@@ -3,7 +3,7 @@
   "authorization": "../../AUTHORIZATION.json",
   "baseline": "365e0b6a0",
   "fixtureReference": "0bd402486:scripts/benchmarks/routes.browser.js",
-  "status": "runtime, same archive and consumer qualification passed; source-pinned documentation build remains pending",
+  "status": "Focused runtime, exact same archive and source-pinned documentation qualification passed; large-size admission and final combined P95 remain pending",
   "changes": [
     "One distance/attraction per symmetric pair sample; original typed force sum order",
     "Scalar default for private asymmetric/unsorted callers",
@@ -98,6 +98,21 @@
       "executableDocEach": 1,
       "bundleEntriesEach": 6,
       "node20": "runtime/types/doc passed; six measured bundles passed separate minimum cap recheck without reinstall"
+    },
+    "documentation": {
+      "owning": 51,
+      "builtPages": 186,
+      "llmArtifacts": 1603,
+      "browserWidths": [
+        320,
+        390,
+        768,
+        1280
+      ],
+      "axeViolations": 0,
+      "overflow": 0,
+      "consoleErrors": 0,
+      "mobile390Reviewed": true
     }
   },
   "archive": {
@@ -135,5 +150,6 @@
     "First complete-output comparison also compared resultHash despite changed work diagnostics; corrected proof explicitly separates only work and its dependent hash.",
     "Unpacked7929395 exceeded7927700; minimum7929400 applied.",
     "Node20 six bundle measurements found Full783810>783700; minimum783900 applied and same six values rechecked."
-  ]
+  ],
+  "sourceCommit": "aea5bd365"
 }

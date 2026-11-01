@@ -5,6 +5,7 @@
 - [x] `../AUTHORIZATION.json`의 remainingApproval 재사용. 원 fixed fixture·한도·표본·165회 반복·지원 분모를 유지한다.
 - [x] 기본 native fixture의 첫 실패 비용을 diagnostic으로 분리 계측했다.
 - [x] 대칭쌍 distance/attraction의 중복만 제거하고 scalar 순서를 유지했다.
+- [x] source `aea5bd365`와 동일 archive3Node·문서51·built186/LLM1603·4폭 browser를 검증했다.
 - [x] 독립 scalar oracle·기존 전체 small 결과·원 endpoint/typed order·signed zero·overflow·immutable·codec를 검증했다.
 - [ ] 최종 combined archive의 전용 Chromium P95/100회 lifecycle 검사는 root와 CPU 슬롯 조율 후 한 번 실행한다.
 - [ ] Density100/1000/10000, FDEB1000/10000 admission·SLO는 여전히 미완료다.
