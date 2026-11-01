@@ -6,7 +6,7 @@
 - [x] 원 edge key/order/rows, complete path, exact endpoint 및 clip/codec를 검증했다.
 - [x] Node22 density literal primitive와 실제 public output의 네 backend exact 비교를 고정했다.
 - [x] engine 지수 반올림을 solver 변경 없이 분리하고 실제 저장 복원 결함을 수리했다.
-- [ ] 최종 source pin·설치3Node·built docs 증거를 마감한다.
+- [x] Source56640916a와 같은c1b9 archive의 설치3Node·source docs51·built186/1603·4폭Axe를 검증했다.
 
 [기존 승인](../AUTHORIZATION.json)의 remainingApproval 범위다. API/schema/algorithmVersion,
 solver 공식·순서·guard·sample 수를 바꾸지 않는다. 새 animation 지원과 큰 규모 SLO를
