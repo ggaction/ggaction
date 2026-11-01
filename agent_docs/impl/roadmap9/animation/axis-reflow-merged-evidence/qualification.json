@@ -1,7 +1,7 @@
 {
   "status": "dynamic-axis-labels-integrated; dependent-lane-title-and-final-qualification-pending",
   "base": "d59526a40",
-  "sourceRevision": null,
+  "sourceRevision": "3ed6e8ef93217a0f92bbf4b1908515ca3fb2bf66",
   "incomingSource": "0811878a9500f2637e1ea60a1e4d40eb352f8370",
   "upstreamPin": "e37357c6c",
   "approval": "../../AUTHORIZATION.json#remainingApproval",
@@ -49,7 +49,8 @@
     "browser.log": 1,
     "realistic.log": 5,
     "boundaries.log": 47,
-    "docs.log": 241
+    "docs.log": 241,
+    "pin-docs.log": 49
   },
   "installed": [
     {
@@ -412,6 +413,46 @@
     "source-files.json": {
       "sha256": "30b44bbb8929a216e5351035da1500a36c07038ac0f3ab746d06720237e84005",
       "bytes": 1024
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "61e11eab762877caa57016b43bca23b72190f36d56c2c14be2afeb8cf81bd36b",
+      "bytes": 1812
+    },
+    "source-pin-pack.json": {
+      "sha256": "d1880f6ea487bd61f4dc961348fb9b5edc91b3e2c90e18638899196341205a2d",
+      "bytes": 388
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pin-docs.log": {
+      "sha256": "1934fd3ad2784e02181c2ba9d25258bdac20f5e581d47c3069977435aa7ec265",
+      "bytes": 10260,
+      "tests": 49
     }
+  },
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
   }
 }
