@@ -1,0 +1,23 @@
+{
+  "consumer": {
+    "node": "v22.23.1",
+    "n": 1000,
+    "verified": 4000,
+    "rebaseVerified": 9000,
+    "wireBytes": 2131841,
+    "wireSHA256": "fe00fae84c405a0e75c48c737cfb755dcd6ab654811bed9b016aea59f25d9342",
+    "default10000Rejected": true
+  },
+  "artifact": {
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1239
+  },
+  "archiveSHA256": "532c21c822e60a9e9507a6362d12420bf2452e6529cef01bb6f51124eb213b41",
+  "animation": {
+    "specifier": "ggaction/animation",
+    "chunks": 1,
+    "modules": 509,
+    "minifiedBytes": 1113099,
+    "gzipBytes": 332660
+  }
+}

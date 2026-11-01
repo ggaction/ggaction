@@ -1,0 +1,375 @@
+{
+  "status": "private-partition-equality-integrated; final-native-qualification-pending",
+  "base": "165448b50",
+  "incoming": "4e399b325",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1244,
+    "packedBytes": 1785545,
+    "unpackedBytes": 8053787,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-fa8a8b550793a4b1a1ea776141fb1ed3790f82acd4298ea3a137fc478ca05b24.tgz",
+    "sha256": "fa8a8b550793a4b1a1ea776141fb1ed3790f82acd4298ea3a137fc478ca05b24"
+  },
+  "checks": {
+    "focused.log": 44,
+    "owning.log": 712,
+    "contracts.log": 31,
+    "docs.log": 242
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "sha256": "fa8a8b550793a4b1a1ea776141fb1ed3790f82acd4298ea3a137fc478ca05b24",
+      "checks": [
+        "animation-partition/offline-four-renderers",
+        "animation-partition/current-frame-interruption",
+        "animation-partition/fallback-and-immutable-failure"
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1059,
+          "minifiedBytes": 2735450,
+          "gzipBytes": 784296
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 424647
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44851
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113099,
+          "gzipBytes": 333793
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135989
+        }
+      ],
+      "types": "passed",
+      "docs": [
+        "animation-guides"
+      ],
+      "status": "passed"
+    },
+    {
+      "node": "v22.23.1",
+      "sha256": "fa8a8b550793a4b1a1ea776141fb1ed3790f82acd4298ea3a137fc478ca05b24",
+      "checks": [
+        "animation-partition/offline-four-renderers",
+        "animation-partition/current-frame-interruption",
+        "animation-partition/fallback-and-immutable-failure"
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1059,
+          "minifiedBytes": 2735450,
+          "gzipBytes": 782879
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 423769
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24779
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44700
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113099,
+          "gzipBytes": 332660
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135493
+        }
+      ],
+      "types": "passed",
+      "docs": [
+        "animation-guides"
+      ],
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "sha256": "fa8a8b550793a4b1a1ea776141fb1ed3790f82acd4298ea3a137fc478ca05b24",
+      "checks": [
+        "animation-partition/offline-four-renderers",
+        "animation-partition/current-frame-interruption",
+        "animation-partition/fallback-and-immutable-failure"
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1059,
+          "minifiedBytes": 2735450,
+          "gzipBytes": 784296
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 424647
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44851
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113099,
+          "gzipBytes": 333793
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135989
+        }
+      ],
+      "types": "passed",
+      "docs": [
+        "animation-guides"
+      ],
+      "status": "passed"
+    }
+  ],
+  "exactConsumer": {
+    "consumer": {
+      "node": "v22.23.1",
+      "n": 1000,
+      "verified": 4000,
+      "rebaseVerified": 9000,
+      "wireBytes": 2131841,
+      "wireSHA256": "fe00fae84c405a0e75c48c737cfb755dcd6ab654811bed9b016aea59f25d9342",
+      "default10000Rejected": true
+    },
+    "artifact": {
+      "external": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-fa8a8b550793a4b1a1ea776141fb1ed3790f82acd4298ea3a137fc478ca05b24.tgz"
+    },
+    "archiveSHA256": "fa8a8b550793a4b1a1ea776141fb1ed3790f82acd4298ea3a137fc478ca05b24",
+    "animation": {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 509,
+      "minifiedBytes": 1113099,
+      "gzipBytes": 332660
+    }
+  },
+  "coverageReuse": {
+    "sourceIdenticalTo": "4e399b325",
+    "lines": 100,
+    "branches": 93.94,
+    "functions": 100,
+    "newCoverageRunClaimed": false
+  },
+  "limits": {
+    "entries": 1244,
+    "packedBytes": 1788900,
+    "unpackedBytes": 8053800
+  },
+  "pending": [
+    "Original 10000 partition endpoint/work guard support",
+    "Large animation lossless transport, complete timing/heap/P95/100-cycle qualification",
+    "Final combined candidate required suites"
+  ],
+  "evidenceFiles": {
+    "exact-consumer.log": {
+      "bytes": 718,
+      "sha256": "6b6bf31999caf6d5984e4f984384df65c734bec750c4ed6ab0746c5c0292d8f9"
+    },
+    "pack22.json": {
+      "bytes": 390,
+      "sha256": "b5b3502e7788d111fc162d1779375cebf20fd8b9d484bee749dbee0b2bbf4624"
+    },
+    "installed-24.json": {
+      "bytes": 1276,
+      "sha256": "6fa7a1cea14cd90a2664dd39e88d786eadf6f9b85b98e4335d81f260d5acaecd"
+    },
+    "installed-20.json.doc.json": {
+      "bytes": 296,
+      "sha256": "487b1e8a2d54db5f4cad45c9498533c524eb6fb290115540f787835b506a3fac"
+    },
+    "pack20-initial.json": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "installed-24.json.doc.json": {
+      "bytes": 297,
+      "sha256": "7d6371ac035c27652fcf3148de059860e0928f89218764db60369d1335c0bdc9"
+    },
+    "contracts.log": {
+      "bytes": 6390,
+      "sha256": "9791acb950c1e7a7f6f16038c71fac90aa22928ed9791656d2610d13c409c42d"
+    },
+    "frozen.json": {
+      "bytes": 436,
+      "sha256": "c04fb9f8fafb920172012fcb736392d5ced93861ed5719ad993be34e5835012b"
+    },
+    "source-equality.json": {
+      "bytes": 106,
+      "sha256": "d01eef9a280271ec45099d95244618f9019974e4e8e06dd60bdb6b8a304b81b6"
+    },
+    "installed.mjs": {
+      "bytes": 3135,
+      "sha256": "357a45a1482b5e53d74e8de52f13700cee5e11076cb8f586033cf0b448c0843a"
+    },
+    "installed-22.json": {
+      "bytes": 1276,
+      "sha256": "842e16fbc38e39edf51e804f1243a9b8b6dd45b8de7ca280622259e5edf574b6"
+    },
+    "pack24.json": {
+      "bytes": 396,
+      "sha256": "fe16019f3650a21d3c97e37cd9d6342035ac6f8292acfa65982ab4f1b682c3e6"
+    },
+    "final-reassert.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "docs.log": {
+      "bytes": 73803,
+      "sha256": "cfca0cd119f98d5c575b0c4610a25b34db77d76ef620f08a7ba10f0a5aa32452"
+    },
+    "exact-consumer.json": {
+      "bytes": 718,
+      "sha256": "6b6bf31999caf6d5984e4f984384df65c734bec750c4ed6ab0746c5c0292d8f9"
+    },
+    "installed-20.json": {
+      "bytes": 1276,
+      "sha256": "d2564c68383fd7faae38820875ffbdc6c7c1eb172d7ae2f0b76a7d347f2a0410"
+    },
+    "pack20.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "pack24-initial.stderr": {
+      "bytes": 966,
+      "sha256": "fc81a2f8653e5750fb1921ad35b30f27626cbe2d82184913d08115c5b97630dc"
+    },
+    "pack22.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "docs-initial.log": {
+      "bytes": 6353514,
+      "sha256": "8c77165b94102b7f4856aa8a396aa2db5d91b48b90f00e867d7a32717db13cdf"
+    },
+    "pack20.json": {
+      "bytes": 396,
+      "sha256": "dd6a1a3d3b88092e55ebaf37b53e8b28803066e921e52eff39a2e7ae60890494"
+    },
+    "installed22.log": {
+      "bytes": 918,
+      "sha256": "4abd1572445b75c1970d9187bafa5f93ad2ae3ffd228edce8523c37aeb77e56f"
+    },
+    "prepack.log": {
+      "bytes": 510,
+      "sha256": "3266b22dbc1cf0bd8d52a65bcedb818b77bdab8b2cbec3ca1e10f2afab87b8f3"
+    },
+    "owning.log": {
+      "bytes": 169825,
+      "sha256": "bd11bc3a63d6ae2090a669ae82510319eeeab7d3a0bfc663ced05d07581f744e"
+    },
+    "installed-22.json.doc.json": {
+      "bytes": 297,
+      "sha256": "c622ccd8863de5c8582b0132be72bb4e3f1030c030242b6a7d99eaf60b9922db"
+    },
+    "final-reassert.json": {
+      "bytes": 398,
+      "sha256": "3da47c50bf7d7ed108d3aa3aef1fc59cc33039fe13d48867104cbdddaa8f0cdc"
+    },
+    "pack24-initial.json": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "installed20.log": {
+      "bytes": 918,
+      "sha256": "d47767f5c64bda4aba1a786dbeeed091ae0c91aae0f26f3025db25c9c80c6e1b"
+    },
+    "evidence.py": {
+      "bytes": 3103,
+      "sha256": "62daa107e9a346ab03fa3201b717594292a6adf5c723f598874e592955eb54e6"
+    },
+    "installed24.log": {
+      "bytes": 918,
+      "sha256": "07ca9f9fa3414ee6474d99bab74d63454ce836ec24c626d4e093a657c360dcaf"
+    },
+    "generate.log": {
+      "bytes": 335,
+      "sha256": "ff1e173ebfd711f21dc34510c15e44bbcbc14b3a77a678fa05eba2593517baae"
+    },
+    "focused.log": {
+      "bytes": 10988,
+      "sha256": "80757f40b09119fe98221275046d77661e2a2177a9fe0f346124ceb32e9f3364"
+    },
+    "pack24.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "pack20-initial.stderr": {
+      "bytes": 966,
+      "sha256": "a3c15259473eae5c323671edd85cc54c1dad1b3a96b4eb289c5a223b70670c8e"
+    }
+  }
+}

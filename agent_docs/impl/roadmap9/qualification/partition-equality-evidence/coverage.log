@@ -1,0 +1,1528 @@
+TAP version 13
+# Subtest: public offline plans preserve keyed meaning, canonical frames and playback defaults
+ok 1 - public offline plans preserve keyed meaning, canonical frames and playback defaults
+  ---
+  duration_ms: 175.840458
+  type: 'test'
+  ...
+# Subtest: frame export preflights the entire explicit schedule and uses the exact fps grid
+ok 2 - frame export preflights the entire explicit schedule and uses the exact fps grid
+  ---
+  duration_ms: 36.131458
+  type: 'test'
+  ...
+# Subtest: public restore rejects corruption, unknown kernels, missing payloads and executable playback
+ok 3 - public restore rejects corruption, unknown kernels, missing payloads and executable playback
+  ---
+  duration_ms: 63.991042
+  type: 'test'
+  ...
+# Subtest: exported frames retain authentic meaning across rebasing and offline restoration
+ok 4 - exported frames retain authentic meaning across rebasing and offline restoration
+  ---
+  duration_ms: 50.412292
+  type: 'test'
+  ...
+# Subtest: frame export rejects cumulative output work before materializing a first frame
+ok 5 - frame export rejects cumulative output work before materializing a first frame
+  ---
+  duration_ms: 269.838625
+  type: 'test'
+  ...
+# Subtest: owned equal and unequal partition groups are compared once per exact pair
+ok 6 - owned equal and unequal partition groups are compared once per exact pair
+  ---
+  duration_ms: 125.667458
+  type: 'test'
+  ...
+# Subtest: nested partition groups retain independent equality and every native offline and rebase item
+ok 7 - nested partition groups retain independent equality and every native offline and rebase item
+  ---
+  duration_ms: 997.592333
+  type: 'test'
+  ...
+# Subtest: caller-owned and shallow-frozen partition groups do not acquire cached equality authority
+ok 8 - caller-owned and shallow-frozen partition groups do not acquire cached equality authority
+  ---
+  duration_ms: 34.441208
+  type: 'test'
+  ...
+# Subtest: an owned group replacement cannot borrow the preceding pair equality
+ok 9 - an owned group replacement cannot borrow the preceding pair equality
+  ---
+  duration_ms: 17.605333
+  type: 'test'
+  ...
+# Subtest: native rectangular and polar normalized states preserve fixed screen values without layout
+ok 10 - native rectangular and polar normalized states preserve fixed screen values without layout
+  ---
+  duration_ms: 34.083542
+  type: 'test'
+  ...
+# Subtest: all native coordinate directions and compatible bend endpoints preserve native mapping
+ok 11 - all native coordinate directions and compatible bend endpoints preserve native mapping
+  ---
+  duration_ms: 73.864708
+  type: 'test'
+  ...
+# Subtest: current curved meaning rebases exactly while native dimensions remain explicit
+ok 12 - current curved meaning rebases exactly while native dimensions remain explicit
+  ---
+  duration_ms: 3.535959
+  type: 'test'
+  ...
+# Subtest: closed numeric inputs reject malformed frames, unknown versions, accessors and inconsistent plans
+ok 13 - closed numeric inputs reject malformed frames, unknown versions, accessors and inconsistent plans
+  ---
+  duration_ms: 1.415375
+  type: 'test'
+  ...
+# Subtest: public partition transitions retain exact native endpoints and the approved canonical intermediate geometry
+ok 14 - public partition transitions retain exact native endpoints and the approved canonical intermediate geometry
+  ---
+  duration_ms: 499.975917
+  type: 'test'
+  ...
+# Subtest: native size, radial hole and clockwise mappings interpolate within their normalized hierarchy
+ok 15 - native size, radial hole and clockwise mappings interpolate within their normalized hierarchy
+  ---
+  duration_ms: 474.289
+  type: 'test'
+  ...
+# Subtest: interrupted bidirectional native partition plans preserve authentic frames and offline meaning
+ok 16 - interrupted bidirectional native partition plans preserve authentic frames and offline meaning
+  ---
+  duration_ms: 715.147042
+  type: 'test'
+  ...
+# Subtest: scope, current path hit and bounded repeated interruptions retain exact native hierarchy identity
+ok 17 - scope, current path hit and bounded repeated interruptions retain exact native hierarchy identity
+  ---
+  duration_ms: 1096.90075
+  type: 'test'
+  ...
+# Subtest: visibility, hierarchy topology, edited geometry and paint retain explicit concrete fallbacks
+ok 18 - visibility, hierarchy topology, edited geometry and paint retain explicit concrete fallbacks
+  ---
+  duration_ms: 86.485875
+  type: 'test'
+  ...
+# Subtest: closed partition transport rejects missing kernels, forged semantic state and unreferenced groups
+ok 19 - closed partition transport rejects missing kernels, forged semantic state and unreferenced groups
+  ---
+  duration_ms: 128.730083
+  type: 'test'
+  ...
+# Subtest: the public plan preserves every compatible native general direction through offline replay
+ok 20 - the public plan preserves every compatible native general direction through offline replay
+  ---
+  duration_ms: 3592.550375
+  type: 'test'
+  ...
+# Subtest: incompatible clipping and structured paint preserve their native pixels through explicit fallbacks
+ok 21 - incompatible clipping and structured paint preserve their native pixels through explicit fallbacks
+  ---
+  duration_ms: 138.642125
+  type: 'test'
+  ...
+# Subtest: a gap that consumes an intermediate cell falls back with both body and label preserved
+ok 22 - a gap that consumes an intermediate cell falls back with both body and label preserved
+  ---
+  duration_ms: 13.603917
+  type: 'test'
+  ...
+# Subtest: typed partition tracks preserve exact immutable endpoints and offline numeric identity
+ok 23 - typed partition tracks preserve exact immutable endpoints and offline numeric identity
+  ---
+  duration_ms: 12.754625
+  type: 'test'
+  ...
+# Subtest: icicle to sunburst samples agree with independent bend values and reverse sampling
+ok 24 - icicle to sunburst samples agree with independent bend values and reverse sampling
+  ---
+  duration_ms: 8.134666
+  type: 'test'
+  ...
+# Subtest: canonical frames support every compatible general direction without a second coordinate formula
+ok 25 - canonical frames support every compatible general direction without a second coordinate formula
+  ---
+  duration_ms: 27.713
+  type: 'test'
+  ...
+# Subtest: same-family size center hole and focus changes interpolate without changing hierarchy identity
+ok 26 - same-family size center hole and focus changes interpolate without changing hierarchy identity
+  ---
+  duration_ms: 1.155291
+  type: 'test'
+  ...
+# Subtest: current-frame rebasing keeps raw boundaries and current CSS gaps exactly at the new start
+ok 27 - current-frame rebasing keeps raw boundaries and current CSS gaps exactly at the new start
+  ---
+  duration_ms: 5.166917
+  type: 'test'
+  ...
+# Subtest: topology visibility reflection and radius policy changes report distinct crossfades
+ok 28 - topology visibility reflection and radius policy changes report distinct crossfades
+  ---
+  duration_ms: 5.807
+  type: 'test'
+  ...
+# Subtest: CSS gap at exact native boundaries agrees with rectangle and sector mapping
+ok 29 - CSS gap at exact native boundaries agrees with rectangle and sector mapping
+  ---
+  duration_ms: 4.352625
+  type: 'test'
+  ...
+# Subtest: intermediate gaps use current curved arc and radial distances including area depths
+ok 30 - intermediate gaps use current curved arc and radial distances including area depths
+  ---
+  duration_ms: 6.594917
+  type: 'test'
+  ...
+# Subtest: track restoration rejects unknown versions malformed topology and inconsistent decisions
+ok 31 - track restoration rejects unknown versions malformed topology and inconsistent decisions
+  ---
+  duration_ms: 3.945916
+  type: 'test'
+  ...
+# Subtest: descriptor checks and global work limits reject before callbacks or oversized traversal
+ok 32 - descriptor checks and global work limits reject before callbacks or oversized traversal
+  ---
+  duration_ms: 606.1305
+  type: 'test'
+  ...
+# Subtest: current semantic values and resolved scales rebase without pixel inversion in either direction
+ok 33 - current semantic values and resolved scales rebase without pixel inversion in either direction
+  ---
+  duration_ms: 115.621125
+  type: 'test'
+  ...
+# Subtest: timed exported frames retain authenticity and exact captured endpoint views
+ok 34 - timed exported frames retain authenticity and exact captured endpoint views
+  ---
+  duration_ms: 47.487833
+  type: 'test'
+  ...
+# Subtest: repeated topology interruption flattens weighted sources and preserves node identity
+ok 35 - repeated topology interruption flattens weighted sources and preserves node identity
+  ---
+  duration_ms: 812.137208
+  type: 'test'
+  ...
+# Subtest: nested enter and exit frames retain keyed correspondence at the actual displayed state
+ok 36 - nested enter and exit frames retain keyed correspondence at the actual displayed state
+  ---
+  duration_ms: 15.150833
+  type: 'test'
+  ...
+# Subtest: sampled endpoint restoration rejects identity, view, topology and semantic corruption
+ok 37 - sampled endpoint restoration rejects identity, view, topology and semantic corruption
+  ---
+  duration_ms: 29.243375
+  type: 'test'
+  ...
+1..37
+# tests 37
+# suites 0
+# pass 37
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8192.280959
+# start of coverage report
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# file                                  | line % | branch % | funcs % | uncovered lines
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# examples                              |        |          |         | 
+#  partition-layouts                    |        |          |         | 
+#   fixture.js                          |  77.14 |   100.00 |   33.33 | 25-28 30-33
+# src                                   |        |          |         | 
+#  actions                              |        |          |         | 
+#   basic.js                            | 100.00 |   100.00 |  100.00 | 
+#   boxPlots                            |        |          |         | 
+#    components.js                      |  28.57 |   100.00 |    0.00 | 27-59 68-97 104-140
+#    create.js                          |  27.78 |   100.00 |    0.00 | 30-107
+#    edit.js                            |   9.98 |   100.00 |    0.00 | 40-45 47-60 62-75 77-88 90-199 207-510
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    materialize.js                     |  11.27 |   100.00 |    0.00 | 24-212
+#    options.js                         |  35.42 |   100.00 |    0.00 | 48-55 57-81 84-86 89-93 96-99 102-131 134-146 149-150 153-155 158-165 168-182 185-192
+#    resolve.js                         |  21.74 |   100.00 |    0.00 | 7-12 15-36 39-46
+#   calendar                            |        |          |         | 
+#    closure.js                         |  38.10 |   100.00 |    0.00 | 8-18 20-21
+#    plots.js                           |  36.05 |   100.00 |   50.00 | 21-32 39-81
+#    resources.js                       |  39.58 |   100.00 |   20.00 | 13-17 20-26 29-36 39-47
+#   canvas                              |        |          |         | 
+#    actions.js                         |  93.30 |    58.33 |   88.24 | 48-49 74-75 77-79 118-119 146 154-155 166-167
+#    fitting.js                         |  19.23 |   100.00 |    0.00 | 37-54 59-90 92-113 115-117 119-180 182-195 197-199 201-203 205-233 241-285
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    plotBorder.js                      |  34.48 |   100.00 |    0.00 | 10-28
+#    plotOrder.js                       |  57.14 |   100.00 |    0.00 | 8-13
+#   categoryOrder                       |        |          |         | 
+#    index.js                           |  33.06 |   100.00 |   20.00 | 25-58 60-80 85-93 99-115
+#   charts                              |        |          |         | 
+#    area.js                            |  28.57 |   100.00 |    0.00 | 20-69
+#    bar.js                             |  37.36 |   100.00 |    0.00 | 27-39 47-90
+#    basic.js                           | 100.00 |   100.00 |  100.00 | 
+#    beeswarm.js                        |  29.11 |   100.00 |    0.00 | 15-25 27-32 40-78
+#    density.js                         |  41.51 |   100.00 |    0.00 | 22-52
+#    ecdf.js                            |  33.33 |   100.00 |    0.00 | 39-41 43-47 49-62 66-71 79-146 155-176
+#    endpoints.js                       |  21.67 |   100.00 |    0.00 | 61-70 72-80 82-88 90-96 98-111 113-128 130-132 134-160 162-180 182-187 189-198 200-206 208-210 212-223 225-235 237-253 255-259 261-268 270-275 280-306 312-351 357-427 447-462 464-505 510-539
+#    frame.js                           |  37.21 |   100.00 |    0.00 | 10-15 18-34 40-43
+#    heatmap.js                         |  25.73 |   100.00 |    0.00 | 41-50 52-66 68-75 77-93 95-111 113-142 150-205
+#    histogram.js                       |  53.13 |   100.00 |    0.00 | 34-63
+#    horizon.js                         |  25.64 |   100.00 |    0.00 | 15-24 26-44 49-77
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    interval-regression.js             |  31.32 |   100.00 |    0.00 | 34-43 45-53 55-87 95-141 156-181
+#    line.js                            |  45.95 |   100.00 |    0.00 | 34-73
+#    missing.js                         |  35.29 |   100.00 |    0.00 | 7-17
+#    ohlc.js                            |  31.58 |   100.00 |   50.00 | 27-91
+#    parallel.js                        |  27.59 |   100.00 |    0.00 | 25-54 62-115
+#    pie.js                             |  87.50 |   100.00 |    0.00 | 7
+#    polar.js                           |  35.56 |   100.00 |    0.00 | 33-41 49-90 99-134
+#    pyramid.js                         |  39.39 |   100.00 |   50.00 | 23-62
+#    radar.js                           |  16.67 |   100.00 |    0.00 | 42-70 72-80 82-116 118-135 137-139 141-155 157-184 186-197 201-224 232-337 346-401
+#    radial.js                          |  30.56 |   100.00 |    0.00 | 18-65 68 71
+#    raincloud.js                       |  15.42 |   100.00 |    0.00 | 46-52 54-60 62-67 69-81 83-102 104-115 117-138 140-144 146-149 151-157 159-176 178-186 188-193 195-244 246-279 281-287 289-332 334-349 351-401 403-417 422-425 431-479
+#    rug-strip.js                       |  19.19 |   100.00 |    0.00 | 38-47 49-83 91-135 138-152 154-171 173-215 223-296
+#    scatter.js                         |  42.68 |   100.00 |    0.00 | 35-81
+#    shared.js                          |  22.12 |   100.00 |    0.00 | 10-11 14-33 36-46 49-59 62-64 67-83 86-99 102-105 108-109 112-121 124-138 141-149 152-158 161-166 169-170 173-174 180-191 194-208 211-217
+#    table.js                           |  38.46 |   100.00 |   50.00 | 22-61
+#    text.js                            |  42.11 |   100.00 |   50.00 | 16-37
+#    trail.js                           |  29.63 |   100.00 |   33.33 | 25-31 36-104
+#    waterfall.js                       |  31.18 |   100.00 |   50.00 | 26-89
+#   composition                         |        |          |         | 
+#    actions.js                         |  52.71 |    48.48 |   60.00 | 33-35 40-41 43-44 47-48 59-60 68-69 87-88 92-93 136-137 180-246 256-280 283-288 297-327 337-354 364-384 390-394
+#    adjacent.js                        |  30.00 |   100.00 |   50.00 | 23-85
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    layer.js                           |  23.26 |   100.00 |   50.00 | 9-41
+#    layerPlan.js                       |   7.39 |   100.00 |    0.00 | 13-29 31-176
+#    targets.js                         |  19.70 |   100.00 |    0.00 | 12-25 27-30 35-37 39-46 48-53 55-68 71-88 94-132
+#   contours                            |        |          |         | 
+#    closure.js                         |  40.91 |   100.00 |    0.00 | 8-18 21-22
+#    marks.js                           |  32.69 |   100.00 |   50.00 | 22-33 40-97
+#    resources.js                       |  43.42 |   100.00 |   12.50 | 12-15 19-21 27-30 34-35 37-43 47-60 64-72
+#   coordinates                         |        |          |         | 
+#    actions.js                         |  85.71 |    60.87 |  100.00 | 18-19 24-25 29-30 45-48 55-58
+#    edit.js                            |  83.12 |    50.00 |  100.00 | 17-23 42-43 46-47 63-64
+#    parallel.js                        |   8.00 |   100.00 |    0.00 | 5-50
+#   data                                |        |          |         | 
+#    basic.js                           | 100.00 |   100.00 |  100.00 | 
+#    basicBin2d.js                      |  47.62 |   100.00 |    0.00 | 20-41
+#    bin.js                             | 100.00 |   100.00 |  100.00 | 
+#    bin2d.js                           |  27.88 |   100.00 |    8.33 | 35-37 39-41 43-62 64-74 76-82 84-92 94-109 111-113 115-127 135-167 176-207
+#    bin2dMaterialize.js                |  42.86 |   100.00 |    0.00 | 12-27
+#    box.js                             |  82.93 |   100.00 |   33.33 | 28-34
+#    complete.js                        | 100.00 |   100.00 |  100.00 | 
+#    computed.js                        | 100.00 |   100.00 |    0.00 | 
+#    computedBinding.js                 |  33.33 |   100.00 |    0.00 | 10-27
+#    create.js                          |  94.87 |    28.57 |  100.00 | 31-32
+#    density.js                         |  61.54 |   100.00 |    0.00 | 13-26 34-44
+#    derived.js                         |  44.23 |    66.67 |   16.67 | 45-78 87-117 135-136 151-169 171-174 182-207
+#    ecdf.js                            |  76.32 |   100.00 |    0.00 | 27-35
+#    edit.js                            |  49.05 |    50.00 |   41.94 | 82-93 95-97 99-108 110-115 118-171 174-181 187-199 203-213 215-225 236-240 242-245 251-265 268 275-279 298-299 305-325 347-351 356-357 374-427 429-431 434-449 457-485 493-524
+#    filter.js                          |  27.87 |   100.00 |    0.00 | 59-74 80-104 113-187 196-202 205-218 220-225 228-240 242-248 250-252 260-275 284-365
+#    filterBinding.js                   |  42.11 |   100.00 |    0.00 | 9-19
+#    filterGeometry.js                  |  12.50 |   100.00 |    0.00 | 2-10 13-29 32-40
+#    flatten.js                         | 100.00 |   100.00 |  100.00 | 
+#    fold.js                            | 100.00 |   100.00 |  100.00 | 
+#    gradientProfile.js                 |  80.00 |   100.00 |    0.00 | 18-24
+#    graphFilter.js                     |  32.32 |   100.00 |    0.00 | 18-23 25-29 31-35 37-43 45-68 70-76 78-86 88-90 95
+#    graphSubset.js                     | 100.00 |   100.00 |  100.00 | 
+#    horizon.js                         |  65.22 |   100.00 |    0.00 | 12-27
+#    impute.js                          | 100.00 |   100.00 |  100.00 | 
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    interval.js                        |  70.59 |   100.00 |    0.00 | 34-48
+#    intervalEdit.js                    |  14.48 |   100.00 |    0.00 | 13-16 19-34 37-49 52-60 63-66 69-74 77-93 96-139 142-151 154-172 175-221
+#    lookup.js                          |  48.00 |   100.00 |    0.00 | 13-22 28-32 39-49
+#    normalize.js                       | 100.00 |   100.00 |  100.00 | 
+#    pivot.js                           |  62.07 |   100.00 |    0.00 | 18-28
+#    raincloudFilter.js                 |  22.41 |   100.00 |    0.00 | 8-18 21-30 33-52 55-58
+#    regression.js                      |  45.71 |   100.00 |    0.00 | 17-19 21-25 27-35 49-69
+#    regressionStatistics.js            |  36.99 |   100.00 |    0.00 | 12-20 22-32 37-41 47-57 63-72
+#    resourcePlan.js                    |  39.71 |    42.86 |    9.52 | 42-93 95-111 118-126 130-133
+#    resourceRevision.js                |  78.05 |    50.00 |   57.14 | 18-19 23-24 28-30 40-41
+#    revise.js                          |  82.83 |    43.33 |   81.82 | 46-47 52 55-60 71-74 84-85 88-89
+#    revisionBindings.js                |  39.75 |    26.67 |   38.46 | 14-31 36-41 57-64 67-74 82-94 101-112 118-122 126-132 138-147 149-152 154-159
+#    shared.js                          |  30.77 |   100.00 |   33.33 | 17-23 28-46 50-91 107-128
+#    sort.js                            | 100.00 |   100.00 |  100.00 | 
+#    sourceContext.js                   |  37.84 |   100.00 |   20.00 | 10-17 19-22 25-29 32-37
+#    sourceCreate.js                    |  50.00 |   100.00 |    0.00 | 9-12 15-23 28-29
+#    sourceEdit.js                      |  40.00 |   100.00 |    0.00 | 10-24
+#    sourcePlan.js                      |  24.14 |   100.00 |    0.00 | 13-17 19-27 32-71 76-87
+#    stack.js                           | 100.00 |   100.00 |  100.00 | 
+#    summary.js                         | 100.00 |   100.00 |  100.00 | 
+#    timeUnit.js                        | 100.00 |   100.00 |  100.00 | 
+#    visibility.js                      |  32.89 |   100.00 |    0.00 | 14-19 21-35 40-49 56-75
+#    window.js                          | 100.00 |   100.00 |  100.00 | 
+#   distributions                       |        |          |         | 
+#    revision.js                        |   8.21 |   100.00 |    0.00 | 14-38 41-60 63-90 93-145 147-155 158-169 172-191 194-247 249-256 258-260 262-288 290-294 297-317 320-331 333-336 338-407 409-411 413-455 458-487
+#   encodings                           |        |          |         | 
+#    angle.js                           |  31.25 |   100.00 |   33.33 | 14-18 26-75
+#    appearance.js                      |  32.84 |   100.00 |   18.18 | 42-88 96-121 130-131 140-155 164-186 195-211 220-226 229-238 246-326
+#    barWidth.js                        |  31.58 |   100.00 |   33.33 | 17-31 41-90
+#    basic.js                           | 100.00 |   100.00 |  100.00 | 
+#    channels.js                        |  28.10 |   100.00 |    4.55 | 86-101 103-121 124-158 160-177 179-202 204-217 219-232 235-239 241-244 246-248 250-268 272-289 291-297 299-308 316-319 322-344 346-384 386-402 404-421 423-425 433-447
+#    color                              |        |          |         | 
+#     continuous.js                     |  29.60 |   100.00 |    0.00 | 38-125
+#     index.js                          |  28.38 |   100.00 |   50.00 | 60-223
+#     layout.js                         |  14.29 |   100.00 |    0.00 | 2-7
+#     policy.js                         |  18.29 |   100.00 |    0.00 | 17-25 28-45 48-69 72-90 93-97 100-151 156-164
+#    conditional.js                     |  25.84 |    72.00 |   53.85 | 29-34 36-39 41-51 53-58 60-170 178-184 195-196 199-206
+#    conditionalRequest.js              |  20.00 |   100.00 |    0.00 | 6-25
+#    density.js                         |  14.00 |   100.00 |   16.67 | 48-64 66-82 84-101 103-118 121-199 207-221 224-238 240-246 248-262 270-537
+#    density                            |        |          |         | 
+#     resolve.js                        |   9.35 |   100.00 |    0.00 | 7-14 17-30 32-38 41-95 98-139
+#    histogram.js                       |  38.33 |   100.00 |   33.33 | 17-22 26-56
+#    horizon.js                         |  20.97 |   100.00 |   22.22 | 56-66 68-107 109-112 120-279 283-288 291-346 354-385
+#    horizon                            |        |          |         | 
+#     resolve.js                        |  15.15 |   100.00 |    0.00 | 18-26 29-37 39-50 52-65 67-73 75-94 97-145 148-156 159-165 168-189 192-222 225-227 230-238 241-244 247-276 279-286 289-297
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    offset.js                          |  37.60 |   100.00 |   66.67 | 38-115
+#    parallel.js                        |  30.63 |   100.00 |   50.00 | 30-106
+#    pathOrder.js                       |  36.36 |   100.00 |   20.00 | 23-64 66-75 83-100 109-115
+#    position                           |        |          |         | 
+#     apply.js                          |  69.92 |    25.53 |   72.73 | 5-6 14-16 27-29 42-46 49 51-64 66-67 73-74 76-85 103-104 107-118 133 137-140 153 157-160 207-211
+#     areaAlignment.js                  |  40.35 |    15.79 |   33.33 | 7-10 17 20 24-26 30-54
+#     index.js                          |  69.00 |    27.27 |   71.43 | 23-38 68-74 103 105-106 112-113 123-136 139-147 150-158 163-169 206-207 216-217
+#     resolve.js                        |  63.54 |    25.37 |   55.17 | 72-73 79-82 92-95 100 109-119 130-154 162-170 177-193 195-199 208-211 219-220 229-232 236-239 262-263 267-268 270-273 275-276 285-286 294 313-314 317-324 337-338 344 346-347 358 369-378 383-386 391-392 398 400-401 406 408-409 411-414 416 418 420-421 423 425-426 430 432 434 436-442 444 446 449 453-457 461 463-464
+#     scope.js                          |  38.46 |   100.00 |    0.00 | 5-12
+#    ranged.js                          |  23.14 |   100.00 |   23.08 | 32-41 43-51 53-136 144-151 160-167 170-177 179-201 208-258 271-326 342-363
+#    remove.js                          |  24.29 |   100.00 |    9.09 | 48-72 74-99 101-109 111-126 128-132 134-161 163-185 187-194 196-207 215-274
+#    ruleAppearance.js                  |  29.66 |   100.00 |   50.00 | 31-113
+#    seriesLayout.js                    |  21.05 |   100.00 |   20.00 | 16-17 20-82 87-88 91-128
+#    shared.js                          |  38.98 |    28.13 |   44.44 | 24-37 42-49 52-60 65 72-75 87-104 119-121 128-129 131-133 139-238 243-246 271-272 279-281 287-295
+#    stroke.js                          |  22.55 |   100.00 |   16.67 | 39-50 52-72 74-80 82-104 112-230
+#    strokeDash.js                      |  34.56 |   100.00 |   25.00 | 33-39 42-63 71-130
+#    temporal.js                        |  71.43 |    40.00 |  100.00 | 3-4
+#    text.js                            |  34.13 |   100.00 |   40.00 | 21-34 42-94 100-115
+#   errorBands                          |        |          |         | 
+#    create.js                          |  25.37 |   100.00 |    0.00 | 41 50-61 63-78 80-83 91-150 153-162 164-173 181-267
+#    edit.js                            |  18.71 |   100.00 |    0.00 | 39-60 75 90-102 104-111 113-116 118-147 149-169 171-229 231-244 246-257 259-281 283-285 293-312 321-474 483-528
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#   errorBars                           |        |          |         | 
+#    create.js                          |  23.47 |   100.00 |    0.00 | 61-73 75-127 129-144 159-224 227-236 238-249 251-259 267-374
+#    edit.js                            |  19.36 |   100.00 |    0.00 | 65-95 100-104 106-113 115-178 180-186 188-217 219-235 237-267 269-364 372-396 405-469
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#   facets                              |        |          |         | 
+#    actions.js                         |  17.95 |   100.00 |    8.00 | 80-92 94-99 101-110 113-146 148-208 210-300 302-314 316-344 349-364 371-485 487-500 502-520 522-542 544-559 567-589 602-612 622-647 657-672 675-721 725-739 748-881 886-903 906-925
+#    derive.js                          |   9.09 |   100.00 |    0.00 | 25-47 49-65 67-171 173-197 199-244 246-260 263-297 299-303 306-374
+#    guides.js                          |  87.50 |   100.00 |    0.00 | 14-15
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    replay.js                          |  36.73 |   100.00 |    0.00 | 11-25 33-48
+#   flow                                |        |          |         | 
+#    closure.js                         |  27.27 |   100.00 |    0.00 | 5-14 17-22
+#    plots.js                           |  50.77 |   100.00 |   60.00 | 15-25 36-56
+#    resources.js                       |  56.25 |   100.00 |   25.00 | 15-20 25-33 38-43
+#   fonts                               |        |          |         | 
+#    index.js                           |  47.22 |   100.00 |   25.00 | 6-18 23-24 29-32
+#   geo                                 |        |          |         | 
+#    annotation.js                      |  43.64 |   100.00 |   50.00 | 13-25 31-48
+#    camera.js                          |  29.27 |   100.00 |    0.00 | 12-40
+#    closure.js                         |  30.95 |   100.00 |    0.00 | 15-20 25-29 34-70 73-77 80-84
+#    coordinates.js                     |  69.81 |    30.77 |   60.00 | 18 25-29 32-33 41-48
+#    join.js                            |  62.86 |   100.00 |   33.33 | 13-18 24-30
+#    lod.js                             |  42.31 |   100.00 |   25.00 | 12-25 29-35 40-48
+#    marks.js                           |  45.68 |   100.00 |   50.00 | 17-28 35-66
+#    projections.js                     |  48.15 |   100.00 |   25.00 | 15-33 37-40 45-49
+#    resources.js                       |  61.54 |   100.00 |   33.33 | 15-20 26-34
+#    routes.js                          |  56.41 |   100.00 |   25.00 | 10-13 17-22 28-34
+#   gradientPlots                       |        |          |         | 
+#    components.js                      |  23.04 |   100.00 |    0.00 | 29-59 62-68 70-77 79-85 93-138 141-154 157-170 178-218 222-230
+#    create.js                          |  28.43 |   100.00 |    0.00 | 29-101
+#    edit.js                            |  13.29 |   100.00 |    0.00 | 34-39 41-43 45-50 52-64 66-76 78-112 120-345
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    materialize.js                     |  15.81 |   100.00 |    0.00 | 25-29 31-41 43-57 59-123 131-166 175-271
+#    options.js                         |  25.40 |   100.00 |    0.00 | 18-24 27-30 33-37 40-50 53-61 63-72 75-87 90-121 124-126
+#    paint.js                           |  13.79 |   100.00 |    0.00 | 7-12 14-18 20-22 24-33 35-43 46-55 58-103 106-116
+#    rebind.js                          |  30.00 |   100.00 |    0.00 | 15-49
+#    resolve.js                         |  21.21 |   100.00 |    0.00 | 7-16 19-27 30-52 55-62 65-66
+#   graphs                              |        |          |         | 
+#    edgeRoutes.js                      |  51.92 |   100.00 |   50.00 | 15-25 31-44
+#    inference.js                       |  45.65 |   100.00 |    0.00 | 16-22 28-45
+#    layouts.js                         |  29.82 |   100.00 |    0.00 | 19-31 33-37 44-49 53-73 76-101 104-110 113-114
+#    plots.js                           |  49.09 |   100.00 |   50.00 | 15-25 32-48
+#    resources.js                       |  47.62 |   100.00 |   16.67 | 17-22 27-36 44-45 48-49 51-63
+#    routeClosure.js                    |  38.33 |   100.00 |    0.00 | 14-16 19-22 27-47 50-55 58-60
+#    screenRoutes.js                    |  45.76 |    66.67 |   33.33 | 17-36 39-45 49-53
+#    sourceRevisionContext.js           |  41.67 |   100.00 |    0.00 | 7-8 10-17 19-20 23-24
+#   guides                              |        |          |         | 
+#    applicability.js                   |  15.23 |   100.00 |    0.00 | 16-22 24-36 38-48 51-76 79-116 119-151
+#    axes                               |        |          |         | 
+#     axes.js                           |  12.41 |   100.00 |    8.33 | 22-33 36-56 58-84 86-141 143-159 161-163 165-199 201-210 213-224 232-357 364-397
+#     axis.js                           |  41.24 |   100.00 |   50.00 | 48-54 57-77 98-183
+#     components.js                     |  33.33 |   100.00 |    0.00 | 7-8 11-13 16-19 22-26 29-32 35-48
+#     edit.js                           |  32.77 |   100.00 |   33.33 | 41-49 51-81 96-102 104-144 146-188 198-224
+#     frame.js                          |  26.47 |   100.00 |    0.00 | 11-26 29-44 47-49 52-64 67-68
+#     index.js                          | 100.00 |   100.00 |  100.00 | 
+#     labels.js                         |  25.34 |   100.00 |   21.43 | 58-80 84-101 103-146 148-164 166-174 176-184 187-221 224-251 256-293 304-359
+#     lines.js                          |  37.72 |   100.00 |   37.50 | 28-31 33-65 67-72 80-113 128-154
+#     parallel.js                       |  24.44 |   100.00 |   25.00 | 11-13 15-31 37-84
+#     parallel                          |        |          |         | 
+#      lifecycle.js                     |  35.48 |   100.00 |   22.22 | 11-24 26-36 38-48 53-61 67-82 92-98 104-115
+#      policy.js                        |  30.94 |   100.00 |   14.29 | 35-39 42-70 72-101 104-127 130-131 134-139
+#      resolve.js                       |  22.58 |   100.00 |    0.00 | 16-29 32-47 49-54 56-68 71-93
+#     policy.js                         |  46.88 |   100.00 |    0.00 | 10-16 19-20 23-27 30-32
+#     remove.js                         |  49.23 |   100.00 |   50.00 | 25-57
+#     tickGroups.js                     |  56.76 |   100.00 |   40.00 | 50-56 59-78 80-88 104-113 124-137 151-170
+#     ticks.js                          |  26.59 |   100.00 |   33.33 | 43-58 60-80 82-138 141-170 175-199 209-244
+#     titles.js                         |  25.99 |   100.00 |   35.71 | 43-49 51-62 64-74 89-91 93-99 102-176 178-212 222-278 288-342
+#    basic.js                           | 100.00 |   100.00 |  100.00 | 
+#    facade.js                          |  15.93 |   100.00 |    0.00 | 13-17 19-43 45-61 64-100 103-113
+#    facadeAxes.js                      |   8.49 |   100.00 |    0.00 | 14-73 75-78 80-148 151-170 172-212
+#    facadeLegend.js                    |  11.11 |   100.00 |    0.00 | 7-42 45-72
+#    grids                              |        |          |         | 
+#     grid.js                           |  33.61 |   100.00 |   33.33 | 28-40 50-92 105-135 148-163 167-176 191-216 220-253 261-272 281-304 313-344
+#     index.js                          | 100.00 |   100.00 |  100.00 | 
+#     resolve.js                        |  20.13 |   100.00 |    0.00 | 46-48 51-82 85-123 126-183 186-206 209-220 223-245 248-288 292-308
+#    guides.js                          |  20.33 |   100.00 |   11.11 | 18-22 24-29 31-79 81-85 87-98 100-105 108-132 141-177
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    legends                            |        |          |         | 
+#     automatic.js                      |  27.59 |   100.00 |    0.00 | 9-29
+#     blocks.js                         |  20.33 |   100.00 |    0.00 | 38-41 43-58 60-65 67-108 110-131 134-141 143-163 165-169 172-193 195-197 200-218 233-254 256-286 294-362
+#     categorical                       |        |          |         | 
+#      actions.js                       |  13.31 |   100.00 |    0.00 | 46-49 51-57 59-63 68-192 197-239 244-278 282-522 525-562 565-580 585 595-613
+#      components.js                    |  26.39 |   100.00 |    0.00 | 13-39 45-59 65-88 94-107 113-124 130-143
+#      index.js                         |  63.08 |   100.00 |   75.00 | 46-93
+#      layout.js                        |  46.97 |   100.00 |    0.00 | 17-19 23-24 28-36 39-43 46-50 53-58 62-66
+#      options.js                       |  39.35 |   100.00 |    0.00 | 84-99 102-216
+#      recipes.js                       |   4.63 |   100.00 |    0.00 | 6-108
+#      resolve.js                       |  16.28 |   100.00 |    0.00 | 19-30 33-51 55-67 69-90 93-153 156-172
+#      symbols.js                       |  24.23 |   100.00 |   22.22 | 19-30 32-40 48-190 200-225 248-261 267-281 290-292
+#      validation.js                    |  77.27 |   100.00 |    0.00 | 12-16
+#     colorSize.js                      |  33.94 |   100.00 |    0.00 | 27-35 38-46 49-52 54-61 64-78 81-89 92-109
+#     combine.js                        |  18.92 |   100.00 |    0.00 | 8-37
+#     continuous                        |        |          |         | 
+#      colorSymbols.js                  |  33.33 |   100.00 |    0.00 | 17-25 28-38 41-60
+#      common.js                        |  30.17 |   100.00 |    0.00 | 80-86 89-100 116-135 138-142 145-158 161-246 249-255 258-272 275-295 298-303 306-322 325-327 330-353 356-387 390-400
+#      gradient.js                      |  24.55 |   100.00 |    0.00 | 30-57 62-112 120-126 131-148 151-203 211-219
+#      index.js                         | 100.00 |   100.00 |  100.00 | 
+#      interval.js                      |  22.12 |   100.00 |    0.00 | 29-73 76-92 95-112 120-163 167-210 218-225
+#      opacity.js                       |  13.94 |   100.00 |    0.00 | 28-60 62-81 83-230 238-310 315-326 329-371 379-387 396-415
+#      stroke.js                        |  34.60 |   100.00 |    7.69 | 19-27 30-32 35-37 45-54 58-59 67-72 76-81 84-85 88-100 108-155 159-188 196-201
+#     creation.js                       |  30.95 |   100.00 |    0.00 | 14-42
+#     edit.js                           |   8.97 |   100.00 |    0.00 | 66-70 72-76 78-92 94-148 150-221 223-248 250-306 308-329 331-398 400-418 420-449 451-523 525-563 566-572 574-702 704-907 911-946 951-1001
+#     focused.js                        |  82.81 |   100.00 |   25.00 | 11-16 39-43
+#     group.js                          |  14.69 |   100.00 |    0.00 | 12-25 27-31 34-101 104-112 118-143
+#     index.js                          | 100.00 |   100.00 |  100.00 | 
+#     lane.js                           |  15.12 |   100.00 |    0.00 | 28-47 49-68 76-196 205-265 271-323
+#     lifecycle.js                      |  15.17 |   100.00 |    0.00 | 12-42 45-64 67-110 114-119 122-123 126-145
+#     remove.js                         |  20.31 |   100.00 |    0.00 | 19-31 33-65 68-73 78-127
+#     size.js                           |  39.31 |   100.00 |   14.29 | 30-32 35-44 52-82 87-117 120-129 137-139
+#     strokeWidth.js                    |  37.09 |   100.00 |   11.11 | 25-27 30-44 46-52 55-72 80-108 113-128 131-134 142-144
+#     target.js                         | 100.00 |   100.00 |  100.00 | 
+#     transition.js                     |  12.35 |   100.00 |    0.00 | 17-21 25-35 37-98 101-107 110-137 139-141 143-146 148-164 166-171 173-176 179-251
+#    polar                              |        |          |         | 
+#     axes                              |        |          |         | 
+#      facade.js                        |  24.89 |   100.00 |   28.57 | 35-75 83-112 116-174 176-209 217-230
+#      index.js                         | 100.00 |   100.00 |  100.00 | 
+#      labels.js                        |  24.11 |   100.00 |   33.33 | 31-69 71-142 150-184 194-217
+#      lines.js                         |  42.98 |   100.00 |   40.00 | 27-37 45-70 80-107
+#      shared.js                        |  50.71 |   100.00 |   18.18 | 39-40 43-44 64-65 68-71 74-80 83-87 90-102 105-127 130-140
+#      ticks.js                         |  31.58 |   100.00 |   33.33 | 25-43 45-74 82-112 122-145
+#      titles.js                        |  30.81 |   100.00 |   25.00 | 36-47 49-63 65-69 71-105 113-151 161-191
+#     grids.js                          |  32.80 |   100.00 |   38.46 | 35-42 45-65 67-100 102-119 121-148 156-173 183-214 224-232
+#     index.js                          | 100.00 |   100.00 |  100.00 | 
+#     resolve.js                        |  34.03 |   100.00 |    0.00 | 66-89 92-161 164-165 168-190 193-208 211-227 230-232 237-238
+#    reuse.js                           |  25.00 |   100.00 |    0.00 | 4-15 18-19 24-33 36-44
+#    tickValues.js                      |  18.84 |   100.00 |    0.00 | 12-47 50-69
+#   hierarchy                           |        |          |         | 
+#    partition.js                       |  86.36 |    86.05 |   50.00 | 27-28 30-36
+#    plots.js                           |  74.58 |    85.71 |   80.00 | 36-50
+#    resources.js                       |  42.25 |    60.00 |   41.67 | 18-41 53-58 61-75 87-92 105-119 126-133 135-142
+#   images                              |        |          |         | 
+#    index.js                           |  50.00 |   100.00 |   25.00 | 5-12 17-18 23-29
+#   index.js                            | 100.00 |   100.00 |   33.33 | 
+#   intervals                           |        |          |         | 
+#    resolve.js                         |   9.66 |   100.00 |    0.00 | 24-28 30-42 44-60 62-64 66-109 111-142 144-215 217-242 245-342 345-352
+#    revision.js                        |  10.85 |   100.00 |    0.00 | 11-52 55-116 119-129
+#   layouts                             |        |          |         | 
+#    index.js                           |  68.42 |   100.00 |   50.00 | 9-14
+#   marks                               |        |          |         | 
+#    arc                                |        |          |         | 
+#     actions.js                        |  29.01 |   100.00 |   16.67 | 62-106 114-151 154-164 172-255 264-315
+#     index.js                          | 100.00 |   100.00 |  100.00 | 
+#    area                               |        |          |         | 
+#     actions.js                        |  27.62 |   100.00 |   16.67 | 60-72 80-129 138-158 167-246 255-352
+#     index.js                          | 100.00 |   100.00 |  100.00 | 
+#     materialize.js                    |  11.93 |   100.00 |    0.00 | 20-107 110-176
+#    bar                                |        |          |         | 
+#     create.js                         |  36.00 |   100.00 |    0.00 | 36-99
+#     edit.js                           |  28.68 |   100.00 |    0.00 | 37-128
+#     index.js                          | 100.00 |   100.00 |  100.00 | 
+#     materialize.js                    |  29.66 |   100.00 |    0.00 | 28-61 69-117
+#    basic.js                           | 100.00 |   100.00 |  100.00 | 
+#    blend.js                           |  50.00 |    66.67 |  100.00 | 8-15
+#    dependentReferences.js             |  10.34 |   100.00 |    0.00 | 7-36 39-86
+#    image                              |        |          |         | 
+#     index.js                          |  34.83 |   100.00 |   12.50 | 14-25 27-35 39-53 58-66 71-83
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    lifecycle.js                       |  61.90 |    50.00 |   40.00 | 9-10 26-39
+#    line                               |        |          |         | 
+#     actions.js                        |  27.75 |   100.00 |   18.18 | 68-73 75-78 80-82 84-95 97-107 115-192 195-213 221-300 309-371
+#     index.js                          | 100.00 |   100.00 |  100.00 | 
+#     materialize.js                    |  15.34 |   100.00 |    0.00 | 21-23 25-38 41-84 87-163
+#    ohlc.js                            |  38.46 |   100.00 |    0.00 | 10-21 26-37
+#    point                              |        |          |         | 
+#     create.js                         |  94.06 |    36.36 |   66.67 | 57 77-81
+#     edit.js                           |  61.87 |    30.77 |  100.00 | 50-53 63-67 69-72 74-77 79-82 84-85 89-91 96-98 107-108 110-113 115-124 126-133
+#     index.js                          | 100.00 |   100.00 |  100.00 | 
+#     jitter.js                         |  47.37 |   100.00 |   20.00 | 15-20 22-31 39-48 57-70
+#     materialize.js                    |  55.22 |    31.25 |   40.74 | 67-68 70-82 87-101 103-107 109-121 128-129 131 133-135 142 147-198 216-217 221-241 269-314 320-324 351-356 362-363 365-366 369-370 375-376 412 414-415 468-475 503-505 529-565 567 569-570 572-575 577-580 582-588 590-591
+#     packing.js                        |  45.31 |   100.00 |   20.00 | 14-18 20-26 31-40 46-58
+#    pyramid.js                         |  41.67 |   100.00 |    0.00 | 10-18 23-34
+#    rect                               |        |          |         | 
+#     actions.js                        |  33.04 |   100.00 |   33.33 | 52-61 66-112 118-167 173-219
+#     index.js                          | 100.00 |   100.00 |  100.00 | 
+#    references.js                      |  20.30 |   100.00 |    0.00 | 47-91 93-170 173-185 187-233 241-251 260-293 296-299 301-353 355-406 408-412 420-421 430-431 441-467
+#    remove.js                          |  14.33 |   100.00 |    0.00 | 30-51 53-61 63-92 94-126 128-140 142-162 165-186 188-192 194-218 223-238 243-327
+#    rule                               |        |          |         | 
+#     actions.js                        |  24.60 |   100.00 |   12.50 | 69-73 75-90 92-100 108-161 167-201 210-405 414-429
+#     appearance.js                     |  50.00 |   100.00 |    0.00 | 12-20 23-26
+#     index.js                          | 100.00 |   100.00 |  100.00 | 
+#    shared.js                          |  45.53 |    48.57 |   57.14 | 31-32 58-59 62-63 78-100 102-116 119-165 170 177 187-190 192-202 204-212 218-222 227-231 245-257
+#    table                              |        |          |         | 
+#     index.js                          |  30.77 |   100.00 |   33.33 | 9-15 18-37
+#    text                               |        |          |         | 
+#     actions.js                        |  22.72 |   100.00 |    7.14 | 59-62 64-84 86-115 117-128 130-137 139-150 158-191 206-215 217-276 284-366 375-451 460-499 508-548
+#     annotation.js                     |  28.77 |   100.00 |   50.00 | 17-68
+#     index.js                          | 100.00 |   100.00 |  100.00 | 
+#     layout.js                         |  21.00 |   100.00 |    5.88 | 38-52 54-61 63-65 67-86 88-99 101-127 129-157 159-174 176-180 182-216 218-244 252-279 288-345 354-376 385-436 445-451
+#     removal.js                        |  15.61 |   100.00 |   12.50 | 11-13 15-19 21-41 43-73 75-103 105-141 149-168
+#     selection.js                      |  39.73 |   100.00 |   25.00 | 17-24 26-42 50-68
+#    tick                               |        |          |         | 
+#     actions.js                        |  33.45 |   100.00 |   16.67 | 62-81 83-102 110-156 165-198 207-272
+#     index.js                          | 100.00 |   100.00 |  100.00 | 
+#    trail                              |        |          |         | 
+#     index.js                          |  38.24 |   100.00 |   33.33 | 10-18 21-32
+#    waterfall.js                       |  39.47 |   100.00 |    0.00 | 10-20 25-36
+#   overlays                            |        |          |         | 
+#    index.js                           |  23.20 |   100.00 |   14.29 | 20-35 37-46 48-64 69-127 133-155 161-174
+#    snapshot.js                        |  21.28 |   100.00 |    0.00 | 7-12 17-47
+#   parameters                          |        |          |         | 
+#    create.js                          |  47.37 |   100.00 |    0.00 | 9-18
+#    edit.js                            |  34.44 |   100.00 |   25.00 | 22-52 57-80 86-89
+#   primitives                          |        |          |         | 
+#    createGraphics.js                  |  67.42 |    50.00 |   60.00 | 34-39 41-50 54-55 61-62 64-65 68 70-71 75-83 86-87 89-90 92-93 113-116 119-120 125-126 128-129 138-143 151-152
+#    datasetIdentity.js                 |  94.12 |    87.50 |   83.33 | 18-19
+#    editGraphics.js                    |  58.18 |    67.61 |   77.78 | 27-28 33-34 36-37 74-98 100-112 119-131 133-136 153-172 184-185 188-189 193-194 198-202 231-234 244-262
+#    graphicProperties.js               | 100.00 |   100.00 |  100.00 | 
+#    index.js                           |  62.07 |   100.00 |   80.00 | 14-35
+#    preparedResourceContext.js         |  49.02 |    50.00 |   50.00 | 13-15 21-22 27-28 33-34 39-40 42-82
+#    resourceState.js                   |  53.81 |    19.35 |   40.00 | 14-19 26-29 38 42-44 52-55 66 69-70 77-78 80-87 90-91 94-97 106-109 119-126 133-135 143-144 152-153 158-164 170-197
+#    semantic.js                        |  71.79 |   100.00 |   50.00 | 13-21 33-34
+#    semanticAction.js                  |  38.00 |    56.67 |   21.74 | 42-51 61 63-64 72-78 84-93 104 110-111 126-131 133-138 140-177 179-184 190-216 221-228 234-252 259-265 268-286 289-292 298-317 330-331 333-334 336-337 344 346-349 351-410 419-420
+#    semanticValidation                 |        |          |         | 
+#     dataset.js                        |  56.82 |    22.22 |  100.00 | 18-20 22-23 28-29 32-43
+#     guide.js                          |  14.06 |   100.00 |    0.00 | 8-26 29-64
+#     index.js                          |  92.98 |    78.57 |  100.00 | 37-38 40-41
+#     layer.js                          |  45.55 |    12.24 |   50.00 | 36-56 71-72 74-75 77-80 83-84 86-88 92-96 98-110 112-113 115-129 132-133 135-137 139-146 148-149 151-152 156-157 159-160 162-163 166-168 172-173 176-177 184 186-187 189-190
+#     scale.js                          |  52.14 |    50.00 |   75.00 | 16-18 26 36-40 49-50 52 54-55 61-65 73-80 83-84 86-87 91-103 105-116
+#     shared.js                         |  20.00 |   100.00 |    0.00 | 2-5
+#   regression                          |        |          |         | 
+#    components.js                      |  29.66 |   100.00 |    0.00 | 37-42 44-53 55-76 84-126 135-161 170-190 199-235
+#    create.js                          |  17.11 |   100.00 |    0.00 | 26-151
+#    edit.js                            |  11.83 |   100.00 |    0.00 | 39-56 58-64 66-96 98-111 113-158 160-167 169-220 222-251 259-447
+#    follow.js                          |  59.09 |    21.43 |  100.00 | 11-12 14-20
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    resolve.js                         |  20.00 |   100.00 |    0.00 | 7-11 15-36 39-55
+#   resources                           |        |          |         | 
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    remove.js                          |  24.31 |   100.00 |   10.00 | 19-27 29-51 53-57 59-68 71-107 109-113 115-118 121-150 156-169
+#    stored.js                          |  28.13 |   100.00 |    0.00 | 9-31
+#   scales                              |        |          |         | 
+#    channels.js                        |  52.07 |   100.00 |   30.00 | 86-94 96-100 102-108 110-116 118-139 141-177 186-202
+#    create.js                          |  70.97 |    30.56 |   75.00 | 49-71 73-79 96-97 99-100 102-103 115-116 120 122-125 128-133 158-159 163-165
+#    definitions.js                     |  34.20 |    39.13 |   27.78 | 76-77 80-89 91-99 101-105 133-138 154 175-190 192-205 208-276 279-329 331-342 345-348 351-367 370-387 390-415 418-459
+#    edit.js                            |  26.42 |   100.00 |   25.00 | 39-46 48-66 68-70 72-91 93-157 165-191
+#    editPolicy.js                      |  15.79 |   100.00 |    0.00 | 41-51 53-72 74-159 161-262 265-285
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    materialize.js                     |  85.06 |    62.50 |   66.67 | 23-24 26-27 42-44 67 70-74
+#    offset.js                          |  62.50 |   100.00 |   66.67 | 21-38
+#    parallel.js                        |  38.03 |   100.00 |    0.00 | 20-46 54-70
+#    patch.js                           |  38.46 |   100.00 |    0.00 | 7-9 12-18 21-26
+#    preview.js                         |  55.00 |    23.53 |   58.33 | 34-35 44-45 58-68 87-107 113-116 124-127 143-149 156-160 165-187 190-200
+#    quantitativeColor.js               |  46.15 |   100.00 |    0.00 | 24-51
+#   selection                           |        |          |         | 
+#    actions.js                         |  21.85 |   100.00 |    0.00 | 57-61 63-72 74-85 87-91 93-97 99-102 104-121 123-127 129-149 152-162 166-182 184-192 194-209 211-227 229-246 248-250 252-257 259-274 276-280 282-291 294-300 305-310 319-347 356-371 380-408 414-431 434-446 448-455 457-473 478-479 485-492 498-513 519-532 538-545 551-578 584-602 605-679 684-722
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    preview.js                         |  37.14 |   100.00 |    0.00 | 13-34
+#    resources.js                       |  26.32 |   100.00 |    0.00 | 7-22 25-29 32-38
+#   textMetrics                         |        |          |         | 
+#    index.js                           |  40.00 |   100.00 |   16.67 | 9-13 16-22 25-39 44-50 56-60
+#   theme                               |        |          |         | 
+#    actions.js                         |  39.80 |    66.67 |   25.00 | 19-20 24-29 38-70 80-97
+#    composition.js                     |  13.39 |   100.00 |    0.00 | 18-22 24-26 28-48 50-71 73-75 77-92 94-120 122-149 152-175 178-210 213-229 232-239
+#    guideDefaults.js                   |  21.09 |   100.00 |    0.00 | 19-45 48-72 74-77 82-95 98-128
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    palettes.js                        |  25.33 |   100.00 |    0.00 | 16-24 27-60 63-75
+#    reconcile.js                       |  10.62 |    13.04 |    3.23 | 26-27 55-63 65-68 70-77 80-86 88-94 96-117 119-133 135-142 144-148 150-172 174-193 196-236 238-245 247-249 251-254 256-292 294-368 371-419 421-502 504-507 509-525 527-561 563-570 572-583 585-596 598-612 614-628 630-649 651-665 667-674 676-689 691-713 715-719 721-724 732-772 774-776 778-792 794-816 818-832 834-860 862-892 894-918 920-938 940-955 957-985 987-1007 1009-1022 1024-1058 1060-1081 1083-1142 1147-1161 1163-1165 1167-1171 1180-1182 1186-1187 1189-1221 1224-1225 1227-1234 1237-1255 1259-1308 1310-1312 1315-1317
+#    resourcePlots.js                   |  31.30 |   100.00 |    0.00 | 28-30 35-63 65-78 81-91 94-115
+#    state.js                           |  27.38 |    20.00 |    7.69 | 14-16 18-23 25-30 33-38 41-52 55-65 68-77 80-88 90-99 102-139 142-149 154 165-166
+#    typographyRoles.js                 |  25.42 |   100.00 |    0.00 | 10-25 30-48 51-59
+#   titles                              |        |          |         | 
+#    actions.js                         |  31.14 |   100.00 |   11.11 | 18-22 24-51 53-66 76-94 106-121 132-154 165-191 202-226
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    resolve.js                         |  22.59 |   100.00 |    0.00 | 58-66 68-86 88-156 159-169 172-193 196-200 202-215 218-301
+#   violinPlots                         |        |          |         | 
+#    create.js                          |  22.13 |   100.00 |    0.00 | 37-49 52-58 61-82 85-96 99-106 108-117 119-135 143-243
+#    edit.js                            |  17.05 |   100.00 |    0.00 | 21-30 32-44 46-59 67-175
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#  animation.js                         | 100.00 |   100.00 |  100.00 | 
+#  animation                            |        |          |         | 
+#   appearance.js                       | 100.00 |    77.78 |  100.00 | 
+#   axisLabelFrames.js                  |  44.23 |    62.50 |   33.33 | 14-17 20-39 42-46
+#   axisLabelTracks.js                  |  56.90 |    62.50 |   33.33 | 19-32 36-38 49-56
+#   cartesianTracks.js                  |  76.67 |    75.00 |   80.00 | 21-22 24-28
+#   concrete.js                         | 100.00 |    76.00 |  100.00 | 
+#   createPlayer.js                     |  27.08 |   100.00 |    0.00 | 14-48
+#   endpoints.js                        |  94.37 |    85.19 |  100.00 | 15-16 68-69
+#   envelope.js                         | 100.00 |   100.00 |  100.00 | 
+#   envelopeCodec.js                    |  86.11 |    71.43 |   83.33 | 10-12 23-27 44-45 68 95-96 99-100
+#   frameEndpoint.js                    |  88.55 |    82.71 |   92.31 | 96-107 122-124
+#   frameProvenance.js                  |  71.29 |    38.46 |   80.00 | 33-34 36-37 42-43 48-49 75-84 91-101
+#   frames.js                           | 100.00 |   100.00 |  100.00 | 
+#   geoFrames.js                        |  44.90 |    66.67 |   33.33 | 13-15 18-24 26-42
+#   geoTextExpressionTracks.js          |  26.32 |   100.00 |    0.00 | 14-31 34-57
+#   geoTextFrames.js                    |  47.17 |    80.00 |   17.65 | 12-13 18-22 26-46
+#   geoTextTracks.js                    |  50.00 |    53.85 |   45.45 | 23-26 28-47 61-74
+#   geoTracks.js                        |  45.74 |    50.00 |   33.33 | 13-16 26-55 76-92
+#   graphTracks.js                      |  50.72 |    61.54 |   58.33 | 14 16-18 20-26 28-37 47-51 55-59 64-66
+#   guideTracks.js                      |  28.84 |    39.39 |   34.62 | 31-39 48-51 53-56 59-63 72-73 77-132 138-144 148-170 176-185 191-220 228-267
+#   nativeGraphPresentation.js          |  64.29 |   100.00 |    0.00 | 10-14
+#   partitionTracks.js                  | 100.00 |    93.94 |  100.00 | 
+#   planner.js                          |  98.23 |    65.33 |   97.92 | 236-238 249-250
+#   player.js                           |   3.83 |   100.00 |    0.00 | 8-15 20-287
+#   polarTracks.js                      |  75.86 |    75.00 |   80.00 | 20-21 23-27
+#   sample.js                           |  81.92 |    81.61 |   60.00 | 88-95 97-104 106-113 124-131
+#   timelinePlayback.js                 |  14.89 |   100.00 |    0.00 | 8-47
+#   timelineSample.js                   |  70.00 |    57.14 |   50.00 | 12-17 25-27
+#   timelineTracks.js                   |  12.37 |   100.00 |    0.00 | 14-31 36-118 121-162 165-180 183-186
+#  basic.js                             | 100.00 |   100.00 |  100.00 | 
+#  BasicChartProgram.js                 | 100.00 |   100.00 |  100.00 | 
+#  ChartProgram.js                      | 100.00 |   100.00 |  100.00 | 
+#  composition.js                       |  80.00 |   100.00 |   50.00 | 9-10
+#  core                                 |        |          |         | 
+#   action.js                           |  80.95 |    66.67 |   80.00 | 20-23 29-37 41-45 49-50 67-68 79-80 84-93 135-136 207-208 216-217 235-240 248-249 252-253 259-260 263-264 268-269 281-282 300-301 310-311 320-321
+#   assetHost.js                        |  19.61 |   100.00 |    0.00 | 2-6 8-11 14-15 17-24 28-49
+#   ChartProgram.js                     |  71.99 |    68.75 |   66.67 | 81-88 91-98 128-129 134-135 144-145 159-160 163-164 177-181 185-186 188-189 196-197 217 221-230 233-248 251-262 265-270 296-297 306-307
+#   compositionScales.js                |  75.00 |    50.00 |  100.00 | 8-10
+#   compositionState.js                 |  24.63 |    50.00 |   77.78 | 14-16 22-226 234-239 241-242 247-248 253 255-256 258-259 261-262 265-268 275-276 284-285 289-290 297-298 300-301 304-305 307 309-310 312-313 315-316 319 324-325 327-329 331-333
+#   contentDigest.js                    |  78.57 |   100.00 |   70.00 | 20-21 49-57 67-70
+#   datasetReferences.js                |  70.59 |    50.00 |   50.00 | 5-6 15-17
+#   diagnostics.js                      | 100.00 |    37.50 |  100.00 | 
+#   encodingBindings.js                 |  60.47 |    90.00 |   42.86 | 17-21 26-33 40-43
+#   extensionRegistry.js                |  20.61 |   100.00 |   25.00 | 20-21 24-28 31-32 34-43 45-75 78-131
+#   facetAxisPolicy.js                  |  30.00 |   100.00 |    0.00 | 4-13 16-17 20-21 24-30
+#   facetGap.js                         |  34.09 |    66.67 |   25.00 | 5-6 12-30 34-35 39-44
+#   font.js                             |  34.15 |   100.00 |    0.00 | 7-17 20-22 25-29 32-33 36-41
+#   graphicProperties.js                |  16.67 |   100.00 |    0.00 | 2-6
+#   identifiers.js                      |  72.41 |    71.43 |  100.00 | 8-11 24-27
+#   immutable.js                        |  72.12 |    82.98 |  100.00 | 58-59 67-68 74-75 81-103
+#   itemIdentity.js                     |  77.97 |    48.78 |   78.57 | 11-13 18-19 22-23 33-37 42 44-46 55-65 77-82 125-128 132-135 157-160 167 177-178 204-205
+#   materializationState.js             |  87.69 |    64.71 |  100.00 | 14-15 20-21 57-60
+#   optionRequirements.js               | 100.00 |   100.00 |  100.00 | 
+#   ownData.js                          |  83.78 |    82.35 |  100.00 | 25-26 30-31 34-35
+#   pngEncoding.js                      |  22.78 |   100.00 |   20.00 | 15-28 33-79
+#   programState.js                     |  53.19 |    78.26 |   60.00 | 15-16 20-27 36-60 66-72 87-88
+#   resourceReference.js                |  73.33 |    66.67 |   75.00 | 11-12 19-20 22-23 27-28
+#   resourceReferences.js               |  33.70 |    22.92 |   32.14 | 23-27 32-40 46-48 53-58 66 85-87 91-98 107-109 118-128 131-141 144-179 182-196 212-213 216-217 219-222 225 227-230 236-237 242-244 247-248 257-261 264-268 274-307 310-346 353-361 366-378 381-394 396-401 403-413 416-423 426-451
+#   rowReference.js                     |  81.82 |    75.00 |  100.00 | 8-9
+#   specs.js                            | 100.00 |   100.00 |  100.00 | 
+#   textMetricProfile.js                |  24.39 |   100.00 |    0.00 | 10-15 17-35 42-43 48-82
+#   textMetrics.js                      |  17.65 |    50.00 |    7.69 | 11-12 16-19 22-40 42-50 53-54 57-59 62-65 68-104 107-111 114-165 168-174 178-187
+#   validation.js                       |  70.70 |    72.50 |   75.00 | 12-15 21-22 25-26 56-57 68-69 72-73 78-81 84-90 94-95 110-111 124-125 136-137 142-145 148-153 155-157
+#   valueEncoding.js                    |  71.74 |    73.91 |  100.00 | 24-25 33-43
+#   vocabulary.js                       |  98.70 |    92.86 |   83.33 | 208-209 278-279
+#  grammar                              |        |          |         | 
+#   actionTargets.js                    |  25.00 |   100.00 |    0.00 | 4-13 17-24
+#   aggregate.js                        |  20.00 |    66.67 |   18.75 | 44-106 109-117 120-131 133-136 140-154 156-158 160-163 165-172 174-178 180-199 202-275 278-296 299-310
+#   animation                           |        |          |         | 
+#    axisLabelDecision.js               |  43.75 |   100.00 |    0.00 | 7-9 11-16
+#    cartesianDensity.js                |  27.03 |   100.00 |    0.00 | 9-20 22-24 26-37
+#    cartesianOverlay.js                |  23.26 |   100.00 |    0.00 | 8-20 22-25 27-29 31-43
+#    cartesianPlacement.js              |  24.19 |   100.00 |    0.00 | 11-31 33-36 38-43 45-50 52-59 61-62
+#    cartesianPosition.js               |  24.37 |   100.00 |    0.00 | 18-22 25-35 37-51 53-56 59-65 67-74 77-83 85-93 96-119
+#    cartesianState.js                  |  30.54 |    18.75 |   25.00 | 25-54 62 64-69 74-75 77-82 84-97 108-149 152-158 160-162 173-184 186-203
+#    frameTimes.js                      |  95.24 |    95.45 |  100.00 | 33-34
+#    geoAnchor.js                       |  30.00 |   100.00 |    0.00 | 18-21 23-44 46-49 51-60 62-70
+#    geoDecision.js                     |  42.86 |   100.00 |    0.00 | 9-17 19-21
+#    geoState.js                        |  33.00 |   100.00 |   12.50 | 22-25 30-56 61-73 76-89 92-100
+#    graphState.js                      |  15.79 |   100.00 |    9.09 | 15-26 28-30 32-67 69-89 91-114
+#    guideAnchors.js                    |  11.50 |   100.00 |    0.00 | 19-63 65-86 91-172 174-180 182-194 196-226
+#    guideState.js                      |  11.49 |   100.00 |    5.26 | 20-66 68-87 89-99 101-138 140-184 186-187 189-191 193-206 208-235
+#    matching.js                        |  95.45 |    88.89 |  100.00 | 15-16
+#    ownerKey.js                        |  72.50 |    71.43 |   66.67 | 18-25 38-40
+#    partitionState.js                  | 100.00 |    97.98 |  100.00 | 
+#    placement.js                       |  30.43 |   100.00 |    0.00 | 8-23
+#    playbackOptions.js                 |  93.33 |    84.21 |  100.00 | 26-27
+#    pointState.js                      |  94.59 |    83.33 |  100.00 | 33-34
+#    polarState.js                      |  42.74 |    35.00 |   31.58 | 18 30-35 37 41-52 57 59-68 70-73 75-77 85-92 96-101 103-117
+#    positions.js                       |  96.77 |    60.00 |   90.91 | 89-91
+#    routes.js                          |  18.18 |   100.00 |    0.00 | 10-19 24-40 42 45-88
+#    timeline.js                        |  11.18 |   100.00 |    0.00 | 9-26 31-112 116-130 133-152
+#    timing.js                          |  63.27 |    54.55 |  100.00 | 28-45
+#    values.js                          |  97.73 |    65.91 |  100.00 | 29 52
+#   arcs.js                             |  13.57 |   100.00 |    0.00 | 16-30 32-43 45-59 61-67 70-85 87-105 108-109 112-113 115-158 160-168 171-206 208-212 214-223 226-254 257-263 268-299 302-303 306-317 320-330 333-339 342-361
+#   areaEndpoints.js                    |  23.91 |   100.00 |    0.00 | 6-10 13-18 21-40 43-46
+#   areaPaint.js                        |  40.00 |   100.00 |    0.00 | 5-10
+#   areaSeries.js                       |   4.63 |   100.00 |    0.00 | 11-15 18-134 137-240 243-319 322-377 380-432
+#   assetPayload.js                     |  23.53 |   100.00 |    0.00 | 9-34
+#   assetRequest.js                     |  45.83 |   100.00 |    0.00 | 9-12 15-23
+#   axisFormat.js                       |  19.15 |   100.00 |    0.00 | 6-10 13-17 20-47
+#   axisGeometry.js                     |  19.81 |   100.00 |    0.00 | 7-11 14-18 21-36 39-60 63-73 77-79 82-86 89-106
+#   axisTextPlacement.js                |  26.47 |   100.00 |    0.00 | 6-31 34-35 39-40 43-45 48-59 62-63 66-68
+#   bars                                |        |          |         | 
+#    aggregate.js                       |   9.02 |   100.00 |    0.00 | 8-24 27-102 105-122
+#    geometry.js                        |  18.99 |   100.00 |    0.00 | 15-41 44-59 62-103 106-107 110-116 121-131 136-158
+#    policy.js                          |  37.07 |    18.18 |   11.11 | 19-20 22-25 27-31 34-51 54-59 62-64 73-74 76 78-80 82 84-87 91-101 104-116
+#   bin.js                              |  14.29 |   100.00 |    0.00 | 27-39 42-82 85-138 140-155 158-241 244-245
+#   bin2d.js                            |  12.40 |   100.00 |    0.00 | 23-28 30-40 42-55 57-67 69-79 81-88 90-106 108-125 127-143 145-171 174-201 204-233 235-247 249-267 269-279 281-293 296-367 370-372 377-379
+#   boxPlot.js                          |  14.89 |   100.00 |    0.00 | 16-19 24-30 32-49 51-62 65-98 101-132 136-188
+#   calendar                            |        |          |         | 
+#    input.js                           |  32.26 |   100.00 |    0.00 | 9-17 20-31
+#    layout.js                          |  21.33 |   100.00 |    0.00 | 14-28 30-46 49-75
+#    options.js                         |  31.58 |   100.00 |    0.00 | 7-19
+#    plot.js                            |  19.77 |   100.00 |    0.00 | 16-34 36-57 59-86
+#   calendarDay.js                      |  21.31 |   100.00 |    0.00 | 7-14 16-32 35-37 40-42 45-61
+#   categoricalDensity.js               |   9.95 |   100.00 |    0.00 | 11-17 19-28 31-103 106-122 124-155 158-172 175-201
+#   categoryOrder.js                    |  14.63 |   100.00 |    0.00 | 15-57 59-61 63-77 79-97 100-129 133-146 149-164
+#   cells.js                            |  12.39 |   100.00 |    0.00 | 6-9 12-25 27-30 32-43 47-74 77-113
+#   color.js                            |  73.25 |    68.57 |   60.00 | 21-22 25-36 39-82 247-257 268-269 296-301 305 309-314
+#   colorSizeLegend.js                  |  17.78 |   100.00 |    0.00 | 6-9 12-30 33-55 57-73 76-82 85-86 89-90
+#   complete.js                         |  10.58 |   100.00 |    0.00 | 16-21 23-28 30-33 35-47 49-65 67-81 83-92 95-118 121-137 139-143 145-156 158-176 178-212 214-228 230-238 241-312
+#   compositing.js                      |  32.56 |   100.00 |    0.00 | 7-11 16-36 41-43
+#   computed.js                         |   9.88 |   100.00 |    0.00 | 26-33 35-40 42-50 52-167 169-193 195-219 222-230 233-234 236-244 246-251 253-258 260-268 270-292 294-301 303-313 315-431 434-474 477-480 483-486
+#   conditionalEncoding.js              |  17.39 |   100.00 |    0.00 | 10-27 29-63 68-69 72-78 83-115
+#   conditionalPosition.js              |  40.00 |   100.00 |    0.00 | 15-16 19-36 39-45
+#   conditionalState.js                 |  25.56 |   100.00 |    0.00 | 25-26 31-81 84-104 109-133
+#   contour                             |        |          |         | 
+#    density.js                         |  16.67 |   100.00 |    0.00 | 10-22 24-42 44-58 61-69 72-90
+#    grid.js                            |  16.67 |   100.00 |    0.00 | 6-29 32-42 45-52 55-66
+#    input.js                           |  34.29 |   100.00 |    0.00 | 9-15 18-30 33-35
+#    layout.js                          |  21.43 |   100.00 |    0.00 | 7-28
+#    marching.js                        |   7.04 |   100.00 |    0.00 | 2-16 19-47 50-71
+#    plot.js                            |  30.77 |   100.00 |    0.00 | 11-23 26-39
+#   coordinates.js                      |  43.10 |    60.00 |   50.00 | 12-13 22-23 28-33 36-58
+#   curveCommands.js                    |  10.95 |   100.00 |    0.00 | 24-26 28-44 47-53 56-60 62-87 89-99 101-145 147-165 167-199 201-222 224-230 232-249 251-278 280-306 308-327 329-333 335-343 345-389 392-393 399-411 413-436 438-452 454-461 464-493
+#   datasetDependencies.js              |  28.38 |    30.77 |   30.00 | 8-53 56-72 83-87 95-98 108-116 118-133 137-145
+#   datasetSchema.js                    |  32.29 |    57.38 |   62.50 | 30-33 36-53 66-67 70-71 85-98 105-106 108-109 113-114 116-117 129-130 160-162 166-168 175-176 191-199 204-213 216-254 256-259 261-275 278-287 290-446
+#   dataSource.js                       |  11.06 |   100.00 |    0.00 | 10-16 18-22 27-49 52-68 71-99 101-134 136-153 156-199
+#   dataSourcePayload.js                |  17.39 |   100.00 |    0.00 | 7-12 15-16 19-26 29-58 63-92
+#   dataSourceRequest.js                |  25.42 |   100.00 |    0.00 | 9-12 15-17 22-58
+#   density.js                          |   7.54 |   100.00 |    0.00 | 34-51 54-58 61-65 68-72 74-81 83-96 98-110 112-131 133-150 153-228 230-275 277-338 340-353 356-423 425-436 439-460 462-469 471-488 490-508 510-519 522-796
+#   densityAreaPath.js                  |  40.00 |   100.00 |    0.00 | 5-10
+#   densityKernels.js                   |  72.22 |   100.00 |    0.00 | 5 8 11 14-15
+#   direction.js                        |  23.91 |    66.67 |   20.00 | 4-9 12-17 20-34 38-45
+#   displayLabels.js                    |  19.42 |   100.00 |    0.00 | 7-8 10-14 17-45 48-53 56-66 70-88 91-93 96-103
+#   ecdf.js                             |  12.04 |   100.00 |    0.00 | 12-21 23-38 40-54 57-86 89-99 102-107 110-187 190-191
+#   expressionAst.js                    |  14.29 |   100.00 |    0.00 | 9-11 13-36 38-128 131-132 136-137 140-141 144-145 150-161
+#   expressionEvaluate.js               |   8.65 |   100.00 |    0.00 | 6-9 12-20 23-104
+#   expressionFunctions.js              |  27.50 |   100.00 |   50.00 | 34-37 40-64 67-70 73-79 81-84 87-104 107-160
+#   expressionInputs.js                 |  31.58 |   100.00 |    0.00 | 7-19
+#   expressionValues.js                 |  32.58 |   100.00 |    0.00 | 10-14 17-24 27-29 32-35 38-42 45-52 55-62 65-67 70-80 83-85 88-89
+#   facetHeaders.js                     |  22.73 |   100.00 |    0.00 | 11-32 35-46 49-65
+#   facets                              |        |          |         | 
+#    dependencies.js                    |  12.13 |   100.00 |    0.00 | 28-31 33-97 100-126 129-159 161-166 168-181 183-210 212-228 230-233 235-263 265-278 281-338
+#    guides.js                          |  12.37 |   100.00 |    0.00 | 21-48 50-63 65-79 82-99 102-130 132-140 142-145 148-149 151-168 170-179 182-237 240-291
+#    index.js                           |   9.22 |   100.00 |    0.00 | 10-15 17-26 28-30 32-51 53-65 67-72 74-76 79-121 124-206
+#    legendIntent.js                    |  30.99 |   100.00 |    0.00 | 21-22 25-71
+#    scales.js                          |  10.58 |   100.00 |    0.00 | 18-40 42-63 65-78 81-127 129-142 144-157 159-167 169-188 191-232 235-274
+#   filter.js                           |  10.12 |   100.00 |    0.00 | 12-14 16-40 42-44 46-48 50-57 60-98 101-137 140-202 204-210 212-228 231-247
+#   flatten.js                          |  14.12 |   100.00 |    0.00 | 9-17 20-45 48-85
+#   flow                                |        |          |         | 
+#    geometry.js                        |  13.04 |   100.00 |    0.00 | 2-5 10-45
+#    layout.js                          |  12.24 |   100.00 |    0.00 | 8-11 13-24 26-80 84-98
+#    model.js                           |  24.44 |   100.00 |    0.00 | 7-12 16-40 43-45
+#    options.js                         |  20.59 |   100.00 |    0.00 | 8-34
+#    plot.js                            |  16.26 |   100.00 |    0.00 | 17-55 58-89 92-123
+#    ribbon.js                          |   8.11 |   100.00 |    0.00 | 4-37
+#    topology.js                        |   3.75 |   100.00 |    0.00 | 4-80
+#   fold.js                             |  15.93 |   100.00 |    0.00 | 12-20 23-30 33-62 64-80 83-113
+#   fontPayload.js                      |  48.84 |   100.00 |    0.00 | 17-18 20-34 37-39 42-43
+#   framePolicy.js                      |  83.54 |    63.33 |   87.50 | 18-22 30-31 38-43
+#   geo                                 |        |          |         | 
+#    annotation.js                      |  35.19 |   100.00 |   25.00 | 16-24 27-35 38-54
+#    annotationPosition.js              |  55.56 |   100.00 |    0.00 | 6-9
+#    camera.js                          |  24.14 |   100.00 |    0.00 | 14-18 20-28 30-32 34-51 53-59 64-87
+#    cameraInterpolation.js             |  25.58 |   100.00 |    0.00 | 11-17 19-37 39-42 45-50 53-65 67-77 81-82 85-86
+#    centroid.js                        |  50.00 |   100.00 |    0.00 | 12-22
+#    encoding.js                        |  26.79 |   100.00 |    0.00 | 12-15 18-45 48-56
+#    fit.js                             |  23.53 |   100.00 |    0.00 | 9-34
+#    geometry.js                        |  16.39 |   100.00 |    0.00 | 4-9 12-17 20-21 23-30 33-61
+#    graticule.js                       |  22.22 |   100.00 |    0.00 | 7-27
+#    input.js                           | 100.00 |    78.57 |   83.33 | 
+#    join.js                            |  19.44 |   100.00 |    0.00 | 8-14 17-20 22-33 38-72
+#    levels.js                          |  12.05 |   100.00 |    0.00 | 11-83
+#    lodOptions.js                      |  23.68 |   100.00 |    0.00 | 10-38
+#    mark.js                            |  31.25 |   100.00 |    0.00 | 20-33 36-47 50-70 73-80
+#    markGeometry.js                    |  22.22 |   100.00 |    0.00 | 6-16 19-42 47-51 53-54
+#    markKind.js                        | 100.00 |    50.00 |  100.00 | 
+#    normalize.js                       |  20.75 |   100.00 |    0.00 | 12-53
+#    options.js                         |  23.81 |   100.00 |    0.00 | 7-12 15-30 33-42
+#    projectionDefinition.js            |  40.00 |   100.00 |    0.00 | 9-20 23-25
+#    projectionFit.js                   |  27.27 |   100.00 |    0.00 | 7-22
+#    projectionMath.js                  |  41.59 |   100.00 |    0.00 | 30-42 45-56 59-69 72-73 76-77 80-85 91-100 104-113
+#    projectionOptions.js               |  29.55 |   100.00 |   16.67 | 19-22 25-27 30-33 38-88
+#    projections.js                     |  16.90 |   100.00 |    0.00 | 8-23 26-57 61-71
+#    routes.js                          |  24.44 |   100.00 |    0.00 | 8-14 19-45
+#    simplify.js                        |  12.50 |   100.00 |    0.00 | 14-28 30-86 89-128
+#    stream.js                          |  10.95 |   100.00 |    0.00 | 12-15 17-47 49-61 64-137
+#    topology.js                        |  11.01 |   100.00 |    0.00 | 5 7-30 32-72 75-93 98-109
+#   gradientProfile.js                  |  18.05 |   100.00 |    0.00 | 28-36 38-63 66-120 123-138 141-143 145-150 153-205
+#   gradientStops.js                    |  25.81 |   100.00 |    0.00 | 5-16 20-30
+#   graph                               |        |          |         | 
+#    approximate.js                     |   7.20 |   100.00 |    0.00 | 7-22 24-48 51-125
+#    candidateSubset.js                 |  41.18 |   100.00 |    0.00 | 8-17
+#    edgeIdentity.js                    |  33.33 |   100.00 |    0.00 | 7-18
+#    fields.js                          |  27.27 |   100.00 |    0.00 | 5-10 13-14 17-28 31-36 39-40 43-44 47-54 57-66
+#    force.js                           |  14.01 |   100.00 |    0.00 | 13-27 29-43 45-60 62-70 72-75 77-81 83-108 110-118 120-136 139-157
+#    input.js                           |  23.08 |   100.00 |    0.00 | 17-23 28-51 53-56 58-72 74-80 85-117
+#    itemIdentity.js                    | 100.00 |   100.00 |    0.00 | 
+#    layout.js                          |  22.22 |   100.00 |    0.00 | 11-30 33-54
+#    layoutOptions.js                   |  23.91 |   100.00 |    0.00 | 11-23 26-48 51-59 64-75 80-92
+#    metricPolicy.js                    |  20.51 |   100.00 |    0.00 | 7-21 24-39
+#    metrics.js                         |   9.38 |   100.00 |    0.00 | 5-34 37-64
+#    model.js                           |  10.71 |   100.00 |    0.00 | 6-15 17-19 21-43 45-53 55-104 109-114 117-140
+#    neighbors.js                       |  14.05 |   100.00 |    0.00 | 14-41 46-121
+#    normalize.js                       |  14.55 |   100.00 |    0.00 | 9-55
+#    plot.js                            |  16.06 |   100.00 |    0.00 | 19-55 58-86 89-137
+#    preprocess.js                      |  11.96 |   100.00 |    0.00 | 8-23 28-92
+#    random.js                          |  27.27 |   100.00 |    0.00 | 4-11
+#    routes                             |        |          |         | 
+#     budget.js                         |  24.00 |   100.00 |    0.00 | 9-17 22-50
+#     common.js                         |  16.54 |   100.00 |    0.00 | 11-23 25-35 40-74 76 78-87 92-127
+#     compatibility.js                  |  26.47 |   100.00 |    0.00 | 6-13 15-20 24-34
+#     density.js                        |  29.82 |   100.00 |    0.00 | 14-19 21-28 30-35 38-57
+#     densityField.js                   |  21.15 |   100.00 |    0.00 | 7-9 12-22 25-27 32-62 65-72 75-80 83-89 92-104
+#     edgePath.js                       |  11.85 |   100.00 |    0.00 | 9-18 21-34 38-63 65-77 80-135
+#     forceDirected.js                  |  14.18 |   100.00 |    0.00 | 11-18 24-75 78-85 88-134
+#     hierarchical.js                   |  13.73 |   100.00 |    0.00 | 10-17 20-50 52-64 67-102
+#     job.js                            |  33.78 |   100.00 |    0.00 | 22-54 57-65 68-74
+#     options.js                        |  43.14 |   100.00 |    0.00 | 18-32 36-46 49-51
+#     polyline.js                       |  29.73 |   100.00 |    0.00 | 11-20 22-32 40-54 59-74
+#     result.js                         |  27.12 |   100.00 |    0.00 | 12-14 20-59
+#     resultProvenance.js               |   8.13 |   100.00 |    0.00 | 7-18 21-74 77-123
+#     shortestPath.js                   |   4.94 |   100.00 |    0.00 | 5-81
+#     spline.js                         |  18.75 |   100.00 |    0.00 | 10-17 19-35 41-80
+#    search.js                          |   9.48 |   100.00 |    0.00 | 8-25 30-116
+#    spanning.js                        |  18.25 |   100.00 |    0.00 | 13-20 22-31 33-36 38-71 76-92 97-126
+#    structural.js                      |  12.09 |   100.00 |    0.00 | 13-30 32-63 65-72 74-78 80-83 86-110 113-134 137-182
+#    subset.js                          |  32.50 |   100.00 |    0.00 | 8-20 23-26 29-36 39-40
+#   gridBoundary.js                     |   9.20 |   100.00 |    0.00 | 3-5 7-15 17-24 29-87
+#   gridGeometry.js                     |  18.92 |   100.00 |    0.00 | 4-19 24-37
+#   guideDash.js                        |  19.61 |   100.00 |    0.00 | 5-11 14-32 35-46 49-51
+#   hierarchy                           |        |          |         | 
+#    input.js                           |  58.60 |    60.61 |   78.95 | 16-18 84-128 139-155
+#    model.js                           |  84.68 |    47.83 |  100.00 | 12-13 28-29 34-35 43-44 48 50-51 63-64 75-76 83-84
+#    normalize.js                       |  88.43 |    46.15 |   80.00 | 40-41 48-49 56-57 91-92 98-100 114-116
+#    options.js                         |  82.00 |    43.48 |  100.00 | 27-28 31-37
+#    order.js                           |  72.73 |    40.00 |   55.56 | 23-34 37 42-43
+#    partition.js                       | 100.00 |    66.67 |  100.00 | 
+#    partitionAdapter.js                |  91.43 |    84.44 |   85.71 | 43-48
+#    partitionBend.js                   |  98.18 |    89.09 |  100.00 | 47
+#    partitionCell.js                   | 100.00 |    84.62 |  100.00 | 
+#    partitionInterpolation.js          | 100.00 |   100.00 |  100.00 | 
+#    partitionMapping.js                | 100.00 |    82.35 |  100.00 | 
+#    partitionPlot.js                   |  94.32 |    70.21 |  100.00 | 43-47
+#    partitionView.js                   |  62.50 |    62.96 |   57.14 | 14-22 58-69 72-80
+#    plot.js                            |  90.74 |    63.29 |   95.00 | 43 45-53 92-93 141-143
+#    tree.js                            |  14.88 |   100.00 |    0.00 | 8-11 14-33 37-46 48-56 60-70 73-121
+#    treemap.js                         |  14.17 |   100.00 |    0.00 | 10-20 22-26 28-41 45-56 58-90 93-120
+#   histogram.js                        |   9.61 |   100.00 |    0.00 | 14-18 20-25 28-32 35-46 48-54 57-80 82-94 96-98 100-104 106-109 111-133 135-166 168-184 186-209 211-217 219-233 235-301 304-312 314-371 374-390 393-406
+#   hitClipDistance.js                  |  20.00 |   100.00 |    0.00 | 4-11 14-27 32-54 57-63 68-75
+#   hitCoordinates.js                   |  89.25 |    45.16 |  100.00 | 9-10 17-18 24-25 73-74 78-79
+#   hitIndex.js                         |  80.69 |    58.57 |   75.00 | 19-27 102 116-125 168-170 175-177 179-180 192-202
+#   hitShapes.js                        |  64.12 |    51.11 |   69.77 | 36-40 42-45 47-53 59 78-82 117-118 124-126 129 148-156 180-192 220-224 231-233 249-263 267-301
+#   hitStroke.js                        |  11.35 |   100.00 |    0.00 | 12-25 27-42 44-65 67-114 116-163 167-172 176-185
+#   horizon.js                          |   9.11 |   100.00 |    0.00 | 24-47 49-67 69-83 85-108 111-114 117-184 186-196 198-246 248-271 273-296 298-300 302-333 335-343 345-353 355-379 381-442 444-458 461-494 499-516
+#   imageMark.js                        |  37.04 |   100.00 |    0.00 | 11-27
+#   imagePayload.js                     |  36.54 |   100.00 |    0.00 | 11-16 19-25 28-31 33-43 46-48 51-52
+#   impute.js                           |  10.37 |   100.00 |    0.00 | 14-21 23-26 28-33 35-41 44-90 93-105 107-117 119-127 129-151 153-163 165-183 185-198 200-221 223-236 238-242 244-299 302-322 325-328
+#   interval.js                         |  14.29 |   100.00 |    0.00 | 30-40 42-63 66-109 111-117 120-156 159-164 166-169 172-202 205-283 286-308
+#   itemMissing.js                      |  39.13 |    33.33 |   25.00 | 8-12 14-21 24-32 38-55 63-64
+#   jitter.js                           |  10.78 |   100.00 |    0.00 | 10-18 21-28 30-37 39-42 45-87 90-95 98-108 110-133 136-204
+#   legendBlocks.js                     |  31.03 |   100.00 |    0.00 | 6-14 30-40 43-47 50-81 85-87
+#   legendBorder.js                     |  22.22 |   100.00 |    0.00 | 3-9
+#   legendClip.js                       |  21.05 |   100.00 |    0.00 | 2-5 7-12 14-16 18-19
+#   legendCombinations.js               |  22.22 |   100.00 |    0.00 | 7-9 11-13 15-20 23-45
+#   legendGradient.js                   |  40.74 |   100.00 |    0.00 | 7-11 14-18 22-27
+#   legendGroups.js                     |  21.31 |   100.00 |    0.00 | 6-33 36-43 46-55 60-61
+#   legendItemsOffset.js                |  25.00 |   100.00 |    0.00 | 4-12
+#   legendOpacity.js                    |  16.67 |   100.00 |    0.00 | 2-6
+#   legendOverflow.js                   |  22.58 |   100.00 |    0.00 | 4-17 20-25 28-31
+#   legendSampling.js                   |  12.50 |   100.00 |    0.00 | 9-15 17-38 41-52 55-96 99-117 120-136
+#   legendSpacing.js                    |  28.89 |   100.00 |    0.00 | 6-13 18-28 31-34 37-45
+#   legendSymbolRecipe.js               |  27.54 |   100.00 |    0.00 | 36-48 50-101 104-138
+#   legendTitleStyle.js                 |  40.91 |   100.00 |    0.00 | 8-14 17-22
+#   linearColor.js                      | 100.00 |    83.33 |  100.00 | 
+#   lineMissing.js                      |  20.43 |   100.00 |    0.00 | 7-11 14-22 26-47 51-65 68-76 80-93
+#   lineSeries.js                       |  10.28 |   100.00 |    0.00 | 29-30 32-82 84-97 99-103 105-119 122-137 139-312 314-338 340-347 349-359 362-406 409-412 415-428
+#   lookup.js                           |  14.43 |   100.00 |    0.00 | 8-19 22-47 49-56 59-88 91-97
+#   markBlend.js                        |  76.47 |    66.67 |   50.00 | 9-12
+#   markEffects.js                      |  65.00 |    50.00 |   50.00 | 11-12 14-18
+#   markFilter.js                       |  22.22 |   100.00 |    0.00 | 11-23 26-47 50-58 61-72
+#   markLabels.js                       |  18.18 |   100.00 |    0.00 | 14-16 19-21 24-46 48-76 78-86 88-92 95-121
+#   markLabelSelection.js               |  17.54 |   100.00 |    0.00 | 5-7 9-14 16-21 24-35 38-57
+#   markOutline.js                      |  51.72 |    40.00 |   50.00 | 10-19 24 26-28
+#   markSelection.js                    |  23.18 |   100.00 |    0.00 | 67-72 74-76 78-83 85-96 99-214 216-248 250-254 256-264 266-272 274-284 286-288 290-311 314-350 354-358
+#   markShadow.js                       |  50.00 |    66.67 |   50.00 | 8-19
+#   markVisibility.js                   |  23.91 |   100.00 |    0.00 | 8-18 21-35 38-46
+#   normalize.js                        |  12.69 |   100.00 |    0.00 | 24-27 29-38 40-43 45-66 69-112 115-147 149-163 165-175 177-212 214-226 228-232 234-236 238-244 246-304 307-316 319-331
+#   numeric.js                          |  39.20 |    80.00 |   40.74 | 5-6 9-11 45-49 51-61 68-71 94 101-106 109-120 123-164 167-171 174-181 184-201 205-214 217-229 232-236 239-245 256-258 268-272 284-302 305-316 319-324
+#   ohlc.js                             |  17.65 |   100.00 |    0.00 | 7-34
+#   ohlcPlot.js                         |  25.58 |   100.00 |    0.00 | 20-33 35-65 67-82 84-86
+#   orderedRange.js                     |  19.15 |   100.00 |    0.00 | 8-35 38-47
+#   overlay.js                          |  29.41 |   100.00 |    0.00 | 8-14 17-32 35-42 45-47 50-51
+#   paint.js                            |  56.29 |    55.88 |   62.50 | 18-27 30-31 45-49 62-72 74-77 81-98 108-109 114-115 118-119 123-124 136-137 146-151
+#   palettes.js                         |  70.26 |    41.18 |   46.15 | 97-98 105-106 112-113 118-132 136-138 140-148 150-155 167-169 174-175 180-189 192-195
+#   parallelAxisTitles.js               |  18.75 |   100.00 |    0.00 | 4-16
+#   parallelCoordinates.js              |  17.28 |   100.00 |    0.00 | 29-30 32-44 46-57 60-64 67-95 98-135 137-141 143-162 165-183 186-243
+#   parallelGuides.js                   |  14.29 |   100.00 |    0.00 | 3-4 6-8 11-35
+#   parameter.js                        |  25.61 |   100.00 |    0.00 | 9-11 13-20 23-31 34-40 43-50 55-66 69-82
+#   parseTime.js                        |  22.58 |   100.00 |    0.00 | 10-14 19-43 48-57 60-81 84-93
+#   pathCommands.js                     |  57.89 |    85.71 |   85.71 | 9-34 47-50 57-58
+#   pathGeometry.js                     |  74.83 |    63.33 |   80.00 | 30-37 50-54 65-69 86-88 157-166 198 223-226 256-263 268-298
+#   pathOrder.js                        |  28.57 |   100.00 |    0.00 | 9-13 16-35
+#   pathSeries.js                       |  17.29 |   100.00 |    0.00 | 10-16 19-37 40-41 43-47 50-58 60-84 87-99 102-124 127-133
+#   pathTopology.js                     |  69.91 |    56.67 |   88.89 | 19-22 29-32 35-38 48-49 51-52 55-56 63-64 85-86 97-108
+#   patterns.js                         |  67.42 |    42.86 |   65.38 | 19-20 43-44 54-55 68-83 85-90 110-130 148-149 163-164 169-170 174-178 185-186 204-209 213-214 220-221
+#   pivot.js                            |  15.92 |   100.00 |    0.00 | 16-19 21-26 28-33 35-39 41-57 60-78 81-112 115-157
+#   plotComposition.js                  |  16.46 |   100.00 |   41.67 | 18 22-31 35-111 115-158
+#   plotPosition.js                     |  30.00 |   100.00 |    0.00 | 5-11 14-20
+#   pointPacking.js                     |   7.32 |   100.00 |    0.00 | 9-14 17-60 62-66 68-80 82-88 91-205
+#   pointPolygon.js                     |  24.69 |   100.00 |   16.67 | 16-18 20-22 24-27 29-35 38-81
+#   pointShapes.js                      |  69.92 |    51.28 |   87.50 | 27-40 47-48 139-140 170-171 179-180 182-186 188-201 221-256
+#   polar.js                            |  45.10 |    20.00 |   40.00 | 18-21 27-28 35-36 39-40 43-44 48-49 55-56 58-59 61-62 79-84 95-98 103-106 115-121 124-138 141-153 156-164 167-189 194-204
+#   polarGuides.js                      |  12.35 |   100.00 |    0.00 | 7-19 21-26 28-33 35-37 39-46 49-58 61-71 74-89 91-107 110-125 127-138 141-153 156-174 177-194 197-232 235-243
+#   polarLineCommands.js                |  25.58 |   100.00 |    0.00 | 8-12 15-38 41-43
+#   polarPaths.js                       |  88.27 |    50.00 |  100.00 | 14-17 23-24 26-27 131-132 136-137 140-141 143-146 155
+#   positionCompatibility.js            |  92.31 |    66.67 |  100.00 | 47-50
+#   positionDatum.js                    |  25.00 |   100.00 |    0.00 | 4-12
+#   positionOffset.js                   |  26.32 |   100.00 |    0.00 | 4-11 14-19
+#   positionPolicies                    |        |          |         | 
+#    arc.js                             |   6.98 |   100.00 |    0.00 | 7-86
+#    area.js                            |  32.73 |    28.57 |   33.33 | 19-55
+#    bar.js                             |   9.60 |   100.00 |    0.00 | 16-114 117-177
+#    common.js                          |  58.82 |   100.00 |   33.33 | 5-6 9-13
+#    index.js                           |  94.44 |    66.67 |  100.00 | 33-34
+#    line.js                            |   6.82 |   100.00 |    0.00 | 10-14 16-20 23-176
+#    point.js                           |  47.37 |    33.33 |  100.00 | 5-8 10-11 13-14 16-17
+#    rule.js                            |  17.65 |   100.00 |    0.00 | 4-17
+#    secondary.js                       |   6.82 |   100.00 |    0.00 | 4-44
+#    source.js                          |  36.84 |    28.57 |   50.00 | 5-6 8-9 11-18
+#    tick.js                            |  15.79 |   100.00 |    0.00 | 4-19
+#   pyramid                             |        |          |         | 
+#    layout.js                          |  11.69 |   100.00 |    0.00 | 7-28 30-35 38-77
+#    plot.js                            |  23.47 |   100.00 |    0.00 | 18-31 34-67 70-87 90-98
+#   radialGradient.js                   |  24.07 |   100.00 |    0.00 | 7-14 19-46 50-54
+#   rects.js                            |  35.90 |   100.00 |    0.00 | 10-13 15-20 23-35 38-39
+#   regression                          |        |          |         | 
+#    derive.js                          |  12.39 |   100.00 |    0.00 | 26-45 47-222 225-226
+#    index.js                           |  58.62 |   100.00 |    0.00 | 18-29
+#    linearSystem.js                    |  11.54 |   100.00 |    0.00 | 4-26
+#    localQuadratic.js                  |  21.28 |   100.00 |    0.00 | 11-47
+#    models.js                          |   6.71 |   100.00 |    0.00 | 13-23 25-29 31-42 44-48 50-60 62-167 169-173 175-180 182-184 186-192 194-208 210-216 218-311 313-332 334-354 356-365 367-409 412-413 415-458 460-466 468-495 498-520 523-547 550-581
+#    parameters.js                      |   7.41 |   100.00 |    0.00 | 9-35 38-42 45-155 158-209 212-236 239-243
+#    statistics.js                      |  18.75 |   100.00 |    0.00 | 7-11 14-23 26-56 59-64
+#   responsiveCanvas.js                 |  13.33 |   100.00 |    0.00 | 9-18 20-28 32-90
+#   responsiveLabels.js                 |  18.75 |   100.00 |    0.00 | 9-13 15-20 25-46 49-80
+#   rotation.js                         |  13.79 |   100.00 |    0.00 | 3-5 8-29
+#   roundedRect.js                      |  19.64 |   100.00 |    0.00 | 17-22 25-32 35-44 47-60 63-70 73-74 76-82 85-117 120-140 143-168
+#   rowLineage.js                       |  15.56 |   100.00 |    0.00 | 25-27 30-31 34-38 41-45 47-54 56-64 66-72 74-79 81-88 90-115 117-125 127-185 188-215 218-270
+#   ruleAppearance.js                   |  66.67 |   100.00 |    0.00 | 7-8 11-12
+#   ruleGeometry.js                     |  26.67 |   100.00 |    0.00 | 3-6 9-15
+#   rules.js                            |  42.68 |   100.00 |    0.00 | 31-36 38-46 49-50 53-82
+#   scales                              |        |          |         | 
+#    appearance.js                      |  32.84 |    40.00 |    5.56 | 26-45 47-54 57-70 73-81 84-98 100-113 116-117 120-131 134-135 138-139 145-148 152-156 159-163 166-168 171-173 176-178 181-183 186-196
+#    color.js                           |  15.08 |    37.50 |    9.09 | 22-24 26-30 32-34 36-49 51-55 57-61 63-83 85-105 107-113 115-118 120-138 140-150 152-156 158-217 220-224 229-236 238-245 250-273 276-281 283-301 304-310 314-322 324-326 330-378
+#    colorConsumers.js                  |  11.30 |   100.00 |    0.00 | 8-19 22-80 83-105 108-115
+#    continuous.js                      |  45.91 |    58.00 |   66.67 | 25-26 37-78 82-87 89-91 93-95 99-131 138-142 144-145 147-150 157-158 165-166 171-172 182-183 185-186 188-192 197-199 216
+#    definition.js                      |  57.99 |    44.00 |   50.00 | 22-23 27-69 71-83 86-88 121-122 130 132-139 144-145 164-165 172-175 177-178 199 201 205-206 212-217
+#    discretized.js                     |  18.62 |   100.00 |    0.00 | 19-25 29-31 34-58 61-73 76-114 117-140 143-149 152-157 160-188
+#    fields.js                          |  32.62 |    45.00 |   42.11 | 4-9 13-14 19-23 26-30 34-35 41-42 49-52 57-68 70-78 80-82 86-87 94-95 98-102 107-134 137-147 150-159 167-168 171-186
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    mapping.js                         | 100.00 |    57.14 |  100.00 | 
+#    ordinal.js                         |   8.57 |   100.00 |    0.00 | 8-18 20-28 30-34 36-44 46-53 56-68 71-85 88-94 97-121 124-193 196-254 257-290 293-315
+#    policies.js                        |  18.00 |    66.67 |   50.00 | 6-42 46-49
+#    radial.js                          |  14.55 |   100.00 |    0.00 | 5-9 12-30 33-55
+#    size.js                            |  18.02 |   100.00 |    0.00 | 32-33 36-37 40-41 44-45 48-52 54-62 64-72 75-81 84-95 98-110 112-114 118-203 205-210 212-233 236-289 292-293 295-302 305-333
+#    temporal.js                        |  22.54 |   100.00 |    0.00 | 13-24 26-57 61-71
+#    transformed.js                     |  35.80 |    43.40 |   55.00 | 15-16 22-23 25-26 34-35 43-46 49-52 66-100 102-110 121 125-137 145-146 151-154 159-166 168-180 182-199 201-232 244-245 247-248 250-251 254-268 274-275 288-289 291-292 304-306 326-369 374-405 408-419
+#    types.js                           |  88.29 |    68.75 |   90.00 | 56-57 66-70 95-96 98-99 108-109
+#    validation.js                      |  61.18 |    73.68 |   66.67 | 6-14 17-22 30-31 37-38 52-53 58-62 65-69 82-83
+#   schemas                             |        |          |         | 
+#    concreteGraphic.js                 |  62.03 |    65.22 |   28.57 | 40-45 47-49 51-57 61-67 79-80 82-83 85-86 88-89 91-92 96-101 105-106 109-110 112-113 115-116 118-121 135-136 139-140 142-143 149 151-152
+#    graphic.js                         |  96.57 |    75.00 |  100.00 | 143-144 167-168 171-172
+#    graphicBounds.js                   |  21.59 |    48.28 |   24.00 | 28-35 37-47 49-75 77-85 87-112 114-147 149-180 182-276 280-283 297-307 320-328 330-340 353 359-367 369-378 380-388 401-402 412-417 422-443 445-459 464-479 481-517 520-533 536-542
+#    graphicClip.js                     |  54.90 |    50.00 |   62.50 | 10-11 13-19 24-25 31-33 39-41 45-50
+#    graphicIdentity.js                 |  80.36 |    52.17 |  100.00 | 11-12 15 23-24 29-30 32-33 53-54
+#    graphicSources.js                  |  47.06 |   100.00 |    0.00 | 7-10 13-17
+#    graphicTree.js                     |  52.76 |    67.57 |   62.50 | 5-17 25-26 36-49 56-66 71-72 80-86 97-103 107-108 111-112 114-115 138-139 142-143 151-152 156-163 166-167 180-183 188-199
+#    mark.js                            | 100.00 |   100.00 |  100.00 | 
+#    semanticPath.js                    |  77.90 |    73.68 |   90.91 | 182-187 195-196 201-213 227 229-230 239-275
+#    weightedBlend.js                   | 100.00 |    71.74 |  100.00 | 
+#   screenAnnotation.js                 |  38.24 |    66.67 |   25.00 | 10-16 19-30 33-34
+#   selectionExpression.js              |  18.18 |   100.00 |    0.00 | 13-36 39-46 49-88
+#   selectionRegion.js                  |  24.76 |   100.00 |    0.00 | 12-21 24-54 57-75 80-84 87-95 101-105
+#   selectionSet.js                     |  29.55 |   100.00 |    0.00 | 6-18 21-22 25-27 32-44
+#   seriesLayout.js                     |  14.50 |   100.00 |    0.00 | 14-18 20-24 26-33 36-108 111-131
+#   shadow.js                           |  15.85 |   100.00 |    0.00 | 8-15 18-46 51-82
+#   shadowComposite.js                  |  21.43 |   100.00 |    0.00 | 10-35 42-70
+#   sort.js                             |  15.91 |   100.00 |    0.00 | 9-33 36-41 43-46 48-58 61-88
+#   stack.js                            |  13.58 |   100.00 |    0.00 | 15-25 28-38 41-68 70-78 80-103 106-162
+#   statisticalReference.js             |  24.03 |   100.00 |    0.00 | 12-17 20-31 34-51 54-60 63-68 71-76 79-82 85-100 103-120 125-129
+#   statistics                          |        |          |         | 
+#    confidenceInterval.js              |  18.18 |   100.00 |    0.00 | 10-28 30-34 38-74 77-90 93-96 99-116 120-123 128-144 147-154
+#    studentT.js                        |  16.33 |   100.00 |    0.00 | 12-25 27-61 63-73 75-85 88-98
+#   streamBaseline.js                   |  16.00 |   100.00 |    0.00 | 9-50
+#   strokeStyle.js                      |  60.24 |    35.71 |   50.00 | 20-30 33-34 37-38 41-48 52-53 70-71 74-75 77-78 80-81
+#   summary.js                          |  10.69 |   100.00 |    0.00 | 29-32 34-42 45-60 63-122 124-144 146-153 156-346
+#   svgImage.js                         |  18.49 |   100.00 |    0.00 | 19-52 57-119
+#   tableData.js                        |  13.43 |   100.00 |    0.00 | 9-28 30-67
+#   tablePlot.js                        |  19.87 |   100.00 |    0.00 | 28-110 113-136 139-156
+#   text.js                             |  31.37 |    60.00 |   11.11 | 20-27 39-40 43-59 62-71 75-91 94-96 117-123 126-137 140-183 191 197-215 219-246 249-255
+#   ticks.js                            |  16.43 |   100.00 |   25.00 | 15-38 41-44 47-57 60-64 66-88 91-128 145-157 159-174 176-199 201-210 213-242 244-246 248-252 254-274 276-286 289-295 298-309 315-347
+#   timeUnit.js                         |  16.62 |   100.00 |    0.00 | 6-16 19-20 22-28 49-70 73-78 81-86 89-126 129-144 147-173 175-177 180-199 201-213 215-218 220-233 241-266 268-278 280-304 307-323 326-348 351-360
+#   trail.js                            |  11.45 |   100.00 |    0.00 | 12-20 25 27-46 49-152 154-166
+#   trailCurve.js                       |  28.13 |   100.00 |    0.00 | 10-32
+#   trailPlot.js                        |  24.29 |   100.00 |    0.00 | 16-26 28-41 43-70
+#   trailSeries.js                      |  19.40 |   100.00 |    0.00 | 9-12 14-20 24-53 55-67
+#   transformInput.js                   |  36.36 |   100.00 |    0.00 | 5-11
+#   transformKeys.js                    |  21.28 |   100.00 |    0.00 | 5-14 17-23 26-42 45-47
+#   transforms.js                       |  55.48 |   100.00 |    2.08 | 80-83 87-95 97-106 108-111 113-124 126-131 137-154 156-175 177-184 186-190 192-199 201-209 211-230 232-256 258-266 268-272 274-286 288-298 300-312 314-329 340 350-352 362-364 383-384 404-406 416-418 437-438 448-449 481-483 557-559 590-591 594-595 598-604 607-612 615-617 620-629
+#   transformTopology.js                | 100.00 |   100.00 |  100.00 | 
+#   valueFormat.js                      |  12.90 |   100.00 |    0.00 | 11-21 24-51 53-55 57-76 79-124
+#   waterfall.js                        |  18.75 |   100.00 |    0.00 | 7-32
+#   waterfallPlot.js                    |  21.36 |   100.00 |    0.00 | 20-33 35-64 66-81 83-103
+#   weightedBlend.js                    |  38.03 |    57.14 |   40.00 | 23-39 44-55 57-71
+#   weightedStatistics.js               |  14.09 |   100.00 |    0.00 | 21-33 36-41 44-68 71-80 83-132 134-136 139-142 144-162 164-175 177-192 194-209 211-218 221-253 256-285 288-289 292-299 302-318 321-337 340-347 350-369
+#   window.js                           |  10.10 |   100.00 |    0.00 | 35-45 47-57 59-93 95-137 140-163 165-168 170-202 205-219 221-238 240-252 254-290 292-313 315-332 334-354 356-366 368-376 378-382 384-390 392-396 398-400 402-473 475-538 540-565 568-608 611-614
+#  index.js                             | 100.00 |   100.00 |  100.00 | 
+#  interaction                          |        |          |         | 
+#   hitAxisLabels.js                    |  34.78 |   100.00 |   50.00 | 15-44
+#   hitConcrete.js                      |  62.32 |    25.00 |   62.50 | 9-24 51-60
+#   hitFrame.js                         |  80.39 |    72.73 |   70.00 | 10-11 30-35 42-43
+#   hitFrameSource.js                   |  66.67 |   100.00 |   66.67 | 7-9
+#   hitGuides.js                        |  22.22 |   100.00 |    0.00 | 12-13 17-63
+#   hitLegends.js                       |  42.86 |   100.00 |    0.00 | 4-7
+#   hitProgram.js                       |  60.00 |    60.61 |   72.00 | 72-125 153-161 180-185 189-209 214-218 221-225 254-269
+#   input.js                            |  31.58 |    66.67 |   50.00 | 8-9 16-42 45-47 51-57
+#   sceneFrame.js                       |  47.06 |   100.00 |    0.00 | 9-17
+#  layout                               |        |          |         | 
+#   aspect.js                           |  11.25 |   100.00 |    0.00 | 6-19 21-33 35-52 55-80
+#   canvas.js                           |  73.86 |    50.00 |   77.78 | 34-35 46-47 52-53 57-58 71-74 92-93 96-97 99 101-102 123-124 128-130 142-155 158-163 173-174
+#   composition.js                      |  48.64 |    38.00 |   71.43 | 19-20 33-40 42-43 46-47 50-51 59-62 68-71 77-78 82-83 88-89 91-92 94-95 99-102 105-108 159-160 178-179 203-232 234-247 250-307 310-331
+#   compositionLegend.js                |  20.88 |    66.67 |   11.11 | 6-13 18-49 58-89
+#   facetContentFlow.js                 |   7.34 |   100.00 |    0.00 | 6-73 77-109
+#   facetHeaderTitles.js                |  20.00 |   100.00 |    0.00 | 6-13 15-20 23-40
+#   facets.js                           |   7.83 |   100.00 |    0.00 | 21-27 29-50 52-56 60-102 105-345
+#   facetTopLane.js                     |  20.69 |   100.00 |    0.00 | 5-13 16-29
+#   guideCollisions.js                  |  15.38 |    66.67 |   33.33 | 1-6 10-25
+#   labels.js                           |  13.00 |   100.00 |    0.00 | 38-39 41-53 56-75 77-86 88-95 97-106 108-146 149-173 175-177 179-187 189-199 201-208 210-212 214-220 222-226 228-231 233-239 241-268 270-285 287-289 291-299 301-310 312-318 320-326 328-330 333-366 376-393 395-404 406-425 427-435 437-443 445-450 453-504 506-519 523-551 553-565 567-573 575-584 587-654 657-683 686-723
+#   legend.js                           |  33.90 |   100.00 |    0.00 | 9-10 14-15 18-46 49-52 58-59
+#   legendGroup.js                      |  10.00 |   100.00 |    0.00 | 9-80
+#   legendItems.js                      |   4.91 |   100.00 |    0.00 | 9-163
+#   legendLane.js                       |   7.11 |   100.00 |    0.00 | 10-13 16-29 31-35 38-42 44-65 67-86 88-91 94-192 195-205 207-214 216-223 225-249 251-304 306-314 317-394 399-450
+#   legendSpacing.js                    |  12.12 |   100.00 |    0.00 | 2-3 6-7 13-66
+#   legendText.js                       |  22.92 |   100.00 |    0.00 | 5-16 21-30 34-48
+#   plotDrawOrder.js                    |   5.88 |   100.00 |    0.00 | 2-17
+#   responsivePolicy.js                 |  17.48 |   100.00 |    0.00 | 10-14 16-21 23-31 33-48 50-59 61-65 70-103
+#   text.js                             |  21.33 |   100.00 |    0.00 | 14-28 30-54 57-75
+#   title.js                            |  18.40 |   100.00 |    0.00 | 4-6 8-10 13-55 58-61 64-67 69-79 83-91 94-95 98-106 112-125
+#  materialization                      |        |          |         | 
+#   adjacentSource.js                   |  25.93 |   100.00 |    0.00 | 8-27
+#   animation                           |        |          |         | 
+#    axisLabelDependencies.js           |  47.06 |   100.00 |    0.00 | 11-12 14-16 18-21 26-34
+#    axisLabelGroups.js                 |  31.08 |    62.50 |   22.22 | 34-37 43-44 46-54 56-93 95-146 154-185 188-195 213-220
+#    axisLabelReflowState.js            |  13.33 |   100.00 |    0.00 | 23-85 88-125 127-157 159-170 172-174 176-193 195-202 204-225
+#    axisLabelState.js                  |  16.35 |   100.00 |    0.00 | 20-26 28-113 118-121 123-126 128-132 134-137 139-145 147-150 152-158 160-165 167-174 176-185 187-208
+#    axisTitleGuides.js                 |  33.33 |    50.00 |   33.33 | 20-23 25-64
+#    axisTitleState.js                  |  15.76 |   100.00 |    0.00 | 21-110 112-120 122-128 131-136 138-150 152-174 178-184
+#    cartesian.js                       |  85.19 |    55.56 |   66.67 | 23 25-27 46 48-50
+#    cartesianOverlay.js                |  29.31 |   100.00 |    0.00 | 18-58
+#    cartesianRows.js                   |  18.63 |   100.00 |    0.00 | 20-102
+#    cartesianSeries.js                 |  28.30 |   100.00 |    0.00 | 16-53
+#    cartesianWork.js                   |  54.55 |   100.00 |    0.00 | 7-11
+#    categoricalLegendState.js          |  19.61 |   100.00 |    0.00 | 30-36 40-143 145-154 156-160 162-164 166-168 170-178 180-202
+#    geo.js                             |  40.91 |   100.00 |    0.00 | 10-22
+#    geoAnnotation.js                   |  26.74 |   100.00 |    0.00 | 17-24 26-43 45-49 51-68 71-72 75-86
+#    geoLabels.js                       |  35.29 |   100.00 |    0.00 | 13-34
+#    geoPresentation.js                 |  57.00 |    39.34 |   31.03 | 24-26 28-31 39-47 55-58 63-78 81-95 120-134 143 145-147 153-154 172-183 195 197 199 206-207
+#    geoText.js                         |  61.39 |    28.79 |   23.68 | 37-71 85-86 98-100 109-111 134-135 138-159 173-174 182-187 196-198
+#    geoTextBlend.js                    |  20.00 |   100.00 |    0.00 | 10-45
+#    geoTextExpressions.js              |  31.75 |   100.00 |    0.00 | 11-14 16-41 47-50 55-63
+#    geoTextGeometry.js                 |  30.21 |    75.00 |   28.57 | 23-26 28-30 34-65 69-96
+#    graph.js                           |  61.36 |    44.44 |   22.22 | 27-48 51 64-66 78-85
+#    guideAnchors.js                    |  31.87 |    22.22 |   12.50 | 19-20 24-28 31-49 51-65 70-90
+#    guideMetrics.js                    |  32.26 |   100.00 |    0.00 | 10-19 21-31
+#    guides.js                          |  52.26 |    20.00 |   31.58 | 36-37 41-70 72-77 81 86-100 102-106 109-111 122-126 141-145 147-148
+#    legendAxisLaneState.js             |  16.88 |   100.00 |    0.00 | 18-21 23-27 30-51 53-77 80-127 129-133 135-139 141-145 147-160
+#    legendBlockState.js                |  39.13 |   100.00 |    0.00 | 7-8 12-23
+#    legendGroupGuides.js               |  42.22 |    50.00 |   33.33 | 18-43
+#    legendGroupState.js                |  16.98 |   100.00 |    0.00 | 19-88 90-93 95-99 101-103 105-108 110-116 120-129 131-159
+#    legendGuides.js                    |  34.52 |    50.00 |   14.29 | 27-37 39-82
+#    legendLaneGuides.js                |  56.00 |    37.50 |   16.67 | 23-41 44 49-50
+#    legendLaneState.js                 |  10.33 |   100.00 |    0.00 | 17-20 22-181 183-187 189-193 195-197 199-201 203-216 218-227 229-254 259-271
+#    legendState.js                     |  15.77 |   100.00 |    0.00 | 25-32 34-65 67-109 111-143 145-159 161-169 171-174 176-178 180-189 191-220
+#    partition.js                       | 100.00 |    88.89 |  100.00 | 
+#    partitionGeometry.js               | 100.00 |    93.52 |  100.00 | 
+#    point.js                           |  94.44 |    57.41 |  100.00 | 56-57 65-66
+#    polar.js                           |  41.33 |    72.73 |   40.00 | 21-58 66-70 72
+#    sizeLegendState.js                 |  18.86 |   100.00 |    0.00 | 25-31 33-110 112-122 124-128 130-132 134-136 138-147 149-173
+#   axisLabelCandidates.js              |  15.79 |   100.00 |    0.00 | 13-32 34-46 49-95
+#   axisLabelLayout.js                  |  10.22 |   100.00 |    0.00 | 10-17 22-51 53-80 82-94 99-186
+#   axisLabelQueries.js                 |  29.17 |   100.00 |    0.00 | 16-32 37-53 56-72
+#   axisLabelText.js                    |  42.86 |   100.00 |    0.00 | 9-15 18-23 26-28
+#   bars                                |        |          |         | 
+#    aggregate.js                       |  19.67 |   100.00 |    0.00 | 13-61
+#    histogram.js                       |  20.32 |   100.00 |    0.00 | 31-66 69-99 102-114 117-118 121-187
+#    ranged.js                          |  21.79 |   100.00 |    0.00 | 18-78
+#    resolve.js                         |  21.70 |   100.00 |    0.00 | 7-20 36-55 58-106
+#   calendar                            |        |          |         | 
+#    plot.js                            |  22.54 |   100.00 |    0.00 | 17-71
+#    resources.js                       |  47.62 |   100.00 |    0.00 | 7-9 12-14 17-21
+#    scaleValues.js                     |  33.33 |   100.00 |    0.00 | 3-6
+#    state.js                           |  20.90 |   100.00 |    0.00 | 12-19 21-55 57-66
+#   canvasResourceRevision.js           | 100.00 |    71.43 |  100.00 | 
+#   categorySlotOffset.js               |  39.02 |    23.08 |   50.00 | 4-6 8-9 12-14 16-18 24-30 34-40
+#   composition.js                      |  58.96 |    39.53 |   52.38 | 25-26 33-34 46-63 65-86 92-112 122-130 155-156 163-170 178-185 245-258 260-263
+#   compositionLegends.js               |  33.33 |    60.00 |   16.67 | 12-26 33-52 56-69 79-80 85-96 98-99 106-120
+#   compositionScales.js                |  24.80 |    44.44 |   25.00 | 11-16 18-25 27-55 57-61 63-80 82-87 91-93 102-106 110-123
+#   compositionSnapshot.js              |  87.97 |    74.36 |   91.67 | 15-18 23-24 30-31 38-39 41-42 47-48 100-101
+#   compositionTitle.js                 |  13.54 |    50.00 |   33.33 | 9-21 25-58 61-96
+#   conditionalArcStructure.js          |  31.25 |    66.67 |   25.00 | 14-29 32-48
+#   conditionalArcValues.js             |  18.18 |   100.00 |    0.00 | 11-55
+#   conditionalAreaStructure.js         |  35.29 |    66.67 |   16.67 | 13-22 25-26 29-30 33-51
+#   conditionalAreaValues.js            |  18.03 |   100.00 |    0.00 | 10-13 16-61
+#   conditionalBarStructure.js          |  36.96 |    66.67 |   25.00 | 16-20 23-46
+#   conditionalBarValues.js             |  17.28 |   100.00 |    0.00 | 13-49 52-81
+#   conditionalBranches.js              |  42.86 |   100.00 |    0.00 | 6-7 12-21
+#   conditionalLineStructure.js         |  30.23 |   100.00 |    0.00 | 9-10 13-24 26-28 31-43
+#   conditionalLineValues.js            |  19.05 |   100.00 |    0.00 | 9-42
+#   conditionalMapping.js               |  27.27 |   100.00 |    0.00 | 12-17 20-48 51-55
+#   conditionalPositionBindings.js      |  36.84 |   100.00 |    0.00 | 8-19
+#   conditionalSelection.js             |  29.41 |   100.00 |    0.00 | 4 7-17
+#   conditionalState.js                 |  29.06 |    62.50 |   40.00 | 26-30 33-88 95-128 130-151 156-187 190-211 216-223 232-235 239-241 260-261
+#   conditionalValues.js                |  47.66 |    17.24 |   44.44 | 23-57 62-64 67-74 78-81 88-90 104-106
+#   contour                             |        |          |         | 
+#    plot.js                            |  20.69 |   100.00 |    0.00 | 13-58
+#    resources.js                       |  40.91 |   100.00 |    0.00 | 8-10 13-22
+#    scaleValues.js                     |  27.27 |   100.00 |    0.00 | 4-11
+#    state.js                           |  20.69 |   100.00 |    0.00 | 14-17 19-50 52-73 75-85
+#   coordinateBounds.js                 |  29.65 |    47.06 |   41.18 | 13-15 18-79 82-87 89-93 95-112 122-127 129-138 144-145 156-160 172-175 180-206 210-218 223-224
+#   dataProvenance.js                   |  15.94 |   100.00 |    0.00 | 7-14 16-21 24-53 56-69
+#   dataSourceState.js                  |  19.40 |    66.67 |    6.67 | 15-24 26-37 40-49 51-54 57-65 70-103 108-127 130-142 150-189 192-201
+#   density.js                          |  17.24 |   100.00 |    0.00 | 6-29
+#   dependencies.js                     |  67.83 |    70.00 |   43.33 | 29-34 44 49-50 54 61-62 90-92 96-100 103-117 127-137
+#   encodings.js                        |  26.32 |   100.00 |    0.00 | 11-38
+#   expressionInputs.js                 |  40.63 |   100.00 |    0.00 | 7-10 13-15 19-24 27-32
+#   facetContentBounds.js               |  15.63 |   100.00 |    0.00 | 13-18 22-96
+#   facetGuides                         |        |          |         | 
+#    edit.js                            |  14.00 |   100.00 |    0.00 | 8-50
+#    index.js                           | 100.00 |   100.00 |  100.00 | 
+#    layout.js                          |  13.40 |   100.00 |    0.00 | 8-11 13-33 35-47 52-97
+#    legacyCategorical.js               |   8.89 |   100.00 |    0.00 | 8-23 25-29 32-89 92-135
+#    owner.js                           |  15.87 |   100.00 |    0.00 | 11-19 22-37 40-71 74-110 115-126
+#    ownerLayout.js                     |  12.99 |   100.00 |    0.00 | 9-16 19-77
+#    placement.js                       |  11.07 |   100.00 |    0.00 | 19-28 31-71 73-92 94-111 113-136 139-157 160-244
+#    preparation.js                     |  14.18 |   100.00 |    0.00 | 30-31 33-71 73-84 86-88 90-105 107-178 180-189 191-210 213-268
+#   facetHeaders.js                     |  11.74 |   100.00 |    0.00 | 28-29 32-45 48-72 75-79 81-83 85-87 89-100 102-124 126-162 164-166 168-174 176-185 187-199 201-206 208-247 249-255 258-272 274-285 288-359 361-365 367-371 373-380 382-389 391-398 400-403 405-409 411-430 432-476 478-502 504-518 520-538 540-561 564-573 576-587 591-596
+#   facets.js                           |  15.94 |   100.00 |    0.00 | 33-39 42-88 91-151 153-179 181-198 201-251
+#   facetScaleContext.js                |  27.78 |   100.00 |    0.00 | 4-10 13-18
+#   facetTopLane.js                     |  20.00 |   100.00 |    0.00 | 6-25
+#   fillPaint.js                        | 100.00 |    60.00 |  100.00 | 
+#   flow                                |        |          |         | 
+#    layoutResource.js                  |  45.45 |   100.00 |    0.00 | 6-11
+#    layoutState.js                     |  14.62 |   100.00 |    0.00 | 15-71 75-128
+#    plot.js                            |  20.59 |   100.00 |    0.00 | 15-68
+#    resources.js                       |  45.83 |   100.00 |    0.00 | 10-12 15-24
+#   fontState.js                        |  28.81 |   100.00 |    0.00 | 12-15 18-20 23-25 27-41 44-52 58-73 80-100 104-114 117-118
+#   frameState.js                       |  71.88 |    78.85 |   72.73 | 56-70 84-93 117-127
+#   geo                                 |        |          |         | 
+#    annotation.js                      |  39.29 |   100.00 |    0.00 | 10-22 25-28
+#    annotationSource.js                |  25.00 |   100.00 |    0.00 | 11-30 33-48
+#    appearance.js                      |  34.04 |   100.00 |    0.00 | 11-16 19-39 44-47
+#    coordinateState.js                 |  31.82 |   100.00 |    0.00 | 8-22
+#    featureDataset.js                  |  50.00 |   100.00 |    0.00 | 9-11 14-20
+#    features.js                        |  23.19 |   100.00 |    0.00 | 8-17 22-33 39-69
+#    joinResource.js                    |  42.11 |   100.00 |    0.00 | 7-9 12-19
+#    joinState.js                       |  25.64 |   100.00 |    0.00 | 10-38
+#    labelAnchors.js                    |  36.84 |   100.00 |    0.00 | 6-8 11-19
+#    labels.js                          |  46.67 |    42.86 |   40.00 | 18-19 22-28 31-45
+#    lodResource.js                     |  27.50 |   100.00 |    0.00 | 12-40
+#    lodState.js                        |  31.25 |   100.00 |    0.00 | 10-31
+#    mark.js                            |  32.56 |   100.00 |    0.00 | 15-43
+#    projectionResource.js              |  36.84 |   100.00 |    0.00 | 8-19
+#    projectionState.js                 |  32.61 |   100.00 |    0.00 | 14-44
+#    resources.js                       |  31.58 |   100.00 |    0.00 | 7-19
+#    routeResource.js                   |  31.25 |   100.00 |    0.00 | 6-16
+#    routeState.js                      |  22.22 |   100.00 |    0.00 | 10-44
+#    source.js                          |  43.33 |   100.00 |    0.00 | 11-25 29-30
+#    state.js                           |  27.27 |   100.00 |    0.00 | 9-32
+#   geometryState.js                    |  40.00 |   100.00 |    0.00 | 7-14 18-24
+#   graph                               |        |          |         | 
+#    candidate.js                       |  44.44 |   100.00 |    0.00 | 5-9
+#    filterState.js                     |  38.10 |   100.00 |    0.00 | 9-21
+#    frameGeometry.js                   |  33.33 |   100.00 |    0.00 | 9-26 28-29 31-32
+#    geometry.js                        |  16.07 |   100.00 |    0.00 | 5-12 14-19 24-56
+#    inferredResource.js                |  35.00 |   100.00 |    0.00 | 8-20
+#    inferredState.js                   |  11.35 |   100.00 |    0.00 | 26-32 35-67 69-103 105-135 137-280
+#    layoutResource.js                  |  36.84 |   100.00 |    0.00 | 8-19
+#    layoutState.js                     |  12.78 |   100.00 |    0.00 | 15-37 39-63 65-132
+#    plot.js                            |  17.14 |   100.00 |    0.00 | 17-28 31-105
+#    presentationReader.js              |  60.00 |    50.00 |   50.00 | 6-7 12-15
+#    resources.js                       |  39.13 |   100.00 |    0.00 | 6-7 10-12 15-23
+#    routeGeometry.js                   |  25.00 |   100.00 |    0.00 | 7-18 21-32
+#    routeInput.js                      |  26.92 |   100.00 |    0.00 | 9-15 22-52
+#    routeRequest.js                    |  29.17 |   100.00 |    0.00 | 13-25 28-48
+#    routeResource.js                   |  44.83 |   100.00 |    0.00 | 8-10 13-14 17-19 22-29
+#    routeState.js                      |  30.00 |   100.00 |    0.00 | 7-16 18-28
+#    sourceItems.js                     |  40.00 |   100.00 |    0.00 | 5-6 9-13 18-25
+#    state.js                           |  29.85 |   100.00 |    0.00 | 14-17 19-37 39-62
+#    view.js                            |  17.14 |   100.00 |    0.00 | 7-35
+#   graphicHierarchy.js                 |  51.02 |    26.92 |   31.25 | 29-30 33-34 44-45 47-48 51-52 63-65 76-84 87-93 99-104 107-116 119-126 129-147
+#   graphicTranslation.js               |   9.64 |   100.00 |    0.00 | 5-21 24-41 44-83
+#   guides                              |        |          |         | 
+#    axisClearance.js                   |  36.36 |   100.00 |    0.00 | 5-11
+#    axisItems.js                       |  33.33 |    50.00 |   14.29 | 11-15 18-19 22-43 47-55
+#    axisTitleLayout.js                 |  20.00 |   100.00 |    0.00 | 8-19 22-46 49-50 53-65
+#    canvas.js                          |  55.56 |   100.00 |    0.00 | 6-9
+#    categoricalLegend.js               |  17.39 |   100.00 |    0.00 | 11-16 19-79 84-92
+#    layout.js                          |  61.40 |    44.44 |   33.33 | 19-25 31-32 34-37 40-41 43-44 46-47 67-75 83-88 92-94 97-100 104-105 112
+#    legendConfig.js                    |  10.95 |   100.00 |    0.00 | 8-28 31-86 89-119 122-130 133-137
+#    legendGradient.js                  |   9.80 |   100.00 |    0.00 | 12-26 29-35 40-193 197-204
+#    legendItems.js                     |  40.70 |    27.27 |    6.25 | 20-24 27 32-34 40-43 47-84
+#    legendLaneState.js                 |  20.35 |   100.00 |   14.29 | 22-26 28-33 35-37 40-43 45-54 56-77 80-90 92-96 99-169 171-178 181-208 219-220 225-226 229-232 235-237 241-278 281-285
+#    legendLayout.js                    |  19.09 |   100.00 |    0.00 | 12-27 30-36 39-50 53-62 65-74 77-110
+#    legendSamples.js                   |  14.89 |   100.00 |    0.00 | 16-21 24-56 59-64 69-125 128-143 145-168 171-188
+#    resources.js                       |  72.20 |    39.02 |   37.93 | 8-13 21-23 27-44 51-54 64-66 71 180-181 184-189 199-200 206-209 212-214 217-221 228-230 233-234 246-255
+#    tickValues.js                      |  19.74 |   100.00 |    0.00 | 8-23 26-47 50-56 61-76
+#    visibility.js                      |  40.74 |    68.18 |   40.00 | 8-31 34-40 43-44 51-70 73 77-82 90-91 105-106
+#   hierarchy                           |        |          |         | 
+#    items.js                           | 100.00 |   100.00 |  100.00 | 
+#    partitionFrames.js                 |  82.52 |    55.22 |   84.38 | 35-38 102 123-125 127-143
+#    partitionPlot.js                   | 100.00 |    88.46 |   85.71 | 
+#    plot.js                            |  35.44 |    16.67 |    6.25 | 14-22 26-29 41-78
+#    resources.js                       |  73.53 |    61.54 |   75.00 | 33 37-53
+#    state.js                           |  64.78 |    49.21 |   80.00 | 19-20 26-27 29-35 46-47 61 80-88 105-112 121-132 138-146 148-151
+#   horizon.js                          |  17.24 |   100.00 |    0.00 | 6-29
+#   image.js                            |  20.59 |   100.00 |    0.00 | 8-34
+#   imageState.js                       |  29.17 |   100.00 |    0.00 | 9-10 12-26 29-40 42-46
+#   layout.js                           |  68.12 |    57.14 |   66.67 | 19-35 37-39 42-43
+#   layoutState.js                      |  73.91 |    44.44 |  100.00 | 10-11 17-20
+#   legendBorder.js                     |  25.00 |   100.00 |    0.00 | 4-7 10-21 24-28
+#   legendClip.js                       |  25.00 |    75.00 |   30.77 | 11-18 23 26-27 29-37 39-44 46-70 73-76 80-96
+#   legendEncodings.js                  |  41.67 |    66.67 |   33.33 | 4-8 13-19 23-24
+#   legendGroups.js                     |  36.36 |   100.00 |    0.00 | 7-8 13-21 24-33
+#   legendItemsOffset.js                |  27.54 |    60.00 |   28.57 | 14-19 25-68
+#   legends.js                          |  39.02 |    33.33 |   50.00 | 9-11 14-17 23-26 42-53 56-82
+#   legendSuppression.js                |  27.27 |   100.00 |    0.00 | 5-8 11-22
+#   legendTargets.js                    |  20.00 |   100.00 |    0.00 | 9-12 15-30 33-50 53-70
+#   legendText.js                       |  57.14 |   100.00 |    0.00 | 5-7
+#   markClip.js                         |  56.67 |    22.22 |   33.33 | 12-17 22-27 29
+#   markEffects.js                      | 100.00 |    23.08 |  100.00 | 
+#   markOutput.js                       |  79.63 |    60.00 |   50.00 | 25-35
+#   marks                               |        |          |         | 
+#    capabilities.js                    |  32.86 |    85.71 |   18.75 | 30 41-42 45-82 85-106 109-116 119-142 145-165 168-175 189-191 194-196 199-208 211-213
+#    grouping.js                        |  11.11 |   100.00 |    0.00 | 5-13 16-54
+#    index.js                           |  73.30 |    43.75 |   62.86 | 49-50 52-53 79-81 97-99 130-132 141-149 152-179 189
+#    pathOrder.js                       |  14.08 |   100.00 |    0.00 | 5-22 24-27 29-34 37-63 66-71
+#    policies.js                        | 100.00 |   100.00 |   11.76 | 
+#   markVisibility.js                   |  38.18 |    50.00 |   16.67 | 6-14 21 23-25 29-32 35-37 42-55
+#   ohlc                                |        |          |         | 
+#    plot.js                            |  22.78 |   100.00 |    0.00 | 18-20 22-79
+#   overlayGeometry.js                  |  46.67 |   100.00 |    0.00 | 8-15
+#   overlayItems.js                     |  15.49 |   100.00 |    0.00 | 28-38 40-48 50-56 58-70 73-172 174-213
+#   planner.js                          |  82.88 |    66.67 |   92.86 | 29-32 41-43 48-49 60-61 63-66 68-71 82-83 107-108 111-112
+#   plotDrawOrder.js                    |  36.36 |    75.00 |   20.00 | 13-30 33-34 37-44
+#   positionGuides.js                   |  27.78 |   100.00 |    0.00 | 6-18
+#   positionPolicy.js                   | 100.00 |    66.67 |  100.00 | 
+#   pyramid                             |        |          |         | 
+#    labels.js                          |  25.00 |   100.00 |    0.00 | 5-13 18-32
+#    plot.js                            |  30.91 |   100.00 |    0.00 | 18-55
+#   rect.js                             |  14.97 |   100.00 |    0.00 | 16-24 26-35 38-48 50-57 59-78 80-91 94-160 163-167
+#   rectConfig.js                       |  40.43 |   100.00 |    0.00 | 20-47
+#   resourceKinds.js                    |  86.21 |    50.00 |  100.00 | 10-11 20-21
+#   resourceState.js                    |  47.20 |    43.10 |   55.56 | 25-27 32-33 59-60 62-83 119-121 125-129 133-140 142-143 171-173 176-181 184-193 198-243 246-284
+#   responsiveLayout.js                 |  21.52 |   100.00 |    0.00 | 12-21 23-34 36-40 45-79
+#   revisionIdentity.js                 |  94.74 |    83.33 |  100.00 | 18
+#   rowEncoding.js                      |  65.15 |    58.33 |   60.00 | 24-29 34-37 41-46 59-65
+#   scaleGuideDependencies.js           |  35.25 |    33.33 |   14.29 | 20-35 37-47 49-53 55-63 66-73 75-78 85-89 91-105 109-110 115-116 119-120
+#   scales                              |        |          |         | 
+#    consumers                          |        |          |         | 
+#     common.js                         |  62.30 |    19.15 |   50.00 | 33-37 40-48 56-59 78-82 85-86 88-90 93-94 96-97 99-100 102-106 110 112-115 117-118
+#     families.js                       |  35.92 |    13.33 |   20.00 | 20-29 33-41 44-52 56-57 62-65 68-69 71-88 90-101
+#     index.js                          |  66.10 |    13.79 |   75.00 | 46-65 68 70-73 79 81-82 84-85 106 108-110 112-117
+#     seriesLayout.js                   |  18.39 |    40.00 |   16.67 | 35-65 67-118 120-162 164-199 205-207 209-223 225-237 240-259
+#    map.js                             |  40.82 |    22.22 |  100.00 | 15-16 18-37 40 42-47
+#    policies                           |        |          |         | 
+#     arc.js                            |  46.34 |    30.00 |   45.45 | 19-32 34 36-39 45-46 48-49 52-54 59-76
+#     bar.js                            |   9.71 |   100.00 |    0.00 | 11-103
+#     binnedPosition.js                 |  31.58 |    33.33 |   22.22 | 16 19-32 35-48 53-75
+#     offset.js                         |  13.68 |   100.00 |    0.00 | 4-15 18-47 56-95
+#     series.js                         |  29.52 |    14.29 |   11.11 | 18-21 23-61 63-73 75 77-81 89-97 99-103
+#    resolve.js                         |  66.74 |    30.11 |   57.14 | 64-70 86-87 114-120 138-141 191-196 199-204 213-225 258-260 262-270 275-282 284-291 293-294 311-319 322-328 352-355 382 384-385 388-391 397-409 412-428 431-437 446-447 449-463
+#   selection                           |        |          |         | 
+#    compatibility.js                   |  16.67 |   100.00 |    0.00 | 3-12
+#    expression.js                      |  62.90 |    50.00 |   27.27 | 12-13 20-23 28-30 36-39 44 52-57 60-62
+#    filter.js                          |  27.27 |   100.00 |    0.00 | 12-29 32-42 45-55
+#    itemResolver.js                    |  58.33 |    40.00 |   33.33 | 7-8 15-18 21-24
+#    items                              |        |          |         | 
+#     arc.js                            |  16.46 |   100.00 |    0.00 | 14-79
+#     bar.js                            |  15.87 |   100.00 |    0.00 | 29-75 77-114 116-128 130-139 142-154 156-199 202-226 229-246 249-252
+#     common.js                         |  59.50 |    47.37 |   54.76 | 21-26 32-35 50-52 58-62 78-89 100-103 118-123 125-134 136-144 157-160 165-172 187-196 214 225-240
+#     index.js                          | 100.00 |   100.00 |  100.00 | 
+#     overlay.js                        |  22.22 |   100.00 |    0.00 | 5-11 14-27
+#     path.js                           |  25.47 |   100.00 |    0.00 | 24-43 46-90 93-106
+#     point.js                          |  82.22 |    60.00 |   66.67 | 11-14 22-23 29-30
+#     rect.js                           |  20.00 |   100.00 |    0.00 | 12-21 23-38 41-70 73-80
+#     rule.js                           |  18.52 |   100.00 |    0.00 | 6-27
+#     tick.js                           |  36.00 |   100.00 |    0.00 | 10-25
+#    itemSelection.js                   |  18.75 |   100.00 |    0.00 | 6-31
+#    legend.js                          |  17.86 |   100.00 |    0.00 | 4-19 22-28
+#    path.js                            |  15.56 |   100.00 |    0.00 | 2-11 14-27 30-33 36-45
+#    point.js                           |   6.06 |   100.00 |    0.00 | 6-44 46-65 68-132
+#    policies                           |        |          |         | 
+#     arc.js                            | 100.00 |   100.00 |    0.00 | 
+#     area.js                           | 100.00 |   100.00 |  100.00 | 
+#     bar.js                            | 100.00 |   100.00 |    0.00 | 
+#     calendar.js                       |  39.13 |   100.00 |    0.00 | 7-20
+#     contour.js                        |  37.50 |   100.00 |    0.00 | 7-21
+#     flow.js                           |  46.43 |   100.00 |    0.00 | 8-22
+#     geo.js                            |  28.95 |   100.00 |    0.00 | 7-28 33-37
+#     graph.js                          |  40.48 |   100.00 |    0.00 | 8-22 24-29 36-39
+#     hierarchy.js                      |  45.00 |   100.00 |    0.00 | 8-13 15-30
+#     image.js                          |  45.45 |   100.00 |    0.00 | 5-12 16-19
+#     index.js                          |  61.54 |    35.29 |   50.00 | 62-63 68-69 82-85 89-90 92-93 103-117 123-143 145-156
+#     line.js                           | 100.00 |   100.00 |    0.00 | 
+#     ohlc.js                           |  33.33 |   100.00 |    0.00 | 6-19 24-29
+#     point.js                          | 100.00 |   100.00 |  100.00 | 
+#     pyramid.js                        |  44.00 |   100.00 |    0.00 | 8-21
+#     rect.js                           |  86.67 |   100.00 |    0.00 | 9-10
+#     rule.js                           | 100.00 |   100.00 |    0.00 | 
+#     table.js                          |  42.31 |   100.00 |    0.00 | 8-22
+#     text.js                           |  48.78 |   100.00 |    0.00 | 14-26 29-36
+#     tick.js                           | 100.00 |   100.00 |    0.00 | 
+#     trail.js                          |  77.78 |   100.00 |    0.00 | 6-7
+#     waterfall.js                      |  38.46 |   100.00 |    0.00 | 6-19 24-25
+#    predicate.js                       |  44.44 |   100.00 |    0.00 | 8-17
+#    rows.js                            |  16.35 |   100.00 |    0.00 | 8-54 59-68 71-85 88-93 96-104
+#    state.js                           |  25.42 |   100.00 |    0.00 | 9-11 14-22 26-27 30-59
+#    styles.js                          |  18.01 |   100.00 |    0.00 | 18-30 32-46 49-61 64-89 91-125 128-129 132-133 135-141 144-174 177-194 197-202 207-211
+#   statisticalPopulation.js            |   9.94 |   100.00 |    0.00 | 23-95 99-115 118-179 182-195 197-218 220-281 284-341
+#   table                               |        |          |         | 
+#    layout.js                          |  13.16 |   100.00 |    0.00 | 9-12 15-76
+#    plot.js                            |  27.94 |   100.00 |    0.00 | 20-68
+#    text.js                            |  19.05 |   100.00 |    0.00 | 5-16 21-42
+#   text.js                             |  63.64 |   100.00 |    0.00 | 7-8 10-11
+#   textContent.js                      |  20.83 |   100.00 |    0.00 | 9-33 36-41 45-64 67-72
+#   textFont.js                         |  36.96 |    40.00 |   33.33 | 12-15 17-18 24-46
+#   textGeometry.js                     |  12.07 |   100.00 |    0.00 | 37-54 56-86 88-94 96-107 110-117 119-130 132-141 143-161 163-195 197-231 233-253 256-267 269-289 291-408 410-485 488-498 504-510 515-526 529-540 542-547
+#   textItem.js                         |  16.67 |   100.00 |    0.00 | 6-30
+#   textLines.js                        |  27.27 |   100.00 |    0.00 | 7-17 20-36 39-40 43-44
+#   textSourceAnchors.js                |  72.22 |    50.00 |   50.00 | 14-18
+#   trail                               |        |          |         | 
+#    plot.js                            |  33.33 |   100.00 |    0.00 | 21-28 30-35 37-66
+#   typography.js                       |  18.60 |   100.00 |    0.00 | 9-43
+#   waterfall                           |        |          |         | 
+#    plot.js                            |  25.00 |   100.00 |    0.00 | 18-21 23-72
+#  persistence                          |        |          |         | 
+#   codec.js                            |  74.07 |    62.00 |   50.00 | 6-9 18-24 27-28 53
+#   validation.js                       |  21.24 |    52.94 |   66.67 | 99-112 121-122 127-128 143-144 151-152 172-173 185-204 206-217 220-747 749-772
+#  renderers                            |        |          |         | 
+#   canvas                              |        |          |         | 
+#    circle.js                          |  13.85 |   100.00 |    0.00 | 8-54 57-65
+#    fill.js                            |  18.40 |   100.00 |    0.00 | 13-14 17-42 47-77 80-95 99-125
+#    image.js                           |  21.43 |   100.00 |    0.00 | 4-14
+#    index.js                           |  21.49 |   100.00 |    0.00 | 42-56 76-86 88-99 101-105 107-117 119-136 139-152 155-175 178-232 235-309 312-313 315-349
+#    isolated.js                        |  12.58 |   100.00 |    0.00 | 10-14 17-25 28-39 43-118 122-151
+#    limits.js                          | 100.00 |   100.00 |  100.00 | 
+#    line.js                            |  12.96 |   100.00 |    0.00 | 6-43 46-54
+#    native.js                          |  14.02 |   100.00 |    0.00 | 24-34 36-40 42-54 57-72 74-149 152-214
+#    outline.js                         |  28.57 |   100.00 |    0.00 | 5-13 16-21
+#    path.js                            |  15.29 |   100.00 |    0.00 | 11-73 76-84
+#    pathTrace.js                       |   5.00 |   100.00 |    0.00 | 2-20
+#    rect.js                            |  12.99 |   100.00 |    0.00 | 9-69 72-77
+#    stroke.js                          |  33.33 |   100.00 |    0.00 | 5-12
+#    surfaceFactory.js                  |  11.76 |   100.00 |    0.00 | 2-16
+#    text.js                            |  11.76 |   100.00 |    0.00 | 12-18 20-108 111-119
+#    textPaint.js                       |  18.52 |   100.00 |    0.00 | 7-15 19-27 30-53 58-81
+#    validation.js                      |  13.04 |   100.00 |    0.00 | 2-11 14-23
+#    weightedBlend.js                   |  14.66 |   100.00 |    0.00 | 12-16 18-44 49-103 105-116
+#   canvasScene.js                      |  72.45 |    57.14 |   77.78 | 13-21 25-26 36-37 45-46 75-86
+#   fontRendering.js                    |  14.08 |   100.00 |    0.00 | 11-37 39-51 57-67 70-124 127-142
+#   fonts.js                            |  34.62 |   100.00 |    0.00 | 6-7 10-11 14-26
+#   imageRendering.js                   |  17.58 |   100.00 |    0.00 | 11-15 17-21 23-42 45-73 76-91
+#   paintFrames.js                      |  16.67 |   100.00 |    0.00 | 8-42
+#   shadowFrames.js                     |  25.00 |   100.00 |    0.00 | 8-28
+#   shadowRendering.js                  |  22.52 |   100.00 |    0.00 | 24-40 43-111
+#   shadowState.js                      |  22.97 |   100.00 |    0.00 | 12-29 32-40 43-58 61-74
+#   text.js                             |  78.95 |   100.00 |    0.00 | 16-19
+#   textGlyphInput.js                   |  33.33 |   100.00 |    0.00 | 6-15
+#   textGlyphMask.js                    |  21.67 |   100.00 |    0.00 | 9-13 19-60
+#   textInkBounds.js                    |  20.83 |   100.00 |    0.00 | 9-22 25-48
+#   transitionScene.js                  |  89.19 |    77.78 |   87.50 | 4-8 18-20
+#  resources                            |        |          |         | 
+#   assetPreparation.js                 |  40.74 |   100.00 |    0.00 | 12-27
+#   dataUpdate.js                       |  22.00 |   100.00 |    0.00 | 21-27 29-61 64-82 85-101 104-113 116-127 132-150
+#   dataUpdateFull.js                   |  34.62 |   100.00 |    0.00 | 10-26
+#   fontResource.js                     |  30.91 |   100.00 |    0.00 | 16-45 48-55
+#   graphRouteExecutor.js               |  16.13 |   100.00 |    0.00 | 16-93
+#   graphRoutes.js                      |  42.55 |   100.00 |    0.00 | 19-39 42-47
+#   imageResource.js                    |  32.76 |   100.00 |    0.00 | 18-48 51-58
+#   resolveAssets.js                    |  23.33 |   100.00 |    0.00 | 8-30
+#   resolveData.js                      |  27.94 |   100.00 |    0.00 | 11-14 17-23 26-28 32-55 58-68
+#   resolveFonts.js                     |  18.95 |   100.00 |    0.00 | 10-20 24-33 37-56 60-95
+#   textMetrics.js                      |  42.86 |   100.00 |    0.00 | 8-11 14-21
+#   textMetricsFull.js                  |  25.83 |   100.00 |    0.00 | 24-27 30-35 40-111 114-120
+#  sceneSnapshot.js                     |  97.30 |    82.35 |  100.00 | 17
+#  selectors                            |        |          |         | 
+#   axes.js                             |  32.26 |    72.73 |   33.33 | 1-5 20-29 34-35 38-75 78-83 87-88
+#   contours.js                         |  22.22 |   100.00 |    0.00 | 5-18
+#   coordinates.js                      |  40.38 |    83.33 |   50.00 | 17-30 33-34 36-37 40-52
+#   datasets.js                         |  64.55 |    48.15 |   66.67 | 11-15 26-27 31-35 56-59 64-73 80-81 93-98 105-109
+#   edgeRoutes.js                       |  30.77 |   100.00 |    0.00 | 5-13
+#   flow.js                             |  36.84 |   100.00 |    0.00 | 6-7 9-16 18-19
+#   geometry.js                         |  29.63 |   100.00 |    0.00 | 5-6 9-11 14-27
+#   graphFilters.js                     |  38.46 |   100.00 |    0.00 | 4-9 12-13
+#   graphicCapacity.js                  |  76.92 |    63.64 |   83.33 | 17-23 30-31
+#   graphicScopes.js                    | 100.00 |    85.71 |  100.00 | 
+#   graphs.js                           |  28.26 |   100.00 |    0.00 | 8-9 12-26 29-34 37-46
+#   grids.js                            | 100.00 |   100.00 |  100.00 | 
+#   hierarchy.js                        |  73.17 |    71.43 |   71.43 | 11-14 19-22 39-41
+#   index.js                            | 100.00 |   100.00 |  100.00 | 
+#   layers.js                           |  58.62 |    70.00 |   60.00 | 8-9 30-33 36-38 44-58
+#   layouts.js                          |  73.91 |    71.43 |   75.00 | 12-13 19-22
+#   markClip.js                         |  53.57 |    33.33 |   50.00 | 6-7 11-13 17-18 20 23-27
+#   markOwners.js                       |  13.04 |   100.00 |    0.00 | 4-32 35-45
+#   plotComposition.js                  |  20.87 |    53.85 |   14.29 | 8-9 14-66 69-93 103-106 108-114
+#   projections.js                      |  30.77 |   100.00 |    0.00 | 5-13
+#   raincloud.js                        |  42.86 |   100.00 |    0.00 | 4-7
+#   resources.js                        |  82.19 |    76.00 |  100.00 | 19-20 22-23 31-32 61-65 70-71
+#   scales.js                           |  51.72 |    80.00 |   60.00 | 14-23 26-29
+#   selectionResources.js               |  30.77 |   100.00 |    0.00 | 5-13
+#   selectionTargets.js                 |  21.05 |   100.00 |    0.00 | 5-19
+#  theme                                |        |          |         | 
+#   defaults.js                         |  88.54 |   100.00 |    0.00 | 12-20 95-96
+#   definition.js                       |  49.54 |    50.00 |   70.00 | 12-18 20-25 29-30 34-64 73-75 77-82
+#  version.js                           | 100.00 |   100.00 |  100.00 | 
+# test                                  |        |          |         | 
+#  charts                               |        |          |         | 
+#   partition-layouts                   |        |          |         | 
+#    reference-values.js                | 100.00 |   100.00 |  100.00 | 
+#    reference.js                       |  35.00 |   100.00 |   16.67 | 5-9 11-14 16-20 29-40
+#  support                              |        |          |         | 
+#   partition-frames.js                 | 100.00 |   100.00 |  100.00 | 
+#  unit                                 |        |          |         | 
+#   animation                           |        |          |         | 
+#    offline.test.js                    | 100.00 |   100.00 |   93.75 | 
+#    partition-group-equality.test.js   | 100.00 |   100.00 |  100.00 | 
+#    partition-state.test.js            | 100.00 |   100.00 |   86.67 | 
+#    partition-transition.test.js       | 100.00 |   100.00 |  100.00 | 
+#    partition.test.js                  | 100.00 |   100.00 |   96.43 | 
+#    rebase.test.js                     | 100.00 |    97.87 |  100.00 | 
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# all files                             |  31.36 |    64.44 |   28.90 | 
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# end of coverage report
