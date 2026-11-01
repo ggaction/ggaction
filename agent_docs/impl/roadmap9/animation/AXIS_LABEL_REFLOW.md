@@ -198,3 +198,43 @@ Source 새1파일과 총 unpacked7843157에 맞춘 package cap은1220/7843200이
 built 문서 결과는 metadata checkpoint에서 추가하며 전체 release/AT60/077를 대신하지 않는다.
 
 Source `1507df9294d71d57137f0a7c627c596914b6bb8c` 고정 뒤 source-pin18개, built186페이지/1603 selective LLM artifact 및 전체320·390·768px/desktop 검색 검사가 종료0으로 완료됐다. 입력14개 hash와 고정 tar hash는 그대로다. 초기 system Ruby2.6/Ruby4 환경의 build 실패를 보존하며 이미 설정된 Ruby3.3으로 preflight·build·browser를 완료했다. 이 metadata 후속은 runtime/type 변경이 없다.
+
+## Dynamic strict state foundation
+
+`materialization/animation/axisLabelReflowState.js`는 공개 sampler에 아직 연결하지 않은 독립
+준비·현재 배치 owner다. P의 안정 `c58201d21`에서 `axisLabelState.js`의 기존 네 layout exports,
+`axisAnimationLabelEntries`, 실제 font/style/독립 lines proof를 받아 보존했다. 같은 파일의 native
+config 준비/검증 두 함수를 private export로 추출해 fixed와 reflow가 공유한다. 계산식은 복제하지 않는다.
+
+닫힌 layout은 channel/frame/canvas/values/mapping/config/metrics/edgeAligned/constraints다.
+config.base에는 기존 고정 policy가 한 번 있으며 maxWidth/wrap/lineHeight/responsive를 추가한다.
+constraints는 minPlotSize/margin/titleBounds만 가진다. 현재 native raw 값과 줄 번호로 실제 entries를
+만들며 raw 값 중복은 ambiguity로 사전 거부한다. 그룹 수집기는 이후 이를 기존 guide ambiguity
+fallback으로 변환해야 한다. raw 값이 비었거나 현재 skip/hidden 때문에 entries가 없어도 준비값과
+실제 font binding은 남는다. maxNodes는 현재 node 수가 아닌 모든 원 문자열의 보수적인 grapheme
+line 상한이다. query/work/node budget은 기존 상수이며 중간 상태에서도 적용한다.
+
+Font 호스트 준비와 이 owner가 `axisLabelQueries`의 같은 bounded collector를 사용한다. 기본/false
+호스트 경로는 그대로다. Native responsive action은 measuring pass에서 후보를 선택하고 최종 Canvas를
+검증하므로 reflow도 동일 후보 선택 뒤 실제 선택 결과의 fit을 검사한다. 첫 후보의 overflow만 보고
+fallback 후보를 소실시키지 않는다. Native candidate의 optional private account callbacks는 계산 전에
+wrap 작업, collision loop 전에 실제 pair 작업을 기존 누적 budget에 산입하며 저장되지 않는다.
+
+중간 raw→scale/frame/offset은 기존 Cartesian/number kernel을 사용한다. 시간 auto format은 domain이
+변할 때 전체 raw 값의 explicit labelMap이 없는 한 중간 문자열을 증명하지 않고 guide-layout fallback이다.
+현재 title overlap bounds가 변하는 경우도 의미가 준비되기 전 pixel 보간하지 않는다. 실제 native
+후보가 중간 Canvas에 들어가지 않으면 명시 guide-layout이며 query/work 오류를 fade로 숨기지 않는다.
+
+독립 numeric/공개 native materialization oracle는 wrap6→native3, skip에서 원 tick 재등장,
+회전 선택, 현재 log Y 위치, 빈 collection/raw membership, schema2 누락 query, JSON strict복원,
+40회 준비 상태 재기준 및 getter/중복/변조/작업 상한을 검증한다. 이는 authentic public frame의
+rebase/offline/현재 hit 검증이 아니다. Closed group·실제 slot 수집·shared emission·현재 source proof는
+다음 단계이며 공개 kernel version/지원 문구는 아직 바꾸지 않는다.
+
+Private 준비 상태 checkpoint는 신규15개를 포함한 Node22 누적55개, Node20/24 각41개,
+구조계약40개와 3owner critical floor95/90/100을 통과했다. 새 state100/96.43/100,
+후보/query owner는 각각100/100/100이다. 최소 plot0 경계는 기존 native responsive Canvas
+검증에 위임해 양수 계약과 일치시켰다. 같은 최종9f872a98… archive에서 각 Node의 기존
+font opt-in1사례·strict types·6bundle을 확인했다. 이는 아직 연결하지 않은 dynamic sampler의
+설치 검증이 아니다. 최초 cap 초과와 회복, 원 fixture/coverage 실패는
+[준비 상태 증거](axis-reflow-evidence/state-foundation.json)에 분리 보존한다.

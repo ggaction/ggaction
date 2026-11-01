@@ -937,12 +937,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 782,800 bytes |
-| `ggaction/basic` | 424,100 bytes |
+| `ggaction` | 782,900 bytes |
+| `ggaction/basic` | 424,200 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 131,400 bytes |
-| `ggaction/animation` | 301,700 bytes |
+| `ggaction/animation` | 302,000 bytes |
 
 
 
@@ -4827,6 +4827,10 @@ semantic-guide 출력/forward proof를 유지한다. Renderer·trace·public sig
 closure 및 font binding 보존을 함께 소유한다. 최종 pixel을 의미로 역산하지 않고, 같은 native
 forward proof/guideTracks seam을 사용한다. 동적 wrapping/skip 선택의 남은 지원 범위는
 [Animation Current](contract/current/ANIMATION.md)가 소유한다.
+독립 `axisLabelReflowState`는 같은 config/query/candidate owner를 사용하여 현재 raw value와
+실제 line 목록·ink bounds를 검산한다. Host preparation과 animation은 같은 bounded wrap query
+collector를 공유한다. 현재 이 준비 owner는 공개 sampler에 미연결이며 동적 collection 수집·emission은
+후속 경계다. Native action의 기본 query/trace/renderer 입력은 바꾸지 않는다.
 
 Native Cartesian@2와 gradient/fixed-label guide@4를 root timeline version3에 결합했다.
 sample은 순수 axis state와 materialization legend/label state를 guideTracks facade로 분기하고

@@ -31,9 +31,29 @@ function visitWrapQueries(text, mode, add, spend) {
   }
 }
 
-export function prepareAxisLabelReflowQueries(program, profile) {
+// One bounded collector is shared by host preparation and strict animation
+// preparation. The latter stores only this group's exact query closure.
+export function createAxisLabelQueryCollector(accountWork) {
   const queries = new Map(); let work = 0, units = 0;
-  const spend = count => validateWorkLimit(work += count, "Axis label query work");
+  const spend = count => { validateWorkLimit(work += count, "Axis label query work"); accountWork?.(count); };
+  const add = (text, style) => {
+    const query = { ...style, text }, key = textMetricKey(query);
+    if (queries.has(key)) return;
+    if (queries.size === FONT_METRIC_MAX_QUERIES || units + text.length > FONT_METRIC_MAX_TEXT_UNITS) {
+      throw new RangeError("Axis label measurement query closure exceeds its budget.");
+    }
+    units += text.length;
+    queries.set(key, query);
+  };
+  return { spend, add, wrap(texts, style, mode) {
+    for (const text of new Set(texts)) {
+      if (text !== "") visitWrapQueries(text, mode, text => add(text, style), spend);
+    }
+  }, values: () => cloneAndFreeze([...queries.values()]) };
+}
+
+export function prepareAxisLabelReflowQueries(program, profile) {
+  const collector = createAxisLabelQueryCollector(), { spend } = collector;
   for (const scope of graphicScopes(program, () => spend(1))) {
     for (const owner of cartesianAxisOwners(scope.program)) {
       spend(1);
@@ -41,23 +61,12 @@ export function prepareAxisLabelReflowQueries(program, profile) {
       if (config === undefined || config.maxWidth === undefined && config.responsive === undefined) continue;
       const style = { fontFamily: config.fontFamily, fontSize: config.fontSize,
         fontWeight: textMetricFontWeight(config.fontWeight), fontStyle: "normal" };
-      const binding = fontMetricBinding(profile, style);
-      const add = text => {
-        const query = { ...style, text }, key = textMetricKey(query);
-        if (queries.has(key)) return;
-        if (queries.size === FONT_METRIC_MAX_QUERIES || units + text.length > FONT_METRIC_MAX_TEXT_UNITS) {
-          throw new RangeError("Axis label measurement query closure exceeds its budget.");
-        }
-        units += text.length;
-        queries.set(key, { resource: binding.resource, query });
-      };
+      fontMetricBinding(profile, style);
       const values = valuesFromTickConfig(scope.program, config);
       spend(values.length);
       const texts = axisLabelTexts(values, scope.program.resolvedScales[config.scale], config);
-      for (const text of new Set(texts)) {
-        if (text !== "") visitWrapQueries(text, config.wrap ?? "word", add, spend);
-      }
+      collector.wrap(texts, style, config.wrap ?? "word");
     }
   }
-  return cloneAndFreeze([...queries.values()]);
+  return cloneAndFreeze(collector.values().map(query => ({ resource: fontMetricBinding(profile, query).resource, query })));
 }
