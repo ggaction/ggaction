@@ -1,0 +1,100 @@
+{
+  "status": "verified-live-gallery; not whole-roadmap-completion",
+  "sourceRevision": "9bb63c67f5c193e472263add5a612a4e38e96c78",
+  "sourceDirty": false,
+  "url": "https://hyeons-mac-mini.tailb43078.ts.net/ggaction-charts/",
+  "charts": 40,
+  "realDataCharts": 26,
+  "newNativeTypes": 18,
+  "imageAssets": 66,
+  "allowedServerFiles": 68,
+  "graph": {
+    "observations": 344,
+    "nodes": 6,
+    "pairs": 5,
+    "counts": [
+      52,
+      44,
+      56,
+      68,
+      124
+    ],
+    "methods": [
+      "hierarchical",
+      "force-directed",
+      "density",
+      "edge-path"
+    ],
+    "offline": "passed",
+    "renderers": [
+      "PNG",
+      "SVG"
+    ]
+  },
+  "meaning": "All344 penguin observations grouped by observed island/species pairs; no invented migration. Hierarchy is explicitly authored for routing only. The observed graph is a tree, so edge-path has no alternative path.",
+  "browser": {
+    "url": "https://hyeons-mac-mini.tailb43078.ts.net/ggaction-charts/",
+    "results": [
+      {
+        "width": 1440,
+        "status": 200,
+        "cards": 40,
+        "newCards": 18,
+        "loadedPNG": 40,
+        "graphPNGAndSVG": true,
+        "escapeClose": true,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "status": 200,
+        "cards": 40,
+        "newCards": 18,
+        "loadedPNG": 40,
+        "graphPNGAndSVG": true,
+        "escapeClose": true,
+        "overflow": false
+      }
+    ],
+    "errors": []
+  },
+  "currentFileIntegrity": {
+    "images": 66,
+    "status": "passed",
+    "checkedAt": "2026-11-01",
+    "loopbackHTTP": 200,
+    "featureProof": "Exact source PNG bytes from pinned9bb63c67f"
+  },
+  "service": {
+    "label": "com.ggaction.chart-gallery",
+    "loopback": "127.0.0.1:8770",
+    "persistent": "macOS LaunchAgent RunAtLoad/KeepAlive",
+    "existingTailscaleHandler": "preserved; no shared route reset",
+    "startupFailure": "Initial service stop caused502; loopback server restored and actual public browser passed.",
+    "privateFiles": "service state, logs and backup not in served allowlist"
+  },
+  "receipts": {
+    "manifest.json": {
+      "bytes": 49562,
+      "sha256": "04da7d3261cdb49f10252125b1a9e3469956468d4c89f573d69db345262b38fd"
+    },
+    "graph-browser.log": {
+      "bytes": 508,
+      "sha256": "a27ab60ea019c51605ed3b92c7f7334d8eb5381d178e5edba3d79f1f7aedf4bd"
+    },
+    "graph-integrity.json": {
+      "bytes": 353,
+      "sha256": "d3724db0749e960210a879c0ba83faa4c54d5fbb668f937c7ed43f477077ad81"
+    },
+    "graph-data-verification.log": {
+      "bytes": 272,
+      "sha256": "e874755f0725d1cd82b6a04dc8ed66e40f11e79086ddbebd01aa76ba97038928"
+    }
+  },
+  "limitations": [
+    "Density output is native actual geometry without smoothing or hiding rough routes.",
+    "Availability depends on this Mac and Tailscale.",
+    "Browser proof is the publish-run receipt; this followup rechecks all66 current hashes and loopback HTTP without repeating browser execution.",
+    "No official docs deployment, publication or final native qualification implied."
+  ]
+}
