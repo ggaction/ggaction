@@ -11,6 +11,11 @@ test("documentation support maps the canonical public entry while preserving exa
     await copyDocumentationSupportFiles({ supportFiles: { "program.js": "examples/font-assets/program.js", "fonts/korean.otf": "examples/font-assets/fonts/korean.otf" } }, directory);
     assert.equal(await readFile(path.join(directory, "program.js"), "utf8"), (await readFile(new URL("../../../examples/font-assets/program.js", import.meta.url), "utf8")).replace('from "../../src/index.js"', 'from "ggaction"'));
     assert.deepEqual(await readFile(path.join(directory, "fonts/korean.otf")), await readFile(new URL("../../../examples/font-assets/fonts/korean.otf", import.meta.url)));
+    await copyDocumentationSupportFiles({ supportFiles: { "comparison.js": "examples/geographic-marks/comparison.js" } }, directory);
+    assert.equal(await readFile(path.join(directory, "comparison.js"), "utf8"),
+      (await readFile(new URL("../../../examples/geographic-marks/comparison.js", import.meta.url), "utf8"))
+        .replace('from "../../src/index.js"', 'from "ggaction"')
+        .replace('from "../../src/inspection.js"', 'from "ggaction/inspection"'));
     await assert.rejects(copyDocumentationSupportFiles({ supportFiles: { "private.js": "examples/getting-started/program.js" } }, directory), /public installed package/);
   } finally { await rm(directory, { recursive: true, force: true }); }
 });

@@ -7122,7 +7122,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "Graticule field/scale/guide consumers remain unassigned. The remaining required consumer owners have not yet been assigned in this manifest."
+        "reason": "All required graticule consumer owners are assigned; whole-candidate qualification and result recording remain pending."
       },
       "assignedOwners": {
         "create": {
@@ -7278,6 +7278,39 @@
           ],
           "tests": [
             "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/geo/graticule-composition.test.js",
+            "test/browser/graticule-composition.browser.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/geo/graticule-composition.test.js",
+            "test/browser/graticule-composition.browser.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/geo/graticule-composition.test.js",
+            "test/browser/graticule-composition.browser.js"
           ]
         }
       }

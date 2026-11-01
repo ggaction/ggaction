@@ -820,5 +820,20 @@
       "options.js": "examples/edge-routes/options.js",
       "data.js": "examples/edge-routes/data.js"
     }
+  },
+  {
+    "id": "graticule-analytical-comparison",
+    "file": "tutorials/geographic-marks.md",
+    "contains": "const comparison = createGraticuleComparison();",
+    "mode": "complete",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "result": "refreshed",
+    "prerequisites": "Copy geographic-marks/comparison.js, program.js and fixture.js beside this module and use their public package imports. The helper explicitly snapshots raw axis and numeric degree values.",
+    "supportFiles": {
+      "geographic-marks/comparison.js": "examples/geographic-marks/comparison.js",
+      "geographic-marks/program.js": "examples/geographic-marks/program.js",
+      "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
+    }
   }
 ]
