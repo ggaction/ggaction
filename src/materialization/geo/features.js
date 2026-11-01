@@ -1,3 +1,4 @@
+import { graphEdgeSourceItems } from "../graph/sourceItems.js";
 import { isGeographicGeometry } from "../../selectors/geometry.js";
 import { resolveInputReference } from "../../selectors/resources.js";
 import { validateWorkLimit } from "../../core/validation.js";
@@ -10,6 +11,7 @@ export function geographicFeatureKeys(resource, input) {
     seen.add(source.id); validateWorkLimit(seen.size, "Geographic level source work");
     source = input(source.inputs[0]);
   }
+  if (source.options.method === "geo-routes") return resource.result.features.map(feature => feature.properties.edgeKey);
   if (source.options.method !== "geo" || source.options.featureKey === undefined) throw new TypeError("Geographic levels require source featureKey and cannot contain nested levels.");
   return geometryFeatureKeys(resource.result.features, source.options.featureKey);
 }
@@ -20,7 +22,7 @@ export function geographicPolygonWinding(resource, input) {
   if (!isGeographicGeometry(resource)) throw new TypeError("A geographic or planar geometry source resource is required.");
   let source = resource;
   const seen = new Set();
-  while (source.options.method !== "geo") {
+  while (!["geo", "geo-routes"].includes(source.options.method)) {
     if (!isGeographicGeometry(source) || seen.has(source.id)) throw new TypeError("Geographic polygon winding requires an acyclic source.");
     seen.add(source.id); validateWorkLimit(seen.size, "Geographic source work");
     const index = source.options.method === "geo-lod"
@@ -35,15 +37,17 @@ export function geographicPolygonWinding(resource, input) {
 // long join chains without relying on the JavaScript call stack.
 export function geographicFeatures(program, resource) {
   const chain = []; let source = resource;
-  while (source.options.method !== "geo") {
+  while (!["geo", "geo-routes"].includes(source.options.method)) {
     chain.push(source);
     const index = source.options.method === "geo-lod"
       ? source.options.levels.findIndex(level => level.id === source.options.activeLevel) : 0;
     source = resolveInputReference(program, source.inputs[index]);
   }
+  const routed = source.options.method === "geo-routes" ? graphEdgeSourceItems(program,
+    resolveInputReference(program, resolveInputReference(program, source.inputs[0]).inputs[0])) : undefined;
   let features = source.result.features.map((feature, index) => ({ ...feature,
     key: source.result.identity.rowKeys[index],
-    ...(source.options.coordinateKind === "geographic" ? { polygonWinding: source.options.polygonWinding ?? "right-hand" } : {}), fields: feature.properties ?? {}, rows: [] }));
+    ...(source.options.coordinateKind === "geographic" ? { polygonWinding: source.options.polygonWinding ?? "right-hand" } : {}), fields: routed?.[index].fields ?? feature.properties ?? {}, rows: routed?.[index].rows ?? [] }));
   for (const current of chain.reverse()) {
     let aliases;
     if (current.options.method === "geo-lod") {

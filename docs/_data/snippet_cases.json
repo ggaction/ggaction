@@ -751,5 +751,15 @@
     "mode": "complete",
     "result": "from, to",
     "prerequisites": "Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included."
+  },
+  {
+    "id": "geographic-route-map",
+    "file": "api/geometry.md",
+    "contains": "const routeMap =",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "routeMap",
+    "rendering": "authoring-only",
+    "prerequisites": "Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors."
   }
 ]

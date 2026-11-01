@@ -1,3 +1,4 @@
+import { registerGeoRouteActions } from "./geo/routes.js";
 import { registerGeoMarkActions } from "./geo/marks.js";
 import { registerGeometryActions } from "./geo/resources.js";
 import { registerGeoLODActions } from "./geo/lod.js";
@@ -87,6 +88,7 @@ export function registerActions(ProgramClass) {
   registerCalendarPlotActions(ProgramClass);
   registerGeometryActions(ProgramClass);
   registerGeoJoinActions(ProgramClass);
+  registerGeoRouteActions(ProgramClass);
   registerGeoLODActions(ProgramClass);
   registerProjectionActions(ProgramClass);
   registerContourResourceActions(ProgramClass);

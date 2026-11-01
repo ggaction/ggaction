@@ -1801,5 +1801,22 @@
         "statements": 5
       }
     ]
+  },
+  {
+    "file": "geographic-routes.mjs",
+    "cases": [
+      {
+        "id": "geographic-routes/source-and-atomic-revision",
+        "statements": 9
+      },
+      {
+        "id": "geographic-routes/offline-restored-edit",
+        "statements": 4
+      },
+      {
+        "id": "geographic-routes/four-renderer-native-line-parity",
+        "statements": 11
+      }
+    ]
   }
 ]

@@ -51,3 +51,8 @@
 - `createGraphRouteExecutor({createWorker?})`의 compute(job,{signal?})는 완료 결과만 반환한다. createWorker 생략은 동기 owner를 사용한다. Host worker는 message/error event, postMessage, terminate를 제공한다. Request `{job}`, reply 완료 envelope이며 원 요청 job으로 다시 검사한다.
 - Instance LRU는8entries/1000000 control+command samples, pending worker는8개다. 큰 단일 완료는 cache하지 않는다. evict(inputHash?)는 명시 제거/전체 비우기이며 dispose는 모든 pending·listeners·workers·cache를 해제하고 재사용을 거부한다. Abort/error/완료도 각 worker를 해제한다. Late callback은 무시한다. 전역 cache는 없다.
 - Worker cache는 같은 inputHash를 새 prepare generation에 재사용할 수 있으나 이전 handle 권한을 재사용하지 않는다. Native AbortSignal만 지원하고 abort는 prepare/apply/compute에서 확인한다. 별도 wall-clock termination 대신 bounded-work 실패와 명시 host cancellation을 쓴다.
+
+Geographic and planar route maps use Full `createGeoRouteData`/`editGeoRouteData`
+to retain the existing sampled route in a GeometryData resource, then native
+`createGeoLineMark` consumes it. [Geometry contracts](GEOMETRY.md#creategeoroutedata)
+own explicit coordinate interpretation, source rows and revision closure.

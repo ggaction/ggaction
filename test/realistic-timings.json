@@ -67,7 +67,8 @@
     "contracts/realistic-polar-transitions.test.js": 1593,
     "contracts/realistic-guide-transitions.test.js": 28887,
     "contracts/realistic-graph-drag.test.js": 26125,
-    "contracts/realistic-cartesian-transitions.test.js": 3697
+    "contracts/realistic-cartesian-transitions.test.js": 3697,
+    "contracts/realistic-geographic-routes.test.js": 2355
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {

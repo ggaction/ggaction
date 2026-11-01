@@ -35,4 +35,13 @@ program.bundleGraphEdges({prepared:{kind:"edge-route-preparation",request:{kind:
 // @ts-expect-error a host request token is required
 prepareGraphEdgeRoutes(program,{kind:"create",id:"route",method:"density"},{});
 // @ts-expect-error screen routes use stored resource IDs
-program.createGraphPlot({routes:true});
+program.createGraphPlot({routes:true});const geometry = program.createGeoRouteData({ id: "mapped", routes: "routes", coordinateKind: "geographic" })
+  .editGeoRouteData({ target: { childPath: ["child"], id: "mapped" }, routes: "routes", coordinateKind: "planar" });
+// @ts-expect-error route geometry requires an explicit coordinate kind
+program.createGeoRouteData({ id: "mapped", routes: "routes" });
+// @ts-expect-error route geometry cannot infer its route source
+program.createGeoRouteData({ id: "mapped", coordinateKind: "planar" });
+// @ts-expect-error Basic does not author route geometry
+basicChart().createGeoRouteData({ id: "mapped", routes: "routes", coordinateKind: "planar" });
+// @ts-expect-error explicit undefined is not an omitted edit
+geometry.editGeoRouteData({ coordinateKind: undefined });

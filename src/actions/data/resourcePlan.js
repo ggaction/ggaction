@@ -1,3 +1,4 @@
+import { createGeoRouteResource } from "../../materialization/geo/routeResource.js";
 import { preflightGeoConsumers } from "../geo/closure.js";
 import { validateSelectionExpressionTargets } from "../../materialization/selection/expression.js";
 import { requireLayer } from "../../selectors/layers.js";
@@ -63,6 +64,9 @@ export function planSourceResourceRevision(program, dataReplacements) {
       }
     } else if (previous.kind === "projection") {
       resource = createProjectionResource({ ...identity, options: previous.options, geometry: resourceInput(previous.inputs[0]), input: resourceInput });
+    } else if (previous.kind === "geometry" && previous.options.method === "geo-routes") {
+      resource = createGeoRouteResource({ ...identity, definition: { coordinateKind: previous.options.coordinateKind },
+        routes: resourceInput(previous.inputs[0]), logicalId: previous.result.identity.logicalId, allocationId: previous.result.identity.allocationId });
     } else if (previous.kind === "geometry" && previous.options.method === "geo-join") {
       const { method, ...definition } = previous.options;
       resource = createGeoJoinResource({ ...identity, geometry: resourceInput(previous.inputs[0]), dataset: source(previous.inputs[1]), definition });

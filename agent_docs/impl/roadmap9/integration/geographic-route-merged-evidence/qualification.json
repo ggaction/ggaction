@@ -1,0 +1,143 @@
+{
+  "status": "verified-geographic-route-and-native-transition-integration; whole STEP077 remains open",
+  "sourceRevision": null,
+  "base": "95f085366",
+  "routeSource": "ee374aec1",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1211,
+    "packedBytes": 1723242,
+    "unpackedBytes": 7784462,
+    "file": "ggaction-37b89dc64608667883c67933a0dfa1bb91e5bcfbbf632a84b708c7baf63fa61f.tgz",
+    "sha256": "37b89dc64608667883c67933a0dfa1bb91e5bcfbbf632a84b708c7baf63fa61f"
+  },
+  "versions": {
+    "transition": 3,
+    "guide": "native-guide-values@4",
+    "cartesian": "semantic-cartesian-geometry@2",
+    "geographicText": "native-geo-text@1"
+  },
+  "checks": {
+    "animationGeographicAndRouteUnit": 800,
+    "boundariesTypesDiscovery": 38,
+    "realistic": 37,
+    "render": 1,
+    "browser": 3,
+    "docs": 235,
+    "finalLimitDocs": 30,
+    "packageArtifact": 7,
+    "installed": {
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "sameArchive": true,
+      "runtimeEach": 53,
+      "animationAndGeographicStrictTypes": "passed",
+      "firstAnimationPublicExample": "passed",
+      "optionalPeers": "passed",
+      "bundlesEach": 6
+    },
+    "built": {
+      "pages": 186,
+      "selectiveArtifacts": 1603
+    },
+    "changedDocsBrowser": {
+      "pages": [
+        "api/geometry/",
+        "reference/runtime/"
+      ],
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "overflow": 0,
+      "axe": 0,
+      "consoleErrors": 0
+    }
+  },
+  "coverageReuse": {
+    "sourceIdenticalGeographicOwners": [
+      "src/actions/geo/routes.js",
+      "src/actions/geo/closure.js",
+      "src/grammar/geo/routes.js",
+      "src/materialization/geo/features.js",
+      "src/materialization/geo/routeResource.js",
+      "src/materialization/geo/routeState.js",
+      "src/materialization/graph/sourceItems.js"
+    ],
+    "upstreamEvidence": "../geographic-route-evidence/qualification.json",
+    "upstreamFocusedTests": 351,
+    "upstreamOwnerMinimums": [
+      100,
+      95.83,
+      100
+    ],
+    "rootSharedAnimationFilesUnchanged": [
+      "src/animation/planner.js",
+      "src/animation/sample.js",
+      "src/animation/frameEndpoint.js",
+      "src/animation/frameProvenance.js"
+    ],
+    "rootSharedCoverageEvidence": "../../animation/native-typed-merged-evidence/qualification.json",
+    "note": "No whole-repository coverage or final STEP077 pass is claimed."
+  },
+  "commonInventoryReuse": {
+    "identicalInputs": [
+      "types/program.d.ts",
+      "types/index.d.ts",
+      "knowledge/action-cards.json",
+      "src/core/vocabulary.js",
+      "test/support/scenarios/lifecycle-recipes.js",
+      "test/support/scenarios/coverage-inventory.js",
+      "test/support/scenarios/coverage-ledger.js",
+      "test/contracts/generated-scenario-feature-coverage.test.js",
+      "test/contracts/generated-lifecycle-scenarios.test.js"
+    ],
+    "upstreamTests": {
+      "lifecycle": 3,
+      "inventory": 7
+    },
+    "ledgerRequirements": 43751,
+    "publicActions": 370,
+    "note": "Default ChartProgram types/cards/grammar remain byte-identical to the qualified route checkpoint; animation subentry changes do not alter those inputs."
+  },
+  "package3Node": {
+    "entries": 1211,
+    "maximumPacked": 1726223,
+    "unpacked": 7784462,
+    "ceilings": [
+      1211,
+      1726300,
+      7784462
+    ]
+  },
+  "bundleMaximums": {
+    "ggaction": 782156,
+    "ggaction/basic": 423716,
+    "ggaction/svg": 24954,
+    "ggaction/graph": 44077,
+    "ggaction/animation": 293500,
+    "ggaction/interaction": 129579
+  },
+  "repairs": [
+    "Preserve larger native timeline/guide/Cartesian state and both new route APIs.",
+    "Restore all consumer/snippet identities and exact native order.",
+    "Combine realistic timing entries and validate65disjoint declared files.",
+    "Existing Flow normalization retained with route→geo consumer rematerialization.",
+    "Finalize README and current architecture caps before final37b8 archive; premeasurement f68a is not the final installed archive."
+  ],
+  "remaining": [
+    "GeoText camera with changing content/static layout",
+    "Categorical/size/group legend and dynamic wrap/skip/inferred titles",
+    "Remaining large-route work and actual target performance budgets",
+    "Complete STEP057–077 acceptance matrix and full qualification",
+    "Separately authorized protected release operations"
+  ]
+}

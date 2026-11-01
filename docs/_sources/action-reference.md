@@ -3704,6 +3704,25 @@ editGeoJoinData({ target?, geometry?, data?, geometryKey?, dataKey? })
 Revise join inputs or key paths and refresh all dependent projections and geographic marks atomically.
 See [Geometry and projections](../api/geometry.md#editgeojoindata).
 
+### `createGeoRouteData`
+
+```javascript
+createGeoRouteData({ id, routes, coordinateKind })
+```
+
+Interpret retained graph edge samples as geographic or planar LineStrings with original edge identity and rows.
+See [Geometry and projections](../api/geometry.md#creategeoroutedata).
+
+### `editGeoRouteData`
+
+```javascript
+editGeoRouteData({ target?, routes?, coordinateKind? })
+```
+
+Revise the route source or coordinate interpretation and refresh dependent geographic consumers atomically.
+See [Geometry and projections](../api/geometry.md#editgeoroutedata).
+
+
 ### `createGeoLODData`
 
 ```javascript

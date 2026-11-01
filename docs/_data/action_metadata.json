@@ -2875,6 +2875,22 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "createGeoRouteData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "editGeoRouteData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "createGeoLODData": {
     "operation": "create",
     "authoringRoles": [

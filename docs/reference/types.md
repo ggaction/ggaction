@@ -91,6 +91,8 @@ interface ChartProgramActions {
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
   editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
+  createGeoRouteData(options: TargetedOptions<CreateGeoRouteDataOptions>): ChartProgram;
+  editGeoRouteData(options: TargetedOptions<EditGeoRouteDataOptions>): ChartProgram;
   createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
   editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
@@ -3388,6 +3390,23 @@ export interface CreateGeoLODDataOptions { readonly id: string; readonly levels:
 
 Related types: [`GeoLODLevels`](#type-geolodlevels).
 
+### `CreateGeoRouteDataOptions` {#type-creategeoroutedataoptions}
+
+<details markdown="1">
+<summary>Expand CreateGeoRouteDataOptions</summary>
+
+```typescript
+export interface CreateGeoRouteDataOptions {
+  readonly id: string;
+  /** Exact retained edge-route resource; no route or dataset inference. */
+  readonly routes: string;
+  /** Geographic requires world route anchors; planar uses identity projection coordinates. */
+  readonly coordinateKind: "geographic" | "planar";
+}
+```
+
+</details>
+
 ### `CreateGeometryDataOptions` {#type-creategeometrydataoptions}
 
 <details markdown="1">
@@ -6656,6 +6675,19 @@ export type EditGeoPointMarkOptions = GeoEditOptions<GeoPointMarkOptions>;
 </details>
 
 Related types: [`GeoEditOptions`](#type-geoeditoptions) · [`GeoPointMarkOptions`](#type-geopointmarkoptions).
+
+### `EditGeoRouteDataOptions` {#type-editgeoroutedataoptions}
+
+<details markdown="1">
+<summary>Expand EditGeoRouteDataOptions</summary>
+
+```typescript
+export interface EditGeoRouteDataOptions {
+  readonly target?: string; readonly routes?: string; readonly coordinateKind?: "geographic" | "planar";
+}
+```
+
+</details>
 
 ### `EditGeoShapeMarkOptions` {#type-editgeoshapemarkoptions}
 

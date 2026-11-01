@@ -99,6 +99,12 @@ Graph/H/layout/data source revision은 final resource 후보를 먼저 검증한
 materialize한다. Canvas의 Full-only resource revision adapter는 prospective plot bounds에 대한
 screen routes를 먼저 검산하고 기존 private final-envelope proof로 새 refs를 원자적으로 적용한다.
 Basic Canvas는 solver를 import하지 않는다. World routes의 결과는 Canvas 크기 변화에 유지한다.
+Route-derived GeometryData는 기존 edge-route 완료 M/L을 native GeoLine source로 해석한다.
+`actions/geo/closure`는 route→geometry→join/level→projection 후보를 의존 순서로 준비하며
+기존 private prepared-resource proof와 한 materialization plan에 연결한다. Canvas screen-route
+revision도 같은 지리 하위 resource closure를 검산한다. Solver·지리 stream·renderer를 복제하지
+않으며 source 행과 typed edge key는 공통 graph source-item owner에서 읽는다.
+정확한 API와 저장 의미는 [Geometry](contract/current/GEOMETRY.md)가 소유한다.
 Private `materialization/graph/presentation.js`는 검증된 현재 그래프 의미에서 일시 edge geometry와
 node 이동 값을 만든다. 기존 native edge owner와 공통 polyline의 endpoint 부착을 재사용하며
 layout·saved route·trace를 쓰지 않는다. 공개 session 연결 전의 독립 계산 경계이며, 정확한
@@ -926,12 +932,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 780,300 bytes |
-| `ggaction/basic` | 423,400 bytes |
+| `ggaction` | 782,200 bytes |
+| `ggaction/basic` | 423,800 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 129,700 bytes |
-| `ggaction/animation` | 293,200 bytes |
+| `ggaction/interaction` | 129,600 bytes |
+| `ggaction/animation` | 293,600 bytes |
 
 
 
@@ -4813,3 +4819,12 @@ forward proof와 함께 적용하며 concrete primitive whitelist만으로 의�
 interaction129,620bytes이며 package는1,206entries / unpacked7,762,829 / 최대packed1,721,725bytes다.
 [통합 검증](impl/roadmap9/animation/native-typed-merged-evidence/qualification.json)은 새 shared owner
 coverage와 source-identical upstream 재사용, 남은 native 의무를 구분한다.
+
+GeoRouteData source를 native transition3/guide4/Cartesian2에 결합했다. Domain action이 기존
+route→geometry→join/LOD/fit projection→GeoLine closure를 명시 실행하고 renderer는 완성
+graphicSpec만 읽는다. 원 Geometry/Graph lineage와 exact resource revision을 기존 policy로
+검산한다. 동일37b8 archive의 세 Node 설치53cases 및 두 strict 타입 fixture가 통과했다.
+Package는1,211entries / unpacked7,784,462 / 최대packed1,726,223bytes이며 최대 gzip은
+Full782,156 / Basic423,716 / animation293,500 / interaction129,579bytes다.
+[통합 증거](impl/roadmap9/integration/geographic-route-merged-evidence/qualification.json)는
+unchanged shared source와 공통 인벤토리의 byte-identical 재사용을 구분한다.
