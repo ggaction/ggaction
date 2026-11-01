@@ -1,0 +1,117 @@
+{
+  "recordedAt": "2026-11-01T13:14:08.847630+00:00",
+  "authorization": "../../AUTHORIZATION.json",
+  "base": "cc6dab918bcad9b9dfb80d614068137105ae05f1",
+  "status": "focused family consumer evidence and owner assignment; not candidate qualification",
+  "environment": {
+    "node": "22.23.1",
+    "execPath": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "runtimeTypesPackageInputsUnchanged": true,
+  "manifest": {
+    "requirements": 30,
+    "groups": 79,
+    "consumerTargets": 577,
+    "addedOwners": 71,
+    "remainingSelectedCells": 5,
+    "allOtherValuesPreserved": true,
+    "beforeSha256": "fe877f4cb5c2c985ae99be301e8cf8675cff55316b179708ed43516f34a0341c",
+    "afterSha256": "1e519d5feb59eebdadc24dd4228037237dc8bba5ff1ec4e13e0df93f292c27d9",
+    "rows": [
+      {
+        "id": "rose-regression",
+        "assigned": 18,
+        "remaining": [
+          "package"
+        ]
+      },
+      {
+        "id": "radar-regression",
+        "assigned": 18,
+        "remaining": [
+          "package"
+        ]
+      },
+      {
+        "id": "streamgraph-regression",
+        "assigned": 18,
+        "remaining": [
+          "package"
+        ]
+      },
+      {
+        "id": "violin-regression",
+        "assigned": 17,
+        "remaining": [
+          "scene-animation",
+          "package"
+        ]
+      }
+    ],
+    "candidate": null,
+    "qualification": "pending"
+  },
+  "checks": [
+    {
+      "log": "owning-final.log.gz",
+      "passed": 141,
+      "failed": 1,
+      "failure": "missing named capability selector for new unit file; all runtime assertions passed",
+      "command": "node --test test/unit/profile-facade-consumers.test.js test/unit/actions/charts/radial-plots.test.js test/unit/actions/charts/radar-facade.test.js test/unit/actions/charts/radar-edit.test.js test/unit/actions/charts/radar-summary.test.js test/unit/wiggle-area.test.js test/unit/actions/charts/violin-plot-facade.test.js test/unit/grammar/categorical-density.test.js test/contracts/radial-chart-types.test.js test/contracts/radar-facade-types.test.js test/contracts/area-endpoint-types.test.js test/contracts/violin-plot-types.test.js test/charts/radial-sectors/public.test.js test/charts/polar-line-radar/public.test.js test/charts/streamgraph/public.test.js test/charts/centered-area-stream/public.test.js test/charts/cars-acceleration-violins/public.test.js test/contracts/native-capability-completion.test.js test/contracts/test-discovery.test.js test/docs/documentation.test.js"
+    },
+    {
+      "command": "node --test test/contracts/native-capability-completion.test.js test/contracts/test-discovery.test.js test/unit/profile-facade-consumers.test.js test/contracts/violin-plot-types.test.js",
+      "log": "owning-repair.log.gz",
+      "passed": 45,
+      "failed": 0,
+      "repair": "added exact file selector to existing actions capability"
+    },
+    {
+      "command": "node --test --test-concurrency=2 test/charts/radial-sectors/vector.render.js test/charts/radial-sectors/png.render.js test/charts/polar-line-radar/vector.render.js test/charts/polar-line-radar/png.render.js test/charts/streamgraph/renderer.render.js test/charts/streamgraph/png.render.js test/charts/centered-area-stream/renderer.render.js test/charts/centered-area-stream/png.render.js test/charts/cars-acceleration-violins/vector.render.js test/charts/cars-acceleration-violins/png.render.js",
+      "log": "render-final.log.gz",
+      "passed": 21,
+      "failed": 0
+    },
+    {
+      "command": "node --test --test-name-pattern='recipes/(rose-chart|violin-plot)' test/docs/executable-programs.test.js",
+      "log": "docs-snippets.log.gz",
+      "passed": 2,
+      "failed": 0
+    },
+    {
+      "command": "node scripts/native-capability-completion.js",
+      "log": "native-pending.json.gz",
+      "status": "pending; assigned owners are not passing candidate results"
+    }
+  ],
+  "firstFailures": {
+    "family-first.log.gz": "7/8: Violin rebased decision reason differs after offline restore; local shared runtime unchanged; root reports latest bb5842ec9 repairs this boundary and original 8/8 pass",
+    "new-owning.log.gz": "11/12: authored positive type fixture omitted StatisticalWeight.kind; corrected to frequency",
+    "lifecycle-types.log.gz": "12/13: compact Radar margin insufficient for implicit side legend; narrowed axis edit fixture to explicit legend:false"
+  },
+  "notRun": [
+    "new source coverage",
+    "new installed archive",
+    "three-Node package qualification",
+    "P95 performance",
+    "complete native candidate qualification"
+  ],
+  "inputSha256": {
+    "test/capabilities.json": "828a647fa50b548b5daf934963111b308811bec9570302d3c08e8e10dba05c51",
+    "test/native-capabilities.json": "1e519d5feb59eebdadc24dd4228037237dc8bba5ff1ec4e13e0df93f292c27d9",
+    "test/unit/profile-facade-consumers.test.js": "6fd902761336bc3c8853d8b9dc340d7a0e23af052a0265e5c1beb713f1d9079e",
+    "test/contracts/violin-plot-types.test.js": "3ff362be04bf687243ae2294aac56bd9a71c474e63c37b368c485d30dbfd705e",
+    "test/charts/polar-line-radar/vector.render.js": "79dacd7a218244e58629ba5657a8f1ad9baab3b30abe8232e9399a8ea3989435",
+    "test/charts/cars-acceleration-violins/vector.render.js": "3bbca962aaae14762dd6abac6d4766e7027e01715ffc33661ee81bae723d23c7"
+  },
+  "knownViolinGap": {
+    "reproducer": "violin-rebase-repro.mjs.gz",
+    "log": "violin-rebase-repro.log.gz",
+    "command": "Decompress under .artifacts/native-regression-consumers/ and run with Node 22.23.1",
+    "expectedExit": 1,
+    "assertions": "graphicSpec and scene exact; decisions sampled-concrete become unsupported-family",
+    "status": "local source gap reproduced; latest root retained-vector repair reported separately; this branch leaves animation owner pending"
+  }
+}
