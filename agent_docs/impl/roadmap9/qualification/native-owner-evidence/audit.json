@@ -1,0 +1,750 @@
+{
+  "status": "owner-assignment-only; final candidate qualification remains pending",
+  "sourceBase": "0aedbe0a7a0a4ab8f35bb4d610272c9e895eafe7",
+  "counts": {
+    "before": {
+      "acceptanceAssigned": 44,
+      "consumerAssigned": 99
+    },
+    "after": {
+      "acceptanceAssigned": 52,
+      "consumerAssigned": 150
+    },
+    "requirements": 30,
+    "groups": 79,
+    "consumers": 577
+  },
+  "assignment": {
+    "groups": {
+      "AT-14": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md",
+          "agent_docs/contract/current/PRIMITIVES.md"
+        ],
+        "tests": [
+          "test/unit/resources/image-preparation.test.js",
+          "test/unit/resources/image-resource-lifecycle.test.js",
+          "test/unit/renderers/image-rendering.test.js",
+          "test/unit/persistence/image-resources.test.js",
+          "test/charts/image-assets/public.test.js",
+          "test/charts/image-assets/png.render.js"
+        ]
+      },
+      "AT-31": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/GEOMETRY.md",
+          "agent_docs/contract/current/INTERACTION.md"
+        ],
+        "tests": [
+          "test/unit/geo/lod-resources.test.js",
+          "test/unit/geo/join-resources.test.js",
+          "test/unit/geo/annotations.test.js",
+          "test/unit/interaction-geo-representation.test.js",
+          "test/unit/interaction-annotation.test.js"
+        ]
+      },
+      "AT-34": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/ANIMATION.md",
+          "agent_docs/contract/current/INTERACTION.md"
+        ],
+        "tests": [
+          "test/unit/hit-frame.test.js",
+          "test/unit/animation/current-hit.test.js",
+          "test/unit/interaction-animation.test.js",
+          "test/browser/interaction-animation.browser.js"
+        ]
+      },
+      "AT-65": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/PARTITION.md",
+          "agent_docs/contract/current/ANIMATION.md",
+          "agent_docs/contract/current/INTERACTION.md"
+        ],
+        "tests": [
+          "test/unit/resources/partition-plots.test.js",
+          "test/unit/interaction-hierarchy-focus.test.js",
+          "test/unit/animation/partition-transition.test.js",
+          "test/unit/animation/partition-session.test.js",
+          "test/browser/animation-partition.browser.js",
+          "test/charts/cross-feature-integration/variants/animation/partition.render.js"
+        ]
+      },
+      "AT-80": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/EDGE_ROUTES.md",
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/ANIMATION.md"
+        ],
+        "tests": [
+          "test/unit/resources/graph-route-lifecycle.test.js",
+          "test/unit/interaction-edge-presentation.test.js",
+          "test/unit/animation/graph-presentation.test.js",
+          "test/unit/animation/route-session.test.js"
+        ]
+      },
+      "AT-81": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/EDGE_ROUTES.md",
+          "agent_docs/contract/current/ANIMATION.md",
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/GEOMETRY.md"
+        ],
+        "tests": [
+          "test/unit/animation/routes.test.js",
+          "test/unit/animation/graph-public.test.js",
+          "test/unit/animation/route-session.test.js",
+          "test/unit/animation/geo-source-hit.test.js"
+        ]
+      },
+      "AT-85": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/AXES.md",
+          "agent_docs/contract/current/ENCODINGS.md",
+          "agent_docs/contract/current/COMPOSITION.md"
+        ],
+        "tests": [
+          "test/unit/grammar/frame-policy.test.js",
+          "test/unit/frame-state.test.js",
+          "test/unit/single-y-admission.test.js",
+          "test/unit/single-y-aggregate-admission.test.js"
+        ]
+      },
+      "AT-86": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/AXES.md",
+          "agent_docs/contract/current/ENCODINGS.md",
+          "agent_docs/contract/current/COMPOSITION.md",
+          "agent_docs/contract/current/GEOMETRY.md"
+        ],
+        "tests": [
+          "test/unit/grammar/frame-policy.test.js",
+          "test/unit/frame-state.test.js",
+          "test/unit/single-y-admission.test.js",
+          "test/unit/actions/composition/polar-facets.test.js",
+          "test/unit/interaction-native-composition.test.js"
+        ]
+      }
+    },
+    "consumerOverrides": {
+      "image": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/unit/resources/image-resource-lifecycle.test.js",
+            "test/unit/persistence/image-resources.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/unit/resources/image-resource-lifecycle.test.js",
+            "test/unit/persistence/image-resources.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/unit/resources/image-resource-lifecycle.test.js",
+            "test/unit/persistence/image-resources.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/unit/resources/image-resource-lifecycle.test.js",
+            "test/unit/persistence/image-resources.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/unit/resources/image-resource-lifecycle.test.js",
+            "test/unit/persistence/image-resources.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/unit/resources/image-resource-lifecycle.test.js",
+            "test/unit/persistence/image-resources.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/unit/renderers/image-rendering.test.js",
+            "test/charts/image-assets/public.test.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/unit/renderers/image-rendering.test.js",
+            "test/charts/image-assets/public.test.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/unit/renderers/image-rendering.test.js",
+            "test/charts/image-assets/public.test.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/unit/renderers/image-rendering.test.js",
+            "test/charts/image-assets/public.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/contracts/image-types.test.js"
+          ]
+        }
+      },
+      "edges-hierarchical": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/ANIMATION.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/animation/routes.test.js",
+            "test/unit/animation/route-session.test.js",
+            "test/unit/interaction-edge-presentation.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md"
+          ],
+          "tests": [
+            "test/contracts/graph-route-types.test.js"
+          ]
+        }
+      },
+      "edges-force-directed": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/ANIMATION.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/animation/routes.test.js",
+            "test/unit/animation/route-session.test.js",
+            "test/unit/interaction-edge-presentation.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md"
+          ],
+          "tests": [
+            "test/contracts/graph-route-types.test.js"
+          ]
+        }
+      },
+      "edges-density": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/ANIMATION.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/animation/routes.test.js",
+            "test/unit/animation/route-session.test.js",
+            "test/unit/interaction-edge-presentation.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md"
+          ],
+          "tests": [
+            "test/contracts/graph-route-types.test.js"
+          ]
+        }
+      },
+      "edges-edge-path": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-routes.test.js",
+            "test/unit/resources/graph-route-lifecycle.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/ANIMATION.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/animation/routes.test.js",
+            "test/unit/animation/route-session.test.js",
+            "test/unit/interaction-edge-presentation.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md"
+          ],
+          "tests": [
+            "test/contracts/graph-route-types.test.js"
+          ]
+        }
+      }
+    }
+  },
+  "rationale": {
+    "AT-14": "이미지 준비 오류·abort·late decode, fit/clip native geometry와 네 출력 및 offline codec을 직접 검사하는 소유자다.",
+    "AT-31": "LOD hysteresis, join hash 보존, coarse/fine 선택 및 원래 detail annotation의 실제 source revision을 함께 검사한다.",
+    "AT-34": "중간 enter/exit/weighted shape와 실제 session click의 후보 중복 및 단일 commit/settled 쌍을 검사한다.",
+    "AT-65": "native partition focus/filter/breadcrumb, current bend hit/selection/keyboard/history 및 reduced-motion endpoint를 검사한다.",
+    "AT-80": "원래 edge별 overlap 후보, Page key cycling, 한 edge 임시 unbundle, 원래 의미/trace/history 보존과 수명 종료를 검사한다.",
+    "AT-81": "네 method의 실제 player seek/interrupt/source revision 및 dateline/clip/visibility/current hit를 검사한다.",
+    "AT-85": "같은 domain의 별도 Y ID, hidden/mirror axis 및 composition overlap을 child write 전 원자적으로 거부하는 정책 소유자다.",
+    "AT-86": "shared Y2, 분리된 facet/concat frame, polar와 geographic native 정책 및 codec을 직접 검사한다."
+  },
+  "checks": {
+    "normalBeforeAssignment": {
+      "tests": 9822,
+      "files": 1549,
+      "exit": 0,
+      "cleanBefore": true,
+      "cleanAfter": true,
+      "source": "0aedbe0a7a0a4ab8f35bb4d610272c9e895eafe7"
+    },
+    "focusedContracts": 35,
+    "assignedIsPassed": false,
+    "finalResult": {
+      "groups": {
+        "total": 79,
+        "passed": 0,
+        "failed": 0,
+        "pending": 79,
+        "notApplicable": 0
+      },
+      "consumers": {
+        "total": 577,
+        "passed": 0,
+        "failed": 0,
+        "pending": 577,
+        "notApplicable": 0
+      }
+    },
+    "internalDocumentation": 1
+  },
+  "remaining": "실행 receipt, input/call/independent expected/actual/diff hashes 및 같은 최종 candidate archive로 79/577을 닫아야 한다. 이번 배정은 runtime 추가 또는 STEP 종료가 아니다."
+}
