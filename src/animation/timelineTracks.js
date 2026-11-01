@@ -45,12 +45,13 @@ function targetIndex(context, spend) {
     for (const state of context.guides[side]) if (state !== null) addOwner(guideAnimationOwnerKey(state.identity));
     for (const group of context.geos[side].groups) addOwner(ownerOfGeo(group.presentation.geometry));
     for (const group of context.geotexts?.[side].groups ?? []) addOwner(validateAnimationOwnerKey(group.presentation.key));
+    for (const pair of context.axislabels?.state.groups ?? []) addOwner(animationOwnerKey(pair.to.scope.namespaces,pair.to.scope.owner));
   }
   for (const track of context.tracks) {
     const from = context.from.scene.nodes[track.sourceIndex], to = context.to.scene.nodes[track.targetIndex];
     const compatible = track.kind !== 'crossfade';
     if (Object.hasOwn(track,'guideKey') && track.guideKey !== undefined) {
-      add(guides, track.guideKey, { id: JSON.stringify(['guide', track.guideKey]), kind: 'guide', compatible,
+      add(guides, track.guideKey, { id: JSON.stringify(['guide', track.guideKey]), kind: 'guide', compatible: compatible || context.axislabels?.compatibleTo.has(track.targetIndex) === true,
         ownerKey: guideAnimationOwnerKey(context.guides.to[track.targetIndex].identity),
         sourceIndex: track.sourceIndex, targetIndex: track.targetIndex, from: styleValues(from.properties), to: styleValues(to.properties) });
     } else if (Object.hasOwn(track,'key') && track.key !== undefined && context.geos.from.items[track.sourceIndex] === null && context.geos.to.items[track.targetIndex] === null &&

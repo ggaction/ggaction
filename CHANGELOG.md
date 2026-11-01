@@ -8,6 +8,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Animate native Cartesian axis wrapping, responsive skipping, rotation and line-count changes at the current viewport, with exact font preparation, raw tick hit identity, bounded rebasing and offline frames.
+
 - Add explicit `prepareTextMetrics` option `axisLabelReflow` to prepare bounded native wrapping queries for current Cartesian axis labels without changing the default measurement path.
 
 - Add Full-only `createGeoRouteData` and `editGeoRouteData` to interpret every retained graph route sample as a geographic or planar GeoLine source, preserving original edge identity, rows and atomic revision closure through native interpolation, clipping and offline restoration.

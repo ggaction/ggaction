@@ -933,7 +933,14 @@ the shared candidate owner applies explicit Canvas and title collision constrain
 Explicit font preparation can request `materialization/axisLabelQueries.js` to collect
 bounded native wrapping queries before host work. It shares the native tokenizer and
 font profile budgets; the default preparation path and stored profile shape stay unchanged.
-Prepared placement never chooses a new wrap or responsive fallback during sampling.
+Fixed prepared placement retains its native line topology. Dynamic axis labels use
+`axisLabelReflowState.js` and `axisLabelGroups.js` to preserve one bounded raw group,
+including an actual empty collection slot. Sampling reuses the same native candidate
+owner at current scale/frame values, retaining raw tick/line identity without invented
+endpoint indices. `axisLabelFrames.js` prepares the final line styles once for drawing
+and read-only dependent ink lookup; actual insertion order stays with the collector.
+Exact font queries are prepared before sampling. Offline frame export charges current
+native group work even when the group emits no nodes, under the existing batch budget.
 Actions still explicitly materialize graphics. These shared calculations do not add a
 semantic compiler, renderer access to meaning, or new stored graphic identity. Public
 animation preparation carries guide meaning in an optional endpoint vector. The same
@@ -953,12 +960,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 783,600 bytes |
+| `ggaction` | 783,700 bytes |
 | `ggaction/basic` | 424,300 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 131,400 bytes |
-| `ggaction/animation` | 317,900 bytes |
+| `ggaction/animation` | 327,800 bytes |
 
 
 
@@ -4900,3 +4907,10 @@ packed1,694,230/unpacked7,641,072bytes와1182entries에 따라 최소한도
 명시 그룹 범례 독립 checkpoint에서 owner3개를 추가한 artifact는1185entries, packed1,696,696 및 unpacked7,669,973bytes였으며 당시 한도1185/1,696,700/7,670,000을 적용했다. Native packing의 당시 Node20 animation281,317gzip bytes와 ceiling281,400은 독립 그룹검증기록에 보존한다. Root 합산의 현재한도는 위 표와 executable owner가 소유한다.
 
 Native axis title clearance is shared by `materialization/guides/axisTitleLayout.js`. Actions retain resource lookup, theme-preferred offsets, same-side preflight and wrapped writes. The pure owner consumes explicit current label bounds and title metrics, preserving the native4px gap, legacy Canvas clamp and rotated-Y ink reserve with collision fallback. It adds no stored intent or automatic compiler; typed inferred/relative title transitions remain a separate integration obligation.
+
+
+동적 axis-label 공개 component는 prepared native group의 현재 후보/줄/metrics를 한 번 계산하고
+final-current lookup으로 dependent guide에 읽기 전용 graphics/bounds/profile을 공급한다. Raw별
+공통 style을 증명하지 못하면 drawing은 보존하되 lookup을 제공하지 않는다. 같은 source package는
+1,236entries/7,982,959unpacked, Node22 1,768,442/Node24 1,771,737packed bytes로 측정했다.
+최소 상한은1,236/1,771,800/7,983,000이며 현재 six-entry ceilings는 위 executable owner 표가 정본이다.

@@ -1863,5 +1863,22 @@
         "statements": 5
       }
     ]
+  },
+  {
+    "file": "animation-axis-reflow.mjs",
+    "cases": [
+      {
+        "id": "animation-axis-reflow/current-native-fonts-four-renderers",
+        "statements": 2
+      },
+      {
+        "id": "animation-axis-reflow/offline-fonts-network-free",
+        "statements": 5
+      },
+      {
+        "id": "animation-axis-reflow/raw-current-hit-retime-rebase",
+        "statements": 2
+      }
+    ]
   }
 ]

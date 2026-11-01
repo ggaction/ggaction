@@ -1,3 +1,4 @@
+import { geoTextNativeDrawingOrdinals } from "./geoText.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { encodeValue } from "../../core/valueEncoding.js";
@@ -29,7 +30,7 @@ const qualify = (id, scope) => scope.reduceRight((id, namespace) => namespaceGra
 const frame = placement => ({ offset: placement.offset, clip: placement.clip, clips: placement.clips });
 const nonAppearance = new Set(["x", "y", "text", "rotation", "textAlign", "textBaseline", "fontFamily", "fontSize", "fontWeight", "fontStyle", "font", "lines"]);
 const nativeOrigins = new WeakMap();
-const empty = length => cloneAndFreeze({ groups: [], items: Array(length).fill(null) });
+export const emptyAxisLabelGroups = length => cloneAndFreeze({ groups: [], items: Array(length).fill(null) });
 function closed(input, keys, label) {
   ownRecord(input, label); rejectUnknownProperties(input, keys, label);
   if (keys.some(key => !Object.hasOwn(input, key))) throw new TypeError(`${label} requires every field.`);
@@ -80,9 +81,11 @@ function normalizeGroup(input, length, spend) {
     if (Object.keys(style).some(key => nonAppearance.has(key) || key === "fillBounds")) throw new TypeError("Axis label appearance cannot duplicate layout or font meaning.");
     validateConcreteGraphicProperties("text", { ...style, ...fontProperties(group), text: "", x: 0, y: 0, textAlign: "center", textBaseline: "top" });
   }
-  closed(input.placement, ["insertion", "ordinal", "frame"], "Axis label placement");
+  closed(input.placement, ["insertion", "ordinal", "geographicBefore", "frame"], "Axis label placement");
   if (!Number.isSafeInteger(input.placement.insertion) || input.placement.insertion < 0 || input.placement.insertion > length ||
       !Number.isSafeInteger(input.placement.ordinal) || input.placement.ordinal < 0) throw new TypeError("Axis label placement requires an actual bounded drawing slot.");
+  if (!Number.isSafeInteger(input.placement.geographicBefore) || input.placement.geographicBefore < 0) throw new TypeError("Axis label geographic order requires a bounded count.");
+  validateGeneratedItemLimit(input.placement.geographicBefore, "Axis label geographic predecessor count");
   validateGeneratedItemLimit(input.placement.ordinal, "Axis label collection ordinal");
   validateAnimationPlacement(input.placement.frame, "Axis label");
   if (Object.hasOwn(input, "reason") && input.reason !== "guide-edited") throw new TypeError("Unknown axis label group fallback reason.");
@@ -141,7 +144,7 @@ function nativeLayout(program, owner, config) {
     edgeAligned: canvasConfig?.plot !== undefined || canvasConfig?.responsive !== undefined,
     responsive: canvasConfig?.responsive, margin: canvasConfig?.margin, titleBounds });
 }
-export function projectAxisLabelGroups(program, endpoint) {
+export function projectAxisLabelGroups(program, endpoint, geotexts) {
   if (endpoint.graphicSpec !== program.graphicSpec || endpoint.collections === undefined) throw new TypeError("Axis label groups require their exact native endpoint.");
   const placements = new Map(endpoint.collections.map((value, ordinal) => [value.graphicId, { ...value, ordinal }]));
   const sceneById = new Map(endpoint.sources.map((source, index) => [source.graphicId, endpoint.scene.nodes[index]]));
@@ -161,7 +164,7 @@ export function projectAxisLabelGroups(program, endpoint) {
       const binding = fontMetricBinding(layout.metrics, { ...layout.config.base, fontStyle: "normal" });
       const font = binding === undefined ? null : concreteFontValue(requireStoredResource(unit, binding.resource));
       const styles = layout.values.map(value => ({ fill: resolveDisplayLabelColor(value, config.colorMap, config.color) }));
-      const group = { key, scope, layout, presentation: { styles, font }, placement: { insertion: slot.index, ordinal: slot.ordinal, frame: frame(slot) } };
+      const group = { key, scope, layout, presentation: { styles, font }, placement: { insertion: slot.index, ordinal: slot.ordinal, geographicBefore: (geoTextNativeDrawingOrdinals(geotexts) ?? []).filter(ordinal => ordinal < slot.ordinal).length, frame: frame(slot) } };
       const nativeNodes = object.items.map(item => ({ type: item.type ?? object.type, properties: item.properties }));
       const byValue = new Map(layout.values.map((value, index) => [scalarKey(value), index])), seen = new Set();
       if (!axisLabelReflowMatchesNodes(layout, nativeNodes)) group.reason = "guide-edited";
@@ -181,7 +184,7 @@ export function projectAxisLabelGroups(program, endpoint) {
         childPath: Object.freeze([...childPath]), ownerId: owner.id, value })])));
     }
   }
-  if (!groups.length) return empty(endpoint.scene.nodes.length);
+  if (!groups.length) return emptyAxisLabelGroups(endpoint.scene.nodes.length);
   groups.sort((a, b) => a.placement.ordinal - b.placement.ordinal);
   const byKey = new Map(groups.map((group, index) => [group.key, index]));
   const result = validateAxisLabelGroups({ groups, items: endpoint.sources.map(source => {
@@ -192,3 +195,28 @@ export function projectAxisLabelGroups(program, endpoint) {
   return result;
 }
 export function axisLabelGroupOrigin(state, group, value) { return nativeOrigins.get(state)?.[group]?.get(scalarKey(value)); }
+
+export function inheritAxisLabelGroupOrigins(state, source, groups) {
+  const origins = nativeOrigins.get(source);
+  if (origins !== undefined) nativeOrigins.set(state, groups.map(group => origins[group]));
+  return state;
+}
+
+// The Geo/Text owner remains the sole authority for its role order. Axis groups
+// keep only their insertion point in that order, including zero-node roles.
+export function validateAxisLabelDrawingOrder(state, geos, geotexts) {
+  const slots = new Map([...geos.groups.map(group => [JSON.stringify(["geo",group.presentation.geometry.key]),group.insertion]),
+    ...geotexts.groups.flatMap(group => [[JSON.stringify(["labels",group.presentation.key]),group.insertion],[JSON.stringify(["leaders",group.presentation.key]),group.leaderInsertion]])]);
+  let previous = 0;
+  const native = geoTextNativeDrawingOrdinals(geotexts);
+  for (const group of state.groups) {
+    const { geographicBefore: count, insertion, ordinal } = group.placement;
+    if (count < previous || count > geotexts.order.length || native !== undefined && count !== native.filter(value => value < ordinal).length) throw new TypeError("Axis label relative drawing order differs from its native roles.");
+    for (const [index, role] of geotexts.order.entries()) {
+      const slot = slots.get(JSON.stringify(role));
+      if (index < count ? slot > insertion : slot < insertion) throw new TypeError("Axis label relative drawing order contradicts its current slot.");
+    }
+    previous = count;
+  }
+  return state;
+}

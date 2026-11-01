@@ -1,3 +1,4 @@
+import { axisLabelSourceResolver } from "./hitAxisLabels.js";
 import { graphicScopes } from "../selectors/graphicScopes.js";
 import { requireClosedProgramState } from "../core/programState.js";
 import { transformHitPoint } from "../grammar/hitCoordinates.js";
@@ -242,12 +243,15 @@ export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1
     counted.add(program);
     return value;
   };
-  const resolve = (input, identity) => {
+  const axisSource=axisLabelSourceResolver(count=>spend(budget,count),requireProgram);
+  const resolve = (input, identity, guideIdentity) => {
     spend(budget);
     const dynamic = Object.hasOwn(input, "kind");
-    const origin = interactionOptions(input, dynamic ? ["kind", "program", "childPath", "ownerId", "itemKey"] : ["program", "index"], [], "Animation native source");
+    const supplied = interactionOptions(input, dynamic ? ["kind", "program", "childPath", "ownerId"] : ["program", "index"], dynamic ? ["value", "itemKey"] : [], "Animation native source");
+    const origin = dynamic ? interactionOptions(supplied, supplied.kind === "guide-label" ? ["kind", "program", "childPath", "ownerId", "value"] : ["kind", "program", "childPath", "ownerId", "itemKey"], [], "Animation native source") : supplied;
     if (!authorized.has(origin.program)) throw new TypeError("Animation native source requires an exact authorized program.");
     if (dynamic) {
+      if (origin.kind === "guide-label") return axisSource(origin,guideIdentity);
       if (origin.kind !== "geo-feature") throw new TypeError("Unsupported animation native source kind.");
       const { context, item, role } = geoSource(origin);
       let itemMetadata;
@@ -269,7 +273,7 @@ export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1
   };
   if (proof.native.nodes.length !== sample.scene.nodes.length) throw new TypeError("Animation hit sources must follow the exact sampled nodes.");
   sample.scene.nodes.forEach((node, zIndex) => {
-    const source = proof.native.nodes[zIndex], original = resolve(source.origin, proof.endpoint?.identities[zIndex]);
+    const source = proof.native.nodes[zIndex], original = resolve(source.origin, proof.endpoint?.identities[zIndex], proof.guides?.[zIndex]?.identity);
     if (Object.hasOwn(source.origin, "kind") && original.metadata === undefined) throw new TypeError("Animation geographic hit requires its exact sampled identity.");
     if (original.metadata === undefined) return;
     const values = source.metrics.map(origin => resolve(origin).metrics);

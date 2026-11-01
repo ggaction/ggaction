@@ -1701,9 +1701,13 @@ export interface TransitionPlan {
  * Cartesian geometry includes selected conditional values, native offsets/spans/category slots,
  * completed density samples, and compatible source-follow overlays.
  * Geo Text content/layout expressions follow the current native camera.
+ * Native Cartesian maxWidth/responsive labels emit current raw-value/line identities,
+ * including newly visible lines without fabricated endpoint indices.
  * Inferred and label-relative Cartesian titles replay the same fixed native label ink dependency.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
+  | { readonly kind: 'guide'; readonly kernel: 'native-axis-label'; readonly ownerKey: string;
+      readonly guideKey: string; readonly role: 'guide-labels' }
   | { readonly kind: 'geographic'; readonly kernel: 'native-geo' | 'native-geo-text'; readonly ownerKey: string;
       readonly itemKey: string; readonly role: string }
   | { readonly kind: 'enter'; readonly targetIndex: number; readonly ownerKey?: string; readonly reason?: 'guide-ambiguity' }

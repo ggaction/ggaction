@@ -1,0 +1,863 @@
+{
+  "scope": "Public native Cartesian axis-label reflow component; not final AT60/077 or whole-repository qualification.",
+  "base": "c60af3f8dac20c4c064b73e8a989d9e56e283e0b",
+  "executionState": "Tests executed against the preserved working candidate. Source pin follows the source commit; no clean release receipt is claimed.",
+  "contracts": {
+    "transition": 3,
+    "guides": "native-guide-values@11",
+    "cartesian": "unchanged @2",
+    "geoText": "unchanged @2",
+    "newPublicFunctions": 0,
+    "newDynamicDecision": {
+      "kind": "guide",
+      "kernel": "native-axis-label",
+      "role": "guide-labels"
+    }
+  },
+  "checks": [
+    {
+      "command": "node --max-old-space-size=512 --experimental-test-coverage --test-concurrency=2 --test test/unit/animation/*.test.js test/unit/interaction-edge-presentation.test.js (11 source includes)",
+      "tests": 679,
+      "exitCode": 0,
+      "note": "Before the final read-only dependency metrics/unsafe-style lookup adjustment. Collector-specific 11-case coverage and final 721 cumulative follow-up cover that delta."
+    },
+    {
+      "command": "node --max-old-space-size=512 --experimental-test-coverage --test-concurrency=2 --test test/unit/animation/*.test.js test/unit/hit-program.test.js test/unit/interaction-node-move.test.js test/unit/interaction-edge-presentation.test.js test/unit/interaction-session.test.js (hitProgram/guideState includes)",
+      "tests": 721,
+      "exitCode": 0,
+      "note": "Final runtime candidate. The later size-interval identity test adds no production changes; its 120-case owning pass closes the previously uncalled existing callback."
+    },
+    {
+      "command": "node --experimental-test-coverage --test test/unit/animation/axis-label-tracks.test.js test/unit/animation/axis-label-reflow.test.js (axisLabelFrames include)",
+      "tests": 11,
+      "exitCode": 0
+    },
+    {
+      "command": "node --experimental-test-coverage --test-concurrency=2 --test test/unit/animation/guide*.test.js test/unit/animation/*legend*.test.js test/unit/animation/native-guides.test.js test/unit/animation/axis-title-layout-state.test.js test/unit/animation/dependent-axis-titles.test.js (guideState include)",
+      "tests": 120,
+      "exitCode": 0
+    },
+    {
+      "command": "GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT=/Users/hyeonjeon/Projects/ggactionnewbrand/.artifacts/datasets/tidytuesday node scripts/run-tests.js realistic contracts/realistic-axis-label-reflow.test.js",
+      "tests": 5,
+      "exitCode": 0,
+      "notes": "First 12 positive source rows, original units/cohorts/SHA; independent x arithmetic/native midpoint, immutable/offline/SVG."
+    },
+    {
+      "command": "node scripts/run-tests.js render charts/cross-feature-integration/variants/animation/axis-label-reflow.render.js",
+      "tests": 1,
+      "backends": [
+        "Canvas",
+        "PNG",
+        "SVG",
+        "vector PDF"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/run-tests.js browser browser/animation-axis-reflow.browser.js",
+      "tests": 1,
+      "dpr": [
+        1,
+        2
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/animation-types.test.js contracts/source-boundaries.test.js contracts/package-boundaries.test.js contracts/test-discovery.test.js contracts/documentation-truth.test.js contracts/package-artifact.test.js",
+      "tests": 47,
+      "exitCode": 0
+    },
+    {
+      "command": "node .artifacts/axis-reflow/public-installed.mjs",
+      "nodes": [
+        "20.20.2",
+        "22.23.1",
+        "24.22.1"
+      ],
+      "runtimeCasesEach": 3,
+      "strictTypesEach": 1,
+      "executedDocumentationEach": 1,
+      "optionalPeers": true,
+      "bundlesEach": 6,
+      "exitCodes": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": "node scripts/run-tests.js docs",
+      "tests": 238,
+      "pass": 236,
+      "fail": 2,
+      "note": "Generated provenance and runtime reference stale; owning regeneration/check below, not a full-suite pass claim."
+    },
+    {
+      "command": "node scripts/run-tests.js docs docs/documentation-coverage.test.js docs/action-reference.test.js",
+      "tests": 20,
+      "exitCode": 0
+    }
+  ],
+  "criticalOwners": {
+    "animation/axisLabelFrames.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 93.1,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "current-metrics-coverage-2.log"
+    },
+    "animation/axisLabelTracks.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 97.67,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "emission-coverage-2.log"
+    },
+    "animation/frameEndpoint.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 97.84,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "emission-coverage-2.log"
+    },
+    "animation/frameProvenance.js": {
+      "actual": {
+        "lines": 98.02,
+        "branches": 93.48,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "emission-coverage-2.log"
+    },
+    "animation/frames.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "emission-coverage-2.log"
+    },
+    "animation/planner.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 94.83,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "emission-coverage-2.log"
+    },
+    "animation/sample.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 98.08,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "emission-coverage-2.log"
+    },
+    "animation/timelineTracks.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 99.36,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "emission-coverage-2.log"
+    },
+    "grammar/animation/axisLabelDecision.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "emission-coverage-2.log"
+    },
+    "interaction/hitAxisLabels.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "emission-coverage-2.log"
+    },
+    "materialization/animation/axisLabelGroups.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 98.82,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "emission-coverage-2.log"
+    },
+    "all files": {
+      "actual": {
+        "lines": 100,
+        "branches": 93.1,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "current-metrics-coverage-2.log"
+    },
+    "materialization/animation/geoText.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 92.17,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "shared-supplement-coverage-3.log"
+    },
+    "interaction/hitProgram.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 95.11,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "shared-owner-coverage-final.log"
+    },
+    "grammar/animation/guideState.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 97.9,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "log": "guide-owner-coverage-final.log"
+    }
+  },
+  "archive": {
+    "path": ".artifacts/axis-reflow/public.tgz",
+    "sha256": "5412d0e403cdaa398b4afd19ae0b19d6f5923140743803732d11b9abde26e7ce",
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/.artifacts/axis-reflow/public-package/ggaction-0.0.26.tgz",
+    "entries": 1236,
+    "packed": 1768442,
+    "unpacked": 7982959
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/.artifacts/axis-reflow/public.tgz",
+      "sha256": "5412d0e403cdaa398b4afd19ae0b19d6f5923140743803732d11b9abde26e7ce",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1057,
+          "minifiedBytes": 2733344,
+          "gzipBytes": 783644,
+          "limit": 783700,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 624,
+          "minifiedBytes": 1446511,
+          "gzipBytes": 424277,
+          "limit": 424300,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954,
+          "limit": 26000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 148878,
+          "gzipBytes": 44638,
+          "limit": 46000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 506,
+          "minifiedBytes": 1093639,
+          "gzipBytes": 327739,
+          "limit": 327800,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 205,
+          "minifiedBytes": 410425,
+          "gzipBytes": 131286,
+          "limit": 131400,
+          "pass": true
+        }
+      ],
+      "runtimeCases": 3,
+      "strictTypes": true,
+      "documentationSnippets": 1
+    },
+    {
+      "node": "v22.23.1",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/.artifacts/axis-reflow/public.tgz",
+      "sha256": "5412d0e403cdaa398b4afd19ae0b19d6f5923140743803732d11b9abde26e7ce",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1057,
+          "minifiedBytes": 2733344,
+          "gzipBytes": 782224,
+          "limit": 783700,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 624,
+          "minifiedBytes": 1446511,
+          "gzipBytes": 423405,
+          "limit": 424300,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24779,
+          "limit": 26000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 148878,
+          "gzipBytes": 44478,
+          "limit": 46000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 506,
+          "minifiedBytes": 1093639,
+          "gzipBytes": 326698,
+          "limit": 327800,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 205,
+          "minifiedBytes": 410425,
+          "gzipBytes": 130829,
+          "limit": 131400,
+          "pass": true
+        }
+      ],
+      "runtimeCases": 3,
+      "strictTypes": true,
+      "documentationSnippets": 1
+    },
+    {
+      "node": "v24.22.1",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/.artifacts/axis-reflow/public.tgz",
+      "sha256": "5412d0e403cdaa398b4afd19ae0b19d6f5923140743803732d11b9abde26e7ce",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1057,
+          "minifiedBytes": 2733344,
+          "gzipBytes": 783644,
+          "limit": 783700,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 624,
+          "minifiedBytes": 1446511,
+          "gzipBytes": 424277,
+          "limit": 424300,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954,
+          "limit": 26000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 148878,
+          "gzipBytes": 44638,
+          "limit": 46000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 506,
+          "minifiedBytes": 1093639,
+          "gzipBytes": 327739,
+          "limit": 327800,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 205,
+          "minifiedBytes": 410425,
+          "gzipBytes": 131286,
+          "limit": 131400,
+          "pass": true
+        }
+      ],
+      "runtimeCases": 3,
+      "strictTypes": true,
+      "documentationSnippets": 1
+    }
+  ],
+  "inputFiles": [
+    {
+      "path": "scripts/browser-bundle-size.js",
+      "sha256": "7a1fdf32ae91235e6100a429f9f4c17c872b0ea5f7bd59b0048252a291cfe328"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/animation-axis-reflow.mjs",
+      "sha256": "f74f76d09c287a4175609c4abad5581c4cdd51c197a677eb3fcea7e0380e4c47"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/manifest.json",
+      "sha256": "87adb0a352a63c9c2925b8245ef12ad8dee1bb02f199e0a433ffa1380d8e539a"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "28d452f47aaefdb56653314a2e776b9ef4b775f105e933b213b25a8cc27c54d0"
+    },
+    {
+      "path": "src/animation/axisLabelFrames.js",
+      "sha256": "58723bc6c236f3fd4dd71655d562455c6a576fffc0da9193672b369b27b00ede"
+    },
+    {
+      "path": "src/animation/axisLabelTracks.js",
+      "sha256": "e475190a97a7d02fed26288c65930a6328548f181a8821469d1f6aeffa7bcc71"
+    },
+    {
+      "path": "src/animation/frameEndpoint.js",
+      "sha256": "cd1e63ef949164874c3a0e724a353eb634e428c68bbe8215571dd495e601ad88"
+    },
+    {
+      "path": "src/animation/frameProvenance.js",
+      "sha256": "5cb5f29a1bc3544606d7766788ec7e24792004dd4f08ad3a4a29e6360296490d"
+    },
+    {
+      "path": "src/animation/frames.js",
+      "sha256": "d67006ab0deaaa48d43dc7f10d9b9eb59891cc094826886423e0b20a998f8cf7"
+    },
+    {
+      "path": "src/animation/planner.js",
+      "sha256": "c452702d9f6b95c69a4773ed4aaeb5f163bb266443897f282345533654512713"
+    },
+    {
+      "path": "src/animation/sample.js",
+      "sha256": "de57db41f817f3c45366454b215bbb620c059ce0e5efc2c8e506a914ca23f7d8"
+    },
+    {
+      "path": "src/animation/timelineTracks.js",
+      "sha256": "d94bfa240f91599c747727f2e21eacdd2f300b505d499f5d8d8f1abb92dfe5fc"
+    },
+    {
+      "path": "src/grammar/animation/axisLabelDecision.js",
+      "sha256": "da4f4eafee778e4fe7660b9d19ec0405db2bbc5dee571694c90f01c561ce49ff"
+    },
+    {
+      "path": "src/grammar/animation/guideState.js",
+      "sha256": "097afb6e5644f29d00ea6c248ddbd2b187a4eff2269fb2df503ac148408473b6"
+    },
+    {
+      "path": "src/interaction/hitAxisLabels.js",
+      "sha256": "e37818983125146fa7e5300f8a0726af8ceb426ea55bf4340967840ff4b2837d"
+    },
+    {
+      "path": "src/interaction/hitProgram.js",
+      "sha256": "410d24770aeaa88df6656daf9d633f165aa20cfc091d53ae187c5d504f89f9a5"
+    },
+    {
+      "path": "src/materialization/animation/axisLabelGroups.js",
+      "sha256": "6d8505c90297841d4da6477bbe2eb880e955db6708ebd5c842f9ccb17b481eb5"
+    },
+    {
+      "path": "src/materialization/animation/geoText.js",
+      "sha256": "0bd34134a1f225acdc2d6374a7fb0a1e28bea72f5b62565c056eb91ff95acc0d"
+    },
+    {
+      "path": "test/browser/animation-axis-reflow.browser.js",
+      "sha256": "e22e7fa4d70efe452a434445e2bbc4ebb42fd0286d59a93ce4daa8f127d8bd95"
+    },
+    {
+      "path": "test/capabilities.json",
+      "sha256": "d5c5ab15d59d081d64298d0a55105f4258c9561228427c19d5b992aa11f5da5e"
+    },
+    {
+      "path": "test/charts/cross-feature-integration/variants/animation/axis-label-reflow.render.js",
+      "sha256": "bdedfdc9d74d3d646c67fb257f04ba83bab9b18e963741a305ce741e64705b70"
+    },
+    {
+      "path": "test/contracts/animation-types.test.js",
+      "sha256": "6581cb966f4407dc8b00344e4c07bfc3d1a5575af9d44e2ad1531ba43c134038"
+    },
+    {
+      "path": "test/contracts/realistic-axis-label-reflow.test.js",
+      "sha256": "0ff6f633cfad445a8f4b04641127cb2370bec5500f05d5e93c23f1244599e3ed"
+    },
+    {
+      "path": "test/contracts/test-discovery.test.js",
+      "sha256": "20986d62afb01b026aa2a8e5d058ca6d5ff9a343e8e5fc4311a6a38fb9618e51"
+    },
+    {
+      "path": "test/realistic-timings.json",
+      "sha256": "8316761d89e1feb21701926b90e18075351a3d8389ad43028ed3a5ee2dcaea90"
+    },
+    {
+      "path": "test/support/animation-axis-reflow-frame.js",
+      "sha256": "73ae2040c4eff05274a82ce79395660b5b958fc57e821803bea8978d715a1284"
+    },
+    {
+      "path": "test/support/animation-axis-reflow-node.js",
+      "sha256": "afb69ca647e308980829281a9a72d75b29907e2bca011b3c506684bcbe3eb490"
+    },
+    {
+      "path": "test/unit/animation/axis-label-drawing-order.test.js",
+      "sha256": "f8483fd18505d101aa49cb053f512f9e1e47027963ed251ff0034d31d3a43f1a"
+    },
+    {
+      "path": "test/unit/animation/axis-label-fonts.test.js",
+      "sha256": "278f28c9175e4b7f55e64487d3bac942a889869e7cdd2f8c24a64c1aa4ce46ce"
+    },
+    {
+      "path": "test/unit/animation/axis-label-hit.test.js",
+      "sha256": "f7f4974985415914bb9f165acf0a9ecea81537e4fafcc3edf12f5f9e534ac228"
+    },
+    {
+      "path": "test/unit/animation/axis-label-reflow.test.js",
+      "sha256": "c8875dd851735ced84e1bb18dc0c41d5059daf5d50c40e5e10cb74c108a0655f"
+    },
+    {
+      "path": "test/unit/animation/axis-label-tracks.test.js",
+      "sha256": "bcd8c9831431fd7420958b5bd99d152a17903920166f26d8f654af016796427f"
+    },
+    {
+      "path": "test/unit/animation/frame-export-budget.test.js",
+      "sha256": "29143b249e089b1eef4cfd74a30d2311537940bd2b027d8f4a210c17fb4ba6b1"
+    },
+    {
+      "path": "test/unit/animation/guide-anchor-transitions.test.js",
+      "sha256": "8895fa16640677baf962c6a65dcd333eca8c41b0ecb148b29708a11c22cfb9cc"
+    },
+    {
+      "path": "test/unit/animation/guide-state.test.js",
+      "sha256": "b356c69eb21367486ec6e0d9eafd75d73e80680b16698d8414816d6e2c1c7471"
+    },
+    {
+      "path": "test/unit/animation/guide-transition.test.js",
+      "sha256": "a26fad2755d040e7629aea795d8f44640549e67377e07a9c271ea148f128a708"
+    },
+    {
+      "path": "types/animation.d.ts",
+      "sha256": "2d41a83305d46dcd7939d632c4437aed0c6a1c40a1592ba352207d95d3bd3058"
+    }
+  ],
+  "logs": [
+    {
+      "path": ".artifacts/axis-reflow/emission-all-1.log",
+      "sha256": "18c28c3e1cf0f2f945d3fe7d081eeebf8cc6bdabf3b355b6cdce84c3f8c1f03d",
+      "tests": 659,
+      "pass": 627,
+      "fail": 32,
+      "duration_ms": 35331.280625
+    },
+    {
+      "path": ".artifacts/axis-reflow/emission-all-2.log",
+      "sha256": "c58115ff2ee3d4d3d735e9c2fdfe29bf448f636b8b6019518cec1f88648b4353",
+      "tests": 663,
+      "pass": 662,
+      "fail": 1,
+      "duration_ms": 35163.460459
+    },
+    {
+      "path": ".artifacts/axis-reflow/emission-coverage-1.log",
+      "sha256": "d50532a00398e6586e1902a5bf4f2e994ac8f4b7c9d6c158bac4d65c3cac067c",
+      "tests": 663,
+      "pass": 663,
+      "fail": 0,
+      "duration_ms": 100630.276375
+    },
+    {
+      "path": ".artifacts/axis-reflow/emission-coverage-2.log",
+      "sha256": "1bbd91d9aec2ab76cc8c048b1e5cd453b2bc1bb63c1eb4928a043d36ac49eb92",
+      "tests": 679,
+      "pass": 679,
+      "fail": 0,
+      "duration_ms": 73777.289334
+    },
+    {
+      "path": ".artifacts/axis-reflow/current-metrics-coverage-2.log",
+      "sha256": "60732d6aa26648a2ba0456726dd225a064f215c2c81e3f66685e990cd2ff3c24",
+      "tests": 11,
+      "pass": 11,
+      "fail": 0,
+      "duration_ms": 5711.991584
+    },
+    {
+      "path": ".artifacts/axis-reflow/shared-supplement-coverage.log",
+      "sha256": "5424e678a4e7f967f6ccf9f4b69ca75af1ad9c4731cd6323959a78127f36be1d",
+      "tests": 171,
+      "pass": 171,
+      "fail": 0,
+      "duration_ms": 24197.323709
+    },
+    {
+      "path": ".artifacts/axis-reflow/shared-supplement-coverage-2.log",
+      "sha256": "8711e4f14f56f38c427b1a661fbff42f4c898a453d402c6c4eef960a528363bd",
+      "tests": 124,
+      "pass": 124,
+      "fail": 0,
+      "duration_ms": 9810.70325
+    },
+    {
+      "path": ".artifacts/axis-reflow/shared-supplement-coverage-3.log",
+      "sha256": "20f2f8bcda75e012421ba3984060fe526dc1b827fca2c7f2a4e77d59e7a7131b",
+      "tests": 305,
+      "pass": 305,
+      "fail": 0,
+      "duration_ms": 41736.139
+    },
+    {
+      "path": ".artifacts/axis-reflow/shared-owner-coverage-final.log",
+      "sha256": "07be258dfe63191b4d805625640d0f1f8a2a7b97ce4983e6549d2da62d1d7835",
+      "tests": 721,
+      "pass": 721,
+      "fail": 0,
+      "duration_ms": 74916.261083
+    },
+    {
+      "path": ".artifacts/axis-reflow/guide-owner-coverage-final.log",
+      "sha256": "a926e6db24ed2a2441dc9df0aad0924b3ce38c01e5d8955216187528a2fe29b0",
+      "tests": 120,
+      "pass": 120,
+      "fail": 0,
+      "duration_ms": 17776.4785
+    },
+    {
+      "path": ".artifacts/axis-reflow/realistic-3.log",
+      "sha256": "4de21625094897d0ee03b46562d1c22c3d4d9f062149131b1400aaaa4e35d610",
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "duration_ms": 2708.565875
+    },
+    {
+      "path": ".artifacts/axis-reflow/render-final.log",
+      "sha256": "89c0eeb9f6a3cd2af6fb5718838d680e7cc4c1073ebc6696c05c86d92064a7c0",
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "duration_ms": 1121.537
+    },
+    {
+      "path": ".artifacts/axis-reflow/browser-final.log",
+      "sha256": "520c648d72b8469db6628c102fd8950b6adcb4eefed1c0f80d4f8e2cfa11b53d",
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "duration_ms": 2427.12775
+    },
+    {
+      "path": ".artifacts/axis-reflow/public-contracts-final.log",
+      "sha256": "c82125e47225e81370821b5ac6690119a8e54d63dc8611471a305c28c2006ba3",
+      "tests": 47,
+      "pass": 47,
+      "fail": 0,
+      "duration_ms": 5210.253292
+    },
+    {
+      "path": ".artifacts/axis-reflow/consumer-source-2.log",
+      "sha256": "c081d1e62dc9c73e449b7e64998cdec080fe9fc06e0705941e00cafc75201b2e"
+    },
+    {
+      "path": ".artifacts/axis-reflow/public-installed20-initial-cap.log",
+      "sha256": "3515ab2345e0cf22e53cca43b3ea3ca589db54126f9383461d8aaaa7703892aa"
+    },
+    {
+      "path": ".artifacts/axis-reflow/public-installed20-final.log",
+      "sha256": "65f7a802216ec6b10078d24321a18fc449106ed285264785da867e10e67d4cd8"
+    },
+    {
+      "path": ".artifacts/axis-reflow/public-installed22-final.log",
+      "sha256": "af63b49ceb908864ba945d5a27cb9c6347c7e74f3af014eac87dcb601ad41d6e"
+    },
+    {
+      "path": ".artifacts/axis-reflow/public-installed24-final.log",
+      "sha256": "43f3267f26623e5c9e73b5bbc4314b6188d92ef70c93ccdc85f9f1666cdb7a25"
+    },
+    {
+      "path": ".artifacts/axis-reflow/docs-source-final.log",
+      "sha256": "66157fbabc52b11f39c7d511dbeb4da92c7c55e6f4f6d5eca21fff3fa4ffea3a",
+      "tests": 238,
+      "pass": 236,
+      "fail": 2,
+      "duration_ms": 30492.100292
+    },
+    {
+      "path": ".artifacts/axis-reflow/docs-owning-final.log",
+      "sha256": "35a7cbe11685d9c05e12885e8df252c0088bb2851bb6e46e8055515dcb181e35",
+      "tests": 20,
+      "pass": 20,
+      "fail": 0,
+      "duration_ms": 6300.101458
+    }
+  ],
+  "artifacts": [
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/axis-label-reflow/middle-pdf.png",
+      "sha256": "61205b51f791164dbe5b864f13e56ef0e5654a944e0f509fba6cd05dce66d0ab"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/axis-label-reflow/middle.pdf",
+      "sha256": "5e74794d23f25eb6fcdeacc6b4e1b9f1aa3abcec0dcd979c85fcc99aba68b333"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/axis-label-reflow/middle.png",
+      "sha256": "3fb6c4b0751d0bf5c9f1a357b38906393b7a06cfc12349fcdf355e42dbc4e9c8"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/axis-label-reflow/middle.svg",
+      "sha256": "83fd043a965ba354137b700218cbe8bd9affb3516be0a4d0cfed0d5ffff1b328"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/axis-label-reflow/native-pdf.png",
+      "sha256": "61205b51f791164dbe5b864f13e56ef0e5654a944e0f509fba6cd05dce66d0ab"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/axis-label-reflow/native.pdf",
+      "sha256": "4d04088a88b2a56d29400d7e5513945e910066f59d5a218bd310721a212c10db"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/axis-label-reflow/native.svg",
+      "sha256": "42f8b35545055ba2b1aa26d1d312b2b5c9aaf20dccf12c960915b483e1d92d48"
+    }
+  ],
+  "priorFailures": [
+    {
+      "logs": [
+        "emission-all-1.log",
+        "emission-all-2.log"
+      ],
+      "resolution": "Early shared hit source union/expectations and strict mutation fixture were repaired before the all-pass source; original 32+1 failures remain in logs."
+    },
+    {
+      "logs": [
+        "fonts-1.log",
+        "fonts-2.log",
+        "fonts-3.log",
+        "render-1.log",
+        "browser-1.log",
+        "realistic-1.log",
+        "realistic-2.log"
+      ],
+      "resolution": "Invalid native responsive/host fixture options, expected dimensions, exact font lease identity and native default normalization were corrected in fixtures; successful final owning logs are separate."
+    },
+    {
+      "logs": [
+        "public-installed20-initial-cap.log"
+      ],
+      "resolution": "Earlier 8bff archive passed runtime/type/doc but exceeded Full/animation caps. Minimal measured caps and read-only dependency-proof guard precede final 5412 same-archive three-Node checks."
+    }
+  ],
+  "pending": [
+    "Source-pinned changed documentation build/browser evidence (separate metadata follow-up).",
+    "P refs-only lane/title integration consuming current graphics/bounds/metrics.",
+    "Final combined native acceptance matrix and release/AT60/077 qualification remain parent-owned."
+  ]
+}

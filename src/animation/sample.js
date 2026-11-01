@@ -1,3 +1,5 @@
+import { sampleAxisLabelTracks } from "./axisLabelTracks.js";
+import { axisLabelFrameCollector } from "./axisLabelFrames.js";
 import { sampleGeoTextTracks } from "./geoTextTracks.js";
 import { geoTextFrameCollector } from "./geoTextFrames.js";
 import { sampleGuideInterpolation, retainSampledGuideMeaning } from "./guideTracks.js";
@@ -12,7 +14,7 @@ import { cloneAndFreeze } from "../core/immutable.js";
 import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 import { samplePositionInterpolation } from "../grammar/animation/positions.js";
 import { transitionSampleState,interpolateNumber } from "../grammar/animation/values.js";
-import { requireTransitionPlan, transitionEndpointPositions, transitionEndpointFrame, transitionGraphs, transitionCartesian, transitionPartitions, transitionPolars, transitionGeos, transitionGuides, transitionGeoTexts, transitionTimeline, transitionOwners } from "./planner.js";
+import { requireTransitionPlan, transitionEndpointPositions, transitionEndpointFrame, transitionGraphs, transitionCartesian, transitionPartitions, transitionPolars, transitionGeos, transitionGuides, transitionGeoTexts, transitionAxisLabels, transitionTimeline, transitionOwners } from "./planner.js";
 import { sampleTransitionTimeline } from "./timelineSample.js";
 import { registerAnimationFrame, registerAnimationFrameView, animationFrameProvenance, animationPlanProvenance } from "./frameProvenance.js";
 import { blendAnimationNodes,fadeAnimationNode,interpolateNodeFrame } from "./concrete.js";
@@ -22,9 +24,16 @@ import { canvasSceneProgram } from "../renderers/canvasScene.js";
 import { graphTrackSamples, sampleGraphTrack, graphFrameCollector } from "./graphTracks.js";
 
 export function sampleTransition(input,timeMs) {
+  return sampleTransitionWithBudget(input,timeMs);
+}
+
+// Internal batch accounting shares the same sampling path and single-frame
+// ceiling. The public API never accepts a host callback or exposes partial work.
+export function sampleTransitionWithBudget(input,timeMs,accountWork) {
   const plan=requireTransitionPlan(input),{progress,side}=transitionSampleState(timeMs,plan.durationMs,plan.easing);
   const timeline=sampleTransitionTimeline(transitionTimeline(plan),timeMs,progress),owners=transitionOwners(plan);
-  const decisions=[],geographic=[];
+  const decisions=[],geographic=[],axislabels=[];
+  const axisState=transitionAxisLabels(plan);
   const geoState=transitionGeos(plan);
   const geoTextState=transitionGeoTexts(plan);
   const guideState=transitionGuides(plan);
@@ -33,29 +42,37 @@ export function sampleTransition(input,timeMs) {
   const graphState=transitionGraphs(plan),graphSamples=graphTrackSamples(graphState.pairs,progress,timeline.progress),graphFrame=graphFrameCollector();
   const partitionState=transitionPartitions(plan),partitionSamples=partitionTrackSamples(partitionState,progress,timeline.progress),partitionFrame=partitionFrameCollector();
   const fromPositions=transitionEndpointPositions(plan,"from"),toPositions=transitionEndpointPositions(plan,"to");
-  const finish=(frame,positions,graphs,cartesian,partitions,polars,geos,guides,geotexts)=>animationFrameProvenance(frame)===undefined?registerAnimationFrame(frame,{plan,timeMs,positions,graphs,cartesian,partitions,polars,geos,guides:retainSampledGuideMeaning(guides),geotexts,meaning:captureFrameMeaning(frame,plan,timeMs,geographic)}):frame;
+  const finish=(frame,positions,graphs,cartesian,partitions,polars,geos,guides,geotexts,axisState)=>animationFrameProvenance(frame)===undefined?registerAnimationFrame(frame,{plan,timeMs,positions,graphs,cartesian,partitions,polars,geos,guides:retainSampledGuideMeaning(guides),geotexts,axislabels:axisState,meaning:captureFrameMeaning(frame,plan,timeMs,geographic,axislabels)}):frame;
   const appendGraph=(side,index)=>{const state=graphState[side],item=state.items[index];graphFrame.append(item===null?undefined:state.groups[item.group],item);};
   const appendPartition=(side,index)=>{const state=partitionState[side],item=state.items[index];partitionFrame.append(item===null?undefined:state.groups[item.group],item);};
   const meaning=position=>position.reason?null:position;
   if(side!==undefined){
     const endpoint=plan[side],frame=transitionEndpointFrame(plan,side)??cloneAndFreeze({graphicSpec:endpoint.graphicSpec,scene:endpoint.scene,progress,decisions});
-    return finish(frame,(progress===0?fromPositions:toPositions).map(meaning),graphState[side],cartesianState[side].map(meaning),partitionState[side],polarState[side].map(meaning),geoState[side],guideState[side],geoTextState[side]);
+    return finish(frame,(progress===0?fromPositions:toPositions).map(meaning),graphState[side],cartesianState[side].map(meaning),partitionState[side],polarState[side].map(meaning),geoState[side],guideState[side],geoTextState[side],axisState[side]);
   }
   const width=interpolateNumber(plan.from.scene.width,plan.to.scene.width,progress),height=interpolateNumber(plan.from.scene.height,plan.to.scene.height,progress);
   const updates=new Map([...plan.tracks,...plan.frameTracks].map(track=>[track.targetIndex,track]));
   const positions=[],cartesian=[],polars=[],guides=[];
-  let geographicWork=0;const accountGeographicWork=amount=>validateWorkLimit(geographicWork+=amount,"Animation geographic sample work");
+  let geographicWork=0;const accountGeographicWork=amount=>{validateWorkLimit(geographicWork+=amount,"Animation native sample work");accountWork?.(amount);};
   const geoFrame=geoFrameCollector(sampleGeoTracks(geoState.state,progress,accountGeographicWork,timeline),geoState.to);
   const geoTextFrame=geoTextFrameCollector(sampleGeoTextTracks(geoTextState.state,progress,accountGeographicWork,timeline),geoTextState.to);
+  const axisFrame=axisLabelFrameCollector(sampleAxisLabelTracks(axisState.state,progress,accountGeographicWork,timeline),axisState.to,timeline);
+  timeline.axisLabelGroup=axisFrame.current;
   const nodes=[];
-  const appendGeo=(slot,ownerKey)=>{for(const value of geoFrame.at(slot,nodes.length,ownerKey)){guides.push(null);geographic[nodes.length]={identity:value.identity,origin:value.origin};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(value.item);geoTextFrame.append(null);}};
-  const appendGeoText=(slot,role,ownerKey)=>{for(const value of geoTextFrame.at(slot,nodes.length,role,ownerKey)){guides.push(null);geographic[nodes.length]={identity:value.identity,origin:value.origin,metrics:value.metrics};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(null);geoTextFrame.append(value.item);}};
+  const appendGeo=(slot,ownerKey)=>{for(const value of geoFrame.at(slot,nodes.length,ownerKey)){guides.push(null);geographic[nodes.length]={identity:value.identity,origin:value.origin};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(value.item);geoTextFrame.append(null);axisFrame.append(null);}};
+  const appendGeoText=(slot,role,ownerKey)=>{for(const value of geoTextFrame.at(slot,nodes.length,role,ownerKey)){guides.push(null);geographic[nodes.length]={identity:value.identity,origin:value.origin,metrics:value.metrics};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(null);geoTextFrame.append(value.item);axisFrame.append(null);}};
+  let emittedGeographic=0;const emittedRoles=new Set();
+  const appendAxis=(slot,key)=>{for(const value of axisFrame.at(slot,nodes.length,key,emittedGeographic)){guides.push({identity:value.identity,reason:"guide-unavailable"});axislabels[nodes.length]={identity:value.identity,origin:value.origin};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(null);geoTextFrame.append(null);axisFrame.append(value.item);}};
   const geographicSlots=new Map(),geographicOrder=new Map(geoTextFrame.order.map((entry,index)=>[JSON.stringify(entry),index]));
   const addGeographicSlot=(slot,role,key)=>{if(!geographicSlots.has(slot))geographicSlots.set(slot,[]);geographicSlots.get(slot).push([role,key]);};
   for(const [slot,keys]of geoFrame.slots)for(const key of keys)addGeographicSlot(slot,"geo",key);
   for(const [slot,role,key]of geoTextFrame.slots)addGeographicSlot(slot,role,key);
-  for(const values of geographicSlots.values())values.sort((a,b)=>geographicOrder.get(JSON.stringify(a))-geographicOrder.get(JSON.stringify(b)));
-  const appendGeographic=slot=>{for(const [role,key]of geographicSlots.get(slot)??[]){if(role==="geo")appendGeo(slot,key);else appendGeoText(slot,role,key);}};
+  const targetGeographicOrder=new Map(geoTextState.to.order.map((role,index)=>[JSON.stringify(role),index]));
+  const axisOrder=new Map(axisFrame.slots.map(([slot,key,ordinal,before])=>[key,{ordinal,before}]));
+  for(const [slot,key]of axisFrame.slots)addGeographicSlot(slot,"axis-labels",key);
+  const rank=([role,key])=>{if(role==="axis-labels")return axisOrder.get(key).before*2;const target=targetGeographicOrder.get(JSON.stringify([role,key]));if(target!==undefined)return target*2+1;return targetGeographicOrder.get(JSON.stringify(["labels",key]))*2+.5;};
+  for(const values of geographicSlots.values())values.sort((a,b)=>rank(a)-rank(b)||(a[0]==="axis-labels"&&b[0]==="axis-labels"?axisOrder.get(a[1]).ordinal-axisOrder.get(b[1]).ordinal:geographicOrder.get(JSON.stringify(a))-geographicOrder.get(JSON.stringify(b))));
+  const appendGeographic=slot=>{for(const [role,key]of geographicSlots.get(slot)??[]){if(role==="geo")appendGeo(slot,key);else if(role==="axis-labels")appendAxis(slot,key);else appendGeoText(slot,role,key);const token=JSON.stringify([role,key]);if(role!=="axis-labels"&&!emittedRoles.has(token)){emittedRoles.add(token);emittedGeographic++;}}};
   const sampleNode=(to,targetIndex)=>{
     const ownerKey=owners.to[targetIndex],progress=timeline.progress(ownerKey);
     guides.push(guideState.to[targetIndex]);
@@ -67,7 +84,7 @@ export function sampleTransition(input,timeMs) {
     let reason=track.reason;
     const appearance=()=>sampleAnimationAppearance(track.appearance,progress);
     if(track.kind==="semantic-guide"){
-      const sampled=sampleGuideInterpolation(track.guide,progress);
+      const sampled=sampleGuideInterpolation(track.guide,progress,timeline);
       if(sampled.kind==="guide"&&sampled.type===to.type){
         const properties={...to.properties,...appearance(),...sampled.properties};validateConcreteGraphicProperties(to.type,properties);
         decisions.push({...metadata,kind:"semantic-kernel",kernel:"guide-geometry"});positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);guides[guides.length-1]=sampled.state;
@@ -124,21 +141,21 @@ export function sampleTransition(input,timeMs) {
     if(guides[guides.length-1]!==null)guides[guides.length-1]={identity:guides[guides.length-1].identity,reason:"guide-unavailable"};
     positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);decisions.push({...metadata,kind:"crossfade",reason});return blendAnimationNodes(from,to,progress,width,height);
   };
-  for(const [targetIndex,to]of plan.to.scene.nodes.entries()){appendGeographic(targetIndex);if(geoState.skipTo.has(targetIndex)||geoTextState.skipTo.has(targetIndex))continue;nodes.push(timeline.node(sampleNode(to,targetIndex),targetIndex));geoFrame.append(null);geoTextFrame.append(null);}
+  for(const [targetIndex,to]of plan.to.scene.nodes.entries()){appendGeographic(targetIndex);if(geoState.skipTo.has(targetIndex)||geoTextState.skipTo.has(targetIndex)||axisFrame.skipTo.has(targetIndex))continue;nodes.push(timeline.node(sampleNode(to,targetIndex),targetIndex));geoFrame.append(null);geoTextFrame.append(null);axisFrame.append(null);}
   appendGeographic(plan.to.scene.nodes.length);
   const used=new Set(nodes.map(node=>node.key));
-  if(used.size!==nodes.length)throw new TypeError("Animation generated Geo key collides with another scene key.");
-  for(const sourceIndex of plan.exits){if(geoState.skipFrom.has(sourceIndex)||geoTextState.skipFrom.has(sourceIndex))continue;const from=plan.from.scene.nodes[sourceIndex];let key=from.key;
+  if(used.size!==nodes.length)throw new TypeError("Animation generated key collides with another scene key.");
+  for(const sourceIndex of plan.exits){if(geoState.skipFrom.has(sourceIndex)||geoTextState.skipFrom.has(sourceIndex)||axisFrame.skipFrom.has(sourceIndex))continue;const from=plan.from.scene.nodes[sourceIndex];let key=from.key;
     if(used.has(key))key=JSON.stringify(["animation-exit",sourceIndex,key]);
     if(used.has(key))throw new TypeError("Animation exit key collides with a target scene key.");used.add(key);
     const ownerKey=owners.from[sourceIndex];
     guides.push(guideState.from[sourceIndex]);decisions.push({kind:"exit",sourceIndex,...(ownerKey===undefined?{}:{ownerKey}),...(guideState.ambiguousFrom.has(sourceIndex)?{reason:"guide-ambiguity"}:{})});nodes.push(fadeAnimationNode(from,1-timeline.progress(ownerKey),key));
-    positions.push(meaning(fromPositions[sourceIndex]));cartesian.push(meaning(cartesianState.from[sourceIndex]));polars.push(meaning(polarState.from[sourceIndex]));appendGraph("from",sourceIndex);appendPartition("from",sourceIndex);geoFrame.append(null);geoTextFrame.append(null);
+    positions.push(meaning(fromPositions[sourceIndex]));cartesian.push(meaning(cartesianState.from[sourceIndex]));polars.push(meaning(polarState.from[sourceIndex]));appendGraph("from",sourceIndex);appendPartition("from",sourceIndex);geoFrame.append(null);geoTextFrame.append(null);axisFrame.append(null);
   }
   validateGeneratedItemLimit(nodes.length,"Animation sampled nodes");
   const scene=cloneAndFreeze({version:2,width,height,nodes});
   const geos=geoFrame.finish();
-  return finish(cloneAndFreeze({graphicSpec:canvasSceneProgram(scene).graphicSpec,scene,progress,decisions}),positions,graphFrame.finish(),cartesian,partitionFrame.finish(),polars,geos,guides,geoTextFrame.finish(geos));
+  return finish(cloneAndFreeze({graphicSpec:canvasSceneProgram(scene).graphicSpec,scene,progress,decisions}),positions,graphFrame.finish(),cartesian,partitionFrame.finish(),polars,geos,guides,geoTextFrame.finish(geos),axisFrame.finish());
 }
 
 // Offline frame export adds only a time label while retaining authentic meaning.
@@ -150,7 +167,7 @@ export function withSampleTime(frame,timeMs,plan) {
     const {side}=transitionSampleState(timeMs,plan.durationMs,plan.easing);
     if(side!==undefined&&transitionEndpointFrame(plan,side)===frame){
       return registerAnimationFrame(cloneAndFreeze({...frame,timeMs}),{plan,timeMs,
-        geotexts:transitionGeoTexts(plan)[side],guides:transitionGuides(plan)[side],geos:transitionGeos(plan)[side],positions:transitionEndpointPositions(plan,side).map(position=>position.reason?null:position),graphs:transitionGraphs(plan)[side],partitions:transitionPartitions(plan)[side],polars:transitionPolars(plan)[side].map(position=>position.reason?null:position),cartesian:transitionCartesian(plan)[side].map(position=>position.reason?null:position),meaning:captureFrameMeaning(frame,plan,timeMs)});
+        axislabels:transitionAxisLabels(plan)[side],geotexts:transitionGeoTexts(plan)[side],guides:transitionGuides(plan)[side],geos:transitionGeos(plan)[side],positions:transitionEndpointPositions(plan,side).map(position=>position.reason?null:position),graphs:transitionGraphs(plan)[side],partitions:transitionPartitions(plan)[side],polars:transitionPolars(plan)[side].map(position=>position.reason?null:position),cartesian:transitionCartesian(plan)[side].map(position=>position.reason?null:position),meaning:captureFrameMeaning(frame,plan,timeMs)});
     }
     if(animationPlanProvenance(plan).identity!==proof.planIdentity)throw new TypeError("Sampled time view does not belong to this plan.");
   }
