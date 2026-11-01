@@ -1,0 +1,179 @@
+{
+  "checkpoint": "guide13 current dynamic-axis title and implicit-lane dependencies",
+  "status": "runtime and same-artifact qualification passed; source pin/build follows source commit",
+  "approval": "../../AUTHORIZATION.json#remainingApproval; parent-approved read-only prepared axis state, flat retention and shared work callbacks",
+  "base": "7fadd5a5ecea25e8340c47e946e9a387a48ae434",
+  "mergedSource": "0811878a9500f2637e1ea60a1e4d40eb352f8370",
+  "versions": {
+    "transition": 3,
+    "guide": "native-guide-values@13",
+    "cartesian": 2,
+    "geoText": 2
+  },
+  "closedVersionsRejected": [
+    11,
+    12
+  ],
+  "design": "../INFERRED_LEGEND_CLEARANCE.md",
+  "sourceHashes": {
+    "src/animation/guideTracks.js": "282bd7fc58d93262e8d90fb048e9ec0c670b3871e01b72c7b3c3fc19b7b20179",
+    "src/animation/planner.js": "ba00d92b9df81ffebb361db461f3567bb6c5402f7f8ecef4dd9134bc371cb040",
+    "src/animation/sample.js": "2341aae59da17d11d0eadc9b28f56831f103ae44a3943492c2579b6477c87da0",
+    "src/grammar/animation/guideState.js": "6aa30ecc49c40272451c52793af64f25bd06e1bdcde540f116ab6fa5309a7491",
+    "src/grammar/schemas/graphicBounds.js": "d08ce7b0a7e1965e439df8770acc69d85735fa9db7dff6abb51a24486b2cb425",
+    "src/materialization/animation/axisLabelDependencies.js": "01dcc84e49d19287639ec398fbeefd8064fb2bd3f8bf1e659a96058cb7c3c2e7",
+    "src/materialization/animation/axisTitleGuides.js": "cc29b72d0428225e781264f9a8d8462604af761d069890b3deac30dc6625d315",
+    "src/materialization/animation/axisTitleState.js": "1aae1b550d994b0a13f6e31e73df794338aacea7c3caf0c065b4ea5201e8c81d",
+    "src/materialization/animation/guides.js": "0230759ed0b1bd3c09f6a774ff70a17bca9482cedd77b9dc43d81fc0946c2a54",
+    "src/materialization/animation/legendAxisLaneState.js": "80f8f28758485a58f9b08dcfb65b4ad50357f428ba61328527c8e4c857c41ef0",
+    "src/materialization/animation/legendGuides.js": "e4107fdb4edb6b02efd609f5e0a6b63be791c9b7d5f80d34c8ff6c04d20ea055",
+    "src/materialization/animation/legendLaneGuides.js": "13379da39476c50f7509805fcb788027bfb908df13f32528cbddf7f764242acf",
+    "src/materialization/animation/legendLaneState.js": "a7e9e59460f8c37e2e8a9808be2432651db55d7cb5645843d49c426e4fca644e",
+    "src/materialization/guides/axisClearance.js": "58597c0b4f06a91f84a7b2d5e7c46163cf56db084e6836fe76fe70a4e8d8c065",
+    "src/materialization/guides/resources.js": "6818d90aee642080a53aee39d59dcd306619ef7d45d19bee632f4f54fcd76c29",
+    "types/animation.d.ts": "e33bc46d61f8e446fc7c7ec689510c26a73a39060c3f1eaa5fb7a2f27a5ec19f"
+  },
+  "sharedSeams": {
+    "patch": "shared-seams.patch",
+    "sha256": "22ed8bb38dba3aeb656bd83a48a9e34f3ebeaa83d014de431d76655908be6959",
+    "changes": [
+      "planner project already prepared axislabels",
+      "planner prepare guide tracks with same endpoint axislabels",
+      "planner strict restored guide refs with validated axislabels",
+      "sample flat retention consumes same current axis state",
+      "sample context shares existing accountGeographicWork callback"
+    ],
+    "unchangedFromR": {
+      "src/animation/frameEndpoint.js": "cd1e63ef949164874c3a0e724a353eb634e428c68bbe8215571dd495e601ad88",
+      "src/animation/frameProvenance.js": "5cb5f29a1bc3544606d7766788ec7e24792004dd4f08ad3a4a29e6360296490d"
+    }
+  },
+  "qualification": {
+    "cumulativeAnimation": {
+      "tests": 696,
+      "passed": 696,
+      "sourceUnchangedAfterRun": true,
+      "note": "The subsequent 14th new read-only projection test is covered by the 45-case supplement; no claim of a repeated 697-case run."
+    },
+    "owningSupplement": {
+      "tests": 45,
+      "passed": 45,
+      "includesNewOwningTests": 14
+    },
+    "coverage": {
+      "guideTracks": [
+        100,
+        98.92,
+        100
+      ],
+      "planner": [
+        100,
+        93.06,
+        100
+      ],
+      "sample": [
+        100,
+        98.08,
+        100
+      ],
+      "axisLabelDependencies": [
+        100,
+        91.3,
+        100
+      ],
+      "axisTitleGuidesSupplement": [
+        100,
+        90.48,
+        100
+      ],
+      "axisTitleState": [
+        100,
+        95.41,
+        100
+      ],
+      "guides": [
+        100,
+        99.38,
+        100
+      ],
+      "legendAxisLaneState": [
+        100,
+        91.08,
+        100
+      ],
+      "legendGuides": [
+        100,
+        100,
+        100
+      ],
+      "graphicBoundsSupplement": [
+        87.27,
+        80.47,
+        92.59
+      ]
+    },
+    "boundaries": 26,
+    "finalCapsPackageTypes": 11,
+    "documentation": 238,
+    "realSources": 5,
+    "realisticDurationMs": 1680.109375,
+    "renderers": "Canvas/PNG exact bytes, SVG vector plus real Chromium pixels, PDF raster against native same-time; actual metric fixture font bytes",
+    "browser": "Existing and dependency fixtures at DPR1/2; Canvas/SVG exact native pixels; font leases disposed and page errors zero",
+    "installed": {
+      "nodes": [
+        "20",
+        "22",
+        "24"
+      ],
+      "runtimeCasesPerNode": 11,
+      "strictAnimationTypes": true,
+      "actualDocSnippet": true,
+      "optionalPeers": true,
+      "sixBundles": true,
+      "freshProcessNetworkGuard": true
+    }
+  },
+  "archive": {
+    "sha256": "46f17f22714c9aa9ccb04a14d9c29a98aa19d7086816c999cb37b56ef190acf3",
+    "files": 1239,
+    "canonicalInputMismatches": [],
+    "localPath": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/animation-archives/ggaction-46f17f22714c9aa9ccb04a14d9c29a98aa19d7086816c999cb37b56ef190acf3.tgz"
+  },
+  "caps": {
+    "entries": 1239,
+    "packedBytes": 1780000,
+    "unpackedBytes": 8019000,
+    "gzip": {
+      "full": 783700,
+      "basic": 424400,
+      "svg": 26000,
+      "graph": 46000,
+      "interaction": 131400,
+      "animation": 333700
+    }
+  },
+  "firstFailuresPreserved": [
+    "old dynamic fallback expectations",
+    "invalid null/path-command fixture",
+    "DPR2 weighted raster limit: only empty fixture canvas height adjusted 600 to 400, limits unchanged",
+    "realistic short selector selected zero tests; final full-path selector passed five",
+    "1239 entries exceeded old 1236",
+    "relative package output path failed in staging; fixed absolute path",
+    "initial installed attempt lacked archive; not a pass",
+    "first real installed tar passed runtime/types/doc but exceeded Basic/animation bundle caps; final README-synchronized exact tar requalified all three Nodes"
+  ],
+  "scopeLimits": [
+    "No overall STEP061/062/077 completion claim",
+    "Changed maxWidth/reflow policy remains explicit fallback",
+    "Non-Cartesian automatic dependency cases remain outside this Cartesian title/lane slice",
+    "No previous plan, copied dependency layout, extra native projection, fake index, duplicated current layout or renderer-side semantic calculation"
+  ],
+  "invariants": [
+    "raw source rows and values unchanged",
+    "font metrics exact and current clipped ink drives native title/lane",
+    "empty groups and source/target-only groups retained",
+    "axis/lane independent timeline clocks and current line styling",
+    "work charged by visited multiline/path/clip structures; cache hits not charged again; exact 10M passes and next step fails atomically",
+    "native supported scene, rebase and offline full equality"
+  ]
+}

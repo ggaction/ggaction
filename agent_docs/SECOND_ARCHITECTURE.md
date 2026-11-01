@@ -17,6 +17,10 @@ endpoint는 기존 frame 객체이며 serializer는 그 진단 view도 보존한
 `materialization/animation/legendAxisLaneState.js`가 공통 native clearance/lane owner로
 여백을 계산한다. Scene의 실제 잉크는 기존 primitive bounds·translation·clip owner를
 재사용한다. 축 layout을 lane에 복사하거나 endpoint pixel을 의미로 역추정하지 않는다.
+동적 label 의존은 `materialization/animation/axisLabelDependencies.js`가 기존 raw 그룹의
+exact owner 참조와 현재 metrics/graphics를 연결한다. Native label 계산은 R collector가 한 번
+소유하고 title/lane은 실제 현재 clip을 포함한 occupied ink만 소비한다. 슬롯·layout 복제나
+과거 plan 참조는 추가하지 않으며 같은 work callback으로 실제 방문을 합산한다.
 정확한 지원과 fallback은 [Current ANIMATION](contract/current/ANIMATION.md)이 소유한다.
 
 > 작업에 필요한 section만 빠르게 찾으려면
@@ -940,7 +944,14 @@ the shared candidate owner applies explicit Canvas and title collision constrain
 Explicit font preparation can request `materialization/axisLabelQueries.js` to collect
 bounded native wrapping queries before host work. It shares the native tokenizer and
 font profile budgets; the default preparation path and stored profile shape stay unchanged.
-Prepared placement never chooses a new wrap or responsive fallback during sampling.
+Fixed prepared placement retains its native line topology. Dynamic axis labels use
+`axisLabelReflowState.js` and `axisLabelGroups.js` to preserve one bounded raw group,
+including an actual empty collection slot. Sampling reuses the same native candidate
+owner at current scale/frame values, retaining raw tick/line identity without invented
+endpoint indices. `axisLabelFrames.js` prepares the final line styles once for drawing
+and read-only dependent ink lookup; actual insertion order stays with the collector.
+Exact font queries are prepared before sampling. Offline frame export charges current
+native group work even when the group emits no nodes, under the existing batch budget.
 Actions still explicitly materialize graphics. These shared calculations do not add a
 semantic compiler, renderer access to meaning, or new stored graphic identity. Public
 animation preparation carries guide meaning in an optional endpoint vector. The same
@@ -964,11 +975,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Current gzip ceiling |
 | --- | --- |
 | `ggaction` | 783,700 bytes |
-| `ggaction/basic` | 424,300 bytes |
+| `ggaction/basic` | 424,400 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 131,400 bytes |
-| `ggaction/animation` | 321,500 bytes |
+| `ggaction/animation` | 333,700 bytes |
 
 
 
@@ -4853,6 +4864,13 @@ semantic-guide 출력/forward proof를 유지한다. Renderer·trace·public sig
 closure 및 font binding 보존을 함께 소유한다. 최종 pixel을 의미로 역산하지 않고, 같은 native
 forward proof/guideTracks seam을 사용한다. 동적 wrapping/skip 선택의 남은 지원 범위는
 [Animation Current](contract/current/ANIMATION.md)가 소유한다.
+독립 `axisLabelReflowState`는 같은 config/query/candidate owner를 사용하여 현재 raw value와
+실제 line 목록·ink bounds를 검산한다. Host preparation과 animation은 같은 bounded wrap query
+collector를 공유한다. `axisLabelGroups`는 실제 native collection의 빈 drawing slot까지 수집하고
+raw별 style/font와 현재 line vector를 닫힌 준비 상태로 검산한다. 아직 공개 sampler에 연결하지
+않았으며 dynamic emission은 후속 경계다. Geo와 이 준비 상태의 동일 concrete placement 검증은
+`grammar/animation/placement`가 소유하고 Geo의 기존 alias/오류를 유지한다. Native action의
+기본 query/trace/renderer 입력은 바꾸지 않는다.
 
 Native Cartesian@2와 gradient/fixed-label guide@4를 root timeline version3에 결합했다.
 sample은 순수 axis state와 materialization legend/label state를 guideTracks facade로 분기하고
@@ -4903,3 +4921,21 @@ packed1,694,230/unpacked7,641,072bytes와1182entries에 따라 최소한도
 명시 그룹 범례 독립 checkpoint에서 owner3개를 추가한 artifact는1185entries, packed1,696,696 및 unpacked7,669,973bytes였으며 당시 한도1185/1,696,700/7,670,000을 적용했다. Native packing의 당시 Node20 animation281,317gzip bytes와 ceiling281,400은 독립 그룹검증기록에 보존한다. Root 합산의 현재한도는 위 표와 executable owner가 소유한다.
 
 Native axis title clearance is shared by `materialization/guides/axisTitleLayout.js`. Actions retain resource lookup, theme-preferred offsets, same-side preflight and wrapped writes. The pure owner consumes explicit current label bounds and title metrics, preserving the native4px gap, legacy Canvas clamp and rotated-Y ink reserve with collision fallback. It adds no stored intent or automatic compiler; typed inferred/relative title transitions remain a separate integration obligation.
+
+
+동적 axis-label 공개 component는 prepared native group의 현재 후보/줄/metrics를 한 번 계산하고
+final-current lookup으로 dependent guide에 읽기 전용 graphics/bounds/profile을 공급한다. Raw별
+공통 style을 증명하지 못하면 drawing은 보존하되 lookup을 제공하지 않는다. 같은 source package는
+1,236entries/7,982,959unpacked, Node22 1,768,442/Node24 1,771,737packed bytes로 측정했다.
+최소 상한은1,236/1,771,800/7,983,000이며 현재 six-entry ceilings는 위 executable owner 표가 정본이다.
+
+
+### 동적 guide 의존성 package 경계
+
+Guide13은 R native axis emission과 고정 축 lane owner를 결합하고 읽기 전용
+`axisLabelDependencies.js`를 추가한다. R package 기준 대비 고정 lane의 두 owner와 이
+adapter를 합쳐3entries가 추가된다. Canonical staging의 Node20/22/24 실측은1,239entries,
+8,018,552unpacked, 최대1,779,682packed이며 최소cap은1,239/1,780,000/8,019,000이다.
+최초1,236-entry 실패를 기록에 보존한다. 공개 entry나 renderer 경계는 추가하지 않는다.
+동일tar의 Node20 bundle 측정에서 Basic424,305/animation333,698bytes가 기존한도를 넘었다.
+최소100bytes 단위로424,400/333,700으로 조정하고 위 표/README와 동기화한다.

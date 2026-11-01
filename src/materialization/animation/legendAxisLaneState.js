@@ -1,3 +1,4 @@
+import { validateAnimationOwnerKey } from "../../grammar/animation/ownerKey.js";
 import { encodeValue } from "../../core/valueEncoding.js";
 import { getErrorDetails } from "../../core/diagnostics.js";
 import { cloneAndFreeze, isOwned } from "../../core/immutable.js";
@@ -11,7 +12,7 @@ import { normalizeLegendLaneAnimationState, legendLaneAnimationKeys, legendLaneA
   sampleLegendLaneInterpolation } from "./legendLaneState.js";
 
 const same = (a, b) => JSON.stringify(encodeValue(a)) === JSON.stringify(encodeValue(b));
-const states = new WeakMap(), entries = new WeakMap();
+const states = new WeakMap(), entries = new WeakMap(), dynamicEntries = new WeakMap();
 const base = state => ({ identity: state.identity, kind: "legend-lane", layout: state.layout });
 const fade = reason => Object.freeze({ kind: "crossfade", reason });
 function record(value, keys, label) {
@@ -25,8 +26,10 @@ export function axisGuideEdge(state) {
   if (state.kind === "anchor" && state.anchor.kind === "title" && ["x", "y"].includes(state.anchor.channel)) return state.anchor.policy.side;
 }
 const axisComponent = state => ["line", "ticks", "labels", "title", "parallel-labels", "parallel-title"].includes(state?.identity.component);
-export function legendAxisReferenceKeys(states, namespaces, edge) {
-  const scoped = states.filter(state => state !== null && axisComponent(state) && same(state.identity.namespaces, namespaces));
+export function legendAxisReferenceKeys(states, namespaces, edge, axislabels) {
+  const ownersWithLabels = new Set((axislabels?.groups ?? []).map(group => JSON.stringify([group.scope.namespaces, group.scope.owner])));
+  const scoped = states.filter(state => state !== null && axisComponent(state) && same(state.identity.namespaces, namespaces) &&
+    !(state.identity.component === "labels" && ownersWithLabels.has(JSON.stringify([state.identity.namespaces, state.identity.owner]))));
   const owners = new Map();
   for (const state of scoped) {
     const side = axisGuideEdge(state);
@@ -48,28 +51,36 @@ export function legendAxisReferenceKeys(states, namespaces, edge) {
 }
 export function normalizeLegendAxisLaneState(input) {
   if (states.has(input)) return states.get(input);
-  record(input, ["identity", "kind", "layout", "axes", "offsets"], "Axis-dependent legend lane");
+  record(input, ["identity", "kind", "layout", "axes", "offsets", ...(Object.hasOwn(input, "labelGroups") ? ["labelGroups"] : [])], "Axis-dependent legend lane");
   if (input.kind !== "legend-axis-lane") throw new TypeError("Expected an axis-dependent native legend lane.");
   const normalized = normalizeLegendLaneAnimationState(base(input));
   ownArray(input.axes, "Legend axis references");
-  if (!input.axes.length) throw new TypeError("Axis-dependent legend lane requires exact axis references.");
+  if (!input.axes.length && !input.labelGroups?.length) throw new TypeError("Axis-dependent legend lane requires exact axis references.");
   let work = 0;
   for (const key of input.axes) {
     if (typeof key !== "string" || !key.length) throw new TypeError("Legend axis references require canonical guide keys.");
     validateWorkLimit(work += key.length + 1, "Legend axis reference work");
   }
   if (!same([...new Set(input.axes)].sort(), input.axes)) throw new TypeError("Legend axis references must be unique and canonical.");
+  if (Object.hasOwn(input, "labelGroups")) {
+    ownArray(input.labelGroups, "Legend label group references");
+    if (!input.labelGroups.length) throw new TypeError("Empty label group references must be omitted.");
+    for (const key of input.labelGroups) { validateAnimationOwnerKey(key); validateWorkLimit(work += key.length + 1, "Legend axis reference work"); }
+    if (!same([...new Set(input.labelGroups)].sort(), input.labelGroups)) throw new TypeError("Legend label group references must be unique and canonical.");
+    if (input.labelGroups.some(key => !same(JSON.parse(key)[0], normalized.identity.namespaces))) throw new TypeError("Legend label groups must share their native namespace.");
+  }
   // The existing native lane owner validates inferred block names and offset
   // inheritance. Zero ink here validates only shape; endpoint ink is separate.
   resolveLegendLaneClearanceEntries(normalized.layout, { clearance: 0, offsets: input.offsets });
-  const result = cloneAndFreeze({ ...normalized, kind: "legend-axis-lane", axes: input.axes, offsets: input.offsets });
+  const result = cloneAndFreeze({ ...normalized, kind: "legend-axis-lane", axes: input.axes, offsets: input.offsets, ...(input.labelGroups === undefined ? {} : { labelGroups: input.labelGroups }) });
   states.set(result, result); if (isOwned(input)) states.set(input, result); return result;
 }
 export const legendAxisLaneKeys = input => legendLaneAnimationKeys(base(normalizeLegendAxisLaneState(input)));
-export function resolveLegendAxisLaneEntries(input, dependencies, laneNode) {
+export function resolveLegendAxisLaneEntries(input, dependencies, laneNode, labelGroups = [], accountWork) {
   const state = normalizeLegendAxisLaneState(input), byKey = new Map();
   const key = JSON.stringify([state.axes, state.offsets, laneNode?.offset ?? [0, 0]]);
-  const cached = entries.get(dependencies)?.get(state.layout)?.get(key);
+  const cache = state.labelGroups === undefined ? entries.get(dependencies) : dynamicEntries.get(dependencies)?.get(labelGroups);
+  const cached = cache?.get(state.layout)?.get(key);
   if (cached !== undefined) return cached;
   for (const item of dependencies) {
     const key = guideAnimationKey(item.state.identity);
@@ -82,45 +93,67 @@ export function resolveLegendAxisLaneEntries(input, dependencies, laneNode) {
     if (axis.reason !== undefined || axisGuideEdge(axis) !== state.layout.edge || !same(axis.identity.namespaces, state.identity.namespaces)) throw new TypeError("Legend axis reference differs from its native scope and edge.");
     if (node.type === "weighted-blend") throw new TypeError("A fallback cannot supply native axis ink.");
     if (node.type === "text" && axis.layout?.metrics === undefined) throw new TypeError("Legend axis text requires its prepared native metrics.");
-    const bounds = resolveSceneNodeOccupiedBounds(node, axis.layout?.metrics);
+    const bounds = resolveSceneNodeOccupiedBounds(node, axis.layout?.metrics, accountWork);
     if (bounds === undefined) return undefined;
     const [x, y] = laneNode?.offset ?? [0, 0];
     return { position: state.layout.edge, bounds: { left: bounds.left - x, right: bounds.right - x, top: bounds.top - y, bottom: bounds.bottom - y } };
   });
+  if (!same(labelGroups.map(item => item.key).sort(), state.labelGroups ?? [])) throw new TypeError("Legend lane requires every current label group.");
+  for (const { current } of labelGroups) {
+    if (current === undefined) throw new TypeError("Unavailable labels cannot supply native axis ink.");
+    for (const graphic of current.graphics) {
+      const bounds = resolveSceneNodeOccupiedBounds({ type: "text", properties: graphic.properties, ...graphic.frame }, current.metrics, accountWork);
+      if (bounds === undefined) continue;
+      const [x, y] = laneNode?.offset ?? [0, 0];
+      blocks.push({ position: state.layout.edge, bounds: { left: bounds.left - x, right: bounds.right - x, top: bounds.top - y, bottom: bounds.bottom - y } });
+    }
+  }
   const result = resolveLegendLaneClearanceEntries(state.layout, { clearance: resolveAxisLaneClearance(state.layout.edge, state.layout.frame.plot, blocks.filter(Boolean)), offsets: state.offsets });
-  if (isOwned(dependencies)) {
-    if (!entries.has(dependencies)) entries.set(dependencies, new WeakMap());
-    const layouts = entries.get(dependencies); if (!layouts.has(state.layout)) layouts.set(state.layout, new Map());
+  if (isOwned(dependencies) && (state.labelGroups === undefined || isOwned(labelGroups))) {
+    let layouts;
+    if (state.labelGroups === undefined) {
+      if (!entries.has(dependencies)) entries.set(dependencies, new WeakMap());
+      layouts = entries.get(dependencies);
+    } else {
+      if (!dynamicEntries.has(dependencies)) dynamicEntries.set(dependencies, new WeakMap());
+      const groups = dynamicEntries.get(dependencies);
+      if (!groups.has(labelGroups)) groups.set(labelGroups, new WeakMap());
+      layouts = groups.get(labelGroups);
+    }
+    if (!layouts.has(state.layout)) layouts.set(state.layout, new Map());
     layouts.get(state.layout).set(key, result);
   }
   return result;
 }
-export function resolveLegendAxisLaneGeometry(input, dependencies, laneNode) {
-  const state = normalizeLegendAxisLaneState(input), entry = resolveLegendAxisLaneEntries(state, dependencies, laneNode).find(entry =>
+export function resolveLegendAxisLaneGeometry(input, dependencies, laneNode, labelGroups, accountWork) {
+  const state = normalizeLegendAxisLaneState(input), entry = resolveLegendAxisLaneEntries(state, dependencies, laneNode, labelGroups, accountWork).find(entry =>
     entry.target === state.identity.owner && entry.family === state.identity.value[0] && entry.component === state.identity.component && same(entry.sample, state.identity.value[1]));
   if (entry === undefined) throw new TypeError("Legend axis lane must name its native component.");
   return cloneAndFreeze({ type: entry.type, properties: entry.properties });
 }
-export function legendAxisLaneMatchesNode(input, node, dependencies) {
-  const state = normalizeLegendAxisLaneState(input), output = resolveLegendAxisLaneGeometry(state, dependencies, node);
+export function legendAxisLaneMatchesNode(input, node, dependencies, labelGroups) {
+  const state = normalizeLegendAxisLaneState(input), output = resolveLegendAxisLaneGeometry(state, dependencies, node, labelGroups);
   if (output.type !== node.type || !Object.entries(output.properties).every(([key, value]) => same(value, node.properties[key]))) return false;
   const original = resolveLegendLaneAnimationGeometry(base(state));
   return legendLaneAnimationMatchesNode(base(state), { ...node, properties: { ...node.properties, ...original.properties } });
 }
 export function prepareLegendAxisLaneInterpolation(fromInput, toInput) {
   const from = normalizeLegendAxisLaneState(fromInput), to = normalizeLegendAxisLaneState(toInput);
-  if (!same(from.axes, to.axes) || !same(from.offsets, to.offsets)) return fade("guide-layout");
+  if (!same(from.axes, to.axes) || !same(from.offsets, to.offsets) || !same(from.labelGroups, to.labelGroups)) return fade("guide-layout");
   const prepared = prepareLegendLaneInterpolation(base(from), base(to));
   return prepared.kind === "crossfade" ? prepared : cloneAndFreeze({ kind: "guide", version: ANIMATION_GUIDE_VERSION, from, to });
 }
-export function sampleLegendAxisLaneInterpolation(plan, progress, dependencies, laneNode) {
+export function sampleLegendAxisLaneInterpolation(plan, progress, dependencies, laneNode, labelGroups, accountWork) {
   const prepared = prepareLegendAxisLaneInterpolation(plan.from, plan.to);
   if (prepared.kind !== "guide" || plan.kind !== "guide" || plan.version !== ANIMATION_GUIDE_VERSION) throw new TypeError("Invalid prepared axis-dependent legend lane.");
   const sampled = sampleLegendLaneInterpolation(prepareLegendLaneInterpolation(base(prepared.from), base(prepared.to)), progress);
   if (sampled.kind !== "guide") return sampled;
   const state = normalizeLegendAxisLaneState({ ...prepared.from, layout: sampled.state.layout });
-  try { return cloneAndFreeze({ kind: "guide", state, ...resolveLegendAxisLaneGeometry(state, dependencies, laneNode) }); }
+  let workFailure;
+  const account = accountWork === undefined ? undefined : amount => { try { accountWork(amount); } catch (error) { workFailure = error; throw error; } };
+  try { return cloneAndFreeze({ kind: "guide", state, ...resolveLegendAxisLaneGeometry(state, dependencies, laneNode, labelGroups, account) }); }
   catch (error) {
+    if (error === workFailure) throw error;
     if (error instanceof RangeError || getErrorDetails(error)?.reason === "canvas-overflow") return fade("guide-layout");
     throw error;
   }

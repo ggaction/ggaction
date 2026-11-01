@@ -129,3 +129,12 @@ test("guide geometry rejects overflow and closed-schema corruption before exposi
   const a = tick(), b = { ...a, policy: { ...a.policy, side: "top" } };
   assert.throws(() => sampleGuideInterpolation({ kind: "guide", version: prepareGuideInterpolation(a, a).version, from: a, to: b }, .5), /Incompatible/);
 });
+
+test('size legend interval identities preserve open bounds and reject nonnumeric limits', () => {
+  const identity = { namespaces: [], owner: 'size', component: 'legend-symbol', value: ['size', ['interval', null, 5]], line: 0 };
+  assert.deepEqual(normalizeGuideIdentity(identity), identity);
+  assert.deepEqual(normalizeGuideIdentity({ ...identity, value: ['size', ['interval', 5, null]] }).value, ['size', ['interval', 5, null]]);
+  for (const bound of ['5', Infinity, NaN]) {
+    assert.throws(() => normalizeGuideIdentity({ ...identity, value: ['size', ['interval', null, bound]] }), /exact raw value/);
+  }
+});

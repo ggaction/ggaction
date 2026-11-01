@@ -275,8 +275,28 @@ measured label bounds. Native theme/default gaps, label-relative gaps, and Canva
 rules remain intact as scales or frames change. A title never treats its final offset
 as the original meaning. The complete same-axis label dependency is checked during
 restoration; editing a label also makes its dependent title fade safely. Text or font
-changes, width-based wrapping, responsive skip/rotation selection, and unsafe intermediate
-placements retain explicit fallbacks.
+changes and unsafe intermediate placements retain explicit fallbacks.
+
+Cartesian labels using `maxWidth` or a responsive policy can change their line count,
+skip selection, and rotation at the current scale and frame. They reuse the native label
+layout with the same raw values, text, font, and policy. Newly visible lines report
+`kind: 'guide'` and `kernel: 'native-axis-label'`; their `guideKey` identifies the raw
+value and current line without inventing an endpoint index. Empty label collections
+retain their owner for geometry tracks. A label's per-line paint track affects the
+current drawing; reusing a frame with different paint on lines of the same raw value
+falls back safely.
+
+For exact font profiles, prepare the required intermediate wrapping queries with
+the `axisLabelReflow: true` request option to
+[`prepareTextMetrics`](rendering.md#embedded-fonts) and apply that profile
+before planning. Prepare again after changing the font. Missing exact queries remain
+errors. Inferred and label-relative titles and same-edge implicit legend lanes use
+the current dynamic labels and exact font metrics, including their actual scene clips.
+Each axis runs on its own geometry clock; a dependent legend does not retime that axis.
+Hidden raw values and empty label collections retain their owner identity. Sampling, interruption, and
+offline replay preserve native drawing order and current guide hit metadata. Exported
+frame batches count native layout work even when no label is painted, and fail before
+returning a partial batch if the shared work limit is exceeded.
 
 Continuous color and stroke-gradient legends with explicit `values` and numeric `offset`
 use their native single-edge layout. Ticks and labels keep their raw values; the current
@@ -320,8 +340,12 @@ own owner progress, applies its current stroke width and scene clips, and measur
 actual ink before native lane placement. A legend can therefore run on a different
 geometry clock without overlapping a faster-moving axis. The saved lane retains exact
 axis references and gap policy, rather than copied axis layouts or endpoint offsets.
-Incomplete or edited dependencies fade as a complete lane. Dynamic wrap, skip, rotation
-selection, and other unsupported sibling policies still retain explicit fallbacks.
+Dynamic wrapping, skip selection, and rotation supply their actual current label ink to
+that same placement. Incomplete or edited dependencies fade as a complete lane; changing
+the wrapping policy also keeps an explicit fallback. A label-relative title with no
+current label cannot invent an anchor. Inferred titles retain the native preferred gap.
+Current label, line, and clip work shares the frame-export budget, including frames with
+no visible labels. Unsupported sibling and non-Cartesian clearance policies still fade.
 
 <!-- snippet-context:start -->
 

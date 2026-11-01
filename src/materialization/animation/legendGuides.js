@@ -1,3 +1,4 @@
+import { axisLabelDependencyKeys } from "./axisLabelDependencies.js";
 import { legendAxisReferenceKeys, normalizeLegendAxisLaneState } from "./legendAxisLaneState.js";
 import { effectiveLegendOffsetConfig } from "../guides/resources.js";
 import { prepareAnimationLegendLanes } from "./legendLaneGuides.js";
@@ -18,20 +19,21 @@ import { GRADIENT_STRIP_COUNT } from "../guides/legendGradient.js";
 
 // The native config remains the authority. Unsupported group/axis clearance
 // dependencies keep their exact native identity and an explicit layout reason.
-export function legendAnimationItems(program, namespaces, spend, axisStates = []) {
+export function legendAnimationItems(program, namespaces, spend, axisStates = [], axislabels) {
   const result = [], prepared = new Map(), configs = program.guideConfigs.legend ?? {};
   const groups = prepareAnimationLegendGroups(program, spend), lanes = prepareAnimationLegendLanes(program, spend);
   const axisLanes = new Map();
-  if (axisStates.length) for (const [kind, layout] of prepareAnimationLegendLanes(program, spend, { allowAxis: true })) {
+  if (axisStates.length || axislabels?.groups.length) for (const [kind, layout] of prepareAnimationLegendLanes(program, spend, { allowAxis: true })) {
     if (lanes.has(kind)) continue;
-    const axes = legendAxisReferenceKeys(axisStates, namespaces, layout.edge);
-    if (!axes?.length) continue;
+    const axes = legendAxisReferenceKeys(axisStates, namespaces, layout.edge, axislabels);
+    const labelGroups = axisLabelDependencyKeys(axislabels, namespaces, layout.edge);
+    if (axes === undefined || labelGroups === undefined || !axes.length && !labelGroups.length) continue;
     const offsets = layout.blocks.filter(block => effectiveLegendOffsetConfig(program, block.kind, configs[block.kind]).inferredOffset === true).map(block => {
       const categorical = block.kind === "size" && configs.size.inheritPosition !== false
         ? ["series", "color", "stroke"].find(kind => configs[kind]?.target === block.target) : undefined;
       return { kind: block.kind, owner: categorical ?? block.kind };
     });
-    if (offsets.length) axisLanes.set(kind, { layout, axes, offsets });
+    if (offsets.length) axisLanes.set(kind, { layout, axes, offsets, ...(labelGroups.length ? { labelGroups } : {}) });
   }
   for (const item of legendGuideItems(program, spend)) {
     const categorical = ["series", "color", "stroke"].includes(item.kind);

@@ -1703,15 +1703,20 @@ export interface TransitionPlan {
  * Guide geometry includes explicit native titles, band boundaries, field-keyed Parallel axes,
  * single-edge gradient and continuous-size legends with exact raw samples, categorical native symbols with
  * typed category/recipe roles and explicit offsets, explicit native legend groups with
- * row/column/wrap packing, implicit edge lanes using current measured bounds and exact fixed
+ * row/column/wrap packing, implicit edge lanes using current measured bounds and exact current
  * Cartesian axis ink at its own timeline progress, and fixed
  * Cartesian label flush/rotation/edge layout with retained exact text measurements.
  * Cartesian geometry includes selected conditional values, native offsets/spans/category slots,
  * completed density samples, and compatible source-follow overlays.
  * Geo Text content/layout expressions follow the current native camera.
- * Inferred and label-relative Cartesian titles replay the same fixed native label ink dependency.
+ * Native Cartesian maxWidth/responsive labels emit current raw-value/line identities,
+ * including newly visible lines without fabricated endpoint indices.
+ * Inferred and label-relative Cartesian titles replay the same current fixed or dynamic native label ink dependency.
+ * Dynamic dependencies retain exact axis owners, current clips and prepared font metrics.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
+  | { readonly kind: 'guide'; readonly kernel: 'native-axis-label'; readonly ownerKey: string;
+      readonly guideKey: string; readonly role: 'guide-labels' }
   | { readonly kind: 'geographic'; readonly kernel: 'native-geo' | 'native-geo-text'; readonly ownerKey: string;
       readonly itemKey: string; readonly role: string }
   | { readonly kind: 'enter'; readonly targetIndex: number; readonly ownerKey?: string; readonly reason?: 'guide-ambiguity' }

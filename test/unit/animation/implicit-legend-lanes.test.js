@@ -104,14 +104,14 @@ test("strict implicit lane restore rejects incomplete or inconsistent siblings a
   assert.throws(() => normalizeLegendLaneAnimationState(accessor), /accessors/); assert.equal(reads, 0);
   assert.throws(() => sampleLegendLaneInterpolation(prepareLegendLaneInterpolation(state, state), 2));
 });
-test("unsupported lane dependencies and a manually edited sibling keep the entire lane on safe fades", () => {
+test("edited and unsupported lane dependencies fade while prepared native reflow remains typed", () => {
   const from = source(), moved = from.editGraphics({ target: "sizeLegendTitle", property: "x", value: 900 });
   assert.ok(visible(sampleTransition(transition(from, moved), 50)).every(item => item.decision.kind === "crossfade"));
   offline(transition(from, moved));
   const changed = from.editLegendBlock({ target: "points", channel: "size", title: "Changed" });
   assert.ok(visible(sampleTransition(transition(from, changed), 50)).every(item => item.decision.kind === "crossfade"));
   const unprepared = source("right", false, true).createYAxis({ position: "right" }).editYAxisLabels({ maxWidth: 20 });
-  assert.ok(visible(sampleTransition(transition(unprepared, unprepared.editCanvas({ width: 1400 })), 50)).every(item => item.decision.reason === "guide-layout"));
+  assert.ok(visible(sampleTransition(transition(unprepared, unprepared.editCanvas({ width: 1400 })), 50)).every(item => item.decision.kernel === "guide-geometry"));
   const badPaint = from.editLegend({ target: "points", channels: ["size"], labels: { color: "currentColor" } });
   const sampled = sampleTransition(transition(from, badPaint), 50);
   assert.ok(visible(sampled).every(item => item.decision.kind === "crossfade"));

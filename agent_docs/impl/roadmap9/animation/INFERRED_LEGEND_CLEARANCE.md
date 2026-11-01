@@ -112,3 +112,34 @@ lookup을 재사용하고 fixed guide12/기존 timeline3/다른 family proof를 
 그룹, manual edit 및 불완전 dependency, whole frame rebase/offline/order, work budget이다.
 Label-relative title에 현재 label이 없으면 원 native 배치가 성립하지 않으므로 명시 fallback이며,
 inferred title은 원 preferred/clamp 정책을 따른다. 새 일반 pixel animation으로 대체하지 않는다.
+
+
+## Guide13 동적 의존 공개 연결
+
+R source0811878a9500f2637e1ea60a1e4d40eb352f8370를 병합하고 위 준비안을 구현했다.
+[remainingApproval](../AUTHORIZATION.json)의 공개 저장·시각·architecture 승인을 그대로 재사용한다.
+새 public API 없이 guide13으로 exact dynamic refs의 저장 의미를 구분하고 guide11/12는 거부한다.
+Transition3/Cartesian2/GeoText2는 유지한다. Title `labels:{group}`와 lane `labelGroups`는
+canonical ownerKey만 저장한다. Empty/raw owner도 보존하고 그룹의 layout/metrics/slot을 복사하지 않는다.
+
+Current lookup은 이미 한 번 적용된 line style의 graphics와 exact metrics만 소비한다. Title도
+원 action이 실제 label occupied ink를 읽는 정책에 맞춰 동일 clip/offset owner를 사용한다.
+초기 clip 회귀에서는 unclipped `labelBounds`를 그대로 사용해 title이 guide-edited가 된 것을
+보존했고, 실제 current graphics에서 같은 native ink를 계산하여 whole-frame equality를 복구했다.
+Font/line-style conflict는 drawing을 보존하면서 typed dependency 전체만 fallback한다.
+
+승인된 shared delta는 planner의 이미 준비된 axislabels context 세 전달, sample finish의
+`retainSampledGuideMeaning(guides,axisState)`, 기존 account callback을 timeline에 전달하는
+한 줄뿐이다. R의 emission/slot/actual-work/다른 family를 유지한다. 새 projection이나 과거 plan
+cache는 없다. Lane 계산 cache는 같은 immutable 현재 dependencies/labelGroups/layout에만
+결박하며 cache hit는 다시 과금하지 않는다. Budget callback의 RangeError를 native 배치 fade로
+삼키지 않는다. Text 줄·글자·font 목록과 path/clip command 방문량을 공통 occupied helper에서
+과금하고 정확10M/1초과·부분 batch 없음 회귀를 검증한다.
+
+정확 글꼴 fixture의 native midpoint를 Canvas/PNG/SVG/vector PDF와 Browser DPR1/2에서
+대조한다. 최초 DPR2 probe는620×600 Canvas의 weighted background가 기존 raster 한도를
+초과했다. 허용한도를 올리지 않고 fixture의 불필요한 빈 높이를400으로 줄여 기존 한도 안에서
+동일 label 줄 전환·title/legend geometry를 검증하며 원 실패를 증거에 보존한다.
+
+최종 source/동일 tar/문서 검증 영수증은 후속 qualification 기록이 소유한다. 이 checkpoint는
+non-Cartesian inferred clearance, 변경된 정책 또는 STEP077 전체 완료를 주장하지 않는다.

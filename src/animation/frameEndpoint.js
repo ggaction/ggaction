@@ -1,3 +1,6 @@
+import { validateAxisLabelDecision } from "../grammar/animation/axisLabelDecision.js";
+import { axisLabelGroupIdentity } from "../materialization/animation/axisLabelGroups.js";
+import { axisLabelReflowMatchesNodes, resolveAxisLabelReflow } from "../materialization/animation/axisLabelReflowState.js";
 import { guideAnimationKey } from "../grammar/animation/guideState.js";
 import { graphicAnimationOwnerKey, guideAnimationOwnerKey } from "../grammar/animation/ownerKey.js";
 import { validateGeoAnimationDecision } from "../grammar/animation/geoDecision.js";
@@ -10,11 +13,11 @@ import { transitionSampleState } from "../grammar/animation/values.js";
 import { unavailablePointAnimationPosition } from "../grammar/animation/pointState.js";
 import { projectSampledAnimationEndpoint } from "./endpoints.js";
 import { animationPlanProvenance } from "./frameProvenance.js";
-import { validateAnimationFallbackReason } from "./concrete.js";
+import { validateAnimationFallbackReason, sameConcreteValue } from "./concrete.js";
 
 // Capture correspondence once while the authentic plan is available. No earlier
 // plan or sampled endpoint is retained by the resulting frame meaning.
-export function captureFrameMeaning(frame, plan, timeMs, geographic = []) {
+export function captureFrameMeaning(frame, plan, timeMs, geographic = [], axislabels = []) {
   const { side } = transitionSampleState(timeMs, plan.durationMs, plan.easing);
   const exact = side === undefined ? undefined : plan[side];
   let identities, backgrounds;
@@ -22,6 +25,7 @@ export function captureFrameMeaning(frame, plan, timeMs, geographic = []) {
   else {
     if (frame.decisions.length !== frame.scene.nodes.length) throw new TypeError("Animation decisions must follow the exact sampled nodes.");
     identities = frame.decisions.map((decision, index) => {
+      if(decision.kind==="guide"){const value=axislabels[index];if(value===undefined)throw new TypeError("Axis label decision requires its actual generated identity.");validateAxisLabelDecision(decision,value.identity);return undefined;}
       if(decision.kind==="geographic"){const value=geographic[index];if(value===undefined)throw new TypeError("Geographic decision requires its actual generated identity.");validateGeoAnimationDecision(decision,value.identity);return value.identity;}
       const endpoint = decision.targetIndex === undefined ? plan.from : plan.to;
       const originalIndex = decision.targetIndex ?? decision.sourceIndex;
@@ -29,7 +33,7 @@ export function captureFrameMeaning(frame, plan, timeMs, geographic = []) {
       return endpoint.identities[originalIndex];
     });
     backgrounds = frame.decisions.flatMap((decision, index) => {
-      if(decision.kind==="geographic")return [];
+      if(decision.kind==="geographic"||decision.kind==="guide")return [];
       const endpoint = decision.targetIndex === undefined ? plan.from : plan.to;
       const original = decision.targetIndex ?? decision.sourceIndex;
       const background = endpoint.backgrounds.find(value => value.index === original);
@@ -41,6 +45,7 @@ export function captureFrameMeaning(frame, plan, timeMs, geographic = []) {
   let native;
   if (proof?.from !== undefined && proof.to !== undefined) {
     const nodes = exact ? proof[side].nodes : frame.decisions.map((decision,index) => {
+      if(decision.kind==="guide"){const origin=axislabels[index]?.origin;if(origin===undefined)throw new TypeError("Axis label hit requires its actual native source.");return Object.freeze({origin,metrics:Object.freeze([origin])});}
       if(decision.kind==="geographic"){const origin=geographic[index]?.origin;if(origin===undefined)throw new TypeError("Geographic hit requires its actual native source.");return Object.freeze({origin,metrics:Object.freeze(geographic[index].metrics??[origin])});}
       const origin = decision.kind === "exit" ? proof.from.nodes[decision.sourceIndex] : proof.to.nodes[decision.targetIndex];
       if (origin === undefined) throw new TypeError("Animation hit requires an exact native source.");
@@ -60,10 +65,10 @@ export function captureFrameMeaning(frame, plan, timeMs, geographic = []) {
 export function prepareFrameEndpoint(frame, proof) {
   if (proof.endpoint === undefined) throw new TypeError("Sampled endpoint requires prepared identity metadata.");
   const positions = proof.positions.map((position, index) => position ?? unavailablePointAnimationPosition(proof.endpoint.identities[index] === undefined ? "anonymous" : "sampled-concrete"));
-  return { endpoint: proof.endpoint, geotexts: proof.geotexts, guides: proof.guides, positions: cloneAndFreeze(positions), geos: proof.geos, graphs: proof.graphs, polars: proof.polars?.map((state,index)=>state??unavailablePolarAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), partitions: proof.partitions, cartesian: proof.cartesian?.map((state,index)=>state??unavailableCartesianAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), frame };
+  return { endpoint: proof.endpoint, axislabels:proof.axislabels, geotexts: proof.geotexts, guides: proof.guides, positions: cloneAndFreeze(positions), geos: proof.geos, graphs: proof.graphs, polars: proof.polars?.map((state,index)=>state??unavailablePolarAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), partitions: proof.partitions, cartesian: proof.cartesian?.map((state,index)=>state??unavailableCartesianAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), frame };
 }
 
-export function validateSampledEndpointMetadata(scene,identities,backgrounds,view,guides=[]) {
+export function validateSampledEndpointMetadata(scene,identities,backgrounds,view,guides=[],axislabels) {
   ownRecord(scene,"Sampled scene");rejectUnknownProperties(scene,["version","width","height","nodes"],"sampled scene");
   for(const node of scene.nodes){
     ownRecord(node,"Sampled scene node");rejectUnknownProperties(node,["key","type","topology","properties","offset","clip","clips"],"sampled scene node");
@@ -84,8 +89,22 @@ export function validateSampledEndpointMetadata(scene,identities,backgrounds,vie
   ownArray(view.decisions,"Sampled frame decisions");
   if(view.decisions.length!==0&&view.decisions.length!==scene.nodes.length)throw new TypeError("Sampled decisions must follow the scene order.");
   if(scene.nodes.length>0&&((view.progress===0||view.progress===1)!==(view.decisions.length===0)))throw new TypeError("Sampled decisions disagree with endpoint progress.");
+  const checkedAxisGroups=new Set();
   for(const [index,decision]of view.decisions.entries()){
     ownRecord(decision,"Sampled decision");
+    if(decision.kind==="guide"){
+      const item=axislabels?.items[index],group=item==null?undefined:axislabels.groups[item.group],guide=guides[index];
+      if(group===undefined||identities[index]!==undefined||indices.has(index)||scene.nodes[index].type!=="text"||guide==null)throw new TypeError("Axis label decision requires its current prepared group.");
+      const identity=axisLabelGroupIdentity(group,item.value,item.line);
+      validateAxisLabelDecision(decision,identity);
+      if(guideAnimationKey(guide.identity)!==guideAnimationKey(identity))throw new TypeError("Axis label decision differs from its retained guide identity.");
+      if(!checkedAxisGroups.has(item.group)){
+        const length=resolveAxisLabelReflow(group.layout).entries.length,nodes=scene.nodes.slice(group.placement.insertion,group.placement.insertion+length);
+        if(!axisLabelReflowMatchesNodes(group.layout,nodes)||nodes.some(({offset,clip,clips})=>!sameConcreteValue({offset,clip,clips},group.placement.frame)))throw new TypeError("Sampled axis label geometry differs from its current native layout.");
+        checkedAxisGroups.add(item.group);
+      }
+      continue;
+    }
     if(decision.kind==="geographic"){validateGeoAnimationDecision(decision,identities[index]);if(!(decision.kernel==="native-geo-text"?["text","line","weighted-blend"]:["circle","path"]).includes(scene.nodes[index].type))throw new TypeError("Geographic decision requires a native geographic primitive.");continue;}
     const ownerKey=identities[index]!==undefined?graphicAnimationOwnerKey(identities[index]):guides[index]==null?undefined:guideAnimationOwnerKey(guides[index].identity);
     const singular=decision.kind==="enter"?"targetIndex":decision.kind==="exit"?"sourceIndex":undefined;

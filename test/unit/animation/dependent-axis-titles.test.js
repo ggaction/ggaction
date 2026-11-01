@@ -85,7 +85,7 @@ test("strict restore verifies complete title label dependencies and own-field in
   assert.throws(() => restoreTransitionPlan(copy)); assert.equal(reads, 0);
 });
 
-test("edited dependency, changed text, dynamic reflow and unsafe midpoint keep explicit fades", () => {
+test("edited dependency, changed text and unsafe midpoint keep explicit fades while prepared reflow stays typed", () => {
   const from = base().createXAxis({ ticksAndLabels: { values: [0, 10], labels: { flush: true } }, title: { text: "Value" } });
   const edited = from.editGraphics({ target: "xAxisLabels", property: "x", value: [151, 550] });
   for (const [a, b, reason] of [[edited, edited.editCanvas({ width: 800 }), "guide-edited"],
@@ -93,7 +93,7 @@ test("edited dependency, changed text, dynamic reflow and unsafe midpoint keep e
     const prepared = plan(a, b); assert.equal(titles(sampleTransition(prepared, 50))[0].decision.reason, reason); roundtrip(prepared);
   }
   const dynamic = base().createXAxis({ ticksAndLabels: { values: [0, 10], labels: { maxWidth: 50 } }, title: { text: "Value" } });
-  assert.equal(titles(sampleTransition(plan(dynamic, dynamic.editCanvas({ width: 800 })), 50))[0].decision.reason, "guide-layout");
+  assert.equal(titles(sampleTransition(plan(dynamic, dynamic.editCanvas({ width: 800 })), 50))[0].decision.kernel, "guide-geometry");
   const args = alongOffset => ({ ticksAndLabels: { values: [0, 10], labels: { flush: true } }, title: { text: "T", at: 5, alongOffset, offset: { from: "labels", gap: 7 } } });
   const a = base().createXAxis(args(-300)), b = base().editXScale({ domain: [0, 100] }).createXAxis(args(-120));
   assert.equal(titles(sampleTransition(plan(a, b), 50))[0].decision.reason, "guide-layout"); roundtrip(plan(a, b));

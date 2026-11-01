@@ -25,6 +25,8 @@ import { nativeGeoTextPresentation, geoTextHasLeaders } from "./geoTextExpressio
 
 const nativeOrigins = new WeakMap();
 const expressionOrigins = new WeakMap();
+const nativeDrawingOrdinals = new WeakMap();
+export const geoTextNativeDrawingOrdinals = state => nativeDrawingOrdinals.get(state);
 const token = identity => JSON.stringify([identity.key, identity.role]);
 export const geoTextFeatureDigest = (feature, coordinateKind) => contentDigest(canonicalJSON({ coordinateKind, geometry: feature.geometry,
   ...(coordinateKind === "geographic" ? { polygonWinding: feature.polygonWinding ?? "right-hand" } : {}) }));
@@ -115,6 +117,7 @@ export function projectGeoTextAnimations(program, endpoint, geos) {
   expected.forEach((missing, index) => { if (missing.size) groups[index].reason = "edited-geo-graphics"; });
   const state = cloneAndFreeze({ groups, items, order: order.sort((a, b) => a.index - b.index).map(entry => entry.value) });
   validateGeoTextAnimations(state, endpoint, geos);
+  nativeDrawingOrdinals.set(state, Object.freeze(order.map(entry => entry.index)));
   nativeOrigins.set(state, groups.map(group => origins.get(group.presentation.key)));
   expressionOrigins.set(state, groups.map(group => [origins.get(group.presentation.key)]));
   return state;

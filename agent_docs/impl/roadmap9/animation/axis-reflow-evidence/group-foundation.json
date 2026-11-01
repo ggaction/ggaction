@@ -1,0 +1,252 @@
+{
+  "scope": "Private native axis group projection and strict current-output validation. Public dynamic sampler, frame provenance/hit, rebase and offline integration remain pending.",
+  "base": "c4742121f",
+  "checks": [
+    {
+      "command": "node --experimental-test-coverage --test-coverage-include=src/materialization/animation/axisLabelGroups.js --test-coverage-include=src/grammar/animation/placement.js --test test/unit/animation/axis-label-groups.test.js test/unit/animation/axis-label-reflow-state.test.js test/unit/animation/geo-presentation.test.js test/unit/animation/geo-text-restore.test.js",
+      "node": "22.23.1",
+      "tests": 40,
+      "exitCode": 0,
+      "criticalFloors": {
+        "grammar/animation/placement.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/animation/axisLabelGroups.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "coverage": {
+        "axisLabelGroups": [
+          100,
+          95.77,
+          100
+        ],
+        "placement": [
+          100,
+          100,
+          100
+        ]
+      }
+    },
+    {
+      "command": "node scripts/run-tests.js unit unit/animation/axis-label-groups.test.js unit/animation/axis-label-reflow-state.test.js unit/animation/geo-presentation.test.js unit/animation/geo-text-restore.test.js",
+      "nodes": [
+        "20.20.2",
+        "24.22.1"
+      ],
+      "testsPerNode": 39,
+      "exitCode": 0,
+      "note": "Before final additional vertical logarithmic axis case; the final group file then passed all 11 cases on each Node."
+    },
+    {
+      "command": "node scripts/run-tests.js unit unit/animation/axis-label-groups.test.js",
+      "nodes": [
+        "20.20.2",
+        "24.22.1"
+      ],
+      "testsPerNode": 11,
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-artifact.test.js contracts/documentation-truth.test.js",
+      "tests": 40,
+      "exitCode": 0
+    },
+    {
+      "command": "node .artifacts/axis-reflow/groups-installed.mjs",
+      "node": "20.20.2",
+      "runtimeCases": 1,
+      "strictTypes": true,
+      "bundles": 6,
+      "exitCode": 0,
+      "note": "Existing explicit font-query public consumer and actual four-format/offline fixture. No dynamic sampled-group claim; no new three-Node installed sweep."
+    },
+    {
+      "command": "node scripts/doc-provenance.js && node scripts/generate-doc-machine-artifacts.js && node scripts/generate-llm-docs.js && node scripts/run-tests.js docs docs/documentation-coverage.test.js",
+      "tests": 18,
+      "exitCode": 0,
+      "note": "Source-pinned generated documentation; runtime input hashes unchanged."
+    }
+  ],
+  "inputs": [
+    {
+      "path": "src/materialization/animation/axisLabelGroups.js",
+      "sha256": "c697d20cc3f3772534bc40380c2a4b5377f3a9f9909c443d6ae0841243673ab7"
+    },
+    {
+      "path": "src/grammar/animation/placement.js",
+      "sha256": "f23165beb54bb5c216dd9351d4541ffbab8df71906251ebd9214a1fe193ac8aa"
+    },
+    {
+      "path": "src/materialization/animation/geoPresentation.js",
+      "sha256": "d7ba6150757981fa2c305a7729a9fb4707a1fcf1f73198fb824f5419d9704231"
+    },
+    {
+      "path": "src/materialization/animation/axisLabelReflowState.js",
+      "sha256": "25cf5398713875608c71581b38c5e3da2c3249c8162d8aa725264ee8bcc96654"
+    },
+    {
+      "path": "src/materialization/animation/axisLabelState.js",
+      "sha256": "5c485864efdaf28f33f2efd4548cfddf4878341d2625e301a49ec6118fcea6f2"
+    },
+    {
+      "path": "src/materialization/axisLabelCandidates.js",
+      "sha256": "96d0b61df12a20fadfe89764fe53a7ea0fe4b4f2bf7d7964fcf190fb1302daa0"
+    },
+    {
+      "path": "src/materialization/axisLabelQueries.js",
+      "sha256": "50d7cf54355a87a4870be54ea91f65e83aa0adae124a48e5f240bfa333306200"
+    },
+    {
+      "path": "test/unit/animation/axis-label-groups.test.js",
+      "sha256": "b3ce2a0ca8e5de6dc4636b4eec3dfd05e407dfe33e2ee956f44dfb313a3fe861"
+    },
+    {
+      "path": "scripts/coverage-policy.js",
+      "sha256": "df7984b52073cb729bb0c45be6e85452b13d9b4fad41b82328a6e3ef6a5088f5"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "f3adbaa8c69d32667e495ba6da0d4eca9c4ef3fe7e3298f53bb43155e7ab96f9"
+    },
+    {
+      "path": "scripts/browser-bundle-size.js",
+      "sha256": "49bdec6a61582b65ce0d6869d9d02253135631befabdabe3aa315f14aecdc605"
+    },
+    {
+      "path": "package.json",
+      "sha256": "9bdaa6a6b531ccb37533d6079120cad92b16ffe7c029e00868eac2a1f30c62ee"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "6c16c3a555c4e9165e2896e71a08118128ea387d968e2dd24d289ba5dddfff37"
+    }
+  ],
+  "archive": {
+    "sha256": "6afb64055f463a04edec9049b82ab10bfa8adb1bc642e01ab60fd8293c257e51",
+    "entries": 1229,
+    "size": 1757086,
+    "unpackedSize": 7935303
+  },
+  "packageMeasurements": {
+    "node22": {
+      "files": 1229,
+      "size": 1757086,
+      "unpackedSize": 7935303
+    },
+    "node20": {
+      "files": 1229,
+      "size": 1760130,
+      "unpackedSize": 7935303
+    }
+  },
+  "firstFailures": [
+    {
+      "artifact": "groups-1.log",
+      "cause": "Fixture combined maxWidth:false with retained wrap; changed to the native edit reset."
+    },
+    {
+      "artifact": "groups-2.log",
+      "cause": "Fixture changed raw label values without updating native ticks; used the native coupled axis action."
+    },
+    {
+      "artifact": "groups-3.log",
+      "cause": "Limit rejection was correct; expected error regex changed to its actual 10000 bound."
+    }
+  ],
+  "pending": [
+    "Dynamic public group emission, exact endpoint and timeline integration",
+    "Flat current native proof and guide hit metadata",
+    "Strict authentic frame rebase/offline and per-line style fallback",
+    "Current group bounds consumed by dependent titles and legend clearance",
+    "Final integrated release/AT60/STEP077 qualification"
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-1.log.gz",
+      "sha256": "8f090976ec2e485e2d17d4fd2e26a41bc02581648e33681bcb28dcfd6f47e647",
+      "uncompressedSha256": "fd6cdee8bb124825a3a74d308dbf021c5e36d05ccdca8bbac899022dab06de66"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-2.log.gz",
+      "sha256": "15f711dfe0c778249bb9ee491c2d44b413fd1135d85a11b85ae1bb954272de3f",
+      "uncompressedSha256": "f1961092743124431a399407fbe08815db9471f3219dbb92dcfbd49c97128955"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-3.log.gz",
+      "sha256": "2f42a7e176796835af7d3e31fc6a3f54c98efa10e6b3d267f9eb805b374ae5b1",
+      "uncompressedSha256": "2964c8b0e9076c4de859abcf6559854c687570d7ed7b7779d310760f8d27f0c9"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-coverage-final.log.gz",
+      "sha256": "4efdcb5936a95f0c45ea30278a52dc52900837ca826e02803d43a04f2ed6f357",
+      "uncompressedSha256": "cf7780da62459f433dda5dc28b15432efc1b82a01bb0cb7fd1c5ac20704a2845"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-node20.log.gz",
+      "sha256": "fcb9cd41eb3408b48537cb544092f42aee68fc68bdaa0d1ea757b8a55ac2e585",
+      "uncompressedSha256": "26d69fac4c4c96612e8a86ed0560c1f2ff786681fc2f5a1aafe3e3e1ef580a7b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-node24.log.gz",
+      "sha256": "84f1d1243f6ab0d828cc2ff309ab532b07398c7f589fa9e1070b4bcb0b09abcb",
+      "uncompressedSha256": "68347a3f737152496e7ae7de4ade0167fc4646c8aaaefc6d7a694e8d413371b8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-node20-final.log.gz",
+      "sha256": "bc7733a060c15892772ce0bcfb175d4a22ae0a32f2546d8b9e8c784de84fdeae",
+      "uncompressedSha256": "42e977946fae074b9150fe603e551f418f88c8eaf3f157380c5ac56a0aca63f2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-node24-final.log.gz",
+      "sha256": "4747d838178fad9dce98288bae84089738abdb813183ce0ea0dd66896fefba38",
+      "uncompressedSha256": "ef7ee976f7737d7d6a0e5207a15d65cb10ededacb635bbaf751aa7422cdb79f3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-contracts.log.gz",
+      "sha256": "e69d63dbf64fabe15cb84b2a04a4a2626d8e04fe64c49570fd42ed0f5449ccdc",
+      "uncompressedSha256": "7ba200828a8c31daca50138eee0ca0d8be00415cf513b8d8dbe632239f03d920"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-package-measure.json.gz",
+      "sha256": "a520ee0a9f19e03d27e2fb39097269f68c8b310d6461030c49720940581fb3aa",
+      "uncompressedSha256": "de3d068d2da1bfabcc2506459db8823418ee00071ae2b0c0ef44c479db188bc9"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-package-measure20.json.gz",
+      "sha256": "caa20b2179e4e16fcb217a6e0c6d4019fa27c27f48fe759030d954aaa34d1186",
+      "uncompressedSha256": "1224a1e44e25037f51c5c019c8c72cdbf29824639fc428b69882da8b2123ad0c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-installed20.log.gz",
+      "sha256": "80ad923808d43c896394d09346c6fee66948cace51d6115ef67e91db59695de4",
+      "uncompressedSha256": "9cabe13dee6d383c6e11571be4831187716b137c52e82a7fe85cbc5dc6819b47"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-installed-20.json.gz",
+      "sha256": "3d4f6e10b01df89288ab95b194c7b9c1f9f2fab7271e36a9590313a6b3df7450",
+      "uncompressedSha256": "3b86fb78ecead1491fbc5087172b2b562f68d2e608fcf4d8f8627aabd841760f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-installed.mjs.gz",
+      "sha256": "0269d9918eddbc21510121a5af91e402557b2ee16ebb3c0a2eef604c647f3a32",
+      "uncompressedSha256": "b193fecfb26f7a47ebf4f0f296dea6ef50c382732c367ecd2e52a0a7f848d8c5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-pin.log.gz",
+      "sha256": "03929c3b5d0bb1f791e7c1f878edf1f6315b54818003feebcec7da5cbc4febb9",
+      "uncompressedSha256": "d4c8f63ad117a53146e44c200c3ff38e6ae5953e0b3362f151464b9d9f8f1c77"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-pin-tests.log.gz",
+      "sha256": "1bbf90884b053a44163e55fb61ae688bad6129de69c5ee3883602354003bc595",
+      "uncompressedSha256": "925d6b6f37b4b2798fc9e748553ccfa34d41d8e9efe04827d7261132a3df5dcf"
+    }
+  ],
+  "sourceCommit": "0c55cb14b",
+  "postCommitInputHashDelta": []
+}

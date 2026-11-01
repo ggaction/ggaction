@@ -1,3 +1,4 @@
+import { validateAnimationOwnerKey, guideAnimationOwnerKey } from "../../grammar/animation/ownerKey.js";
 import { cloneAndFreeze, isOwned } from "../../core/immutable.js";
 import { ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateUnitInterval, validateWorkLimit } from "../../core/validation.js";
@@ -26,7 +27,7 @@ function finite(value, positive = false) {
 }
 function anchorOf(layout) { return { ...layout.anchor, frame: layout.frame }; }
 function labelsOf(layout) {
-  return layout.labels === null ? null : normalizeAxisAnimationLayout({ ...layout.labels, frame: layout.frame, canvas: layout.canvas });
+  return layout.labels === null || Object.hasOwn(layout.labels, "group") ? null : normalizeAxisAnimationLayout({ ...layout.labels, frame: layout.frame, canvas: layout.canvas });
 }
 function configOf(layout) {
   const anchor = layout.anchor;
@@ -73,25 +74,29 @@ function normalizeLayout(input) {
     ownRecord(input.labels, "Prepared title label dependency");
     if (Object.hasOwn(input.labels, "frame") || Object.hasOwn(input.labels, "canvas")) throw new TypeError("Dependent title layout owns its frame once.");
   }
+  const group = input.labels !== null && Object.hasOwn(input.labels, "group") ? input.labels.group : undefined;
+  if (group !== undefined) { record(input.labels, ["group"], "Title label group reference"); validateAnimationOwnerKey(group); }
   const labels = labelsOf(input);
   if (labels !== null && labels.channel !== fullAnchor.channel) throw new TypeError("Title and label dependency must share their native axis channel.");
-  if (labels === null && input.clearance.kind === "labels") throw new TypeError("Label-relative title requires its label dependency.");
+  if (labels === null && group === undefined && input.clearance.kind === "labels") throw new TypeError("Label-relative title requires its label dependency.");
   const metrics = normalizeGuideMetrics(input.metrics), { frame, ...anchor } = fullAnchor;
   const normalized = cloneAndFreeze({ ...input, frame, anchor, metrics,
-    labels: labels === null ? null : (({ frame: ignored, canvas: ignoredCanvas, ...value }) => value)(labels) });
+    labels: group !== undefined ? { group } : labels === null ? null : (({ frame: ignored, canvas: ignoredCanvas, ...value }) => value)(labels) });
   if (!same(queries(normalized).map(textMetricKey).sort(), metrics.measurements.map(textMetricKey).sort())) throw new TypeError("Prepared title metrics require the exact query closure.");
-  geometry(normalized);
+  if (group === undefined) geometry(normalized);
   layouts.set(normalized, normalized); if (isOwned(input)) layouts.set(input, normalized);
   return normalized;
 }
-function geometry(layout) {
-  if (geometries.has(layout)) return geometries.get(layout);
+function geometry(layout, currentLabels) {
+  const dynamic = layout.labels?.group !== undefined;
+  if (dynamic && currentLabels === undefined) throw new TypeError("Dependent title requires its current native label group.");
+  if (!dynamic && geometries.has(layout)) return geometries.get(layout);
   const config = configOf(layout), anchor = anchorOf(layout), labels = labelsOf(layout);
-  const ink = labels === null ? { labelBounds: [], requiredBounds: null } : resolveAxisAnimationLabelBounds(labels);
+  const ink = dynamic ? currentLabels : labels === null ? { labelBounds: [], requiredBounds: null } : resolveAxisAnimationLabelBounds(labels);
   const scale = anchor.anchor.kind === "range" ? { range: anchor.anchor.range } : resolveCartesianPosition(anchor.anchor.mapping).resolvedScale;
   const input = { channel: anchor.channel, config, text: layout.text, profile: layout.metrics, frame: layout.frame,
     canvas: layout.canvas, scale, labels: ink.requiredBounds, labelBounds: ink.labelBounds,
-    along: resolveAxisTitleAlong(scale, config), labelPosition: labels?.config.position };
+    along: resolveAxisTitleAlong(scale, config), labelPosition: dynamic ? anchor.policy.side : labels?.config.position };
   const offset = layout.clearance.kind === "fixed" ? layout.clearance.offset : layout.clearance.kind === "inferred" ? resolveInferredAxisTitleOffset({ ...input,
     preferred: layout.clearance.preferred, unclamped: layout.clearance.unclamped }) : resolveLabelRelativeAxisTitleOffset(input);
   const resolved = resolveGuideAnchor({ ...anchor, policy: { ...anchor.policy, offset } });
@@ -101,11 +106,11 @@ function geometry(layout) {
   const lines = axisTitleTextLines(layout.text, config);
   const result = cloneAndFreeze({ type: "text", properties: { ...resolved.properties, text: layout.text,
     ...(layout.style.rotation === 0 ? {} : { rotation: layout.style.rotation }), ...(lines === undefined ? {} : { lines }) } });
-  if (isOwned(layout)) geometries.set(layout, result); return result;
+  if (!dynamic && isOwned(layout)) geometries.set(layout, result); return result;
 }
 export function prepareAxisTitleAnimationLayout({ anchor, canvas, config, text, profile, labels = null, preferred, unclamped = false }) {
   const { frame, ...value } = anchor;
-  if (labels !== null && (!same(labels.frame, frame) || !same(labels.canvas, canvas))) throw new TypeError("Title and labels must share their native frame.");
+  if (labels !== null && !Object.hasOwn(labels, "group") && (!same(labels.frame, frame) || !same(labels.canvas, canvas))) throw new TypeError("Title and labels must share their native frame.");
   const layout = { frame, canvas, anchor: value, text,
     style: { fontFamily: config.fontFamily ?? DEFAULT_FONT_FAMILY, fontSize: config.fontSize,
       fontWeight: textMetricFontWeight(config.fontWeight), rotation: config.rotation, overlap: config.overlap ?? "error" },
@@ -117,11 +122,13 @@ export function normalizeAxisTitleAnimationState(input) {
   record(input, ["identity", "kind", "layout"], "Dependent title animation state");
   const identity = normalizeGuideIdentity(input.identity);
   if (input.kind !== "title-layout" || identity.component !== "title" || identity.line !== 0 || identity.value !== null) throw new TypeError("Dependent title requires its native title identity.");
-  return cloneAndFreeze({ identity, kind: "title-layout", layout: normalizeLayout(input.layout) });
+  const layout = normalizeLayout(input.layout);
+  if (layout.labels?.group !== undefined && layout.labels.group !== guideAnimationOwnerKey(identity)) throw new TypeError("Title labels must name its exact native axis owner.");
+  return cloneAndFreeze({ identity, kind: "title-layout", layout });
 }
-export function resolveAxisTitleAnimationGeometry(input) { return geometry(normalizeAxisTitleAnimationState(input).layout); }
-export function axisTitleAnimationMatchesNode(input, node) {
-  const state = normalizeAxisTitleAnimationState(input), output = geometry(state.layout), style = state.layout.style;
+export function resolveAxisTitleAnimationGeometry(input, currentLabels) { return geometry(normalizeAxisTitleAnimationState(input).layout, currentLabels); }
+export function axisTitleAnimationMatchesNode(input, node, currentLabels) {
+  const state = normalizeAxisTitleAnimationState(input), output = geometry(state.layout, currentLabels), style = state.layout.style;
   return node.type === output.type && Object.entries(output.properties).every(([key, value]) => same(value, node.properties[key])) &&
     (node.properties.rotation ?? 0) === style.rotation && (node.properties.fontStyle ?? "normal") === "normal" && (node.properties.fontFamily ?? DEFAULT_FONT_FAMILY) === style.fontFamily &&
     node.properties.fontSize === style.fontSize && textMetricFontWeight(node.properties.fontWeight) === style.fontWeight &&
@@ -132,16 +139,16 @@ export function prepareAxisTitleInterpolation(fromInput, toInput) {
   if (guideAnimationKey(from.identity) !== guideAnimationKey(to.identity)) return fade("guide-policy");
   const a = from.layout, b = to.layout;
   if (a.text !== b.text || !same(a.style, b.style) || !same(a.metrics, b.metrics) || a.clearance.kind !== b.clearance.kind ||
-      a.clearance.unclamped !== b.clearance.unclamped || (a.labels === null) !== (b.labels === null)) return fade("guide-layout");
+      a.clearance.unclamped !== b.clearance.unclamped || a.labels?.group !== b.labels?.group || (a.labels === null) !== (b.labels === null)) return fade("guide-layout");
   const anchor = prepareGuideAnchor(anchorOf(a), anchorOf(b));
   if (anchor.kind === "crossfade") return anchor;
-  if (a.labels !== null) {
+  if (a.labels !== null && a.labels.group === undefined) {
     const labels = prepareAxisAnimationLayoutPair(labelsOf(a), labelsOf(b));
     if (labels.kind === "crossfade") return labels;
   }
   return cloneAndFreeze({ kind: "guide", version: ANIMATION_GUIDE_VERSION, from, to });
 }
-export function sampleAxisTitleInterpolation(input, progress) {
+export function sampleAxisTitleInterpolation(input, progress, currentLabels) {
   validateUnitInterval(progress, "Dependent title progress"); record(input, ["kind", "version", "from", "to"], "Prepared dependent title interpolation");
   if (input.kind !== "guide" || input.version !== ANIMATION_GUIDE_VERSION) throw new TypeError("Invalid prepared dependent title interpolation.");
   const prepared = prepareAxisTitleInterpolation(input.from, input.to);
@@ -149,16 +156,17 @@ export function sampleAxisTitleInterpolation(input, progress) {
   const a = prepared.from.layout, b = prepared.to.layout;
   const anchor = sampleGuideAnchor(prepareGuideAnchor(anchorOf(a), anchorOf(b)), progress);
   if (anchor.kind === "crossfade") return anchor;
-  const labels = a.labels === null ? null : sampleAxisAnimationLayout(labelsOf(a), labelsOf(b), progress);
+  const labels = a.labels === null || a.labels.group !== undefined ? null : sampleAxisAnimationLayout(labelsOf(a), labelsOf(b), progress);
   if (labels?.kind === "crossfade") return labels;
   const at = (a, b) => interpolateNumber(a, b, progress), { frame, ...value } = anchor.state;
+  if (a.labels?.group !== undefined && (currentLabels === undefined || a.clearance.kind === "labels" && currentLabels.labelBounds.length === 0)) return fade("guide-layout");
   try {
     const state = normalizeAxisTitleAnimationState({ ...prepared.from, layout: { ...a, frame, anchor: value,
       canvas: { width: at(a.canvas.width, b.canvas.width), height: at(a.canvas.height, b.canvas.height) },
-      labels: labels === null ? null : (({ frame: ignored, canvas: ignoredCanvas, ...value }) => value)(labels.layout),
+      labels: a.labels?.group !== undefined ? a.labels : labels === null ? null : (({ frame: ignored, canvas: ignoredCanvas, ...value }) => value)(labels.layout),
       clearance: a.clearance.kind === "inferred" ? { ...a.clearance, preferred: at(a.clearance.preferred, b.clearance.preferred) }
         : a.clearance.kind === "fixed" ? { ...a.clearance, offset: at(a.clearance.offset, b.clearance.offset) } : { ...a.clearance, gap: at(a.clearance.gap, b.clearance.gap) } } });
-    return cloneAndFreeze({ kind: "guide", state, ...geometry(state.layout) });
+    return cloneAndFreeze({ kind: "guide", state, ...geometry(state.layout, currentLabels) });
   } catch (error) {
     if (!(error instanceof RangeError)) throw error;
     return fade("guide-layout");

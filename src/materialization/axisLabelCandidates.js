@@ -12,12 +12,14 @@ const RESPONSIVE_FAILURES = new Set(["label-overlap", "label-lines", "label-size
 // measured placement identical for native actions and prepared frame sampling.
 function candidate(input, config, indices) {
   const { channel, canvas, measuring, titleBounds } = input;
+  input.accountPreparation?.();
   const prepared = prepareAxisLabelLayout({ ...input, config, indices });
   const layout = resolvePreparedAxisLabelLayout(prepared);
   const { resolved, labelBounds, orderedBounds, requiredBounds, rotatedOverlap } = layout;
   if (!canvas || measuring !== true && !labelBounds.every(item => textBoundsFitCanvas(item, canvas))) {
     throw canvasOverflowError(`The ${channel}-axis labels do not fit the Canvas margin.`, labelBounds, canvas);
   }
+  input.accountWork?.(config.overlap === "error" && rotatedOverlap ? orderedBounds.length ** 2 : orderedBounds.length);
   if (config.overlap === "error" && orderedBounds.some((item, index) => rotatedOverlap
     ? orderedBounds.slice(0, index).some(previous => textBoundsIntersect(previous, item))
     : index > 0 && textBoundsIntersect(orderedBounds[index - 1], item))) {

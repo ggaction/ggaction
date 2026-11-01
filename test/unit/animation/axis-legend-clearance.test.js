@@ -119,7 +119,7 @@ test("nested inferred lane dependencies keep native scoped identity and offline 
   assert.equal(new Set(legends(current).map(item => item.decision.guideKey)).size, legends(current).length);
   offline(plan); offline(transition(current, to));
   const original = exportTransitionPlan(plan), index = original.from.guides.findIndex(state => state?.kind === "legend-axis-lane");
-  assert.ok(index >= 0); assert.equal(original.kernels.guide, "native-guide-values@12");
+  assert.ok(index >= 0); assert.equal(original.kernels.guide, "native-guide-values@13");
   for (const mutate of [state => state.axes.pop(), state => state.axes.push(state.axes[0]), state => state.axes[0] = "missing", state => state.offsets[0].owner = "missing"]) {
     const copy = structuredClone(original); mutate(copy.from.guides[index]); assert.throws(() => restoreTransitionPlan(copy));
   }
