@@ -75,7 +75,8 @@
       "documentExample": true,
       "optionalPeers": true,
       "bundleEntries": 6
-    }
+    },
+    "sourcePinnedDocs": 32
   },
   "limits": {
     "entries": 1182,
@@ -131,6 +132,11 @@
     "categorical-pack22-absolute.log": "c291f5749b4bda5d98c71ed011263b0839aac5c929c893ab415e928b7ffd2a30",
     "categorical-pack22.log": "ae804ccb18cab87d2d8177a47f434481c5ee2a668382e34b848c6ab0e4874942",
     "categorical-pack24-absolute.log": "a38536d65c055a6277c957b8d73df3f76705586be5f861f0062fa03c12992fff",
-    "categorical-pack24.log": "f4ddf9e990b54742fc6f40cffa8892d57321b1772fd7a0bb63d07745e392aa4a"
-  }
+    "categorical-pack24.log": "f4ddf9e990b54742fc6f40cffa8892d57321b1772fd7a0bb63d07745e392aa4a",
+    "categorical-legend-docs-pin.log": "9feb7a94be165516d4cd8c3fe291077fd3d995e69cfdf997c5bb6b8769042eff",
+    "categorical-legend-docs-pinned.log": "acdbf64ffc42b9f214d6cde305a71ab9e8849d0835fdbe85bbae95d700dd062f",
+    "categorical-legend-docs-build-pinned.log": "6ad2ab0cc2b0d6764cc4be457a8b0f186677663a73b43a90cc939ef669b02d91",
+    "categorical-legend-built-docs-pinned.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b"
+  },
+  "source": "285927a1d"
 }
