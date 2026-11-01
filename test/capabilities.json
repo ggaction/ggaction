@@ -50,6 +50,10 @@
       {
         "type": "prefix",
         "path": "unit/actions/"
+      },
+      {
+        "type": "file",
+        "path": "unit/profile-facade-consumers.test.js"
       }
     ],
     "animation": [
