@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { chart, prepareDataUpdate } from "../../../src/index.js";
+import { chart, hconcat, prepareDataUpdate } from "../../../src/index.js";
 import { createFlow } from "../../../examples/flow-layouts/program.js";
 import { inspectProgram, comparePrograms, getMarkItems, describeAction } from "../../../src/inspection.js";
 import { exportAccessibleData } from "../../../src/accessibility.js";
@@ -176,4 +176,39 @@ test("flow tooltip source lookup follows reordered revisions and editable restor
     assert.equal(describeFlowInspection(current), 'ab: 1 to "1"; flow 6.');
     assert.equal(serializeProgram(original), before);
   } finally { session.destroy(); }
+});
+
+for (const method of ["dag", "cyclic"]) test(`flow ${method} edits, highlights and scoped revisions preserve typed node and link ownership`, () => {
+  const original = createFlowInspection(method), before = serializeProgram(original);
+  const layout = resource(original, "layout");
+  const styled = original.editFlowNodes({ nodes: { overrides: [{ key: 1, fill: "orange" }] }, labels: { content: { field: "name" } } })
+    .editFlowLinks({ links: { overrides: [{ key: "ab", fill: "purple" }] } });
+  assert.equal(resource(styled, "layout"), layout);
+  assert.deepEqual(styled.graphicSpec.objects.flowNodes.items.filter(item => item.identity.role === "label").map(item => item.properties.text), ["Input", "First", "Second"]);
+  const chosen = styled.highlightMarks({ id: "chosen", target: "flowNodes", select: { rows: { data: "nodes", indices: [0] } }, fill: "red" });
+  const nodeKey = getMarkItems(chosen, { target: "flowNodes" }).find(item => item.fields.id === 1).key;
+  assert.deepEqual(chosen.graphicSpec.objects.flowNodes.items.filter(item => item.properties.fill === "red").map(item => item.identity.key), [nodeKey, nodeKey]);
+  assert.equal(renderToSVG(chosen.removeMarkHighlight({ selection: "chosen" })), renderToSVG(styled));
+  const rows = original.semanticSpec.datasets.find(data => data.id === "edges").values;
+  const revised = deserializeProgram(serializeProgram(chosen)).reviseData({ source: "edges", id: "next", values: [...rows].reverse().map(row => ({ ...row, amount: row.amount * 2 })) });
+  assert.equal(resource(revised, "graph").revision, 1); assert.equal(resource(revised, "layout").revision, 1);
+  const node = getMarkItems(revised, { target: "flowNodes" }).find(item => item.fields.id === 1);
+  assert.equal(node.key, nodeKey); assert.equal(node.fields.value, 8);
+  assert.deepEqual([node.fields.incoming, node.fields.outgoing], [method === "cyclic" ? 4 : 0, 8]);
+  const links = getMarkItems(revised, { target: "flowLinks" });
+  const link = links.find(item => item.fields.id === "ab");
+  assert.deepEqual([link.fields.source, link.fields.target, link.fields.value], [1, "1", 6]);
+  assert.deepEqual([link.rows[0].data, link.rows[0].revision, link.rows[0].index], ["next", 1, rows.length - 1]);
+  assert.equal(link.geometry[0].properties.fill, "purple");
+  const combined = hconcat({ programs: [{ id: "left", program: revised }, { id: "right", program: revised }] });
+  const changed = combined.editFlowLinks({ target: { childPath: ["left"], id: "flowLinks" }, links: { fill: "green", overrides: [] } });
+  assert.equal(changed.children.right, revised);
+  assert.equal(resource(changed.children.left, "layout"), resource(revised, "layout"));
+  const left = getMarkItems(changed, { target: { childPath: ["left"], id: "flowLinks" } });
+  const right = getMarkItems(changed, { target: { childPath: ["right"], id: "flowLinks" } });
+  assert.equal(new Set([...left, ...right].map(item => item.key)).size, rows.length * 2);
+  assert.deepEqual(left.map(item => item.rows), right.map(item => item.rows));
+  assert.ok(left.every(item => item.geometry[0].properties.fill === "green"));
+  assert.equal(renderToSVG(deserializeProgram(serializeProgram(changed))), renderToSVG(changed));
+  assert.equal(serializeProgram(original), before);
 });

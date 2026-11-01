@@ -1,0 +1,69 @@
+{
+  "base": "9039879b298dfbc6e7bec8de708f3f5285556407",
+  "requirements": 30,
+  "groups": 79,
+  "consumerCells": 577,
+  "rows": [
+    {
+      "id": "tree",
+      "oldAssigned": 0,
+      "assigned": 14,
+      "remaining": [
+        "encodings",
+        "scales",
+        "guides",
+        "scene-animation",
+        "package"
+      ]
+    },
+    {
+      "id": "treemap",
+      "oldAssigned": 0,
+      "assigned": 14,
+      "remaining": [
+        "encodings",
+        "scales",
+        "guides",
+        "scene-animation",
+        "package"
+      ]
+    },
+    {
+      "id": "graph-nodes",
+      "oldAssigned": 0,
+      "assigned": 15,
+      "remaining": [
+        "encodings",
+        "scales",
+        "guides",
+        "package"
+      ]
+    },
+    {
+      "id": "sankey-dag",
+      "oldAssigned": 5,
+      "assigned": 14,
+      "remaining": [
+        "encodings",
+        "scales",
+        "guides",
+        "scene-animation",
+        "package"
+      ]
+    },
+    {
+      "id": "sankey-cyclic",
+      "oldAssigned": 5,
+      "assigned": 14,
+      "remaining": [
+        "encodings",
+        "scales",
+        "guides",
+        "scene-animation",
+        "package"
+      ]
+    }
+  ],
+  "othersUnchanged": true,
+  "existingAssignedOwnersPreserved": true
+}
