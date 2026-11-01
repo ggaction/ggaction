@@ -1,3 +1,6 @@
+import { axisTitleAnimationItems } from "./axisTitleGuides.js";
+import { axisTitleAnimationMatchesNode } from "./axisTitleState.js";
+import { legendGroupAnimationMatchesNode } from "./legendGroupState.js";
 import { categoricalLegendAnimationMatchesNode } from "./categoricalLegendState.js";
 import { sizeLegendAnimationMatchesNode } from "./sizeLegendState.js";
 import { prepareAxisAnimationLayout, normalizeAxisLabelAnimationState, axisLabelAnimationMatchesNode } from "./axisLabelState.js";
@@ -96,6 +99,7 @@ function scopedGuides(program, namespaces, spend) {
       parallel ? { field: item.field, value: item.value } : item.value, item.line);
     add(item.graphicId, item.reason === undefined ? { identity: id, kind: "anchor", anchor: item.anchor } : { identity: id, reason: item.reason });
   }
+  for (const item of axisTitleAnimationItems(program, namespaces, spend)) result.set(item.graphicId, item.state);
   for (const item of legendAnimationItems(program, namespaces, spend)) {
     spend(1 + item.graphicId.length);
     result.set(item.graphicId, item.state);
@@ -116,9 +120,17 @@ export function projectGuideAnimationState(program, endpoint) {
       states.set(qualified, state);
     }
   }
-  return cloneAndFreeze(endpoint.sources.map((source, index) => {
+  const editedGroups = new Set();
+  const groupKey = state => JSON.stringify([state.identity.namespaces, state.identity.owner]);
+  const projected = endpoint.sources.map((source, index) => {
     const state = states.get(source.graphicId);
     if (state === undefined || state.reason !== undefined) return state ?? null;
-    return (state.kind === "categorical-legend" ? categoricalLegendAnimationMatchesNode : state.kind === "size-legend" ? sizeLegendAnimationMatchesNode : state.kind === "legend" ? legendAnimationMatchesNode : state.kind === "label-layout" ? axisLabelAnimationMatchesNode : guideAnimationMatchesNode)(state, endpoint.scene.nodes[index]) ? state : { identity: state.identity, reason: "guide-edited" };
-  }));
+    const matches = (state.kind === "title-layout" ? axisTitleAnimationMatchesNode : state.kind === "legend-group" ? legendGroupAnimationMatchesNode : state.kind === "categorical-legend" ? categoricalLegendAnimationMatchesNode : state.kind === "size-legend" ? sizeLegendAnimationMatchesNode : state.kind === "legend" ? legendAnimationMatchesNode : state.kind === "label-layout" ? axisLabelAnimationMatchesNode : guideAnimationMatchesNode)(state, endpoint.scene.nodes[index]);
+    if (!matches && state.kind === "legend-group") editedGroups.add(groupKey(state));
+    return matches ? state : { identity: state.identity, reason: "guide-edited" };
+  });
+  const editedLabels = new Set(projected.filter(state => state?.identity.component === "labels" && state.reason !== undefined).map(groupKey));
+  return cloneAndFreeze(projected.map(state => state?.kind === "title-layout" && editedLabels.has(groupKey(state))
+    ? { identity: state.identity, reason: "guide-edited" } : state?.kind === "legend-group" && editedGroups.has(groupKey(state))
+    ? { identity: state.identity, reason: "guide-edited" } : state));
 }

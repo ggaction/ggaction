@@ -1,0 +1,9 @@
+import {createPackageArtifact} from '../scripts/package-artifact.js';
+import path from 'node:path';
+import {mkdir,copyFile,writeFile} from 'node:fs/promises';
+const artifact=await createPackageArtifact();
+const frozenFile=path.resolve(`.artifacts/route-cycle-archives/ggaction-${artifact.sha256}.tgz`);
+await mkdir('.artifacts/route-cycle-archives',{recursive:true});
+await copyFile(artifact.file,frozenFile);
+await writeFile('.artifacts/route-cycle-fixed.json',JSON.stringify({...artifact,frozenFile},null,2)+'\n');
+console.log(JSON.stringify({...artifact,frozenFile},null,2));

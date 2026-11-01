@@ -224,11 +224,12 @@ import { planTransition, serializeAnimation, deserializeAnimation,
   sampleTransition } from 'ggaction/animation';
 import { renderToSVG } from 'ggaction/svg';
 
-const from = chart().createCanvas({ width: 400, height: 240, margin: 40 })
+const from = chart().createCanvas({ width: 500, height: 400, margin: 80 })
   .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
   .createPointMark().encodeX({ field: 'x', scale: { domain: [0, 10], nice: false } })
   .encodeY({ field: 'y' }).createVerticalGrid({ values: [5] })
-  .createXAxisLabels({ values: [0, 5, 10], flush: true });
+  .createXAxisLabels({ values: [0, 5, 10], flush: true })
+  .createXAxisTitle({ text: 'Amount', at: 5, offset: { from: 'labels', gap: 7 } });
 const to = from.editScale({ id: 'x', domain: [0, 20] });
 const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
 const restored = deserializeAnimation(serializeAnimation(plan));
@@ -254,29 +255,65 @@ Fixed Cartesian label rotation, flush alignment, and plot-edge alignment use the
 measured layout. Their raw values, displayed text, hard-break lines, fonts, and alignment
 policy must stay compatible. Scale, frame, and numeric offsets can change; exact font
 profiles must contain every required measurement. Current layouts support interruption
-and offline replay. Width-based wrapping, responsive skip/rotation selection, inferred or
-label-relative title clearance, and edited geometry retain explicit fallbacks.
+and offline replay. Inferred and label-relative Cartesian titles reuse those current
+measured label bounds. Native theme/default gaps, label-relative gaps, and Canvas fit
+rules remain intact as scales or frames change. A title never treats its final offset
+as the original meaning. The complete same-axis label dependency is checked during
+restoration; editing a label also makes its dependent title fade safely. Text or font
+changes, width-based wrapping, responsive skip/rotation selection, and unsafe intermediate
+placements retain explicit fallbacks.
 
 Continuous color and stroke-gradient legends with explicit `values` and numeric `offset`
 use their native single-edge layout. Ticks and labels keep their raw values; the current
 scale maps them again as the domain changes. Gradient length, thickness, offset, and frame
 move through that same layout. Current legend frames can be interrupted and restored
 offline. Text or font changes crossfade; exact font profiles must contain all required
-measurements. Automatic samples, symbol legends, borders, groups, multiple blocks on one
-edge, and inferred axis clearance retain safe fallbacks.
+measurements. Automatic samples, symbol legends, borders, implicit shared lanes, and
+inferred axis clearance retain safe fallbacks.
 
 Continuous size legends also support exact `values` and explicit numeric `offset` in one
 independent edge block. Linear, log, sqrt, and pow size mappings interpolate area before
 calculating the symbol radius. The native measured layout preserves multiline labels,
 hidden labels, explicit alignment, and spacing. Automatic sampling, ordinal/discrete size,
-and grouped or dependent legend placement currently retain an explicit layout crossfade.
+and implicit dependent legend placement retain an explicit layout crossfade.
 
 Categorical color, stroke, shape, and series legends retain typed category values and
 native line, point, or swatch roles. With an explicit offset in one independent edge
 block, compatible symbol dimensions, spacing, and frame changes use the same measured
 layout as the static legend. Hidden and multiline labels remain associated with their
 original values. Changed text, fonts, shapes, domain order, or layout policies fade
-explicitly; grouped, clipped, bordered, or overflow layouts remain pending typed cases.
+explicitly; clipped, bordered, or overflow layouts retain their explicit fallbacks.
+
+Explicit `editLegendLayout` groups can combine categorical, size, and color/stroke-gradient
+blocks. The current frame uses the same measured block bounds and `row`, `column`, or
+`wrap` packing as a static legend, including edge, corner, and plot-relative `at` placement.
+A wrap layout can change rows as the available width changes. Each item keeps its raw
+value and role through that change, interruption, and offline restoration. Use explicit
+offsets and exact continuous `values`; keep block order, text, fonts, and placement policy
+compatible. Unsupported siblings, automatic samples, inferred axis clearance, individual
+block placement, borders, clips, and overflow retain a complete-group fallback.
+
+> **Executable complete.** Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change.
+
+```js
+import { chart } from "ggaction";
+import { planTransition, sampleTransition, serializeAnimation,
+  deserializeAnimation } from "ggaction/animation";
+import { renderToSVG } from "ggaction/svg";
+
+const from = chart().createCanvas({ width: 800, height: 500, margin: 140 })
+  .createData({ values: [{ x: 1, value: 1, group: "A" }, { x: 2, value: 4, group: "B" }] })
+  .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "value" })
+  .encodeColor({ field: "group" })
+  .encodeSize({ field: "value", scale: { range: [20, 80] } })
+  .createLegend({ channels: ["color"], title: "Group", offset: 20 })
+  .createLegend({ channels: ["size"], title: "Value", values: [1, 4], offset: 20 })
+  .editLegendLayout({ target: "points", position: "bottom", blockLayout: "row", offset: 20 });
+const to = from.editCanvas({ width: 1000 }).editScale({ id: "size", range: [80, 320] });
+const transition = planTransition({ from, to, options: { durationMs: 100, easing: "linear" } });
+const restored = deserializeAnimation(serializeAnimation(transition));
+console.log(renderToSVG(sampleTransition(restored.plan, 50)));
+```
 
 > **Executable complete.** Run this complete ES module with ggaction installed; both native categorical legends and their offline midpoint are included.
 

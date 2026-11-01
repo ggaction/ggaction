@@ -1,4 +1,6 @@
 import { prepareCategoricalLegendLayout, normalizeCategoricalLegendAnimationState } from "./categoricalLegendState.js";
+import { prepareAnimationLegendGroups } from "./legendGroupGuides.js";
+import { normalizeLegendGroupAnimationState } from "./legendGroupState.js";
 import { resolveCategoricalLegendAppearance } from "../legends.js";
 import { prepareSizeLegendLayout, normalizeSizeLegendAnimationState } from "./sizeLegendState.js";
 import { legendGuideItems } from "../guides/legendItems.js";
@@ -14,12 +16,17 @@ import { GRADIENT_STRIP_COUNT } from "../guides/legendGradient.js";
 // dependencies keep their exact native identity and an explicit layout reason.
 export function legendAnimationItems(program, namespaces, spend) {
   const result = [], prepared = new Map(), configs = program.guideConfigs.legend ?? {};
+  const groups = prepareAnimationLegendGroups(program, spend);
   for (const item of legendGuideItems(program, spend)) {
     const categorical = ["series", "color", "stroke"].includes(item.kind);
     if (!categorical && (!["gradient", "strokeGradient", "size"].includes(item.kind) || item.kind !== "size" && item.component === "symbol")) continue;
     const component = `legend-${item.component}`, config = resolveEffectiveLegendBlockConfig(program, item.kind, configs[item.kind]);
     const value = item.component === "strip" ? [item.kind, ["segment", item.line, GRADIENT_STRIP_COUNT]] : categorical && item.component === "symbol" ? [item.kind, [...item.value[1], item.part]] : item.value;
     const identity = { namespaces, owner: item.ownerId, component, value, line: 0 };
+    if (groups.has(item.ownerId)) {
+      result.push({ graphicId: item.graphicId, state: normalizeLegendGroupAnimationState({ identity, kind: "legend-group", layout: groups.get(item.ownerId) }) });
+      continue;
+    }
     if (!prepared.has(item.kind)) {
       const appearance = categorical ? resolveCategoricalLegendAppearance(program, config) : undefined;
       const simple = config.clipHeight === undefined && (!categorical || (!config.overflow && config.combine === undefined && config.layout === "edge" &&

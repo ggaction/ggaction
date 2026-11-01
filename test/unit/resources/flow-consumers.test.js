@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { chart, prepareDataUpdate } from "../../../src/index.js";
+import { chart, hconcat, prepareDataUpdate } from "../../../src/index.js";
 import { createFlow } from "../../../examples/flow-layouts/program.js";
 import { inspectProgram, comparePrograms, getMarkItems, describeAction } from "../../../src/inspection.js";
 import { exportAccessibleData } from "../../../src/accessibility.js";
@@ -8,6 +8,8 @@ import { createTransitionScene } from "../../../src/scene.js";
 import { resolveMarkSourceItems } from "../../../src/materialization/selection/policies/index.js";
 import { serializeProgram, deserializeProgram } from "../../../src/persistence.js";
 import { renderToSVG } from "../../../src/renderers/svg.js";
+import { createInteractionSession } from "../../../src/interaction.js";
+import { createFlowInspection, flowInspectionEdges, readFlowInspection, describeFlowInspection } from "../../support/flow-inspection.js";
 const expression = root => ({ version: 2, registry: "standard@1", root });
 const raw = [{ id: "ab", source: "a", target: "b", value: 3 }, { id: "ac", source: "a", target: "c", value: 1 }];
 const response = values => ({ text: JSON.stringify(values), mimeType: "application/json", encoding: "utf-8" });
@@ -108,4 +110,105 @@ test("zero and empty flow retain source semantics and dormant overrides", () => 
   p = p.reviseData({ source: "n", id: "empty", values: [] });
   assert.equal(p.graphicSpec.objects.flowNodes.items.length, 0);
   assert.equal(renderToSVG(deserializeProgram(serializeProgram(p))), renderToSVG(p));
+});
+
+for (const method of ["dag", "cyclic"]) test(`flow ${method} inspection keeps tooltip meaning, typed adjacency and exact original rows`, () => {
+  const original = createFlowInspection(method), before = serializeProgram(original);
+  const session = createInteractionSession({ program: original });
+  try {
+    session.dispatch({ type: "inspect", point: method === "dag" ? { x: 30, y: 100 } : { x: 92, y: 95 } });
+    const node = readFlowInspection(session.getState());
+    assert.equal(node.hit.ownerId, "flowNodes"); assert.equal(node.hit.role, "node");
+    assert.deepEqual(node.accessible.fields, { id: 1, name: "Input", key: 1, value: 4,
+      incoming: method === "dag" ? 0 : 2, outgoing: 4, imbalance: method === "dag" ? -4 : -2 });
+    assert.deepEqual(node.adjacency, { incoming: method === "dag" ? [] : ["ba"], outgoing: ["ab", "ac"], neighbors: ["1", "end"] });
+    assert.deepEqual(node.originalRows, [{ id: 1, name: "Input" }]);
+    assert.equal(node.item.rows[0].data, "nodes"); assert.equal(node.item.rows[0].index, 0);
+    assert.equal(node.item.rows[0].rowKey, '["scalar",[["number",1]]]');
+    assert.equal(describeFlowInspection(node), `Input: flow 4; incoming ${method === "dag" ? 0 : 2}; outgoing 4; neighbors ["1","end"].`);
+
+    session.dispatch({ type: "inspect", point: method === "dag" ? { x: 120, y: 78 } : { x: 120, y: 35 } });
+    const link = readFlowInspection(session.getState());
+    assert.equal(link.hit.ownerId, "flowLinks"); assert.equal(link.hit.role, "link");
+    assert.equal(link.hit.itemKey, link.item.key); assert.equal(link.item.key, link.accessible.key);
+    assert.deepEqual(link.accessible.fields, { id: "ab", s: 1, t: "1", amount: 3, note: "primary", source: 1, target: "1", value: 3 });
+    assert.deepEqual(link.adjacency, { source: 1, target: "1" });
+    assert.deepEqual(link.originalRows, [flowInspectionEdges[0]]);
+    assert.equal(link.item.rows[0].data, "edges"); assert.equal(link.item.rows[0].index, 0);
+    assert.equal(link.item.rows[0].rowKey, '["scalar",[["string","ab"]]]');
+    assert.deepEqual(link.hit.resourceRefs, [{ kind: "layout", id: "layout", revision: 0 }]);
+    assert.equal(describeFlowInspection(link), 'ab: 1 to "1"; flow 3.');
+
+    if (method === "cyclic") {
+      session.dispatch({ type: "inspect", point: { x: 92, y: 169 } });
+      const reverse = readFlowInspection(session.getState());
+      assert.deepEqual(reverse.adjacency, { source: "1", target: 1 });
+      assert.deepEqual(reverse.originalRows, [{ id: "ba", s: "1", t: 1, amount: 2, note: "return" }]);
+      assert.equal(describeFlowInspection(reverse), 'ba: "1" to 1; flow 2.');
+    }
+    assert.equal(serializeProgram(original), before);
+  } finally { session.destroy(); }
+});
+
+test("flow tooltip source lookup follows reordered revisions and editable restore without retaining old values", () => {
+  const original = createFlowInspection(), before = serializeProgram(original);
+  const session = createInteractionSession({ program: original });
+  try {
+    session.dispatch({ type: "inspect", point: { x: 120, y: 78 } });
+    const key = readFlowInspection(session.getState()).item.key;
+    const revised = original.reviseData({ source: "edges", id: "nextEdges",
+      values: [...flowInspectionEdges].reverse().map(row => ({ ...row, amount: row.amount * 2 })) });
+    const restored = deserializeProgram(serializeProgram(revised));
+    session.updateProgram(restored);
+    const link = getMarkItems(restored, { target: "flowLinks" }).find(item => item.fields.id === "ab");
+    // The ribbon starts at x=40. Its source-side interval supplies an interior point
+    // after the authored edge order changed; no key or endpoint is rewritten.
+    const commands = link.geometry[0].properties.commands;
+    const upper = commands[0].y, lower = commands.at(-2).y;
+    session.dispatch({ type: "inspect", point: { x: 50, y: (upper + lower) / 2 } });
+    const current = readFlowInspection(session.getState());
+    assert.equal(current.item.key, key);
+    assert.equal(current.accessible.fields.value, 6);
+    assert.deepEqual(current.originalRows, [{ ...flowInspectionEdges[0], amount: 6 }]);
+    assert.equal(current.item.rows[0].data, "nextEdges"); assert.equal(current.item.rows[0].index, 1);
+    assert.equal(current.item.rows[0].revision, 1);
+    assert.deepEqual(current.hit.resourceRefs, [{ kind: "layout", id: "layout", revision: 1 }]);
+    assert.equal(describeFlowInspection(current), 'ab: 1 to "1"; flow 6.');
+    assert.equal(serializeProgram(original), before);
+  } finally { session.destroy(); }
+});
+
+for (const method of ["dag", "cyclic"]) test(`flow ${method} edits, highlights and scoped revisions preserve typed node and link ownership`, () => {
+  const original = createFlowInspection(method), before = serializeProgram(original);
+  const layout = resource(original, "layout");
+  const styled = original.editFlowNodes({ nodes: { overrides: [{ key: 1, fill: "orange" }] }, labels: { content: { field: "name" } } })
+    .editFlowLinks({ links: { overrides: [{ key: "ab", fill: "purple" }] } });
+  assert.equal(resource(styled, "layout"), layout);
+  assert.deepEqual(styled.graphicSpec.objects.flowNodes.items.filter(item => item.identity.role === "label").map(item => item.properties.text), ["Input", "First", "Second"]);
+  const chosen = styled.highlightMarks({ id: "chosen", target: "flowNodes", select: { rows: { data: "nodes", indices: [0] } }, fill: "red" });
+  const nodeKey = getMarkItems(chosen, { target: "flowNodes" }).find(item => item.fields.id === 1).key;
+  assert.deepEqual(chosen.graphicSpec.objects.flowNodes.items.filter(item => item.properties.fill === "red").map(item => item.identity.key), [nodeKey, nodeKey]);
+  assert.equal(renderToSVG(chosen.removeMarkHighlight({ selection: "chosen" })), renderToSVG(styled));
+  const rows = original.semanticSpec.datasets.find(data => data.id === "edges").values;
+  const revised = deserializeProgram(serializeProgram(chosen)).reviseData({ source: "edges", id: "next", values: [...rows].reverse().map(row => ({ ...row, amount: row.amount * 2 })) });
+  assert.equal(resource(revised, "graph").revision, 1); assert.equal(resource(revised, "layout").revision, 1);
+  const node = getMarkItems(revised, { target: "flowNodes" }).find(item => item.fields.id === 1);
+  assert.equal(node.key, nodeKey); assert.equal(node.fields.value, 8);
+  assert.deepEqual([node.fields.incoming, node.fields.outgoing], [method === "cyclic" ? 4 : 0, 8]);
+  const links = getMarkItems(revised, { target: "flowLinks" });
+  const link = links.find(item => item.fields.id === "ab");
+  assert.deepEqual([link.fields.source, link.fields.target, link.fields.value], [1, "1", 6]);
+  assert.deepEqual([link.rows[0].data, link.rows[0].revision, link.rows[0].index], ["next", 1, rows.length - 1]);
+  assert.equal(link.geometry[0].properties.fill, "purple");
+  const combined = hconcat({ programs: [{ id: "left", program: revised }, { id: "right", program: revised }] });
+  const changed = combined.editFlowLinks({ target: { childPath: ["left"], id: "flowLinks" }, links: { fill: "green", overrides: [] } });
+  assert.equal(changed.children.right, revised);
+  assert.equal(resource(changed.children.left, "layout"), resource(revised, "layout"));
+  const left = getMarkItems(changed, { target: { childPath: ["left"], id: "flowLinks" } });
+  const right = getMarkItems(changed, { target: { childPath: ["right"], id: "flowLinks" } });
+  assert.equal(new Set([...left, ...right].map(item => item.key)).size, rows.length * 2);
+  assert.deepEqual(left.map(item => item.rows), right.map(item => item.rows));
+  assert.ok(left.every(item => item.geometry[0].properties.fill === "green"));
+  assert.equal(renderToSVG(deserializeProgram(serializeProgram(changed))), renderToSVG(changed));
+  assert.equal(serializeProgram(original), before);
 });

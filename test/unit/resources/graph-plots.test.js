@@ -32,6 +32,10 @@ test("graph plots retain distinct node, parallel-edge, loop and arrow identities
   assert.deepEqual(graphics(p).filter(item => item.type === "text").map(item => item.properties.text), ["Alpha", "Beta", "Gamma"]);
   assert.equal(getMarkItems(p).length, 6);
   assert.equal(exportAccessibleData(p).views[0].rows.length, 6);
+  const accessible = exportAccessibleData(p, { format: "items", target: "graphPlot" }).views[0].items;
+  assert.deepEqual(accessible.map(item => [item.key, item.role, item.fields]), items.map(item => [item.key, item.role, item.fields]));
+  assert.deepEqual(accessible.filter(item => item.role === "node").map(item => item.fields.degree), [4, 2, 0]);
+  assert.deepEqual(accessible.filter(item => item.role === "edge").map(item => item.fields.weight), [2, 3, 1]);
   assert.equal(renderToSVG(deserializeProgram(serializeProgram(p))), renderToSVG(p));
   assert.deepEqual(createTransitionScene(deserializeProgram(serializeProgram(p)), { format: "canvas" }), createTransitionScene(p, { format: "canvas" }));
   assert.equal(typeof basicChart().createGraphPlot, "undefined");

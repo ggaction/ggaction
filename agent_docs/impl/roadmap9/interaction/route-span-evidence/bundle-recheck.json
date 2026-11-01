@@ -1,0 +1,114 @@
+{
+  "status": "passed",
+  "method": "same archive saved measurements; no repeated runtime",
+  "checks": [
+    {
+      "node": 20,
+      "specifier": "ggaction",
+      "actual": 781519,
+      "limit": 781600
+    },
+    {
+      "node": 20,
+      "specifier": "ggaction/basic",
+      "actual": 422951,
+      "limit": 423000
+    },
+    {
+      "node": 20,
+      "specifier": "ggaction/svg",
+      "actual": 24954,
+      "limit": 26000
+    },
+    {
+      "node": 20,
+      "specifier": "ggaction/graph",
+      "actual": 44180,
+      "limit": 46000
+    },
+    {
+      "node": 20,
+      "specifier": "ggaction/animation",
+      "actual": 233459,
+      "limit": 233500
+    },
+    {
+      "node": 20,
+      "specifier": "ggaction/interaction",
+      "actual": 137439,
+      "limit": 137500
+    },
+    {
+      "node": 22,
+      "specifier": "ggaction",
+      "actual": 780144,
+      "limit": 781600
+    },
+    {
+      "node": 22,
+      "specifier": "ggaction/basic",
+      "actual": 422085,
+      "limit": 423000
+    },
+    {
+      "node": 22,
+      "specifier": "ggaction/svg",
+      "actual": 24779,
+      "limit": 26000
+    },
+    {
+      "node": 22,
+      "specifier": "ggaction/graph",
+      "actual": 44023,
+      "limit": 46000
+    },
+    {
+      "node": 22,
+      "specifier": "ggaction/animation",
+      "actual": 232682,
+      "limit": 233500
+    },
+    {
+      "node": 22,
+      "specifier": "ggaction/interaction",
+      "actual": 137002,
+      "limit": 137500
+    },
+    {
+      "node": 24,
+      "specifier": "ggaction",
+      "actual": 781519,
+      "limit": 781600
+    },
+    {
+      "node": 24,
+      "specifier": "ggaction/basic",
+      "actual": 422951,
+      "limit": 423000
+    },
+    {
+      "node": 24,
+      "specifier": "ggaction/svg",
+      "actual": 24954,
+      "limit": 26000
+    },
+    {
+      "node": 24,
+      "specifier": "ggaction/graph",
+      "actual": 44180,
+      "limit": 46000
+    },
+    {
+      "node": 24,
+      "specifier": "ggaction/animation",
+      "actual": 233459,
+      "limit": 233500
+    },
+    {
+      "node": 24,
+      "specifier": "ggaction/interaction",
+      "actual": 137439,
+      "limit": 137500
+    }
+  ]
+}

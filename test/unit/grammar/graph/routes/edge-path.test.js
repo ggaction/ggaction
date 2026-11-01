@@ -5,6 +5,7 @@ import { createRouteBudget } from "../../../../../src/grammar/graph/routes/budge
 import { bundleEdgePathRoutes, normalizeEdgePathOptions, smoothRouteCorners } from "../../../../../src/grammar/graph/routes/edgePath.js";
 import { shortestRoutePath } from "../../../../../src/grammar/graph/routes/shortestPath.js";
 import { getErrorDetails } from "../../../../../src/core/diagnostics.js";
+import { enumerateShortestPath } from "../../../../oracles/shortest-path.js";
 
 const p = (x, y) => ({ x, y });
 const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-12, `${a} != ${b}`);
@@ -100,4 +101,71 @@ test("invalid options, cost/world overflow, abort and bounded queues leave origi
   assert.throws(() => bundleEdgePathRoutes(diagonalParallel, { maxStretch: Number.MAX_VALUE }), /stretch.*finite/);
   assert.throws(() => bundleEdgePathRoutes({ ...input, limits: { maxSamples: 10 } }), error => getErrorDetails(error)?.code === "resource-limit");
   assert.deepEqual(input, before);
+});
+
+test("simple cycle stretch matches independent path enumeration and preserves typed processing order", () => {
+  const square = fixture({ points: [p(0, 0), p(1, 0), p(1, 1), p(0, 1)], edges: [[30, 0, 1], [20, 1, 2], [10, 2, 3], [0, 3, 0]], directed: false });
+  const literal = bundleEdgePathRoutes(square);
+  assert.deepEqual(literal.diagnostics.processingOrder, literal.routes.map(route => route.edgeKey).reverse());
+  assert.deepEqual(literal.diagnostics.bundledEdges, []);
+  assert.deepEqual(literal.diagnostics.lockedEdges, []);
+  assert.ok(literal.routes.every(route => route.provenance.reason === "stretch" && route.commands.length === 2));
+  for (let count = 3; count <= 9; count++) {
+    const points = Array.from({ length: count }, (_, i) => p(Math.cos(i * 2 * Math.PI / count), Math.sin(i * 2 * Math.PI / count)));
+    const edges = points.map((_, i) => [i % 2 ? String(i) : i, i, (i + 1) % count]);
+    const input = fixture({ points, edges, directed: false }), before = structuredClone(input);
+    const lengths = edges.map(([, a, b]) => Math.hypot(points[a].x - points[b].x, points[a].y - points[b].y));
+    const arcs = edges.flatMap(([, a, b]) => [[a, b], [b, a]]), costs = lengths.flatMap(length => [length ** 2, length ** 2]);
+    const result = bundleEdgePathRoutes(input, { maxStretch: 1 });
+    edges.forEach(([, source, target], index) => {
+      const alternative = enumerateShortestPath(arcs, costs, source, target, arcs.map((_, arc) => Math.floor(arc / 2) === index));
+      assert.equal(alternative.edges.length, count - 1);
+      const length = alternative.edges.reduce((sum, arc) => sum + lengths[Math.floor(arc / 2)], 0);
+      assert.ok(length > lengths[index]);
+      assert.equal(result.routes[index].provenance.reason, "stretch");
+      assert.equal(result.routes[index].provenance.skipped, false);
+    });
+    assert.deepEqual(input, before);
+  }
+});
+
+test("disconnected cycles retain independent lock state while branches, loops and parallel edges use general paths", () => {
+  const points = [p(0, 0), p(1, 0), p(1, 1), p(0, 1), p(5, 0), p(6, 1), p(7, 0)];
+  const edges = [[0, 0, 1], [1, 1, 2], [2, 2, 3], [3, 3, 0], [4, 4, 6], [5, 4, 5], [6, 5, 6]];
+  const result = bundleEdgePathRoutes(fixture({ points, edges, directed: false }));
+  assert.ok(result.routes.slice(0, 4).every(route => route.provenance.reason === "stretch"));
+  assert.equal(result.routes[4].provenance.skipped, true);
+  assert.deepEqual(result.diagnostics.lockedEdges, result.routes.slice(5).map(route => route.edgeKey));
+  const parallel = bundleEdgePathRoutes(fixture({ points: [p(0, 0), p(1, 0)], edges: [[1, 0, 1], [2, 0, 1]], directed: false }));
+  assert.equal(parallel.routes[0].provenance.skipped, true);
+  assert.equal(parallel.routes[1].provenance.reason, "locked");
+  const branch = bundleEdgePathRoutes(fixture({ points: [...points.slice(0, 4), p(2, 1)], edges: [...edges.slice(0, 4), [4, 2, 4], [5, 0, 0]], directed: false }));
+  assert.equal(branch.routes[4].provenance.reason, "disconnected");
+  assert.equal(branch.routes[5].provenance.reason, "zero-length");
+});
+
+test("cycle proof preserves overflow, explicit abort and sample limits instead of masking failed searches", () => {
+  const points = [p(0, 0), p(1, 1), p(0, 1e-10), p(1, 1 - 1e-10), p(0, 2e-10), p(1, 1 - 2e-10)];
+  const edges = points.map((_, i) => [i, i, (i + 1) % points.length]), input = fixture({ points, edges, directed: false }), before = structuredClone(input);
+  assert.throws(() => bundleEdgePathRoutes(input, { exponent: 2047, maxStretch: 1 }), /path cost must be finite/);
+  assert.throws(() => bundleEdgePathRoutes(input, { maxStretch: Number.MAX_VALUE }), /stretch bound must be finite/);
+  assert.throws(() => bundleEdgePathRoutes(input, {}, AbortSignal.abort()), { name: "AbortError" });
+  assert.throws(() => bundleEdgePathRoutes({ ...input, limits: { maxSamples: 32 } }), error => getErrorDetails(error)?.code === "resource-limit");
+  assert.deepEqual(input, before);
+});
+
+test("ten thousand cycle edges finish within unchanged work limits without omitting routes", () => {
+  const count = 10_000, points = Array.from({ length: count }, (_, i) => p(Math.cos(i * 2 * Math.PI / count), Math.sin(i * 2 * Math.PI / count)));
+  const offset = Math.floor(count / 3), edges = points.map((_, i) => [i, i, (i + offset) % count]), input = fixture({ points, edges, directed: false });
+  const result = bundleEdgePathRoutes(input);
+  assert.equal(result.routes.length, count);
+  assert.equal(result.diagnostics.processingOrder.length, count);
+  assert.ok(result.diagnostics.work < 10_000_000);
+  assert.ok(result.diagnostics.peakSamples < 200_000);
+  assert.deepEqual(result.diagnostics.bundledEdges, []);
+  for (const [i, route] of result.routes.entries()) {
+    assert.equal(route.provenance.reason, "stretch");
+    assert.equal(route.edgeKey, input.model.edges[i].key);
+    assert.deepEqual(route.commands, [{ op: "M", ...points[i] }, { op: "L", ...points[(i + offset) % count] }]);
+  }
 });

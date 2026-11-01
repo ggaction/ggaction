@@ -1,0 +1,101 @@
+{
+  "node": "v20.20.2",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+  "sha256": "3f9abcd0c980200100ed89deb96523e7b5dd7fc28a237be493d8e2f4d0f7ce55",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2500.0147079999997
+    },
+    {
+      "id": "ggaction",
+      "status": "passed",
+      "durationMs": 2518.6731250000003,
+      "value": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 1036,
+        "minifiedBytes": 2704813,
+        "gzipBytes": 775065
+      }
+    },
+    {
+      "id": "ggaction/basic",
+      "status": "passed",
+      "durationMs": 1311.849083000001,
+      "value": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 620,
+        "minifiedBytes": 1443790,
+        "gzipBytes": 423325
+      }
+    },
+    {
+      "id": "ggaction/svg",
+      "status": "passed",
+      "durationMs": 75.92712500000016,
+      "value": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 44,
+        "minifiedBytes": 73991,
+        "gzipBytes": 24954
+      }
+    },
+    {
+      "id": "ggaction/graph",
+      "status": "passed",
+      "durationMs": 205.86745800000062,
+      "value": {
+        "specifier": "ggaction/graph",
+        "chunks": 1,
+        "modules": 85,
+        "minifiedBytes": 147084,
+        "gzipBytes": 44076
+      }
+    },
+    {
+      "id": "ggaction/animation",
+      "status": "passed",
+      "durationMs": 932.8607499999998,
+      "value": {
+        "specifier": "ggaction/animation",
+        "chunks": 1,
+        "modules": 450,
+        "minifiedBytes": 931861,
+        "gzipBytes": 281317
+      }
+    },
+    {
+      "id": "ggaction/interaction",
+      "status": "passed",
+      "durationMs": 536.9362079999992,
+      "value": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 190,
+        "minifiedBytes": 384137,
+        "gzipBytes": 123515
+      }
+    }
+  ],
+  "limitFailures": [
+    {
+      "specifier": "ggaction",
+      "actual": 775065,
+      "limit": 775000
+    },
+    {
+      "specifier": "ggaction/basic",
+      "actual": 423325,
+      "limit": 423200
+    }
+  ],
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "status": "bundle-limit-failed"
+}

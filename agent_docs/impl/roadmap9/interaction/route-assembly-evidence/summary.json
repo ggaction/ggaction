@@ -1,0 +1,89 @@
+{
+  "status": "qualified",
+  "base": "9785f63d3",
+  "authorization": "../../AUTHORIZATION.json remainingApproval and parent explicit same-job completion assembly approval",
+  "change": "Pass the existing immutable prepared job explicitly to the existing resource assembly owner; remove one duplicate native-input lowering, normalization, hash and clone.",
+  "unchanged": [
+    "public API and stored schemas",
+    "four solvers and every numeric result/diagnostic",
+    "work/sample/abort guards",
+    "complete result validation",
+    "native commit resource validation",
+    "receiver/token/worker lifetime"
+  ],
+  "checks": {
+    "sourceEachNode": 102,
+    "nodes": [
+      20,
+      22,
+      24
+    ],
+    "changedOwners": {
+      "src/materialization/graph/routeResource.js": [
+        100,
+        100,
+        100
+      ],
+      "src/resources/graphRoutes.js": [
+        100,
+        100,
+        100
+      ]
+    },
+    "boundariesDiscoverySharding": 40,
+    "canonicalPackage": 7,
+    "exactComparison": "Four methods x world/screen prepared output equals independent synchronous public action including complete native semantic state, source rows, ordered refs, viewport and offline restore. External clone/forged rehashed completion/hostile getter/stale/abort/immutable regressions also pass.",
+    "installedPerNode": 5,
+    "bundlesPerNode": 6,
+    "peers": "passed",
+    "bundleGzipMaximum": {
+      "ggaction": 782041,
+      "ggaction/basic": 422951,
+      "ggaction/svg": 24954,
+      "ggaction/graph": 44580,
+      "ggaction/animation": 233459,
+      "ggaction/interaction": 137439
+    }
+  },
+  "archive": {
+    "sha256": "c4c906ee9b6fc3eb1a486906ef01c3c9b5fef7ff9da15a6826a20b8305b89d22",
+    "entryCount": 1170,
+    "size": 1670065,
+    "unpackedSize": 7561755,
+    "afterMetadataSHAUnchanged": true
+  },
+  "caps": {
+    "entries": 1170,
+    "packedBytes": 1674100,
+    "unpackedBytes": 7561800,
+    "FullGzip": 782100
+  },
+  "firstFailures": [
+    {
+      "scope": "test fixture",
+      "message": "Source row data is a string per row, not one object per dataset.",
+      "resolution": "Assert explicit dataset IDs over actual row-reference set; no runtime change."
+    },
+    {
+      "scope": "canonical package",
+      "message": "Unpacked7561755 exceeds7561500; Node20packed1674030 exceeds1674000 measured separately.",
+      "resolution": "Minimal rounded7561800/1674100; canonical package7 passes."
+    }
+  ],
+  "performance": "New source P95 intentionally unmeasured. Parent coordinated one measurement at the final combined candidate instead of repeated CPU holds for each small preparation change. Previous1e307/archive58a measurements remain pinned to their original source.",
+  "remaining": [
+    "all-item graphic limit",
+    "force/density large workloads",
+    "full AT82 stage matrix and retained heap qualification",
+    "AT82/STEP077 incomplete"
+  ],
+  "source": "9b46f2145",
+  "documentation": {
+    "provenance": true,
+    "machine": true,
+    "llms": true,
+    "owningChecks": 47,
+    "publicContentChanged": false,
+    "builtBrowserReuse": "Only internal preparation owner and source identifiers changed; public HTML/CSS/JS unchanged."
+  }
+}

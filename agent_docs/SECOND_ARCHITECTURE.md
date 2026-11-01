@@ -140,6 +140,16 @@ Calendar/selection 통합 afc4e34e6 이후 동일 private route source의 합산
 6,164,691 unpacked/최대1,347,343 packed bytes다. 상한939/1,348,000/6,165,000을 적용하며
 통합 main의 Full663,000/Basic371,000 gzip 상한을 유지한다.
 
+Route job의 private WeakSet proof는 `createRouteJob`의 전체 검증·해시·마지막 deep clone이
+끝난 exact immutable 객체에만 붙는다. 같은 객체의 반복 검증은 그 proof를 재사용하며
+외부 record·구조 복사·worker 입력은 매번 전체 own-data/버전/해시 검증을 거친다. WeakSet은
+job을 강하게 보유하지 않으며 공개 cache/권한 API나 저장 필드를 만들지 않는다. Abort 검사는
+proof 조회보다 먼저 실행되고 solver의 독립 budget과 결과 vector/provenance 검증은 그대로다.
+
+비동기 route preparation은 생성한 exact job을 같은 routeResource owner의 완료 구성 helper로
+명시 전달한다. 같은 native inputs를 다시 내려 두 번째 job을 만들지 않으며 완료 vector 검증과
+최종 불변 resource 구성은 동기 경로와 같은 helper가 소유한다. 새 registry나 공개 상태는 없다.
+
 Route 공개 연결용 private job은 `grammar/graph/routes/job.js`가 exact revision vector와
 해석된 intent, viewport, 입력·완료 해시를 결박한다. `materialization/graph/routeInput.js`는
 source의 typed key 순위를 읽어 opaque normalized key를 해독하지 않고 worker 입력으로
@@ -930,6 +940,12 @@ animation preparation carries guide meaning in an optional endpoint vector. The 
 closed validator checks native forward geometry, sampled identity and offline restore;
 flat frame provenance retains current guide values without retaining previous plans.
 Exact supported guide families and fallbacks belong to the Current Animation contract.
+Native legend actions and animation share `materialization/guides/legendLaneState.js`
+for family ordering and occupied block bounds. Group preparation stores one frame with
+its native placement and intrinsic block values; `legendGroupState.js` reuses each
+family's pure native layout plus `layout/legendGroup.js` packing. The action still owns
+all graphic writes and trace nodes. Sampling neither invokes an action nor derives
+meaning from final coordinates, and unsupported dependent blocks keep a group fallback.
 
 ### Browser bundle regression ceilings
 
@@ -937,12 +953,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 782,900 bytes |
-| `ggaction/basic` | 424,200 bytes |
+| `ggaction` | 783,600 bytes |
+| `ggaction/basic` | 424,300 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 131,400 bytes |
-| `ggaction/animation` | 302,000 bytes |
+| `ggaction/animation` | 311,300 bytes |
 
 
 
@@ -2089,7 +2105,7 @@ Theme는 이 기본값과 authored override를 구분하고 기존 plot material
 갱신한다. 마지막 frame 제거는 해당 family 기본값을 복원한다. 저장된 graph/hierarchy/layout 계산은
 다시 실행하지 않으며 named highlight는 새 baseline에서 기존 selection owner가 다시 적용한다.
 
-Theme 정의 정규화는 `actions/theme/definition.js`에서 core own-data·paint grammar를 재사용한다.
+Theme 정의 정규화와 effective frame/token/guide offset 읽기는 `theme/definition.js`에서 core own-data·paint grammar를 재사용한다. Action state와 native animation projection은 같은 read-only owner를 소비하며 정의 검증·오류 순서를 유지한다.
 `theme/defaults.js`는 공유 token/default 값만 소유한다. Optional categorical palette는 자동 appearance scale의
 resolved range와 기존 mark/legend materializer를 갱신한다. Pattern palette는 final item의 typed category와
 기존 fill materializer를 사용하며 scalar scale range에 구조화 paint를 저장하지 않는다.
@@ -4877,3 +4893,7 @@ packed1,694,230/unpacked7,641,072bytes와1182entries에 따라 최소한도
 1182/1,694,300/7,641,100으로 교정한다. 최초1179entry 한도 실패는 검증 기록에 남긴다.
 동일 설치본의 Node20 Full774,919/Basic423,184/animation276,707gzip bytes에 따라
 현재 표를775,000/423,200/276,800으로만 올린다. SVG/graph/interaction 한도는 유지한다.
+
+명시 그룹 범례 독립 checkpoint에서 owner3개를 추가한 artifact는1185entries, packed1,696,696 및 unpacked7,669,973bytes였으며 당시 한도1185/1,696,700/7,670,000을 적용했다. Native packing의 당시 Node20 animation281,317gzip bytes와 ceiling281,400은 독립 그룹검증기록에 보존한다. Root 합산의 현재한도는 위 표와 executable owner가 소유한다.
+
+Native axis title clearance is shared by `materialization/guides/axisTitleLayout.js`. Actions retain resource lookup, theme-preferred offsets, same-side preflight and wrapped writes. The pure owner consumes explicit current label bounds and title metrics, preserving the native4px gap, legacy Canvas clamp and rotated-Y ink reserve with collision fallback. It adds no stored intent or automatic compiler; typed inferred/relative title transitions remain a separate integration obligation.

@@ -17,6 +17,8 @@ import { encodeValue } from "../../core/valueEncoding.js";
 
 const same = (a, b) => JSON.stringify(encodeValue(a)) === JSON.stringify(encodeValue(b));
 const layouts = new WeakMap(), geometries = new WeakMap(), sampledLayouts = new WeakMap();
+const intrinsicLayouts = new WeakMap(), intrinsicGeometries = new WeakMap(), intrinsicSamples = new WeakMap();
+const cornerLayouts = new WeakMap(), cornerGeometries = new WeakMap(), cornerSamples = new WeakMap();
 const fade = reason => Object.freeze({ kind: "crossfade", reason });
 const configKeys = ["position", "align", "offset", "title", "titleVisible", "titlePosition", "gradientDirection", "gradient", "sampling", "fieldType", "labels", "titleStyle", "blockGap", "titlePadding"];
 const fontKeys = ["fontFamily", "fontSize", "fontWeight", "fontStyle", "align"];
@@ -73,8 +75,9 @@ export function legendTextQueries(config, texts) {
   if (config.titleVisible) append(config.title, config.titleStyle);
   return [...result.values()];
 }
-function normalizeLayout(input) {
-  if (layouts.has(input)) return layouts.get(input);
+function normalizeLayout(input, intrinsicMode = false) {
+  const cache = intrinsicMode === "corner" ? cornerLayouts : intrinsicMode ? intrinsicLayouts : layouts;
+  if (cache.has(input)) return cache.get(input);
   record(input, ["frame", "config", "mapping", "metrics", "stripStrokeWidth"], "Prepared legend layout");
   record(input.frame, ["plot", "canvas"], "Prepared legend frame");
   record(input.frame.plot, ["x", "y", "width", "height"], "Prepared legend plot");
@@ -92,16 +95,16 @@ function normalizeLayout(input) {
   }
   const metrics = normalizeGuideMetrics(input.metrics);
   const result = { ...input, config, mapping, metrics };
-  const layout = intrinsic(result);
+  const layout = intrinsic(result, intrinsicMode);
   const expected = legendTextQueries(config, layout.texts).map(textMetricKey).sort();
   if (!same(expected, metrics.measurements.map(textMetricKey).sort())) throw new TypeError("Prepared legend metrics must contain the exact required query closure.");
   const normalized = cloneAndFreeze(result);
-  layouts.set(normalized, normalized);
-  if (isOwned(input)) layouts.set(input, normalized);
+  cache.set(normalized, normalized);
+  if (isOwned(input)) cache.set(input, normalized);
   return normalized;
 }
-function intrinsic(layout) {
-  return resolveGradientLayoutValues({ ...layout.frame, config: nativeConfig(layout.config), scale: layout.mapping.scale,
+function intrinsic(layout, intrinsicMode = false) {
+  return resolveGradientLayoutValues({ ...layout.frame, config: { ...nativeConfig(layout.config), ...(intrinsicMode ? { groupIntrinsic: true, ...(intrinsicMode === "corner" ? { groupCorner: true } : {}) } : {}) }, scale: layout.mapping.scale,
     profile: layout.metrics, stripStrokeWidth: layout.stripStrokeWidth });
 }
 export function legendTextGeometry(text, point, style, metrics, side = false) {
@@ -109,10 +112,11 @@ export function legendTextGeometry(text, point, style, metrics, side = false) {
   return { x: point.x, y: point.y - (side ? style.fontSize / 2 : 0), text,
     textAlign: point.align, textBaseline: side ? "top" : "middle", ...(lines === undefined ? {} : { lines }) };
 }
-function geometryList(input) {
-  if (geometries.has(input)) return geometries.get(input);
+function geometryList(input, intrinsicMode = false) {
+  const cache = intrinsicMode === "corner" ? cornerGeometries : intrinsicMode ? intrinsicGeometries : geometries;
+  if (cache.has(input)) return cache.get(input);
   const { config, frame, metrics, stripStrokeWidth } = input;
-  const layout = intrinsic(input), side = ["left", "right"].includes(config.position);
+  const layout = intrinsic(input, intrinsicMode), side = intrinsicMode || ["left", "right"].includes(config.position);
   const entries = Array.from({ length: GRADIENT_STRIP_COUNT }, (_, index) => ({
     component: "legend-strip", sample: ["segment", index, GRADIENT_STRIP_COUNT], type: "rect", properties: gradientStripGeometry(layout, index)
   }));
@@ -129,15 +133,15 @@ function geometryList(input) {
       top: Math.min(p.y1, p.y2) - extent, bottom: Math.max(p.y1, p.y2) + extent } :
       { left: p.x - extent, right: p.x + p.width + extent, top: p.y - extent, bottom: p.y + p.height + extent };
   }));
-  const move = side ? { dx: 0, ...resolveSingleSideLegendPlacement({ side: config.position, ...frame, bounds }) }
+  const move = intrinsicMode ? { dx: 0, dy: 0 } : side ? { dx: 0, ...resolveSingleSideLegendPlacement({ side: config.position, ...frame, bounds }) }
     : resolveSingleHorizontalLegendPlacement({ ...frame, config, bounds });
   const result = entries.map(entry => ({ ...entry, properties: Object.fromEntries(Object.entries(entry.properties).map(([key, value]) =>
     [key, ["x", "x1", "x2"].includes(key) ? value + move.dx : ["y", "y1", "y2"].includes(key) ? value + move.dy : value])) }));
   const frozen = cloneAndFreeze(result);
-  if (isOwned(input)) geometries.set(input, frozen);
+  if (isOwned(input)) cache.set(input, frozen);
   return frozen;
 }
-export function prepareGradientLegendLayout({ config, scale, frame, profile, stripStrokeWidth = 0 }) {
+export function prepareGradientLegendLayout({ config, scale, frame, profile, stripStrokeWidth = 0, intrinsicMode = false }) {
   const font = input => ({ fontFamily: input.fontFamily ?? DEFAULT_FONT_FAMILY, fontSize: input.fontSize,
     fontWeight: textMetricFontWeight(input.fontWeight), fontStyle: input.fontStyle ?? "normal", align: input.align ?? null });
   const canonical = {
@@ -150,30 +154,30 @@ export function prepareGradientLegendLayout({ config, scale, frame, profile, str
   normalizeConfig(canonical);
   const mapping = cartesianPosition(canonical.sampling.values[0], { ...scale, type: scale.type === "sequential" ? "linear" : scale.type, range: [0, 1] });
   const initial = { frame, config: canonical, mapping, metrics: profile, stripStrokeWidth };
-  const texts = intrinsic(initial).texts;
-  return normalizeLayout({ ...initial, metrics: prepareGuideMetrics(legendTextQueries(canonical, texts), profile, "animation-legend") });
+  const texts = intrinsic(initial, intrinsicMode).texts;
+  return normalizeLayout({ ...initial, metrics: prepareGuideMetrics(legendTextQueries(canonical, texts), profile, "animation-legend") }, intrinsicMode);
 }
-export function normalizeLegendAnimationState(input) {
+export function normalizeLegendAnimationState(input, intrinsicMode = false) {
   record(input, ["identity", "kind", "layout"], "Legend animation state");
   const identity = normalizeGuideIdentity(input.identity);
   if (input.kind !== "legend" || !identity.component.startsWith("legend-")) throw new TypeError("Legend animation requires a native legend identity.");
-  const layout = normalizeLayout(input.layout);
-  if (!geometryList(layout).some(entry => entry.component === identity.component && same(entry.sample, identity.value[1]))) {
+  const layout = normalizeLayout(input.layout, intrinsicMode);
+  if (!geometryList(layout, intrinsicMode).some(entry => entry.component === identity.component && same(entry.sample, identity.value[1]))) {
     throw new TypeError("Legend identity does not name a prepared native component.");
   }
   return cloneAndFreeze({ identity, kind: "legend", layout });
 }
-export function resolveLegendAnimationGeometry(state) {
-  const prepared = normalizeLegendAnimationState(state);
-  const entry = geometryList(prepared.layout).find(entry => entry.component === prepared.identity.component && same(entry.sample, prepared.identity.value[1]));
+export function resolveLegendAnimationGeometry(state, intrinsicMode = false) {
+  const prepared = normalizeLegendAnimationState(state, intrinsicMode);
+  const entry = geometryList(prepared.layout, intrinsicMode).find(entry => entry.component === prepared.identity.component && same(entry.sample, prepared.identity.value[1]));
   return cloneAndFreeze({ type: entry.type, properties: entry.properties });
 }
 export function legendAnimationMatchesNode(state, node) {
   const geometry = resolveLegendAnimationGeometry(state);
   return node.type === geometry.type && Object.entries(geometry.properties).every(([key, value]) => same(value, node.properties[key]));
 }
-export function prepareLegendInterpolation(fromInput, toInput) {
-  const from = normalizeLegendAnimationState(fromInput), to = normalizeLegendAnimationState(toInput);
+export function prepareLegendInterpolation(fromInput, toInput, intrinsicMode = false) {
+  const from = normalizeLegendAnimationState(fromInput, intrinsicMode), to = normalizeLegendAnimationState(toInput, intrinsicMode);
   if (guideAnimationKey(from.identity) !== guideAnimationKey(to.identity)) return fade("guide-policy");
   const { layout: a } = from, { layout: b } = to;
   const policy = layout => ({ ...layout.config, offset: 0, blockGap: 0, titlePadding: layout.config.titlePadding === null ? null : 0,
@@ -183,17 +187,18 @@ export function prepareLegendInterpolation(fromInput, toInput) {
   if (position.kind === "crossfade") return fade(position.reason);
   return cloneAndFreeze({ kind: "guide", version: ANIMATION_GUIDE_VERSION, from, to });
 }
-export function sampleLegendInterpolation(plan, progress) {
+export function sampleLegendInterpolation(plan, progress, intrinsicMode = false) {
+  const sampleCache = intrinsicMode === "corner" ? cornerSamples : intrinsicMode ? intrinsicSamples : sampledLayouts;
   validateUnitInterval(progress, "Legend animation progress");
   record(plan, ["kind", "version", "from", "to"], "Prepared legend interpolation");
   if (plan.kind !== "guide" || plan.version !== ANIMATION_GUIDE_VERSION) throw new TypeError("Invalid prepared legend interpolation.");
-  const prepared = prepareLegendInterpolation(plan.from, plan.to);
+  const prepared = prepareLegendInterpolation(plan.from, plan.to, intrinsicMode);
   if (prepared.kind !== "guide") throw new TypeError("Invalid prepared legend interpolation.");
   const a = prepared.from.layout, b = prepared.to.layout;
-  const cached = sampledLayouts.get(a)?.get(b);
+  const cached = sampleCache.get(a)?.get(b);
   if (cached?.progress === progress) {
-    const state = normalizeLegendAnimationState({ ...prepared.from, layout: cached.layout });
-    return cloneAndFreeze({ kind: "guide", state, ...resolveLegendAnimationGeometry(state) });
+    const state = normalizeLegendAnimationState({ ...prepared.from, layout: cached.layout }, intrinsicMode);
+    return cloneAndFreeze({ kind: "guide", state, ...resolveLegendAnimationGeometry(state, intrinsicMode) });
   }
   const numbers = (from, to) => Object.fromEntries(Object.keys(from).map(key => [key, interpolateNumber(from[key], to[key], progress)]));
   const mapped = sampleCartesianPosition(prepareCartesianPosition(a.mapping, b.mapping), progress);
@@ -204,12 +209,14 @@ export function sampleLegendInterpolation(plan, progress) {
       titlePadding: a.config.titlePadding === null ? null : interpolateNumber(a.config.titlePadding, b.config.titlePadding, progress),
       labels: { ...a.config.labels, offset: interpolateNumber(a.config.labels.offset, b.config.labels.offset, progress) } } } };
   try {
-    const normalized = normalizeLegendAnimationState(state);
-    if (!sampledLayouts.has(a)) sampledLayouts.set(a, new WeakMap());
-    sampledLayouts.get(a).set(b, { progress, layout: normalized.layout });
-    return cloneAndFreeze({ kind: "guide", state: normalized, ...resolveLegendAnimationGeometry(normalized) });
+    const normalized = normalizeLegendAnimationState(state, intrinsicMode);
+    if (!sampleCache.has(a)) sampleCache.set(a, new WeakMap());
+    sampleCache.get(a).set(b, { progress, layout: normalized.layout });
+    return cloneAndFreeze({ kind: "guide", state: normalized, ...resolveLegendAnimationGeometry(normalized, intrinsicMode) });
   } catch (error) {
     if (!(error instanceof RangeError) && getErrorDetails(error)?.reason !== "canvas-overflow") throw error;
     return fade("guide-layout");
   }
 }
+
+export { normalizeLayout as normalizeLegendLayout, geometryList as resolveLegendEntries };

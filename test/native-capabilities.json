@@ -570,8 +570,27 @@
       "id": "AT-23",
       "expectation": "Graph and flow layouts preserve deterministic topology, lineage, width, cycles and adjacency",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/GRAPHS.md",
+          "agent_docs/contract/current/FLOWS.md",
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/ACCESSIBILITY.md"
+        ],
+        "tests": [
+          "test/unit/grammar/graph-normalize.test.js",
+          "test/unit/grammar/graph-model.test.js",
+          "test/unit/grammar/graph-layout.test.js",
+          "test/unit/grammar/graph-force.test.js",
+          "test/unit/actions/data/observed-graph.test.js",
+          "test/unit/resources/graph-layouts.test.js",
+          "test/unit/resources/graph-hit.test.js",
+          "test/unit/flow-layouts.test.js",
+          "test/unit/resources/flow-plots.test.js",
+          "test/unit/resources/flow-consumers.test.js",
+          "test/browser/flow-layouts.browser.js",
+          "test/browser/interaction-animation.browser.js"
+        ]
       },
       "input": "Graph, circular and force layouts plus acyclic, cyclic and boundary-case flows"
     },
@@ -619,8 +638,28 @@
       "id": "AT-27",
       "expectation": "Table and composite roles have explicit layout, hit and order semantics",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/PYRAMID.md",
+          "agent_docs/contract/current/OHLC.md",
+          "agent_docs/contract/current/WATERFALL.md",
+          "agent_docs/contract/current/TABLE.md",
+          "agent_docs/contract/current/NATIVE_POLICY.md"
+        ],
+        "tests": [
+          "test/unit/grammar/pyramid-layout.test.js",
+          "test/unit/pyramid-plot.test.js",
+          "test/unit/grammar/financial-roles.test.js",
+          "test/unit/ohlc-plot.test.js",
+          "test/unit/waterfall-plot.test.js",
+          "test/unit/grammar/table-cells.test.js",
+          "test/unit/grammar/table-data.test.js",
+          "test/unit/materialization/table-content.test.js",
+          "test/unit/table-plot.test.js",
+          "test/unit/composition-recipes.test.js",
+          "test/contracts/composition-recipes.test.js",
+          "test/contracts/native-api-policy.test.js"
+        ]
       },
       "input": "Pyramid, OHLC, waterfall, table and sparkline roles with reference-band compositions"
     },
@@ -628,8 +667,35 @@
       "id": "AT-28",
       "expectation": "Native width, area, angle, baseline and bandwidth semantics cover missing, negative and zero values",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/TRAIL.md",
+          "agent_docs/contract/current/CORE.md",
+          "agent_docs/contract/current/ENCODINGS.md",
+          "agent_docs/contract/current/COMPLETE_CHARTS.md",
+          "agent_docs/contract/current/VIOLIN_PLOTS.md"
+        ],
+        "tests": [
+          "test/unit/grammar/trail.test.js",
+          "test/unit/grammar/trail-curve.test.js",
+          "test/unit/grammar/trail-series.test.js",
+          "test/unit/trail-plot.test.js",
+          "test/unit/grammar/polar.test.js",
+          "test/unit/grammar/polar-line-series.test.js",
+          "test/unit/actions/encodings/polar-position-encodings.test.js",
+          "test/unit/actions/charts/polar-facades.test.js",
+          "test/unit/actions/charts/radar-facade.test.js",
+          "test/unit/actions/charts/radar-summary.test.js",
+          "test/unit/grammar/measured-radius.test.js",
+          "test/unit/actions/charts/radial-plots.test.js",
+          "test/unit/grammar/stream-baseline.test.js",
+          "test/unit/wiggle-area.test.js",
+          "test/unit/actions/data/density-data.test.js",
+          "test/charts/cars-density-area/reference-values.test.js",
+          "test/unit/grammar/transforms/numeric-invariants.test.js",
+          "test/unit/grammar/categorical-density.test.js",
+          "test/unit/actions/charts/violin-plot-facade.test.js"
+        ]
       },
       "input": "Trail, polar, radar, rose, streamgraph and violin variants"
     },
@@ -1926,9 +1992,141 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "Field encodings, scale and guide consumers still require an explicit applicability decision and owning evidence. Generic scene snapshots do not establish family-specific transition, rebase or offline behavior. No discoverable family-specific installed-package test owner has been assigned."
       },
-      "assignedOwners": {}
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md",
+            "agent_docs/contract/current/MARK_SELECTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/charts/tree-layouts/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/charts/tree-layouts/renderer.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/charts/tree-layouts/renderer.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/charts/tree-layouts/png.render.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/contracts/hierarchy-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/docs/documentation.test.js",
+            "test/charts/tree-layouts/public.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        }
+      }
     },
     {
       "id": "treemap",
@@ -1959,9 +2157,140 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "Field encodings, scale and guide consumers still require an explicit applicability decision and owning evidence. Generic scene snapshots do not establish family-specific transition, rebase or offline behavior. No discoverable family-specific installed-package test owner has been assigned."
       },
-      "assignedOwners": {}
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md",
+            "agent_docs/contract/current/MARK_SELECTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/resources/hierarchy-consumers.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/charts/treemap-layouts/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/charts/treemap-layouts/renderer.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/charts/treemap-layouts/renderer.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/charts/treemap-layouts/png.render.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/contracts/hierarchy-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/docs/documentation.test.js",
+            "test/charts/treemap-layouts/public.test.js"
+          ]
+        }
+      }
     },
     {
       "id": "graph-nodes",
@@ -1993,9 +2322,157 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "Position encodings, axes and scale legends do not apply to the stored graph layout under the current contract; the required encoding, scale and guide cells still need their explicit applicability decision. A discoverable family-specific installed-package test owner remains unassigned; source execution of consumer fixtures is not installed-package evidence."
       },
-      "assignedOwners": {}
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-plots.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-plots.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-plots.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-plots.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md",
+            "agent_docs/contract/current/MARK_SELECTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-plots.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-plots.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-hit.test.js",
+            "test/browser/interaction-animation.browser.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/resources/graph-plots.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md",
+            "agent_docs/contract/current/ANIMATION.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/animation/graph-tracks.test.js",
+            "test/unit/animation/graph-public.test.js",
+            "test/browser/animation-graph.browser.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/charts/graph-plots/public.test.js",
+            "test/browser/graph-output.browser.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/charts/graph-plots/public.test.js",
+            "test/browser/graph-output.browser.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/charts/graph-plots/pdf.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/charts/graph-plots/png.render.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/contracts/observed-graph-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/docs/documentation.test.js",
+            "test/docs/executable-programs.test.js",
+            "test/charts/graph-plots/public.test.js"
+          ]
+        }
+      }
     },
     {
       "id": "edges-hierarchical",
@@ -2618,7 +3095,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "Field encoding, scale and guide cells still require an explicit applicability decision and owning evidence. The stored flow thickness scale is not a public encode/scale-guide consumer. Generic scene snapshots do not establish flow transition, rebase or offline behavior. No discoverable family-specific installed-package test owner has been assigned."
       },
       "assignedOwners": {
         "create": {
@@ -2664,6 +3141,93 @@
           ],
           "tests": [
             "test/charts/flow-layouts/png.render.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-consumers.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-consumers.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-consumers.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md",
+            "agent_docs/contract/current/MARK_SELECTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-consumers.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-consumers.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-consumers.test.js",
+            "test/browser/flow-layouts.browser.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-consumers.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/contracts/flow-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/docs/documentation.test.js",
+            "test/charts/flow-layouts/public.test.js",
+            "test/docs/executable-programs.test.js"
           ]
         }
       }
@@ -2697,7 +3261,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "Field encoding, scale and guide cells still require an explicit applicability decision and owning evidence. The stored flow thickness scale is not a public encode/scale-guide consumer. Generic scene snapshots do not establish flow transition, rebase or offline behavior. No discoverable family-specific installed-package test owner has been assigned."
       },
       "assignedOwners": {
         "create": {
@@ -2743,6 +3307,92 @@
           ],
           "tests": [
             "test/charts/flow-layouts/png.render.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-consumers.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-consumers.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-consumers.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md",
+            "agent_docs/contract/current/MARK_SELECTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-consumers.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-consumers.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-consumers.test.js",
+            "test/browser/flow-layouts.browser.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-consumers.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/contracts/flow-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/docs/documentation.test.js",
+            "test/charts/flow-layouts/public.test.js"
           ]
         }
       }
@@ -4679,9 +5329,192 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "A discoverable family-specific installed-package owner is not assigned."
       },
-      "assignedOwners": {}
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md"
+          ],
+          "tests": [
+            "test/unit/actions/charts/radial-plots.test.js",
+            "test/charts/radial-sectors/public.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/MARKS.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/ENCODINGS.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/AXES.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js",
+            "test/unit/actions/charts/radial-plots.test.js",
+            "test/charts/radial-sectors/public.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/MARK_SELECTION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/radial-sectors/vector.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/radial-sectors/public.test.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/radial-sectors/png.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/radial-sectors/vector.render.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md"
+          ],
+          "tests": [
+            "test/contracts/radial-chart-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md"
+          ],
+          "tests": [
+            "test/docs/documentation.test.js",
+            "test/charts/radial-sectors/public.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        }
+      }
     },
     {
       "id": "radar-regression",
@@ -4712,9 +5545,194 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "A discoverable family-specific installed-package owner is not assigned."
       },
-      "assignedOwners": {}
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md"
+          ],
+          "tests": [
+            "test/unit/actions/charts/radar-facade.test.js",
+            "test/unit/actions/charts/radar-summary.test.js",
+            "test/charts/polar-line-radar/public.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/MARKS.md"
+          ],
+          "tests": [
+            "test/unit/actions/charts/radar-edit.test.js",
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/ENCODINGS.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/AXES.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js",
+            "test/unit/actions/charts/radar-facade.test.js",
+            "test/unit/actions/charts/radar-summary.test.js",
+            "test/charts/polar-line-radar/public.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/MARK_SELECTION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/polar-line-radar/vector.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/polar-line-radar/public.test.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/polar-line-radar/png.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/polar-line-radar/vector.render.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md"
+          ],
+          "tests": [
+            "test/contracts/radar-facade-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md"
+          ],
+          "tests": [
+            "test/docs/documentation.test.js",
+            "test/charts/polar-line-radar/public.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        }
+      }
     },
     {
       "id": "streamgraph-regression",
@@ -4745,9 +5763,201 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "A discoverable family-specific installed-package owner is not assigned."
       },
-      "assignedOwners": {}
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md"
+          ],
+          "tests": [
+            "test/unit/wiggle-area.test.js",
+            "test/charts/streamgraph/public.test.js",
+            "test/charts/centered-area-stream/public.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/MARKS.md"
+          ],
+          "tests": [
+            "test/unit/wiggle-area.test.js",
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/ENCODINGS.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/AXES.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js",
+            "test/unit/wiggle-area.test.js",
+            "test/charts/streamgraph/public.test.js",
+            "test/charts/centered-area-stream/public.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/MARK_SELECTION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/streamgraph/renderer.render.js",
+            "test/charts/centered-area-stream/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/streamgraph/public.test.js",
+            "test/charts/centered-area-stream/public.test.js",
+            "test/charts/streamgraph/renderer.render.js",
+            "test/charts/centered-area-stream/renderer.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/streamgraph/png.render.js",
+            "test/charts/centered-area-stream/png.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/streamgraph/renderer.render.js",
+            "test/charts/centered-area-stream/renderer.render.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md"
+          ],
+          "tests": [
+            "test/contracts/area-endpoint-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md"
+          ],
+          "tests": [
+            "test/docs/documentation.test.js",
+            "test/charts/streamgraph/public.test.js",
+            "test/charts/centered-area-stream/public.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPLETE_CHARTS.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        }
+      }
     },
     {
       "id": "violin-regression",
@@ -4778,9 +5988,196 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "The family-specific installed-package test owner has not yet been assigned."
       },
-      "assignedOwners": {}
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md"
+          ],
+          "tests": [
+            "test/unit/actions/charts/violin-plot-facade.test.js",
+            "test/unit/grammar/categorical-density.test.js",
+            "test/charts/cars-acceleration-violins/public.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/MARKS.md"
+          ],
+          "tests": [
+            "test/unit/actions/charts/violin-plot-facade.test.js",
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/ENCODINGS.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/AXES.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js",
+            "test/unit/actions/charts/violin-plot-facade.test.js",
+            "test/unit/grammar/categorical-density.test.js",
+            "test/charts/cars-acceleration-violins/public.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/MARK_SELECTION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/cars-acceleration-violins/vector.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/cars-acceleration-violins/public.test.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/cars-acceleration-violins/png.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/cars-acceleration-violins/vector.render.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md"
+          ],
+          "tests": [
+            "test/contracts/violin-plot-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md"
+          ],
+          "tests": [
+            "test/docs/documentation.test.js",
+            "test/charts/cars-acceleration-violins/public.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/VIOLIN_PLOTS.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/profile-facade-consumers.test.js",
+            "test/unit/animation/cartesian-density.test.js"
+          ]
+        }
+      }
     }
   ],
   "interactionColumns": [

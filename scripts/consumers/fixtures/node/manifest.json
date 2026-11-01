@@ -1229,6 +1229,10 @@
     "file": "edge-routes.mjs",
     "cases": [
       {
+        "id": "edge-routes/bounded-hierarchy-spans",
+        "statements": 9
+      },
+      {
         "id": "edge-routes/bounded-long-paths",
         "statements": 5
       },
@@ -1606,11 +1610,19 @@
     "file": "animation.mjs",
     "cases": [
       {
+        "id": "animation/grouped-legend-offline-native",
+        "statements": 1
+      },
+      {
         "id": "animation/categorical-legend-offline-native",
         "statements": 1
       },
       {
         "id": "animation/size-legend-offline-native",
+        "statements": 1
+      },
+      {
+        "id": "animation/dependent-title-offline-native",
         "statements": 1
       },
       {

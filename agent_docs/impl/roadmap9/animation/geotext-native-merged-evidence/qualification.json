@@ -1,6 +1,6 @@
 {
   "status": "verified-focused-geographic-text-expression-integration; whole-native-qualification-pending",
-  "sourceRevision": null,
+  "sourceRevision": "f4a6f9aa28779c20d0a61f0cd51c547f110e65ea",
   "base": "bec9fe3cf",
   "incoming": "a63c1db354b55ebddec20b53d170855db2f04f41",
   "approval": "../../AUTHORIZATION.json#remainingApproval",
@@ -367,12 +367,45 @@
     "coverage-final.json": {
       "sha256": "2aa19ad1438c20d0ad255bb287a1dc9aaf0d141951ad7b3833e784bf79c3cec9",
       "bytes": 1500
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-docs.log": {
+      "sha256": "5716ed977160d444808d87078edfd4653606754fc3d328c75efeb27104bea9db",
+      "bytes": 6132
+    },
+    "source-pin-pack.json": {
+      "sha256": "53094a83e3616fead6062e7f20638e560d9a46f02ae6e8b5339b721837861f34",
+      "bytes": 395
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
   },
   "remaining": [
-    "Source-pin metadata",
     "Group/lane and dynamic label/title clearance",
     "Exact route improvements and remaining large-route support",
     "Native target matrix and nine final commands; no STEP077 completion claimed"
-  ]
+  ],
+  "sourcePin": {
+    "source": "f4a6f9aa28779c20d0a61f0cd51c547f110e65ea",
+    "metadataOnly": true,
+    "canonicalArchiveUnchanged": "a688255777698aa7f6835860f901410a0a4c1b7e014d83c71e2a391a80ff718c",
+    "docs": {
+      "log": "source-pin-docs.log.gz",
+      "passed": 31
+    },
+    "reuse": "Source-level runtime, installed artifact, built pages and browser checks remain the unchanged inputs recorded above; no fresh clean-source whole-suite claim."
+  }
 }

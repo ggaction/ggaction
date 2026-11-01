@@ -1,0 +1,80 @@
+{
+  "node": "v22.23.1",
+  "sha256": "4cb4826dd4d0a96945d79a65f8fcb32d55ecb045bab5436666add71b5d85b223",
+  "checks": [
+    {
+      "id": "edge-routes/bounded-hierarchy-spans",
+      "status": "passed",
+      "durationMs": 23018.679125000002
+    },
+    {
+      "id": "edge-routes/bounded-long-paths",
+      "status": "passed",
+      "durationMs": 1575.4609170000003
+    },
+    {
+      "id": "edge-routes/worker-authority-and-cache",
+      "status": "passed",
+      "durationMs": 160.4106670000001
+    },
+    {
+      "id": "edge-routes/offline-restore-and-revision",
+      "status": "passed",
+      "durationMs": 485.85370899999907
+    },
+    {
+      "id": "edge-routes/four-renderers-and-scene",
+      "status": "passed",
+      "durationMs": 20.85908300000301
+    }
+  ],
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1040,
+      "minifiedBytes": 2728399,
+      "gzipBytes": 780164
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 610,
+      "minifiedBytes": 1443539,
+      "gzipBytes": 422085
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24779
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 83,
+      "minifiedBytes": 147618,
+      "gzipBytes": 44053
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 394,
+      "minifiedBytes": 767691,
+      "gzipBytes": 232682
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 214,
+      "minifiedBytes": 429949,
+      "gzipBytes": 137002
+    }
+  ],
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "status": "passed"
+}

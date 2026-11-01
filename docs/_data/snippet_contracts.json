@@ -22,12 +22,26 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.",
-    "sha256": "9dbf48a7a9bd57bc58ef5bced0f6d2ceb8925922230729d3d1296c4898f85426",
+    "sha256": "38cc9e1facf4a5347b938049f54d79f48d55d1d551a999cb5fa18f57f4942c00",
     "executable": true
   },
   {
     "file": "api/animation.md",
     "block": 3,
+    "heading": "Move axes, labels, and grids",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"points\""
+    ],
+    "prerequisites": "Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change.",
+    "sha256": "ee3e428352200bc842a1e131b6fc2078bab7550f4909adfc9c12e498b5efb015",
+    "executable": true
+  },
+  {
+    "file": "api/animation.md",
+    "block": 4,
     "heading": "Move axes, labels, and grids",
     "mode": "complete",
     "environment": "node-esm",
@@ -39,7 +53,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 4,
+    "block": 5,
     "heading": "Move axes, labels, and grids",
     "mode": "complete",
     "environment": "node-esm",
@@ -51,7 +65,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 5,
+    "block": 6,
     "heading": "Move axes, labels, and grids",
     "mode": "complete",
     "environment": "node-esm",
@@ -63,7 +77,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 6,
+    "block": 7,
     "heading": "Render the same frame",
     "mode": "fragment",
     "environment": "esm-context",
@@ -75,7 +89,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 7,
+    "block": 8,
     "heading": "Play with an explicit clock",
     "mode": "fragment",
     "environment": "browser-module",
