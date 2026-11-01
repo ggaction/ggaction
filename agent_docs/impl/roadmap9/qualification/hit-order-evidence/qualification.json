@@ -1,0 +1,43 @@
+{
+  "kind": "focused-correctness-evidence",
+  "baseRevision": "41487c00c",
+  "sourceHashes": {
+    "src/grammar/hitIndex.js": "22b403f0ebb0ddca982fa3e0b2e9412742bd80e4d4e8d78e872b8699317d79e5",
+    "test/unit/grammar/hit-index.test.js": "503f5c507fb99a244ac253526bab3a0bd962c5197f0e8a1b99cb950b4b3f8a5f",
+    "test/unit/hit-program.test.js": "736cf356191585a7fb56af3d8fd4e8964804d6fb890bad4c37aa758cfd7ef126",
+    "agent_docs/contract/current/INTERACTION.md": "d9a4f0e528b2cb3f57d98efd2fd8f13911eadb906cab3915b3269f9af39a7a43"
+  },
+  "runtimeChange": "actual UTF-16 comparison work; all original limits unchanged",
+  "results": {
+    "Node20": {
+      "tests": 47,
+      "exit": 0
+    },
+    "Node22": {
+      "tests": 47,
+      "exit": 0
+    },
+    "Node24": {
+      "tests": 47,
+      "exit": 0
+    },
+    "hitIndexCoverage": {
+      "tests": 47,
+      "lines": 100,
+      "branches": 100,
+      "functions": 100,
+      "exit": 0
+    },
+    "packageAndDiscovery": {
+      "tests": 22,
+      "exit": 0
+    },
+    "sourceBoundaries": {
+      "tests": 14,
+      "exit": 0
+    }
+  },
+  "qualification": "not-performance-qualified",
+  "originalFailure": "../native-workloads-tool-evidence/capacity-audit/blocker-stacks.jsonl",
+  "sameArchiveBrowser": "pending final combined root candidate; no new installed or P95 claim"
+}

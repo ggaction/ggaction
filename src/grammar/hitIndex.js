@@ -8,10 +8,22 @@ export const MAX_HIT_INDEX_ITEMS = 100_000;
 export const MAX_HIT_INDEX_WORK = 10_000_000;
 export const MAX_HIT_QUERY_WORK = 2_000_000;
 const states = new WeakMap(), identity = [1, 0, 0, 1, 0, 0];
-const compareText = (a, b) => a < b ? -1 : a > b ? 1 : 0;
 function spend(work, count = 1) {
   work.value += count;
   if (work.value > work.limit) throw new RangeError("Hit index exceeds its work budget.");
+}
+// Private ordering owner: charge only the UTF-16 units actually compared.
+// This is JavaScript string ordering, including unpaired surrogates, without
+// running an additional whole-string comparison or retaining a prefix cache.
+export function compareHitText(a, b, work) {
+  const length = Math.min(a.length, b.length);
+  for (let index = 0; index < length; index++) {
+    spend(work, 2);
+    const left = a.charCodeAt(index), right = b.charCodeAt(index);
+    if (left !== right) return left < right ? -1 : 1;
+  }
+  spend(work);
+  return a.length < b.length ? -1 : a.length > b.length ? 1 : 0;
 }
 function exact(value, keys, label) {
   ownRecord(value, label);
@@ -87,8 +99,7 @@ function build(items, work) {
       const x = a.shape.bounds, y = b.shape.bounds;
       const cx = x[axis[0]] / 2 + x[axis[1]] / 2, cy = y[axis[0]] / 2 + y[axis[1]] / 2;
       if (cx !== cy) return cx < cy ? -1 : 1;
-      spend(work, a.nodeKey.length + b.nodeKey.length);
-      return compareText(a.nodeKey, b.nodeKey);
+      return compareHitText(a.nodeKey, b.nodeKey, work);
     });
     const mid = Math.floor(task.items.length / 2); node.left = {}; node.right = {};
     pending.push({ node: node.right, items: task.items.slice(mid) }, { node: node.left, items: task.items.slice(0, mid) });
@@ -106,12 +117,11 @@ function candidateOrder(a, b, work, nearest = false) {
   spend(work);
   const priority = nearest ? a.distance - b.distance : b.zIndex - a.zIndex || a.distance - b.distance;
   if (priority) return priority;
-  spend(work, a.itemKey.length + b.itemKey.length);
-  const item = compareText(a.itemKey, b.itemKey);
+  const item = compareHitText(a.itemKey, b.itemKey, work);
   if (item) return item;
   const ap = JSON.stringify(a.childPath), bp = JSON.stringify(b.childPath);
-  spend(work, ap.length + bp.length + a.ownerId.length + b.ownerId.length);
-  return compareText(ap, bp) || compareText(a.ownerId, b.ownerId) || (nearest ? b.zIndex - a.zIndex : 0);
+  spend(work, ap.length + bp.length);
+  return compareHitText(ap, bp, work) || compareHitText(a.ownerId, b.ownerId, work) || (nearest ? b.zIndex - a.zIndex : 0);
 }
 
 /** Bind explicit node/semantic mappings to one immutable current scene; no resource inference. */

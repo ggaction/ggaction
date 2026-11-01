@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { cloneAndFreeze, freezeOwned } from "../../../src/core/immutable.js";
 import { prepareHitShape, hitShapeWork } from "../../../src/grammar/hitShapes.js";
-import { prepareHitIndex, hitIndex, MAX_HIT_INDEX_ITEMS, MAX_HIT_INDEX_WORK } from "../../../src/grammar/hitIndex.js";
+import { compareHitText, prepareHitIndex, hitIndex, MAX_HIT_INDEX_ITEMS, MAX_HIT_INDEX_WORK } from "../../../src/grammar/hitIndex.js";
 import { createTransitionScene } from "../../../src/scene.js";
 import { ChartProgram } from "../../../src/ChartProgram.js";
 
@@ -163,4 +163,36 @@ test("inherited scene and reference accessors are never evaluated", () => {
     if (version) Object.defineProperty(Object.prototype, "version", version); else delete Object.prototype.version;
     if (kind) Object.defineProperty(Object.prototype, "kind", kind); else delete Object.prototype.kind;
   }
+});
+
+test("bounded hit text ordering matches UTF-16 lexical order and charges inspected units once", () => {
+  const cases = [["", "", 0, 1], ["", "a", -1, 1], ["a", "", 1, 1], ["a", "aa", -1, 3],
+    ["aa", "a", 1, 3], ["same", "same", 0, 9], ["ab", "ac", -1, 4], ["ac", "ab", 1, 4],
+    ["\uD800", "\uDC00", -1, 2], ["\uD800\uDC00", "\uE000", -1, 2], ["\uD83D\uDE00", "\uD83D\uDE01", -1, 4]];
+  for (const [a, b, expected, units] of cases) {
+    const work = { value: 0, limit: units };
+    assert.equal(compareHitText(a, b, work), expected); assert.equal(work.value, units);
+    assert.throws(() => compareHitText(a, b, { value: 0, limit: units - 1 }), /work budget/);
+  }
+  const keys = ["", "a", "aa", "ab", "\0", "\uD800", "\uDC00", "\uD83D\uDE00", "\uE000"];
+  for (const a of keys) for (const b of keys) {
+    assert.equal(compareHitText(a, b, { value: 0, limit: 100 }), a < b ? -1 : a > b ? 1 : 0);
+  }
+  const prefix = "x".repeat(100000), exact = { value: MAX_HIT_INDEX_WORK - 200002, limit: MAX_HIT_INDEX_WORK };
+  assert.equal(compareHitText(`${prefix}a`, `${prefix}b`, exact), -1); assert.equal(exact.value, MAX_HIT_INDEX_WORK);
+  assert.throws(() => compareHitText(`${prefix}a`, `${prefix}b`, { value: exact.value - 200001, limit: MAX_HIT_INDEX_WORK }), /work budget/);
+  assert.throws(() => compareHitText(prefix, prefix, { value: 0, limit: 200000 }), /work budget/);
+});
+
+test("equal-center BVH nodes preserve Unicode ties, signed-zero bounds and duplicate validation", () => {
+  const keys = ["ab", "aa", "a", "\uE000", "\uD83D\uDE01", "\uD83D\uDE00", "\uDC00", "\uD800", "z", "q"];
+  const entries = keys.map((key, i) => entry(key, box(i % 2 ? -0 : 0), info(key)));
+  const source = scene(keys), index = prepareHitIndex(source, entries), before = JSON.stringify(entries);
+  const expected = [...keys].sort();
+  assert.deepEqual(hitIndex(index, source, { x: 5, y: 5 }).candidates.map(item => item.itemKey), expected);
+  assert.throws(() => prepareHitIndex(scene([...keys, keys[0]]), [...entries, entries[0]]), /unique/);
+  const prefix = "x".repeat(150000), hostile = keys.map(key => entry(`${prefix}${key}`));
+  assert.throws(() => prepareHitIndex(scene(hostile.map(item => item.nodeKey)), hostile), /work budget/);
+  assert.equal(JSON.stringify(entries), before);
+  assert.deepEqual(hitIndex(index, source, { x: 5, y: 5 }).candidates.map(item => item.itemKey), expected);
 });
