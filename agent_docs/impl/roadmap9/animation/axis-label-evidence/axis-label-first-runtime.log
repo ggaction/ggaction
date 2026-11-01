@@ -1,0 +1,256 @@
+TAP version 13
+# Subtest: public titles map the interpolated semantic value through the native scale
+ok 1 - public titles map the interpolated semantic value through the native scale
+  ---
+  duration_ms: 81.900292
+  type: 'test'
+  ...
+# Subtest: title strings, font and inferred clearance preserve explicit appearance or layout fades
+ok 2 - title strings, font and inferred clearance preserve explicit appearance or layout fades
+  ---
+  duration_ms: 115.376584
+  type: 'test'
+  ...
+# Subtest: polar titles use shortest angular meaning and native inside outside placement
+ok 3 - polar titles use shortest angular meaning and native inside outside placement
+  ---
+  duration_ms: 18.145584
+  type: 'test'
+  ...
+# Subtest: band edge membership uses typed values and supports Basic resize, subsets and nested namespaces
+ok 4 - band edge membership uses typed values and supports Basic resize, subsets and nested namespaces
+  ---
+  duration_ms: 135.708542
+  type: 'test'
+  ...
+# Subtest: Parallel fields retain correspondence across reordered field slots and removed dimensions
+ok 5 - Parallel fields retain correspondence across reordered field slots and removed dimensions
+  ---
+  duration_ms: 190.758875
+  type: 'test'
+  ...
+# Subtest: guide anchor meaning stays flat through repeated sampled-frame rebase and labelled frame export
+ok 6 - guide anchor meaning stays flat through repeated sampled-frame rebase and labelled frame export
+  ---
+  duration_ms: 985.765625
+  type: 'test'
+  ...
+# Subtest: guide anchor strict restore rejects versions and forged field membership or geometry before sampling
+not ok 7 - guide anchor strict restore rejects versions and forged field membership or geometry before sampling
+  ---
+  duration_ms: 10.5415
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/guide-anchor-transitions.test.js:117:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+
+    + 'native-guide-values@4'
+    - 'native-guide-values@3'
+                           ^
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'native-guide-values@3'
+  actual: 'native-guide-values@4'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/guide-anchor-transitions.test.js:120:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: guide anchor identity normalization is closed, typed, descriptor-safe and canonical
+ok 8 - guide anchor identity normalization is closed, typed, descriptor-safe and canonical
+  ---
+  duration_ms: 11.910917
+  type: 'test'
+  ...
+# Subtest: Basic native guides use the same typed transition and offline owner
+ok 9 - Basic native guides use the same typed transition and offline owner
+  ---
+  duration_ms: 55.314292
+  type: 'test'
+  ...
+# Subtest: public guide samples interpolate semantic scale before forward mapping and preserve endpoints
+ok 10 - public guide samples interpolate semantic scale before forward mapping and preserve endpoints
+  ---
+  duration_ms: 49.230709
+  type: 'test'
+  ...
+# Subtest: new raw tick values enter while same-value label spelling crossfades under one guide key
+ok 11 - new raw tick values enter while same-value label spelling crossfades under one guide key
+  ---
+  duration_ms: 17.163333
+  type: 'test'
+  ...
+# Subtest: duplicate raw guide values keep separate enters and exits with explicit ambiguity
+ok 12 - duplicate raw guide values keep separate enters and exits with explicit ambiguity
+  ---
+  duration_ms: 12.418291
+  type: 'test'
+  ...
+# Subtest: guide meaning survives sampled endpoints, labelled views, repeated rebases and offline restore
+ok 13 - guide meaning survives sampled endpoints, labelled views, repeated rebases and offline restore
+  ---
+  duration_ms: 123.212708
+  type: 'test'
+  ...
+# Subtest: scoped guides use explicit child namespaces while reordered panels retain each owner
+ok 14 - scoped guides use explicit child namespaces while reordered panels retain each owner
+  ---
+  duration_ms: 19.058083
+  type: 'test'
+  ...
+# Subtest: polar rules and circles replay native guide values across Canvas resize
+ok 15 - polar rules and circles replay native guide values across Canvas resize
+  ---
+  duration_ms: 50.397875
+  type: 'test'
+  ...
+# Subtest: unsupported label policy and edited guide geometry keep explicit fallback through restore
+not ok 16 - unsupported label policy and edited guide geometry keep explicit fallback through restore
+  ---
+  duration_ms: 13.640292
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/guide-transition.test.js:108:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+
+    0 !== 3
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 3
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/guide-transition.test.js:112:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: strict guide restore rejects unknown versions, wrong cardinality and forged forward mapping
+not ok 17 - strict guide restore rejects unknown versions, wrong cardinality and forged forward mapping
+  ---
+  duration_ms: 13.322041
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/guide-transition.test.js:118:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+
+    + 'native-guide-values@4'
+    - 'native-guide-values@3'
+                           ^
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'native-guide-values@3'
+  actual: 'native-guide-values@4'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/guide-transition.test.js:120:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: guide color, opacity and stroke width use the shared appearance kernel alongside value mapping
+ok 18 - guide color, opacity and stroke width use the shared appearance kernel alongside value mapping
+  ---
+  duration_ms: 17.783333
+  type: 'test'
+  ...
+# Subtest: sampled guide decisions cannot impersonate anonymous canvas backgrounds or a different raw value
+ok 19 - sampled guide decisions cannot impersonate anonymous canvas backgrounds or a different raw value
+  ---
+  duration_ms: 15.9055
+  type: 'test'
+  ...
+# Subtest: native exact gradient values use shared log scale meaning and single-block placement
+ok 20 - native exact gradient values use shared log scale meaning and single-block placement
+  ---
+  duration_ms: 547.502584
+  type: 'test'
+  ...
+# Subtest: native legend forward proof retains all four edges, bottom titles and explicit text alignment
+ok 21 - native legend forward proof retains all four edges, bottom titles and explicit text alignment
+  ---
+  duration_ms: 355.998167
+  type: 'test'
+  ...
+# Subtest: legend colors reuse appearance interpolation and rebase retains exact prepared native meaning
+ok 22 - legend colors reuse appearance interpolation and rebase retains exact prepared native meaning
+  ---
+  duration_ms: 535.566375
+  type: 'test'
+  ...
+# Subtest: legend semantic sample insertion preserves raw correspondence and scoped owners
+ok 23 - legend semantic sample insertion preserves raw correspondence and scoped owners
+  ---
+  duration_ms: 818.325166
+  type: 'test'
+  ...
+# Subtest: unknown or dependent native layout policies preserve explicit identity and safe fades
+ok 24 - unknown or dependent native layout policies preserve explicit identity and safe fades
+  ---
+  duration_ms: 319.288541
+  type: 'test'
+  ...
+# Subtest: strict offline legend state rejects changed proof, unknown kernels and nonown layout values
+ok 25 - strict offline legend state rejects changed proof, unknown kernels and nonown layout values
+  ---
+  duration_ms: 51.096375
+  type: 'test'
+  ...
+# Subtest: stroke gradients preserve native width bounds without reading final pixels as scale values
+ok 26 - stroke gradients preserve native width bounds without reading final pixels as scale values
+  ---
+  duration_ms: 389.954042
+  type: 'test'
+  ...
+# Subtest: prepared legend ink retains exact font bindings and only the queries used by native layout
+ok 27 - prepared legend ink retains exact font bindings and only the queries used by native layout
+  ---
+  duration_ms: 16.157166
+  type: 'test'
+  ...
+# Subtest: prepared legend closure rejects policy forgery and out-of-domain semantic identities
+ok 28 - prepared legend closure rejects policy forgery and out-of-domain semantic identities
+  ---
+  duration_ms: 15.845041
+  type: 'test'
+  ...
+# Subtest: legend sample normalization does not cache mutable caller layout values
+ok 29 - legend sample normalization does not cache mutable caller layout values
+  ---
+  duration_ms: 17.626791
+  type: 'test'
+  ...
+# Subtest: temporal gradient legends retain exact epoch values and native formatted labels
+ok 30 - temporal gradient legends retain exact epoch values and native formatted labels
+  ---
+  duration_ms: 375.571458
+  type: 'test'
+  ...
+1..30
+# tests 30
+# suites 0
+# pass 27
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4078.46875

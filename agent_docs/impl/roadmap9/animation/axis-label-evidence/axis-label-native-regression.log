@@ -1,0 +1,454 @@
+TAP version 13
+# Subtest: creates x/y labels from shared tick configurations
+ok 1 - creates x/y labels from shared tick configurations
+  ---
+  duration_ms: 76.389542
+  type: 'test'
+  ...
+# Subtest: formats decimals and records nested graphical edits
+ok 2 - formats decimals and records nested graphical edits
+  ---
+  duration_ms: 4.119709
+  type: 'test'
+  ...
+# Subtest: rejects conflicts and rematerializes after Canvas edits
+ok 3 - rejects conflicts and rematerializes after Canvas edits
+  ---
+  duration_ms: 46.993458
+  type: 'test'
+  ...
+# Subtest: creates mirrored labels and edits their position and format immutably
+ok 4 - creates mirrored labels and edits their position and format immutably
+  ---
+  duration_ms: 26.202084
+  type: 'test'
+  ...
+# Subtest: switches y-label formats repeatedly and preserves font-weight boundaries
+ok 5 - switches y-label formats repeatedly and preserves font-weight boundaries
+  ---
+  duration_ms: 18.437666
+  type: 'test'
+  ...
+# Subtest: rejects incompatible formats and insufficient mirrored label margins
+ok 6 - rejects incompatible formats and insufficient mirrored label margins
+  ---
+  duration_ms: 40.49625
+  type: 'test'
+  ...
+# Subtest: sub-day temporal labels retain explicit instants through format and Canvas edits
+ok 7 - sub-day temporal labels retain explicit instants through format and Canvas edits
+  ---
+  duration_ms: 20.027667
+  type: 'test'
+  ...
+# Subtest: Cartesian label colors use typed raw values and a global fallback independently of display text
+ok 8 - Cartesian label colors use typed raw values and a global fallback independently of display text
+  ---
+  duration_ms: 86.369125
+  type: 'test'
+  ...
+# Subtest: complete, focused, grouped and whole-axis color edits converge without mutating parents
+ok 9 - complete, focused, grouped and whole-axis color edits converge without mutating parents
+  ---
+  duration_ms: 113.53675
+  type: 'test'
+  ...
+# Subtest: numeric/time color maps accept finite keys and fall back for changed ticks
+ok 10 - numeric/time color maps accept finite keys and fall back for changed ticks
+  ---
+  duration_ms: 26.23425
+  type: 'test'
+  ...
+# Subtest: wrapped lines keep their raw tick color and maps are immutable
+ok 11 - wrapped lines keep their raw tick color and maps are immutable
+  ---
+  duration_ms: 43.791584
+  type: 'test'
+  ...
+# Subtest: color maps reject unknown fields, malformed colors and duplicate typed keys atomically
+ok 12 - color maps reject unknown fields, malformed colors and duplicate typed keys atomically
+  ---
+  duration_ms: 16.7875
+  type: 'test'
+  ...
+# Subtest: threshold selects mapped ticks rather than overflowing text bounds and keeps legacy output
+ok 13 - threshold selects mapped ticks rather than overflowing text bounds and keeps legacy output
+  ---
+  duration_ms: 170.892333
+  type: 'test'
+  ...
+# Subtest: complete, focused, grouped, whole-axis and plot-facade edits converge immutably
+ok 14 - complete, focused, grouped, whole-axis and plot-facade edits converge immutably
+  ---
+  duration_ms: 47.250625
+  type: 'test'
+  ...
+# Subtest: omission preserves threshold, auto removes it and disabled flushing keeps dormant intent
+ok 15 - omission preserves threshold, auto removes it and disabled flushing keeps dormant intent
+  ---
+  duration_ms: 35.6045
+  type: 'test'
+  ...
+# Subtest: vertical, reversed and displaced ranges use the same mapped-position policy
+ok 16 - vertical, reversed and displaced ranges use the same mapped-position policy
+  ---
+  duration_ms: 62.080916
+  type: 'test'
+  ...
+# Subtest: wrapped lines move as one eligible tick group
+ok 17 - wrapped lines move as one eligible tick group
+  ---
+  duration_ms: 14.248875
+  type: 'test'
+  ...
+# Subtest: editable persistence retains threshold and rejects noncanonical stored values
+ok 18 - editable persistence retains threshold and rejects noncanonical stored values
+  ---
+  duration_ms: 27.402125
+  type: 'test'
+  ...
+# Subtest: invalid requests fail atomically and threshold does not authorize rotated flushing
+ok 19 - invalid requests fail atomically and threshold does not authorize rotated flushing
+  ---
+  duration_ms: 60.121583
+  type: 'test'
+  ...
+# Subtest: excluding a near-edge tick never bypasses Canvas bounds or ordinary overlap checks
+ok 20 - excluding a near-edge tick never bypasses Canvas bounds or ordinary overlap checks
+  ---
+  duration_ms: 28.228833
+  type: 'test'
+  ...
+# Subtest: opt-in flush contains complete endpoint text without dropping ticks or shrinking fonts
+ok 21 - opt-in flush contains complete endpoint text without dropping ticks or shrinking fonts
+  ---
+  duration_ms: 95.556584
+  type: 'test'
+  ...
+# Subtest: flush uses the along-offset span and preserves outward spacing on both axes
+ok 22 - flush uses the along-offset span and preserves outward spacing on both axes
+  ---
+  duration_ms: 13.595166
+  type: 'test'
+  ...
+# Subtest: complete, whole-axis, grouped and focused flush edits converge immutably
+ok 23 - complete, whole-axis, grouped and focused flush edits converge immutably
+  ---
+  duration_ms: 110.314417
+  type: 'test'
+  ...
+# Subtest: flush survives Canvas and reversed-scale rematerialization
+ok 24 - flush survives Canvas and reversed-scale rematerialization
+  ---
+  duration_ms: 53.090041
+  type: 'test'
+  ...
+# Subtest: flush validates boolean/rotation and cannot hide a label wider than the scale span
+ok 25 - flush validates boolean/rotation and cannot hide a label wider than the scale span
+  ---
+  duration_ms: 35.166791
+  type: 'test'
+  ...
+# Subtest: five full UTC timestamps fit a fixed 200-pixel span using explicit overlap allowance
+ok 26 - five full UTC timestamps fit a fixed 200-pixel span using explicit overlap allowance
+  ---
+  duration_ms: 20.008334
+  type: 'test'
+  ...
+# Subtest: flush translates wrapped label groups together
+ok 27 - flush translates wrapped label groups together
+  ---
+  duration_ms: 4.461625
+  type: 'test'
+  ...
+# Subtest: uses explicit rotation to resolve long Cartesian label collisions
+ok 28 - uses explicit rotation to resolve long Cartesian label collisions
+  ---
+  duration_ms: 106.953416
+  type: 'test'
+  ...
+# Subtest: wraps each axis value deterministically and replays after Canvas edits
+ok 29 - wraps each axis value deterministically and replays after Canvas edits
+  ---
+  duration_ms: 25.088
+  type: 'test'
+  ...
+# Subtest: forwards layout policy through complete axis facades and permits explicit overlap
+ok 30 - forwards layout policy through complete axis facades and permits explicit overlap
+  ---
+  duration_ms: 43.700084
+  type: 'test'
+  ...
+# Subtest: rejects invalid axis label layout policies atomically
+ok 31 - rejects invalid axis label layout policies atomically
+  ---
+  duration_ms: 6.205458
+  type: 'test'
+  ...
+# Subtest: fixed Canvas anchors bottom labels outward at -270 degrees
+ok 32 - fixed Canvas anchors bottom labels outward at -270 degrees
+  ---
+  duration_ms: 117.312334
+  type: 'test'
+  ...
+# Subtest: fixed Canvas anchors top labels outward at -270 degrees
+ok 33 - fixed Canvas anchors top labels outward at -270 degrees
+  ---
+  duration_ms: 19.510792
+  type: 'test'
+  ...
+# Subtest: fixed Canvas anchors bottom labels outward at -90 degrees
+ok 34 - fixed Canvas anchors bottom labels outward at -90 degrees
+  ---
+  duration_ms: 14.325583
+  type: 'test'
+  ...
+# Subtest: fixed Canvas anchors top labels outward at -90 degrees
+ok 35 - fixed Canvas anchors top labels outward at -90 degrees
+  ---
+  duration_ms: 31.067375
+  type: 'test'
+  ...
+# Subtest: fixed Canvas anchors bottom labels outward at -45 degrees
+ok 36 - fixed Canvas anchors bottom labels outward at -45 degrees
+  ---
+  duration_ms: 6.103708
+  type: 'test'
+  ...
+# Subtest: fixed Canvas anchors top labels outward at -45 degrees
+ok 37 - fixed Canvas anchors top labels outward at -45 degrees
+  ---
+  duration_ms: 4.870833
+  type: 'test'
+  ...
+# Subtest: fixed Canvas anchors bottom labels outward at 45 degrees
+ok 38 - fixed Canvas anchors bottom labels outward at 45 degrees
+  ---
+  duration_ms: 10.132167
+  type: 'test'
+  ...
+# Subtest: fixed Canvas anchors top labels outward at 45 degrees
+ok 39 - fixed Canvas anchors top labels outward at 45 degrees
+  ---
+  duration_ms: 10.952333
+  type: 'test'
+  ...
+# Subtest: fixed Canvas anchors bottom labels outward at 90 degrees
+ok 40 - fixed Canvas anchors bottom labels outward at 90 degrees
+  ---
+  duration_ms: 16.408375
+  type: 'test'
+  ...
+# Subtest: fixed Canvas anchors top labels outward at 90 degrees
+ok 41 - fixed Canvas anchors top labels outward at 90 degrees
+  ---
+  duration_ms: 19.303167
+  type: 'test'
+  ...
+# Subtest: fixed Canvas anchors bottom labels outward at 270 degrees
+ok 42 - fixed Canvas anchors bottom labels outward at 270 degrees
+  ---
+  duration_ms: 10.582375
+  type: 'test'
+  ...
+# Subtest: fixed Canvas anchors top labels outward at 270 degrees
+ok 43 - fixed Canvas anchors top labels outward at 270 degrees
+  ---
+  duration_ms: 5.3115
+  type: 'test'
+  ...
+# Subtest: automatic Canvas anchors bottom labels outward at -270 degrees
+ok 44 - automatic Canvas anchors bottom labels outward at -270 degrees
+  ---
+  duration_ms: 43.739125
+  type: 'test'
+  ...
+# Subtest: automatic Canvas anchors top labels outward at -270 degrees
+ok 45 - automatic Canvas anchors top labels outward at -270 degrees
+  ---
+  duration_ms: 5.890708
+  type: 'test'
+  ...
+# Subtest: automatic Canvas anchors bottom labels outward at -90 degrees
+ok 46 - automatic Canvas anchors bottom labels outward at -90 degrees
+  ---
+  duration_ms: 12.48025
+  type: 'test'
+  ...
+# Subtest: automatic Canvas anchors top labels outward at -90 degrees
+ok 47 - automatic Canvas anchors top labels outward at -90 degrees
+  ---
+  duration_ms: 4.765417
+  type: 'test'
+  ...
+# Subtest: automatic Canvas anchors bottom labels outward at -45 degrees
+ok 48 - automatic Canvas anchors bottom labels outward at -45 degrees
+  ---
+  duration_ms: 8.305292
+  type: 'test'
+  ...
+# Subtest: automatic Canvas anchors top labels outward at -45 degrees
+ok 49 - automatic Canvas anchors top labels outward at -45 degrees
+  ---
+  duration_ms: 6.437208
+  type: 'test'
+  ...
+# Subtest: automatic Canvas anchors bottom labels outward at 45 degrees
+ok 50 - automatic Canvas anchors bottom labels outward at 45 degrees
+  ---
+  duration_ms: 8.648791
+  type: 'test'
+  ...
+# Subtest: automatic Canvas anchors top labels outward at 45 degrees
+ok 51 - automatic Canvas anchors top labels outward at 45 degrees
+  ---
+  duration_ms: 11.296458
+  type: 'test'
+  ...
+# Subtest: automatic Canvas anchors bottom labels outward at 90 degrees
+ok 52 - automatic Canvas anchors bottom labels outward at 90 degrees
+  ---
+  duration_ms: 8.527125
+  type: 'test'
+  ...
+# Subtest: automatic Canvas anchors top labels outward at 90 degrees
+ok 53 - automatic Canvas anchors top labels outward at 90 degrees
+  ---
+  duration_ms: 5.711584
+  type: 'test'
+  ...
+# Subtest: automatic Canvas anchors bottom labels outward at 270 degrees
+ok 54 - automatic Canvas anchors bottom labels outward at 270 degrees
+  ---
+  duration_ms: 6.964084
+  type: 'test'
+  ...
+# Subtest: automatic Canvas anchors top labels outward at 270 degrees
+ok 55 - automatic Canvas anchors top labels outward at 270 degrees
+  ---
+  duration_ms: 14.172166
+  type: 'test'
+  ...
+# Subtest: rotated side-axis labels stay outside fixed margins
+ok 56 - rotated side-axis labels stay outside fixed margins
+  ---
+  duration_ms: 67.19625
+  type: 'test'
+  ...
+# Subtest: focused edits, mirrored positions, scale and Canvas replay preserve rotated edge anchoring
+ok 57 - focused edits, mirrored positions, scale and Canvas replay preserve rotated edge anchoring
+  ---
+  duration_ms: 22.073584
+  type: 'test'
+  ...
+# Subtest: all output adapters consume the same outward-anchored rotated labels
+ok 58 - all output adapters consume the same outward-anchored rotated labels
+  ---
+  duration_ms: 235.4915
+  type: 'test'
+  ...
+# Subtest: prepared flush layout keeps exact raw positions while moving measured text inside its scale span
+ok 59 - prepared flush layout keeps exact raw positions while moving measured text inside its scale span
+  ---
+  duration_ms: 4.473167
+  type: 'test'
+  ...
+# Subtest: hard-break label groups retain line order and translate as one measured group on either Y side
+ok 60 - hard-break label groups retain line order and translate as one measured group on either Y side
+  ---
+  duration_ms: 19.294584
+  type: 'test'
+  ...
+# Subtest: native rotation and edge clearance use measured bounds without changing raw anchors
+ok 61 - native rotation and edge clearance use measured bounds without changing raw anchors
+  ---
+  duration_ms: 14.086083
+  type: 'test'
+  ...
+# Subtest: settled wrapping is reused without a fresh width choice and missing exact metrics remain errors
+ok 62 - settled wrapping is reused without a fresh width choice and missing exact metrics remain errors
+  ---
+  duration_ms: 63.37025
+  type: 'test'
+  ...
+# Subtest: read-only native preparation exactly follows responsive wrap skip rotation and hidden raw values
+ok 63 - read-only native preparation exactly follows responsive wrap skip rotation and hidden raw values
+  ---
+  duration_ms: 540.98725
+  type: 'test'
+  ...
+# Subtest: native exact gradient values use shared log scale meaning and single-block placement
+ok 64 - native exact gradient values use shared log scale meaning and single-block placement
+  ---
+  duration_ms: 935.312084
+  type: 'test'
+  ...
+# Subtest: native legend forward proof retains all four edges, bottom titles and explicit text alignment
+ok 65 - native legend forward proof retains all four edges, bottom titles and explicit text alignment
+  ---
+  duration_ms: 402.346625
+  type: 'test'
+  ...
+# Subtest: legend colors reuse appearance interpolation and rebase retains exact prepared native meaning
+ok 66 - legend colors reuse appearance interpolation and rebase retains exact prepared native meaning
+  ---
+  duration_ms: 647.240708
+  type: 'test'
+  ...
+# Subtest: legend semantic sample insertion preserves raw correspondence and scoped owners
+ok 67 - legend semantic sample insertion preserves raw correspondence and scoped owners
+  ---
+  duration_ms: 878.178417
+  type: 'test'
+  ...
+# Subtest: unknown or dependent native layout policies preserve explicit identity and safe fades
+ok 68 - unknown or dependent native layout policies preserve explicit identity and safe fades
+  ---
+  duration_ms: 317.810917
+  type: 'test'
+  ...
+# Subtest: strict offline legend state rejects changed proof, unknown kernels and nonown layout values
+ok 69 - strict offline legend state rejects changed proof, unknown kernels and nonown layout values
+  ---
+  duration_ms: 66.458166
+  type: 'test'
+  ...
+# Subtest: stroke gradients preserve native width bounds without reading final pixels as scale values
+ok 70 - stroke gradients preserve native width bounds without reading final pixels as scale values
+  ---
+  duration_ms: 416.221125
+  type: 'test'
+  ...
+# Subtest: prepared legend ink retains exact font bindings and only the queries used by native layout
+ok 71 - prepared legend ink retains exact font bindings and only the queries used by native layout
+  ---
+  duration_ms: 15.324334
+  type: 'test'
+  ...
+# Subtest: prepared legend closure rejects policy forgery and out-of-domain semantic identities
+ok 72 - prepared legend closure rejects policy forgery and out-of-domain semantic identities
+  ---
+  duration_ms: 15.19075
+  type: 'test'
+  ...
+# Subtest: legend sample normalization does not cache mutable caller layout values
+ok 73 - legend sample normalization does not cache mutable caller layout values
+  ---
+  duration_ms: 16.562625
+  type: 'test'
+  ...
+# Subtest: temporal gradient legends retain exact epoch values and native formatted labels
+ok 74 - temporal gradient legends retain exact epoch values and native formatted labels
+  ---
+  duration_ms: 346.901875
+  type: 'test'
+  ...
+1..74
+# tests 74
+# suites 0
+# pass 74
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5439.116

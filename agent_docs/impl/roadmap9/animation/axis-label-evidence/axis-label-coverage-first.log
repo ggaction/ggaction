@@ -1,0 +1,183 @@
+TAP version 13
+# Subtest: prepared axis flush replays raw mapping and measured widths instead of endpoint pixel interpolation
+ok 1 - prepared axis flush replays raw mapping and measured widths instead of endpoint pixel interpolation
+  ---
+  duration_ms: 7.053834
+  type: 'test'
+  ...
+# Subtest: public flush labels preserve raw keys, current-frame meaning and strict offline equality
+ok 2 - public flush labels preserve raw keys, current-frame meaning and strict offline equality
+  ---
+  duration_ms: 132.805041
+  type: 'test'
+  ...
+# Subtest: fixed rotations and edge-aligned frames retain native text placement on all four sides
+ok 3 - fixed rotations and edge-aligned frames retain native text placement on all four sides
+  ---
+  duration_ms: 153.795583
+  type: 'test'
+  ...
+# Subtest: hard-break and hidden labels retain semantic line identity in scoped layouts
+ok 4 - hard-break and hidden labels retain semantic line identity in scoped layouts
+  ---
+  duration_ms: 81.294209
+  type: 'test'
+  ...
+# Subtest: layout changes retain explicit fade policy while unresolved wrapping remains unsupported
+ok 5 - layout changes retain explicit fade policy while unresolved wrapping remains unsupported
+  ---
+  duration_ms: 101.477583
+  type: 'test'
+  ...
+# Subtest: strict axis state rejects corrupted geometry, nonown policy and extra metric queries without execution
+ok 6 - strict axis state rejects corrupted geometry, nonown policy and extra metric queries without execution
+  ---
+  duration_ms: 7.660917
+  type: 'test'
+  ...
+# Subtest: exact font bindings remain attached to prepared layout and missing metrics cannot be guessed
+ok 7 - exact font bindings remain attached to prepared layout and missing metrics cannot be guessed
+  ---
+  duration_ms: 1.254833
+  type: 'test'
+  ...
+# Subtest: guide correspondence matches raw values across insertion and preserves component roles
+ok 8 - guide correspondence matches raw values across insertion and preserves component roles
+  ---
+  duration_ms: 35.572667
+  type: 'test'
+  ...
+# Subtest: same-value label text changes crossfade while unchanged native glyphs interpolate
+ok 9 - same-value label text changes crossfade while unchanged native glyphs interpolate
+  ---
+  duration_ms: 13.476916
+  type: 'test'
+  ...
+# Subtest: duplicate ticks cannot be matched by an arbitrary first position
+ok 10 - duplicate ticks cannot be matched by an arbitrary first position
+  ---
+  duration_ms: 8.639333
+  type: 'test'
+  ...
+# Subtest: guide transport validates forward geometry and keeps mark identities disjoint
+not ok 11 - guide transport validates forward geometry and keeps mark identities disjoint
+  ---
+  duration_ms: 18.86175
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/guide-tracks.test.js:42:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+
+    0 !== 2
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 2
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/guide-tracks.test.js:54:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: guide track policy changes preserve explicit fallback and never borrow missing guide metadata
+ok 12 - guide track policy changes preserve explicit fallback and never borrow missing guide metadata
+  ---
+  duration_ms: 11.770791
+  type: 'test'
+  ...
+# Subtest: native exact gradient values use shared log scale meaning and single-block placement
+ok 13 - native exact gradient values use shared log scale meaning and single-block placement
+  ---
+  duration_ms: 691.016458
+  type: 'test'
+  ...
+# Subtest: native legend forward proof retains all four edges, bottom titles and explicit text alignment
+ok 14 - native legend forward proof retains all four edges, bottom titles and explicit text alignment
+  ---
+  duration_ms: 488.76125
+  type: 'test'
+  ...
+# Subtest: legend colors reuse appearance interpolation and rebase retains exact prepared native meaning
+ok 15 - legend colors reuse appearance interpolation and rebase retains exact prepared native meaning
+  ---
+  duration_ms: 740.504834
+  type: 'test'
+  ...
+# Subtest: legend semantic sample insertion preserves raw correspondence and scoped owners
+ok 16 - legend semantic sample insertion preserves raw correspondence and scoped owners
+  ---
+  duration_ms: 1204.708833
+  type: 'test'
+  ...
+# Subtest: unknown or dependent native layout policies preserve explicit identity and safe fades
+ok 17 - unknown or dependent native layout policies preserve explicit identity and safe fades
+  ---
+  duration_ms: 524.420792
+  type: 'test'
+  ...
+# Subtest: strict offline legend state rejects changed proof, unknown kernels and nonown layout values
+ok 18 - strict offline legend state rejects changed proof, unknown kernels and nonown layout values
+  ---
+  duration_ms: 66.12875
+  type: 'test'
+  ...
+# Subtest: stroke gradients preserve native width bounds without reading final pixels as scale values
+ok 19 - stroke gradients preserve native width bounds without reading final pixels as scale values
+  ---
+  duration_ms: 542.569625
+  type: 'test'
+  ...
+# Subtest: prepared legend ink retains exact font bindings and only the queries used by native layout
+ok 20 - prepared legend ink retains exact font bindings and only the queries used by native layout
+  ---
+  duration_ms: 19.659208
+  type: 'test'
+  ...
+# Subtest: prepared legend closure rejects policy forgery and out-of-domain semantic identities
+ok 21 - prepared legend closure rejects policy forgery and out-of-domain semantic identities
+  ---
+  duration_ms: 20.498208
+  type: 'test'
+  ...
+# Subtest: legend sample normalization does not cache mutable caller layout values
+ok 22 - legend sample normalization does not cache mutable caller layout values
+  ---
+  duration_ms: 22.363958
+  type: 'test'
+  ...
+# Subtest: temporal gradient legends retain exact epoch values and native formatted labels
+ok 23 - temporal gradient legends retain exact epoch values and native formatted labels
+  ---
+  duration_ms: 504.488583
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 22
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5464.441666
+# start of coverage report
+# ---------------------------------------------------------------------
+# file                 | line % | branch % | funcs % | uncovered lines
+# ---------------------------------------------------------------------
+# src                  |        |          |         |
+#  animation           |        |          |         |
+#   guideTracks.js     | 100.00 |   100.00 |  100.00 |
+#  materialization     |        |          |         |
+#   animation          |        |          |         |
+#    axisLabelState.js |  97.16 |    86.13 |  100.00 | 79-80 173-175
+#    guideMetrics.js   | 100.00 |    95.24 |  100.00 |
+# ---------------------------------------------------------------------
+# all files            |  98.29 |    91.49 |  100.00 |
+# ---------------------------------------------------------------------
+# end of coverage report

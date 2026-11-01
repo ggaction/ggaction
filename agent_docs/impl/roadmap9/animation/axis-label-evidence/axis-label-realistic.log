@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: tt-us-births preserves raw guide values across eight native transition recipes
+ok 1 - tt-us-births preserves raw guide values across eight native transition recipes
+  ---
+  duration_ms: 7507.814583
+  type: 'test'
+  ...
+# Subtest: tt-trash-wheel preserves raw guide values across eight native transition recipes
+ok 2 - tt-trash-wheel preserves raw guide values across eight native transition recipes
+  ---
+  duration_ms: 3472.410666
+  type: 'test'
+  ...
+# Subtest: tt-stock-prices preserves raw guide values across eight native transition recipes
+ok 3 - tt-stock-prices preserves raw guide values across eight native transition recipes
+  ---
+  duration_ms: 7115.650041
+  type: 'test'
+  ...
+# Subtest: tt-animal-rescues preserves raw guide values across eight native transition recipes
+ok 4 - tt-animal-rescues preserves raw guide values across eight native transition recipes
+  ---
+  duration_ms: 4895.4995
+  type: 'test'
+  ...
+# Subtest: tt-movie-profit preserves raw guide values across eight native transition recipes
+ok 5 - tt-movie-profit preserves raw guide values across eight native transition recipes
+  ---
+  duration_ms: 3109.281291
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 28886.863292
