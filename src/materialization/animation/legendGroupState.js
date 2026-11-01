@@ -1,3 +1,4 @@
+import { legendAnimationFamily as owner, legendBlockEntryProperties } from "./legendBlockState.js";
 import { cloneAndFreeze, isOwned } from "../../core/immutable.js";
 import { ownRecord, ownArray } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateWorkLimit, validateUnitInterval } from "../../core/validation.js";
@@ -10,18 +11,11 @@ import { resolveLegendGroupPlacement } from "../../layout/legendGroup.js";
 import { unionLegendBounds } from "../guides/legendLaneState.js";
 import { translatedProperties } from "../graphicTranslation.js";
 import { intrinsicLegendConfigValues } from "../legendGroups.js";
-import { normalizeCategoricalLegendLayout, resolveCategoricalLegendEntries, prepareCategoricalLegendInterpolation, sampleCategoricalLegendInterpolation } from "./categoricalLegendState.js";
-import { normalizeSizeLegendLayout, resolveSizeLegendEntries, prepareSizeLegendInterpolation, sampleSizeLegendInterpolation } from "./sizeLegendState.js";
-import { normalizeLegendLayout, resolveLegendEntries, prepareLegendInterpolation, sampleLegendInterpolation } from "./legendState.js";
 
 const same = (a, b) => JSON.stringify(encodeValue(a)) === JSON.stringify(encodeValue(b));
 const layouts = new WeakMap(), geometry = new WeakMap(), samples = new WeakMap(), preparedBlocks = new WeakMap();
 const fade = reason => Object.freeze({ kind: "crossfade", reason });
 const mode = group => group.placement.position?.includes("-") ? "corner" : true;
-const owner = kind => ["color", "series", "stroke"].includes(kind)
-  ? { kind: "categorical-legend", normalize: normalizeCategoricalLegendLayout, entries: resolveCategoricalLegendEntries, prepare: prepareCategoricalLegendInterpolation, sample: sampleCategoricalLegendInterpolation }
-  : kind === "size" ? { kind: "size-legend", normalize: normalizeSizeLegendLayout, entries: resolveSizeLegendEntries, prepare: prepareSizeLegendInterpolation, sample: sampleSizeLegendInterpolation }
-    : ["gradient", "strokeGradient"].includes(kind) ? { kind: "legend", normalize: normalizeLegendLayout, entries: resolveLegendEntries, prepare: prepareLegendInterpolation, sample: sampleLegendInterpolation } : undefined;
 function record(value, keys, label) {
   ownRecord(value, label); rejectUnknownProperties(value, keys, label);
   if (keys.some(key => !Object.hasOwn(value, key))) throw new TypeError(`${label} requires every field.`);
@@ -72,16 +66,7 @@ function bounds(block, layout, entries) {
   const objects = {}, ids = [], config = layout.config;
   for (const [index, entry] of entries.entries()) {
     const id = entry.component === "legend-symbol" ? `preparedLegendSymbols${index}` : `prepared${index}`;
-    let style;
-    if (entry.type === "text") style = entry.component === "legend-title" ? config.titleStyle : config.labels;
-    else if (owner(block.kind).kind === "categorical-legend") {
-      const layer = config.symbol.layers.find(layer => layer.type === entry.sample[2]);
-      const at = config.domain.findIndex(value => same(value, entry.sample[1]));
-      const stroke = layer.type === "line" ? layer.stroke ?? (config.channels.includes("stroke") ? layout.appearance.strokes[at] : layout.appearance.colors[at])
-        : config.channels.includes("stroke") ? layout.appearance.strokes[at] : layer.stroke;
-      style = { ...layer, stroke, strokeWidth: layer.lineWidth ?? layer.strokeWidth };
-    } else style = { stroke: "black", strokeWidth: block.kind === "size" ? layout.symbolStrokeWidth : entry.type === "line" ? 1 : layout.stripStrokeWidth };
-    objects[id] = { type: entry.type, properties: { ...style, ...entry.properties } }; ids.push(id);
+    objects[id] = { type: entry.type, properties: legendBlockEntryProperties(block.kind, layout, entry) }; ids.push(id);
   }
   return unionLegendBounds({ graphicSpec: { objects, order: ids }, materializationConfigs: { textMetrics: layout.metrics } }, ids);
 }

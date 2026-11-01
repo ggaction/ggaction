@@ -20,7 +20,7 @@ export function requireSizeLegendScale(program, id) {
   return scale;
 }
 
-export function resolveSizeLegendLayout(program, config) {
+export function resolveSizeLegendConfig(program, config) {
   validateLegendClip("size",config);
   config = intrinsicLegendConfig(program, config);
   const scale = requireSizeLegendScale(program, config.scale);
@@ -52,10 +52,15 @@ export function resolveSizeLegendLayout(program, config) {
     columns: categorical.columns, titlePosition: categorical.titlePosition,
     offset: categorical.offset, itemGap: effective.blockGap ?? categorical.itemGap
   } : { position };
+  return { config: effective, placement: { ...effective, ...geometry }, scale };
+}
+
+export function resolveSizeLegendLayout(program, config) {
+  const prepared = resolveSizeLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
-  const layout = resolveSizeLegendLayoutValues({ plot, canvas, config: { ...effective, ...geometry },
-    scale, format: config.labels.format, profile: program.materializationConfigs.textMetrics });
-  return { ...layout, config: effective };
+  const layout = resolveSizeLegendLayoutValues({ plot, canvas, config: prepared.placement,
+    scale: prepared.scale, format: config.labels.format, profile: program.materializationConfigs.textMetrics });
+  return { ...layout, config: prepared.config };
 }
 
 // Both authored legends and prepared transitions use the same explicit native

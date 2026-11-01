@@ -73,7 +73,7 @@ test("legend semantic sample insertion preserves raw correspondence and scoped o
 
 test("unknown or dependent native layout policies preserve explicit identity and safe fades", () => {
   const from = base();
-  for (const p of [base().editLegend({ values: "auto" }), base({ border: { padding: 4 } }), base({ offset: undefined })]) {
+  for (const p of [base().editLegend({ values: "auto" }), base({ border: { padding: 4 } }) ]) {
     const prepared = plan(p, p.editCanvas({ width: 800 }));
     assert.ok(guides(sampleTransition(prepared, 50)).every(item => item.decision.reason === "guide-layout"));
     restoredEqual(prepared);
@@ -81,6 +81,8 @@ test("unknown or dependent native layout policies preserve explicit identity and
   for (const q of [from.editLegend({ title: "Changed" }), from.editLegend({ labels: { fontSize: 14 } }), from.editLegend({ position: "left" })]) {
     assert.ok(guides(sampleTransition(plan(from, q), 50)).some(item => item.decision.kind === "crossfade"));
   }
+  const inferred = base({ offset: undefined }), automatic = plan(inferred, inferred.editCanvas({ width: 800 }));
+  assert.ok(guides(sampleTransition(automatic, 50)).every(item => item.decision.kernel === "guide-geometry")); restoredEqual(automatic);
   const edited = from.editGraphics({ target: "colorGradientTicks", property: "x1", value: 1 });
   assert.ok(guides(sampleTransition(plan(from, edited), 50)).some(item => item.decision.reason === "guide-edited"));
 });
