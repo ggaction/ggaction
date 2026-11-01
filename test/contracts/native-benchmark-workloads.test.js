@@ -20,7 +20,7 @@ for (const kind of ['points', 'partition', 'geo', 'data']) test(`native benchmar
 });
 
 test('native benchmark preserves every required size and SLO including unsupported cells', () => {
-  assert.deepEqual(workloadSizes, { points: [1000,10000,100000], partition: [100,1000,10000], geo: [1000,10000,100000], data: [1000,10000,100000] });
+  assert.deepEqual(workloadSizes, { points: [1000,10000,100000], partition: [100,1000,10000], geo: [1000,10000,100000], data: [1000,10000,100000], inference: [100,1000,10000] });
   assert.deepEqual(workloadThresholds.points, {hitMs:[8,12,20],fullFrameSampleMs:[16.7,33,50]});
   assert.deepEqual(workloadThresholds.partition,{kernelMs:[10,50,300],gesturePreviewMs:[33,33,33]});
   assert.deepEqual(workloadThresholds.geo,{cameraPreviewMs:[16.7,33,50],hitMs:[20,20,20]});

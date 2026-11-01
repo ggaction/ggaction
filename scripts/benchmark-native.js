@@ -21,7 +21,7 @@ for (const argument of process.argv.slice(2)) {
 }
 if (!args.has("--archive") || !args.has("--output")) throw new Error("Native benchmark requires --archive=<local.tgz> and --output=<directory>.");
 const workload = args.get("--workload") ?? "all";
-if (!["all", "routes", "memory", "workloads", "points", "partition", "geo", "data"].includes(workload)) throw new Error("Native benchmark workload must be all, routes, memory, workloads, points, partition, geo or data.");
+if (!["all", "routes", "memory", "workloads", "points", "partition", "geo", "data", "inference"].includes(workload)) throw new Error("Native benchmark workload must be all, routes, memory, workloads, points, partition, geo, data or inference.");
 const diagnostic = args.has("--diagnostic");
 const archive = path.resolve(args.get("--archive")), out = path.resolve(args.get("--output"));
 const bytes = await readFile(archive);
@@ -42,19 +42,25 @@ const report = {
     prepareComputeValidateMs: "public preparation including worker startup, clone, computation and validation", applyMs: "native prepared commit",
     bundlingMs: "preparation plus apply", materializeMs: "native GraphPlot", canvasRenderMs: "synchronous commands",
     svgSerializeDomMs: "serialization and DOM insertion, excludes compositor paint" },
-  workloadScope: "Complete deterministic native point/hierarchy/Geo/data inputs at every required size. Native authoring and independent numeric preflight precede timing. Public layout includes immutable action validation; data blocking slice is the entire synchronous deserialize/revise call. Unsupported cells remain failures of support; no downsampling. Production P95 is not final qualification by itself.",
+  workloadScope: "Complete deterministic native point/hierarchy/Geo/data/inference inputs at every required size. Native authoring and independent numeric preflight precede timing. Public layout includes immutable action validation; data blocking slice is the entire synchronous deserialize/revise call. Unsupported cells remain failures of support; no downsampling. Inference uses an exact k10 integer lattice with an independent full-output oracle; source authoring and oracle initialization are outside timing. The unavailable public inference worker is a separate unsupported stage. Production P95 is not final qualification by itself.",
   inputs: {}, cases: [], workloads: [], lifecycle: []
 };
-const files = ["scripts/benchmark-native.js", "scripts/benchmarks/routes.browser.js", "scripts/benchmarks/routes.worker.js", "scripts/benchmarks/workloads.browser.js"];
+const files = ["scripts/benchmark-native.js", "scripts/benchmarks/routes.browser.js", "scripts/benchmarks/routes.worker.js", "scripts/benchmarks/workloads.browser.js", "test/oracles/inference-grid.js"];
 for (const file of files) report.inputs[file] = sha(await readFile(path.join(root, file)));
 const persist = () => writeFile(path.join(out, "report.json"), JSON.stringify(report, null, 2) + "\n");
 let consumer, browser, server;
 try {
   consumer = await preparePackageConsumer({ packageSpec: archive });
   const assets = new Map();
+  // Copy only the independently pinned benchmark oracle, never checkout runtime.
+  // Relative imports then resolve inside the same installed consumer directory.
+  const workloadDirectory = path.join(consumer.directory, "scripts/benchmarks");
+  await mkdir(workloadDirectory, { recursive: true });
+  await mkdir(path.join(consumer.directory, "test/oracles"), { recursive: true });
+  await writeFile(path.join(consumer.directory, "test/oracles/inference-grid.js"), await readFile(path.join(root, "test/oracles/inference-grid.js")));
   for (const [file, output] of [["routes.browser.js", "app.js"], ["routes.worker.js", "worker.js"], ["workloads.browser.js", "workloads.js"]]) {
     const result = await build({ stdin: { contents: await readFile(new URL(`benchmarks/${file}`, import.meta.url), "utf8"),
-      resolveDir: consumer.directory, sourcefile: file }, absWorkingDir: consumer.directory,
+      resolveDir: file === "workloads.browser.js" ? workloadDirectory : consumer.directory, sourcefile: file }, absWorkingDir: consumer.directory,
       bundle: true, minify: true, format: "esm", platform: "browser", target: "es2022", write: false, metafile: true });
     const sources = Object.keys(result.metafile.inputs).filter(name => name !== file);
     assert.ok(sources.every(name => path.resolve(consumer.directory, name).startsWith(consumer.directory + path.sep)), "source checkout entered installed bundle");

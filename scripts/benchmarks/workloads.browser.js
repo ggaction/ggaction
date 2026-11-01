@@ -3,14 +3,16 @@ import { createTransitionScene } from 'ggaction/scene';
 import { planTransition, sampleTransition } from 'ggaction/animation';
 import { createInteractionSession } from 'ggaction/interaction';
 import { serializeProgram, deserializeProgram } from 'ggaction/persistence';
+import { expectedGridNeighbors } from '../../test/oracles/inference-grid.js';
 
 // These are the complete required size classes, including unsupported cells.
-export const workloadSizes = Object.freeze({ points: [1000, 10000, 100000], partition: [100, 1000, 10000], geo: [1000, 10000, 100000], data: [1000, 10000, 100000] });
+export const workloadSizes = Object.freeze({ points: [1000, 10000, 100000], partition: [100, 1000, 10000], geo: [1000, 10000, 100000], data: [1000, 10000, 100000], inference: [100, 1000, 10000] });
 export const workloadThresholds = Object.freeze({
   points: { hitMs: [8, 12, 20], fullFrameSampleMs: [16.7, 33, 50] },
   partition: { kernelMs: [10, 50, 300], gesturePreviewMs: [33, 33, 33] },
   geo: { cameraPreviewMs: [16.7, 33, 50], hitMs: [20, 20, 20] },
-  data: { loadMs: [100, 500, 3000], reviseMs: [100, 500, 3000], blockingSliceMs: [50, 50, 50] }
+  data: { loadMs: [100, 500, 3000], reviseMs: [100, 500, 3000], blockingSliceMs: [50, 50, 50] },
+  inference: { inferenceMs: [null, 1000, null], workerMs: [null, null, 10000] }
 });
 const check = (value, message) => { if (!value) throw new Error(`Workload assertion: ${message}`); };
 const close = (a, b) => check(Number.isFinite(a) && Math.abs(a - b) <= 1e-7 * Math.max(1, Math.abs(b)), `${a} != ${b}`);
@@ -72,6 +74,10 @@ export function nativeWorkloadInput(kind, count) {
   check(Object.hasOwn(workloadSizes, kind), 'unknown workload');
   check(Number.isSafeInteger(count) && count >= 3 && count <= 100000, 'invalid fixture size');
   if (kind === 'points' || kind === 'data') return pointRows(count);
+  if (kind === 'inference') {
+    const side = Math.ceil(Math.sqrt(count));
+    return Array.from({ length: count }, (_, index) => { const id = count - index - 1; return { id, x: id % side, y: Math.floor(id / side) }; });
+  }
   if (kind === 'partition') return [{ key: 'root', parent: null, value: 0 }, ...Array.from({ length: count - 1 }, (_, id) => ({ key: id, parent: 'root', value: 1 }))];
   // A non-collinear, all-front-facing LineString. No vertex filtering or sampling.
   return { type: 'FeatureCollection', features: [{ type: 'Feature', id: 'line', properties: {}, geometry: { type: 'LineString', coordinates:
@@ -97,6 +103,44 @@ export function prepareNativeWorkload(kind, count, input = nativeWorkloadInput(k
       stages.push({ name: 'source-revise', prepare: () => ({ run() { const r = time(() => program.reviseData({ source: 'rows', id: 'revision', values: revised })); return { metrics: { reviseMs: r.elapsed, blockingSliceMs: r.elapsed }, program: r.value }; }, validate(r) { checkPoints(program, input); return checkPoints(r.program, revised); } }) });
       witness = { ...witness, snapshotCharacters: saved.length, load: 'deserializeProgram', revise: 'reviseData with full dependent point rematerialization', blocking: 'entire synchronous public call, no yielded slice' };
     }
+  } else if (kind === 'inference') {
+    check(input.length === count, 'inference input cardinality');
+    const expected = expectedGridNeighbors(input), definition = { id: 'neighbors', data: 'rows', nodeKey: 'id', ruleId: 'nearest',
+      rule: 'knn', features: ['x', 'y'], metric: 'manhattan', options: { k: 10, symmetrize: 'directed', search: { mode: 'exact', algorithm: 'kd-tree' } } };
+    program = chart().createData({ id: 'rows', keyField: 'id', values: input });
+    const baseline = JSON.stringify(program.semanticSpec), graphic = program.graphicSpec, source = program.semanticSpec.datasets.find(value => value.id === 'rows');
+    witness = { nodes: count, expectedEdges: expected.length, k: 10, metric: 'manhattan', search: 'exact kd-tree',
+      inputOrder: 'descending numeric ID', oracle: 'complete Manhattan shells, numeric ID ties, all rows and edges',
+      execution: 'synchronous public createInferredGraphData; no public inference worker executor',
+      preparation: 'source authoring and independent oracle outside inference timing', sourceRows: count,
+      outputHashScope: 'complete graph resource, including the actual per-fixture allocated logical data ID; not a cross-fixture identity hash' };
+    stages.push({ name: 'exact-inference', prepare: () => ({
+      run() { const r = time(() => program.createInferredGraphData(definition)); return { metrics: { inferenceMs: r.elapsed }, program: r.value, output: r.value.semanticSpec.resources.find(value => value.kind === 'graph' && value.id === 'neighbors') }; },
+      validate(result) {
+        const resource = result.program.semanticSpec.resources.find(value => value.kind === 'graph' && value.id === 'neighbors');
+        check(resource?.inputs.length === 1 && resource.inputs[0].kind === 'data' && resource.inputs[0].id === 'rows' && resource.inputs[0].logicalId === source.logicalId && resource.inputs[0].revision === 0, 'inference exact source ref');
+        const model = resource.result.model, diagnostics = resource.result.diagnostics, keys = new Map();
+        check(model.nodes.length === count && model.edges.length === expected.length, 'all inference nodes and k10 edges');
+        model.nodes.forEach((node, index) => {
+          check(node.sourceRows.length === 1 && node.sourceRows[0] === index, 'inference node row order');
+          check(node.key === source.rowKeys[index] && !keys.has(node.key), 'exact inference typed node key'); keys.set(node.key, index);
+        });
+        const edgeKeys = new Set();
+        model.edges.forEach((edge, index) => {
+          const wanted = expected[index];
+          check(keys.get(edge.sourceKey) === wanted.sourceIndex && keys.get(edge.targetKey) === wanted.targetIndex && edge.weight === wanted.weight, 'exact inference pair order, ties and weight');
+          check(edge.sourceRows.length === 2 && edge.sourceRows[0] === wanted.sourceIndex && edge.sourceRows[1] === wanted.targetIndex, 'exact inference edge source rows');
+          check(edge.directed === true && edge.origin === 'inferred' && edge.ruleId === 'nearest' && !edgeKeys.has(edge.key), 'inference direction, provenance and unique edge key'); edgeKeys.add(edge.key);
+        });
+        check(resource.provenance.origin === 'inferred' && resource.provenance.sourceRows.length === count, 'complete inferred source provenance');
+        resource.provenance.sourceRows.forEach((row, index) => check(row.data === source.id && row.logicalDataId === source.logicalId && row.revision === source.revision && row.rowKey === source.rowKeys[index] && row.role === 'node', 'exact inference source provenance'));
+        check(diagnostics.effectiveK === 10 && diagnostics.preparation.omitted.length === 0 && diagnostics.preparation.sourceIndices.length === count, 'no inference node omitted');
+        diagnostics.preparation.sourceIndices.forEach((index, i) => check(index === i, 'inference original source indexes'));
+        check(diagnostics.search.mode === 'exact' && diagnostics.search.algorithm === 'kd-tree', 'exact inference search');
+        check(result.program.graphicSpec === graphic && JSON.stringify(program.semanticSpec) === baseline, 'inference leaves previous program and graphics unchanged');
+        return { ...witness, edges: model.edges.length, pairCount: diagnostics.pairCount, search: diagnostics.search };
+      }
+    }) });
   } else if (kind === 'partition') {
     check(input.length === count, 'hierarchy input cardinality includes root');
     program = canvas().createData({ id: 'rows', keyField: 'key', values: input }).createHierarchyData({ id: 'hierarchy', key: 'key', parent: 'parent', value: 'value' });
@@ -157,7 +201,7 @@ export async function benchmarkWorkload(kind, count, ratio, measured = 30, warmu
   check(workloadSizes[kind]?.includes(count), 'only original size classes may be measured');
   check(Number.isSafeInteger(measured) && measured > 0 && Number.isSafeInteger(warmups) && warmups >= 0, 'iteration counts');
   const input = nativeWorkloadInput(kind, count), inputHash = await digest(input), start = performance.now();
-  const requiredStages = {points:['css-hit','full-frame'],partition:['normalized-layout','gesture-preview'],geo:['camera-preview','css-hit'],data:['editable-load','source-revise']}[kind];
+  const requiredStages = {points:['css-hit','full-frame'],partition:['normalized-layout','gesture-preview'],geo:['camera-preview','css-hit'],data:['editable-load','source-revise'],inference: count === 10000 ? ['exact-inference','large-worker'] : ['exact-inference']}[kind];
   const report = { kind, count, ratio, inputHash, requiredStages, status: 'measured', stages: [], sourcePreparationMs: 0 };
   const failure = (error, stage) => ({ name: stage, status: isNativeLimit(error) ? 'explicit-limit' : 'failed', successSLO: isNativeLimit(error) ? 'unsupported-not-success' : 'failed-this-fixture', warmups: 0, measured: 0, error: { name: error.name, message: error.message } });
   let fixture;
@@ -171,7 +215,7 @@ export async function benchmarkWorkload(kind, count, ratio, measured = 30, warmu
       try {
         const preparation = time(stage.prepare); prepared = preparation.value;
         const first = prepared.run(), witness = prepared.validate(first);
-        const output = first.frame?.scene ?? (first.program ? first.program.semanticSpec : first.hit);
+        const output = first.output ?? first.frame?.scene ?? (first.program ? first.program.semanticSpec : first.hit);
         const outputHash = await digest(output);
         // Exercise all three distinct CSS queries before timing; no hit is inferred from an endpoint screenshot.
         if (stage.name === 'css-hit') for (let i = 0; i < 2; i++) prepared.validate(prepared.run());
@@ -180,10 +224,17 @@ export async function benchmarkWorkload(kind, count, ratio, measured = 30, warmu
         for (let i = 0; i < measured; i++) { const value = prepared.run(); prepared.validate(value); samples.push(value.metrics); }
         const p50 = {}, p95 = {}, thresholds = {}, tier = workloadSizes[kind].indexOf(count);
         for (const key of Object.keys(samples[0])) { p50[key] = percentile(samples.map(s => s[key]), .5); p95[key] = percentile(samples.map(s => s[key]), .95); thresholds[key] = workloadThresholds[kind][key][tier]; }
-        report.stages.push({ name: stage.name, status: 'measured', preparationMs: preparation.elapsed, warmups, measured, samples, p50, p95, thresholds, witness, outputHash, witnessHash: await digest(witness), successSLO: Object.keys(p95).every(key => p95[key] <= thresholds[key]) ? 'passed-this-fixture' : 'failed-this-fixture' });
+        report.stages.push({ name: stage.name, status: 'measured', preparationMs: preparation.elapsed, warmups, measured, samples, p50, p95, thresholds, witness, outputHash, witnessHash: await digest(witness), successSLO: Object.values(thresholds).some(value => value === null) ? (kind === 'inference' && count === 10000 ? 'synchronous-not-worker-qualified' : 'no-size-slo-specified') : Object.keys(p95).every(key => p95[key] <= thresholds[key]) ? 'passed-this-fixture' : 'failed-this-fixture' });
       } catch (error) { report.stages.push(failure(error, stage.name)); report.status = report.stages.at(-1).status; }
       finally { prepared?.dispose?.(); fixture.assertImmutable(); }
     }
+  }
+  if (kind === 'inference' && count === 10000) {
+    report.stages = report.stages.filter(stage => stage.name !== 'large-worker');
+    report.stages.push({ name: 'large-worker', status: 'required-worker-unavailable', successSLO: 'unsupported-not-success',
+      warmups: 0, measured: 0, thresholds: { workerMs: 10000 },
+      reason: 'The public inference action is synchronous. The graph route worker executor does not execute inference; no harness worker is presented as a public inference executor.' });
+    if (report.status === 'measured') report.status = 'required-worker-unavailable';
   }
   check(await digest(input) === inputHash, 'full input hash must remain unchanged');
   return report;

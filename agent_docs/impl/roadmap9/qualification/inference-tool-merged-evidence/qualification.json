@@ -1,0 +1,83 @@
+{
+  "status": "inference-benchmark-integrated; large-native-support-and-worker-pending",
+  "base": "13e07dbe3",
+  "incoming": "06d497cf0096e057c414fcda57a185562055d2f6",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "runtimeTypesPublicContractsAndPackedInputsChanged": false,
+  "archive": {
+    "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9.tgz",
+    "sha256": "37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9"
+  },
+  "harnessInputs": {
+    "scripts/benchmark-native.js": "f3d51f45276dba2124abc20dcda8f191d82a3ed4aaf2012178ec21e3d7ac4481",
+    "scripts/benchmarks/routes.browser.js": "3f6b14d9b09a33e51d6f0afb59b709539c14d313bf7110e09c688fcf0ca46d55",
+    "scripts/benchmarks/routes.worker.js": "d52c9b779d4db10e66faff28751b12a13408b1d57c3bbfdfa4ff4f089857c729",
+    "scripts/benchmarks/workloads.browser.js": "96de184180385ec9baaac8c9a89828bd7ff180f1300dc2372e49d4c3e269b5fb",
+    "test/oracles/inference-grid.js": "9def3438a82a59590be540bf2b5f079cc77ad208c429db59d4276f724a06dc1f",
+    "app.js": {
+      "sha256": "08574fc1d35a73aba575a29d77e8a7dcf79dd14582cf3748707a34f1720e9282",
+      "bytes": 2803233
+    },
+    "worker.js": {
+      "sha256": "6ecd3cd9ced53af277a4a8dac6c2a57bc1b89b1e1ddd186418bf76fe00e6a547",
+      "bytes": 57398
+    },
+    "workloads.js": {
+      "sha256": "d0de5981f94fa40118c263fcbc683095d4ef10c840233648fb25f7b477be6990",
+      "bytes": 3126097
+    }
+  },
+  "checks": {
+    "contracts": 48,
+    "actualOriginalCompleteInputOracle": true,
+    "newInferenceSizeDprCells": 6,
+    "newStages": 8,
+    "measured": 4,
+    "explicit-limit": 2,
+    "required-worker-unavailable": 2,
+    "profile": {
+      "seed": 0,
+      "dpr": [
+        1,
+        2
+      ],
+      "warmups": 0,
+      "measured": 1,
+      "cycles": 4
+    },
+    "performanceQualified": false,
+    "network": "Local bootstrap only, then offline; zero post-bootstrap HTTP requests required."
+  },
+  "preserved": {
+    "oldNativeSizeDprCells": 24,
+    "oldNativeStages": 48,
+    "routeFixtureAndWorker": "unchanged"
+  },
+  "sourceEquality": {
+    "scripts/benchmark-native.js": "f3d51f45276dba2124abc20dcda8f191d82a3ed4aaf2012178ec21e3d7ac4481",
+    "scripts/benchmarks/workloads.browser.js": "96de184180385ec9baaac8c9a89828bd7ff180f1300dc2372e49d4c3e269b5fb",
+    "test/oracles/inference-grid.js": "9def3438a82a59590be540bf2b5f079cc77ad208c429db59d4276f724a06dc1f"
+  },
+  "remaining": [
+    "ExplicitmaxNodes/maxEdges forwarding and larger inference admission; no public inference worker yet",
+    "Production CPU-exclusive warm5/30 P95 and full100cycle lifecycle; allrequiredoriginalsizes remain",
+    "Final577consumer/79ATgroups, ninecommands, independentreview and protecteddelivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "contracts.log": {
+      "sha256": "f861801f6a30fd0b8c91d6b1cc0934201e15120bc895d42a20d79d837b0d710c",
+      "bytes": 10274,
+      "saved": "contracts.log.gz"
+    },
+    "diagnostic.log": {
+      "sha256": "17ddfdf23cdacf2db8c10df7ffe2b9ecc351bb53821da632353810960e03aadf",
+      "bytes": 1203,
+      "saved": "diagnostic.log.gz"
+    },
+    "diagnostic/report.json": {
+      "sha256": "10ef2119afd4b93ba77b8c6524d4316eda7691abf0b22f01c916dcc9035693a3",
+      "bytes": 18872,
+      "saved": "diagnostic-report.json.gz"
+    }
+  }
+}
