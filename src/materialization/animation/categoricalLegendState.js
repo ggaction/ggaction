@@ -22,6 +22,8 @@ import { normalizeLegendTextStyle, legendTextQueries, legendTextGeometry } from 
 
 const same = (a, b) => JSON.stringify(encodeValue(a)) === JSON.stringify(encodeValue(b));
 const layouts = new WeakMap(), geometries = new WeakMap(), samples = new WeakMap();
+const intrinsicLayouts = new WeakMap(), intrinsicGeometries = new WeakMap(), intrinsicSamples = new WeakMap();
+const cornerLayouts = new WeakMap(), cornerGeometries = new WeakMap(), cornerSamples = new WeakMap();
 const fade = reason => Object.freeze({ kind: "crossfade", reason });
 const configKeys = ["kind", "domain", "channels", "position", "align", "offset", "title", "titleVisible", "titlePosition", "direction", "columns", "itemGap", "rowPadding", "titlePadding", "labelMap", "labels", "titleStyle", "symbol"];
 const numericSymbol = type => type === "line" ? ["length", "lineWidth"] : type === "point" ? ["size", "strokeWidth"] : ["width", "height", "strokeWidth"];
@@ -35,7 +37,7 @@ function finite(value, positive = false) {
 const withoutNull = value => Object.fromEntries(Object.entries(value).filter(([, item]) => item !== null));
 const nativeConfig = config => ({ ...withoutNull(config), layout: "edge", border: false,
   labels: withoutNull(config.labels), titleStyle: withoutNull(config.titleStyle) });
-function normalizeConfig(input) {
+function normalizeConfig(input, intrinsicMode = false) {
   record(input, configKeys, "Prepared categorical legend config");
   ownArray(input.domain, "Prepared legend domain"); ownArray(input.channels, "Prepared legend channels");
   validateWorkLimit(input.domain.length ** 2, "Prepared categorical legend work");
@@ -56,7 +58,7 @@ function normalizeConfig(input) {
   const labelMap = normalizeDisplayLabelMap(input.labelMap);
   normalizeLegendTextStyle(input.labels, true); normalizeLegendTextStyle(input.titleStyle, false);
   validateLegendTitleAlignment(withoutNull(input.titleStyle), input.titlePosition);
-  if (["left", "right"].includes(input.position) && (input.align !== "center" || input.direction !== "vertical" || input.titlePosition !== "top")) {
+  if (["left", "right"].includes(input.position) && (!intrinsicMode && input.align !== "center" || input.direction !== "vertical" || input.titlePosition !== "top")) {
     throw new TypeError("Prepared side legends require native centered vertical layout and a top title.");
   }
   record(input.symbol, ["layers"], "Prepared categorical symbol"); ownArray(input.symbol.layers, "Prepared categorical symbol layers");
@@ -89,27 +91,29 @@ function normalizeAppearance(input, length) {
   });
   return input;
 }
-function intrinsic(layout) {
-  return resolveCategoricalLegendLayoutValues({ ...layout.frame, config: nativeConfig(layout.config), appearance: layout.appearance, profile: layout.metrics });
+function intrinsic(layout, intrinsicMode = false) {
+  return resolveCategoricalLegendLayoutValues({ ...layout.frame, config: { ...nativeConfig(layout.config), ...(intrinsicMode ? { groupIntrinsic: true, ...(intrinsicMode === "corner" ? { groupCorner: true } : {}) } : {}) }, appearance: layout.appearance, profile: layout.metrics });
 }
-function normalizeLayout(input) {
-  if (layouts.has(input)) return layouts.get(input);
+function normalizeLayout(input, intrinsicMode = false) {
+  const cache = intrinsicMode === "corner" ? cornerLayouts : intrinsicMode ? intrinsicLayouts : layouts;
+  if (cache.has(input)) return cache.get(input);
   record(input, ["frame", "config", "appearance", "metrics"], "Prepared categorical legend layout");
   record(input.frame, ["plot", "canvas"], "Prepared categorical legend frame");
   record(input.frame.plot, ["x", "y", "width", "height"], "Prepared categorical legend plot");
   record(input.frame.canvas, ["width", "height"], "Prepared categorical legend canvas");
   Object.values(input.frame.plot).forEach(value => finite(value)); Object.values(input.frame.canvas).forEach(value => finite(value, true));
-  const config = normalizeConfig(input.config), appearance = normalizeAppearance(input.appearance, config.domain.length), metrics = normalizeGuideMetrics(input.metrics);
+  const config = normalizeConfig(input.config, intrinsicMode), appearance = normalizeAppearance(input.appearance, config.domain.length), metrics = normalizeGuideMetrics(input.metrics);
   const result = { ...input, config, appearance, metrics };
   const expected = legendTextQueries(config, categoricalLegendLabels(config)).map(textMetricKey).sort();
   if (!same(expected, metrics.measurements.map(textMetricKey).sort())) throw new TypeError("Prepared categorical metrics require the exact native query closure.");
-  intrinsic(result);
-  const normalized = cloneAndFreeze(result); layouts.set(normalized, normalized); if (isOwned(input)) layouts.set(input, normalized);
+  intrinsic(result, intrinsicMode);
+  const normalized = cloneAndFreeze(result); cache.set(normalized, normalized); if (isOwned(input)) cache.set(input, normalized);
   return normalized;
 }
-function geometryList(layout) {
-  if (geometries.has(layout)) return geometries.get(layout);
-  const { config, appearance, metrics, frame } = layout, native = intrinsic(layout), width = symbolWidth(config), entries = [], side = ["left", "right"].includes(config.position);
+function geometryList(layout, intrinsicMode = false) {
+  const cache = intrinsicMode === "corner" ? cornerGeometries : intrinsicMode ? intrinsicGeometries : geometries;
+  if (cache.has(layout)) return cache.get(layout);
+  const { config, appearance, metrics, frame } = layout, native = intrinsic(layout, intrinsicMode), width = symbolWidth(config), entries = [], side = intrinsicMode || ["left", "right"].includes(config.position);
   config.domain.forEach((value, index) => {
     for (const layer of config.symbol.layers) {
       const x = native.symbolX[index], y = native.itemY[index]; let item;
@@ -130,40 +134,40 @@ function geometryList(layout) {
   const bounds = unionBounds(entries.map(entry => entry.type === "text"
     ? resolveTextBounds({ ...entry.properties, ...(entry.component === "legend-title" ? config.titleStyle : config.labels) }, metrics)
     : resolvePrimitiveOccupiedBounds(entry.type, { ...entry.layer, ...entry.properties, strokeWidth: entry.layer.lineWidth ?? entry.layer.strokeWidth })));
-  const move = ["left", "right"].includes(config.position)
+  const move = intrinsicMode ? { dx: 0, dy: 0 } : ["left", "right"].includes(config.position)
     ? { dx: 0, ...resolveSingleSideLegendPlacement({ side: config.position, ...frame, bounds }) }
     : resolveSingleHorizontalLegendPlacement({ ...frame, config, bounds });
   const result = cloneAndFreeze(entries.map(({ layer, ...entry }) => ({ ...entry,
     properties: translatedProperties(entry.type, entry.properties, move.dx, move.dy) })));
-  if (isOwned(layout)) geometries.set(layout, result); return result;
+  if (isOwned(layout)) cache.set(layout, result); return result;
 }
-export function prepareCategoricalLegendLayout({ config, appearance, frame, profile }) {
+export function prepareCategoricalLegendLayout({ config, appearance, frame, profile, intrinsicMode = false }) {
   const font = input => ({ fontFamily: input.fontFamily ?? DEFAULT_FONT_FAMILY, fontSize: input.fontSize, fontWeight: textMetricFontWeight(input.fontWeight), fontStyle: input.fontStyle ?? "normal", align: input.align ?? null });
   const canonical = { kind: config.kind, domain: config.domain, channels: config.channels, position: config.position, align: config.align,
     offset: config.offset, title: config.title, titleVisible: config.titleVisible !== false, titlePosition: config.titlePosition, direction: config.direction,
     columns: config.columns ?? null, itemGap: config.itemGap, rowPadding: config.rowPadding ?? null, titlePadding: config.titlePadding ?? null,
     labelMap: [...(config.labelMap ?? []), ...(config.defaultLabelMap ?? []).filter(entry => !(config.labelMap ?? []).some(item => item.value === entry.value))],
     labels: { ...font(config.labels), offset: config.labels.offset, format: "auto" }, titleStyle: font(config.titleStyle), symbol: config.symbol };
-  normalizeConfig(canonical);
+  normalizeConfig(canonical, intrinsicMode);
   return normalizeLayout({ frame, config: canonical, appearance: Object.fromEntries(["colors", "strokes", "dashes", "shapes"].map(key => [key, appearance[key]])),
-    metrics: prepareGuideMetrics(legendTextQueries(canonical, categoricalLegendLabels(canonical)), profile, "animation-categorical-legend") });
+    metrics: prepareGuideMetrics(legendTextQueries(canonical, categoricalLegendLabels(canonical)), profile, "animation-categorical-legend") }, intrinsicMode);
 }
-export function normalizeCategoricalLegendAnimationState(input) {
+export function normalizeCategoricalLegendAnimationState(input, intrinsicMode = false) {
   record(input, ["identity", "kind", "layout"], "Categorical legend animation state");
-  const identity = normalizeGuideIdentity(input.identity), layout = normalizeLayout(input.layout);
-  if (input.kind !== "categorical-legend" || identity.value[0] !== layout.config.kind || !geometryList(layout).some(entry => entry.component === identity.component && same(entry.sample, identity.value[1]))) throw new TypeError("Categorical identity does not name its native component.");
+  const identity = normalizeGuideIdentity(input.identity), layout = normalizeLayout(input.layout, intrinsicMode);
+  if (input.kind !== "categorical-legend" || identity.value[0] !== layout.config.kind || !geometryList(layout, intrinsicMode).some(entry => entry.component === identity.component && same(entry.sample, identity.value[1]))) throw new TypeError("Categorical identity does not name its native component.");
   return cloneAndFreeze({ identity, kind: "categorical-legend", layout });
 }
-export function resolveCategoricalLegendAnimationGeometry(input) {
-  const state = normalizeCategoricalLegendAnimationState(input), entry = geometryList(state.layout).find(item => item.component === state.identity.component && same(item.sample, state.identity.value[1]));
+export function resolveCategoricalLegendAnimationGeometry(input, intrinsicMode = false) {
+  const state = normalizeCategoricalLegendAnimationState(input, intrinsicMode), entry = geometryList(state.layout, intrinsicMode).find(item => item.component === state.identity.component && same(item.sample, state.identity.value[1]));
   return cloneAndFreeze({ type: entry.type, properties: entry.properties });
 }
 export function categoricalLegendAnimationMatchesNode(state, node) {
   const geometry = resolveCategoricalLegendAnimationGeometry(state);
   return node.type === geometry.type && Object.entries(geometry.properties).every(([key, value]) => same(value, node.properties[key]));
 }
-export function prepareCategoricalLegendInterpolation(fromInput, toInput) {
-  const from = normalizeCategoricalLegendAnimationState(fromInput), to = normalizeCategoricalLegendAnimationState(toInput);
+export function prepareCategoricalLegendInterpolation(fromInput, toInput, intrinsicMode = false) {
+  const from = normalizeCategoricalLegendAnimationState(fromInput, intrinsicMode), to = normalizeCategoricalLegendAnimationState(toInput, intrinsicMode);
   if (guideAnimationKey(from.identity) !== guideAnimationKey(to.identity)) return fade("guide-policy");
   const a = from.layout, b = to.layout;
   const policy = layout => ({ config: { ...layout.config, offset: 0, itemGap: 0, rowPadding: layout.config.rowPadding === null ? null : 0,
@@ -172,26 +176,29 @@ export function prepareCategoricalLegendInterpolation(fromInput, toInput) {
   if (!same(policy(a), policy(b)) || !same(a.metrics, b.metrics)) return fade("guide-layout");
   return cloneAndFreeze({ kind: "guide", version: ANIMATION_GUIDE_VERSION, from, to });
 }
-export function sampleCategoricalLegendInterpolation(plan, progress) {
+export function sampleCategoricalLegendInterpolation(plan, progress, intrinsicMode = false) {
+  const sampleCache = intrinsicMode === "corner" ? cornerSamples : intrinsicMode ? intrinsicSamples : samples;
   validateUnitInterval(progress, "Categorical legend progress"); record(plan, ["kind", "version", "from", "to"], "Prepared categorical legend interpolation");
   if (plan.kind !== "guide" || plan.version !== ANIMATION_GUIDE_VERSION) throw new TypeError("Invalid prepared categorical legend interpolation.");
-  const prepared = prepareCategoricalLegendInterpolation(plan.from, plan.to);
+  const prepared = prepareCategoricalLegendInterpolation(plan.from, plan.to, intrinsicMode);
   if (prepared.kind !== "guide") throw new TypeError("Invalid prepared categorical legend interpolation.");
-  const a = prepared.from.layout, b = prepared.to.layout, cached = samples.get(a)?.get(b);
+  const a = prepared.from.layout, b = prepared.to.layout, cached = sampleCache.get(a)?.get(b);
   if (cached?.progress === progress) {
-    const state = normalizeCategoricalLegendAnimationState({ ...prepared.from, layout: cached.layout });
-    return cloneAndFreeze({ kind: "guide", state, ...resolveCategoricalLegendAnimationGeometry(state) });
+    const state = normalizeCategoricalLegendAnimationState({ ...prepared.from, layout: cached.layout }, intrinsicMode);
+    return cloneAndFreeze({ kind: "guide", state, ...resolveCategoricalLegendAnimationGeometry(state, intrinsicMode) });
   }
   const numbers = (from, to) => Object.fromEntries(Object.keys(from).map(key => [key, from[key] === null ? null : interpolateNumber(from[key], to[key], progress)]));
   const config = { ...a.config, ...numbers(Object.fromEntries(["offset", "itemGap", "rowPadding", "titlePadding"].map(key => [key, a.config[key]])), b.config),
     labels: { ...a.config.labels, offset: interpolateNumber(a.config.labels.offset, b.config.labels.offset, progress) },
     symbol: { layers: a.config.symbol.layers.map((layer, i) => ({ ...layer, ...Object.fromEntries(numericSymbol(layer.type).map(key => [key, interpolateNumber(layer[key], b.config.symbol.layers[i][key], progress)])) })) } };
   try {
-    const state = normalizeCategoricalLegendAnimationState({ ...prepared.from, layout: { ...a, config, frame: { plot: numbers(a.frame.plot, b.frame.plot), canvas: numbers(a.frame.canvas, b.frame.canvas) } } });
-    if (!samples.has(a)) samples.set(a, new WeakMap()); samples.get(a).set(b, { progress, layout: state.layout });
-    return cloneAndFreeze({ kind: "guide", state, ...resolveCategoricalLegendAnimationGeometry(state) });
+    const state = normalizeCategoricalLegendAnimationState({ ...prepared.from, layout: { ...a, config, frame: { plot: numbers(a.frame.plot, b.frame.plot), canvas: numbers(a.frame.canvas, b.frame.canvas) } } }, intrinsicMode);
+    if (!sampleCache.has(a)) sampleCache.set(a, new WeakMap()); sampleCache.get(a).set(b, { progress, layout: state.layout });
+    return cloneAndFreeze({ kind: "guide", state, ...resolveCategoricalLegendAnimationGeometry(state, intrinsicMode) });
   } catch (error) {
     if (!(error instanceof RangeError) && getErrorDetails(error)?.reason !== "canvas-overflow") throw error;
     return fade("guide-layout");
   }
 }
+
+export { normalizeLayout as normalizeCategoricalLegendLayout, geometryList as resolveCategoricalLegendEntries };

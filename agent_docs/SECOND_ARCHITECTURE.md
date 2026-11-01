@@ -935,6 +935,12 @@ animation preparation carries guide meaning in an optional endpoint vector. The 
 closed validator checks native forward geometry, sampled identity and offline restore;
 flat frame provenance retains current guide values without retaining previous plans.
 Exact supported guide families and fallbacks belong to the Current Animation contract.
+Native legend actions and animation share `materialization/guides/legendLaneState.js`
+for family ordering and occupied block bounds. Group preparation stores one frame with
+its native placement and intrinsic block values; `legendGroupState.js` reuses each
+family's pure native layout plus `layout/legendGroup.js` packing. The action still owns
+all graphic writes and trace nodes. Sampling neither invokes an action nor derives
+meaning from final coordinates, and unsupported dependent blocks keep a group fallback.
 
 ### Browser bundle regression ceilings
 
@@ -942,12 +948,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 783,100 bytes |
-| `ggaction/basic` | 424,000 bytes |
+| `ggaction` | 783,300 bytes |
+| `ggaction/basic` | 424,200 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 131,400 bytes |
-| `ggaction/animation` | 301,700 bytes |
+| `ggaction/animation` | 306,100 bytes |
 
 
 
@@ -4878,3 +4884,7 @@ packed1,694,230/unpacked7,641,072bytes와1182entries에 따라 최소한도
 1182/1,694,300/7,641,100으로 교정한다. 최초1179entry 한도 실패는 검증 기록에 남긴다.
 동일 설치본의 Node20 Full774,919/Basic423,184/animation276,707gzip bytes에 따라
 현재 표를775,000/423,200/276,800으로만 올린다. SVG/graph/interaction 한도는 유지한다.
+
+명시 그룹 범례 독립 checkpoint에서 owner3개를 추가한 artifact는1185entries, packed1,696,696 및 unpacked7,669,973bytes였으며 당시 한도1185/1,696,700/7,670,000을 적용했다. Native packing의 당시 Node20 animation281,317gzip bytes와 ceiling281,400은 독립 그룹검증기록에 보존한다. Root 합산의 현재한도는 위 표와 executable owner가 소유한다.
+
+Native axis title clearance is shared by `materialization/guides/axisTitleLayout.js`. Actions retain resource lookup, theme-preferred offsets, same-side preflight and wrapped writes. The pure owner consumes explicit current label bounds and title metrics, preserving the native4px gap, legacy Canvas clamp and rotated-Y ink reserve with collision fallback. It adds no stored intent or automatic compiler; typed inferred/relative title transitions remain a separate integration obligation.

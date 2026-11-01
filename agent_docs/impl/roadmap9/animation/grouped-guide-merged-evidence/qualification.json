@@ -1,0 +1,310 @@
+{
+  "status": "focused-grouped-guide-integration-verified; final-native-pending",
+  "sourceRevision": null,
+  "base": "f02dfe82f",
+  "incoming": "7f813a1ee",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "versions": {
+    "transition": 3,
+    "guide": "native-guide-values@7",
+    "cartesian": "semantic-cartesian-geometry@2",
+    "geographicText": "native-geo-text@2"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1222,
+    "packedBytes": 1743750,
+    "unpackedBytes": 7871385,
+    "file": "ggaction-1c40e0c460235a41fd00e44c1c5bcda5ee383f0925baf5e98d633b5bf79aba7b.tgz",
+    "sha256": "1c40e0c460235a41fd00e44c1c5bcda5ee383f0925baf5e98d633b5bf79aba7b"
+  },
+  "checks": {
+    "animation.log": 592,
+    "coverage-final.log": 1708,
+    "boundaries.log": 54,
+    "realistic.log": 5,
+    "render-corrected.log": 10,
+    "browser.log": 3,
+    "package-final.log": 7,
+    "docs-final.log": 31
+  },
+  "installed": {
+    "20": {
+      "runtime": 60,
+      "types": "passed",
+      "geoTypes": "passed",
+      "doc": "passed",
+      "bundles": 6,
+      "node": "v20.20.2"
+    },
+    "22": {
+      "runtime": 60,
+      "types": "passed",
+      "geoTypes": "passed",
+      "doc": "passed",
+      "bundles": 6,
+      "node": "v22.23.1"
+    },
+    "24": {
+      "runtime": 60,
+      "types": "passed",
+      "geoTypes": "passed",
+      "doc": "passed",
+      "bundles": 6,
+      "node": "v24.22.1"
+    }
+  },
+  "coverage": {
+    "tests": 1708,
+    "guideTracks": [
+      100,
+      98.89,
+      100
+    ],
+    "legendGroupGuides": [
+      100,
+      94.59,
+      100
+    ],
+    "legendGroupState": [
+      100,
+      92.48,
+      100
+    ],
+    "axisTitleLayout": [
+      100,
+      100,
+      100
+    ],
+    "legendLaneState": [
+      97.89,
+      91.87,
+      100
+    ],
+    "scope": "Five changed shared owners only; floors unchanged. First1208 focused tests pass but guideTracks88.76 branches did not meet floor; full animation selection corrects to98.89 without source or floor changes."
+  },
+  "runtimeIdenticalToIncoming": [
+    "src/actions/guides/axes/titles.js",
+    "src/actions/guides/legends/lane.js",
+    "src/animation/guideTracks.js",
+    "src/grammar/animation/guideState.js",
+    "src/materialization/animation/categoricalLegendState.js",
+    "src/materialization/animation/guides.js",
+    "src/materialization/animation/legendGroupGuides.js",
+    "src/materialization/animation/legendGroupState.js",
+    "src/materialization/animation/legendGuides.js",
+    "src/materialization/animation/legendState.js",
+    "src/materialization/animation/sizeLegendState.js",
+    "src/materialization/guides/axisTitleLayout.js",
+    "src/materialization/guides/legendLaneState.js",
+    "src/materialization/legendGroups.js"
+  ],
+  "shared5Unchanged": true,
+  "built": {
+    "pages": 186,
+    "selectiveLlm": 1603
+  },
+  "docsBrowser": {
+    "pages": [
+      "api/animation",
+      "reference/runtime"
+    ],
+    "widths": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "pairs": 8,
+    "overflow": 0,
+    "axe": 0,
+    "errors": 0
+  },
+  "limits": {
+    "entries": 1222,
+    "packed": 1746600,
+    "unpacked": 7871400,
+    "maximumMeasuredPacked": 1746594,
+    "measuredUnpacked": 7871385,
+    "fullGzip": 783300,
+    "basicGzip": 424200,
+    "animationGzip": 306100,
+    "otherEntriesUnchanged": true
+  },
+  "nativeManifest": {
+    "requirements": 30,
+    "groups": 79,
+    "consumerTargets": 577,
+    "requiredConsumers": 574,
+    "canonicalNotApplicable": 3,
+    "assignedAcceptanceOwners": 55,
+    "assignedConsumerOwners": 243,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577
+  },
+  "diagnostics": [
+    "Original snippet marker encodeColor selected both grouped and categorical blocks. Preserved all root entries and imported the exact unique incoming categorical marker plus grouped example. Full docs:generate succeeded.",
+    "First render selector named a missing directory; exact discovered guides.render.js rerun10pass. Wrong-selection failure preserved, not counted as render execution.",
+    "Supported Node20 packed1746594 exceeded1740200. Minimal cap1746600; entries1222/unpacked7871400 from canonical staging.",
+    "Measured Full783202/Basic424109/animation306100 drove minimal ceiling updates; README and architecture synchronized before final archive."
+  ],
+  "evidenceFiles": {
+    "coverage.log": {
+      "sha256": "018ca9cb3bf7f41226e42bc8603f7b21cf0ac8c973d4388c27f35fdbaae77174",
+      "bytes": 266338
+    },
+    "docs-browser.log": {
+      "sha256": "5a3c64266d4efdb7a39b58387ad78a2a8dd19b04ff830dc2a0475375030ebc27",
+      "bytes": 610
+    },
+    "coverage-first.log": {
+      "sha256": "018ca9cb3bf7f41226e42bc8603f7b21cf0ac8c973d4388c27f35fdbaae77174",
+      "bytes": 266338
+    },
+    "pack22.json": {
+      "sha256": "2511762f3d0844ca522c7b580d46d9e05889c451111c79c7b4a74fc76dd9dae0",
+      "bytes": 385
+    },
+    "installed-24.json": {
+      "sha256": "f5a12ad79d8cc5141957a8ed44569de471c74131d66380d2b374c36fbc577ae3",
+      "bytes": 3777
+    },
+    "browser.log": {
+      "sha256": "6fc271b3c821fbc9dfafe2b3790810cf2a03992c1c4010bf84831b304c1a532d",
+      "bytes": 869
+    },
+    "render.log": {
+      "sha256": "f49c4599e15c2f40feb77aaf7ed4f0a0aee6f6badf961529e60c3774e2613e5b",
+      "bytes": 529
+    },
+    "docs-final.log": {
+      "sha256": "193b2c40a324e04a534a10d860e45636e33eb6ce27b735001414ffb92de9f8e0",
+      "bytes": 6144
+    },
+    "frozen.json": {
+      "sha256": "557a6ae008df5b6eb73d0491de7c7b65268a657d6b3f7329e4bf45d1544549f2",
+      "bytes": 436
+    },
+    "installed-24.log": {
+      "sha256": "5eaf61b29f118b24b732a9b94090ab225b3b7ab5912109143d4d90efde75a912",
+      "bytes": 3257
+    },
+    "pack20-first.stderr": {
+      "sha256": "f2e6f795756c06b38e0aa4dcd25671f508a11fc7401735eead7ef6fa724c4814",
+      "bytes": 966
+    },
+    "installed-22.json": {
+      "sha256": "c38f8842da142107977a0234edcc480a4d439f2a89eb477d25d702750541c084",
+      "bytes": 3777
+    },
+    "pack24.json": {
+      "sha256": "655a2f6ad4e6bc3b4f3df8be65d1131f67927b09062c9267404cca263a7a11c3",
+      "bytes": 385
+    },
+    "installed-22.log": {
+      "sha256": "145cd92e1b4b894c60c8ac1445e5b83ac5e371d90f24d479da1a314636a66bfc",
+      "bytes": 3257
+    },
+    "render-corrected.log": {
+      "sha256": "3fd77f4535e04766e7d699d7d16d4487f6b748c1a0391c0194f8a746321bdc6c",
+      "bytes": 2458
+    },
+    "package-final.log": {
+      "sha256": "9e749f217f7b8174152f39754d134a637479c8c0a388e1867ea51f190035a2e3",
+      "bytes": 1717
+    },
+    "pack20-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs.log": {
+      "sha256": "4b7cbbc5186798bb70feeff9cdf923446e231b4c0b738fcf9ba4ca13204113b5",
+      "bytes": 6146
+    },
+    "prepack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "boundaries.log": {
+      "sha256": "68aaf8f30ed0dfdd30f9c2bddf6e18c415931de6ff684e17123ae94a73b54c5f",
+      "bytes": 11680
+    },
+    "installed-20.log": {
+      "sha256": "ef8f2424887bd7b2dae5a069816e601d5d31f0a33178de7b2021b4a667f85413",
+      "bytes": 3257
+    },
+    "animation.log": {
+      "sha256": "c000f0b53a111547140dd38d9f1b903f981db8f78bacc9fb2b42c8a64e5679e7",
+      "bytes": 140021
+    },
+    "installed-20.json": {
+      "sha256": "e44ec5fd6ed45c888eccb6dc2382a4a1a9d3624acf9451620fc1d9c4c4b51021",
+      "bytes": 3777
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "premeasure20.json": {
+      "sha256": "0b971a67a97731ed432562530f9f28a02f1c14b1a67e39cc7ce76d407d37b33f",
+      "bytes": 305
+    },
+    "reference.log": {
+      "sha256": "d66e219db78fbc5e050bd74f3dbfb65a84fc1129c6ce8c728361e9da592f3847",
+      "bytes": 116
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "prepack.json": {
+      "sha256": "b75dc6bf95a8e6b0bafa12d37a6de2730a9379701cfab6f415cbf456da19b331",
+      "bytes": 297
+    },
+    "pack20.json": {
+      "sha256": "47d640a1594ea9b6d318d53a1203342687973c165d6ec9dcb90403913d018b3c",
+      "bytes": 385
+    },
+    "snippets.log": {
+      "sha256": "93ded1c5c4f03438f631d6e47f2eb1f958c5f926e8b0cb68c4620612fb6132c1",
+      "bytes": 889
+    },
+    "built.log": {
+      "sha256": "52552c274bf016d373a8bf4dcd752a76c79cd04e3adb9b6ba0c95f38e502f307",
+      "bytes": 179
+    },
+    "premeasure20.log": {
+      "sha256": "9b0985db7db568dfa8d2607de011c84a6efe23630164dc4b7d649526b4dbb905",
+      "bytes": 253
+    },
+    "generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "realistic.log": {
+      "sha256": "48c5a1bf35271ff99643c1e49f6708fcbfcf9c756c6634c3cc318ab8e975e623",
+      "bytes": 1299
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "coverage-final.log": {
+      "sha256": "259e5b832dd3e457069e886b6a755cd66935048196b426727bf9a861df28a4fe",
+      "bytes": 384340
+    },
+    "build.log": {
+      "sha256": "07a7e9d8b45abbae59dbc2ddcbd31c7456ecfd45b790b267e7cacd4141280c11",
+      "bytes": 420
+    }
+  },
+  "remaining": [
+    "Source-pin metadata",
+    "Dynamic axis label/title clearance and implicit legend lanes",
+    "Remaining large-route native rendering/SLO",
+    "Native target matrix and nine final commands; STEP077 incomplete"
+  ]
+}

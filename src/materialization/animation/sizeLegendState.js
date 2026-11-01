@@ -18,6 +18,8 @@ import { normalizeLegendTextStyle, legendTextQueries, legendTextGeometry } from 
 
 const same = (a, b) => JSON.stringify(encodeValue(a)) === JSON.stringify(encodeValue(b));
 const layouts = new WeakMap(), geometries = new WeakMap(), samples = new WeakMap();
+const intrinsicLayouts = new WeakMap(), intrinsicGeometries = new WeakMap(), intrinsicSamples = new WeakMap();
+const cornerLayouts = new WeakMap(), cornerGeometries = new WeakMap(), cornerSamples = new WeakMap();
 const fade = reason => Object.freeze({ kind: "crossfade", reason });
 const configKeys = ["position", "align", "offset", "title", "titleVisible", "titlePosition", "direction", "columns", "itemGap", "rowPadding", "titlePadding", "sampling", "labelMap", "labels", "titleStyle"];
 function record(value, keys, label) {
@@ -52,12 +54,13 @@ function normalizeConfig(input) {
   normalizeLegendTextStyle(input.labels, true); normalizeLegendTextStyle(input.titleStyle, false);
   return { ...input, sampling, labelMap };
 }
-function intrinsic(layout) {
-  return resolveSizeLegendLayoutValues({ ...layout.frame, config: nativeConfig(layout.config, layout.symbolStrokeWidth),
+function intrinsic(layout, intrinsicMode = false) {
+  return resolveSizeLegendLayoutValues({ ...layout.frame, config: { ...nativeConfig(layout.config, layout.symbolStrokeWidth), ...(intrinsicMode ? { groupIntrinsic: true, ...(intrinsicMode === "corner" ? { groupCorner: true } : {}) } : {}) },
     scale: layout.mapping.scale, profile: layout.metrics });
 }
-function normalizeLayout(input) {
-  if (layouts.has(input)) return layouts.get(input);
+function normalizeLayout(input, intrinsicMode = false) {
+  const cache = intrinsicMode === "corner" ? cornerLayouts : intrinsicMode ? intrinsicLayouts : layouts;
+  if (cache.has(input)) return cache.get(input);
   record(input, ["frame", "config", "mapping", "metrics", "symbolStrokeWidth"], "Prepared size legend layout");
   record(input.frame, ["plot", "canvas"], "Prepared size legend frame");
   record(input.frame.plot, ["x", "y", "width", "height"], "Prepared size legend plot");
@@ -72,16 +75,17 @@ function normalizeLayout(input) {
   normalizeSizeScaleDefinition({ patch: mapping.scale.range[0] > mapping.scale.range[1]
     ? { ...mapping.scale, range: [...mapping.scale.range].reverse(), reverse: true } : mapping.scale });
   const metrics = normalizeGuideMetrics(input.metrics), result = { ...input, config, mapping, metrics };
-  const layout = intrinsic(result), expected = legendTextQueries(config, layout.text).map(textMetricKey).sort();
+  const layout = intrinsic(result, intrinsicMode), expected = legendTextQueries(config, layout.text).map(textMetricKey).sort();
   if (!same(expected, metrics.measurements.map(textMetricKey).sort())) throw new TypeError("Prepared size metrics must contain the exact required query closure.");
-  const normalized = cloneAndFreeze(result); layouts.set(normalized, normalized);
-  if (isOwned(input)) layouts.set(input, normalized);
+  const normalized = cloneAndFreeze(result); cache.set(normalized, normalized);
+  if (isOwned(input)) cache.set(input, normalized);
   return normalized;
 }
-function geometryList(layout) {
-  if (geometries.has(layout)) return geometries.get(layout);
-  const { config, metrics, frame, symbolStrokeWidth } = layout, native = intrinsic(layout);
-  const side = ["left", "right"].includes(config.position);
+function geometryList(layout, intrinsicMode = false) {
+  const cache = intrinsicMode === "corner" ? cornerGeometries : intrinsicMode ? intrinsicGeometries : geometries;
+  if (cache.has(layout)) return cache.get(layout);
+  const { config, metrics, frame, symbolStrokeWidth } = layout, native = intrinsic(layout, intrinsicMode);
+  const side = intrinsicMode || ["left", "right"].includes(config.position);
   const entries = native.values.map((value, index) => ({ component: "legend-symbol", sample: ["value", value], type: "circle",
     properties: { x: native.symbolX[index], y: native.symbolY[index], radius: native.radii[index] } }));
   for (const index of native.labelItemIndices) entries.push({
@@ -96,15 +100,15 @@ function geometryList(layout) {
     const r = p.radius + symbolStrokeWidth / 2;
     return { left: p.x - r, right: p.x + r, top: p.y - r, bottom: p.y + r };
   }));
-  const move = ["left", "right"].includes(config.position)
+  const move = intrinsicMode ? { dx: 0, dy: 0 } : ["left", "right"].includes(config.position)
     ? { dx: 0, ...resolveSingleSideLegendPlacement({ side: config.position, ...frame, bounds }) }
     : resolveSingleHorizontalLegendPlacement({ ...frame, config, bounds });
   const result = cloneAndFreeze(entries.map(entry => ({ ...entry, properties: { ...entry.properties,
     x: entry.properties.x + move.dx, y: entry.properties.y + move.dy } })));
-  if (isOwned(layout)) geometries.set(layout, result);
+  if (isOwned(layout)) cache.set(layout, result);
   return result;
 }
-export function prepareSizeLegendLayout({ config, scale, frame, profile }) {
+export function prepareSizeLegendLayout({ config, scale, frame, profile, intrinsicMode = false }) {
   const font = input => ({ fontFamily: input.fontFamily ?? DEFAULT_FONT_FAMILY, fontSize: input.fontSize,
     fontWeight: textMetricFontWeight(input.fontWeight), fontStyle: input.fontStyle ?? "normal", align: input.align ?? null });
   const canonical = { position: config.position, align: config.align, offset: config.offset, title: config.title,
@@ -114,24 +118,24 @@ export function prepareSizeLegendLayout({ config, scale, frame, profile }) {
   normalizeConfig(canonical);
   const mapping = cartesianPosition(canonical.sampling.values[0], scale);
   const initial = { frame, config: canonical, mapping, metrics: profile, symbolStrokeWidth: config.blockSymbol?.strokeWidth ?? 0 };
-  return normalizeLayout({ ...initial, metrics: prepareGuideMetrics(legendTextQueries(canonical, intrinsic(initial).text), profile, "animation-size-legend") });
+  return normalizeLayout({ ...initial, metrics: prepareGuideMetrics(legendTextQueries(canonical, intrinsic(initial, intrinsicMode).text), profile, "animation-size-legend") }, intrinsicMode);
 }
-export function normalizeSizeLegendAnimationState(input) {
+export function normalizeSizeLegendAnimationState(input, intrinsicMode = false) {
   record(input, ["identity", "kind", "layout"], "Size legend animation state");
-  const identity = normalizeGuideIdentity(input.identity), layout = normalizeLayout(input.layout);
-  if (input.kind !== "size-legend" || identity.value[0] !== "size" || !geometryList(layout).some(entry => entry.component === identity.component && same(entry.sample, identity.value[1]))) throw new TypeError("Size legend identity does not name its native component.");
+  const identity = normalizeGuideIdentity(input.identity), layout = normalizeLayout(input.layout, intrinsicMode);
+  if (input.kind !== "size-legend" || identity.value[0] !== "size" || !geometryList(layout, intrinsicMode).some(entry => entry.component === identity.component && same(entry.sample, identity.value[1]))) throw new TypeError("Size legend identity does not name its native component.");
   return cloneAndFreeze({ identity, kind: "size-legend", layout });
 }
-export function resolveSizeLegendAnimationGeometry(input) {
-  const state = normalizeSizeLegendAnimationState(input), entry = geometryList(state.layout).find(item => item.component === state.identity.component && same(item.sample, state.identity.value[1]));
+export function resolveSizeLegendAnimationGeometry(input, intrinsicMode = false) {
+  const state = normalizeSizeLegendAnimationState(input, intrinsicMode), entry = geometryList(state.layout, intrinsicMode).find(item => item.component === state.identity.component && same(item.sample, state.identity.value[1]));
   return cloneAndFreeze({ type: entry.type, properties: entry.properties });
 }
 export function sizeLegendAnimationMatchesNode(state, node) {
   const geometry = resolveSizeLegendAnimationGeometry(state);
   return node.type === geometry.type && Object.entries(geometry.properties).every(([key, value]) => same(value, node.properties[key]));
 }
-export function prepareSizeLegendInterpolation(fromInput, toInput) {
-  const from = normalizeSizeLegendAnimationState(fromInput), to = normalizeSizeLegendAnimationState(toInput);
+export function prepareSizeLegendInterpolation(fromInput, toInput, intrinsicMode = false) {
+  const from = normalizeSizeLegendAnimationState(fromInput, intrinsicMode), to = normalizeSizeLegendAnimationState(toInput, intrinsicMode);
   if (guideAnimationKey(from.identity) !== guideAnimationKey(to.identity)) return fade("guide-policy");
   const a = from.layout, b = to.layout;
   const policy = layout => ({ ...layout.config, offset: 0, itemGap: 0,
@@ -141,15 +145,16 @@ export function prepareSizeLegendInterpolation(fromInput, toInput) {
   const position = prepareCartesianPosition(a.mapping, b.mapping);
   return position.kind === "crossfade" ? fade(position.reason) : cloneAndFreeze({ kind: "guide", version: ANIMATION_GUIDE_VERSION, from, to });
 }
-export function sampleSizeLegendInterpolation(plan, progress) {
+export function sampleSizeLegendInterpolation(plan, progress, intrinsicMode = false) {
+  const sampleCache = intrinsicMode === "corner" ? cornerSamples : intrinsicMode ? intrinsicSamples : samples;
   validateUnitInterval(progress, "Size legend progress"); record(plan, ["kind", "version", "from", "to"], "Prepared size legend interpolation");
   if (plan.kind !== "guide" || plan.version !== ANIMATION_GUIDE_VERSION) throw new TypeError("Invalid prepared size legend interpolation.");
-  const prepared = prepareSizeLegendInterpolation(plan.from, plan.to);
+  const prepared = prepareSizeLegendInterpolation(plan.from, plan.to, intrinsicMode);
   if (prepared.kind !== "guide") throw new TypeError("Invalid prepared size legend interpolation.");
-  const a = prepared.from.layout, b = prepared.to.layout, cached = samples.get(a)?.get(b);
+  const a = prepared.from.layout, b = prepared.to.layout, cached = sampleCache.get(a)?.get(b);
   if (cached?.progress === progress) {
-    const state = normalizeSizeLegendAnimationState({ ...prepared.from, layout: cached.layout });
-    return cloneAndFreeze({ kind: "guide", state, ...resolveSizeLegendAnimationGeometry(state) });
+    const state = normalizeSizeLegendAnimationState({ ...prepared.from, layout: cached.layout }, intrinsicMode);
+    return cloneAndFreeze({ kind: "guide", state, ...resolveSizeLegendAnimationGeometry(state, intrinsicMode) });
   }
   const mapped = sampleCartesianPosition(prepareCartesianPosition(a.mapping, b.mapping), progress);
   if (mapped.kind === "crossfade") return fade(mapped.reason);
@@ -158,11 +163,13 @@ export function sampleSizeLegendInterpolation(plan, progress) {
     labels: { ...a.config.labels, offset: interpolateNumber(a.config.labels.offset, b.config.labels.offset, progress) } };
   try {
     const state = normalizeSizeLegendAnimationState({ ...prepared.from, layout: { ...a, config,
-      frame: { plot: numbers(a.frame.plot, b.frame.plot), canvas: numbers(a.frame.canvas, b.frame.canvas) }, mapping: { value: mapped.value, scale: mapped.scale } } });
-    if (!samples.has(a)) samples.set(a, new WeakMap()); samples.get(a).set(b, { progress, layout: state.layout });
-    return cloneAndFreeze({ kind: "guide", state, ...resolveSizeLegendAnimationGeometry(state) });
+      frame: { plot: numbers(a.frame.plot, b.frame.plot), canvas: numbers(a.frame.canvas, b.frame.canvas) }, mapping: { value: mapped.value, scale: mapped.scale } } }, intrinsicMode);
+    if (!sampleCache.has(a)) sampleCache.set(a, new WeakMap()); sampleCache.get(a).set(b, { progress, layout: state.layout });
+    return cloneAndFreeze({ kind: "guide", state, ...resolveSizeLegendAnimationGeometry(state, intrinsicMode) });
   } catch (error) {
     if (!(error instanceof RangeError) && getErrorDetails(error)?.reason !== "canvas-overflow" && !/exact required query closure/.test(error.message)) throw error;
     return fade("guide-layout");
   }
 }
+
+export { normalizeLayout as normalizeSizeLegendLayout, geometryList as resolveSizeLegendEntries };

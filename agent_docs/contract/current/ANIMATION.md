@@ -182,7 +182,7 @@ gradient 크기·offset과 scale의 의미값을 보간한 뒤 기존 native lay
 새 sample은 enter/exit이며 sampling/문자열/font/배치정책 변경은 정확한 identity를 보존한 fade다.
 필요한 text query closure만 저장하고 schema2의 정확 font binding/측정치가 빠지면 준비 오류다.
 중간 frame은 같은 native 의미로 재기준·오프라인 재생한다. Auto sampling, gradient symbol
-범례, border/group/multi-block/inferred axis clearance와 복잡한 label reflow는 아직 typed 범위 밖이며
+범례, border/implicit multi-block lane/inferred axis clearance와 복잡한 label reflow는 아직 typed 범위 밖이며
 지원되는 gradient component에는 `guide-layout` reason을 보존한다.
 
 연속 size 범례도 exact raw `values`와 명시 offset의 독립 edge block을 지원한다. Native
@@ -190,7 +190,7 @@ linear/log/sqrt/pow size scale의 값→면적 mapping을 먼저 계산하고 �
 단순 반지름 보간은 사용하지 않는다. 같은 sample/문자열/font/배치 정책에서 frame, offset,
 itemGap, rowPadding, titlePadding과 labels.offset을 보간한 뒤 native measured layout을 재생한다.
 숨긴 label은 숨긴 채 유지하고 hard-break 줄·명시 정렬·현재 frame 재기준과 offline 복원이 같다.
-Auto sampling, ordinal/discrete size, group/clip/border와 종속 배치는 이 size slice에
+Auto sampling, ordinal/discrete size, clip/border와 암묵적인 종속 배치는 이 size slice에
 포함되지 않으며 `guide-layout`을 보존한다.
 
 범주형 series/color/stroke 범례도 명시 offset의 독립 edge block을 준비한다. 같은 raw domain과
@@ -198,10 +198,21 @@ Auto sampling, ordinal/discrete size, group/clip/border와 종속 배치는 이 
 보간하고 기존 measured layout과 shape builder를 재생한다. Typed category와 symbol 역할이
 key이며 같은 표시 문자열도 합치지 않는다. 숨김과 hard-break, 네 edge·nested scope·현재 frame
 재기준 및 strict offline이 같다. Solid appearance는 공통 owner가 보간한다. Domain/shape/layout
-정책 변경, overflow/group/clip/border/inferred clearance는 명시 fade 또는 enter/exit이며 새
+정책 변경, overflow/clip/border/inferred clearance는 명시 fade 또는 enter/exit이며 새
 배치를 임의로 추정하지 않는다. 원 native block symbol override도 같은 geometry proof를 따른다.
 
-Optional endpoint `guides` vector와 `native-guide-values@6` manifest를 보존한다. Strict restore는
+명시 `editLegendLayout` 그룹은 같은 target의 categorical·size·gradient/strokeGradient 블록을
+하나의 종속 배치로 준비한다. `row/column/wrap`, 네 edge·네 corner·plot-relative `at`와
+명시 offset/alongOffset을 보존하고 현재 frame과 각 블록 의미를 먼저 샘플링한다. 기존 native
+occupied-bounds와 group packing owner가 현재 경계·행을 계산하므로 wrap의 행 전환도 정적
+동일 옵션 결과와 같다. Frame은 그룹 한 곳에 저장하고 각 item은 원 typed raw value·role로
+그 안의 블록을 참조한다. 정확 text metric closure와 native Canvas/plot fit 검사를 유지한다.
+블록 순서/집합·placement 정책·문자열/font 변경 또는 미지원 sibling은 전체 그룹을 명시 fade한다.
+암묵적 shared lane, inferred axis clearance, border/clip/overflow·자동 sample·개별 local placement와
+opacity/strokeWidth 등 아직 typed 의미가 없는 sibling은 이 그룹 확대에 포함되지 않는다.
+현재 그룹 frame 재기준과 strict offline 복원은 같은 native 의미를 유지한다.
+
+Optional endpoint `guides` vector와 `native-guide-values@7` manifest를 보존한다. Strict restore는
 closed shape, node cardinality, 실제 mark/background identity와의 배타성, typed guide key,
 sample decision 및 native forward geometry를 검증한다. 현재 guide 의미는 flat frame proof에
 저장하여 이전 plan을 보존하지 않는다. 오프라인 복원도 동일 시각의 scene을 만든다.

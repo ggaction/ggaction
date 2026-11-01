@@ -5,11 +5,11 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 783_100, // Exact route integration: Node20/24 783,043 gzip bytes.
-  "ggaction/basic": 424_000, // Shared categorical recipes: Node20/24 423,963 gzip bytes.
+  ggaction: 783_300, // Grouped guides integration: Node20/24 783,202 gzip bytes.
+  "ggaction/basic": 424_200, // Shared native title placement: Node20/24 424,109 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 301_700, // Geographic Text integration: Node20/24 301,639 gzip bytes.
+  "ggaction/animation": 306_100, // Grouped guides integration: Node20/24 306,100 gzip bytes.
   "ggaction/interaction": 131_400
 });
 
