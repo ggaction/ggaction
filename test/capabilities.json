@@ -576,6 +576,10 @@
     ],
     "font-assets": [
       {
+        "type": "file",
+        "path": "unit/resources/font-axis-reflow.test.js"
+      },
+      {
         "type": "prefix",
         "path": "charts/font-assets/"
       },

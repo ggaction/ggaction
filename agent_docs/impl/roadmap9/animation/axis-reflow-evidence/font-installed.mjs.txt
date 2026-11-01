@@ -1,0 +1,36 @@
+import { preparePackageConsumer } from '../../scripts/package-consumer.js';
+import { testOptionalDependencies } from '../../scripts/consumers/optional-peers.js';
+import { BROWSER_BUNDLE_GZIP_LIMITS, measureMinimalBrowserBundle } from '../../scripts/browser-bundle-size.js';
+import { readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
+const archive=path.resolve('.artifacts/axis-reflow/font-closure.tgz');
+const consumer=await preparePackageConsumer({packageSpec:archive});
+const receipt={node:process.version,archive,sha256:createHash('sha256').update(await readFile(archive)).digest('hex'),bundles:[]};
+try {
+await testOptionalDependencies(consumer);
+await writeFile(path.join(consumer.directory,'fonts.mjs'),await readFile('scripts/consumers/fixtures/node/fonts.mjs'));
+await writeFile(path.join(consumer.directory,'runner.mjs'),`import {cases} from './fonts.mjs';for(const entry of cases){await entry.run();console.log(entry.id+' passed');}`);
+process.stdout.write(execFileSync(process.execPath,['runner.mjs'],{cwd:consumer.directory,encoding:'utf8',timeout:120000}));
+receipt.runtimeCases=4;
+await writeFile(path.join(consumer.directory,'font-closure.mts'),`import{chart,prepareTextMetrics,type TextMetricsHost,type TextMetricsRequest}from'ggaction';
+declare const host:TextMetricsHost;
+const request:TextMetricsRequest={id:'m',fonts:['font'],axisLabelReflow:true};
+await prepareTextMetrics(chart(),request,host);
+await prepareTextMetrics(chart(),{...request,axisLabelReflow:false},host);
+// @ts-expect-error explicit opt-in is boolean
+await prepareTextMetrics(chart(),{...request,axisLabelReflow:'true'},host);
+// @ts-expect-error explicit undefined is not boolean
+await prepareTextMetrics(chart(),{...request,axisLabelReflow:undefined},host);
+`);
+process.stdout.write(execFileSync(process.execPath,[path.resolve('node_modules/typescript/bin/tsc'),'--noEmit','--strict','--exactOptionalPropertyTypes','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext','font-closure.mts'],{cwd:consumer.directory,encoding:'utf8',timeout:120000}));
+receipt.strictTypes=true;
+for(const specifier of Object.keys(BROWSER_BUNDLE_GZIP_LIMITS)) {
+ const value=await measureMinimalBrowserBundle(consumer.directory,{specifier});
+ receipt.bundles.push({...value,limit:BROWSER_BUNDLE_GZIP_LIMITS[specifier],pass:value.gzipBytes<=BROWSER_BUNDLE_GZIP_LIMITS[specifier]});
+}
+await writeFile(`.artifacts/axis-reflow/font-installed-${process.versions.node.split('.')[0]}.json`,JSON.stringify(receipt,null,2)+'\n');
+console.log(JSON.stringify(receipt,null,2));
+if(receipt.bundles.some(b=>!b.pass))throw Error('Measured bundle exceeds its recorded cap');
+} finally { await consumer.cleanup(); }

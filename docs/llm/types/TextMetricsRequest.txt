@@ -1,1 +1,6 @@
-export interface TextMetricsRequest { id: string; fonts: readonly string[]; }
+export interface TextMetricsRequest {
+  id: string;
+  fonts: readonly string[];
+  /** Prepare bounded wrap queries for current Cartesian axis labels. Reprepare after changing their text, font, or bound font resource. Default: false. */
+  axisLabelReflow?: boolean;
+}

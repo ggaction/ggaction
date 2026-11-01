@@ -930,6 +930,9 @@ native measured placement. `materialization/axisLabelCandidates.js` owns native 
 width and native/wrap/skip/rotation selection from resolved values, frames and exact metrics.
 Axis actions retain resource lookup, authored-option validation and trace orchestration;
 the shared candidate owner applies explicit Canvas and title collision constraints.
+Explicit font preparation can request `materialization/axisLabelQueries.js` to collect
+bounded native wrapping queries before host work. It shares the native tokenizer and
+font profile budgets; the default preparation path and stored profile shape stay unchanged.
 Prepared placement never chooses a new wrap or responsive fallback during sampling.
 Actions still explicitly materialize graphics. These shared calculations do not add a
 semantic compiler, renderer access to meaning, or new stored graphic identity. Public
@@ -950,12 +953,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 783,300 bytes |
-| `ggaction/basic` | 424,200 bytes |
+| `ggaction` | 783,600 bytes |
+| `ggaction/basic` | 424,300 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 131,400 bytes |
-| `ggaction/animation` | 306,100 bytes |
+| `ggaction/animation` | 306,200 bytes |
 
 
 
