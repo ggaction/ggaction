@@ -5,7 +5,7 @@ import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit 
 import { createGeometryBudget, snapshotGeometryJSON } from "../../grammar/geo/input.js";
 import { normalizeGeoStyle } from "../../grammar/geo/mark.js";
 import { geoPartsTopology } from "../../grammar/geo/markGeometry.js";
-import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
+import { validateAnimationPlacement } from "../../grammar/animation/placement.js";
 import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
 import { validateGraphicIdentity } from "../../grammar/schemas/graphicIdentity.js";
 import { normalizeAnimationGeoGroup, resolveAnimationGeoGeometry } from "../../grammar/animation/geoState.js";
@@ -55,10 +55,6 @@ function closed(input, keys, label) {
 function tuple(value, length, label) {
   ownArray(value, label);
   if (value.length !== length || value.some(n => !Number.isFinite(n))) throw new TypeError(`${label} requires a finite tuple.`);
-}
-function rectangle(value) {
-  tuple(value, 4, "Geo frame clip");
-  validateGraphicClip({ x: value[0], y: value[1], width: value[2], height: value[3] });
 }
 
 // Store source paint once, before bounds-dependent pattern materialization.
@@ -207,9 +203,5 @@ export function validateGeoAnimationPresentations(input, endpoint) {
 }
 
 export function validateGeoAnimationFrame(frame) {
-  closed(frame, ["offset", "clip", "clips"], "Geo animation frame");
-  tuple(frame.offset, 2, "Geo frame offset"); rectangle(frame.clip);
-  ownArray(frame.clips, "Geo frame clips");
-  for (const clip of frame.clips) Array.isArray(clip) ? rectangle(clip) : validateGraphicClip(clip);
-  return frame;
+  return validateAnimationPlacement(frame, "Geo");
 }

@@ -124,6 +124,14 @@
       {
         "type": "file",
         "path": "browser/animation-geotext-expressions.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-axis-reflow.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-axis-label-reflow.test.js"
       }
     ],
     "architecture": [
@@ -1604,6 +1612,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-cartesian-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-axis-label-reflow.test.js"
       }
     ],
     "rendering": [

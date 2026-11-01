@@ -68,7 +68,8 @@
     "contracts/realistic-guide-transitions.test.js": 7633,
     "contracts/realistic-graph-drag.test.js": 26125,
     "contracts/realistic-cartesian-transitions.test.js": 3697,
-    "contracts/realistic-geographic-routes.test.js": 2355
+    "contracts/realistic-geographic-routes.test.js": 2355,
+    "contracts/realistic-axis-label-reflow.test.js": 2133
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -152,6 +153,10 @@
     "contracts/realistic-waterfall-plots.test.js": {
       "environment": "macOS arm64, Node22.23.1, canonical realistic heap and concurrency",
       "measurement": "Sum of 16 successful canonical realistic per-test durations 3001.387998ms, rounded upward. Source: agent_docs/impl/roadmap9/chart/waterfall-evidence/waterfall-realistic.log.gz. Scheduling estimate only."
+    },
+    "contracts/realistic-axis-label-reflow.test.js": {
+      "environment": "macOS arm64, Node 22.23.1, max-old-space-size=512, test-concurrency=2",
+      "measurement": "Sum of five successful canonical realistic per-test durations 2132.474418 ms, rounded upward. Original first-twelve positive rows and units from five pinned sources, native midpoint layout, independent raw-value positions, strict rebase/offline and SVG integrity. Scheduling estimate only."
     }
   },
   "localMeasurements": {

@@ -34,6 +34,14 @@ for(const decision of frame.decisions)if(decision.kind==='geographic'){
   // @ts-expect-error a currently generated Geo part need not exist at an endpoint
   decision.targetIndex;
 }
+for(const decision of frame.decisions)if(decision.kind==='guide'){
+  const key:string=decision.guideKey;const owner:string=decision.ownerKey;
+  const kernel:'native-axis-label'=decision.kernel;const role:'guide-labels'=decision.role;
+  // @ts-expect-error a newly emitted native line has no fabricated endpoint index
+  decision.targetIndex;
+  // @ts-expect-error guide raw identity is distinct from mark item identity
+  decision.itemKey;
+}
 planTransition({from:frame,to,options:{durationMs:100}});
 planTransition({from,to:frame,options:{durationMs:100}});
 const saved:string=serializeAnimation(plan,{repeat:Infinity,rate:-1,reducedMotion:true});

@@ -24,7 +24,7 @@ function record(value, keys, label) {
 function finite(value, positive = false) {
   if (!Number.isFinite(value) || positive && value <= 0) throw new RangeError("Prepared axis layout requires finite dimensions.");
 }
-function normalizeConfig(config, channel) {
+export function normalizeAxisAnimationConfig(config, channel) {
   record(config, keys, "Prepared axis label policy");
   if (!(channel === "x" ? ["top", "bottom"] : ["left", "right"]).includes(config.position) ||
       typeof config.fontFamily !== "string" || !config.fontFamily.length ||
@@ -72,7 +72,7 @@ function normalizeLayout(input) {
   record(input.mapping, ["value", "scale"], "Prepared axis mapping");
   ownRecord(input.mapping.scale, "Prepared axis scale");
   if (!["type", "domain", "range"].every(key => Object.hasOwn(input.mapping.scale, key))) throw new TypeError("Prepared axis scale requires its own fields.");
-  const mapping = normalizeCartesianPosition(input.mapping), config = normalizeConfig(input.config, input.channel);
+  const mapping = normalizeCartesianPosition(input.mapping), config = normalizeAxisAnimationConfig(input.config, input.channel);
   if (!Object.is(mapping.value, input.values[0]) || mapping.scale.type === "ordinal-offset") throw new TypeError("Prepared axis mapping requires its native first value.");
   const discrete = ["ordinal", "band", "point"].includes(mapping.scale.type), domain = mapping.scale.domain;
   if (input.values.some(value => discrete ? !domain.includes(value) : typeof value !== "number" || value < Math.min(...domain) || value > Math.max(...domain))) {
@@ -124,11 +124,14 @@ function findEntry(layout, identity) {
   if (!entries.has(layout)) entries.set(layout, new Map(geometryList(layout).map(entry => [entryKey(entry.value, entry.line), entry])));
   return entries.get(layout).get(entryKey(identity.value, identity.line));
 }
-export function prepareAxisAnimationLayout({ values, scale, config, channel, frame, canvas, profile, edgeAligned }) {
-  const canonical = { position: config.position, offset: config.offset, alongOffset: config.alongOffset ?? 0,
+export function prepareAxisAnimationConfig(config) {
+  return { position: config.position, offset: config.offset, alongOffset: config.alongOffset ?? 0,
     fontFamily: config.fontFamily ?? DEFAULT_FONT_FAMILY, fontSize: config.fontSize, fontWeight: textMetricFontWeight(config.fontWeight),
     rotation: config.rotation, flush: config.flush ?? false, flushThreshold: config.flushThreshold ?? null,
     align: config.align ?? null, format: config.format, labelMap: config.labelMap ?? [], overlap: config.overlap };
+}
+export function prepareAxisAnimationLayout({ values, scale, config, channel, frame, canvas, profile, edgeAligned }) {
+  const canonical = prepareAxisAnimationConfig(config);
   const initial = { channel, frame, canvas, values, mapping: cartesianPosition(values[0], scale), config: canonical, metrics: profile, edgeAligned };
   return normalizeLayout({ ...initial, metrics: prepareGuideMetrics(queries(initial), profile, "animation-axis") });
 }

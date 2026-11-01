@@ -149,10 +149,9 @@ Cartesian axis line/tick/fixed label/grid와 polar axis/tick/fixed label/spoke/c
 
 동일 raw value의 scale/domain/range와 frame을 먼저 보간한 뒤 native geometry를 만든다.
 새 값과 제거된 값은 enter/exit이며 중복 raw value는 `guide-ambiguity` reason의 별도 enter/exit다.
-같은 값의 label 문자열·font/static style 변경은 appearance crossfade다. 동일 label 줄 구성과
-정렬 정책을 유지하며 동적인 wrap/skip/rotation 선택의 responsive reflow는 `guide-layout`, 명시 geometry
+같은 값의 label 문자열·font/static policy 변경은 appearance crossfade다. 명시 geometry
 편집은 `guide-edited`다. 현재 crossfade guide는 identity만 보존한 `guide-unavailable` 상태에서
-다음 transition도 명시 fallback한다. Complex axis label reflow는 아직 이 typed 범위 밖이다.
+다음 transition도 명시 fallback한다.
 
 Cartesian label의 고정 회전, flush/flushThreshold, plot-edge 정렬은 `label-layout` 준비값에서
 원 native 측정·배치 함수를 재생한다. 같은 raw 값 집합과 표시 문자열·hard-break 줄·font·정렬 정책을
@@ -161,6 +160,21 @@ Cartesian label의 고정 회전, flush/flushThreshold, plot-edge 정렬은 `lab
 font resource/content identity와 측정 누락 오류를 유지한다. LabelMap의 숨긴 값은 다시 나타나지 않고
 중복 문자열은 raw value/line identity를 합치지 않는다. maxWidth wrapping, responsiveResult에 따른
 줄 수·skip·rotation 선택 변화는 이 고정 배치 범위에 포함되지 않는다.
+
+Cartesian `maxWidth` 또는 responsive label policy는 별도 native raw 그룹에서 현재 frame/scale/
+offset을 먼저 계산하고 원 wrapping·skip·rotation 후보를 다시 선택한다. 동일 raw cohort, 표시 내용,
+font와 policy가 필요하며 바뀌면 `guide-layout` fallback이다. 현재 native 배치가 Canvas에 들어가지
+않아도 명시 fallback하며 metric 누락/예산 오류는 fade로 숨기지 않는다. Schema2 폰트의 중간 줄
+측정은 [CORE의 명시 폰트 준비](CORE.md)를 따르는 `axisLabelReflow:true` 옵션으로 준비해야 한다.
+Font 교체 뒤에는 새 exact query closure를 다시 준비한다. 기본 측정 요청은 바뀌지 않는다.
+
+Dynamic decision은 `{kind:'guide',kernel:'native-axis-label',ownerKey,guideKey,role:'guide-labels'}`다.
+현재 raw tick+line identity를 사용하며 새 줄에 sourceIndex/targetIndex를 만들지 않는다. 빈 collection도
+실제 slot과 owner 의미를 유지하므로 geometry retime 대상이다. 기존 줄의 개별 style keyframe은 현재
+그림에 반영한다. 같은 raw의 줄들이 서로 다른 style을 가지면 다음 전환은 `guide-edited` fallback이고,
+공통 style이면 현재 typed 의미를 유지한다. 실제 native source의 raw membership과 exact metrics로
+현재 hit metadata를 만들지만 mark selection 권한을 추가하지 않는다. MaxWidth/responsive 그룹을
+의존하는 title/legend clearance는 아직 별도 연결 범위이며 원 fallback을 유지한다.
 
 명시 numeric offset의 Cartesian title은 `start/center/end` range 역할 또는 numeric `at` 값을
 보존한다. Numeric at와 scale을 보간한 후 native mapping을 적용하며 text/font 변경은 fade다.
@@ -188,7 +202,7 @@ gradient 크기·offset과 scale의 의미값을 보간한 뒤 기존 native lay
 새 sample은 enter/exit이며 sampling/문자열/font/배치정책 변경은 정확한 identity를 보존한 fade다.
 필요한 text query closure만 저장하고 schema2의 정확 font binding/측정치가 빠지면 준비 오류다.
 중간 frame은 같은 native 의미로 재기준·오프라인 재생한다. Auto sampling, gradient symbol
-범례, border/inferred axis clearance와 복잡한 label reflow는 아직 typed 범위 밖이며
+범례, border/inferred axis clearance 및 그에 의존하는 동적 label reflow는 아직 이 gradient 범위 밖이며
 지원되는 gradient component에는 `guide-layout` reason을 보존한다.
 
 연속 size 범례도 exact raw `values`와 명시 offset의 독립 edge block을 지원한다. Native
@@ -229,11 +243,16 @@ identity와 `guide-unavailable`만 보존한다. 관계없는 scope의 정상 gu
 중간 frame→재기준→strict offline 복원 결과가 같다. Same-edge axis-dependent clearance,
 자동 sample·border/clip/overflow·개별 local placement·미지원 sibling은 명시 fallback을 유지한다.
 
-Optional endpoint `guides` vector와 `native-guide-values@10` manifest를 보존한다. Strict restore는
+Optional endpoint `guides` vector 및 dynamic `axislabels:{groups,items}`와 `native-guide-values@11`
+manifest를 보존한다. Version10은 명시 거부한다. Strict restore는
 closed shape, node cardinality, 실제 mark/background identity와의 배타성, typed guide key,
 sample decision 및 native forward geometry를 검증한다. 현재 guide 의미는 flat frame proof에
 저장하여 이전 plan을 보존하지 않는다. 오프라인 복원도 동일 시각의 scene을 만든다.
 Canvas resize background의 기존 weighted lowering과 guide 자체 vector 출력은 구분한다.
+Dynamic group은 현재 raw cohort/metrics/font/전체 줄·실제 collection slot과 Geo 역할에 대한 상대
+drawing order를 검산한다. 현재 sample/rebase/offline에서 같은 drawing 순서를 보존하고 이전 plan을
+참조하지 않는다. 빈 출력의 native 계산도 단일 sample10M 및 frame export 누적10M work에 포함되며,
+실제 output node10k와 schedule10k 한도도 유지한다. Batch 실패 시 부분 결과를 반환하지 않는다.
 
 ## Solid 색·투명도·선 두께 전환
 

@@ -5,11 +5,11 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 783_700, // Density diagnostic portability: Node20/24 783,623 gzip bytes.
-  "ggaction/basic": 424_300, // Shared native tokenizer: Node20/24 424,223 gzip bytes.
+  ggaction: 783_700, // Axis reflow and portable density codec union: Node20/24 783,678 gzip bytes.
+  "ggaction/basic": 424_300, // Shared native tokenizer and placement proof: Node20/24 424,277 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 317_900, // Implicit legend lane integration: Node20/24 317,874 gzip bytes.
+  "ggaction/animation": 327_800, // Native axis reflow: Node20/24 327,739 gzip bytes.
   "ggaction/interaction": 131_400
 });
 
