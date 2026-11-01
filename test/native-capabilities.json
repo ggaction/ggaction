@@ -2340,7 +2340,164 @@
         "status": "pending",
         "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
       },
-      "assignedOwners": {}
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/unit/table-plot.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/unit/table-plot.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/unit/table-plot.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/unit/table-plot.test.js",
+            "test/unit/table-consumers.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/unit/table-plot.test.js",
+            "test/unit/table-consumers.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/unit/table-plot.test.js",
+            "test/unit/table-consumers.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/unit/table-plot.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/unit/table-plot.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/unit/table-plot.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/unit/table-plot.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/unit/table-plot.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/charts/table/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/charts/table/renderer.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/charts/table/renderer.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/charts/table/png.render.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/contracts/table-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/docs/executable-programs.test.js"
+          ]
+        }
+      }
     },
     {
       "id": "pyramid",
@@ -2373,7 +2530,161 @@
         "status": "pending",
         "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
       },
-      "assignedOwners": {}
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/unit/pyramid-plot.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/unit/pyramid-plot.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/unit/pyramid-plot.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/unit/pyramid-plot.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/unit/pyramid-plot.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/unit/pyramid-plot.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/unit/pyramid-plot.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/unit/pyramid-plot.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/unit/pyramid-plot.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/unit/pyramid-plot.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/unit/pyramid-plot.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/charts/pyramid/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/charts/pyramid/renderer.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/charts/pyramid/renderer.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/charts/pyramid/png.render.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/contracts/pyramid-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/docs/executable-programs.test.js"
+          ]
+        }
+      }
     },
     {
       "id": "ohlc",
@@ -2407,7 +2718,161 @@
         "status": "pending",
         "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
       },
-      "assignedOwners": {}
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/unit/ohlc-plot.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/unit/ohlc-plot.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/unit/ohlc-plot.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/unit/ohlc-plot.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/unit/ohlc-plot.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/unit/ohlc-plot.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/unit/ohlc-plot.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/unit/ohlc-plot.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/unit/ohlc-plot.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/unit/ohlc-plot.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/unit/ohlc-plot.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/charts/ohlc/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/charts/ohlc/renderer.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/charts/ohlc/renderer.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/charts/ohlc/png.render.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/contracts/ohlc-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/docs/executable-programs.test.js"
+          ]
+        }
+      }
     },
     {
       "id": "waterfall",
@@ -2441,7 +2906,161 @@
         "status": "pending",
         "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
       },
-      "assignedOwners": {}
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/unit/waterfall-plot.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/unit/waterfall-plot.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/unit/waterfall-plot.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/unit/waterfall-plot.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/unit/waterfall-plot.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/unit/waterfall-plot.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/unit/waterfall-plot.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/unit/waterfall-plot.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/unit/waterfall-plot.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/unit/waterfall-plot.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/unit/waterfall-plot.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/charts/waterfall/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/charts/waterfall/renderer.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/charts/waterfall/renderer.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/charts/waterfall/png.render.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/contracts/waterfall-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/docs/executable-programs.test.js"
+          ]
+        }
+      }
     },
     {
       "id": "trail",
@@ -2475,7 +3094,161 @@
         "status": "pending",
         "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
       },
-      "assignedOwners": {}
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/unit/trail-plot.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/unit/trail-plot.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/unit/trail-plot.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/unit/trail-plot.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/unit/trail-plot.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/unit/trail-plot.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/unit/trail-plot.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/unit/trail-plot.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/unit/trail-plot.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/unit/trail-plot.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/unit/trail-plot.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/charts/trail/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/charts/trail/renderer.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/charts/trail/renderer.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/charts/trail/png.render.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/contracts/trail-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/docs/executable-programs.test.js"
+          ]
+        }
+      }
     },
     {
       "id": "geo-shape",
