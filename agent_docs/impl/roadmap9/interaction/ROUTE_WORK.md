@@ -8,8 +8,11 @@
 - [x] predecessor 상태 방식, 독립 oracle와 기존 출력 비교
 - [x] 같은 archive 세 Node 및 문서·경계 검증 마감
 - [x] 새 source의 실제 Chromium edge-path1k P95
+- [x] 단일 spline span 준비의 실제 연산 제거와 HEB10k 원 경로 보존
+- [ ] 새 source의 HEB10k Chromium P95
 - [ ] HEB 입력 준비 중복의 추가 검토
-- [ ] Density/force의 나머지 크기 지원과 geographic GraphRoute 연결
+- [x] Geographic GraphRoute 연결 — [공개 adapter](../chart/geo-route-data.md)
+- [ ] Density/force의 나머지 크기 지원
 
 승인은 [AUTHORIZATION](../AUTHORIZATION.json)의 remainingApproval을 재사용한다.
 Parent는 2026-10-30 charge-site 결과를 읽고 predecessor 최소 개선을 진행하도록 명시했다.
@@ -104,5 +107,36 @@ SVG serialization+DOM8.3 / 6.4 ms다. Compositor paint 시간을 주장하지 �
 Host lifecycle100/retained-heap은 변경되지 않은 이전 source의 측정으로 분리해 재사용한다.
 
 이 결과는 새 source의 **추가2셀**이다. 이전 source의24셀(8성공/16제한)을 소급 수정하지
-않는다. HEB10k, force/density 및 geographic binding은 후속이며 AT82 전체 통과가 아니다.
+않는다. 당시 HEB10k, force/density 및 geographic binding은 후속이었고 AT82 전체 통과가 아니었다.
+이후 geographic adapter와 아래 single-span 계산 개선을 각각 별도 checkpoint로 기록한다.
 세부 수치·samples·환경·최초 실패와 해시는 [summary](route-work-evidence/summary.json)에 있다.
+
+
+## 단일 span의 실제 준비 연산 제거 — 2026-11-01
+
+원본 job/context 반복 검증은 별도 budget이므로 제거만으로 kernel의 work 한도를 바꾸지
+않는다. 별도의 작은 수학 최적화를 먼저 적용했다. 2/3/4개 control point의 clamped uniform
+spline은 knot span이 `[0,1]` 하나다. 이전 구현은 knot/derivative 배열, interval 탐색과
+일반 evaluator 호출을 만들지만 실제 호출은 모두 endpoint shortcut이었다. 새 분기는
+endpoint tangent를 `degree*(p1-p0)`, `degree*(pn-pn-1)`로 직접 만들고 이전의 `step=1/3`
+곱셈·덧셈 순서를 보존한다. 새 approximation이나 곡선 단순화가 아니며 같은 cubic을
+같은 `flattenPathCommands` owner로 전달한다. 5개 이상 control은 기존 계산 그대로다.
+
+Accounting은 삭제된 knot/derivative 배열 구성과 generic evaluation 비용을 제거한다.
+작은 분기의 준비 비용은 point당 own/finite validation 및 읽기 8단위와, 네 tangent scalar의
+뺄셈/곱셈·네 cubic scalar의 곱셈/덧셈 16단위 및 record/command 준비 16단위다.
+샘플당 8 work와 전체 flatten/subdivision/sample/abort/10M work guard는 유지했다.
+기존 결과의 algorithm/spline version, tolerance, maxSubdivisions와 path provenance는 유지한다.
+
+2/3/4/5/8 control ×24개 고정seed 입력의 전체 sample 결과120개는 원 source와 exact 동일했다
+(SHA256 `064731954b9725e7ce257aab8cadf8a8bfea7720b7550140592bfc12608c0f00`).
+독립 Cox–de Boor basis와 literal Bernstein 중점, translation/scale, overflow/descriptor/abort/
+work exhaustion 검증을 추가했다. 10k star workload는 원 10k edges·9,999 graph nodes·10k
+hierarchy nodes를 모두 유지하며 work9,723,588·peakSamples88,841로 완료한다.
+초기 공개 호출 Node 진단은11,551ms이므로 SLO 통과가 아니다. 실제 Chromium P95·동일 archive
+검증은 이 source가 고정된 뒤 별도로 기록한다. HEB 준비 시간 최적화와 나머지 AT82는 미완료다.
+
+집중 source94개 ×Node20/22/24, spline owner100/100/100, boundary/discovery40, package7을
+통과했다. 같은481be548…69f16 archive에서 세 Node 각각 공개5사례와6bundle을 검증했다.
+최초 package 상한·설치 상대경로·Full gzip19byte 초과와 교정을 [증거](route-span-evidence/summary.json)에
+보존한다. 아직 browser P95와 source-pin metadata는 별도 마감 전이다.

@@ -142,3 +142,46 @@ test("straightening a deep hierarchy keeps all provenance controls without impos
   assert.equal(result.routes[0].controlPoints.length, count);
   assert.deepEqual(result.routes[0].commands, [{ op: "M", x: 0, y: 0 }, { op: "L", x: 1, y: 0 }]);
 });
+
+
+test("single-span curves preserve literal Bernstein geometry under scale and translation", () => {
+  const families = [
+    { points: [point(0, 0), point(2, 2)], expected: point(1, 1) },
+    { points: [point(0, 0), point(0, 2), point(2, 2)], expected: point(.5, 1.5) },
+    { points: [point(0, 0), point(0, 2), point(2, 2), point(2, 0)], expected: point(1, 1.5) }
+  ];
+  for (const family of families) {
+    assert.deepEqual(clampedSplinePoint(family.points, .5), family.expected);
+    for (const [scale, x, y] of [[1, 0, 0], [3, 19, -7], [.125, -2, 3]]) {
+      const controls = family.points.map(p => point(p.x * scale + x, p.y * scale + y));
+      const before = structuredClone(controls), budget = createRouteBudget();
+      const result = sampleClampedSpline(controls, { tolerance: .0001 * scale }, budget);
+      assert.deepEqual(result.points[0], controls[0]);
+      assert.deepEqual(result.points.at(-1), controls.at(-1));
+      assert.equal(result.degree, controls.length - 1);
+      for (let i = 0; i <= 256; i++) {
+        assert.ok(polylineDistance(clampedSplinePoint(controls, i / 256), result.points) <= .0001 * scale + 1e-12);
+      }
+      assert.deepEqual(controls, before);
+      assert.ok(Object.isFrozen(result.points));
+    }
+  }
+});
+
+test("single-span preparation still rejects work exhaustion, aborts, accessors and finite overflow", () => {
+  for (const count of [2, 3, 4]) {
+    const controls = Array.from({ length: count }, (_, i) => point(i, i % 2)), before = structuredClone(controls);
+    const budget = createRouteBudget(); budget.charge(9_999_960);
+    assert.throws(() => sampleClampedSpline(controls, {}, budget), /Route work/);
+    const controller = new AbortController(), stopped = createRouteBudget({}, controller.signal);
+    controller.abort();
+    assert.throws(() => sampleClampedSpline(controls, {}, stopped), { name: "AbortError" });
+    assert.throws(() => sampleClampedSpline(controls, {}, createRouteBudget({ maxSamples: count + 1 })), /samples/);
+    const overflow = controls.map((p, i) => point(i === 0 ? -1e308 : 1e308, p.y));
+    assert.throws(() => sampleClampedSpline(overflow, {}, createRouteBudget()), /finite/);
+    assert.deepEqual(controls, before);
+  }
+  let reads = 0;
+  assert.throws(() => sampleClampedSpline([point(0, 0), { get x() { reads++; return 1; }, y: 1 }], {}, createRouteBudget()), /accessors/);
+  assert.equal(reads, 0);
+});

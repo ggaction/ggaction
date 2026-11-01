@@ -1,0 +1,133 @@
+{
+  "status": "source-qualified-browser-p95-pending",
+  "date": "2026-11-01",
+  "base": "ee374aec1",
+  "source": null,
+  "authorization": "../AUTHORIZATION.json remainingApproval; parent approved exact single-span math and unchanged guards",
+  "change": "Single clamped span with 2-4 controls uses direct endpoint derivatives; arithmetic order and shared flattening unchanged.",
+  "unchanged": [
+    "public APIs/types/schema",
+    "algorithm/spline versions",
+    "all route limits",
+    "curve tolerance/subdivision/sample membership",
+    "5+ control general span algorithm"
+  ],
+  "comparison": {
+    "cases": 120,
+    "seed": 931,
+    "controls": [
+      2,
+      3,
+      4,
+      5,
+      8
+    ],
+    "exactJSONWithoutTrailingNewlineSHA256": "064731954b9725e7ce257aab8cadf8a8bfea7720b7550140592bfc12608c0f00",
+    "byteIdentical": true,
+    "independentOracle": "Cox-de Boor basis, literal Bernstein midpoint and geometric invariants"
+  },
+  "checks": {
+    "sourceNode20": 94,
+    "sourceNode22": 94,
+    "sourceNode24": 94,
+    "criticalOwner": {
+      "file": "src/grammar/graph/routes/spline.js",
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "boundaryDiscoverySharding": 40,
+    "packageContracts": 7,
+    "installedPerNode": 5,
+    "installedNodes": [
+      20,
+      22,
+      24
+    ],
+    "bundlesPerNode": 6
+  },
+  "archive": {
+    "sha256": "481be548bf4f77a26c3215f76e38fc9425f2a46009c8d7b9278693a960069f16",
+    "entryCount": 1170,
+    "size": 1669099,
+    "unpackedSize": 7558637
+  },
+  "packageMeasurementNode20": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1170,
+    "packedBytes": 1673129,
+    "unpackedBytes": 7558637
+  },
+  "caps": {
+    "entries": 1170,
+    "packedBytes": 1673200,
+    "unpackedBytes": 7558700,
+    "fullGzip": 781600
+  },
+  "preflight": {
+    "kind": "diagnostic-preflight-not-SLO",
+    "runtime": "v22.23.1",
+    "geometry": "star hierarchy native tree anchors, offset floor(n/3) graph edges",
+    "results": [
+      {
+        "edges": 100,
+        "nodes": 100,
+        "hierarchyNodes": 101,
+        "status": "complete",
+        "elapsedMs": 170.418208,
+        "work": 113309,
+        "peakSamples": 2668,
+        "routes": 100
+      },
+      {
+        "edges": 1000,
+        "nodes": 1000,
+        "hierarchyNodes": 1001,
+        "status": "complete",
+        "elapsedMs": 1162.770458,
+        "work": 1011485,
+        "peakSamples": 14466,
+        "routes": 1000
+      },
+      {
+        "edges": 10000,
+        "nodes": 9999,
+        "hierarchyNodes": 10000,
+        "status": "complete",
+        "elapsedMs": 11551.080541,
+        "work": 9723588,
+        "peakSamples": 88841,
+        "routes": 10000
+      }
+    ]
+  },
+  "firstFailures": [
+    {
+      "scope": "package",
+      "message": "packed1673129 >1672900; uncompressed7558637 >7557900 also measured",
+      "resolution": "minimal100byte rounded caps1673200/7558700"
+    },
+    {
+      "scope": "harness",
+      "message": "relative tar path resolved under temp consumer and ENOENT",
+      "resolution": "absolute same-bytes archive path; no runtime change"
+    },
+    {
+      "scope": "bundle",
+      "message": "Node20 Full781519 >781500 after all5runtime passed",
+      "resolution": "781600; all18 saved measurements revalidated; no reinstall"
+    }
+  ],
+  "pending": [
+    "actual Chromium DPR1/2 warmup5+30 HEB10k P95",
+    "source-pinned documentation metadata"
+  ],
+  "remaining": [
+    "authentic preparation duplicate validation audit",
+    "force1k/10k and edgepath10k algorithmic limits",
+    "density owned by root",
+    "AT82 full and STEP077 not complete"
+  ]
+}

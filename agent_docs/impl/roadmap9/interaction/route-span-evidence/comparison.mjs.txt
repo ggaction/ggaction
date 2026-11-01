@@ -1,0 +1,10 @@
+import {sampleClampedSpline} from '../src/grammar/graph/routes/spline.js';
+import {createRouteBudget} from '../src/grammar/graph/routes/budget.js';
+import {writeFileSync} from 'node:fs';import {createHash} from 'node:crypto';
+let state=931;const rand=()=>((state=(Math.imul(state,1664525)+1013904223)>>>0)/2**32);
+const cases=[];for(const count of [2,3,4,5,8])for(let k=0;k<24;k++){
+ const points=Array.from({length:count},()=>({x:(rand()-.5)*8,y:(rand()-.5)*8}));
+ const budget=createRouteBudget();const result=sampleClampedSpline(points,{tolerance:.0001},budget);
+ cases.push({points,result});
+}
+const json=JSON.stringify(cases);writeFileSync(process.argv[2],json+'\n');console.log(JSON.stringify({cases:cases.length,sha256:createHash('sha256').update(json).digest('hex')}));

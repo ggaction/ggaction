@@ -25,6 +25,38 @@ const streams = buffer => [...buffer.toString("latin1").matchAll(/stream\r?\n([\
 });
 
 export const cases = [
+  { id: "edge-routes/bounded-hierarchy-spans", run() {
+    const count = 9999, edgeCount = 10000;
+    const nodes = Array.from({ length: count }, (_, id) => ({ id }));
+    const edges = Array.from({ length: edgeCount }, (_, id) => ({ id, source: id % count, target: (id + 3333) % count }));
+    let base = chart().createData({ id: "tree", values: [{ key: "root", parent: null, value: 0 },
+      ...nodes.map(({ id }) => ({ key: id, parent: "root", value: 1 }))] })
+      .createHierarchyData({ id: "hierarchy", data: "tree", key: "key", parent: "parent", value: "value" })
+      .layoutHierarchy({ id: "tree-layout", method: "tree", options: { nodeSize: [1, 1], siblingGap: 1, depthGap: 100, orientation: "vertical" } });
+    const hierarchy = base.semanticSpec.resources.find(r => r.kind === "hierarchy");
+    const anchors = new Map(base.semanticSpec.resources.find(r => r.kind === "layout").result.nodes.map(n => [n.key, n]));
+    const positions = hierarchy.result.nodes.filter(n => n.depth === 1)
+      .map(n => ({ key: nodes[n.sourceRows[0] - 1].id, x: anchors.get(n.key).x, y: anchors.get(n.key).y }));
+    const byKey = new Map(positions.map(p => [p.key, p]));
+    base = base.createData({ id: "nodes", values: nodes, keyField: "id" }).createData({ id: "edges", values: edges, keyField: "id" })
+      .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "source", target: "target" })
+      .layoutGraph({ id: "layout", method: "fixed", options: { positions } });
+    const saved = serializeProgram(base);
+    const routed = base.bundleGraphEdges({ id: "routes", graph: "graph", layout: "layout", method: "hierarchical",
+      options: { hierarchy: "hierarchy", hierarchyLayout: "tree-layout", mapping: nodes.map(({ id }) => ({ nodeKey: id, hierarchyKey: id })) } });
+    const result = route(routed).result;
+    assert.equal(result.routes.length, edgeCount); assert.ok(result.diagnostics.work <= 10_000_000);
+    assert.ok(result.diagnostics.peakSamples < 10_000_000);
+    result.routes.forEach((item, i) => {
+      const from = byKey.get(edges[i].source), to = byKey.get(edges[i].target);
+      assert.deepEqual(item.commands[0], { op: "M", x: from.x, y: from.y });
+      assert.deepEqual(item.commands.at(-1), { op: "L", x: to.x, y: to.y });
+      assert.equal(item.controlPoints.length, 3); assert.equal(item.provenance.hierarchyKeys.length, 3);
+      assert.equal(item.provenance.splineVersion, "clamped-uniform@1"); assert.equal(item.provenance.degree, 2);
+    });
+    assert.deepEqual(route(deserializeProgram(serializeProgram(routed))).result, result);
+    assert.equal(serializeProgram(base), saved);
+  } },
   { id: "edge-routes/bounded-long-paths", run() {
     const count = 1000, nodes = Array.from({ length: count }, (_, id) => ({ id }));
     const edges = nodes.map(({ id }) => ({ id, source: id, target: (id + 333) % count }));
