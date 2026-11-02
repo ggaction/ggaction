@@ -12,6 +12,11 @@ import { planSourceResourceRevision, planSourceResourceRevisionStages } from "..
 import { prepareScreenRouteRevisionStages } from "../../../src/actions/graphs/screenRoutes.js";
 import { applyCanvasResourceRevision } from "../../../src/materialization/canvasResourceRevision.js";
 import { editCanvasStages } from "../../../src/actions/canvas/actions.js";
+import { editGraphLayoutStages, prepareGraphResourceStages, writePreparedGraphResource } from "../../../src/actions/graphs/layouts.js";
+import { editHierarchyLayoutStages, writeHierarchyResourceStages } from "../../../src/actions/hierarchy/resources.js";
+import { createObservedGraphResource } from "../../../src/materialization/graph/resources.js";
+import { encodeRowKey } from "../../../src/core/itemIdentity.js";
+import { createHierarchyResource } from "../../../src/materialization/hierarchy/resources.js";
 const execution = { policy: "bounded-route@1", ...ROUTE_EXECUTION_MAXIMA };
 const get = (p,kind,id) => p.semanticSpec.resources.find(r=>r.kind===kind&&r.id===id);
 const source = () => chart().createCanvas({width:200,height:100})
@@ -167,5 +172,63 @@ test("exact-plot Canvas stages retain authored plot and native guide layout",asy
     assert.equal(jobs,1);assert.deepEqual(value.graphicSpec,expected.graphicSpec);
     assert.deepEqual(value.materializationConfigs.canvas,expected.materializationConfigs.canvas);
     assert.equal(scope.ledger.buffers(),0);assert.equal(serializeProgram(p),before);
+  }finally{executor.dispose();}
+});
+
+
+test("graph layout and graph resource continuations preserve native revision, child materialization and failure order",async()=>{
+  const base=source().editCanvas({width:400,height:300,margin:30}),executor=workerExecutor();
+  try{
+    const ordinary=base.bundleGraphEdges({id:"r",method:"edge-path"}).createGraphPlot({id:"plot",routes:"r"});
+    const p=(await bounded(base,executor)).createGraphPlot({id:"plot",routes:"r"}),before=serializeProgram(p);
+    const args={node:{key:0,x:2,y:4}},scope={execution,ledger:createRouteLedger(execution)};
+    const changed=await advance(editGraphLayoutStages(p,args,get(p,"layout","l"),scope),executor,scope);
+    assert.equal(changed.jobs,1);assert.deepEqual(changed.value.graphicSpec,ordinary.editLayout({target:"l",...args}).graphicSpec);
+    assert.equal(get(changed.value,"layout","l").revision,1);assert.equal(get(changed.value,"edge-route","r").revision,1);
+    const graph=get(p,"graph","g"),dataset=id=>p.semanticSpec.datasets.find(d=>d.id===id);
+    const candidate=createObservedGraphResource({id:"g",revision:1,nodes:dataset("n"),edges:dataset("e"),definition:{...graph.options.definition,directed:true}});
+    const graphScope={execution,ledger:createRouteLedger(execution)};
+    const plan=await advance(prepareGraphResourceStages(p,candidate,undefined,graphScope),executor,graphScope);
+    const preparedWork=graphScope.ledger.diagnostics().work;
+    const revised={jobs:plan.jobs,value:writePreparedGraphResource(p,plan.value)};
+    assert.ok(graphScope.ledger.diagnostics().work>preparedWork);
+    assert.equal(revised.jobs,1);assert.deepEqual(revised.value.graphicSpec,ordinary.editGraphData({target:"g",definition:{directed:true}}).graphicSpec);
+    assert.deepEqual(["graph","layout","edge-route"].map((kind,index)=>get(revised.value,kind,["g","l","r"][index]).revision),[1,1,1]);
+    assert.equal(scope.ledger.buffers()+graphScope.ledger.buffers(),0);assert.equal(serializeProgram(p),before);
+    const failing={execution,ledger:createRouteLedger(execution)};
+    await assert.rejects(advance(editGraphLayoutStages(p,{order:{}},get(p,"layout","l"),failing),executor,failing),/hierarchy order/);
+    assert.equal(failing.ledger.diagnostics().work,0);assert.equal(serializeProgram(p),before);
+    assert.throws(()=>p.editLayout({target:"l",...args}),/prepareGraphEdgeRoutes/);
+    const controller=new AbortController(),cancelled={execution,ledger:createRouteLedger(execution,controller.signal),signal:controller.signal};
+    const pending=await advance(prepareGraphResourceStages(p,candidate,undefined,cancelled),executor,cancelled);
+    controller.abort(Error("cancel graph apply"));assert.throws(()=>writePreparedGraphResource(p,pending.value),/cancel graph apply/);
+    assert.equal(cancelled.ledger.buffers(),0);assert.equal(serializeProgram(p),before);
+  }finally{executor.dispose();}
+});
+
+test("hierarchy layout and hierarchy resource continuations retain route provenance and native consumer order",async()=>{
+  let base=source().editCanvas({width:400,height:300,margin:30})
+    .createData({id:"tree",values:[{key:"root",parent:null,value:0},{key:0,parent:"root",value:1},{key:1,parent:"root",value:1}]})
+    .createHierarchyData({id:"h",data:"tree",key:"key",parent:"parent",value:"value"})
+    .layoutHierarchy({id:"hl",hierarchy:"h",method:"tree",options:{nodeSize:[10,10],siblingGap:20,depthGap:30,orientation:"vertical"}});
+  base=base.editLayout({target:"l",options:{positions:[0,1].map(key=>{const n=get(base,"layout","hl").result.nodes.find(n=>n.key===encodeRowKey(key));return {key,x:n.x,y:n.y};})}});
+  const options={hierarchy:"h",hierarchyLayout:"hl",mapping:[0,1].map(key=>({nodeKey:key,hierarchyKey:key}))},executor=workerExecutor();
+  try{
+    const ordinary=base.bundleGraphEdges({id:"r",graph:"g",layout:"l",method:"hierarchical",options}).createGraphPlot({id:"plot",routes:"r"}).createTreePlot({id:"treePlot",layout:"hl"});
+    const prepared=await prepareGraphEdgeRoutes(base,{kind:"create",id:"r",graph:"g",layout:"l",method:"hierarchical",options:{...options,execution}},{executor,requestToken:"h",deadlineMs:30000});
+    const p=base.bundleGraphEdges({prepared,requestToken:"h"}).createGraphPlot({id:"plot",routes:"r"}).createTreePlot({id:"treePlot",layout:"hl"}),before=serializeProgram(p);
+    const args={target:"hl",options:{nodeSize:[10,10]}},scope={execution,ledger:createRouteLedger(execution)};
+    const changed=await advance(editHierarchyLayoutStages(p,args,get(p,"layout","hl"),scope),executor,scope);
+    assert.equal(changed.jobs,1);assert.deepEqual(changed.value.graphicSpec,ordinary.editLayout(args).graphicSpec);
+    assert.deepEqual(get(changed.value,"edge-route","r").result.routes[0].provenance,get(ordinary.editLayout(args),"edge-route","r").result.routes[0].provenance);
+    const previous=get(p,"hierarchy","h"),dataset=p.semanticSpec.datasets.find(d=>d.id==="tree");
+    const candidate=createHierarchyResource({id:"h",revision:1,dataset,options:{...previous.options,valueMode:"own-plus-children"}}),nextScope={execution,ledger:createRouteLedger(execution)};
+    const revised=await advance(writeHierarchyResourceStages(p,candidate,nextScope),executor,nextScope);
+    assert.equal(revised.jobs,1);assert.deepEqual(revised.value.graphicSpec,ordinary.editHierarchyData({target:"h",valueMode:"own-plus-children"}).graphicSpec);
+    assert.equal(get(revised.value,"layout","hl").revision,1);assert.equal(get(revised.value,"edge-route","r").revision,1);
+    const failed={execution,ledger:createRouteLedger(execution)};
+    await assert.rejects(advance(editHierarchyLayoutStages(p,{target:"hl",options:{depthGap:40}},get(p,"layout","hl"),failed),executor,failed),/anchors must match/);
+    assert.equal(failed.ledger.buffers(),0);
+    assert.equal(scope.ledger.buffers()+nextScope.ledger.buffers(),0);assert.equal(serializeProgram(p),before);
   }finally{executor.dispose();}
 });

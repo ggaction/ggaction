@@ -29,8 +29,8 @@ export function withPreparedDataResourceResults(program, args, replacements, ope
 
 // Facet projections create a new dataset identity, not a later source revision.
 // This separate private authority still binds exact refs and a complete result DAG.
-export function withPreparedProjectedResourceResults(program, args, replacements, operation, dataReplacements) {
-  return bindPreparedResources(program, args, replacements, operation, dataReplacements, false, { projected: true });
+export function withPreparedProjectedResourceResults(program, args, replacements, operation, dataReplacements, routeScope) {
+  return bindPreparedResources(program, args, replacements, operation, dataReplacements, false, { projected: true, routeScope });
 }
 
 // Canvas revisions may invalidate several independent screen-space routes.
