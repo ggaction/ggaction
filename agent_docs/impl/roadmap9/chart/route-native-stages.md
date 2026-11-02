@@ -87,3 +87,5 @@ B dispatch에 연결하지 않았다. 서로 다른 정책의 전체 요청 admi
 
 공개 B update, full332후보 인수, screen/guide/fit/composition continuations, 원1k/10k 실행,
 전 구간100ms는 계속 미완료다. 이 기록은 해당 범위를 축소하거나 완료로 처리하지 않는다.
+
+검증 source commit은 `c2dc6b2589d1a04e86a3be9145d4f16326b746d5`이며 후행 metadata pin은 실행 bytes를 바꾸지 않는다.
