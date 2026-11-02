@@ -91,13 +91,13 @@ export function forceRouteSchedule() {
   return cycles;
 }
 
-export function bundleForceDirectedRoutes(input, optionsInput = {}, signal) {
-  const options = normalizeForceRouteOptions(optionsInput), context = prepareRouteInput(input, signal);
+export function bundleForceDirectedRoutes(input, optionsInput = {}, signal, scope) {
+  const options = normalizeForceRouteOptions(optionsInput), context = prepareRouteInput(input, signal, scope);
   const metrics = context.edges.map(edge => forceEdgeMetric([edge.source, edge.target]));
   const active = metrics.flatMap((metric, index) => metric.length > FDEB_EPSILON ? [index] : []);
   const candidatePairs = active.length * (active.length - 1) / 2;
   context.budget.pairs(candidatePairs); context.budget.charge(candidatePairs * 16);
-  const neighbors = buildForceNeighbors(metrics, active, context.model.directed, options.compatibilityThreshold, context.budget.check);
+  const neighbors = buildForceNeighbors(metrics, active, context.model.directed, options.compatibilityThreshold, context.budget.check, undefined, context.budget);
   try {
     const compatibilityPairs = neighbors.pairs;
     const cycles = active.length ? forceRouteSchedule() : [];

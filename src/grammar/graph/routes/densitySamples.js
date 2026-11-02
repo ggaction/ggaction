@@ -32,7 +32,7 @@ export function densitySampleByteBound(count, edges, longest) {
 
 // Solver-private storage: coordinates remain in the original immutable routes.
 // Existing sample capacity bounds every count and the derived byte reservation;
-// this is not a new public memory policy or a whole-JS-heap guarantee.
+// V2 additionally reserves these buffers in its request ledger, not the whole JS heap.
 export function prepareDensitySamples(routes, budget) {
   budget.check();
   let count = 0, longest = 0;
@@ -43,12 +43,13 @@ export function prepareDensitySamples(routes, budget) {
   }
   const maximumBytes = densitySampleByteBound(count, routes.length, longest);
   const table = { weights: undefined, angles: undefined, offsets: undefined, count, bytes: 0, peakBytes: 0 };
+  if (budget.reserve !== undefined) table.release = budget.release;
   let lengths;
   const reserve = bytes => {
     budget.check();
     const next = table.bytes + bytes;
     validateGeneratedItemLimit(next, "Density sample buffer bytes", maximumBytes);
-    table.bytes = next; table.peakBytes = Math.max(table.peakBytes, next);
+    budget.reserve?.(bytes); table.bytes = next; table.peakBytes = Math.max(table.peakBytes, next);
   };
   try {
     reserve(count * 8); table.weights = new Float64Array(count);
@@ -64,7 +65,7 @@ export function prepareDensitySamples(routes, budget) {
       cursor += routes[edge].length;
     }
     table.offsets[routes.length] = cursor;
-    table.bytes -= lengths.byteLength;
+    budget.release?.(lengths.byteLength); table.bytes -= lengths.byteLength;
     return table;
   } catch (error) {
     disposeDensitySamples(table); throw error;
@@ -72,6 +73,7 @@ export function prepareDensitySamples(routes, budget) {
 }
 
 export function disposeDensitySamples(table) {
+  table.release?.(table.bytes); delete table.release;
   table.weights = table.angles = table.offsets = undefined;
   table.count = table.bytes = table.peakBytes = 0;
 }

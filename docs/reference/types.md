@@ -5917,7 +5917,7 @@ export interface ECDFOutputFields {
 <summary>Expand EdgePathRouteOptions</summary>
 
 ```typescript
-export interface EdgePathRouteOptions extends EdgeRouteCommonOptions { readonly exponent?: number; readonly maxStretch?: number; }
+export type EdgePathRouteOptions = EdgeRouteCommonOptions & { readonly exponent?: number; readonly maxStretch?: number; };
 ```
 
 </details>
@@ -5930,12 +5930,15 @@ Related types: [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions).
 <summary>Expand EdgeRouteCommonOptions</summary>
 
 ```typescript
-export interface EdgeRouteCommonOptions { readonly zeroLength?: "point"; readonly limits?: EdgeRouteLimits; }
+export type EdgeRouteCommonOptions = { readonly zeroLength?: "point" } & (
+  { readonly execution?: never; readonly limits?: EdgeRouteLimits }
+  | { readonly execution: EdgeRouteExecution; readonly limits?: Pick<EdgeRouteLimits, "maxNodes" | "maxEdges"> }
+);
 ```
 
 </details>
 
-Related types: [`EdgeRouteLimits`](#type-edgeroutelimits).
+Related types: [`EdgeRouteLimits`](#type-edgeroutelimits) · [`EdgeRouteExecution`](#type-edgerouteexecution).
 
 ### `EdgeRouteDefinition` {#type-edgeroutedefinition}
 
@@ -5953,6 +5956,21 @@ export type EdgeRouteDefinition =
 </details>
 
 Related types: [`HierarchicalEdgeRouteOptions`](#type-hierarchicaledgerouteoptions) · [`ForceDirectedEdgeRouteOptions`](#type-forcedirectededgerouteoptions) · [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions) · [`EdgePathRouteOptions`](#type-edgepathrouteoptions).
+
+### `EdgeRouteExecution` {#type-edgerouteexecution}
+
+<details markdown="1">
+<summary>Expand EdgeRouteExecution</summary>
+
+```typescript
+export interface EdgeRouteExecution {
+  readonly policy: "bounded-route@1";
+  readonly maxWork: number; readonly maxCandidatePairs: number; readonly maxSamples: number;
+  readonly maxBufferBytes: number; readonly maxBytes: number;
+}
+```
+
+</details>
 
 ### `EdgeRouteLimits` {#type-edgeroutelimits}
 
@@ -9112,7 +9130,7 @@ export interface FoldDataOutputFields {
 <summary>Expand ForceDirectedEdgeRouteOptions</summary>
 
 ```typescript
-export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { readonly compatibilityThreshold?: number; }
+export type ForceDirectedEdgeRouteOptions = EdgeRouteCommonOptions & { readonly compatibilityThreshold?: number; };
 ```
 
 </details>
@@ -10029,7 +10047,7 @@ Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionsc
 <summary>Expand HierarchicalEdgeRouteOptions</summary>
 
 ```typescript
-export interface HierarchicalEdgeRouteOptions extends EdgeRouteCommonOptions {
+export type HierarchicalEdgeRouteOptions = EdgeRouteCommonOptions & {
   readonly hierarchy?: string; readonly hierarchyLayout?: string;
   readonly mapping: readonly { readonly nodeKey: RowKey; readonly hierarchyKey: RowKeyScalar }[];
   readonly strength?: number; readonly tolerance?: number; readonly maxSubdivisions?: number;

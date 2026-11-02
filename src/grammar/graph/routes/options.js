@@ -2,6 +2,7 @@ import { cloneAndFreeze } from "../../../core/immutable.js";
 import { ownArray, ownRecord } from "../../../core/ownData.js";
 import { encodeRowKey } from "../../../core/itemIdentity.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit } from "../../../core/validation.js";
+import { normalizeRouteExecution, normalizeRouteNodeLimits } from "./execution.js";
 import { normalizeRouteLimits } from "./budget.js";
 import { normalizeHierarchicalRouteOptions } from "./hierarchical.js";
 import { normalizeForceRouteOptions } from "./forceDirected.js";
@@ -37,15 +38,19 @@ export function normalizeRouteIntent(method, input = {}, coordinateSpace = "worl
   if (!["world", "screen"].includes(coordinateSpace)) throw new TypeError("Route coordinateSpace must be world or screen.");
   input = Object.assign(Object.create(null), ownRecord(input, "Edge route options"));
   if (Object.values(input).some(value => value === undefined || value === null)) throw new TypeError("Edge route options cannot contain null or undefined.");
-  const { limits: rawLimits = {}, mapping, ...numeric } = input;
-  const limits = normalizeRouteLimits(rawLimits);
+  const { limits: rawLimits = {}, mapping, ...rest } = input;
+  const bounded = Object.hasOwn(input, "execution");
+  const execution = bounded ? normalizeRouteExecution(input.execution) : undefined;
+  const numeric = bounded ? Object.fromEntries(Object.entries(rest).filter(([key]) => key !== "execution")) : rest;
+  const limits = bounded ? normalizeRouteNodeLimits(rawLimits) : normalizeRouteLimits(rawLimits);
   if (method !== "hierarchical" && Object.hasOwn(input, "mapping")) throw new TypeError("Only hierarchical routes use mapping.");
-  const options = { ...normalizers[method](numeric), limits,
+  const options = { ...normalizers[method](numeric), limits, ...(bounded ? { execution } : {}),
     ...(method === "hierarchical" ? { mapping: normalizeRouteMapping(mapping, limits.maxNodes) } : {}) };
   return cloneAndFreeze({ method, coordinateSpace, options });
 }
 
 export function routeNumericOptions(intent) {
   const { limits: _limits, mapping: _mapping, ...options } = Object.assign(Object.create(null), intent.options);
+  if (Object.hasOwn(intent.options, "execution")) delete options.execution;
   return options;
 }

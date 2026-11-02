@@ -11,9 +11,16 @@ export interface GraphRouteCompletion {
   readonly inputHash: string; readonly resultHash: string;
   readonly result: EdgeRouteResult & { readonly options: Readonly<Record<string, unknown>> };
 }
+export interface GraphRouteJobV2 extends Omit<GraphRouteJob, "schemaVersion"> {
+  readonly schemaVersion: 2;
+}
+export interface GraphRouteCompletionV2 extends GraphRouteCompletion {
+  readonly schemaVersion: 2;
+  readonly result: GraphRouteCompletion["result"] & { readonly diagnostics: EdgeRouteResult["diagnostics"] & { readonly peakBufferBytes: number } };
+}
 /** A browser Worker satisfies this protocol. One request owns one worker until completion, error or cancellation. */
 export interface GraphRouteWorker {
-  postMessage(message: { readonly job: GraphRouteJob }): void;
+  postMessage(message: { readonly job: GraphRouteJob | GraphRouteJobV2 }): void;
   addEventListener(type: "message", listener: (event: { readonly data: unknown }) => void): void;
   addEventListener(type: "error", listener: (event: { readonly error: unknown }) => void): void;
   removeEventListener(type: "message", listener: (event: { readonly data: unknown }) => void): void;
@@ -22,14 +29,19 @@ export interface GraphRouteWorker {
 }
 export interface GraphRouteExecutor {
   compute(job: GraphRouteJob, options?: { readonly signal?: AbortSignal }): Promise<GraphRouteCompletion>;
+  compute(job: GraphRouteJobV2, options: { readonly signal?: AbortSignal; readonly deadlineMs: number }): Promise<GraphRouteCompletionV2>;
   evict(inputHash?: string): void;
   dispose(): void;
 }
 export type GraphEdgeRoutesRequest = ({ readonly kind: "create" } & BundleGraphEdgesOptions)
   | ({ readonly kind: "edit" } & EditEdgeRouteOptions);
-export interface GraphEdgeRoutesHost { readonly requestToken: string; readonly signal?: AbortSignal; readonly executor?: GraphRouteExecutor; }
+export type GraphEdgeRoutesHost = { readonly requestToken: string; readonly signal?: AbortSignal } & (
+  { readonly executor?: GraphRouteExecutor; readonly deadlineMs?: never }
+  | { readonly executor: GraphRouteExecutor; readonly deadlineMs: number }
+);
 export function createGraphRouteExecutor(options?: { readonly createWorker?: () => GraphRouteWorker }): GraphRouteExecutor;
 export function computeGraphEdgeRoutes(job: GraphRouteJob, signal?: AbortSignal): GraphRouteCompletion;
+export function computeGraphEdgeRoutesAsync(job: GraphRouteJobV2, signal?: AbortSignal): Promise<GraphRouteCompletionV2>;
 export function prepareGraphEdgeRoutes(program: ChartProgram, request: GraphEdgeRoutesRequest, host: GraphEdgeRoutesHost): Promise<PreparedGraphEdgeRoutes>;
 
 import type { CreateInferredGraphDataOptions, EditInferredGraphDataOptions, PreparedInferredGraphData, GraphModel, GraphInferenceDiagnostics } from "./program.js";

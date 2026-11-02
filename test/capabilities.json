@@ -453,6 +453,14 @@
     "edge-routes": [
       {
         "type": "file",
+        "path": "contracts/graph-route-package.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-route-bounded.test.js"
+      },
+      {
+        "type": "file",
         "path": "browser/edge-routes.browser.js"
       },
       {

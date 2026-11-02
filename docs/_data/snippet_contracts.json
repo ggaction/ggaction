@@ -1867,6 +1867,34 @@
     "executable": false
   },
   {
+    "file": "api/edge-routes.md",
+    "block": 1,
+    "heading": "Explicit bounded execution",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "d85555f9cf121e477af3b9829296037226c8cc51b02fb9374f770de6a3120760",
+    "executable": false
+  },
+  {
+    "file": "api/edge-routes.md",
+    "block": 2,
+    "heading": "Explicit bounded execution",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "self"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `self`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "6ee07b3b6e36d419a09aca519c1af4275b08366844e0bb814c683e343b3f0a38",
+    "executable": false
+  },
+  {
     "file": "api/encodings.md",
     "block": 1,
     "heading": "Choose appearance with conditions",

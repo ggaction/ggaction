@@ -1,3 +1,5 @@
+import { createRouteLedger } from "./execution.js";
+import { routeHashStages, finishRouteStages, ROUTE_COMPLETION_BYTES } from "./valueHash.js";
 import { cloneAndFreeze } from "../../../core/immutable.js";
 import { ownArray, ownRecord } from "../../../core/ownData.js";
 import { validateWorkLimit } from "../../../core/validation.js";
@@ -16,16 +18,20 @@ const samePoint = (a, b) => Object.is(a.x, b.x) && Object.is(a.y, b.y);
 
 // Validate a completed value without rerunning any solver. Input and result
 // digests establish reproducible consistency, not cryptographic authenticity.
-export function validateRouteResult(jobInput, envelope) {
-  const job = validateRouteJob(jobInput), context = prepareRouteInput(job.input);
-  exactRouteRecord(envelope, ["inputHash", "resultHash", "result"], "Route completion");
+function validateRouteGeometry(job, envelope, scope) {
+  const bounded = job.schemaVersion === 2;
+  const context = prepareRouteInput(bounded ? { ...job.input, limits: job.intent.options.limits } : job.input,
+    scope?.signal, bounded ? scope ?? { execution: job.intent.options.execution } : scope === undefined ? undefined : { ledger: scope.ledger });
+  exactRouteRecord(envelope, [...(bounded ? ["schemaVersion"] : []), "inputHash", "resultHash", "result"], "Route completion");
+  if (bounded && envelope.schemaVersion !== 2) throw new TypeError("Route completion requires schemaVersion 2.");
   if (envelope.inputHash !== job.inputHash) throw new TypeError("Route completion input is stale.");
   const result = envelope.result;
   exactRouteRecord(result, ["complete", "routes", "diagnostics", "options"], "Route result");
   if (result.complete !== true) throw new TypeError("Only complete routes can be stored.");
   exactRouteRecord(result.options, Object.keys(routeNumericOptions(job.intent)), "Route result options");
   normalizeRouteIntent(job.intent.method, { ...result.options, limits: job.intent.options.limits,
-    ...(job.intent.method === "hierarchical" ? { mapping: job.intent.options.mapping } : {}) }, job.intent.coordinateSpace);
+    ...(job.intent.method === "hierarchical" ? { mapping: job.intent.options.mapping } : {}),
+    ...(bounded ? { execution: job.intent.options.execution } : {}) }, job.intent.coordinateSpace);
   if (routeValueHash(result.options) !== routeValueHash(routeNumericOptions(job.intent))) throw new TypeError("Route result options disagree with intent.");
   if (Array.isArray(result.routes) && result.routes.length !== context.model.edges.length) throw new TypeError("Route result membership is stale.");
   ownArray(result.routes, "Route results");
@@ -53,7 +59,32 @@ export function validateRouteResult(jobInput, envelope) {
   }
   validateRouteProvenance(job, result, context);
   validateRouteDiagnostics(job, result, context);
-  validateWorkLimit(result.diagnostics.work, "Stored route work");
+  if (!bounded) validateWorkLimit(result.diagnostics.work, "Stored route work");
+  return result;
+}
+
+export function validateRouteResult(jobInput, envelope, scope) {
+  const job = validateRouteJob(jobInput);
+  if (job.schemaVersion === 2) return finishRouteStages(validateRouteResultStages(job, envelope, scope));
+  const result = validateRouteGeometry(job, envelope, scope);
   if (typeof envelope.resultHash !== "string" || envelope.resultHash !== routeValueHash(result)) throw new TypeError("Route result hash is stale.");
   return cloneAndFreeze(envelope);
+}
+
+
+export function* validateRouteResultStages(jobInput, envelope, scope) {
+  const job = validateRouteJob(jobInput);
+  if (job.schemaVersion !== 2) throw new TypeError("Asynchronous route validation requires schemaVersion 2.");
+  const execution = job.intent.options.execution, ledger = scope?.ledger ?? createRouteLedger(execution, scope?.signal);
+  validateRouteGeometry(job, envelope, { execution, ledger, signal: scope?.signal });
+  if (typeof envelope.resultHash !== "string" || !/^[a-f0-9]{64}$/.test(envelope.resultHash)) throw new TypeError("Route result hash is stale.");
+  const checked = cloneAndFreeze(envelope);
+  jobInput = undefined; envelope = undefined;
+  // Worker counters are checked before contributing to the request ledger.
+  if (scope?.includeComputation !== false) { ledger.charge(checked.result.diagnostics.work); ledger.pairs(checked.result.diagnostics.candidatePairs); }
+  ledger.samples(checked.result.diagnostics.peakSamples);
+  ledger.reserve(checked.result.diagnostics.peakBufferBytes); ledger.release(checked.result.diagnostics.peakBufferBytes);
+  const digest = yield* routeHashStages(checked.result, execution, ledger, ROUTE_COMPLETION_BYTES);
+  if (checked.resultHash !== digest.hash) throw new TypeError("Route result hash is stale.");
+  ledger.check(); return checked;
 }

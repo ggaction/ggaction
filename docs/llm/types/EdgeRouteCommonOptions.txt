@@ -1,1 +1,4 @@
-export interface EdgeRouteCommonOptions { readonly zeroLength?: "point"; readonly limits?: EdgeRouteLimits; }
+export type EdgeRouteCommonOptions = { readonly zeroLength?: "point" } & (
+  { readonly execution?: never; readonly limits?: EdgeRouteLimits }
+  | { readonly execution: EdgeRouteExecution; readonly limits?: Pick<EdgeRouteLimits, "maxNodes" | "maxEdges"> }
+);

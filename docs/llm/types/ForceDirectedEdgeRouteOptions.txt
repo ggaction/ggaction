@@ -1,1 +1,1 @@
-export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { readonly compatibilityThreshold?: number; }
+export type ForceDirectedEdgeRouteOptions = EdgeRouteCommonOptions & { readonly compatibilityThreshold?: number; };

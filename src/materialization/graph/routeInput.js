@@ -35,7 +35,7 @@ export function resolveRouteInput(program, graph, layout, intent, hierarchy, hie
   } else {
     edgeKeys = model.edges.map(edge => [edge.ruleId, edge.directed, byKey.get(edge.sourceKey), byKey.get(edge.targetKey)]);
   }
-  const input = { model, positions: layout.result.nodes, order: { nodes: nodeRanks, edges: ranks(edgeKeys) }, limits: normalized.options.limits };
+  const input = { model, positions: layout.result.nodes, order: { nodes: nodeRanks, edges: ranks(edgeKeys) }, ...(Object.hasOwn(normalized.options, "execution") ? {} : { limits: normalized.options.limits }) };
   const inputs = [reference(graph), reference(layout)];
   let hierarchyInput;
   if (normalized.method === "hierarchical") {

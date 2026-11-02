@@ -1,0 +1,5 @@
+export interface EdgeRouteExecution {
+  readonly policy: "bounded-route@1";
+  readonly maxWork: number; readonly maxCandidatePairs: number; readonly maxSamples: number;
+  readonly maxBufferBytes: number; readonly maxBytes: number;
+}

@@ -3,19 +3,20 @@ import { forceCompatibility } from "./compatibility.js";
 const CHUNK_PAIRS = 32_768;
 
 // Only the solver's already budgeted, ordered active edges enter this owner.
-// The byte bound is derived from that same candidate count, not a new policy.
-export function buildForceNeighbors(metrics, active, directed, threshold, check, chunkPairs = CHUNK_PAIRS) {
+// The structural byte bound retains the candidate count; V2 also reserves it.
+export function buildForceNeighbors(metrics, active, directed, threshold, check, chunkPairs = CHUNK_PAIRS, budget) {
   check();
   const count = metrics.length, candidates = active.length * (active.length - 1) / 2;
   const headerBytes = 4 * (count + 1) + 4 * count, maximumBytes = headerBytes + 13 * candidates;
   if (![count, candidates, chunkPairs].every(value => Number.isSafeInteger(value) && value >= 0 && value <= 0xffffffff) ||
       chunkPairs === 0 || !Number.isSafeInteger(maximumBytes)) throw new RangeError("Force neighbor buffer sizes must be bounded integers.");
   const table = { offsets: undefined, degrees: undefined, chunks: [], pairs: 0, bytes: 0, chunkPairs };
+  if (budget?.reserve !== undefined) table.release = budget.release;
   const reserve = bytes => {
     check();
     const next = table.bytes + bytes;
     if (!Number.isSafeInteger(next) || next > maximumBytes) throw new RangeError("Force neighbor buffers exceed their candidate bound.");
-    table.bytes = next;
+    budget?.reserve?.(bytes); table.bytes = next;
   };
   try {
     reserve(headerBytes);
@@ -61,6 +62,7 @@ export function forEachForceNeighbor(table, visit) {
 }
 
 export function disposeForceNeighbors(table) {
+  table.release?.(table.bytes); delete table.release;
   table.chunks.length = 0;
   table.offsets = table.degrees = undefined;
   table.pairs = table.bytes = 0;

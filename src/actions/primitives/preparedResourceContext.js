@@ -17,8 +17,8 @@ export function preparedResourceResults(args, enteredProgram) {
 
 // Bind precomputed dependent results only to the exact resource primitive argument.
 // Nested callers restore their prior binding and every exit removes authority.
-export function withPreparedResourceResults(program, args, replacements, operation, dataReplacements = []) {
-  return bindPreparedResources(program, args, replacements, operation, dataReplacements, false);
+export function withPreparedResourceResults(program, args, replacements, operation, dataReplacements = [], routeScope) {
+  return bindPreparedResources(program, args, replacements, operation, dataReplacements, false, { routeScope });
 }
 
 // Source revisions may update independent resources rooted in the same exact
@@ -39,7 +39,7 @@ export function withPreparedScreenRouteResults(program, args, replacements, oper
   return bindPreparedResources(program, args, replacements, operation, [], false, { screenRooted: true });
 }
 
-function bindPreparedResources(program, args, replacements, operation, dataReplacements, dataRooted, { projected = false, screenRooted = false } = {}) {
+function bindPreparedResources(program, args, replacements, operation, dataReplacements, dataRooted, { projected = false, screenRooted = false, routeScope } = {}) {
   ownRecord(args, "Prepared resource arguments");
   ownArray(replacements, "Prepared resource replacements");
   const identities = new Set();
@@ -76,7 +76,7 @@ function bindPreparedResources(program, args, replacements, operation, dataRepla
     dataIds.add(entry.previous.id);
   }
   const hadPrevious = prepared.has(args), previous = prepared.get(args);
-  prepared.set(args, { program, replacements: cloneAndFreeze(replacements), dataReplacements: cloneAndFreeze(dataReplacements), dataRooted, projected, screenRooted });
+  prepared.set(args, { program, replacements: cloneAndFreeze(replacements), dataReplacements: cloneAndFreeze(dataReplacements), dataRooted, projected, screenRooted, routeScope });
   try { return operation(args); }
   finally { if (hadPrevious) prepared.set(args, previous); else prepared.delete(args); }
 }
@@ -99,4 +99,10 @@ export function preparedResourceDataProjection(args, enteredProgram) {
 export function preparedResourceScreenRooted(args, enteredProgram) {
   preparedResourceResults(args, enteredProgram);
   return prepared.get(args)?.screenRooted === true;
+}
+
+// Resource validation uses the same native request counters, never new proof.
+export function preparedResourceRouteScope(args, enteredProgram) {
+  preparedResourceResults(args, enteredProgram);
+  return prepared.get(args)?.routeScope;
 }
