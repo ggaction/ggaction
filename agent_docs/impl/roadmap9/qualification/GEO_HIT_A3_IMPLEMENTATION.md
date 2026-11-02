@@ -9,7 +9,7 @@
 - [x] 같은 archive 3Node/browser/types/docs/bundle, 모든 critical coverage floor
 - [ ] 새 archive 원100k rebase/offline 전체 기능 (WeakSet rehash 병목 유지)
 - [ ] 원 canonical benchmark 5 warmup + 30 measured, 100cycle/retention
-- [ ] 최종 source/evidence pin과 원격 checkpoint
+- [x] 제품 source/evidence pin과 원격 진행 checkpoint (원 큰 rebase/P95/100cycle은 위 open 유지)
 
 공개 정책은 INTERACTION/current, types, public API 문서가 소유한다. 이 기록은 기능 구현 과정의 증거이며 STEP077 완료나 P95 통과 선언이 아니다. Root의 기존 remainingApproval 채택을 재사용하며 별도 PR/publish/deploy를 하지 않는다.
 
@@ -64,3 +64,5 @@ Root는 위 실제제품 준비 병목을 확인하고, 원 계산·검증·과�
 별도 package load hook은 원 WeakSet.add를 그대로 실행하며 global `ownedValues`와 traversal `ancestors`별 비용과 느린 JS stack을 기록했다.25.1M 호출 시 owned 누적71.53s/max6.58s, ancestor누적1.40s/max12.9ms였다. `freezeOwned→cloneAndFreeze→geo/projections.result/forward→stream.lineCoordinates`, scene snapshot, Geo group snapshot이 느린 호출 경로다. PID89817은 필요한 attribution 확보 후 rebase plan에서 중단했다. 이 진단은 제품 source나 수학을 바꾸지 않았지만 계측이 GC 시점을 바꾸므로 제품 성능 통과가 아니다. Ancestor Set 교체안은 근거가 없어 폐기했다. Global registry의 회전·삭제·리셋도 하지 않는다.
 
 [증거와 재실행 설명](geo-hit-a3-evidence/README.md), [source별 SHA와 미완료 목록](geo-hit-a3-evidence/verification.json)이 범위를 고정한다. 다음 개념은 공개 owned facade를 보존하며 내부 synchronous projection result 조립에서 반복 ownership 등록을 줄일 수 있는지 소형 oracle과 구체 계수로 먼저 확인하는 것이다. Canonical benchmark 입력·timers·SLO·5+30/DPR1·2와 원 모든좌표 검산 의무는 유지한다.
+
+제품 source commit은 `dd1837f399fed9e6afc78f0878a796cb576b2527`이며 이 후속 pin은 metadata-only다. 최종 frozen archive와 source별 SHA가 위 증거에 연결되어 있다.

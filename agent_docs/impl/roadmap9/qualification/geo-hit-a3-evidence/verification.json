@@ -53,5 +53,6 @@
     "canonical camera/hit 5+30 DPR1/2",
     "original100cycle retention/lifetime"
   ],
-  "guards": "default parts30000 / geometry1000000 / stroke1000000 / query2000000 / weighted union1000000 preserved"
+  "guards": "default parts30000 / geometry1000000 / stroke1000000 / query2000000 / weighted union1000000 preserved",
+  "sourceCommit": "dd1837f399fed9e6afc78f0878a796cb576b2527"
 }
