@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 426_300, // Shared tagged fragments: Node20/24 426,217 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 69_600, // Integrated JSON string counter: Node20 69,506 gzip bytes.
-  "ggaction/animation": 343_700, // Exact owned Geo snapshot reuse: Node20/24 343,602 gzip bytes.
+  "ggaction/animation": 343_800, // Single-admission Geo sample calculation: Node20/24 343,722 gzip bytes.
   "ggaction/interaction": 140_100 // Explicit path hit index and policy: Node20/24 140,077 gzip bytes.
 });
 

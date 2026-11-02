@@ -7,10 +7,10 @@
 - [x] 일반 admission·오류 순서·실제 작업량·누적 guard 반례 증거
 - [x] 후보 loader로 기존 Geo animation 131 tests 통과
 - [x] Root의 exact checkpoint e4ce7d2f3 검토·채택
-- [ ] 제품 적용 및 capability tests 편입
+- [x] 제품 적용 및 capability tests 편입
 - [ ] 제품 archive·설치 consumer·original100k 기능·exclusive canonical 성능 검증
 
-Root는 2026-11-02에 [수명/호출 감사](GEO_LIFETIME_SCOPE_AUDIT.md)의 C1 방향을 검토하고, “같은 호출에서 한 번 검증한 exact immutable presentation/group을 즉시 소비하는 계산 분리”를 허용했다. 먼저 concrete diff와 diagnostics/aggregate work 동등성을 원격 checkpoint로 고정하도록 지시했다. 이 문서는 그 선행 검토 자료다. 새 사용자 승인 요청이나 새 공개 API/schema 결정은 아니다. **제품 source는 아직 변경하지 않았다.** C2와 global registry/cache 변경은 포함하지 않는다.
+Root는 2026-11-02에 [수명/호출 감사](GEO_LIFETIME_SCOPE_AUDIT.md)의 C1 방향을 검토하고, “같은 호출에서 한 번 검증한 exact immutable presentation/group을 즉시 소비하는 계산 분리”를 허용했다. 먼저 concrete diff와 diagnostics/aggregate work 동등성을 원격 checkpoint로 고정하도록 지시했다. 이 문서는 그 선행 검토 자료다. 새 사용자 승인 요청이나 새 공개 API/schema 결정은 아니다. **이 read-only checkpoint 시점의 제품 source는 변경하지 않았다.** C2와 global registry/cache 변경은 포함하지 않는다.
 
 ## 정확한 변경 경계
 
@@ -56,3 +56,5 @@ GEO_C1_MODE=candidate node --import ./agent_docs/impl/roadmap9/qualification/geo
 ## 구체 채택 기록
 
 Root는 2026-11-02에 `e4ce7d2f3`의 concrete proposal과 patch를 읽고 기존 remainingApproval 범위에서 그대로 제품 적용하도록 채택했다. 최초 입력검사·수학·stream·모든 guard와 generic/restore/v3–5 정합을 유지하고 admission/order/diagnostics/aggregate work 반례를 capability tests에 편입하도록 지시했다. C2는 미포함이다. 대형 검증은 scalar PID24486 종료/슬롯 반환 뒤 조율하며, root integration의 package cap은 별도로 유지한다.
+
+채택 후 제품 적용과 현재 검증 결과는 [구현 기록](GEO_SAMPLE_ADMISSION_IMPLEMENTATION.md)으로 이어진다. 위 source-loader 비교는 원`db1fd0890`/proposal`e4ce7d2f3`source에서 재현하며, 제품 적용 뒤에는 고정sourcehash불일치를 의도대로 거부한다.

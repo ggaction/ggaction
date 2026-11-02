@@ -1,0 +1,282 @@
+{
+  "pid": 28930,
+  "node": "v22.23.1",
+  "start": "2026-11-02T13:15:28.460Z",
+  "head": "f6b7946737b716850aeeeef72f315dfd740a81a1",
+  "sourceDiffSHA256": "89eda123fb2a7b888dfc68440aa2436f2ab617aa6265409115c0b909dd51c122",
+  "sources": {
+    "hitShapes": "a331472afd0f034648cc1017eb4dd4be9a30b6db6386f3eb0a221caf0d427803",
+    "hitStroke": "f794d38334f679c363623f37e7b939ff5da189a8db4365cec1427fd6349e2c31",
+    "hitPartIndex": "fb8deea7a446adea041d97c88d2a619506e00626db0c50120b723fd4937e497f",
+    "hitPolicy": "be7191005fee303d0b5ef30a4b63b84690e40f0eee71f5fb860111aff6f3f77e",
+    "hitIndex": "c00cd8d4c938882ea84dcc1cea856d864dd9eacb0a190dc7e866b1e4752d610b"
+  },
+  "cases": [
+    {
+      "count": 100000,
+      "start": "2026-11-02T13:15:28.493Z",
+      "inputSHA256": "3abb4487631f9099de7725acc9bf1fec159d3c6807f5abeba6e583ef3d5d5079",
+      "commands": {
+        "count": 199999,
+        "maxError": 2.0605739337042905e-13,
+        "hash": "24153eb87f7c2ef17e06f95497ce4519ea67c8ff2e240bfc6f4b21c5d675620c"
+      },
+      "default": "explicit-limit",
+      "phase": "complete",
+      "preparationMs": 3518.011624999999,
+      "counts": {
+        "parts": 339849,
+        "strokeWork": 1459397,
+        "geometryWork": 1599247,
+        "nodes": 84963,
+        "indexBuildWork": 5184746,
+        "originalShapeWork": 6736859,
+        "preparationWork": 11921605,
+        "bindingWork": 11921800
+      },
+      "footprints": {
+        "parts": 339849,
+        "commands": 1939096,
+        "hash": "ed299020fa7f2b61130344c9f359aa59ffc13007c0c1453170aed5cd125b9284"
+      },
+      "memory": {
+        "rss": 1047773184,
+        "heapTotal": 918224896,
+        "heapUsed": 876274776,
+        "external": 10355418,
+        "arrayBuffers": 8187111
+      },
+      "queries": [
+        {
+          "point": {
+            "x": 147.64064604418175,
+            "y": 200
+          },
+          "distance": 0,
+          "nearest": {
+            "hit": true,
+            "distance": 0,
+            "localPoint": {
+              "x": 147.64064604418175,
+              "y": 200
+            },
+            "diagnostics": []
+          },
+          "hit": true,
+          "work": 43133,
+          "target": {
+            "itemKey": "[[],\"coast\",\"geo\",[\"9d151042-70d2-4d5f-901b-b884b7e8138c\",\"[\\\"scalar\\\",[[\\\"string\\\",\\\"line\\\"]]]\"]]",
+            "ownerId": "coast",
+            "role": "geo",
+            "childPath": [],
+            "rowKeys": [],
+            "resourceRefs": [
+              {
+                "kind": "geometry",
+                "id": "world",
+                "revision": 0
+              }
+            ],
+            "screenPoint": {
+              "x": 147.64064604418175,
+              "y": 200
+            },
+            "localPoint": {
+              "x": 147.64064604418175,
+              "y": 200
+            },
+            "distance": 0,
+            "zIndex": 1
+          }
+        },
+        {
+          "point": {
+            "x": 200,
+            "y": 200
+          },
+          "distance": 0,
+          "nearest": {
+            "hit": true,
+            "distance": 0,
+            "localPoint": {
+              "x": 200,
+              "y": 200
+            },
+            "diagnostics": []
+          },
+          "hit": true,
+          "work": 97411,
+          "target": {
+            "itemKey": "[[],\"coast\",\"geo\",[\"9d151042-70d2-4d5f-901b-b884b7e8138c\",\"[\\\"scalar\\\",[[\\\"string\\\",\\\"line\\\"]]]\"]]",
+            "ownerId": "coast",
+            "role": "geo",
+            "childPath": [],
+            "rowKeys": [],
+            "resourceRefs": [
+              {
+                "kind": "geometry",
+                "id": "world",
+                "revision": 0
+              }
+            ],
+            "screenPoint": {
+              "x": 200,
+              "y": 200
+            },
+            "localPoint": {
+              "x": 200,
+              "y": 200
+            },
+            "distance": 0,
+            "zIndex": 1
+          }
+        },
+        {
+          "point": {
+            "x": 252.35935395581825,
+            "y": 200
+          },
+          "distance": 0,
+          "nearest": {
+            "hit": true,
+            "distance": 0,
+            "localPoint": {
+              "x": 252.35935395581825,
+              "y": 200
+            },
+            "diagnostics": []
+          },
+          "hit": true,
+          "work": 52055,
+          "target": {
+            "itemKey": "[[],\"coast\",\"geo\",[\"9d151042-70d2-4d5f-901b-b884b7e8138c\",\"[\\\"scalar\\\",[[\\\"string\\\",\\\"line\\\"]]]\"]]",
+            "ownerId": "coast",
+            "role": "geo",
+            "childPath": [],
+            "rowKeys": [],
+            "resourceRefs": [
+              {
+                "kind": "geometry",
+                "id": "world",
+                "revision": 0
+              }
+            ],
+            "screenPoint": {
+              "x": 252.35935395581825,
+              "y": 200
+            },
+            "localPoint": {
+              "x": 252.35935395581825,
+              "y": 200
+            },
+            "distance": 0,
+            "zIndex": 1
+          }
+        },
+        {
+          "point": {
+            "x": 200,
+            "y": 230
+          },
+          "distance": 21.273293739428425,
+          "nearest": {
+            "status": "explicit-limit",
+            "error": "Hit shape exceeds its geometry work budget."
+          },
+          "hit": false,
+          "work": 1,
+          "target": null
+        }
+      ],
+      "referenceProgress": {
+        "query": 3,
+        "parts": 335872,
+        "total": 339849
+      },
+      "anchor": {
+        "x": 148.64012243837007,
+        "y": 208.72670626057155
+      },
+      "status": "passed",
+      "current": {
+        "entries": 1,
+        "parts": 339791,
+        "commands": 199999,
+        "maxError": 3.268496584496461e-13,
+        "queries": [
+          {
+            "point": {
+              "x": 195.92903727788268,
+              "y": 311
+            },
+            "work": 30515,
+            "distance": 0
+          },
+          {
+            "point": {
+              "x": 307,
+              "y": 311
+            },
+            "work": 69115,
+            "distance": 0
+          },
+          {
+            "point": {
+              "x": 418.07096272211726,
+              "y": 311
+            },
+            "work": 36961,
+            "distance": 0
+          }
+        ]
+      },
+      "rebase": {
+        "entries": 1,
+        "parts": 339697,
+        "commands": 199999,
+        "maxError": 3.552713678800501e-13,
+        "queries": [
+          {
+            "point": {
+              "x": 174.91362086065607,
+              "y": 311
+            },
+            "work": 25881,
+            "distance": 0
+          },
+          {
+            "point": {
+              "x": 307,
+              "y": 311
+            },
+            "work": 58941,
+            "distance": 0
+          },
+          {
+            "point": {
+              "x": 439.0863791393439,
+              "y": 311
+            },
+            "work": 31235,
+            "distance": 0
+          }
+        ]
+      },
+      "offline": "no native hit authority",
+      "end": "2026-11-02T13:19:08.931Z"
+    }
+  ],
+  "archiveSHA256": "52ae6397eacbab02df8f7cae8978c426667cdd1b69dbddc683d6aac71be93d85",
+  "packageRoot": "/private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-wQqyf4/node_modules/ggaction",
+  "receiptPath": "/Users/hyeonjeon/.codex/worktrees/roadmap9-geo-hit-a3/ggactionnewbrand/.artifacts/geo-hit-a3/sample-admission/archive.json",
+  "baselineFootprint": {
+    "vertices": 100000,
+    "parts": 339849,
+    "commands": 1939096,
+    "sha256": "ed299020fa7f2b61130344c9f359aa59ffc13007c0c1453170aed5cd125b9284",
+    "scope": "Original full ordered native hit parts, JSON array hash; original source evidence and every installed checkpoint agree."
+  },
+  "kind": "same installed artifact; full scalar reference with explicit GC between 4096-part batches only; product guards unchanged; not P95 or long-lived 100cycle",
+  "snapshotSourceSHA256": "ee894799290ea02bda2535d666c899bafc868e662df66273cb727a568e0b132b",
+  "querySourceSHA256": "8bc3434123845f1a6089bfd4eb3f3ea0eb53330f46ba3c9ac8caf5022079b0fc"
+}

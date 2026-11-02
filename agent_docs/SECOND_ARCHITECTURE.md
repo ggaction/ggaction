@@ -1038,12 +1038,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 788,900 bytes |
+| `ggaction` | 789,000 bytes |
 | `ggaction/basic` | 426,300 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 69,600 bytes |
-| `ggaction/interaction` | 137,600 bytes |
-| `ggaction/animation` | 343,600 bytes |
+| `ggaction/interaction` | 140,100 bytes |
+| `ggaction/animation` | 343,800 bytes |
 
 
 
@@ -5213,3 +5213,5 @@ unpacked8175677B이며 ceiling1261/1818500/8175700이다. Animation gzip343502B�
 Geo projection grammar의 단일 private 계산 kernel은 source-segment streaming 중 일시 result를 raw record로 조립한다. 기존 projection kernel facade는 반환을 cloneAndFreeze로 닫고, stream은 raw point를 동기적으로만 읽어 새 concrete commands를 만든 뒤 기존 projectGeometry 최종 owned 경계를 유지한다. 수학·검증·작업량·native authority의 소유자는 바뀌지 않는다.
 
 경로의boolean/number판정은기존flatten계산의일시rawgeometry를동기적으로읽는다. 공개flatten반환과subdivision오류diagnostics는기존owned/frozen경계를유지한다. 수학·topology검증·budget·hitindex방문과금은변경하지않는다.
+
+Geo sampler는 한 동기 호출에서 full presentation/group admission을 완료한 exact immutable 결과를 지역 계산 closure로 즉시 소비한다. 일반 resolver와 restored-state admission은 기존 전수 검사 경로를 유지하며, 실제 native stream/refinement/output 과금과 aggregate guard·concrete validation·최종 owned 출력은 그대로다. 새 public schema/권한 registry/retained cache는 없다. 구체 채택·동등성 및 artifact 증거는 [sample admission 기록](impl/roadmap9/qualification/GEO_SAMPLE_ADMISSION_PROPOSAL.md)에 둔다.

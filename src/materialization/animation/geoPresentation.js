@@ -9,7 +9,7 @@ import { geoPartsTopology } from "../../grammar/geo/markGeometry.js";
 import { validateAnimationPlacement } from "../../grammar/animation/placement.js";
 import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
 import { validateGraphicIdentity } from "../../grammar/schemas/graphicIdentity.js";
-import { normalizeAnimationGeoGroup, resolveAnimationGeoGeometry } from "../../grammar/animation/geoState.js";
+import { normalizeAnimationGeoGroup, resolveAnimationGeoGeometry, prepareAnimationGeoGeometry } from "../../grammar/animation/geoState.js";
 import { namespaceGraphicId } from "../../selectors/graphicCapacity.js";
 import { resolveCoordinateBounds } from "../coordinateBounds.js";
 import { materializeMarkEffectProperties } from "../markEffects.js";
@@ -61,9 +61,13 @@ function tuple(value, length, label) {
 // Store source paint once, before bounds-dependent pattern materialization.
 // Native streaming and native paint owners produce current concrete parts.
 export function normalizeGeoAnimationPresentation(input) {
+  return admitGeoAnimationPresentation(input, false);
+}
+
+function admitGeoAnimationPresentation(input, prepareGeometry) {
   const value = snapshotGeometryJSON(input, createGeometryBudget());
   closed(value, ["geometry", "styles", "plotOrigin", "frame"], "Geo animation presentation");
-  normalizeAnimationGeoGroup(value.geometry);
+  const geometry = prepareGeometry ? prepareAnimationGeoGeometry(value.geometry) : normalizeAnimationGeoGroup(value.geometry);
   ownArray(value.styles, "Geo feature styles");
   if (value.styles.length !== value.geometry.features.length) throw new TypeError("Geo styles must follow every prepared feature.");
   for (const [index, style] of value.styles.entries()) {
@@ -75,12 +79,23 @@ export function normalizeGeoAnimationPresentation(input) {
   }
   tuple(value.plotOrigin, 2, "Geo plot origin");
   validateGeoAnimationFrame(value.frame);
-  return value;
+  return prepareGeometry ? { presentation: value, resolveGeometry: geometry } : value;
 }
 
 export function resolveGeoAnimationPresentation(input, capacityEnabled = false) {
-  const presentation = normalizeGeoAnimationPresentation(input), { geometry, styles, plotOrigin } = presentation;
-  const projected = resolveAnimationGeoGeometry(geometry, capacityEnabled), graphics = [];
+  const presentation = normalizeGeoAnimationPresentation(input);
+  return materializeGeoAnimationPresentation(presentation, resolveAnimationGeoGeometry(presentation.geometry, capacityEnabled), capacityEnabled);
+}
+
+// Admit all presentation fields before any native stream. The prepared closure
+// stays within this call; generic wrappers and restored-state admission remain.
+export function resolveSampledGeoPresentation(input, capacityEnabled = false) {
+  const { presentation, resolveGeometry } = admitGeoAnimationPresentation(input, true);
+  return { presentation, resolved: materializeGeoAnimationPresentation(presentation, resolveGeometry(capacityEnabled), capacityEnabled) };
+}
+
+function materializeGeoAnimationPresentation(presentation, projected, capacityEnabled) {
+  const { geometry, styles, plotOrigin } = presentation, graphics = [];
   const lineage = { kind: "resource", resource: geometry.binding.geometry ?? geometry.projection };
   for (const [index, feature] of projected.features.entries()) {
     const key = geoAnimationItemKey(geometry, feature.key), topology = geoPartsTopology(feature.parts);
