@@ -1,12 +1,13 @@
 import { prepareGeoResourceRevisions, geographicConsumerIds } from "../geo/closure.js";
 import { orderResourceDependencies } from "../../materialization/resourceState.js";
 import { applyMaterializationPlan, planLayersDataRematerialization } from "../../materialization/dependencies.js";
-import { createEdgeRouteResource } from "../../materialization/graph/routeResource.js";
+import { createEdgeRouteResourceStages } from "../../materialization/graph/routeResource.js";
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 import { resolveGraphPlot } from "../../materialization/graph/plot.js";
 import { resolveInputReference } from "../../selectors/resources.js";
 import { routeValueHash } from "../../grammar/graph/routes/job.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
+import { finishRouteStages } from "../../grammar/graph/routes/valueHash.js";
 
 const key = ref => JSON.stringify([ref.kind, ref.id]);
 
@@ -16,25 +17,33 @@ export function needsScreenRouteRevision(program, resource) {
 }
 
 export function reviseEdgeRouteResource(program, previous, inputs) {
+  return finishRouteStages(reviseEdgeRouteResourceStages(program, previous, inputs));
+}
+
+export function* reviseEdgeRouteResourceStages(program, previous, inputs, scope) {
   const [graph, layout, hierarchy, hierarchyLayout] = inputs;
-  return createEdgeRouteResource({ program, id: previous.id, revision: previous.revision + 1,
-    intent: previous.options, graph, layout, hierarchy, hierarchyLayout });
+  return yield* createEdgeRouteResourceStages({ program, id: previous.id, revision: previous.revision + 1,
+    intent: previous.options, graph, layout, hierarchy, hierarchyLayout }, scope);
 }
 
 // Existing owners provide their complete candidate resource state first. Each
 // route is computed once after every one of its input revisions is available.
 export function prepareEdgeRouteRevisions(program, resources) {
+  return finishRouteStages(prepareEdgeRouteRevisionStages(program, resources));
+}
+
+export function* prepareEdgeRouteRevisionStages(program, resources, scope) {
   const candidates = new Map(resources.map(resource => [key(resource), resource])), entries = [];
   for (const previous of program.semanticSpec.resources) {
     if (previous.kind !== "edge-route" || !previous.inputs.some(ref => candidates.get(key(ref))?.revision !== ref.revision) &&
         !needsScreenRouteRevision(program, previous)) continue;
     const preview = { ...program, semanticSpec: { ...program.semanticSpec, resources } };
     const inputs = previous.inputs.map(ref => resolveInputReference(preview, { ...ref, revision: candidates.get(key(ref))?.revision ?? ref.revision }));
-    const resource = reviseEdgeRouteResource(preview, previous, inputs);
+    const resource = yield* reviseEdgeRouteResourceStages(preview, previous, inputs, scope);
     entries.push({ previous: { kind: previous.kind, id: previous.id, revision: previous.revision }, resource });
     candidates.set(key(resource), resource);
   }
-  const geo = prepareGeoResourceRevisions(program, resources.map(resource => candidates.get(key(resource))));
+  const geo = prepareGeoResourceRevisions(program, resources.map(resource => candidates.get(key(resource))), scope);
   const finalResources = geo.resources;
   const ids = new Set(entries.map(entry => entry.resource.id));
   const layers = mapLayerResourceBindings(program.semanticSpec.layers, ref => {

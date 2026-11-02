@@ -27,13 +27,18 @@ import { previewGraphLayouts } from "../graphs/layouts.js";
 import { preflightContourConsumers } from "../contours/closure.js";
 import { preflightCalendarConsumers } from "../calendar/closure.js";
 import { withPreparedDataResourceResults } from "../primitives/preparedResourceContext.js";
-import { reviseEdgeRouteResource, needsScreenRouteRevision } from "../graphs/routeClosure.js";
+import { reviseEdgeRouteResourceStages, needsScreenRouteRevision } from "../graphs/routeClosure.js";
+import { finishRouteStages } from "../../grammar/graph/routes/valueHash.js";
 
 const key = ref => JSON.stringify([ref.kind, ref.id]);
 
 // Full-only orchestration. Numeric factories retain their own validation and
 // budgets; this owner determines only dependency order and the final union.
 export function planSourceResourceRevision(program, dataReplacements) {
+  return finishRouteStages(planSourceResourceRevisionStages(program, dataReplacements));
+}
+
+export function* planSourceResourceRevisionStages(program, dataReplacements, scope) {
   const revised = new Map(), entries = [];
   const source = ref => dataReplacements.has(ref.id)
     ? requireMaterializedDataset(program, dataReplacements.get(ref.id)) : resolveInputReference(program, ref);
@@ -45,7 +50,7 @@ export function planSourceResourceRevision(program, dataReplacements) {
     const identity = { id: previous.id, revision: previous.revision + 1 };
     let resource;
     if (previous.kind === "edge-route") {
-      resource = reviseEdgeRouteResource(program, previous, previous.inputs.map(resourceInput));
+      resource = yield* reviseEdgeRouteResourceStages(program, previous, previous.inputs.map(resourceInput), scope);
     } else if (previous.kind === "hierarchy") {
       resource = createHierarchyResource({ ...identity, dataset: source(previous.inputs[0]), options: previous.options });
     } else if (previous.kind === "graph") {
@@ -101,7 +106,7 @@ export function planSourceResourceRevision(program, dataReplacements) {
   const coordinates = mapCoordinateResourceBindings(program.semanticSpec.coordinates, ref => revised.has(key(ref))
     ? { ...ref, revision: revised.get(key(ref)).revision } : ref);
   const preview = { ...program, markConfigs: program.markConfigs, semanticSpec: { ...program.semanticSpec, resources, layers, coordinates } };
-  validateResourceGraph(preview, program.constructor);
+  validateResourceGraph(preview, program.constructor, scope);
   previewGraphLayouts(preview, resources, layouts);
   preflightContourConsumers(preview, entries.map(entry => entry.resource).filter(resource => resource.kind === "geometry"));
   preflightCalendarConsumers(preview, layouts.filter(resource => resource.options.method === "calendar"));

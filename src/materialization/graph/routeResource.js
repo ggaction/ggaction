@@ -1,6 +1,6 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
-import { createRouteJobStages, createRouteJob, computeRouteJob, validateRouteJob } from "../../grammar/graph/routes/job.js";
+import { createRouteJobStages, createRouteJob, computeRouteJob, computeRouteJobWithLedger, validateRouteJob } from "../../grammar/graph/routes/job.js";
 import { validateRouteResult } from "../../grammar/graph/routes/result.js";
 import { resolveRouteInput } from "./routeInput.js";
 
@@ -32,4 +32,19 @@ export function completedEdgeRouteResource({ id, revision = 0, graph, hierarchy 
     inputs: job.inputs, options: job.intent,
     result: { viewport: job.viewport, inputHash: checked.inputHash, resultHash: checked.resultHash, ...computed },
     provenance: { origin: "inferred", sourceRows: edgeRouteSourceRows(graph, hierarchy) } });
+}
+
+// A native revision retains its exact resource intent and references across the
+// worker suspension. The ordinary synchronous path never yields or accepts v2.
+export function* createEdgeRouteResourceStages(resolved, scope) {
+  if (scope === undefined) return createEdgeRouteResource(resolved);
+  const { program, graph, layout, intent, hierarchy, hierarchyLayout } = resolved;
+  const bounded = Object.hasOwn(intent.options, "execution");
+  const job = bounded
+    ? yield* edgeRouteJobStages(program, graph, layout, intent, hierarchy, hierarchyLayout, scope)
+    : edgeRouteJob(program, graph, layout, intent, hierarchy, hierarchyLayout, scope);
+  const completion = bounded ? yield Object.freeze({ kind: "edge-route-computation", job })
+    : computeRouteJobWithLedger(job, scope.signal, scope.ledger);
+  scope.ledger.check();
+  return completedEdgeRouteResource(resolved, job, completion, { ...scope, includeComputation: false });
 }

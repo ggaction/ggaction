@@ -457,6 +457,10 @@
       },
       {
         "type": "file",
+        "path": "unit/resources/graph-route-native-stages.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/resources/graph-route-bounded.test.js"
       },
       {

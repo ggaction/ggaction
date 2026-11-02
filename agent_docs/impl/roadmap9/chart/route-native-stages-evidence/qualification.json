@@ -1,0 +1,558 @@
+{
+  "status": "verified-private-route-source-continuation-checkpoint",
+  "base": "b86503b56",
+  "archive": {
+    "node": "v20.20.2",
+    "file": "/Users/hyeonjeon/.codex/worktrees/route-v2-native/ggactionnewbrand/.artifacts/route-native-stages/package/ggaction-0.0.26.tgz",
+    "sha256": "585e9860b31a1d55f729d87cbde25d4eb40ff99c354ac07c824d46e9635cbaf6",
+    "entries": 1266,
+    "packedBytes": 1824016,
+    "unpackedBytes": 8198861
+  },
+  "sources": [
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "sha256": "88316f66f093464465e65dd80f2ab53fa349c4416cdbdb662e765a42fbc5d07b"
+    },
+    {
+      "path": "agent_docs/contract/current/EDGE_ROUTES.md",
+      "sha256": "7c8318786d0cf5f18f7e1a42ad450542b5509d07a9187edbea5f65b1bbab6bd8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/audit.json",
+      "sha256": "03b1cec1bcfc6d927f011797ff64bc9f09df678939b0efcbd4cac9f5681f241d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/audit.mjs",
+      "sha256": "65dcbc04af6f40d1a87048aa3a215fade90f2410f2df7a79e36e2b216a10d8c8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/record.py",
+      "sha256": "9929925f2a3d0a49f50cb2173f899c47b894de4ab5f9c90d00e01cabb785106d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/verify.mjs",
+      "sha256": "4e0ac071e035253049c32c0d0fc45ec521c73c82708edbfb6e53e89d9179510a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/browser.mjs",
+      "sha256": "05053bb704d506b501fa6344bb1376e8bc4cba467a71292f64278db8cf7c9393"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/consumer.mjs",
+      "sha256": "5e83518f524ebd7c63a772b6ed76aaf3257048ac8aad9b3764a5001503a2cf7d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/installed.mjs",
+      "sha256": "34d99a68026f63bafb7c44082918e1c58eb06d4244687e036f54009a8e3b9462"
+    },
+    {
+      "path": "docs/api/edge-routes.md",
+      "sha256": "726e2052c4ba9afbee7db427e87cdd7dcf4811b29d30b2e990b69ea205266d9b"
+    },
+    {
+      "path": "docs/api/graphs.md",
+      "sha256": "61cfa2054cd4b498a261f244a5329f587eab386be22a9a62dd79b576c651cef8"
+    },
+    {
+      "path": "docs/compatibility.md",
+      "sha256": "b3cedf76e09c62487c43c1526457a2eeb504815fd66d89a22ddae36560c6a301"
+    },
+    {
+      "path": "scripts/browser-bundle-size.js",
+      "sha256": "aa6dd153334e4486e09da4c7119d231af9e147ae85cf738047d9a1d1152c8ac7"
+    },
+    {
+      "path": "scripts/coverage-policy.js",
+      "sha256": "dd0290984313e032446fc56c2ba8bbaadf818bc99d231a768b79273f6fb52ae3"
+    },
+    {
+      "path": "scripts/generate-doc-search-index.js",
+      "sha256": "c4219e3125b65ef9203c1070dead0ec816f1eb6aae2ad166f04393759d5bb7ff"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "a62a74a101068c5cba80e0f87bb3404f6563c7569d4448148dce4ee039633994"
+    },
+    {
+      "path": "src/actions/data/resourcePlan.js",
+      "sha256": "739bdd00b6850a01aca7bdef7d0bb7fdae585c1ac8ae48cc6b31bce7b92d15c3"
+    },
+    {
+      "path": "src/actions/geo/closure.js",
+      "sha256": "014045dac9cb636ed8defd5cd712cfe3bf0075a73d08bbe725066c8e249fa6c9"
+    },
+    {
+      "path": "src/actions/graphs/edgeRoutes.js",
+      "sha256": "110e448982767a98fe2ad631f46c147947e928cef5103526d3f111234135ce64"
+    },
+    {
+      "path": "src/actions/graphs/routeClosure.js",
+      "sha256": "41884e3d3b70f0f14a16efbd8ed1004b55e50cd25f39273c9266d916b1d8f262"
+    },
+    {
+      "path": "src/actions/graphs/routePlan.js",
+      "sha256": "5365f40b27fdb82442b8c0c13c73aafb878029917492b988684f586eba72b8df"
+    },
+    {
+      "path": "src/actions/primitives/preparedResourceContext.js",
+      "sha256": "40fce715f9f52ea52d5ff08d5f2c25b025e6a76a667280492e5d4c6a2a8cc686"
+    },
+    {
+      "path": "src/actions/primitives/resourceState.js",
+      "sha256": "4c9fe00b9c594acf95a1b10aa74ffe308ab6611b483f53f67b9af97a2b0306d1"
+    },
+    {
+      "path": "src/core/encodedValueCursor.js",
+      "sha256": "f8675ff2afe9bbb0f1e8d2d71ce41f97a8290e31674037dbdd870e1258df8f0c"
+    },
+    {
+      "path": "src/core/jsonText.js",
+      "sha256": "87e5a44427dd30b5efa568bd50eecf01b0a7093eccba8d8d003a3536c1189bb4"
+    },
+    {
+      "path": "src/core/sha256.js",
+      "sha256": "a94e9caced46162e33d653cd07b5a36d0626cf4e5e46424644c9273f5e4ca979"
+    },
+    {
+      "path": "src/core/valueEncoding.js",
+      "sha256": "ea59303f02796696ed3bdab1ce21995c93a6b15b625f2db4a907a4e6af733b10"
+    },
+    {
+      "path": "src/grammar/graph/routes/budget.js",
+      "sha256": "0dd2d73fb0f528bf443319b3fd9eb13516198702e3d52a694adfabfb803456dd"
+    },
+    {
+      "path": "src/grammar/graph/routes/common.js",
+      "sha256": "a77b78900cf37467b4e7104493ef340ca35412df75ddd86728061f652b4af2be"
+    },
+    {
+      "path": "src/grammar/graph/routes/density.js",
+      "sha256": "369af12e82e68ab11055e5bb8af45b80ce88a98db8393e07c2780bf26e88161d"
+    },
+    {
+      "path": "src/grammar/graph/routes/densitySamples.js",
+      "sha256": "f64995259b65aa1e095940b30a3645979ae142ae81a7fe19021977992b170145"
+    },
+    {
+      "path": "src/grammar/graph/routes/edgePath.js",
+      "sha256": "72a0004992860d904586f74cf81e8780db5e197900330b291cb103ef4ee94851"
+    },
+    {
+      "path": "src/grammar/graph/routes/execution.js",
+      "sha256": "8ebd2e35f4f8cac82799fb4d375cd239b048bcef382d320305b75db72e01c448"
+    },
+    {
+      "path": "src/grammar/graph/routes/forceDirected.js",
+      "sha256": "3354a06bedd23ae141eff03c2538c6de6a31face453abb0435941c56395ac0d6"
+    },
+    {
+      "path": "src/grammar/graph/routes/forceNeighbors.js",
+      "sha256": "07a25b7ae0355673cbfdeb78afb41dc334082962d53311a172cbd703cf80f1fa"
+    },
+    {
+      "path": "src/grammar/graph/routes/hierarchical.js",
+      "sha256": "a2c09bbccc7bf4a4239af5e1eb1ff4ade41caf993c579061454c791fc1a41397"
+    },
+    {
+      "path": "src/grammar/graph/routes/job.js",
+      "sha256": "88d3f12b54286caceb022c1780c3856e41476c4377d87cea9059121565aca634"
+    },
+    {
+      "path": "src/grammar/graph/routes/options.js",
+      "sha256": "ca1682357adb7a5e175d6e0614ce4575930a4d52c7c8b2dc76581f798f10a782"
+    },
+    {
+      "path": "src/grammar/graph/routes/result.js",
+      "sha256": "25d92549431c68a05ccbaa107107e8c94abe97ed0dd62258724d5a2602e26c99"
+    },
+    {
+      "path": "src/grammar/graph/routes/resultProvenance.js",
+      "sha256": "23bac788b90c1c16d331fea510ca9081baa4ede5520bbf74ed310e651e3384c7"
+    },
+    {
+      "path": "src/grammar/graph/routes/valueHash.js",
+      "sha256": "552cc07d659c40b6ac3bf3610c462f9e7d88912cd05c39a2a5f018a694a9cd89"
+    },
+    {
+      "path": "src/graph.js",
+      "sha256": "427c520333196679ce59a89528f66e26160e0b4dd2bdced00955f50faa8fa0ea"
+    },
+    {
+      "path": "src/materialization/graph/routeInput.js",
+      "sha256": "0a82fc776f434ee995111519b60d845f5a0631ecc88d429d5956006f5e37ab49"
+    },
+    {
+      "path": "src/materialization/graph/routeRequest.js",
+      "sha256": "d83b93fb8fb0e5809552e0721677778e13c59346c34392c1c6f9566c5cc83ea0"
+    },
+    {
+      "path": "src/materialization/graph/routeResource.js",
+      "sha256": "59826aa3a8e17dde03fec1f60497a4cd12676c35c1b3567138c95ebfde926d07"
+    },
+    {
+      "path": "src/materialization/graph/routeState.js",
+      "sha256": "c07c4b1c891391a0b68f4bfa54e0f4e5c21676c6696f9fe343139076358ef2f7"
+    },
+    {
+      "path": "src/materialization/resourceState.js",
+      "sha256": "f71c4f8df7844c24748bbafe30d76473a7b9a213ea304b9b436d4ba1dd2ef8ad"
+    },
+    {
+      "path": "src/resources/graphRouteCompute.js",
+      "sha256": "89ad40b39e61fd6b534db1eaf6ca2ffdfadc2f8ebb9ff2afc6872f9aff869739"
+    },
+    {
+      "path": "src/resources/graphRouteExecutor.js",
+      "sha256": "71edd1c72a325ce3b17ede96976acbeb5588356f3e664e539ba0ba23b7581e58"
+    },
+    {
+      "path": "src/resources/graphRouteWorker.js",
+      "sha256": "90a728b9f68f82d8dd5f74a06cc1d6e11f77dc524c0f621bd0812be89a28e477"
+    },
+    {
+      "path": "src/resources/graphRoutes.js",
+      "sha256": "d5d3e5f368321c5bae835b277a7be832328943390273b755cc29ecd3ad93be38"
+    },
+    {
+      "path": "src/resources/routeStages.js",
+      "sha256": "3064c0eb72b6b5ef386951ef1e37b2fc457f95a95da8cc79bfefb34e406989c5"
+    },
+    {
+      "path": "test/capabilities.json",
+      "sha256": "e9776ea3d3585ae585d410a92de4251d20ec41ad3a0f5950cedc793d96c6c3cf"
+    },
+    {
+      "path": "test/contracts/graph-route-package.test.js",
+      "sha256": "88cea129acf7322b934f8328c90a38fc2f0a1cdaedd1acf96092547a2b3b9621"
+    },
+    {
+      "path": "test/contracts/graph-route-types.test.js",
+      "sha256": "6156564752ec1773b71b8d265601051a339e0ddd3ef15adb2f8eb2348d7163b2"
+    },
+    {
+      "path": "test/contracts/package-boundaries.test.js",
+      "sha256": "9321e288f8bc34aa4ae61a2c5f817fbe4b3317206a7b0f8967e01329bd848e89"
+    },
+    {
+      "path": "test/unit/grammar/graph/routes/execution.test.js",
+      "sha256": "f1d5af303b02da8f6bc14cefa0413ae02b2a595707816dce97597fb7ab3104fd"
+    },
+    {
+      "path": "test/unit/resources/graph-route-bounded.test.js",
+      "sha256": "c74f6769caa6491db669313be9a21f1722e72a5c933910d461061f56d27071f8"
+    },
+    {
+      "path": "test/unit/resources/graph-route-native-stages.test.js",
+      "sha256": "c1753575d7dda8d49dfe33ab96a9fb39da611dc0a8830adc68185c5ee12e6f8d"
+    },
+    {
+      "path": "types/graph.d.ts",
+      "sha256": "67bff886f574edb7619c99efa763343a1b7cc373b06002112359390471fccfee"
+    },
+    {
+      "path": "types/index.d.ts",
+      "sha256": "9eac06001ed9123355a0ff71f50bd076367cf9df5a0ecda653b49bfa1fa29fa5"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "07ac642c9b7797880381e9511d5f29b9b84ac45d23a79cafbdb7782291f11d2b"
+    }
+  ],
+  "packedSources": [
+    {
+      "path": "src/actions/data/resourcePlan.js",
+      "sha256": "739bdd00b6850a01aca7bdef7d0bb7fdae585c1ac8ae48cc6b31bce7b92d15c3"
+    },
+    {
+      "path": "src/actions/geo/closure.js",
+      "sha256": "014045dac9cb636ed8defd5cd712cfe3bf0075a73d08bbe725066c8e249fa6c9"
+    },
+    {
+      "path": "src/actions/graphs/edgeRoutes.js",
+      "sha256": "110e448982767a98fe2ad631f46c147947e928cef5103526d3f111234135ce64"
+    },
+    {
+      "path": "src/actions/graphs/routeClosure.js",
+      "sha256": "41884e3d3b70f0f14a16efbd8ed1004b55e50cd25f39273c9266d916b1d8f262"
+    },
+    {
+      "path": "src/actions/graphs/routePlan.js",
+      "sha256": "5365f40b27fdb82442b8c0c13c73aafb878029917492b988684f586eba72b8df"
+    },
+    {
+      "path": "src/actions/primitives/preparedResourceContext.js",
+      "sha256": "40fce715f9f52ea52d5ff08d5f2c25b025e6a76a667280492e5d4c6a2a8cc686"
+    },
+    {
+      "path": "src/actions/primitives/resourceState.js",
+      "sha256": "4c9fe00b9c594acf95a1b10aa74ffe308ab6611b483f53f67b9af97a2b0306d1"
+    },
+    {
+      "path": "src/core/encodedValueCursor.js",
+      "sha256": "f8675ff2afe9bbb0f1e8d2d71ce41f97a8290e31674037dbdd870e1258df8f0c"
+    },
+    {
+      "path": "src/core/jsonText.js",
+      "sha256": "87e5a44427dd30b5efa568bd50eecf01b0a7093eccba8d8d003a3536c1189bb4"
+    },
+    {
+      "path": "src/core/sha256.js",
+      "sha256": "a94e9caced46162e33d653cd07b5a36d0626cf4e5e46424644c9273f5e4ca979"
+    },
+    {
+      "path": "src/core/valueEncoding.js",
+      "sha256": "ea59303f02796696ed3bdab1ce21995c93a6b15b625f2db4a907a4e6af733b10"
+    },
+    {
+      "path": "src/grammar/graph/routes/budget.js",
+      "sha256": "0dd2d73fb0f528bf443319b3fd9eb13516198702e3d52a694adfabfb803456dd"
+    },
+    {
+      "path": "src/grammar/graph/routes/common.js",
+      "sha256": "a77b78900cf37467b4e7104493ef340ca35412df75ddd86728061f652b4af2be"
+    },
+    {
+      "path": "src/grammar/graph/routes/density.js",
+      "sha256": "369af12e82e68ab11055e5bb8af45b80ce88a98db8393e07c2780bf26e88161d"
+    },
+    {
+      "path": "src/grammar/graph/routes/densitySamples.js",
+      "sha256": "f64995259b65aa1e095940b30a3645979ae142ae81a7fe19021977992b170145"
+    },
+    {
+      "path": "src/grammar/graph/routes/edgePath.js",
+      "sha256": "72a0004992860d904586f74cf81e8780db5e197900330b291cb103ef4ee94851"
+    },
+    {
+      "path": "src/grammar/graph/routes/execution.js",
+      "sha256": "8ebd2e35f4f8cac82799fb4d375cd239b048bcef382d320305b75db72e01c448"
+    },
+    {
+      "path": "src/grammar/graph/routes/forceDirected.js",
+      "sha256": "3354a06bedd23ae141eff03c2538c6de6a31face453abb0435941c56395ac0d6"
+    },
+    {
+      "path": "src/grammar/graph/routes/forceNeighbors.js",
+      "sha256": "07a25b7ae0355673cbfdeb78afb41dc334082962d53311a172cbd703cf80f1fa"
+    },
+    {
+      "path": "src/grammar/graph/routes/hierarchical.js",
+      "sha256": "a2c09bbccc7bf4a4239af5e1eb1ff4ade41caf993c579061454c791fc1a41397"
+    },
+    {
+      "path": "src/grammar/graph/routes/job.js",
+      "sha256": "88d3f12b54286caceb022c1780c3856e41476c4377d87cea9059121565aca634"
+    },
+    {
+      "path": "src/grammar/graph/routes/options.js",
+      "sha256": "ca1682357adb7a5e175d6e0614ce4575930a4d52c7c8b2dc76581f798f10a782"
+    },
+    {
+      "path": "src/grammar/graph/routes/result.js",
+      "sha256": "25d92549431c68a05ccbaa107107e8c94abe97ed0dd62258724d5a2602e26c99"
+    },
+    {
+      "path": "src/grammar/graph/routes/resultProvenance.js",
+      "sha256": "23bac788b90c1c16d331fea510ca9081baa4ede5520bbf74ed310e651e3384c7"
+    },
+    {
+      "path": "src/grammar/graph/routes/valueHash.js",
+      "sha256": "552cc07d659c40b6ac3bf3610c462f9e7d88912cd05c39a2a5f018a694a9cd89"
+    },
+    {
+      "path": "src/graph.js",
+      "sha256": "427c520333196679ce59a89528f66e26160e0b4dd2bdced00955f50faa8fa0ea"
+    },
+    {
+      "path": "src/materialization/graph/routeInput.js",
+      "sha256": "0a82fc776f434ee995111519b60d845f5a0631ecc88d429d5956006f5e37ab49"
+    },
+    {
+      "path": "src/materialization/graph/routeRequest.js",
+      "sha256": "d83b93fb8fb0e5809552e0721677778e13c59346c34392c1c6f9566c5cc83ea0"
+    },
+    {
+      "path": "src/materialization/graph/routeResource.js",
+      "sha256": "59826aa3a8e17dde03fec1f60497a4cd12676c35c1b3567138c95ebfde926d07"
+    },
+    {
+      "path": "src/materialization/graph/routeState.js",
+      "sha256": "c07c4b1c891391a0b68f4bfa54e0f4e5c21676c6696f9fe343139076358ef2f7"
+    },
+    {
+      "path": "src/materialization/resourceState.js",
+      "sha256": "f71c4f8df7844c24748bbafe30d76473a7b9a213ea304b9b436d4ba1dd2ef8ad"
+    },
+    {
+      "path": "src/resources/graphRouteCompute.js",
+      "sha256": "89ad40b39e61fd6b534db1eaf6ca2ffdfadc2f8ebb9ff2afc6872f9aff869739"
+    },
+    {
+      "path": "src/resources/graphRouteExecutor.js",
+      "sha256": "71edd1c72a325ce3b17ede96976acbeb5588356f3e664e539ba0ba23b7581e58"
+    },
+    {
+      "path": "src/resources/graphRouteWorker.js",
+      "sha256": "90a728b9f68f82d8dd5f74a06cc1d6e11f77dc524c0f621bd0812be89a28e477"
+    },
+    {
+      "path": "src/resources/graphRoutes.js",
+      "sha256": "d5d3e5f368321c5bae835b277a7be832328943390273b755cc29ecd3ad93be38"
+    },
+    {
+      "path": "src/resources/routeStages.js",
+      "sha256": "3064c0eb72b6b5ef386951ef1e37b2fc457f95a95da8cc79bfefb34e406989c5"
+    },
+    {
+      "path": "types/graph.d.ts",
+      "sha256": "67bff886f574edb7619c99efa763343a1b7cc373b06002112359390471fccfee"
+    },
+    {
+      "path": "types/index.d.ts",
+      "sha256": "9eac06001ed9123355a0ff71f50bd076367cf9df5a0ecda653b49bfa1fa29fa5"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "07ac642c9b7797880381e9511d5f29b9b84ac45d23a79cafbdb7782291f11d2b"
+    }
+  ],
+  "files": [
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/browser.json.gz",
+      "sha256": "7591575defb7ddc54a323f35e9d34eb171bc75dfc34a497c632fb867997c1a54",
+      "uncompressedSha256": "bd9d0c2982b36ac9fcb7fe00b2713536aac4bf1628d86f460dbec8256db1c6b0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/browser.log.gz",
+      "sha256": "9298dce54bf392993a9493aeb9e73ca8686cda6e639868ea1721bdafaec7b12f",
+      "uncompressedSha256": "82133193782e4c675b6b9f6aabc8fa5637817e5714c87931835d458e25a59373"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/discovery-corrected.log.gz",
+      "sha256": "1a458256d582b8e0cbd398be73599c2adeddfca2abe2ddb5c61d826de0009dc8",
+      "uncompressedSha256": "94f2ea01c8e9747311c03a836d6683ec7a0874b1eaa8bb21f6f94904dadb23fd"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/docs-contracts-final.log.gz",
+      "sha256": "0fd891f959f5c7d5008ea123e989bd86d017367a7b9dfa4d04778d81ec2bbbd9",
+      "uncompressedSha256": "2cc93456036ee473bfa52ad79ad73e0bc86cb59a70984944f9e223fbc108e694"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/docs-contracts.log.gz",
+      "sha256": "7046780493520c529c7b9cfee42ba212a3d5bdf2578cf2a445036065702ec8e6",
+      "uncompressedSha256": "d100cf5ab78399656b5a42d724d7d57f2a4c1598b270110002130f6695aa1097"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/docs-generation.log.gz",
+      "sha256": "864bb00876833756f8e3109daca56a4e4af9c1096d9229b8bdf9f110cba6b4e1",
+      "uncompressedSha256": "d4c8f63ad117a53146e44c200c3ff38e6ae5953e0b3362f151464b9d9f8f1c77"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/freeze.log.gz",
+      "sha256": "3bfb9cd2cd9d0d982ed23cabf90b081d9120ca66dff2b2893eb2c43e0de781a6",
+      "uncompressedSha256": "c6dd33139dcbac87944066801bb2a9b7b3230ca5b04f5f230aa3db68303719ad"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/frozen.json.gz",
+      "sha256": "e86653288bec57e7f5c4536bd6e1cb94a7d689dc96008f4259b0bb58e86340b4",
+      "uncompressedSha256": "185d51e820332f24041d1bc6495754675e2f4700e18922008fe635dea1bd1dcb"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/installed-20.json.gz",
+      "sha256": "b19da42e34d5aa722fb7ff1c091e94421c01453f18b34b06bf5fd1a6746a97e3",
+      "uncompressedSha256": "c6b4671ce5c609ab9b7a75f78c3e1b31a0ddf52db9478c858578b2dba579cbe2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/installed-22.json.gz",
+      "sha256": "b87b400926aa56006e014fd4b16e5126e08a0b8b4c5ccbb0e0e29848803adb97",
+      "uncompressedSha256": "e5bccf459c7071b5e4429b23e6a737328dc6b7ebbe48edb41fbf257a956fa50a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/installed-24.json.gz",
+      "sha256": "f0f4f839697847625f014f9416584900674832e14953d765f036ea43fc77b912",
+      "uncompressedSha256": "17f3c84177ddaac0afe3ce0db70a1f56ba01d501e7a7be371dcee000320b3869"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/installed20.log.gz",
+      "sha256": "b19da42e34d5aa722fb7ff1c091e94421c01453f18b34b06bf5fd1a6746a97e3",
+      "uncompressedSha256": "c6b4671ce5c609ab9b7a75f78c3e1b31a0ddf52db9478c858578b2dba579cbe2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/installed22.log.gz",
+      "sha256": "b87b400926aa56006e014fd4b16e5126e08a0b8b4c5ccbb0e0e29848803adb97",
+      "uncompressedSha256": "e5bccf459c7071b5e4429b23e6a737328dc6b7ebbe48edb41fbf257a956fa50a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/installed24.log.gz",
+      "sha256": "f0f4f839697847625f014f9416584900674832e14953d765f036ea43fc77b912",
+      "uncompressedSha256": "17f3c84177ddaac0afe3ce0db70a1f56ba01d501e7a7be371dcee000320b3869"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/native-stages-baseline.log.gz",
+      "sha256": "a054b756731e7c56f20848a0ac2124f0c05149c084ca59e41ab2e4ff6268ae36",
+      "uncompressedSha256": "56cc9122bcf8e40b66b9d1ddcd71db4ca2bacc905c284e64318f9817456f139d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/native-stages-coverage-complete.log.gz",
+      "sha256": "5f0ab2d2d3f8a6bc8cc9b5596e03520e11bc09f4054f35426d72625ccbf04e0c",
+      "uncompressedSha256": "062085e94025072e2794ef24f659a7957fb99c76fb542ad888b1580c19d9edbf"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/native-stages-coverage.log.gz",
+      "sha256": "4554aac3aab69734936c041d1c2d9a817fa95b5fb3659524eff0058f29225b18",
+      "uncompressedSha256": "caea70239dee77858bd936c04acb213453d0264052452a113bc2bfd30d97d1ce"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/native-stages-new.log.gz",
+      "sha256": "0d68ee01466cbdc9436393d74bf7fc3dcc73b6e0b1b0aff625af4521a56c5015",
+      "uncompressedSha256": "f87e1477a2bc825c5af405627b19e9705bb0af42a34e5fedebafd5c5f374aca3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/native-stages-node20.log.gz",
+      "sha256": "c5be70301ba5462470470c8e954a865435e2e303d5e90205c6c7260a5f04db1e",
+      "uncompressedSha256": "85ababeb2b1e28ae7ff865854c316dc4b6e1d2aa3a419678202c4d379dab18e2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/native-stages-node22.log.gz",
+      "sha256": "e4fea2e49917a3459fcf5eade3edf8e2868e8da8aebadf300558fcf832931109",
+      "uncompressedSha256": "7850524ed6cac19d6720e6c2c750fca22ce7538d56c680a3bdff20f41265ad8d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/native-stages-node24.log.gz",
+      "sha256": "f337423fa372fed7e076b060eb09e3651cf8d0159330087d0e7f8960c89c473c",
+      "uncompressedSha256": "e6644dc99323f5b9b25f7b1fd2406e5f3520e34bd7a6b97cb87d2ee0e4e0e551"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/native-stages-pack-measure.json.gz",
+      "sha256": "97e88ef6f67b7ba04b0f32b0b020018f58c334a08e898b6f3a0cdf9645d848c6",
+      "uncompressedSha256": "984d103f237a19a480664b8645cbfdf5d7f10c21c4ef4ad3587f200416600138"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/native-stages-provenance.log.gz",
+      "sha256": "864bb00876833756f8e3109daca56a4e4af9c1096d9229b8bdf9f110cba6b4e1",
+      "uncompressedSha256": "d4c8f63ad117a53146e44c200c3ff38e6ae5953e0b3362f151464b9d9f8f1c77"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-stages-evidence/receipts/native-stages-refactor.log.gz",
+      "sha256": "dccf87011734ffd03f25fa4084fc18363e9aedbcf247feadb4a9de5a3b9f544d",
+      "uncompressedSha256": "ab241d19b3ed8766ad78e5ad1e3273f7a76e42507b77be94c3a6f23835a88419"
+    }
+  ],
+  "claims": {
+    "v1SynchronousBehavior": true,
+    "privateNativeRouteSourceContinuation": true,
+    "publicBUpdate": false,
+    "fullBUnion": false,
+    "latency100ms": false,
+    "largeCapacity": false,
+    "publication": false
+  },
+  "remaining": [
+    "Screen/guide/responsive/fit, data identity and composition continuations.",
+    "Aggregate heterogeneous policy admission and held-result sample lifetime.",
+    "Exact closed native action union with per-family positive and failure evidence.",
+    "Original large fixtures and full synchronous-stage latency."
+  ],
+  "sourceCommit": "c2dc6b2589d1a04e86a3be9145d4f16326b746d5"
+}

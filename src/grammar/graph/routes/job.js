@@ -122,12 +122,17 @@ export function validateRouteJob(job) {
 }
 
 export function computeRouteJob(input, signal) {
+  return computeRouteJobWithLedger(input, signal);
+}
+
+// Native revision accounting observes v1 costs without changing its own guards.
+export function computeRouteJobWithLedger(input, signal, ledger) {
   if (signal !== undefined) AbortSignal.prototype.throwIfAborted.call(signal);
-  const job = validateRouteJob(input), options = routeNumericOptions(job.intent);
+  const job = validateRouteJob(input), options = routeNumericOptions(job.intent), scope = ledger === undefined ? undefined : { ledger };
   if (job.schemaVersion !== 1) throw new TypeError("Route v2 requires computeGraphEdgeRoutesAsync.");
-  const result = job.intent.method === "hierarchical" ? bundleHierarchicalRoutes(job.input, job.hierarchy, options, signal)
-    : job.intent.method === "force-directed" ? bundleForceDirectedRoutes(job.input, options, signal)
-      : job.intent.method === "density" ? bundleDensityRoutes(job.input, options, signal) : bundleEdgePathRoutes(job.input, options, signal);
+  const result = job.intent.method === "hierarchical" ? bundleHierarchicalRoutes(job.input, job.hierarchy, options, signal, scope)
+    : job.intent.method === "force-directed" ? bundleForceDirectedRoutes(job.input, options, signal, scope)
+      : job.intent.method === "density" ? bundleDensityRoutes(job.input, options, signal, scope) : bundleEdgePathRoutes(job.input, options, signal, scope);
   return cloneAndFreeze({ inputHash: job.inputHash, resultHash: routeValueHash(result), result });
 }
 

@@ -1038,8 +1038,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 792,700 bytes |
-| `ggaction/basic` | 426,300 bytes |
+| `ggaction` | 793,118 bytes |
+| `ggaction/basic` | 426,400 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 74,500 bytes |
 | `ggaction/interaction` | 140,172 bytes |
@@ -5243,3 +5243,21 @@ editSemantic/materialization child action을 수행한다. Candidate ChartProgra
 Geo projection grammar의 단일 private 계산 kernel은 source-segment streaming 중 일시 result를 raw record로 조립한다. 기존 projection kernel facade는 반환을 cloneAndFreeze로 닫고, stream은 raw point를 동기적으로만 읽어 새 concrete commands를 만든 뒤 기존 projectGeometry 최종 owned 경계를 유지한다. 수학·검증·작업량·native authority의 소유자는 바뀌지 않는다.
 
 경로의boolean/number판정은기존flatten계산의일시rawgeometry를동기적으로읽는다. 공개flatten반환과subdivision오류diagnostics는기존owned/frozen경계를유지한다. 수학·topology검증·budget·hitindex방문과금은변경하지않는다.
+
+
+
+Native update의 후속 private 단계는 기존 route/source resource DAG owner가 generator locals와
+exact candidate refs를 소유한다. 기존 v1 진입점은 동일 generator를 동기로 끝까지 소비하고,
+명시 private v2 준비만 native job/completion 경계에서 대기한다. 원 validation·primitive proof·
+consumer preflight를 계속 사용하며 core action wrapper를 async로 바꾸거나 candidate program을
+직접 최종 결과로 내보내지 않는다. 이 단계 추출은 전체 B native update 지원을 뜻하지 않는다.
+구체 연결 상태는 [native 단계 기록](impl/roadmap9/chart/route-native-stages.md)을 따른다.
+
+
+Canvas의 후속 private 단계도 기존 exact-constructor `canvasResourceRevision` handler의
+`prepareStages`를 사용한다. Full screen-route owner의 원 one-use plan/primitive context가 권한을
+유지하고 Basic에는 solver나 host 의존성이 들어가지 않는다. Canvas edit, guide overflow 및
+responsive pass는 각 owner의 동일 generator locals에서 실제 경로 완료를 기다린다. 기존 동기
+진입점은 이를 즉시 소비하며 원 guide pass·overflow cap·occupied bounds 및 context 복원을 유지한다.
+이는 private 준비 단계이며 fit/probe의 wrapped action 및 전체 B dispatch 연결을 대신하지 않는다.
+구체 검증과 미완료 범위는 [Canvas 단계 기록](impl/roadmap9/chart/route-screen-stages.md)을 따른다.

@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-private-route-stages-integration",
+  "base": "11ee73d13",
+  "upstream": "e5e71407f",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1268,
+    "packedBytes": 1826695,
+    "unpackedBytes": 8227339,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-0bffe8366925280af955585b6a7ee13f0670184c32ff85d40f50c07a68bd100b.tgz",
+    "sha256": "0bffe8366925280af955585b6a7ee13f0670184c32ff85d40f50c07a68bd100b"
+  },
+  "sourceHashes": {
+    "src/actions/canvas/actions.js": "ac63f8b1974257a47dc65290730ef7e3da6a65b7207aaeb727d08df1a6a1bcbc",
+    "src/actions/data/resourcePlan.js": "739bdd00b6850a01aca7bdef7d0bb7fdae585c1ac8ae48cc6b31bce7b92d15c3",
+    "src/actions/graphs/routeClosure.js": "41884e3d3b70f0f14a16efbd8ed1004b55e50cd25f39273c9266d916b1d8f262",
+    "src/actions/graphs/screenRoutes.js": "d5cf3497fca979ebdea802d323d819771c653c05dc699ae80e751033a7b906cc",
+    "src/actions/primitives/preparedResourceContext.js": "9425946bdc917a96ef89c019bc66bf31bc708d29055cc4237ff910b58b70635a",
+    "src/grammar/graph/routes/job.js": "88d3f12b54286caceb022c1780c3856e41476c4377d87cea9059121565aca634",
+    "src/materialization/canvasResourceRevision.js": "4049cef4b2ef019811981c83bea7e345f9cdad276b8971ff8ed255a20f266406",
+    "src/materialization/graph/routeResource.js": "59826aa3a8e17dde03fec1f60497a4cd12676c35c1b3567138c95ebfde926d07",
+    "src/materialization/guides/layout.js": "52f8428ee3010a2ab4e856744f81ab07aeb02290cf2c74424fe53174fdcc9927",
+    "src/materialization/responsiveLayout.js": "8783931ec991e3bf732b2ea1be5eadd52637eba7762008df0146bf5a304cceb0"
+  },
+  "evidenceFiles": {
+    "pack.json": {
+      "sha256": "04fd9cbaf0d012ce847662f98e808e65b197b479fe9e1b96a782811e3a47a901",
+      "bytes": 387
+    },
+    "installed-24.json": {
+      "sha256": "e262624b735380e224e4d2bf66ce1c3f1c8d2eeda158a945522d30547eca5085",
+      "bytes": 5624
+    },
+    "browser.log": {
+      "sha256": "82133193782e4c675b6b9f6aabc8fa5637817e5714c87931835d458e25a59373",
+      "bytes": 1028
+    },
+    "frozen.json": {
+      "sha256": "04fd9cbaf0d012ce847662f98e808e65b197b479fe9e1b96a782811e3a47a901",
+      "bytes": 387
+    },
+    "installed-stages-20.json": {
+      "sha256": "aab0302dbcea6ef7978a6f2b64fa9ebea796e90baa9ffa21a4e8f307b2fc4ba4",
+      "bytes": 2484
+    },
+    "installed-22.json": {
+      "sha256": "9601d5d321fa8c861d6df39e29848fd5af39f3f96caa3b8ee6e93b681a1e4c0a",
+      "bytes": 5624
+    },
+    "prepack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "boundaries.log": {
+      "sha256": "9f5498c1138b6c6bb20af6e822179c756ccd12080c60e4eb7330dc259c7fe5d4",
+      "bytes": 7506
+    },
+    "installed-stages-22.json": {
+      "sha256": "495c0af19609470ea24d7a63e334ad6e4e7e9f4de81ff7d0faadfa3ba794276b",
+      "bytes": 2630
+    },
+    "private24.log": {
+      "sha256": "7e26e388a4c9e0f3d39806a3cd01ca8722485cc104e329c2e77041e56d368ce0",
+      "bytes": 1279
+    },
+    "installed-20.json": {
+      "sha256": "7e6ccc4c48874dade90afb7edecfe3921dfe977fe107054b530fe7d498f48748",
+      "bytes": 5624
+    },
+    "prepack24.json": {
+      "sha256": "995e50dcb07189c7277d99c37cf7e316134952fa1384bdf79fdedf981dac80f9",
+      "bytes": 301
+    },
+    "prepack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "private22.log": {
+      "sha256": "0fe89f4c81d8dea52fac0439571470b44344314cd6119377edfd299797024ff4",
+      "bytes": 2601
+    },
+    "record.py": {
+      "sha256": "d8df8166495550fea3d2dbc22fb9c95ae8d37f9815ad2df9f5f4912c311a2438",
+      "bytes": 4957
+    },
+    "prepack.json": {
+      "sha256": "b08e882181d4da6bb9e1d6d669536d54b779fa5a2790b14ef575092d28a1d275",
+      "bytes": 299
+    },
+    "private20.log": {
+      "sha256": "315416d2c58ac7fcf691fbd52d8fbd8226328ba523de338f681f7460668ea3c7",
+      "bytes": 2455
+    },
+    "pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "boundaries-selector-failed.log": {
+      "sha256": "7c766053a91e920d0689997b4f89a5e984c0329339037fca2a3477bd9559f1f5",
+      "bytes": 558
+    },
+    "installed22.log": {
+      "sha256": "9601d5d321fa8c861d6df39e29848fd5af39f3f96caa3b8ee6e93b681a1e4c0a",
+      "bytes": 5624
+    },
+    "owning.log": {
+      "sha256": "c8be4126b9937e3b768b384a36a77c8308484e5e68c0e4677656d093f131d1d5",
+      "bytes": 319419
+    },
+    "installed-stages-24.json": {
+      "sha256": "898c84776d03743a46471ead3c5bf30fcc372f55c50af1dc654d011e16b227df",
+      "bytes": 1308
+    },
+    "installed20.log": {
+      "sha256": "7e6ccc4c48874dade90afb7edecfe3921dfe977fe107054b530fe7d498f48748",
+      "bytes": 5624
+    },
+    "installed24.log": {
+      "sha256": "e262624b735380e224e4d2bf66ce1c3f1c8d2eeda158a945522d30547eca5085",
+      "bytes": 5624
+    },
+    "browser.json": {
+      "sha256": "794a87d8e3379fb3865b6b1b4a01dfc5475f24c646d259e6d4b6886c1f7a79ec",
+      "bytes": 1453
+    },
+    "focused.log": {
+      "sha256": "b51d6eaeda2177745d0ae433f97fce33f2f3a96035e40ed7fb9caae2edc3dc69",
+      "bytes": 5307
+    }
+  },
+  "checks": {
+    "sameArchiveNodeVersions": [
+      20,
+      22,
+      24
+    ],
+    "publicCasesPerNode": 8,
+    "privateCasesPerNode": 9,
+    "strictTypes": true,
+    "browserBundles": 6,
+    "actualBrowserMinifiedWorker": true,
+    "owning": 1423,
+    "focused": 23,
+    "boundaries": 37,
+    "earlierSelectorFailure": "Nonexistent coverage-policy test selector failed before tests; corrected to existing source/package/discovery contracts."
+  },
+  "remaining": [
+    "public native B update and full consumer union",
+    "fit and data/composition integration",
+    "original large route capacity and whole pipeline 100ms",
+    "isolated canonical P95 and original 100cycle lifetime",
+    "final combined qualification"
+  ]
+}

@@ -7,7 +7,7 @@ import {build} from 'esbuild';
 import {gzipSync} from 'node:zlib';
 import {preparePackageConsumer} from '../../../../../scripts/package-consumer.js';
 import {measureMinimalBrowserBundle} from '../../../../../scripts/browser-bundle-size.js';
-const prefix='.artifacts/route-v2-native', frozen=JSON.parse(await readFile(`${prefix}/frozen.json`,'utf8'));
+const prefix=process.env.ROUTE_QUALIFICATION_DIRECTORY??'.artifacts/route-v2-native', frozen=JSON.parse(await readFile(`${prefix}/frozen.json`,'utf8'));
 assert.equal(createHash('sha256').update(await readFile(frozen.file)).digest('hex'),frozen.sha256);
 process.env.npm_execpath=await realpath('/opt/homebrew/bin/npm');
 const consumer=await preparePackageConsumer({packageSpec:frozen.file});

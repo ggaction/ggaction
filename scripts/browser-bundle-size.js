@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 792_700, // Bounded native route preparation: Node20/24 792,657 gzip bytes.
-  "ggaction/basic": 426_300, // Shared tagged fragments: Node20/24 426,217 gzip bytes.
+  ggaction: 793_118, // Combined native Canvas continuations: Node20/24 793,118 gzip bytes.
+  "ggaction/basic": 426_400, // Shared Canvas stages without Full routes: Node20/24 426,399 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 74_500, // Exact Full planner binding: Node20/24 74,445 gzip bytes.
   "ggaction/animation": 343_663, // Integrated raw projection: Node20/24 343,663 gzip bytes.
