@@ -27,5 +27,6 @@
     "small100cycleOldSceneAlive": 0
   },
   "original100k": "native/all scalar/reference footprints/current passed; subsequent rebase plan WeakSet rehash interrupted; rebase/offline and original100cycle remain open",
-  "performance": "pending new canonical5+30/DPR1/2; original SLO unchanged"
+  "performance": "pending new canonical5+30/DPR1/2; original SLO unchanged",
+  "sourceCommit": "9a524620333a2008889433a63d8ee8c1556a589c"
 }

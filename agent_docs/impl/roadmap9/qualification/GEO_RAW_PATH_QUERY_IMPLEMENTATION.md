@@ -27,3 +27,5 @@ Root는2026-11-02에 `requireFlattened`가boolean/number판정에만사용하는
 원100k의모든199999native좌표·339849parts/1939096footprintcommands exacthash·4query전수scalar·current199999좌표/3CSSquery는다시통과했다. Native준비3,020.67ms(기능진단값)였고원work/거리/owner는그대로다. 이후rebaseplan에서758/758WeakSet rehash가재현되어PID1748을중단했다. 원rebase/offline전체와long-lived100cycle은열려있다. 이query변경이plan단계의남은geometry snapshot복사병목을해결했다고주장하지않는다. [manifest](geo-raw-path-query-evidence/verification.json)와partial원로그/sample이범위를고정한다.
 
 새canonical은이frozenarchive와명시정책모든size를사용해원1k/10k/100k·DPR1/2·5warmup+30measured를그대로측정한다. 최초default1k실패와새결과는별도report로보관한다. 입력·timers·SLO와오류guard는바꾸지않는다.
+
+제품source는 `9a524620333a2008889433a63d8ee8c1556a589c`이며후속pin은metadata-only다.
