@@ -173,6 +173,10 @@ export function reviseSourceIdentity(source, values, options, allocationId) {
 export function validateTypedRowKeyToken(key) {
   let decoded;
   try { decoded = JSON.parse(key); } catch { throw invalid("rowKeys", "Invalid typed row key token."); }
+  return validateDecodedTypedRowKeyToken(key, decoded);
+}
+
+function validateDecodedTypedRowKeyToken(key, decoded) {
   if (!Array.isArray(decoded) || decoded.length !== 2 || !["scalar", "tuple"].includes(decoded[0]) || !Array.isArray(decoded[1])) {
     throw invalid("rowKeys", "Invalid typed row key token.");
   }
@@ -215,7 +219,9 @@ export function validateSourceIdentity(dataset) {
         throw invalid("rowKeys", "Invalid generated row key token.");
       }
     } else {
-      validateTypedRowKeyToken(key);
+      // Only strings have no observable coercion to repeat at the public boundary.
+      if (typeof key === "string") validateDecodedTypedRowKeyToken(key, decoded);
+      else validateTypedRowKeyToken(key);
     }
   }
   if (spec.mode !== "generated" && nextGeneratedKey !== 0) throw invalid("nextGeneratedKey", "Keyed sources have no generated counter.");

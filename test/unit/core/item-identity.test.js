@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   allocateRowKeys, compareRowKeys, createSourceIdentity, encodeRowKey,
-  reviseSourceIdentity, validateSourceIdentity
+  reviseSourceIdentity, validateSourceIdentity, validateTypedRowKeyToken
 } from "../../../src/core/itemIdentity.js";
 import { getErrorDetails } from "../../../src/diagnostics.js";
 import { compareReferenceKeys, referenceAllocation, referenceKey } from "../../oracles/identity.js";
@@ -143,4 +143,72 @@ test("stored source validation rejects corrupt keys, modes, counters and field d
   }
   const mismatch = structuredClone(source({ keyField: "id" })); mismatch.values[0].id = "changed";
   assert.throws(() => validateSourceIdentity(mismatch));
+});
+
+test("stored typed tokens retain canonical scalar and tuple boundaries", () => {
+  for (const key of [false, true, -0, -3, 1e21, 0n, -12n, "", "__proto__", "\uD800",
+    new Date(-1), new Date(8640000000000000), [false, "x", 12n, new Date(0)]]) {
+    const token = encodeRowKey(key);
+    assert.equal(validateTypedRowKeyToken(token), token);
+    const stored = source({ keys: [key] }, [{}]);
+    assert.equal(validateSourceIdentity(stored), stored);
+  }
+  for (const token of ['null', '{}', '[]', '["scalar",[]]', '["tuple",[]]',
+    '["scalar",[["number",-0]]]', '["scalar",[["number",1.0]]]',
+    '["scalar",[["number",1e0]]]', '["scalar",[["number",1e999]]]',
+    '["scalar",[["bigint","01"]]]', '["scalar",[["date",8640000000000001]]]',
+    '["scalar",[["unknown",1]]]', '["scalar",[null]]', '["tuple",[null]]']) {
+    for (const run of [() => validateTypedRowKeyToken(token), () => validateSourceIdentity({
+      ...source({ keys: [0] }, [{}]), rowKeys: [token]
+    })]) assert.throws(run, error => {
+      assert.equal(error.constructor, TypeError);
+      assert.equal(error.message, "Invalid typed row key token.");
+      assert.deepEqual(getErrorDetails(error), { code: "invalid-value", optionPath: "rowKeys" });
+      return true;
+    });
+  }
+});
+
+test("source and standalone token validation preserve distinct parsing errors", () => {
+  const stored = source({ keys: [0] }, [{}]);
+  for (const token of ["malformed", '["scalar",[,]]']) {
+    assert.throws(() => validateSourceIdentity({ ...stored, rowKeys: [token] }), {
+      name: "TypeError", message: "Invalid row key token."
+    });
+    assert.throws(() => validateTypedRowKeyToken(token), {
+      name: "TypeError", message: "Invalid typed row key token."
+    });
+  }
+});
+
+test("nonstring source tokens preserve repeated coercion and its error order", () => {
+  const stored = source({ keys: [0] }, [{}]), token = encodeRowKey(0);
+  for (const failAt of [0, 1, 2]) {
+    const reads = [];
+    const key = { get toString() {
+      reads.push("get toString");
+      return () => {
+        reads.push("call toString");
+        if (reads.length / 2 === failAt) throw new Error("coercion failed");
+        return token;
+      };
+    } };
+    assert.throws(() => validateSourceIdentity({ ...stored, rowKeys: [key] }), error => {
+      assert.equal(error.message, failAt === 1 ? "Invalid row key token." : "Invalid typed row key token.");
+      assert.deepEqual(getErrorDetails(error), { code: "invalid-value", optionPath: "rowKeys" });
+      return true;
+    });
+    assert.deepEqual(reads, Array(failAt === 1 ? 1 : 2).fill(["get toString", "call toString"]).flat());
+  }
+});
+
+test("stored source validation rejects row accessors before reading their values", () => {
+  let reads = 0;
+  const rowKeys = Object.defineProperty([encodeRowKey(0)], "0", { get() { reads++; return encodeRowKey(0); } });
+  assert.throws(() => validateSourceIdentity({ ...source({ keys: [0] }, [{}]), rowKeys }), /holes or accessors/);
+  assert.equal(reads, 0);
+  const values = [Object.defineProperty({}, "id", { get() { reads++; return 0; }, enumerable: true })];
+  const stored = source({ keyField: "id" }, [{ id: 0 }]);
+  assert.throws(() => validateSourceIdentity({ ...stored, values }), /own data properties/);
+  assert.equal(reads, 0);
 });

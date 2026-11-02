@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-internal-typed-key-checkpoint",
+  "base": "a4a756f0a7a1a4d86016acd668288d7a10cc6c2d",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1268,
+    "packedBytes": 1827459,
+    "unpackedBytes": 8230417,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-de615969c3155394abd6e1b3f9f4eb015bc926be2ad6b819e48a170075d2ec47.tgz",
+    "sha256": "de615969c3155394abd6e1b3f9f4eb015bc926be2ad6b819e48a170075d2ec47"
+  },
+  "sourceHashes": {
+    "src/core/itemIdentity.js": "5da2b8dab0c15f8725cb03687cdd10717762e636acfd387ffe7bfe8549eec555",
+    "test/unit/core/item-identity.test.js": "4e64bf2dc7e6cac49568623fe21cd557e607767c2cf749962d0d76fe35a4c4b2",
+    "scripts/package-artifact.js": "51f1c7a157bd36f24dbc1044efac5388143e312b53cdf610db0dd248297fb183",
+    "scripts/browser-bundle-size.js": "72fab652008baeab73f58d8c08d76d787a813e887053539379b9f499c6d95f95"
+  },
+  "evidenceFiles": {
+    "installed.log": {
+      "sha256": "acdebbaf810c386ebf3e8739bf0b3a092d7091e7560f96dd6bbdb8b388d23960",
+      "bytes": 2354
+    },
+    "pack.json": {
+      "sha256": "015beebed8ee74bd9ee8283558fd639c738081295ff949603438bf5a30d461fe",
+      "bytes": 377
+    },
+    "measure24-native.json": {
+      "sha256": "e1bedc2b07428883362cccaade371269b2837bf5882848121258c3b75f1cd224",
+      "bytes": 300
+    },
+    "run.py": {
+      "sha256": "c1ceae8140386990a0b40262e3577579f45f88ea41bafa84204d3e7749451945",
+      "bytes": 1177
+    },
+    "measure24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "path-error-pack.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "measure24.json": {
+      "sha256": "a01b3faf38b52f3637dba833a7d724101227e6d952894a9160863ea654bee341",
+      "bytes": 293
+    },
+    "installed.mjs": {
+      "sha256": "db9bff4c3c439f60acf1eaaac7c84a5b1420a3dd6c78cbd1acc221e10a3710cd",
+      "bytes": 3274
+    },
+    "package-final.log": {
+      "sha256": "258132bd70f2172f75036e835fb3da242d8fc0e3537ddc2df86b9fc1477a1442",
+      "bytes": 1714
+    },
+    "path-error-pack.stderr": {
+      "sha256": "e79726a6557d05ce1bdda6bfb348206a67018e5b4b4c1290d5d87a3b3daaefd9",
+      "bytes": 4972
+    },
+    "boundaries.log": {
+      "sha256": "409df69815634348ab55d56b2b5449c0a91a2fbd339ad5d6fbab5f921793a8d2",
+      "bytes": 5690
+    },
+    "measure24-native.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "installed.json": {
+      "sha256": "222d81879b2d796c94225ceb8678ae6e0ba5f59fd2ed87114a49f503714f9e55",
+      "bytes": 4235
+    },
+    "record.py": {
+      "sha256": "b27b6bc0111026c14e2cd53b08e104ed0ff8958576505aac8f3f0905bb38da42",
+      "bytes": 3262
+    },
+    "pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "coverage.json": {
+      "sha256": "bcc81be24730b44de7c6ea4fd6642e0ccab61a77e50061da4a66b59b92e8932c",
+      "bytes": 62
+    },
+    "owning.log": {
+      "sha256": "caee24a763c90c15cc4aeb6c9a68826a39c0a49bb54d96bd12ce85066b107e44",
+      "bytes": 184768
+    },
+    "pack-install.py": {
+      "sha256": "0ff43c25d21ce952fef1d425428c4f93bd7a5cd0c5080a082cdf474da273922f",
+      "bytes": 746
+    },
+    "proof-audit.json": {
+      "sha256": "9e177194fb72f6dbd6e214f280041dbb5911c7633c36f93ce02af763b627cc55",
+      "bytes": 2868
+    },
+    "proof-source-hashes.json": {
+      "sha256": "fd69b331ba6844155eb07f50b24ca8bb7e3f41066685bf5534c093bbd57bbfc5",
+      "bytes": 879
+    },
+    "proof-patch.diff": {
+      "sha256": "b3c101416f61b54fd22bebdcf04d35f495c70e6146873e85846c67bedaf18825",
+      "bytes": 5645
+    },
+    "proof-proof.mjs": {
+      "sha256": "ac85f15b4dc2bff6875c25eac75211eac56c68885eef278c9f397b313ee345e7",
+      "bytes": 5990
+    },
+    "proof-public-proof.mjs": {
+      "sha256": "9fbca4e61256e7463a33e87042bc2e4edc29b197cf077882b7c4e6141951e1ba",
+      "bytes": 2121
+    },
+    "proof-proof.log": {
+      "sha256": "3f15c9e42b471fea9271a701faecc0543607298edb5718d8afba1a5c1600bf37",
+      "bytes": 87
+    },
+    "proof-loader.mjs": {
+      "sha256": "2e716532e13cc2a514902c5aeddb142d5fb5bea36a390babca0da22c4c7fd585",
+      "bytes": 821
+    },
+    "proof-focused.log": {
+      "sha256": "fef755b94e8e14270a7e23aebf53056560d650a62a2f0568c5275bdffb571dac",
+      "bytes": 7574
+    },
+    "proof-proof.json": {
+      "sha256": "c84d779a85b41d689f40b822c75073318e70ef674fcfccd75ad1fdaaf3713dff",
+      "bytes": 27615
+    }
+  },
+  "checks": {
+    "exactBehaviorCases": 88,
+    "publicReviseRows": 32,
+    "typedParseCallsBefore": 256,
+    "typedParseCallsAfter": 128,
+    "sameArchiveNodes": [
+      "v20.20.2",
+      "v22.23.1",
+      "v24.22.1"
+    ],
+    "installedOriginalDataRows": 1000,
+    "browserBundles": {
+      "ggaction": {
+        "gzipBytes": 791989,
+        "limit": 793317
+      },
+      "ggaction/basic": {
+        "gzipBytes": 425384,
+        "limit": 426400
+      },
+      "ggaction/svg": {
+        "gzipBytes": 25558,
+        "limit": 26000
+      },
+      "ggaction/graph": {
+        "gzipBytes": 74218,
+        "limit": 74500
+      },
+      "ggaction/animation": {
+        "gzipBytes": 342637,
+        "limit": 343826
+      },
+      "ggaction/interaction": {
+        "gzipBytes": 139505,
+        "limit": 140172
+      }
+    },
+    "owning": 105,
+    "boundaries": 28,
+    "package-final": 7,
+    "itemIdentityCoverage": {
+      "lines": 99.14,
+      "branches": 97.79,
+      "functions": 100
+    }
+  },
+  "remaining": [
+    "original100k data load/revise and blocking50ms",
+    "final combined archive canonical performance and lifetime",
+    "remaining roadmap implementation and full qualification"
+  ],
+  "packaging": {
+    "node24Premeasurement": {
+      "entryCount": 1268,
+      "size": 1831052,
+      "unpackedSize": 8230417,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/data-key-token/measure24-native/ggaction-0.0.26.tgz",
+      "sha256": "963abdc98baae810677ad4943ca231f206d841825eb585629d3b6c149292b157",
+      "diagnosticOnly": true
+    },
+    "limitsChanged": {
+      "packedBytes": [
+        1830985,
+        1831052
+      ],
+      "unpackedBytes": [
+        8230130,
+        8230417
+      ]
+    },
+    "notes": [
+      "measure24.json used the shell npm fallback; actual Node24 cap input is measure24-native.json with explicit npm_execpath.",
+      "Initial pack path-error was a relative destination setup error, corrected to an absolute destination before the passing strict pack.",
+      "Runtime work, row and byte quotas and performance thresholds are unchanged."
+    ]
+  }
+}
