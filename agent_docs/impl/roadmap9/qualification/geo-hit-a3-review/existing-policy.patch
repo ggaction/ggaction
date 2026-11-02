@@ -1,0 +1,59 @@
+--- a/scripts/benchmarks/workloads.browser.js
++++ b/scripts/benchmarks/workloads.browser.js
+@@ -50,9 +50,9 @@
+   nodes.forEach((node, i) => { close(node.properties.x, 20 + 360 * rows[i].x / denominator); close(node.properties.y, 380 - 360 * rows[i].y); check(node.properties.radius > 0, 'point radius'); });
+   return { count: nodes.length, first: nodes[0].properties, last: nodes.at(-1).properties };
+ }
+-function hitStage(program, queries, owner, rowKeys) {
++function hitStage(program, queries, owner, rowKeys, preparation) {
+   return () => {
+-    const session = createInteractionSession({ program, bindings: [] });
++    const session = createInteractionSession({ program, bindings: [], ...(preparation === undefined ? {} : { hitPreparation: preparation }) });
+     const host = typeof document === 'undefined' ? { addEventListener() {}, removeEventListener() {}, getBoundingClientRect: () => ({ left: 0, top: 0 }) } : document.querySelector('canvas');
+     session.mount(host, { rootTransform: [1.5, 0, 0, 1.5, 7, 11] });
+     let cursor = 0;
+@@ -69,9 +69,9 @@
+     };
+   };
+ }
+-function samplingStage(from, to, metric, validate) {
++function samplingStage(from, to, metric, validate, options = sampleOptions) {
+   return () => {
+-    const plan = planTransition({ from, to, options: sampleOptions });
++    const plan = planTransition({ from, to, options });
+     check(sampleTransition(plan, 0).graphicSpec === from.graphicSpec, 'exact start graphic identity');
+     check(sampleTransition(plan, 100).graphicSpec === to.graphicSpec, 'exact end graphic identity');
+     return { run() { const result = time(() => sampleTransition(plan, 50)); return { metrics: { [metric]: result.elapsed }, frame: result.value }; },
+@@ -101,11 +101,11 @@
+     program = pointProgram(input); witness = checkPoints(program, input);
+     if (kind === 'points') {
+       const indices = [0, Math.floor(count / 2), count - 1], rows = program.semanticSpec.datasets.find(data => data.id === 'rows').rowKeys;
+-      stages.push({ name: 'css-hit', prepare: hitStage(program, indices.map(i => [20 + 360 * input[i].x, 380 - 360 * input[i].y]), 'points', indices.map(i => rows[i])) });
++      stages.push({ name: 'css-hit', prepare: hitStage(program, indices.map(i => [20 + 360 * input[i].x, 380 - 360 * input[i].y]), 'points', indices.map(i => rows[i]), count === 100000 ? { maxSceneNodes: count + 1, maxWork: 128000000 } : undefined) });
+       stages.push({ name: 'full-frame', prepare: () => samplingStage(program, program.editScale({ id: 'x', domain: [0, 2], nice: false }), 'fullFrameSampleMs', frame => {
+         check(frame.decisions.filter(value => value.kernel === 'cartesian-point').length === count, 'every point must use semantic position interpolation');
+         return checkPoints(frame, input, 1.5);
+-      })() });
++      }, count >= 10000 ? { ...sampleOptions, maxEndpointNodes: 2 * (count + 1), maxOutputNodes: count + 1 } : sampleOptions)() });
+     } else {
+       const saved = serializeProgram(program), revised = input.map(row => ({ ...row, x: row.x / 2 }));
+       stages.push({ name: 'editable-load', prepare: () => ({ run() { const r = time(() => deserializeProgram(saved)); return { metrics: { loadMs: r.elapsed, blockingSliceMs: r.elapsed }, program: r.value }; }, validate: r => checkPoints(r.program, input) }) });
+@@ -183,7 +183,8 @@
+     check(input.features[0].geometry.coordinates.length === count, 'all source vertices');
+     program = canvas().createGeometryData({ id: 'world', format: 'geojson', coordinateKind: 'geographic', featureKey: 'id', values: input })
+       .createProjection({ id: 'projection', type: 'equirectangular', scalePx: 100, translatePx: [200, 200], precisionPx: 0.5 })
+-      .createCoordinate({ type: 'geo' }).createGeoLineMark({ id: 'coast', stroke: '#2563eb', strokeWidth: 2 });
++      .createCoordinate({ type: 'geo' }).createGeoLineMark({ id: 'coast', stroke: '#2563eb', strokeWidth: 2,
++        ...(count >= 10000 ? { capacity: { maxProjectedPoints: 200000, maxPathCommands: 200000 } } : {}) });
+     const checkGeo = (value, scale) => {
+       const nodes = (value.scene ?? scene(value)).nodes.filter(node => node.type === 'path');
+       check(nodes.length === 1, 'one nonempty line part');
+@@ -201,7 +202,7 @@
+     witness = checkGeo(program, 100);
+     stages.push({ name: 'camera-preview', prepare: () => samplingStage(program, program.editProjection({ scalePx: 200 }), 'cameraPreviewMs', frame => {
+       check(frame.decisions.some(value => value.kernel === 'native-geo'), 'native geographic projection kernel'); return checkGeo(frame, Math.sqrt(20000));
+-    })() });
++    }, count >= 10000 ? { ...sampleOptions, formatVersion: 5 } : sampleOptions)() });
+     const coordinates = input.features[0].geometry.coordinates, indices = [0, Math.floor((count - 1) / 2), count - 2];
+     stages.push({ name: 'css-hit', prepare: hitStage(program, indices.map(i => [200 + 50 * (coordinates[i][0] + coordinates[i+1][0]) * Math.PI / 180, 200 - 50 * (coordinates[i][1] + coordinates[i+1][1]) * Math.PI / 180]), 'coast') });
+   }

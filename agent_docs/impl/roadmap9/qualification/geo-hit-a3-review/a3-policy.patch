@@ -1,0 +1,12 @@
+--- a/scripts/benchmarks/workloads.browser.js
++++ b/scripts/benchmarks/workloads.browser.js
+@@ -204,7 +204,8 @@
+       check(frame.decisions.some(value => value.kernel === 'native-geo'), 'native geographic projection kernel'); return checkGeo(frame, Math.sqrt(20000));
+     }, count >= 10000 ? { ...sampleOptions, formatVersion: 5 } : sampleOptions)() });
+     const coordinates = input.features[0].geometry.coordinates, indices = [0, Math.floor((count - 1) / 2), count - 2];
+-    stages.push({ name: 'css-hit', prepare: hitStage(program, indices.map(i => [200 + 50 * (coordinates[i][0] + coordinates[i+1][0]) * Math.PI / 180, 200 - 50 * (coordinates[i][1] + coordinates[i+1][1]) * Math.PI / 180]), 'coast') });
++    stages.push({ name: 'css-hit', prepare: hitStage(program, indices.map(i => [200 + 50 * (coordinates[i][0] + coordinates[i+1][0]) * Math.PI / 180, 200 - 50 * (coordinates[i][1] + coordinates[i+1][1]) * Math.PI / 180]), 'coast', undefined, count >= 10000 ? { maxWork: 128000000,
++      pathGeometry: { maxParts: 400000, maxWork: 2000000, maxIndexWork: 16000000 } } : undefined) });
+   }
+   check(JSON.stringify(input) === original, 'caller input unchanged');
+   return { stages, witness, assertImmutable() { check(JSON.stringify(input) === original, 'caller input changed'); } };
