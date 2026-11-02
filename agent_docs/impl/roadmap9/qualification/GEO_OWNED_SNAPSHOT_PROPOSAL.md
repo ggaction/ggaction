@@ -30,3 +30,7 @@ Temporary seen WeakSet은 기존 입력 root가 이미 강하게 보유한 conta
 검사 대상은 mutable/frozen/owned 및 shallow-owned, owned/mutable 반복 alias, null prototype, accessor 읽기 0회, cycle, sparse/extra array, symbol/nonenumerable, NaN/undefined, prototype key, ±0, maxDepth/maxValues 및 작업량 0–7의 정확 경계다. Alias 출력의 서로 다른 identity와 caller 변경 후 snapshot 격리도 확인했다. 원 제품은 이 검토 checkpoint에서 변경하지 않았다.
 
 제품화 시 owning tests는 이력 문서를 의존하지 않고 같은 invariants를 직접 검산한다. 관련 geometry/animation 회귀·owner coverage·same archive 3Node/browser와 원 100k rebase/offline 검증을 이어간다. 원 canonical 5+30/DPR1·2 및 100cycle, 모든 기존 guard/SLO는 유지한다.
+
+## 채택 기록
+
+2026-11-02 Root는 revision `0d700c2b4`의 proposal과 exact diff를 검토하고 남은 사용자 포괄 승인 안의 내부 병목 개선으로 채택했다. 원 순회·scratch·descriptor·budget·오류 순서를 모두 유지한 뒤 deep-owned/ordinary-prototype/alias-free tree만 반환한다. shallow-owned, alias, null prototype, 잘못된 restore 입력의 fallback과 exact diagnostics를 제품 테스트로 고정한다. 전역 registry 변경이나 retained cache 추가는 승인 대상이 아니다. 큰 원규모 실행은 scalar 작업 종료 후 슬롯을 조율한다.
