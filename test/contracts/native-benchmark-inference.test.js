@@ -1,7 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { expectedGridNeighbors } from '../oracles/inference-grid.js';
-import { nativeWorkloadInput, prepareNativeWorkload, workloadSizes, workloadThresholds, benchmarkWorkload } from '../../scripts/benchmarks/workloads.browser.js';
+import { nativeWorkloadInput, prepareNativeWorkload, workloadSizes, workloadThresholds } from '../../scripts/benchmarks/workloads.browser.js';
+import { chart } from 'ggaction';
+import { computeGraphInference } from 'ggaction/graph';
+import { inferenceWorkerStage } from '../../scripts/benchmarks/inference.js';
 
 // Deliberately exhaustive, unlike the shell oracle and the product kd-tree.
 function allPairs(rows, k) {
@@ -65,15 +68,48 @@ test('inference public benchmark validates every pair, typed ordering, direction
   fixture.assertImmutable();
 });
 
-test('inference large diagnostic keeps the full input, explicit edge budget and absent public worker distinct', async () => {
-  const report = await benchmarkWorkload('inference', 10000, 1, 1, 0);
-  assert.deepEqual(report.requiredStages, ['exact-inference', 'large-worker']);
-  assert.equal(report.witness.nodes, 10000); assert.equal(report.witness.expectedEdges, 100000);
-  assert.equal(report.stages[0].status, 'explicit-limit');
-  assert.match(report.stages[0].error.message, /Graph neighbor edges must not exceed 10000/);
-  assert.equal(report.stages[0].successSLO, 'unsupported-not-success');
-  assert.equal(report.stages[1].status, 'required-worker-unavailable');
-  assert.equal(report.stages[1].successSLO, 'unsupported-not-success');
-  assert.deepEqual(report.stages[1].thresholds, { workerMs: 10000 });
-  assert.equal(report.stages[1].measured, 0);
+test('inference large fixture retains every original row and requires its dedicated public worker host', async () => {
+  const fixture = prepareNativeWorkload('inference', 10000);
+  assert.equal(fixture.witness.nodes, 10000); assert.equal(fixture.witness.expectedEdges, 100000);
+  assert.deepEqual(fixture.stages.map(value => value.name), ['exact-inference', 'large-worker']);
+  const prepared = fixture.stages[1].prepare();
+  try { await assert.rejects(prepared.run(), /requires a browser Worker/); }
+  finally { prepared.dispose(); fixture.assertImmutable(); }
+});
+
+test('inference benchmark unwraps host timing without weakening completion validation or worker cleanup', async () => {
+  const rows = nativeWorkloadInput('inference', 100), base = chart().createData({ id: 'rows', keyField: 'id', values: rows });
+  const definition = { id: 'neighbors', data: 'rows', nodeKey: 'id', ruleId: 'nearest', rule: 'knn', features: ['x', 'y'], metric: 'manhattan', options: { k: 10, search: { algorithm: 'kd-tree' } } };
+  const expected = base.createInferredGraphData(definition).semanticSpec.resources.find(value => value.id === 'neighbors');
+  for (const failure of [undefined, 'stale-hash', 'worker-error', 'bad-timing']) {
+    const workers = [];
+    const prepared = inferenceWorkerStage(base, definition, result => {
+      assert.deepEqual(result.output, expected); return { edges: result.output.result.model.edges.length };
+    }, () => {
+      const listeners = new Map(), worker = {
+        terminated: 0,
+        addEventListener(type, fn) { listeners.set(type, fn); },
+        removeEventListener(type) { listeners.delete(type); },
+        terminate() { this.terminated++; },
+        postMessage({ job }) { queueMicrotask(() => {
+          if (failure === 'worker-error') { listeners.get('message')?.({ data: { failure: { name: 'RangeError', message: 'native rejection' }, computeMs: 0 } }); return; }
+          const completion = structuredClone(computeGraphInference(structuredClone(job)));
+          if (failure === 'stale-hash') completion.inputHash = '0'.repeat(64);
+          listeners.get('message')?.({ data: { result: completion, computeMs: failure === 'bad-timing' ? NaN : 0 } });
+        }); }
+      };
+      workers.push({ worker, listeners }); return worker;
+    });
+    try {
+      if (failure) await assert.rejects(prepared.run(), /stale|native rejection|timing/);
+      else for (let i = 0; i < 2; i++) {
+        const result = await prepared.run(), witness = prepared.validate(result);
+        assert.equal(witness.edges, 1000); assert.equal(witness.workerComputeMs, 0);
+        assert.ok(result.metrics.workerMs > 0 && witness.applyMs >= 0);
+        assert.deepEqual(witness.counters, { workers: 0, listeners: 0 });
+      }
+    } finally { prepared.dispose(); }
+    assert.ok(workers.every(({ worker, listeners }) => worker.terminated === 1 && listeners.size === 0));
+    assert.equal(base.semanticSpec.resources?.length ?? 0, 0);
+  }
 });

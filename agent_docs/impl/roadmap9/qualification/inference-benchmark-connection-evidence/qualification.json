@@ -1,0 +1,105 @@
+{
+  "status": "original-inference-benchmark-connected-to-public-worker; final-performance-qualification-pending",
+  "base": "2e654b817",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "runtimeArchiveSHA256": "ed5f57d5576be46577f8eefe09a09f284a321aef5e25a71854073eb5bbb3423f",
+  "runtimeInputsChanged": false,
+  "archiveReassertedByteIdentical": true,
+  "contracts": 33,
+  "fixtures": {
+    "previous": "76ec184c2",
+    "all15OriginalInputsUnchanged": true,
+    "hashes": {
+      "points/1000": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+      "points/10000": "679628ed88a528915e95744c49ad18a19a005fa55d515f70ee02d199e8729845",
+      "points/100000": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+      "partition/100": "b1d25b7c54960f73f5b1582e0838ef8d0a19cfc5acafe3836cb99f49ce7d92eb",
+      "partition/1000": "dfe300b478fb1d3b701848ef166eb05b20a1f6cbbd6d298c303fe04394e02f98",
+      "partition/10000": "e204dd2c1ab81f7c75b8d32aa006841fcda7e1e140ffd6a983dc1d5b448e1a1e",
+      "geo/1000": "8028f2da2e9bbbcd45e287854f20e66f240d98da6dd30f88cc3a9d0bc2898fe6",
+      "geo/10000": "eedbb01f96fbfa4448a4ebf9bf5398a660b990c042e05ebfea957b07b3a986cc",
+      "geo/100000": "3abb4487631f9099de7725acc9bf1fec159d3c6807f5abeba6e583ef3d5d5079",
+      "data/1000": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+      "data/10000": "679628ed88a528915e95744c49ad18a19a005fa55d515f70ee02d199e8729845",
+      "data/100000": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+      "inference/100": "fce20cc838f845aee8653e28abcdf74727e48ce0a84cd68cf4bb58c4599125f3",
+      "inference/1000": "599b856519a0d8a10c76cfa72dd361c840154b55f3baa0f0620d2038e218db34",
+      "inference/10000": "85bf9876dd097ce27cfeccafd500f93f3b69fac4361cea27ec0f6d8a8d48f48b"
+    }
+  },
+  "diagnostic": {
+    "source": "diagnostic--report.json.gz",
+    "cases": 6,
+    "stages": 8,
+    "DPR": [
+      1,
+      2
+    ],
+    "warmups": 0,
+    "measured": 1,
+    "allOriginalNodesAnd100000EdgesValidated": true,
+    "sameCompleteResourceHashForSyncAndWorker": true,
+    "zeroPostBootstrapRequests": true,
+    "qualification": false,
+    "largeWorkerMs": [
+      21001.700000047684,
+      22056.5
+    ]
+  },
+  "timing": "Worker metric includes startup/copy/compute/main validation. Compute-only and apply are separate diagnostics. No changed sizes, seed, full-output oracle, math or SLO. Explicit existing inference capacity/execution policy is selected; default support is not inferred.",
+  "pending": [
+    "Final combined candidate P95/retained heap/100 cycles",
+    "Large inference worker remains above original 10000ms goal",
+    "Other native family qualification and original final required suites"
+  ],
+  "evidenceFiles": {
+    "contracts-final.log": {
+      "bytes": 7660,
+      "sha256": "bd2a278f602bbf42fd32b77dcca16db5b1acde327eedee3139e72c4bf76040fe"
+    },
+    "contracts.log": {
+      "bytes": 7662,
+      "sha256": "52c55a0240a14d73b0d776b78586fc0607b1b3ecce3ada5538c776076a90f8fb"
+    },
+    "diagnostic.log": {
+      "bytes": 1125,
+      "sha256": "cbaf4ff7f5f568575c1445eb731d2ef06ed58830e080cfc9d4532e8d7ab47ce0"
+    },
+    "package-reassert.json": {
+      "bytes": 405,
+      "sha256": "a3aada11c97cf299a6403d4af98beb24d99a3266fbe14e19e573b6bbe2a41e9f"
+    },
+    "fixtures.json": {
+      "bytes": 1405,
+      "sha256": "0e230c604dc97c41c6e8952fd54fda5732e1b02c7c001d8bb715d9e2f41cd9d1"
+    },
+    "package-reassert.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "evidence.py": {
+      "bytes": 2865,
+      "sha256": "5bee65a5e68268aeeb6d3c9177f078db960967b4731051bf09bc011930482d9d"
+    },
+    "diagnostic--workloads.js": {
+      "bytes": 3152167,
+      "sha256": "f2a62510bc316d92e74d6a695184f96c6efd7be9dcc02983fe152df059096d16"
+    },
+    "diagnostic--report.json": {
+      "bytes": 25542,
+      "sha256": "f2c0c7dc984a32dbeeea3b41efd02751e197850276f2846d1324477e6421b6d8"
+    },
+    "diagnostic--worker.js": {
+      "bytes": 58326,
+      "sha256": "03fea63be5c28d46beb9be198bc00b65fcbac2198bd6b40ac7486e60bffa39b7"
+    },
+    "diagnostic--inference-worker.js": {
+      "bytes": 60435,
+      "sha256": "6c64276e86fef9c5fc503fad6ffb307a75c2f9020d00610d1d324522cc124502"
+    },
+    "diagnostic--app.js": {
+      "bytes": 2831119,
+      "sha256": "3902767d31ad3a71b4398cc2a374599d7260f80c2f25cf3713d95a61ecd7b261"
+    }
+  }
+}

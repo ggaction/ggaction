@@ -43,10 +43,10 @@ const report = {
     prepareComputeValidateMs: "public preparation including worker startup, clone, computation and validation", applyMs: "native prepared commit",
     bundlingMs: "preparation plus apply", materializeMs: "native GraphPlot", canvasRenderMs: "synchronous commands",
     svgSerializeDomMs: "serialization and DOM insertion, excludes compositor paint" },
-  workloadScope: "Complete deterministic native point/hierarchy/Geo/data/inference inputs at every required size. Native authoring and independent numeric preflight precede timing. Public layout includes immutable action validation; data blocking slice is the entire synchronous deserialize/revise call. Unsupported cells remain failures of support; no downsampling. Inference uses an exact k10 integer lattice with an independent full-output oracle; source authoring and oracle initialization are outside timing. The unavailable public inference worker is a separate unsupported stage. Production P95 is not final qualification by itself.",
+  workloadScope: "Complete deterministic native point/hierarchy/Geo/data/inference inputs at every required size. Native authoring and independent numeric preflight precede timing. Public layout includes immutable action validation; data blocking slice is the entire synchronous deserialize/revise call. Unsupported cells remain failures of support; no downsampling. Inference uses exact k10 and a complete independent oracle. Source authoring and oracle initialization are outside timing. Worker time includes startup, copy, public compute and main validation; compute-only and native apply times are separate diagnostics. Production P95 is not final qualification by itself.",
   inputs: {}, cases: [], workloads: [], lifecycle: []
 };
-const files = ["scripts/benchmark-native.js", "scripts/benchmarks/routes.browser.js", "scripts/benchmarks/routes.worker.js", "scripts/benchmarks/workloads.browser.js", "test/oracles/inference-grid.js", "scripts/benchmarks/lifecycle.js"];
+const files = ["scripts/benchmark-native.js", "scripts/benchmarks/routes.browser.js", "scripts/benchmarks/routes.worker.js", "scripts/benchmarks/workloads.browser.js", "scripts/benchmarks/inference.js", "scripts/benchmarks/inference.worker.js", "test/oracles/inference-grid.js", "scripts/benchmarks/lifecycle.js"];
 for (const file of files) report.inputs[file] = sha(await readFile(path.join(root, file)));
 const persist = () => writeFile(path.join(out, "report.json"), JSON.stringify(report, null, 2) + "\n");
 let consumer, browser, server;
@@ -57,9 +57,10 @@ try {
   // Relative imports then resolve inside the same installed consumer directory.
   const workloadDirectory = path.join(consumer.directory, "scripts/benchmarks");
   await mkdir(workloadDirectory, { recursive: true });
+  await writeFile(path.join(workloadDirectory, "inference.js"), await readFile(path.join(root, "scripts/benchmarks/inference.js")));
   await mkdir(path.join(consumer.directory, "test/oracles"), { recursive: true });
   await writeFile(path.join(consumer.directory, "test/oracles/inference-grid.js"), await readFile(path.join(root, "test/oracles/inference-grid.js")));
-  for (const [file, output] of [["routes.browser.js", "app.js"], ["routes.worker.js", "worker.js"], ["workloads.browser.js", "workloads.js"]]) {
+  for (const [file, output] of [["routes.browser.js", "app.js"], ["routes.worker.js", "worker.js"], ["inference.worker.js", "inference-worker.js"], ["workloads.browser.js", "workloads.js"]]) {
     const result = await build({ stdin: { contents: await readFile(new URL(`benchmarks/${file}`, import.meta.url), "utf8"),
       resolveDir: file === "workloads.browser.js" ? workloadDirectory : consumer.directory, sourcefile: file }, absWorkingDir: consumer.directory,
       bundle: true, minify: true, format: "esm", platform: "browser", target: "es2022", write: false, metafile: true });

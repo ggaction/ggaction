@@ -4,6 +4,15 @@ import { planTransition, sampleTransition } from 'ggaction/animation';
 import { createInteractionSession } from 'ggaction/interaction';
 import { serializeProgram, deserializeProgram } from 'ggaction/persistence';
 import { expectedGridNeighbors } from '../../test/oracles/inference-grid.js';
+import { inferenceWorkerStage } from './inference.js';
+
+const inferenceWorkerUrl = typeof document === 'undefined' ? undefined : URL.createObjectURL(new Blob([
+  await (await fetch('./inference-worker.js')).text()
+], { type: 'text/javascript' }));
+const createInferenceWorker = () => {
+  if (inferenceWorkerUrl === undefined) throw new Error('Inference benchmark requires a browser Worker.');
+  return new Worker(inferenceWorkerUrl, { type: 'module' });
+};
 
 // These are the complete required size classes, including unsupported cells.
 export const workloadSizes = Object.freeze({ points: [1000, 10000, 100000], partition: [100, 1000, 10000], geo: [1000, 10000, 100000], data: [1000, 10000, 100000], inference: [100, 1000, 10000] });
@@ -106,17 +115,16 @@ export function prepareNativeWorkload(kind, count, input = nativeWorkloadInput(k
   } else if (kind === 'inference') {
     check(input.length === count, 'inference input cardinality');
     const expected = expectedGridNeighbors(input), definition = { id: 'neighbors', data: 'rows', nodeKey: 'id', ruleId: 'nearest',
-      rule: 'knn', features: ['x', 'y'], metric: 'manhattan', options: { k: 10, symmetrize: 'directed', search: { mode: 'exact', algorithm: 'kd-tree' } } };
+      rule: 'knn', features: ['x', 'y'], metric: 'manhattan', options: { k: 10, symmetrize: 'directed', search: { mode: 'exact', algorithm: 'kd-tree' } },
+      maxEdges: count * 10, execution: { policy: 'bounded-inference@1', maxWork: 100000000, maxBytes: 134217728 } };
     program = chart().createData({ id: 'rows', keyField: 'id', values: input });
     const baseline = JSON.stringify(program.semanticSpec), graphic = program.graphicSpec, source = program.semanticSpec.datasets.find(value => value.id === 'rows');
     witness = { nodes: count, expectedEdges: expected.length, k: 10, metric: 'manhattan', search: 'exact kd-tree',
       inputOrder: 'descending numeric ID', oracle: 'complete Manhattan shells, numeric ID ties, all rows and edges',
-      execution: 'synchronous public createInferredGraphData; no public inference worker executor',
+      execution: 'synchronous createInferredGraphData and dedicated public inference executor',
       preparation: 'source authoring and independent oracle outside inference timing', sourceRows: count,
       outputHashScope: 'complete graph resource, including the actual per-fixture allocated logical data ID; not a cross-fixture identity hash' };
-    stages.push({ name: 'exact-inference', prepare: () => ({
-      run() { const r = time(() => program.createInferredGraphData(definition)); return { metrics: { inferenceMs: r.elapsed }, program: r.value, output: r.value.semanticSpec.resources.find(value => value.kind === 'graph' && value.id === 'neighbors') }; },
-      validate(result) {
+    const validateInference = result => {
         const resource = result.program.semanticSpec.resources.find(value => value.kind === 'graph' && value.id === 'neighbors');
         check(resource?.inputs.length === 1 && resource.inputs[0].kind === 'data' && resource.inputs[0].id === 'rows' && resource.inputs[0].logicalId === source.logicalId && resource.inputs[0].revision === 0, 'inference exact source ref');
         const model = resource.result.model, diagnostics = resource.result.diagnostics, keys = new Map();
@@ -139,8 +147,12 @@ export function prepareNativeWorkload(kind, count, input = nativeWorkloadInput(k
         check(diagnostics.search.mode === 'exact' && diagnostics.search.algorithm === 'kd-tree', 'exact inference search');
         check(result.program.graphicSpec === graphic && JSON.stringify(program.semanticSpec) === baseline, 'inference leaves previous program and graphics unchanged');
         return { ...witness, edges: model.edges.length, pairCount: diagnostics.pairCount, search: diagnostics.search };
-      }
+      };
+    stages.push({ name: 'exact-inference', prepare: () => ({
+      run() { const r = time(() => program.createInferredGraphData(definition)); return { metrics: { inferenceMs: r.elapsed }, program: r.value, output: r.value.semanticSpec.resources.find(value => value.kind === 'graph' && value.id === 'neighbors') }; },
+      validate: validateInference
     }) });
+    if (count === 10000) stages.push({ name: 'large-worker', prepare: () => inferenceWorkerStage(program, definition, validateInference, createInferenceWorker) });
   } else if (kind === 'partition') {
     check(input.length === count, 'hierarchy input cardinality includes root');
     program = canvas().createData({ id: 'rows', keyField: 'key', values: input }).createHierarchyData({ id: 'hierarchy', key: 'key', parent: 'parent', value: 'value' });
@@ -214,27 +226,21 @@ export async function benchmarkWorkload(kind, count, ratio, measured = 30, warmu
       let prepared;
       try {
         const preparation = time(stage.prepare); prepared = preparation.value;
-        const first = prepared.run(), witness = prepared.validate(first);
+        const first = await prepared.run(), witness = prepared.validate(first);
         const output = first.output ?? first.frame?.scene ?? (first.program ? first.program.semanticSpec : first.hit);
         const outputHash = await digest(output);
         // Exercise all three distinct CSS queries before timing; no hit is inferred from an endpoint screenshot.
-        if (stage.name === 'css-hit') for (let i = 0; i < 2; i++) prepared.validate(prepared.run());
-        for (let i = 0; i < warmups; i++) prepared.validate(prepared.run());
+        if (stage.name === 'css-hit') for (let i = 0; i < 2; i++) prepared.validate(await prepared.run());
+        for (let i = 0; i < warmups; i++) prepared.validate(await prepared.run());
         const samples = [];
-        for (let i = 0; i < measured; i++) { const value = prepared.run(); prepared.validate(value); samples.push(value.metrics); }
+        const diagnostics = [];
+        for (let i = 0; i < measured; i++) { const value = await prepared.run(); prepared.validate(value); samples.push(value.metrics); if (value.diagnostics) diagnostics.push(value.diagnostics); }
         const p50 = {}, p95 = {}, thresholds = {}, tier = workloadSizes[kind].indexOf(count);
         for (const key of Object.keys(samples[0])) { p50[key] = percentile(samples.map(s => s[key]), .5); p95[key] = percentile(samples.map(s => s[key]), .95); thresholds[key] = workloadThresholds[kind][key][tier]; }
-        report.stages.push({ name: stage.name, status: 'measured', preparationMs: preparation.elapsed, warmups, measured, samples, p50, p95, thresholds, witness, outputHash, witnessHash: await digest(witness), successSLO: Object.values(thresholds).some(value => value === null) ? (kind === 'inference' && count === 10000 ? 'synchronous-not-worker-qualified' : 'no-size-slo-specified') : Object.keys(p95).every(key => p95[key] <= thresholds[key]) ? 'passed-this-fixture' : 'failed-this-fixture' });
+        report.stages.push({ name: stage.name, status: 'measured', preparationMs: preparation.elapsed, warmups, measured, samples, p50, p95, thresholds, witness, outputHash, witnessHash: await digest(witness), ...(diagnostics.length ? { diagnostics } : {}), successSLO: Object.values(thresholds).some(value => value === null) ? (kind === 'inference' && count === 10000 ? 'synchronous-not-worker-qualified' : 'no-size-slo-specified') : Object.keys(p95).every(key => p95[key] <= thresholds[key]) ? 'passed-this-fixture' : 'failed-this-fixture' });
       } catch (error) { report.stages.push(failure(error, stage.name)); report.status = report.stages.at(-1).status; }
       finally { prepared?.dispose?.(); fixture.assertImmutable(); }
     }
-  }
-  if (kind === 'inference' && count === 10000) {
-    report.stages = report.stages.filter(stage => stage.name !== 'large-worker');
-    report.stages.push({ name: 'large-worker', status: 'required-worker-unavailable', successSLO: 'unsupported-not-success',
-      warmups: 0, measured: 0, thresholds: { workerMs: 10000 },
-      reason: 'The public inference action is synchronous. The graph route worker executor does not execute inference; no harness worker is presented as a public inference executor.' });
-    if (report.status === 'measured') report.status = 'required-worker-unavailable';
   }
   check(await digest(input) === inputHash, 'full input hash must remain unchanged');
   return report;
