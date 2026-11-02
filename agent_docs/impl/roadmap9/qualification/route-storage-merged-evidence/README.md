@@ -4,7 +4,7 @@
 - [x] Owning83·공유 route/presentation92·critical17 owner floor·계약48·문서245
 - [x] 같은 archive의 Node20/22/24 각각 runtime5·strict TS·snippet·peers·6bundles
 - [x] 문서186페이지·LLM1606개와 최소 artifact cap 정합
-- [ ] Source pin과 같은 archive 재확인
+- [x] Source pin과 같은 archive 재확인
 - [ ] 큰 bounded 실행·native update·원 큰 solver·P95 및 최종 STEP 완료
 
 [qualification.json](qualification.json)이 실행·재사용·최초 실패·미완료의 정확한 범위를 소유한다.
@@ -26,3 +26,5 @@ Canonical archive는 `d46a3d39777a245cf7cf8d7a8a5f1b9b75625ebecb5fa9bec6731b10f5
 Packed density·ordered force·worker 권한/cache·offline revision·네 renderer/scene의5개 runtime과
 strict types·문서 snippet·optional peers·6개 bundle을 검사한다. 3Node 모두 통과했다.
 이 기능 검사를 P95·heap/100cycle 또는 STEP071/077 완료로 바꾸지 않는다.
+
+Source `46efd262f608cdacc4eb3647d72ee25b01987c20` pin 뒤 문서 계약9개와 같은 archive SHA 재확인이 통과했다. Runtime/package 입력 변화0이며 새 whole-suite 또는 성능 실행으로 세지 않는다.
