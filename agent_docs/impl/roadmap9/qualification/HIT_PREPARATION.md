@@ -9,11 +9,25 @@
 정책의 현재 공개 계약은 [INTERACTION](../../../contract/current/INTERACTION.md)이 정본이다.
 
 정책 연결과 아래 Node20 blocker로 채택된 exact-object metadata 재사용, 같은 호출의 circle 명령 재사용,
-private geometry container의 중복 복사 제거가 이 checkpoint의 대상이다.
+private geometry container의 중복 복사 제거, shared path 계산과 기존 owned facade의 분리가 이 checkpoint의 대상이다.
 Scene proof와 서로 다른 호출의 geometry shape 공유는 아직 구현하지 않았다. Native data/selection/query/animation
 한도를 바꾸거나 identity를 줄여 100k를 허용하지 않는다. Binding과 index는 독립 준비 예산이다.
 
 ## 현재 검증 상태
+
+- Source: `00e8ac18ef8612f3c62d1b3340fababd680dd745`.
+- 같은 archive `1dc38ce6acb158e637c0991aa15aa158182a2325f4aafbe45ff3818fd62c6e8e`의
+  Node20/22/24 각각 원100k·원자적 교체2case,strictTS,실행doc,optional peers를 통과했다.
+  Node22/24는6bundle까지exit0이다. Node20 최초Full cap실패는 보존하고 같은6측정값의
+  최소cap 재검산을 별도 통과했다.
+- 원99개 전체 private state/command/query/work exact. Source focused1264/1264 및10hit owner
+  95/90/100 floor, shared path 기존80/75/80 floor 통과. 이후 추가 extreme 회귀 포함 path11개×3Node 통과.
+- 동일 설치물 production Chromium의100k 전수/9CSS/DPR1·2가2/2 통과했다.
+- Source pin 후docs22/22,Jekyll build,186page/1603LLM hash 및 변경interaction페이지4폭/Axe 통과.
+  Built search 한도 최초실패와 최소cap에서 동일built 재검산을 구분했다.
+- 이는 명시 정책의 기능 checkpoint이며 최종성능SLO/P95,통합전체,전체로드맵 완료가 아니다.
+
+## 초기 정책 검증과 원 실패 기록
 
 - 기존 기본 거부, 명시 허용, 작은 정책으로 다시 검사, borrowed/clone/frozen frame 거부,
   중첩 합계, 실패한 교체·history·sample 원자성을 포함한 원 정책 hit-testing337개 통과, metadata proof 포함 재검증342개 통과.
@@ -35,9 +49,9 @@ Scene proof와 서로 다른 호출의 geometry shape 공유는 아직 구현하
 
 ## 남은 검증과 의무
 
-고정 archive 세Node와 실제browser, 문서 pin/build/changed-page checks, source hash/evidence
-마감 후에만 정책 checkpoint를 안정본으로 전달한다. 원100k fixture/9query/DPR와 full row lineage는
-그대로 유지한다. 긴 준비시간·메모리와 마지막 combined candidate의 전용CPU P95/SLO는 후행이다.
+이 기록의 현재 기능 checkpoint는 고정 archive 세Node와 실제browser, 문서pin까지 검증했다.
+원100k fixture/9query/DPR와 full row lineage는 그대로 유지한다. 긴 준비시간·메모리와 마지막
+combined candidate의 전용CPU P95/SLO는 후행이다. Scene proof와 호출간 shape 재사용은 추가하지 않았다.
 원 diagnostic의 카운터0은 instrumentation을 로드하지 않은 값이지 실제 work0이 아니다.
 
 ## 11월2일 검증 중 드러난 blocker와 최소 수리
@@ -191,3 +205,15 @@ DPR1/2 각각100000 Canvas arc 호출,100001 scene node,모든 좌표,9CSS query
 Scene의 실제 native identity가 포함된 해시를 그대로 기록하며DPR간 동일hash를 주장하지 않는다.
 원fixture/heap/GC/수학/guard/과금은 유지했다. 전체 설치·browser 프로세스는 종료했으며,
 전체로드맵/최종release/성능SLO/P95의 완료를 선언하지 않는다. 다음은 이 source에 대한 문서 pin이다.
+
+## 문서 pin과 마지막 정합
+
+문서 provenance는 source00e8ac18e의 정확 src/type fingerprint에 고정했다. Pin 후doc/source22/22,
+Jekyll build와변경interaction페이지1440/320/390/768의containment·Axe·완료anchor·console검사가
+통과했다. 최초built 정적검사는search-index1091898bytes가1091300cap을 넘어 실패했고 원log를
+보존했다. 새정책문서의 실제크기에 최소cap1091900만 적용해 동일built의186page/1603LLM hash
+검사를 재실행하여 통과했다. Runtime/type/packed 입력 변화0이며 archiveSHA는 그대로다.
+
+최종 package ceiling1245/1790500/8059200, bundle ceiling은Full784400/Basic424700/SVG26000/
+graph46000/animation333800/interaction136700이다. 원 runtime 중단과 Full/search cap 실패를
+삭제하지 않았고, same-measurement/owning 수리를 전체 최초green으로 쓰지 않는다.
