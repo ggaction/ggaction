@@ -1,0 +1,76 @@
+{
+  "kind": "immutable d6dece68e old reader golden; future A2 reader compatibility remains to be implemented/tested",
+  "cases": [
+    {
+      "version": 3,
+      "bytes": 10407,
+      "sha256": "822ac7ff7df1edb9874803a92205dda9494251cbafa66702f0623c133a59d3fe",
+      "frames": [
+        {
+          "timeMs": 0,
+          "frame": "f1324be49ddb154565338cbbda8c97bacf0b5f6aa88921b10212905125f9947f"
+        },
+        {
+          "timeMs": 25,
+          "frame": "92adbc2b6d63827c415d071458e04e8956e5df0bab335d524a41f7669a0fe1d1"
+        },
+        {
+          "timeMs": 50,
+          "frame": "9753725f8f1e1dc1cc75d0eccd048ea95795c726ef05e1df68605680feb17e8b"
+        },
+        {
+          "timeMs": 100,
+          "frame": "b0fe23600f32534a4cd17bab814b6c9421a25c0ec4ef5bfdd600285c302d6ad5"
+        }
+      ],
+      "oldReaderRejectsVersion5": {
+        "name": "TypeError",
+        "message": "Unsupported transition plan kind or version."
+      }
+    },
+    {
+      "version": 4,
+      "bytes": 12085,
+      "sha256": "408a6613bfec1bb1ead1009a5b5498c9cbe542845253bb2a16645215fe2e9f53",
+      "frames": [
+        {
+          "timeMs": 0,
+          "frame": "f1324be49ddb154565338cbbda8c97bacf0b5f6aa88921b10212905125f9947f"
+        },
+        {
+          "timeMs": 25,
+          "frame": "92adbc2b6d63827c415d071458e04e8956e5df0bab335d524a41f7669a0fe1d1"
+        },
+        {
+          "timeMs": 50,
+          "frame": "9753725f8f1e1dc1cc75d0eccd048ea95795c726ef05e1df68605680feb17e8b"
+        },
+        {
+          "timeMs": 100,
+          "frame": "b0fe23600f32534a4cd17bab814b6c9421a25c0ec4ef5bfdd600285c302d6ad5"
+        }
+      ],
+      "oldReaderRejectsVersion5": {
+        "name": "Error",
+        "message": "Unknown Restored transition plan property \"limits\"."
+      }
+    }
+  ],
+  "errors": [
+    {
+      "case": "no-options",
+      "name": "TypeError",
+      "message": "Transition request requires its own endpoints and options."
+    },
+    {
+      "case": "own-undefined-duration",
+      "name": "RangeError",
+      "message": "Transition duration must be a non-negative finite number."
+    },
+    {
+      "case": "unknown-option",
+      "name": "Error",
+      "message": "Unknown transition options property \"numericEncoding\"."
+    }
+  ]
+}
