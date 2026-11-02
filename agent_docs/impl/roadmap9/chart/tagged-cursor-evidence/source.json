@@ -1,0 +1,7 @@
+{
+  "owner": "src/grammar/graph/inferenceBudget.js",
+  "ownerSHA256": "d2a8a405a44620653c2611775d20b6fde3fc8c430baf032e17553c89f3bf931a",
+  "stringBodySHA256": "b48aea7ed6a9c274856b8352ae285878154484983c0967ae2bc942b4d5421af3",
+  "transform": "inject one yield per original scalar loop iteration; original minimum check, all length arithmetic and final quota check retained",
+  "productChanges": 0
+}

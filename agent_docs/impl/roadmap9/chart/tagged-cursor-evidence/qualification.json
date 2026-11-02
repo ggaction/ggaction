@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-02",
+  "status": "review-prototype; product adoption pending",
+  "authorization": "../../AUTHORIZATION.json",
+  "baseline": "94f46b080582f352caedded5281cf4e6927a54bc",
+  "productChanges": 0,
+  "largeExecutions": 0,
+  "archiveChanges": 0,
+  "benchmarkChanges": 0,
+  "sourceSHA256": {
+    "src/core/contentDigest.js": "f6ec75ffc60526a974789a5f679ba384c802c75cc41287d4a212b926ba3b4de4",
+    "src/core/sha256.js": "a94e9caced46162e33d653cd07b5a36d0626cf4e5e46424644c9273f5e4ca979",
+    "src/core/valueEncoding.js": "09af680c92693885b0afc9f5ce2475a2fbd7c0537df80b830596482bf0b398ac",
+    "src/core/ownData.js": "fa81e2edca5037e2c1f13a82240e5d70097e292073b05e3bbe682b68358dad7d",
+    "src/core/immutable.js": "1ec67bd4b674532050ef8351474840d7b947418469b79d976395b63c7bf62fc2",
+    "src/core/validation.js": "21c32af580a7ac10dd50a76f48f6311bb8bebab0fb3255924342ccda6dfdfdbe",
+    "src/grammar/graph/inferenceBudget.js": "d2a8a405a44620653c2611775d20b6fde3fc8c430baf032e17553c89f3bf931a",
+    "agent_docs/impl/roadmap9/chart/tagged-cursor-evidence/browser.mjs": "92562fd01621cdba7a083a7f7c8854b0fd852bc0868d5f8ac963e7e9f5307cd6",
+    "agent_docs/impl/roadmap9/chart/tagged-cursor-evidence/prototype.mjs": "73f02f7eb4940dfad99dff9f232cd16a469c3ef63321f304e8bc499944ac0176",
+    "agent_docs/impl/roadmap9/chart/tagged-cursor-evidence/build.mjs": "2f9b39aefdd9de3c5a51f44b08b2948b5f629706a47de0d8eb24d8f49e137cf2",
+    "agent_docs/impl/roadmap9/chart/tagged-cursor-evidence/audit.mjs": "6fe8e17d0c63ec75e63d6a0d43101b2cc4c92871ab4f6a19a37e778b19a56781"
+  },
+  "scalarSource": {
+    "owner": "src/grammar/graph/inferenceBudget.js",
+    "ownerSHA256": "d2a8a405a44620653c2611775d20b6fde3fc8c430baf032e17553c89f3bf931a",
+    "stringBodySHA256": "b48aea7ed6a9c274856b8352ae285878154484983c0967ae2bc942b4d5421af3",
+    "transform": "inject one yield per original scalar loop iteration; original minimum check, all length arithmetic and final quota check retained",
+    "productChanges": 0
+  },
+  "checks": {
+    "wholeValueChunkComparisonsEachNode": 138,
+    "utf16SingleUnitComparisons": {
+      "22": 65536,
+      "20": 256,
+      "24": 256
+    },
+    "macrotaskAbortBoundariesEachNode": 16,
+    "chromiumAbortBoundaries": 3,
+    "chromiumOracle": "WebCrypto SHA-256 and native JSON/TextEncoder",
+    "byteChunkSizes": [
+      1,
+      2,
+      3,
+      4,
+      7,
+      64
+    ],
+    "minimumStringEscapingAllocations": 0,
+    "oversizedArrayDescriptorAllocations": 0,
+    "finalDigestPublicationAfterAbort": 0,
+    "noNativeCommitPerformed": true
+  },
+  "proposedNext": "Extract source-neutral JSON scalar unit/count/writer owner first; retain old sync encodeValue/canonicalJSON. Strict immutable-native cursor and route bindings require subsequent explicit adoption.",
+  "limitations": [
+    "frozen snapshot precondition is not native authority",
+    "external mutable snapshot acquisition not implemented",
+    "native descriptor/key enumeration is indivisible",
+    "BigInt.toString is indivisible and allocates before its decimal text quota",
+    "Proxy host traps are not sandboxed",
+    "prototype generator allocates observation objects per UTF16 span; no throughput claim",
+    "no public async API, worker integration or 100ms/P95/SLO qualification"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "bytesEqual": true,
+  "hash": "01f4a757b04221deff0e8659c9ea24c1a961c2a274b14a75e2c240b0a61fb8ee",
+  "oracle": "01f4a757b04221deff0e8659c9ea24c1a961c2a274b14a75e2c240b0a61fb8ee",
+  "aborts": [
+    {
+      "at": 1,
+      "calls": 1,
+      "publications": 0,
+      "terminals": 1,
+      "timerRuns": 1,
+      "cleared": true,
+      "latencyMs": 0.19999980926513672
+    },
+    {
+      "at": 2,
+      "calls": 2,
+      "publications": 0,
+      "terminals": 1,
+      "timerRuns": 1,
+      "cleared": true,
+      "latencyMs": 0
+    },
+    {
+      "at": 4,
+      "calls": 4,
+      "publications": 0,
+      "terminals": 1,
+      "timerRuns": 1,
+      "cleared": true,
+      "latencyMs": 0
+    }
+  ],
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+  "productChanges": 0,
+  "performanceQualification": false
+}
