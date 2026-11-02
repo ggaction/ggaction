@@ -1,0 +1,131 @@
+{
+  "status": "read-only review; not adopted",
+  "sourcePin": "e1a4b7517d59ff1fb39a90e5eae167e026a3734c",
+  "node": "v22.23.1",
+  "source": {
+    "src/animation/sample.js": {
+      "originalSHA256": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+      "prototypeBothSHA256": "2489e0e50e7bc679bef3f6e6185088140c36e4c5da3d4cf6c46bea86fa1605e7"
+    },
+    "src/renderers/canvasScene.js": {
+      "originalSHA256": "e5d9a0360752a5c7f440c8a8834c9105ed1bf8895c01c2862a9b5ff22e998af5",
+      "prototypeBothSHA256": "aabcd332bafa87ce6c900db1ce9c680dee8f57ff731473ca288750b91ea7e786"
+    }
+  },
+  "variants": {
+    "decisions": [
+      {
+        "clones": 2035,
+        "ownedAdds": 8048,
+        "weakAdds": 10084,
+        "weakHas": 23155
+      },
+      {
+        "clones": 1033,
+        "ownedAdds": 8048,
+        "weakAdds": 9082,
+        "weakHas": 21152
+      }
+    ],
+    "wrappers": [
+      {
+        "clones": 2035,
+        "ownedAdds": 8048,
+        "weakAdds": 10084,
+        "weakHas": 23155
+      },
+      {
+        "clones": 1034,
+        "ownedAdds": 8048,
+        "weakAdds": 9083,
+        "weakHas": 22154
+      }
+    ],
+    "both": [
+      {
+        "clones": 2035,
+        "ownedAdds": 8048,
+        "weakAdds": 10084,
+        "weakHas": 23155
+      },
+      {
+        "clones": 32,
+        "ownedAdds": 8048,
+        "weakAdds": 8081,
+        "weakHas": 20151
+      }
+    ]
+  },
+  "tests": {
+    "regression-final.log": {
+      "tests": 1289,
+      "pass": 1289,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "render-final.log": {
+      "tests": 52,
+      "pass": 52,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "regression.log": {
+      "tests": 942,
+      "pass": 942,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "hit.log": {
+      "tests": 347,
+      "pass": 347,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "render.log": {
+      "tests": 52,
+      "pass": 52,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    }
+  },
+  "productSourceChanges": 0,
+  "original100kRun": false,
+  "packageQualification": false,
+  "performanceClaim": false,
+  "lifetime": {
+    "variants": 4,
+    "oldObjectsPerVariant": 8,
+    "cycles": 5,
+    "alive": 0,
+    "hundredCycleQualification": false
+  },
+  "evidence": {
+    "boundary-lifetime.json": "f5e4874c87b39c88feb79b774aef9ef2c8c9ec5fec212839fddb6699e09be0cb",
+    "boundary-lifetime.log.gz": "6a715ad8d9f9d5be696f591c5b646dfcaff1160089bdde80380ecff015a7a649",
+    "boundary-lifetime.mjs": "1d72f3447ec6e4f88a618e7bb5ae72c8d8d3223c3669e1d42979d9ae7adb4cc9",
+    "hit.log.gz": "3ca429223f7455db077f856814e59a402cef0ab520b8d43b9813bb64438e2136",
+    "loader.mjs": "3200abd474f408436dceee8ebbd623f410fc824e7ebc1e9e8df1ff4701e68fda",
+    "product-both.log.gz": "7b5df582d13b66cc4de61696882e96543b4a873175e4ea651d217ef475862c74",
+    "product-compare-both-linear.json": "d5c4c7d7c4f40db47274237369e899ba2d3eabdd5a411f15d6210496441096d2",
+    "product-compare-decisions-linear.json": "c41138495767e6cea1b52cbb65e44233ea6c684ea607d9d2c69f624ed090d26b",
+    "product-compare-wrappers-linear.json": "119211695796cefcf6d971b1a7553fe6164f8fb046e9e2eea6f469c358e3c40a",
+    "product-compare.mjs": "6f8955cc29d23da4bd4e069619d53629f97e0e169544788d33755d7af887f28a",
+    "product-decisions.log.gz": "68fa75e233b97bb6ccdea25c2bafa643febff75ab3da05b9dc338b4f823572b0",
+    "product-wrappers.log.gz": "c4b964faf86aa0f75365114a4083cb52bc381beca132aed23ce26ae24e9f8cb1",
+    "qualify.mjs": "b142ef0244c5759bbe7f70a9ca676e30576a72213a37f0795c25ae5c94e288fc",
+    "regression-final.log.gz": "9492ec8fff5887ed381ec1a91c4d0dd31c4a61ee490e4b5677e1da7125dd61bc",
+    "regression.log.gz": "fb19dd5bdf747b47c0258e0981cf4b541985a0cfe7e8e473353995585e44ac5b",
+    "render-final.log.gz": "a84ccdb98e1a0ab277821d5bfb3e5599a68878fd6babcdabe8198ec8168ac9bf",
+    "render.log.gz": "ce0c8370b90a695740fcafb46023297192afda7eb27079f2889217b1af3d9e49"
+  }
+}
