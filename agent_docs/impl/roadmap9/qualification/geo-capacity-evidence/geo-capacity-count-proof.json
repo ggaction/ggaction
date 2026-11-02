@@ -1,0 +1,234 @@
+{
+  "source": "ac96edb076fc9a299fa82e6ef18b63a2eb001845",
+  "mode": "analytic count proof plus local three-vertex probes; no full 10k/100k native execution",
+  "bounds": {
+    "maxLongitudeStepDeg": 0.06006006006006006,
+    "halfLatitudeStepDeg": 5,
+    "longitudeMidpointErrorRad": 4.995619699253603e-7,
+    "latitudeMidpointErrorRad": 1.496381414611836e-9,
+    "maxProjectedMidpointErrorPx": 0.00009991284220820555,
+    "midpointFractionBound": 0.000005724584177686731,
+    "angularDotLower": 0.9961945612620097,
+    "resampleAngularThreshold": 0.8660254037844387
+  },
+  "derivedCounts": [
+    {
+      "raw": 1000,
+      "refined": 1998,
+      "output": 1999,
+      "commands": 1999,
+      "parts": 1,
+      "streamWork": 18916,
+      "fullNativeObserved": true
+    },
+    {
+      "raw": 10000,
+      "refined": 19998,
+      "output": 19999,
+      "commands": 19999,
+      "parts": 1,
+      "streamWork": 198916,
+      "fullNativeObserved": false
+    },
+    {
+      "raw": 100000,
+      "refined": 199998,
+      "output": 199999,
+      "commands": 199999,
+      "parts": 1,
+      "streamWork": 2088916,
+      "fullNativeObserved": false
+    }
+  ],
+  "observations": [
+    {
+      "n": 1000,
+      "at": 0,
+      "scale": 100,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 1000,
+      "at": 0,
+      "scale": 141.4213562373095,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 1000,
+      "at": 0,
+      "scale": 200,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 1000,
+      "at": 498,
+      "scale": 100,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 1000,
+      "at": 498,
+      "scale": 141.4213562373095,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 1000,
+      "at": 498,
+      "scale": 200,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 1000,
+      "at": 997,
+      "scale": 100,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 1000,
+      "at": 997,
+      "scale": 141.4213562373095,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 1000,
+      "at": 997,
+      "scale": 200,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 10000,
+      "at": 0,
+      "scale": 100,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 10000,
+      "at": 0,
+      "scale": 141.4213562373095,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 10000,
+      "at": 0,
+      "scale": 200,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 10000,
+      "at": 4998,
+      "scale": 100,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 10000,
+      "at": 4998,
+      "scale": 141.4213562373095,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 10000,
+      "at": 4998,
+      "scale": 200,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 10000,
+      "at": 9997,
+      "scale": 100,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 10000,
+      "at": 9997,
+      "scale": 141.4213562373095,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 10000,
+      "at": 9997,
+      "scale": 200,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 100000,
+      "at": 0,
+      "scale": 100,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 100000,
+      "at": 0,
+      "scale": 141.4213562373095,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 100000,
+      "at": 0,
+      "scale": 200,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 100000,
+      "at": 49998,
+      "scale": 100,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 100000,
+      "at": 49998,
+      "scale": 141.4213562373095,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 100000,
+      "at": 49998,
+      "scale": 200,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 100000,
+      "at": 99997,
+      "scale": 100,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 100000,
+      "at": 99997,
+      "scale": 141.4213562373095,
+      "localVertices": 3,
+      "commands": 5
+    },
+    {
+      "n": 100000,
+      "at": 99997,
+      "scale": 200,
+      "localVertices": 3,
+      "commands": 5
+    }
+  ]
+}

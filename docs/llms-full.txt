@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:030b02a6c5570c68b0b4a31572b608bccaa61aa8ad3e45285187e31c8cb39299. Status: development. Runtime source: 46efd262f608cdacc4eb3647d72ee25b01987c20. Release baseline: v0.0.13.
+Contract: sha256:0daa3cb3e6522ee1ceed1121f60befcc7ac1daa51e52bf6720160db9699c8895. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/46efd262f608cdacc4eb3647d72ee25b01987c20/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/46efd262f608cdacc4eb3647d72ee25b01987c20/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -29163,6 +29163,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
@@ -29207,6 +29208,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
 | `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
@@ -29240,6 +29242,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
@@ -29297,6 +29300,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
 | `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
@@ -29342,6 +29346,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
@@ -29385,6 +29390,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
 | `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
@@ -29519,6 +29525,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fill` | Optional / branch-dependent | `"none" \| undefined` |
@@ -29573,6 +29580,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fill` | Optional / branch-dependent | `"none" \| undefined` |
 | `stepDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
@@ -36986,7 +36994,7 @@ These blocks are generated from the declaration file owned by each package entry
 export type { CreateGeoRouteDataOptions, EditGeoRouteDataOptions, GeoRouteResource } from "./program.js";
 export type { GeoCameraOperation, NavigateProjectionOptions, ProjectionViewport } from "./program.js";
 export type { GeoAnnotationAnchor, GeoAnnotationOptions, EditGeoAnnotationOptions, GeoAnnotationBinding } from "./program.js";
-export type { GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
+export type { GeoMarkCapacity, GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
 export type { TableCellPaint, TableLabelPaint, TableBandPaint, TableSparklinePaint, TableFooterOptions, TableSparklineCell, TableColumn, CreateTablePlotOptions, EditTablePlotOptions } from "./program.js";
 export type { TrailBodyPaint, TrailPosition, TrailPlotOptions, CreateTrailPlotOptions, EditTrailPlotOptions } from "./program.js";
 export type { WaterfallBarPaint, WaterfallConnectorPaint, WaterfallLabelPaint, WaterfallX, WaterfallColor, WaterfallWidth, CreateWaterfallPlotOptions, EditWaterfallPlotOptions } from "./program.js";
@@ -46698,6 +46706,17 @@ export interface GeoLineMarkOptions extends Omit<GeoSourceMarkOptions, "fill"> {
 
 Related types: [`GeoSourceMarkOptions`](./reference/types/#type-geosourcemarkoptions).
 
+### `GeoMarkCapacity` {#type-geomarkcapacity}
+
+ Expand GeoMarkCapacity
+
+```typescript
+export interface GeoMarkCapacity {
+  readonly maxProjectedPoints?: number;
+  readonly maxPathCommands?: number;
+}
+```
+
 ### `GeoMarkStyleOptions` {#type-geomarkstyleoptions}
 
  Expand GeoMarkStyleOptions
@@ -46708,6 +46727,8 @@ export interface GeoMarkStyleOptions {
   readonly clip?: boolean; readonly lineCap?: "butt" | "round" | "square"; readonly lineJoin?: "miter" | "round" | "bevel";
   readonly miterLimit?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false; readonly blend?: BlendMode;
 }
+/** Per-mark projected output budget. Each explicit value is an integer from 1 through 200000.
+ * Omitted fields use 10000 projected points and 30000 commands; omission on edit retains the binding. */
 ```
 
 Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow) · [`BlendMode`](./reference/types/#type-blendmode).
@@ -46741,6 +46762,7 @@ Related types: [`GeoSourceMarkOptions`](./reference/types/#type-geosourcemarkopt
 
 ```typescript
 export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
+  readonly capacity?: GeoMarkCapacity;
   readonly id?: string; readonly coordinate?: string; readonly geometry?: string;
   readonly interpolation?: "source-segment" | "great-circle";
   /** Explicit false removes a previous hint. */
@@ -46748,7 +46770,7 @@ export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
 }
 ```
 
-Related types: [`GeoMarkStyleOptions`](./reference/types/#type-geomarkstyleoptions).
+Related types: [`GeoMarkStyleOptions`](./reference/types/#type-geomarkstyleoptions) · [`GeoMarkCapacity`](./reference/types/#type-geomarkcapacity).
 
 ### `GeographicGeometry` {#type-geographicgeometry}
 
@@ -47185,6 +47207,7 @@ export type GraphicType =
 
 ```typescript
 export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
+  readonly capacity?: GeoMarkCapacity;
   readonly id?: string; readonly coordinate?: string; readonly fill?: "none";
   readonly stepDeg?: readonly [number, number];
   readonly extentDeg?: readonly [readonly [number, number], readonly [number, number]];
@@ -47192,7 +47215,7 @@ export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
 }
 ```
 
-Related types: [`GeoMarkStyleOptions`](./reference/types/#type-geomarkstyleoptions).
+Related types: [`GeoMarkStyleOptions`](./reference/types/#type-geomarkstyleoptions) · [`GeoMarkCapacity`](./reference/types/#type-geomarkcapacity).
 
 ### `GridDirectionOptions` {#type-griddirectionoptions}
 
@@ -53525,12 +53548,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/46efd262f608cdacc4eb3647d72ee25b01987c20/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/46efd262f608cdacc4eb3647d72ee25b01987c20/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -53672,6 +53695,20 @@ the group. Transitions between different backdrop modes need an explicit policy.
 [Renderer limits and preparation](./api/rendering/#weighted-concrete-blends)
 apply to all sources. Graphic and editable serialization preserve the concrete
 sources without retaining callbacks or renderer objects.
+
+## Explicit path command capacity
+
+A concrete path may declare `properties.maxCommands`, an own enumerable integer
+from 1 through 200000. Its default remains 30000. Set `maxCommands` with
+`editGraphics` before assigning a larger command array. Lowering the declaration
+below the current command count rejects atomically. Explicit undefined, null,
+accessors and inherited declarations reject. Clips and existing native path
+builders keep their independent limits.
+
+The declaration travels with the concrete path through scenes, weighted sources,
+rendering and graphic persistence. Renderers still consume only concrete graphics.
+A Geo-owned path must match its mark's explicit capacity; use the Geo domain edit
+to change that policy. Path capacity does not raise hit stroke or query budgets.
 
 <!-- Source: /api/data/summaries-and-shaping/ -->
 
@@ -56657,9 +56694,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:030b02a6c5570c68b0b4a31572b608bccaa61aa8ad3e45285187e31c8cb39299` |
+| Contract fingerprint | `sha256:0daa3cb3e6522ee1ceed1121f60befcc7ac1daa51e52bf6720160db9699c8895` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
-| Runtime source commit | `46efd262f608cdacc4eb3647d72ee25b01987c20` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 379 |
 | Declared actions in that release | 234 |
@@ -59154,6 +59191,48 @@ const map = chart().createCanvas({ width: 400, height: 300, margin: 0 })
   .createProjection({ id: "plane", type: "identity" })
   .createCoordinate({ type: "geo" })
   .createGeoShapeMark({ fill: "#93c5fd", stroke: "#1e40af", clip: true });
+```
+
+### Projected output limits
+
+Geo shape, point, line and graticule marks accept `capacity` on create or edit.
+`maxProjectedPoints` limits the mark's total projected points (default 10000),
+and `maxPathCommands` limits its total commands and each stream's refined/output
+point counts (default 30000). Each explicit integer may be 1 through 200000.
+For example, add `capacity: { maxProjectedPoints: 200000, maxPathCommands: 200000 }`
+to the `createGeoShapeMark` call above when that larger output is needed.
+
+Omitting capacity during an edit retains it; `{}` resets both defaults. Explicit
+undefined, null, accessors, inherited fields and unknown keys reject. Edits that
+exceed either budget fail before changing the chart. The policy stays with the
+mark binding through source, projection and Canvas edits. Geometry is neither
+simplified nor split to fit a budget. Graphic-item, generator, work and clip limits
+still apply independently, and some refined or clipped inputs may exceed the
+explicit maximum. Large-path typed camera animation and hit stroke/query budgets
+are independent; raising this native output policy does not raise those limits.
+
+### Explicit capacity example
+
+This complete Node.js program keeps every source position and declares the
+projected output budget on its line mark. Projection edits retain that policy.
+
+> **Executable complete.** Install ggaction and run this complete ES module in Node.js 20 or later.
+
+```javascript
+import { chart } from "ggaction";
+
+const capacityProgram = chart().createCanvas({ width: 400, height: 400, margin: 20 })
+  .createGeometryData({
+    id: "route", format: "geojson", coordinateKind: "geographic",
+    values: { type: "LineString", coordinates: [[-30, -5], [0, 5], [30, -5]] }
+  })
+  .createProjection({ id: "map", type: "equirectangular", scalePx: 100, translatePx: [200, 200] })
+  .createCoordinate({ type: "geo" })
+  .createGeoLineMark({
+    id: "routeLine", stroke: "#2563eb", strokeWidth: 2,
+    capacity: { maxProjectedPoints: 200000, maxPathCommands: 200000 }
+  })
+  .editProjection({ scalePx: 150 });
 ```
 
 ## `createGeoShapeMark`

@@ -77,6 +77,11 @@
   },
   "options": [
     {
+      "name": "capacity",
+      "required": false,
+      "type": "GeoMarkCapacity | undefined"
+    },
+    {
       "name": "id",
       "required": false,
       "type": "string | undefined"
@@ -163,7 +168,7 @@
     }
   ],
   "callPatterns": [
-    "createGraticule({ id?, coordinate?, target?, fill?, stepDeg?, extentDeg?, precisionDeg?, stroke? })"
+    "createGraticule({ id?, coordinate?, target?, capacity?, fill?, stepDeg?, extentDeg?, precisionDeg? })"
   ],
   "snippet": "program.createGraticule({ id: \"grid\", stepDeg: [20, 20] })",
   "errors": [],

@@ -1,0 +1,110 @@
+{
+  "node": "v22.23.1",
+  "pid": 84853,
+  "head": "62e51bb4284238fc2b2bcf266ae31f6711f4c5b0",
+  "sourceDiffHash": "f46ea6cda64493c81456674d8ac75b876ed65b2c4b962162d07361806a60604a",
+  "kind": "source functional diagnostic, not P95",
+  "cases": [
+    {
+      "count": 1000,
+      "start": "2026-11-02T02:39:09.218Z",
+      "rawHash": "8028f2da2e9bbbcd45e287854f20e66f240d98da6dd30f88cc3a9d0bc2898fe6",
+      "scales": [
+        {
+          "scale": 100,
+          "commands": 1999,
+          "maxError": 1.7053025658242404e-13,
+          "hash": "2a723fb43565281fc12937139b5663d253e4d905b53caddb71d62f404c2f8e75"
+        },
+        {
+          "scale": 141.4213562373095,
+          "commands": 1999,
+          "maxError": 2.5579538487363607e-13,
+          "hash": "01754f8499d7c9c47dc4de6f186a15eb634c8d94dd9b191c54877898f6055834"
+        },
+        {
+          "scale": 200,
+          "commands": 1999,
+          "maxError": 3.410605131648481e-13,
+          "hash": "4b4067edbf8e5c3f3412e550fc5c1fa8fad43fb1c351337b96513bc2b43b9707"
+        }
+      ],
+      "nativeMs": 239.31420800000006,
+      "sceneHash": "259f829812ed372a41fb3b6d37dbd30dc86ce2f42257b09faab6cbf255d31a0d",
+      "canvasHash": "b2250900ddc177b45886225b1441ac48e198f277a804c0d12955d1b0f72ae60e",
+      "pngHash": "7cd3a830c525342870b29aa4a784446d95963dd009a802d9d87730b94c9ece57",
+      "svgHash": "e16d9c2cc0fb4142236a0c0a4642c45dab15768c5b46b851be1a6fcb4692ad19",
+      "pdfHash": "56fca4fb04031b6959dfff901b55b8db2c1b5d7cd74e612b4bc82f44d71af94c",
+      "status": "passed",
+      "totalMs": 304.26441700000004
+    },
+    {
+      "count": 10000,
+      "start": "2026-11-02T02:39:09.525Z",
+      "rawHash": "eedbb01f96fbfa4448a4ebf9bf5398a660b990c042e05ebfea957b07b3a986cc",
+      "default": "explicit-limit",
+      "scales": [
+        {
+          "scale": 100,
+          "commands": 19999,
+          "maxError": 1.4210854715202004e-13,
+          "hash": "de588f3b1b32c7f3adb9a7d3f00102a145761fdfda940295216fd273276b5737"
+        },
+        {
+          "scale": 141.4213562373095,
+          "commands": 19999,
+          "maxError": 2.2737367544323206e-13,
+          "hash": "bcb7ee597dd01fcc1eb43e792a49b0eb45da2f9d6c0902f11f867cbc1d09cf1c"
+        },
+        {
+          "scale": 200,
+          "commands": 19999,
+          "maxError": 2.8421709430404007e-13,
+          "hash": "ec5dc74b17eb2ca9c401141f7c24fff4968a9d424171209a84110409182b7931"
+        }
+      ],
+      "nativeMs": 2267.110125,
+      "sceneHash": "2f140a5a5fd37c70c0b07e4d3c7a71d6da995410711059862a7bff64301a72c8",
+      "canvasHash": "342a23229c407e100d61ab73e2ab53e85eddc677531731838286d23ea94b22b2",
+      "pngHash": "fe92191ee89d4016facbecb8501c2f18de9b8cd8791502d9b3dcabfb8a6b58c3",
+      "svgHash": "e9026351e575bdf5bb9e5b166a7e5bbac10b444c266d088b0a6e8f6defc71526",
+      "pdfHash": "d627a2b08d0eb4bdfd48f06b98c251e55c42f346db39d642a3d66e59fc206ca6",
+      "status": "passed",
+      "totalMs": 2694.323917
+    },
+    {
+      "count": 100000,
+      "start": "2026-11-02T02:39:12.220Z",
+      "rawHash": "3abb4487631f9099de7725acc9bf1fec159d3c6807f5abeba6e583ef3d5d5079",
+      "default": "explicit-limit",
+      "scales": [
+        {
+          "scale": 100,
+          "commands": 199999,
+          "maxError": 1.9895196601282805e-13,
+          "hash": "24153eb87f7c2ef17e06f95497ce4519ea67c8ff2e240bfc6f4b21c5d675620c"
+        },
+        {
+          "scale": 141.4213562373095,
+          "commands": 199999,
+          "maxError": 2.8421709430404007e-13,
+          "hash": "363d5d2ac3fc1f1291d9962add000fafc7cd1990191680af7ecfb6a93537d489"
+        },
+        {
+          "scale": 200,
+          "commands": 199999,
+          "maxError": 3.979039320256561e-13,
+          "hash": "c221021bb74a8a273b7bf304ebfc1b1a51322024d7e672878a7987f977b0af42"
+        }
+      ],
+      "nativeMs": 25530.789541,
+      "sceneHash": "9c449fd4fc3ba5f708a12c43fd02d4a83b7dfdaf8b12098caa7d8a30e6a56df5",
+      "canvasHash": "c6e0e3bd7f2f4b3ab372a4ebddee62d936f5b8badbb928d00229ac0a5b338b2c",
+      "pngHash": "62d67b3f49e0ab7cbf867009e6dd578a77d2524d2e9c23d1de3570cf8a0df498",
+      "svgHash": "7fc72ab135ffe4bf8ec0d1de29717bf3efb8c1b8926a0c229a88d795b8238901",
+      "pdfHash": "27fe7654e0908c0b228870b4b2f5200a60c6ec7d8df7ee5021d4f451eb0b195d",
+      "status": "passed",
+      "totalMs": 30298.576499999996
+    }
+  ]
+}

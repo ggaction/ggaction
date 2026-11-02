@@ -2197,6 +2197,18 @@
   {
     "file": "api/geometry.md",
     "block": 7,
+    "heading": "Explicit capacity example",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Install ggaction and run this complete ES module in Node.js 20 or later.",
+    "sha256": "022742c314403ab384666bb0595cab62d9df40b0c710d5e44943ee817dd84578",
+    "executable": true
+  },
+  {
+    "file": "api/geometry.md",
+    "block": 8,
     "heading": "Map feature fields to color and size",
     "mode": "complete",
     "environment": "node-esm",
@@ -2208,7 +2220,7 @@
   },
   {
     "file": "api/geometry.md",
-    "block": 8,
+    "block": 9,
     "heading": "Choose color or size with conditions",
     "mode": "complete",
     "environment": "node-esm",
@@ -2220,7 +2232,7 @@
   },
   {
     "file": "api/geometry.md",
-    "block": 9,
+    "block": 10,
     "heading": "`createGeoAnnotation`",
     "mode": "complete",
     "environment": "node-esm",
@@ -2232,7 +2244,7 @@
   },
   {
     "file": "api/geometry.md",
-    "block": 10,
+    "block": 11,
     "heading": "`createGeoRouteData`",
     "mode": "complete",
     "environment": "node-esm",

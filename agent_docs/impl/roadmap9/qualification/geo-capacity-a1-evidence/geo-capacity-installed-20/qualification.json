@@ -1,0 +1,61 @@
+{
+  "node": "v20.20.2",
+  "platform": "darwin",
+  "records": [
+    {
+      "id": "runtime",
+      "status": "failed",
+      "durationMs": 27.44462499999986,
+      "error": "Error: Command failed: /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node run.mjs\nnode:internal/modules/esm/resolve:873\n  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);\n        ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find package '@napi-rs/canvas' imported from /private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-wUgdyQ/geo-capacity.mjs\n    at packageResolve (node:internal/modules/esm/resolve:873:9)\n    at moduleResolve (node:internal/modules/esm/resolve:946:18)\n    at defaultResolve (node:internal/modules/esm/resolve:1188:11)\n    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:708:12)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:657:25)\n    at ModuleLoader.resolve (node:internal/modules/esm/loader:640:38)\n    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:264:38)\n    at ModuleJob._link (node:internal/modules/esm/module_job:168:49) {\n  code: 'ERR_MODULE_NOT_FOUND'\n}\n\nNode.js v20.20.2\n\n    at genericNodeError (node:internal/errors:984:15)\n    at wrappedFn (node:internal/errors:538:14)\n    at checkExecSyncError (node:child_process:891:11)\n    at execFileSync (node:child_process:927:15)\n    at run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/scripts/consumers/runtime.js:19:3)\n    at Object.run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/.artifacts/geo-capacity-installed.mjs:26:34)\n    at runConsumerCases (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/scripts/consumers/runtime.js:37:39)\n    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/.artifacts/geo-capacity-installed.mjs:25:8"
+    },
+    {
+      "id": "strict-types",
+      "status": "passed",
+      "durationMs": 192.6243340000001
+    },
+    {
+      "id": "documentation",
+      "status": "passed",
+      "durationMs": 295.06012499999997
+    },
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 3124.3559170000003
+    },
+    {
+      "id": "bundle:ggaction",
+      "status": "failed",
+      "durationMs": 2697.2492089999996,
+      "error": "AssertionError [ERR_ASSERTION]: ggaction: 785238 > 784400\n    at Object.run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/.artifacts/geo-capacity-installed.mjs:30:272)\n    at async runConsumerCases (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/scripts/consumers/runtime.js:37:27)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/.artifacts/geo-capacity-installed.mjs:25:2"
+    },
+    {
+      "id": "bundle:ggaction/basic",
+      "status": "failed",
+      "durationMs": 1311.1022909999992,
+      "error": "AssertionError [ERR_ASSERTION]: ggaction/basic: 425444 > 424700\n    at Object.run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/.artifacts/geo-capacity-installed.mjs:30:272)\n    at async runConsumerCases (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/scripts/consumers/runtime.js:37:27)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/.artifacts/geo-capacity-installed.mjs:25:2"
+    },
+    {
+      "id": "bundle:ggaction/svg",
+      "status": "passed",
+      "durationMs": 75.67050000000017
+    },
+    {
+      "id": "bundle:ggaction/graph",
+      "status": "passed",
+      "durationMs": 215.83079100000032
+    },
+    {
+      "id": "bundle:ggaction/animation",
+      "status": "failed",
+      "durationMs": 1043.2017919999998,
+      "error": "AssertionError [ERR_ASSERTION]: ggaction/animation: 334301 > 333800\n    at Object.run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/.artifacts/geo-capacity-installed.mjs:30:272)\n    at async runConsumerCases (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/scripts/consumers/runtime.js:37:27)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/.artifacts/geo-capacity-installed.mjs:25:2"
+    },
+    {
+      "id": "bundle:ggaction/interaction",
+      "status": "failed",
+      "durationMs": 598.4247909999995,
+      "error": "AssertionError [ERR_ASSERTION]: ggaction/interaction: 136880 > 136700\n    at Object.run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/.artifacts/geo-capacity-installed.mjs:30:272)\n    at async runConsumerCases (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/scripts/consumers/runtime.js:37:27)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/.artifacts/geo-capacity-installed.mjs:25:2"
+    }
+  ]
+}

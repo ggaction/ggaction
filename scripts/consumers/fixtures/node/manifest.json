@@ -1951,5 +1951,18 @@
         "statements": 6
       }
     ]
+  },
+  {
+    "file": "geographic-capacity.mjs",
+    "cases": [
+      {
+        "id": "geographic-capacity/all-original-vertices-and-atomic-native-closure",
+        "statements": 1
+      },
+      {
+        "id": "geographic-capacity/source-free-four-backend-and-scene",
+        "statements": 18
+      }
+    ]
   }
 ]

@@ -724,6 +724,10 @@
       {
         "type": "file",
         "path": "browser/graticule-composition.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/geographic-capacity.browser.js"
       }
     ],
     "grammar": [

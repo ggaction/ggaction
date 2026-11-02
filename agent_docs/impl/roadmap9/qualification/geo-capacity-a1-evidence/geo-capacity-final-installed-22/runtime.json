@@ -1,0 +1,12 @@
+[
+  {
+    "id": "geographic-capacity/all-original-vertices-and-atomic-native-closure",
+    "status": "passed",
+    "durationMs": 25938.2205
+  },
+  {
+    "id": "geographic-capacity/source-free-four-backend-and-scene",
+    "status": "passed",
+    "durationMs": 155.27187500000218
+  }
+]

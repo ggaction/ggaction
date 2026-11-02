@@ -131,6 +131,11 @@
       "type": "BlendMode | undefined"
     },
     {
+      "name": "capacity",
+      "required": false,
+      "type": "GeoMarkCapacity | undefined"
+    },
+    {
       "name": "coordinate",
       "required": false,
       "type": "string | undefined"

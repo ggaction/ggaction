@@ -997,12 +997,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 787,400 bytes |
-| `ggaction/basic` | 424,800 bytes |
+| `ggaction` | 788,300 bytes |
+| `ggaction/basic` | 425,600 bytes |
 | `ggaction/svg` | 26,000 bytes |
-| `ggaction/graph` | 68,900 bytes |
-| `ggaction/interaction` | 136,700 bytes |
-| `ggaction/animation` | 339,400 bytes |
+| `ggaction/graph` | 69,000 bytes |
+| `ggaction/interaction` | 136,900 bytes |
+| `ggaction/animation` | 339,800 bytes |
 
 
 
@@ -2884,6 +2884,15 @@ Corner item block은 기존 layout owner가 실제 title/item bounds와12px gap�
 ### 첫 네 기능 통합의 검색 측정
 
 ### 열네 승인 기능의 누적 통합 측정
+
+### Explicit concrete path capacity
+
+Geo의 실행 용량은 exact native binding이 소유하며 materializer가 path별 concrete 선언으로 전달한다.
+Path topology/value schema가 현재 선언을 cache보다 먼저 검산하고, bounds·flatten·renderer·scene·codec는
+같은 backend-neutral properties를 소비한다. Primitive edit와 editable restore는 selector가 찾은 실제 retained
+scoped Geo binding을 grammar 검증에 전달해 선언과 대조한다. Standalone concrete는 native 권한을 주장하지 않고 독립 schema를
+만족한다. Clip/generator/hit/animation 보호 경계에는 이 선언을 자동으로 전파하지 않는다. 정확한 옵션과
+기본값은 [GEOMETRY](contract/current/GEOMETRY.md) 및 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
 
 ### Point-owned graphic capacity
 
@@ -5056,3 +5065,8 @@ Root의 inference worker·point·position sampling과 합친 session hit prepara
 Root 합산 공개version4는1254entries/Node22packed1802294/Node20·24packed1805641/unpacked8129912bytes다. 실제 입력에 최소cap1254/1805700/8130000을 적용한다. Node20 animation339303gzipbytes에는 표의339400cap, Basic424738에는424800을 적용하며 Full786299는786300안이다. 검색1093920에는1094000cap이다. Package guard와 runtime 자원guard·원성능SLO를 구분한다. 실제 same-tar 원100k point/10k partition·3Node·브라우저 검증은 [합산증거](impl/roadmap9/qualification/animation-v4-merged-evidence/qualification.json)를 따른다.
 
 Root route 저장 합산은1256entries/Node22packed1804523/Node20·24packed1807911/unpacked8137423bytes이며 최소cap1256/1808000/8137500이다. Full787369·graph68878gzip에는 표의787400/68900cap을 적용한다. 다른 entry·runtime guard·수학과 package export 경계는 유지한다. [합산 검증](impl/roadmap9/qualification/route-storage-merged-evidence/qualification.json)은 원 큰 solver/P95를 완료로 세지 않는다.
+Geo explicit capacity의 단일 정규화 owner를 추가한 A1 package 실측은 1246 entries,
+8,068,202 unpacked bytes, Node22 packed 1,788,941 / Node20 1,792,600 bytes이다.
+현재 ceiling은 1246 / 1,792,700 / 8,068,300으로 실제 입력만 반영한다.
+
+Root Geo A1 합산은1257entries/Node22packed1806540/Node20·24packed1809929/unpacked8146465bytes이며 cap1257/1810000/8146500이다. 실제 최대Full788278/Basic425529/SVG25178/graph68925/animation339775/interaction136880gzipB에 표의 한도를 적용하고 search1095666에는1095700cap을 적용한다. [설치본 검증](impl/roadmap9/qualification/geo-a1-merged-evidence/qualification.json)은 A2 camera·큰 hit·SLO 완료와 구분한다.

@@ -7810,6 +7810,17 @@ export interface GeoLineMarkOptions extends Omit<GeoSourceMarkOptions, "fill"> {
 
 Related types: [`GeoSourceMarkOptions`](../../../reference/types/#type-geosourcemarkoptions).
 
+### `GeoMarkCapacity` {#type-geomarkcapacity}
+
+ Expand GeoMarkCapacity
+
+```typescript
+export interface GeoMarkCapacity {
+  readonly maxProjectedPoints?: number;
+  readonly maxPathCommands?: number;
+}
+```
+
 ### `GeoMarkStyleOptions` {#type-geomarkstyleoptions}
 
  Expand GeoMarkStyleOptions
@@ -7820,6 +7831,8 @@ export interface GeoMarkStyleOptions {
   readonly clip?: boolean; readonly lineCap?: "butt" | "round" | "square"; readonly lineJoin?: "miter" | "round" | "bevel";
   readonly miterLimit?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false; readonly blend?: BlendMode;
 }
+/** Per-mark projected output budget. Each explicit value is an integer from 1 through 200000.
+ * Omitted fields use 10000 projected points and 30000 commands; omission on edit retains the binding. */
 ```
 
 Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`MarkOutline`](../../../reference/types/#type-markoutline) · [`MarkShadow`](../../../reference/types/#type-markshadow) · [`BlendMode`](../../../reference/types/#type-blendmode).
@@ -7853,6 +7866,7 @@ Related types: [`GeoSourceMarkOptions`](../../../reference/types/#type-geosource
 
 ```typescript
 export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
+  readonly capacity?: GeoMarkCapacity;
   readonly id?: string; readonly coordinate?: string; readonly geometry?: string;
   readonly interpolation?: "source-segment" | "great-circle";
   /** Explicit false removes a previous hint. */
@@ -7860,7 +7874,7 @@ export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
 }
 ```
 
-Related types: [`GeoMarkStyleOptions`](../../../reference/types/#type-geomarkstyleoptions).
+Related types: [`GeoMarkStyleOptions`](../../../reference/types/#type-geomarkstyleoptions) · [`GeoMarkCapacity`](../../../reference/types/#type-geomarkcapacity).
 
 ### `GeographicGeometry` {#type-geographicgeometry}
 
@@ -8297,6 +8311,7 @@ export type GraphicType =
 
 ```typescript
 export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
+  readonly capacity?: GeoMarkCapacity;
   readonly id?: string; readonly coordinate?: string; readonly fill?: "none";
   readonly stepDeg?: readonly [number, number];
   readonly extentDeg?: readonly [readonly [number, number], readonly [number, number]];
@@ -8304,7 +8319,7 @@ export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
 }
 ```
 
-Related types: [`GeoMarkStyleOptions`](../../../reference/types/#type-geomarkstyleoptions).
+Related types: [`GeoMarkStyleOptions`](../../../reference/types/#type-geomarkstyleoptions) · [`GeoMarkCapacity`](../../../reference/types/#type-geomarkcapacity).
 
 ### `GridDirectionOptions` {#type-griddirectionoptions}
 

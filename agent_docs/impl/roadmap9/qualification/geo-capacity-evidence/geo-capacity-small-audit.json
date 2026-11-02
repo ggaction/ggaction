@@ -1,0 +1,99 @@
+{
+  "source": "ac96edb076fc9a299fa82e6ef18b63a2eb001845",
+  "mode": "small source functional diagnostic, not production Chromium or P95",
+  "size": 1000,
+  "inputHash": "8028f2da2e9bbbcd45e287854f20e66f240d98da6dd30f88cc3a9d0bc2898fe6",
+  "outputs": [
+    {
+      "scale": 100,
+      "preparedPoints": 1998,
+      "outputPoints": 1999,
+      "commands": 1999,
+      "work": 18916,
+      "parts": 1,
+      "maxError": 1.7053025658242404e-13,
+      "hash": "60d777344fa4cc2124cf2974f4caec92b31679bda24d50453dea0cf82526c76a"
+    },
+    {
+      "scale": 141.4213562373095,
+      "preparedPoints": 1998,
+      "outputPoints": 1999,
+      "commands": 1999,
+      "work": 18916,
+      "parts": 1,
+      "maxError": 2.5579538487363607e-13,
+      "hash": "50790d646ff4afa2241490df68c7847a667e12ff15b13592ba49ef9733e9c578"
+    },
+    {
+      "scale": 200,
+      "preparedPoints": 1998,
+      "outputPoints": 1999,
+      "commands": 1999,
+      "work": 18916,
+      "parts": 1,
+      "maxError": 3.410605131648481e-13,
+      "hash": "d307cf5467a6f3b3f2318fe6eabac51e35b45d5aa598de0653c97f4a16766081"
+    }
+  ],
+  "witness": {
+    "vertices": 1000,
+    "commands": 1999,
+    "first": {
+      "op": "M",
+      "x": 147.6401224401701,
+      "y": 208.72664625997166
+    },
+    "last": {
+      "op": "L",
+      "x": 252.3598775598299,
+      "y": 191.27335374002834
+    }
+  },
+  "stages": [
+    {
+      "name": "camera-preview",
+      "status": "pass",
+      "elapsedMs": 604.654,
+      "witness": {
+        "vertices": 1000,
+        "commands": 1999,
+        "first": {
+          "op": "M",
+          "x": 125.95195103069393,
+          "y": 212.34134149488435
+        },
+        "last": {
+          "op": "L",
+          "x": 274.0480489693061,
+          "y": 187.65865850511565
+        }
+      },
+      "outputHash": "444aaaec26398513f49d5479355aa4945e432c6b17f4ac854f49719a55711137",
+      "metrics": {
+        "cameraPreviewMs": 72.23741600000017
+      }
+    },
+    {
+      "name": "css-hit",
+      "status": "pass",
+      "elapsedMs": 311.7782080000002,
+      "witness": {
+        "queries": 3,
+        "cssTransform": [
+          1.5,
+          0,
+          0,
+          1.5,
+          7,
+          11
+        ],
+        "candidateCount": 1,
+        "owner": "coast"
+      },
+      "outputHash": "a1bca2e4664223fb312970cc5c1dc89ca0d3f3bb46b9a9361fc58a43efe975b0",
+      "metrics": {
+        "hitMs": 86.18674999999985
+      }
+    }
+  ]
+}

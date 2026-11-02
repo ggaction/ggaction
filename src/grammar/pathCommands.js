@@ -68,9 +68,11 @@ export function buildLinearPathCommands(points, { close = false } = {}) {
   return freezeOwned(commands.map(command => freezeOwned(command)));
 }
 
-export function validatePathCommands(commands) {
+export function validatePathCommands(commands, maximum) {
+  if (!Array.isArray(commands)) throw new TypeError("path.commands must contain at least one entry.");
+  validatePathCommandCount(commands.length, "path.commands length", maximum);
   if (validatedCommands.has(commands)) return commands;
-  resolvePathSubpaths(commands);
+  resolvePathSubpaths(commands, maximum);
   if (isOwned(commands)) validatedCommands.add(commands);
   return commands;
 }

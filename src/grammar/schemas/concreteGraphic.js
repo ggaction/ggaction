@@ -1,3 +1,4 @@
+import { pathCommandCapacity, validatePathCapacity } from "../pathTopology.js";
 import { validateWeightedBlendSources } from "./weightedBlend.js";
 import { normalizeMarkShadow } from "../markShadow.js";
 import { normalizeMarkOutline } from "../markOutline.js";
@@ -34,7 +35,8 @@ const TEXT_BASELINES = new Set([
 ]);
 const validatedProperties = new WeakMap();
 
-export function validateConcreteGraphicValue(type, property, value) {
+export function validateConcreteGraphicValue(type, property, value, properties) {
+  if (property === "maxCommands") validatePathCapacity(value);
   if (type === "weighted-blend" && property === "sources") validateWeightedBlendSources(value, validateConcreteGraphicProperties);
   if (property === "shadow") {
     if (value === false) throw new TypeError("Concrete shadow must be an object.");
@@ -123,12 +125,13 @@ export function validateConcreteGraphicValue(type, property, value) {
   if (property === "lineJoin") validateLineJoin(value, `${type} graphic`);
   if (property === "miterLimit") validateMiterLimit(value, `${type} graphic`);
   if (type === "path" && property === "commands") {
-    validatePathCommands(value);
+    validatePathCommands(value, properties === undefined ? undefined : pathCommandCapacity(properties));
   }
   return value;
 }
 
 export function validateConcreteGraphicProperties(type, properties) {
+  if (type === "path" && isPlainObject(properties)) pathCommandCapacity(properties);
   const validatedTypes = validatedProperties.get(properties);
   if (validatedTypes?.has(type)) return properties;
   if (!isPlainObject(properties)) {
@@ -143,7 +146,7 @@ export function validateConcreteGraphicProperties(type, properties) {
   }
   for (const [property, value] of Object.entries(properties)) {
     validateGraphicProperty(type, property);
-    validateConcreteGraphicValue(type, property, value);
+    validateConcreteGraphicValue(type, property, value, properties);
   }
   if (type === "text" && properties.font !== undefined &&
       (properties.font.family !== properties.fontFamily || properties.font.style !== (properties.fontStyle ?? "normal") ||

@@ -183,7 +183,14 @@ Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. 
   - ✅ Covered: type-specific canvas/circle/rect/line/text/path properties, `length`, heterogeneous `items`.
   - ✅ Covered: the shared concrete-property schema is table-tested by type and `editGraphics` exercises single,
     broadcast, distributed and heterogeneous application paths.
-  - ✅ Covered: finite `M | L | C | Z` path command arrays, maximum 30,000 commands, and command-order validation.
+  - ✅ Covered: finite `M | L | C | Z` path command arrays, default maximum 30,000 commands, and command-order validation.
+    Path-only `maxCommands` is an own enumerable integer declaration from 1 through 200000. Explicit undefined,
+    null, accessors, inherited values and out-of-range values reject. Lowering it below existing commands fails
+    atomically. Validate current capacity before cached command/topology reuse; an earlier larger declaration
+    grants no authority to a smaller one. Concrete scene, weighted source, bounds, flatten and graphic codec
+    preserve the declaration. A native Geo path must match its exact scoped binding policy. Clip paths and
+    existing path generators retain their independent defaults. This does not raise hit stroke/query limits.
+    Evidence: `test/unit/geo/capacity.test.js`.
     각 `M`이 새 subpath를 시작한다. `L/C`는 열린 subpath에서만 허용하고 `Z`는 그 subpath를 닫는다.
     `Z` 뒤에는 `M`만 허용한다. `M`, `M Z`, 연속 `M`은 zero-area position-only subpath로 유효하다.
     모든 command는 exact own data fields와 finite 좌표만 받으며 배열은 dense하다.

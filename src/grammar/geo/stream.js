@@ -2,7 +2,7 @@ import { normalizePolygonWinding } from "./options.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
-import { MAX_PATH_COMMANDS } from "../pathTopology.js";
+import { MAX_PATH_COMMANDS, MAX_DECLARED_PATH_COMMANDS } from "../pathTopology.js";
 import { createGeometryBudget, snapshotGeometryJSON } from "./input.js";
 import { normalizeGeometry } from "./geometry.js";
 import { normalizeProjectionOptions, projectionTuple, longitudeDegrees } from "./projectionOptions.js";
@@ -69,7 +69,7 @@ export function projectGeometry(geometry, projectionInput, input = {}) {
   const interpolation = Object.hasOwn(input, "interpolation") ? input.interpolation : "source-segment";
   if (!["source-segment", "great-circle"].includes(interpolation) || coordinateKind === "planar" && interpolation !== "source-segment") throw new TypeError("Geometry interpolation is incompatible with its coordinate kind.");
   const maxPoints = Object.hasOwn(input, "maxPoints") ? input.maxPoints : MAX_PATH_COMMANDS;
-  if (!Number.isSafeInteger(maxPoints) || maxPoints < 1 || maxPoints > MAX_PATH_COMMANDS) throw new RangeError("Geographic maxPoints exceeds the path command limit.");
+  if (!Number.isSafeInteger(maxPoints) || maxPoints < 1 || maxPoints > MAX_DECLARED_PATH_COMMANDS) throw new RangeError("Geographic maxPoints exceeds the path command limit.");
   let routeHint;
   if (Object.hasOwn(input, "routeHint")) {
     routeHint = projectionTuple(input.routeHint, [2], "Geographic routeHint");

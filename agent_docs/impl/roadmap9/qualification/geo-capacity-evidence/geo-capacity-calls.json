@@ -1,0 +1,72 @@
+{
+  "source": "ac96edb076fc9a299fa82e6ef18b63a2eb001845",
+  "mode": "instrumented source calls only; not P95 or qualification",
+  "nativePreparation": {
+    "cloneAndFreeze": 12111,
+    "snapshotGeometryJSON": 7,
+    "projectGeometry": 2
+  },
+  "camera-preview": {
+    "preparation": {
+      "cloneAndFreeze": 36166,
+      "snapshotGeometryJSON": 43,
+      "projectGeometry": 6,
+      "normalizeAnimationGeoGroup": 20,
+      "normalizeGeoAnimationPresentation": 10,
+      "resolveGeoAnimationPresentation": 4,
+      "resolveAnimationGeoGeometry": 4
+    },
+    "calls": {
+      "sampleGeoInterpolation": 1,
+      "cloneAndFreeze": 6037,
+      "normalizeGeoAnimationPresentation": 2,
+      "snapshotGeometryJSON": 6,
+      "normalizeAnimationGeoGroup": 3,
+      "resolveGeoAnimationPresentation": 1,
+      "resolveAnimationGeoGeometry": 1,
+      "projectGeometry": 1
+    },
+    "witness": {
+      "vertices": 1000,
+      "commands": 1999,
+      "first": {
+        "op": "M",
+        "x": 125.95195103069393,
+        "y": 212.34134149488435
+      },
+      "last": {
+        "op": "L",
+        "x": 274.0480489693061,
+        "y": 187.65865850511565
+      }
+    },
+    "remainingQueryCandidates": [],
+    "outputHash": "b0c43a02b0767ab41303ca7546a7bd79760c579e51d51a9a6e40dff46b8e1264"
+  },
+  "css-hit": {
+    "preparation": {
+      "cloneAndFreeze": 17
+    },
+    "calls": {
+      "cloneAndFreeze": 1
+    },
+    "witness": {
+      "queries": 3,
+      "cssTransform": [
+        1.5,
+        0,
+        0,
+        1.5,
+        7,
+        11
+      ],
+      "candidateCount": 1,
+      "owner": "coast"
+    },
+    "remainingQueryCandidates": [
+      1,
+      1
+    ],
+    "outputHash": "77ed94ce469c71021ec24e3759eca74bad51f5135d3bd00285d87a0409267950"
+  }
+}

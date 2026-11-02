@@ -121,7 +121,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "length"
   ]),
   path: new Set([
-    "commands",
+    "commands", "maxCommands",
     "fillRule",
     "fill",
     "outline",

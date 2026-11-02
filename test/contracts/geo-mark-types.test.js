@@ -16,7 +16,7 @@ import {chart, type GeoPointMarkOptions, type GeoMarkBinding, type SemanticCoord
 import {chart as basic} from ${JSON.stringify(path.join(root, "types/basic.js"))};
 const p=chart().createCoordinate({type:'geo',projection:'map'}).createGeoPointMark({geometry:'cities',radiusDeg:3})
  .editGeoPointMark({target:{childPath:['left'],id:'cities'},radiusPx:5}).createGeoShapeMark({fill:'orange',blend:'multiply',outline:{color:'white',width:2}})
- .editGeoShapeMark({strokeWidth:0}).createGeoLineMark({interpolation:'great-circle',routeHint:[0,30]}).editGeoLineMark({routeHint:false,interpolation:'source-segment'})
+ .editGeoShapeMark({strokeWidth:0,capacity:{maxProjectedPoints:200000,maxPathCommands:200000}}).createGeoLineMark({interpolation:'great-circle',routeHint:[0,30]}).editGeoLineMark({routeHint:false,interpolation:'source-segment'})
  .createGraticule({stepDeg:[10,20],extentDeg:[[-180,-80],[180,80]],precisionDeg:2.5}).editGraticule({opacity:0}).editCoordinate({target:'main',projection:'other'});
 p.encodeColor({target:'districts',field:'category',scale:{id:'categories',unknown:'gray'}})
  .encodeColor({target:'routes',field:'value',fieldType:'quantitative',scale:{id:'traffic',type:'threshold',domain:[10],range:['blue','red']}})
@@ -36,7 +36,15 @@ declare const coordinate:SemanticCoordinate;
 if(coordinate.type==='geo') { const id:string=coordinate.projection.id; void id; }
 declare const binding:GeoMarkBinding;
 if(binding.mode==='graticule') { const step:number=binding.graticule.stepDeg[0]; void step; }
-const circle:GeoPointMarkOptions={radiusPx:4}; void circle;
+const circle:GeoPointMarkOptions={radiusPx:4,capacity:{maxProjectedPoints:50}}; void circle;
+p.createGraticule({capacity:{maxPathCommands:100000}}).editGraticule({capacity:{}});
+if(binding.mode !== 'annotation') { const limit:number|undefined=binding.capacity?.maxPathCommands; void limit; }
+// @ts-expect-error Explicit undefined is not an omitted capacity.
+p.createGeoLineMark({capacity:undefined});
+// @ts-expect-error Capacity has a closed set of fields.
+p.createGeoShapeMark({capacity:{vertices:200000}});
+// @ts-expect-error Annotation does not bind a generated geometry capacity.
+p.createGeoAnnotation({anchor:{type:'position',position:[0,0]},text:'Here',capacity:{}});
 p.createGeoAnnotation({anchor:{type:'position',position:[10,20]},text:'Here',rotation:20,fill:'red'})
  .editGeoAnnotation({target:{childPath:['left'],id:'note'},anchor:{type:'feature',geometry:'world',key:['county',1],level:'county'},text:'Moved'});
 if(binding.mode==='annotation' && binding.anchor.type==='feature') { const key = binding.anchor.key; void key; }

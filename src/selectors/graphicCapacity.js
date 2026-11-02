@@ -45,3 +45,22 @@ export function resolveGraphicItemCapacity(program, { id, label, type }) {
     label
   };
 }
+
+function geoOwners(program, id) {
+  const layer = findLayer(program, id);
+  const owners = layer?.mark?.type === "geo" && layer.geoBinding.mode !== "annotation" ? [layer.geoBinding] : [];
+  for (const childId of program.compositionSpec?.children ?? []) {
+    const prefix = namespaceGraphicId(`${program.compositionSpec.id}-${childId}`, ""), child = program.children[childId];
+    if (!id.startsWith(prefix) || child === undefined) continue;
+    const localId = id.slice(prefix.length);
+    if (child.graphicSpec.objects[localId] !== undefined) owners.push(...geoOwners(child, localId));
+  }
+  return owners;
+}
+
+// Only the exact scoped native owner may supply a geographic declaration.
+export function resolveGraphicGeoBinding(program, id) {
+  const owners = geoOwners(program, id);
+  if (owners.length > 1) throw new TypeError("Geographic path ownership is ambiguous.");
+  return owners[0];
+}

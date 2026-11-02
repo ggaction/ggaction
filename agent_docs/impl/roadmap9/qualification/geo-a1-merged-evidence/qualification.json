@@ -1,0 +1,887 @@
+{
+  "status": "explicit-native-geographic-capacity-integrated; animation-hit-and-performance-pending",
+  "base": "d6dece68e",
+  "upstreamSource": "784b2165c7f1d691d2f4951e26ebf2d46d0ea5f4",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "A1 explicit native Geo projected-point/path-command capacity and concrete path declaration only. Preserve all vertices, original math, default caps, clip/generator/work/hit/query policies and renderer graphicSpec-only boundary. A2 camera animation payload/admission is not implemented.",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1257,
+    "packedBytes": 1806540,
+    "unpackedBytes": 8146465,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-03d9cd8fb9b72c1c505676b5194a8d14460d183742dd63c215f8b4ec6aa33dde.tgz",
+    "sha256": "03d9cd8fb9b72c1c505676b5194a8d14460d183742dd63c215f8b4ec6aa33dde"
+  },
+  "checks": {
+    "coverage.log": 440,
+    "contracts-final.log": 48,
+    "docs.log": 246,
+    "animation.log": 50,
+    "render.log": 2,
+    "browser-installed.log": 2,
+    "browser-source.log": 2
+  },
+  "critical": {
+    "floors": {
+      "actions/geo/marks.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/geo/capacity.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/geo/mark.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/geo/markGeometry.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/geo/stream.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/pathCommands.js": {
+        "lines": 80,
+        "branches": 75,
+        "functions": 80
+      },
+      "grammar/pathGeometry.js": {
+        "lines": 80,
+        "branches": 75,
+        "functions": 80
+      },
+      "grammar/pathTopology.js": {
+        "lines": 80,
+        "branches": 75,
+        "functions": 80
+      },
+      "materialization/geo/mark.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "selectors/graphicCapacity.js": {
+        "lines": 90,
+        "branches": 80,
+        "functions": 100
+      },
+      "grammar/schemas/concreteGraphic.js": {
+        "lines": 85,
+        "branches": 85,
+        "functions": 100
+      },
+      "grammar/schemas/graphicBounds.js": {
+        "lines": 85,
+        "branches": 75,
+        "functions": 90
+      }
+    },
+    "actual": {
+      "actions/geo/marks.js": {
+        "lines": 100,
+        "branches": 98.2,
+        "functions": 100
+      },
+      "actions/primitives/editGraphics.js": {
+        "lines": 92.58,
+        "branches": 95.57,
+        "functions": 91.67
+      },
+      "grammar/geo/capacity.js": {
+        "lines": 100,
+        "branches": 97.3,
+        "functions": 100
+      },
+      "grammar/geo/mark.js": {
+        "lines": 100,
+        "branches": 94.44,
+        "functions": 100
+      },
+      "grammar/geo/markGeometry.js": {
+        "lines": 100,
+        "branches": 95.92,
+        "functions": 100
+      },
+      "grammar/geo/stream.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "grammar/pathCommands.js": {
+        "lines": 100,
+        "branches": 97.73,
+        "functions": 100
+      },
+      "grammar/pathGeometry.js": {
+        "lines": 97.2,
+        "branches": 94.51,
+        "functions": 100
+      },
+      "grammar/pathTopology.js": {
+        "lines": 100,
+        "branches": 98.57,
+        "functions": 100
+      },
+      "grammar/schemas/concreteGraphic.js": {
+        "lines": 87.58,
+        "branches": 91.51,
+        "functions": 100
+      },
+      "grammar/schemas/graphic.js": {
+        "lines": 98.86,
+        "branches": 92.86,
+        "functions": 100
+      },
+      "grammar/schemas/graphicBounds.js": {
+        "lines": 93.38,
+        "branches": 89.62,
+        "functions": 96.55
+      },
+      "materialization/geo/mark.js": {
+        "lines": 100,
+        "branches": 96.3,
+        "functions": 100
+      },
+      "persistence/validation.js": {
+        "lines": 95.1,
+        "branches": 95.68,
+        "functions": 62
+      },
+      "selectors/graphicCapacity.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "all files": {
+        "lines": 95.79,
+        "branches": 95.34,
+        "functions": 90.68
+      }
+    }
+  },
+  "source": {
+    "src/actions/geo/marks.js": {
+      "sha256": "c4711d30141ae28cf9f8445e93e73caf588379f7e4d3b10a276014eac3fbd707",
+      "upstreamExact": true
+    },
+    "src/actions/primitives/editGraphics.js": {
+      "sha256": "bfff27d74c925812d9f4564c50c1ff3b8594ff86e23b23dfbe657eb8f62b2799",
+      "upstreamExact": true
+    },
+    "src/grammar/geo/capacity.js": {
+      "sha256": "f9dea6d520ffdf9982c903b56299a2952802ec1baf79663ac730dfb2c2476b6f",
+      "upstreamExact": true
+    },
+    "src/grammar/geo/mark.js": {
+      "sha256": "10f34f86353420169760a178be8d5be24ed09974f7ba3cc91042c400299f0ae1",
+      "upstreamExact": true
+    },
+    "src/grammar/geo/markGeometry.js": {
+      "sha256": "2755410c1ce2e611ee810ebb468470b298b4ba91df23c55259715fe1c361952e",
+      "upstreamExact": true
+    },
+    "src/grammar/geo/stream.js": {
+      "sha256": "da1307c795183bf752c0ac5c2065aeee41986f677361ca6e7a8738ccbb8a331a",
+      "upstreamExact": true
+    },
+    "src/grammar/pathCommands.js": {
+      "sha256": "f25047a6f75c97a429021907ecc957fedbb28fc2ed62bf3db4a69c6023c72871",
+      "upstreamExact": true
+    },
+    "src/grammar/pathGeometry.js": {
+      "sha256": "8084c2b1fb06544115f57ff54bfc6455eb44245d8b9affd24182c5235858fa16",
+      "upstreamExact": true
+    },
+    "src/grammar/pathTopology.js": {
+      "sha256": "5bed9f615d6b843bd9db89508c57276d9c5350acb93a85f9388be20279f21264",
+      "upstreamExact": true
+    },
+    "src/grammar/schemas/concreteGraphic.js": {
+      "sha256": "17e8ba56fe626433a06435d7c622cfa1cbe222ba451a1fcd10272b2fea28a911",
+      "upstreamExact": true
+    },
+    "src/grammar/schemas/graphic.js": {
+      "sha256": "3ea8b32d02986e8d4cc887fc33906c0b9edc851f57b0e75d5fa8b0a0ffe14f21",
+      "upstreamExact": true
+    },
+    "src/grammar/schemas/graphicBounds.js": {
+      "sha256": "744648ea81515de984f910df719023c63421754f4b6f1c1830a3f7fbb3ec7fa4",
+      "upstreamExact": true
+    },
+    "src/inspectionDescriptors.js": {
+      "sha256": "40ba6750b856ebc221887a60b2d0ef86271f98b20381524d167911b95f9c7c0f",
+      "upstreamExact": false
+    },
+    "src/materialization/geo/mark.js": {
+      "sha256": "044dba09cf967e1b3395a7ad1cc10f0145c700747c04c47d05c330ceb743c92b",
+      "upstreamExact": true
+    },
+    "src/persistence/validation.js": {
+      "sha256": "ffb7737a9088e18d722899dc88e50e1ac734e2c8c4bd602fafba68f9a891832a",
+      "upstreamExact": true
+    },
+    "src/selectors/graphicCapacity.js": {
+      "sha256": "80301d027d2887c620c83909a5db5aeb0546eac77397c7ba63c618ae139beceb",
+      "upstreamExact": false
+    },
+    "types/index.d.ts": {
+      "sha256": "74b80a07d821a255c10d4ed8fb3a9a60d307a3bb276a94ff116d56f2eb314289",
+      "upstreamExact": true
+    },
+    "types/program.d.ts": {
+      "sha256": "84ab75bbdee2d9aa0c505be8b14c27a3166aaea157b0ee4ca2562e478cdb8d79",
+      "upstreamExact": false
+    }
+  },
+  "consumers": [
+    {
+      "node": "v20.20.2",
+      "archiveSHA256": "03d9cd8fb9b72c1c505676b5194a8d14460d183742dd63c215f8b4ec6aa33dde",
+      "checks": [
+        {
+          "id": "optional-peers",
+          "status": "passed",
+          "durationMs": 4612.221750000001
+        },
+        {
+          "id": "runtime",
+          "status": "passed",
+          "durationMs": 29335.7045
+        },
+        {
+          "id": "strict-types",
+          "status": "passed",
+          "durationMs": 189.09674999999697
+        },
+        {
+          "id": "documentation",
+          "status": "passed",
+          "durationMs": 279.2055839999957
+        },
+        {
+          "id": "bundle:ggaction",
+          "status": "passed",
+          "durationMs": 2528.4350829999967
+        },
+        {
+          "id": "bundle:ggaction/basic",
+          "status": "passed",
+          "durationMs": 1273.6000829999975
+        },
+        {
+          "id": "bundle:ggaction/svg",
+          "status": "passed",
+          "durationMs": 74.01058299999568
+        },
+        {
+          "id": "bundle:ggaction/graph",
+          "status": "passed",
+          "durationMs": 306.69645799999853
+        },
+        {
+          "id": "bundle:ggaction/animation",
+          "status": "passed",
+          "durationMs": 1005.9967499999984
+        },
+        {
+          "id": "bundle:ggaction/interaction",
+          "status": "passed",
+          "durationMs": 569.1660829999964
+        }
+      ],
+      "runtime": [
+        {
+          "id": "geographic-capacity/all-original-vertices-and-atomic-native-closure",
+          "status": "passed",
+          "durationMs": 26983.728542
+        },
+        {
+          "id": "geographic-capacity/source-free-four-backend-and-scene",
+          "status": "passed",
+          "durationMs": 169.79162499999802
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1068,
+          "minifiedBytes": 2747097,
+          "gzipBytes": 788278
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 626,
+          "minifiedBytes": 1450766,
+          "gzipBytes": 425529
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 74850,
+          "gzipBytes": 25178
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 115,
+          "minifiedBytes": 228922,
+          "gzipBytes": 68925
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 512,
+          "minifiedBytes": 1134694,
+          "gzipBytes": 339775
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 214,
+          "minifiedBytes": 428130,
+          "gzipBytes": 136880
+        }
+      }
+    },
+    {
+      "node": "v22.23.1",
+      "archiveSHA256": "03d9cd8fb9b72c1c505676b5194a8d14460d183742dd63c215f8b4ec6aa33dde",
+      "checks": [
+        {
+          "id": "optional-peers",
+          "status": "passed",
+          "durationMs": 2709.730458
+        },
+        {
+          "id": "runtime",
+          "status": "passed",
+          "durationMs": 27573.45075
+        },
+        {
+          "id": "strict-types",
+          "status": "passed",
+          "durationMs": 224.49775000000227
+        },
+        {
+          "id": "documentation",
+          "status": "passed",
+          "durationMs": 438.26887499999793
+        },
+        {
+          "id": "bundle:ggaction",
+          "status": "passed",
+          "durationMs": 2428.5908329999984
+        },
+        {
+          "id": "bundle:ggaction/basic",
+          "status": "passed",
+          "durationMs": 1235.1628330000021
+        },
+        {
+          "id": "bundle:ggaction/svg",
+          "status": "passed",
+          "durationMs": 73.56487500000367
+        },
+        {
+          "id": "bundle:ggaction/graph",
+          "status": "passed",
+          "durationMs": 276.48991700000624
+        },
+        {
+          "id": "bundle:ggaction/animation",
+          "status": "passed",
+          "durationMs": 990.7917910000033
+        },
+        {
+          "id": "bundle:ggaction/interaction",
+          "status": "passed",
+          "durationMs": 535.0033330000006
+        }
+      ],
+      "runtime": [
+        {
+          "id": "geographic-capacity/all-original-vertices-and-atomic-native-closure",
+          "status": "passed",
+          "durationMs": 26760.106916
+        },
+        {
+          "id": "geographic-capacity/source-free-four-backend-and-scene",
+          "status": "passed",
+          "durationMs": 154.77524999999878
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1068,
+          "minifiedBytes": 2747097,
+          "gzipBytes": 786892
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 626,
+          "minifiedBytes": 1450766,
+          "gzipBytes": 424629
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 74850,
+          "gzipBytes": 25040
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 115,
+          "minifiedBytes": 228922,
+          "gzipBytes": 68773
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 512,
+          "minifiedBytes": 1134694,
+          "gzipBytes": 338620
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 214,
+          "minifiedBytes": 428130,
+          "gzipBytes": 136375
+        }
+      }
+    },
+    {
+      "node": "v24.22.1",
+      "archiveSHA256": "03d9cd8fb9b72c1c505676b5194a8d14460d183742dd63c215f8b4ec6aa33dde",
+      "checks": [
+        {
+          "id": "optional-peers",
+          "status": "passed",
+          "durationMs": 2068.836542
+        },
+        {
+          "id": "runtime",
+          "status": "passed",
+          "durationMs": 24177.34725
+        },
+        {
+          "id": "strict-types",
+          "status": "passed",
+          "durationMs": 189.68995899999936
+        },
+        {
+          "id": "documentation",
+          "status": "passed",
+          "durationMs": 302.76258400000006
+        },
+        {
+          "id": "bundle:ggaction",
+          "status": "passed",
+          "durationMs": 2303.3242500000015
+        },
+        {
+          "id": "bundle:ggaction/basic",
+          "status": "passed",
+          "durationMs": 1135.2955839999995
+        },
+        {
+          "id": "bundle:ggaction/svg",
+          "status": "passed",
+          "durationMs": 63.60070800000176
+        },
+        {
+          "id": "bundle:ggaction/graph",
+          "status": "passed",
+          "durationMs": 291.53412500000195
+        },
+        {
+          "id": "bundle:ggaction/animation",
+          "status": "passed",
+          "durationMs": 938.4002499999988
+        },
+        {
+          "id": "bundle:ggaction/interaction",
+          "status": "passed",
+          "durationMs": 510.90845799999806
+        }
+      ],
+      "runtime": [
+        {
+          "id": "geographic-capacity/all-original-vertices-and-atomic-native-closure",
+          "status": "passed",
+          "durationMs": 23351.66825
+        },
+        {
+          "id": "geographic-capacity/source-free-four-backend-and-scene",
+          "status": "passed",
+          "durationMs": 204.96395800000028
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1068,
+          "minifiedBytes": 2747097,
+          "gzipBytes": 788278
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 626,
+          "minifiedBytes": 1450766,
+          "gzipBytes": 425529
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 74850,
+          "gzipBytes": 25178
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 115,
+          "minifiedBytes": 228922,
+          "gzipBytes": 68925
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 512,
+          "minifiedBytes": 1134694,
+          "gzipBytes": 339775
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 214,
+          "minifiedBytes": 428130,
+          "gzipBytes": 136880
+        }
+      }
+    }
+  ],
+  "browser": {
+    "node": "v22.23.1",
+    "status": "passed",
+    "archive": "03d9cd8fb9b72c1c505676b5194a8d14460d183742dd63c215f8b4ec6aa33dde",
+    "browser": "Chromium",
+    "vertices": 100000,
+    "commands": 199999,
+    "ratios": [
+      1,
+      2
+    ],
+    "sourceFree": true,
+    "sourcePrefixExclusion": "asserted by esbuild metafile"
+  },
+  "packMeasurements": {
+    "20": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1257,
+      "packedBytes": 1809929,
+      "unpackedBytes": 8146465,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/geo-a1-merged/pack20/ggaction-0.0.26.tgz",
+      "sha256": "c29275ff1044bbc9e2a25e7b06082854022935bec8606fa6b99eccd98df147fd"
+    },
+    "22": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1257,
+      "packedBytes": 1806540,
+      "unpackedBytes": 8146465,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/geo-a1-merged/pack22/ggaction-0.0.26.tgz",
+      "sha256": "03d9cd8fb9b72c1c505676b5194a8d14460d183742dd63c215f8b4ec6aa33dde"
+    },
+    "24": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1257,
+      "packedBytes": 1809929,
+      "unpackedBytes": 8146465,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/geo-a1-merged/pack24/ggaction-0.0.26.tgz",
+      "sha256": "c29275ff1044bbc9e2a25e7b06082854022935bec8606fa6b99eccd98df147fd"
+    }
+  },
+  "documentation": {
+    "builtPages": 186,
+    "llmArtifacts": 1607
+  },
+  "reusedEvidence": [
+    {
+      "path": "../GEO_CAPACITY_A1.md",
+      "boundary": "Source15 runtime owner list:14byte-exact, selector retains earlier own point-config behavior plus exact new Geo resolver. Generated inspection/type program retain existing inferred-graph public options. Persistence validation source byte-exact; reuse broad3292/3010 plus45 same-source53function offset-union evidence, not a new canonical full coverage result. Root focused report itself records62% persistence functions."
+    },
+    {
+      "path": "../geo-capacity-a1-evidence/geo-capacity-critical.json",
+      "boundary": "Reused persistence broad line/branch and same-source V8 function-offset union remain separately identified; root12canonical focused floors pass independently."
+    }
+  ],
+  "artifactPolicy": {
+    "entries": 1257,
+    "packedBytes": 1810000,
+    "unpackedBytes": 8146500,
+    "bundleCaps": {
+      "ggaction": 788300,
+      "ggaction/basic": 425600,
+      "ggaction/svg": 26000,
+      "ggaction/graph": 69000,
+      "ggaction/animation": 339800,
+      "ggaction/interaction": 136900
+    },
+    "searchCap": 1095700,
+    "runtimePoliciesChanged": false
+  },
+  "repairsAndRetainedFailures": [
+    "contracts-first.log: invalid guessed discovery selector, corrected canonical test-discovery owner",
+    "docs-first.log: 2 search-byte failures; measured1095666 cap1095700; final246pass",
+    "pack20-first.log:1257 entries exceedprevious1256; raw1809929-byte tar hash retained",
+    "premeasure20.json: integrated Full/Basic/graph/animation actual gzip exceeds old artifact caps; minimal measured ceilings only",
+    "browser-installed-first.log: macOS /var realpath alias in metafile assertion; normalize installed root via realpath, same archive rerun2pass. Runtime was not started in failed hooks."
+  ],
+  "pending": [
+    "A2 geographic animation native/offline/rebase/timeline capacity and wire/kernel choice",
+    "Large stroke-hit preparation/spatial query and CSS20ms, Geo camera16.7/33/50ms SLO",
+    "Common animation50ms/partition native kernel and gesture SLO",
+    "Bounded route execution/native update/original large solver admission",
+    "Final9commands/P95/retainedheap100cycle/independent review/STEP057-077 closeout"
+  ],
+  "evidenceFiles": {
+    "coverage.log": {
+      "sha256": "7cd36b4f3852cda7a31c4a901433956cd2b9dd580cb893a1804414a07c1afca2",
+      "bytes": 111346
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "pack22.json": {
+      "sha256": "e9bd4b1e334d0b3e80056b1694380f3748787f8ad24a05a707b103cb5054071d",
+      "bytes": 378
+    },
+    "browser-source.log": {
+      "sha256": "7de2069707357b690ad5912314ed926fc008109ef5fb16819cfea2f6ca22d9c4",
+      "bytes": 643
+    },
+    "render.log": {
+      "sha256": "ff4eba6808f8d8ca93b914b1c9f040894db6b75c297b4abe7d2fae6d3776e523",
+      "bytes": 627
+    },
+    "descriptors.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "contracts-final.log": {
+      "sha256": "0fb7cb3356fe12ce623738431efa9c6536a3cb5ed40a3c8658edea0f8cb00f23",
+      "bytes": 10000
+    },
+    "contracts.log": {
+      "sha256": "0ef7bf4ca38bc1fb152e602df9844982f6fe3af15694348ffb779cdfa580b211",
+      "bytes": 8402
+    },
+    "record-contracts.log": {
+      "sha256": "af635ff618a931ed607040da48963f81de638c47ade54e44e9b96ffa89272b3e",
+      "bytes": 1813
+    },
+    "browser-installed-first.log": {
+      "sha256": "91294552643a8ed26c5bf1e6dece56dda51fcc30b57cb7c2b44ee63b8b27929f",
+      "bytes": 2928
+    },
+    "source.json": {
+      "sha256": "2424f7e19f560757d802c96acd79c58b22c234c1c21ea2329587031a1b312c09",
+      "bytes": 2691
+    },
+    "frozen.json": {
+      "sha256": "7ac25e87fc42f1e97b07091c0f63af474d0d509eaa9194c3b3689af69aa3b8fe",
+      "bytes": 436
+    },
+    "installed-24.log": {
+      "sha256": "9270e1952b949cd084da3d44b4758ac0c36450e0744109f5952b2bf9ea7e8696",
+      "bytes": 1216
+    },
+    "pack20.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "browser-installed.json": {
+      "sha256": "fb5cf210dfbdf85d716fa6c49dfb85ffbba1b1cf21e5fd610bacf96113cb7756",
+      "bytes": 310
+    },
+    "coverage.mjs": {
+      "sha256": "f624b80435d45b286c8a448af7c859d1417240092f104c97cd7a5b7b52a11bd0",
+      "bytes": 1162
+    },
+    "pack22.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24.json": {
+      "sha256": "c9ece86887c0b11c59c1570ce214d5473f2b011fa7501b9ef163c18d68bfaa96",
+      "bytes": 378
+    },
+    "installed-22.log": {
+      "sha256": "8f3a20c39572042c9fe463a13629b424c8dab9df7729cfd9b0d0919b319078cc",
+      "bytes": 1216
+    },
+    "pack20-first-observed.json": {
+      "sha256": "f5c7065ce1a7b82e9cba3d5a3b83f5ab31dbd21696574ce6e4dcacdc9a273b1b",
+      "bytes": 109
+    },
+    "pack20-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs.log": {
+      "sha256": "efccba59c11653b728872e77dc0a605059019f538fab416f23b9d814a8376b10",
+      "bytes": 74789
+    },
+    "installed-20.log": {
+      "sha256": "bc6b975c356a083455812728c33046cd251b1d78005a116c192f612204d35622",
+      "bytes": 1216
+    },
+    "pack24.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "animation.log": {
+      "sha256": "6b73de20a0a0074d7bdfd1f50674db0a2a4abb9c0020b2fc57868332a708b243",
+      "bytes": 12005
+    },
+    "premeasure.mjs": {
+      "sha256": "a9732c1e6c728fd49c0eb43ded90c2db2b1d5c10f67c43622f3d326200cf6de3",
+      "bytes": 618
+    },
+    "premeasure20.json": {
+      "sha256": "2225e095f26fd5178cbf0d96c5a1977a981ea25450270fc168d0c6c96993ac73",
+      "bytes": 919
+    },
+    "browser-installed.log": {
+      "sha256": "ff08b7c3af2ac5e79c9d9294f330c2130ff63fe3510ebfa2958238865d3ff2f8",
+      "bytes": 640
+    },
+    "pack20.json": {
+      "sha256": "7a72220bfff529d76239133e5000e6fdd16b501470332c4dd0f9a853e1076ded",
+      "bytes": 378
+    },
+    "prepack.log": {
+      "sha256": "50b25dfb75bff5e38ad497f04c1e3984dc8bfc72ad5031e3969766a37a23474e",
+      "bytes": 498
+    },
+    "machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "built.log": {
+      "sha256": "870bce70acc90ff20afe8b62fe05fe460070fbe831ed46e0745147e8047a92a8",
+      "bytes": 102
+    },
+    "contracts-first.log": {
+      "sha256": "57a6dde4b1ef4ee5b4c8af0b9bc24c45963859c2b86cef875ab819f412c6e0dc",
+      "bytes": 559
+    },
+    "pack20-first.log": {
+      "sha256": "336e1329a07769905049a6ce1f4611ace0ce1482555ff965f6e57e121c598d93",
+      "bytes": 966
+    },
+    "premeasure20.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence.py": {
+      "sha256": "031e02544a8e5bf2b23d0d764cbf4b2c27ec9ff00e227ac20aecf984cc7a69ad",
+      "bytes": 4738
+    },
+    "generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "docs-first.log": {
+      "sha256": "da31dc8543d22d96d02f682f452227fe36dd0f99e0dd0b2871a6fb4462d30a4e",
+      "bytes": 76126
+    },
+    "build.log": {
+      "sha256": "4bdd87706018f38d09f03f16b4a40397b243b46e43226a41b7c0ba15c92b7f0f",
+      "bytes": 420
+    },
+    "critical.json": {
+      "sha256": "441a941ba7fadc6de30e7b54f1db4f58cdcb77c288a3d2924e15863ed0e69280",
+      "bytes": 3071
+    },
+    "installed-24/runtime.json": {
+      "sha256": "10a70dd602f8bf631b4ab9dd7e9a7f2f0a280763d303fe61ca6cfb30477e41c8",
+      "bytes": 284
+    },
+    "installed-24/installation.json": {
+      "sha256": "0dcaa7214390f21e0bbf49c00fef6758088829cc9e1faaeaaf8a3cbd834cd59e",
+      "bytes": 584
+    },
+    "installed-24/qualification.json": {
+      "sha256": "6424adb6f24174245b4477064a96467a02b17c7b5eb47f3cbf0cc87920702f46",
+      "bytes": 1165
+    },
+    "installed-24/bundles.json": {
+      "sha256": "b1c959c4898335a904f13abced8672bd078fdc885f919b2c7fefa59a96683699",
+      "bytes": 918
+    },
+    "installed-22/runtime.json": {
+      "sha256": "7c185f1100b184fc6102385b31a3d6602b1260eb95c6800585d8b1f17257b394",
+      "bytes": 285
+    },
+    "installed-22/installation.json": {
+      "sha256": "65c3178214070df52ba1bfcf996e9d6004923b9cb0418eb0333bb26dcf0264da",
+      "bytes": 584
+    },
+    "installed-22/qualification.json": {
+      "sha256": "01e4c3a84161289cb3d4a253ca01fe0fb39b812499b185d1c6e3d3361b8c4a63",
+      "bytes": 1164
+    },
+    "installed-22/bundles.json": {
+      "sha256": "97016c47d84ecea44f5255a69b05145bca527a3865e26ac97c9c920f638897b8",
+      "bytes": 918
+    },
+    "installed-20/runtime.json": {
+      "sha256": "0109bb75632246e27a203d3062967328053c984bc59667726e7647c9a13c1e45",
+      "bytes": 285
+    },
+    "installed-20/installation.json": {
+      "sha256": "0335d6b3dcd4380bdef115c5390c1cf51250051fc511113b4c73604fa9c89736",
+      "bytes": 584
+    },
+    "installed-20/qualification.json": {
+      "sha256": "b7a77a6b12bda93e2604940c0359beefbba076939f5bd504b51f7c63ea981e25",
+      "bytes": 1169
+    },
+    "installed-20/bundles.json": {
+      "sha256": "b1c959c4898335a904f13abced8672bd078fdc885f919b2c7fefa59a96683699",
+      "bytes": 918
+    }
+  }
+}

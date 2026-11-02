@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:030b02a6c5570c68b0b4a31572b608bccaa61aa8ad3e45285187e31c8cb39299",
-    "sourceCommit": "46efd262f608cdacc4eb3647d72ee25b01987c20",
+    "contractId": "sha256:0daa3cb3e6522ee1ceed1121f60befcc7ac1daa51e52bf6720160db9699c8895",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "763bf75d56e160c3353cdef7578934fe5392c80a5cb59066d718a5c0a00441e0"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -2369,8 +2369,8 @@
         "edittableplot",
         "related"
       ],
-      "bytes": 168119,
-      "sha256": "a831692b92f5e6388c35150129a00f1578e02a253d4c029fde5436e696b36f26"
+      "bytes": 168743,
+      "sha256": "54c41e08db3b2a93a1d060aee2dea3db4832401591764e889afc3691b1e2cc3a"
     },
     {
       "order": 126,
@@ -2653,8 +2653,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 89548,
-      "sha256": "ddce69a157c7d46deb9b2e4bd0718428e970207065a79306a50ba8bf6096ee49"
+      "bytes": 89565,
+      "sha256": "b3b566441a5a04ce287e7f07285c6d496cde550b0781c60cfd1e4d4817bd15f7"
     },
     {
       "order": 132,
@@ -3149,6 +3149,7 @@
         "type-geolodchildlevel",
         "type-geolodlevels",
         "type-geolinemarkoptions",
+        "type-geomarkcapacity",
         "type-geomarkstyleoptions",
         "type-geopointmarkoptions",
         "type-geoshapemarkoptions",
@@ -3591,8 +3592,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 515666,
-      "sha256": "54bdce4267d0127421f48f345504c40144370cf6daf375ef21f91d2a164a870f"
+      "bytes": 516278,
+      "sha256": "764993b45bf161dff1f603a1fee13905a058ff968f9159016145208ae3b510d1"
     },
     {
       "order": 133,
@@ -3625,10 +3626,11 @@
         "clip-a-named-graphic-owner",
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity",
-        "blend-concrete-sources-for-one-item"
+        "blend-concrete-sources-for-one-item",
+        "explicit-path-command-capacity"
       ],
-      "bytes": 23271,
-      "sha256": "982f0983357748adc0e806d0c8dfc89787d1336244717ddce5bfa86db53730a9"
+      "bytes": 23991,
+      "sha256": "00a37c2ae0031fa731e91b37a06c6e38ce730eeeab136f5a77c243d1229136ea"
     },
     {
       "order": 135,
@@ -3968,8 +3970,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "140db26a4da7a57fbd945303e3602de3c156225f83ba1e08db3f20e43cbeb3d1"
+      "bytes": 3000,
+      "sha256": "cb736fdd1bde7fe0138210784d1fa082cf1db541e8f1a6072d2c7b70c4e5fe00"
     },
     {
       "order": 156,
@@ -4192,6 +4194,8 @@
         "editprojection",
         "navigateprojection",
         "draw-through-a-geo-coordinate",
+        "projected-output-limits",
+        "explicit-capacity-example",
         "creategeoshapemark",
         "map-feature-fields-to-color-and-size",
         "choose-color-or-size-with-conditions",
@@ -4208,8 +4212,8 @@
         "creategeoroutedata",
         "editgeoroutedata"
       ],
-      "bytes": 33467,
-      "sha256": "56345546547781fc50051063cea3477d8b4f3ceb1d4e12c0ea18f5be6d2f8087"
+      "bytes": 35543,
+      "sha256": "f154c60c5ccfa4632713edb49f55c82ded7c4eaeffcc62c6c5727d04b3ba1fba"
     },
     {
       "order": 170,
