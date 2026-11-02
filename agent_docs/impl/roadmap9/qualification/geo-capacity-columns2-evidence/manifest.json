@@ -1,0 +1,192 @@
+{
+  "kind": "private-columns2-component",
+  "base": "1e743f08b",
+  "publicFormat5": false,
+  "large100000": false,
+  "sourceInputs": [
+    {
+      "path": "src/animation/columnCodec.js",
+      "sha256": "968674bb4fb632026de774dc07dc2797f2c99454de4bb731fe404f60e1c2508b"
+    },
+    {
+      "path": "src/animation/numericColumns.js",
+      "sha256": "6db7cff74e73bd6b2a96aa08207d314f4896bce886ea1787935156d302dfcd5d"
+    },
+    {
+      "path": "src/animation/resources.js",
+      "sha256": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03"
+    },
+    {
+      "path": "src/animation/envelopeCodec.js",
+      "sha256": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82"
+    },
+    {
+      "path": "src/animation/planner.js",
+      "sha256": "cf3fed95f4cc89dd8c276c2c4a31e31db8f14189a38b91764d95c7ae6789baac"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "171a5ebcee76678d691ce6dfcf3d500a2681b67a4fd2425ac2639295c900750b"
+    },
+    {
+      "path": "test/unit/animation/column-codec.test.js",
+      "sha256": "812fc3ec1dba598e4174d1f73e00cd40bbf2e30c3bc27b93644425a55d56246d"
+    },
+    {
+      "path": "test/unit/animation/numeric-columns.test.js",
+      "sha256": "28f7401c0a8edeee0ec5c10a057dc94094e54638ff6323a044a0438d1414faa3"
+    },
+    {
+      "path": "test/unit/animation/numeric-geographic-transport.test.js",
+      "sha256": "3effff7be58c3a076eaef62f41f72092c5eeec91471d9ddef440463d199fc1e4"
+    },
+    {
+      "path": "test/unit/animation/legacy-geographic-transport.test.js",
+      "sha256": "1e9feb65fcb2ba6401fddbf51006854b44303fa9afca76c88cd7320a6b063d84"
+    },
+    {
+      "path": "test/unit/animation/resource-scope.test.js",
+      "sha256": "c988fed47fc4c6d64ed69dbd3de98a8b2837dafee9647a74fd6a5c83997bbb61"
+    },
+    {
+      "path": "test/unit/animation/explicit-capacity.test.js",
+      "sha256": "1ffc5d080a1c8e00f94335bce08aee233b21cc2c910ae9a235d0cbb81b337fa0"
+    },
+    {
+      "path": "test/unit/animation/envelope-codec.test.js",
+      "sha256": "b76cd59154a9e6d2766fc4db98bd96568855db702e7bdcb9ee539fff71d8b08e"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/boundaries-first.log",
+      "sha256": "e7f8e709c96f4a0640a9a8336176562707a58a0b17a6d8dcaa7087474c834304"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/columns2-coverage.log",
+      "sha256": "75e1bf4be5038e8887efec868f3a8ad91e2364a57449c41610610149c5d98b8f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/legacy-0.json",
+      "sha256": "1d6e417616f1353727d1ea55982eb3750053fd54a6a146109f49f77f56f0c282"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/legacy-1.json",
+      "sha256": "4b137ba0a14ffadb87e554740d56e5fb06f792eb30c5334abaf118a5e22b9837"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/legacy-2.json",
+      "sha256": "baf86565c9195e718dc8b6c30436d7c4c3ee3347acf35e3919b04734cca49cf9"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/legacy-3.json",
+      "sha256": "01df147d2918b84bdcd4e06aaff49f5998bf2294d53102a0751f7ab6b12ab4a5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/legacy-4.json",
+      "sha256": "f097f166984057213e84ab620392ab222697fc50fa2b39661ef8b41f30462d54"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/legacy-5.json",
+      "sha256": "e53c307d138a2b02de4a3bba4590b0020afda99e73d5858f34a7ab08c2ef0ccd"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/legacy-native-capacity10-first.log",
+      "sha256": "51182a41d8523f0901e3b789f428029427c4d4d97557797978a1612344dafc23"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/legacy.json",
+      "sha256": "c271547cf8b35f4e6cead3ed1ccf713945fa3e507828c63d2f75eb911090704f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/legacy.log",
+      "sha256": "0567b51d57bcddf303f82a9e6d5c66b62bb0be87e2b2891aceab77636a9503e1"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/legacy.mjs",
+      "sha256": "9511dbac886e8ae31d1ab730da59be0c864ae5d06b345268941be80f69b1be0b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/numeric-geographic-first.log",
+      "sha256": "397728659fdcdf5fd36bf616d01767a5b2b71e2ba01e0116f3ab54db25d3b834"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/numeric-geographic.log",
+      "sha256": "9c54991676f302b81e5658e70cbea892ac9c3e653bc2d72ea14a9edb2cffa2ef"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/owning-node20.log",
+      "sha256": "e2ad7822281aa7a495670b7fe4fdd5c9c4f677b41979df53c7cc806b47d969d8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/owning-node24.log",
+      "sha256": "9b5daac324aacab183c3970177deaf098c02dbbc1127ae22001c01618febea8b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/package-contracts.log",
+      "sha256": "003742ff384762765e43c83336b480a7cd5c899a4cba1365b96159fb5b8d1f19"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/package-first.log",
+      "sha256": "bd6e91a5cb42c3a2f2cfe950b6d04a4c71c3e8cd5fa5a103f467ad609d9efb08"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/package-node20-first.log",
+      "sha256": "f6c05993127e14ebd7315b0146e9007df052ac8747078b42115a174f56d5e13f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/package-node20.log",
+      "sha256": "a702f49a5f5bb03fc7c47c6e1e89d521427dfe41fba2249d82c431b439cc78c4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/package-node22.log",
+      "sha256": "473a8bd3c2a1d3680da16d22801ce95e36d74142cb6eb0613a42cc5cdf46a2a0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/package-node24.log",
+      "sha256": "a702f49a5f5bb03fc7c47c6e1e89d521427dfe41fba2249d82c431b439cc78c4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/package-second.log",
+      "sha256": "45b27f733023ff75e4c1bef88a068c57968fa54f60294080c92f8194d27e3c31"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/replay.mjs",
+      "sha256": "e58b906d9ee69da43a69c92cdb0595b2089a0f3d978defe9892e29a6b3fe6fee"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-capacity-columns2-evidence/owning-node22.log",
+      "sha256": "65700b718880a55dd7ae41f599172e8e7da25c537af2f7a442398fa068dc6697"
+    }
+  ],
+  "results": {
+    "owning": {
+      "node20": 57,
+      "node22": 57,
+      "node24": 57
+    },
+    "critical": {
+      "columnCodec.js": [
+        100,
+        98.33,
+        100
+      ],
+      "numericColumns.js": [
+        100,
+        100,
+        100
+      ]
+    },
+    "boundaries": 37,
+    "packageContracts": 10,
+    "package": {
+      "entries": 1259,
+      "unpacked": 8156156,
+      "packed": {
+        "node20": 1812879,
+        "node22": 1809598,
+        "node24": 1812879
+      }
+    }
+  }
+}

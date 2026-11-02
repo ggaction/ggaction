@@ -1,0 +1,274 @@
+[
+  {
+    "capacity": null,
+    "nodes": false,
+    "version": 3,
+    "bytes": 8291,
+    "sha256": "1d6e417616f1353727d1ea55982eb3750053fd54a6a146109f49f77f56f0c282",
+    "wireSHA256": "1fd7a9c90e6f0f5bbe6550c9f9242da55b86c75cb280e275558938be634ffd4a",
+    "frames": [
+      {
+        "timeMs": 0,
+        "sha256": "d5c78e7899258c23f008a3b4950f845f3cb4f308b9a14c5b666801778ba47758"
+      },
+      {
+        "timeMs": 25,
+        "sha256": "12355b9cdb05648dd55fd0908ef3887c9a0bffd518e2aec21b9cc4a112b4d62d"
+      },
+      {
+        "timeMs": 50,
+        "sha256": "0691ec3639de2567b72887a2bac0dc200b5913a785740d1981c31760c87863cc"
+      },
+      {
+        "timeMs": 100,
+        "sha256": "3841117e21d70bc5b0cda3cc14f17462c87a80c11f685bda74be02b24ca0cc39"
+      }
+    ],
+    "decisions": [
+      {
+        "sourceIndex": 0,
+        "targetIndex": 0,
+        "owner": "canvas/background",
+        "role": "canvas-background",
+        "kind": "exact"
+      },
+      {
+        "kind": "geographic",
+        "kernel": "native-geo",
+        "ownerKey": "[[],\"coast\"]",
+        "itemKey": "[[],\"coast\",\"geo\",[\"e62f3063-381b-472d-b43e-2672c366a503\",\"[\\\"generated\\\",\\\"01a851bb-f5b0-453d-b1ff-b371aa864350\\\",0]\"]]",
+        "role": "[null,0]"
+      }
+    ]
+  },
+  {
+    "capacity": null,
+    "nodes": true,
+    "version": 4,
+    "bytes": 11045,
+    "sha256": "4b137ba0a14ffadb87e554740d56e5fb06f792eb30c5334abaf118a5e22b9837",
+    "wireSHA256": "31b6eb161b4b129ce7fee5328ef8441f9feb204f22b2d5dc3ec8cf5178e8f168",
+    "frames": [
+      {
+        "timeMs": 0,
+        "sha256": "d5c78e7899258c23f008a3b4950f845f3cb4f308b9a14c5b666801778ba47758"
+      },
+      {
+        "timeMs": 25,
+        "sha256": "12355b9cdb05648dd55fd0908ef3887c9a0bffd518e2aec21b9cc4a112b4d62d"
+      },
+      {
+        "timeMs": 50,
+        "sha256": "0691ec3639de2567b72887a2bac0dc200b5913a785740d1981c31760c87863cc"
+      },
+      {
+        "timeMs": 100,
+        "sha256": "3841117e21d70bc5b0cda3cc14f17462c87a80c11f685bda74be02b24ca0cc39"
+      }
+    ],
+    "decisions": [
+      {
+        "sourceIndex": 0,
+        "targetIndex": 0,
+        "owner": "canvas/background",
+        "role": "canvas-background",
+        "kind": "exact"
+      },
+      {
+        "kind": "geographic",
+        "kernel": "native-geo",
+        "ownerKey": "[[],\"coast\"]",
+        "itemKey": "[[],\"coast\",\"geo\",[\"e62f3063-381b-472d-b43e-2672c366a503\",\"[\\\"generated\\\",\\\"01a851bb-f5b0-453d-b1ff-b371aa864350\\\",0]\"]]",
+        "role": "[null,0]"
+      }
+    ]
+  },
+  {
+    "capacity": {
+      "maxProjectedPoints": 1000,
+      "maxPathCommands": 1000
+    },
+    "nodes": false,
+    "version": 3,
+    "bytes": 8623,
+    "sha256": "baf86565c9195e718dc8b6c30436d7c4c3ee3347acf35e3919b04734cca49cf9",
+    "wireSHA256": "37cc34504b780dd72989a9b1a1503e043bf1375dffa93aa3c9cd89ad6b124a20",
+    "frames": [
+      {
+        "timeMs": 0,
+        "sha256": "0d14544b26d0ade2f9218963080c35c47f9f77bb37e26632dc1bd0fd3eb25cdd"
+      },
+      {
+        "timeMs": 25,
+        "sha256": "c32715d5a7a5de8fc4640d6baea3e0a8f920069ce52338e124a686b7198cdf7d"
+      },
+      {
+        "timeMs": 50,
+        "sha256": "4de828fb48ee044e8215a4b3e1c12241e3b05c4737dfe418eb28a8420b4f473a"
+      },
+      {
+        "timeMs": 100,
+        "sha256": "60d1ab3ea0f091f03b3b32123826b0b19abb806b25c9d13c24962adb0b4afb9a"
+      }
+    ],
+    "decisions": [
+      {
+        "sourceIndex": 0,
+        "targetIndex": 0,
+        "owner": "canvas/background",
+        "role": "canvas-background",
+        "kind": "exact"
+      },
+      {
+        "sourceIndex": 1,
+        "targetIndex": 1,
+        "itemKey": "[[],\"coast\",\"geo\",[\"0bae73eb-34a4-4953-ae74-e3db84371d90\",\"[\\\"generated\\\",\\\"8947cc96-697d-4714-a3d7-1180986aef7a\\\",0]\"]]",
+        "role": "[null,0]",
+        "ownerKey": "[[],\"coast\"]",
+        "kind": "crossfade",
+        "reason": "edited-geo-graphics"
+      }
+    ]
+  },
+  {
+    "capacity": {
+      "maxProjectedPoints": 1000,
+      "maxPathCommands": 1000
+    },
+    "nodes": true,
+    "version": 4,
+    "bytes": 11467,
+    "sha256": "01df147d2918b84bdcd4e06aaff49f5998bf2294d53102a0751f7ab6b12ab4a5",
+    "wireSHA256": "06c34f1515da1ba6af7407123d9fc790e537825941f53e7d5a0e0a3bdd01dfd9",
+    "frames": [
+      {
+        "timeMs": 0,
+        "sha256": "0d14544b26d0ade2f9218963080c35c47f9f77bb37e26632dc1bd0fd3eb25cdd"
+      },
+      {
+        "timeMs": 25,
+        "sha256": "c32715d5a7a5de8fc4640d6baea3e0a8f920069ce52338e124a686b7198cdf7d"
+      },
+      {
+        "timeMs": 50,
+        "sha256": "4de828fb48ee044e8215a4b3e1c12241e3b05c4737dfe418eb28a8420b4f473a"
+      },
+      {
+        "timeMs": 100,
+        "sha256": "60d1ab3ea0f091f03b3b32123826b0b19abb806b25c9d13c24962adb0b4afb9a"
+      }
+    ],
+    "decisions": [
+      {
+        "sourceIndex": 0,
+        "targetIndex": 0,
+        "owner": "canvas/background",
+        "role": "canvas-background",
+        "kind": "exact"
+      },
+      {
+        "sourceIndex": 1,
+        "targetIndex": 1,
+        "itemKey": "[[],\"coast\",\"geo\",[\"0bae73eb-34a4-4953-ae74-e3db84371d90\",\"[\\\"generated\\\",\\\"8947cc96-697d-4714-a3d7-1180986aef7a\\\",0]\"]]",
+        "role": "[null,0]",
+        "ownerKey": "[[],\"coast\"]",
+        "kind": "crossfade",
+        "reason": "edited-geo-graphics"
+      }
+    ]
+  },
+  {
+    "capacity": {
+      "maxProjectedPoints": 200000,
+      "maxPathCommands": 200000
+    },
+    "nodes": false,
+    "version": 3,
+    "bytes": 8635,
+    "sha256": "f097f166984057213e84ab620392ab222697fc50fa2b39661ef8b41f30462d54",
+    "wireSHA256": "e369dee200089bccc766fe696cc3108bb7569f0b9b3be96adafa58c7817ae322",
+    "frames": [
+      {
+        "timeMs": 0,
+        "sha256": "25b2016280041f4fae45bae760a7ee32c35a6d5878aa6b0ec353a1acc645efe7"
+      },
+      {
+        "timeMs": 25,
+        "sha256": "a17e035018257f1dab523ccf2fd6b3ae2496c28cd01fd104105a2f08a6e472eb"
+      },
+      {
+        "timeMs": 50,
+        "sha256": "4f79e675d136948a7d7e5613feaf1d2f76a008aa810824c4c6902de1898adbf2"
+      },
+      {
+        "timeMs": 100,
+        "sha256": "115f2bfa9dc2821668e4697e3424f3bd97b9c0426e0abf3e9aa25ba39e01b5fd"
+      }
+    ],
+    "decisions": [
+      {
+        "sourceIndex": 0,
+        "targetIndex": 0,
+        "owner": "canvas/background",
+        "role": "canvas-background",
+        "kind": "exact"
+      },
+      {
+        "sourceIndex": 1,
+        "targetIndex": 1,
+        "itemKey": "[[],\"coast\",\"geo\",[\"b111d1f4-4a66-47e7-9125-f20ca491ec54\",\"[\\\"generated\\\",\\\"4fc1b0ca-dc0e-4510-b256-d3ee1f7e87c3\\\",0]\"]]",
+        "role": "[null,0]",
+        "ownerKey": "[[],\"coast\"]",
+        "kind": "crossfade",
+        "reason": "edited-geo-graphics"
+      }
+    ]
+  },
+  {
+    "capacity": {
+      "maxProjectedPoints": 200000,
+      "maxPathCommands": 200000
+    },
+    "nodes": true,
+    "version": 4,
+    "bytes": 11479,
+    "sha256": "e53c307d138a2b02de4a3bba4590b0020afda99e73d5858f34a7ab08c2ef0ccd",
+    "wireSHA256": "3f06d7bee18c9ff73ee74c1e0ec02e5607f3b9df92cd1a511f06b626378f90e7",
+    "frames": [
+      {
+        "timeMs": 0,
+        "sha256": "25b2016280041f4fae45bae760a7ee32c35a6d5878aa6b0ec353a1acc645efe7"
+      },
+      {
+        "timeMs": 25,
+        "sha256": "a17e035018257f1dab523ccf2fd6b3ae2496c28cd01fd104105a2f08a6e472eb"
+      },
+      {
+        "timeMs": 50,
+        "sha256": "4f79e675d136948a7d7e5613feaf1d2f76a008aa810824c4c6902de1898adbf2"
+      },
+      {
+        "timeMs": 100,
+        "sha256": "115f2bfa9dc2821668e4697e3424f3bd97b9c0426e0abf3e9aa25ba39e01b5fd"
+      }
+    ],
+    "decisions": [
+      {
+        "sourceIndex": 0,
+        "targetIndex": 0,
+        "owner": "canvas/background",
+        "role": "canvas-background",
+        "kind": "exact"
+      },
+      {
+        "sourceIndex": 1,
+        "targetIndex": 1,
+        "itemKey": "[[],\"coast\",\"geo\",[\"b111d1f4-4a66-47e7-9125-f20ca491ec54\",\"[\\\"generated\\\",\\\"4fc1b0ca-dc0e-4510-b256-d3ee1f7e87c3\\\",0]\"]]",
+        "role": "[null,0]",
+        "ownerKey": "[[],\"coast\"]",
+        "kind": "crossfade",
+        "reason": "edited-geo-graphics"
+      }
+    ]
+  }
+]

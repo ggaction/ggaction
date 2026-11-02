@@ -14,6 +14,10 @@ endpoint는 기존 frame 객체이며 serializer는 그 진단 view도 보존한
 
 비공개 `animation/columnCodec.js`는 실제 준비값의 shape별 dense column과 정확 scalar runs만
 소유한다. 원 concrete 값·own key 순서·undefined·hole을 무손실 복원하며 의미를 생성하지 않는다.
+별도 private columns@2는 compound 내부까지 같은 Node를 내려가고,
+`animation/numericColumns.js`가 finite Float64의 정확 little-endian 저장과 canonical base64를
+검산한다. Reader는 원 전송 한도와 모든 pool 저장·logical occurrence·reference 비용을 복원
+할당 전에 과금한다. 이 private reader/writer 추가는 공개 format 선택이나 Geo 지원을 바꾸지 않는다.
 `animation/resources.js`의 opaque scope는 native owner 검증과 offline 데이터 검산의 권한을
 구별한다. Planner와 sampler는 기존 기본 경로를 유지하며 이 명시 private scope에서만 준비
 traversal과 node 상계를 선택한다. Sample의 기존 canonical native proof에서 현재 owner만 읽어
@@ -5081,3 +5085,5 @@ Geo explicit capacity의 단일 정규화 owner를 추가한 A1 package 실측�
 Root Geo A1 합산은1257entries/Node22packed1806540/Node20·24packed1809929/unpacked8146465bytes이며 cap1257/1810000/8146500이다. 실제 최대Full788278/Basic425529/SVG25178/graph68925/animation339775/interaction136880gzipB에 표의 한도를 적용하고 search1095666에는1095700cap을 적용한다. [설치본 검증](impl/roadmap9/qualification/geo-a1-merged-evidence/qualification.json)은 A2 camera·큰 hit·SLO 완료와 구분한다.
 
 Root SHA 합산은1258entries/Node22packed1807573/Node20·24packed1810854/unpacked8149596bytes이며 cap1258/1810900/8149600이다. 실제 최대Full788792/Basic426195/SVG25672/graph69473/animation340335/interaction137407gzipB에는 표의 한도를 적용한다. [합산 검증](impl/roadmap9/qualification/sha256-merged-evidence/qualification.json)은 원 hash·복사 경계와 async/heap/P95 미완료를 구분한다.
+
+Private columns@2 codec 추가의 package 실측은1259entries/Node22packed1809598/Node20·24packed1812879/unpacked8156156bytes이며 최소 cap1259/1812900/8156200이다. 기존 v3/v4 공개 writer와 reader는 유지되고 공개 format5는 아직 연결되지 않았다. [private 검증](impl/roadmap9/qualification/GEO_CAPACITY_A2_IMPLEMENTATION.md)은 후속 공개 Geo@2 검증과 구분한다.
