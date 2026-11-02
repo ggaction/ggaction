@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-02",
+  "status": "verified-concept",
+  "authorization": "../../AUTHORIZATION.json",
+  "proposal": "0156ba5ea",
+  "sourceCommit": "db163e237bd93c1d79999303859d78de78f71250",
+  "rootAdoption": "Private SHA-256 create/update/finish/clear scalar extraction only; retain synchronous contentDigest/contentBytesDigest wrappers and all input/hash/API/guard semantics.",
+  "sourceSHA256": {
+    "src/core/contentDigest.js": "f6ec75ffc60526a974789a5f679ba384c802c75cc41287d4a212b926ba3b4de4",
+    "src/core/sha256.js": "a94e9caced46162e33d653cd07b5a36d0626cf4e5e46424644c9273f5e4ca979",
+    "test/unit/core/content-digest.test.js": "254fbb6e5fc8416508c9baae60d1022e8a50c0d21a0c5d1e2048ebb5ecbdbe93",
+    "test/unit/core/sha256.test.js": "b6caa0aac2f883d039ce98001724aca2737c5b7f4105275bbc4b88591b991fb5",
+    "scripts/coverage-policy.js": "941ef21906dc0d0f403dd800984424b303cf20cf0cd111022166bc2ecf196c08",
+    "scripts/package-artifact.js": "934d44344962fc6b24445fdc3da7ce950b1293b6a2dd27d61031d67fd5e825fd",
+    "scripts/browser-bundle-size.js": "898247439b417d36877625f32ee07a406b491df7792a9665c79c212ea10b5f25",
+    "README.md": "7ad8f5eb08dfd4aec0c760006985ab0714036dcbb272b3ab984c8648ba3ed681"
+  },
+  "scope": {
+    "numericStateBytes": 352,
+    "fullInputPaddingCopy": false,
+    "inputTextEncoderAndCopyUnchanged": true,
+    "publicAPIChanges": 0,
+    "schemaChanges": 0,
+    "guardChanges": 0,
+    "asyncEncoderImplemented": false,
+    "abortLatencyClaim": false,
+    "performanceQualification": false,
+    "largeFixtureRuns": 0
+  },
+  "sourceTests": {
+    "shaPerNode": {
+      "20": 8,
+      "22": 8,
+      "24": 8
+    },
+    "shaCoverage": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "sourceCodecImage": 30,
+    "routeInferenceJobs": 19,
+    "boundariesDiscoveryArchitectureAssets": 26,
+    "package": 7,
+    "sourcePinnedDocs": 18
+  },
+  "archive": {
+    "sha256": "537132a7716a79515ccbd9e4d8eefbe156da09133d812292f1e387587517cd5f",
+    "frozenFile": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/sha256-state/ggaction-537132a7716a79515ccbd9e4d8eefbe156da09133d812292f1e387587517cd5f.tgz",
+    "entryCount": 1249,
+    "size": 1787566,
+    "unpackedSize": 8067386
+  },
+  "installed": {
+    "nodeOrder": [
+      24,
+      22,
+      20
+    ],
+    "sameArchive": true,
+    "runtimeCasesEach": 12,
+    "strictTypes": "edge-routes.mts",
+    "canonicalSnippet": "edge-route-analytical-comparison",
+    "optionalPeers": true,
+    "bundleEntriesEach": 6
+  },
+  "firstFailures": [
+    "New private source adds one entry:1249>1248; final entry1249 and measured unpacked8067386→cap8067400.",
+    "Initial Node24 archive a92bef0f runtime12/type/snippet pass but five bundle caps exceeded; minimum measured caps applied, README changed, final537132a7 archive verified on all3Node."
+  ],
+  "cpuContext": "Small functional checks overlapped root Geo qualification; no exclusive CPU reservation or performance inference.",
+  "remaining": [
+    "resumable tagged/JSON encoder",
+    "bounded macrotask cancellation and indivisible enumeration/coercion limits",
+    "route v2 numeric policy and closed native update union",
+    "original1000/10000 final combined P95"
+  ]
+}
