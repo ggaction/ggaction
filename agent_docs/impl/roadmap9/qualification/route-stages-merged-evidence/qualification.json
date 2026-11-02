@@ -131,8 +131,8 @@
       "bytes": 208
     },
     "source-pin-docs.log": {
-      "sha256": "89a0746adc7f92932d884626714c4229d5b6fa25808b95662352697c094417bf",
-      "bytes": 29174
+      "sha256": "f8cdd1e7b6b8f4459981cc94ef25604a0c218f14ff7d3b4d4f9362f580bef7f1",
+      "bytes": 1809
     },
     "boundaries-selector-failed.log": {
       "sha256": "7c766053a91e920d0689997b4f89a5e984c0329339037fca2a3477bd9559f1f5",
@@ -173,6 +173,14 @@
     "focused.log": {
       "sha256": "b51d6eaeda2177745d0ae433f97fce33f2f3a96035e40ed7fb9caae2edc3dc69",
       "bytes": 5307
+    },
+    "source-pin-pack.json": {
+      "sha256": "4b54672ccf13f9919fcbaa2fc957baa83d5e001cd25d4c79ea88f8ee44cc979c",
+      "bytes": 389
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
   },
   "checks": {
@@ -198,5 +206,17 @@
     "original large route capacity and whole pipeline 100ms",
     "isolated canonical P95 and original 100cycle lifetime",
     "final combined qualification"
-  ]
+  ],
+  "sourceRevision": "26fea583d5f4dc6f9c90ef0d14e77f4d13fceacb",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
 }
