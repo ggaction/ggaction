@@ -1,0 +1,8 @@
+{
+  "kind": "read-only loader prototype against unchanged scalar owner",
+  "fixtures": 20,
+  "fullResultOracles": 1920,
+  "partsCompared": 701,
+  "anchors": 20,
+  "productChanges": false
+}
