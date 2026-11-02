@@ -12,6 +12,12 @@ identity/meaning만 저장하여 공통 scene compiler가 graphicSpec을 재생�
 endpoint는 기존 frame 객체이며 serializer는 그 진단 view도 보존한다. 이 private 경계는
 일반 player/session 또는 offline hit의 완성을 뜻하지 않는다.
 
+중간 point sample의 위치 의미는 finite primitive와 exact owned scale을 담는 새 local
+row/x/y만 bottom-up 동결하고, 전체 emission 순서를 완성한 vector root에 기존 core ownership을
+부여한다. Provenance 등록의 기존 clone 경계는 그대로 root를 재사용한다. 개별 local child를
+core registry에 추가하지 않으며 caller freeze/clone에 frame 권한을 주거나 과거 frame/plan 참조를
+추가하지 않는다. Node·scene·graphic 물질화와 renderer 입력 경계는 그대로다.
+
 비공개 `animation/columnCodec.js`는 실제 준비값의 shape별 dense column과 정확 scalar runs만
 소유한다. 원 concrete 값·own key 순서·undefined·hole을 무손실 복원하며 의미를 생성하지 않는다.
 `animation/resources.js`의 opaque scope는 native owner 검증과 offline 데이터 검산의 권한을

@@ -1,0 +1,45 @@
+import assert from 'node:assert/strict';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {spawnSync,execFileSync} from 'node:child_process';
+import {registerHooks} from 'node:module';
+import {createHash} from 'node:crypto';
+import {serialize,deserialize} from 'node:v8';
+const hash=v=>createHash('sha256').update(v).digest('hex');
+if(process.argv[2]==='child'){
+ const before=process.argv[3]==='before',source=new URL('../../src/',import.meta.url).href;
+ registerHooks({load(url,context,next){const result=next(url,context);if(!url.startsWith(source))return result;const relative=url.slice(source.length);let content=String(result.source);
+  if(before&&['animation/sample.js'].includes(relative))content=execFileSync('git',['show','2fb36c76d:src/'+relative],{encoding:'utf8'});
+  if(relative==='animation/resources.js')content=content.replace('export function validateAnimationResourceWork(value,label,scope) {','export function validateAnimationResourceWork(value,label,scope) {if(globalThis.__work)globalThis.__work[label]=Math.max(globalThis.__work[label]??0,value);');
+  if(relative==='core/immutable.js'){
+   content=content.replace('const clone = array ? new Array(input.length) : {};','const clone = array ? new Array(input.length) : {};if(globalThis.__counts)globalThis.__counts.clones++;');
+   content=content.replace('ownedValues.add(value);','ownedValues.add(value);if(globalThis.__counts)globalThis.__counts.ownedAdds++;');
+  }return{...result,source:content};}});
+ const{deserializeProgram}=await import('../../src/persistence.js'),{planTransition,sampleTransition,serializeAnimation,deserializeAnimation,exportAnimationFrames}=await import('../../src/animation.js');
+ const{animationFrameProvenance}=await import('../../src/animation/frameProvenance.js');
+ let saved='';for await(const chunk of process.stdin)saved+=chunk;const from=deserializeProgram(saved),to=from.editScale({id:'x',domain:[0,2],nice:false}),results={};
+ const options={durationMs:100,easing:'linear'},times=[0,25,37,50,75,100];
+ const meaning=frame=>({frame,positions:animationFrameProvenance(frame).positions});
+ for(const version of[3,4]){
+  const opts={...options,...(version===4?{maxEndpointNodes:3000,maxOutputNodes:2000}:{})};
+  globalThis.__work={};const plan=planTransition({from,to,options:opts}),work=globalThis.__work;delete globalThis.__work;
+  const native=times.map(t=>meaning(sampleTransition(plan,t))),text=serializeAnimation(plan),offline=deserializeAnimation(text).plan;
+  const replay=times.map(t=>meaning(sampleTransition(offline,t)));assert.deepEqual(replay,native);assert.equal(serializeAnimation(offline),text);
+  const batch=exportAnimationFrames(plan,{timesMs:[0,25,50,75,100]});
+  const sampled=sampleTransition(plan,37);globalThis.__work={};const rebase=planTransition({from:sampled,to,options:opts}),rebaseWork=globalThis.__work;delete globalThis.__work;
+  const rebased=meaning(sampleTransition(rebase,50)),rebaseText=serializeAnimation(rebase),restoredRebase=deserializeAnimation(rebaseText).plan;
+  assert.equal(serializeAnimation(restoredRebase),rebaseText);assert.deepEqual(meaning(sampleTransition(restoredRebase,50)),rebased);
+  globalThis.__counts={clones:0,ownedAdds:0};sampleTransition(plan,50);const counts=globalThis.__counts;delete globalThis.__counts;
+  results[version]={native,batch,rebased,text,rebaseText,work,rebaseWork,counts};
+ }
+ process.stdout.write(serialize(results).toString('base64'));
+}else{
+ const{chart}=await import('../../src/index.js'),{serializeProgram}=await import('../../src/persistence.js'),{nativeWorkloadInput}=await import('../../scripts/benchmarks/workloads.browser.js');
+ const rows=nativeWorkloadInput('points',1000);const program=chart().createCanvas({width:400,height:400,margin:20,plotBorder:false}).createData({id:'rows',keyField:'id',values:rows}).createPointMark({id:'points',maxItems:100000}).encodeX({field:'x',scale:{id:'x',domain:[0,1],nice:false}}).encodeY({field:'y',scale:{id:'y',domain:[0,1],nice:false}}),saved=serializeProgram(program);
+ const runs=[];for(const phase of['before','after']){const result=spawnSync(process.execPath,[new URL(import.meta.url).pathname,'child',phase],{input:saved,encoding:'utf8',maxBuffer:64*1024*1024});assert.equal(result.status,0,result.stderr);runs.push(deserialize(Buffer.from(result.stdout,'base64')));}
+ const comparisons={};for(const version of[3,4]){const[a,b]=runs.map(r=>r[version]);assert.deepEqual(b.native,a.native);assert.deepEqual(b.batch,a.batch);assert.deepEqual(b.rebased,a.rebased);assert.equal(b.text,a.text);assert.deepEqual(b.work,a.work);assert.deepEqual(b.rebaseWork,a.rebaseWork);if(version===3)assert.equal(b.rebaseText,a.rebaseText);
+  // Literal independent native coordinate oracle for every row and every time.
+  for(const [index,time]of[0,25,37,50,75,100].entries()){const circles=b.native[index].frame.scene.nodes.filter(n=>n.type==='circle');assert.equal(circles.length,1000);for(let i=0;i<rows.length;i++){assert.ok(Math.abs(circles[i].properties.x-(20+360*rows[i].x/(1+time/100)))<1e-10);assert.ok(Math.abs(circles[i].properties.y-(380-360*rows[i].y))<1e-10);}}
+  comparisons[version]={nativeBytes:[Buffer.byteLength(a.text),Buffer.byteLength(b.text)],nativeSHA256:[hash(a.text),hash(b.text)],rebaseBytes:[Buffer.byteLength(a.rebaseText),Buffer.byteLength(b.rebaseText)],rebaseSHA256:[hash(a.rebaseText),hash(b.rebaseText)],counts:[a.counts,b.counts],work:a.work,rebaseWork:a.rebaseWork,fullNativeOfflineMeaningBatchRebaseEqual:true,restoreReserializeExact:true};}
+ const source=Object.fromEntries(['src/animation/sample.js'].map(f=>[f,hash(execFileSync('cat',[f]))]));
+ const report={kind:'actual product before 2fb36c76d versus current positions-vector local freeze; counters are diagnostic, not SLO',node:process.version,rows:1000,inputSHA256:hash(JSON.stringify(rows)),savedInputSHA256:hash(saved),source,comparisons};await writeFile(new URL('./product-compare.json',import.meta.url),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));
+}

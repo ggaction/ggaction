@@ -11,7 +11,7 @@ import { validateGeneratedItemLimit, validateWorkLimit } from "../core/validatio
 import { samplePolarInterpolation } from "../grammar/animation/polarState.js";
 import { sampleCartesianInterpolation } from "../grammar/animation/cartesianState.js";
 import { partitionTrackSamples, samplePartitionTrack, partitionFrameCollector, partitionAnimationPaint } from "./partitionTracks.js";
-import { cloneAndFreeze } from "../core/immutable.js";
+import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 import { samplePositionInterpolation } from "../grammar/animation/positions.js";
 import { transitionSampleState,interpolateNumber } from "../grammar/animation/values.js";
@@ -135,7 +135,8 @@ export function sampleTransitionWithBudget(input,timeMs,accountWork) {
       if(x.kind==="position"&&y.kind==="position"){
         const properties={...to.properties,...appearance(),x:x.position,y:y.position,radius:interpolateNumber(from.properties.radius,to.properties.radius,progress)};
         validateConcreteGraphicProperties("circle",properties);decisions.push({...metadata,kind:"semantic-kernel",kernel:"cartesian-point"});
-        positions.push({x:{value:x.value,scale:x.scale},y:{value:y.value,scale:y.scale}});cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);
+        // These records contain only finite sampled values and exact owned scales.
+        positions.push(Object.freeze({x:Object.freeze({value:x.value,scale:x.scale}),y:Object.freeze({value:y.value,scale:y.scale})}));cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);
         return cloneAndFreeze({...to,properties,...interpolateNodeFrame(from,to,progress)});
       }
       reason=x.reason??y.reason;
@@ -157,7 +158,7 @@ export function sampleTransitionWithBudget(input,timeMs,accountWork) {
   validateGeneratedItemLimit(nodes.length,"Animation sampled nodes",animationResourceLimits(transitionResources(plan))?.maxOutputNodes);
   const scene=cloneAndFreeze({version:2,width,height,nodes});
   const geos=geoFrame.finish();
-  return finish(cloneAndFreeze({graphicSpec:canvasSceneProgram(scene).graphicSpec,scene,progress,decisions}),positions,graphFrame.finish(),cartesian,partitionFrame.finish(),polars,geos,guides,geoTextFrame.finish(geos),axisFrame.finish());
+  return finish(cloneAndFreeze({graphicSpec:canvasSceneProgram(scene).graphicSpec,scene,progress,decisions}),freezeOwned(positions),graphFrame.finish(),cartesian,partitionFrame.finish(),polars,geos,guides,geoTextFrame.finish(geos),axisFrame.finish());
 }
 
 // Offline frame export adds only a time label while retaining authentic meaning.
