@@ -1,0 +1,94 @@
+{
+  "kind": "analytical 100k projection; six small exact tests, no 100k candidate runtime",
+  "checkedSmallCases": 6,
+  "projected": [
+    {
+      "n": 100000,
+      "kind": "native",
+      "commands": 199999,
+      "sourcePositions": 100000,
+      "current": {
+        "physical": 2200507,
+        "encoded": 5801491
+      },
+      "descended": {
+        "physical": 1001067,
+        "encoded": 1002875
+      },
+      "logical": 2200254,
+      "writerDescriptors": 2200253,
+      "readerDescriptors": 1600203,
+      "cells": 2200010,
+      "interning": 7200164,
+      "originalPreparationWork": 7758752,
+      "sourceGroup": {
+        "values": 300044,
+        "positions": 100000,
+        "work": 1489471
+      },
+      "presentation": {
+        "values": 300067,
+        "work": 1289642
+      },
+      "groupState": {
+        "values": 300077,
+        "work": 1289771
+      },
+      "streamWork": 2088916,
+      "vectorScalarStorage": 999998,
+      "vectorBase64Characters": 10666656,
+      "binaryWirePhysical": 1064,
+      "binaryWireEncoded": 2890,
+      "binaryEnvelopeConservativeByteBound": 10751686,
+      "batch": {
+        "fourInteriorStreamOnly": 8355664,
+        "fiveInteriorStreamOnly": 10444580,
+        "limit": 10000000
+      }
+    },
+    {
+      "n": 100000,
+      "kind": "sampled",
+      "commands": 199999,
+      "sourcePositions": 100000,
+      "current": {
+        "physical": 2200737,
+        "encoded": 5802078
+      },
+      "descended": {
+        "physical": 1001327,
+        "encoded": 1003586
+      },
+      "logical": 2200303,
+      "writerDescriptors": 2200302,
+      "readerDescriptors": 1600233,
+      "cells": 2200052,
+      "interning": 7200550,
+      "originalPreparationWork": 7759406,
+      "sourceGroup": {
+        "values": 300044,
+        "positions": 100000,
+        "work": 1489471
+      },
+      "presentation": {
+        "values": 300067,
+        "work": 1289642
+      },
+      "groupState": {
+        "values": 300077,
+        "work": 1289771
+      },
+      "streamWork": 2088916,
+      "vectorScalarStorage": 999998,
+      "vectorBase64Characters": 10666656,
+      "binaryWirePhysical": 1318,
+      "binaryWireEncoded": 3587,
+      "binaryEnvelopeConservativeByteBound": 10772190,
+      "batch": {
+        "fourInteriorStreamOnly": 8355664,
+        "fiveInteriorStreamOnly": 10444580,
+        "limit": 10000000
+      }
+    }
+  ]
+}

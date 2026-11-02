@@ -20,6 +20,10 @@ core registry에 추가하지 않으며 caller freeze/clone에 frame 권한을 �
 
 비공개 `animation/columnCodec.js`는 실제 준비값의 shape별 dense column과 정확 scalar runs만
 소유한다. 원 concrete 값·own key 순서·undefined·hole을 무손실 복원하며 의미를 생성하지 않는다.
+별도 private columns@2는 compound 내부까지 같은 Node를 내려가고,
+`animation/numericColumns.js`가 finite Float64의 정확 little-endian 저장과 canonical base64를
+검산한다. Reader는 원 전송 한도와 모든 pool 저장·logical occurrence·reference 비용을 복원
+할당 전에 과금한다. 이 private reader/writer 추가는 공개 format 선택이나 Geo 지원을 바꾸지 않는다.
 `animation/resources.js`의 opaque scope는 native owner 검증과 offline 데이터 검산의 권한을
 구별한다. Planner와 sampler는 기존 기본 경로를 유지하며 이 명시 private scope에서만 준비
 traversal과 node 상계를 선택한다. Sample의 기존 canonical native proof에서 현재 owner만 읽어
@@ -5091,3 +5095,4 @@ Root SHA 합산은1258entries/Node22packed1807573/Node20·24packed1810854/unpack
 Prepared point scale 통합은1258entries/Node22packed1808245/Node20·24packed1811511/unpacked8152110bytes이며 cap1258/1811600/8152200이다. Animation gzip 최대340708B에는 표의340800B를 적용한다. [합산 검증](impl/roadmap9/qualification/prepared-scale-merged-evidence/qualification.json)은 source-specific100k와 fresh1k·동일 archive3Node를 구별하며 원50ms 및 최종 통합을 남긴다.
 
 Point positions vector의 local freeze 통합은 source155B만 추가해1258entries/unpacked8152265B이며 cap8152300B다. 다른 artifact/runtime 한도는 유지한다. [통합 검증](impl/roadmap9/qualification/position-state-merged-evidence/qualification.json)은 현재 샘플러의1k 동등성과 original100k source-specific 결과를 구별한다.
+Private columns@2 codec 추가의 package 실측은1259entries/Node22packed1809598/Node20·24packed1812879/unpacked8156156bytes이며 최소 cap1259/1812900/8156200이다. 기존 v3/v4 공개 writer와 reader는 유지되고 공개 format5는 아직 연결되지 않았다. [private 검증](impl/roadmap9/qualification/GEO_CAPACITY_A2_IMPLEMENTATION.md)은 후속 공개 Geo@2 검증과 구분한다.
