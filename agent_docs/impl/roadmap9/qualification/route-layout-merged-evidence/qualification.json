@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-private-graph-hierarchy-stages-integration",
+  "base": "4bceea06e",
+  "upstream": "3427ae56f",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1268,
+    "packedBytes": 1827030,
+    "unpackedBytes": 8228755,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-216c55178c8be33c234091580043ed9eb16c5986105f124b03d83233b600a485.tgz",
+    "sha256": "216c55178c8be33c234091580043ed9eb16c5986105f124b03d83233b600a485"
+  },
+  "sourceHashes": {
+    "src/actions/graphs/layouts.js": "b54ab60d43185c410209b7b5db61ad6462e2ac3ae35bc73d6ee148c6737a94e6",
+    "src/actions/hierarchy/resources.js": "63ef423ec68961cfbb2451c26cbccc511f077cf04c6e1bc9da1244c845984e34",
+    "src/actions/primitives/preparedResourceContext.js": "affb070411ba107290054d7f813284c7f0a38c100f821d963b43c8c87157e04a"
+  },
+  "evidenceFiles": {
+    "pack.json": {
+      "sha256": "f6ae0a2eed4acd7e3fc7b1763197edf9936e6f22bf1b2cabdf4a8ef7ef5d8bce",
+      "bytes": 387
+    },
+    "installed-24.json": {
+      "sha256": "1b6db51e9fa71f1997f67d4de91a2d34ca3b7440f9285b00b19cad4cd2855fe6",
+      "bytes": 5624
+    },
+    "browser.log": {
+      "sha256": "82133193782e4c675b6b9f6aabc8fa5637817e5714c87931835d458e25a59373",
+      "bytes": 1028
+    },
+    "frozen.json": {
+      "sha256": "f6ae0a2eed4acd7e3fc7b1763197edf9936e6f22bf1b2cabdf4a8ef7ef5d8bce",
+      "bytes": 387
+    },
+    "installed-stages-20.json": {
+      "sha256": "75100402b8eeed6ee312fc38febe951f55f695b23c2792ab50848bd4a6b0f675",
+      "bytes": 3040
+    },
+    "installed-22.json": {
+      "sha256": "1fca4f4eddb902ebb8b5446973e7a8eadba938cc676b1bf5f8f8ad0a2103d50d",
+      "bytes": 5624
+    },
+    "prepack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "boundaries.log": {
+      "sha256": "f369c85b2c610a6bf40ddea3e604b430e2f9af4e03bf8b6b5c2637f51c319cde",
+      "bytes": 8139
+    },
+    "installed-stages-22.json": {
+      "sha256": "2ccddd00fd45ab96f2e79c752083237c5bbc09448826f8c3126341f979a852dd",
+      "bytes": 3215
+    },
+    "private24.log": {
+      "sha256": "722ee60f1730d253d14be4ba99bf6d42cb23f0999378d6c00ba17aea788577c9",
+      "bytes": 1530
+    },
+    "installed-20.json": {
+      "sha256": "b66d5b37067125390639bfc8e5aa2e87397a53b21df6fade6fbe3c07783b5af4",
+      "bytes": 5624
+    },
+    "prepack24.json": {
+      "sha256": "a00c1ef3f1a1cec04f66ead142cd12b94ff1c2e2645707215e90fc2eea00b2dd",
+      "bytes": 301
+    },
+    "prepack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "private22.log": {
+      "sha256": "f406c2432b1631a03dea990b1f6a57af47decac6efb9ce76b49ef556863c960c",
+      "bytes": 3186
+    },
+    "record.py": {
+      "sha256": "6fcfa316713ef6dd7afc1b0ce30943cb2d0485ff7f34b6d62545e9a2701cdcaf",
+      "bytes": 4625
+    },
+    "prepack.json": {
+      "sha256": "5f0c75777defc1468dfe390fe946ad402cecff566a6890b8174a2259f90ed18c",
+      "bytes": 299
+    },
+    "private20.log": {
+      "sha256": "78456608ce241771a6129cfe5b5900aaa6f715712e2d94af91567a34bc209bab",
+      "bytes": 3011
+    },
+    "pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "installed22.log": {
+      "sha256": "1fca4f4eddb902ebb8b5446973e7a8eadba938cc676b1bf5f8f8ad0a2103d50d",
+      "bytes": 5624
+    },
+    "owning.log": {
+      "sha256": "ae9534f4fe9db766aaa294057e42255e5863fa60550ef6f26391720f878cc4ca",
+      "bytes": 27821
+    },
+    "installed-stages-24.json": {
+      "sha256": "29f5977f1ba0b79a30c606757a7e935405a6370a7f24a8faedcd9bdbea5d59d6",
+      "bytes": 1559
+    },
+    "installed20.log": {
+      "sha256": "b66d5b37067125390639bfc8e5aa2e87397a53b21df6fade6fbe3c07783b5af4",
+      "bytes": 5624
+    },
+    "installed24.log": {
+      "sha256": "1b6db51e9fa71f1997f67d4de91a2d34ca3b7440f9285b00b19cad4cd2855fe6",
+      "bytes": 5624
+    },
+    "browser.json": {
+      "sha256": "f07bea0cff75d9e7f61d25bf1dfdd280e21234e2883829a737ff303f16f0028d",
+      "bytes": 1453
+    }
+  },
+  "checks": {
+    "sameArchiveNodeVersions": [
+      20,
+      22,
+      24
+    ],
+    "publicCasesPerNode": 8,
+    "privateCasesPerNode": 11,
+    "strictTypes": true,
+    "browserBundles": 6,
+    "actualBrowserMinifiedWorker": true,
+    "owning": 110,
+    "boundaries": 40
+  },
+  "remaining": [
+    "public native B update and full consumer union",
+    "data and fit invocation lifecycle integration",
+    "original route capacity and whole pipeline 100ms",
+    "exclusive canonical P95 and original 100cycle lifetime",
+    "final combined qualification"
+  ]
+}

@@ -1038,7 +1038,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 793,173 bytes |
+| `ggaction` | 793,317 bytes |
 | `ggaction/basic` | 426,400 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 74,500 bytes |
@@ -5261,3 +5261,9 @@ responsive pass는 각 owner의 동일 generator locals에서 실제 경로 완�
 진입점은 이를 즉시 소비하며 원 guide pass·overflow cap·occupied bounds 및 context 복원을 유지한다.
 이는 private 준비 단계이며 fit/probe의 wrapped action 및 전체 B dispatch 연결을 대신하지 않는다.
 구체 검증과 미완료 범위는 [Canvas 단계 기록](impl/roadmap9/chart/route-screen-stages.md)을 따른다.
+
+Graph/layout과 hierarchy resource의 후속 private 단계는 원 검증·DAG·partition view·materialization
+owner를 그대로 이어간다. Graph의 native prepare/write pair가 원 projected/ordinary primitive
+권한에 같은 ledger를 전달한다. `graphSourceRevisions`와 `graphSourceProjection`의 active wrapped
+수명은 늘리지 않으며 동기 `writeGraphResource`가 원 조회를 유지한다. 준비 host의 source 문맥
+확보는 이 제약을 따라야 한다. 현재 범위는 [resource 단계 기록](impl/roadmap9/chart/route-layout-stages.md)에 있다.
