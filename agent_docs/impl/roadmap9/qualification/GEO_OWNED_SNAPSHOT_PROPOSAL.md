@@ -50,3 +50,7 @@ Temporary seen WeakSet은 기존 입력 root가 이미 강하게 보유한 conta
 PID 17616는 2026-11-02T12:29:09.291Z부터 2026-11-02T12:32:16.707Z까지 동일 installed archive에서 원 100k 전체 기능을 실행해 exit 0으로 마쳤다. Native 199999 좌표, 339849 parts/1939096 footprint commands와 기존 exact hash, 전체 part를 읽는 scalar 4 queries, current 및 rebase 각각 199999 좌표/3 CSS queries가 통과했다. Rebase 339697 parts, 최대 좌표오차 3.55e-13, 방문 work 25881/58941/31235이며 모든 owner/distance가 맞다. 마지막 format5 serialize/deserialize 후 offline frame에 native hit authority가 없음을 확인했다.
 
 이전 archive에서 반복 정체했던 rebase plan을 이번에는 통과했다. 2초 native sample은 다양한 계산 경로를 보였으며 이전 758/758 rehash 독점 정체와 다르다. 원 기능 입력·수학·guard·oracle 범위는 유지했고 scalar reference-only batch 사이 GC와 기능 phase 사이 GC는 이전 진단 환경 그대로다. 이것은 장기 원100cycle 또는 GC 없는 canonical P95의 통과가 아니다. [원 결과](geo-owned-snapshot-evidence/large-installed.json), 실행 helper, stdout과 sample gzip을 보존했다.
+
+## 원격 재현 helper 정리
+
+Root 요청에 따라 큰 기능 helper의 특정 /var/folders 설치 경로와 gitignored baseline JSON 의존을 제거했다. package-root/receipt/output 절대 경로 및 committed baseline footprint SHA256을 인자로 받는다. Receipt의 tar SHA256과 설치 package의 1262개 파일 bytes를 전부 비교한 뒤 실행한다. 원 count100000·좌표·queries·reference batch GC·native/current/rebase/offline assertions는 유지하며 baseline parts/commands도 명시 검산한다. Node 문법과 validate-only 입력/archive 검증을 수행했으며 새 대형 실행으로 세지 않는다. [재현 설명](geo-owned-snapshot-evidence/REPRODUCE.md)을 따른다.

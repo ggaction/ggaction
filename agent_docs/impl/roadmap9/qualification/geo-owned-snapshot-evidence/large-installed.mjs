@@ -1,23 +1,40 @@
 import assert from 'node:assert/strict';
 import {registerHooks} from 'node:module';
-import {writeFileSync,readFileSync} from 'node:fs';
+import {writeFileSync,readFileSync,realpathSync,mkdirSync,lstatSync} from 'node:fs';
+import path from 'node:path';
+import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
+const args=new Map();for(const token of process.argv.slice(2)){const match=/^--([a-z-]+)=(.+)$/.exec(token);if(!match||args.has(match[1]))throw new TypeError('Use unique --name=value arguments.');args.set(match[1],match[2]);}
+for(const key of args.keys())if(!['package-root','receipt','output','baseline-footprint','validate-only'].includes(key))throw new TypeError('Unknown reproduction argument.');
+for(const key of ['package-root','receipt','output'])if(!args.has(key)||!path.isAbsolute(args.get(key)))throw new TypeError(key+' requires an absolute path.');
+const baselineFootprint=JSON.parse(readFileSync(new URL('baseline-footprint.json',import.meta.url)));
+assert.equal(args.get('baseline-footprint'),baselineFootprint.sha256,'The unchanged committed footprint oracle is required.');
+const packageRoot=realpathSync(args.get('package-root')),receiptPath=realpathSync(args.get('receipt')),output=args.get('output');
+const artifact=JSON.parse(readFileSync(receiptPath));assert.match(artifact.sha256,/^[a-f0-9]{64}$/);assert.ok(path.isAbsolute(artifact.file));
+assert.equal(createHash('sha256').update(readFileSync(artifact.file)).digest('hex'),artifact.sha256,'Exact archive receipt bytes');
+const metadata=JSON.parse(readFileSync(path.join(packageRoot,'package.json')));assert.equal(metadata.name,'ggaction');assert.equal(metadata.version,artifact.version);
+const archiveEntries=execFileSync('tar',['-tzf',artifact.file],{encoding:'utf8',maxBuffer:16777216}).trimEnd().split('\n');
+const installedHash=createHash('sha256');
+for(const entry of archiveEntries){assert.ok(entry.startsWith('package/')&&!entry.endsWith('/')&&!entry.split('/').includes('..'),'Ordinary package archive entry');const file=path.join(packageRoot,entry.slice(8));assert.ok(lstatSync(file).isFile(),'Installed archive file');installedHash.update(readFileSync(file));}
+assert.equal(installedHash.digest('hex'),createHash('sha256').update(execFileSync('tar',['-xOzf',artifact.file],{maxBuffer:67108864})).digest('hex'),'Installed package must match every archived file byte');
+const module=relative=>import(pathToFileURL(path.join(packageRoot,relative)));
 registerHooks({load(url,context,next){const r=next(url,context);if(url.endsWith('/src/grammar/hitShapes.js'))return{...r,source:String(r.source)+'\nexport const inspectShape=x=>states.get(x);'};if(url.endsWith('/src/grammar/hitPartIndex.js'))return{...r,source:String(r.source)+'\nexport const inspectPartIndex=x=>states.get(x);'};return r;}});
-const {chart}=await import('/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-wxHbmL/node_modules/ggaction/src/index.js');
-const {planTransition,sampleTransition,serializeAnimation,deserializeAnimation}=await import('/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-wxHbmL/node_modules/ggaction/src/animation.js');
-const {prepareProgramHitFrame,prepareAnimationHitFrame}=await import('/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-wxHbmL/node_modules/ggaction/src/interaction/hitProgram.js');
-const {hitFrameSource}=await import('/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-wxHbmL/node_modules/ggaction/src/interaction/hitFrameSource.js');
-const {hitIndex,prepareHitIndex}=await import('/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-wxHbmL/node_modules/ggaction/src/grammar/hitIndex.js');
-const {inspectShape,hitShape,nearestHitShape,hitShapeAnchor,hitShapeWork,hitShapePreparationWork}=await import('/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-wxHbmL/node_modules/ggaction/src/grammar/hitShapes.js');
-const {inspectPartIndex}=await import('/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-wxHbmL/node_modules/ggaction/src/grammar/hitPartIndex.js');
-const {pathFillContains,pathStrokeDistance}=await import('/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-wxHbmL/node_modules/ggaction/src/grammar/pathGeometry.js');
+const {chart}=await module('src/index.js');
+const {planTransition,sampleTransition,serializeAnimation,deserializeAnimation}=await module('src/animation.js');
+const {prepareProgramHitFrame,prepareAnimationHitFrame}=await module('src/interaction/hitProgram.js');
+const {hitFrameSource}=await module('src/interaction/hitFrameSource.js');
+const {hitIndex,prepareHitIndex}=await module('src/grammar/hitIndex.js');
+const {inspectShape,hitShape,nearestHitShape,hitShapeAnchor,hitShapeWork,hitShapePreparationWork}=await module('src/grammar/hitShapes.js');
+const {inspectPartIndex}=await module('src/grammar/hitPartIndex.js');
+const {pathFillContains,pathStrokeDistance}=await module('src/grammar/pathGeometry.js');
 const sha=x=>createHash('sha256').update(x).digest('hex');
 const hashParts=parts=>{const h=createHash('sha256').update('[');parts.forEach((p,i)=>{if(i)h.update(',');h.update(JSON.stringify(p));});return h.update(']').digest('hex');};
-const output='.artifacts/geo-hit-a3/snapshot-reuse/large-installed.json';
-const record={pid:process.pid,node:process.version,start:new Date().toISOString(),head:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),sourceDiffSHA256:sha(execFileSync('git',['diff','--','src'])),sources:Object.fromEntries(['hitShapes','hitStroke','hitPartIndex','hitPolicy','hitIndex'].map(x=>[x,sha(readFileSync("/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-wxHbmL/node_modules/ggaction"+`/src/grammar/${x}.js`))])),cases:[],archiveSHA256:"4fbdf2a66fe9a8396b43dcbc6fde2aba2ca0c5e39275a9fe37ef17115db52fa9",kind:'same installed artifact; full scalar reference with explicit GC between 4096-part batches only; product guards unchanged; not P95 or long-lived 100cycle'};
-record.snapshotSourceSHA256=sha(readFileSync("/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-wxHbmL/node_modules/ggaction/src/grammar/geo/input.js"));
-record.querySourceSHA256=sha(readFileSync("/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-wxHbmL/node_modules/ggaction/src/grammar/pathGeometry.js"));
+if(args.has('validate-only')){assert.equal(args.get('validate-only'),'true');console.log(JSON.stringify({status:'validated-only; original100k not run',packageRoot,archiveSHA256:artifact.sha256,archiveEntries:archiveEntries.length,baselineFootprint}));process.exit(0);}
+mkdirSync(path.dirname(output),{recursive:true});
+const record={pid:process.pid,node:process.version,start:new Date().toISOString(),head:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),sourceDiffSHA256:sha(execFileSync('git',['diff','--','src'])),sources:Object.fromEntries(['hitShapes','hitStroke','hitPartIndex','hitPolicy','hitIndex'].map(x=>[x,sha(readFileSync(packageRoot+`/src/grammar/${x}.js`))])),cases:[],archiveSHA256:artifact.sha256,packageRoot,receiptPath,baselineFootprint,kind:'same installed artifact; full scalar reference with explicit GC between 4096-part batches only; product guards unchanged; not P95 or long-lived 100cycle'};
+record.snapshotSourceSHA256=sha(readFileSync(path.join(packageRoot,"src/grammar/geo/input.js")));
+record.querySourceSHA256=sha(readFileSync(path.join(packageRoot,"src/grammar/pathGeometry.js")));
 const save=()=>writeFileSync(output,JSON.stringify(record,null,2));save();console.log(JSON.stringify({pid:process.pid,start:record.start}));
 const policy={maxWork:128000000,pathGeometry:{maxParts:400000,maxWork:2000000,maxIndexWork:16000000}};
 for(const count of[100000]){
@@ -34,7 +51,7 @@ for(const count of[100000]){
   row.preparationMs=performance.now()-start;row.counts={...state.counts,nodes:index.metadata.length/4,indexBuildWork:state.partIndex.work,originalShapeWork:hitShapeWork(shape),preparationWork:hitShapePreparationWork(shape),bindingWork:hitFrameSource(frame).work};
   assert.equal(state.counts.parts,state.strokes.length);let commandCount=0;
   for(const part of state.strokes){assert.ok(part.commands.length>=2);for(const c of part.commands){assert.ok(['M','L','Z'].includes(c.op));if(c.op!=='Z')assert.ok(Number.isFinite(c.x)&&Number.isFinite(c.y));commandCount++;}}
-  row.footprints={parts:state.strokes.length,commands:commandCount,hash:hashParts(state.strokes)};const prior=JSON.parse(readFileSync('.artifacts/geo-hit-a3/large-source-partial-rehash.json')).cases.find(x=>x.count===count);assert.equal(row.footprints.hash,prior.footprints.hash);row.memory=process.memoryUsage();save();
+  row.footprints={parts:state.strokes.length,commands:commandCount,hash:hashParts(state.strokes)};assert.equal(count,baselineFootprint.vertices);assert.equal(row.footprints.parts,baselineFootprint.parts);assert.equal(row.footprints.commands,baselineFootprint.commands);assert.equal(row.footprints.hash,baselineFootprint.sha256);row.memory=process.memoryUsage();save();
   row.queries=[];
   const queries=[0,Math.floor((count-1)/2),count-2].map(i=>({x:200+50*(coordinates[i][0]+coordinates[i+1][0])*Math.PI/180,y:200-50*(coordinates[i][1]+coordinates[i+1][1])*Math.PI/180}));
   queries.push({x:200,y:230});
