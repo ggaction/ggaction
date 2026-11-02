@@ -19,6 +19,10 @@
 기본 범위 안의 별도 메모리 개선은 [FDEB upper-neighbor 저장](route-upper-neighbor-storage.md)에서
 기록한다. 이 개선의 검증과 큰 정책의 미완료 상태를 구분한다.
 
+Density의 다음 최소 후보와 원100/1000 첫 반복 ledger는
+[packed sample 설계](density-packed-samples-design.md)에 기록한다. Weight/angle 보관만 바꾸는
+제품 후보이며 아직 채택·구현하지 않았다. 이 후보의 현재 work/guard 실패는 그대로 남는다.
+
 ## 보존할 계약
 
 원 계약은 `study/coverage-expansion-2026-10-27/roadmap/contracts/edge-bundling.ko.md`,

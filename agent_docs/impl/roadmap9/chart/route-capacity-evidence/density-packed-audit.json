@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "status": "read-only initial preparation and packed-storage research; not product, admission, heap, or performance qualification",
+  "source": "61ddab0aa7e55c1aac9708af57af4650e337d84b",
+  "node": "v22.23.1",
+  "authorization": "../../AUTHORIZATION.json",
+  "results": [
+    {
+      "edges": 100,
+      "S": 22200,
+      "maximumEdgeSamples": 222,
+      "beforeResampling": {
+        "work": 62820,
+        "candidatePairs": 0,
+        "peakSamples": 200
+      },
+      "beforeField": {
+        "work": 617820,
+        "candidatePairs": 0,
+        "peakSamples": 133400
+      },
+      "packed": {
+        "count": 22200,
+        "checks": 44400,
+        "weightBytes": 177600,
+        "angleBytes": 177600,
+        "offsetBytes": 404,
+        "maximumSegmentScratch": 1768,
+        "scalarHash": "37fa1fe620d958431af57632780d73c1e17dca9a0e3561b108bba3b342357c98"
+      },
+      "retainedCoordinateNumbers": 44400,
+      "removedWeightedCoordinateCopies": 44400,
+      "removedFlatReferences": 22200,
+      "oldWeightedSampleNumberPayload": 710400,
+      "oldNestedAndFlatReferenceSlots": 44400,
+      "packedNumericPayload": 355604,
+      "existingFirstField": {
+        "source": "aea5bd365",
+        "rows": 514642,
+        "candidates": 10115328,
+        "charge": 10652170
+      },
+      "firstFieldCumulativeWork": 11269990,
+      "preservedInitialPeakSamples": 133400,
+      "note": "Stops before first field. Prior field counters are reused only after source hash equality; no full iteration or P95."
+    },
+    {
+      "edges": 1000,
+      "S": 223000,
+      "maximumEdgeSamples": 223,
+      "beforeResampling": {
+        "work": 652020,
+        "candidatePairs": 0,
+        "peakSamples": 2000
+      },
+      "beforeField": {
+        "work": 6227020,
+        "candidatePairs": 0,
+        "peakSamples": 1340000
+      },
+      "packed": {
+        "count": 223000,
+        "checks": 446000,
+        "weightBytes": 1784000,
+        "angleBytes": 1784000,
+        "offsetBytes": 4004,
+        "maximumSegmentScratch": 1776,
+        "scalarHash": "37b04a58c6ff41fe4ac7749a5cacfafeb3963a13f247377189c25bedb9aac1ce"
+      },
+      "retainedCoordinateNumbers": 446000,
+      "removedWeightedCoordinateCopies": 446000,
+      "removedFlatReferences": 223000,
+      "oldWeightedSampleNumberPayload": 7136000,
+      "oldNestedAndFlatReferenceSlots": 446000,
+      "packedNumericPayload": 3572004,
+      "existingFirstField": {
+        "source": "aea5bd365",
+        "rows": 5169546,
+        "candidates": 101634772,
+        "charge": 107027318
+      },
+      "firstFieldCumulativeWork": 113254338,
+      "preservedInitialPeakSamples": 1340000,
+      "note": "Stops before first field. Prior field counters are reused only after source hash equality; no full iteration or P95."
+    }
+  ],
+  "edgeCases": {
+    "count": 12,
+    "checks": 24,
+    "weightBytes": 96,
+    "angleBytes": 96,
+    "offsetBytes": 20,
+    "maximumSegmentScratch": 24,
+    "scalarHash": "5c69631060bd570a58b0cee1906788e02ee9aa7418960d93e4218b04fb5b6271"
+  },
+  "sourceSHA256": {
+    "src/grammar/graph/routes/density.js": "dc21e5f9d746cb4a553f9e96b3617594a837b80619303d242629b205b3781539",
+    "src/grammar/graph/routes/densityField.js": "9f3921ba9c91989f1014a27adfe76339016d9f92f808c8dd8103a94135e647cf",
+    "src/grammar/graph/routes/polyline.js": "ad2762f7c2ba6f542a5506479dcb2a17c1a058018258a3a692a8395ea82d46be",
+    "src/grammar/graph/routes/budget.js": "f32d00a6b734ffc23bb95f294ea73ac68645fdf25fb4c91045acb60662231568"
+  },
+  "limits": {
+    "fieldExecuted": false,
+    "laterIterationsExecuted": false,
+    "solverExecuted": false,
+    "guardChanged": false,
+    "productModified": false
+  }
+}
