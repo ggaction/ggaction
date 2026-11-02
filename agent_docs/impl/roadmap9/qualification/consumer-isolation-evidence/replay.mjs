@@ -1,0 +1,62 @@
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { mkdir, readFile, writeFile, copyFile, access } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
+import { preparePackageConsumer } from "../../../../../scripts/package-consumer.js";
+import { testOptionalDependencies } from "../../../../../scripts/consumers/optional-peers.js";
+import { testNodeConsumer } from "../../../../../scripts/consumers/node.js";
+
+const root = fileURLToPath(new URL("../../../../../", import.meta.url));
+const archive = path.resolve(process.argv[2]);
+const output = path.resolve(process.argv[3]);
+const bytes = await readFile(archive);
+const sha256 = createHash("sha256").update(bytes).digest("hex");
+assert.equal(sha256, "03d9cd8fb9b72c1c505676b5194a8d14460d183742dd63c215f8b4ec6aa33dde");
+const integrity = `sha512-${createHash("sha512").update(bytes).digest("base64")}`;
+await mkdir(output, { recursive: true });
+const started = Date.now();
+const receipt = { archive, sha256, integrity, node: process.version, execArgv: process.execArgv, pid: process.pid, startedAt: new Date(started).toISOString(), source: execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim(), qualification: "functional-installed-consumers-only", performanceClaim: false };
+const consumer = await preparePackageConsumer({ packageSpec: archive });
+receipt.directory = consumer.directory;
+const lock = JSON.parse(await readFile(path.join(consumer.directory, "package-lock.json"), "utf8"));
+assert.equal(lock.packages["node_modules/ggaction"].integrity, integrity);
+receipt.installedIntegrity = lock.packages["node_modules/ggaction"].integrity;
+await writeFile(path.join(output, "run.json"), JSON.stringify(receipt, null, 2));
+console.log(JSON.stringify({ phase: "installed", ...receipt }));
+try {
+  await testOptionalDependencies(consumer);
+  receipt.peers = consumer.resolvedPeers;
+  await writeFile(path.join(output, "run.json"), JSON.stringify(receipt, null, 2));
+  console.log(JSON.stringify({ phase: "consumers", directory: consumer.directory, at: new Date().toISOString() }));
+  await testNodeConsumer(consumer.directory);
+  const records = JSON.parse(await readFile(path.join(consumer.directory, "node-cases.json"), "utf8"));
+  const manifest = JSON.parse(await readFile(path.join(root, "scripts/consumers/fixtures/node/manifest.json"), "utf8"));
+  assert.deepEqual(records.map(record => record.id), manifest.flatMap(entry => entry.cases.map(item => item.id)));
+  assert.equal(records.length, 404);
+  assert.ok(records.every(record => record.status === "passed"));
+  const shared = records.filter(record => !record.isolation);
+  const isolated = records.filter(record => record.isolation === "case");
+  assert.equal(shared.length, 400);
+  assert.equal(new Set(shared.map(record => record.pid)).size, 1);
+  assert.equal(isolated.length, 4);
+  assert.equal(new Set(isolated.map(record => record.pid)).size, 4);
+  assert.ok(isolated.every(record => record.parentPid === shared[0].pid && record.pid !== shared[0].pid && record.exitCode === 0));
+  receipt.status = "passed";
+  receipt.cases = records.length;
+  receipt.sharedPid = shared[0].pid;
+  receipt.isolatedCases = isolated;
+} catch (error) {
+  receipt.status = "failed";
+  receipt.error = error.stack ?? String(error);
+  process.exitCode = 1;
+} finally {
+  await copyFile(path.join(consumer.directory, "node-cases.json"), path.join(output, "node-cases.json")).catch(() => {});
+  await consumer.cleanup();
+  receipt.cleaned = !(await access(consumer.directory).then(() => true, () => false));
+  receipt.finishedAt = new Date().toISOString();
+  receipt.durationMs = Date.now() - started;
+  await writeFile(path.join(output, "run.json"), JSON.stringify(receipt, null, 2));
+  console.log(JSON.stringify(receipt));
+}

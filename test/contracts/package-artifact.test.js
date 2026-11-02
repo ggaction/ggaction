@@ -241,12 +241,17 @@ test("installed fixture modules and their case manifest are exhaustive", async (
   const ids = [];
   assert.deepEqual((await readdir(directory)).filter(file => file.endsWith(".mjs")).sort(), manifest.map(entry => entry.file).sort());
   for (const entry of manifest) {
+    assert.deepEqual(Object.keys(entry).sort(), (Object.hasOwn(entry, "isolation") ? ["cases", "file", "isolation"] : ["cases", "file"]));
+    if (Object.hasOwn(entry, "isolation")) assert.equal(entry.isolation, "case");
     const source = await readFile(new URL(entry.file, directory), "utf8");
     const ast = parse(source, { ecmaVersion: "latest", sourceType: "module" });
     const cases = ast.body.find(node => node.type === "ExportNamedDeclaration").declaration.declarations[0].init.elements;
     assert.deepEqual(cases.map(node => node.properties.find(property => property.key.name === "id").value.value), entry.cases.map(item => item.id));
+    assert.deepEqual(cases.map(node => node.properties.find(property => property.key.name === "run").value.body.body.length), entry.cases.map(item => item.statements), "Statement counts come from each current fixture run body.");
+    for (const item of entry.cases) assert.deepEqual(Object.keys(item).sort(), ["id", "statements"]);
     assert.doesNotMatch(source, /from ["'].*src\//, "Fixtures consume installed public exports");
     ids.push(...entry.cases.map(item => item.id));
   }
   assert.equal(new Set(ids).size, ids.length);
+  assert.deepEqual(manifest.filter(entry => entry.isolation).map(entry => entry.file), ["hit-preparation.mjs", "geographic-capacity.mjs"]);
 });

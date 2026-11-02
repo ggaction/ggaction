@@ -122,7 +122,7 @@
       },
       {
         "id": "guides/overflow-summary-line",
-        "statements": 1
+        "statements": 7
       },
       {
         "id": "guides/axis-label-edge-threshold",
@@ -863,11 +863,11 @@
     "cases": [
       {
         "id": "conditional-encoding/fresh-process-lifecycle",
-        "statements": 10
+        "statements": 2
       },
       {
         "id": "conditional-encoding/renderers-and-scene",
-        "statements": 22
+        "statements": 21
       },
       {
         "id": "conditional-encoding/bar-blend-lifecycle",
@@ -875,7 +875,7 @@
       },
       {
         "id": "conditional-encoding/position-text-lifecycle",
-        "statements": 23
+        "statements": 22
       }
     ]
   },
@@ -884,11 +884,11 @@
     "cases": [
       {
         "id": "paint/structured-filled-marks",
-        "statements": 10
+        "statements": 1
       },
       {
         "id": "paint/structured-text",
-        "statements": 7
+        "statements": 1
       },
       {
         "id": "paint/fresh-codec",
@@ -901,7 +901,7 @@
     "cases": [
       {
         "id": "images/resource-lifecycle",
-        "statements": 12
+        "statements": 11
       },
       {
         "id": "images/renderer-scene-offline",
@@ -939,7 +939,7 @@
       },
       {
         "id": "fonts/renderers-scene-handles",
-        "statements": 6
+        "statements": 11
       },
       {
         "id": "fonts/resource-backed-labels",
@@ -952,7 +952,7 @@
     "cases": [
       {
         "id": "data/observed-graph-lifecycle",
-        "statements": 16
+        "statements": 20
       }
     ]
   },
@@ -961,7 +961,7 @@
     "cases": [
       {
         "id": "paint/outline-basic-and-codec",
-        "statements": 8
+        "statements": 1
       },
       {
         "id": "paint/outline-text-and-fresh-edit",
@@ -969,7 +969,7 @@
       },
       {
         "id": "paint/outline-image-hierarchy-composition",
-        "statements": 20
+        "statements": 19
       }
     ]
   },
@@ -987,7 +987,7 @@
     "cases": [
       {
         "id": "data/inferred-graph-lifecycle",
-        "statements": 22
+        "statements": 38
       },
       {
         "id": "data/inferred-graph-explicit-capacity",
@@ -1038,7 +1038,7 @@
     "cases": [
       {
         "id": "flow/full-basic-lifecycle",
-        "statements": 13
+        "statements": 16
       },
       {
         "id": "flow/fresh-process-source-revision",
@@ -1068,7 +1068,7 @@
     "cases": [
       {
         "id": "contour/full-basic-lifecycle",
-        "statements": 12
+        "statements": 13
       },
       {
         "id": "contour/fresh-process-source-revision",
@@ -1174,11 +1174,11 @@
     "cases": [
       {
         "id": "responsive/full-basic-resize-restore",
-        "statements": 1
+        "statements": 13
       },
       {
         "id": "responsive/renderers-scene-codec",
-        "statements": 1
+        "statements": 10
       }
     ]
   },
@@ -1187,11 +1187,11 @@
     "cases": [
       {
         "id": "selection/logical-item-update",
-        "statements": 1
+        "statements": 28
       },
       {
         "id": "selection/logical-scoped-update",
-        "statements": 1
+        "statements": 7
       }
     ]
   },
@@ -1221,15 +1221,15 @@
     "cases": [
       {
         "id": "nested/shared-layout-lifecycle",
-        "statements": 1
+        "statements": 13
       },
       {
         "id": "nested/projected-graph-source",
-        "statements": 1
+        "statements": 5
       },
       {
         "id": "nested/renderers-scene-codec",
-        "statements": 1
+        "statements": 10
       }
     ]
   },
@@ -1250,15 +1250,15 @@
       },
       {
         "id": "edge-routes/bounded-hierarchy-spans",
-        "statements": 9
+        "statements": 18
       },
       {
         "id": "edge-routes/bounded-long-paths",
-        "statements": 5
+        "statements": 13
       },
       {
         "id": "edge-routes/own-host-options",
-        "statements": 5
+        "statements": 10
       },
       {
         "id": "edge-routes/responsive-source-and-guide-closure",
@@ -1283,15 +1283,15 @@
     "cases": [
       {
         "id": "geometry/full-basic-identity",
-        "statements": 11
+        "statements": 10
       },
       {
         "id": "geometry/fresh-process-offline",
-        "statements": 8
+        "statements": 9
       },
       {
         "id": "geometry/topology-atomic-failure",
-        "statements": 9
+        "statements": 8
       },
       {
         "id": "geometry/declared-winding-offline-renderers",
@@ -1334,15 +1334,15 @@
     "cases": [
       {
         "id": "geographic-join/typed-fields-and-atomic-revision",
-        "statements": 9
+        "statements": 11
       },
       {
         "id": "geographic-join/offline-fresh-process",
-        "statements": 3
+        "statements": 6
       },
       {
         "id": "geographic-join/four-renderer-source-geometry-parity",
-        "statements": 6
+        "statements": 12
       }
     ]
   },
@@ -1385,15 +1385,15 @@
     "cases": [
       {
         "id": "geographic-levels/hysteresis-selection-and-atomicity",
-        "statements": 10
+        "statements": 12
       },
       {
         "id": "geographic-levels/offline-fresh-process",
-        "statements": 4
+        "statements": 7
       },
       {
         "id": "geographic-levels/four-renderer-current-level-parity",
-        "statements": 6
+        "statements": 1
       }
     ]
   },
@@ -1419,15 +1419,15 @@
     "cases": [
       {
         "id": "geographic-annotations/feature-anchor-and-atomicity",
-        "statements": 7
+        "statements": 9
       },
       {
         "id": "geographic-annotations/offline-fresh-process",
-        "statements": 3
+        "statements": 6
       },
       {
         "id": "geographic-annotations/four-renderer-native-text-parity",
-        "statements": 5
+        "statements": 9
       }
     ]
   },
@@ -1469,7 +1469,7 @@
       },
       {
         "id": "geographic-camera/fresh-process-restored-native-navigation",
-        "statements": 6
+        "statements": 8
       },
       {
         "id": "geographic-camera/four-renderer-anchored-view-parity",
@@ -1482,15 +1482,15 @@
     "cases": [
       {
         "id": "geographic-labels/native-source-and-selection",
-        "statements": 9
+        "statements": 11
       },
       {
         "id": "geographic-labels/offline-restored-source-revision",
-        "statements": 4
+        "statements": 7
       },
       {
         "id": "geographic-labels/four-renderer-native-text-parity",
-        "statements": 5
+        "statements": 9
       }
     ]
   },
@@ -1499,11 +1499,11 @@
     "cases": [
       {
         "id": "trail/public-lifecycle",
-        "statements": 14
+        "statements": 15
       },
       {
         "id": "trail/offline-scene-renderers",
-        "statements": 11
+        "statements": 13
       },
       {
         "id": "trail/fresh-process-and-nested",
@@ -1707,7 +1707,7 @@
       },
       {
         "id": "animation/implicit-legend-lanes-offline-native",
-        "statements": 1
+        "statements": 18
       }
     ]
   },
@@ -1795,11 +1795,11 @@
       },
       {
         "id": "animation-geo/current-frame-interruption",
-        "statements": 9
+        "statements": 14
       },
       {
         "id": "animation-geo/immutable-failure",
-        "statements": 5
+        "statements": 8
       }
     ]
   },
@@ -1859,15 +1859,15 @@
     "cases": [
       {
         "id": "geographic-routes/source-and-atomic-revision",
-        "statements": 9
+        "statements": 10
       },
       {
         "id": "geographic-routes/offline-restored-edit",
-        "statements": 4
+        "statements": 5
       },
       {
         "id": "geographic-routes/four-renderer-native-line-parity",
-        "statements": 11
+        "statements": 14
       }
     ]
   },
@@ -1901,7 +1901,7 @@
       },
       {
         "id": "animation-axis-reflow/offline-fonts-network-free",
-        "statements": 5
+        "statements": 1
       },
       {
         "id": "animation-axis-reflow/raw-current-hit-retime-rebase",
@@ -1950,7 +1950,8 @@
         "id": "hit-preparation/closed-session-policy-atomic-replacement",
         "statements": 6
       }
-    ]
+    ],
+    "isolation": "case"
   },
   {
     "file": "geographic-capacity.mjs",
@@ -1963,6 +1964,7 @@
         "id": "geographic-capacity/source-free-four-backend-and-scene",
         "statements": 18
       }
-    ]
+    ],
+    "isolation": "case"
   }
 ]
