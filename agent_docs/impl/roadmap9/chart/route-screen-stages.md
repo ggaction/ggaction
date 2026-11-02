@@ -64,3 +64,5 @@ data identity와 composition/facet, heterogeneous policy admission 및 held-resu
 검산 명령은 `node agent_docs/impl/roadmap9/chart/route-screen-stages-evidence/verify.mjs`이며,
 [qualification](route-screen-stages-evidence/qualification.json)이 source와 archive/압축 raw receipts를
 결박한다. 공개 B update, 전체 union, fit/composition/data 연결, 큰 capacity 및100ms는 미완료다.
+
+검증 source commit은 `cbf7bbf4410a3c2e7b30a90dfc5c4bddeb3da4ad`이며 후행 metadata pin은 실행 bytes를 바꾸지 않는다.
