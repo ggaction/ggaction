@@ -1,0 +1,764 @@
+{
+  "status": "verified-narrow-allocation-reduction; original100k-rebase-offline-and-SLO-unresolved",
+  "baseline": "c6d44f50b2a6fec611429f4d07b31f801f7ff901",
+  "adoption": "b21362a68",
+  "archive": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/point-validation/archives/ggaction-186c01ea470a97e8c10a2f97e66061ef0d4a5583ae561ab1bfacd2b00a159c84.tgz",
+    "sha256": "186c01ea470a97e8c10a2f97e66061ef0d4a5583ae561ab1bfacd2b00a159c84"
+  },
+  "source": {
+    "file": "src/grammar/animation/pointState.js",
+    "sha256": "0e9911898522ceac164ccca51ef5aba41df8f857eda239ecee6845a216528129",
+    "packedSHA256": "0e9911898522ceac164ccca51ef5aba41df8f857eda239ecee6845a216528129"
+  },
+  "coverage": {
+    "tests": 840,
+    "owner": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "comparison": {
+    "records": 135,
+    "errorsAndOutcomesExact": true,
+    "getterReads": 0,
+    "rowRegistrations": {
+      "before": 40000,
+      "after": 22000
+    },
+    "wholeFrameWirePositionHashesExact": true,
+    "oneKVariants": 9,
+    "uuidFixtureControlled": true,
+    "initialUnseededComparisonRejected": true
+  },
+  "lifetime": {
+    "node": "v22.23.1",
+    "rows": 1000,
+    "sampleCycles": 100,
+    "rebaseCycles": 10,
+    "gcPasses": 5,
+    "oldObjectsAlive": [],
+    "oldPlanAlive": false,
+    "rebaseObjectsAlive": [],
+    "currentFullyOwned": true,
+    "notOriginalHundredThousandRowHeapQualification": true
+  },
+  "consumers": [
+    {
+      "node": "v20.20.2",
+      "artifact": {
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/point-validation/archives/ggaction-186c01ea470a97e8c10a2f97e66061ef0d4a5583ae561ab1bfacd2b00a159c84.tgz",
+        "sha256": "186c01ea470a97e8c10a2f97e66061ef0d4a5583ae561ab1bfacd2b00a159c84"
+      },
+      "status": "passed",
+      "records": [
+        {
+          "id": "peers",
+          "status": "passed",
+          "ms": 2305.086875
+        },
+        {
+          "id": "node",
+          "status": "passed",
+          "ms": 2565.2369579999995
+        },
+        {
+          "id": "types",
+          "status": "passed",
+          "ms": 3083.4670000000006
+        },
+        {
+          "id": "mcp",
+          "status": "passed",
+          "ms": 624.286666
+        },
+        {
+          "id": "docs",
+          "status": "passed",
+          "ms": 99521.02924999999
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1072,
+          "minifiedBytes": 2751703,
+          "gzipBytes": 789782,
+          "limit": 789800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 628,
+          "minifiedBytes": 1454911,
+          "gzipBytes": 426844,
+          "limit": 426900,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 46,
+          "minifiedBytes": 78700,
+          "gzipBytes": 26242,
+          "limit": 26300,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 117,
+          "minifiedBytes": 230823,
+          "gzipBytes": 69522,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 520,
+          "minifiedBytes": 1171833,
+          "gzipBytes": 353159,
+          "limit": 353200,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 218,
+          "minifiedBytes": 437849,
+          "gzipBytes": 139886,
+          "limit": 139900,
+          "status": "passed"
+        }
+      },
+      "resolvedPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      }
+    },
+    {
+      "node": "v22.23.1",
+      "artifact": {
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/point-validation/archives/ggaction-186c01ea470a97e8c10a2f97e66061ef0d4a5583ae561ab1bfacd2b00a159c84.tgz",
+        "sha256": "186c01ea470a97e8c10a2f97e66061ef0d4a5583ae561ab1bfacd2b00a159c84"
+      },
+      "status": "passed",
+      "records": [
+        {
+          "id": "types",
+          "status": "passed",
+          "ms": 2799.3835830000007
+        },
+        {
+          "id": "mcp",
+          "status": "passed",
+          "ms": 650.4324589999997
+        },
+        {
+          "id": "docs",
+          "status": "passed",
+          "ms": 100423.77212499999
+        },
+        {
+          "id": "peers",
+          "status": "passed",
+          "ms": 2634.125625
+        },
+        {
+          "id": "node",
+          "status": "passed",
+          "ms": 2466.626875
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1072,
+          "minifiedBytes": 2751703,
+          "gzipBytes": 788251,
+          "limit": 789800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 628,
+          "minifiedBytes": 1454911,
+          "gzipBytes": 425811,
+          "limit": 426900,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 46,
+          "minifiedBytes": 78700,
+          "gzipBytes": 26112,
+          "limit": 26300,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 117,
+          "minifiedBytes": 230823,
+          "gzipBytes": 69356,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 520,
+          "minifiedBytes": 1171833,
+          "gzipBytes": 351946,
+          "limit": 353200,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 218,
+          "minifiedBytes": 437849,
+          "gzipBytes": 139258,
+          "limit": 139900,
+          "status": "passed"
+        }
+      },
+      "resolvedPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "rechecks": [
+        {
+          "ids": "peers,node",
+          "archiveSHA256": "186c01ea470a97e8c10a2f97e66061ef0d4a5583ae561ab1bfacd2b00a159c84"
+        }
+      ]
+    },
+    {
+      "node": "v24.22.1",
+      "artifact": {
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/point-validation/archives/ggaction-186c01ea470a97e8c10a2f97e66061ef0d4a5583ae561ab1bfacd2b00a159c84.tgz",
+        "sha256": "186c01ea470a97e8c10a2f97e66061ef0d4a5583ae561ab1bfacd2b00a159c84"
+      },
+      "status": "passed",
+      "records": [
+        {
+          "id": "peers",
+          "status": "passed",
+          "ms": 2600.627542
+        },
+        {
+          "id": "node",
+          "status": "passed",
+          "ms": 2609.943542
+        },
+        {
+          "id": "types",
+          "status": "passed",
+          "ms": 3031.404125000001
+        },
+        {
+          "id": "mcp",
+          "status": "passed",
+          "ms": 756.8770830000012
+        },
+        {
+          "id": "docs",
+          "status": "passed",
+          "ms": 99315.537417
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1072,
+          "minifiedBytes": 2751703,
+          "gzipBytes": 789782,
+          "limit": 789800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 628,
+          "minifiedBytes": 1454911,
+          "gzipBytes": 426844,
+          "limit": 426900,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 46,
+          "minifiedBytes": 78700,
+          "gzipBytes": 26242,
+          "limit": 26300,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 117,
+          "minifiedBytes": 230823,
+          "gzipBytes": 69522,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 520,
+          "minifiedBytes": 1171833,
+          "gzipBytes": 353159,
+          "limit": 353200,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 218,
+          "minifiedBytes": 437849,
+          "gzipBytes": 139886,
+          "limit": 139900,
+          "status": "passed"
+        }
+      },
+      "resolvedPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      }
+    }
+  ],
+  "consumerScope": "unchanged animation-point-scales and animation-batched cases plus original1000 analytic/native/offline/rebase; not whole408 runtime matrix",
+  "browser": {
+    "archiveSHA256": "186c01ea470a97e8c10a2f97e66061ef0d4a5583ae561ab1bfacd2b00a159c84",
+    "sourceRuntimeInputs": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "sceneVersion": 3,
+    "formatVersion": 6,
+    "paints": 6,
+    "status": "passed"
+  },
+  "documentationBoundaryTests": 49,
+  "packs": [
+    {
+      "node": 20,
+      "entryCount": 1267,
+      "packedBytes": 1833576,
+      "unpackedBytes": 8237162
+    },
+    {
+      "node": 22,
+      "entryCount": 1267,
+      "packedBytes": 1829700,
+      "unpackedBytes": 8237162
+    },
+    {
+      "node": 24,
+      "entryCount": 1267,
+      "packedBytes": 1833576,
+      "unpackedBytes": 8237162
+    }
+  ],
+  "packageLimits": {
+    "entries": 1267,
+    "packedBytes": 1833576,
+    "unpackedBytes": 8237162
+  },
+  "original100k": {
+    "partial": {
+      "kind": "Public version6 actual API path, phased plan lifetimes; no instrumentation; not SLO/P95",
+      "node": "v22.23.1",
+      "pid": 60117,
+      "execArgv": [
+        "--expose-gc",
+        "--max-old-space-size=8192"
+      ],
+      "n": 100000,
+      "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+      "phases": {
+        "prepare": {
+          "ms": 72676.468917,
+          "accounting": {
+            "native": true,
+            "limits": {
+              "maxEndpointNodes": 200002,
+              "maxOutputNodes": 100001
+            },
+            "maximumWork": {
+              "Animation preparation work": 97911711
+            }
+          },
+          "columns": {
+            "logicalValues": 7600057,
+            "descriptorVisits": 7600056,
+            "cellVisits": 7600004,
+            "storageCells": 600000,
+            "interningWork": 93556546,
+            "internNodes": 208,
+            "uniqueLowerBound": {
+              "physicalValues": 300119,
+              "encodedValues": 300285,
+              "bytes": 31279231
+            },
+            "physicalValues": 304549,
+            "encodedValues": 308479,
+            "bytes": 31332316,
+            "validatedLogicalValues": 7600057
+          }
+        },
+        "sample": {
+          "ms": 135.63962499999616,
+          "timing": "pure sample after explicit post-prepare GC; not P95/SLO",
+          "coordinateOracleMs": 4.615708999990602
+        },
+        "offline": {
+          "ms": 182300.47675,
+          "bytes": 31332306,
+          "sha256": "a9783a7db87457b7e5bec4d5aabca2eb054d46de346600602db7d20caeb72ce6",
+          "accounting": {
+            "native": false,
+            "limits": {
+              "maxEndpointNodes": 200002,
+              "maxOutputNodes": 100001
+            },
+            "maximumWork": {
+              "Animation preparation work": 97911711
+            }
+          },
+          "decodedPayload": {
+            "physicalValues": 304527,
+            "bytes": 26380646,
+            "estimatedEncodedValues": 308439,
+            "estimatedEncodedBytes": 31332155
+          },
+          "encodedEnvelope": {
+            "physicalValues": 308444,
+            "bytes": 31332306
+          }
+        },
+        "rebase": {
+          "ms": 65503.48108300002,
+          "accounting": {
+            "native": true,
+            "limits": {
+              "maxEndpointNodes": 200002,
+              "maxOutputNodes": 100001
+            },
+            "maximumWork": {
+              "Animation preparation work": 133456501
+            }
+          },
+          "columns": {
+            "logicalValues": 5400809,
+            "descriptorVisits": 5600792,
+            "cellVisits": 5600744,
+            "storageCells": 700061,
+            "interningWork": 77962024,
+            "internNodes": 60368,
+            "uniqueLowerBound": {
+              "physicalValues": 540258,
+              "encodedValues": 580551,
+              "bytes": 59893989
+            },
+            "physicalValues": 623133,
+            "encodedValues": 786610,
+            "bytes": 61023624,
+            "validatedLogicalValues": 5400809
+          }
+        }
+      },
+      "lifetime": [
+        {
+          "stage": "native-plan-released",
+          "memory": {
+            "rss": 1329364992,
+            "heapTotal": 780517376,
+            "heapUsed": 464603848,
+            "external": 33328154,
+            "arrayBuffers": 29875
+          }
+        },
+        {
+          "stage": "native-offline-plan-released",
+          "memory": {
+            "rss": 1026260992,
+            "heapTotal": 810549248,
+            "heapUsed": 607148616,
+            "external": 64688529,
+            "arrayBuffers": 29675
+          }
+        },
+        {
+          "stage": "rebase-plan-and-source-frame-released",
+          "memory": {
+            "rss": 1811972096,
+            "heapTotal": 949288960,
+            "heapUsed": 637353928,
+            "external": 63047316,
+            "arrayBuffers": 29675
+          }
+        }
+      ],
+      "allCoordinatesVerified": 100000,
+      "batch50Rejected": true,
+      "stage": "rebase-plan-and-source-frame-released",
+      "allRebaseCoordinatesVerified": 100000
+    },
+    "stop": {
+      "time": "2026-11-02T16:18:36.636Z",
+      "pid": 60117,
+      "status": "diagnostic-termination",
+      "signal": "SIGTERM",
+      "reason": "Same-process rebase offline restore remained in WeakSet.add in-place Rehash in two separated OS samples; original first offline completed, final rebase offline did not",
+      "process": "  PID ELAPSED  %CPU    RSS COMMAND\n60117   13:31  99.0 558672 node --expose-gc --max-old-space-size=8192 .artifacts/point-validation/product-100000-phased.mjs\n",
+      "originalTimeoutChanged": false,
+      "phaseSplitting": false,
+      "completedStage": "rebase-plan-and-source-frame-released",
+      "samples": [
+        "rebase-offline-sample-1.txt",
+        "rebase-offline-sample-2.txt"
+      ]
+    },
+    "exitCode": 143,
+    "finalRebaseOfflinePassed": false
+  },
+  "limitations": [
+    "First original100k offline now completed but rebase offline remained in in-place Rehash and was diagnostically terminated",
+    "Single GC-after-prepare sample135.64ms exceeds50ms; overlapping small package checks and no P95 qualification",
+    "Original100cycle/heap/SLO remain open",
+    "Full normal10446 was at baseline; this narrow change reran owner840 and relevant installed consumers",
+    "Node22 first installed fixture incorrectly expected raw key0; corrected to exact public item key; first record preserved",
+    "Initial 1k cross-run comparison had random UUID mismatch; deterministic UUID setup before fixture creation produced exact whole-frame/wire/position hashes",
+    "No registry rotation, validation removal, input changes, runtime guard changes or split-process original100k pass"
+  ],
+  "evidenceFiles": {
+    "baseline-pointState.js": {
+      "sha256": "e15d4c1f0677b09ac1decd32611fbb2be31390ddc95b27a5d354913f607fb673",
+      "bytes": 2292
+    },
+    "boundaries-docs.log": {
+      "sha256": "fe360663582a9c92a7ff470c5cd52802208fe049debb4e6fb7fd418a27a1bc15",
+      "bytes": 10805
+    },
+    "browser-installed.json": {
+      "sha256": "fe518bb9ccf3ae5a743f4f92352e5b0128b3e07f7163fdb428d8c8dba23d1350",
+      "bytes": 227
+    },
+    "browser-installed.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "browser-installed.mjs": {
+      "sha256": "3ccc6d947e41b665572f0a0eab5b7089ca9e147591766be2bcdfc111f67ceaae",
+      "bytes": 896
+    },
+    "candidate.json": {
+      "sha256": "82736802ca14ece3ec4b43a2c25301a7193dc09a4105d00ef510db1d361131f1",
+      "bytes": 21034
+    },
+    "candidate.log": {
+      "sha256": "227d782e7e25206737795fc89324e39435bf5a40675487286019e64d4f6f4612",
+      "bytes": 375
+    },
+    "canonical-consumer.mjs": {
+      "sha256": "6d99a7e2be7fa71efc7d59f613b7383a6192a3716616e131b50cd1fa2d470ee0",
+      "bytes": 3779
+    },
+    "comparison.json": {
+      "sha256": "af3e897ac616ccd953a10ee669d76165bf33b2265397b2e4626707a096a74a1a",
+      "bytes": 288
+    },
+    "comparison.log": {
+      "sha256": "2713d3b9ab78feb8a2b0bf3248277c408101d510e878a3818a2d9c71acb2bb77",
+      "bytes": 258
+    },
+    "consumer20.json": {
+      "sha256": "ba05410e04a3274b39e186d5605a734e2824e4f7237ac75336bfae74f6832098",
+      "bytes": 2220
+    },
+    "consumer20.log": {
+      "sha256": "c4d3276b75e3368a2ca1e400a2140fee40643173e8933e5345ce01664af153b5",
+      "bytes": 193
+    },
+    "consumer22-first.json": {
+      "sha256": "4e8e1347bb159879244404d1f9c2c6c27b9bf2fbd887f31c74d1828bfbdebe73",
+      "bytes": 4568
+    },
+    "consumer22-runtime-fixed.log": {
+      "sha256": "fc580cf5fd44e9c3df3e4815de4a1b30ec06227a5f041f3e47c185ce680123fe",
+      "bytes": 25
+    },
+    "consumer22.json": {
+      "sha256": "fdad24fb8690eab41b23a49cdf79ee1a72bf5cb804b524fa958f8e4fffa37d4d",
+      "bytes": 2371
+    },
+    "consumer22.log": {
+      "sha256": "73d91879fe0d0231f60b7431ad490e50c11b39c7e2881cb01c48710f49ba18df",
+      "bytes": 193
+    },
+    "consumer24.json": {
+      "sha256": "54227a2de5e7a89a424a4e63c4399161b540ad02a93d448274fbcc2cf1fb0b68",
+      "bytes": 2214
+    },
+    "consumer24.log": {
+      "sha256": "c4d3276b75e3368a2ca1e400a2140fee40643173e8933e5345ce01664af153b5",
+      "bytes": 193
+    },
+    "control.json": {
+      "sha256": "3ae461158d102b92230a8b530b7849c37d667ab3a9bb3f9c34cd307dbb3b46ff",
+      "bytes": 21034
+    },
+    "control.log": {
+      "sha256": "6d414d5b9d55e28a5afde2405c6e707cec048269c985d340bf54d3283eff3f64",
+      "bytes": 375
+    },
+    "first.log": {
+      "sha256": "f5513d7a9f21a0f7bd2945be00206fe457debb1df535e8c7e27e97948a73a3b6",
+      "bytes": 817
+    },
+    "frozen.json": {
+      "sha256": "5eff4629a6e6a643b2b9d7fbebaa4a49b7ba4dd29ccd6101fb890dd2c9241592",
+      "bytes": 287
+    },
+    "installed-one-k-first.mjs": {
+      "sha256": "e59c4ee129305155807098d99b6fb67df8bf195cccbcdfe152bc076a5379f31b",
+      "bytes": 2161
+    },
+    "installed-one-k-local.log": {
+      "sha256": "df38b59c9785f64a325495ddfa04e7a4a58f30ff057501b24d3bf901f4c01ded",
+      "bytes": 57
+    },
+    "installed-one-k.mjs": {
+      "sha256": "415784d703d309f517ba1f29a0640f7f037495523451804f52e4957a00c0cebf",
+      "bytes": 2280
+    },
+    "lifetime.json": {
+      "sha256": "b49438c87746ef5e8c5c7032ee3a741d1785fc79ab6a1e21d968d27a75908be2",
+      "bytes": 268
+    },
+    "lifetime.log": {
+      "sha256": "3272838db8c0cc3d944a5562adbb4aef80990e7aff9af56fa6a368e84df8ee38",
+      "bytes": 227
+    },
+    "lifetime.mjs": {
+      "sha256": "f3ac56bc9d34c728bd7d4070e84613872d908abcbf2ef93730245356a6105496",
+      "bytes": 3025
+    },
+    "loader.mjs": {
+      "sha256": "2892cb0ab7b31bff30a406a4468b3a97bdd31e9e35fbe618a16b88082cb40819",
+      "bytes": 632
+    },
+    "navigation-final.log": {
+      "sha256": "a40ca6ec43c3cc8458683d5b077b24bf3a2f853d458c76c0b2a8efc63ab226ac",
+      "bytes": 1494
+    },
+    "offline-first-sample.txt": {
+      "sha256": "4a474d5d1ded4f169c1287df529b696f15b1e96faea532daa1c23f5eff5dead7",
+      "bytes": 290969
+    },
+    "one-k-candidate.json": {
+      "sha256": "69dd934db393be2393d896278f6c8f8cbf73512f9fb19cda8adf328fa75c611c",
+      "bytes": 13319
+    },
+    "one-k-candidate.log": {
+      "sha256": "a9ad531bbebe5347245ee56cee997fc03c2fbaa8016b697088904071348fd81b",
+      "bytes": 11817
+    },
+    "one-k-control.json": {
+      "sha256": "69dd934db393be2393d896278f6c8f8cbf73512f9fb19cda8adf328fa75c611c",
+      "bytes": 13319
+    },
+    "one-k-control.log": {
+      "sha256": "3d9dba94d43b261bd598012084fbd60c0d66e69087bc8f2e660850475ae463dc",
+      "bytes": 12192
+    },
+    "one-k-unseeded-candidate.json": {
+      "sha256": "381992403e7b1e5333ff1f03472023b455c4a49e6f8af3156ec05d87d7db0b19",
+      "bytes": 13319
+    },
+    "one-k-unseeded-control.json": {
+      "sha256": "7c304e702d4a28ddd507f5fb8a3b84395ed4eb443c6d61ea50cd5e51ffa533e3",
+      "bytes": 13319
+    },
+    "one-k.mjs": {
+      "sha256": "a7fc309b66c7b38370a7e6fd23b91e6e8f02e9bd4119db1ed0ebaa989a654888",
+      "bytes": 5518
+    },
+    "oracle.mjs": {
+      "sha256": "159d0cb23394b0bf628a8f37534f0cfba0b8c00b172ab7f8ab93cd1f83af1cbb",
+      "bytes": 2409
+    },
+    "owning-coverage.log": {
+      "sha256": "932a42d82a7e5dc962a63750600d8043cf7e257fc416a0821365c7264b4b6b32",
+      "bytes": 201566
+    },
+    "pack20-measure.json": {
+      "sha256": "a81a0ff39005617063c769efb984d68e90afcf8e2991260b45704ad93fda63e1",
+      "bytes": 146
+    },
+    "pack20-measure.stderr": {
+      "sha256": "52493ee187a92974cf0488adac65c6aab9d17a26431b8fe1cba917d6a8573bf4",
+      "bytes": 590
+    },
+    "pack22-measure.json": {
+      "sha256": "027ed5d8e5ab43924bf9ad61578ed81c4fc0854808da0876a05ebab66c2fb4bc",
+      "bytes": 146
+    },
+    "pack22-measure.stderr": {
+      "sha256": "a33431ae22729c9146eaf740a0ce62559c4999ec98a3504500e61c8846876803",
+      "bytes": 590
+    },
+    "pack24-measure.json": {
+      "sha256": "bc1903e4008ca9842874352d1744992e911f354221f27bc80805359329b9cb98",
+      "bytes": 146
+    },
+    "pack24-measure.stderr": {
+      "sha256": "883206a728bbea2c8864893f21493c91a4cf82770d511ecf1bfddbc3ceb10cd8",
+      "bytes": 590
+    },
+    "product-100000-phased-partial.json": {
+      "sha256": "3d38bd0c38d1f7046db2ddf6d4027aefbdbb57f7b4a5087784811557497481b7",
+      "bytes": 3665
+    },
+    "product-100000-phased.log": {
+      "sha256": "6f18729b9059e997a3378152b908a811eea835ab53057542ce6595b32a7303d3",
+      "bytes": 157
+    },
+    "product-100000-phased.mjs": {
+      "sha256": "60778eaa2bdec42a64a95ad6869af0dbbb2f70c58efe9dba29d033a56f881643",
+      "bytes": 6166
+    },
+    "product-100000-stop.json": {
+      "sha256": "7f2ac59270bbdab77b85a8425a5e168566d45367f164a1e28eca1cbc120e50ca",
+      "bytes": 691
+    },
+    "rebase-offline-sample-1.txt": {
+      "sha256": "291d9e3bc10fa2c054bfbecc11ebf7581bdb1fc3472109ac8c64da7f28e33a2b",
+      "bytes": 88383
+    },
+    "rebase-offline-sample-2.txt": {
+      "sha256": "e59829eb840723b63bb0d6fe7a1972ef2b4c17c89b0075042055bce377262ddc",
+      "bytes": 88167
+    },
+    "record.mjs": {
+      "sha256": "3c2c362843510389f6e9842397102cce34747b1a804f19a56ecf6dfce70b5af5",
+      "bytes": 4200
+    },
+    "strict-pack.json": {
+      "sha256": "8107fbd1a57006c9cc695c6801aa2ed31ad30e337318a996279a3303dd12df93",
+      "bytes": 128918
+    }
+  }
+}
