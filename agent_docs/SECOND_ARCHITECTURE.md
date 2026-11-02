@@ -5188,3 +5188,11 @@ Worker의 compute-only import는 순수 계산 경계를 유지한다.
 editSemantic/materialization child action을 수행한다. Candidate ChartProgram 반환이나
 제2facade proof는 없다. 원 action wrapper의 trace/theme/completion 책임도 유지한다.
 정확한 정책·한계는 [EDGE_ROUTES](contract/current/EDGE_ROUTES.md#명시-bounded-route-v2)가 소유한다.
+
+
+Native update의 후속 private 단계는 기존 route/source resource DAG owner가 generator locals와
+exact candidate refs를 소유한다. 기존 v1 진입점은 동일 generator를 동기로 끝까지 소비하고,
+명시 private v2 준비만 native job/completion 경계에서 대기한다. 원 validation·primitive proof·
+consumer preflight를 계속 사용하며 core action wrapper를 async로 바꾸거나 candidate program을
+직접 최종 결과로 내보내지 않는다. 이 단계 추출은 전체 B native update 지원을 뜻하지 않는다.
+구체 연결 상태는 [native 단계 기록](impl/roadmap9/chart/route-native-stages.md)을 따른다.

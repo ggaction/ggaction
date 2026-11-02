@@ -5,10 +5,10 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 792_700, // Bounded native route preparation: Node20/24 792,657 gzip bytes.
+  ggaction: 792_800, // Native route continuations: Node20/24 792,740 gzip bytes.
   "ggaction/basic": 426_300, // Shared tagged fragments: Node20/24 426,217 gzip bytes.
   "ggaction/svg": 26_000,
-  "ggaction/graph": 74_500, // Exact Full planner binding keeps Node20/24 at 74,445 gzip bytes.
+  "ggaction/graph": 74_500, // Exact Full planner binding keeps Node20/24 at 74,464 gzip bytes.
   "ggaction/animation": 341_600, // Integrated prepared scalar and sampled metadata: Node20 341,583 gzip bytes.
   "ggaction/interaction": 137_600 // Integrated tagged fragments and metadata: Node20 137,519 gzip bytes.
 });
