@@ -21,7 +21,11 @@
 
 Density의 다음 최소 후보와 원100/1000 첫 반복 ledger는
 [packed sample 설계](density-packed-samples-design.md)에 기록한다. Weight/angle 보관만 바꾸는
-제품 후보이며 아직 채택·구현하지 않았다. 이 후보의 현재 work/guard 실패는 그대로 남는다.
+후보는 `90ae73151`에서 별도 private 메모리 개념으로 구현·검증됐다. [최종 기록](density-packed-samples.md)을 따른다. 기존 work/guard 실패는 그대로 남는다.
+
+현재 추가 검토안은 [sample·memory·취소·native update ledger](route-bounded-policy-ledger.md)에 있다.
+아래 초기4-field 실행안의 누락인 maxSamples를 명시5-field로 보완하고, 과거 streaming/typed
+연구와 현재 제품을 구분한다. 새 v2 정책은 아직 제품에 구현하지 않았다.
 
 ## 보존할 계약
 
@@ -81,6 +85,7 @@ execution: {
   policy: 'bounded-route@1',
   maxWork,             // 기존 work 단위의 전체 누적 허용량
   maxCandidatePairs,   // 누적 검토 pair; 현재 의미 유지
+  maxSamples,         // 기존 보수 active sample charge; typed slots로 재해석하지 않음
   maxBufferBytes,      // 직접 소유한 typed numeric buffers의 동시 byte
   maxBytes            // canonical encoded job와 completion 각각의 byte
 }
@@ -106,7 +111,11 @@ Input hash에는 실행 policy가 포함된다. 시간제한·host 객체는 has
 수학 결과의 좌표/원행과 전체 diagnostics hash의 의미를 구분한다. 새 live-buffer 계측이
 기존 보수 peakSamples와 다르면 metadata 변경으로 정확히 기록한다.
 
-## 실제 할당을 없애는 density 순서
+## 초기 density 할당 연구와 현재 채택 범위
+
+다음 목록은 초기 연구안이다. 실제 제품90ae는 [packed samples](density-packed-samples.md)의
+weight/angle/offset만 바꿨고 tangent 재계산·field dense화·좌표 typed화·charge 변경은 하지 않았다.
+후행 streaming도 동일 tangent/math/order가 검산되기 전 채택된 구현으로 보지 않는다.
 
 1. 원 route 순서로 각 간선의 weights/tangent를 준비하고 field에 바로 누적한다. 전체
    `routes.map(routeDensitySamples)`와 `flat()` 동시 보유를 없앤다. bounds는 같은 모든
@@ -174,7 +183,7 @@ spring+원 neighbor 순서 operand84,000개를 binary64 bytes로 비교했다. S
 count는 deepEqual였다. 1k/10k의 보지 않은 iteration에 이를 확대하지 않는다. 이 증거로 범용
 memo cache를 만들지 않는다. 원10k work6.88785B의 과금을 줄이는 근거로도 사용하지 않는다.
 
-FDEB의 다음 독립 후보는 upper-triangle typed neighbors다. 현재 symmetric loop가 실제 읽는
+FDEB의 당시 독립 후보였던 upper-triangle typed neighbors는 `61ddab0aa`에서 기본 guard 안의 메모리 개선으로 채택·구현됐다. 다음은 그 초기 근거다. 현재 symmetric loop가 실제 읽는
 `edge` 오름차순→상대 edge 오름차순→sample 오름차순을 그대로 저장하면 reverse-side 덧셈
 순서도 보존된다. target Uint32+compatibility Float64+reverse Uint8에13A bytes, offset/degree에
 8E+4 bytes이며 원10k A=8,145,000에서105,965,004B다. 작은 oracle와 raw signed-zero/overflow를

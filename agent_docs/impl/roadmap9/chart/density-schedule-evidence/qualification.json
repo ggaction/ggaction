@@ -1,0 +1,364 @@
+{
+  "schemaVersion": 1,
+  "status": "static proposal and small research harness qualified; product v2 pending",
+  "base": "90ae731513ec85a8eb5bd378a82d5904d1be6da4",
+  "authorization": "../../AUTHORIZATION.json",
+  "rootAdoption": "2026-11-02: static maxSamples/memory/cancellation/native-union proposal and small public-exact fixture first; original100 diagnostic only after CPU slot, finite work1B and host30s; no product policy changes.",
+  "productSourceChanged": false,
+  "srcTree": "4d508288154aee792b968e9a4cf2b3dab357e323",
+  "original100Executed": false,
+  "diagnosticPolicy": {
+    "diagnosticWorkLimit": 1000000000,
+    "hostDeadlineMs": 30000,
+    "productMaxSamples": 10000000,
+    "productEdgeSamples": 4096,
+    "productModified": false
+  },
+  "small": {
+    "node": "v22.23.1",
+    "status": "small-exact",
+    "durationMs": 2131.1524999999997,
+    "sourceHashes": {
+      "density": "545fce10c98ee3ee65e639bf5f110bedb6ab9b5dc366eb793242522c6626f885",
+      "densityField": "33cf23bb9a77435a9a6a10736133e3a87c8712090d0d4d04a44dfd632613481b",
+      "densitySamples": "cd4370571f1713849f364a6cd8847e961d59da01a8a99c2738870bb0b7adf54d",
+      "polyline": "ad2762f7c2ba6f542a5506479dcb2a17c1a058018258a3a692a8395ea82d46be",
+      "common": "1fdad8bb7f6c6d7e9b011048240851a2515a290261da573db276303380e0caf4",
+      "budget": "f32d00a6b734ffc23bb95f294ea73ac68645fdf25fb4c91045acb60662231568",
+      "job": "24a57135c8f03db848ead02a05c37dd754648a9299571d7931a5ec50cacc2784"
+    },
+    "cases": [
+      {
+        "edges": 3,
+        "directed": false,
+        "inputWork": 1996,
+        "charges": {
+          "initial-resampling": 516,
+          "weights": 302064,
+          "field": 1524984,
+          "advection-resampling": 13174,
+          "finalization": 8832
+        },
+        "diagnostics": {
+          "work": 1851566,
+          "candidatePairs": 0,
+          "peakSamples": 10114,
+          "gridSize": 256,
+          "step": 0.005,
+          "iterations": 20,
+          "schedule": [
+            {
+              "iteration": 0,
+              "bandwidth": 0.05,
+              "fieldCells": 7012,
+              "samples": 518
+            },
+            {
+              "iteration": 1,
+              "bandwidth": 0.045000000000000005,
+              "fieldCells": 6072,
+              "samples": 518
+            },
+            {
+              "iteration": 2,
+              "bandwidth": 0.04050000000000001,
+              "fieldCells": 5124,
+              "samples": 542
+            },
+            {
+              "iteration": 3,
+              "bandwidth": 0.03645,
+              "fieldCells": 4620,
+              "samples": 548
+            },
+            {
+              "iteration": 4,
+              "bandwidth": 0.03280500000000001,
+              "fieldCells": 4284,
+              "samples": 526
+            },
+            {
+              "iteration": 5,
+              "bandwidth": 0.029524500000000006,
+              "fieldCells": 4032,
+              "samples": 526
+            },
+            {
+              "iteration": 6,
+              "bandwidth": 0.026572050000000003,
+              "fieldCells": 3608,
+              "samples": 528
+            },
+            {
+              "iteration": 7,
+              "bandwidth": 0.023914845000000004,
+              "fieldCells": 3388,
+              "samples": 526
+            },
+            {
+              "iteration": 8,
+              "bandwidth": 0.021523360500000005,
+              "fieldCells": 3028,
+              "samples": 526
+            },
+            {
+              "iteration": 9,
+              "bandwidth": 0.019371024450000007,
+              "fieldCells": 2812,
+              "samples": 524
+            },
+            {
+              "iteration": 10,
+              "bandwidth": 0.017433922005000005,
+              "fieldCells": 2540,
+              "samples": 524
+            },
+            {
+              "iteration": 11,
+              "bandwidth": 0.015690529804500003,
+              "fieldCells": 2404,
+              "samples": 524
+            },
+            {
+              "iteration": 12,
+              "bandwidth": 0.014121476824050006,
+              "fieldCells": 2072,
+              "samples": 580
+            },
+            {
+              "iteration": 13,
+              "bandwidth": 0.012709329141645005,
+              "fieldCells": 2044,
+              "samples": 644
+            },
+            {
+              "iteration": 14,
+              "bandwidth": 0.011438396227480505,
+              "fieldCells": 1668,
+              "samples": 720
+            },
+            {
+              "iteration": 15,
+              "bandwidth": 0.010294556604732455,
+              "fieldCells": 1628,
+              "samples": 804
+            },
+            {
+              "iteration": 16,
+              "bandwidth": 0.009265100944259209,
+              "fieldCells": 1548,
+              "samples": 900
+            },
+            {
+              "iteration": 17,
+              "bandwidth": 0.008338590849833289,
+              "fieldCells": 1504,
+              "samples": 1006
+            },
+            {
+              "iteration": 18,
+              "bandwidth": 0.0078125,
+              "fieldCells": 1272,
+              "samples": 1086
+            },
+            {
+              "iteration": 19,
+              "bandwidth": 0.0078125,
+              "fieldCells": 1436,
+              "samples": 1104
+            }
+          ]
+        },
+        "resultHash": "7c198abdc99c917c915e3a8dc45ef2306bd94b59c7065a6762bdb4dfa12ac718",
+        "jobBytes": 3403,
+        "completionBytes": 152237,
+        "finalCommands": 1104,
+        "finalControls": 1104,
+        "comparison": "All public result fields exact."
+      },
+      {
+        "edges": 3,
+        "directed": true,
+        "inputWork": 1980,
+        "charges": {
+          "initial-resampling": 516,
+          "weights": 352800,
+          "field": 2873162,
+          "advection-resampling": 16178,
+          "finalization": 15952
+        },
+        "diagnostics": {
+          "work": 3260588,
+          "candidatePairs": 0,
+          "peakSamples": 39262,
+          "gridSize": 256,
+          "step": 0.005,
+          "iterations": 20,
+          "schedule": [
+            {
+              "iteration": 0,
+              "bandwidth": 0.05,
+              "fieldCells": 11492,
+              "samples": 520
+            },
+            {
+              "iteration": 1,
+              "bandwidth": 0.045000000000000005,
+              "fieldCells": 30240,
+              "samples": 610
+            },
+            {
+              "iteration": 2,
+              "bandwidth": 0.04050000000000001,
+              "fieldCells": 35596,
+              "samples": 548
+            },
+            {
+              "iteration": 3,
+              "bandwidth": 0.03645,
+              "fieldCells": 26128,
+              "samples": 570
+            },
+            {
+              "iteration": 4,
+              "bandwidth": 0.03280500000000001,
+              "fieldCells": 24304,
+              "samples": 552
+            },
+            {
+              "iteration": 5,
+              "bandwidth": 0.029524500000000006,
+              "fieldCells": 21474,
+              "samples": 562
+            },
+            {
+              "iteration": 6,
+              "bandwidth": 0.026572050000000003,
+              "fieldCells": 19984,
+              "samples": 554
+            },
+            {
+              "iteration": 7,
+              "bandwidth": 0.023914845000000004,
+              "fieldCells": 17920,
+              "samples": 562
+            },
+            {
+              "iteration": 8,
+              "bandwidth": 0.021523360500000005,
+              "fieldCells": 16088,
+              "samples": 556
+            },
+            {
+              "iteration": 9,
+              "bandwidth": 0.019371024450000007,
+              "fieldCells": 14696,
+              "samples": 560
+            },
+            {
+              "iteration": 10,
+              "bandwidth": 0.017433922005000005,
+              "fieldCells": 12950,
+              "samples": 556
+            },
+            {
+              "iteration": 11,
+              "bandwidth": 0.015690529804500003,
+              "fieldCells": 11756,
+              "samples": 558
+            },
+            {
+              "iteration": 12,
+              "bandwidth": 0.014121476824050006,
+              "fieldCells": 10516,
+              "samples": 616
+            },
+            {
+              "iteration": 13,
+              "bandwidth": 0.012709329141645005,
+              "fieldCells": 9328,
+              "samples": 696
+            },
+            {
+              "iteration": 14,
+              "bandwidth": 0.011438396227480505,
+              "fieldCells": 8626,
+              "samples": 796
+            },
+            {
+              "iteration": 15,
+              "bandwidth": 0.010294556604732455,
+              "fieldCells": 8680,
+              "samples": 986
+            },
+            {
+              "iteration": 16,
+              "bandwidth": 0.009265100944259209,
+              "fieldCells": 9312,
+              "samples": 1186
+            },
+            {
+              "iteration": 17,
+              "bandwidth": 0.008338590849833289,
+              "fieldCells": 9496,
+              "samples": 1420
+            },
+            {
+              "iteration": 18,
+              "bandwidth": 0.0078125,
+              "fieldCells": 9410,
+              "samples": 1776
+            },
+            {
+              "iteration": 19,
+              "bandwidth": 0.0078125,
+              "fieldCells": 10778,
+              "samples": 1994
+            }
+          ]
+        },
+        "resultHash": "9650ee00a7e49bfa4673dddf65ea5c8d496eaf027c5d0a6d6451d3656a232500",
+        "jobBytes": 3272,
+        "completionBytes": 272372,
+        "finalCommands": 1994,
+        "finalControls": 1994,
+        "comparison": "All public result fields exact."
+      }
+    ],
+    "guardProbes": [
+      "work1B rejects next charge atomically",
+      "maxSamples10M rejects10000001 atomically"
+    ],
+    "firstFailure": "Harness compared pure result directly with public stored envelope; corrected using existing native viewport/inputHash/resultHash fields and removing pure options. Product unchanged.",
+    "files": [
+      "small-22.json.gz",
+      "small-final.log.gz",
+      "first-small-22.json.gz"
+    ]
+  },
+  "arithmetic": {
+    "file": "bounds.json",
+    "rows": 6,
+    "meaning": "safe BigInt-cross-checked ceilings, not actual large allocation or selected product maxima"
+  },
+  "union": {
+    "file": "native-union.json",
+    "candidateActions": 332,
+    "excludedActions": 47,
+    "meaning": "source-pinned candidate superset; not proven minimal or implemented closed union"
+  },
+  "commands": [
+    "node agent_docs/impl/roadmap9/chart/density-schedule-evidence/bounds.mjs",
+    "node agent_docs/impl/roadmap9/chart/density-schedule-evidence/native-union.mjs",
+    "node agent_docs/impl/roadmap9/chart/density-schedule-evidence/observe.mjs --small",
+    "node agent_docs/impl/roadmap9/chart/density-schedule-evidence/verify.mjs"
+  ],
+  "notClaimed": [
+    "original100 completion",
+    "public large admission",
+    "P95 or SLO",
+    "whole JS heap bound",
+    "complete native update union",
+    "new product/API/schema/guard behavior"
+  ]
+}
