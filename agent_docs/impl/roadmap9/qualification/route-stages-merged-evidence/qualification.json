@@ -10,8 +10,8 @@
     "entryCount": 1268,
     "packedBytes": 1826695,
     "unpackedBytes": 8227339,
-    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-0bffe8366925280af955585b6a7ee13f0670184c32ff85d40f50c07a68bd100b.tgz",
-    "sha256": "0bffe8366925280af955585b6a7ee13f0670184c32ff85d40f50c07a68bd100b"
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-eda130b004a6191649c41a6c55c971fe060ced7ca38174b91ac1cc8159e2fae4.tgz",
+    "sha256": "eda130b004a6191649c41a6c55c971fe060ced7ca38174b91ac1cc8159e2fae4"
   },
   "sourceHashes": {
     "src/actions/canvas/actions.js": "ac63f8b1974257a47dc65290730ef7e3da6a65b7207aaeb727d08df1a6a1bcbc",
@@ -27,28 +27,48 @@
   },
   "evidenceFiles": {
     "pack.json": {
-      "sha256": "04fd9cbaf0d012ce847662f98e808e65b197b479fe9e1b96a782811e3a47a901",
-      "bytes": 387
+      "sha256": "e79acd67252dbb7c63eb52c53d2a4dcb373c4e2c71d83ea014df8448d22e52aa",
+      "bytes": 393
     },
     "installed-24.json": {
-      "sha256": "e262624b735380e224e4d2bf66ce1c3f1c8d2eeda158a945522d30547eca5085",
+      "sha256": "6c144f3ad20b174bcc90ad4bc1bcf5724c1ba899d695e7f27b44ffadffa891d8",
       "bytes": 5624
     },
     "browser.log": {
       "sha256": "82133193782e4c675b6b9f6aabc8fa5637817e5714c87931835d458e25a59373",
       "bytes": 1028
     },
-    "frozen.json": {
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "pack-before-readme.json": {
       "sha256": "04fd9cbaf0d012ce847662f98e808e65b197b479fe9e1b96a782811e3a47a901",
       "bytes": 387
     },
+    "frozen.json": {
+      "sha256": "e79acd67252dbb7c63eb52c53d2a4dcb373c4e2c71d83ea014df8448d22e52aa",
+      "bytes": 393
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
     "installed-stages-20.json": {
-      "sha256": "aab0302dbcea6ef7978a6f2b64fa9ebea796e90baa9ffa21a4e8f307b2fc4ba4",
-      "bytes": 2484
+      "sha256": "75e83ecbe442614c103ec471d1d13918a6cc15accae9018befb283b3f018338f",
+      "bytes": 2482
+    },
+    "prepack-final24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     },
     "installed-22.json": {
-      "sha256": "9601d5d321fa8c861d6df39e29848fd5af39f3f96caa3b8ee6e93b681a1e4c0a",
+      "sha256": "d9c8d85aabf722940687d6efbef299046d4513878ee089ccc1d8425d89f1ad07",
       "bytes": 5624
+    },
+    "prepack-final.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     },
     "prepack.stderr": {
       "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
@@ -58,16 +78,28 @@
       "sha256": "9f5498c1138b6c6bb20af6e822179c756ccd12080c60e4eb7330dc259c7fe5d4",
       "bytes": 7506
     },
+    "prepack-final.json": {
+      "sha256": "91fa29b428cabd0ac37f45da670f829386f2c8ec9d62c84045d7611f6a4945c0",
+      "bytes": 300
+    },
     "installed-stages-22.json": {
-      "sha256": "495c0af19609470ea24d7a63e334ad6e4e7e9f4de81ff7d0faadfa3ba794276b",
-      "bytes": 2630
+      "sha256": "c6bdacfed9a7b5297358430e3e17dfc9aa6ebf48959e750e4985e5d95b76abcc",
+      "bytes": 2629
+    },
+    "prepack-final24.json": {
+      "sha256": "a34ba9e1bbad4d8ce8168332dcb521791a318c2375c317b41f19ef3b43611a6b",
+      "bytes": 302
     },
     "private24.log": {
-      "sha256": "7e26e388a4c9e0f3d39806a3cd01ca8722485cc104e329c2e77041e56d368ce0",
-      "bytes": 1279
+      "sha256": "acfbf85a8866bf39cd6380d17dde645e3f7eb033406fb72b7a0ab4d6dc4aacf9",
+      "bytes": 1270
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
     },
     "installed-20.json": {
-      "sha256": "7e6ccc4c48874dade90afb7edecfe3921dfe977fe107054b530fe7d498f48748",
+      "sha256": "485011f3d788f4740a3a19ddcae4dbfe60f14f404860fd8065b71acc7dacca48",
       "bytes": 5624
     },
     "prepack24.json": {
@@ -79,51 +111,63 @@
       "bytes": 208
     },
     "private22.log": {
-      "sha256": "0fe89f4c81d8dea52fac0439571470b44344314cd6119377edfd299797024ff4",
-      "bytes": 2601
+      "sha256": "f577c98af227c4689b496375cdf8edce795f912d182f2e2e0e0d62875515ec09",
+      "bytes": 2600
     },
     "record.py": {
-      "sha256": "d8df8166495550fea3d2dbc22fb9c95ae8d37f9815ad2df9f5f4912c311a2438",
-      "bytes": 4957
+      "sha256": "27c94936648a27148f8f46cd5bfe3f344cc3d99ce283b4d5c51e85a782a30c17",
+      "bytes": 5167
     },
     "prepack.json": {
       "sha256": "b08e882181d4da6bb9e1d6d669536d54b779fa5a2790b14ef575092d28a1d275",
       "bytes": 299
     },
     "private20.log": {
-      "sha256": "315416d2c58ac7fcf691fbd52d8fbd8226328ba523de338f681f7460668ea3c7",
-      "bytes": 2455
+      "sha256": "423cc088be3d122e5a32016d7aeefaf0903f20c092bdbb8c7817b34bc9e6d162",
+      "bytes": 2453
     },
     "pack.stderr": {
       "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
       "bytes": 208
+    },
+    "source-pin-docs.log": {
+      "sha256": "89a0746adc7f92932d884626714c4229d5b6fa25808b95662352697c094417bf",
+      "bytes": 29174
     },
     "boundaries-selector-failed.log": {
       "sha256": "7c766053a91e920d0689997b4f89a5e984c0329339037fca2a3477bd9559f1f5",
       "bytes": 558
     },
     "installed22.log": {
-      "sha256": "9601d5d321fa8c861d6df39e29848fd5af39f3f96caa3b8ee6e93b681a1e4c0a",
+      "sha256": "d9c8d85aabf722940687d6efbef299046d4513878ee089ccc1d8425d89f1ad07",
       "bytes": 5624
+    },
+    "source-pin-docs-first.log": {
+      "sha256": "89a0746adc7f92932d884626714c4229d5b6fa25808b95662352697c094417bf",
+      "bytes": 29174
     },
     "owning.log": {
       "sha256": "c8be4126b9937e3b768b384a36a77c8308484e5e68c0e4677656d093f131d1d5",
       "bytes": 319419
     },
     "installed-stages-24.json": {
-      "sha256": "898c84776d03743a46471ead3c5bf30fcc372f55c50af1dc654d011e16b227df",
-      "bytes": 1308
+      "sha256": "2f736b651cf70457ec8e463f5fbd425f934b05acf956975bed39544a69450bea",
+      "bytes": 1299
     },
     "installed20.log": {
-      "sha256": "7e6ccc4c48874dade90afb7edecfe3921dfe977fe107054b530fe7d498f48748",
+      "sha256": "485011f3d788f4740a3a19ddcae4dbfe60f14f404860fd8065b71acc7dacca48",
       "bytes": 5624
     },
+    "pin.log": {
+      "sha256": "deefcfb3fd0049891d64a23aff45b119d320fb9c43106eb761ad0339a2e3fa3a",
+      "bytes": 969
+    },
     "installed24.log": {
-      "sha256": "e262624b735380e224e4d2bf66ce1c3f1c8d2eeda158a945522d30547eca5085",
+      "sha256": "6c144f3ad20b174bcc90ad4bc1bcf5724c1ba899d695e7f27b44ffadffa891d8",
       "bytes": 5624
     },
     "browser.json": {
-      "sha256": "794a87d8e3379fb3865b6b1b4a01dfc5475f24c646d259e6d4b6886c1f7a79ec",
+      "sha256": "7af8a5ba1987b3339184526ed7132047ae3ca680e30638f9f12dc6d8c366c198",
       "bytes": 1453
     },
     "focused.log": {
@@ -142,6 +186,7 @@
     "strictTypes": true,
     "browserBundles": 6,
     "actualBrowserMinifiedWorker": true,
+    "readmeCorrection": "First source pin found stale Basic ceiling. README synchronized; same final archive reinstalled on all three Nodes and actual browser.",
     "owning": 1423,
     "focused": 23,
     "boundaries": 37,
