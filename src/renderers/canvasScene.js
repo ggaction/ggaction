@@ -25,6 +25,8 @@ function compile(scene) {
     throw new TypeError('renderTransitionScene requires a version 2 Canvas scene.');
   }
   const objects = { canvas: { type: 'canvas', properties: { width: scene.width, height: scene.height }, children: [] } };
+  // Only locally created groups and wrappers still requiring a snapshot.
+  const pending = [['canvas',objects.canvas]];
   const keys = new Set();
   let index = 0, activeClips = [];
   const groups = [objects.canvas], origins = [[0, 0]];
@@ -60,6 +62,7 @@ function compile(scene) {
         : { type: 'canvas', properties: {
           x: clip[0] - origin[0], y: clip[1] - origin[1], width: clip[2], height: clip[3]
         }, children: [] };
+      pending.push([id,nested]);
       parent.children.push(id); groups.push(nested); origins.push(pathClip ? origin : [clip[0], clip[1]]);
     }
     activeClips = clips;
@@ -67,10 +70,16 @@ function compile(scene) {
     const id = `node-${index++}`;
     const object = { type: node.type, properties: position(node.properties,
       node.offset[0] - origin[0], node.offset[1] - origin[1]) };
-    objects[id] = isOwned(object.properties) ? freezeOwned(object) : object;
+    if(isOwned(object.properties))objects[id]=freezeOwned(object);
+    else {objects[id]=object;pending.push([id,object]);}
     group.children.push(id);
   }
-  return { graphicSpec: { objects, order: ['canvas'] } };
+  // Preserve insertion/error order after every node has passed validation.
+  for(const [id,object] of pending){
+    if(Object.hasOwn(object,'children'))freezeOwned(object.children);
+    objects[id]=cloneAndFreeze(object,undefined,'state.graphicSpec.objects.'+id);
+  }
+  return freezeOwned({graphicSpec:freezeOwned({objects:freezeOwned(objects),order:freezeOwned(['canvas'])})});
 }
 
 function snapshotSignature(scene) {
