@@ -431,6 +431,42 @@
     "record.py": {
       "sha256": "98173c9e730775069478131c35a0e107495252523511ba39de7296b9ddcede4c",
       "bytes": 4029
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "61fb9e7d283c6f75166366e134db07e8770caa8849baa5e634f7cf16515c0340",
+      "bytes": 1814
+    },
+    "source-pin-pack.json": {
+      "sha256": "6e08b066593ce933ce62fa9c3314734e276f0dfe606e4bfc13453b69b5c6ab42",
+      "bytes": 388
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
+  },
+  "sourceRevision": "4e7de7b9e92f963553783062a4b38922a6cd19c0",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
   }
 }
