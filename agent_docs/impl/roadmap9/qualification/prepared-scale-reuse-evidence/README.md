@@ -13,7 +13,7 @@
 - `boundaries-final`: type/package/source/test-discovery45개. `positions`14개와 공개 Full/Basic
   default/v4 replay2개는 더 좁은 진단이며757에 중복 포함된다.
 - `docs`: 최초244/245와 provenance stale1건을 보존한다. Canonical provenance/LLM generator
-  뒤 `docs-provenance`18개로 수리했다. Source commit 후 pin 근거는 별도 final 기록에 추가한다.
+  뒤 `docs-provenance`18개로 수리했다. Source f689244fc pin 후 `source-pin-docs`18개와 `package-final`의 byte-identical archive를 추가했다.
 - 동일 archive는 `package.json`의 SHA256 `ebaf0bbb…`다. Node20/22/24 모두 source-free
   public cases(새2+기존 animation), strict types, animation7 snippets, peers를 통과했다.
 - Node20/24는 animation gzip339677이 옛339400을 넘어 마지막 budget guard만 실패했다.

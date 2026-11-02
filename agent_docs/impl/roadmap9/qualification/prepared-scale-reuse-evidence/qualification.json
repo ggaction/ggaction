@@ -1,5 +1,5 @@
 {
-  "status": "verified-body-awaiting-source-pin",
+  "status": "verified",
   "base": "d6dece68e807150a6523350f240b4d451f410139",
   "reviewCheckpoint": "1234c719b13bc04d6957e2cda0a5975229c38275",
   "adopted": "2026-11-02 root; AUTHORIZATION.json#remainingApproval; prepared-only b-prime",
@@ -45,7 +45,8 @@
     "initialFailed": 1,
     "initialFailure": "provenance stale",
     "repairedFocused": 18,
-    "sourcePinPending": true
+    "sourcePinPending": false,
+    "pinnedFocusedPassed": 18
   },
   "archive": {
     "name": "ggaction",
@@ -119,5 +120,7 @@
   },
   "newPublicAPIs": 0,
   "schemaAndKernelChanges": 0,
-  "coreRendererMaterializationChanges": 0
+  "coreRendererMaterializationChanges": 0,
+  "sourceCommit": "f689244fc4369d3cd949ca2d6c11998480972d55",
+  "archiveAfterSourcePinByteIdentical": true
 }

@@ -1,6 +1,6 @@
 # Prepared point scale 재사용
 
-진행 상태: 제품 본문 검증 완료, commit 이후 source pin 검증 예정. Root가 2026-11-02
+진행 상태: 이 개념 checkpoint 검증 완료. Runtime source `f689244fc`를 문서 provenance에 고정했다. Root가 2026-11-02
 [frame-sampling.md](frame-sampling.md)의 대안(b′)를 기존
 [AUTHORIZATION.json](../AUTHORIZATION.json)의 `remainingApproval` 범위로 명시 채택했다.
 감사 checkpoint는 `1234c719b`, 제품 기준은 root `d6dece68e`다.
@@ -63,3 +63,6 @@ Production-minified 설치본 browser는 root source input0, v3/v4, DPR1/2에서
 
 원 harness/receipt/log/판정 입력은 [증거 폴더](prepared-scale-reuse-evidence/README.md)에 있다.
 Source pin 완료 뒤에도 원50ms sample 의무와 다음 local-freeze/기존 scalar mapper 후보는 남는다.
+
+Source pin 후 focused docs18/18 및 재포장 SHA `ebaf0bbb…` 완전동일을 확인했다.
+뒤 metadata commit은 runtime/type 변경0이며 위 원100k·동일 archive3Node 근거를 재사용한다.
