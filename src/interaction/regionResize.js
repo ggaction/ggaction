@@ -59,7 +59,7 @@ function publicHandles(context, projected, spend) {
   return cloneAndFreeze(result);
 }
 
-export function prepareResizeHandles(program, binding, base, scene, rootTransform, displayed = base, account) {
+export function prepareResizeHandles(program, binding, base, scene, rootTransform, displayed = base, account, hitPreparation) {
   const spend = handleWork(account);
   const owner = resolveResizeBinding(program, binding, true);
   if (!owner || owner.resolved.selector.region === undefined) return null;
@@ -74,14 +74,14 @@ export function prepareResizeHandles(program, binding, base, scene, rootTransfor
   const projected = projectSelectionHandles(input, spend);
   if (projected === null) return null;
   const collection = programHitOwnerCollection(base, owner.target);
-  prepareRegionEntries(program, owner, base, scene, rootTransform, displayed, true, spend);
+  prepareRegionEntries(program, owner, base, scene, rootTransform, displayed, true, spend, hitPreparation);
   const context = { binding, owner, bounds, scales, polarFrame, coordinates, placement, collection, input, projected };
   const handles = publicHandles(context, projected, spend);
   return freezeOwned({ ...context, handles });
 }
 
-export function prepareResizeGesture(program, binding, base, scene, rootTransform, point, displayed, pointerType = "mouse") {
-  const context = prepareResizeHandles(program, binding, base, scene, rootTransform, displayed);
+export function prepareResizeGesture(program, binding, base, scene, rootTransform, point, displayed, pointerType = "mouse", hitPreparation) {
+  const context = prepareResizeHandles(program, binding, base, scene, rootTransform, displayed, undefined, hitPreparation);
   if (context === null) return null;
   const query = normalizeHitQuery({ pointerType, ...(binding.slop === undefined ? {} : { slop: binding.slop }) });
   let selected, distance = Infinity, ambiguous = false;

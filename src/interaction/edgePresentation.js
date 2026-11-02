@@ -19,7 +19,7 @@ export function normalizeEdgePresentation(program, input) {
   return cloneAndFreeze({ type: "unbundleEdge", target: owner.target, itemKey: request.itemKey });
 }
 
-export function prepareEdgePresentation(program, command, displayed) {
+export function prepareEdgePresentation(program, command, displayed, hitPreparation) {
   const owner = interactionOwner(program, command.target), layer = requireLayer(owner.view, command.target.id);
   const { graph, layout } = resolveGraphLayerResources(owner.view, layer);
   let work = 0; const spend = count => validateWorkLimit(work += count, "Edge presentation work");
@@ -36,7 +36,7 @@ export function prepareEdgePresentation(program, command, displayed) {
   if (animated === undefined) {
     const sample = readNativeGraphPresentation(program);
     requireAnimationFrameProgram(sample, program);
-    const native = prepareAnimationHitFrame(sample);
+    const native = prepareAnimationHitFrame(sample, undefined, undefined, hitPreparation);
     const before = JSON.stringify(native.scene), current = JSON.stringify(displayed.scene);
     spend(before.length + current.length);
     if (before !== current) throw new Error("Edge presentation requires native or authentic current graph geometry.");

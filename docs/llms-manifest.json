@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:dec0e73db66c4c5a1058a12375254cd14af327cdaa248644390093ed58ae9b16",
-    "sourceCommit": "0b86ddebd41788295a8836ff4546f0cd4cba8154",
+    "contractId": "sha256:64a3ccd3ecbeefe6a4dc4ead0058662a61d8d53e59049fee1fc3c41cad7e34e0",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "5eb45a640f37c601e1bced258a7f0d983cc0c48220f8623f4918090aa1e22dcf"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1312,6 +1312,7 @@
       "headings": [
         "inspect-chart-items",
         "create-and-mount",
+        "bound-hit-preparation",
         "resize-a-selection-or-reorder-categories",
         "observe-the-mounted-surface-size",
         "prepare-assets-before-committing",
@@ -1343,8 +1344,8 @@
         "native-control-alternatives",
         "inspect-overlapping-graph-edges"
       ],
-      "bytes": 113124,
-      "sha256": "df209b4b759f0acf198d080974ade9d1c48a3349797996b06b26adfa1ed37575"
+      "bytes": 114842,
+      "sha256": "7a5e82b27397079fe257afc9f6b706e86fd66f384c283bd81bc38cc9815e727a"
     },
     {
       "order": 78,
@@ -2651,8 +2652,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 88351,
-      "sha256": "423c3c0d62bec172083ed094b5eb89a67ee2bb40580388c7059c25bd2be650df"
+      "bytes": 88802,
+      "sha256": "080d3604bf8e53f5d65700150f026004978add0aee8cf8adb38a3984acab16f7"
     },
     {
       "order": 132,
@@ -3625,8 +3626,8 @@
         "stored-selection-resources-and-concrete-identity",
         "blend-concrete-sources-for-one-item"
       ],
-      "bytes": 23271,
-      "sha256": "670f5767eb0223cf3fc76ed0f7dbdcb789c3cfe1ea27d156aa7708e7ade8ef35"
+      "bytes": 23199,
+      "sha256": "08921ada167ca38b8b5a6dfe5b1ae686f7463adc91b6a67d6e6692ae73d97b86"
     },
     {
       "order": 135,
@@ -3966,8 +3967,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "bf3588e74fae15888784e7db473e23c102870d55947c497f9aa2ab23f5f8ccf1"
+      "bytes": 3000,
+      "sha256": "867de0c0bd84d5e4cd583f266ee5ddf5e41d1c61833c5294515b747c3aa31c83"
     },
     {
       "order": 156,

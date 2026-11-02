@@ -8,7 +8,7 @@ import { freezeOwned, cloneAndFreeze } from "../core/immutable.js";
 import { canvasSceneSnapshot } from "../sceneSnapshot.js";
 import { namespaceGraphicId } from "../selectors/graphicCapacity.js";
 import { validateGraphicIdentity, namespaceItemKey } from "../grammar/schemas/graphicIdentity.js";
-import { MAX_HIT_INDEX_ITEMS, MAX_HIT_INDEX_WORK } from "../grammar/hitIndex.js";
+import { MAX_HIT_INDEX_ITEMS, normalizeHitPreparation } from "../grammar/hitPolicy.js";
 import { hitShapeWork } from "../grammar/hitShapes.js";
 import { prepareConcreteHitShape } from "./hitConcrete.js";
 import { guideHitMetadata, guideHitItemKey } from "./hitGuides.js";
@@ -30,7 +30,7 @@ export function requireProgram(program) {
 
 function spend(budget, count = 1) {
   budget.work += count;
-  if (budget.work > MAX_HIT_INDEX_WORK) throw new RangeError("Hit program exceeds its preparation work budget.");
+  if (budget.work > budget.limit) throw new RangeError("Hit program exceeds its preparation work budget.");
 }
 function contexts(program, budget) {
   const result = new Map();
@@ -127,18 +127,21 @@ function geoSourceResolver(budget) {
 }
 
 /** Bind existing concrete item identities to the exact scene; no rematerialization. */
-export function prepareProgramHitFrame(program, version = 0, budget = { work: 0 }) {
+export function prepareProgramHitFrame(program, version = 0, budget, options) {
+  const policy = normalizeHitPreparation(options);
+  budget ??= { work: 0 };
+  budget.limit = policy.maxWork;
   requireProgram(program);
   if (!Number.isSafeInteger(version) || version < 0) throw new TypeError("Hit frame version must be a non-negative safe integer.");
   const initialWork = budget.work;
   let count = 0;
   for (const object of Object.values(program.graphicSpec.objects)) {
     count += object.items?.length ?? 1;
-    if (count > MAX_HIT_INDEX_ITEMS) throw new RangeError("Hit program exceeds its item budget.");
+    if (count > policy.maxSceneNodes) throw new RangeError("Hit program exceeds its item budget.");
   }
   const owners = contexts(program, budget);
   const snapshot = canvasSceneSnapshot(program);
-  if (snapshot.scene.nodes.length > MAX_HIT_INDEX_ITEMS) throw new RangeError("Hit program exceeds its item budget.");
+  if (snapshot.scene.nodes.length > policy.maxSceneNodes) throw new RangeError("Hit program exceeds its item budget.");
   const identities = new Map();
   for (const object of Object.values(program.graphicSpec.objects)) {
     for (const item of object.items ?? []) if (item.identity !== undefined) identities.set(item.id, item.identity);
@@ -175,7 +178,7 @@ export function prepareProgramHitFrame(program, version = 0, budget = { work: 0 
     const context = owners.get(collection.graphicId);
     if (context) collections.set(JSON.stringify([context.childPath, context.localId]), collection);
   }
-  registerHitFrameSource(frame, { profiles, placements, collections, work: budget.work - initialWork, nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
+  registerHitFrameSource(frame, { profiles, placements, collections, nodeCount: count, work: budget.work - initialWork, nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
   return frame;
 }
 
@@ -199,13 +202,14 @@ export function programHitOwnerCollection(base, target) {
 }
 
 /** Bind a sampled concrete frame only to the exact program's known node identities. */
-export function rebindProgramHitFrame(base, scene, version, rootTransform = [1, 0, 0, 1, 0, 0]) {
+export function rebindProgramHitFrame(base, scene, version, rootTransform = [1, 0, 0, 1, 0, 0], options) {
+  const policy = normalizeHitPreparation(options);
   const source = hitFrameSource(base);
   if (source === undefined) throw new TypeError("Frame binding requires an authentic program hit frame.");
   if (!Number.isSafeInteger(version) || version < 0) throw new TypeError("Hit frame version must be a non-negative safe integer.");
   transformHitPoint(rootTransform, { x: 0, y: 0 });
-  const owned = ownHitScene(scene), metadata = new Map(base.entries.map(entry => [entry.nodeKey, entry.metadata]));
-  const entries = [], budget = { work: 0 };
+  const owned = ownHitScene(scene, policy), metadata = new Map(base.entries.map(entry => [entry.nodeKey, entry.metadata]));
+  const entries = [], budget = { work: 0, limit: policy.maxWork };
   owned.nodes.forEach((node, zIndex) => {
     const original = source.nodes.get(node.key);
     if (original === undefined || original.type !== node.type || original.topology !== node.topology) {
@@ -238,22 +242,27 @@ export function currentAnimationGraphFrame(frame, program) {
   return proof.graphs === undefined ? undefined : { sample: source.sample, graphs: proof.graphs };
 }
 
-export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1, 0, 0, 1, 0, 0]) {
+export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1, 0, 0, 1, 0, 0], options) {
+  const policy = normalizeHitPreparation(options);
   const proof = animationFrameProvenance(sample);
   if (proof === undefined) throw new TypeError("Animation hit requires an authentic sampled frame.");
   if (!Number.isSafeInteger(version) || version < 0) throw new TypeError("Hit frame version must be a non-negative safe integer.");
   if (proof.native === undefined) throw new TypeError("Animation hit requires native endpoint metadata.");
   transformHitPoint(rootTransform, { x: 0, y: 0 });
-  const budget = { work: 0 }, entries = [], profiles = new Map(), counted = new Set(), geographicSources = new Map();
+  if (sample.scene.nodes.length > policy.maxSceneNodes) throw new RangeError("Hit program exceeds its item budget.");
+  const budget = { work: 0, limit: policy.maxWork }, entries = [], profiles = new Map(), counted = new Set(), geographicSources = new Map();
   spend(budget, proof.native.owners.length);
   const authorized = new Set(proof.native.owners), geoSource = geoSourceResolver(budget);
   const baseFor = program => {
     let value = nativeBases.get(program);
     if (value === undefined) {
-      const base = prepareProgramHitFrame(program, 0, budget);
+      const base = prepareProgramHitFrame(program, 0, budget, policy);
       value = { base, source: hitFrameSource(base), entries: new Map(base.entries.map(entry => [entry.nodeKey, entry.metadata])) };
       nativeBases.set(program, value);
-    } else if (!counted.has(program)) spend(budget, value.source.work);
+    } else {
+      if (Math.max(value.source.nodeCount, value.base.scene.nodes.length) > policy.maxSceneNodes) throw new RangeError("Hit program exceeds its item budget.");
+      if (!counted.has(program)) spend(budget, value.source.work);
+    }
     counted.add(program);
     return value;
   };

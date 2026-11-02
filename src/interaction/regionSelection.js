@@ -69,11 +69,11 @@ export function resolveRegionBinding(program, binding, allowMissing = false) {
   return owner;
 }
 
-export function prepareRegionEntries(program, owner, base, scene, rootTransform, displayed, strict, account = () => {}) {
+export function prepareRegionEntries(program, owner, base, scene, rootTransform, displayed, strict, account = () => {}, hitPreparation) {
   let work = 0;
   const spend = count => { validateWorkLimit(work += count, "Region gesture work"); account(count); };
   const allowed = new Set(scopeSelectionKeys(program, owner.target, owner.resolved.items.filter(item => item.visible !== false).map(item => item.key), spend));
-  const frame = rebindProgramHitFrame(displayed, scene, displayed.version, rootTransform);
+  const frame = rebindProgramHitFrame(displayed, scene, displayed.version, rootTransform, hitPreparation);
   const selectedEntries = frame.entries.filter(entry => entry.metadata.ownerId === owner.target.id && samePath(entry.metadata.childPath, owner.target.childPath) && allowed.has(entry.metadata.itemKey));
   if (strict) {
     // Stored scale inversion cannot infer an arbitrary sampled animation's scale.
@@ -89,7 +89,7 @@ export function prepareRegionEntries(program, owner, base, scene, rootTransform,
   return { selectedEntries, spend };
 }
 
-export function prepareRegionGesture(program, binding, base, scene, rootTransform, start, displayed = base) {
+export function prepareRegionGesture(program, binding, base, scene, rootTransform, start, displayed = base, hitPreparation) {
   const owner = resolveRegionBinding(program, binding, true);
   if (!owner) return null;
   const placement = programHitOwnerPlacement(base, owner.target.childPath), offset = placement.offset;
@@ -100,7 +100,7 @@ export function prepareRegionGesture(program, binding, base, scene, rootTransfor
   const polarFrame = binding.channels?.theta === undefined ? undefined : resolveCoordinatePolarFrame(owner.view, layer.coordinate);
   if (polarFrame !== undefined && (polarThetaAtPoint(localStart, polarFrame) === null || polarFrame.availableRadius === 0 ||
     Math.hypot(localStart.x - polarFrame.centerX, localStart.y - polarFrame.centerY) > polarFrame.availableRadius)) return null;
-  const { selectedEntries, spend } = prepareRegionEntries(program, owner, base, scene, rootTransform, displayed, binding.type === "brush"), items = new Map();
+  const { selectedEntries, spend } = prepareRegionEntries(program, owner, base, scene, rootTransform, displayed, binding.type === "brush", undefined, hitPreparation), items = new Map();
   if (binding.type !== "brush") {
     for (const entry of selectedEntries) {
       spend(1); const b = entry.shape.bounds;

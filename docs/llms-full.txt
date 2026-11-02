@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:dec0e73db66c4c5a1058a12375254cd14af327cdaa248644390093ed58ae9b16. Status: development. Runtime source: 0b86ddebd41788295a8836ff4546f0cd4cba8154. Release baseline: v0.0.13.
+Contract: sha256:64a3ccd3ecbeefe6a4dc4ead0058662a61d8d53e59049fee1fc3c41cad7e34e0. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/0b86ddebd41788295a8836ff4546f0cd4cba8154/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/0b86ddebd41788295a8836ff4546f0cd4cba8154/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11695,6 +11695,39 @@ rectangle once. Device pixel ratio is never multiplied into hit coordinates.
 Slop remains in CSS pixels under scale or rotation. Use matching logical dimensions
 for the rendered chart and surface when no root matrix is supplied.
 
+## Bound hit preparation
+
+Large native scenes can opt into a larger preparation allowance for one session:
+
+> **Executable complete.** Run the complete ES module with public imports. The explicit preparation allowance belongs only to this immutable program session.
+
+```javascript
+import { chart } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+const program = chart().createCanvas({ width: 400, height: 400 })
+  .createData({ values: [{ x: 1, y: 2 }] })
+  .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "y" });
+const session = createInteractionSession({ program, bindings: [],
+  hitPreparation: { maxSceneNodes: 100001, maxWork: 128000000 }
+});
+console.log(session.getState().scene.nodes.length);
+session.destroy();
+```
+
+The defaults are 100,000 scene nodes and 10,000,000 work units for each of native
+binding and spatial indexing. Omitted or `undefined` fields keep those defaults.
+`maxSceneNodes` accepts safe integers from 1 to 200,000; `maxWork` accepts 1 to
+128,000,000. Backgrounds and nested children count toward the same scene limit.
+The policy stays fixed for that session through mounting, edits, history and
+current-frame replacement. Invalid or over-budget candidates leave the accepted
+program and picture intact.
+
+This option keeps the separate 100,000 hit-entry and 2,000,000 query-work limits,
+along with existing snapshot, selection and animation limits. Increasing preparation
+allows more bounded work; it does not promise a frame rate or reduce memory usage.
+For 100,000 authored points, the mark also needs its explicit `maxItems: 100000`
+capacity, and a background requires an additional scene node.
+
 ## Resize a selection or reorder categories
 
 Use a `resize` binding to edit an existing region selection, or a `reorder` binding
@@ -12009,8 +12042,8 @@ Mounting another element removes the old listeners. Unmount is idempotent.
 work; it returns true once and false thereafter. Terminal state remains readable;
 mutating session methods reject further work.
 
-Preparation is limited to 100,000 scene nodes and 10,000,000 work units; queries
-are limited to 2,000,000 units. Work includes geometry, metadata and guide sample
+Preparation uses the session's [hit preparation limits](./api/interaction/#bound-hit-preparation);
+queries remain limited to 2,000,000 units. Work includes geometry, metadata and guide sample
 comparisons. The session does not persist host objects or hover state. Keyboard navigation and asset loading are not editing commands; the optional resolver prepares assets before accepting a candidate. PNG/PDF exports remain static.
 
 ## Commit selections and parameters
@@ -38509,6 +38542,14 @@ export interface InteractionSession {
 }
 export declare function createInteractionSession(options: {
   readonly program: InteractionProgram;
+  /** Session-local preparation only. Omitted/undefined fields retain the defaults.
+   * Entry, query, snapshot, selection and animation limits are unchanged. */
+  readonly hitPreparation?: {
+    /** Safe integer 1..200000. Default 100000, including background and nested nodes. */
+    readonly maxSceneNodes?: number;
+    /** Safe integer 1..128000000. Default 10000000, independently for binding and indexing. */
+    readonly maxWork?: number;
+  };
   /** Explicit host preparation. Candidate state commits only after this lease is ready. */
   readonly assetResolver?: (request: InteractionAssetRequest) => InteractionAssetLease | Promise<InteractionAssetLease>;
   /** Integer 0..10000, default 100. Zero disables undo/redo, but preserves the initial reset baseline. */
@@ -53421,12 +53462,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0b86ddebd41788295a8836ff4546f0cd4cba8154/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0b86ddebd41788295a8836ff4546f0cd4cba8154/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -56553,9 +56594,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:dec0e73db66c4c5a1058a12375254cd14af327cdaa248644390093ed58ae9b16` |
+| Contract fingerprint | `sha256:64a3ccd3ecbeefe6a4dc4ead0058662a61d8d53e59049fee1fc3c41cad7e34e0` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
-| Runtime source commit | `0b86ddebd41788295a8836ff4546f0cd4cba8154` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 379 |
 | Declared actions in that release | 234 |

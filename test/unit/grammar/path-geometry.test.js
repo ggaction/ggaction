@@ -1,11 +1,83 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { flattenPathCommands, pathFillContains, pathStrokeDistance, segmentDistance, arcToCubicCommands, resolvePathCommandBounds } from "../../../src/grammar/pathGeometry.js";
+import { flattenPathCommands, calculateFlattenedPathCommands, flattenVariableWidthPath, pathFillContains, pathStrokeDistance, segmentDistance, arcToCubicCommands, calculateArcCubicCommands, resolvePathCommandBounds } from "../../../src/grammar/pathGeometry.js";
+import { isOwned } from "../../../src/core/immutable.js";
 import { outerCommands, holeCommands, reversedHoleCommands, islandCommands, cubicCommands } from "../../../examples/compound-path/coordinates.js";
 import { resolvePrimitiveGraphicBounds } from "../../../src/grammar/schemas/graphicBounds.js";
 
 const curvePoint = t => ({x:30*t*t-20*t*t*t,y:30*t*(1-t)});
 const distance = (p, points) => Math.min(...points.slice(1).map((b,i)=>segmentDistance(p,points[i],b)));
+
+function assertOwnedTree(value) {
+  if (value === null || typeof value !== "object") return;
+  assert.ok(Object.isFrozen(value)); assert.ok(isOwned(value));
+  Object.values(value).forEach(assertOwnedTree);
+}
+
+test("private path calculations isolate inputs while normal and variable-width results stay deeply owned", () => {
+  const commands = [{ op: "M", x: 0, y: -0 }, { op: "L", x: 2, y: 0 }, { op: "L", x: 2, y: 3 }, { op: "Z" }];
+  const transform = [2, 0, 0, 3, 5, 7], options = { transform };
+  const expected = { subpaths: [{ closed: true, hasSegments: true, points: [{ x: 5, y: 7 }, { x: 9, y: 7 }, { x: 9, y: 16 }, { x: 5, y: 7 }] }], diagnostics: [] };
+  const raw = calculateFlattenedPathCommands(commands, options), owned = flattenPathCommands(commands, options);
+  assert.deepEqual(raw, expected); assert.deepEqual(owned, expected); assertOwnedTree(owned);
+  assert.equal(isOwned(raw), false); assert.equal(isOwned(raw.subpaths[0].points[0]), false);
+  const widths = [{ op: "M", x: 0, y: 2 }, { op: "L", x: 2, y: 4 }, { op: "L", x: 2, y: 6 }, { op: "Z" }];
+  const variable = flattenVariableWidthPath(commands, widths, options);
+  assert.deepEqual(variable.subpaths[0].points.map(point => point.width), [2, 4, 6, 2]); assertOwnedTree(variable);
+  commands[0].x = 100; transform[4] = 100; widths[0].y = 100;
+  assert.deepEqual(raw, expected); assert.deepEqual(owned, expected);
+  assert.equal(variable.subpaths[0].points[0].width, 2);
+  raw.subpaths[0].points[0].x = 200;
+  assert.deepEqual(owned, expected); assert.equal(variable.subpaths[0].points[0].x, 5);
+  assert.throws(() => { owned.subpaths[0].points[0].x = 200; }, TypeError);
+});
+
+test("raw and owned path calculations retain exact abort diagnostics and closed numeric guards", () => {
+  const line = [{ op: "M", x: 0, y: 0 }, { op: "L", x: 1, y: 1 }];
+  const expected = { subpaths: [], diagnostics: [{ code: "path-point-limit", limit: 1, commandIndex: 1 }] };
+  assert.deepEqual(calculateFlattenedPathCommands(line, { maxPoints: 1 }), expected);
+  const owned = flattenPathCommands(line, { maxPoints: 1 }); assert.deepEqual(owned, expected); assertOwnedTree(owned);
+  for (const calculate of [calculateFlattenedPathCommands, flattenPathCommands]) {
+    for (const options of [{ tolerance: 0 }, { maxDepth: 21 }, { maxPoints: 0 }, { maxPoints: 1000001 }, { transform: [1, 0] }]) assert.throws(() => calculate(line, options));
+    assert.throws(() => calculate([{ op: "L", x: 0, y: 0 }]), /requires M/);
+    assert.throws(() => calculate([{ op: "M", x: Infinity, y: 0 }]), /finite/);
+  }
+  const input = { centerX: 2, centerY: 3, radiusX: 5, startAngle: 0, endAngle: 0 };
+  const rawArc = calculateArcCubicCommands(input), arc = arcToCubicCommands(input);
+  assert.deepEqual(rawArc, { commands: [{ op: "M", x: 7, y: 3 }], diagnostics: [] });
+  assert.deepEqual(rawArc, arc); assertOwnedTree(arc); assert.equal(isOwned(rawArc.commands[0]), false);
+  input.centerX = 99; rawArc.commands[0].x = 99; assert.equal(arc.commands[0].x, 7);
+  const incomplete = { ...input, endAngle: Math.PI, maxDepth: 0 };
+  assert.deepEqual(calculateArcCubicCommands(incomplete), arcToCubicCommands(incomplete)); assertOwnedTree(arcToCubicCommands(incomplete));
+  for (const calculate of [calculateArcCubicCommands, arcToCubicCommands]) {
+    for (const change of [{ radiusX: 0 }, { radiusY: -1 }, { endAngle: Infinity }, { endAngle: 1e10 }, { tolerance: 0 }]) assert.throws(() => calculate({ ...input, ...change }));
+  }
+});
+
+test("raw and owned curve calculations retain extreme bounds, exact subdivision and overflow rejection", () => {
+  const magnitude = 2 ** 1023;
+  const commands = [{ op: "M", x: -magnitude, y: 0 },
+    { op: "C", x1: magnitude, y1: 0, x2: magnitude, y2: 0, x: -magnitude, y: 0 }];
+  assert.deepEqual(resolvePathCommandBounds(commands), { left: -magnitude, right: magnitude / 2, top: 0, bottom: 0 });
+  const expected = { subpaths: [{ closed: false, hasSegments: true,
+    points: [{ x: -1, y: 0 }, { x: 0.5, y: 0 }, { x: -1, y: 0 }] }], diagnostics: [] };
+  const options = { transform: [2 ** -1023, 0, 0, 1, 0, 0] };
+  for (const calculate of [calculateFlattenedPathCommands, flattenPathCommands]) {
+    assert.deepEqual(calculate(commands, options), expected);
+    const limited = calculate(cubicCommands, { maxDepth: 1 });
+    assert.deepEqual(limited.subpaths[0].points, [{ x: 0, y: 0 }, { x: 5, y: 7.5 }, { x: 10, y: 0 }]);
+    assert.deepEqual(limited.diagnostics.map(item => item.code), ["path-subdivision-limit", "path-subdivision-limit"]);
+    assert.throws(() => calculate(commands, { transform: [2, 0, 0, 1, 0, 0] }), /coordinates must be finite/);
+    assert.throws(() => calculate([{ op: "M", x: -Number.MAX_VALUE, y: 0 },
+      { op: "C", x1: 0, y1: 1, x2: 0, y2: 1, x: Number.MAX_VALUE, y: 0 }]), /distance is not finite/);
+  }
+  assertOwnedTree(flattenPathCommands(commands, options));
+  for (const calculate of [calculateArcCubicCommands, arcToCubicCommands]) {
+    assert.throws(() => calculate({ centerX: 1.7e308, centerY: 0, radiusX: 1e308,
+      startAngle: 0, endAngle: Math.PI / 2 }), /coordinates must be finite/);
+  }
+});
+
 test("adaptive subdivision bounds cubic error in scene CSS pixels",()=>{
   const coarse=flattenPathCommands(cubicCommands),fine=flattenPathCommands(cubicCommands,{tolerance:0.01});
   assert.deepEqual(coarse.diagnostics,[]);assert.ok(fine.subpaths[0].points.length>coarse.subpaths[0].points.length);

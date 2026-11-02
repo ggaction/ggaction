@@ -1,3 +1,4 @@
+import { normalizeHitPreparation } from "../grammar/hitPolicy.js";
 import { validateWorkLimit } from "../core/validation.js";
 import { normalizeEdgePresentation, prepareEdgePresentation } from "./edgePresentation.js";
 import { normalizeKeyboardBinding, prepareKeyboardFrame, reconcileKeyboardFocus, normalizeFocusCommand, moveKeyboardFocus, keyboardActivation, keyboardKeyCommand } from "./keyboardFocus.js";
@@ -87,11 +88,17 @@ const emptyHit = (frameVersion, diagnostics) => cloneAndFreeze({ target: null, c
 
 /** Browser-safe inspection and atomic authoring command lifecycle. */
 export function createInteractionSession(input) {
-  const request = options(input, ["program"], ["bindings", "selectionPolicy", "historyLimit", "assetResolver"], "Interaction session");
+  const request = options(input, ["program"], ["bindings", "selectionPolicy", "historyLimit", "assetResolver", "hitPreparation"], "Interaction session");
+  const hitPreparation = normalizeHitPreparation(request.hitPreparation);
+  const programFrame = (program, version) => prepareProgramHitFrame(program, version, undefined, hitPreparation);
+  const rebindFrame = (base, scene, version, transform) => rebindProgramHitFrame(base, scene, version, transform, hitPreparation);
+  const sampledHitFrame = (sample, version, transform) => prepareAnimationHitFrame(sample, version, transform, hitPreparation);
+  const frameBridge = frame => createHitFrameBridge(frame, hitPreparation);
+  const ownScene = scene => ownHitScene(scene, hitPreparation);
   const configured = bindings(request.program, request.bindings), selectionPolicy = normalizeSelectionPolicy(request.selectionPolicy);
   const hasMoving = configured.pointers.some(({ binding }) => ["moveNode", "annotate", "navigate", "reorder"].includes(binding.type));
   const managedSelections = configured.linked.filter(link => !link.filter);
-  let program = request.program, base = prepareProgramHitFrame(program), bridge = createHitFrameBridge(base), displayed = base;
+  let program = request.program, base = programFrame(program), bridge = frameBridge(base), displayed = base;
   const keyboardFrames = new WeakMap();
   const keyboardFrameFor = (current, frame) => {
     if (configured.keyboard === null) return null;
@@ -194,7 +201,7 @@ export function createInteractionSession(input) {
     if (token === null) return false;
     let frame;
     if (restore) {
-      frame = rebindProgramHitFrame(token.baseline, token.baseline.scene, nextInteger(bridge.getState().version), rootTransform);
+      frame = rebindFrame(token.baseline, token.baseline.scene, nextInteger(bridge.getState().version), rootTransform);
       keyboardFrameFor(program, frame);
     }
     edgePresentation = null; previewFrame = null;
@@ -211,16 +218,16 @@ export function createInteractionSession(input) {
     }
     if (edgePresentation === null && (previewProgram !== null || previewFrame !== null)) throw new Error("Edge presentation requires the editing preview to finish or cancel first.");
     const baseline = edgePresentation?.baseline ?? displayed;
-    const sample = prepareEdgePresentation(program, command, baseline);
-    const initial = prepareAnimationHitFrame(sample, nextInteger(bridge.getState().version), rootTransform);
-    keyboardFrameFor(program, initial); const checked = createHitFrameBridge(initial); checked.dispose();
+    const sample = prepareEdgePresentation(program, command, baseline, hitPreparation);
+    const initial = sampledHitFrame(sample, nextInteger(bridge.getState().version), rootTransform);
+    keyboardFrameFor(program, initial); const checked = frameBridge(initial); checked.dispose();
     mounted?.capture?.cancel("updateProgram"); preparation.cancel("presentation"); cancelFramePreparation("presentation");
     const previous = program, sessionGeneration = generation, baseRevision = revision;
     const token = { baseline, inspection: edgePresentation === null
       ? (lastHit?.frameVersion === bridge.getState().version ? lastInspection : null) : edgePresentation.inspection, target: command.target };
     edgePresentation = token;
     const accept = () => {
-      const frame = prepareAnimationHitFrame(sample, nextInteger(bridge.getState().version), rootTransform);
+      const frame = sampledHitFrame(sample, nextInteger(bridge.getState().version), rootTransform);
       keyboardFrameFor(program, frame);
       return () => { previewFrame = sample; setFrame(frame); lastHit = null; publish("unbundleEdge", { target: command.target, itemKey: command.itemKey }); return outcome("applied"); };
     };
@@ -238,7 +245,7 @@ export function createInteractionSession(input) {
   // Candidate index and keyboard models are prepared before a renderer lease can
   // be published. The actual swap has no fallible geometry work or host callback.
   const prepareFramePublication = (frame, sample) => {
-    const model = keyboardFrameFor(program, frame), candidate = createHitFrameBridge(frame);
+    const model = keyboardFrameFor(program, frame), candidate = frameBridge(frame);
     return () => {
       const previous = bridge; bridge = candidate; displayed = frame; animationFrame = sample;
       adoptKeyboardFrame(model); lastHit = null; previous.dispose();
@@ -267,8 +274,8 @@ export function createInteractionSession(input) {
     const reconciled = reconcileSelections(prepared.program, prepared.records, selectionPolicy, { verify: true });
     const selectionChanges = [...initial.changes, ...prepared.selectionChanges, ...reconciled.changes];
     const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
-    const candidate = prepareProgramHitFrame(prepared.program, version);
-    const frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
+    const candidate = programFrame(prepared.program, version);
+    const frame = rebindFrame(candidate, candidate.scene, version, rootTransform);
     keyboardFrameFor(prepared.program, frame);
     const resourceRevisions = preparation.enabled ? interactionResourceRevisions(prepared.program) : undefined;
     return { prepared, reconciled, selectionChanges, nextGeneration, nextRevision, candidate, frame, resourceRevisions };
@@ -297,12 +304,12 @@ export function createInteractionSession(input) {
     const prepareCommit = () => {
       // Host mount/frame changes while assets load do not invalidate an immutable
       // candidate. Rebind its concrete geometry to the current host transform.
-      frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+      frame = rebindFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
       keyboardFrameFor(prepared.program, frame);
       return () => {
         clearEdgePresentation();
         mounted?.capture?.cancel("updateProgram"); previewProgram = null; previewFrame = null;
-        if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+        if (frame.version <= bridge.getState().version) frame = rebindFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
         setFrame(frame, prepared.program); base = candidate; program = prepared.program;
         const releaseFrame = detachAnimationFrame();
         linkedSelections = prepared.projections; selectionRecords = reconciled.records;
@@ -341,8 +348,8 @@ export function createInteractionSession(input) {
     try {
       const version = nextInteger(bridge.getState().version);
       nextGeneration = nextInteger(generation); nextRevision = nextInteger(revision);
-      candidate = prepareProgramHitFrame(entry.state.program, version);
-      frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
+      candidate = programFrame(entry.state.program, version);
+      frame = rebindFrame(candidate, candidate.scene, version, rootTransform);
       keyboardFrameFor(entry.state.program, frame);
       resourceRevisions = preparation.enabled ? interactionResourceRevisions(entry.state.program) : undefined;
       if (edgePresentation !== null || hasMoving && (previewProgram !== null || previewFrame !== null)) nextInteger(nextInteger(bridge.getState().version));
@@ -351,12 +358,12 @@ export function createInteractionSession(input) {
       throw error;
     }
     const prepareCommit = () => {
-      frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+      frame = rebindFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
       keyboardFrameFor(entry.state.program, frame);
       return () => {
         clearEdgePresentation();
         mounted?.capture?.cancel("updateProgram"); previewProgram = null; previewFrame = null;
-        if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+        if (frame.version <= bridge.getState().version) frame = rebindFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
         setFrame(frame, entry.state.program); base = candidate;
         const releaseFrame = detachAnimationFrame();
         ({ program, selectionRecords, linkedSelections } = entry.state);
@@ -390,17 +397,17 @@ export function createInteractionSession(input) {
     }
     const verified = reconcileSelections(linked.program, linked.records ?? reconciled.records, selectionPolicy, { verify: true });
     const selectionChanges = cloneAndFreeze([...reconciled.changes, ...(linked.selectionChanges ?? []), ...verified.changes]);
-    const candidate = prepareProgramHitFrame(linked.program, version);
-    let frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
+    const candidate = programFrame(linked.program, version);
+    let frame = rebindFrame(candidate, candidate.scene, version, rootTransform);
     keyboardFrameFor(linked.program, frame);
     if (edgePresentation !== null || hasMoving && (previewProgram !== null || previewFrame !== null)) nextInteger(nextInteger(bridge.getState().version));
     const prepareCommit = tags => {
-      frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+      frame = rebindFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
       keyboardFrameFor(linked.program, frame);
       return () => {
         clearEdgePresentation();
         mounted?.capture?.cancel("updateProgram");
-        if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+        if (frame.version <= bridge.getState().version) frame = rebindFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
         setFrame(frame, linked.program); base = candidate; program = linked.program; generation = nextGeneration; revision = nextRevision; lastHit = null;
         const releaseFrame = detachAnimationFrame();
         linkedSelections = linked.projections; selectionRecords = verified.records;
@@ -498,16 +505,16 @@ export function createInteractionSession(input) {
       if (![c.version, c.generation].every(value => Number.isSafeInteger(value) && value >= 0)) throw new TypeError("Frame command counters must be non-negative safe integers.");
       const stale = () => c.generation !== generation || c.version <= Math.max(bridge.getState().version, frameRequestVersion);
       // A stale object is never inspected, including nested accessors or forged samples.
-      const sampled = Object.hasOwn(c, "frame"), scene = !stale() && !sampled ? ownHitScene(c.scene) : undefined;
+      const sampled = Object.hasOwn(c, "frame"), scene = !stale() && !sampled ? ownScene(c.scene) : undefined;
       return perform(() => {
         if (stale()) return outcome("stale");
         const current = program, sessionGeneration = generation, baseRevision = revision;
         if (sampled) requireAnimationFrameProgram(c.frame, current);
-        const bind = version => sampled ? prepareAnimationHitFrame(c.frame, version, rootTransform)
-          : rebindProgramHitFrame(base, scene, version, rootTransform);
+        const bind = version => sampled ? sampledHitFrame(c.frame, version, rootTransform)
+          : rebindFrame(base, scene, version, rootTransform);
         const initial = bind(c.version);
         // Preflight before cancelling any pending native or frame work.
-        keyboardFrameFor(current, initial); const check = createHitFrameBridge(initial); check.dispose();
+        keyboardFrameFor(current, initial); const check = frameBridge(initial); check.dispose();
         if (edgePresentation !== null || hasMoving && (previewProgram !== null || previewFrame !== null)) nextInteger(nextInteger(bridge.getState().version));
         mounted?.capture?.cancel("updateProgram");
         clearEdgePresentation(true, true);
@@ -540,7 +547,7 @@ export function createInteractionSession(input) {
       const account = count => validateWorkLimit(work += count, "Selection handle query work");
       const handles = configured.pointers.filter(({ binding }) => binding.type === "resize").flatMap(({ binding }) =>
         resizePreview?.binding === binding ? resizePreview.handles
-          : prepareResizeHandles(previewProgram ?? program, binding, previewProgram === null ? base : displayed, bridge.getState().scene, rootTransform, displayed, account)?.handles ?? []);
+          : prepareResizeHandles(previewProgram ?? program, binding, previewProgram === null ? base : displayed, bridge.getState().scene, rootTransform, displayed, account, hitPreparation)?.handles ?? []);
       return freezeOwned({ frameVersion: bridge.getState().version, handles: freezeOwned(handles) });
     },
     whenSettled() { return activePreparation.whenSettled(); },
@@ -582,8 +589,8 @@ export function createInteractionSession(input) {
       perform(() => {
         clearEdgePresentation();
         const version = nextInteger(bridge.getState().version);
-        let frame = rebindProgramHitFrame(displayed, bridge.getState().scene, version, transform);
-        const candidate = createHitFrameBridge(frame);
+        let frame = rebindFrame(displayed, bridge.getState().scene, version, transform);
+        const candidate = frameBridge(frame);
         let candidateKeyboard;
         try { candidateKeyboard = keyboardFrameFor(program, frame); } catch (error) { candidate.dispose(); throw error; }
         try {
@@ -631,7 +638,7 @@ export function createInteractionSession(input) {
             const discard = (token, restore = true) => {
               try {
                 if (token?.raf !== undefined) scheduler.cancelAnimationFrame(token.raf);
-                if (moving && restore && token?.previewed) setFrame(rebindProgramHitFrame(token.frame, token.scene, nextInteger(bridge.getState().version), transform));
+                if (moving && restore && token?.previewed) setFrame(rebindFrame(token.frame, token.scene, nextInteger(bridge.getState().version), transform));
               }
               finally {
                 if (token) token.raf = undefined; gesture = undefined; previewProgram = null; previewFrame = null;
@@ -656,12 +663,12 @@ export function createInteractionSession(input) {
               const accept = () => {
                 let frame;
                 if (result.frame) {
-                  frame = prepareAnimationHitFrame(result.frame, nextInteger(bridge.getState().version), transform);
+                  frame = sampledHitFrame(result.frame, nextInteger(bridge.getState().version), transform);
                   nextInteger(nextInteger(frame.version));
                 } else if (moving && draft) {
-                  frame = rebindProgramHitFrame(draft.candidate, draft.candidate.scene, nextInteger(bridge.getState().version), transform);
+                  frame = rebindFrame(draft.candidate, draft.candidate.scene, nextInteger(bridge.getState().version), transform);
                   nextInteger(nextInteger(frame.version));
-                } else if (navigating && token.previewed) frame = rebindProgramHitFrame(token.frame, token.scene, nextInteger(bridge.getState().version), transform);
+                } else if (navigating && token.previewed) frame = rebindFrame(token.frame, token.scene, nextInteger(bridge.getState().version), transform);
                 const frameProgram = result.frame ? program : draft?.prepared.program ?? program;
                 if (frame) keyboardFrameFor(frameProgram, frame);
                 return () => {
@@ -693,8 +700,8 @@ export function createInteractionSession(input) {
                 const effective = edgePresentation?.baseline ?? displayed, scene = effective.scene;
                 const context = reordering ? prepareReorderGesture(program, binding, base, scene, transform, point,
                   bridge.hit(point, { pointerType, ...(binding.slop === undefined ? {} : { slop: binding.slop }) }), effective)
-                  : resizing ? prepareResizeGesture(program, binding, base, scene, transform, point, effective, pointerType) : navigating ? prepareCameraNavigation(program, binding, base, scene, transform, point) : moving ? movement.prepare(program, binding, base, scene, transform, point, bridge.hit(point, { slop: 0 }), effective)
-                  : prepareRegionGesture(program, binding, base, scene, transform, point, effective);
+                  : resizing ? prepareResizeGesture(program, binding, base, scene, transform, point, effective, pointerType, hitPreparation) : navigating ? prepareCameraNavigation(program, binding, base, scene, transform, point) : moving ? movement.prepare(program, binding, base, scene, transform, point, bridge.hit(point, { slop: 0 }), effective)
+                  : prepareRegionGesture(program, binding, base, scene, transform, point, effective, hitPreparation);
                 return context;
               },
               begin: (point, _pointerType, context) => {
@@ -863,7 +870,7 @@ export function createInteractionSession(input) {
         // Detaching an active native preview restores its pre-gesture scene.
         // The new surface must bind that restored scene, not the earlier draft.
         if (candidate.getState().scene !== bridge.getState().scene) {
-          const restored = rebindProgramHitFrame(displayed, bridge.getState().scene, nextInteger(bridge.getState().version), transform);
+          const restored = rebindFrame(displayed, bridge.getState().scene, nextInteger(bridge.getState().version), transform);
           candidateKeyboard = keyboardFrameFor(program, restored); candidate.updateFrame(restored); frame = restored;
         }
         bridge.dispose(); bridge = candidate; displayed = frame; adoptKeyboardFrame(candidateKeyboard); mounted = lease; rootTransform = transform; lastHit = null;
@@ -877,9 +884,9 @@ export function createInteractionSession(input) {
           if (mounted !== lease) return outcome("stale");
           clearEdgePresentation();
           const version = nextInteger(bridge.getState().version);
-          let frame = rebindProgramHitFrame(displayed, bridge.getState().scene, version), failure;
+          let frame = rebindFrame(displayed, bridge.getState().scene, version), failure;
           try { detach(lease); } catch (error) { failure = error; }
-          if (frame.scene !== bridge.getState().scene) frame = rebindProgramHitFrame(displayed, bridge.getState().scene, nextInteger(bridge.getState().version));
+          if (frame.scene !== bridge.getState().scene) frame = rebindFrame(displayed, bridge.getState().scene, nextInteger(bridge.getState().version));
           setFrame(frame); mounted = undefined; rootTransform = IDENTITY; lastHit = null;
           try { publish("unmount"); } catch (error) { failure ??= error; }
           if (failure) throw failure;

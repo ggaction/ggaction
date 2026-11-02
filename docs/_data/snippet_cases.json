@@ -858,5 +858,15 @@
       "inference-worker.mjs": "examples/graph-inference/worker.mjs"
     },
     "resultKind": "semantic"
+  },
+  {
+    "id": "interaction-hit-preparation",
+    "file": "api/interaction.md",
+    "contains": "hitPreparation: { maxSceneNodes: 100001",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete ES module with public imports. The explicit preparation allowance belongs only to this immutable program session.",
+    "rendering": "authoring-only"
   }
 ]

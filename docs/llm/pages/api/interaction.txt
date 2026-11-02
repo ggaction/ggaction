@@ -35,6 +35,39 @@ rectangle once. Device pixel ratio is never multiplied into hit coordinates.
 Slop remains in CSS pixels under scale or rotation. Use matching logical dimensions
 for the rendered chart and surface when no root matrix is supplied.
 
+## Bound hit preparation
+
+Large native scenes can opt into a larger preparation allowance for one session:
+
+> **Executable complete.** Run the complete ES module with public imports. The explicit preparation allowance belongs only to this immutable program session.
+
+```javascript
+import { chart } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+const program = chart().createCanvas({ width: 400, height: 400 })
+  .createData({ values: [{ x: 1, y: 2 }] })
+  .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "y" });
+const session = createInteractionSession({ program, bindings: [],
+  hitPreparation: { maxSceneNodes: 100001, maxWork: 128000000 }
+});
+console.log(session.getState().scene.nodes.length);
+session.destroy();
+```
+
+The defaults are 100,000 scene nodes and 10,000,000 work units for each of native
+binding and spatial indexing. Omitted or `undefined` fields keep those defaults.
+`maxSceneNodes` accepts safe integers from 1 to 200,000; `maxWork` accepts 1 to
+128,000,000. Backgrounds and nested children count toward the same scene limit.
+The policy stays fixed for that session through mounting, edits, history and
+current-frame replacement. Invalid or over-budget candidates leave the accepted
+program and picture intact.
+
+This option keeps the separate 100,000 hit-entry and 2,000,000 query-work limits,
+along with existing snapshot, selection and animation limits. Increasing preparation
+allows more bounded work; it does not promise a frame rate or reduce memory usage.
+For 100,000 authored points, the mark also needs its explicit `maxItems: 100000`
+capacity, and a background requires an additional scene node.
+
 ## Resize a selection or reorder categories
 
 Use a `resize` binding to edit an existing region selection, or a `reorder` binding
@@ -349,8 +382,8 @@ Mounting another element removes the old listeners. Unmount is idempotent.
 work; it returns true once and false thereafter. Terminal state remains readable;
 mutating session methods reject further work.
 
-Preparation is limited to 100,000 scene nodes and 10,000,000 work units; queries
-are limited to 2,000,000 units. Work includes geometry, metadata and guide sample
+Preparation uses the session's [hit preparation limits](../../../api/interaction/#bound-hit-preparation);
+queries remain limited to 2,000,000 units. Work includes geometry, metadata and guide sample
 comparisons. The session does not persist host objects or hover state. Keyboard navigation and asset loading are not editing commands; the optional resolver prepares assets before accepting a candidate. PNG/PDF exports remain static.
 
 ## Commit selections and parameters
