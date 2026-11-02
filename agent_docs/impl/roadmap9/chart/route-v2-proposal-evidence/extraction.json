@@ -1,0 +1,14 @@
+{
+  "source": "src/grammar/graph/routes/job.js",
+  "sourceSHA256": "24a57135c8f03db848ead02a05c37dd754648a9299571d7931a5ec50cacc2784",
+  "bodySHA256": "543f53fc63dc2c4f5aff60dec725b1d8c0294edcb864c9c1a9b16aaf2fbb5e57",
+  "generatedSHA256": "03bcc8a665fabe7ce5a5bbf9d4d626f01fd1201758d76189d3d6e5c573442ccf",
+  "productChanges": 0,
+  "seams": [
+    "append original createRouteJob as generator",
+    "detach raw payload and viewport after original snapshot",
+    "replace only body hash with private cursor stages",
+    "existing same-module validatedJobs.add after full hash",
+    "count registration without exposing registry"
+  ]
+}

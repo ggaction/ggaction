@@ -1,0 +1,127 @@
+{
+  "source": "207e18ac7e87aab25ff2c56f8e3eeacf10186d81",
+  "node": "v24.22.1",
+  "status": "small-native-job-stage-exact",
+  "records": [
+    {
+      "method": "edge-path",
+      "coordinateSpace": "world",
+      "hash": "2f0743e121fb8f7a71a0734f3e87f3f666409ec7f985400f8d1f079a5729f6ff",
+      "turns": 52,
+      "mutationIsolated": true,
+      "exactSameModuleProof": true,
+      "crossModuleFullValidation": true,
+      "cancelAt": [
+        1,
+        52
+      ]
+    },
+    {
+      "method": "edge-path",
+      "coordinateSpace": "screen",
+      "hash": "9748bfe8c4b4b24c822225e88d2304d5bd1deb47068aa559148a1934bc652891",
+      "turns": 53,
+      "mutationIsolated": true,
+      "exactSameModuleProof": true,
+      "crossModuleFullValidation": true,
+      "cancelAt": [
+        1,
+        53
+      ]
+    },
+    {
+      "method": "force-directed",
+      "coordinateSpace": "world",
+      "hash": "97d01a5ff883eebd691022aba67fb193cb076bcee11db9baf25c5a0dd450c625",
+      "turns": 52,
+      "mutationIsolated": true,
+      "exactSameModuleProof": true,
+      "crossModuleFullValidation": true,
+      "cancelAt": [
+        1,
+        52
+      ]
+    },
+    {
+      "method": "force-directed",
+      "coordinateSpace": "screen",
+      "hash": "a3d0a3a87507dde6ff1d9f8424618d1d618c72a87d77520ed57a28a98a0195e0",
+      "turns": 53,
+      "mutationIsolated": true,
+      "exactSameModuleProof": true,
+      "crossModuleFullValidation": true,
+      "cancelAt": [
+        1,
+        53
+      ]
+    },
+    {
+      "method": "density",
+      "coordinateSpace": "world",
+      "hash": "42c7fdec9f045fa4e936cd3b0aba172af23fc8a0821a944b18cfd666f14ff35d",
+      "turns": 52,
+      "mutationIsolated": true,
+      "exactSameModuleProof": true,
+      "crossModuleFullValidation": true,
+      "cancelAt": [
+        1,
+        52
+      ]
+    },
+    {
+      "method": "density",
+      "coordinateSpace": "screen",
+      "hash": "849a64c3468140bd7353b838d9add390ba8b0b3bde1366357c551fa7b280ed6a",
+      "turns": 53,
+      "mutationIsolated": true,
+      "exactSameModuleProof": true,
+      "crossModuleFullValidation": true,
+      "cancelAt": [
+        1,
+        53
+      ]
+    },
+    {
+      "method": "hierarchical",
+      "coordinateSpace": "world",
+      "hash": "16a1bd67c27039daf526488972b8df220c30c430b05f329f0a1a3b7d4ae68e49",
+      "turns": 88,
+      "mutationIsolated": true,
+      "exactSameModuleProof": true,
+      "crossModuleFullValidation": true,
+      "cancelAt": [
+        1,
+        88
+      ]
+    },
+    {
+      "method": "hierarchical",
+      "coordinateSpace": "screen",
+      "hash": "70d7ea44298de61835023f709316fcba2231be5d886e59e4ecfa87b49456165f",
+      "turns": 88,
+      "mutationIsolated": true,
+      "exactSameModuleProof": true,
+      "crossModuleFullValidation": true,
+      "cancelAt": [
+        1,
+        88
+      ]
+    }
+  ],
+  "counters": {
+    "registrations": 8,
+    "activeHashes": 0
+  },
+  "getters": 0,
+  "scope": "evidence-only original v1 body generator in temporary module; no product modifications or v2 admission",
+  "finalNativeHandlePublished": false,
+  "largeFixtureRun": false,
+  "latencyQualified": false,
+  "remaining": [
+    "snapshot and validation before first yield",
+    "numeric v2 policy integration",
+    "result validation and final materialization",
+    "full native update closure",
+    "whole preparation100ms"
+  ]
+}

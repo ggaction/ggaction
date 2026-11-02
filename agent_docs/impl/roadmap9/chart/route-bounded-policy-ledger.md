@@ -271,3 +271,11 @@ model/input/copy/field/object/다중 fit 비용을 포함하는 권장 maxBuffer
 다음 숫자 선정은 이 완주값과 원1k/10k의 아직 미관측 ledger를 분리해서 root에 제시한다.
 본 checkpoint 뒤 추가 큰 loop를 임의 시작하지 않는다. V2 single-authority limits, async validation,
 완전 native update union과 actual buffer/packet의 전체 수명 증명은 계속 미완료다.
+
+## 7. 후속 구체 수치·API 제안
+
+[Route v2 구체 제안](route-v2-proposal.md)은 private cursor 제품207e18ac7을 바탕으로
+다섯 hard maximum 후보, 명시 기본값 부재, v1 보존·v2 header/worker entry·native proof 순서와
+복수 route/fit aggregate policy를 구체화한다. 소형8job×3Node만 새로 실행했고 제품 변경은 없다.
+원 density1k/10k 후반 ledger와100ms/native union 완료는 계속 미증명이다. 이 링크가 위 역사적
+수치 또는 당시 미채택 상태를 바꾸지는 않는다.
