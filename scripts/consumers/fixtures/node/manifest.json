@@ -1237,6 +1237,10 @@
     "file": "edge-routes.mjs",
     "cases": [
       {
+        "id": "edge-routes/ordered-force-storage",
+        "statements": 12
+      },
+      {
         "id": "edge-routes/symmetric-force-pairs",
         "statements": 4
       },

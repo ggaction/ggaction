@@ -1,0 +1,35 @@
+{
+  "node": "v24.22.1",
+  "sha256": "1a304ca56f6233164ec54492a308101e0bcc885f31a15d35d73f4597215c18e8",
+  "checks": [
+    {
+      "id": "edge-routes/ordered-force-storage",
+      "status": "passed",
+      "durationMs": 536.55225
+    },
+    {
+      "id": "edge-routes/symmetric-force-pairs",
+      "status": "passed",
+      "durationMs": 34.01016700000014
+    },
+    {
+      "id": "edge-routes/worker-authority-and-cache",
+      "status": "passed",
+      "durationMs": 167.90033299999982
+    },
+    {
+      "id": "edge-routes/offline-restore-and-revision",
+      "status": "passed",
+      "durationMs": 394.512792
+    },
+    {
+      "id": "edge-routes/four-renderers-and-scene",
+      "status": "passed",
+      "durationMs": 19.52370800000017
+    }
+  ],
+  "bundles": [],
+  "types": "passed",
+  "error": "Error: Command failed: /Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node snippet.mjs\nnode:internal/modules/esm/resolve:272\n    throw new ERR_MODULE_NOT_FOUND(\n          ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find module '/private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-zTZP6z/comparison.js' imported from /private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-zTZP6z/snippet.mjs\n    at finalizeResolution (node:internal/modules/esm/resolve:272:11)\n    at moduleResolve (node:internal/modules/esm/resolve:879:10)\n    at defaultResolve (node:internal/modules/esm/resolve:1006:11)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:705:20)\n    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:725:38)\n    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:763:56)\n    at #resolve (node:internal/modules/esm/loader:687:17)\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:607:35)\n    at ModuleJob.syncLink (node:internal/modules/esm/module_job:276:33)\n    at ModuleJob.link (node:internal/modules/esm/module_job:381:17) {\n  code: 'ERR_MODULE_NOT_FOUND',\n  url: 'file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-zTZP6z/comparison.js'\n}\n\nNode.js v24.22.1\n\n    at genericNodeError (node:internal/errors:986:15)\n    at wrappedFn (node:internal/errors:540:14)\n    at checkExecSyncError (node:child_process:943:11)\n    at execFileSync (node:child_process:979:15)\n    at run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/scripts/consumers/runtime.js:19:3)\n    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/route-neighbors/installed.mjs:21:2",
+  "status": "failed"
+}

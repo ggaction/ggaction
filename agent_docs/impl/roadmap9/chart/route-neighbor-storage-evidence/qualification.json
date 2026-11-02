@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-02",
+  "status": "verified-concept",
+  "authorization": "../../AUTHORIZATION.json",
+  "rootAdoption": "2026-11-02: port the verified typed upper-neighbor prototype under existing default guards, v1 complete output and scalar order; no large solver or new public policy.",
+  "baseline": "68627051f627a04a5477dbe52b12d3c31e90f70e",
+  "sourceSHA256": {
+    "src/grammar/graph/routes/forceDirected.js": "c304473a35e1b938a212970e86cb2674afb8f2b76e5e728773b4ed897b1a19ef",
+    "src/grammar/graph/routes/forceNeighbors.js": "0792585f944cfc10e01336c651966ddc111a0b86106ae70f09480ff4f61382f1",
+    "test/unit/grammar/graph/routes/force-neighbor-storage.test.js": "2aa1203e4d4e71cf483b42f95f11d87b4f32969102b6b774ef5878d71fc0eb54",
+    "scripts/consumers/fixtures/node/edge-routes.mjs": "0bbdb598eeeca08a2ff0f74205e431667bf212eeb5a92ec49773f7336dcee6fa"
+  },
+  "invariants": [
+    "default guards, maxCandidatePairs, maxSamples and work formulas unchanged",
+    "force-directed@1, fixed 6 cycles / 165 iterations, ordered scalar accumulation and signed zero unchanged",
+    "no public API/schema/algorithm/hash-byte/renderer/worker envelope change",
+    "no shared animation4, core, benchmark or other worktree changes"
+  ],
+  "sourceTests": {
+    "focused": {
+      "node20": 16,
+      "node22": 16,
+      "node24": 16,
+      "scalarComparisonsPerNode": 825
+    },
+    "routeAndPresentation": 88,
+    "criticalOwners": 16,
+    "newOwner": {
+      "lines": 100,
+      "branches": 96.43,
+      "functions": 100
+    },
+    "changedForceOwner": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "contractsFinal": 45,
+    "docs": 3,
+    "documentationTruthAndArchitecture": 4
+  },
+  "previousCompleteResult": {
+    "nodes": [
+      20,
+      22,
+      24
+    ],
+    "originalEdges": 100,
+    "resultHash": "212ae9c180c0db17f20d80728de1e12309e20ce7765bb732059b0ac030996322",
+    "work": 1264670,
+    "candidatePairs": 4950,
+    "compatibilityPairs": 750,
+    "peakSamples": 7000,
+    "iterations": 165,
+    "allResultFieldsExact": true,
+    "reproducer": "compare.mjs"
+  },
+  "storage": {
+    "chunkPairs": 32768,
+    "reservedBytesBound": "8E+4+13C",
+    "original100ActualTypedBytes": 65154,
+    "fullCandidateAllocationNotOnlyAcceptedPairs": true,
+    "noConsolidationCopy": true,
+    "notAJSHeapGuarantee": true
+  },
+  "archive": {
+    "sha256": "1a304ca56f6233164ec54492a308101e0bcc885f31a15d35d73f4597215c18e8",
+    "localPath": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/route-neighbors/ggaction-1a304ca56f6233164ec54492a308101e0bcc885f31a15d35d73f4597215c18e8.tgz",
+    "entryCount": 1247,
+    "packedBytes": 1785417,
+    "unpackedBytes": 8059955,
+    "freezeNode": "v22.23.1",
+    "sameArchiveNodes": [
+      20,
+      22,
+      24
+    ],
+    "runtimeCasesEach": 5,
+    "strictTypes": "edge-routes.ts",
+    "snippet": "edge-route-analytical-comparison",
+    "optionalPeers": "passed",
+    "bundleFinalRecheck": "bundle-recheck.json"
+  },
+  "packageMeasurements": [
+    {
+      "node": 20,
+      "entries": 1247,
+      "packedBytes": 1788704,
+      "unpackedBytes": 8059955
+    },
+    {
+      "node": 22,
+      "entries": 1247,
+      "packedBytes": 1785417,
+      "unpackedBytes": 8059955
+    },
+    {
+      "node": 24,
+      "entries": 1247,
+      "packedBytes": 1788704,
+      "unpackedBytes": 8059955
+    }
+  ],
+  "finalPackageLimits": {
+    "entries": 1247,
+    "packedBytes": 1788800,
+    "unpackedBytes": 8060000
+  },
+  "initialFailures": [
+    {
+      "file": "contracts.log.gz",
+      "reason": "New internal file: 1247 package entries exceeded 1246; measured caps adjusted, not a runtime failure."
+    },
+    {
+      "file": "coverage.log.gz",
+      "reason": "Route-only capture omitted existing polyline reanchor consumer; final 88-test route+presentation capture meets all 16 owner floors."
+    },
+    {
+      "file": "first-installed-24.json",
+      "reason": "All five runtime cases and types passed, but local qualification script omitted declared documentation support files. Canonical copyDocumentationSupportFiles restored in harness only."
+    },
+    {
+      "files": [
+        "installed-20.json",
+        "installed-22.json",
+        "installed-24.json"
+      ],
+      "reason": "Runtime/types/docs/peers passed; original Full/graph bundle limits exceeded. Minimum measured caps786500/68400 checked against the same18 measurements, preserving original failed receipts."
+    },
+    {
+      "file": "documentation-truth-first.log.gz",
+      "reason": "Existing architecture table still stated Full785300/graph46000 while source caps had already advanced. Table updated to current measured786500/68400; final truth+path4/4."
+    }
+  ],
+  "environment": {
+    "performanceQualification": false,
+    "otherWork": "Point and interaction agents ran their own large functional tests during the isolated small installed checks. No dedicated CPU/P95 claim."
+  },
+  "remaining": [
+    "bounded worker numerical policy and complete native update union not implemented",
+    "original FDEB1000/10000 solver and density large admission not run or claimed here",
+    "AT82 P95/retained heap/100-cycle and STEP077 remain incomplete"
+  ],
+  "reproduction": {
+    "cwd": "repository root",
+    "source": [
+      "node --test test/unit/grammar/graph/routes/force-neighbor-storage.test.js test/unit/grammar/graph/routes/force-directed.test.js test/unit/grammar/graph/routes/force-pairs.test.js",
+      "node agent_docs/impl/roadmap9/chart/route-neighbor-storage-evidence/compare.mjs"
+    ],
+    "critical": "node --experimental-test-coverage '--test-coverage-include=src/grammar/graph/routes/*.js' --test test/unit/grammar/graph/routes/*.test.js test/unit/graph-presentation.test.js",
+    "package": [
+      "node agent_docs/impl/roadmap9/chart/route-neighbor-storage-evidence/freeze.mjs",
+      "node agent_docs/impl/roadmap9/chart/route-neighbor-storage-evidence/installed.mjs"
+    ],
+    "nodeRuntime": "Put each selected Node binary directory first on PATH for children; freeze once on Node22 and reuse the same fixed.json/tar for20/22/24."
+  }
+}

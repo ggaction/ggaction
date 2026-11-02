@@ -25,6 +25,28 @@ const streams = buffer => [...buffer.toString("latin1").matchAll(/stream\r?\n([\
 });
 
 export const cases = [
+  { id: "edge-routes/ordered-force-storage", async run() {
+    const count = 100, nodes = Array.from({ length: count }, (_, id) => ({ id }));
+    const edges = nodes.map(({ id }) => ({ id, source: id, target: (id + Math.floor(count / 3)) % count }));
+    const positions = nodes.map(({ id }) => ({ key: id, x: 200 + 150 * Math.cos(2 * Math.PI * id / count), y: 200 + 150 * Math.sin(2 * Math.PI * id / count) }));
+    const base = chart().createData({ id: "nodes", values: nodes, keyField: "id" }).createData({ id: "edges", values: edges, keyField: "id" })
+      .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "source", target: "target", directed: false })
+      .layoutGraph({ id: "layout", method: "fixed", options: { positions } });
+    const original = serializeProgram(base), direct = base.bundleGraphEdges({ id: "routes", method: "force-directed" });
+    const result = route(direct).result, prepared = await prepareGraphEdgeRoutes(base, { kind: "create", id: "routes", method: "force-directed" }, { requestToken: "ordered" });
+    assert.deepEqual(route(base.bundleGraphEdges({ prepared, requestToken: "ordered" })).result, result);
+    assert.deepEqual([result.diagnostics.work, result.diagnostics.candidatePairs, result.diagnostics.peakSamples, result.diagnostics.compatibilityPairs, result.diagnostics.totalIterations], [1264670, 4950, 7000, 750, 165]);
+    assert.equal(result.routes.length, count);
+    result.routes.forEach((item, i) => {
+      const source = positions[i], target = positions[(i + Math.floor(count / 3)) % count];
+      assert.deepEqual(item.commands[0], { op: "M", x: source.x, y: source.y });
+      assert.deepEqual(item.commands.at(-1), { op: "L", x: target.x, y: target.y });
+      assert.equal(item.commands.length, 34); assert.equal(item.controlPoints.length, 34);
+      assert.ok(item.commands.every(point => Number.isFinite(point.x) && Number.isFinite(point.y)));
+    });
+    assert.deepEqual(route(deserializeProgram(serializeProgram(direct))).result, result);
+    assert.equal(serializeProgram(base), original);
+  } },
   { id: "edge-routes/symmetric-force-pairs", async run() {
     const base = chart().createCanvas({ width: 320, height: 240, margin: 0 })
       .createData({ id: "nodes", keyField: "id", values: ["a", "b", "c", "d"].map(id => ({ id })) })
