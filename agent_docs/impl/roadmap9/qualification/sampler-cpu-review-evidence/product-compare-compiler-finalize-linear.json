@@ -1,0 +1,245 @@
+{
+  "kind": "actual product fcb848916 versus evidence-only compiler completed-container finalization; counters are diagnostic, not SLO",
+  "node": "v22.23.1",
+  "variant": "compiler-finalize",
+  "scaleType": "linear",
+  "rows": 1000,
+  "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+  "savedInputSHA256": "cf0a1ef7bd0baea4a0619c9e7a495e575bc625e166fbf09c29b5380f2064fde3",
+  "source": {
+    "src/animation/sample.js": "34f72d55de9f6e8da2aa020df68ece29dfabb73fbf0bf5bbac7bb5984c51df08",
+    "src/renderers/canvasScene.js": "aabcd332bafa87ce6c900db1ce9c680dee8f57ff731473ca288750b91ea7e786"
+  },
+  "comparisons": {
+    "3": {
+      "nativeBytes": [
+        1822845,
+        1822845
+      ],
+      "nativeSHA256": [
+        "ead0945d592089927df788a580f8e447a86c30dc374db3da145c6939099e1081",
+        "ead0945d592089927df788a580f8e447a86c30dc374db3da145c6939099e1081"
+      ],
+      "rebaseBytes": [
+        2381600,
+        2381600
+      ],
+      "rebaseSHA256": [
+        "2aa752546823421ce82b30dbed820c49cf51e2a01ca8f60f9ff5b251aa2c2cf9",
+        "2aa752546823421ce82b30dbed820c49cf51e2a01ca8f60f9ff5b251aa2c2cf9"
+      ],
+      "counts": [
+        {
+          "clones": 31,
+          "ownedAdds": 6044,
+          "weakAdds": 6076,
+          "weakHas": 17145,
+          "weakSources": {
+            "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+            "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+            "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 2000,
+            "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 1008,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+            "    at compile (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/renderers/canvasScene.js": 1001,
+            "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/renderers/canvasScene.js": 14,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+            "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameEndpoint.js": 4,
+            "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/endpoints.js": 3,
+            "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+          },
+          "freezeCalls": 12053,
+          "freezeSources": {
+            "    at transitionSampleState (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/animation/values.js": 2,
+            "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTracks.js": 1,
+            "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+            "    at prepareContinuousScaleScalar (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/scales/mapping.js": 2,
+            "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 8000,
+            "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 1006,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoFrames.js": 3,
+            "    at compile (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/renderers/canvasScene.js": 1001,
+            "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/renderers/canvasScene.js": 7,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/graphTracks.js": 3,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/partitionTracks.js": 3,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTextFrames.js": 4,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 3,
+            "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+            "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/endpoints.js": 2,
+            "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameProvenance.js": 4
+          },
+          "cloneArraySlots": 9011,
+          "cloneRecordKeys": 1031
+        },
+        {
+          "clones": 26,
+          "ownedAdds": 6044,
+          "weakAdds": 6071,
+          "weakHas": 16136,
+          "weakSources": {
+            "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+            "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+            "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 2000,
+            "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 1008,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+            "    at compile (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/renderers/canvasScene.js": 1010,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+            "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameEndpoint.js": 4,
+            "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/endpoints.js": 3,
+            "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+          },
+          "freezeCalls": 12053,
+          "freezeSources": {
+            "    at transitionSampleState (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/animation/values.js": 2,
+            "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTracks.js": 1,
+            "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+            "    at prepareContinuousScaleScalar (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/scales/mapping.js": 2,
+            "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 8000,
+            "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 1006,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoFrames.js": 3,
+            "    at compile (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/renderers/canvasScene.js": 1008,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/graphTracks.js": 3,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/partitionTracks.js": 3,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTextFrames.js": 4,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 3,
+            "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+            "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/endpoints.js": 2,
+            "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameProvenance.js": 4
+          },
+          "cloneArraySlots": 8009,
+          "cloneRecordKeys": 26
+        }
+      ],
+      "work": {
+        "Animation preparation work": 771686
+      },
+      "rebaseWork": {
+        "Animation preparation work": 451681
+      },
+      "mixedGeoFullFrameAndMeaningEqual": true,
+      "fullNativeOfflineMeaningBatchRebaseEqual": true,
+      "timelineAndTimelineRebaseFullMeaningEqual": true,
+      "fallbackFullMeaningEqual": true,
+      "restoreReserializeExact": true
+    },
+    "4": {
+      "nativeBytes": [
+        345803,
+        345803
+      ],
+      "nativeSHA256": [
+        "a4005de6cba97a7d301a3b91cae917bc3f5178e4108abaf01774efeaac8f0c43",
+        "a4005de6cba97a7d301a3b91cae917bc3f5178e4108abaf01774efeaac8f0c43"
+      ],
+      "rebaseBytes": [
+        422310,
+        422310
+      ],
+      "rebaseSHA256": [
+        "f7ed3e77fb29f269ac9751dfea0e060f93b2f4bc65464c93d9edd200e8dbd0d7",
+        "f7ed3e77fb29f269ac9751dfea0e060f93b2f4bc65464c93d9edd200e8dbd0d7"
+      ],
+      "counts": [
+        {
+          "clones": 31,
+          "ownedAdds": 6044,
+          "weakAdds": 6076,
+          "weakHas": 17145,
+          "weakSources": {
+            "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+            "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+            "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 2000,
+            "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 1008,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+            "    at compile (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/renderers/canvasScene.js": 1001,
+            "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/renderers/canvasScene.js": 14,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+            "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameEndpoint.js": 4,
+            "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/endpoints.js": 3,
+            "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+          },
+          "freezeCalls": 12053,
+          "freezeSources": {
+            "    at transitionSampleState (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/animation/values.js": 2,
+            "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTracks.js": 1,
+            "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+            "    at prepareContinuousScaleScalar (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/scales/mapping.js": 2,
+            "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 8000,
+            "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 1006,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoFrames.js": 3,
+            "    at compile (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/renderers/canvasScene.js": 1001,
+            "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/renderers/canvasScene.js": 7,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/graphTracks.js": 3,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/partitionTracks.js": 3,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTextFrames.js": 4,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 3,
+            "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+            "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/endpoints.js": 2,
+            "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameProvenance.js": 4
+          },
+          "cloneArraySlots": 9011,
+          "cloneRecordKeys": 1031
+        },
+        {
+          "clones": 26,
+          "ownedAdds": 6044,
+          "weakAdds": 6071,
+          "weakHas": 16136,
+          "weakSources": {
+            "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+            "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+            "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 2000,
+            "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 1008,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+            "    at compile (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/renderers/canvasScene.js": 1010,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+            "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameEndpoint.js": 4,
+            "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/endpoints.js": 3,
+            "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+          },
+          "freezeCalls": 12053,
+          "freezeSources": {
+            "    at transitionSampleState (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/animation/values.js": 2,
+            "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTracks.js": 1,
+            "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+            "    at prepareContinuousScaleScalar (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/grammar/scales/mapping.js": 2,
+            "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 8000,
+            "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/sample.js": 1006,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoFrames.js": 3,
+            "    at compile (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/renderers/canvasScene.js": 1008,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/graphTracks.js": 3,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/partitionTracks.js": 3,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/geoTextFrames.js": 4,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 3,
+            "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+            "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/endpoints.js": 2,
+            "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-sampler-cpu-review/ggactionnewbrand/src/animation/frameProvenance.js": 4
+          },
+          "cloneArraySlots": 8009,
+          "cloneRecordKeys": 26
+        }
+      ],
+      "work": {
+        "Animation preparation work": 771686
+      },
+      "rebaseWork": {
+        "Animation preparation work": 451681
+      },
+      "mixedGeoFullFrameAndMeaningEqual": true,
+      "fullNativeOfflineMeaningBatchRebaseEqual": true,
+      "timelineAndTimelineRebaseFullMeaningEqual": true,
+      "fallbackFullMeaningEqual": true,
+      "restoreReserializeExact": true
+    }
+  }
+}
