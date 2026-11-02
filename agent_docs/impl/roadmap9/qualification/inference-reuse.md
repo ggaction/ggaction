@@ -6,7 +6,7 @@
 - [x] root가 기존 remainingApproval 범위로 좁은 두 증명 경계를 채택
 - [x] completion/job 및 prepared resource의 정확한 동일 객체 재검증만 제거
 - [x] 복제·plain freeze·다른 source/constructor·codec·abort/late 회귀와3개 owner coverage
-- [ ] 같은 package3Node·실제 Chromium worker 및 source pin 자격 마감
+- [x] 같은 package3Node·실제 Chromium worker 및 source pin 자격 마감
 - [ ] 최종 combined AT82 P95/retained heap/100cycle
 
 승인은 [AUTHORIZATION](../AUTHORIZATION.json)의 remainingApproval 및2026-11-02 root의 구체안 채택을 재사용한다. 기존 source6644a8aef, qualification cb08d22a8 위의 독립 checkpoint다. Benchmark 도구·공유 animation4·원fixture·추론 수학·work charge·전역guard·공개schema·타입을 바꾸지 않는다.
@@ -31,3 +31,9 @@
 증거의 `profile*.mjs.txt` 세 파일을 `.artifacts/inference-reuse/`에 `.txt` 없이 복사하고 root에서 `node --loader ./.artifacts/inference-reuse/profile-loader.mjs .artifacts/inference-reuse/profile.mjs 10000 <prefix>`를 실행한다. Baseline cb08과 현재 소스 각각 실행한 inclusive 함수 시간은 서로 중첩되므로 합계로 해석하지 않는다. Loader는 제품 파일을 쓰지 않고 실제 worker의 원결과를 그대로 전달한다. 정본 benchmark 도구는 수정하지 않았다.
 
 같은 archive의 Node24 첫 검사는 모든 기능·type·문서 예제는 통과했지만 graph entry의 gzip67,610bytes가 기존67,600bytes를 넘었다. 최초 receipt를 보존하고67,700의 최소 백 단위 상한에 같은 측정값을 재검산했다. Package 실측은1246entries/Node20packed1,787,331/unpacked8,055,120으로 각각1,787,400/8,055,200 한도를 적용한다. Full 및 다른 entry 한도는 보존한다.
+
+## 소스 고정 후 최종 증거
+
+소스 `4ab14ff505afb9dc6ed3a0ac9fda9e5f03003f1f`에서 다시 만든 package는 검증 archive `5926cc74cffb5a5d9751e6f2f9e12fd4fed02d527824ef15544920973be17430`과 바이트 단위로 동일하다. 같은 archive의 Node20/22/24 각각 runtime5·strict type1·실행 문서2·browser bundle6을 통과했다. 소스 핀 후 문서242개, 빌드186페이지 및 LLM1606개 링크·identity 검사가 통과했다. 공개 prose·snippet·layout·CSS 변화가 없어 기존 cb08 체크포인트의 desktop 검색/axe 및 전체 페이지320/390/768 검사를 재사용하며, 실제 Chromium worker 기능 검사는 이번 소스로 새로 실행했다.
+
+원10k 노드/100k 간선을 전수 검산한 Chromium 단발 prepare16.63초·commit0.482초는 기능 검증의 관측값이다. 병렬 작업 부하가 있었으며 P95 또는 large worker10초 SLO 통과 근거가 아니다. 최종 combined AT82의 P95·retained heap·100cycle 검증과 성능 목표는 미완료로 남긴다.

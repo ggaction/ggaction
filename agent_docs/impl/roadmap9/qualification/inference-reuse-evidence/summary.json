@@ -1,5 +1,5 @@
 {
-  "status": "source-verified-pin-pending",
+  "status": "verified-checkpoint",
   "authorization": "../../AUTHORIZATION.json",
   "base": "cb08d22a8adf528d105af574786e78573431d4b0",
   "scope": "Exact immutable completion/job and validated prepared resource proofs; no API/schema/math/guard changes",
@@ -71,8 +71,7 @@
     "installed24.json": "runtime/types/docs passed but graph67610 exceeds67600; same bytes reassessed against67700"
   },
   "pending": [
-    "Source pin/build checks",
-    "Final combined AT82 P95/retained heap/100cycle"
+    "Final combined AT82 P95/retained heap/100cycle; large worker 10s SLO remains unmet"
   ],
   "qualification": false,
   "installed": {
@@ -89,5 +88,26 @@
     "eachFull10000Nodes100000Edges": true,
     "initialNode24": "installed24.json",
     "sameMeasurementReassessment": "installed24-reassessed.json"
+  },
+  "source": "4ab14ff505afb9dc6ed3a0ac9fda9e5f03003f1f",
+  "functionalQualification": true,
+  "docs": {
+    "sourcePin": "4ab14ff505afb9dc6ed3a0ac9fda9e5f03003f1f",
+    "sourceTests": 242,
+    "build": "passed",
+    "builtPages": 186,
+    "llmArtifacts": 1606,
+    "browserReuse": {
+      "source": "cb08d22a8adf528d105af574786e78573431d4b0",
+      "reason": "Public prose, snippets, layouts, CSS and UI inputs are unchanged; only source provenance and generated pin changed",
+      "checks": [
+        "desktop search and axe",
+        "all pages at widths 320, 390 and 768"
+      ]
+    }
+  },
+  "repack": {
+    "byteIdentical": true,
+    "receipt": "repack.json"
   }
 }
