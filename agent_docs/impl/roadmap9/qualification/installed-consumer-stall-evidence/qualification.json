@@ -1,0 +1,117 @@
+{
+  "sourceRevision": "8cbbc020c",
+  "status": "contracts844pass-1interrupted; installed-process-isolation-diagnosis-pending",
+  "archive": {
+    "archiveSHA256": "03d9cd8fb9b72c1c505676b5194a8d14460d183742dd63c215f8b4ec6aa33dde",
+    "installedIntegrity": "sha512-Ll3k597E2Umc+j3kCGIU5PhLqm9fzvZQNDFbs8CSlAuTv/R2xlPT/4fkyxtpHq0biYkmBmkYq/eNlvITF+1ygw==",
+    "canonicalIntegrityMatches": true,
+    "node": "v22.23.1",
+    "consumer": "/private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-19GtRm",
+    "sourceRevision": "8cbbc020c",
+    "note": "Canonical all-contracts functional execution; temporarily suspended own process tree while P used large slot, not a timing/SLO result."
+  },
+  "contracts": {
+    "tests": 845,
+    "passed": 844,
+    "failed": 1,
+    "failedTest": "installed native families execute against one canonical package",
+    "reason": "Root explicitly terminated owned synchronous consumer child after original100k hit preparation made no receipt progress for7minutes; two live native samples stayed in WeakSet add/EphemeronHashTable rehash. Full contracts are NOT green."
+  },
+  "partialConsumers": {
+    "passed": 400,
+    "failed": 0,
+    "complete": false,
+    "last": "data/inferred-graph-worker-complete-grid",
+    "next": "hit-preparation/all-100000-native-points"
+  },
+  "suspension": {
+    "rootPid": 98773,
+    "pids": [
+      319,
+      320,
+      98773,
+      98781,
+      98897,
+      98907,
+      99077,
+      99094,
+      99178,
+      99179,
+      99181
+    ],
+    "reason": "Canonical all-contracts includes all installed consumers and original100k. Temporarily suspend this owned tree while P owns large functional slot; no SLO timing claim.",
+    "resumedPids": [
+      319,
+      320,
+      98773,
+      98781,
+      98897,
+      98907,
+      99077,
+      99094,
+      99178,
+      99179,
+      99181
+    ],
+    "resumeReason": "P original100k finished and returned large slot; functional-only contract execution resumed without changing source."
+  },
+  "interruption": {
+    "pid": 99179,
+    "observedProcess": "99179 14:01  88.6 1645744",
+    "completedCases": 400,
+    "reason": "Repeated live native samples remain in WeakSet EphemeronHashTable rehash during original100k hit preparation after400 installed cases. Terminate only owned synchronous consumer child to let parent preserve failure and finish other contracts. Not a product success or SLO result."
+  },
+  "realistic": {
+    "tests": 96,
+    "passed": 96,
+    "suite": "canonical realistic runner, 512MiB per child/concurrency2, pinned TidyTuesday cache",
+    "scope": "geographic camera/marks/transitions/encodings; four files only, not full corpus"
+  },
+  "pending": [
+    "Fresh-process large consumer harness with exact case/receipt/fixture preservation",
+    "Long-lived mixed-workload WeakSet rehash attribution and native retained-heap/100cycle",
+    "All nine final commands, native performance and STEP057-077 closeout"
+  ],
+  "evidenceFiles": {
+    "all-contracts.log": {
+      "sha256": "2059683eb2676536bd6865bdb54804ac7f418b95d180c6c1b8b559ab45c1e3f2",
+      "bytes": 183347
+    },
+    "all-consumers-archive.json": {
+      "sha256": "0d92fdceee9010819ebd270ce620ed704fe02561687927f64671452c387fd196",
+      "bytes": 552
+    },
+    "all-consumers-partial.json": {
+      "sha256": "1e22a432eef3b72555e3faa5413cab50600cc3f9e88e910b9ad5d6d5755cc1c3",
+      "bytes": 46129
+    },
+    "contracts-suspended.json": {
+      "sha256": "d64816e49f117d50b722a2287c61c37196e6931dd48a2c7509134ef3542460a2",
+      "bytes": 617
+    },
+    "consumer-interruption.json": {
+      "sha256": "07d1c4a58a40d538fbe6d8a6863439f398834b4521ece1d4ced61a4e668f0118",
+      "bytes": 388
+    },
+    "consumer-native-sample.txt": {
+      "sha256": "1932e5098b0819176989868b481736e79c0e67b2db1ba487dc7bdafeed9d0922",
+      "bytes": 103786
+    },
+    "consumer-native-sample.log": {
+      "sha256": "271c6fed9488fac4efa00dbaec3f785c2e22d20476614fa6498a096d4dd7023d",
+      "bytes": 227
+    },
+    "consumer-native-sample-late.txt": {
+      "sha256": "c648c204b3e1081572d8ea246a5abe8dd699cf5f4a332a72ae2438b11b9a2f07",
+      "bytes": 103340
+    },
+    "consumer-native-sample-late.log": {
+      "sha256": "e60deb7d4adeaa21ee627e4221a97161cd2745f4af0e0c319e8bde993b952f8a",
+      "bytes": 231
+    },
+    "realistic.log": {
+      "sha256": "3e73c1afacd683c298b69212e6d8078d060d9fd5099f7b3c114ba27ea961463e",
+      "bytes": 24906
+    }
+  }
+}
