@@ -1,0 +1,168 @@
+{
+  "node": "v24.22.1",
+  "scope": "research only; current source; no product cursor or native async commit",
+  "native": {
+    "nodes": 3,
+    "edges": 3,
+    "methods": [
+      "edge-path"
+    ],
+    "coordinateSpaces": [
+      "world",
+      "screen"
+    ]
+  },
+  "records": [
+    {
+      "label": "world native job body",
+      "encodedBytes": 3381,
+      "sha256": "b0e3097a49ec2fb1c9fc8860e55263b856da5084c0f06050948568cb4e6d1975",
+      "chunks": [
+        1,
+        7,
+        64,
+        1024
+      ],
+      "exactQuota": true,
+      "oneByteShortRejected": true
+    },
+    {
+      "label": "world solver result",
+      "encodedBytes": 3589,
+      "sha256": "e70a78e6d2428dc8c7e78633c068d65948a5468cb49b9485316ca09e7d25905d",
+      "chunks": [
+        1,
+        7,
+        64,
+        1024
+      ],
+      "exactQuota": true,
+      "oneByteShortRejected": true
+    },
+    {
+      "label": "world validated completion",
+      "encodedBytes": 3776,
+      "sha256": "c0aed8a4cbabf4e19b0ce5b08a5a49bc3174a8243717582f9a2265bb25e38cfb",
+      "chunks": [
+        1,
+        7,
+        64,
+        1024
+      ],
+      "exactQuota": true,
+      "oneByteShortRejected": true
+    },
+    {
+      "label": "screen native job body",
+      "encodedBytes": 3436,
+      "sha256": "f972d702a64ddbaf9ee95ea9cd747f822bb5bdcb46d00c2caafb6512ac093b66",
+      "chunks": [
+        1,
+        7,
+        64,
+        1024
+      ],
+      "exactQuota": true,
+      "oneByteShortRejected": true
+    },
+    {
+      "label": "screen solver result",
+      "encodedBytes": 3589,
+      "sha256": "e70a78e6d2428dc8c7e78633c068d65948a5468cb49b9485316ca09e7d25905d",
+      "chunks": [
+        1,
+        7,
+        64,
+        1024
+      ],
+      "exactQuota": true,
+      "oneByteShortRejected": true
+    },
+    {
+      "label": "screen validated completion",
+      "encodedBytes": 3776,
+      "sha256": "8b124f24cf152a143c9e666eb4637914d342eaa40172cad54f59411602d4e42f",
+      "chunks": [
+        1,
+        7,
+        64,
+        1024
+      ],
+      "exactQuota": true,
+      "oneByteShortRejected": true
+    },
+    {
+      "label": "ordered record, shared DAG, holes and tags",
+      "encodedBytes": 197,
+      "sha256": "8641fdf0967e78feb1fc4508cf5dd248d01edb5dd0c0e36c7452aae7561d440f",
+      "chunks": [
+        1,
+        7,
+        64,
+        1024
+      ],
+      "exactQuota": true,
+      "oneByteShortRejected": true
+    },
+    {
+      "label": "small wide-record example only",
+      "encodedBytes": 1968,
+      "sha256": "7eb37eb4892c4ebccf6f9b3573c2104fd26d9d2f0573952360fa6a26603538d2",
+      "chunks": [
+        1,
+        7,
+        64,
+        1024
+      ],
+      "exactQuota": true,
+      "oneByteShortRejected": true
+    }
+  ],
+  "proofs": {
+    "externalMutationIsolated": true,
+    "exactJobProofOnly": true,
+    "forgedFrozenJobsRejected": 3,
+    "hostileRouteGetters": 0,
+    "legacyGetterDifferenceObserved": true,
+    "legacySiblingErrorOrderDifferenceObserved": true,
+    "nativeHost": {
+      "jobAvailableBeforeFirstAwait": true,
+      "jobDeepOwned": true,
+      "requestMutationIsolated": true,
+      "mutableWorkerCompletionIsolated": true,
+      "authorityRejections": 4,
+      "abortAfterPrepareRejected": true,
+      "workerTerminated": 1,
+      "listenersRemaining": 0
+    },
+    "realMacrotaskCompleted": {
+      "hash": "c0aed8a4cbabf4e19b0ce5b08a5a49bc3174a8243717582f9a2265bb25e38cfb",
+      "turns": 60,
+      "publications": 1,
+      "terminal": 1
+    },
+    "abortedTurns": [
+      1,
+      2,
+      60
+    ],
+    "abortBeforeInput": true,
+    "clearedSHA": true
+  },
+  "limits": {
+    "researchBytes": 100000,
+    "researchSteps": 100000,
+    "productionPolicyChanged": false,
+    "largeFixture": false,
+    "packageConsumer": false,
+    "browserRun": false,
+    "latencyOr100msClaim": false,
+    "unresolved": [
+      "BigInt decimal conversion",
+      "wide record descriptors/keys",
+      "mutable external snapshot acquisition",
+      "domain validation/clone/structured clone",
+      "full route v2 closed update union"
+    ]
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "sourceRevision": "5ec4f4b40402521f902f643c9d49365b9658db52",
+  "status": "read-only-review-verified",
+  "authorization": "../AUTHORIZATION.json#remainingApproval",
+  "productSourceChanges": 0,
+  "publicContractChanges": 0,
+  "packageRebuilt": false,
+  "largeFixtureRun": false,
+  "latencyQualification": false,
+  "checks": {
+    "nativeNodes": 3,
+    "nativeEdges": 3,
+    "recordsPerNode": 8,
+    "chunkSizes": [
+      1,
+      7,
+      64,
+      1024
+    ],
+    "nodeMajors": [
+      20,
+      22,
+      24
+    ],
+    "hostRegressions": 14,
+    "selectorFailure": "preserved; no tests executed; corrected selector passed"
+  },
+  "files": [
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-cursor-callsite-review.md",
+      "sha256": "56878ddcc9cb656df234266c9b1aa9c4f8edb1d2d3689dc7cbd4a2eccf6adee0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-cursor-evidence/audit.mjs",
+      "sha256": "73845b423a4df679b42e8e206aed48cb189aa738cf311d4a909277ce5e19972f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-cursor-evidence/build.mjs",
+      "sha256": "125599c5d252f9b114eae3c2d22eefbd0b898813bec9e6d387bfffcfa77cb521"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-cursor-evidence/host-regression-corrected.log",
+      "sha256": "c20e7ef67d16bdddbd570cdfdac21aa05f7e4e5e3ba6cada5a2d3d74ad5ee68f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-cursor-evidence/host-regression-selector-failure.log",
+      "sha256": "73bdbdd095267f799081baca475ebd6af74ec37ce7ea832e284c60402d6ff037"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-cursor-evidence/node20.json",
+      "sha256": "401667c48c954eafead3d27313ebe8752783ccde93b3cbbb6a2bc4f9ca5c4f7a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-cursor-evidence/node22.json",
+      "sha256": "d719c6858df7edfdd46285e484cf56eb6ec59604adc7d2f302400a503dbc3442"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-cursor-evidence/node24.json",
+      "sha256": "1b2791dc59759f2d5eb3656a47a9a41d66a940642781678057e28d5bcbd87a07"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-cursor-evidence/source.json",
+      "sha256": "a21e31c8f36e8e436975dfb59052624f6782519e6907c950e5f56bdc522e78ef"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-cursor-evidence/verify.mjs",
+      "sha256": "06aa61b9be53462dbacc891476a1e3197afa0d51be10d3deb6f300009cd611fd"
+    }
+  ]
+}

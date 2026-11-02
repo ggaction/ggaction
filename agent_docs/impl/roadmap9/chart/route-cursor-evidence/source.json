@@ -1,0 +1,568 @@
+{
+  "basis": "5ec4f4b40402521f902f643c9d49365b9658db52",
+  "productChanges": 0,
+  "scalarTransform": "original minimum/final quota and scalar arithmetic retained; add one yield observation per original loop iteration",
+  "scalarBodySHA256": "2995a5026a58f0b9c73ee378c4ab8fdccab0b7746818ac88835aa1c66fbc15e1",
+  "prototype": "reuse historical research prototype, not a proposed production tag implementation",
+  "sources": [
+    {
+      "path": "src/core/jsonText.js",
+      "sha256": "eb46930467af6d2b6dd60a30232974e909303e1152e00874560925e10f941532",
+      "seams": []
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/tagged-cursor-evidence/prototype.mjs",
+      "sha256": "73f02f7eb4940dfad99dff9f232cd16a469c3ef63321f304e8bc499944ac0176",
+      "seams": []
+    },
+    {
+      "path": "src/core/sha256.js",
+      "sha256": "a94e9caced46162e33d653cd07b5a36d0626cf4e5e46424644c9273f5e4ca979",
+      "seams": []
+    },
+    {
+      "path": "src/core/contentDigest.js",
+      "sha256": "f6ec75ffc60526a974789a5f679ba384c802c75cc41287d4a212b926ba3b4de4",
+      "seams": []
+    },
+    {
+      "path": "src/core/valueEncoding.js",
+      "sha256": "09af680c92693885b0afc9f5ce2475a2fbd7c0537df80b830596482bf0b398ac",
+      "seams": []
+    },
+    {
+      "path": "src/core/ownData.js",
+      "sha256": "fa81e2edca5037e2c1f13a82240e5d70097e292073b05e3bbe682b68358dad7d",
+      "seams": []
+    },
+    {
+      "path": "src/core/immutable.js",
+      "sha256": "1ec67bd4b674532050ef8351474840d7b947418469b79d976395b63c7bf62fc2",
+      "seams": [
+        {
+          "line": 26,
+          "text": "export function cloneAndFreeze(value, ancestors = new WeakSet(), path = \"state\") {"
+        }
+      ]
+    },
+    {
+      "path": "src/grammar/graph/model.js",
+      "sha256": "b1299d28e1e36f15ffe313a28887808abff1394e0cfc60aa365338ecf9b2f883",
+      "seams": [
+        {
+          "line": 2,
+          "text": "import { cloneAndFreeze, isPlainObject } from \"../../core/immutable.js\";"
+        },
+        {
+          "line": 56,
+          "text": "function records(nodes, edges, directed, selfLoops, limits, priorWork = 0, execution, signal) {"
+        },
+        {
+          "line": 60,
+          "text": "const validateWorkLimit = inferenceWorkValidator(execution, signal);"
+        },
+        {
+          "line": 111,
+          "text": "export function createGraphModel(nodes, edges, options, priorWork = 0, execution, signal) {"
+        },
+        {
+          "line": 115,
+          "text": "const resolved = graphLimits(limitOptions), indexed = records(nodes, edges, directed, selfLoops, resolved, priorWork, execution, signal);"
+        },
+        {
+          "line": 118,
+          "text": "return cloneAndFreeze(model);"
+        },
+        {
+          "line": 121,
+          "text": "export function indexGraphModel(model, options = {}, execution, signal) {"
+        },
+        {
+          "line": 126,
+          "text": "const indexed = records(model.nodes, model.edges, model.directed, model.selfLoops, limits, 0, execution, signal);"
+        }
+      ]
+    },
+    {
+      "path": "src/grammar/graph/inferenceBudget.js",
+      "sha256": "3e1df3e6705331bc57832016637005ccd9625e443971a8fbf1c9e2925d7c8190",
+      "seams": [
+        {
+          "line": 26,
+          "text": "export function checkInferenceSignal(signal) {"
+        },
+        {
+          "line": 27,
+          "text": "if (signal !== undefined) AbortSignal.prototype.throwIfAborted.call(signal);"
+        },
+        {
+          "line": 30,
+          "text": "export function inferenceWorkValidator(execution, signal) {"
+        },
+        {
+          "line": 31,
+          "text": "checkInferenceSignal(signal);"
+        },
+        {
+          "line": 38,
+          "text": "return signal === undefined ? validate : (value, label) => { checkInferenceSignal(signal); return validate(value, label); };"
+        }
+      ]
+    },
+    {
+      "path": "src/grammar/graph/routes/job.js",
+      "sha256": "24a57135c8f03db848ead02a05c37dd754648a9299571d7931a5ec50cacc2784",
+      "seams": [
+        {
+          "line": 1,
+          "text": "import { cloneAndFreeze } from \"../../../core/immutable.js\";"
+        },
+        {
+          "line": 15,
+          "text": "export const routeValueHash = value => contentDigest(canonicalJSON(encodeValue(value)));"
+        },
+        {
+          "line": 16,
+          "text": "const same = (a, b) => routeValueHash(a) === routeValueHash(b);"
+        },
+        {
+          "line": 19,
+          "text": "const validatedJobs = new WeakSet();"
+        },
+        {
+          "line": 49,
+          "text": "const body = cloneAndFreeze({ schemaVersion: 1, algorithmVersion: ROUTE_VERSIONS[intent.method], inputs: payload.inputs,"
+        },
+        {
+          "line": 51,
+          "text": "const job = cloneAndFreeze({ ...body, inputHash: routeValueHash(body) });"
+        },
+        {
+          "line": 52,
+          "text": "validatedJobs.add(job);"
+        },
+        {
+          "line": 57,
+          "text": "if (validatedJobs.has(job)) return job;"
+        },
+        {
+          "line": 67,
+          "text": "export function computeRouteJob(input, signal) {"
+        },
+        {
+          "line": 68,
+          "text": "if (signal !== undefined) AbortSignal.prototype.throwIfAborted.call(signal);"
+        },
+        {
+          "line": 70,
+          "text": "const result = job.intent.method === \"hierarchical\" ? bundleHierarchicalRoutes(job.input, job.hierarchy, options, signal)"
+        },
+        {
+          "line": 71,
+          "text": ": job.intent.method === \"force-directed\" ? bundleForceDirectedRoutes(job.input, options, signal)"
+        },
+        {
+          "line": 72,
+          "text": ": job.intent.method === \"density\" ? bundleDensityRoutes(job.input, options, signal) : bundleEdgePathRoutes(job.input, options, signal);"
+        },
+        {
+          "line": 73,
+          "text": "return cloneAndFreeze({ inputHash: job.inputHash, resultHash: routeValueHash(result), result });"
+        }
+      ]
+    },
+    {
+      "path": "src/grammar/graph/routes/result.js",
+      "sha256": "8189f68bdf53fc13edff90545dc81bd26e928ff2a1ef4efadd84f15f59d4f1dc",
+      "seams": [
+        {
+          "line": 1,
+          "text": "import { cloneAndFreeze } from \"../../../core/immutable.js\";"
+        },
+        {
+          "line": 7,
+          "text": "import { validateRouteJob, routeValueHash } from \"./job.js\";"
+        },
+        {
+          "line": 29,
+          "text": "if (routeValueHash(result.options) !== routeValueHash(routeNumericOptions(job.intent))) throw new TypeError(\"Route result options disagree with intent.\");"
+        },
+        {
+          "line": 52,
+          "text": "if (routeValueHash(bounds) !== routeValueHash(route.bounds)) throw new TypeError(\"Stored route bounds are stale.\");"
+        },
+        {
+          "line": 57,
+          "text": "if (typeof envelope.resultHash !== \"string\" || envelope.resultHash !== routeValueHash(result)) throw new TypeError(\"Route result hash is stale.\");"
+        },
+        {
+          "line": 58,
+          "text": "return cloneAndFreeze(envelope);"
+        }
+      ]
+    },
+    {
+      "path": "src/grammar/graph/routes/common.js",
+      "sha256": "1fdad8bb7f6c6d7e9b011048240851a2515a290261da573db276303380e0caf4",
+      "seams": [
+        {
+          "line": 1,
+          "text": "import { cloneAndFreeze } from \"../../../core/immutable.js\";"
+        },
+        {
+          "line": 39,
+          "text": "export function prepareRouteInput(input, signal) {"
+        },
+        {
+          "line": 43,
+          "text": "const budget = createRouteBudget(input.limits, signal);"
+        },
+        {
+          "line": 64,
+          "text": "const positions = cloneAndFreeze(indexed.nodes.map(node => byKey.get(node.key)));"
+        },
+        {
+          "line": 65,
+          "text": "const frame = coordinateFrame(positions), model = cloneAndFreeze(input.model);"
+        },
+        {
+          "line": 73,
+          "text": "return Object.freeze({ model, positions, frame, budget, nodes: cloneAndFreeze(nodeOrder.map(index => normalized[index])), edges: cloneAndFreeze(edges) });"
+        },
+        {
+          "line": 126,
+          "text": "return cloneAndFreeze({ complete: true, routes: result, diagnostics: context.budget.diagnostics() });"
+        }
+      ]
+    },
+    {
+      "path": "src/grammar/graph/routes/edgePath.js",
+      "sha256": "0a50a316c675c230428f57094a636af34fc55d9f09641a416f68670842938a54",
+      "seams": [
+        {
+          "line": 1,
+          "text": "import { cloneAndFreeze } from \"../../../core/immutable.js\";"
+        },
+        {
+          "line": 79,
+          "text": "export function bundleEdgePathRoutes(input, optionsInput = {}, signal) {"
+        },
+        {
+          "line": 80,
+          "text": "const options = normalizeEdgePathOptions(optionsInput), context = prepareRouteInput(input, signal), { edges, budget } = context;"
+        },
+        {
+          "line": 132,
+          "text": "return cloneAndFreeze({ ...result, options,"
+        }
+      ]
+    },
+    {
+      "path": "src/grammar/graph/routes/density.js",
+      "sha256": "545fce10c98ee3ee65e639bf5f110bedb6ab9b5dc366eb793242522c6626f885",
+      "seams": [
+        {
+          "line": 1,
+          "text": "import { cloneAndFreeze } from \"../../../core/immutable.js\";"
+        },
+        {
+          "line": 38,
+          "text": "export function bundleDensityRoutes(input, optionsInput = {}, signal) {"
+        },
+        {
+          "line": 39,
+          "text": "const options = normalizeDensityRouteOptions(optionsInput), context = prepareRouteInput(input, signal);"
+        },
+        {
+          "line": 59,
+          "text": "return cloneAndFreeze({ ...result, options, diagnostics: { ...result.diagnostics, gridSize: GRID_SIZE, step: STEP, iterations: schedule.length, schedule } });"
+        }
+      ]
+    },
+    {
+      "path": "src/grammar/graph/routes/forceDirected.js",
+      "sha256": "c304473a35e1b938a212970e86cb2674afb8f2b76e5e728773b4ed897b1a19ef",
+      "seams": [
+        {
+          "line": 1,
+          "text": "import { cloneAndFreeze } from \"../../../core/immutable.js\";"
+        },
+        {
+          "line": 94,
+          "text": "export function bundleForceDirectedRoutes(input, optionsInput = {}, signal) {"
+        },
+        {
+          "line": 95,
+          "text": "const options = normalizeForceRouteOptions(optionsInput), context = prepareRouteInput(input, signal);"
+        },
+        {
+          "line": 129,
+          "text": "return cloneAndFreeze({ ...result, options,"
+        }
+      ]
+    },
+    {
+      "path": "src/grammar/graph/routes/hierarchical.js",
+      "sha256": "23d1a04c1b83dae5b5f9607b2f2594d7ca298a58632a59f0d3a749735ebf490c",
+      "seams": [
+        {
+          "line": 1,
+          "text": "import { cloneAndFreeze } from \"../../../core/immutable.js\";"
+        },
+        {
+          "line": 66,
+          "text": "export function bundleHierarchicalRoutes(routeInput, input, optionsInput = {}, signal) {"
+        },
+        {
+          "line": 68,
+          "text": "const context = prepareRouteInput(routeInput, signal), hierarchy = validateRouteHierarchy(input, context);"
+        },
+        {
+          "line": 101,
+          "text": "return cloneAndFreeze({ ...result, options, routes: result.routes.map(route => ({ ...route, provenance: { ...route.provenance, ...details.get(route.edgeKey) } })) });"
+        }
+      ]
+    },
+    {
+      "path": "src/grammar/graph/routes/budget.js",
+      "sha256": "f32d00a6b734ffc23bb95f294ea73ac68645fdf25fb4c91045acb60662231568",
+      "seams": [
+        {
+          "line": 21,
+          "text": "export function createRouteBudget(limits = {}, signal) {"
+        },
+        {
+          "line": 25,
+          "text": "if (signal !== undefined) AbortSignal.prototype.throwIfAborted.call(signal);"
+        }
+      ]
+    },
+    {
+      "path": "src/materialization/graph/routeInput.js",
+      "sha256": "dfd73991a2ec5cd2cc6f8955f6fd3a9620cd220aebd145702bd4ed9b97f092bf",
+      "seams": [
+        {
+          "line": 1,
+          "text": "import { cloneAndFreeze } from \"../../core/immutable.js\";"
+        },
+        {
+          "line": 51,
+          "text": "return cloneAndFreeze({ inputs, intent: normalized, input, ...(hierarchyInput === undefined ? {} : { hierarchy: hierarchyInput }) });"
+        }
+      ]
+    },
+    {
+      "path": "src/materialization/graph/routeResource.js",
+      "sha256": "e35e0e38cd5d4cd37535fb5f44fd0eed907173fadcc844bd4f8d9ced02a0f0a9",
+      "seams": [
+        {
+          "line": 1,
+          "text": "import { cloneAndFreeze } from \"../../core/immutable.js\";"
+        },
+        {
+          "line": 25,
+          "text": "return cloneAndFreeze({ kind: \"edge-route\", id, revision, algorithmVersion: \"1\", ownership: { mode: \"authored\" },"
+        }
+      ]
+    },
+    {
+      "path": "src/materialization/graph/routeRequest.js",
+      "sha256": "52f2eea511a3deaeb64d450008f3c626606595b6ae9df0d244a04cfab387c07e",
+      "seams": []
+    },
+    {
+      "path": "src/materialization/graph/routeState.js",
+      "sha256": "7b05f3a3b6d78b9a62a8c0bedbd214f4be8b3f92f55c3a5570558de48f38a8bd",
+      "seams": [
+        {
+          "line": 2,
+          "text": "import { routeValueHash } from \"../../grammar/graph/routes/job.js\";"
+        },
+        {
+          "line": 11,
+          "text": "if (routeValueHash(resource.options) !== routeValueHash(normalized)) throw new TypeError(\"Edge route options must store resolved defaults.\");"
+        },
+        {
+          "line": 22,
+          "text": "if (routeValueHash(viewport) !== routeValueHash(job.viewport) ||"
+        },
+        {
+          "line": 23,
+          "text": "routeValueHash(resource.provenance.sourceRows) !== routeValueHash(edgeRouteSourceRows(graph, hierarchy))) throw new TypeError(\"Edge route viewport or source provenance is stale.\");"
+        }
+      ]
+    },
+    {
+      "path": "src/resources/graphRoutes.js",
+      "sha256": "12c65acdc4e373b68caf8f9cd995fa71bba86e575992b1cd6443d0ac751f142a",
+      "seams": [
+        {
+          "line": 3,
+          "text": "import { cloneAndFreeze } from \"../core/immutable.js\";"
+        },
+        {
+          "line": 16,
+          "text": "const active = signal => { if (signal !== undefined) AbortSignal.prototype.throwIfAborted.call(signal); };"
+        },
+        {
+          "line": 24,
+          "text": "rejectUnknownProperties(host, [\"requestToken\", \"signal\", \"executor\"], \"route preparation host\");"
+        },
+        {
+          "line": 25,
+          "text": "const { requestToken, signal, executor } = host;"
+        },
+        {
+          "line": 26,
+          "text": "if (typeof requestToken !== \"string\" || !requestToken) throw new TypeError(\"Route preparation requires a nonempty requestToken.\");"
+        },
+        {
+          "line": 27,
+          "text": "validateWorkLimit(requestToken.length, \"Route request token length\");"
+        },
+        {
+          "line": 29,
+          "text": "active(signal); validateResourceGraph(program);"
+        },
+        {
+          "line": 33,
+          "text": "const completion = await (executor === undefined ? computeRouteJob(job, signal) : executor.compute(job, { signal }));"
+        },
+        {
+          "line": 34,
+          "text": "active(signal);"
+        },
+        {
+          "line": 36,
+          "text": "const handle = cloneAndFreeze({ kind: \"edge-route-preparation\", request: { kind, id: resource.id }, inputHash: job.inputHash });"
+        },
+        {
+          "line": 37,
+          "text": "prepared.set(handle, { base: program, kind, resource, requestToken, signal });"
+        },
+        {
+          "line": 41,
+          "text": "export function readPreparedGraphEdgeRoutes(program, handle, requestToken, kind) {"
+        },
+        {
+          "line": 44,
+          "text": "if (result.base !== actionSource(program) || result.requestToken !== requestToken || result.kind !== kind) throw annotateError(new Error(\"Prepared edge route belongs to a different receiver, token or action.\"), { code: \"stale-result\" });"
+        },
+        {
+          "line": 45,
+          "text": "active(result.signal);"
+        }
+      ]
+    },
+    {
+      "path": "src/resources/graphRouteExecutor.js",
+      "sha256": "569fd8360d8dca1b5d02e6384bf5d3505a8a23ae1673633f9aa711638ba885b6",
+      "seams": [
+        {
+          "line": 10,
+          "text": "const assertActive = signal => { if (signal !== undefined) AbortSignal.prototype.throwIfAborted.call(signal); };"
+        },
+        {
+          "line": 40,
+          "text": "const signal = args.signal; assertActive(signal);"
+        },
+        {
+          "line": 46,
+          "text": "if (createWorker === undefined) return retain(job, validateRouteResult(job, computeRouteJob(job, signal)));"
+        },
+        {
+          "line": 56,
+          "text": "for (const cleanup of [() => worker?.removeEventListener?.(\"message\", onMessage),"
+        },
+        {
+          "line": 65,
+          "text": "try { assertActive(signal); } catch (error) { finish(error); }"
+        },
+        {
+          "line": 68,
+          "text": "function onMessage(event) {"
+        },
+        {
+          "line": 70,
+          "text": "try { assertActive(signal); finish(undefined, validateRouteResult(job, event.data)); }"
+        },
+        {
+          "line": 78,
+          "text": "worker.addEventListener(\"message\", onMessage); worker.addEventListener(\"error\", onError);"
+        },
+        {
+          "line": 80,
+          "text": "assertActive(signal);"
+        }
+      ]
+    },
+    {
+      "path": "src/actions/graphs/edgeRoutes.js",
+      "sha256": "bd3ed11427e20dd870760d3d6ed14393f983683208434d5011587dfb80eeebc7",
+      "seams": [
+        {
+          "line": 30,
+          "text": "[editing ? \"target\" : \"id\", \"graph\", \"layout\", \"method\", \"options\", \"coordinateSpace\", \"prepared\", \"requestToken\"], function (args = {}) {"
+        },
+        {
+          "line": 34,
+          "text": "if (Object.keys(args).some(key => key !== \"prepared\" && key !== \"requestToken\")) throw new TypeError(\"Prepared edge route application accepts only prepared and requestToken.\");"
+        },
+        {
+          "line": 35,
+          "text": "resource = readPreparedGraphEdgeRoutes(this, args.prepared, args.requestToken, editing ? \"edit\" : \"create\");"
+        }
+      ]
+    },
+    {
+      "path": "src/actions/graphs/routeClosure.js",
+      "sha256": "893d05fbc2f6dc97555bbd5ee7a0499a7b3ef72b2e19f9809d8b643d6305ec01",
+      "seams": [
+        {
+          "line": 8,
+          "text": "import { routeValueHash } from \"../../grammar/graph/routes/job.js\";"
+        },
+        {
+          "line": 15,
+          "text": "routeValueHash(resource.result.viewport) !== routeValueHash(resolveGraphicBounds(program));"
+        }
+      ]
+    },
+    {
+      "path": "src/actions/graphs/screenRoutes.js",
+      "sha256": "a5cb04256a8ac8e4d141359ebb27b35548f7feaa1a87bf99d6535b7f9d50e1fb",
+      "seams": [
+        {
+          "line": 4,
+          "text": "import { routeValueHash } from \"../../grammar/graph/routes/job.js\";"
+        },
+        {
+          "line": 20,
+          "text": "routeValueHash(previous.result.viewport) === routeValueHash(viewport)) continue;"
+        },
+        {
+          "line": 41,
+          "text": "if (plan === undefined || program.semanticSpec !== plan.semanticSpec || routeValueHash(resolveGraphicBounds(program)) !== routeValueHash(plan.viewport)) throw new TypeError(\"Screen route plan belongs to a different Canvas transition.\");"
+        }
+      ]
+    },
+    {
+      "path": "agent_docs/contract/current/EDGE_ROUTES.md",
+      "sha256": "ffa3cefdd5ffaf2e5aadd484f757865dcfa426f327f917744d78635429985547",
+      "seams": [
+        {
+          "line": 5,
+          "text": "- Signature: `bundleGraphEdges({ id, graph?, layout?, method, options?, coordinateSpace? })` 또는 `bundleGraphEdges({ prepared, requestToken })`."
+        },
+        {
+          "line": 33,
+          "text": "- Signature: `editEdgeRoute({ target?, graph?, layout?, method?, options?, coordinateSpace? })` 또는 `editEdgeRoute({ prepared, requestToken })`."
+        },
+        {
+          "line": 50,
+          "text": "- `prepareGraphEdgeRoutes(program,{kind:'create'|'edit',...authoringOptions},{requestToken,signal?,executor?})`는 await 전에 own request/host와 exact Full unit receiver를 검사·snapshot한다. Opaque handle은 private authority에 original receiver/token/operation/signal을 결박하며 result 배열을 공개하지 않는다."
+        }
+      ]
+    }
+  ]
+}
