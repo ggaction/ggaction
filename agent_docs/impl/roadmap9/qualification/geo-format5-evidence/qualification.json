@@ -1,7 +1,7 @@
 {
   "kind": "explicit animation format5 and native geographic capacity functional qualification",
-  "sourceRevision": "c80f9e938d42eba6c586811c56b08249507cf9e3",
-  "sourceState": "verified worktree; source pin follows code commit",
+  "sourceRevision": "3be517aefed9019eda28d323c158bf699340bdc8",
+  "sourceState": "committed source; metadata-only pin verifies identical archive",
   "archive": {
     "name": "ggaction",
     "version": "0.0.26",
@@ -936,6 +936,41 @@
     "format5-followup-installed.mjs": {
       "sha256": "5825a0260e5710f0469f33589b92be9bbb33dcc038eb02b2a3593dc70db88303",
       "bytes": 1678
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "3982205df65f821b10cb746dc7b80e3cba0fb24a16a9402c62bc9529e8e2c253",
+      "bytes": 1808
+    },
+    "source-pin-pack.json": {
+      "sha256": "388a3cfae8e1aa0bc81dcc32bd8f5262a0a6b1291315d27d457aa3cfbe6285ff",
+      "bytes": 394
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
+  },
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
   }
 }
