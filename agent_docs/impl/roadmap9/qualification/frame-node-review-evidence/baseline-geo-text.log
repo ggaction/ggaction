@@ -1,0 +1,63 @@
+✖ content expressions both follow current logarithmic camera, with exact native endpoints (48.056666ms)
+✔ changed geographic Text expressions follow spherical rotation and independent native offsets (62.92325ms)
+✔ from-only collision leaders keep their current native geometry and precede labels (89.393417ms)
+✔ middle-only current Text visibility, empty content and nested clips use the native projection (108.781209ms)
+✔ flat expression rebases retain actual current state and fail atomically above 64 sources (576.032708ms)
+✔ closed expression transport rejects invalid weight, font, source, raw anchor and concrete output (23.940125ms)
+✔ mixed source revisions keep target raw lineage and independent actual font metric origins (96.187292ms)
+✔ empty formatted fields retain raw source membership while explicit empty Text keeps native output (81.720875ms)
+✔ explicit timeline style applies to every expression and rejects ambiguous current opacity (62.147ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 8
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1665.695208
+
+✖ failing tests:
+
+test at test/unit/animation/geo-text-expressions.test.js:26:1
+✖ content expressions both follow current logarithmic camera, with exact native endpoints (48.056666ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      {
+        fill: '#334155',
+        fontFamily: 'sans-serif',
+        fontSize: 12,
+  ...
+        textBaseline: 'middle',
+  +     x: 60.5685424949238,
+  +     y: 70.71067811865474
+  -     x: 60.568542494923804,
+  -     y: 70.71067811865476
+      },
+      {
+        fill: '#334155',
+        fontFamily: 'sans-serif',
+        fontSize: 12,
+  ...
+        textBaseline: 'middle',
+  +     x: 60.5685424949238,
+  +     y: 70.71067811865474
+  -     x: 60.568542494923804,
+  -     y: 70.71067811865476
+      }
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/test/unit/animation/geo-text-expressions.test.js:32:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { x: 60.5685424949238, y: 70.71067811865474, text: 'Old', fill: '#334155', opacity: 1, fontSize: 12, fontFamily: 'sans-serif', fontWeight: 'normal', textAlign: 'center', textBaseline: 'middle', rotation: 0 }, { x: 60.5685424949238, y: 70.71067811865474, text: 'New', fill: '#334155', opacity: 1, fontSize: 12, fontFamily: 'sans-serif', fontWeight: 'normal', textAlign: 'center', textBaseline: 'middle', rotation: 0 } ],
+    expected: [ { x: 60.568542494923804, y: 70.71067811865476, text: 'Old', fill: '#334155', opacity: 1, fontSize: 12, fontFamily: 'sans-serif', fontWeight: 'normal', textAlign: 'center', textBaseline: 'middle', rotation: 0 }, { x: 60.568542494923804, y: 70.71067811865476, text: 'New', fill: '#334155', opacity: 1, fontSize: 12, fontFamily: 'sans-serif', fontWeight: 'normal', textAlign: 'center', textBaseline: 'middle', rotation: 0 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

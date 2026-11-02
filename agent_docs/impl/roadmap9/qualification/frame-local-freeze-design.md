@@ -91,3 +91,12 @@ finite value primitive와 기존 exact deep-owned scale만 갖는다. Endpoint s
 원100k는 별도 large slot을 받은 뒤 직렬로 검산한다. Timing은 진단이며50ms/P95/retained
 heap 통과가 아니다. 장수명 WeakSet rehash의 root OS sample 관측은 별도 가설이고 이
 변경의 효과로 단정하지 않는다. Global ownership 교체와 scalar mapper는 채택 범위 밖이다.
+
+## 2단계 읽기 검토의 수정
+
+`425d76230` 뒤 [node local-freeze 검토](frame-node-local-freeze-review.md)에서 hitIndex가
+개별 node의 ownership을 요구하고, Geo/GeoText/axis-label 추가 node가 raw local일 수 있음을
+확인했다. 따라서 위2단계의 node 외피 Object.freeze-only와 무조건 nodes vector stamp는
+채택 후보에서 제외한다. Node 외피/props는 기존 core ownership을 유지하고 새 frame tuple만
+지역 동결하며, 모든 node의 exact ownership을 확인할 때만 vector root를 stamp하는 좁은
+대안을 loader로 검토한다. 아직 제품 변경은 없으며 구현 채택은 별도다.
