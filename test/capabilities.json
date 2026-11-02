@@ -132,6 +132,14 @@
       {
         "type": "file",
         "path": "contracts/realistic-axis-label-reflow.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-batched.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/circle-batch.browser.js"
       }
     ],
     "architecture": [

@@ -1,3 +1,4 @@
+import { circleBatchRow } from "./circleBatch.js";
 import { shadowBlurSupport } from "../shadow.js";
 import {
   requireFiniteBounds,
@@ -289,6 +290,9 @@ function hasActiveStroke(properties) {
 }
 
 export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
+  if (type === "circle-batch" && ![properties.x, properties.y, properties.radius].every(Array.isArray)) return undefined;
+  if (type === "circle-batch") return unionBounds(properties.x.map((_, index) =>
+    resolvePrimitiveGraphicBounds("circle", circleBatchRow(properties, index), profile)));
   if (type === "weighted-blend") return weightedBounds(properties, profile, false);
   const strokeExtent = properties.outline === undefined
     ? (hasActiveStroke(properties) ? properties.strokeWidth / 2 : 0)
@@ -358,6 +362,9 @@ export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
 // Layout occupancy includes the bounded visual effect. Selection and hit
 // geometry explicitly use the unchanged source primitive bounds below.
 export function resolvePrimitiveOccupiedBounds(type, properties = {}, profile) {
+  if (type === "circle-batch" && ![properties.x, properties.y, properties.radius].every(Array.isArray)) return undefined;
+  if (type === "circle-batch") return unionBounds(properties.x.map((_, index) =>
+    resolvePrimitiveOccupiedBounds("circle", circleBatchRow(properties, index), profile)));
   if (type === "weighted-blend") return weightedBounds(properties, profile, true);
   const bounds = resolvePrimitiveGraphicBounds(type, properties, profile), shadow = properties.shadow;
   if (bounds === undefined || shadow === undefined) return bounds;

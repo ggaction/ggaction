@@ -1,5 +1,19 @@
 # `ggaction` Second Architecture
 
+명시 format6는 scene3 entries와 공통 circle-batch primitive로 fully materialized frame을 표현한다.
+`animation/batchSample.js`는 이미 준비된 point kernels의 연속 호환 run을 수치 columns로 계산하고,
+`grammar/animation/positions.js`의 private batch token은 기존 scalar mapping 수학을 공유한다.
+Current row correspondence·geometry·native origin 검산은 sample 내부에 남는다. 단일 도형과
+다른 family는 기존 kernel 결과를 scene3 single entry로 유지한다. Renderer는 완성된 concrete
+columns만 읽고 색/좌표/meaning을 sample 이후에 계산하지 않는다.
+`core/sceneRows.js`는 concrete logical row 순서와 개수의 공통 읽기를 소유한다.
+`grammar/schemas/batchScene.js`는 concrete batch 구조 검증을, `animation/batchScene.js`는
+private builder와 rebase preparation의 concrete projection을 소유한다. Frame provenance는
+core 읽기만 사용하고 interaction은 animation sampler에 의존하지 않는다. Public frame에 lazy nodes나 legacy adapter를 추가하지 않는다. 저장은 알려진 numeric
+schema 경로만 기존 columns@2로 투영하고 전체 payload hash/원 logical quota를 보존한다.
+Runtime native proof는 logical row와 (graphicId,rowIndex)에 대응하며 offline은 권한0이다.
+정확 공개 overload/호환/저장 계약은 [Animation 계약](contract/current/ANIMATION.md)을 따른다.
+
 Private animation plan transport는 실제 endpoint 그래픽과 준비한 의미값/scale만 저장한다.
 `animation/planner.js`가 기존 graphic validator와 `grammar/animation/pointState.js`를 통해
 닫힌 입력을 검증하고 endpoint/matching owner로 scene·track·enter/exit를 재생한다.
@@ -1038,12 +1052,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 788,900 bytes |
-| `ggaction/basic` | 426,300 bytes |
-| `ggaction/svg` | 26,000 bytes |
+| `ggaction` | 789,800 bytes |
+| `ggaction/basic` | 426,900 bytes |
+| `ggaction/svg` | 26,300 bytes |
 | `ggaction/graph` | 69,600 bytes |
-| `ggaction/interaction` | 137,700 bytes |
-| `ggaction/animation` | 343,600 bytes |
+| `ggaction/interaction` | 139,900 bytes |
+| `ggaction/animation` | 353,200 bytes |
 
 
 
@@ -4069,7 +4083,7 @@ codec의 기존 경계는 바뀌지 않는다. 정확 정책과 event는 Current
 
 
 D3 초기 package919entries/Node20packed1,325,924/unpacked6,066,891를 측정해 cap을
-919/1,326,000/6,067,000으로 최소 올림했다. 초기 Node22 interaction96,601gzip에는97,000을
+919/1,326,300/6,067,000으로 최소 올림했다. 초기 Node22 interaction96,601gzip에는97,000을
 적용한 뒤 Node20의97,221gzip으로97,500까지 최소 증분했다. Full/Basic/SVG floor와 cap은 유지한다.
 Search959,574bytes는960,000으로 최소 올림했다.
 최초 초과 실패와 동일 archive의 후속3Node 검증 결과는 D3 증거에서 구분한다.
@@ -4160,7 +4174,7 @@ MARK_SELECTION이 소유한다. Angular와 후행 history의 완료는 이 check
 
 이 공개 연결의 Node20/24 최대 실측은 Full653,407/Basic367,386/interaction105,754 gzip,
 package927entries/packed1,340,606/unpacked6,125,329이다. 상한은 각각653,500/367,400/105,800 및
-927/1,341,000/6,126,000으로 최소 올림했다. Basic 증가는 공유 persisted selection 검증 소유자이며
+927/1,341,000/6,126,300으로 최소 올림했다. Basic 증가는 공유 persisted selection 검증 소유자이며
 Full action import는 없다. Search961,762bytes는962,000 상한을 쓴다. 최초 초과와 경계 수정 전후
 archive는 STEP059 evidence에서 별도 구분하며 최종 통합에서는 합산 실측을 다시 수행한다.
 
@@ -4535,7 +4549,7 @@ Navigation 모듈 추가의 package 실측은1060entries/1,504,297packed/6,840,0
 Weighted concrete qualification은 runtime 모듈 5개를 추가하며 기존 public entry
 경계를 유지한다. 설치된 package의 Node20 측정은 Full732,039 / Basic387,595 /
 SVG24,941 / interaction110,455 gzip bytes이다. 각 cap은734,000 / 389,000 /
-26,000 / 112,000이고 graph cap은 유지한다. 최초 interaction cap 실패와 같은
+26,300 / 112,000이고 graph cap은 유지한다. 최초 interaction cap 실패와 같은
 archive의 집중 재검증을 별도 보존한다. Package는1,048entries,
 Node20/24 측정packed1,486,571bytes, unpacked6,755,280bytes이며 cap은
 1,048 / 1,488,000 / 6,757,000이다. 최종 Node22 archive의 packed1,482,864bytes와
@@ -4569,7 +4583,7 @@ Native Table·Trail·Area 공유 정책과 weighted concrete·gesture asset prep
 1111/1,582,000/7,203,000을 적용한다. Node22 동일 설치 archive에서 Full770,901 /
 Basic421,153 / SVG24,765 / graph43,923 / interaction121,101gzip을 실측했다.
 Full/Basic/interaction만 다음100byte 단위771,000/421,200/121,200으로 조정하고
-SVG26,000/graph46,000은 유지한다. Native action은 Full에, 공유 concrete schema와
+SVG26,300/graph46,000은 유지한다. Native action은 Full에, 공유 concrete schema와
 materialization/renderer는 기존 Basic 경계에 남으며 새 export는 없다. 이 측정용
 archive는 합산 한도 결정 근거이며 최종 clean candidate qualification을 대신하지 않는다.
 
@@ -4630,7 +4644,7 @@ Marginal·Bullet·Combo의 native public recipe와 Geo winding·interaction 합�
 논리적 native item 대체 값은 기존 selection/identity owner를 재사용하는 browser-safe
 accessibilityItems owner1개에 모으며 화면상의 가시성과는 구분한다. 합산 Node22 package는
 1114entries/1,587,160packed/7,225,523unpacked bytes다. 최소 한도
-1114/1,588,000/7,226,000을 적용한다. 정확한 공개 형식은 Current ACCESSIBILITY가 소유한다.
+1114/1,588,000/7,226,300을 적용한다. 정확한 공개 형식은 Current ACCESSIBILITY가 소유한다.
 
 Accessible items와 stable owner 오류 설명을 합친 검색 payload는1,074,243bytes다.
 이전1,073,700 한도를 넘으므로 최소100byte 단위1,074,300을 적용한다. 같은 package의

@@ -1,3 +1,4 @@
+import { circleBatchRow, circleBatchRowKey } from "../grammar/schemas/circleBatch.js";
 import { validateGraphicClip, graphicClipBounds, translateGraphicClip } from '../grammar/schemas/graphicClip.js';
 import { validateConcreteGraphicProperties } from '../grammar/schemas/concreteGraphic.js';
 import { requireSingleOrderedGraphicByType, walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
@@ -13,21 +14,28 @@ export function collectTransitionGraphics(graphicSpec, identities, { onNode, onC
   if (![width, height].every(n => Number.isFinite(n) && n >= 0)) throw new TypeError('Scene requires finite nonnegative Canvas dimensions.');
   const nodes = [], stack = [{ x: 0, y: 0, clip: [0, 0, width, height], clips: [] }];
   const used = new Map();
-  const add = (id, graphic, suffix = "") => {
+  const add = (id, graphic, suffix = "", rowIndex, preparationKey) => {
+    if (graphic.type === "circle-batch") {
+      validateConcreteGraphicProperties(graphic.type, graphic.properties);
+      for (let index = 0; index < graphic.properties.x.length; index++) {
+        add(id, { type: "circle", properties: circleBatchRow(graphic.properties, index) }, `${suffix}/row/${index}`, index, circleBatchRowKey(graphic, index));
+      }
+      return;
+    }
     if (graphic.type === "collection") {
       for (const [index, item] of (graphic.items ?? []).entries()) add(item.id ?? id, item, `${suffix}/${index}`);
       return;
     }
     validateConcreteGraphicProperties(graphic.type, graphic.properties);
     const frame = stack.at(-1);
-    const identity = identities.get(id);
+    const identity = rowIndex === undefined ? identities.get(id) : undefined;
     const base = identity?.key ?? `graphic:${opaqueKey([id, suffix])}`;
     const count = used.get(base) ?? 0; used.set(base, count + 1);
     const node = { key: `${base}#${count}`, type: graphic.type,
       topology: identity?.topology ?? "",
       properties: graphic.properties,
       offset: [frame.x, frame.y], clip: frame.clip, clips: frame.clips };
-    onNode?.(id, node);
+    onNode?.(id, node, rowIndex, preparationKey);
     nodes.push(node);
   };
   const background = (id, object) => {
@@ -67,7 +75,7 @@ export function collectTransitionGraphics(graphicSpec, identities, { onNode, onC
         if (object.type !== "collection" && !Array.isArray(object.items)) add(id, object);
       }
     },
-    item({ id, object, owner }) { add(id, { ...object, type: object.type ?? owner.type }); },
+    item({ id, object, owner }) { add(id, object.type === undefined ? { ...object, type: owner.type } : object); },
     exit({ id, object }) { if (id !== root && (object.type === "canvas" || object.clip !== undefined)) stack.pop(); }
   });
   return { version: 2, width, height, nodes };

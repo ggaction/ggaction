@@ -52,7 +52,21 @@ const saved:string=serializeAnimation(plan,{repeat:Infinity,rate:-1,reducedMotio
 const restored=deserializeAnimation(saved);
 const frames=exportAnimationFrames(restored.plan,{timesMs:[0,50,100]});
 const time:number=frames[0].timeMs;
-planTransition({from:frames[0],to,options:{durationMs:100}});
+planTransition({from:frames[0],to,options:{durationMs:100,formatVersion:6}});
+if(restored.plan.version===6){
+  const batch=sampleTransition(restored.plan,50);const version:3=batch.scene.version;
+  // @ts-expect-error batch decisions belong to entries
+  batch.decisions;
+}else{const legacy=sampleTransition(restored.plan,50);legacy.decisions;}
+const batched=planTransition({from,to,options:{durationMs:100,formatVersion:6}});
+const batchFrame=sampleTransition(batched,50);const batchVersion:6=batched.version;
+renderToSVG(batchFrame);
+// @ts-expect-error batched endpoints require explicit format6
+planTransition({from:batchFrame,to,options:{durationMs:100}});
+const batchPlayer=createAnimationPlayer({plan:batched,clock:{now:()=>0,requestFrame:()=>1,cancelFrame(){}},render:frame=>{const version:3=frame.scene.version;}});
+batchPlayer.interrupt({to,options:{durationMs:100,formatVersion:6}});
+// @ts-expect-error player representation is fixed at creation
+batchPlayer.interrupt({to,options:{durationMs:100}});
 exportAnimationFrames(plan,{fps:60});
 declare const context:CanvasRenderingContext2D;
 render(frame,context);renderToSVG(frame);renderToPNGBuffer(frame);renderToPDFBuffer(frame);

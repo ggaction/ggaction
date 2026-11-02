@@ -4,3 +4,5 @@ export interface GraphicWeightedBlendProperties {
   readonly opacity?: number;
   readonly blend?: BlendMode;
 }
+
+/** Shared concrete circle paint; geometry is stored in the three columns. */

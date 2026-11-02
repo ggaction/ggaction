@@ -48,7 +48,7 @@ export async function prepareShadowRendering(program, options) {
   if (decode !== undefined && typeof decode !== "function") throw new TypeError("Shadow decode must be a function.");
   if (!Number.isFinite(pixelRatio) || pixelRatio <= 0) throw new RangeError("Shadow pixelRatio must be positive and finite.");
   assertAssetActive(signal, "Shadow");
-  const scene = program?.version === 2 && Array.isArray(program.nodes) ? program : undefined;
+  const scene = (program?.version === 2 && Array.isArray(program.nodes) || program?.version === 3 && Array.isArray(program.entries)) ? program : undefined;
   const resolved = scene === undefined ? program : canvasSceneProgram(scene);
   const graphicSpec = requireProgramGraphicSpec(resolved), digest = shadowGraphicDigest(graphicSpec);
   const items = shadowGraphicItems(graphicSpec), target = resolveGraphicRenderTarget(graphicSpec);

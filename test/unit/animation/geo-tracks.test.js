@@ -89,3 +89,20 @@ test("partial source membership changes preserve common features and classify ne
  assert.equal(unrelated.state.groups.length,0);assert.equal(unrelated.fallbackTrack({sourceIndex:0,targetIndex:b.items.findIndex(Boolean)}).reason,"geo-identity");
  assert.equal(prepareGeoTracks(empty,empty).fallbackTrack({sourceIndex:0,targetIndex:0}),undefined);
 });
+
+test("geographic collectors keep unmatched slots empty and require the real drawing owner",async()=>{
+ const {geoFrameCollector}=await import("../../../src/animation/geoFrames.js");
+ const p=make(),target=state(p.editProjection({rotateDeg:[30,0,0]}));
+ const prepared=prepareGeoTracks(state(p),target),samples=sampleGeoTracks(prepared.state,.5),collector=geoFrameCollector(samples,target);
+ assert.deepEqual(collector.at(-1,0,"unknown"),[]);
+ assert.deepEqual(collector.at(target.groups[0].insertion,0,"unknown"),[]);
+ assert.throws(()=>collector.finish(),/actual drawing slot/);
+ const emitted=[];
+ for(const [slot,owners]of collector.slots)for(const owner of owners)for(const row of collector.at(slot,emitted.length,owner)){
+  emitted.push(row.node);collector.append(row.item);
+ }
+ collector.append(undefined);
+ const result=collector.finish();
+ assert.equal(emitted.length,1);assert.equal(result.groups[0].insertion,0);assert.equal(result.items.at(-1),null);
+ assert.deepEqual(emitted.map(node=>node.properties),p.editProjection(samples[0].presentation.geometry.parameters).graphicSpec.objects.places.items.map(item=>item.properties));
+});

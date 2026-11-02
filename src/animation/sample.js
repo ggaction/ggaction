@@ -1,3 +1,6 @@
+import { samplePreparedBatch } from "./batchSample.js";
+import { createBatchSceneBuilder, batchPositionsForScene } from "./batchScene.js";
+import { projectSampledAnimationEndpoint } from "./endpoints.js";
 import { animationResourceLimits } from "./resources.js";
 import { sampleAxisLabelTracks } from "./axisLabelTracks.js";
 import { axisLabelFrameCollector } from "./axisLabelFrames.js";
@@ -32,6 +35,7 @@ export function sampleTransition(input,timeMs) {
 // ceiling. The public API never accepts a host callback or exposes partial work.
 export function sampleTransitionWithBudget(input,timeMs,accountWork) {
   const plan=requireTransitionPlan(input),{progress,side}=transitionSampleState(timeMs,plan.durationMs,plan.easing);
+  if(plan.version===6&&side===undefined){const batch=samplePreparedBatch(plan,timeMs,progress);if(batch!==undefined)return batch;}
   const timeline=sampleTransitionTimeline(transitionTimeline(plan),timeMs,progress),owners=transitionOwners(plan);
   const decisions=[],geographic=[],axislabels=[];
   const axisState=transitionAxisLabels(plan);
@@ -43,7 +47,27 @@ export function sampleTransitionWithBudget(input,timeMs,accountWork) {
   const graphState=transitionGraphs(plan),graphSamples=graphTrackSamples(graphState.pairs,progress,timeline.progress),graphFrame=graphFrameCollector();
   const partitionState=transitionPartitions(plan),partitionSamples=partitionTrackSamples(partitionState,progress,timeline.progress),partitionFrame=partitionFrameCollector();
   const fromPositions=transitionEndpointPositions(plan,"from"),toPositions=transitionEndpointPositions(plan,"to");
-  const finish=(frame,positions,graphs,cartesian,partitions,polars,geos,guides,geotexts,axisState)=>animationFrameProvenance(frame)===undefined?registerAnimationFrame(frame,{plan,timeMs,positions,graphs,cartesian,partitions,polars,geos,guides:retainSampledGuideMeaning(guides,axisState),geotexts,axislabels:axisState,meaning:captureFrameMeaning(frame,plan,timeMs,geographic,axislabels)}):frame;
+  const finish=(frame,positions,graphs,cartesian,partitions,polars,geos,guides,geotexts,axisState)=>{
+    if(animationFrameProvenance(frame)!==undefined&&(plan.version!==6||frame.scene.version===3))return frame;
+    let meaning;
+    if(plan.version===6){
+      // Existing family kernels remain concrete single-entry fallbacks. Only
+      // completed compatible point rows share a batch container.
+      if(frame.scene.version===3){
+        const exact=plan[side],legacy={graphicSpec:frame.graphicSpec,scene:exact.scene,progress:frame.progress,decisions:[]};
+        meaning=captureFrameMeaning(legacy,plan,timeMs,geographic,axislabels);
+        positions=batchPositionsForScene(frame.scene,positions.map((value,index)=>value??{reason:meaning.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete"}));
+      }else{
+        meaning=captureFrameMeaning(frame,plan,timeMs,geographic,axislabels);
+        const builder=createBatchSceneBuilder(frame.scene.width,frame.scene.height);
+        frame.scene.nodes.forEach((node,index)=>builder.append(node,side===undefined?frame.decisions[index]:null,positions[index]??{reason:meaning.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete"}));
+        const result=builder.finish();positions=result.positions;
+        frame=freezeOwned({graphicSpec:canvasSceneProgram(result.scene).graphicSpec,scene:result.scene,progress});
+      }
+      meaning={...meaning,endpoint:projectSampledAnimationEndpoint(frame,meaning.endpoint.identities,meaning.endpoint.backgrounds)};
+    }else meaning=captureFrameMeaning(frame,plan,timeMs,geographic,axislabels);
+    return registerAnimationFrame(frame,{plan,timeMs,positions,graphs,cartesian,partitions,polars,geos,guides:retainSampledGuideMeaning(guides,axisState),geotexts,axislabels:axisState,meaning});
+  };
   const appendGraph=(side,index)=>{const state=graphState[side],item=state.items[index];graphFrame.append(item===null?undefined:state.groups[item.group],item);};
   const appendPartition=(side,index)=>{const state=partitionState[side],item=state.items[index];partitionFrame.append(item===null?undefined:state.groups[item.group],item);};
   const meaning=position=>position.reason?null:position;
@@ -178,6 +202,13 @@ export function withSampleTime(frame,timeMs,plan) {
     requireTransitionPlan(plan);
     const {side}=transitionSampleState(timeMs,plan.durationMs,plan.easing);
     if(side!==undefined&&transitionEndpointFrame(plan,side)===frame){
+      if(frame.scene.version===3){
+        const positions=batchPositionsForScene(frame.scene,transitionEndpointPositions(plan,side));
+        const legacy={graphicSpec:frame.graphicSpec,scene:plan[side].scene,progress:frame.progress,decisions:[]};
+        const captured=captureFrameMeaning(legacy,plan,timeMs),meaning={...captured,endpoint:proof.endpoint};
+        return registerAnimationFrame(cloneAndFreeze({...frame,timeMs}),{plan,timeMs,positions,
+          axislabels:transitionAxisLabels(plan)[side],geotexts:transitionGeoTexts(plan)[side],guides:transitionGuides(plan)[side],geos:transitionGeos(plan)[side],graphs:transitionGraphs(plan)[side],partitions:transitionPartitions(plan)[side],polars:transitionPolars(plan)[side].map(position=>position.reason?null:position),cartesian:transitionCartesian(plan)[side].map(position=>position.reason?null:position),meaning});
+      }
       return registerAnimationFrame(cloneAndFreeze({...frame,timeMs}),{plan,timeMs,
         axislabels:transitionAxisLabels(plan)[side],geotexts:transitionGeoTexts(plan)[side],guides:transitionGuides(plan)[side],geos:transitionGeos(plan)[side],positions:transitionEndpointPositions(plan,side).map(position=>position.reason?null:position),graphs:transitionGraphs(plan)[side],partitions:transitionPartitions(plan)[side],polars:transitionPolars(plan)[side].map(position=>position.reason?null:position),cartesian:transitionCartesian(plan)[side].map(position=>position.reason?null:position),meaning:captureFrameMeaning(frame,plan,timeMs)});
     }

@@ -26,6 +26,7 @@ export function createAnimationPlayer(input) {
     rejectUnknownProperties(request, ["to", "options", "rate", "repeat", "reducedMotion"], "animation interruption");
     if (["to","options"].some(key=>!Object.hasOwn(request,key))) throw new TypeError("Animation interruption requires its own target and options.");
     const target = requireTransitionEndpoint(request.to), options = cloneAndFreeze(normalizeTransitionOptions(request.options));
+    if((plan.version===6)!==(options.formatVersion===6))throw new TypeError("Animation interruption must preserve its frame representation.");
     const playback = optional(request, ["rate", "repeat", "reducedMotion"]);
     controller.interrupt({ durationMs: options.durationMs,
       ...playback,

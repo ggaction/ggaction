@@ -1,0 +1,80 @@
+--- a/src/animation/columnCodec.js
++++ b/src/animation/columnCodec.js
+@@ -1,5 +1,5 @@
+ import { animationNumericVectorFootprint, packAnimationNumericVector, inspectAnimationNumericVector } from "./numericColumns.js";
+-import { cloneAndFreeze, isPlainObject, isOwned } from "../core/immutable.js";
++import { cloneAndFreeze, freezeOwned, isPlainObject, isOwned } from "../core/immutable.js";
+ import { ownArray, ownRecord } from "../core/ownData.js";
+ import { validateGeneratedItemLimit } from "../core/validation.js";
+ import { validateAnimationColumnCount, animationColumnLimits } from "./resources.js";
+@@ -192,7 +192,18 @@
+ 
+ export function validateAnimationColumns(input, scope) { return validateColumns(input, scope, 1); }
+ export function validateAnimationColumnsV2(input, scope) { return validateColumns(input, scope, 2); }
+-function validateColumns(input, scope, version) {
++// Format6 snapshots each already-validated compound constant once. The
++// snapshot copier intentionally ignores shallow ownership on caller values.
++function snapshotValidatedConstant(value) {
++  if (scalar(value)) return value;
++  const result = Array.isArray(value) ? new Array(value.length) : {};
++  for (const key of Object.keys(value)) define(result, key, snapshotValidatedConstant(value[key]));
++  return freezeOwned(result);
++}
++function ownedConstantColumn(snapshot, logicalSum) { return { at: () => snapshot.value, logicalSum }; }
++export function validateAnimationColumnsV2WithOwnedConstants(input, scope) { return validateColumns(input, scope, 2, true); }
++function validateColumns(input, scope, version, ownConstants = false) {
++  const constantSnapshots = new Map();
+   // This independent physical byte/descriptor walk also runs for native preparation.
+   const physical=inspectPhysical(input);
+   fields(input,["kind","version","root","vectors"]);
+@@ -215,7 +226,16 @@
+   function column(value,length,selector=false) {
+     cellVisits+=length;validateAnimationColumnCount(storageCells+cellVisits,"cells",scope);
+     const tag=variant(value,selector?["constant","vector","runs"]:["constant","vector","runs","node"]);
+-    if(tag==="constant"){const size=version===1?treeSize(value.constant):treeSize(value.constant,new Set(),0,scope);validateAnimationColumnCount(size*length,"expandedValues",scope);return {at:()=>value.constant,logicalSum:size*length};}
++    if(tag==="constant"){
++      const size=version===1?treeSize(value.constant):treeSize(value.constant,new Set(),0,scope);
++      validateAnimationColumnCount(size*length,"expandedValues",scope);
++      if(ownConstants&&!scalar(value.constant)){
++        let snapshot=constantSnapshots.get(value.constant);
++        if(snapshot===undefined){snapshot={input:value.constant};constantSnapshots.set(value.constant,snapshot);}
++        return ownedConstantColumn(snapshot,size*length);
++      }
++      return {at:()=>value.constant,logicalSum:size*length};
++    }
+     if(tag==="vector"){const vector=ref(value.vector,length);return{at:i=>vector.at(i),logicalSum:length};}
+     if(tag==="runs"){
+       ownArray(value.runs,label);let count=0;const ends=[];
+@@ -289,6 +309,12 @@
+     nodeProof.set(value,proof);return proof;
+   }
+   const root=node(input.root);
++  // Complete physical, descriptor, expanded-value and cell validation precedes
++  // every new owned snapshot. Returned closures retain no mutable constants.
++  for(const snapshot of constantSnapshots.values()){
++    snapshot.value=snapshotValidatedConstant(snapshot.input);delete snapshot.input;Object.freeze(snapshot);
++  }
++  constantSnapshots.clear();
+   return {logicalValues:root.logical,descriptorVisits,cellVisits,...(version===2?{storageCells}:{}),...physical,restore:root.restore};
+ }
+ 
+--- a/src/animation/planner.js
++++ b/src/animation/planner.js
+@@ -2,7 +2,7 @@
+ import { projectBatchNumericColumns, restoreBatchNumericColumns, batchLogicalPlanWork } from "./batchCodec.js";
+ import { createBatchSceneBuilder, projectBatchSceneRows, validateBatchSceneStructure } from "./batchScene.js";
+ import { createTransitionResourceScope, createOfflineResourceScope, normalizeAnimationResourceLimits, animationResourceLimits, validateAnimationResourceWork, validatePreparedEndpointResources, pointAnimationRowLimit } from "./resources.js";
+-import { prepareAnimationColumns, restoreAnimationColumns, prepareAnimationColumnsV2, prepareAnimationColumnsV2WithConstants, restoreAnimationColumnsV2, validateAnimationColumnsV2 } from "./columnCodec.js";
++import { prepareAnimationColumns, restoreAnimationColumns, prepareAnimationColumnsV2, prepareAnimationColumnsV2WithConstants, restoreAnimationColumnsV2, validateAnimationColumnsV2WithOwnedConstants } from "./columnCodec.js";
+ import { inspectAnimationEnvelopeValue } from "./envelopeCodec.js";
+ import { projectAxisLabelGroups, validateAxisLabelGroups, validateAxisLabelDrawingOrder, emptyAxisLabelGroups } from "../materialization/animation/axisLabelGroups.js";
+ import { prepareAxisLabelTracks } from "./axisLabelTracks.js";
+@@ -403,7 +403,7 @@
+   const entries=[["kind",{literal:input.kind}],["version",{literal:input.version}],...(timeline?[["timeline",input.timeline]]:[]),
+     ["kernels",{literal:numeric?Object.fromEntries(Object.entries(input.kernels).filter(([key])=>key!=="columns"&&key!=="batchFrame")):input.kernels}],["durationMs",{literal:input.durationMs}],["easing",{literal:input.easing}],["from",input.from],["to",input.to]];
+   const compact={kind:"animation-columns",version:numeric?2:1,root:{object:entries},vectors:input.vectors};
+-  const batchColumns=version===BATCHED_TRANSITION_PLAN_VERSION?validateAnimationColumnsV2(compact,resources):undefined;
++  const batchColumns=version===BATCHED_TRANSITION_PLAN_VERSION?validateAnimationColumnsV2WithOwnedConstants(compact,resources):undefined;
+   const projected=batchColumns===undefined?(numeric?restoreAnimationColumnsV2:restoreAnimationColumns)(compact,resources):batchColumns.restore();
+   const raw=version===BATCHED_TRANSITION_PLAN_VERSION?restoreBatchNumericColumns(projected,resources,batchColumns.cellVisits):projected;
+   const plan=restoreTransitionPlanInternal(raw,resources,version);

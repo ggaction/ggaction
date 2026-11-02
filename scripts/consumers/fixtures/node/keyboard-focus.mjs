@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
+import { execFileWithInput } from './consumer-input.js';
 import { chart, hconcat } from 'ggaction';
 import { chart as basic } from 'ggaction/basic';
 import { createInteractionSession } from 'ggaction/interaction';
@@ -21,7 +21,7 @@ export const cases=[
   const s=createInteractionSession({program:parent,bindings:[{type:'keyboard',targets:[{target,activation:{type:'select',selection:'picked'}}]}]});s.dispatch({type:'focus',target,itemKey:key});s.dispatch({type:'activate'});
   assert.equal(s.getState().program.children.a,p);assert.equal(s.getState().history.undoCount,1);assert.deepEqual(exportAccessibleData(s.getState().program.children.b,{format:'items'}).views[0].items[0].selectedBy,['picked']);
   const code=`import fs from 'node:fs';import{deserializeProgram}from'ggaction/persistence';import{createInteractionSession}from'ggaction/interaction';globalThis.fetch=()=>{throw Error('offline');};const p=deserializeProgram(fs.readFileSync(0,'utf8')),s=createInteractionSession({program:p,bindings:[{type:'keyboard',targets:[{target:{childPath:['b'],id:'points'}}]}]});s.dispatch({type:'focus',move:'first'});process.stdout.write(JSON.stringify(s.getState().focus));s.destroy();`;
-  const restored=JSON.parse(execFileSync(process.execPath,['--input-type=module','-e',code],{input:serializeProgram(s.getState().program),encoding:'utf8',timeout:30000}));assert.equal(restored.itemKey,key);assert.deepEqual(restored.target,target);s.destroy();
+  const restored=JSON.parse(execFileWithInput(process.execPath,['--input-type=module','-e',code],{input:serializeProgram(s.getState().program),encoding:'utf8',timeout:30000}));assert.equal(restored.itemKey,key);assert.deepEqual(restored.target,target);s.destroy();
  }},
  {id:'keyboard-focus/native-hierarchy-paths',run(){
   const p=chart().createCanvas().createData({values:[{group:'A',part:'a',v:2},{group:'B',part:'b',v:3}]}).createHierarchyData({id:'hierarchy',groupFields:['group','part'],value:'v'}).layoutHierarchy({id:'layout',method:'partition'}).createPartitionPlot({id:'partition'});

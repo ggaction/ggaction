@@ -27,7 +27,7 @@ export function canvasSceneSnapshot(program, cache = true) {
   if (cache && snapshots.has(program)) return snapshots.get(program);
   const sources = [], canvases = [], collections = [];
   const scene = collectTransitionGraphics(program.graphicSpec, sceneIdentities(program.graphicSpec), {
-    onNode(graphicId, node) { sources.push({ graphicId, nodeKey: node.key }); },
+    onNode(graphicId, node, rowIndex) { sources.push({ graphicId, nodeKey: node.key, ...(rowIndex === undefined ? {} : { rowIndex }) }); },
     onCanvas(graphicId, frame) { canvases.push({ graphicId, offset: [frame.x, frame.y], clip: frame.clip }); },
     onCollection(graphicId, frame, index, parent) { collections.push({ graphicId, index, offset: [frame.x, frame.y], clip: frame.clip, clips: frame.clips, parentFrame: { offset: [parent.x, parent.y], clip: parent.clip, clips: parent.clips } }); }
   });

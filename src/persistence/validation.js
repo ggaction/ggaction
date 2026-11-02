@@ -158,7 +158,7 @@ export function validateGraphic(graphic, path = "payload.graphicSpec", { legacy 
     }
     if (object.properties !== undefined) validateProperties(object.type, object.properties);
     if (object.items !== undefined) {
-      if (object.type === "canvas" || object.properties !== undefined) throw invalidSnapshot(`Invalid item owner "${id}".`, path);
+      if (object.type === "canvas" || object.type === "circle-batch" || object.properties !== undefined) throw invalidSnapshot(`Invalid item owner "${id}".`, path);
       requireArray(object.items, `${path}.objects.${id}.items`);
       for (const item of object.items) {
         exactKeys(item, [...(object.type === "collection" ? ["id", "type", "properties"] : ["id", "properties"]), ...(item.identity === undefined ? [] : ["identity"])], path);

@@ -1,3 +1,4 @@
+import { animationSceneRows } from "../core/sceneRows.js";
 import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { uniquePositionBinding } from "../core/encodingBindings.js";
 import { validateWorkLimit } from "../core/validation.js";
@@ -77,8 +78,8 @@ export function prepareRegionEntries(program, owner, base, scene, rootTransform,
   const selectedEntries = frame.entries.filter(entry => entry.metadata.ownerId === owner.target.id && samePath(entry.metadata.childPath, owner.target.childPath) && allowed.has(entry.metadata.itemKey));
   if (strict) {
     // Stored scale inversion cannot infer an arbitrary sampled animation's scale.
-    const original = new Map(base.scene.nodes.map(node => [node.key, node]));
-    const current = new Map(scene.nodes.map(node => [node.key, node]));
+    const original = new Map(Array.from(animationSceneRows(base.scene, { decisions: false }), ({ node }) => [node.key, node]));
+    const current = new Map(Array.from(animationSceneRows(scene, { decisions: false }), ({ node }) => [node.key, node]));
     for (const entry of selectedEntries) {
       spend(1);
       const currentNode = JSON.stringify(current.get(entry.nodeKey)), originalNode = JSON.stringify(original.get(entry.nodeKey));

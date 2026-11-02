@@ -1,3 +1,4 @@
+import { validateCircleBatchColumn, validateCircleBatchProperties } from "./circleBatch.js";
 import { pathCommandCapacity, validatePathCapacity } from "../pathTopology.js";
 import { validateWeightedBlendSources } from "./weightedBlend.js";
 import { normalizeMarkShadow } from "../markShadow.js";
@@ -35,7 +36,20 @@ const TEXT_BASELINES = new Set([
 ]);
 const validatedProperties = new WeakMap();
 
+function validateCircleAppearance(value) {
+  ownRecord(value, "circle-batch.appearance");
+  if (["x", "y", "radius", "length"].some(key => Object.hasOwn(value, key))) {
+    throw new TypeError("circle-batch.appearance cannot contain coordinates or length.");
+  }
+  validateConcreteGraphicProperties("circle", value);
+}
+
 export function validateConcreteGraphicValue(type, property, value, properties) {
+  if (type === "circle-batch") {
+    if (property === "appearance") validateCircleAppearance(value);
+    else validateCircleBatchColumn(value, property);
+    return value;
+  }
   if (property === "maxCommands") validatePathCapacity(value);
   if (type === "weighted-blend" && property === "sources") validateWeightedBlendSources(value, validateConcreteGraphicProperties);
   if (property === "shadow") {
@@ -144,7 +158,8 @@ export function validateConcreteGraphicProperties(type, properties) {
   if (type === "image" && ["image", "x", "y", "width", "height"].some(key => !Object.hasOwn(properties, key))) {
     throw new TypeError("image.properties requires image, x, y, width, and height.");
   }
-  for (const [property, value] of Object.entries(properties)) {
+  if (type === "circle-batch") validateCircleBatchProperties(properties, validateCircleAppearance);
+  if (type !== "circle-batch") for (const [property, value] of Object.entries(properties)) {
     validateGraphicProperty(type, property);
     validateConcreteGraphicValue(type, property, value, properties);
   }

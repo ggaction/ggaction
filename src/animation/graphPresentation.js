@@ -8,6 +8,7 @@ import { resolveAnimationGraphGeometry, animationGraphItemGeometry, animationGra
 import { canvasSceneProgram } from "../renderers/canvasScene.js";
 import { projectSampledAnimationEndpoint } from "./endpoints.js";
 import { animationFrameProvenance, registerGraphPresentationFrame } from "./frameProvenance.js";
+import { animationSceneLength } from "../core/sceneRows.js";
 
 // Only authentic current meanings admit this private presentation operation.
 // No endpoint interpolation, native solver or host-created scene is consulted.
@@ -31,10 +32,11 @@ export function createGraphPresentationFrame(original, operation) {
     group = moveGraphPresentationNode(previous, node.key, { x: node.x, y: node.y });
     validateAnimationGraphGroup(group);
   } else selected = unbundleGraphPresentationEdge(previous, operation.edge);
-  validateWorkLimit(animationGraphGroupWork(previous) + animationGraphGroupWork(group) + original.scene.nodes.length, "Graph presentation frame work");
+  validateWorkLimit(animationGraphGroupWork(previous) + animationGraphGroupWork(group) + animationSceneLength(original.scene), "Graph presentation frame work");
   const beforeGeometry = resolveAnimationGraphGeometry(previous), geometry = moving ? resolveAnimationGraphGeometry(group) : null;
   let count = 0;
-  const items = [...proof.graphs.items], nodes = original.scene.nodes.map((node, index) => {
+  const items = [...proof.graphs.items];
+  const presentNode = (node, index) => {
     const item = items[index];
     if (item === null || item.group !== operation.group || (!moving && (item.kind !== "edge" || item.key !== operation.edge))) return node;
     if (item.reason !== undefined || !animationGraphGeometryMatches(node, animationGraphItemGeometry(previous, item, beforeGeometry))) {
@@ -53,11 +55,22 @@ export function createGraphPresentationFrame(original, operation) {
     // exact concrete fallback instead of assigning false sampled-route meaning.
     if (!moving) items[index] = { ...item, reason: "edited-graph-geometry" };
     return { ...node, properties };
-  });
+  };
+  let scene;
+  if (original.scene.version === 3) {
+    let index = 0;
+    const entries = original.scene.entries.map(entry => {
+      // Circle runs contain only Cartesian point rows. Keep their exact entry
+      // and position boundaries while advancing the shared logical item order.
+      if (entry.kind === "circle-run") { index += entry.keys.length; return entry; }
+      const node = presentNode(entry.node, index++);
+      return node === entry.node ? entry : { ...entry, node };
+    });
+    scene = cloneAndFreeze({ ...original.scene, entries });
+  } else scene = cloneAndFreeze({ ...original.scene, nodes: original.scene.nodes.map(presentNode) });
   if (count === 0) throw new Error("Graph presentation requires a represented current item.");
-  const scene = cloneAndFreeze({ ...original.scene, nodes });
   const frame = cloneAndFreeze({ graphicSpec: canvasSceneProgram(scene).graphicSpec, scene,
-    progress: original.progress, decisions: original.decisions });
+    progress: original.progress, ...(scene.version === 3 ? {} : { decisions: original.decisions }) });
   const endpoint = projectSampledAnimationEndpoint(frame, proof.endpoint.identities, proof.endpoint.backgrounds);
   const graphs = cloneAndFreeze({ groups: proof.graphs.groups.map((value, index) => index === operation.group ? group : value), items });
   return registerGraphPresentationFrame(frame, original, endpoint, graphs);

@@ -1,3 +1,4 @@
+import { visitGraphicSources } from "../grammar/schemas/graphicSources.js";
 import { graphicClipBounds, intersectClipBounds, validateGraphicClip } from "../grammar/schemas/graphicClip.js";
 import { walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
 
@@ -7,6 +8,10 @@ import { walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
 export function walkGraphicPaintItems(target, visit) {
   const frames = [{ offset: [0, 0], clip: { left: 0, top: 0, right: target.width, bottom: target.height } }];
   function paint(id, object, type, frame) {
+    if (type === "circle-batch") {
+      visitGraphicSources(id, object, type, (rowId, row, rowType) => visit(rowId, row, rowType, frame));
+      return;
+    }
     visit(id, object, type, frame);
     if (type !== "weighted-blend") return;
     for (const source of object.properties.sources) {

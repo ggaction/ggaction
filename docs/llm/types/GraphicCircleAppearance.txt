@@ -1,0 +1,13 @@
+export interface GraphicCircleAppearance {
+  readonly fill?: string | LinearGradientPaint | Required<RadialGradientPaint> |
+    (Required<Omit<PatternPaint, "coordinateSpace">> & { readonly origin: LinearGradientPoint });
+  readonly outline?: Readonly<MarkOutline>;
+  readonly stroke?: string;
+  readonly strokeWidth?: number;
+  readonly lineCap?: "butt" | "round" | "square";
+  readonly lineJoin?: "miter" | "round" | "bevel";
+  readonly miterLimit?: number;
+  readonly opacity?: number;
+  readonly blend?: BlendMode;
+  readonly shadow?: Readonly<Required<MarkShadow>>;
+}

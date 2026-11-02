@@ -75,16 +75,36 @@ function metadata(value, work) {
 }
 function sceneKeys(scene, work, maxSceneNodes) {
   ownRecord(scene, "Hit scene");
-  if (!isOwned(scene) || !Object.hasOwn(scene, "version") || scene.version !== 2 || !Object.hasOwn(scene, "nodes") || !isOwned(scene.nodes) ||
-      !Array.isArray(scene.nodes) || scene.nodes.length > maxSceneNodes) throw new TypeError("Hit index requires an immutable owned Canvas scene within its item budget.");
-  ownArray(scene.nodes, "Hit scene nodes");
+  if (!isOwned(scene) || !Object.hasOwn(scene, "version")) throw new TypeError("Hit index requires an immutable owned Canvas scene within its item budget.");
+  const batch = scene.version === 3;
+  if (!Object.hasOwn(scene, batch ? "entries" : "nodes")) throw new TypeError("Hit index requires an immutable owned Canvas scene within its item budget.");
+  const rows = batch ? scene.entries : scene.nodes;
+  if (![2, 3].includes(scene.version) || !isOwned(rows) || !Array.isArray(rows) || rows.length > maxSceneNodes) {
+    throw new TypeError("Hit index requires an immutable owned Canvas scene within its item budget.");
+  }
+  ownArray(rows, "Hit scene nodes");
   const keys = new Set();
-  for (const node of scene.nodes) {
-    ownRecord(node, "Hit scene node");
-    if (!isOwned(node) || !Object.hasOwn(node, "key")) throw new TypeError("Hit scene nodes require immutable own keys.");
-    const key = text(node.key, work);
+  const add = value => {
+    if (keys.size >= maxSceneNodes) throw new RangeError("Hit scene exceeds its item budget.");
+    const key = text(value, work);
     if (keys.has(key)) throw new TypeError("Hit scene node keys must be unique.");
     keys.add(key);
+  };
+  for (const row of rows) {
+    ownRecord(row, "Hit scene node");
+    if (!isOwned(row)) throw new TypeError("Hit scene nodes require immutable own keys.");
+    if (batch && !Object.hasOwn(row, "kind")) throw new TypeError("Hit scene entry requires its own kind.");
+    if (batch && row.kind === "circle-run") {
+      if (!Object.hasOwn(row, "keys") || !isOwned(row.keys)) throw new TypeError("Hit circle run requires immutable own keys.");
+      ownArray(row.keys, "Hit circle run keys");
+      if (!row.keys.length || row.keys.length > 10000) throw new RangeError("Hit circle run exceeds its row budget.");
+      for (const key of row.keys) add(key);
+    } else {
+      const node = batch ? row.kind === "single" && row.node : row;
+      ownRecord(node, "Hit scene node");
+      if (!isOwned(node) || !Object.hasOwn(node, "key")) throw new TypeError("Hit scene nodes require immutable own keys.");
+      add(node.key);
+    }
   }
   return keys;
 }

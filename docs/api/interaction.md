@@ -66,7 +66,10 @@ const program = chart().createCanvas({ width: 400, height: 400 })
 const session = createInteractionSession({ program, bindings: [],
   hitPreparation: { maxSceneNodes: 100001, maxWork: 128000000 }
 });
-console.log(session.getState().scene.nodes.length);
+const scene = session.getState().scene;
+console.log(scene.version === 2 ? scene.nodes.length : scene.entries.reduce(
+  (count, entry) => count + (entry.kind === "circle-run" ? entry.keys.length : 1), 0
+));
 session.destroy();
 ```
 
@@ -368,8 +371,12 @@ Native edits and program replacements clear the transient animation frame and re
 lease. Frames themselves add no history entry. The same flow accepts a reduced-motion player's
 final frame; the host owns playback policy.
 
-An animation host may supply a sampled version-2 Canvas scene whose node keys,
-types and topology belong to the current program. Render the accepted snapshot:
+An animation host may supply a version-2 Canvas scene or a complete version-3
+batch scene whose logical keys, types and topology belong to the current program.
+`state.scene` and the frame command's `scene` use `AnyCanvasTransitionScene`;
+check `scene.version` before reading `nodes` or `entries`. The `frame` alternative
+also accepts authentic format6 samples, preserving each batch row's native identity.
+Offline and cloned frames retain no native targeting authority. Render the accepted snapshot:
 
 <!-- snippet-context:start -->
 

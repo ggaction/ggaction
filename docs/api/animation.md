@@ -75,10 +75,76 @@ pattern continues to use the native geometry and paint materialization rules.
 
 Saved transition plans use version 3 by default, or version 4 when explicit node
 limits are requested. Explicit `formatVersion: 5` selects lossless numeric transport,
-including native geographic capacity. All three retain the required
+including native geographic capacity. Explicit `formatVersion: 6` adds materialized
+batched frames. All four versions retain the required
 `premultiplied-linear-srgb@1` appearance kernel. Earlier development plan versions
 and missing or unknown kernels are rejected on restore. The outer animation
 envelope remains schema 1.
+
+## Sample materialized batches
+
+Choose `formatVersion: 6` explicitly to return `BatchedTransitionFrame` values.
+The frame contains a complete `graphicSpec`, `progress`, and a version 3 `scene`.
+Its ordered `entries` contain ordinary single nodes or adjacent `circle-run` columns.
+Each run contains at most 10,000 circles with equal appearance, placement and
+resolved scales. Coordinates, radii, paint, clips and current identities are ready
+when sampling returns; all four renderers consume the frame directly. Other
+geometry and incompatible paint remain concrete single-entry fallbacks.
+
+The default continues to return legacy version 2 scenes with `nodes` and a
+separate `decisions` vector. A batched frame embeds decisions in each entry:
+`decision` for a single node and `decisions` for a run. Exact endpoints use
+`null`; intermediate runs hold aligned source indices, target indices and item keys.
+Both representations are immutable. Circle batches preserve individual drawing
+order and alpha for every circle.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run this complete ES module with ggaction installed; both keyed endpoints, format6 sampling, SVG output and offline version narrowing are included.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from 'ggaction';
+import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from 'ggaction/animation';
+import { renderToSVG } from 'ggaction/svg';
+
+const from = chart().createCanvas({ width: 320, height: 200, margin: 20 })
+  .createData({ id: 'rows', keyField: 'id', values: [{ id: 'a', x: 1, y: 2 }, { id: 'b', x: 2, y: 1 }] })
+  .createPointMark({ id: 'points' })
+  .encodeX({ field: 'x', scale: { id: 'x', domain: [0, 3], nice: false } })
+  .encodeY({ field: 'y', scale: { id: 'y', domain: [0, 3], nice: false } });
+const to = from.editScale({ id: 'x', domain: [0, 6], nice: false });
+const plan = planTransition({ from, to, options: { durationMs: 1000, formatVersion: 6 } });
+const frame = sampleTransition(plan, 500);
+const svg = renderToSVG(frame);
+const restored = deserializeAnimation(serializeAnimation(plan));
+if (restored.plan.version === 6) {
+  const batched = sampleTransition(restored.plan, 500);
+  console.log(batched.scene.entries.length);
+} else {
+  const legacy = sampleTransition(restored.plan, 500);
+  console.log(legacy.decisions.length);
+}
+```
+
+TypeScript now types `deserializeAnimation(...).plan` as `AnyTransitionPlan`.
+Existing consumers that inspect representation-specific fields must narrow
+`plan.version === 6` before sampling, as above. A dynamically typed options union
+also returns `AnyTransitionPlan`; literal 6 and legacy options retain precise overloads.
+Rendering either representation needs no conversion.
+
+Batched endpoints require `formatVersion: 6` for rebase. A player keeps its creation
+representation and rejects a cross-representation interrupt before changing its
+state. Repeat 6 when interrupting a batch player. Serialization keeps the selected
+version and has no implicit downgrade. Choose legacy mode from the original
+program endpoints when an application needs legacy frames.
+
+The existing logical row, owner, work and export limits still apply: ten batches
+of 10,000 circles count as 100,000 rows. Node limits default to 10,000 and must be
+raised explicitly for larger admitted native point owners. Numeric storage preserves
+finite values and negative zero; offline restoration grants no native hit authority.
+Selecting format 6 does not promise a particular frame rate.
 
 ## Preserve geographic capacity in saved animations
 
@@ -546,15 +612,20 @@ source data. General Text anchor interpolation remains outside this camera kerne
 | Function | Result and behavior |
 | --- | --- |
 | `planTransition({from, to, options:{durationMs, easing?, tracks?, markers?, composite?, maxEndpointNodes?, maxOutputNodes?, formatVersion?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
-| `sampleTransition(plan, timeMs)` | Immutable `{graphicSpec, scene, progress, decisions}`. Finite time is clamped to the plan's duration. For zero duration, time zero selects the target. |
+| `sampleTransition(plan, timeMs)` | Immutable legacy `{graphicSpec, scene, progress, decisions}` or format6 `{graphicSpec, scene, progress}` with embedded entry decisions. Finite time is clamped to the plan's duration. For zero duration, time zero selects the target. |
 | `serializeAnimation(plan, playback?)` | A JSON string containing the prepared endpoint payloads, kernel versions, and playback preferences. |
 | `deserializeAnimation(text)` | Immutable `{plan, playback}`. It validates the complete stored values before returning an authentic plan. |
 | `exportAnimationFrames(plan, {timesMs})` | Frames with `timeMs`, using a nonempty strictly increasing array within the duration. |
 | `exportAnimationFrames(plan, {fps})` | Frames at `index / fps * 1000` milliseconds through the duration; fps must be positive and finite. |
 
-When an authentic sample is reused as an endpoint, sampling that endpoint returns
+When an authentic sample is reused in the same representation, sampling that endpoint returns
 the original frame, including its original progress and decisions. Exported
 `timeMs` belongs to the new plan and does not rewrite the endpoint progress.
+
+A temporary unbundled graph frame also retains its original sampling decisions.
+When reused as an endpoint, its edited edge uses a concrete fallback. Saving and
+restoring that plan preserves the preview and fallback; restored frames still
+cannot authorize native interaction.
 
 A frame-rate grid does not add an off-grid ending frame. Use `timesMs` when an
 exact endpoint is required. A zero-duration plan exports one frame at zero.

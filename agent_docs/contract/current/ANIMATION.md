@@ -12,10 +12,14 @@ durationMs는0이상 finite, easing은 `linear|cubic-in-out`이며 기본값은 
 양 endpoint의 실제 materialized graphics와 typed identity·row grain을 사용한다.
 행 인덱스·draw order·label을 item correspondence로 추정하지 않는다.
 
-`sampleTransition(plan,timeMs)`는 `{graphicSpec,scene,progress,decisions}`를 반환한다.
+기존 format3–5의 `sampleTransition(plan,timeMs)`는 `{graphicSpec,scene,progress,decisions}`를 반환한다.
 이미 sampled frame을 endpoint로 재사용한 경우 그 endpoint에서는 원본 객체와 원래
 progress/decisions를 그대로 돌려준다. `exportAnimationFrames`의 timeMs는 새 계획의
 시간축이며 기존 endpoint의 원래 progress를 덮어쓰지 않는다.
+임시 graph unbundle을 새 endpoint로 사용할 때도 원 sample decision을 생성 이력으로 보존한다.
+변경된 edge는 검증된 graph item의 `edited-graph-geometry`로 구분하며, 이후 계획은
+그 간선을 concrete fallback으로 처리한다. 저장·복원은 이 조합을 보존하되 kernel 적용
+가능성이나 native interaction 권한을 부여하지 않는다. 다른 의미값 누락은 계속 거부한다.
 finite time은 양 끝으로 clamp하며0duration의 time0은 target이다. exact endpoint는
 원 graphicSpec/scene 참조를 보존한다. 중간 graphicSpec은 기존 scene concrete owner를
 재사용하므로 네 공개 renderer에 frame 자체를 전달할 수 있다. frame clone은 authentic
@@ -65,7 +69,7 @@ Sample/rebase는 원 concrete/meaning/scale/identity의 현재 flat proof만 유
 ## 명시 format5와 지리 용량
 
 `formatVersion:5`를 own으로 명시하면 version5·transition5와 `animation-columns@2`를 선택한다.
-그 외 명시값(null/undefined/3/4 포함)은 거부한다. Node 두 옵션을 생략할 수 있으며 각 기본10000과
+명시6은 아래 batch frame 계약을 선택한다. 나머지 명시값(null/undefined/3/4 포함)은 거부한다. Node 두 옵션을 생략할 수 있으며 각 기본10000과
 기존 명시 최대·scope quota를 그대로 적용한다. 기존 options의 v3/v4 선택·bytes·reader는 유지한다.
 
 Format5는 같은 실제 endpoint/timeline을 저장하며 compound 내부를 손실 없이 내려간다.
@@ -86,6 +90,37 @@ Version5는 version4와 같은 top-level fields를 가지며 kernels.columns를 
 Unknown/mismatched version·kernel은 column 확장 전에 거부하고, 실제 family·capacity와 manifest를
 복원 뒤 다시 대조한다. Restored wire bytes·native exact endpoint·sample/timeline/rebase/renderer
 입력은 보존한다. 저장 형식 선택은 재생 시간 보장이 아니다.
+
+## 명시 format6와 완성된 batch frame
+
+명시 `formatVersion:6`만 transition6·columns@2·batchFrame1을 선택한다. 기본v3/명시nodev4/명시5와
+기존 정상 저장 bytes는 유지한다. 공개 `BatchedTransitionPlan`의 sample은 완성된
+`{graphicSpec,scene:{version:3,width,height,entries},progress}`다. Scene3는 single node/decision 또는
+circle-run keys/placement/properties/decisions를 저장한다. Exact endpoint decision은null, interior
+point run은 동일 owner/role/kernel과 sourceIndices/targetIndices/itemKeys의 dense table이다.
+각 run은1..10000행이며 연속 draw order·appearance·placement·scale 경계에서 나눈다.
+
+모든 좌표/appearance/placement/현재 의미/native identity는 sample 반환 전에 완성·검산된다.
+Renderer는 graphicSpec의 공통 circle-batch primitive를 직접 소비하고 의미 평가를 하지 않는다.
+기존 family/복잡 paint fallback은 single entry로 유지한다. Private positions는 entries에 대응하는
+single value 또는 point-run x/y values와 exact scale이다. Native proof는 logical row 순서와
+(graphicId,rowIndex)를 사용하고 offline/clone/caller batch에는 native 권한을 부여하지 않는다.
+
+Node/owner/work/export 과금은 physical entry 수가 아닌 logical row 및 원 primitive 비용이다.
+기존 명시scope/point maxItems·모든 전송 상계를 유지한다. Numeric projection은 알려진 batch
+좌표/반지름/position/decision-index 경로만 기존 float64-le로 저장하며 -0를 보존한다.
+columns@2 pool 검산 뒤 모든 length/cells/논리work·owner 경계를 숫자 배열 할당 전에 검사한다.
+SHA digest는 전체 tagged payload를 덮고 모든 single legacy 값도 기존 strict codec을 따른다.
+
+Batch frame→legacy plan의 암묵변환은 거부한다. Format6 rebase는 완성된 row를 직접 읽어
+private track 입력을 준비하며 과거 frame/plan을 보존하지 않는다. 같은 representation의 exact
+sample은 원 frame identity를 유지한다. Player는 생성 representation을 보존하고 cross-mode
+interrupt를 상태 변경 전에 거부한다. Serializer는 현재 version을 유지하며 downgrade API는 없다.
+
+`AnyTransitionPlan/AnyTransitionFrame` union과 format6 overload를 공개한다. deserialize 반환 plan은
+AnyTransitionPlan이므로 기존 TypeScript 소비자가 representation별 필드를 읽으려면 version6 분기가
+필요하다. Literal legacy options는 기존 precise 타입, literal6은 batch 타입, 동적options는 union이다.
+정확 예제는 [공개 Animation 문서](../../../docs/api/animation.md)의 version 분기를 따른다.
 
 ## 완료된 Graph 배치 전환
 

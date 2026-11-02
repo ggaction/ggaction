@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:35d351c7e7850f2dad114aca97ad2ecfd87fbe302d4568c4d6197b18a3fd975b. Status: development. Runtime source: 97d9e30ee6ab21901fdf2820cd2c46f3b6685456. Release baseline: v0.0.13.
+Contract: sha256:b882a91b634bdd0caf7461d7c8b9fb590b6d0abcaad378eaf5e93015125b9e48. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/97d9e30ee6ab21901fdf2820cd2c46f3b6685456/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/97d9e30ee6ab21901fdf2820cd2c46f3b6685456/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11151,10 +11151,72 @@ pattern continues to use the native geometry and paint materialization rules.
 
 Saved transition plans use version 3 by default, or version 4 when explicit node
 limits are requested. Explicit `formatVersion: 5` selects lossless numeric transport,
-including native geographic capacity. All three retain the required
+including native geographic capacity. Explicit `formatVersion: 6` adds materialized
+batched frames. All four versions retain the required
 `premultiplied-linear-srgb@1` appearance kernel. Earlier development plan versions
 and missing or unknown kernels are rejected on restore. The outer animation
 envelope remains schema 1.
+
+## Sample materialized batches
+
+Choose `formatVersion: 6` explicitly to return `BatchedTransitionFrame` values.
+The frame contains a complete `graphicSpec`, `progress`, and a version 3 `scene`.
+Its ordered `entries` contain ordinary single nodes or adjacent `circle-run` columns.
+Each run contains at most 10,000 circles with equal appearance, placement and
+resolved scales. Coordinates, radii, paint, clips and current identities are ready
+when sampling returns; all four renderers consume the frame directly. Other
+geometry and incompatible paint remain concrete single-entry fallbacks.
+
+The default continues to return legacy version 2 scenes with `nodes` and a
+separate `decisions` vector. A batched frame embeds decisions in each entry:
+`decision` for a single node and `decisions` for a run. Exact endpoints use
+`null`; intermediate runs hold aligned source indices, target indices and item keys.
+Both representations are immutable. Circle batches preserve individual drawing
+order and alpha for every circle.
+
+> **Executable complete.** Run this complete ES module with ggaction installed; both keyed endpoints, format6 sampling, SVG output and offline version narrowing are included.
+
+```js
+import { chart } from 'ggaction';
+import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from 'ggaction/animation';
+import { renderToSVG } from 'ggaction/svg';
+
+const from = chart().createCanvas({ width: 320, height: 200, margin: 20 })
+  .createData({ id: 'rows', keyField: 'id', values: [{ id: 'a', x: 1, y: 2 }, { id: 'b', x: 2, y: 1 }] })
+  .createPointMark({ id: 'points' })
+  .encodeX({ field: 'x', scale: { id: 'x', domain: [0, 3], nice: false } })
+  .encodeY({ field: 'y', scale: { id: 'y', domain: [0, 3], nice: false } });
+const to = from.editScale({ id: 'x', domain: [0, 6], nice: false });
+const plan = planTransition({ from, to, options: { durationMs: 1000, formatVersion: 6 } });
+const frame = sampleTransition(plan, 500);
+const svg = renderToSVG(frame);
+const restored = deserializeAnimation(serializeAnimation(plan));
+if (restored.plan.version === 6) {
+  const batched = sampleTransition(restored.plan, 500);
+  console.log(batched.scene.entries.length);
+} else {
+  const legacy = sampleTransition(restored.plan, 500);
+  console.log(legacy.decisions.length);
+}
+```
+
+TypeScript now types `deserializeAnimation(...).plan` as `AnyTransitionPlan`.
+Existing consumers that inspect representation-specific fields must narrow
+`plan.version === 6` before sampling, as above. A dynamically typed options union
+also returns `AnyTransitionPlan`; literal 6 and legacy options retain precise overloads.
+Rendering either representation needs no conversion.
+
+Batched endpoints require `formatVersion: 6` for rebase. A player keeps its creation
+representation and rejects a cross-representation interrupt before changing its
+state. Repeat 6 when interrupting a batch player. Serialization keeps the selected
+version and has no implicit downgrade. Choose legacy mode from the original
+program endpoints when an application needs legacy frames.
+
+The existing logical row, owner, work and export limits still apply: ten batches
+of 10,000 circles count as 100,000 rows. Node limits default to 10,000 and must be
+raised explicitly for larger admitted native point owners. Numeric storage preserves
+finite values and negative zero; offline restoration grants no native hit authority.
+Selecting format 6 does not promise a particular frame rate.
 
 ## Preserve geographic capacity in saved animations
 
@@ -11598,15 +11660,20 @@ source data. General Text anchor interpolation remains outside this camera kerne
 | Function | Result and behavior |
 | --- | --- |
 | `planTransition({from, to, options:{durationMs, easing?, tracks?, markers?, composite?, maxEndpointNodes?, maxOutputNodes?, formatVersion?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
-| `sampleTransition(plan, timeMs)` | Immutable `{graphicSpec, scene, progress, decisions}`. Finite time is clamped to the plan's duration. For zero duration, time zero selects the target. |
+| `sampleTransition(plan, timeMs)` | Immutable legacy `{graphicSpec, scene, progress, decisions}` or format6 `{graphicSpec, scene, progress}` with embedded entry decisions. Finite time is clamped to the plan's duration. For zero duration, time zero selects the target. |
 | `serializeAnimation(plan, playback?)` | A JSON string containing the prepared endpoint payloads, kernel versions, and playback preferences. |
 | `deserializeAnimation(text)` | Immutable `{plan, playback}`. It validates the complete stored values before returning an authentic plan. |
 | `exportAnimationFrames(plan, {timesMs})` | Frames with `timeMs`, using a nonempty strictly increasing array within the duration. |
 | `exportAnimationFrames(plan, {fps})` | Frames at `index / fps * 1000` milliseconds through the duration; fps must be positive and finite. |
 
-When an authentic sample is reused as an endpoint, sampling that endpoint returns
+When an authentic sample is reused in the same representation, sampling that endpoint returns
 the original frame, including its original progress and decisions. Exported
 `timeMs` belongs to the new plan and does not rewrite the endpoint progress.
+
+A temporary unbundled graph frame also retains its original sampling decisions.
+When reused as an endpoint, its edited edge uses a concrete fallback. Saving and
+restoring that plan preserves the preview and fallback; restored frames still
+cannot authorize native interaction.
 
 A frame-rate grid does not add an off-grid ending frame. Use `timesMs` when an
 exact endpoint is required. A zero-duration plan exports one frame at zero.
@@ -11810,7 +11877,10 @@ const program = chart().createCanvas({ width: 400, height: 400 })
 const session = createInteractionSession({ program, bindings: [],
   hitPreparation: { maxSceneNodes: 100001, maxWork: 128000000 }
 });
-console.log(session.getState().scene.nodes.length);
+const scene = session.getState().scene;
+console.log(scene.version === 2 ? scene.nodes.length : scene.entries.reduce(
+  (count, entry) => count + (entry.kind === "circle-run" ? entry.keys.length : 1), 0
+));
 session.destroy();
 ```
 
@@ -12092,8 +12162,12 @@ Native edits and program replacements clear the transient animation frame and re
 lease. Frames themselves add no history entry. The same flow accepts a reduced-motion player's
 final frame; the host owns playback policy.
 
-An animation host may supply a sampled version-2 Canvas scene whose node keys,
-types and topology belong to the current program. Render the accepted snapshot:
+An animation host may supply a version-2 Canvas scene or a complete version-3
+batch scene whose logical keys, types and topology belong to the current program.
+`state.scene` and the frame command's `scene` use `AnyCanvasTransitionScene`;
+check `scene.version` before reading `nodes` or `entries`. The `frame` alternative
+also accepts authentic format6 samples, preserving each batch row's native identity.
+Offline and cloned frames retain no native targeting authority. Render the accepted snapshot:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `session`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -37056,7 +37130,7 @@ export type { FlowDefinition, CreateFlowDataOptions, EditFlowDataOptions, FlowNo
 export type { ImageResourceSource, CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost,
   PreparedImageResource, ApplyImageResourceOptions, ImageRef, ImageResource, ImageMarkOptions, CreateImageMarkOptions, EditImageMarkOptions } from "./program.js";
 import type { CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost, PreparedImageResource } from "./program.js";
-import type { CanvasTransitionScene } from "./scene.js";
+import type { AnyCanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 export type { PartitionPlotOptions, EditPartitionPlotOptions, PartitionViewState } from "./program.js";
@@ -37400,6 +37474,8 @@ export type {
   GraphicObject,
   GraphicSpec,
   GraphicType,
+  GraphicCircleAppearance,
+  GraphicCircleBatchProperties,
   GraphicBlendSource,
   GraphicWeightedBlendProperties,
   GroupEncodingOptions,
@@ -37576,7 +37652,7 @@ export function render(
 ): void;
 
 export function prepareImageRendering(program: Pick<ChartProgram, "graphicSpec">, host: ImageRenderingHost): Promise<PreparedImageRendering>;
-export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
+export function prepareImageRendering(scene: AnyCanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
 
 export function prepareImageResource(program: ChartProgram, request: CreateImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"create">>;
 export function prepareImageResource(program: ChartProgram, request: ReplaceImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"replace">>;
@@ -37592,13 +37668,13 @@ export function prepareFontResource(program: ChartProgram, request: ReplaceFontR
 export function prepareFontResource(program: ChartProgram, request: FontResourceRequest, host: FontResourceHost): Promise<PreparedFontResource>;
 export function prepareTextMetrics(program: ChartProgram, request: TextMetricsRequest, host: TextMetricsHost): Promise<PreparedTextMetrics>;
 export function prepareFontRendering(program: Pick<ChartProgram, "graphicSpec">, host: FontRenderingHost): Promise<PreparedFontRendering>;
-export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
+export function prepareFontRendering(scene: AnyCanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
 
 export type { GraphMetric, GraphFeatures, GraphSearchOptions, GraphFeaturePolicy, InferredGraphSource, GraphMetricDefinition, GraphNeighborDefinition, GraphMetricMstDefinition, GraphCandidateMstDefinition, GraphStructuralDefinition, InferredGraphDefinition, CreateInferredGraphDataOptions, EditInferredGraphDataOptions, GraphInferenceDiagnostics, ObservedGraphResource, InferredGraphResource } from "./program.js";
 export type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
 import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
 export function prepareShadowRendering(program: Pick<ChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
-export function prepareShadowRendering(scene: CanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
+export function prepareShadowRendering(scene: AnyCanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
 export type { GeoJoinKeyOptions, CreateGeoJoinDataOptions, EditGeoJoinDataOptions, GeoJoinResource } from "./program.js";
 
 export type { GeoLODBaseLevel, GeoLODChildLevel, GeoLODLevels, CreateGeoLODDataOptions, EditGeoLODDataOptions, GeoLODResource } from "./program.js";
@@ -37611,7 +37687,7 @@ export type { GeoLODBaseLevel, GeoLODChildLevel, GeoLODLevels, CreateGeoLODDataO
 ```typescript
 export type { GraphicBlendSource, GraphicWeightedBlendProperties } from "./program.js";
 export type { FillPaint, MarkOutline, MarkShadow, BlendMode, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
-import type { CanvasTransitionScene } from "./scene.js";
+import type { AnyCanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 export type { ConditionalEncodingOptions } from "./program.js";
@@ -37768,16 +37844,16 @@ export function render(
 ): void;
 
 export function prepareImageRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: ImageRenderingHost): Promise<PreparedImageRendering>;
-export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
+export function prepareImageRendering(scene: AnyCanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
 export type { FontIdentity, FontMimeType, ConcreteFont, PreparedFontRendering, FontRenderingHost } from "./program.js";
 import type { PreparedFontRendering, FontRenderingHost } from "./program.js";
 export function prepareFontRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: FontRenderingHost): Promise<PreparedFontRendering>;
-export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
+export function prepareFontRendering(scene: AnyCanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
 
 export type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
 import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
 export function prepareShadowRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
-export function prepareShadowRendering(scene: CanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
+export function prepareShadowRendering(scene: AnyCanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
 ```
 
 #### `ggaction/extension`
@@ -38156,7 +38232,8 @@ export function getProjectionView(program: ProgramInput, options?: { readonly ta
 [Complete declaration and relative dependencies](./types/scene.d.ts)
 
 ```typescript
-import type { ChartProgram, GraphicObject, GraphicClipPath, CanvasRenderOptions, PreparedShadowRendering } from './program.js';
+import type { TransitionDecision } from './animation.js';
+import type { ChartProgram, GraphicObject, GraphicClipPath, GraphicCircleBatchProperties, CanvasRenderOptions, PreparedShadowRendering } from './program.js';
 export interface TransitionNode {
   readonly key: string;
   readonly type: string;
@@ -38190,7 +38267,19 @@ export interface CanvasTransitionScene {
 }
 export declare function createTransitionScene(program: ChartProgram, options?: {format?: 'svg'; shadows?: PreparedShadowRendering}): TransitionScene;
 export declare function createTransitionScene(program: ChartProgram, options: {format: 'canvas'}): CanvasTransitionScene;
-export declare function renderTransitionScene(scene: CanvasTransitionScene, context: CanvasRenderingContext2D, options?: CanvasRenderOptions): void;
+export declare function renderTransitionScene(scene: AnyCanvasTransitionScene, context: CanvasRenderingContext2D, options?: CanvasRenderOptions): void;
+
+/** Materialized numeric columns, in adjacent drawing order. */
+export type SampleEntry =
+  | { readonly kind: 'single'; readonly node: CanvasTransitionNode; readonly decision: TransitionDecision | null }
+  | { readonly kind: 'circle-run'; readonly keys: readonly string[]; readonly topology: string;
+      readonly offset: readonly [number, number]; readonly clip: readonly [number, number, number, number];
+      readonly clips: readonly (readonly [number, number, number, number] | GraphicClipPath)[];
+      readonly properties: GraphicCircleBatchProperties;
+      readonly decisions: null | { readonly kind: 'semantic-kernel'; readonly kernel: 'cartesian-point'; readonly ownerKey: string; readonly role: string;
+        readonly sourceIndices: readonly number[]; readonly targetIndices: readonly number[]; readonly itemKeys: readonly string[] } };
+export interface BatchedTransitionScene { readonly version: 3; readonly width: number; readonly height: number; readonly entries: readonly SampleEntry[]; }
+export type AnyCanvasTransitionScene = CanvasTransitionScene | BatchedTransitionScene;
 ```
 
 #### `ggaction/interaction`
@@ -38201,8 +38290,8 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, ProjectionParameters, GeoCameraOperation, GraphPosition, EditAnnotationOptions, EditGeoAnnotationOptions, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
-import type { CanvasTransitionScene } from './scene.js';
-import type { TransitionFrame } from './animation.js';
+import type { AnyCanvasTransitionScene } from './scene.js';
+import type { AnyTransitionFrame } from './animation.js';
 import type { PreparedImageRendering, PreparedFontRendering, PreparedShadowRendering } from './program.js';
 export interface InteractionAssets {
   readonly images?: PreparedImageRendering;
@@ -38225,7 +38314,7 @@ export interface InteractionUpdateRequest extends InteractionPreparation {
 }
 export interface InteractionAssetRequest extends InteractionUpdateRequest {
   /** Prepare this exact renderer-ready frame instead of program when present. */
-  readonly frame?: TransitionFrame;
+  readonly frame?: AnyTransitionFrame;
 }
 export interface InteractionSettlement {
   readonly status: 'settled' | 'cancelled' | 'error';
@@ -38443,10 +38532,10 @@ export interface InteractionState {
   /** Separate transient editing result. Null outside an active preview. */
   readonly previewProgram: InteractionProgram | null;
   /** Authentic graph drag or temporary edge presentation; separate from the accepted animation baseline. */
-  readonly previewFrame: TransitionFrame | null;
+  readonly previewFrame: AnyTransitionFrame | null;
   /** Exact accepted sampled frame; null for committed programs and plain scenes. */
-  readonly animationFrame: TransitionFrame | null;
-  readonly scene: CanvasTransitionScene;
+  readonly animationFrame: AnyTransitionFrame | null;
+  readonly scene: AnyCanvasTransitionScene;
   readonly frameVersion: number;
   readonly generation: number;
   /** Session-local committed program revision; inspection and frames do not increment it. */
@@ -38623,13 +38712,13 @@ export type InteractionCommand = InteractionEditCommand | InteractionHistoryComm
   readonly generation: number;
 } & ({
   /** Scene containing only current program node keys and unchanged topology. */
-  readonly scene: CanvasTransitionScene;
+  readonly scene: AnyCanvasTransitionScene;
   readonly frame?: never;
 } | {
   /** Authentic sample with the exact current native program in its displayed or direct endpoint owners.
    * Painted geographic source parts and attached Text labels may focus/activate only within the same current native owner,
    * child scope, resource identity and logical feature membership. Endpoint revisions remain distinct. */
-  readonly frame: TransitionFrame;
+  readonly frame: AnyTransitionFrame;
   readonly scene?: never;
 }));
 export interface InteractionDispatchResult { readonly status: 'applied' | 'queued' | 'stale' | 'unchanged'; }
@@ -38750,7 +38839,7 @@ export function prepareInferredGraphData(program: ChartProgram, request: Inferre
 ```typescript
 import type { ChartProgram } from './program.js';
 import type { BasicChartProgram } from './basic.js';
-import type { CanvasTransitionScene } from './scene.js';
+import type { CanvasTransitionScene, BatchedTransitionScene } from './scene.js';
 
 declare const transitionPlan: unique symbol;
 declare const transitionFrame: unique symbol;
@@ -38775,7 +38864,7 @@ export interface AnimationMarker { readonly id: string; readonly timeMs: number;
 export interface TransitionOptions {
   readonly durationMs: number;
   /** Explicit lossless numeric transport and native geographic capacity. */
-  readonly formatVersion?: 5;
+  readonly formatVersion?: 5 | 6;
   readonly easing?: AnimationEasing;
   readonly tracks?: readonly AnimationTrack[];
   readonly markers?: readonly AnimationMarker[];
@@ -38793,6 +38882,8 @@ export interface TransitionPlan {
   readonly durationMs: number;
   readonly easing: AnimationEasing;
 }
+export interface BatchedTransitionPlan extends Omit<TransitionPlan, 'version'> { readonly version: 6; }
+export type AnyTransitionPlan = TransitionPlan | BatchedTransitionPlan;
 /** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, guide-geometry, partition, or completed-graph.
  * Guide geometry includes explicit native titles, band boundaries, field-keyed Parallel axes,
  * single-edge gradient and continuous-size legends with exact raw samples, categorical native symbols with
@@ -38825,7 +38916,11 @@ export interface TransitionFrame extends Readonly<Pick<ChartProgram, 'graphicSpe
   readonly progress: number;
   readonly decisions: readonly TransitionDecision[];
 }
+export interface BatchedTransitionFrame extends Omit<TransitionFrame, 'scene' | 'decisions'> { readonly scene: BatchedTransitionScene; }
+export type AnyTransitionFrame = TransitionFrame | BatchedTransitionFrame;
 export interface ExportedAnimationFrame extends TransitionFrame { readonly timeMs: number; }
+export interface ExportedBatchedAnimationFrame extends BatchedTransitionFrame { readonly timeMs: number; }
+export type AnyExportedAnimationFrame = ExportedAnimationFrame | ExportedBatchedAnimationFrame;
 export interface PlaybackOptions {
   readonly rate?: number;
   /** Additional repetitions; Infinity repeats until cancelled. */
@@ -38838,29 +38933,35 @@ export interface AnimationPlayback {
   readonly reducedMotion: boolean;
 }
 export interface RestoredAnimation {
-  readonly plan: TransitionPlan;
+  readonly plan: AnyTransitionPlan;
   readonly playback: AnimationPlayback;
 }
 export type AnimationFrameOptions =
   | { readonly timesMs: readonly number[]; readonly fps?: never }
   | { readonly fps: number; readonly timesMs?: never };
-type TransitionRequest<Options extends TransitionOptions = TransitionOptions> = {
-  readonly from: AnimationProgram | TransitionFrame;
-  readonly to: AnimationProgram | TransitionFrame;
-  readonly options: Options;
-};
-export declare function planTransition(input: TransitionRequest<TransitionOptions & {
+export type LegacyTransitionOptions = Omit<TransitionOptions, 'formatVersion'> & { readonly formatVersion?: 5 };
+export type BatchedTransitionOptions = Omit<TransitionOptions, 'formatVersion'> & { readonly formatVersion: 6 };
+type LegacyEndpoint = AnimationProgram | TransitionFrame;
+type AnyEndpoint = LegacyEndpoint | BatchedTransitionFrame;
+type TransitionRequest<Options, Endpoint = LegacyEndpoint> = { readonly from: Endpoint; readonly to: Endpoint; readonly options: Options };
+export declare function planTransition(input: TransitionRequest<BatchedTransitionOptions, AnyEndpoint>): BatchedTransitionPlan;
+export declare function planTransition(input: TransitionRequest<LegacyTransitionOptions & {
   readonly formatVersion?: never; readonly maxEndpointNodes?: never; readonly maxOutputNodes?: never;
 }>): TransitionPlan & { readonly version: 3 };
-export declare function planTransition(input: TransitionRequest<TransitionOptions & { readonly formatVersion?: never } & (
+export declare function planTransition(input: TransitionRequest<LegacyTransitionOptions & { readonly formatVersion?: never } & (
   { readonly maxEndpointNodes: number } | { readonly maxOutputNodes: number }
 )>): TransitionPlan & { readonly version: 4 };
-export declare function planTransition(input: TransitionRequest<TransitionOptions & { readonly formatVersion: 5 }>): TransitionPlan & { readonly version: 5 };
-export declare function planTransition(input: TransitionRequest): TransitionPlan;
+export declare function planTransition(input: TransitionRequest<LegacyTransitionOptions & { readonly formatVersion: 5 }>): TransitionPlan & { readonly version: 5 };
+export declare function planTransition(input: TransitionRequest<LegacyTransitionOptions>): TransitionPlan;
+export declare function planTransition(input: TransitionRequest<TransitionOptions> | TransitionRequest<BatchedTransitionOptions, AnyEndpoint>): AnyTransitionPlan;
+export declare function sampleTransition(plan: BatchedTransitionPlan, timeMs: number): BatchedTransitionFrame;
 export declare function sampleTransition(plan: TransitionPlan, timeMs: number): TransitionFrame;
-export declare function serializeAnimation(plan: TransitionPlan, playback?: PlaybackOptions): string;
+export declare function sampleTransition(plan: AnyTransitionPlan, timeMs: number): AnyTransitionFrame;
+export declare function serializeAnimation(plan: AnyTransitionPlan, playback?: PlaybackOptions): string;
 export declare function deserializeAnimation(text: string): RestoredAnimation;
+export declare function exportAnimationFrames(plan: BatchedTransitionPlan, options: AnimationFrameOptions): readonly ExportedBatchedAnimationFrame[];
 export declare function exportAnimationFrames(plan: TransitionPlan, options: AnimationFrameOptions): readonly ExportedAnimationFrame[];
+export declare function exportAnimationFrames(plan: AnyTransitionPlan, options: AnimationFrameOptions): readonly AnyExportedAnimationFrame[];
 
 export interface AnimationClock<Handle = number> {
   now(): number;
@@ -38880,31 +38981,34 @@ export interface AnimationSettlement {
   readonly timeMs: number;
   readonly iteration: number;
 }
-export interface AnimationMarkerEvent extends AnimationMarker {
+export interface AnimationMarkerEvent<Frame = TransitionFrame> extends AnimationMarker {
   readonly iteration: number;
-  readonly frame: TransitionFrame;
+  readonly frame: Frame;
 }
-export interface AnimationPlayer {
-  play(): AnimationPlayer;
-  pause(): AnimationPlayer;
-  seek(timeMs: number, options?: { readonly emit?: boolean }): AnimationPlayer;
-  reverse(): AnimationPlayer;
-  setRate(rate: number): AnimationPlayer;
-  setRepeat(repeat: number): AnimationPlayer;
-  cancel(): AnimationPlayer;
-  interrupt(input: PlaybackOptions & { readonly to: AnimationProgram | TransitionFrame; readonly options: TransitionOptions }): AnimationPlayer;
+export interface AnimationPlayer<Frame = TransitionFrame, Options = LegacyTransitionOptions, Endpoint = LegacyEndpoint> {
+  play(): AnimationPlayer<Frame, Options, Endpoint>;
+  pause(): AnimationPlayer<Frame, Options, Endpoint>;
+  seek(timeMs: number, options?: { readonly emit?: boolean }): AnimationPlayer<Frame, Options, Endpoint>;
+  reverse(): AnimationPlayer<Frame, Options, Endpoint>;
+  setRate(rate: number): AnimationPlayer<Frame, Options, Endpoint>;
+  setRepeat(repeat: number): AnimationPlayer<Frame, Options, Endpoint>;
+  cancel(): AnimationPlayer<Frame, Options, Endpoint>;
+  interrupt(input: PlaybackOptions & { readonly to: Endpoint; readonly options: Options }): AnimationPlayer<Frame, Options, Endpoint>;
   dispose(): void;
   getState(): AnimationPlayerState;
-  getFrame(): TransitionFrame | undefined;
+  getFrame(): Frame | undefined;
   readonly finished: Promise<AnimationSettlement>;
 }
-export declare function createAnimationPlayer<Handle>(input: PlaybackOptions & {
-  readonly plan: TransitionPlan;
+type AnimationPlayerInput<Plan, Frame, Handle> = PlaybackOptions & {
+  readonly plan: Plan;
   readonly clock: AnimationClock<Handle>;
-  readonly render: (frame: TransitionFrame) => void;
-  readonly commit?: (frame: TransitionFrame) => void;
-  readonly onMarker?: (event: AnimationMarkerEvent) => void;
-}): AnimationPlayer;
+  readonly render: (frame: Frame) => void;
+  readonly commit?: (frame: Frame) => void;
+  readonly onMarker?: (event: AnimationMarkerEvent<Frame>) => void;
+};
+export declare function createAnimationPlayer<Handle>(input: AnimationPlayerInput<BatchedTransitionPlan, BatchedTransitionFrame, Handle>): AnimationPlayer<BatchedTransitionFrame, BatchedTransitionOptions, AnyEndpoint>;
+export declare function createAnimationPlayer<Handle>(input: AnimationPlayerInput<TransitionPlan, TransitionFrame, Handle>): AnimationPlayer;
+export declare function createAnimationPlayer<Handle>(input: AnimationPlayerInput<AnyTransitionPlan, AnyTransitionFrame, Handle>): AnimationPlayer<AnyTransitionFrame, TransitionOptions, AnyEndpoint>;
 ```
 
 ## Rendering functions
@@ -47244,6 +47348,7 @@ export type GraphicType =
   | "canvas"
   | "collection"
   | "circle"
+  | "circle-batch"
   | "rect"
   | "line"
   | "text"
@@ -53599,12 +53704,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/97d9e30ee6ab21901fdf2820cd2c46f3b6685456/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/97d9e30ee6ab21901fdf2820cd2c46f3b6685456/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -53760,6 +53865,44 @@ The declaration travels with the concrete path through scenes, weighted sources,
 rendering and graphic persistence. Renderers still consume only concrete graphics.
 A Geo-owned path must match its mark's explicit capacity; use the Geo domain edit
 to change that policy. Path capacity does not raise hit stroke or query budgets.
+
+## Store fully materialized circles in columns
+
+Extension authors can use `circle-batch` for an ordered set of circles sharing
+one concrete appearance. Its properties are exactly `x`, `y`, `radius`, and
+`appearance`. The three coordinate arrays must be dense ordinary arrays with the
+same length from 1 through 10000. Coordinates are finite and radii non-negative.
+`appearance` accepts the existing concrete circle paint, outline, stroke, opacity,
+blend and shadow properties; it cannot contain coordinates or `length`.
+
+> **Executable complete.** Run the complete ES module with ggaction installed; it authors one canvas and fully materialized circle columns.
+
+```javascript
+import { ChartProgram } from "ggaction/extension";
+
+const program = new ChartProgram()
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .editGraphics({ target: "canvas", property: "width", value: 100 })
+  .editGraphics({ target: "canvas", property: "height", value: 80 })
+  .createGraphics({ id: "circles", type: "circle-batch", parent: "canvas" })
+  .editGraphics({ target: "circles", property: "x", value: [25, 40, 70] })
+  .editGraphics({ target: "circles", property: "y", value: [30, 35, 45] })
+  .editGraphics({ target: "circles", property: "radius", value: [12, 16, 9] })
+  .editGraphics({ target: "circles", property: "appearance",
+    value: { fill: "#247ca8", opacity: 0.5 } });
+```
+
+Each row is painted individually in array order. Overlapping transparent circles,
+patterns, outlines, blend modes and prepared shadows retain ordinary circle
+behavior across Canvas, SVG, PNG and PDF. A batch cannot own items or children,
+and does not accept the `length` option. Rendering and persistence require all
+four properties and equal column lengths. A heterogeneous collection can contain
+a complete batch item; weighted blend sources retain their existing type list.
+
+Graphic and editable snapshots preserve the columns. Older package versions
+that do not recognize this type reject it; no automatic conversion is performed.
+Authoring a batch does not grant it a domain mark's selection identity. Ordinary
+chart authors continue to use domain mark actions.
 
 <!-- Source: /api/data/summaries-and-shaping/ -->
 
@@ -56745,9 +56888,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:35d351c7e7850f2dad114aca97ad2ecfd87fbe302d4568c4d6197b18a3fd975b` |
+| Contract fingerprint | `sha256:b882a91b634bdd0caf7461d7c8b9fb590b6d0abcaad378eaf5e93015125b9e48` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
-| Runtime source commit | `97d9e30ee6ab21901fdf2820cd2c46f3b6685456` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 379 |
 | Declared actions in that release | 234 |

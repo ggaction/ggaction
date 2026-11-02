@@ -1,5 +1,5 @@
 import { animationNumericVectorFootprint, packAnimationNumericVector, inspectAnimationNumericVector } from "./numericColumns.js";
-import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import { cloneAndFreeze, freezeOwned, isPlainObject, isOwned } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { validateGeneratedItemLimit } from "../core/validation.js";
 import { validateAnimationColumnCount, animationColumnLimits } from "./resources.js";
@@ -42,9 +42,24 @@ function treeSize(value, ancestors = new Set(), depth = 0, scope) {
   ancestors.delete(value); validateAnimationColumnCount(size,"expandedValues",scope); return size;
 }
 
+// Compound constants must not skip nested row columns: those columns own
+// additional cell charges under the existing codec. Literal numeric arrays and
+// records containing them are safe; nested record arrays keep their old layout.
+function hasNoNestedColumns(value) {
+  if (scalar(value)) return true;
+  if (Array.isArray(value)) {
+    if (value.length > 1 && value.every(row => row === null || row === undefined || Array.isArray(row) || isPlainObject(row)) && value.some(row => row !== null && typeof row === 'object')) return false;
+    return value.length !== 1 || !Object.hasOwn(value, 0) || scalar(value[0]) || hasNoNestedColumns(value[0]);
+  }
+  return Object.values(value).every(hasNoNestedColumns);
+}
+
 export function prepareAnimationColumns(input, scope) { return prepareColumns(input, scope, 1); }
 export function prepareAnimationColumnsV2(input, scope) { return prepareColumns(input, scope, 2); }
-function prepareColumns(input, scope, version) {
+// Format6 may retain exact owned compound constants already accepted by the
+// version2 reader. Earlier encoders keep their byte-for-byte lowering policy.
+export function prepareAnimationColumnsV2WithConstants(input, scope) { return prepareColumns(input, scope, 2, true); }
+function prepareColumns(input, scope, version, compoundConstants = false) {
   // Count every logical occurrence even when the compact representation shares it.
   const logicalValues = treeSize(input,new Set(),0,scope), vectors = [], ancestors = new Set();
   let descriptorVisits = 0, cellVisits = 0, interningWork = 0, internNodes = 0, storageCells = 0;
@@ -106,7 +121,7 @@ function prepareColumns(input, scope, version) {
   }
   function column(values) {
     cellVisits += values.length; validateAnimationColumnCount(storageCells+cellVisits,"cells",scope);
-    if (values.every(value=>equal(value,values[0]))) return version===1||scalar(values[0]) ? {constant:values[0]} : {node:{array:values.map(lower)}};
+    if (values.every(value=>equal(value,values[0]))) return version===1||scalar(values[0])||compoundConstants&&isOwned(values[0])&&hasNoNestedColumns(values[0]) ? {constant:values[0]} : {node:{array:values.map(lower)}};
     if (values.every(scalar)) {
       const runs=[];
       for(const value of values){const last=runs.at(-1);if(last&&equal(last[1],value))last[0]++;else runs.push([1,value]);}
@@ -177,7 +192,18 @@ function prepareColumns(input, scope, version) {
 
 export function validateAnimationColumns(input, scope) { return validateColumns(input, scope, 1); }
 export function validateAnimationColumnsV2(input, scope) { return validateColumns(input, scope, 2); }
-function validateColumns(input, scope, version) {
+// Format6 snapshots each already-validated compound constant once. The
+// snapshot copier intentionally ignores shallow ownership on caller values.
+function snapshotValidatedConstant(value) {
+  if (scalar(value)) return value;
+  const result = Array.isArray(value) ? new Array(value.length) : {};
+  for (const key of Object.keys(value)) define(result, key, snapshotValidatedConstant(value[key]));
+  return freezeOwned(result);
+}
+function ownedConstantColumn(snapshot, logicalSum) { return { at: () => snapshot.value, logicalSum }; }
+export function validateAnimationColumnsV2WithOwnedConstants(input, scope) { return validateColumns(input, scope, 2, true); }
+function validateColumns(input, scope, version, ownConstants = false) {
+  const constantSnapshots = new Map();
   // This independent physical byte/descriptor walk also runs for native preparation.
   const physical=inspectPhysical(input);
   fields(input,["kind","version","root","vectors"]);
@@ -200,7 +226,16 @@ function validateColumns(input, scope, version) {
   function column(value,length,selector=false) {
     cellVisits+=length;validateAnimationColumnCount(storageCells+cellVisits,"cells",scope);
     const tag=variant(value,selector?["constant","vector","runs"]:["constant","vector","runs","node"]);
-    if(tag==="constant"){const size=version===1?treeSize(value.constant):treeSize(value.constant,new Set(),0,scope);validateAnimationColumnCount(size*length,"expandedValues",scope);return {at:()=>value.constant,logicalSum:size*length};}
+    if(tag==="constant"){
+      const size=version===1?treeSize(value.constant):treeSize(value.constant,new Set(),0,scope);
+      validateAnimationColumnCount(size*length,"expandedValues",scope);
+      if(ownConstants&&!scalar(value.constant)){
+        let snapshot=constantSnapshots.get(value.constant);
+        if(snapshot===undefined){snapshot={input:value.constant};constantSnapshots.set(value.constant,snapshot);}
+        return ownedConstantColumn(snapshot,size*length);
+      }
+      return {at:()=>value.constant,logicalSum:size*length};
+    }
     if(tag==="vector"){const vector=ref(value.vector,length);return{at:i=>vector.at(i),logicalSum:length};}
     if(tag==="runs"){
       ownArray(value.runs,label);let count=0;const ends=[];
@@ -274,6 +309,12 @@ function validateColumns(input, scope, version) {
     nodeProof.set(value,proof);return proof;
   }
   const root=node(input.root);
+  // Complete physical, descriptor, expanded-value and cell validation precedes
+  // every new owned snapshot. Returned closures retain no mutable constants.
+  for(const snapshot of constantSnapshots.values()){
+    snapshot.value=snapshotValidatedConstant(snapshot.input);delete snapshot.input;Object.freeze(snapshot);
+  }
+  constantSnapshots.clear();
   return {logicalValues:root.logical,descriptorVisits,cellVisits,...(version===2?{storageCells}:{}),...physical,restore:root.restore};
 }
 

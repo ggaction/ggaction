@@ -1,12 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { hconcat } from "../../../src/index.js";
+import { chart, hconcat } from "../../../src/index.js";
 import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from "../../../src/animation.js";
 import { animationFrameProvenance } from "../../../src/animation/frameProvenance.js";
 import { createGraphPresentationFrame } from "../../../src/animation/graphPresentation.js";
 import { prepareAnimationHitFrame, requireAnimationFrameProgram } from "../../../src/interaction/hitProgram.js";
 import { createHitFrameBridge } from "../../../src/interaction/hitFrame.js";
 import { animationGraphFrame } from "../../support/animation-graph-frame.js";
+import { animationSceneRows } from "../../../src/core/sceneRows.js";
+import { exportTransitionPlan, restoreTransitionPlan } from "../../../src/animation/planner.js";
 
 const options = { durationMs: 100, easing: "linear" };
 const hit = (frame, point) => { const bridge = createHitFrameBridge(prepareAnimationHitFrame(frame)); try { return bridge.hit(point, { slop: 0 }); } finally { bridge.dispose(); } };
@@ -58,6 +60,18 @@ test("temporary unbundle changes the chosen edge body and arrow while preserving
   assert.equal(after.graphs.groups[0], group); assert.equal(after.native, proof.native);
   const plan = planTransition({ from: next, to, options }); assert.equal(sampleTransition(plan, 0), next);
   assert.ok(sampleTransition(plan, 50).decisions.some(value => value.reason === "edited-graph-geometry"));
+  const restored = deserializeAnimation(serializeAnimation(plan)).plan;
+  assert.deepEqual(sampleTransition(restored, 0).scene, next.scene);
+  assert.deepEqual(sampleTransition(restored, 50).scene, sampleTransition(plan, 50).scene);
+  assert.throws(() => prepareAnimationHitFrame(sampleTransition(restored, 50)), /native endpoint/);
+  const raw = exportTransitionPlan(plan), index = changed[0];
+  const missingReason = structuredClone(raw); delete missingReason.from.graphs.items[index].reason;
+  assert.throws(() => restoreTransitionPlan(missingReason), /meaning differs/);
+  const missingMeaning = structuredClone(raw); missingMeaning.from.graphs.items[index] = null;
+  assert.throws(() => restoreTransitionPlan(missingMeaning), /retained prepared meaning/);
+  const editedNode = structuredClone(raw), nodeIndex = editedNode.from.graphs.items.findIndex(item => item?.kind === "node");
+  editedNode.from.graphs.items[nodeIndex].reason = "edited-graph-geometry";
+  assert.throws(() => restoreTransitionPlan(editedNode), /retained prepared meaning/);
 });
 
 test("nested graph presentations retain unrelated scopes and native child identities", () => {
@@ -84,4 +98,28 @@ test("graph presentation never promotes copied, offline or invalid operations to
   assert.equal(reads, 0); assert.equal(JSON.stringify(frame), before);
   const unbundled = createGraphPresentationFrame(frame, { group: 0, edge: group.edges[0].key });
   assert.throws(() => createGraphPresentationFrame(unbundled, { group: 0, node: { key: group.nodes[0].key, x: 70, y: 90 } }), /exact current/);
+});
+
+test("batched mixed frames preserve point runs through native graph move and unbundle", () => {
+  const { from, to } = animationGraphFrame(false, true);
+  const points = chart().createCanvas({ width: 200, height: 160, margin: 20 })
+    .createData({ id: "data", keyField: "id", values: [{ id: "a", x: 1, y: 2 }, { id: "b", x: 4, y: 6 }] })
+    .createPointMark({ id: "points" }).encodeX({ field: "x", scale: { id: "x", domain: [0, 10], nice: false } })
+    .encodeY({ field: "y", scale: { domain: [0, 10], nice: false } });
+  const compose = (graph, point) => hconcat({ programs: [{ id: "graph", program: graph }, { id: "points", program: point }] });
+  const initial = compose(from, points), target = compose(to, points.editScale({ id: "x", domain: [0, 20], nice: false }));
+  const frames = [undefined, 6].map(formatVersion => sampleTransition(planTransition({ from: initial, to: target,
+    options: { ...options, ...(formatVersion === undefined ? {} : { formatVersion }) } }), 50));
+  const group = animationFrameProvenance(frames[1]).graphs.groups[0], run = frames[1].scene.entries.find(entry => entry.kind === "circle-run");
+  assert.ok(run);
+  for (const operation of [{ group: 0, node: { key: group.nodes[0].key, x: 80, y: 120 } }, { group: 0, edge: group.edges[0].key }]) {
+    const [legacy, batch] = frames.map(frame => createGraphPresentationFrame(frame, operation));
+    assert.equal(batch.scene.version, 3); assert.equal(Object.hasOwn(batch, "decisions"), false);
+    assert.equal(batch.scene.entries.find(entry => entry.kind === "circle-run"), run);
+    assert.deepEqual([...animationSceneRows(batch.scene)].map(row => row.node), legacy.scene.nodes);
+    assert.deepEqual(prepareAnimationHitFrame(batch).entries, prepareAnimationHitFrame(legacy).entries);
+    const rebased = planTransition({ from: batch, to: target, options: { ...options, formatVersion: 6 } });
+    assert.equal(sampleTransition(rebased, 0), batch);
+    assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(rebased)).plan, 50).scene, sampleTransition(rebased, 50).scene);
+  }
 });

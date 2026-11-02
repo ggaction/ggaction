@@ -1,0 +1,1106 @@
+{
+  "records": [
+    {
+      "id": "linear/false/false/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/false/false/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/false/false/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/false/false/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/false/false/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/false/true/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/false/true/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/false/true/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/false/true/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/false/true/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/true/false/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/true/false/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/true/false/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/true/false/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/true/false/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/true/true/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/true/true/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/true/true/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/true/true/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "linear/true/true/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/false/false/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/false/false/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/false/false/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/false/false/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/false/false/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/false/true/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/false/true/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/false/true/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/false/true/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/false/true/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/true/false/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/true/false/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/true/false/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/true/false/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/true/false/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/true/true/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/true/true/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/true/true/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/true/true/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "time/true/true/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    },
+    {
+      "id": "log/false/false/-0",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Scale type \"log\" received an invalid value."
+      },
+      "getterReads": 0,
+      "registrations": 5
+    },
+    {
+      "id": "log/false/false/0",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Scale type \"log\" received an invalid value."
+      },
+      "getterReads": 0,
+      "registrations": 5
+    },
+    {
+      "id": "log/false/false/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "log/false/false/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "log/false/false/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "log/false/true/-0",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Scale type \"log\" received an invalid value."
+      },
+      "getterReads": 0,
+      "registrations": 5
+    },
+    {
+      "id": "log/false/true/0",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Scale type \"log\" received an invalid value."
+      },
+      "getterReads": 0,
+      "registrations": 5
+    },
+    {
+      "id": "log/false/true/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "log/false/true/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "log/false/true/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "log/true/false/-0",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Scale type \"log\" received an invalid value."
+      },
+      "getterReads": 0,
+      "registrations": 5
+    },
+    {
+      "id": "log/true/false/0",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Scale type \"log\" received an invalid value."
+      },
+      "getterReads": 0,
+      "registrations": 5
+    },
+    {
+      "id": "log/true/false/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "log/true/false/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "log/true/false/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "log/true/true/-0",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Scale type \"log\" received an invalid value."
+      },
+      "getterReads": 0,
+      "registrations": 5
+    },
+    {
+      "id": "log/true/true/0",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Scale type \"log\" received an invalid value."
+      },
+      "getterReads": 0,
+      "registrations": 5
+    },
+    {
+      "id": "log/true/true/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "log/true/true/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "log/true/true/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/false/false/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/false/false/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/false/false/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/false/false/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/false/false/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/false/true/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/false/true/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/false/true/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/false/true/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/false/true/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/true/false/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/true/false/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/true/false/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/true/false/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/true/false/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/true/true/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/true/true/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/true/true/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/true/true/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "pow/true/true/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/false/false/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/false/false/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/false/false/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/false/false/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/false/false/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/false/true/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/false/true/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/false/true/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/false/true/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/false/true/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/true/false/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/true/false/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/true/false/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/true/false/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/true/false/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/true/true/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/true/true/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/true/true/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/true/true/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "sqrt/true/true/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/false/false/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/false/false/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/false/false/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/false/false/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/false/false/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/false/true/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/false/true/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/false/true/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/false/true/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/false/true/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/true/false/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/true/false/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/true/false/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/true/false/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/true/false/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/true/true/-0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/true/true/0",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/true/true/1",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/true/true/10",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "symlog/true/true/100",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 52
+    },
+    {
+      "id": "value",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Animation position value must be finite."
+      },
+      "getterReads": 0,
+      "registrations": 0
+    },
+    {
+      "id": "domain",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Animation position domain requires two finite numbers."
+      },
+      "getterReads": 0,
+      "registrations": 1
+    },
+    {
+      "id": "range",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Animation position range requires two finite numbers."
+      },
+      "getterReads": 0,
+      "registrations": 1
+    },
+    {
+      "id": "clamp",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Animation position clamp must be boolean."
+      },
+      "getterReads": 0,
+      "registrations": 0
+    },
+    {
+      "id": "type",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Animation position requires a supported continuous scale type."
+      },
+      "getterReads": 0,
+      "registrations": 0
+    },
+    {
+      "id": "extra",
+      "outcome": {
+        "name": "Error",
+        "message": "Unknown animation position scale property \"extra\"."
+      },
+      "getterReads": 0,
+      "registrations": 0
+    },
+    {
+      "id": "undefined",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Animation position scale values cannot be undefined."
+      },
+      "getterReads": 0,
+      "registrations": 0
+    },
+    {
+      "id": "getter",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Animation position endpoint requires enumerable own data properties; accessors are not supported."
+      },
+      "getterReads": 0,
+      "registrations": 0
+    },
+    {
+      "id": "hole",
+      "outcome": {
+        "name": "TypeError",
+        "message": "Animation position domain must be dense."
+      },
+      "getterReads": 0,
+      "registrations": 1
+    },
+    {
+      "id": "base",
+      "outcome": {
+        "name": "RangeError",
+        "message": "Log scale base must not equal 1."
+      },
+      "getterReads": 0,
+      "registrations": 0
+    },
+    {
+      "id": "negative",
+      "outcome": {
+        "name": "RangeError",
+        "message": "Log scale domain must be strictly positive or strictly negative."
+      },
+      "getterReads": 0,
+      "registrations": 3
+    },
+    {
+      "id": "constant",
+      "outcome": {
+        "name": "RangeError",
+        "message": "Symlog scale constant must be a positive finite number."
+      },
+      "getterReads": 0,
+      "registrations": 0
+    },
+    {
+      "id": "exponent",
+      "outcome": {
+        "name": "RangeError",
+        "message": "Power scale exponent must be a positive finite number."
+      },
+      "getterReads": 0,
+      "registrations": 0
+    },
+    {
+      "id": "empty",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 22
+    },
+    {
+      "id": "overflow",
+      "outcome": {
+        "ok": true
+      },
+      "getterReads": 0,
+      "registrations": 40
+    }
+  ],
+  "rowRegistrations": 40000
+}

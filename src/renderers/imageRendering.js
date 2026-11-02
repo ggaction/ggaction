@@ -46,7 +46,7 @@ export async function prepareImageRendering(program, options) {
   const { decode, signal } = options;
   if (typeof decode !== "function") throw new TypeError("Image rendering requires an explicit decode callback.");
   assertAssetActive(signal);
-  const scene = program?.version === 2 && Array.isArray(program.nodes) ? program : undefined;
+  const scene = (program?.version === 2 && Array.isArray(program.nodes) || program?.version === 3 && Array.isArray(program.entries)) ? program : undefined;
   const graphicSpec = imageSpec(scene === undefined ? program : canvasSceneProgram(scene));
   // Complete every payload and cumulative budget check before the first callback.
   const values = imageValues(graphicSpec);

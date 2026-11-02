@@ -15,7 +15,7 @@ export type { FlowDefinition, CreateFlowDataOptions, EditFlowDataOptions, FlowNo
 export type { ImageResourceSource, CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost,
   PreparedImageResource, ApplyImageResourceOptions, ImageRef, ImageResource, ImageMarkOptions, CreateImageMarkOptions, EditImageMarkOptions } from "./program.js";
 import type { CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost, PreparedImageResource } from "./program.js";
-import type { CanvasTransitionScene } from "./scene.js";
+import type { AnyCanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 export type { PartitionPlotOptions, EditPartitionPlotOptions, PartitionViewState } from "./program.js";
@@ -359,6 +359,8 @@ export type {
   GraphicObject,
   GraphicSpec,
   GraphicType,
+  GraphicCircleAppearance,
+  GraphicCircleBatchProperties,
   GraphicBlendSource,
   GraphicWeightedBlendProperties,
   GroupEncodingOptions,
@@ -535,7 +537,7 @@ export function render(
 ): void;
 
 export function prepareImageRendering(program: Pick<ChartProgram, "graphicSpec">, host: ImageRenderingHost): Promise<PreparedImageRendering>;
-export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
+export function prepareImageRendering(scene: AnyCanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
 
 export function prepareImageResource(program: ChartProgram, request: CreateImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"create">>;
 export function prepareImageResource(program: ChartProgram, request: ReplaceImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"replace">>;
@@ -551,13 +553,13 @@ export function prepareFontResource(program: ChartProgram, request: ReplaceFontR
 export function prepareFontResource(program: ChartProgram, request: FontResourceRequest, host: FontResourceHost): Promise<PreparedFontResource>;
 export function prepareTextMetrics(program: ChartProgram, request: TextMetricsRequest, host: TextMetricsHost): Promise<PreparedTextMetrics>;
 export function prepareFontRendering(program: Pick<ChartProgram, "graphicSpec">, host: FontRenderingHost): Promise<PreparedFontRendering>;
-export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
+export function prepareFontRendering(scene: AnyCanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
 
 export type { GraphMetric, GraphFeatures, GraphSearchOptions, GraphFeaturePolicy, InferredGraphSource, GraphMetricDefinition, GraphNeighborDefinition, GraphMetricMstDefinition, GraphCandidateMstDefinition, GraphStructuralDefinition, InferredGraphDefinition, CreateInferredGraphDataOptions, EditInferredGraphDataOptions, GraphInferenceDiagnostics, ObservedGraphResource, InferredGraphResource } from "./program.js";
 export type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
 import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
 export function prepareShadowRendering(program: Pick<ChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
-export function prepareShadowRendering(scene: CanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
+export function prepareShadowRendering(scene: AnyCanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
 export type { GeoJoinKeyOptions, CreateGeoJoinDataOptions, EditGeoJoinDataOptions, GeoJoinResource } from "./program.js";
 
 export type { GeoLODBaseLevel, GeoLODChildLevel, GeoLODLevels, CreateGeoLODDataOptions, EditGeoLODDataOptions, GeoLODResource } from "./program.js";

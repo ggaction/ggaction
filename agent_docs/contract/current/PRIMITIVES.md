@@ -89,7 +89,7 @@ revision ref를 같은 transaction에서 갱신한다. remove는 live consumer�
 - Signature: `createGraphics({ id, type, length?, parent?, before?, after? })`.
 - `id`: 필수 global graphic ID. tree depth와 무관하게 unique하며 equivalent repeated definition과
   attachment는 idempotent하다.
-- `type`: `"canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path" | "image" | "weighted-blend"`.
+- `type`: `"canvas" | "collection" | "circle" | "circle-batch" | "rect" | "line" | "text" | "path" | "image" | "weighted-blend"`.
 - `length`: 일반 graphic은 `0..10,000` integer. semantic point layer와 selected materialized
   dataset 및 graphic ID/type의 소유권이 증명된 circle/rect/path/collection은 owner의 [Point capacity](MARKS.md#createpointmark)를
   따른다(기본50,000, 명시 maxItems의 상한100,000; raw/output 모두 검산).
@@ -110,7 +110,7 @@ revision ref를 같은 transaction에서 갱신한다. remove는 live consumer�
 
 ### Formal values — `createGraphics`
 
-- Implemented: `createGraphics({ id: UserId; type: "canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path" | "image" | "weighted-blend"; length?: NonNegativeInteger; parent?: UserId; before?: UserId; after?: UserId })`; `before | after` 중 최대 하나이며 anchor는 같은 parent의 direct sibling이다.
+- Implemented: `createGraphics({ id: UserId; type: "canvas" | "collection" | "circle" | "circle-batch" | "rect" | "line" | "text" | "path" | "image" | "weighted-blend"; length?: NonNegativeInteger; parent?: UserId; before?: UserId; after?: UserId })`; `before | after` 중 최대 하나이며 anchor는 같은 parent의 direct sibling이다.
 - Proposed (NOT IMPLEMENTED): —
 - Maybe Future (NOT IMPLEMENTED): renderer-specific `svg | g` graphic types.
 
@@ -118,7 +118,7 @@ revision ref를 같은 transaction에서 갱신한다. remove는 live consumer�
 
 - `id`: ✅ Covered valid/invalid IDs, equivalent idempotence and conflicts.
 - `type`
-  - ✅ Covered: `"canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path" | "image" | "weighted-blend"` creation paths.
+  - ✅ Covered: `"canvas" | "collection" | "circle" | "circle-batch" | "rect" | "line" | "text" | "path" | "image" | "weighted-blend"` creation paths.
   - ✅ Covered: unknown type rejection.
   - Maybe Future: renderer-specific `svg/g`; current contract adds only backend-neutral primitives needed by multiple actions.
 - `length`
@@ -309,3 +309,24 @@ filter extent를 제한한다. PDF는 중간 weighted item만 논리1px raster�
 Evidence: `test/unit/weighted-blend.test.js`, `test/unit/renderers/weighted-blend.test.js`,
 `test/unit/renderers/weighted-blend-assets.test.js`, `test/browser/weighted-blends.browser.js`,
 `test/charts/cross-feature-integration/variants/weighted-blends/backends.render.js`, `test/contracts/weighted-blend-types.test.js`.
+
+## Concrete circle batches
+
+`circle-batch`는 순서대로 완성된 circle들을 공유 appearance와 숫자 column으로 저장한다.
+properties는 정확히 `{x,y,radius,appearance}`다. x/y/radius는 동일 길이1..10000의
+own dense ordinary number array이며 finite이고 radius는 음수가 아니다. appearance는
+circle의 기존 concrete fill/outline/stroke/strokeWidth/lineCap/lineJoin/miterLimit/opacity/blend/shadow만
+받는다. 좌표·length·items·children·새 opaque style은 받지 않는다. 실제 fill/paint validation은
+기존 circle owner를 공유한다. `createGraphics`의 length와 batch의 items/children은 거부한다.
+
+개별 `editGraphics`는 기존 primitive처럼 미완성 속성 작성이 가능하고, 렌더링 및 persistence는
+완성된 네 필드와 column 길이를 함께 검사한다. Heterogeneous collection item 교체는 완성된
+batch properties를 요구한다. 동일 appearance여도 각 row를 별도 circle로 순서대로 그리며
+겹친 opacity·outline·shadow·blend의 합성 단위나 pattern work/magnitude 한계를 합치지 않는다.
+공통 bounds는 row별 circle bounds의 union이다. 그림자 준비도 row마다 glyph를 만든다.
+
+Graphic envelope1/editable4는 additive concrete type을 보존하며 container version은 바꾸지 않는다.
+기존 reader는 모르는 type을 거부하며 자동 downgrade는 없다. Caller-authored batch는 native
+semantic authority를 만들지 않는다. Weighted-blend sources는 기존 여섯 primitive만 지원한다.
+[Test](../../../test/unit/renderers/circle-batch.test.js)는 author/edit 불변성, malformed column,
+저장/복원과 DPR1/2 Canvas·SVG·PNG·PDF의 기존 circle 동등성을 검증한다.

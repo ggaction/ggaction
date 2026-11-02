@@ -1,5 +1,9 @@
+import { prepareBatchSampling } from "./batchSample.js";
+import { projectBatchNumericColumns, restoreBatchNumericColumns, batchLogicalPlanWork } from "./batchCodec.js";
+import { createBatchSceneBuilder, projectBatchSceneRows } from "./batchScene.js";
+import { validateBatchSceneStructure } from "../grammar/schemas/batchScene.js";
 import { createTransitionResourceScope, createOfflineResourceScope, normalizeAnimationResourceLimits, animationResourceLimits, validateAnimationResourceWork, validatePreparedEndpointResources, pointAnimationRowLimit } from "./resources.js";
-import { prepareAnimationColumns, restoreAnimationColumns, prepareAnimationColumnsV2, restoreAnimationColumnsV2 } from "./columnCodec.js";
+import { prepareAnimationColumns, restoreAnimationColumns, prepareAnimationColumnsV2, prepareAnimationColumnsV2WithConstants, restoreAnimationColumnsV2, validateAnimationColumnsV2WithOwnedConstants } from "./columnCodec.js";
 import { inspectAnimationEnvelopeValue } from "./envelopeCodec.js";
 import { projectAxisLabelGroups, validateAxisLabelGroups, validateAxisLabelDrawingOrder, emptyAxisLabelGroups } from "../materialization/animation/axisLabelGroups.js";
 import { prepareAxisLabelTracks } from "./axisLabelTracks.js";
@@ -50,6 +54,7 @@ import { graphicAnimationOwnerKey, guideAnimationOwnerKey } from "../grammar/ani
 export const TRANSITION_PLAN_VERSION = 3;
 const SCOPED_TRANSITION_PLAN_VERSION = 4;
 const NUMERIC_TRANSITION_PLAN_VERSION = 5;
+const BATCHED_TRANSITION_PLAN_VERSION = 6;
 const plans = new WeakSet();
 const preparedResources = new WeakMap(), preparedColumns = new WeakMap(), preparedWire = new WeakMap();
 const preparedTimelines = new WeakMap();
@@ -64,6 +69,7 @@ const preparedPolars = new WeakMap();
 const preparedGraphs = new WeakMap();
 const preparedPartitions = new WeakMap();
 const exactFrames = new WeakMap();
+const batchFramePositions = new WeakMap();
 // Transition version also fixes timing/easing, correspondence and weighted blending.
 const kernels = Object.freeze({ transition: TRANSITION_PLAN_VERSION, position: ANIMATION_POSITION_VERSION, appearance: ANIMATION_APPEARANCE_VERSION });
 function native(program) {
@@ -136,7 +142,7 @@ export function normalizeTransitionOptions(input) {
   budget([timeline],true);
   const requested=Object.fromEntries(["maxEndpointNodes","maxOutputNodes"].filter(key=>Object.hasOwn(options,key)).map(key=>[key,options[key]]));
   if(Object.keys(requested).length)normalizeAnimationResourceLimits(requested);
-  if(Object.hasOwn(options,"formatVersion")&&options.formatVersion!==NUMERIC_TRANSITION_PLAN_VERSION)throw new TypeError("Explicit transition formatVersion must be 5.");
+  if(Object.hasOwn(options,"formatVersion")&&![NUMERIC_TRANSITION_PLAN_VERSION,BATCHED_TRANSITION_PLAN_VERSION].includes(options.formatVersion))throw new TypeError("Explicit transition formatVersion must be 5 or 6.");
   return cloneAndFreeze({durationMs:options.durationMs,easing,...timeline,...requested,...(Object.hasOwn(options,"formatVersion")?{formatVersion:options.formatVersion}:{})});
 }
 function assemble(from,to,a,b,options,graphs,cartesian,partitions,polars,geos,guides,geotexts,axislabels,resources,version=TRANSITION_PLAN_VERSION) {
@@ -144,7 +150,7 @@ function assemble(from,to,a,b,options,graphs,cartesian,partitions,polars,geos,gu
   validateGeneratedItemLimit(from.scene.nodes.length+to.scene.nodes.length,"Animation endpoint nodes",animationResourceLimits(resources)?.maxEndpointNodes);
   const matching=matchAnimationEndpoints(from,to);
   const axisPreparation=prepareAxisLabelTracks(axislabels.from,axislabels.to);
-  const geoPreparation=prepareGeoTracks(geos.from,geos.to,version===NUMERIC_TRANSITION_PLAN_VERSION);
+  const geoPreparation=prepareGeoTracks(geos.from,geos.to,version>=NUMERIC_TRANSITION_PLAN_VERSION);
   const geoTextPreparation=prepareGeoTextTracks(geotexts.from,geotexts.to);
   budget([cartesian.from,cartesian.to,polars.from,polars.to,guides.from,guides.to],false,resources);
   const guidePreparation=prepareGuideTracks({...from,guides:guides.from,axislabels:axislabels.from},{...to,guides:guides.to,axislabels:axislabels.to});
@@ -168,7 +174,7 @@ export function planTransition(input) {
   const options=normalizeTransitionOptions(input.options);
   const limits=Object.fromEntries(["maxEndpointNodes","maxOutputNodes"].filter(key=>Object.hasOwn(options,key)).map(key=>[key,options[key]]));
   const version=options.formatVersion??SCOPED_TRANSITION_PLAN_VERSION;
-  const resources=createTransitionResourceScope(input.from,input.to,version===NUMERIC_TRANSITION_PLAN_VERSION?normalizeAnimationResourceLimits(limits):limits);
+  const resources=createTransitionResourceScope(input.from,input.to,version>=NUMERIC_TRANSITION_PLAN_VERSION?normalizeAnimationResourceLimits(limits):limits);
   const plan=planTransitionInternal({...input,options},resources,version);
   prepareVersion4Wire(plan);return plan;
 }
@@ -183,14 +189,25 @@ function planTransitionInternal(input,resources,version=TRANSITION_PLAN_VERSION)
   const prepare=value=>{
     const proof=animationFrameProvenance(value);
     if(proof!==undefined){
-      if(proof.geos?.groups.some(group=>Object.hasOwn(group.presentation.geometry.binding,"capacity")))validateGeoAnimationPresentations(proof.geos,proof.endpoint,version===NUMERIC_TRANSITION_PLAN_VERSION);
-      return prepareFrameEndpoint(value,proof);
+      if(value.scene.version===3&&version!==BATCHED_TRANSITION_PLAN_VERSION)throw new TypeError("A batched frame requires explicit formatVersion 6.");
+      const prepared=prepareFrameEndpoint(value,proof);
+      if(proof.geos?.groups.some(group=>Object.hasOwn(group.presentation.geometry.binding,"capacity")))validateGeoAnimationPresentations(proof.geos,prepared.endpoint,version>=NUMERIC_TRANSITION_PLAN_VERSION);
+      return prepared;
     }
-    const endpoint=projectAnimationEndpoint(value),geos=projectGeoAnimationPresentations(value,endpoint,version===NUMERIC_TRANSITION_PLAN_VERSION),geotexts=projectGeoTextAnimations(value,endpoint,geos),axislabels=projectAxisLabelGroups(value,endpoint,geotexts);validateAxisLabelDrawingOrder(axislabels,geos,geotexts);return{endpoint,axislabels,geotexts,guides:projectGuideAnimationState(value,endpoint,axislabels,animationResourceLimits(resources)?.maxOutputNodes),geos,positions:projectPointAnimationPositions(value,endpoint,resources===undefined?undefined:(program,layer)=>pointAnimationRowLimit(program,layer,resources)),graphs:projectGraphAnimationState(value,endpoint),cartesian:projectCartesianAnimationState(value,endpoint),polars:projectPolarAnimationState(value,endpoint),partitions:validateAnimationPartitionState(projectPartitionAnimations(value,endpoint),endpoint)};
+    const endpoint=projectAnimationEndpoint(value),geos=projectGeoAnimationPresentations(value,endpoint,version>=NUMERIC_TRANSITION_PLAN_VERSION),geotexts=projectGeoTextAnimations(value,endpoint,geos),axislabels=projectAxisLabelGroups(value,endpoint,geotexts);validateAxisLabelDrawingOrder(axislabels,geos,geotexts);return{endpoint,axislabels,geotexts,guides:projectGuideAnimationState(value,endpoint,axislabels,animationResourceLimits(resources)?.maxOutputNodes),geos,positions:projectPointAnimationPositions(value,endpoint,resources===undefined?undefined:(program,layer)=>pointAnimationRowLimit(program,layer,resources)),graphs:projectGraphAnimationState(value,endpoint),cartesian:projectCartesianAnimationState(value,endpoint),polars:projectPolarAnimationState(value,endpoint),partitions:validateAnimationPartitionState(projectPartitionAnimations(value,endpoint),endpoint)};
   };
   const from=prepare(input.from),to=prepare(input.to),plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs??emptyAnimationGraphs(from.endpoint.scene.nodes.length),to:to.graphs??emptyAnimationGraphs(to.endpoint.scene.nodes.length)},{from:from.cartesian??emptyAnimationCartesian(from.endpoint),to:to.cartesian??emptyAnimationCartesian(to.endpoint)},{from:from.partitions??emptyAnimationPartitions(from.endpoint.scene.nodes.length),to:to.partitions??emptyAnimationPartitions(to.endpoint.scene.nodes.length)},{from:from.polars??emptyAnimationPolars(from.endpoint),to:to.polars??emptyAnimationPolars(to.endpoint)},{from:from.geos??emptyAnimationGeos(from.endpoint.scene.nodes.length),to:to.geos??emptyAnimationGeos(to.endpoint.scene.nodes.length)},{from:from.guides??emptyAnimationGuides(from.endpoint),to:to.guides??emptyAnimationGuides(to.endpoint)},{from:from.geotexts??emptyAnimationGeoTexts(from.endpoint.scene.nodes.length),to:to.geotexts??emptyAnimationGeoTexts(to.endpoint.scene.nodes.length)},{from:from.axislabels??emptyAxisLabelGroups(from.endpoint.scene.nodes.length),to:to.axislabels??emptyAxisLabelGroups(to.endpoint.scene.nodes.length)},resources,version);
-  exactFrames.set(plan,Object.freeze({from:from.frame,to:to.frame}));registerAnimationPlan(plan,{from:input.from,to:input.to});
+  exactFrames.set(plan,Object.freeze({from:from.frame,to:to.frame}));registerAnimationPlan(plan,{from:input.from,to:input.to});prepareBatchedPlan(plan);
   return plan;
+}
+// The planner supplies its exact closed preparation values. The batch sampler
+// never imports the planner or retains accessor callbacks to it.
+function prepareBatchedPlan(plan) {
+  if (plan.version !== BATCHED_TRANSITION_PLAN_VERSION) return;
+  prepareBatchSampling(plan, { timeline: transitionTimeline(plan), resources: transitionResources(plan),
+    positions: { from: transitionEndpointPositions(plan, "from"), to: transitionEndpointPositions(plan, "to") },
+    graphs: transitionGraphs(plan), partitions: transitionPartitions(plan), geos: transitionGeos(plan),
+    geoTexts: transitionGeoTexts(plan), axisLabels: transitionAxisLabels(plan) });
 }
 export function requireTransitionPlan(plan) {
   if(!plans.has(plan))throw new TypeError("Transition sampling requires an authentic prepared plan.");return plan;
@@ -207,7 +224,17 @@ function exportTransitionPlanRaw(input) {
     const guideState={...(hasAnimationGuides(guides[side])?{guides:guides[side]}:{}),...(axislabels[side].groups.length?{axislabels:axislabels[side]}:{})};
     const graphState={...(hasRetainedAnimationPolars(polars[side],source)?{polars:polars[side]}:{}),...(graphs[side].groups.length?{graphs:graphs[side]}:{}),...(hasRetainedAnimationCartesian(cartesian[side],source)?{cartesian:cartesian[side]}:{})};
     const partitionState=partitions[side].groups.length?{partitions:partitions[side]}:{};
-    const view=frame===undefined?{}:{view:{progress:frame.progress,decisions:frame.decisions,...(Object.hasOwn(frame,"timeMs")?{timeMs:frame.timeMs}:{})}};
+    const view=frame===undefined?{}:{view:{progress:frame.progress,...(frame.scene.version===3?{}:{decisions:frame.decisions}),...(Object.hasOwn(frame,"timeMs")?{timeMs:frame.timeMs}:{})}};
+    if(frame?.scene.version===3){
+      const proof=animationFrameProvenance(frame);
+      return {scene:frame.scene,identities:source.identities,backgrounds:source.backgrounds,positions:proof?.positions??batchFramePositions.get(frame),...graphState,...partitionState,...geoState,...guideState,...view};
+    }
+    if(plan.version===BATCHED_TRANSITION_PLAN_VERSION&&source.format==='sampled'){
+      const builder=createBatchSceneBuilder(source.scene.width,source.scene.height);
+      source.scene.nodes.forEach((node,index)=>builder.append(node,frame.decisions.length?frame.decisions[index]:null,positions[side][index]));
+      const compact=builder.finish();
+      return {scene:compact.scene,identities:source.identities,backgrounds:source.backgrounds,positions:compact.positions,...graphState,...partitionState,...geoState,...guideState,view:{progress:frame.progress,...(Object.hasOwn(frame,'timeMs')?{timeMs:frame.timeMs}:{})}};
+    }
     return source.format==="native"?{graphicSpec:source.graphicSpec,positions:positions[side],...graphState,...partitionState,...geoState,...guideState,...view}:{scene:source.scene,identities:source.identities,
       backgrounds:source.backgrounds,positions:positions[side],...graphState,...partitionState,...geoState,...guideState,...view};
   };
@@ -234,7 +261,18 @@ function closed(value, keys, label) {
   if(keys.some(key=>!Object.hasOwn(value,key)||value[key]===undefined))throw new TypeError(`${label} requires every declared field.`);
 }
 function restoreEndpoint(input,resources,version=TRANSITION_PLAN_VERSION) {
-  let endpoint,frame;
+  let endpoint,frame,batchFrame;
+  if(version===BATCHED_TRANSITION_PLAN_VERSION&&input.scene!==undefined&&input.scene.version!==3)throw new TypeError("Version6 sampled endpoints require scene3.");
+  if(input.scene?.version===3){
+    if(version!==BATCHED_TRANSITION_PLAN_VERSION)throw new TypeError("Batched endpoint requires version 6.");
+    validateBatchSceneStructure(input.scene,input.positions,animationResourceLimits(resources)?.maxOutputNodes);
+    ownRecord(input.view,"Batched frame view");rejectUnknownProperties(input.view,["progress","timeMs"],"batched frame view");
+    const scene=cloneAndFreeze(input.scene),graphicSpec=canvasSceneProgram(scene).graphicSpec;validateGraphic(graphicSpec);
+    batchFrame=cloneAndFreeze({graphicSpec,scene,...input.view});
+    batchFramePositions.set(batchFrame,cloneAndFreeze(input.positions));
+    const rows=projectBatchSceneRows(scene,input.positions);
+    input={...input,scene:rows.scene,positions:rows.positions,view:{...input.view,decisions:rows.decisions}};
+  }
   if(Object.hasOwn(input,"scene")){
     closed(input,["scene","identities","backgrounds","positions","view",...(Object.hasOwn(input,"axislabels")?["axislabels"]:[]),...(Object.hasOwn(input,"guides")?["guides"]:[]),...(Object.hasOwn(input,"geotexts")?["geotexts"]:[]),...(Object.hasOwn(input,"geos")?["geos"]:[]),...(Object.hasOwn(input,"graphs")?["graphs"]:[]),...(Object.hasOwn(input,"cartesian")?["cartesian"]:[]),...(Object.hasOwn(input,"polars")?["polars"]:[]),...(Object.hasOwn(input,"partitions")?["partitions"]:[])],"Restored sampled endpoint");
     const scene=cloneAndFreeze(input.scene),graphicSpec=canvasSceneProgram(scene).graphicSpec;validateGraphic(graphicSpec);
@@ -258,7 +296,7 @@ function restoreEndpoint(input,resources,version=TRANSITION_PLAN_VERSION) {
   for(let index=0;index<input.positions.length;index++){
     validatePointAnimationPosition(input.positions[index],endpoint.identities[index],endpoint.scene.nodes[index]);
   }
-  const geos=Object.hasOwn(input,"geos")?validateGeoAnimationPresentations(input.geos,endpoint,version===NUMERIC_TRANSITION_PLAN_VERSION):emptyAnimationGeos(endpoint.scene.nodes.length);
+  const geos=Object.hasOwn(input,"geos")?validateGeoAnimationPresentations(input.geos,endpoint,version>=NUMERIC_TRANSITION_PLAN_VERSION):emptyAnimationGeos(endpoint.scene.nodes.length);
   if(Object.hasOwn(input,"geos")&&geos.groups.length===0)throw new TypeError("An empty animation Geo state must be omitted.");
   const geotexts=Object.hasOwn(input,"geotexts")?validateGeoTextAnimations(input.geotexts,endpoint,geos):emptyAnimationGeoTexts(endpoint.scene.nodes.length);
   validateAxisLabelDrawingOrder(axislabels,geos,geotexts);
@@ -276,16 +314,21 @@ function restoreEndpoint(input,resources,version=TRANSITION_PLAN_VERSION) {
   const cartesian=Object.hasOwn(input,"cartesian")?validateAnimationCartesian(input.cartesian,endpoint):emptyAnimationCartesian(endpoint);
   if(Object.hasOwn(input,"cartesian")&&!hasRetainedAnimationCartesian(cartesian,endpoint))throw new TypeError("Empty Cartesian animation states must be omitted.");
   for(const [index,decision]of (view?.decisions??[]).entries())if(decision.kind==="semantic-kernel"){
+    // A temporary unbundle retains the sample's original decision, while its
+    // validated graph item explicitly makes the edited edge a concrete fallback.
+    // This history never restores graph-kernel eligibility or native authority.
+    const graphItem = graphs.items[index];
+    if(decision.kernel==="completed-graph"&&graphItem?.kind==="edge"&&graphItem.reason==="edited-graph-geometry")continue;
     if(decision.kernel==="guide-geometry"?guides[index]?.kind===undefined:decision.kernel==="polar-geometry"?polars[index].kind===undefined:decision.kernel==="cartesian-point"?Object.hasOwn(input.positions[index],"reason"):decision.kernel==="cartesian-geometry"?cartesian[index].kind===undefined:(decision.kernel==="partition"?partitions:graphs).items[index]===null||Object.hasOwn((decision.kernel==="partition"?partitions:graphs).items[index],"reason")) {
       throw new TypeError("Sampled semantic decision requires its retained prepared meaning.");
     }
   }
-  return {endpoint,axislabels,guides,geotexts,geos:cloneAndFreeze(geos),positions:cloneAndFreeze(input.positions),graphs:cloneAndFreeze(graphs),cartesian,polars,partitions:cloneAndFreeze(partitions),frame};
+  return {endpoint,axislabels,guides,geotexts,geos:cloneAndFreeze(geos),positions:cloneAndFreeze(input.positions),graphs:cloneAndFreeze(graphs),cartesian,polars,partitions:cloneAndFreeze(partitions),frame:batchFrame??frame};
 }
 export function restoreTransitionPlan(input) {
   const descriptor=input!==null&&typeof input==="object"?Object.getOwnPropertyDescriptor(input,"version"):undefined;
   const version=descriptor!==undefined&&Object.hasOwn(descriptor,"value")?descriptor.value:undefined;
-  return version===SCOPED_TRANSITION_PLAN_VERSION||version===NUMERIC_TRANSITION_PLAN_VERSION?restoreVersion4Wire(input,version):restoreTransitionPlanInternal(input);
+  return [SCOPED_TRANSITION_PLAN_VERSION,NUMERIC_TRANSITION_PLAN_VERSION,BATCHED_TRANSITION_PLAN_VERSION].includes(version)?restoreVersion4Wire(input,version):restoreTransitionPlanInternal(input);
 }
 function restoreTransitionPlanInternal(input,resources,version=TRANSITION_PLAN_VERSION) {
   budget([input],true,resources);
@@ -313,7 +356,7 @@ function restoreTransitionPlanInternal(input,resources,version=TRANSITION_PLAN_V
   const options=normalizeTransitionOptions({durationMs:input.durationMs,easing:input.easing,...(timelineKernel?{tracks:input.timeline.tracks,markers:input.timeline.markers,composite:input.timeline.composite}:{})});
   const from=restoreEndpoint(input.from,resources,version),to=restoreEndpoint(input.to,resources,version);
   const plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs,to:to.graphs},{from:from.cartesian,to:to.cartesian},{from:from.partitions,to:to.partitions},{from:from.polars,to:to.polars},{from:from.geos,to:to.geos},{from:from.guides,to:to.guides},{from:from.geotexts,to:to.geotexts},{from:from.axislabels,to:to.axislabels},resources,version);
-  exactFrames.set(plan,Object.freeze({from:from.frame,to:to.frame}));registerAnimationPlan(plan,{});
+  exactFrames.set(plan,Object.freeze({from:from.frame,to:to.frame}));registerAnimationPlan(plan,{});prepareBatchedPlan(plan);
   return plan;
 }
 
@@ -347,17 +390,19 @@ export function transitionColumnMetrics(plan) {
 // Version4 carries only exact concrete endpoint/timeline nodes; metadata stays
 // explicit. The value codec and strict meaning/graphic validators remain owners.
 function prepareVersion4Wire(plan) {
-  const raw=exportTransitionPlanRaw(plan),resources=preparedResources.get(plan);
-  const numeric=plan.version===NUMERIC_TRANSITION_PLAN_VERSION;
-  const prepared=(numeric?prepareAnimationColumnsV2:prepareAnimationColumns)(raw,resources),nodes=new Map(prepared.compact.root.object);
-  const wire=cloneAndFreeze({kind:raw.kind,version:raw.version,limits:animationResourceLimits(resources),kernels:numeric?{...raw.kernels,columns:"animation-columns@2"}:raw.kernels,
+  const original=exportTransitionPlanRaw(plan),resources=preparedResources.get(plan);
+  if(plan.version===BATCHED_TRANSITION_PLAN_VERSION)validateAnimationResourceWork(batchLogicalPlanWork(original),"Animation preparation work",resources);
+  const raw=plan.version===BATCHED_TRANSITION_PLAN_VERSION?projectBatchNumericColumns(original):original;
+  const numeric=plan.version>=NUMERIC_TRANSITION_PLAN_VERSION;
+  const prepared=(plan.version===BATCHED_TRANSITION_PLAN_VERSION?prepareAnimationColumnsV2WithConstants:numeric?prepareAnimationColumnsV2:prepareAnimationColumns)(raw,resources),nodes=new Map(prepared.compact.root.object);
+  const wire=cloneAndFreeze({kind:raw.kind,version:raw.version,limits:animationResourceLimits(resources),kernels:numeric?{...raw.kernels,columns:"animation-columns@2",...(plan.version===BATCHED_TRANSITION_PLAN_VERSION?{batchFrame:1}:{})}:raw.kernels,
     durationMs:raw.durationMs,easing:raw.easing,from:nodes.get("from"),to:nodes.get("to"),vectors:prepared.compact.vectors,
     ...(Object.hasOwn(raw,"timeline")?{timeline:nodes.get("timeline")}: {})});
   inspectAnimationEnvelopeValue(wire,false,true);
   preparedColumns.set(plan,prepared);preparedWire.set(plan,wire);
 }
 function restoreVersion4Wire(input,version=SCOPED_TRANSITION_PLAN_VERSION) {
-  const numeric=version===NUMERIC_TRANSITION_PLAN_VERSION;
+  const numeric=version>=NUMERIC_TRANSITION_PLAN_VERSION;
   inspectAnimationEnvelopeValue(input,false,true);
   const timeline=Object.hasOwn(input,"timeline");
   closed(input,["kind","version","limits","kernels","durationMs","easing","from","to","vectors",...(timeline?["timeline"]:[])],"Restored version4 transition plan");
@@ -366,17 +411,20 @@ function restoreVersion4Wire(input,version=SCOPED_TRANSITION_PLAN_VERSION) {
   const resources=createOfflineResourceScope(input.limits);
   validateNonNegativeFinite(input.durationMs,"Transition duration");easeProgress(.5,input.easing);
   ownRecord(input.kernels,"Animation kernels");
-  const versions={...kernels,transition:version,...(numeric?{columns:"animation-columns@2"}:{}),timeline:ANIMATION_TIMELINE_VERSION,geoText:ANIMATION_GEO_TEXT_VERSION,guide:ANIMATION_GUIDE_VERSION,geo:ANIMATION_GEO_VERSION,polar:ANIMATION_POLAR_VERSION,cartesian:ANIMATION_CARTESIAN_VERSION,graph:ANIMATION_GRAPH_VERSION,route:ANIMATION_ROUTE_VERSION,partition:PARTITION_ANIMATION_VERSION};
-  closed(input.kernels,Object.keys(versions).filter(key=>["transition","position","appearance",...(numeric?["columns"]:[])].includes(key)||Object.hasOwn(input.kernels,key)),"Animation kernels");
+  const versions={...kernels,transition:version,...(numeric?{columns:"animation-columns@2"}:{}),...(version===BATCHED_TRANSITION_PLAN_VERSION?{batchFrame:1}:{}),timeline:ANIMATION_TIMELINE_VERSION,geoText:ANIMATION_GEO_TEXT_VERSION,guide:ANIMATION_GUIDE_VERSION,geo:ANIMATION_GEO_VERSION,polar:ANIMATION_POLAR_VERSION,cartesian:ANIMATION_CARTESIAN_VERSION,graph:ANIMATION_GRAPH_VERSION,route:ANIMATION_ROUTE_VERSION,partition:PARTITION_ANIMATION_VERSION};
+  closed(input.kernels,Object.keys(versions).filter(key=>["transition","position","appearance",...(numeric?["columns"]:[]),...(version===BATCHED_TRANSITION_PLAN_VERSION?["batchFrame"]:[])].includes(key)||Object.hasOwn(input.kernels,key)),"Animation kernels");
   for(const[key,value]of Object.entries(versions))if(Object.hasOwn(input.kernels,key)&&input.kernels[key]!==value&&!(numeric&&key==="geo"&&input.kernels[key]===ANIMATION_GEO_CAPACITY_VERSION))throw new TypeError("Unsupported animation kernel version.");
   if(timeline!==Object.hasOwn(input.kernels,"timeline"))throw new TypeError("Version4 timeline requires its exact kernel manifest.");
   const entries=[["kind",{literal:input.kind}],["version",{literal:input.version}],...(timeline?[["timeline",input.timeline]]:[]),
-    ["kernels",{literal:numeric?Object.fromEntries(Object.entries(input.kernels).filter(([key])=>key!=="columns")):input.kernels}],["durationMs",{literal:input.durationMs}],["easing",{literal:input.easing}],["from",input.from],["to",input.to]];
+    ["kernels",{literal:numeric?Object.fromEntries(Object.entries(input.kernels).filter(([key])=>key!=="columns"&&key!=="batchFrame")):input.kernels}],["durationMs",{literal:input.durationMs}],["easing",{literal:input.easing}],["from",input.from],["to",input.to]];
   const compact={kind:"animation-columns",version:numeric?2:1,root:{object:entries},vectors:input.vectors};
-  const raw=(numeric?restoreAnimationColumnsV2:restoreAnimationColumns)(compact,resources),plan=restoreTransitionPlanInternal(raw,resources,version);
+  const batchColumns=version===BATCHED_TRANSITION_PLAN_VERSION?validateAnimationColumnsV2WithOwnedConstants(compact,resources):undefined;
+  const projected=batchColumns===undefined?(numeric?restoreAnimationColumnsV2:restoreAnimationColumns)(compact,resources):batchColumns.restore();
+  const raw=version===BATCHED_TRANSITION_PLAN_VERSION?restoreBatchNumericColumns(projected,resources,batchColumns.cellVisits):projected;
+  const plan=restoreTransitionPlanInternal(raw,resources,version);
   preparedColumns.set(plan,{compact:cloneAndFreeze(compact)});preparedWire.set(plan,cloneAndFreeze(input));return plan;
 }
 
 function geoKernelVersion(geos,version) {
-  return version===NUMERIC_TRANSITION_PLAN_VERSION&&[...geos.from.groups,...geos.to.groups].some(group=>Object.hasOwn(group.presentation.geometry.binding,"capacity"))?ANIMATION_GEO_CAPACITY_VERSION:ANIMATION_GEO_VERSION;
+  return version>=NUMERIC_TRANSITION_PLAN_VERSION&&[...geos.from.groups,...geos.to.groups].some(group=>Object.hasOwn(group.presentation.geometry.binding,"capacity"))?ANIMATION_GEO_CAPACITY_VERSION:ANIMATION_GEO_VERSION;
 }

@@ -9,6 +9,7 @@ import {serializeProgram} from '../../src/persistence.js';
 import {planTransition,sampleTransition,serializeAnimation,deserializeAnimation} from '../../src/animation.js';
 import {registerGraphPresentationReader,readNativeGraphPresentation} from '../../src/materialization/graph/presentationReader.js';
 import {animationFrameProvenance,registerNativeGraphPresentationFrame} from '../../src/animation/frameProvenance.js';
+import {animationSceneRows} from '../../src/core/sceneRows.js';
 
 const options={durationMs:100,easing:'linear'};
 function fixture(){
@@ -59,14 +60,17 @@ test('native reader never inherits authority or accepts a copied frame',()=>{
  assert.equal(proof.native.owners[0],program);assert.equal(Object.hasOwn(proof,'plan'),false);
 });
 
-test('current animated nested edge presentation preserves source scopes, baseline and topology',()=>{
+for(const formatVersion of [undefined,6])test(`format ${formatVersion??"default"} nested edge presentation preserves source scopes, baseline and topology`,()=>{
  const {program}=fixture(),to=program.editLayout({options:{positions:[{key:'a',x:60,y:120},{key:'b',x:260,y:120}]}});
  const wrap=p=>hconcat({id:'pair',programs:[{id:'left',program:p},{id:'right',program}]}),native=wrap(program),target={childPath:['left'],id:'plot'};
- const frame=sampleTransition(planTransition({from:native,to:wrap(to),options}),50),key=getMarkItems(native,{target}).find(item=>item.fields.kind==='edge').key;
+ const frame=sampleTransition(planTransition({from:native,to:wrap(to),options:{...options,...(formatVersion===undefined?{}:{formatVersion})}}),50),key=getMarkItems(native,{target}).find(item=>item.fields.kind==='edge').key;
  const s=createInteractionSession({program:native,bindings:[binding(target)]});s.dispatch({type:'frame',frame,version:1,generation:0});
  s.dispatch({type:'unbundleEdge',target,itemKey:key});assert.equal(s.getState().animationFrame,frame);assert.equal(s.getState().program,native);
  const preview=s.getState().previewFrame,proof=animationFrameProvenance(preview);
- for(const[i,node]of preview.scene.nodes.entries())if(proof.endpoint.identities[i]?.key!==key)assert.equal(node,frame.scene.nodes[i]);
+ const originalRows=[...animationSceneRows(frame.scene)];
+ for(const{index,node}of animationSceneRows(preview.scene))if(proof.endpoint.identities[index]?.key!==key)assert.equal(node,originalRows[index].node);
+ const replanned=planTransition({from:preview,to:wrap(to),options:{...options,...(formatVersion===undefined?{}:{formatVersion})}});
+ assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(replanned)).plan,50).scene,sampleTransition(replanned,50).scene);
  s.dispatch({type:'unbundleEdge',target,itemKey:null});assert.equal(s.getState().previewFrame,null);assert.equal(s.getState().animationFrame,frame);assert.deepEqual(s.getState().scene,frame.scene);
  s.dispatch({type:'unbundleEdge',target,itemKey:key});s.updateProgram(native);assert.equal(s.getState().previewFrame,null);assert.equal(s.getState().animationFrame,null);s.destroy();
 });
