@@ -898,5 +898,15 @@
     "result": "capacityProgram",
     "prerequisites": "Install ggaction and run this complete ES module in Node.js 20 or later.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "interaction-path-preparation",
+    "file": "api/interaction.md",
+    "contains": "const pathProgram =",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "pathProgram",
+    "prerequisites": "Run this complete ES module with public package imports. Concrete path capacity and session preparation are explicit.",
+    "rendering": "authoring-only"
   }
 ]

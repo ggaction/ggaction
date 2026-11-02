@@ -1,0 +1,286 @@
+{
+  "pid": 77966,
+  "node": "v22.23.1",
+  "start": "2026-11-02T10:47:18.783Z",
+  "head": "4606936b302335100142c6b461b133b306afcec9",
+  "sourceDiffSHA256": "ca194f9810023c45c29e5e5f88aa2d824162322c2a3a84f81fd2adc034ea6570",
+  "sources": {
+    "hitShapes": "bd274ce2d3a064d18cd7c3600e83ae2e256b01a452c14be5079d58656d4c285a",
+    "hitStroke": "7d8aa4c51aac55c87c90c26726e3742f83efdb682b2cc94f4071f5ad037a841d",
+    "hitPartIndex": "59ce87ca4cbc4702ac2cdc0ba1e9bd53dbd3947c5070f55cf3299b70ed419486",
+    "hitPolicy": "be7191005fee303d0b5ef30a4b63b84690e40f0eee71f5fb860111aff6f3f77e",
+    "hitIndex": "c00cd8d4c938882ea84dcc1cea856d864dd9eacb0a190dc7e866b1e4752d610b"
+  },
+  "cases": [
+    {
+      "count": 10000,
+      "start": "2026-11-02T10:47:18.810Z",
+      "inputSHA256": "eedbb01f96fbfa4448a4ebf9bf5398a660b990c042e05ebfea957b07b3a986cc",
+      "commands": {
+        "count": 19999,
+        "maxError": 1.4210854715202004e-13,
+        "hash": "de588f3b1b32c7f3adb9a7d3f00102a145761fdfda940295216fd273276b5737"
+      },
+      "default": "explicit-limit",
+      "preparationMs": 514.69775,
+      "counts": {
+        "parts": 31165,
+        "strokeWork": 134661,
+        "geometryWork": 145827,
+        "nodes": 7791,
+        "indexBuildWork": 477314,
+        "originalShapeWork": 614495,
+        "preparationWork": 1091809,
+        "bindingWork": 1092004
+      },
+      "footprints": {
+        "parts": 31165,
+        "commands": 176992,
+        "hash": "b8101c7d7c582634e25bafa9b750df83715266b072ebd68cc6e00f7bd7de7abc"
+      },
+      "memory": {
+        "rss": 365166592,
+        "heapTotal": 306151424,
+        "heapUsed": 279756016,
+        "external": 2701488,
+        "arrayBuffers": 528303
+      },
+      "queries": [
+        {
+          "point": {
+            "x": 147.64535895157724,
+            "y": 200
+          },
+          "distance": 0,
+          "nearest": {
+            "hit": true,
+            "distance": 0,
+            "localPoint": {
+              "x": 147.64535895157724,
+              "y": 200
+            },
+            "diagnostics": []
+          },
+          "hit": true,
+          "work": 5233,
+          "target": {
+            "itemKey": "[[],\"coast\",\"geo\",[\"66402b31-4eb6-4efe-a888-6c9a0c49c696\",\"[\\\"scalar\\\",[[\\\"string\\\",\\\"line\\\"]]]\"]]",
+            "ownerId": "coast",
+            "role": "geo",
+            "childPath": [],
+            "rowKeys": [],
+            "resourceRefs": [
+              {
+                "kind": "geometry",
+                "id": "world",
+                "revision": 0
+              }
+            ],
+            "screenPoint": {
+              "x": 147.64535895157724,
+              "y": 200
+            },
+            "localPoint": {
+              "x": 147.64535895157724,
+              "y": 200
+            },
+            "distance": 0,
+            "zIndex": 1
+          }
+        },
+        {
+          "point": {
+            "x": 200,
+            "y": 200
+          },
+          "distance": 0,
+          "nearest": {
+            "hit": true,
+            "distance": 0,
+            "localPoint": {
+              "x": 200,
+              "y": 200
+            },
+            "diagnostics": []
+          },
+          "hit": true,
+          "work": 10565,
+          "target": {
+            "itemKey": "[[],\"coast\",\"geo\",[\"66402b31-4eb6-4efe-a888-6c9a0c49c696\",\"[\\\"scalar\\\",[[\\\"string\\\",\\\"line\\\"]]]\"]]",
+            "ownerId": "coast",
+            "role": "geo",
+            "childPath": [],
+            "rowKeys": [],
+            "resourceRefs": [
+              {
+                "kind": "geometry",
+                "id": "world",
+                "revision": 0
+              }
+            ],
+            "screenPoint": {
+              "x": 200,
+              "y": 200
+            },
+            "localPoint": {
+              "x": 200,
+              "y": 200
+            },
+            "distance": 0,
+            "zIndex": 1
+          }
+        },
+        {
+          "point": {
+            "x": 252.35464104842276,
+            "y": 200
+          },
+          "distance": 0,
+          "nearest": {
+            "hit": true,
+            "distance": 0,
+            "localPoint": {
+              "x": 252.35464104842276,
+              "y": 200
+            },
+            "diagnostics": []
+          },
+          "hit": true,
+          "work": 4827,
+          "target": {
+            "itemKey": "[[],\"coast\",\"geo\",[\"66402b31-4eb6-4efe-a888-6c9a0c49c696\",\"[\\\"scalar\\\",[[\\\"string\\\",\\\"line\\\"]]]\"]]",
+            "ownerId": "coast",
+            "role": "geo",
+            "childPath": [],
+            "rowKeys": [],
+            "resourceRefs": [
+              {
+                "kind": "geometry",
+                "id": "world",
+                "revision": 0
+              }
+            ],
+            "screenPoint": {
+              "x": 252.35464104842276,
+              "y": 200
+            },
+            "localPoint": {
+              "x": 252.35464104842276,
+              "y": 200
+            },
+            "distance": 0,
+            "zIndex": 1
+          }
+        },
+        {
+          "point": {
+            "x": 200,
+            "y": 230
+          },
+          "distance": 21.272753680130364,
+          "nearest": {
+            "status": "explicit-limit",
+            "error": "Hit shape exceeds its geometry work budget."
+          },
+          "hit": false,
+          "work": 1,
+          "target": null
+        }
+      ],
+      "anchor": {
+        "x": 148.64012226013415,
+        "y": 208.72724631986964
+      },
+      "status": "passed",
+      "current": {
+        "entries": 1,
+        "parts": 31157
+      },
+      "rebase": {
+        "entries": 1,
+        "parts": 31159
+      },
+      "offline": "no native hit authority",
+      "end": "2026-11-02T10:47:38.380Z"
+    },
+    {
+      "count": 100000,
+      "start": "2026-11-02T10:47:38.413Z",
+      "inputSHA256": "3abb4487631f9099de7725acc9bf1fec159d3c6807f5abeba6e583ef3d5d5079",
+      "commands": {
+        "count": 199999,
+        "maxError": 2.0605739337042905e-13,
+        "hash": "24153eb87f7c2ef17e06f95497ce4519ea67c8ff2e240bfc6f4b21c5d675620c"
+      },
+      "default": "explicit-limit",
+      "preparationMs": 41946.961083,
+      "counts": {
+        "parts": 339849,
+        "strokeWork": 1459397,
+        "geometryWork": 1599247,
+        "nodes": 84963,
+        "indexBuildWork": 5184746,
+        "originalShapeWork": 6736859,
+        "preparationWork": 11921605,
+        "bindingWork": 11921800
+      },
+      "footprints": {
+        "parts": 339849,
+        "commands": 1939096,
+        "hash": "ed299020fa7f2b61130344c9f359aa59ffc13007c0c1453170aed5cd125b9284"
+      },
+      "memory": {
+        "rss": 889733120,
+        "heapTotal": 1555775488,
+        "heapUsed": 1507220424,
+        "external": 10850606,
+        "arrayBuffers": 8685619
+      },
+      "queries": [
+        {
+          "point": {
+            "x": 147.64064604418175,
+            "y": 200
+          },
+          "distance": 0,
+          "nearest": {
+            "hit": true,
+            "distance": 0,
+            "localPoint": {
+              "x": 147.64064604418175,
+              "y": 200
+            },
+            "diagnostics": []
+          },
+          "hit": true,
+          "work": 43133,
+          "target": {
+            "itemKey": "[[],\"coast\",\"geo\",[\"27110043-7cda-48bf-91ad-54ae973d205c\",\"[\\\"scalar\\\",[[\\\"string\\\",\\\"line\\\"]]]\"]]",
+            "ownerId": "coast",
+            "role": "geo",
+            "childPath": [],
+            "rowKeys": [],
+            "resourceRefs": [
+              {
+                "kind": "geometry",
+                "id": "world",
+                "revision": 0
+              }
+            ],
+            "screenPoint": {
+              "x": 147.64064604418175,
+              "y": 200
+            },
+            "localPoint": {
+              "x": 147.64064604418175,
+              "y": 200
+            },
+            "distance": 0,
+            "zIndex": 1
+          }
+        }
+      ]
+    }
+  ],
+  "kind": "source functional diagnostic; scalar oracle ignores query work solely to compare exact distance; product guards unchanged; not P95"
+}

@@ -2566,6 +2566,18 @@
   {
     "file": "api/interaction.md",
     "block": 3,
+    "heading": "Bound hit preparation",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run this complete ES module with public package imports. Concrete path capacity and session preparation are explicit.",
+    "sha256": "445ffb5e073d29c8467dd5f7e3bc7bab22ad2013cdea4babfda5efd02e13ce5d",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 4,
     "heading": "Resize a selection or reorder categories",
     "mode": "complete",
     "environment": "node-esm",
@@ -2580,7 +2592,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 4,
+    "block": 5,
     "heading": "Observe the mounted surface size",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2594,7 +2606,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 5,
+    "block": 6,
     "heading": "Prepare assets before committing",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2608,7 +2620,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 6,
+    "block": 7,
     "heading": "Undo, redo and reset",
     "mode": "complete",
     "environment": "node-esm",
@@ -2622,7 +2634,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 7,
+    "block": 8,
     "heading": "Inspect without a DOM",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2636,7 +2648,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 8,
+    "block": 9,
     "heading": "Replace a program or sampled frame",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2650,7 +2662,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 9,
+    "block": 10,
     "heading": "State and cleanup",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2664,7 +2676,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 10,
+    "block": 11,
     "heading": "Commit selections and parameters",
     "mode": "complete",
     "environment": "node-esm",
@@ -2679,7 +2691,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 11,
+    "block": 12,
     "heading": "Filter and reorder a view",
     "mode": "complete",
     "environment": "node-esm",
@@ -2693,7 +2705,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 12,
+    "block": 13,
     "heading": "Link named selections",
     "mode": "complete",
     "environment": "node-esm",
@@ -2708,7 +2720,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 13,
+    "block": 14,
     "heading": "Filter another view from a selection",
     "mode": "complete",
     "environment": "node-esm",
@@ -2723,7 +2735,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 14,
+    "block": 15,
     "heading": "Select the nearest item",
     "mode": "complete",
     "environment": "node-esm",
@@ -2738,7 +2750,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 15,
+    "block": 16,
     "heading": "Select categories from a legend",
     "mode": "complete",
     "environment": "browser-module",
@@ -2753,7 +2765,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 16,
+    "block": 17,
     "heading": "Hide and restore categories from a legend",
     "mode": "complete",
     "environment": "browser-module",
@@ -2767,7 +2779,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 17,
+    "block": 18,
     "heading": "Automatic click selection",
     "mode": "complete",
     "environment": "browser-module",
@@ -2782,7 +2794,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 18,
+    "block": 19,
     "heading": "Brush or lasso an existing selection",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2799,7 +2811,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 19,
+    "block": 20,
     "heading": "Connect parameter inputs and a context action",
     "mode": "complete",
     "environment": "browser-module",
@@ -2816,7 +2828,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 20,
+    "block": 21,
     "heading": "Navigate a partition view from host controls",
     "mode": "complete",
     "environment": "browser-module",
@@ -2830,7 +2842,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 21,
+    "block": 22,
     "heading": "Adjust a geographic view from host controls",
     "mode": "complete",
     "environment": "browser-module",
@@ -2846,7 +2858,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 22,
+    "block": 23,
     "heading": "Navigate a map with drag, wheel, pinch and keyboard",
     "mode": "complete",
     "environment": "browser-module",
@@ -2860,7 +2872,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 23,
+    "block": 24,
     "heading": "Move graph nodes with pointer or keyboard",
     "mode": "complete",
     "environment": "browser-module",
@@ -2875,7 +2887,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 24,
+    "block": 25,
     "heading": "Edit existing annotations",
     "mode": "complete",
     "environment": "browser-module",
@@ -2889,7 +2901,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 25,
+    "block": 26,
     "heading": "Prepare native work before replacing the program",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2905,7 +2917,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 26,
+    "block": 27,
     "heading": "Combine editing gestures",
     "mode": "complete",
     "environment": "browser-module",
@@ -2921,7 +2933,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 27,
+    "block": 28,
     "heading": "Keyboard item focus",
     "mode": "complete",
     "environment": "browser-module",
@@ -2938,7 +2950,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 28,
+    "block": 29,
     "heading": "Accessible tooltips and touch",
     "mode": "complete",
     "environment": "browser-module",
@@ -2955,7 +2967,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 29,
+    "block": 30,
     "heading": "Native control alternatives",
     "mode": "complete",
     "environment": "browser-module",
@@ -2972,7 +2984,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 30,
+    "block": 31,
     "heading": "Inspect overlapping graph edges",
     "mode": "complete",
     "environment": "browser-module",

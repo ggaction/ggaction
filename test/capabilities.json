@@ -1117,6 +1117,14 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-geographic-hit-capacity.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/interaction-path-capacity.browser.js"
+      },
+      {
+        "type": "file",
         "path": "browser/hit-preparation.browser.js"
       },
       {

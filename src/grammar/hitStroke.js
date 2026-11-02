@@ -1,3 +1,4 @@
+import { normalizeHitPathGeometry } from "./hitPolicy.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { interpolateNumber } from "./numeric.js";
@@ -7,6 +8,7 @@ import { resolveStrokeDetails } from "./strokeStyle.js";
 export const MAX_HIT_STROKE_WORK = 1_000_000;
 const EPSILON = Number.EPSILON * 64;
 const prepared = new WeakSet();
+const costs = new WeakMap();
 const same = (a, b) => a.x === b.x && a.y === b.y;
 
 function point(value) {
@@ -16,7 +18,7 @@ function point(value) {
 }
 function spend(work, count = 1) {
   work.value += count;
-  if (!Number.isSafeInteger(work.value) || work.value > MAX_HIT_STROKE_WORK) throw new RangeError("Hit stroke exceeds its work budget.");
+  if (!Number.isSafeInteger(work.value) || work.value > (work.limit ?? MAX_HIT_STROKE_WORK)) throw new RangeError("Hit stroke exceeds its work budget.");
 }
 function direction(a, b) {
   const x = b.x - a.x, y = b.y - a.y, length = Math.hypot(x, y);
@@ -70,7 +72,7 @@ function dashedRuns(subpath, style, work) {
   const { pattern, cycle } = style, points = subpath.points;
   let length = 0;
   for (let i = 1; i < points.length; i++) length += direction(points[i - 1], points[i])?.length ?? 0;
-  if (!Number.isFinite(length) || Math.ceil(length / cycle) * pattern.length > MAX_HIT_STROKE_WORK - work.value) {
+  if (!Number.isFinite(length) || Math.ceil(length / cycle) * pattern.length > (work.limit ?? MAX_HIT_STROKE_WORK) - work.value) {
     throw new RangeError("Hit stroke dash exceeds its work budget.");
   }
   const runs = [];
@@ -116,10 +118,12 @@ function dashedRuns(subpath, style, work) {
 function strokeParts(run, style, parts, work) {
   const half = style.width / 2, points = run.points.filter((value, index) => index === 0 || !same(value, run.points[index - 1]));
   const polygon = vertices => {
+    if (work.maxParts !== undefined && parts.length >= work.maxParts) throw new RangeError("Hit stroke parts exceed their work budget.");
     spend(work, vertices.length); vertices.forEach(point);
     parts.push({ type: "polygon", points: vertices, commands: vertices.map((p, i) => ({ op: i ? "L" : "M", ...p })).concat({ op: "Z" }) });
   };
   const circle = center => {
+    if (work.maxParts !== undefined && parts.length >= work.maxParts) throw new RangeError("Hit stroke parts exceed their work budget.");
     spend(work);
     if (![center.x - half, center.x + half, center.y - half, center.y + half].every(Number.isFinite)) throw new RangeError("Hit stroke bounds must be finite.");
     parts.push({ type: "circle", x: center.x, y: center.y, radius: half });
@@ -163,12 +167,20 @@ function strokeParts(run, style, parts, work) {
 }
 
 /** Convert resolved flattened subpaths to the actual painted local stroke footprint. */
-export function prepareHitStroke(geometry, input) {
-  const work = { value: 0 }, style = normalizeStroke(input), subpaths = normalizeGeometry(geometry, work), parts = [];
+export function calculateHitStroke(geometry, input, policy) {
+  policy = normalizeHitPathGeometry(policy);
+  const work = { value: 0, ...(policy === undefined ? {} : { limit: policy.maxWork, maxParts: policy.maxParts }) }, style = normalizeStroke(input), subpaths = normalizeGeometry(geometry, work), parts = [];
   if (style.width > 0) for (const subpath of subpaths) {
     for (const run of dashedRuns(subpath, style, work)) strokeParts(run, style, parts, work);
   }
-  const result = cloneAndFreeze(parts); prepared.add(result); return result;
+  return { parts, work: work.value };
+}
+
+// The ordinary prepared facade retains its owned immutable result and authenticity.
+// Hit shape assembly consumes the raw intermediate commands synchronously instead.
+export function prepareHitStroke(geometry, input, policy) {
+  const value = calculateHitStroke(geometry, input, policy);
+  const result = cloneAndFreeze(value.parts); prepared.add(result); costs.set(result, value.work); return result;
 }
 
 /** Distance to painted stroke, so CSS slop can be applied without filling dash gaps. */
@@ -183,3 +195,5 @@ export function hitStrokeDistance(parts, query) {
   }
   return distance;
 }
+
+export const hitStrokePreparationWork = parts => costs.get(parts);

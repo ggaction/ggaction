@@ -246,3 +246,7 @@ selectionHandles.handles[0].point.x=0;
 createInteractionSession({program:chart(),hitPreparation:{maxSceneNodes:100001,maxWork:128000000}});
 // @ts-expect-error preparation cannot change the query limit
 createInteractionSession({program:chart(),hitPreparation:{maxQueryWork:3000000}});
+
+createInteractionSession({program:chart(),hitPreparation:{pathGeometry:{maxParts:400000,maxWork:2000000,maxIndexWork:16000000}}});
+// @ts-expect-error path preparation cannot change the query budget
+createInteractionSession({program:chart(),hitPreparation:{pathGeometry:{maxQueryWork:3000000}}});

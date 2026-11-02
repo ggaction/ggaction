@@ -9,7 +9,7 @@
 - [ ] 소형 product/prototype 동등성, 원10k/100k 실제 footprint 및 query 검증
 - [ ] 동일 archive/browser P95·100cycle와 전체 consumer closure
 
-Gate 상태는 `approved`다. [기존 remainingApproval](../AUTHORIZATION.json)은 이 범위의 설계 구체화를 이미 승인했다. 사용자에게 재승인을 요구하지 않는다. Root가 이 정확 문서의 채택/수정 판단을 기록한 다음 제품을 구현한다. 이 commit은 문서·적용하지 않은 patch·정적 검증만 포함하며 Current/API/types/제품 source를 바꾸지 않는다. 새 시각 결과나 native 권한을 만들지 않는다.
+Gate 상태는 `approved`다. [기존 remainingApproval](../AUTHORIZATION.json)은 이 범위의 설계 구체화를 이미 승인했다. 사용자에게 재승인을 요구하지 않는다. Root가 이 정확 문서의 채택/수정 판단을 기록한 다음 제품을 구현한다. 최초 review commit a14a50e3은 문서·적용 전 patch·정적 검증만 포함했다. 이후 채택된 제품 구현과 실제 적용 상태는 [구현 기록](GEO_HIT_A3_IMPLEMENTATION.md)을 따른다. 새 시각 결과나 native 권한을 만들지 않는다.
 
 A1/A2의 native capacity/format5는 [완료 기록](GEO_CAPACITY_A2_IMPLEMENTATION.md)을 따른다. Scalar/Canvas compiler 최적화는 별도 owner가 진행하므로 이 안에 포함하지 않는다.
 
@@ -110,7 +110,7 @@ Focus anchor는 기존 **첫 유효 part 순서**를 보존해야 한다. 공간
 
 ## Canonical benchmark 적용 전 diff
 
-[existing-policy.patch](geo-hit-a3-review/existing-policy.patch)는 이미 승인·구현된 A1/A2/point/hitPreparation 옵션만 원 driver에 연결한다. [a3-policy.patch](geo-hit-a3-review/a3-policy.patch)는 이 제안이 구현된 뒤에만 Geo CSS hit에 nested pathGeometry를 전달한다. 두 patch는 **아직 제품에 적용하지 않았다**. 첫 patch만으로 큰 Geo hit 성공을 주장하지 않는다.
+[existing-policy.patch](geo-hit-a3-review/existing-policy.patch)는 이미 승인·구현된 A1/A2/point/hitPreparation 옵션만 원 driver에 연결한다. [a3-policy.patch](geo-hit-a3-review/a3-policy.patch)는 이 제안이 구현된 뒤에만 Geo CSS hit에 nested pathGeometry를 전달한다. 두 patch는 최초 review 시점에는 적용 전이었다. A3 구현 checkpoint에서 승인된 옵션 연결만 canonical driver에 적용했다. 첫 patch만으로 큰 Geo hit 성공을 주장하지 않는다.
 
 원 input generation/hash·counts·projection/precision/line width·원3CSSquery·oracle·warmups/측정횟수·타이머 위치·SLO는 변경하지 않는다. Small tier는 기존 default를 보존하고 필요한10k/100k에만 명시 capacity를 선택한다. `fullFrameSampleMs/cameraPreviewMs`는 계속 sampleTransition 단독이다. 별도 Canvas draw 계측은 다른 이름의 진단으로 추가할 수 있지만 기존50ms를 renderer 포함 수치로 교체하지 않는다.
 

@@ -1,0 +1,29 @@
+{
+  "pid": 89817,
+  "node": "v22.23.1",
+  "start": "2026-11-02T11:30:16.591Z",
+  "head": "d244b550f2ec7418b20f8e15dffcf8e85b91627e",
+  "sourceDiffSHA256": "508733913f6b72f74e31f91d2c9351b9f3d0231060c4cd5ed9fe6d08b94875cb",
+  "sources": {
+    "hitShapes": "a331472afd0f034648cc1017eb4dd4be9a30b6db6386f3eb0a221caf0d427803",
+    "hitStroke": "f794d38334f679c363623f37e7b939ff5da189a8db4365cec1427fd6349e2c31",
+    "hitPartIndex": "fb8deea7a446adea041d97c88d2a619506e00626db0c50120b723fd4937e497f",
+    "hitPolicy": "be7191005fee303d0b5ef30a4b63b84690e40f0eee71f5fb860111aff6f3f77e",
+    "hitIndex": "c00cd8d4c938882ea84dcc1cea856d864dd9eacb0a190dc7e866b1e4752d610b"
+  },
+  "cases": [
+    {
+      "count": 100000,
+      "start": "2026-11-02T11:30:16.626Z",
+      "inputSHA256": "3abb4487631f9099de7725acc9bf1fec159d3c6807f5abeba6e583ef3d5d5079",
+      "commands": {
+        "count": 199999,
+        "maxError": 2.0605739337042905e-13,
+        "hash": "24153eb87f7c2ef17e06f95497ce4519ea67c8ff2e240bfc6f4b21c5d675620c"
+      },
+      "phase": "rebase plan"
+    }
+  ],
+  "archiveSHA256": "bbb592a75661d3b9cdc09440ab4da304600933ca347e37fe03746b717b8f9680",
+  "kind": "same installed artifact; isolated fresh-process rebase/offline functionality after sequential original run hit/current pass and rebase-plan WeakSet rehash; not long-lived pass"
+}
