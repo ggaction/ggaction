@@ -5,10 +5,10 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 786_500, // Typed force neighbor storage: Node20/24 786,443 gzip bytes.
+  ggaction: 787_000, // Packed density samples: Node24 786,906 gzip bytes.
   "ggaction/basic": 424_400, // Dynamic guide dependency union: Node20/24 424,305 gzip bytes.
   "ggaction/svg": 26_000,
-  "ggaction/graph": 68_400, // Typed force neighbor storage: Node20/24 68,376 gzip bytes.
+  "ggaction/graph": 68_900, // Packed density samples: Node24 68,840 gzip bytes.
   "ggaction/animation": 333_700, // Dynamic guide dependencies: Node20 333,698 gzip bytes.
   "ggaction/interaction": 131_400
 });

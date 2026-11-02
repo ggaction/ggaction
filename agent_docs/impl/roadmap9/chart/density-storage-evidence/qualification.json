@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-02",
+  "status": "verified-concept",
+  "authorization": "../../AUTHORIZATION.json",
+  "rootAdoption": "2026-11-02: implement only weight/angle Float64 arrays and offsets, existing route coordinates and shared scalar helper; no new bounded policy, API, schema, guards or charge changes.",
+  "baseline": "4c12b132612e7b83da36daceba7c259d03c826f6",
+  "sourceSHA256": {
+    "src/grammar/graph/routes/density.js": "545fce10c98ee3ee65e639bf5f110bedb6ab9b5dc366eb793242522c6626f885",
+    "src/grammar/graph/routes/densityField.js": "33cf23bb9a77435a9a6a10736133e3a87c8712090d0d4d04a44dfd632613481b",
+    "src/grammar/graph/routes/densitySamples.js": "cd4370571f1713849f364a6cd8847e961d59da01a8a99c2738870bb0b7adf54d",
+    "test/unit/grammar/graph/routes/density-storage.test.js": "77727ec1774f841df01c5fbbe37e070f39cb5553d3163e43fce8ce36152e83bc",
+    "scripts/consumers/fixtures/node/edge-routes.mjs": "beb755007340116d3c093b7a2755a33ad9cfb61d4f273b3bdfc652dfafdcc6c9"
+  },
+  "invariants": [
+    "density-v1 and20iterations unchanged",
+    "field sample/y/x/channel order and zero-valued Map insertions unchanged",
+    "each weight/angle computed once; no per-sample wrapper or tangent recomputation",
+    "all output coordinates, bounds, provenance, diagnostics, resultHash and endpoint signed zero preserved",
+    "all default guards, sample/work24S/live6S+2E charges unchanged",
+    "no shared animation4, core, public types, worker envelope, benchmark or other worktree edits"
+  ],
+  "storage": {
+    "arrays": "Float64 weights[S], Float64 angles[S], Uint32 offsets[E+1], Float64 reusable segment scratch[L]",
+    "derivedReservedByteBound": "16S+4(E+1)+8L",
+    "sourceOfBound": "existing maxSamples plus safe integer/Uint32 count validation; no new policy constant",
+    "cleanup": "scratch finally; sample table in caller finally and preparation catch; all four allocations checked for abort before allocation",
+    "notAJSHeapGuarantee": true
+  },
+  "sourceTests": {
+    "focusedPerNode": {
+      "20": 17,
+      "22": 17,
+      "24": 17
+    },
+    "directedAndUndirectedIterationsEach": 20,
+    "oldKernelComparisonNodes": [
+      20,
+      22,
+      24
+    ],
+    "routeAndPresentation": 92,
+    "criticalOwners": 17,
+    "newOwner": {
+      "lines": 100,
+      "branches": 97.22,
+      "functions": 100
+    },
+    "densityOwner": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "fieldOwner": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "focusedContracts": 42,
+    "packageAndDocumentationTruth": 10,
+    "documentationLinks": 8,
+    "canonicalDocs": 2,
+    "coverageReuse": "coverage source bytes unchanged; subsequent test-only zero Map insertion assertion passed in final focused17each and owning42"
+  },
+  "originalGuardComparison": {
+    "node": "v22.23.1",
+    "baselineAndCurrentExact": true,
+    "failures": [
+      {
+        "count": 100,
+        "name": "RangeError",
+        "message": "Route work must not exceed 10000000.",
+        "details": {
+          "code": "resource-limit",
+          "optionPath": "Route work",
+          "limit": 10000000,
+          "actual": 10000002
+        }
+      },
+      {
+        "count": 1000,
+        "name": "RangeError",
+        "message": "Route work must not exceed 10000000.",
+        "details": {
+          "code": "resource-limit",
+          "optionPath": "Route work",
+          "limit": 10000000,
+          "actual": 10000008
+        }
+      },
+      {
+        "count": 10000,
+        "name": "RangeError",
+        "message": "Route active samples must not exceed 10000000.",
+        "details": {
+          "code": "resource-limit",
+          "optionPath": "Route active samples",
+          "limit": 10000000,
+          "actual": 13400000
+        }
+      }
+    ],
+    "scope": "safety rejections only; guard unmodified and not large support pass"
+  },
+  "archive": {
+    "sha256": "727f9144ffadc6ad6d8d7f359a8e9b4741fc079ab1e6544ccdb3151dca596489",
+    "localPath": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/density-storage/ggaction-727f9144ffadc6ad6d8d7f359a8e9b4741fc079ab1e6544ccdb3151dca596489.tgz",
+    "entryCount": 1248,
+    "packedBytes": 1786643,
+    "unpackedBytes": 8064255,
+    "freezeNode": "v22.23.1",
+    "sameArchiveNodes": [
+      24,
+      22,
+      20
+    ],
+    "runtimeCasesEach": 5,
+    "strictTypes": "edge-routes.ts",
+    "snippet": "edge-route-analytical-comparison",
+    "optionalPeers": "passed",
+    "bundleFinalRecheck": "bundle-recheck.json"
+  },
+  "packageMeasurements": [
+    {
+      "node": 20,
+      "entryCount": 1248,
+      "packedBytes": 1790005,
+      "unpackedBytes": 8064255
+    },
+    {
+      "node": 22,
+      "entryCount": 1248,
+      "packedBytes": 1786643,
+      "unpackedBytes": 8064255
+    },
+    {
+      "node": 24,
+      "entryCount": 1248,
+      "packedBytes": 1790005,
+      "unpackedBytes": 8064255
+    }
+  ],
+  "finalPackageLimits": {
+    "entries": 1248,
+    "packedBytes": 1790100,
+    "unpackedBytes": 8064300
+  },
+  "initialFailures": [
+    {
+      "file": "freeze.log.gz",
+      "reason": "New internal owner raised entries1247→1248; original failure retained."
+    },
+    {
+      "file": "freeze-20.log.gz",
+      "reason": "Node20 packed1790005 exceeded1788800; measured minimum packed1790100/unpacked8064300 caps, without public policy change."
+    },
+    {
+      "file": "installed-24.json",
+      "reason": "All5runtime/types/snippet/peers passed; Full786906 and graph68840 exceeded previous786500/68400. Same18measurements rechecked at minimum787000/68900, original receipt retained."
+    }
+  ],
+  "environment": {
+    "performanceQualification": false,
+    "otherWork": "Root small coverage/pack/docs overlapped source-free small checks; original10k guard-only comparison used explicitly coordinated slot and returned it. No isolated P95 or heap measurement."
+  },
+  "remaining": [
+    "bounded-worker numerical policy and complete native update union not implemented",
+    "original density100/1000 work and10000 sample failures remain",
+    "no whole-heap reduction, large admission, P95/SLO,100cycle or STEP071/077 completion claim"
+  ],
+  "reproduction": {
+    "source": "node --test test/unit/grammar/graph/routes/density-storage.test.js test/unit/grammar/graph/routes/density.test.js test/unit/grammar/graph/routes/density-field.test.js",
+    "previousKernel": "node agent_docs/impl/roadmap9/chart/density-storage-evidence/compare.mjs",
+    "originalGuards": "GGACTION_DENSITY_FAILURE_SIZES=100,1000,10000 node agent_docs/impl/roadmap9/chart/density-storage-evidence/compare.mjs",
+    "critical": "node --experimental-test-coverage '--test-coverage-include=src/grammar/graph/routes/*.js' --test test/unit/grammar/graph/routes/*.test.js test/unit/graph-presentation.test.js",
+    "freeze": "node agent_docs/impl/roadmap9/chart/density-storage-evidence/freeze.mjs",
+    "installed": "node agent_docs/impl/roadmap9/chart/density-storage-evidence/installed.mjs",
+    "bundleRecheck": "node agent_docs/impl/roadmap9/chart/density-storage-evidence/recheck-bundles.mjs",
+    "nodeRuntime": "Place Node directory first on PATH for npm children; freeze once and reuse fixed.json/tar."
+  }
+}

@@ -1,0 +1,315 @@
+{
+  "node": "v22.23.1",
+  "baseline": "4c12b132612e7b83da36daceba7c259d03c826f6",
+  "results": [
+    {
+      "directed": false,
+      "hash": "bee7d9f24112d7af5e0222b5a84343c60f0545f588e42557fa222d415699380f",
+      "diagnostics": {
+        "work": 1851567,
+        "candidatePairs": 0,
+        "peakSamples": 10114,
+        "gridSize": 256,
+        "step": 0.005,
+        "iterations": 20,
+        "schedule": [
+          {
+            "iteration": 0,
+            "bandwidth": 0.05,
+            "fieldCells": 7012,
+            "samples": 518
+          },
+          {
+            "iteration": 1,
+            "bandwidth": 0.045000000000000005,
+            "fieldCells": 6072,
+            "samples": 518
+          },
+          {
+            "iteration": 2,
+            "bandwidth": 0.04050000000000001,
+            "fieldCells": 5124,
+            "samples": 542
+          },
+          {
+            "iteration": 3,
+            "bandwidth": 0.03645,
+            "fieldCells": 4620,
+            "samples": 548
+          },
+          {
+            "iteration": 4,
+            "bandwidth": 0.03280500000000001,
+            "fieldCells": 4284,
+            "samples": 526
+          },
+          {
+            "iteration": 5,
+            "bandwidth": 0.029524500000000006,
+            "fieldCells": 4032,
+            "samples": 526
+          },
+          {
+            "iteration": 6,
+            "bandwidth": 0.026572050000000003,
+            "fieldCells": 3608,
+            "samples": 528
+          },
+          {
+            "iteration": 7,
+            "bandwidth": 0.023914845000000004,
+            "fieldCells": 3388,
+            "samples": 526
+          },
+          {
+            "iteration": 8,
+            "bandwidth": 0.021523360500000005,
+            "fieldCells": 3028,
+            "samples": 526
+          },
+          {
+            "iteration": 9,
+            "bandwidth": 0.019371024450000007,
+            "fieldCells": 2812,
+            "samples": 524
+          },
+          {
+            "iteration": 10,
+            "bandwidth": 0.017433922005000005,
+            "fieldCells": 2540,
+            "samples": 524
+          },
+          {
+            "iteration": 11,
+            "bandwidth": 0.015690529804500003,
+            "fieldCells": 2404,
+            "samples": 524
+          },
+          {
+            "iteration": 12,
+            "bandwidth": 0.014121476824050006,
+            "fieldCells": 2072,
+            "samples": 580
+          },
+          {
+            "iteration": 13,
+            "bandwidth": 0.012709329141645005,
+            "fieldCells": 2044,
+            "samples": 644
+          },
+          {
+            "iteration": 14,
+            "bandwidth": 0.011438396227480505,
+            "fieldCells": 1668,
+            "samples": 720
+          },
+          {
+            "iteration": 15,
+            "bandwidth": 0.010294556604732455,
+            "fieldCells": 1628,
+            "samples": 804
+          },
+          {
+            "iteration": 16,
+            "bandwidth": 0.009265100944259209,
+            "fieldCells": 1548,
+            "samples": 900
+          },
+          {
+            "iteration": 17,
+            "bandwidth": 0.008338590849833289,
+            "fieldCells": 1504,
+            "samples": 1006
+          },
+          {
+            "iteration": 18,
+            "bandwidth": 0.0078125,
+            "fieldCells": 1272,
+            "samples": 1086
+          },
+          {
+            "iteration": 19,
+            "bandwidth": 0.0078125,
+            "fieldCells": 1436,
+            "samples": 1104
+          }
+        ]
+      }
+    },
+    {
+      "directed": true,
+      "hash": "ddc78904a3da165c961781717823c54ef88f8466fd5805c79523c8a63ee3b8e9",
+      "diagnostics": {
+        "work": 3260589,
+        "candidatePairs": 0,
+        "peakSamples": 39262,
+        "gridSize": 256,
+        "step": 0.005,
+        "iterations": 20,
+        "schedule": [
+          {
+            "iteration": 0,
+            "bandwidth": 0.05,
+            "fieldCells": 11492,
+            "samples": 520
+          },
+          {
+            "iteration": 1,
+            "bandwidth": 0.045000000000000005,
+            "fieldCells": 30240,
+            "samples": 610
+          },
+          {
+            "iteration": 2,
+            "bandwidth": 0.04050000000000001,
+            "fieldCells": 35596,
+            "samples": 548
+          },
+          {
+            "iteration": 3,
+            "bandwidth": 0.03645,
+            "fieldCells": 26128,
+            "samples": 570
+          },
+          {
+            "iteration": 4,
+            "bandwidth": 0.03280500000000001,
+            "fieldCells": 24304,
+            "samples": 552
+          },
+          {
+            "iteration": 5,
+            "bandwidth": 0.029524500000000006,
+            "fieldCells": 21474,
+            "samples": 562
+          },
+          {
+            "iteration": 6,
+            "bandwidth": 0.026572050000000003,
+            "fieldCells": 19984,
+            "samples": 554
+          },
+          {
+            "iteration": 7,
+            "bandwidth": 0.023914845000000004,
+            "fieldCells": 17920,
+            "samples": 562
+          },
+          {
+            "iteration": 8,
+            "bandwidth": 0.021523360500000005,
+            "fieldCells": 16088,
+            "samples": 556
+          },
+          {
+            "iteration": 9,
+            "bandwidth": 0.019371024450000007,
+            "fieldCells": 14696,
+            "samples": 560
+          },
+          {
+            "iteration": 10,
+            "bandwidth": 0.017433922005000005,
+            "fieldCells": 12950,
+            "samples": 556
+          },
+          {
+            "iteration": 11,
+            "bandwidth": 0.015690529804500003,
+            "fieldCells": 11756,
+            "samples": 558
+          },
+          {
+            "iteration": 12,
+            "bandwidth": 0.014121476824050006,
+            "fieldCells": 10516,
+            "samples": 616
+          },
+          {
+            "iteration": 13,
+            "bandwidth": 0.012709329141645005,
+            "fieldCells": 9328,
+            "samples": 696
+          },
+          {
+            "iteration": 14,
+            "bandwidth": 0.011438396227480505,
+            "fieldCells": 8626,
+            "samples": 796
+          },
+          {
+            "iteration": 15,
+            "bandwidth": 0.010294556604732455,
+            "fieldCells": 8680,
+            "samples": 986
+          },
+          {
+            "iteration": 16,
+            "bandwidth": 0.009265100944259209,
+            "fieldCells": 9312,
+            "samples": 1186
+          },
+          {
+            "iteration": 17,
+            "bandwidth": 0.008338590849833289,
+            "fieldCells": 9496,
+            "samples": 1420
+          },
+          {
+            "iteration": 18,
+            "bandwidth": 0.0078125,
+            "fieldCells": 9410,
+            "samples": 1776
+          },
+          {
+            "iteration": 19,
+            "bandwidth": 0.0078125,
+            "fieldCells": 10778,
+            "samples": 1994
+          }
+        ]
+      }
+    }
+  ],
+  "failures": [
+    {
+      "count": 100,
+      "name": "RangeError",
+      "message": "Route work must not exceed 10000000.",
+      "details": {
+        "code": "resource-limit",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 10000002
+      }
+    },
+    {
+      "count": 1000,
+      "name": "RangeError",
+      "message": "Route work must not exceed 10000000.",
+      "details": {
+        "code": "resource-limit",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 10000008
+      }
+    },
+    {
+      "count": 10000,
+      "name": "RangeError",
+      "message": "Route active samples must not exceed 10000000.",
+      "details": {
+        "code": "resource-limit",
+        "optionPath": "Route active samples",
+        "limit": 10000000,
+        "actual": 13400000
+      }
+    }
+  ],
+  "sourceSHA256": {
+    "src/grammar/graph/routes/density.js": "545fce10c98ee3ee65e639bf5f110bedb6ab9b5dc366eb793242522c6626f885",
+    "src/grammar/graph/routes/densityField.js": "33cf23bb9a77435a9a6a10736133e3a87c8712090d0d4d04a44dfd632613481b",
+    "src/grammar/graph/routes/densitySamples.js": "cd4370571f1713849f364a6cd8847e961d59da01a8a99c2738870bb0b7adf54d"
+  },
+  "scope": "same-engine old complete kernel vs new; original guard failures remain failures, no P95 claim"
+}

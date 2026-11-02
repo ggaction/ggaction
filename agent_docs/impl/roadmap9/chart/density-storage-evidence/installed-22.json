@@ -1,0 +1,85 @@
+{
+  "node": "v22.23.1",
+  "sha256": "727f9144ffadc6ad6d8d7f359a8e9b4741fc079ab1e6544ccdb3151dca596489",
+  "checks": [
+    {
+      "id": "edge-routes/packed-density-samples",
+      "status": "passed",
+      "durationMs": 907.253375
+    },
+    {
+      "id": "edge-routes/ordered-force-storage",
+      "status": "passed",
+      "durationMs": 520.1663750000002
+    },
+    {
+      "id": "edge-routes/worker-authority-and-cache",
+      "status": "passed",
+      "durationMs": 152.17337499999985
+    },
+    {
+      "id": "edge-routes/offline-restore-and-revision",
+      "status": "passed",
+      "durationMs": 387.2040830000001
+    },
+    {
+      "id": "edge-routes/four-renderers-and-scene",
+      "status": "passed",
+      "durationMs": 18.202582999999777
+    }
+  ],
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1066,
+      "minifiedBytes": 2742355,
+      "gzipBytes": 785573
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 625,
+      "minifiedBytes": 1446516,
+      "gzipBytes": 423440
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24779
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 115,
+      "minifiedBytes": 228519,
+      "gzipBytes": 68679
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 509,
+      "minifiedBytes": 1112884,
+      "gzipBytes": 332580
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 205,
+      "minifiedBytes": 410499,
+      "gzipBytes": 130861
+    }
+  ],
+  "types": "passed",
+  "snippet": {
+    "status": "passed",
+    "sha256": "37511e8bdd17a1c88e7d6bcb6f776037421ca49c0da7d90134ae0d493be2ed31"
+  },
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "status": "passed"
+}

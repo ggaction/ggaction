@@ -1,17 +1,20 @@
-# Density sample 보관 최소안 — 제품 채택 전 검토
+# Density sample 보관 최소안 — 채택된 private 저장 변경
 
 ## 진행 상태
 
 - [x] 기존 source와 첫 반복의 실제 dataflow를 대조
 - [x] 원100/1000 초기 준비만 실행하고 모든 weight/angle의 binary64 동일성 검산
 - [x] 이전 first-field 계측의 source hash가 현재 owner와 같은지 확인
-- [ ] 아래 private packed sample 제품 변경의 root 채택
-- [ ] 실제 field/advection/20회 완주·실패 경계·기존 diagnostics/hash 동등성
+- [x] 아래 private packed sample 제품 변경의 root 채택
+- [x] 실제 field/advection/20회 완주·실패 경계·기존 diagnostics/hash 동등성
+- [x] 같은 archive의 3개 Node 소비자 및 최종 문서 검증
 - [ ] bounded route v2 수치 policy·native update union 완결·원 큰 입력·최종 P95
 
 [전체 승인](../AUTHORIZATION.json)의 remainingApproval 안에서 준비한 구체안이다. Root가 채택한
-[B native update 방향](route-native-update-boundary.md)과 구분한다. 이번 기록은 **제품 source,
-공개 API/schema, Current, guard, benchmark 도구를 바꾸지 않았다.** 큰 입력의 지원 또는
+[B native update 방향](route-native-update-boundary.md)과 구분한다. 최초 `4c12b1326` 감사 기록은
+제품 source를 바꾸지 않았고, 2026-11-02 root가 이 문서의 첫 private 보관 개념을 채택했다.
+이후 구현은 [자격 기록](density-packed-samples.md)에 따로 남긴다. 공개 API/schema, guard,
+benchmark 도구는 바꾸지 않는다. 큰 입력의 지원 또는
 AT82 완료를 의미하지 않는다. 기존 FDEB [upper-neighbor checkpoint](route-upper-neighbor-storage.md)는 보존한다.
 
 ## 확인한 첫 반복

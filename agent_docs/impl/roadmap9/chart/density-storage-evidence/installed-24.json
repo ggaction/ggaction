@@ -1,0 +1,85 @@
+{
+  "node": "v24.22.1",
+  "sha256": "727f9144ffadc6ad6d8d7f359a8e9b4741fc079ab1e6544ccdb3151dca596489",
+  "checks": [
+    {
+      "id": "edge-routes/packed-density-samples",
+      "status": "passed",
+      "durationMs": 989.9863750000001
+    },
+    {
+      "id": "edge-routes/ordered-force-storage",
+      "status": "passed",
+      "durationMs": 715.1310830000002
+    },
+    {
+      "id": "edge-routes/worker-authority-and-cache",
+      "status": "passed",
+      "durationMs": 293.9782919999998
+    },
+    {
+      "id": "edge-routes/offline-restore-and-revision",
+      "status": "passed",
+      "durationMs": 500.67120799999975
+    },
+    {
+      "id": "edge-routes/four-renderers-and-scene",
+      "status": "passed",
+      "durationMs": 21.86720800000012
+    }
+  ],
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1066,
+      "minifiedBytes": 2742355,
+      "gzipBytes": 786906
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 625,
+      "minifiedBytes": 1446516,
+      "gzipBytes": 424305
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24954
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 115,
+      "minifiedBytes": 228519,
+      "gzipBytes": 68840
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 509,
+      "minifiedBytes": 1112884,
+      "gzipBytes": 333698
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 205,
+      "minifiedBytes": 410499,
+      "gzipBytes": 131316
+    }
+  ],
+  "types": "passed",
+  "snippet": {
+    "status": "passed",
+    "sha256": "37511e8bdd17a1c88e7d6bcb6f776037421ca49c0da7d90134ae0d493be2ed31"
+  },
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "status": "bundle-limit-failed"
+}
