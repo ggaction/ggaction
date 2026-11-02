@@ -759,6 +759,19 @@
     "strict-pack.json": {
       "sha256": "8107fbd1a57006c9cc695c6801aa2ed31ad30e337318a996279a3303dd12df93",
       "bytes": 128918
+    },
+    "source-pin.log": {
+      "sha256": "1c7668f1b23ca7b14de09054d741308e630f079eaaaa88642559d880fcfd6e5f",
+      "bytes": 7857
+    },
+    "source-pin-pack.json": {
+      "sha256": "5ffcc916c6f973cb9b7c83f54c9ac0d8b37133dc5a07f6a1d710c4975f30fa28",
+      "bytes": 128917
     }
+  },
+  "sourcePin": {
+    "revision": "9cc6e89c3",
+    "tests": 35,
+    "strictPackSHA256": "186c01ea470a97e8c10a2f97e66061ef0d4a5583ae561ab1bfacd2b00a159c84"
   }
 }
