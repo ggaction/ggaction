@@ -1,0 +1,60 @@
+{
+  "kind": "small read-only loader counters; one sample; no performance qualification",
+  "rawVertices": 1000,
+  "commands": 1999,
+  "maxError": 2.7000623958883807e-13,
+  "owned": 3141,
+  "snapshots": [
+    {
+      "kind": "presentation",
+      "ownedInput": false,
+      "reused": false,
+      "values": 3067,
+      "work": 11625,
+      "ownedAdds": 1021
+    },
+    {
+      "kind": "group",
+      "ownedInput": true,
+      "reused": true,
+      "values": 3044,
+      "work": 11453,
+      "ownedAdds": 0
+    },
+    {
+      "kind": "presentation",
+      "ownedInput": true,
+      "reused": true,
+      "values": 3067,
+      "work": 11625,
+      "ownedAdds": 0
+    },
+    {
+      "kind": "group",
+      "ownedInput": true,
+      "reused": true,
+      "values": 3044,
+      "work": 11453,
+      "ownedAdds": 0
+    },
+    {
+      "kind": "group",
+      "ownedInput": true,
+      "reused": true,
+      "values": 3044,
+      "work": 11453,
+      "ownedAdds": 0
+    },
+    {
+      "kind": "LineString",
+      "ownedInput": true,
+      "reused": true,
+      "values": 3003,
+      "work": 10920,
+      "ownedAdds": 0
+    }
+  ],
+  "groups": 3,
+  "presentations": 2,
+  "streams": 1
+}
