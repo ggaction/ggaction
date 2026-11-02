@@ -1018,8 +1018,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 788,800 bytes |
-| `ggaction/basic` | 426,200 bytes |
+| `ggaction` | 788,900 bytes |
+| `ggaction/basic` | 426,300 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 69,600 bytes |
 | `ggaction/interaction` | 137,500 bytes |
@@ -5108,3 +5108,21 @@ scene clone 경계를 따른다. Hit/renderer/meaning 권한은 그대로다.
 cap1259/1811900/8153000이다. Animation gzip340806B에는 표의340900B를 적용한다.
 [통합 검증](impl/roadmap9/qualification/point-node-merged-evidence/qualification.json)은 실제 원100k
 모든 좌표·offline·rebase와 아직 별도인50ms/P95·100cycle 의무를 구별한다.
+
+### Private immutable value cursor
+
+`core/encodedValueCursor.js`는 기존 deep-owned native snapshot을 명시 own-data 검사 뒤 tagged byte
+chunk로 읽는 비공개 pure cursor다. `core/jsonText.js`의 allocation-free Unicode width 계산을
+기존 string byte count와 bounded writer가 공유한다. Scalar tag 선택과 container/hole fragments는
+`core/valueEncoding.js`를 그대로 정본으로 사용한다. 기존 generic codec의 getter·error 순서,
+raw canonical JSON, route v1 hash 및 public package 경계는 유지한다.
+
+Cursor는 explicit byte/step/depth 정책만 가지며 host signal·timer·program·receiver/token 권한을
+보유하지 않는다. 외부 mutable 입력을 snapshot하거나 새 domain proof를 등록하지 않는다.
+기존 SHA owner를 소비하는 caller가 실제 macrotask 취소와 finally clear를 담당한다.
+이 checkpoint의 native job/result 검산은 public route v2나 전체 준비100ms 지원을 뜻하지 않는다.
+상세 scope와3Node 동일 archive 증거는 [private cursor 기록](impl/roadmap9/chart/strict-value-cursor.md)에 둔다.
+
+새 private cursor가 추가된 package 실측은1260entries/unpacked8160231B이며 cap1260/1814200/8160300이다.
+기존 writer/count 공유와 tagged fragment 추출 후 Node20·24 Full788848B/Basic426217B에 대해
+위 표의 최소100B 단위788900/426300 상한을 적용했다. 제품 runtime 수치 guard는 바꾸지 않는다.
