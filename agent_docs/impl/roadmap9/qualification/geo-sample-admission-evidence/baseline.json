@@ -1,0 +1,1308 @@
+{
+  "mode": "baseline",
+  "rows": [
+    {
+      "name": "mutable",
+      "result": "e4f2839031efd095d9c2e670cb3729e9cf0f6ce5b99b6463046351963feed9d2",
+      "events": "7c57c802af755c318d8e1dbda443c19675621e4b3b37e88773e605f70fd318ed",
+      "eventCount": 84,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 2
+      }
+    },
+    {
+      "name": "generic-mutable",
+      "result": "4bb161c2605f1debdc0345dddd4e5743c4612e41a75618c5608b71d6043e4289",
+      "events": "e9cf34d084990b4ba49c4ae35824e9587f69877340f28704972f0cd270eb5fd6",
+      "eventCount": 1286,
+      "counts": {
+        "presentation": 1,
+        "group": 2,
+        "stream": 2
+      }
+    },
+    {
+      "name": "owned",
+      "result": "e4f2839031efd095d9c2e670cb3729e9cf0f6ce5b99b6463046351963feed9d2",
+      "events": "7c57c802af755c318d8e1dbda443c19675621e4b3b37e88773e605f70fd318ed",
+      "eventCount": 84,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 2
+      }
+    },
+    {
+      "name": "generic-owned",
+      "result": "4bb161c2605f1debdc0345dddd4e5743c4612e41a75618c5608b71d6043e4289",
+      "events": "e9cf34d084990b4ba49c4ae35824e9587f69877340f28704972f0cd270eb5fd6",
+      "eventCount": 1286,
+      "counts": {
+        "presentation": 1,
+        "group": 2,
+        "stream": 2
+      }
+    },
+    {
+      "name": "shallow-owned",
+      "result": "e4f2839031efd095d9c2e670cb3729e9cf0f6ce5b99b6463046351963feed9d2",
+      "events": "7c57c802af755c318d8e1dbda443c19675621e4b3b37e88773e605f70fd318ed",
+      "eventCount": 84,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 2
+      }
+    },
+    {
+      "name": "generic-shallow-owned",
+      "result": "4bb161c2605f1debdc0345dddd4e5743c4612e41a75618c5608b71d6043e4289",
+      "events": "e9cf34d084990b4ba49c4ae35824e9587f69877340f28704972f0cd270eb5fd6",
+      "eventCount": 1286,
+      "counts": {
+        "presentation": 1,
+        "group": 2,
+        "stream": 2
+      }
+    },
+    {
+      "name": "frozen-unowned",
+      "result": "e4f2839031efd095d9c2e670cb3729e9cf0f6ce5b99b6463046351963feed9d2",
+      "events": "7c57c802af755c318d8e1dbda443c19675621e4b3b37e88773e605f70fd318ed",
+      "eventCount": 84,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 2
+      }
+    },
+    {
+      "name": "generic-frozen-unowned",
+      "result": "4bb161c2605f1debdc0345dddd4e5743c4612e41a75618c5608b71d6043e4289",
+      "events": "e9cf34d084990b4ba49c4ae35824e9587f69877340f28704972f0cd270eb5fd6",
+      "eventCount": 1286,
+      "counts": {
+        "presentation": 1,
+        "group": 2,
+        "stream": 2
+      }
+    },
+    {
+      "name": "null-prototype",
+      "result": "e4f2839031efd095d9c2e670cb3729e9cf0f6ce5b99b6463046351963feed9d2",
+      "events": "7c57c802af755c318d8e1dbda443c19675621e4b3b37e88773e605f70fd318ed",
+      "eventCount": 84,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 2
+      }
+    },
+    {
+      "name": "generic-null-prototype",
+      "result": "4bb161c2605f1debdc0345dddd4e5743c4612e41a75618c5608b71d6043e4289",
+      "events": "e9cf34d084990b4ba49c4ae35824e9587f69877340f28704972f0cd270eb5fd6",
+      "eventCount": 1286,
+      "counts": {
+        "presentation": 1,
+        "group": 2,
+        "stream": 2
+      }
+    },
+    {
+      "name": "aliases",
+      "result": "e4f2839031efd095d9c2e670cb3729e9cf0f6ce5b99b6463046351963feed9d2",
+      "events": "7c57c802af755c318d8e1dbda443c19675621e4b3b37e88773e605f70fd318ed",
+      "eventCount": 84,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 2
+      }
+    },
+    {
+      "name": "extra",
+      "error": {
+        "name": "Error",
+        "message": "Unknown Geo animation presentation property \"extra\"."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-extra",
+      "error": {
+        "name": "Error",
+        "message": "Unknown Geo animation presentation property \"extra\"."
+      },
+      "events": "91635581d3749916bcb5d397f4d34a2490c61cd3837079e5bce4362dfef30ec8",
+      "eventCount": 525,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "owned-extra",
+      "error": {
+        "name": "Error",
+        "message": "Unknown Geo animation presentation property \"extra\"."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "projection-kind",
+      "error": {
+        "name": "TypeError",
+        "message": "Animation Geo requires an exact projection reference."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-projection-kind",
+      "error": {
+        "name": "TypeError",
+        "message": "Animation Geo requires an exact projection reference."
+      },
+      "events": "c0df1bf2eaca9e6d40e88c14c441cf428668ed6833c972b5ec0c19c33aa5be69",
+      "eventCount": 846,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "owned-projection-kind",
+      "error": {
+        "name": "TypeError",
+        "message": "Animation Geo requires an exact projection reference."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "negative-scale",
+      "error": {
+        "name": "RangeError",
+        "message": "scalePx must be positive."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-negative-scale",
+      "error": {
+        "name": "RangeError",
+        "message": "scalePx must be positive."
+      },
+      "events": "9f5b1368a8165560c14c1867846107b964d55d181f8604d5b8d7c65b392d4121",
+      "eventCount": 846,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "owned-negative-scale",
+      "error": {
+        "name": "RangeError",
+        "message": "scalePx must be positive."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "latitude",
+      "error": {
+        "name": "RangeError",
+        "message": "Geographic latitude must be between -90 and 90 degrees."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-latitude",
+      "error": {
+        "name": "RangeError",
+        "message": "Geographic latitude must be between -90 and 90 degrees."
+      },
+      "events": "8314d7f3b522f110ca24444708c72f06c99382e10f3fcfadb7552564156a027b",
+      "eventCount": 856,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "owned-latitude",
+      "error": {
+        "name": "RangeError",
+        "message": "Geographic latitude must be between -90 and 90 degrees."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "extra-geometry",
+      "error": {
+        "name": "TypeError",
+        "message": "Animation Geo requires normalized source geometry."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-extra-geometry",
+      "error": {
+        "name": "TypeError",
+        "message": "Animation Geo requires normalized source geometry."
+      },
+      "events": "3ef470d0c0fc5a40ee72ce036facfafd75a626a017d8509c8bab5fb9786eb51b",
+      "eventCount": 862,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "owned-extra-geometry",
+      "error": {
+        "name": "TypeError",
+        "message": "Animation Geo requires normalized source geometry."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "style-count",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo styles must follow every prepared feature."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-style-count",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo styles must follow every prepared feature."
+      },
+      "events": "a535e031e81b464caf20dcd3071d475bbd8cf1b096d818816d164a157400e8e8",
+      "eventCount": 761,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "owned-style-count",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo styles must follow every prepared feature."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "style-radius",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo style cannot duplicate geometry or frame state."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-style-radius",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo style cannot duplicate geometry or frame state."
+      },
+      "events": "1b71d97e9378a7175a2ef6e733cbda50f924c0f18bd3cafc2065e9aaa7d369ea",
+      "eventCount": 866,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "owned-style-radius",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo style cannot duplicate geometry or frame state."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "style-required",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo feature style must be normalized."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-style-required",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo feature style must be normalized."
+      },
+      "events": "407389ec5ceee1846ee51c940224e311855a173b107c149100def718b9e5c685",
+      "eventCount": 856,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "owned-style-required",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo feature style must be normalized."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "frame-offset",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo frame offset requires a finite tuple."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-frame-offset",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo frame offset requires a finite tuple."
+      },
+      "events": "d639489a104439b279f4bcaeac71befaacba566d7e5e9c059dc5c900b0de8e0b",
+      "eventCount": 856,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "owned-frame-offset",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo frame offset requires a finite tuple."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "plot-origin",
+      "error": {
+        "name": "TypeError",
+        "message": "Geometry source requires finite JSON values."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-plot-origin",
+      "error": {
+        "name": "TypeError",
+        "message": "Geometry source requires finite JSON values."
+      },
+      "events": "8d252d72624e948c02d58e28f07f6b1653b0813aa2bf09033eedd9b6088083e5",
+      "eventCount": 454,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "owned-plot-origin",
+      "error": {
+        "name": "TypeError",
+        "message": "Geometry source requires finite JSON values."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "duplicate-feature",
+      "error": {
+        "name": "TypeError",
+        "message": "Animation Geo feature keys must be unique nonempty strings."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-duplicate-feature",
+      "error": {
+        "name": "TypeError",
+        "message": "Animation Geo feature keys must be unique nonempty strings."
+      },
+      "events": "2f4d99f96655010543e57e6dfa9037c920fe4a9f742d83f9ccf87f2ec12f0422",
+      "eventCount": 854,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "owned-duplicate-feature",
+      "error": {
+        "name": "TypeError",
+        "message": "Animation Geo feature keys must be unique nonempty strings."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "noncanonical-key",
+      "error": {
+        "name": "TypeError",
+        "message": "Animation Geo owner must use a canonical scope and layer ID."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-noncanonical-key",
+      "error": {
+        "name": "TypeError",
+        "message": "Animation Geo owner must use a canonical scope and layer ID."
+      },
+      "events": "771996cb781e2e01d707bbece963dcd149635d6c2fbca42880fb439fe0319e32",
+      "eventCount": 846,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "owned-noncanonical-key",
+      "error": {
+        "name": "TypeError",
+        "message": "Animation Geo owner must use a canonical scope and layer ID."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "invalid-both-group-style",
+      "error": {
+        "name": "RangeError",
+        "message": "scalePx must be positive."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-invalid-both-group-style",
+      "error": {
+        "name": "RangeError",
+        "message": "scalePx must be positive."
+      },
+      "events": "c4f0760d3e946f3546b4fd8902b8ba739987882a9f536c1db203e03e713d9dff",
+      "eventCount": 746,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "owned-invalid-both-group-style",
+      "error": {
+        "name": "RangeError",
+        "message": "scalePx must be positive."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "invalid-style-stream",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo styles must follow every prepared feature."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-invalid-style-stream",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo styles must follow every prepared feature."
+      },
+      "events": "a535e031e81b464caf20dcd3071d475bbd8cf1b096d818816d164a157400e8e8",
+      "eventCount": 761,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "owned-invalid-style-stream",
+      "error": {
+        "name": "TypeError",
+        "message": "Geo styles must follow every prepared feature."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      }
+    },
+    {
+      "name": "array-maxValues",
+      "error": {
+        "name": "RangeError",
+        "message": "Geometry JSON array must not exceed 2000000."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-array-maxValues",
+      "error": {
+        "name": "RangeError",
+        "message": "Geometry JSON array must not exceed 2000000."
+      },
+      "events": "2c4fb638b9c5d2e63e77bd06eca908ed68b5fad50a3d65523d4d1e7e9edb1ac0",
+      "eventCount": 339,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "work-10000000",
+      "error": {
+        "name": "RangeError",
+        "message": "Geometry normalization work must not exceed 10000000."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-work-10000000",
+      "error": {
+        "name": "RangeError",
+        "message": "Geometry normalization work must not exceed 10000000."
+      },
+      "events": "ea272cabb14f1101dabe008c65eb3bef923ceaa04819e8654a1c790bdadd9591",
+      "eventCount": 209,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "work-9999999",
+      "error": {
+        "name": "RangeError",
+        "message": "Geometry normalization work must not exceed 10000000."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-work-9999999",
+      "error": {
+        "name": "RangeError",
+        "message": "Geometry normalization work must not exceed 10000000."
+      },
+      "events": "a1f03e45d37917ab398f1a2088b9212b4d0908b7e177071446a677e8eeacfe3e",
+      "eventCount": 209,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "depth",
+      "error": {
+        "name": "RangeError",
+        "message": "Geometry JSON nesting exceeds maxDepth."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-depth",
+      "error": {
+        "name": "RangeError",
+        "message": "Geometry JSON nesting exceeds maxDepth."
+      },
+      "events": "70ff575c073e83abc8139dacc0b9fe0fdae356d10491111943bbcb25e05c5f30",
+      "eventCount": 1421,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "cycle",
+      "error": {
+        "name": "TypeError",
+        "message": "Geometry source cannot contain cycles."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "generic-cycle",
+      "error": {
+        "name": "TypeError",
+        "message": "Geometry source cannot contain cycles."
+      },
+      "events": "91635581d3749916bcb5d397f4d34a2490c61cd3837079e5bce4362dfef30ec8",
+      "eventCount": 525,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "accessor",
+      "error": {
+        "name": "TypeError",
+        "message": "Geometry JSON object requires enumerable own data properties; accessors are not supported."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 0,
+        "stream": 0
+      }
+    },
+    {
+      "name": "hidden-0",
+      "result": "bdfba7109c312071c2baa3108a7ce11b5f66a077201dc95851b364c0b8b16e91",
+      "events": "f43eea5e5ad30e4a289ecc3d5139852505662286e4e02ea4afcd77b15ae73514",
+      "eventCount": 87,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 2
+      },
+      "account": [
+        69
+      ]
+    },
+    {
+      "name": "hidden-0.37",
+      "result": "4401fb254b22e305d52c302efde03d7293641a6ab3254ff154fc8ea54e4563bc",
+      "events": "f43eea5e5ad30e4a289ecc3d5139852505662286e4e02ea4afcd77b15ae73514",
+      "eventCount": 87,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 2
+      },
+      "account": [
+        69
+      ]
+    },
+    {
+      "name": "hidden-1",
+      "result": "80723ce25143eda64b855284e1efac69d31c450cf1fb5c8e130959cbf584f73e",
+      "events": "080be06a110f55fe93ccf6a5dab4bfac0e38f63756f4d210ba5c84ad146c0c8d",
+      "eventCount": 87,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 2
+      },
+      "account": [
+        69
+      ]
+    },
+    {
+      "name": "hidden-public",
+      "result": "b0e554319b621fde690aa669a00ea82bf4ef857efe6009d9fc37aed3fb3bf00a",
+      "events": "29e6fe768ee2c1490fe63eb98de490a9c4b2efd8c18c77d0a94be86480d7534d",
+      "eventCount": 91,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 2
+      }
+    },
+    {
+      "name": "hidden-rebase",
+      "result": "5c3ae58b7c6330dcd743a36ccf1c767da2cdf3a284fb3079edd3476c9c198e24",
+      "events": "29e6fe768ee2c1490fe63eb98de490a9c4b2efd8c18c77d0a94be86480d7534d",
+      "eventCount": 91,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 2
+      }
+    },
+    {
+      "name": "hidden-offline",
+      "result": "b0e554319b621fde690aa669a00ea82bf4ef857efe6009d9fc37aed3fb3bf00a",
+      "events": "29e6fe768ee2c1490fe63eb98de490a9c4b2efd8c18c77d0a94be86480d7534d",
+      "eventCount": 91,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 2
+      }
+    },
+    {
+      "name": "seam-0",
+      "result": "085535e7259014c3b1b4f7d6b5a4961446d05ea2c4062167c7008b44ec5fddd0",
+      "events": "d7af56292e7fffee0071855c1c64f4c87406d1cdf0a603510e57a959d77a91d3",
+      "eventCount": 120,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      },
+      "account": [
+        68
+      ]
+    },
+    {
+      "name": "seam-0.37",
+      "result": "fe5bac55d27b54d0fdefc8b559d9143f618d6cc0de220aa0d7f87bc969c5e1ea",
+      "events": "ee0c98859b54d4457556b62cfa262a8280c61d00bb41736088c1963b1202a2dd",
+      "eventCount": 111,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      },
+      "account": [
+        66
+      ]
+    },
+    {
+      "name": "seam-1",
+      "result": "7d77d059531a4cb5a881f381996b4e82c29d3723345df431a432cd39554267e3",
+      "events": "ee0c98859b54d4457556b62cfa262a8280c61d00bb41736088c1963b1202a2dd",
+      "eventCount": 111,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      },
+      "account": [
+        66
+      ]
+    },
+    {
+      "name": "seam-public",
+      "result": "caab1a9e480efd915995b500aa2fbe11d13c0247d021184304318b3c4b8ff38e",
+      "events": "8b66a7060a4e61d162ac6430cf8039214f7565421300f3813d7d93bf5f67e847",
+      "eventCount": 115,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      }
+    },
+    {
+      "name": "seam-rebase",
+      "result": "eaa9229c1897f9c0b3a585a0247d1b066a12157da161f3a32e54845787ff3239",
+      "events": "3c8314011096fd8d1deeb52f738045dbf5a63e6e745746d1c9f324e7bd5266d0",
+      "eventCount": 125,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      }
+    },
+    {
+      "name": "seam-offline",
+      "result": "caab1a9e480efd915995b500aa2fbe11d13c0247d021184304318b3c4b8ff38e",
+      "events": "8b66a7060a4e61d162ac6430cf8039214f7565421300f3813d7d93bf5f67e847",
+      "eventCount": 115,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      }
+    },
+    {
+      "name": "planar-hole-0",
+      "result": "c583dc26e18f813feccdf85f57ca58b6f5663c369098cdacfb2681abe6b5e294",
+      "events": "60cc9419a26f02ce5492f9cb50d7f2f898f1a1df20227fc62f56231a5ac10010",
+      "eventCount": 293,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      },
+      "account": [
+        152
+      ]
+    },
+    {
+      "name": "planar-hole-0.37",
+      "result": "9fdbcdf3fcfef047e83e181226733c213657e64582d2d1a16a658d01e757cf53",
+      "events": "60cc9419a26f02ce5492f9cb50d7f2f898f1a1df20227fc62f56231a5ac10010",
+      "eventCount": 293,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      },
+      "account": [
+        152
+      ]
+    },
+    {
+      "name": "planar-hole-1",
+      "result": "23dc4b97e8f8addee29ae71d283f005c4185bab53c697f8755dc662fecf17bb9",
+      "events": "60cc9419a26f02ce5492f9cb50d7f2f898f1a1df20227fc62f56231a5ac10010",
+      "eventCount": 293,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      },
+      "account": [
+        152
+      ]
+    },
+    {
+      "name": "planar-hole-public",
+      "result": "39df830ca673e3c140f1ceebb1f64a728f62bb1c412b6066580870af874c1e13",
+      "events": "9a74871054a230e16b1528d19c40f65c6cf339ea0c5097a491331571711f5c05",
+      "eventCount": 297,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      }
+    },
+    {
+      "name": "planar-hole-rebase",
+      "result": "acc521d07196fe62aa802e48ea5dd2140cdccfd1272378760247727e5cbf12c2",
+      "events": "9a74871054a230e16b1528d19c40f65c6cf339ea0c5097a491331571711f5c05",
+      "eventCount": 297,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      }
+    },
+    {
+      "name": "planar-hole-offline",
+      "result": "39df830ca673e3c140f1ceebb1f64a728f62bb1c412b6066580870af874c1e13",
+      "events": "9a74871054a230e16b1528d19c40f65c6cf339ea0c5097a491331571711f5c05",
+      "eventCount": 297,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      }
+    },
+    {
+      "name": "canonical-1k-0",
+      "result": "c4d8429835a88cb68f900d339c4365616f0ba5c7472b387047ab56daea1df0a6",
+      "events": "6d5a2db98cbaedd5c96cd646bb78cc6868080ec03b33bb8c670eb82af7f8e492",
+      "eventCount": 37021,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      },
+      "account": [
+        18916
+      ]
+    },
+    {
+      "name": "canonical-1k-0.37",
+      "result": "27833e163e17a922a7f548b2d7aaf7cbb39cba9fd08cad3b48463636829b45a1",
+      "events": "6d5a2db98cbaedd5c96cd646bb78cc6868080ec03b33bb8c670eb82af7f8e492",
+      "eventCount": 37021,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      },
+      "account": [
+        18916
+      ]
+    },
+    {
+      "name": "canonical-1k-1",
+      "result": "9cc69d27080d7af6b444d5dab41ec12873a285d773120856adc59627e790396b",
+      "events": "6d5a2db98cbaedd5c96cd646bb78cc6868080ec03b33bb8c670eb82af7f8e492",
+      "eventCount": 37021,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      },
+      "account": [
+        18916
+      ]
+    },
+    {
+      "name": "canonical-1k-public",
+      "result": "8ffa0e13e89a9fd95754f2c5fc8ce74c8a6d925ec8ab5598c943543d51960a8b",
+      "events": "f78de03951a1f021f4b2650482836c9033dd5b87ed360dba518d97d5ad54a30e",
+      "eventCount": 37025,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      }
+    },
+    {
+      "name": "canonical-1k-rebase",
+      "result": "f4ce211f8a664a4245db90420885caec383819902546804503442862b03da647",
+      "events": "f78de03951a1f021f4b2650482836c9033dd5b87ed360dba518d97d5ad54a30e",
+      "eventCount": 37025,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      }
+    },
+    {
+      "name": "canonical-1k-offline",
+      "result": "8ffa0e13e89a9fd95754f2c5fc8ce74c8a6d925ec8ab5598c943543d51960a8b",
+      "events": "f78de03951a1f021f4b2650482836c9033dd5b87ed360dba518d97d5ad54a30e",
+      "eventCount": 37025,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      }
+    },
+    {
+      "name": "multi-group",
+      "result": "64e2de0d44273f380e66025e36a888649def46744b5ec8615ff2507588ca372f",
+      "events": "f3658f4f863e4c684cfc9e726f59c8af98826d226d8948db0591d99d14c83511",
+      "eventCount": 174,
+      "counts": {
+        "presentation": 4,
+        "group": 6,
+        "stream": 4
+      },
+      "account": [
+        69,
+        69
+      ]
+    },
+    {
+      "name": "timeline",
+      "result": "715384544c5e72f1c8c7b0d33928994e9b18ec5d77df3a70f69487626b5ab092",
+      "events": "f3658f4f863e4c684cfc9e726f59c8af98826d226d8948db0591d99d14c83511",
+      "eventCount": 174,
+      "counts": {
+        "presentation": 4,
+        "group": 6,
+        "stream": 4
+      },
+      "account": [
+        69,
+        69
+      ]
+    },
+    {
+      "name": "timeline-invalid",
+      "error": {
+        "name": "RangeError",
+        "message": "Geographic opacity must be between 0 and 1 (values from 0 to 1)."
+      },
+      "events": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "eventCount": 0,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 0
+      },
+      "account": []
+    },
+    {
+      "name": "aggregate-callback",
+      "error": {
+        "name": "RangeError",
+        "message": "original aggregate callback sentinel"
+      },
+      "events": "c4679bb524751fdfa7f8c6f5522507d773ffe0f08a0925b48d18403ef2c7aabd",
+      "eventCount": 173,
+      "counts": {
+        "presentation": 4,
+        "group": 6,
+        "stream": 4
+      },
+      "account": [
+        69,
+        69
+      ]
+    },
+    {
+      "name": "synthetic-work-at-limit",
+      "result": "64e2de0d44273f380e66025e36a888649def46744b5ec8615ff2507588ca372f",
+      "events": "28bbf585394cb1a008cd76e3bf45bfdad63e3167062b68deac1e5b59e5fb10db",
+      "eventCount": 174,
+      "counts": {
+        "presentation": 4,
+        "group": 6,
+        "stream": 4
+      },
+      "account": [
+        5000000,
+        5000000
+      ],
+      "syntheticDiagnostics": {
+        "work": 2500000
+      }
+    },
+    {
+      "name": "synthetic-work-over-limit",
+      "error": {
+        "name": "RangeError",
+        "message": "Animation Geo sampled work must not exceed 10000000."
+      },
+      "events": "3c5b945786c43d68b3edc9e2c825e45ea516d8283a47616e65f1888a0e6eb0e3",
+      "eventCount": 173,
+      "counts": {
+        "presentation": 4,
+        "group": 6,
+        "stream": 4
+      },
+      "account": [
+        5000002
+      ],
+      "syntheticDiagnostics": {
+        "work": 2500001
+      }
+    },
+    {
+      "name": "synthetic-points-at-limit",
+      "result": "64e2de0d44273f380e66025e36a888649def46744b5ec8615ff2507588ca372f",
+      "events": "c0bcdf12268b7290f2f288742c72cb7a605ef2ff1d83aca224010ff637c06440",
+      "eventCount": 174,
+      "counts": {
+        "presentation": 4,
+        "group": 6,
+        "stream": 4
+      },
+      "account": [
+        69,
+        69
+      ],
+      "syntheticDiagnostics": {
+        "outputPoints": 2500
+      }
+    },
+    {
+      "name": "synthetic-points-over-limit",
+      "error": {
+        "name": "RangeError",
+        "message": "Animation Geo sampled points must not exceed 10000."
+      },
+      "events": "5f8658787c962d8aea00ad53dd149798742c0ffe1393f682792e0417cafc3529",
+      "eventCount": 174,
+      "counts": {
+        "presentation": 4,
+        "group": 6,
+        "stream": 4
+      },
+      "account": [
+        69,
+        69
+      ],
+      "syntheticDiagnostics": {
+        "outputPoints": 2501
+      }
+    }
+  ]
+}

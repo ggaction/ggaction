@@ -1,0 +1,45 @@
+{
+  "kind": "read-only source-loader A/B; no product change or SLO claim",
+  "source": "db1fd0890",
+  "runtime": "v22.23.1",
+  "cases": 96,
+  "errors": 57,
+  "allOutputsErrorsAndActualWorkExact": true,
+  "genericFullAdmissionExact": 24,
+  "canonical1k": {
+    "before": {
+      "name": "canonical-1k-0.37",
+      "result": "27833e163e17a922a7f548b2d7aaf7cbb39cba9fd08cad3b48463636829b45a1",
+      "events": "6d5a2db98cbaedd5c96cd646bb78cc6868080ec03b33bb8c670eb82af7f8e492",
+      "eventCount": 37021,
+      "counts": {
+        "presentation": 2,
+        "group": 3,
+        "stream": 1
+      },
+      "account": [
+        18916
+      ]
+    },
+    "after": {
+      "name": "canonical-1k-0.37",
+      "result": "27833e163e17a922a7f548b2d7aaf7cbb39cba9fd08cad3b48463636829b45a1",
+      "events": "6d5a2db98cbaedd5c96cd646bb78cc6868080ec03b33bb8c670eb82af7f8e492",
+      "eventCount": 37021,
+      "counts": {
+        "presentation": 1,
+        "group": 1,
+        "stream": 1
+      },
+      "account": [
+        18916
+      ]
+    }
+  },
+  "sourceHashes": {
+    "src/grammar/animation/geoState.js": "921dad0fc1fa84a41f6c2a8877c0719bddc2525a9bd81220e4ae3bd023278570",
+    "src/materialization/animation/geoPresentation.js": "5ef1c5afa4cf39b87b116541b0a78922b9d2911b8033a82a94aa14d1dcfb8ea8",
+    "src/animation/geoTracks.js": "1953480c098e824a4521637668583d7a8211e6036359a358e4a84c34106e1591"
+  },
+  "patchSha256": "34864e19a88ef87778dc2c3b54b322185d7c8fa569c7eb4a788951be83c4a140"
+}

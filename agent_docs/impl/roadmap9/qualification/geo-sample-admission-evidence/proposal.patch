@@ -1,0 +1,104 @@
+diff --git a/src/grammar/animation/geoState.js b/src/grammar/animation/geoState.js
+--- a/src/grammar/animation/geoState.js
++++ b/src/grammar/animation/geoState.js
+@@ -60,7 +60,18 @@ export function normalizeAnimationGeoGroup(input) {
+ // The native stream owns clipping, refinement, winding, holes and complements.
+ // Return every current part; endpoint command counts never constrain a frame.
+ export function resolveAnimationGeoGeometry(input, capacityEnabled = false) {
+-  const group = normalizeAnimationGeoGroup(input), features = [];
++  return resolveNormalizedAnimationGeoGeometry(normalizeAnimationGeoGroup(input), capacityEnabled);
++}
++
++// Internal synchronous preparation always admits the complete input. Only this
++// closure can reach the calculation with that exact normalized immutable group.
++export function prepareAnimationGeoGeometry(input) {
++  const group = normalizeAnimationGeoGroup(input);
++  return capacityEnabled => resolveNormalizedAnimationGeoGeometry(group, capacityEnabled);
++}
++
++function resolveNormalizedAnimationGeoGeometry(group, capacityEnabled) {
++  const features = [];
+   const capacity = capacityEnabled ? geoBindingCapacity(group.binding) : undefined; let work = 0, points = 0;
+   for (const feature of group.features) {
+     const geometry = group.binding.mode === "graticule" ? feature.geometry : geoMarkGeometry(feature.geometry, group.binding, group.parameters);
+diff --git a/src/materialization/animation/geoPresentation.js b/src/materialization/animation/geoPresentation.js
+--- a/src/materialization/animation/geoPresentation.js
++++ b/src/materialization/animation/geoPresentation.js
+@@ -9,7 +9,7 @@ import { geoPartsTopology } from "../../grammar/geo/markGeometry.js";
+ import { validateAnimationPlacement } from "../../grammar/animation/placement.js";
+ import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
+ import { validateGraphicIdentity } from "../../grammar/schemas/graphicIdentity.js";
+-import { normalizeAnimationGeoGroup, resolveAnimationGeoGeometry } from "../../grammar/animation/geoState.js";
++import { normalizeAnimationGeoGroup, resolveAnimationGeoGeometry, prepareAnimationGeoGeometry } from "../../grammar/animation/geoState.js";
+ import { namespaceGraphicId } from "../../selectors/graphicCapacity.js";
+ import { resolveCoordinateBounds } from "../coordinateBounds.js";
+ import { materializeMarkEffectProperties } from "../markEffects.js";
+@@ -61,9 +61,13 @@ function tuple(value, length, label) {
+ // Store source paint once, before bounds-dependent pattern materialization.
+ // Native streaming and native paint owners produce current concrete parts.
+ export function normalizeGeoAnimationPresentation(input) {
++  return admitGeoAnimationPresentation(input, false);
++}
++
++function admitGeoAnimationPresentation(input, prepareGeometry) {
+   const value = snapshotGeometryJSON(input, createGeometryBudget());
+   closed(value, ["geometry", "styles", "plotOrigin", "frame"], "Geo animation presentation");
+-  normalizeAnimationGeoGroup(value.geometry);
++  const geometry = prepareGeometry ? prepareAnimationGeoGeometry(value.geometry) : normalizeAnimationGeoGroup(value.geometry);
+   ownArray(value.styles, "Geo feature styles");
+   if (value.styles.length !== value.geometry.features.length) throw new TypeError("Geo styles must follow every prepared feature.");
+   for (const [index, style] of value.styles.entries()) {
+@@ -75,12 +79,23 @@ export function normalizeGeoAnimationPresentation(input) {
+   }
+   tuple(value.plotOrigin, 2, "Geo plot origin");
+   validateGeoAnimationFrame(value.frame);
+-  return value;
++  return prepareGeometry ? { presentation: value, resolveGeometry: geometry } : value;
+ }
+ 
+ export function resolveGeoAnimationPresentation(input, capacityEnabled = false) {
+-  const presentation = normalizeGeoAnimationPresentation(input), { geometry, styles, plotOrigin } = presentation;
+-  const projected = resolveAnimationGeoGeometry(geometry, capacityEnabled), graphics = [];
++  const presentation = normalizeGeoAnimationPresentation(input);
++  return materializeGeoAnimationPresentation(presentation, resolveAnimationGeoGeometry(presentation.geometry, capacityEnabled), capacityEnabled);
++}
++
++// Admit all presentation fields before any native stream. The prepared closure
++// stays within this call; generic wrappers and restored-state admission remain.
++export function resolveSampledGeoPresentation(input, capacityEnabled = false) {
++  const { presentation, resolveGeometry } = admitGeoAnimationPresentation(input, true);
++  return { presentation, resolved: materializeGeoAnimationPresentation(presentation, resolveGeometry(capacityEnabled), capacityEnabled) };
++}
++
++function materializeGeoAnimationPresentation(presentation, projected, capacityEnabled) {
++  const { geometry, styles, plotOrigin } = presentation, graphics = [];
+   const lineage = { kind: "resource", resource: geometry.binding.geometry ?? geometry.projection };
+   for (const [index, feature] of projected.features.entries()) {
+     const key = geoAnimationItemKey(geometry, feature.key), topology = geoPartsTopology(feature.parts);
+diff --git a/src/animation/geoTracks.js b/src/animation/geoTracks.js
+--- a/src/animation/geoTracks.js
++++ b/src/animation/geoTracks.js
+@@ -4,7 +4,7 @@ import { canonicalJSON } from "../core/contentDigest.js";
+ import { validateUnitInterval, validateGeneratedItemLimit, validateWorkLimit } from "../core/validation.js";
+ import { prepareGeoInterpolation, sampleGeoInterpolation } from "../grammar/animation/geoState.js";
+ import { interpolateNumber } from "../grammar/animation/values.js";
+-import { normalizeGeoAnimationPresentation, resolveGeoAnimationPresentation, geoAnimationItemKey } from "../materialization/animation/geoPresentation.js";
++import { normalizeGeoAnimationPresentation, resolveSampledGeoPresentation, geoAnimationItemKey } from "../materialization/animation/geoPresentation.js";
+ import { clipInterpolationCompatible, interpolateNodeFrame } from "./concrete.js";
+ 
+ const prepared = new WeakSet();
+@@ -77,12 +77,11 @@ export function sampleGeoTracks(state,progress,accountWork,timeline) {
+     if(group.interpolation===null)continue;
+     const current=timeline?.progress(group.to.geometry.key)??progress;
+     const geometry=sampleGeoInterpolation(group.interpolation,current).group;
+-    const presentation=normalizeGeoAnimationPresentation({...group.to,geometry,
++    const {presentation,resolved}=resolveSampledGeoPresentation({...group.to,geometry,
+       styles:group.to.styles.map((style,index)=>{const native=group.appearances[index]===null?style:{...style,...sampleAnimationAppearance(group.appearances[index],current)};
+         const patch=timeline?.geoStyle(group.targetGroup,geometry.features[index].key);return patch===undefined?native:{...native,...patch};}),
+       plotOrigin:group.from.plotOrigin.map((value,index)=>interpolateNumber(value,group.to.plotOrigin[index],current)),
+-      frame:interpolateNodeFrame(group.from.frame,group.to.frame,current)});
+-    const resolved=resolveGeoAnimationPresentation(presentation,capacityTracks.has(state));
++      frame:interpolateNodeFrame(group.from.frame,group.to.frame,current)},capacityTracks.has(state));
+     validateWorkLimit(work+=resolved.diagnostics.work,"Animation Geo sampled work");
+     accountWork?.(resolved.diagnostics.work);
+     if(!capacityTracks.has(state)||!Object.hasOwn(geometry.binding,"capacity"))validateGeneratedItemLimit(points+=resolved.diagnostics.points,"Animation Geo sampled points");
