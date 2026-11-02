@@ -1,0 +1,1347 @@
+{
+  "kind": "unmodified-1k-same-plan-full-frame CPU attribution; timings are not browser/P95/SLO",
+  "node": "v24.22.1",
+  "inputRows": 1000,
+  "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+  "sourceAggregate": "b1f2d096af4f54c60f0b5914e43bfa7b20e436f029586ac842cec80d9f343bc7",
+  "warmups": 5,
+  "measured": 30,
+  "thresholds": {
+    "hitMs": [
+      8,
+      12,
+      20
+    ],
+    "fullFrameSampleMs": [
+      16.7,
+      33,
+      50
+    ]
+  },
+  "timings": [
+    28.720666999999935,
+    24.022958000000017,
+    14.548999999999978,
+    15.211291999999958,
+    19.328250000000025,
+    14.000916000000075,
+    19.32224999999994,
+    13.33887500000003,
+    13.67658300000005,
+    20.370667000000026,
+    13.118833999999993,
+    12.90441599999997,
+    43.06037500000002,
+    13.412124999999946,
+    13.705916000000002,
+    18.948332999999934,
+    13.881708000000003,
+    19.951124999999934,
+    11.99824999999987,
+    13.830415999999786,
+    19.923958999999968,
+    13.04512499999987,
+    13.862542000000076,
+    19.16574999999989,
+    14.91233299999999,
+    15.011541999999963,
+    19.168333000000075,
+    13.645375000000058,
+    19.477084000000104,
+    14.163750000000164
+  ],
+  "profileMicroseconds": 575416,
+  "witness": {
+    "count": 1000,
+    "first": {
+      "x": 27.272727272727273,
+      "fill": "#4c78a8",
+      "y": 369.09090909090907,
+      "radius": 3
+    },
+    "last": {
+      "x": 78.18181818181819,
+      "fill": "#4c78a8",
+      "y": 30.909090909090878,
+      "radius": 3
+    }
+  },
+  "fullFrameDeepEqual": true,
+  "frameSHA256": "aa325d3c42766e8c522a3f8592f89116021ed040c2ff4485792be3edfaca3d2d",
+  "leaf": [
+    {
+      "frame": {
+        "functionName": "freezeOwned",
+        "scriptId": "162",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/core/immutable.js",
+        "lineNumber": 11,
+        "columnNumber": 27
+      },
+      "microseconds": 152374
+    },
+    {
+      "frame": {
+        "functionName": "(garbage collector)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "microseconds": 73459
+    },
+    {
+      "frame": {
+        "functionName": "cloneAndFreeze",
+        "scriptId": "162",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/core/immutable.js",
+        "lineNumber": 25,
+        "columnNumber": 30
+      },
+      "microseconds": 55582
+    },
+    {
+      "frame": {
+        "functionName": "post",
+        "scriptId": "118",
+        "url": "node:inspector",
+        "lineNumber": 114,
+        "columnNumber": 6
+      },
+      "microseconds": 55416
+    },
+    {
+      "frame": {
+        "functionName": "copy",
+        "scriptId": "162",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/core/immutable.js",
+        "lineNumber": 27,
+        "columnNumber": 15
+      },
+      "microseconds": 42751
+    },
+    {
+      "frame": {
+        "functionName": "sampleNode",
+        "scriptId": "1413",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/sample.js",
+        "lineNumber": 77,
+        "columnNumber": 19
+      },
+      "microseconds": 25750
+    },
+    {
+      "frame": {
+        "functionName": "samplePositionInterpolation",
+        "scriptId": "1354",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/positions.js",
+        "lineNumber": 63,
+        "columnNumber": 43
+      },
+      "microseconds": 17166
+    },
+    {
+      "frame": {
+        "functionName": "compile",
+        "scriptId": "201",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/renderers/canvasScene.js",
+        "lineNumber": 22,
+        "columnNumber": 16
+      },
+      "microseconds": 13711
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "305",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/matching.js",
+        "lineNumber": 8,
+        "columnNumber": 16
+      },
+      "microseconds": 13456
+    },
+    {
+      "frame": {
+        "functionName": "isOwned",
+        "scriptId": "162",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/core/immutable.js",
+        "lineNumber": 21,
+        "columnNumber": 23
+      },
+      "microseconds": 13083
+    },
+    {
+      "frame": {
+        "functionName": "validateGraphicIdentity",
+        "scriptId": "232",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/schemas/graphicIdentity.js",
+        "lineNumber": 5,
+        "columnNumber": 39
+      },
+      "microseconds": 12875
+    },
+    {
+      "frame": {
+        "functionName": "ownDataProperties",
+        "scriptId": "169",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/core/ownData.js",
+        "lineNumber": 4,
+        "columnNumber": 33
+      },
+      "microseconds": 10458
+    },
+    {
+      "frame": {
+        "functionName": "sampleTransitionWithBudget",
+        "scriptId": "1413",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/sample.js",
+        "lineNumber": 32,
+        "columnNumber": 42
+      },
+      "microseconds": 10208
+    },
+    {
+      "frame": {
+        "functionName": "(program)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "microseconds": 7167
+    },
+    {
+      "frame": {
+        "functionName": "registerAnimationFrame",
+        "scriptId": "306",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/frameProvenance.js",
+        "lineNumber": 29,
+        "columnNumber": 38
+      },
+      "microseconds": 7166
+    },
+    {
+      "frame": {
+        "functionName": "mapLinearValues",
+        "scriptId": "328",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/scales/continuous.js",
+        "lineNumber": 175,
+        "columnNumber": 31
+      },
+      "microseconds": 6376
+    },
+    {
+      "frame": {
+        "functionName": "validatePair",
+        "scriptId": "291",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/scales/validation.js",
+        "lineNumber": 23,
+        "columnNumber": 28
+      },
+      "microseconds": 4958
+    },
+    {
+      "frame": {
+        "functionName": "captureFrameMeaning",
+        "scriptId": "1405",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/frameEndpoint.js",
+        "lineNumber": 19,
+        "columnNumber": 35
+      },
+      "microseconds": 4375
+    },
+    {
+      "frame": {
+        "functionName": "validateConcreteGraphicProperties",
+        "scriptId": "164",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/schemas/concreteGraphic.js",
+        "lineNumber": 130,
+        "columnNumber": 49
+      },
+      "microseconds": 3958
+    },
+    {
+      "frame": {
+        "functionName": "validClip",
+        "scriptId": "201",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/renderers/canvasScene.js",
+        "lineNumber": 30,
+        "columnNumber": 20
+      },
+      "microseconds": 3792
+    },
+    {
+      "frame": {
+        "functionName": "vector",
+        "scriptId": "1362",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/concrete.js",
+        "lineNumber": 49,
+        "columnNumber": 17
+      },
+      "microseconds": 3792
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "302",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/endpoints.js",
+        "lineNumber": 52,
+        "columnNumber": 32
+      },
+      "microseconds": 3460
+    },
+    {
+      "frame": {
+        "functionName": "mapContinuousScaleValues",
+        "scriptId": "347",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/scales/mapping.js",
+        "lineNumber": 11,
+        "columnNumber": 40
+      },
+      "microseconds": 3417
+    },
+    {
+      "frame": {
+        "functionName": "canvasSceneProgram",
+        "scriptId": "201",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/renderers/canvasScene.js",
+        "lineNumber": 90,
+        "columnNumber": 34
+      },
+      "microseconds": 3416
+    },
+    {
+      "frame": {
+        "functionName": "isPlainObject",
+        "scriptId": "162",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/core/immutable.js",
+        "lineNumber": 2,
+        "columnNumber": 29
+      },
+      "microseconds": 2749
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "1354",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/positions.js",
+        "lineNumber": 86,
+        "columnNumber": 63
+      },
+      "microseconds": 2292
+    },
+    {
+      "frame": {
+        "functionName": "append",
+        "scriptId": "1410",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/graphTracks.js",
+        "lineNumber": 61,
+        "columnNumber": 15
+      },
+      "microseconds": 1959
+    },
+    {
+      "frame": {
+        "functionName": "validateConcreteGraphicValue",
+        "scriptId": "164",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/schemas/concreteGraphic.js",
+        "lineNumber": 36,
+        "columnNumber": 44
+      },
+      "microseconds": 1916
+    },
+    {
+      "frame": {
+        "functionName": "matchItemIdentities",
+        "scriptId": "305",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/matching.js",
+        "lineNumber": 23,
+        "columnNumber": 35
+      },
+      "microseconds": 1500
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "232",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/schemas/graphicIdentity.js",
+        "lineNumber": 7,
+        "columnNumber": 52
+      },
+      "microseconds": 1125
+    },
+    {
+      "frame": {
+        "functionName": "indexIdentities",
+        "scriptId": "305",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/matching.js",
+        "lineNumber": 5,
+        "columnNumber": 24
+      },
+      "microseconds": 1125
+    },
+    {
+      "frame": {
+        "functionName": "ownArray",
+        "scriptId": "169",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/core/ownData.js",
+        "lineNumber": 22,
+        "columnNumber": 24
+      },
+      "microseconds": 1084
+    },
+    {
+      "frame": {
+        "functionName": "projectSampledAnimationEndpoint",
+        "scriptId": "302",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/endpoints.js",
+        "lineNumber": 49,
+        "columnNumber": 47
+      },
+      "microseconds": 792
+    },
+    {
+      "frame": {
+        "functionName": "time",
+        "scriptId": "157",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/scripts/benchmarks/workloads.browser.js",
+        "lineNumber": 30,
+        "columnNumber": 13
+      },
+      "microseconds": 792
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "1405",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/frameEndpoint.js",
+        "lineNumber": 34,
+        "columnNumber": 42
+      },
+      "microseconds": 792
+    },
+    {
+      "frame": {
+        "functionName": "append",
+        "scriptId": "1404",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/partitionTracks.js",
+        "lineNumber": 71,
+        "columnNumber": 17
+      },
+      "microseconds": 791
+    },
+    {
+      "frame": {
+        "functionName": "node",
+        "scriptId": "1417",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/timelineSample.js",
+        "lineNumber": 21,
+        "columnNumber": 8
+      },
+      "microseconds": 791
+    },
+    {
+      "frame": {
+        "functionName": "retainSampledGuideMeaning",
+        "scriptId": "1391",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/guideTracks.js",
+        "lineNumber": 43,
+        "columnNumber": 41
+      },
+      "microseconds": 750
+    },
+    {
+      "frame": {
+        "functionName": "append",
+        "scriptId": "1416",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/geoFrames.js",
+        "lineNumber": 43,
+        "columnNumber": 30
+      },
+      "microseconds": 750
+    },
+    {
+      "frame": {
+        "functionName": "finish",
+        "scriptId": "1414",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/axisLabelFrames.js",
+        "lineNumber": 47,
+        "columnNumber": 97
+      },
+      "microseconds": 750
+    },
+    {
+      "frame": {
+        "functionName": "interpolateNumber",
+        "scriptId": "300",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/values.js",
+        "lineNumber": 32,
+        "columnNumber": 33
+      },
+      "microseconds": 750
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "1413",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/sample.js",
+        "lineNumber": 147,
+        "columnNumber": 31
+      },
+      "microseconds": 708
+    },
+    {
+      "frame": {
+        "functionName": "sampleAnimationAppearance",
+        "scriptId": "1361",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/appearance.js",
+        "lineNumber": 57,
+        "columnNumber": 41
+      },
+      "microseconds": 417
+    },
+    {
+      "frame": {
+        "functionName": "sampleTransition",
+        "scriptId": "1413",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/sample.js",
+        "lineNumber": 26,
+        "columnNumber": 32
+      },
+      "microseconds": 417
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "1405",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/frameEndpoint.js",
+        "lineNumber": 46,
+        "columnNumber": 66
+      },
+      "microseconds": 417
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "302",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/endpoints.js",
+        "lineNumber": 58,
+        "columnNumber": 46
+      },
+      "microseconds": 417
+    },
+    {
+      "frame": {
+        "functionName": "sampleAxisLabelTracks",
+        "scriptId": "1360",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/axisLabelTracks.js",
+        "lineNumber": 43,
+        "columnNumber": 37
+      },
+      "microseconds": 416
+    },
+    {
+      "frame": {
+        "functionName": "transitionSampleState",
+        "scriptId": "300",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/values.js",
+        "lineNumber": 19,
+        "columnNumber": 37
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "finish",
+        "scriptId": "1404",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/partitionTracks.js",
+        "lineNumber": 80,
+        "columnNumber": 27
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "1405",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/frameEndpoint.js",
+        "lineNumber": 26,
+        "columnNumber": 37
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "validateFillPaint",
+        "scriptId": "186",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/paint.js",
+        "lineNumber": 51,
+        "columnNumber": 33
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "dependentLegend",
+        "scriptId": "1391",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/guideTracks.js",
+        "lineNumber": 25,
+        "columnNumber": 24
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "axisLabelFrameCollector",
+        "scriptId": "1414",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/axisLabelFrames.js",
+        "lineNumber": 8,
+        "columnNumber": 39
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "finish",
+        "scriptId": "1410",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/graphTracks.js",
+        "lineNumber": 67,
+        "columnNumber": 24
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "305",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/matching.js",
+        "lineNumber": 39,
+        "columnNumber": 52
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "1414",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/axisLabelFrames.js",
+        "lineNumber": 11,
+        "columnNumber": 23
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "animationPlanProvenance",
+        "scriptId": "306",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/frameProvenance.js",
+        "lineNumber": 27,
+        "columnNumber": 39
+      },
+      "microseconds": 375
+    }
+  ],
+  "nearestOwner": [
+    {
+      "frame": {
+        "functionName": "freezeOwned",
+        "scriptId": "162",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/core/immutable.js",
+        "lineNumber": 11,
+        "columnNumber": 27
+      },
+      "microseconds": 152374
+    },
+    {
+      "frame": {
+        "functionName": "cloneAndFreeze",
+        "scriptId": "162",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/core/immutable.js",
+        "lineNumber": 25,
+        "columnNumber": 30
+      },
+      "microseconds": 55582
+    },
+    {
+      "frame": {
+        "functionName": "copy",
+        "scriptId": "162",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/core/immutable.js",
+        "lineNumber": 27,
+        "columnNumber": 15
+      },
+      "microseconds": 42751
+    },
+    {
+      "frame": {
+        "functionName": "sampleNode",
+        "scriptId": "1413",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/sample.js",
+        "lineNumber": 77,
+        "columnNumber": 19
+      },
+      "microseconds": 25750
+    },
+    {
+      "frame": {
+        "functionName": "samplePositionInterpolation",
+        "scriptId": "1354",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/positions.js",
+        "lineNumber": 63,
+        "columnNumber": 43
+      },
+      "microseconds": 17166
+    },
+    {
+      "frame": {
+        "functionName": "compile",
+        "scriptId": "201",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/renderers/canvasScene.js",
+        "lineNumber": 22,
+        "columnNumber": 16
+      },
+      "microseconds": 13711
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "305",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/matching.js",
+        "lineNumber": 8,
+        "columnNumber": 16
+      },
+      "microseconds": 13456
+    },
+    {
+      "frame": {
+        "functionName": "isOwned",
+        "scriptId": "162",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/core/immutable.js",
+        "lineNumber": 21,
+        "columnNumber": 23
+      },
+      "microseconds": 13083
+    },
+    {
+      "frame": {
+        "functionName": "validateGraphicIdentity",
+        "scriptId": "232",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/schemas/graphicIdentity.js",
+        "lineNumber": 5,
+        "columnNumber": 39
+      },
+      "microseconds": 12875
+    },
+    {
+      "frame": {
+        "functionName": "ownDataProperties",
+        "scriptId": "169",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/core/ownData.js",
+        "lineNumber": 4,
+        "columnNumber": 33
+      },
+      "microseconds": 10458
+    },
+    {
+      "frame": {
+        "functionName": "sampleTransitionWithBudget",
+        "scriptId": "1413",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/sample.js",
+        "lineNumber": 32,
+        "columnNumber": 42
+      },
+      "microseconds": 10208
+    },
+    {
+      "frame": {
+        "functionName": "registerAnimationFrame",
+        "scriptId": "306",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/frameProvenance.js",
+        "lineNumber": 29,
+        "columnNumber": 38
+      },
+      "microseconds": 7166
+    },
+    {
+      "frame": {
+        "functionName": "mapLinearValues",
+        "scriptId": "328",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/scales/continuous.js",
+        "lineNumber": 175,
+        "columnNumber": 31
+      },
+      "microseconds": 6376
+    },
+    {
+      "frame": {
+        "functionName": "validatePair",
+        "scriptId": "291",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/scales/validation.js",
+        "lineNumber": 23,
+        "columnNumber": 28
+      },
+      "microseconds": 4958
+    },
+    {
+      "frame": {
+        "functionName": "captureFrameMeaning",
+        "scriptId": "1405",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/frameEndpoint.js",
+        "lineNumber": 19,
+        "columnNumber": 35
+      },
+      "microseconds": 4375
+    },
+    {
+      "frame": {
+        "functionName": "validateConcreteGraphicProperties",
+        "scriptId": "164",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/schemas/concreteGraphic.js",
+        "lineNumber": 130,
+        "columnNumber": 49
+      },
+      "microseconds": 3958
+    },
+    {
+      "frame": {
+        "functionName": "validClip",
+        "scriptId": "201",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/renderers/canvasScene.js",
+        "lineNumber": 30,
+        "columnNumber": 20
+      },
+      "microseconds": 3792
+    },
+    {
+      "frame": {
+        "functionName": "vector",
+        "scriptId": "1362",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/concrete.js",
+        "lineNumber": 49,
+        "columnNumber": 17
+      },
+      "microseconds": 3792
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "302",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/endpoints.js",
+        "lineNumber": 52,
+        "columnNumber": 32
+      },
+      "microseconds": 3460
+    },
+    {
+      "frame": {
+        "functionName": "mapContinuousScaleValues",
+        "scriptId": "347",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/scales/mapping.js",
+        "lineNumber": 11,
+        "columnNumber": 40
+      },
+      "microseconds": 3417
+    },
+    {
+      "frame": {
+        "functionName": "canvasSceneProgram",
+        "scriptId": "201",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/renderers/canvasScene.js",
+        "lineNumber": 90,
+        "columnNumber": 34
+      },
+      "microseconds": 3416
+    },
+    {
+      "frame": {
+        "functionName": "isPlainObject",
+        "scriptId": "162",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/core/immutable.js",
+        "lineNumber": 2,
+        "columnNumber": 29
+      },
+      "microseconds": 2749
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "1354",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/positions.js",
+        "lineNumber": 86,
+        "columnNumber": 63
+      },
+      "microseconds": 2292
+    },
+    {
+      "frame": {
+        "functionName": "append",
+        "scriptId": "1410",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/graphTracks.js",
+        "lineNumber": 61,
+        "columnNumber": 15
+      },
+      "microseconds": 1959
+    },
+    {
+      "frame": {
+        "functionName": "validateConcreteGraphicValue",
+        "scriptId": "164",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/schemas/concreteGraphic.js",
+        "lineNumber": 36,
+        "columnNumber": 44
+      },
+      "microseconds": 1916
+    },
+    {
+      "frame": {
+        "functionName": "matchItemIdentities",
+        "scriptId": "305",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/matching.js",
+        "lineNumber": 23,
+        "columnNumber": 35
+      },
+      "microseconds": 1500
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "232",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/schemas/graphicIdentity.js",
+        "lineNumber": 7,
+        "columnNumber": 52
+      },
+      "microseconds": 1125
+    },
+    {
+      "frame": {
+        "functionName": "indexIdentities",
+        "scriptId": "305",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/matching.js",
+        "lineNumber": 5,
+        "columnNumber": 24
+      },
+      "microseconds": 1125
+    },
+    {
+      "frame": {
+        "functionName": "ownArray",
+        "scriptId": "169",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/core/ownData.js",
+        "lineNumber": 22,
+        "columnNumber": 24
+      },
+      "microseconds": 1084
+    },
+    {
+      "frame": {
+        "functionName": "projectSampledAnimationEndpoint",
+        "scriptId": "302",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/endpoints.js",
+        "lineNumber": 49,
+        "columnNumber": 47
+      },
+      "microseconds": 792
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "1405",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/frameEndpoint.js",
+        "lineNumber": 34,
+        "columnNumber": 42
+      },
+      "microseconds": 792
+    },
+    {
+      "frame": {
+        "functionName": "append",
+        "scriptId": "1404",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/partitionTracks.js",
+        "lineNumber": 71,
+        "columnNumber": 17
+      },
+      "microseconds": 791
+    },
+    {
+      "frame": {
+        "functionName": "node",
+        "scriptId": "1417",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/timelineSample.js",
+        "lineNumber": 21,
+        "columnNumber": 8
+      },
+      "microseconds": 791
+    },
+    {
+      "frame": {
+        "functionName": "retainSampledGuideMeaning",
+        "scriptId": "1391",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/guideTracks.js",
+        "lineNumber": 43,
+        "columnNumber": 41
+      },
+      "microseconds": 750
+    },
+    {
+      "frame": {
+        "functionName": "append",
+        "scriptId": "1416",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/geoFrames.js",
+        "lineNumber": 43,
+        "columnNumber": 30
+      },
+      "microseconds": 750
+    },
+    {
+      "frame": {
+        "functionName": "finish",
+        "scriptId": "1414",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/axisLabelFrames.js",
+        "lineNumber": 47,
+        "columnNumber": 97
+      },
+      "microseconds": 750
+    },
+    {
+      "frame": {
+        "functionName": "interpolateNumber",
+        "scriptId": "300",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/values.js",
+        "lineNumber": 32,
+        "columnNumber": 33
+      },
+      "microseconds": 750
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "1413",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/sample.js",
+        "lineNumber": 147,
+        "columnNumber": 31
+      },
+      "microseconds": 708
+    },
+    {
+      "frame": {
+        "functionName": "sampleAnimationAppearance",
+        "scriptId": "1361",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/appearance.js",
+        "lineNumber": 57,
+        "columnNumber": 41
+      },
+      "microseconds": 417
+    },
+    {
+      "frame": {
+        "functionName": "sampleTransition",
+        "scriptId": "1413",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/sample.js",
+        "lineNumber": 26,
+        "columnNumber": 32
+      },
+      "microseconds": 417
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "1405",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/frameEndpoint.js",
+        "lineNumber": 46,
+        "columnNumber": 66
+      },
+      "microseconds": 417
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "302",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/endpoints.js",
+        "lineNumber": 58,
+        "columnNumber": 46
+      },
+      "microseconds": 417
+    },
+    {
+      "frame": {
+        "functionName": "sampleAxisLabelTracks",
+        "scriptId": "1360",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/axisLabelTracks.js",
+        "lineNumber": 43,
+        "columnNumber": 37
+      },
+      "microseconds": 416
+    },
+    {
+      "frame": {
+        "functionName": "transitionSampleState",
+        "scriptId": "300",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/values.js",
+        "lineNumber": 19,
+        "columnNumber": 37
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "finish",
+        "scriptId": "1404",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/partitionTracks.js",
+        "lineNumber": 80,
+        "columnNumber": 27
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "1405",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/frameEndpoint.js",
+        "lineNumber": 26,
+        "columnNumber": 37
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "validateFillPaint",
+        "scriptId": "186",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/paint.js",
+        "lineNumber": 51,
+        "columnNumber": 33
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "dependentLegend",
+        "scriptId": "1391",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/guideTracks.js",
+        "lineNumber": 25,
+        "columnNumber": 24
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "axisLabelFrameCollector",
+        "scriptId": "1414",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/axisLabelFrames.js",
+        "lineNumber": 8,
+        "columnNumber": 39
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "finish",
+        "scriptId": "1410",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/graphTracks.js",
+        "lineNumber": 67,
+        "columnNumber": 24
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "305",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/matching.js",
+        "lineNumber": 39,
+        "columnNumber": 52
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "1414",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/axisLabelFrames.js",
+        "lineNumber": 11,
+        "columnNumber": 23
+      },
+      "microseconds": 375
+    },
+    {
+      "frame": {
+        "functionName": "animationPlanProvenance",
+        "scriptId": "306",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/frameProvenance.js",
+        "lineNumber": 27,
+        "columnNumber": 39
+      },
+      "microseconds": 375
+    }
+  ],
+  "coreCaller": [
+    {
+      "frame": {
+        "functionName": "samplePositionInterpolation",
+        "scriptId": "1354",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/positions.js",
+        "lineNumber": 63,
+        "columnNumber": 43
+      },
+      "microseconds": 85079
+    },
+    {
+      "frame": {
+        "functionName": "registerAnimationFrame",
+        "scriptId": "306",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/frameProvenance.js",
+        "lineNumber": 29,
+        "columnNumber": 38
+      },
+      "microseconds": 45041
+    },
+    {
+      "frame": {
+        "functionName": "sampleNode",
+        "scriptId": "1413",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/sample.js",
+        "lineNumber": 77,
+        "columnNumber": 19
+      },
+      "microseconds": 44627
+    },
+    {
+      "frame": {
+        "functionName": "sampleTransitionWithBudget",
+        "scriptId": "1413",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/sample.js",
+        "lineNumber": 32,
+        "columnNumber": 42
+      },
+      "microseconds": 22584
+    },
+    {
+      "frame": {
+        "functionName": "mapLinearValues",
+        "scriptId": "328",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/scales/continuous.js",
+        "lineNumber": 175,
+        "columnNumber": 31
+      },
+      "microseconds": 22543
+    },
+    {
+      "frame": {
+        "functionName": "canvasSceneProgram",
+        "scriptId": "201",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/renderers/canvasScene.js",
+        "lineNumber": 90,
+        "columnNumber": 34
+      },
+      "microseconds": 19251
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "302",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/endpoints.js",
+        "lineNumber": 58,
+        "columnNumber": 46
+      },
+      "microseconds": 16998
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "305",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/matching.js",
+        "lineNumber": 8,
+        "columnNumber": 16
+      },
+      "microseconds": 8332
+    },
+    {
+      "frame": {
+        "functionName": "indexIdentities",
+        "scriptId": "305",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/animation/matching.js",
+        "lineNumber": 5,
+        "columnNumber": 24
+      },
+      "microseconds": 3210
+    },
+    {
+      "frame": {
+        "functionName": "validatePair",
+        "scriptId": "291",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/scales/validation.js",
+        "lineNumber": 23,
+        "columnNumber": 28
+      },
+      "microseconds": 2667
+    },
+    {
+      "frame": {
+        "functionName": "finish",
+        "scriptId": "1415",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/geoTextFrames.js",
+        "lineNumber": 46,
+        "columnNumber": 77
+      },
+      "microseconds": 1541
+    },
+    {
+      "frame": {
+        "functionName": "validateConcreteGraphicProperties",
+        "scriptId": "164",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/grammar/schemas/concreteGraphic.js",
+        "lineNumber": 130,
+        "columnNumber": 49
+      },
+      "microseconds": 1208
+    },
+    {
+      "frame": {
+        "functionName": "",
+        "scriptId": "302",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/endpoints.js",
+        "lineNumber": 52,
+        "columnNumber": 32
+      },
+      "microseconds": 1166
+    },
+    {
+      "frame": {
+        "functionName": "finish",
+        "scriptId": "1416",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/geoFrames.js",
+        "lineNumber": 43,
+        "columnNumber": 70
+      },
+      "microseconds": 1125
+    },
+    {
+      "frame": {
+        "functionName": "finish",
+        "scriptId": "1414",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/axisLabelFrames.js",
+        "lineNumber": 47,
+        "columnNumber": 97
+      },
+      "microseconds": 792
+    },
+    {
+      "frame": {
+        "functionName": "finish",
+        "scriptId": "1404",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/partitionTracks.js",
+        "lineNumber": 80,
+        "columnNumber": 27
+      },
+      "microseconds": 750
+    },
+    {
+      "frame": {
+        "functionName": "captureFrameMeaning",
+        "scriptId": "1405",
+        "url": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-sampling/ggactionnewbrand/.artifacts/frame-sampling/source/src/animation/frameEndpoint.js",
+        "lineNumber": 19,
+        "columnNumber": 35
+      },
+      "microseconds": 750
+    }
+  ]
+}
