@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: prepared routes match synchronous authoring and preserve exact receiver, token and action authority
+ok 1 - prepared routes match synchronous authoring and preserve exact receiver, token and action authority
+  ---
+  duration_ms: 54.568667
+  type: 'test'
+  ...
+# Subtest: completed route assembly preserves all methods, source rows and viewport through preparation and restore
+ok 2 - completed route assembly preserves all methods, source rows and viewport through preparation and restore
+  ---
+  duration_ms: 1589.1315
+  type: 'test'
+  ...
+# Subtest: completed route assembly validates external jobs and every completion before retaining immutable output
+ok 3 - completed route assembly validates external jobs and every completion before retaining immutable output
+  ---
+  duration_ms: 7.591791
+  type: 'test'
+  ...
+# Subtest: route preparation snapshots host options and rejects aborted, forged and descriptor-bearing requests
+ok 4 - route preparation snapshots host options and rejects aborted, forged and descriptor-bearing requests
+  ---
+  duration_ms: 7.809375
+  type: 'test'
+  ...
+# Subtest: route host boundaries ignore inherited options without evaluating getters
+ok 5 - route host boundaries ignore inherited options without evaluating getters
+  ---
+  duration_ms: 20.543875
+  type: 'test'
+  ...
+# Subtest: explicit route executors bound cache lifetime, pending workers, cancellation and late completions
+ok 6 - explicit route executors bound cache lifetime, pending workers, cancellation and late completions
+  ---
+  duration_ms: 13.417292
+  type: 'test'
+  ...
+# Subtest: worker completion validation rejects stale payloads, malformed workers and transport failures
+ok 7 - worker completion validation rejects stale payloads, malformed workers and transport failures
+  ---
+  duration_ms: 5.426875
+  type: 'test'
+  ...
+# Subtest: route cache eviction is least-recently-used and disposal during worker construction leaves no live worker
+ok 8 - route cache eviction is least-recently-used and disposal during worker construction leaves no live worker
+  ---
+  duration_ms: 14.967375
+  type: 'test'
+  ...
+# Subtest: a real worker computes the same completed numeric routes as the synchronous boundary
+ok 9 - a real worker computes the same completed numeric routes as the synchronous boundary
+  ---
+  duration_ms: 82.230541
+  type: 'test'
+  ...
+# Subtest: Canvas invalidates screen routes atomically and rematerializes each shared consumer once
+ok 10 - Canvas invalidates screen routes atomically and rematerializes each shared consumer once
+  ---
+  duration_ms: 108.06175
+  type: 'test'
+  ...
+# Subtest: private screen revision authority rejects incomplete unions and changes to world routes or intent
+ok 11 - private screen revision authority rejects incomplete unions and changes to world routes or intent
+  ---
+  duration_ms: 22.876959
+  type: 'test'
+  ...
+# Subtest: source result unions admit viewport-only siblings with exact unchanged route inputs and intent
+ok 12 - source result unions admit viewport-only siblings with exact unchanged route inputs and intent
+  ---
+  duration_ms: 32.218875
+  type: 'test'
+  ...
+# Subtest: route creation and edit resolve missing options from own data without evaluating inherited getters
+ok 13 - route creation and edit resolve missing options from own data without evaluating inherited getters
+  ---
+  duration_ms: 37.285291
+  type: 'test'
+  ...
+# Subtest: public route preparation excludes inherited hierarchy during completion validation
+ok 14 - public route preparation excludes inherited hierarchy during completion validation
+  ---
+  duration_ms: 6.276542
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2422.509792

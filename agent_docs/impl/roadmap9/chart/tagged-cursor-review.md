@@ -6,6 +6,7 @@
 - [x] 기존 tagged bytes/hash와 소형 exact 검산, UTF16 전수 및 실제 macrotask 취소
 - [x] source owner 재사용·private signature·실패/할당 경계 구체화
 - [x] 후속 [JSON string count만 제품 추출](json-string-count.md) — writer/cursor 제외
+- [x] 후속 [native route 연결 경계 검토](route-cursor-callsite-review.md) — 첫 await 이전 snapshot·host 권한 검산, 제품0
 - [ ] 제품 writer/cursor 추출 채택 및 구현
 - [ ] 외부 mutable 입력 snapshot/넓은 record/BigInt/route v2 준비 연결
 
