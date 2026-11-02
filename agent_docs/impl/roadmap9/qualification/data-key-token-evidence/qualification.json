@@ -126,6 +126,30 @@
     "proof-proof.json": {
       "sha256": "c84d779a85b41d689f40b822c75073318e70ef674fcfccd75ad1fdaaf3713dff",
       "bytes": 27615
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "618439dd44c4741bb200579364cad624f8491281c91b8236c357ad19e9b22adb",
+      "bytes": 1812
+    },
+    "source-pin-pack.json": {
+      "sha256": "9965e4c2a2e8399d18fd257f21ab3d1b4eba2d74598e28c145aeb8aa6dc2cea4",
+      "bytes": 384
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
   },
   "checks": {
@@ -203,5 +227,17 @@
       "Initial pack path-error was a relative destination setup error, corrected to an absolute destination before the passing strict pack.",
       "Runtime work, row and byte quotas and performance thresholds are unchanged."
     ]
+  },
+  "sourceRevision": "7d4f828ea3479b9d12c83fa182e5d9e3eb985e06",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
   }
 }
