@@ -6,7 +6,7 @@
 - [x] 기존 sample charge 식과 buffer/object 수명 대조
 - [x] 생산 density orchestration/helper를 사용하는 유한 진단 도구의 소형20회 결과·hash를 실제 public 결과와 exact 검산
 - [x] 직접 edit 외 guide/encoding/composition 후보를 source-pinned 명시 목록으로 기록
-- [ ] 원100의20회 진단: root CPU 슬롯 배정 뒤 단1건, work1B와 host30초 제한
+- [x] 원100의20회 진단: root CPU 슬롯에서 단1건, work1B와 host30초 제한으로 완료
 - [ ] 실제 ledger를 근거로 제품의 hard maxima와 완전한 native adapter union 채택
 - [ ] v2 제품 구현·원100/1k/10k 기능 검증·최종 합산 P95/heap/100cycle
 
@@ -204,3 +204,70 @@ Default original100/1000 work 거부와 original10k sample 거부의 [stable90ae
 
 다음 채택 숫자는 실제 ledger가 있는 범위와 없는 범위를 분리해 제시한다. 전체20회를 못 끝내면
 부분값과 최초 guard/deadline을 보존하고, iteration/size를 줄인 결과를 원 입력 완료로 대체하지 않는다.
+
+
+## 6. 원100 한 건의 실제20회 결과
+
+Root가 R Chromium 종료 뒤 단독 large 슬롯을 배정했고 PID92791의 worker를 한 번 실행했다.
+[원본 report](density-schedule-evidence/original100-22.json.gz)와 [종료 log](density-schedule-evidence/original100-22.log.gz)를
+보존한다. Apple M4/arm64/16GiB/macOS27.0.1, Node22.23.1이며 root small pack/docs만 병행했다.
+Worker는20회 뒤 자연 종료했고 large 슬롯을 즉시 반환했다. 전역/제품 코드·guard 변경은0이다.
+
+| iteration | 입력 S | 출력 T | fieldCells | candidate-channel slots | field work |
+|---:|---:|---:|---:|---:|---:|
+| 0 | 22,200 | 22,400 | 43,848 | 10,115,328 | 10,652,170 |
+| 1 | 22,400 | 22,800 | 42,980 | 8,471,656 | 8,965,730 |
+| 2 | 22,800 | 23,100 | 42,084 | 7,147,084 | 7,605,580 |
+| 3 | 23,100 | 23,452 | 41,204 | 5,995,392 | 6,418,824 |
+| 4 | 23,452 | 23,732 | 40,528 | 5,034,580 | 5,426,348 |
+| 5 | 23,732 | 24,256 | 39,860 | 4,210,412 | 4,571,676 |
+| 6 | 24,256 | 24,728 | 39,312 | 3,554,272 | 3,890,834 |
+| 7 | 24,728 | 25,500 | 38,684 | 2,987,728 | 3,300,232 |
+| 8 | 25,500 | 26,064 | 38,236 | 2,542,516 | 2,836,552 |
+| 9 | 26,064 | 26,500 | 37,776 | 2,140,968 | 2,415,050 |
+| 10 | 26,500 | 26,972 | 37,304 | 1,792,104 | 2,046,290 |
+| 11 | 26,972 | 27,304 | 36,316 | 1,499,868 | 1,735,984 |
+| 12 | 27,304 | 30,572 | 34,968 | 1,250,596 | 1,469,152 |
+| 13 | 30,572 | 34,640 | 33,368 | 1,151,544 | 1,375,446 |
+| 14 | 34,640 | 39,484 | 31,372 | 1,071,874 | 1,304,134 |
+| 15 | 39,484 | 45,120 | 29,384 | 1,002,664 | 1,245,280 |
+| 16 | 45,120 | 51,940 | 27,776 | 938,850 | 1,193,159 |
+| 17 | 51,940 | 60,463 | 26,028 | 886,040 | 1,155,239 |
+| 18 | 60,463 | 68,177 | 24,911 | 911,991 | 1,209,700 |
+| 19 | 68,177 | 72,355 | 24,845 | 1,026,889 | 1,362,445 |
+
+각 행의 field work는 `S + y행 방문 + candidate-channel slots`와 정확히 같다. Native
+`candidatePairs`는0이며 이 field 슬롯과 혼동하지 않는다. 전체 S합649,404, T합699,559,
+y행합5,798,065, candidate-channel 슬롯합63,732,356이다. 모든 원 charge의 합은 다음과 같다.
+
+| phase | 실제 work |
+|---|---:|
+| 원 prepare/index/order | 62,820 |
+| 초기 resample | 22,200 |
+| 기존 weight/advection 보수 S×24 | 15,585,696 |
+| field | 70,179,825 |
+| resample | 699,559 |
+| finalization | 578,840 |
+| **전체** | **87,128,940** |
+
+PeakSamples434,107은 마지막 field의 `6×68,177+24,845+200`과 같다. 최종 commands/controls는
+각72,355개이며 줄이거나 버린 edge는 없다. 관측된 iteration 입력의 최대 한 edge는740 samples다.
+최종 edge별 count 최대는 별도 보고값을 만들지 않았으나 기존4096 guard가 실제 resample에서
+검사됐다. Packed preparation의 실제 최대는1,097,148B다. 마지막 iteration의 point object
+보수 ceiling216,901은 측정 heap이 아니고 기존 수명식 `2S+T+8192`의 산술값이다.
+
+Canonical encoded job은80,439B, 완료 packet은9,821,768B이며 결과 hash는
+`0a988991ea0252b1cb7bf65f4592bf4c252956cf745b399b5e50238e387802b3`다.
+총5,276.246417ms에는 observer import/setup·counter·progress 메시지·hash/byte encoding이 들어간다.
+하나의 source 진단이고 browser worker·같은 archive·P95·SLO·retained heap 증거가 아니다.
+기존 public work10M은 첫 iteration에서 실패하는 채로다. 이번 결과를 v2 제품 지원으로 세지 않는다.
+
+Sample 수는 초기22,200→마지막72,355로 커졌고 bandwidth floor에 가까운13회 이후 증가가
+더 빨라졌다. 그러므로 초기 sample을20회에 그대로 곱하거나 원100 값을1k/10k로 비례 확대해
+policy 상한/시간을 확정할 수 없다. 이 한 입력을 위한 관측 하한은 work87,128,940,
+maxSamples434,107, 직접 packed 준비1,097,148B, completion9,821,768B다. 이는 전체 transaction의
+model/input/copy/field/object/다중 fit 비용을 포함하는 권장 maxBufferBytes/제품 hard cap이 아니다.
+
+다음 숫자 선정은 이 완주값과 원1k/10k의 아직 미관측 ledger를 분리해서 root에 제시한다.
+본 checkpoint 뒤 추가 큰 loop를 임의 시작하지 않는다. V2 single-authority limits, async validation,
+완전 native update union과 actual buffer/packet의 전체 수명 증명은 계속 미완료다.

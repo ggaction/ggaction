@@ -10,6 +10,7 @@
 - [x] root가 B의 native 준비→worker→원자 commit 방향 채택(2026-11-02)
 - [ ] 수치 상한·closed edit union·세부 저장/commit signature의 제품 채택
 - [x] FDEB10000의49,995,000 pair 전수 scalar 감사 및 원100 ordered-input 중복 감사
+- [x] 원 density100의20회 유한 진단 ledger: [work87,128,940 및 완료bytes](route-bounded-policy-ledger.md#6-원100-한-건의-실제20회-결과)
 - [ ] 큰 정책 제품 구현·동일 archive/3Node·원 큰 입력 완전 계산·최종 합산 P95/heap/100cycle
 
 [전체 승인](../AUTHORIZATION.json)의 remainingApproval 안에서 구체안을 준비한다. 이 문서는
