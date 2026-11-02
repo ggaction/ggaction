@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-02",
+  "status": "verified-concept",
+  "authorization": "../../AUTHORIZATION.json",
+  "proposal": "36de5a4f9",
+  "sourceCommit": "f4b389117b570ee6ae2399867dc709d6b04c457c",
+  "rootAdoption": "Private JSON string count/UTF16 scalar owner only; inference consumes it with unchanged minimum/final quota, tags, order, diagnostics and allocation preflight. No writer/cursor/public API or global policy.",
+  "sourceSHA256": {
+    "src/core/jsonText.js": "eb46930467af6d2b6dd60a30232974e909303e1152e00874560925e10f941532",
+    "src/grammar/graph/inferenceBudget.js": "3e1df3e6705331bc57832016637005ccd9625e443971a8fbf1c9e2925d7c8190",
+    "src/core/contentDigest.js": "f6ec75ffc60526a974789a5f679ba384c802c75cc41287d4a212b926ba3b4de4",
+    "src/core/valueEncoding.js": "09af680c92693885b0afc9f5ce2475a2fbd7c0537df80b830596482bf0b398ac",
+    "src/core/sha256.js": "a94e9caced46162e33d653cd07b5a36d0626cf4e5e46424644c9273f5e4ca979",
+    "src/core/validation.js": "21c32af580a7ac10dd50a76f48f6311bb8bebab0fb3255924342ccda6dfdfdbe",
+    "test/unit/core/json-text.test.js": "1ff294d6fe0ad8bd3694b9738cbcd2e9f92e1852e0407fdec3cd62b6fdffff16",
+    "test/unit/grammar/graph/inference-budget.test.js": "3e1d7d5f36f43a9344046c1bb119d1cc67b73f30a2c542b32bd0621ea95bf147",
+    "scripts/coverage-policy.js": "9f2b69d6c65e21e63cf025fae67b4177b515290cf55c7a993d0d67da695164c3",
+    "scripts/package-artifact.js": "bc940f6f3f31d6b0c341f737ee0d1518d198272e7c03070a5dbed08fb96d53db"
+  },
+  "sourceTests": {
+    "coverageTests": 36,
+    "critical": {
+      "core/jsonText.js": [
+        100,
+        100,
+        100
+      ],
+      "grammar/graph/inferenceBudget.js": [
+        100,
+        100,
+        100
+      ]
+    },
+    "fullUTF16PerNode": 65536,
+    "hashAndCountPerNode": 16,
+    "oldNewComparisons": 868,
+    "boundaries": 38,
+    "smallLifecycleCodec": 10,
+    "package": 7,
+    "sourcePinnedDocs": 18
+  },
+  "archive": {
+    "sha256": "69c45bcacf6c9290b2efbeed52fdf69d604a8be77d5e9d4012a9f8226037dc9d",
+    "frozenFile": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/json-string-count/ggaction-69c45bcacf6c9290b2efbeed52fdf69d604a8be77d5e9d4012a9f8226037dc9d.tgz",
+    "entryCount": 1250,
+    "size": 1787697,
+    "unpackedSize": 8067660
+  },
+  "installed": {
+    "nodeOrder": [
+      24,
+      22,
+      20
+    ],
+    "sameArchive": true,
+    "runtimeCasesEach": 12,
+    "strictTypes": "edge-routes.mts",
+    "canonicalSnippet": "edge-route-analytical-comparison",
+    "optionalPeers": true,
+    "bundleEntriesEach": 6
+  },
+  "scope": {
+    "publicAPIChanges": 0,
+    "schemaChanges": 0,
+    "globalGuardChanges": 0,
+    "genericEncoderChanges": 0,
+    "hashChanges": 0,
+    "largeFixtureRuns": 0,
+    "performanceQualification": false,
+    "abortLatencyClaim": false,
+    "asyncWriterOrCursor": false
+  },
+  "firstFailures": [
+    "New source module: entries1250>1249. Measured unpacked8067660>old8067400; minimum caps1250/8067700. Packed/bundle caps unchanged."
+  ],
+  "cpuContext": "Small functional checks shared CPU with other agents; no exclusive performance reservation.",
+  "remaining": [
+    "strict tagged cursor and writer adoption",
+    "mutable input snapshot ownership",
+    "indivisible wide descriptor enumeration and BigInt conversion",
+    "macrotask cancellation and large route v2 policy/qualification"
+  ]
+}
