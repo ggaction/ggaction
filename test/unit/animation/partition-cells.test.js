@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {partitionBendCellGeometry as geometry} from '../../../src/grammar/hierarchy/partitionCell.js';
 import {createPartitionAnimationState as create} from '../../../src/grammar/animation/partitionState.js';
+import {resolvePartitionAnimationGeometry} from '../../../src/materialization/animation/partitionGeometry.js';
 import {mapPartitionBendPoint} from '../../../src/grammar/hierarchy/partitionAdapter.js';
 const kernel={width:300,height:100,innerRadius:20,outerRadius:100,radiusPolicy:'equal-depth',sweep:2*Math.PI};
 const frame={origin:[240,180],angle:0,handedness:1,kernel,gap:[0,0]},cell={u0:0,u1:1,v0:0,v1:1};
@@ -31,4 +32,12 @@ test('invalid frames and tessellation requests fail before allocating cell paths
  assert.throws(()=>geometry({...cell,u1:0},{...frame,angle:NaN},.5));
  assert.throws(()=>geometry(cell,frame,2));
  let calls=0;const bad={...frame};Object.defineProperty(bad,'angle',{enumerable:true,get(){calls++;return 0;}});assert.throws(()=>geometry(cell,bad,.5),/accessors/);assert.equal(calls,0);
+});
+
+test('group geometry retains aggregate work rejection and does not admit hidden cell frames',()=>{
+ const hidden={key:'hidden',visible:false};
+ const group=nodes=>({meaning:{state:{frame:{...frame,angle:NaN},bend:0,nodes}}});
+ assert.throws(()=>resolvePartitionAnimationGeometry(group(Array(51021).fill(hidden))),/Partition animation geometry work/);
+ assert.deepEqual([...resolvePartitionAnimationGeometry(group([hidden]))],[['hidden',null]]);
+ assert.throws(()=>resolvePartitionAnimationGeometry(group([{...hidden,...cell,visible:true}])) ,/finite origin, angle and handedness/);
 });

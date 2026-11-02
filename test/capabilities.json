@@ -1454,6 +1454,10 @@
     ],
     "partition": [
       {
+        "type": "file",
+        "path": "unit/grammar/partition-cell-calculation.test.js"
+      },
+      {
         "type": "prefix",
         "path": "charts/partition-layouts/"
       },

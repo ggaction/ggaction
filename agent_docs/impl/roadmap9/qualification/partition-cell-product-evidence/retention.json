@@ -1,0 +1,7 @@
+{
+  "cycles": 100,
+  "nodes": 2,
+  "oldFrames": 100,
+  "alive": 0,
+  "kind": "Small installed frame retention smoke; not canonical memory workload or P95"
+}

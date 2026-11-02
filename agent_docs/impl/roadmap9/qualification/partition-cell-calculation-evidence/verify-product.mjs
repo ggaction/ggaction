@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
+import {resolve,dirname} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
+import {gunzipSync,gzipSync} from 'node:zlib';
+import {spawnSync} from 'node:child_process';
+import {paths,candidate} from './candidate.mjs';
+const here=dirname(fileURLToPath(import.meta.url)), root=resolve(here,'../../../../..');
+const out=resolve(process.argv[2]??resolve(root,'.artifacts/partition-cell-product'));
+mkdirSync(out,{recursive:true});
+const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
+const admitted=JSON.parse(readFileSync(resolve(here,'source-hashes.json'))),sourceHashes={};
+for(const path of paths){
+ const before=spawnSync('git',['show',`c8bac0e77:${path}`],{cwd:root,encoding:'utf8'});
+ assert.equal(before.status,0,before.stderr);assert.equal(sha(before.stdout),admitted[path]);
+ const source=readFileSync(resolve(root,path),'utf8');
+ assert.equal(source,candidate(path,before.stdout),`Product differs from adopted patch: ${path}`);
+ sourceHashes[path]=sha(source);
+}
+const file=resolve(out,'product.json');
+const child=spawnSync(process.execPath,[resolve(here,'proof.mjs'),file],{cwd:root,encoding:'utf8',env:{...process.env,PARTITION_PROOF_MODE:'product'}});
+assert.equal(child.status,0,child.stderr);process.stdout.write(child.stdout);
+const expected=JSON.parse(gunzipSync(readFileSync(resolve(here,'candidate.json.gz'))));
+const actual=JSON.parse(readFileSync(file));
+assert.deepEqual({...actual,mode:'candidate'},expected,'Product outputs, errors, math, iterations, work and allocation counters must match adopted candidate');
+writeFileSync(file+'.gz',gzipSync(readFileSync(file)));
+const receipt={kind:'Applied product exact comparison with adopted candidate; not P95 qualification',runtime:process.version,proposal:'5e1f2add6427659b68f73d9a92f5bc87ca63c12a',cases:actual.rows.length,sourceHashes,allRowsAndCountersExact:true,original1k:actual.rows.find(row=>row.name==='public-1k')};
+writeFileSync(resolve(out,'summary.json'),JSON.stringify(receipt,null,2)+'\n');
+console.log(JSON.stringify(receipt));

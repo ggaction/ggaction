@@ -1,0 +1,24 @@
+{
+  "kind": "Applied product exact comparison with adopted candidate; not P95 qualification",
+  "runtime": "v22.23.1",
+  "proposal": "5e1f2add6427659b68f73d9a92f5bc87ca63c12a",
+  "cases": 907,
+  "sourceHashes": {
+    "src/grammar/hierarchy/partitionMapping.js": "710b9414bd7a7e90ee232d96b9af4dd9c32e02f1c7d4ca438058f7b7205caea7",
+    "src/grammar/hierarchy/partitionBend.js": "1cd3cbac0f335c57d1103d0e8887a9dcac3fc489ae1487dcd838837d84a8cd5a",
+    "src/grammar/hierarchy/partitionAdapter.js": "57c2ddf87ed19e82ee61b214996bd2171139d2372370feb5077e778951aeb2c1",
+    "src/grammar/hierarchy/partitionCell.js": "d704da8a78314f578a5aaf5f42489b9de207c3c42bea11d21e40d1b1f2534286"
+  },
+  "allRowsAndCountersExact": true,
+  "original1k": {
+    "name": "public-1k",
+    "generic": false,
+    "result": "b1e9c2ddebd685dc6d7e0d51a4bfdbffb8feca303d956ee7d02b7ec75e3280f4",
+    "math": 11003,
+    "inverseIterations": 1000,
+    "work": "302a880ea551b0bcb5673727878a94439a9ec79428646e40dcdc5385917243ca",
+    "workCount": 8096,
+    "ownData": 27056,
+    "owned": 22074
+  }
+}

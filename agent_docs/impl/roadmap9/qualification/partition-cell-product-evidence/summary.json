@@ -1,0 +1,58 @@
+{
+  "sourceStatus": "applied adopted patch; source checkpoint follows this receipt",
+  "proposal": "5e1f2add6427659b68f73d9a92f5bc87ca63c12a",
+  "adoption": "2b7b12f5b",
+  "productCases": 907,
+  "ownerTests": 117,
+  "boundaryTests": 32,
+  "criticalCoverage": "coverage.json",
+  "sameArchive": {
+    "sha256": "bb78b18bdda0f13451c84e469b6c42609a27898c6f297194427c4f1b853fab48",
+    "entries": 1268,
+    "packedBytes": 1827690,
+    "unpackedBytes": 8230957,
+    "runtime": [
+      20,
+      22,
+      24
+    ],
+    "strictTypes": [
+      20,
+      22,
+      24
+    ],
+    "sixBrowserBundles": [
+      20,
+      22,
+      24
+    ],
+    "browserDPR": [
+      1,
+      2
+    ],
+    "currentAndRebased": true,
+    "publicTutorial": "passed",
+    "originalNodeClass": 1000,
+    "retentionCollected": 100
+  },
+  "limits": {
+    "entries": 1268,
+    "packedBytes": 1830664,
+    "unpackedBytes": 8231000,
+    "animationGzipBytes": 343976
+  },
+  "open": [
+    "Original 10k native/current/rebase/offline functional verification",
+    "Final integrated original 5+30 DPR1/2 exclusive P95",
+    "Roadmap057\u2013070/077 remaining qualification"
+  ],
+  "harnessRepairs": [
+    "pack destination changed from relative to absolute; no runtime product change",
+    "browser provenance normalizes /var realpath and excludes explicit inline stdin virtual module; every real input remains in installed consumer"
+  ],
+  "notClaimed": [
+    "Original10k complete",
+    "Final SLO pass",
+    "Canonical memory100cycle pass"
+  ]
+}
