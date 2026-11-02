@@ -1,0 +1,341 @@
+{
+  "status": "ready-for-review; no-product-adoption",
+  "sourceRevision": "aa18606de9146c8cf508cf789948125011ea6ab0",
+  "reviewBase": "e328cfd15d0a11d5ad6b4eb962667b8a928cb823",
+  "sourceSHA256": {
+    "src/animation/numericColumns.js": "6db7cff74e73bd6b2a96aa08207d314f4896bce886ea1787935156d302dfcd5d",
+    "src/animation/columnCodec.js": "968674bb4fb632026de774dc07dc2797f2c99454de4bb731fe404f60e1c2508b",
+    "src/animation/envelopeCodec.js": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+    "src/animation/planner.js": "e240a9aa415ae79def9716f8ad1f58792a20fd56575a30dcd36fdef97b2a46ac",
+    "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+    "src/animation/frameProvenance.js": "5cb5f29a1bc3544606d7766788ec7e24792004dd4f08ad3a4a29e6360296490d",
+    "src/grammar/animation/pointState.js": "e15d4c1f0677b09ac1decd32611fbb2be31390ddc95b27a5d354913f607fb673",
+    "src/grammar/schemas/concreteGraphic.js": "17e8ba56fe626433a06435d7c622cfa1cbe222ba451a1fcd10272b2fea28a911",
+    "src/persistence.js": "f0df5446953896fa41b98cf8286cd45042394b5e8d0b50680741cd422c074c01",
+    "src/persistence/validation.js": "ffb7737a9088e18d722899dc88e50e1ac734e2c8c4bd602fafba68f9a891832a",
+    "src/persistence/codec.js": "8536870fa5e75e369b8235505f5fb135f159e5b9d9bdbbecbf3370224c74c20d",
+    "types/animation.d.ts": "264f37f74af70f162fce1486d18a4b95cae19d1f0337c360b9936c2955a90e98",
+    "types/program.d.ts": "84ab75bbdee2d9aa0c505be8b14c27a3166aaea157b0ee4ca2562e478cdb8d79",
+    "types/scene.d.ts": "0ec51fabe97052f15ba288923017fcaa643d6fb68dd2404482f91fba5916e608"
+  },
+  "oracle": {
+    "kind": "read-only format6 numeric projection / codec rejection oracle; not prepared-plan or renderer implementation",
+    "sourceRows": 1000,
+    "logicalEndpointRows": [
+      1001,
+      1001
+    ],
+    "batchLengths": [
+      1000
+    ],
+    "wireBytes": 652563,
+    "wireSHA256": "93cc7429aceb90f329714411d66a0211d4e6a0cdc5e431a65906df78b30f1e51",
+    "roundtripExact": true,
+    "reserializeExact": true,
+    "offlineAuthority": false,
+    "frozenNumericArrays": true,
+    "signedZeroAndFiniteExtremes": true,
+    "fullWireBatchAndNestedLegacyNegativeZero": true,
+    "getterReads": 0,
+    "work": [
+      504903,
+      254039
+    ],
+    "legacy": {
+      "editableVersion": 4,
+      "graphicVersion": 1,
+      "editableSHA256": "c3365ec5aa9a66366efb31998d4e444f64d3d4a491987469911d6c96b0593f9a",
+      "graphicSHA256": "31607a34a4072e9b7d2912f86848255320e77cbf2573e5d095d6c2ed0b66c891",
+      "bytesUnchanged": true
+    },
+    "failures": [
+      {
+        "name": "outer hash mismatch",
+        "error": "TypeError",
+        "message": "Animation envelope payload digest does not match.",
+        "zeroNumericAllocation": true
+      },
+      {
+        "name": "unknown envelope field",
+        "error": "TypeError",
+        "message": "Unsupported animation envelope schema or fields.",
+        "zeroNumericAllocation": true
+      },
+      {
+        "name": "unknown plan version",
+        "error": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\n7 !== 6\n",
+        "zeroNumericAllocation": true
+      },
+      {
+        "name": "unknown kernel",
+        "error": "AssertionError",
+        "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    appearance: 'premultiplied-linear-srgb@1',\n+   batchFrame: 2,\n-   batchFrame: 1,\n    columns: 'animation-col",
+        "zeroNumericAllocation": true
+      },
+      {
+        "name": "unknown plan field",
+        "error": "AssertionError",
+        "message": "Format6 review fields\n+ actual - expected\n\n  [\n    'durationMs',\n    'easing',\n+   'extra',\n    'from',\n    'kernels',\n    'kind',\n    'limits',\n    'to',\n",
+        "zeroNumericAllocation": true
+      },
+      {
+        "name": "endpoint logical limit",
+        "error": "AssertionError",
+        "message": "The expression evaluated to a falsy value:\n\n  assert.ok(rows<=wire.limits.maxEndpointNodes)\n",
+        "zeroNumericAllocation": true
+      },
+      {
+        "name": "output logical limit",
+        "error": "AssertionError",
+        "message": "The expression evaluated to a falsy value:\n\n  assert.ok(count<=wire.limits.maxOutputNodes)\n",
+        "zeroNumericAllocation": true
+      },
+      {
+        "name": "unknown limit",
+        "error": "TypeError",
+        "message": "Unknown animation resource limit.",
+        "zeroNumericAllocation": true
+      },
+      {
+        "name": "invalid limit maximum",
+        "error": "RangeError",
+        "message": "Invalid animation maxOutputNodes.",
+        "zeroNumericAllocation": true
+      },
+      {
+        "name": "unknown batch property",
+        "error": "AssertionError",
+        "message": "Format6 review fields\n+ actual - expected\n\n  [\n    'appearance',\n+   'bad',\n    'radius',\n    'x',\n    'y'\n  ]\n",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "hole in column",
+        "error": "TypeError",
+        "message": "Format6 review must be dense.",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "mismatched x length",
+        "error": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\n999 !== 1000\n",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "nonfinite coordinate",
+        "error": "TypeError",
+        "message": "circle.x must be a finite number.",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "negative radius",
+        "error": "RangeError",
+        "message": "circle.radius must not be negative.",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "duplicate row key",
+        "error": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\ntrue !== false\n",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "wrong item identity",
+        "error": "AssertionError",
+        "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'forged'\n- '[[],\"points\",\"point\",[\"4aafa4a1-e6ad-482d-a085-a187f099d585\",\"[\\\\\"array\\\\\",[\\\\\"row\\\\\",\\\\\"[\\\\\\\\\\\\\"scalar\\\\\\\\",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "wrong owner identity",
+        "error": "AssertionError",
+        "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'forged'\n- '[[],\"points\"]'\n",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "negative source index",
+        "error": "AssertionError",
+        "message": "The expression evaluated to a falsy value:\n\n  assert.ok(Number.isSafeInteger(e.decisions[k][r])&&e.decisions[k][r]>=0&&e.decisions[k][r]<limits.maxOutputNodes)\n",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "endpoint has interior decisions",
+        "error": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\nfalse !== true\n",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "interior missing decisions",
+        "error": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\ntrue !== false\n",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "wrong semantic numeric value",
+        "error": "TypeError",
+        "message": "Prepared animation point meaning differs from its concrete endpoint.",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "single nested unknown field",
+        "error": "Error",
+        "message": "Unknown rect graphic property \"bad\".",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "stored numeric length mismatch",
+        "error": "RangeError",
+        "message": "Animation numeric vector byte length differs from its declaration.",
+        "zeroNumericAllocation": true
+      },
+      {
+        "name": "stored numeric noncanonical base64",
+        "error": "TypeError",
+        "message": "Animation numeric vector requires canonical base64.",
+        "zeroNumericAllocation": true
+      },
+      {
+        "name": "stored numeric nonfinite bits",
+        "error": "TypeError",
+        "message": "Animation numeric vector contains a nonfinite value.",
+        "zeroNumericAllocation": true
+      },
+      {
+        "name": "stored numeric unknown field",
+        "error": "TypeError",
+        "message": "Animation numeric vector has unknown fields or encoding.",
+        "zeroNumericAllocation": true
+      },
+      {
+        "name": "stored numeric huge declaration",
+        "error": "RangeError",
+        "message": "Animation envelope bytes exceed its limit.",
+        "zeroNumericAllocation": true
+      },
+      {
+        "name": "numeric declaration mismatch",
+        "error": "RangeError",
+        "message": "Animation numeric vector byte length differs from its declaration.",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "numeric extra field",
+        "error": "TypeError",
+        "message": "Animation numeric vector has unknown fields or encoding.",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "numeric unknown tag",
+        "error": "TypeError",
+        "message": "Animation numeric vector has unknown fields or encoding.",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "numeric malformed base64",
+        "error": "TypeError",
+        "message": "Animation numeric vector requires canonical base64.",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "numeric unsafe length",
+        "error": "RangeError",
+        "message": "Animation numeric vector requires a bounded safe length.",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "numeric nonfinite bits",
+        "error": "TypeError",
+        "message": "Animation numeric vector contains a nonfinite value.",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "numeric own getter",
+        "error": "TypeError",
+        "message": "Format6 review requires enumerable own data properties; accessors are not supported.",
+        "zeroNumericAllocation": false
+      },
+      {
+        "name": "logical work original ceiling",
+        "error": "RangeError",
+        "message": "Animation preparation work must not exceed 140000000.",
+        "zeroNumericAllocation": false
+      }
+    ],
+    "limitations": [
+      "Prototype validates point-run transport only; production general-family validators still must integrate",
+      "Legacy compatibility receipt is baseline oracle, not future product qualification",
+      "Logical work preflight streams conceptual rows before dense numeric allocation; expansion only checks the small oracle; product must avoid per-row temporary objects",
+      "No native authority issuance, hit, four renderer, P95 or100cycle qualification"
+    ]
+  },
+  "types": {
+    "command": "node node_modules/typescript/bin/tsc --noEmit --strict --exactOptionalPropertyTypes --module NodeNext --moduleResolution NodeNext --target ES2022 --skipLibCheck false .artifacts/batch-review-draft/public-consumer.ts",
+    "status": "passed",
+    "productionTypesChanged": false
+  },
+  "scope": "Schema-specific float64 projection plus existing columns2/envelope1 and public type proposal only",
+  "original100kRuns": 0,
+  "limitations": [
+    "Prototype validates point-run transport only; production general-family validators still must integrate",
+    "Legacy compatibility receipt is baseline oracle, not future product qualification",
+    "Logical work preflight streams conceptual rows before dense numeric allocation; expansion only checks the small oracle; product must avoid per-row temporary objects",
+    "No native authority issuance, hit, four renderer, P95 or100cycle qualification"
+  ],
+  "evidenceFiles": {
+    "input.mjs": {
+      "sha256": "d6ed825625f27066ad1d05c19ecd8f05ea4ba70d1395aa24a4338b976d327d43",
+      "bytes": 2730
+    },
+    "wire-prototype.mjs": {
+      "sha256": "c99c603f98e8f714c13ecfb4a124fcbbb244643d1e977fc87ed44e77370225c5",
+      "bytes": 13098
+    },
+    "wire-oracle.mjs": {
+      "sha256": "44bd18c517e7721416fbf2f4457dcbeff808fdb06b800490ee3f0e69927beb06",
+      "bytes": 9463
+    },
+    "wire-oracle.json": {
+      "sha256": "299fdfb9acac17577abc7f9c5232a9172b709a3064d0a4e9ff298eb82523e61e",
+      "bytes": 8831
+    },
+    "wire-oracle.log": {
+      "sha256": "8a8a4f163e1b4552164f9caa7c43d8c519378022abf3845b61bd1a1219c0a632",
+      "bytes": 273
+    },
+    "wire-oracle-first-failure.log": {
+      "sha256": "1af4cc9080f775d3fcd336d62adcbe65857a1fe9a1ed7e20dd077f2c9314e930",
+      "bytes": 1370
+    },
+    "public-candidate.d.ts": {
+      "sha256": "bdafa52883ad568201693c14ed01543b9cd69ddb37a82146a02c29dd020f770c",
+      "bytes": 5476
+    },
+    "public-consumer.ts": {
+      "sha256": "a7ebf12dae24384237a9fcc916e5a0ebe0da1a0bc2aee3c3d88d8fc7c1ab33e8",
+      "bytes": 2361
+    },
+    "public-candidate.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "public-candidate-first-failure.log": {
+      "sha256": "e311f0d11a8d1ffe899b6492daad27986076e9096dc42bd01be281a7742d3114",
+      "bytes": 2000
+    },
+    "legacy-editable.json": {
+      "sha256": "282db15a98c7535d9bfa5e8af0abb2dd3ada11abf589daec6056f11a475d099d",
+      "bytes": 14437
+    },
+    "legacy-graphic.json": {
+      "sha256": "2d22cdcefefee54d1f6e339876f731b703b5aa0f2b0e49dd77a205ef422aa62f",
+      "bytes": 1113
+    },
+    "candidate-wire.json": {
+      "sha256": "88ad027681f043aa2ae005397d416ce7b9fdbbf70628a35ce185ab55a8219e12",
+      "bytes": 652564
+    },
+    "record-format6.mjs": {
+      "sha256": "4f15e838b19513de7612040eef755d9f56e2e845c30cb313269e562c88d7fbdd",
+      "bytes": 3007
+    }
+  }
+}
