@@ -45,7 +45,7 @@ export function validateWorkLimit(value, label) {
 export function validateGraphicItemLimit(value, capacity) {
   const point = capacity.pointOwned && getMarkGraphicTypes("point").includes(capacity.graphicType);
   const label = point ? "Point mark item count" : capacity.label;
-  const maximum = point ? validatePointItemCapacity(capacity.maxItems) : MAX_GENERATED_ITEMS;
+  const maximum = point ? validatePointItemCapacity(Object.hasOwn(capacity, "maxItems") ? capacity.maxItems : undefined) : MAX_GENERATED_ITEMS;
   if (point) validateGeneratedItemLimit(capacity.rawCount, label, maximum);
   return validateGeneratedItemLimit(value, label, maximum);
 }

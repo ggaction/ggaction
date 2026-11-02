@@ -1,3 +1,4 @@
+import { validateAnimationResourceWork } from "./resources.js";
 import { prepareAnimationAppearance } from "./appearance.js";
 import { cloneAndFreeze, isOwned } from "../core/immutable.js";
 import { validateWorkLimit } from "../core/validation.js";
@@ -14,7 +15,7 @@ function roles(state) {
   for (const item of state.items) if (item !== null) values[item.group].add(JSON.stringify([item.key, item.role]));
   return values;
 }
-export function partitionTrackPreparation(from, to, a, b) {
+export function partitionTrackPreparation(from, to, a, b, resources) {
   const pairs = [], indices = new Map(), equalities = new WeakMap(), aRoles = roles(a), bRoles = roles(b); let work = 0;
   const track = match => {
     const source = a.items[match.sourceIndex], target = b.items[match.targetIndex];
@@ -27,7 +28,7 @@ export function partitionTrackPreparation(from, to, a, b) {
     if (!clipInterpolationCompatible(first, last)) return fade("clip-topology");
     const key = JSON.stringify([source.group, target.group]); let pair = indices.get(key);
     if (pair === undefined) {
-      for (const group of [a.groups[source.group], b.groups[target.group]]) validateWorkLimit(work += partitionAnimationGroupWork(group) * 4, "Partition animation track work");
+      for (const group of [a.groups[source.group], b.groups[target.group]]) validateAnimationResourceWork(work += partitionAnimationGroupWork(group) * 4, "Partition animation track work",resources);
       const firstRoles = aRoles[source.group], lastRoles = bRoles[target.group], visibility = firstRoles.size !== lastRoles.size || [...firstRoles].some(role => !lastRoles.has(role));
       const plan = preparePartitionAnimationState(a.groups[source.group].meaning, b.groups[target.group].meaning);
       pair = pairs.length; indices.set(key, pair); pairs.push({ sourceGroup: source.group, targetGroup: target.group, plan, ...(visibility ? { reason: "visibility" } : {}) });

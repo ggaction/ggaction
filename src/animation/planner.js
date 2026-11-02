@@ -1,3 +1,5 @@
+import { createTransitionResourceScope, createOfflineResourceScope, animationResourceLimits, validateAnimationResourceWork, validatePreparedEndpointResources, pointAnimationRowLimit } from "./resources.js";
+import { prepareAnimationColumns, restoreAnimationColumns } from "./columnCodec.js";
 import { projectAxisLabelGroups, validateAxisLabelGroups, validateAxisLabelDrawingOrder, emptyAxisLabelGroups } from "../materialization/animation/axisLabelGroups.js";
 import { prepareAxisLabelTracks } from "./axisLabelTracks.js";
 import { projectGeoTextAnimations, validateGeoTextAnimations, emptyAnimationGeoTexts } from "../materialization/animation/geoText.js";
@@ -46,6 +48,7 @@ import { graphicAnimationOwnerKey, guideAnimationOwnerKey } from "../grammar/ani
 
 export const TRANSITION_PLAN_VERSION = 3;
 const plans = new WeakSet();
+const preparedResources = new WeakMap(), preparedColumns = new WeakMap();
 const preparedTimelines = new WeakMap();
 const preparedOwners = new WeakMap();
 const preparedPositions = new WeakMap();
@@ -70,18 +73,18 @@ export function requireTransitionEndpoint(value) {
   else native(value);
   return value;
 }
-function budget(endpoints, restored = false) {
+function budget(endpoints, restored = false, resources) {
   const pending=endpoints.map(value=>({value,depth:0}));let work=0;
-  while(pending.length){const {value,depth}=pending.pop();validateWorkLimit(++work,"Animation preparation work");
+  while(pending.length){const {value,depth}=pending.pop();validateAnimationResourceWork(++work,"Animation preparation work",resources);
     if(depth>128)throw new RangeError("Animation preparation nesting exceeds 128 levels.");
-    if(typeof value==="string")validateWorkLimit(work+=value.length,"Animation preparation work");
+    if(typeof value==="string")validateAnimationResourceWork(work+=value.length,"Animation preparation work",resources);
     else if(value!==null&&typeof value==="object"){
       if(restored){
-        if(Array.isArray(value)){validateWorkLimit(value.length,"Animation preparation work");ownArray(value,"Restored animation array");}
+        if(Array.isArray(value)){validateAnimationResourceWork(value.length,"Animation preparation work",resources);ownArray(value,"Restored animation array");}
         else ownRecord(value,"Restored animation object");
       }
       for(const [key,child] of Object.entries(value)){
-      validateWorkLimit(work+=key.length,"Animation preparation work");pending.push({value:child,depth:depth+1});
+      validateAnimationResourceWork(work+=key.length,"Animation preparation work",resources);pending.push({value:child,depth:depth+1});
     }}
     else if(restored&&!["number","boolean","undefined"].includes(typeof value)&&value!==null)throw new TypeError("Restored animation requires plain data.");
   }
@@ -130,16 +133,17 @@ export function normalizeTransitionOptions(input) {
   budget([timeline],true);
   return cloneAndFreeze({durationMs:options.durationMs,easing,...timeline});
 }
-function assemble(from,to,a,b,options,graphs,cartesian,partitions,polars,geos,guides,geotexts,axislabels) {
-  validateGeneratedItemLimit(from.scene.nodes.length+to.scene.nodes.length,"Animation endpoint nodes");
+function assemble(from,to,a,b,options,graphs,cartesian,partitions,polars,geos,guides,geotexts,axislabels,resources) {
+  validatePreparedEndpointResources(from,guides.from,resources);validatePreparedEndpointResources(to,guides.to,resources);
+  validateGeneratedItemLimit(from.scene.nodes.length+to.scene.nodes.length,"Animation endpoint nodes",animationResourceLimits(resources)?.maxEndpointNodes);
   const matching=matchAnimationEndpoints(from,to);
   const axisPreparation=prepareAxisLabelTracks(axislabels.from,axislabels.to);
   const geoPreparation=prepareGeoTracks(geos.from,geos.to);
   const geoTextPreparation=prepareGeoTextTracks(geotexts.from,geotexts.to);
-  budget([cartesian.from,cartesian.to,polars.from,polars.to,guides.from,guides.to]);
+  budget([cartesian.from,cartesian.to,polars.from,polars.to,guides.from,guides.to],false,resources);
   const guidePreparation=prepareGuideTracks({...from,guides:guides.from,axislabels:axislabels.from},{...to,guides:guides.to,axislabels:axislabels.to});
   const graphPreparation=graphTrackPreparation(from,to,graphs.from,graphs.to);
-  const partitionPreparation=partitionTrackPreparation(from,to,partitions.from,partitions.to);
+  const partitionPreparation=partitionTrackPreparation(from,to,partitions.from,partitions.to,resources);
   let tracks=matching.matches.filter(match=>!geoPreparation.skipFrom.has(match.sourceIndex)&&!geoPreparation.skipTo.has(match.targetIndex)&&!geoTextPreparation.skipFrom.has(match.sourceIndex)&&!geoTextPreparation.skipTo.has(match.targetIndex)).map(match=>geoTextPreparation.fallbackTrack(match)??geoPreparation.fallbackTrack(match)??partitionPreparation.track(match)??graphPreparation.track(match)??preparePolarTrack(match,from,to,polars.from[match.sourceIndex],polars.to[match.targetIndex])??prepareCartesianTrack(match,from,to,cartesian.from[match.sourceIndex],cartesian.to[match.targetIndex])??track(match,from,to,a[match.sourceIndex],b[match.targetIndex]));
   tracks.push(...guidePreparation.tracks.map(axisPreparation.fallbackTrack));
   const owners=Object.fromEntries([['from',from],['to',to]].map(([side,endpoint])=>[side,endpoint.identities.map((identity,index)=>identity!==undefined?graphicAnimationOwnerKey(identity):guides[side][index]===null?undefined:guideAnimationOwnerKey(guides[side][index].identity))]));
@@ -149,19 +153,23 @@ function assemble(from,to,a,b,options,graphs,cartesian,partitions,polars,geos,gu
   const timeline=['tracks','markers','composite'].some(key=>Object.hasOwn(options,key))?prepareAnimationTimeline(options,{from,to,tracks,guides,geos:{...geos,...geoPreparation},geotexts:{...geotexts,...geoTextPreparation},axislabels:{...axislabels,...axisPreparation}}):undefined;
   const plan=cloneAndFreeze({kind:"transition-plan",version:TRANSITION_PLAN_VERSION,durationMs:options.durationMs,easing:options.easing,
     from,to,tracks,frameTracks:frames,enters:matching.enters.filter(index=>!frameTargets.has(index)),exits:matching.exits.filter(index=>!frameSources.has(index))});
-  plans.add(plan);preparedAxisLabels.set(plan,{...axislabels,...axisPreparation});preparedOwners.set(plan,cloneAndFreeze(owners));preparedTimelines.set(plan,timeline);preparedGeoTexts.set(plan,{...geotexts,...geoTextPreparation});preparedGuides.set(plan,{from:cloneAndFreeze(guides.from),to:cloneAndFreeze(guides.to),ambiguousFrom:new Set(guidePreparation.ambiguous.source),ambiguousTo:new Set(guidePreparation.ambiguous.target)});preparedGeos.set(plan,{...geos,...geoPreparation});preparedPolars.set(plan,cloneAndFreeze(polars));preparedCartesian.set(plan,cloneAndFreeze(cartesian));preparedPositions.set(plan,cloneAndFreeze({from:a,to:b}));preparedGraphs.set(plan,cloneAndFreeze({...graphs,pairs:graphPreparation.pairs}));preparedPartitions.set(plan,cloneAndFreeze({...partitions,pairs:partitionPreparation.pairs}));return plan;
+  plans.add(plan);preparedResources.set(plan,resources);preparedAxisLabels.set(plan,{...axislabels,...axisPreparation});preparedOwners.set(plan,cloneAndFreeze(owners));preparedTimelines.set(plan,timeline);preparedGeoTexts.set(plan,{...geotexts,...geoTextPreparation});preparedGuides.set(plan,{from:cloneAndFreeze(guides.from),to:cloneAndFreeze(guides.to),ambiguousFrom:new Set(guidePreparation.ambiguous.source),ambiguousTo:new Set(guidePreparation.ambiguous.target)});preparedGeos.set(plan,{...geos,...geoPreparation});preparedPolars.set(plan,cloneAndFreeze(polars));preparedCartesian.set(plan,cloneAndFreeze(cartesian));preparedPositions.set(plan,cloneAndFreeze({from:a,to:b}));preparedGraphs.set(plan,cloneAndFreeze({...graphs,pairs:graphPreparation.pairs}));preparedPartitions.set(plan,cloneAndFreeze({...partitions,pairs:partitionPreparation.pairs}));return plan;
 }
-export function planTransition(input) {
+export function planTransition(input) {return planTransitionInternal(input);}
+function transitionRequest(input) {
   ownRecord(input,"Transition request");rejectUnknownProperties(input,["from","to","options"],"transition request");
   if (["from","to","options"].some(key=>!Object.hasOwn(input,key))) throw new TypeError("Transition request requires its own endpoints and options.");
+}
+function planTransitionInternal(input,resources) {
+  transitionRequest(input);
   const options=normalizeTransitionOptions(input.options);
-  requireTransitionEndpoint(input.from);requireTransitionEndpoint(input.to);budget([input.from.graphicSpec,input.to.graphicSpec]);
+  requireTransitionEndpoint(input.from);requireTransitionEndpoint(input.to);budget([input.from.graphicSpec,input.to.graphicSpec],false,resources);
   const prepare=value=>{
     const proof=animationFrameProvenance(value);
     if(proof!==undefined)return prepareFrameEndpoint(value,proof);
-    const endpoint=projectAnimationEndpoint(value),geos=projectGeoAnimationPresentations(value,endpoint),geotexts=projectGeoTextAnimations(value,endpoint,geos),axislabels=projectAxisLabelGroups(value,endpoint,geotexts);validateAxisLabelDrawingOrder(axislabels,geos,geotexts);return{endpoint,axislabels,geotexts,guides:projectGuideAnimationState(value,endpoint,axislabels),geos,positions:projectPointAnimationPositions(value,endpoint),graphs:projectGraphAnimationState(value,endpoint),cartesian:projectCartesianAnimationState(value,endpoint),polars:projectPolarAnimationState(value,endpoint),partitions:validateAnimationPartitionState(projectPartitionAnimations(value,endpoint),endpoint)};
+    const endpoint=projectAnimationEndpoint(value),geos=projectGeoAnimationPresentations(value,endpoint),geotexts=projectGeoTextAnimations(value,endpoint,geos),axislabels=projectAxisLabelGroups(value,endpoint,geotexts);validateAxisLabelDrawingOrder(axislabels,geos,geotexts);return{endpoint,axislabels,geotexts,guides:projectGuideAnimationState(value,endpoint,axislabels,animationResourceLimits(resources)?.maxOutputNodes),geos,positions:projectPointAnimationPositions(value,endpoint,resources===undefined?undefined:(program,layer)=>pointAnimationRowLimit(program,layer,resources)),graphs:projectGraphAnimationState(value,endpoint),cartesian:projectCartesianAnimationState(value,endpoint),polars:projectPolarAnimationState(value,endpoint),partitions:validateAnimationPartitionState(projectPartitionAnimations(value,endpoint),endpoint)};
   };
-  const from=prepare(input.from),to=prepare(input.to),plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs??emptyAnimationGraphs(from.endpoint.scene.nodes.length),to:to.graphs??emptyAnimationGraphs(to.endpoint.scene.nodes.length)},{from:from.cartesian??emptyAnimationCartesian(from.endpoint),to:to.cartesian??emptyAnimationCartesian(to.endpoint)},{from:from.partitions??emptyAnimationPartitions(from.endpoint.scene.nodes.length),to:to.partitions??emptyAnimationPartitions(to.endpoint.scene.nodes.length)},{from:from.polars??emptyAnimationPolars(from.endpoint),to:to.polars??emptyAnimationPolars(to.endpoint)},{from:from.geos??emptyAnimationGeos(from.endpoint.scene.nodes.length),to:to.geos??emptyAnimationGeos(to.endpoint.scene.nodes.length)},{from:from.guides??emptyAnimationGuides(from.endpoint),to:to.guides??emptyAnimationGuides(to.endpoint)},{from:from.geotexts??emptyAnimationGeoTexts(from.endpoint.scene.nodes.length),to:to.geotexts??emptyAnimationGeoTexts(to.endpoint.scene.nodes.length)},{from:from.axislabels??emptyAxisLabelGroups(from.endpoint.scene.nodes.length),to:to.axislabels??emptyAxisLabelGroups(to.endpoint.scene.nodes.length)});
+  const from=prepare(input.from),to=prepare(input.to),plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs??emptyAnimationGraphs(from.endpoint.scene.nodes.length),to:to.graphs??emptyAnimationGraphs(to.endpoint.scene.nodes.length)},{from:from.cartesian??emptyAnimationCartesian(from.endpoint),to:to.cartesian??emptyAnimationCartesian(to.endpoint)},{from:from.partitions??emptyAnimationPartitions(from.endpoint.scene.nodes.length),to:to.partitions??emptyAnimationPartitions(to.endpoint.scene.nodes.length)},{from:from.polars??emptyAnimationPolars(from.endpoint),to:to.polars??emptyAnimationPolars(to.endpoint)},{from:from.geos??emptyAnimationGeos(from.endpoint.scene.nodes.length),to:to.geos??emptyAnimationGeos(to.endpoint.scene.nodes.length)},{from:from.guides??emptyAnimationGuides(from.endpoint),to:to.guides??emptyAnimationGuides(to.endpoint)},{from:from.geotexts??emptyAnimationGeoTexts(from.endpoint.scene.nodes.length),to:to.geotexts??emptyAnimationGeoTexts(to.endpoint.scene.nodes.length)},{from:from.axislabels??emptyAxisLabelGroups(from.endpoint.scene.nodes.length),to:to.axislabels??emptyAxisLabelGroups(to.endpoint.scene.nodes.length)},resources);
   exactFrames.set(plan,Object.freeze({from:from.frame,to:to.frame}));registerAnimationPlan(plan,{from:input.from,to:input.to});
   return plan;
 }
@@ -203,7 +211,7 @@ function closed(value, keys, label) {
   ownRecord(value,label);rejectUnknownProperties(value,keys,label);
   if(keys.some(key=>!Object.hasOwn(value,key)||value[key]===undefined))throw new TypeError(`${label} requires every declared field.`);
 }
-function restoreEndpoint(input) {
+function restoreEndpoint(input,resources) {
   let endpoint,frame;
   if(Object.hasOwn(input,"scene")){
     closed(input,["scene","identities","backgrounds","positions","view",...(Object.hasOwn(input,"axislabels")?["axislabels"]:[]),...(Object.hasOwn(input,"guides")?["guides"]:[]),...(Object.hasOwn(input,"geotexts")?["geotexts"]:[]),...(Object.hasOwn(input,"geos")?["geos"]:[]),...(Object.hasOwn(input,"graphs")?["graphs"]:[]),...(Object.hasOwn(input,"cartesian")?["cartesian"]:[]),...(Object.hasOwn(input,"polars")?["polars"]:[]),...(Object.hasOwn(input,"partitions")?["partitions"]:[])],"Restored sampled endpoint");
@@ -221,7 +229,7 @@ function restoreEndpoint(input) {
   if(Object.hasOwn(input,"axislabels")&&!axislabels.groups.length)throw new TypeError("Empty axis label groups must be omitted.");
   const guides=Object.hasOwn(input,"guides")?validateAnimationGuides(input.guides,endpoint,axislabels):emptyAnimationGuides(endpoint);
   if(Object.hasOwn(input,"guides")&&!hasAnimationGuides(guides))throw new TypeError("Empty animation guide states must be omitted.");
-  if(input.view!==undefined)validateSampledEndpointMetadata(endpoint.scene,endpoint.identities,endpoint.backgrounds,input.view,guides,axislabels);
+  if(input.view!==undefined)validateSampledEndpointMetadata(endpoint.scene,endpoint.identities,endpoint.backgrounds,input.view,guides,axislabels,animationResourceLimits(resources)?.maxOutputNodes);
   ownArray(input.positions,"Restored animation positions");
   if(input.positions.length!==endpoint.scene.nodes.length)throw new TypeError("Restored positions must correspond to every endpoint node.");
   for(let index=0;index<input.positions.length;index++){
@@ -251,8 +259,9 @@ function restoreEndpoint(input) {
   }
   return {endpoint,axislabels,guides,geotexts,geos:cloneAndFreeze(geos),positions:cloneAndFreeze(input.positions),graphs:cloneAndFreeze(graphs),cartesian,polars,partitions:cloneAndFreeze(partitions),frame};
 }
-export function restoreTransitionPlan(input) {
-  budget([input],true);
+export function restoreTransitionPlan(input) {return restoreTransitionPlanInternal(input);}
+function restoreTransitionPlanInternal(input,resources) {
+  budget([input],true,resources);
   const timelineKernel=Object.hasOwn(input,"timeline");
   closed(input,["kind","version","kernels","durationMs","easing","from","to",...(timelineKernel?["timeline"]:[])],"Restored transition plan");
   if(input.kind!=="transition-plan"||input.version!==TRANSITION_PLAN_VERSION)throw new TypeError("Unsupported transition plan kind or version.");
@@ -275,8 +284,35 @@ export function restoreTransitionPlan(input) {
   if(input.kernels.transition!==kernels.transition||input.kernels.position!==kernels.position||input.kernels.appearance!==kernels.appearance)throw new TypeError("Unsupported animation kernel version.");
   if(timelineKernel){closed(input.timeline,["version","tracks","markers","composite"],"Restored timeline");if(input.timeline.version!==ANIMATION_TIMELINE_VERSION)throw new TypeError("Unsupported animation timeline version.");}
   const options=normalizeTransitionOptions({durationMs:input.durationMs,easing:input.easing,...(timelineKernel?{tracks:input.timeline.tracks,markers:input.timeline.markers,composite:input.timeline.composite}:{})});
-  const from=restoreEndpoint(input.from),to=restoreEndpoint(input.to);
-  const plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs,to:to.graphs},{from:from.cartesian,to:to.cartesian},{from:from.partitions,to:to.partitions},{from:from.polars,to:to.polars},{from:from.geos,to:to.geos},{from:from.guides,to:to.guides},{from:from.geotexts,to:to.geotexts},{from:from.axislabels,to:to.axislabels});
+  const from=restoreEndpoint(input.from,resources),to=restoreEndpoint(input.to,resources);
+  const plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs,to:to.graphs},{from:from.cartesian,to:to.cartesian},{from:from.partitions,to:to.partitions},{from:from.polars,to:to.polars},{from:from.geos,to:to.geos},{from:from.guides,to:to.guides},{from:from.geotexts,to:to.geotexts},{from:from.axislabels,to:to.axislabels},resources);
   exactFrames.set(plan,Object.freeze({from:from.frame,to:to.frame}));registerAnimationPlan(plan,{});
   return plan;
+}
+
+export function transitionResources(plan) {requireTransitionPlan(plan);return preparedResources.get(plan);}
+// Private qualification path. Public omission continues to prepare version3.
+export function planTransitionWithResources(input,limits) {
+  transitionRequest(input);
+  const resources=createTransitionResourceScope(input.from,input.to,limits);
+  const plan=planTransitionInternal(input,resources);
+  preparedColumns.set(plan,prepareAnimationColumns(exportTransitionPlan(plan),resources));
+  return plan;
+}
+export function exportScopedTransition(plan) {
+  requireTransitionPlan(plan);const resources=preparedResources.get(plan);
+  if(resources===undefined)throw new TypeError("Scoped export requires explicit resource admission.");
+  return cloneAndFreeze({kind:"scoped-transition",version:1,limits:animationResourceLimits(resources),columns:preparedColumns.get(plan).compact});
+}
+export function restoreScopedTransition(input) {
+  closed(input,["kind","version","limits","columns"],"Scoped transition");
+  if(input.kind!=="scoped-transition"||input.version!==1)throw new TypeError("Unsupported scoped transition.");
+  closed(input.limits,["maxEndpointNodes","maxOutputNodes"],"Scoped transition limits");
+  const resources=createOfflineResourceScope(input.limits),raw=restoreAnimationColumns(input.columns,resources);
+  const plan=restoreTransitionPlanInternal(raw,resources);
+  preparedColumns.set(plan,{compact:cloneAndFreeze(input.columns)});return plan;
+}
+
+export function transitionColumnMetrics(plan) {
+  requireTransitionPlan(plan);return preparedColumns.get(plan)?.metrics;
 }

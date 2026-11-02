@@ -12,6 +12,15 @@ identity/meaning만 저장하여 공통 scene compiler가 graphicSpec을 재생�
 endpoint는 기존 frame 객체이며 serializer는 그 진단 view도 보존한다. 이 private 경계는
 일반 player/session 또는 offline hit의 완성을 뜻하지 않는다.
 
+비공개 `animation/columnCodec.js`는 실제 준비값의 shape별 dense column과 정확 scalar runs만
+소유한다. 원 concrete 값·own key 순서·undefined·hole을 무손실 복원하며 의미를 생성하지 않는다.
+`animation/resources.js`의 opaque scope는 native owner 검증과 offline 데이터 검산의 권한을
+구별한다. Planner와 sampler는 기존 기본 경로를 유지하며 이 명시 private scope에서만 준비
+traversal과 node 상계를 선택한다. Sample의 기존 canonical native proof에서 현재 owner만 읽어
+명시 rebase scope를 새로 만들며 별도 frame scope나 과거 plan/frame을 참조하지 않는다.
+정확 quota·closed format 및 아직 공개하지 않은 경계는
+[private codec 기록](impl/roadmap9/qualification/animation-codec-private.md)을 따른다.
+
 축에 의존하는 animation 범례 lane은 같은 scope의 canonical guide 참조만 저장한다.
 `animation/guideTracks.js`는 각 축의 현재 timeline 의미와 실제 node style을 읽고,
 `materialization/animation/legendAxisLaneState.js`가 공통 native clearance/lane owner로

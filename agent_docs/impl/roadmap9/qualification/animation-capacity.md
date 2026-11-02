@@ -6,8 +6,12 @@
 - [x] 반복 scale 저장과 partition 그룹 비교 비용 분리
 - [x] 실제 concrete graphic을 복원하는 lossless column 후보 검산
 - [x] 구체 API·closed schema·restore·batch·rebase·호환안 작성
-- [ ] root의 기존 remainingApproval 범위 정합 검토 및 구체안 채택
+- [x] root의 기존 remainingApproval 범위 정합 검토 및 구체안 채택
 - [ ] 채택 이후 제품 구현·원 fixture 전수·모든 소비자 검증
+
+2026-11-02 채택 후 단계 구현의 현재 private fixed quotas·권한 경계·원100k 제품 receipt는
+[private codec 기록](animation-codec-private.md)에 있다. 아래는 최초 검토안이며 당시10M logical
+제안과 진단 실행을 현재 공개 지원으로 해석하지 않는다. 공개v4/options는 별도 checkpoint다.
 
 기준 `def731fe2`와 partition 동일성 비용만 수정한 `4e399b325`.
 이 자료는 [remainingApproval](../AUTHORIZATION.json#remainingApproval)의 이미 승인된

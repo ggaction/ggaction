@@ -68,7 +68,7 @@ export function prepareFrameEndpoint(frame, proof) {
   return { endpoint: proof.endpoint, axislabels:proof.axislabels, geotexts: proof.geotexts, guides: proof.guides, positions: cloneAndFreeze(positions), geos: proof.geos, graphs: proof.graphs, polars: proof.polars?.map((state,index)=>state??unavailablePolarAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), partitions: proof.partitions, cartesian: proof.cartesian?.map((state,index)=>state??unavailableCartesianAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), frame };
 }
 
-export function validateSampledEndpointMetadata(scene,identities,backgrounds,view,guides=[],axislabels) {
+export function validateSampledEndpointMetadata(scene,identities,backgrounds,view,guides=[],axislabels,maxDecisionIndex=10000) {
   ownRecord(scene,"Sampled scene");rejectUnknownProperties(scene,["version","width","height","nodes"],"sampled scene");
   for(const node of scene.nodes){
     ownRecord(node,"Sampled scene node");rejectUnknownProperties(node,["key","type","topology","properties","offset","clip","clips"],"sampled scene node");
@@ -114,7 +114,7 @@ export function validateSampledEndpointMetadata(scene,identities,backgrounds,vie
     rejectUnknownProperties(decision,fields,"sampled decision");
     if(fields.some(key=>!Object.hasOwn(decision,key))||!["enter","exit","exact","crossfade","semantic-kernel"].includes(decision.kind))throw new TypeError("Unknown or incomplete sampled decision.");
     if(ownerKey!==undefined&&decision.ownerKey!==ownerKey)throw new TypeError("Sampled owner differs from its exact native identity.");
-    for(const key of ["sourceIndex","targetIndex"])if(Object.hasOwn(decision,key)&&(!Number.isSafeInteger(decision[key])||decision[key]<0||decision[key]>=10000))throw new TypeError("Invalid sampled decision index.");
+    for(const key of ["sourceIndex","targetIndex"])if(Object.hasOwn(decision,key)&&(!Number.isSafeInteger(decision[key])||decision[key]<0||decision[key]>=maxDecisionIndex))throw new TypeError("Invalid sampled decision index.");
     if(singular&&Object.hasOwn(decision,"reason")&&(decision.reason!=="guide-ambiguity"||guides[index]==null))throw new TypeError("Only an ambiguous guide may add an unmatched decision reason.");
     if(!singular){
       const identity=identities[index],background=backgrounds.find(value=>value.index===index);

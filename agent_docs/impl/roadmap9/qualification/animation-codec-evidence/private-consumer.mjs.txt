@@ -1,0 +1,53 @@
+import assert from 'node:assert/strict';
+import {readFile,writeFile} from 'node:fs/promises';
+import {join} from 'node:path';
+import {preparePackageConsumer} from '../../scripts/package-consumer.js';
+import {run} from '../../scripts/consumers/runtime.js';
+import {testTypeScriptConsumer} from '../../scripts/consumers/types.js';
+import {testOptionalDependencies} from '../../scripts/consumers/optional-peers.js';
+import {measureMinimalBrowserBundle,BROWSER_BUNDLE_GZIP_LIMITS} from '../../scripts/browser-bundle-size.js';
+const artifact=JSON.parse(await readFile('.artifacts/animation-columns/private-package.json','utf8'));
+const consumer=await preparePackageConsumer({packageSpec:artifact.file});
+const receipt={artifact,node:process.version,directory:consumer.directory,records:[],bundles:{}};
+try {
+ const file=join(consumer.directory,'private-animation.mjs');
+ await writeFile(file,`import assert from 'node:assert/strict';
+ import {chart} from 'ggaction';
+ import {chart as basicChart} from 'ggaction/basic';
+ import {planTransition,sampleTransition,serializeAnimation,deserializeAnimation} from 'ggaction/animation';
+ const source=new URL('./animation/planner.js',import.meta.resolve('ggaction'));
+ const {planTransitionWithResources,exportScopedTransition,restoreScopedTransition,transitionResources}=await import(source);
+ const {animationResourceAccounting}=await import(new URL('./animation/resources.js',import.meta.resolve('ggaction')));
+ const {prepareAnimationColumns,restoreAnimationColumns}=await import(new URL('./animation/columnCodec.js',import.meta.resolve('ggaction')));
+ const {encodeAnimationEnvelope,decodeAnimationEnvelope}=await import(new URL('./animation/envelopeCodec.js',import.meta.resolve('ggaction')));
+ const sparse=new Array(4);sparse[1]=undefined;sparse[3]=null;
+ const literal={rows:[{a:undefined,b:-0},{b:NaN},sparse,null,undefined],tail:[1n,Infinity,-Infinity]};
+ const compact=prepareAnimationColumns(literal).compact;
+ assert.deepEqual(restoreAnimationColumns(decodeAnimationEnvelope(encodeAnimationEnvelope(compact))),literal);
+ const from=chart().createCanvas({width:200,height:160,margin:20,plotBorder:false}).createData({id:'rows',keyField:'id',values:Array.from({length:20},(_,id)=>({id,x:id/20,y:(20-id)/20}))}).createPointMark({id:'points',maxItems:20}).encodeX({field:'x',scale:{id:'x',domain:[0,1],nice:false}}).encodeY({field:'y',scale:{id:'y',domain:[0,1],nice:false}});
+ const to=from.editScale({id:'x',domain:[0,2],nice:false}),options={durationMs:100,easing:'linear'},limits={maxEndpointNodes:200002,maxOutputNodes:100001};
+ const ordinary=planTransition({from,to,options});assert.equal(ordinary.version,3);assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(ordinary)).plan,37),sampleTransition(ordinary,37));
+ const scoped=planTransitionWithResources({from,to,options},limits),offline=restoreScopedTransition(decodeAnimationEnvelope(encodeAnimationEnvelope(exportScopedTransition(scoped))));
+ assert.equal(animationResourceAccounting(transitionResources(offline)).native,false);
+ for(const time of[0,37,100])assert.deepEqual(sampleTransition(scoped,time),sampleTransition(offline,time));
+ const frame=sampleTransition(scoped,37),rebased=planTransitionWithResources({from:frame,to,options},limits);
+ assert.equal(sampleTransition(rebased,0),frame);
+ assert.deepEqual(sampleTransition(restoreScopedTransition(exportScopedTransition(rebased)),50),sampleTransition(rebased,50));
+ const basic=basicChart().createCanvas({width:200,height:160,margin:20,plotBorder:false}).createData({id:'rows',keyField:'id',values:[{id:'a',x:.2,y:.4}]}).createPointMark({id:'points',maxItems:3}).encodeX({field:'x',scale:{id:'x',domain:[0,1],nice:false}}).encodeY({field:'y',scale:{id:'y',domain:[0,1],nice:false}});
+ const basicPlan=planTransitionWithResources({from:basic,to:basic,options},limits);
+ assert.deepEqual(sampleTransition(restoreScopedTransition(exportScopedTransition(basicPlan)),37),sampleTransition(basicPlan,37));
+ const rows=[{key:'root',parent:null,value:0},...Array.from({length:9},(_,key)=>({key,parent:'root',value:1}))];
+ const partition=chart().createCanvas({width:400,height:400,margin:20,plotBorder:false}).createData({id:'rows',keyField:'key',values:rows}).createHierarchyData({id:'hierarchy',key:'key',parent:'parent',value:'value'}).layoutHierarchy({id:'layout',method:'partition'}).createPartitionPlot({id:'partition',labels:false,cells:{strokeWidth:0}});
+ const partitionPlan=planTransitionWithResources({from:partition,to:partition.editCanvas({width:600}),options},limits);
+ const partitionOffline=restoreScopedTransition(decodeAnimationEnvelope(encodeAnimationEnvelope(exportScopedTransition(partitionPlan))));
+ for(const time of[0,37,100])assert.deepEqual(sampleTransition(partitionOffline,time),sampleTransition(partitionPlan,time));
+ await assert.rejects(import('ggaction/animation/planner'),e=>e.code==='ERR_PACKAGE_PATH_NOT_EXPORTED');
+ console.log('packed private codec/native/offline/rebase and unchanged public v3 passed');`);
+ for(const [id,execute] of [
+  ['optional-peers',()=>testOptionalDependencies(consumer)],
+  ['private-native-offline-rebase',()=>run(process.execPath,[file],consumer.directory)],
+  ['types',()=>testTypeScriptConsumer(consumer.directory)]
+ ]){await execute();receipt.records.push({id,status:'passed'});}
+ for(const specifier of Object.keys(BROWSER_BUNDLE_GZIP_LIMITS)){const measured=await measureMinimalBrowserBundle(consumer.directory,{specifier});receipt.bundles[specifier]={gzipBytes:measured.gzipBytes,limit:BROWSER_BUNDLE_GZIP_LIMITS[specifier],status:measured.gzipBytes<=BROWSER_BUNDLE_GZIP_LIMITS[specifier]?'passed':'exceeded'};}
+}finally{await writeFile('.artifacts/animation-columns/private-consumer-'+process.versions.node+'.json',JSON.stringify(receipt,null,2)+'\n');await consumer.cleanup();}
+console.log(JSON.stringify(receipt));assert.ok(Object.values(receipt.bundles).every(entry=>entry.status==='passed'));

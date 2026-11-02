@@ -1,0 +1,158 @@
+{
+  "kind": "Private product resource path, phased plan lifetimes; no instrumentation; not SLO/P95",
+  "node": "v24.22.1",
+  "n": 100000,
+  "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+  "phases": {
+    "prepare": {
+      "ms": 22212.233083,
+      "accounting": {
+        "native": true,
+        "limits": {
+          "maxEndpointNodes": 200002,
+          "maxOutputNodes": 100001
+        },
+        "maximumWork": {
+          "Animation preparation work": 78333686
+        }
+      },
+      "columns": {
+        "logicalValues": 7600057,
+        "descriptorVisits": 7600056,
+        "cellVisits": 7600004,
+        "physicalValues": 604540,
+        "encodedValues": 608452,
+        "bytes": 33703134,
+        "validatedLogicalValues": 7600057
+      },
+      "fullLegacyWork": 97911711
+    },
+    "sample": {
+      "ms": 2620.637416999998
+    },
+    "offline": {
+      "ms": 40691.685458,
+      "bytes": 33703431,
+      "accounting": {
+        "native": false,
+        "limits": {
+          "maxEndpointNodes": 200002,
+          "maxOutputNodes": 100001
+        },
+        "maximumWork": {
+          "Animation preparation work": 97911711
+        }
+      },
+      "columns": {
+        "logicalValues": 7600057,
+        "descriptorVisits": 5600048,
+        "cellVisits": 7600004,
+        "physicalValues": 604540,
+        "encodedValues": 608452,
+        "bytes": 33703134
+      }
+    },
+    "rebase": {
+      "ms": 27233.053499999995,
+      "accounting": {
+        "native": true,
+        "limits": {
+          "maxEndpointNodes": 200002,
+          "maxOutputNodes": 100001
+        },
+        "maximumWork": {
+          "Animation preparation work": 46333687
+        }
+      },
+      "columns": {
+        "logicalValues": 10100086,
+        "descriptorVisits": 11500070,
+        "cellVisits": 11500023,
+        "physicalValues": 804915,
+        "encodedValues": 809470,
+        "bytes": 41204291,
+        "validatedLogicalValues": 10100086
+      },
+      "fullLegacyWork": 133456501
+    },
+    "rebaseOffline": {
+      "ms": 43159.26504099999,
+      "bytes": 41204588,
+      "accounting": {
+        "native": false,
+        "limits": {
+          "maxEndpointNodes": 200002,
+          "maxOutputNodes": 100001
+        },
+        "maximumWork": {
+          "Animation preparation work": 133456501
+        }
+      },
+      "columns": {
+        "logicalValues": 10100086,
+        "descriptorVisits": 8500059,
+        "cellVisits": 11500023,
+        "physicalValues": 804915,
+        "encodedValues": 809470,
+        "bytes": 41204291
+      }
+    }
+  },
+  "lifetime": [
+    {
+      "stage": "native-plan-released",
+      "memory": {
+        "rss": 1844051968,
+        "heapTotal": 1065533440,
+        "heapUsed": 717704088,
+        "external": 69800917,
+        "arrayBuffers": 148239
+      }
+    },
+    {
+      "stage": "native-offline-plan-released",
+      "memory": {
+        "rss": 2244149248,
+        "heapTotal": 1030930432,
+        "heapUsed": 726366616,
+        "external": 77832437,
+        "arrayBuffers": 148239
+      }
+    },
+    {
+      "stage": "rebase-plan-and-source-frame-released",
+      "memory": {
+        "rss": 2796290048,
+        "heapTotal": 1036845056,
+        "heapUsed": 733735056,
+        "external": 84833433,
+        "arrayBuffers": 148239
+      }
+    },
+    {
+      "stage": "all-native-offline-rebase-exact",
+      "memory": {
+        "rss": 2039726080,
+        "heapTotal": 1047330816,
+        "heapUsed": 733910216,
+        "external": 96833461,
+        "arrayBuffers": 148239
+      }
+    }
+  ],
+  "allCoordinatesVerified": 100000,
+  "batch50Rejected": true,
+  "stage": "all-native-offline-rebase-exact",
+  "allRebaseCoordinatesVerified": 100000,
+  "sourceSHA256": {
+    "src/animation/columnCodec.js": "53b821b73ec56ec74cdcafd37de24aa13e29cf754e6421aa252dd50e892bc345",
+    "src/animation/resources.js": "b11b2cb82be425076f722791c4df12c588e25b5ee01231374f82ab8f44f38aea",
+    "src/animation/planner.js": "3f4663c4a25492cf2111c7752d9a0ee494b2db9fbb3e54d382cf628d24e01050",
+    "src/animation/envelopeCodec.js": "0f4c5cf76b7e440cd847cd701d8d797463254398143934168b51f338ab68e7a9",
+    "src/animation/sample.js": "7be3f2ad64b1de769030ce6b219ea7acf9115db864c81e5189522456dd2125da",
+    "src/animation/frameEndpoint.js": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+    "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+    "src/materialization/animation/point.js": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+    "src/materialization/animation/guides.js": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2"
+  }
+}
