@@ -6,7 +6,7 @@
 - [x] JSON count와 bounded writer의 Unicode owner 공유
 - [x] Value encoding의 scalar/container/hole 정본을 공유하는 private strict cursor
 - [x] UTF16·bytes/hash·동기 getter/error compatibility·소유권·취소·3Node 동일 package 검증
-- [ ] 검증된 source/evidence commit·push
+- [x] 검증된 source/evidence commit·push
 
 Root는 [연결 경계 검토](route-cursor-callsite-review.md)를 읽고
 [기존 전체 승인](../AUTHORIZATION.json#L32)으로 다음 범위를 채택했다.
@@ -65,3 +65,7 @@ publication0/terminal1/clear를 확인한 것이며 latency 목표나 전체 nat
 unpacked8160300을 적용했다. Full788848/Basic426217 gzip에는 최소100B 상한788900/426300을 적용한다.
 최초 entry/packed 및 bundle 실패 receipt를 보존했다. 새 writer/cursor는 public API/declarations/current
 contracts를 바꾸지 않으므로 새 공개 문법이나 미구현 v2를 문서화하지 않는다.
+
+Source revision은 `3f7b4781306ea24ddbb98b32b1c9306f7c8a70e1`이다. 이후 provenance/machine/LLM
+metadata만 pin하고 documentation-truth+package-boundaries9/9를 통과했다. 다시 만든 archive SHA는
+`3616d6aafc6eadf146dfe39eb50bb3ea9de7b621d3d207ff587305526409048f`로 동일하다.

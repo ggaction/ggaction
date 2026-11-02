@@ -347,6 +347,42 @@
     "record-contracts.log": {
       "sha256": "7474c41d21b4204d8803b9b8b952588f1f83ccb7d59a583f7a7320f48f9942ad",
       "bytes": 758
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "af60051b7207d2c5c5ffb6fb7bba37bbcb75f330badce3eb79506da65695e84a",
+      "bytes": 1809
+    },
+    "source-pin-pack.json": {
+      "sha256": "c9cbee32ed0db7d63f26405faa42b87dd1136863f3e3dc082ca9076bf8bfe829",
+      "bytes": 384
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
+  },
+  "sourceRevision": "3f7b4781306ea24ddbb98b32b1c9306f7c8a70e1",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
   }
 }
