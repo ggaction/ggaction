@@ -6,7 +6,7 @@
 - [x] owning29개·critical12개·경계20개·package7개·문서243개 통과
 - [x] 실제 Canvas/SVG DPR1/2 브라우저 회귀2개와 같은 archive의3Node 소비자
 - [x] 각 Node runtime6개·strict types·optional peers·bundle6개, 문서186페이지/LLM1606개 통과
-- [ ] 소스 pin 및 같은 archive 재확인
+- [x] 소스 pin 및 같은 archive 재확인
 - [ ] 원100k 공통 sample·Canvas 재생과 최종 native 성능 자격
 
 [qualification.json](qualification.json)이 정확한 실행 범위·처음 시도·보완·미완료 의무를 소유한다.
@@ -27,6 +27,9 @@ Canonical archive `890f14dd0dfb1a0f14f9860ecf0ff56984891285c6e3201ca7577847ef0b9
 Node20/22/24에 그대로 설치했다. 실측1251entries/Node22packed1,791,901/
 Node20·24packed1,795,691/unpacked8,087,851bytes이며 최소 unpacked cap8,087,900만 조정했다.
 기존 browser bundle 한도를 모두 유지한다.
+
+소스 `53f30545b42d470478f787774ad02c57063b10ab` pin 이후 문서 계약9개와 동일 archive
+재확인이 통과했다. 메타데이터 기록을 추가 runtime 또는 전체 suite 실행으로 세지 않는다.
 
 `same-plan.mjs.gz`는 실제 source를 쓰지 않고 두 sampler만 동일 private plan registry에 연결한다.
 `profile.mjs.gz`와 CPU 원자료는 비용 귀속을 재현하며, `installed.mjs`는 source-free 설치 소비자를
