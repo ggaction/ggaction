@@ -45,8 +45,9 @@ export function inspectAnimationEnvelopeValue(input, encoded, estimateEncoding =
   const pending = [{value: input, depth: 0}], ancestors = new WeakSet();
   let values = 0, bytes = 0, estimatedEncodedValues = 0, estimatedEncodedBytes = 0;
   while (pending.length) {
-    const {value, depth, leave} = pending.pop();
-    if (leave) { ancestors.delete(value); continue; }
+    const entry = pending.pop(), value = entry.value;
+    if (Object.hasOwn(entry, "leave")) { ancestors.delete(value); continue; }
+    const depth = entry.depth;
     if (++values > ANIMATION_ENVELOPE_LIMITS.values) failLimit("values", values);
     // One plain value gains at most four structural levels in tagged encoding.
     if (depth > (encoded ? ANIMATION_ENVELOPE_LIMITS.depth * 4 + 8 : ANIMATION_ENVELOPE_LIMITS.depth)) {

@@ -1,5 +1,8 @@
 # Animation private lossless codec 및 scoped 자원 검증
 
+이 문서는 아래 private source checkpoint 당시의 검증 기록이다. 이후 공개 options/version4의
+현재 연결과 별도 최종 receipt는 [공개 연결 기록](animation-v4.md)과 Current 계약을 따른다.
+
 ## 상태와 승인 근거
 
 - 2026-11-02 root가 [remainingApproval](../AUTHORIZATION.json)의 기존 전체 승인 범위로

@@ -1714,12 +1714,16 @@ export interface TransitionOptions {
   readonly tracks?: readonly AnimationTrack[];
   readonly markers?: readonly AnimationMarker[];
   readonly composite?: 'reject' | 'priority';
+  /** Explicit endpoint sum; safe integer 1..200002. Omission keeps 10000. */
+  readonly maxEndpointNodes?: number;
+  /** Explicit endpoint/sample count; safe integer 1..100001. Omission keeps 10000. */
+  readonly maxOutputNodes?: number;
 }
 /** Created only by planTransition or deserializeAnimation. */
 export interface TransitionPlan {
   readonly [transitionPlan]: true;
   readonly kind: 'transition-plan';
-  readonly version: 3;
+  readonly version: 3 | 4;
   readonly durationMs: number;
   readonly easing: AnimationEasing;
 }
@@ -1774,11 +1778,18 @@ export interface RestoredAnimation {
 export type AnimationFrameOptions =
   | { readonly timesMs: readonly number[]; readonly fps?: never }
   | { readonly fps: number; readonly timesMs?: never };
-export declare function planTransition(input: {
+type TransitionRequest<Options extends TransitionOptions = TransitionOptions> = {
   readonly from: AnimationProgram | TransitionFrame;
   readonly to: AnimationProgram | TransitionFrame;
-  readonly options: TransitionOptions;
-}): TransitionPlan;
+  readonly options: Options;
+};
+export declare function planTransition(input: TransitionRequest<TransitionOptions & {
+  readonly maxEndpointNodes?: never; readonly maxOutputNodes?: never;
+}>): TransitionPlan & { readonly version: 3 };
+export declare function planTransition(input: TransitionRequest<TransitionOptions & (
+  { readonly maxEndpointNodes: number } | { readonly maxOutputNodes: number }
+)>): TransitionPlan & { readonly version: 4 };
+export declare function planTransition(input: TransitionRequest): TransitionPlan;
 export declare function sampleTransition(plan: TransitionPlan, timeMs: number): TransitionFrame;
 export declare function serializeAnimation(plan: TransitionPlan, playback?: PlaybackOptions): string;
 export declare function deserializeAnimation(text: string): RestoredAnimation;

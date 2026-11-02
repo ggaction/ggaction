@@ -722,6 +722,16 @@
     "rendering": "authoring-only"
   },
   {
+    "id": "animation-capacity",
+    "file": "api/animation.md",
+    "contains": "const largerPlan =",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "from,to",
+    "prerequisites": "Run with ggaction installed; both endpoints and explicit rebase limits are included.",
+    "rendering": "authoring-only"
+  },
+  {
     "id": "animation-guides",
     "file": "api/animation.md",
     "contains": ".createVerticalGrid({ values: [5] })",

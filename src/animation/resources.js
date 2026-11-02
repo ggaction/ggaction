@@ -9,7 +9,7 @@ import { animationFrameProvenance } from "./frameProvenance.js";
 export const SCOPED_ANIMATION_LIMITS = Object.freeze({expandedValues:12_000_000,descriptors:16_000_000,cells:16_000_000,preparedTraversalWork:140_000_000});
 const scopes = new WeakMap();
 const ordinary = Object.freeze({expandedValues:10_000_000,descriptors:10_000_000,cells:10_000_000,preparedTraversalWork:10_000_000});
-function limits(value) {
+export function normalizeAnimationResourceLimits(value) {
   ownRecord(value,"Animation resource limits");
   if(Object.keys(value).some(key=>!["maxEndpointNodes","maxOutputNodes"].includes(key)))throw new TypeError("Unknown animation resource limit.");
   const result={maxEndpointNodes:10_000,maxOutputNodes:10_000};
@@ -46,14 +46,14 @@ export function createTransitionResourceScope(from,to,inputLimits) {
       for(const program of sources)programOwners(program,programs);
     }
   }
-  return issue({limits:limits(inputLimits),programs,native});
+  return issue({limits:normalizeAnimationResourceLimits(inputLimits),programs,native});
 }
 export function createOfflineResourceScope(inputLimits) {
   // Only data quotas are granted. The strict endpoint/meaning owner must still
   // validate every restored value; this token never reconstructs native origins.
   ownRecord(inputLimits,"Animation resource limits");
   if(!Object.hasOwn(inputLimits,"maxEndpointNodes")&&!Object.hasOwn(inputLimits,"maxOutputNodes"))throw new TypeError("Scoped animation requires explicit node limits.");
-  return issue({limits:limits(inputLimits),programs:new Set(),native:false});
+  return issue({limits:normalizeAnimationResourceLimits(inputLimits),programs:new Set(),native:false});
 }
 function requireScope(scope) {
   const value=scopes.get(scope);if(value===undefined)throw new TypeError("Animation resources require an authentic private scope.");return value;

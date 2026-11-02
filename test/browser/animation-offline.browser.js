@@ -22,17 +22,17 @@ test('offline animation frames share embedded assets in browser Canvas and SVG a
     await writeFile(path.join(directory,'frame.js'),bundle.outputFiles[0].contents);
     await writeFile(path.join(directory,'index.html'),'<!doctype html><html lang="en"><title>Offline animation</title><link rel="icon" href="data:,"><p id="status">Ready</p><canvas aria-label="Offline point transition with embedded assets"></canvas></html>');
     server=await startStaticServer(directory);browser=await chromium.launch({headless:true});
-    for(const ratio of [1,2]){
+    for(const [ratio,explicit] of [[1,false],[2,false],[1,true],[2,true]]){
       const context=await browser.newContext({deviceScaleFactor:ratio});
       try{
         const opened=await openBrowserPage(context,server.baseUrl,{waitFor:()=>document.querySelector('#status').textContent==='Ready'});
         await opened.page.evaluate(async()=>{globalThis.animation=await import('/frame.js');});
         await context.setOffline(true);
-        const result=await opened.page.evaluate(async({font,ratio})=>{
+        const result=await opened.page.evaluate(async({font,ratio,explicit})=>{
           const {animationAssetEndpoints,planTransition,serializeAnimation,deserializeAnimation,exportAnimationFrames,render,prepareImageRendering,prepareFontRendering,renderToSVG}=globalThis.animation;
           let networkCalls=0;globalThis.fetch=()=>{networkCalls++;throw Error('offline');};
           const {from,to}=animationAssetEndpoints(font,bytes=>btoa(String.fromCharCode(...bytes)));
-          const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}});
+          const plan=planTransition({from,to,options:{durationMs:100,easing:'linear',...(explicit?{maxEndpointNodes:200002,maxOutputNodes:100001}:{})}});
           const restored=deserializeAnimation(serializeAnimation(plan));
           const frames=exportAnimationFrames(restored.plan,{timesMs:[0,50,100]}),records=[];
           for(const frame of frames){
@@ -54,9 +54,9 @@ test('offline animation frames share embedded assets in browser Canvas and SVG a
               records.push({timeMs:frame.timeMs,canvas:pixels(canvas),svg:pixels(svg),size:[canvas.width,canvas.height]});
             }finally{fonts.dispose();}
           }
-          document.querySelector('#status').textContent='Complete';return {records,networkCalls};
-        },{font,ratio});
-        assert.equal(result.networkCalls,0);
+          document.querySelector('#status').textContent='Complete';return {records,networkCalls,version:restored.plan.version};
+        },{font,ratio,explicit});
+        assert.equal(result.networkCalls,0);assert.equal(result.version,explicit?4:3);
         for(const record of result.records){assert.deepEqual(record.size,[300*ratio,200*ratio]);
           record.canvas.forEach((pixel,i)=>pixel.forEach((value,c)=>assert.ok(Math.abs(value-record.svg[i][c])<=1,JSON.stringify(record))));}
         assert.deepEqual(result.records[0].canvas.slice(0,4),[[255,0,0,255],[0,0,255,255],[0,128,0,255],[255,255,255,255]]);

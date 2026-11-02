@@ -176,3 +176,17 @@ test('independent intern work and envelope allocation enforce their exact fixed 
  const over=[{x:'a'.repeat(length+1)},{x:'other'}];assert.throws(()=>prepareAnimationColumns(over),error=>getErrorDetails(error)?.limit===10000000);
  const scoped=prepareAnimationColumns(over,createOfflineResourceScope({maxOutputNodes:100001}));assert.equal(scoped.metrics.interningWork,10000001);assert.deepEqual(restoreAnimationColumns(scoped.compact),over);
 });
+
+test('envelope walks read only their own stack tags and preserve every resource guard',async()=>{
+ const {inspectAnimationEnvelopeValue}=await import('../../../src/animation/envelopeCodec.js');
+ let reads=0;const names=['leave','depth'],prior=names.map(key=>Object.getOwnPropertyDescriptor(Object.prototype,key));
+ const over=Array(1000001).fill(null),cycle={};cycle.self=cycle;let deep=0;for(let i=0;i<129;i++)deep={deep};
+ try{
+  for(const key of names)Object.defineProperty(Object.prototype,key,{configurable:true,get(){reads++;return true;}});
+  assert.equal(inspectAnimationEnvelopeValue({x:[1,2]},false,true).physicalValues,4);
+  assert.throws(()=>inspectAnimationEnvelopeValue(over,false),/values/);
+  assert.throws(()=>inspectAnimationEnvelopeValue(cycle,false),/cycles/);
+  assert.throws(()=>inspectAnimationEnvelopeValue(deep,false),/depth/);
+ }finally{names.forEach((key,i)=>{if(prior[i]===undefined)delete Object.prototype[key];else Object.defineProperty(Object.prototype,key,prior[i]);});}
+ assert.equal(reads,0);
+});

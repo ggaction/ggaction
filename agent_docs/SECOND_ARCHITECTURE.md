@@ -18,8 +18,10 @@ endpoint는 기존 frame 객체이며 serializer는 그 진단 view도 보존한
 구별한다. Planner와 sampler는 기존 기본 경로를 유지하며 이 명시 private scope에서만 준비
 traversal과 node 상계를 선택한다. Sample의 기존 canonical native proof에서 현재 owner만 읽어
 명시 rebase scope를 새로 만들며 별도 frame scope나 과거 plan/frame을 참조하지 않는다.
-정확 quota·closed format 및 아직 공개하지 않은 경계는
-[private codec 기록](impl/roadmap9/qualification/animation-codec-private.md)을 따른다.
+공개 planner는 두 node 옵션을 모두 생략하면 기존v3를 사용하고 명시 요청만v4의 endpoint/timeline
+Node와 공통 vectors로 저장한다. 동일 codec 뒤 strict actual graphic 검산을 재사용하며 native 권한을
+offline에 복원하지 않는다. 정확 공개 quota·wire format은 [Animation 계약](contract/current/ANIMATION.md),
+원100k 검증 checkpoint는 [private codec 기록](impl/roadmap9/qualification/animation-codec-private.md)을 따른다.
 
 축에 의존하는 animation 범례 lane은 같은 scope의 canonical guide 참조만 저장한다.
 `animation/guideTracks.js`는 각 축의 현재 timeline 의미와 실제 node style을 읽고,

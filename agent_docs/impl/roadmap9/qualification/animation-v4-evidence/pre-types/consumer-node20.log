@@ -1,0 +1,27 @@
+node:internal/errors:984
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node /Users/hyeonjeon/.codex/worktrees/roadmap9-animation-codec/ggactionnewbrand/node_modules/typescript/bin/tsc --noEmit --strict --exactOptionalPropertyTypes --target ES2022 --module NodeNext --moduleResolution NodeNext /var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-jz7drd/animation.mts
+    at genericNodeError (node:internal/errors:984:15)
+    at wrappedFn (node:internal/errors:538:14)
+    at checkExecSyncError (node:child_process:891:11)
+    at execFileSync (node:child_process:927:15)
+    at run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-animation-codec/ggactionnewbrand/scripts/consumers/runtime.js:19:3)
+    at testTypeScriptConsumer (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-animation-codec/ggactionnewbrand/scripts/consumers/types.js:8:3)
+    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-animation-codec/ggactionnewbrand/.artifacts/animation-v4/consumer.mjs:19:5 {
+  status: 1,
+  signal: null,
+  output: [
+    null,
+    "../../../../../../../var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-jz7drd/animation.mts(74,7): error TS2322: Type '3 | 4' is not assignable to type '3'.\n" +
+      "  Type '4' is not assignable to type '3'.\n",
+    ''
+  ],
+  pid: 67233,
+  stdout: "../../../../../../../var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-jz7drd/animation.mts(74,7): error TS2322: Type '3 | 4' is not assignable to type '3'.\n" +
+    "  Type '4' is not assignable to type '3'.\n",
+  stderr: ''
+}
+
+Node.js v20.20.2

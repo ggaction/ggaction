@@ -78,6 +78,20 @@
   {
     "file": "api/animation.md",
     "block": 7,
+    "heading": "Request larger node limits",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "source: \"rows\""
+    ],
+    "prerequisites": "Run with ggaction installed; both endpoints and explicit rebase limits are included.",
+    "sha256": "ea1f842932005b31359696393db6444df1c99e6d0a079bb1e4eca3155fcfee95",
+    "executable": true
+  },
+  {
+    "file": "api/animation.md",
+    "block": 8,
     "heading": "Render the same frame",
     "mode": "fragment",
     "environment": "esm-context",
@@ -89,7 +103,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 8,
+    "block": 9,
     "heading": "Play with an explicit clock",
     "mode": "fragment",
     "environment": "browser-module",

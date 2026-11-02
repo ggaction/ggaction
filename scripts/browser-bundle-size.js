@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 424_800, // Private lossless animation codec: Node20/24 424,715 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 333_800, // Owned position preparation: Node20/24 333,720 gzip bytes.
+  "ggaction/animation": 339_300, // Explicit version4 codec: Node20/24 339,210 gzip bytes.
   "ggaction/interaction": 136_000
 });
 

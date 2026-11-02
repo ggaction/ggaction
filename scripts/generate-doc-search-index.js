@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 1091300; // Selection handle reference: 1091249 measured bytes.
+export const SEARCH_INDEX_MAX_BYTES = 1092000; // Explicit animation node limits: 1091918 measured bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");
