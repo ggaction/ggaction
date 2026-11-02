@@ -3,16 +3,23 @@
   "baseline": "9cc6e89c3",
   "metadata": "c12f89030",
   "effectiveSource": {
+    "src/grammar/schemas/circleBatch.js": "87d56da0b5a6ba5d62a236bb8c27d93437347e2135c8e3061aa879947e02ba7e",
+    "src/grammar/animation/positions.js": "e2f1c2551dafc9486b6422189c9f622659511eed775f4c9494c2260fa619f2f1",
+    "src/animation/batchSample.js": "b58a902fb777ac08b115aa34e851abf6def0aaa3f29981973a7b82197fe4fce9"
+  },
+  "profileEffectiveSource": {
     "src/grammar/schemas/circleBatch.js": "d567af3e3d5213bd2dab74e7d0c663b7fb579bf269aa9e668b1b47c48145a08d",
     "src/grammar/animation/positions.js": "e2f1c2551dafc9486b6422189c9f622659511eed775f4c9494c2260fa619f2f1",
     "src/animation/batchSample.js": "b58a902fb777ac08b115aa34e851abf6def0aaa3f29981973a7b82197fe4fce9"
   },
+  "profileScope": "Before final null-prototype array-like hardening; final1k/focused/lifetime rerun; final100k not rerun",
   "comparison": {
     "oneKVariants": 9,
     "wholeFramePositionsWireExact": true,
     "negativeCases": 10,
     "getterReads": 0,
     "creator": {
+      "inheritedIteratorCannotChangeLength": true,
       "inheritedSetterCannotInterceptOwnWrites": true,
       "callbackFailureUnpublished": true,
       "primitiveNumericOnly": true,
@@ -444,15 +451,15 @@
     },
     "column-lifetime.log": {
       "bytes": 378,
-      "sha256": "38ec8a6da8f4bc09c7395ec157bf9be29a2d524d1e80b70dd6344f38858beffd"
+      "sha256": "137c691d5e1d0e1b4bfd8bc43d73b8caafe3ada8b872d5d2cc9fc78407b9bf3d"
     },
     "column-lifetime.mjs": {
       "bytes": 762,
       "sha256": "9a78ac50fd7796ed9df7d3b62c5424e2f828690e3399c873e013cafbd6f3d3a8"
     },
     "comparison.json": {
-      "bytes": 317,
-      "sha256": "e9be5367717f42f2b4f404c7bea0ff5f27fcc0aa8e5973e1d6af7f70eabd67a3"
+      "bytes": 366,
+      "sha256": "c9caaeb56979331163402ef056a6d441824d70b5f73b50f4fe116d9d7ce9386d"
     },
     "effective/src/animation/batchSample.js": {
       "bytes": 9295,
@@ -463,12 +470,12 @@
       "sha256": "e2f1c2551dafc9486b6422189c9f622659511eed775f4c9494c2260fa619f2f1"
     },
     "effective/src/grammar/schemas/circleBatch.js": {
-      "bytes": 2818,
-      "sha256": "d567af3e3d5213bd2dab74e7d0c663b7fb579bf269aa9e668b1b47c48145a08d"
+      "bytes": 2835,
+      "sha256": "87d56da0b5a6ba5d62a236bb8c27d93437347e2135c8e3061aa879947e02ba7e"
     },
     "effective-source.json": {
       "bytes": 321,
-      "sha256": "50111281bac6dbb9849458297ea6fcb2825c73a677348514bbdbc996b39da9aa"
+      "sha256": "7bf55689bf9c7ebb0f616df9594ab8012e596ab79c9bfd2b03bb92c52e3c03a7"
     },
     "first-assignment-loader.mjs": {
       "bytes": 3556,
@@ -483,8 +490,8 @@
       "sha256": "3a3bfe590090ec1d4dcc11cb7e099e997f24122e4046d076e69a0b1ace8a1041"
     },
     "focused-complete.log": {
-      "bytes": 9261,
-      "sha256": "e6ddc5d228eae145c91f1caf078d936deb8f587c286014260a249f4ec5931387"
+      "bytes": 9263,
+      "sha256": "941615eba12a9b179144429409786dbbd7d3c8c3ee9772fa59a4f93de2b74657"
     },
     "focused.log": {
       "bytes": 2356,
@@ -496,19 +503,19 @@
     },
     "lifetime.log": {
       "bytes": 605,
-      "sha256": "ca3970a5021d92a50d6dfac22997bba199a0aa8510c4e004cd9556d966573d19"
+      "sha256": "9e34c89ea5dc3309273be8554db0315203a2f1229b8359522707300a4e4b53e0"
     },
     "lifetime.mjs": {
       "bytes": 3025,
       "sha256": "f3ac56bc9d34c728bd7d4070e84613872d908abcbf2ef93730245356a6105496"
     },
     "loader.mjs": {
-      "bytes": 3520,
-      "sha256": "ea9a74e608db505c14ae79640ec8a2a84745b97720891b1f53d776134a3ba3f8"
+      "bytes": 3537,
+      "sha256": "1f4a828e5f4bd9b5d03103f89f558c01972f3c6c680cc25510c0ff43d6f8d1fe"
     },
     "navigation.log": {
-      "bytes": 1494,
-      "sha256": "d2055313835f82c4bebfa6cd7eb5a49817d7e57429e407ab3d31631c7ada0e31"
+      "bytes": 1492,
+      "sha256": "c9f910f0b7a8686f2a8a2ffdb94730b443859faa101eceabe669ce025da1b7c8"
     },
     "one-k-candidate.json": {
       "bytes": 13319,
@@ -516,7 +523,7 @@
     },
     "one-k-candidate.log": {
       "bytes": 12195,
-      "sha256": "78dbc7afec675e888d8b5901977bde2765301cab6c91a08139f41d21e8d58d8f"
+      "sha256": "f2f083d56f5c48da3c5016c59b1e63040f4af0424f6c7642542c5239fecdec50"
     },
     "one-k-control.json": {
       "bytes": 13319,
@@ -531,8 +538,8 @@
       "sha256": "eaecfc5662ec241746c33bcb2c1595c2f871c9aee68146aedd528da970986df4"
     },
     "oracle-candidate.json": {
-      "bytes": 1213,
-      "sha256": "b0c38f01d578a53cfc0b3076547aa7f83b20bc26ec4b859591a9d46c3048f8d9"
+      "bytes": 1262,
+      "sha256": "d743fd984b6069ff714de7c39667bb2ff8f917488b9fb2185628638004cd14a1"
     },
     "oracle-control.json": {
       "bytes": 1003,
@@ -540,11 +547,11 @@
     },
     "oracle-final.log": {
       "bytes": 378,
-      "sha256": "26c2bff33936d20c8c96d91a9cbc70ca57ed43d643ddbd5551ea3efbcf005795"
+      "sha256": "6e6bc6f20b9f2b6ab89b3ef174d2a63c761501358382d01ef09b045a4ef3a836"
     },
     "oracle.mjs": {
-      "bytes": 3096,
-      "sha256": "38d1e23e8d874e01e26f62640a325a9d812a87a793a696e1120a123f149934c0"
+      "bytes": 3661,
+      "sha256": "a4268f3ae871014560715abf9ca05e8dd5b993126bebc9ed7910849b4c3b6126"
     },
     "profile/receipt.json": {
       "bytes": 2574,
@@ -558,6 +565,10 @@
       "bytes": 3709,
       "sha256": "816b4ca177412bd9d350a5286a7c3771b280f00aa1b3a32bc0ad477e5cd7a76e"
     },
+    "profile-effective-source.json": {
+      "bytes": 321,
+      "sha256": "50111281bac6dbb9849458297ea6fcb2825c73a677348514bbdbc996b39da9aa"
+    },
     "profile-run.mjs": {
       "bytes": 4190,
       "sha256": "5397e71a41a0863492c431eb3f1156304e00621eb2d5f9e9ed0d96b9cf597833"
@@ -567,12 +578,12 @@
       "sha256": "1e7b704056edc0a4654c945b64073a3986b5495704db1e252af37e9ce94d3e4c"
     },
     "proposal.patch": {
-      "bytes": 6802,
-      "sha256": "2e6695f0c9e887b25f249e659784d1fb27f9836712f949d0b7745e2ff777c8bf"
+      "bytes": 6819,
+      "sha256": "52e59263e44cf43751fb41d35ee67359d9f99cfcc5c343e166ac0c6538221732"
     },
     "record.mjs": {
-      "bytes": 2366,
-      "sha256": "41df3c87ca15fbe111b2d23bdeace67fad7877817d4868c12f612509d755bcd2"
+      "bytes": 2553,
+      "sha256": "cc019bd37acd8f2bd687f37a8f0612c827f4cbe9f1b0613c24d2ffb9f3790404"
     },
     "summarize.mjs": {
       "bytes": 1536,
