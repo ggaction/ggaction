@@ -623,7 +623,7 @@ Related types: [`PreparedFontResource`](#type-preparedfontresource).
 ```typescript
 export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }
 declare const preparedGraphEdgeRoutesUpdate: unique symbol;
-/** An authentic native layout update, bound to its exact completed Full receiver. */
+/** An authentic native resource update, bound to its exact completed Full receiver. */
 ```
 
 </details>
@@ -13310,7 +13310,7 @@ export interface PreparedGraphEdgeRoutes {
 ```typescript
 export interface PreparedGraphEdgeRoutesUpdate {
   readonly [preparedGraphEdgeRoutesUpdate]: true; readonly kind: "edge-route-preparation";
-  readonly request: { readonly kind: "update"; readonly action: "editLayout"; readonly args: Readonly<Record<string, unknown>> };
+  readonly request: { readonly kind: "update"; readonly action: "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData"; readonly args: Readonly<Record<string, unknown>> };
   readonly inputHashes: readonly string[];
 }
 ```

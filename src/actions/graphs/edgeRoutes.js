@@ -4,7 +4,7 @@ import { createEdgeRouteResource } from "../../materialization/graph/routeResour
 import { normalizeEdgeRouteRequest } from "../../materialization/graph/routeRequest.js";
 import { registerScreenRouteRevision } from "./screenRoutes.js";
 import { readPreparedGraphEdgeRoutes, registerGraphRoutePlanner, enterGraphRouteUpdateInvocation, applyPreparedGraphRouteUpdate, readGraphRouteUpdateTheme } from "../../resources/graphRoutes.js";
-import { resolveNativeRouteUpdate, prepareNativeRouteUpdate } from "./nativeUpdate.js";
+import { snapshotNativeRouteEdit, resolveNativeRouteUpdate, prepareNativeRouteUpdate } from "./nativeUpdate.js";
 import { registerNativeRouteThemeReader } from "../theme/nativeRouteUpdate.js";
 import { findStoredResource } from "../../selectors/resources.js";
 
@@ -34,7 +34,7 @@ export const applyGraphEdgeRoutesUpdate = /* @__PURE__ */ bindActionInvocationSc
   ["prepared", "requestToken"], function (args) { return applyPreparedGraphRouteUpdate(this, args); }
 ), enterGraphRouteUpdateInvocation);
 export function registerEdgeRouteActions(ProgramClass) {
-  registerGraphRoutePlanner(ProgramClass, planEdgeRouteApplication, { resolve: resolveNativeRouteUpdate, prepare: prepareNativeRouteUpdate, apply: applyGraphEdgeRoutesUpdate });
+  registerGraphRoutePlanner(ProgramClass, planEdgeRouteApplication, { snapshot: snapshotNativeRouteEdit, resolve: resolveNativeRouteUpdate, prepare: prepareNativeRouteUpdate, apply: applyGraphEdgeRoutesUpdate });
   Object.assign(ProgramClass.prototype, { bundleGraphEdges, editEdgeRoute, applyGraphEdgeRoutesUpdate });
   registerNativeRouteThemeReader(ProgramClass, readGraphRouteUpdateTheme);
   registerScreenRouteRevision(ProgramClass);

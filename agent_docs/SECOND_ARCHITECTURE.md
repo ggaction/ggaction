@@ -1032,7 +1032,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 795,200 bytes |
+| `ggaction` | 795,800 bytes |
 | `ggaction/basic` | 426,900 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 75,700 bytes |
@@ -5216,7 +5216,8 @@ owner를 그대로 이어간다. Graph의 native prepare/write pair가 원 proje
 ### Prepared native route invocation
 
 Full의 exact constructor planner binding은 native update resolve/prepare/apply owner도 연결한다.
-현재 공개 연결은 graph/hierarchy `editLayout`이며 나머지 승인된 B union은 후속 의무다.
+현재 공개 연결은 `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData`,
+`editInferredGraphData`이며 나머지 승인된 B union은 후속 의무다.
 Host는 deep-owned native args와 원 generator plan을 준비하고 original prepared WeakMap만
 사용한다. `core/action.js`의 private once-only scope binding은 원 동기 wrapper의 enter부터
 native child, completion theme, result validator, exit까지 범위를 유지한다. Prepare await 동안
@@ -5232,3 +5233,11 @@ prepare/resource write 권한이 아니다. 후속 completion siblings는 일반
 work가 그 비용을 모두 측정한다는 뜻이 아니다. 정확한 범위·한계와 source evidence는
 [Current](contract/current/EDGE_ROUTES.md#applygraphedgeroutesupdate)와
 [구현 기록](impl/roadmap9/chart/route-b-native-connection.md)이 소유한다.
+
+
+Native resource 후속 연결은 같은 private Full owner에 strict snapshot을 함께 once-bind한다.
+유일한 opaque 예외인 prepared inference는 원 graphInference WeakMap의 exact-base 검산을
+사용하며 기존 wrapped reader의 actionSource/오류 순서는 보존한다. 새 proof를 등록하거나
+외부 handle clone에 권한을 주지 않는다. Resource construction/plan/apply는 원 graph/flow/
+hierarchy owner를 공유하고 원 dependency DAG의 영향 route 전체에 aggregate policy를 적용한다.
+구체 경계와 검증 상태는 [resource 연결 기록](impl/roadmap9/chart/route-native-resource-connection.md)이 소유한다.

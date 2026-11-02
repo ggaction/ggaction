@@ -39,6 +39,18 @@ export async function prepareInferredGraphData(program, input, options) {
 export function readPreparedInferredGraph(program, handle, requestToken, kind) {
   const result = prepared.get(handle);
   if (result === undefined) throw new TypeError("Expected an authentic prepared inferred graph.");
-  if (result.base !== actionSource(program) || result.requestToken !== requestToken || result.kind !== kind) throw annotateError(new Error("Prepared inferred graph belongs to a different receiver, token or action."), { code: "stale-result" });
+  return readPreparedAtBase(result, actionSource(program), requestToken, kind);
+}
+
+// Native route preparation already owns an exact immutable receiver. This is
+// the same inference registry check, without fabricating an action invocation.
+export function readPreparedInferredGraphAtBase(program, handle, requestToken, kind) {
+  const result = prepared.get(handle);
+  if (result === undefined) throw new TypeError("Expected an authentic prepared inferred graph.");
+  return readPreparedAtBase(result, program, requestToken, kind);
+}
+
+function readPreparedAtBase(result, program, requestToken, kind) {
+  if (result.base !== program || result.requestToken !== requestToken || result.kind !== kind) throw annotateError(new Error("Prepared inferred graph belongs to a different receiver, token or action."), { code: "stale-result" });
   active(result.signal); return result.resource;
 }

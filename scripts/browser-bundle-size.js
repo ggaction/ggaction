@@ -5,7 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 795_200, // Native prepared layout invocation; qualification records exact archive bytes.
+  ggaction: 795_800, // Native prepared layout invocation; qualification records exact archive bytes.
   "ggaction/basic": 426_900, // Private theme inspection retains the Basic boundary.
   "ggaction/svg": 26_000,
   "ggaction/graph": 75_700, // Exact Full native update binding; no assembly import.

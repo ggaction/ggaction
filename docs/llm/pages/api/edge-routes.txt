@@ -194,7 +194,7 @@ Version 1 retains its original synchronous fallback, cache, limits and protocol.
 Create or edit a version 2 route through `prepareGraphEdgeRoutes`, then use the
 ordinary authentic prepared application. A same-method edit retains the stored
 execution policy; a method change requires an explicit replacement policy. Raw
-synchronous route creation or recomputation rejects version 2 intent. Native layout revisions use the explicit prepared update below. Source, viewport,
+synchronous route creation or recomputation rejects version 2 intent. Native layout and graph/hierarchy resource revisions use the explicit prepared update below. Source dataset, viewport,
 fit and other native update actions remain outside the current public update union.
 Stored version 2 vectors still restore offline and render through every existing
 backend. Consumer materialization remains an explicit wrapped action after prepare.
@@ -205,10 +205,12 @@ backend. Consumer materialization remains an explicit wrapped action after prepa
 applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;
 ```
 
-Prepare an `editLayout` on the exact completed Full unit program that owns at least
-one affected version 2 route. Both graph and hierarchy layout edits use their
-original native validators, primitives, route consumers and theme completion.
-Other update actions are not yet part of this public union. Scoped, composition
+Prepare one of `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData` or
+`editInferredGraphData` on the exact completed Full unit program that owns at least
+one affected version 2 route. Each uses its original native arguments, validators,
+primitives, dependent resources, route consumers and theme completion. Candidate
+graph chains are included before their layouts and routes. Other update actions
+are not yet part of this public union. Scoped, composition
 and facet receivers remain pending. If native completion requires additional
 viewport route computation beyond the prepared layout plan, preparation rejects
 that path; it does not silently run a synchronous fallback.
@@ -225,7 +227,11 @@ program = program.applyGraphEdgeRoutesUpdate({
 });
 ```
 
-Preparation snapshots arguments before its first await and checks the complete
+Preparation snapshots arguments before its first await. An authentic
+`editInferredGraphData({prepared, requestToken})` retains its original frozen inference
+handle identity; the inference owner checks the exact receiver, token, edit kind
+and original signal again during application. A copied handle is rejected.
+Preparation checks the complete
 request against every affected version 2 policy. It includes native preparation,
 worker results, consumer validation and wrapped preflight completion. Applying
 starts from that accounting snapshot and checks the additional native apply costs.

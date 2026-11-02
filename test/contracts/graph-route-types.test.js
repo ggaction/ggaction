@@ -40,6 +40,12 @@ declare const storedV2: EdgeRouteResourceV2;
 const resourceVersion: "2" = storedV2.algorithmVersion;
 const updated = await prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editLayout",args:{target:"layout",node:{key:1,x:20,y:5}}}},{requestToken:"update",executor,deadlineMs:30000});
 program.applyGraphEdgeRoutesUpdate({prepared:updated,requestToken:"update"});
+prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editGraphData",args:{target:"g",definition:{directed:false}}}},{requestToken:"u",executor,deadlineMs:30000});
+prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editFlowData",args:{definition:{balance:"allow"}}}},{requestToken:"u",executor,deadlineMs:30000});
+prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editHierarchyData",args:{valueMode:"leaf-sum"}}},{requestToken:"u",executor,deadlineMs:30000});
+prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editInferredGraphData",args:{definition:{options:{k:2}}}}},{requestToken:"u",executor,deadlineMs:30000});
+// @ts-expect-error native action arguments remain matched to their action
+prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editHierarchyData",args:{node:{key:0,x:1,y:2}}}},{requestToken:"u",executor,deadlineMs:30000});
 // @ts-expect-error native update handles cannot create an edge route
 program.bundleGraphEdges({prepared:updated,requestToken:"update"});
 // @ts-expect-error authoring handles cannot apply a native update

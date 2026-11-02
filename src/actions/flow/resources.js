@@ -1,3 +1,4 @@
+import { readNativeGraphRouteUpdatePlan } from "../../resources/graphRoutes.js";
 import { closedAction } from "../../core/action.js";
 import { annotateError } from "../../core/diagnostics.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -7,7 +8,7 @@ import { resolveGraphResource } from "../../selectors/graphs.js";
 import { findStoredResource, resolveInputReference } from "../../selectors/resources.js";
 import { createFlowResource, FLOW_SOURCE_FIELDS, flowSourceDefinition } from "../../materialization/flow/resources.js";
 import { createFlowLayoutResource } from "../../materialization/flow/layoutResource.js";
-import { writeGraphResource } from "../graphs/layouts.js";
+import { writeGraphResource, writePreparedGraphResource } from "../graphs/layouts.js";
 
 export const createFlowData = /* @__PURE__ */ closedAction(
   { op: "createFlowData", description: "Create a directed flow graph with explicit values and conservation policy." },
@@ -20,16 +21,25 @@ export const createFlowData = /* @__PURE__ */ closedAction(
     return this.editSemantic({ property: `resource[graph:${id}]`, value: resource });
   });
 
+export function editedFlowResource(program, args, previous) {
+  const { nodes, edges, definition = {} } = args;
+  ownRecord(definition, "Flow definition patch");
+  if (Object.values(args).some(value => value === undefined)) throw new TypeError("Flow edits cannot contain undefined.");
+  if (nodes === undefined && edges === undefined && !Object.keys(definition).length) throw new TypeError("Flow edits require a nonempty patch.");
+  const source = (requested, role) => requested === undefined ? resolveInputReference(program, previous.inputs[previous.options.roles[role]]) : requireMaterializedDataset(program, requested);
+  return createFlowResource({ id: previous.id, revision: previous.revision + 1, nodes: source(nodes, "nodes"), edges: source(edges, "edges"),
+    definition: { ...flowSourceDefinition(previous), ...definition } });
+}
+
 export const editFlowData = /* @__PURE__ */ closedAction(
   { op: "editFlowData", description: "Revise a flow graph and its dependent layouts." }, ["target", "nodes", "edges", "definition"], function (args = {}) {
     const previous = resolveGraphResource(this, args.target, "observed", true);
-    const { nodes, edges, definition = {} } = args;
-    ownRecord(definition, "Flow definition patch");
-    if (Object.values(args).some(value => value === undefined)) throw new TypeError("Flow edits cannot contain undefined.");
-    if (nodes === undefined && edges === undefined && !Object.keys(definition).length) throw new TypeError("Flow edits require a nonempty patch.");
-    const source = (requested, role) => requested === undefined ? resolveInputReference(this, previous.inputs[previous.options.roles[role]]) : requireMaterializedDataset(this, requested);
-    const resource = createFlowResource({ id: previous.id, revision: previous.revision + 1, nodes: source(nodes, "nodes"), edges: source(edges, "edges"),
-      definition: { ...flowSourceDefinition(previous), ...definition } });
+    const prepared = readNativeGraphRouteUpdatePlan(this, args, editFlowData);
+    if (prepared !== undefined) {
+      if (prepared.plan.previous !== previous) throw new TypeError("Prepared flow input is stale.");
+      return writePreparedGraphResource(this, { ...prepared.plan.plan, scope: prepared.scope });
+    }
+    const resource = editedFlowResource(this, args, previous);
     return writeGraphResource(this, resource);
   });
 

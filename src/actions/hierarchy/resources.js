@@ -1,3 +1,4 @@
+import { readNativeGraphRouteUpdatePlan } from "../../resources/graphRoutes.js";
 import { finishRouteStages } from "../../grammar/graph/routes/valueHash.js";
 import { recoverPartitionFocus } from "../../grammar/hierarchy/partitionView.js";
 import { hierarchyLayoutModel } from "../../grammar/hierarchy/model.js";
@@ -63,6 +64,10 @@ export function writeHierarchyResource(program, resource) {
 }
 
 export function* writeHierarchyResourceStages(program, resource, scope) {
+  return applyHierarchyResourcePlan(program, yield* planHierarchyResourceStages(program, resource, scope), scope);
+}
+
+export function* planHierarchyResourceStages(program, resource, scope) {
   const layouts = program.semanticSpec.resources.filter(candidate => candidate.kind === "layout" &&
     candidate.inputs.length === 1 && candidate.inputs[0].kind === "hierarchy" && candidate.inputs[0].id === resource.id);
   const preview = { ...program, semanticSpec: { ...program.semanticSpec, resources: program.semanticSpec.resources.map(candidate =>
@@ -73,10 +78,15 @@ export function* writeHierarchyResourceStages(program, resource, scope) {
   const routes = yield* prepareEdgeRouteRevisionStages(program, preview.semanticSpec.resources.map(candidate => candidate.kind === "layout"
     ? nextLayouts.get(candidate.id) ?? candidate : candidate), scope);
   const views = preflightHierarchyLayouts(program, routes.resources, [...nextLayouts.values()]);
+  return { resource, replacements, routes, views, layoutIds: new Set(layouts.map(layout => layout.id)) };
+}
+
+export function applyHierarchyResourcePlan(program, { resource, replacements, routes, views, layoutIds }, scope) {
+  scope?.ledger.check();
   const entered = applyPartitionViews(program, views);
   const next = withPreparedResourceResults(entered, { property: `resource[hierarchy:${resource.id}]`, value: resource }, [...replacements, ...routes.entries],
     args => entered.editSemantic(args), [], scope);
-  return materializeEdgeRouteConsumers(materializeLayouts(next, new Set(layouts.map(layout => layout.id)), program), routes.ids);
+  return materializeEdgeRouteConsumers(materializeLayouts(next, layoutIds, program), routes.ids);
 }
 
 export const createHierarchyData = /* @__PURE__ */ closedAction(
@@ -87,13 +97,22 @@ export const createHierarchyData = /* @__PURE__ */ closedAction(
     return this.editSemantic({ property: `resource[hierarchy:${id}]`, value: resource });
   });
 
+export function editedHierarchyResource(program, args, previous) {
+  const { data, ...patch } = patchOptions(args, ["target"]);
+  const dataset = data === undefined ? resolveInputReference(program, previous.inputs[0]) : resolveHierarchyDataset(program, data);
+  const options = normalizeHierarchySource(patch, previous.options);
+  return createHierarchyResource({ id: previous.id, revision: previous.revision + 1, dataset, options });
+}
+
 export const editHierarchyData = /* @__PURE__ */ closedAction(
   { op: "editHierarchyData", description: "Revise hierarchy data and its dependent layouts." }, ["target", "data", ...HIERARCHY_SOURCE_FIELDS], function (args = {}) {
     const previous = resolveHierarchyResource(this, "hierarchy", args.target);
-    const { data, ...patch } = patchOptions(args, ["target"]);
-    const dataset = data === undefined ? resolveInputReference(this, previous.inputs[0]) : resolveHierarchyDataset(this, data);
-    const options = normalizeHierarchySource(patch, previous.options);
-    const resource = createHierarchyResource({ id: previous.id, revision: previous.revision + 1, dataset, options });
+    const prepared = readNativeGraphRouteUpdatePlan(this, args, editHierarchyData);
+    if (prepared !== undefined) {
+      if (prepared.plan.previous !== previous) throw new TypeError("Prepared hierarchy input is stale.");
+      return applyHierarchyResourcePlan(this, prepared.plan.plan, prepared.scope);
+    }
+    const resource = editedHierarchyResource(this, args, previous);
     return writeHierarchyResource(this, resource);
   });
 

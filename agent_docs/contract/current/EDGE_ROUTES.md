@@ -48,23 +48,23 @@
 ## `applyGraphEdgeRoutesUpdate`
 
 - Signature: `applyGraphEdgeRoutesUpdate({ prepared, requestToken })`.
-- Full-only synchronous action. `prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editLayout",args}},{requestToken,executor,deadlineMs,signal?})`가 원 completed unit receiver에서 준비한 authentic update handle만 받는다. 현재 graph 또는 hierarchy layout의 native edit와 모든 dependent edge-route/Geo/GraphPlot/TreePlot consumer closure를 연결한다. 영향을 받는 route 중 explicit v2가 하나 이상이어야 한다. V1 dependent route는 기존 synchronous owner와 guard를 유지한다.
-- 첫 await 전에 nested own-data edit args를 복사·동결한다. Constructor/native function/base/token/ref/revision/viewport/order를 원 private registry에 결박한다. 복제·위조 handle, 다른 receiver/token, overridden native/apply action, scoped composition은 거부한다. 저장 trace와 준비 plan 조회는 권한을 만들지 않는다.
+- Full-only synchronous action. `prepareGraphEdgeRoutes(program,{kind:"update",edit:{action,args}},{requestToken,executor,deadlineMs,signal?})`가 원 completed unit receiver에서 준비한 authentic update handle만 받는다. 현재 `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData`, `editInferredGraphData`의 원 native edit와 dependent candidate graph/layout/edge-route/Geo/resource plot consumer closure를 연결한다. 영향을 받는 route 중 explicit v2가 하나 이상이어야 한다. V1 dependent route는 기존 synchronous owner와 guard를 유지한다.
+- 첫 await 전에 nested own-data edit args를 복사·동결한다. 유일한 예외는 `editInferredGraphData`의 원 inference registry가 검증한 frozen prepared handle identity이며, base/token/kind/signal을 원 owner에서 준비와 최종 적용 때 다시 검사한다. 외부 args record를 await 동안 보관하지 않는다. Constructor/native function/base/token/ref/revision/viewport/order를 원 private registry에 결박한다. 복제·위조 handle, 다른 receiver/token, overridden native/apply action, scoped composition은 거부한다. 저장 trace와 준비 plan 조회는 권한을 만들지 않는다.
 - 모든 영향 v2 resource의 execution policy에 동일한 실제 work/pairs/live-buffer/peak-sample 합산을 대조한다. Packet maxBytes는 각 job/result owner가 검사한다. 이전 완료를 다음 job 동안 보유한 samples도 합산한다. 이 offset은 해당 job/completion의 private scope에만 적용하며 종료된 worker peak를 저장 resource 재검산에서 보유 결과에 다시 더하지 않는다. Prepare 전체의 validation/native plan/worker/실제 wrapped preflight/theme 비용을 누적하고 최종 apply는 그 누적값의 독립 copy에서 검산을 계속한다.
 - Async 준비 중 invocation scope는 열리지 않는다. 최종 sync action의 enter→native child→primitive/materializer→theme→result validation→exit 전체에서 exact plan을 한 번 소비하고 finally scope를 복원한다. 실패 시 원 invoke error를 cleanup error가 대체하지 않는다. Candidate program을 재사용·반환하지 않는다. 원 signal 취소는 준비 완료 후 apply도 거부한다.
 - Trace의 첫 child는 요청 action/요약 args와 정확히 일치한다. 후속 completion siblings는 authored-source 해석에서 제외하고 같은 native action 중복 child는 해석을 거부한다. 이 closed trace 해석은 저장 후 테마 inspection용 데이터이며 execution/prepare/resource write 권한이 아니다. 실행 중 theme metadata는 exact Full constructor와 현재 authentic prepared invocation에서만 native action을 읽는다.
 - 최초 descriptor scan/clone의 acquisition 비용에는 별도 깊이·work·전체 heap 상계가 아직 없고 현재 ledger가 그 비용을 완전히 계량하지 않는다. Cycle은 원 clone owner가 첫 await 전에 거부한다.
-- 현재 공개 update union은 completed unit의 `editLayout` 하나다. Scoped/composition/facet receiver와 native completion이 추가 viewport route job을 요구하는 경로는 후속 의무다. 그런 추가 계산을 동기 fallback으로 실행하지 않는다. Source/data/graph/hierarchy revision, Canvas/fit/guide/theme/composition update의 공개 연결도 지원한다고 주장하지 않는다. Snapshot, clone, postMessage, geometry와 최종 materialization의 전체 100ms 상계도 미검증이다.
+- 현재 공개 update union은 completed unit의 `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData`, `editInferredGraphData` 다섯 action이다. Scoped/composition/facet receiver와 native completion이 추가 viewport route job을 요구하는 경로는 후속 의무다. 그런 추가 계산을 동기 fallback으로 실행하지 않는다. Source/data/derived revision, Canvas/fit/guide/theme/composition update의 공개 연결은 후속 의무다. 그래프/계층 자원의 native 편집 연결이 그 source revision 전체를 지원한다는 뜻은 아니다. Snapshot, clone, postMessage, geometry와 최종 materialization의 전체 100ms 상계도 미검증이다.
 
 ### Formal values — `applyGraphEdgeRoutesUpdate`
 
-- Implemented: `applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram` and `GraphEdgeRoutesUpdateRequest` with `edit.action:"editLayout"`.
+- Implemented: `applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram` and `GraphEdgeRoutesUpdateRequest` with the closed five-action native resource union above.
 - Planned: 승인된 나머지 native update union 연결.
 - Proposed (NOT IMPLEMENTED): generic extension replay, persisted preparation authority.
 
 ### Value coverage — `applyGraphEdgeRoutesUpdate`
 
-- ✅ Covered: original native layout wrapper/consumer order, immutable argument snapshot, authentic handles, cancellation, aggregate policies, trace inspection and declaration boundaries.
+- ✅ Covered: original native layout/resource wrapper and candidate-DAG consumer order, immutable argument snapshot, authentic handles, cancellation, aggregate policies, trace inspection and declaration boundaries.
 - Evidence: `test/unit/resources/graph-route-native-update.test.js`, `test/unit/resources/graph-route-request-ledger.test.js`, `test/unit/actions/theme-native-route-update.test.js`, `test/unit/core/action-invocation-scope.test.js`, `test/contracts/graph-route-types.test.js`.
 
 ## `ggaction/graph` host boundary
@@ -105,5 +105,5 @@ stroke와 native GraphPlot 범례 지원 범위를 유지한다. Analytical chil
 - 단일 요청 work/pairs는 실제 원 charge를 합산한다. 초기 저장 검증, native job 준비, worker job+solver, host completion, resource assembly, geo/graph closure preflight와 최종 primitive binding 검산을 포함한다. 복사된 완료를 재검증할 때 이미 계산한 worker work를 중복 charge하지 않으며 검증 자체 비용은 추가한다. maxSamples는 원 counting의 peak, maxBufferBytes는 live typed buffer/hash scratch 예약량이며 전체 heap 측정이 아니다. 할당 전 예약하고 finally 반환한다.
 - Full exact constructor에 한 번 연결된 private native planner가 기존 geo/graph consumer preflight와 wrapped materialization operation plan을 준비한다. graph package는 Full assembly/registrar/renderer를 import하지 않는다. Planner lookup은 proof가 아니며 original prepared WeakMap에 exact base/constructor/kind/token/signal/resource/plan과 누적 accounting snapshot을 보관한다.
 - Final facade는 original signal과 exact base/constructor/kind/token을 검사하고 준비 누적값에서 ledger를 이어받아 기존 preparedResourceContext·editSemantic·wrapped materialization children을 실행한다. Candidate program을 그대로 반환하지 않는다. 동일 immutable base에서 handle을 재사용하는 독립 적용은 같은 준비 누적값에서 시작하며 이전 적용 비용을 섞지 않는다. 최종 theme/action-completion 경계는 기존 wrapper가 소유한다.
-- V2 raw synchronous create/edit/recompute는 prepare를 요구하는 오류다. Same-method prepared edit는 execution을 보존하고 method 변경은 명시 execution을 요구한다. 현재 v2 경로는 unit create/edit와 위의 native `editLayout` update이며 나머지 source/viewport/fit native update union은 후속 의무다. 이 미구현 한계를 자동 동기 fallback으로 숨기지 않는다. Offline restore와 기존 concrete renderer 소비는 지원한다.
+- V2 raw synchronous create/edit/recompute는 prepare를 요구하는 오류다. Same-method prepared edit는 execution을 보존하고 method 변경은 명시 execution을 요구한다. 현재 v2 경로는 unit create/edit와 위의 다섯 native resource update이며 나머지 source/viewport/fit native update union은 후속 의무다. 이 미구현 한계를 자동 동기 fallback으로 숨기지 않는다. Offline restore와 기존 concrete renderer 소비는 지원한다.
 - 증거: `test/unit/resources/graph-route-bounded.test.js`, `test/unit/grammar/graph/routes/execution.test.js`, `test/contracts/graph-route-types.test.js` 및 package/browser 계약.

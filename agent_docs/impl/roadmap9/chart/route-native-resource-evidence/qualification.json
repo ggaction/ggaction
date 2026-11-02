@@ -1,0 +1,478 @@
+{
+  "status": "verified-native-resource-update-checkpoint",
+  "base": "746f7847c",
+  "authorization": "Root adopted the concrete once-only synchronous invocation scope and persisted native-child inspection under remainingApproval.",
+  "archive": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/route-v2-native/ggactionnewbrand/.artifacts/route-native-resource/package/ggaction-0.0.26.tgz",
+    "sha256": "b04826b709ed055822e33a9641c70fe425fe11819a71aa372088205c6df95a36",
+    "entries": 1268,
+    "packedBytes": 1830188,
+    "unpackedBytes": 8229472
+  },
+  "sources": [
+    {
+      "path": "README.md",
+      "sha256": "7762377153edf70afdb3e6f3b3bf325aab464368fc5694876d5b532b46e55d43"
+    },
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "sha256": "422ae35a92b6088f3725bbecfb4f579b9e3029779c5e5935b87fe5dd34907571"
+    },
+    {
+      "path": "agent_docs/contract/ACTION_CATALOG.md",
+      "sha256": "8c1546c58b907e887420ce29f4625b5f7f329daa8554c436e6548c0cdd875062"
+    },
+    {
+      "path": "agent_docs/contract/ACTION_INDEX.json",
+      "sha256": "2603f5f5a184f9ec4b5a90822cc84306349f3048f4b378a05fe7b57942b7dc36"
+    },
+    {
+      "path": "agent_docs/contract/current/EDGE_ROUTES.md",
+      "sha256": "7c133fd5e3ddd3ef28c35bceb27122d2af1f1b7df1ab8b8c01a39bbdbe470797"
+    },
+    {
+      "path": "agent_docs/contract/current/FLOWS.md",
+      "sha256": "ed3f2db56119ddac2b6081e8f865ec13bd0a19fe5d2dc70f92e02d01d7811f00"
+    },
+    {
+      "path": "agent_docs/contract/current/GRAPHS.md",
+      "sha256": "896d8f46ffbf890a6a99dec0a3172653135fd16449b17fe0cc517e6b1b1e1154"
+    },
+    {
+      "path": "agent_docs/contract/current/HIERARCHY.md",
+      "sha256": "23e780efb06583d6b6ade7ffbc7c05df7dc828a014a0dc4b9a687c78b8c8cdf3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-b-native-connection.md",
+      "sha256": "d7104be6bfd665651a282d103153493fedbe1fb078edd96f27798799a40be8c5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-connection.md",
+      "sha256": "777f9e2732589aebbe27024c8a4cd37114f98aba9940ccd96a818b9124af9bf6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/README.md",
+      "sha256": "6771110020654c281124e1f9e8eec89ca2ea3c4f56b93216fee726f65874643f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/archive.mjs",
+      "sha256": "dd940dfbf3891f04fa163bebfdebaf01a624c564bdefa927f51375f768de759e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/browser.mjs",
+      "sha256": "61820e25ef55b0d3957a32c2f3a120479c9fb5d43f4cbb4922e0b180a41f9b9c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/consumer.mjs",
+      "sha256": "c3fb50e83e02ed84bb3eec34430d41563a4904dbdebf320c77ac77aa54351984"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/installed.mjs",
+      "sha256": "9f1ad8800df9b1fcc829b61be252fc09e35e2be30dafd820030cbb155baa88a6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/owning.zsh",
+      "sha256": "53b16517c3a1cf37dc814856fc891709c23c50e6f8218608c74caf2263627a6d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/record.mjs",
+      "sha256": "ad1685e16064ba35e4d01dd02489c155c919cbd784eefc04e3216a7061133d9f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/union.json",
+      "sha256": "2e13c4e2ae658ded5dd710f21eadbd7812a383d75cb6a5cc863941df46e02596"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/union.mjs",
+      "sha256": "0d25fe49479012b5ddea19647b4274e19be8d812db07a88a18d77999642b43c5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/verify.mjs",
+      "sha256": "fecfcdb2c35b11d151c4e6068597e8f0e0ac095f24df5fd7b9c3db92b0acf795"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-update-evidence/README.md",
+      "sha256": "01ba6d4aea509d6b03bb2f254d68c6ab7c66f89c715a4513d7ed75b1d6e2e15b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-update-evidence/archive.mjs",
+      "sha256": "4b1fdb5fd5ac1d60fd761a6606ec2c51252205d356b2bb91eda76bee83cd7c1e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-update-evidence/browser.mjs",
+      "sha256": "9250281a4335aa95365f35fe6ba34b87e02aa6e81957ae6a4868b5a2780dd87e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-update-evidence/consumer.mjs",
+      "sha256": "5d79f25f06ea0aa9a8ab59518fac496f0dc61d25d75d20df9b5fcc8daae84134"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-update-evidence/installed.mjs",
+      "sha256": "147cf51c883759238a7a38a32fd5b597a44dea4e9c707dd0817f55a8459ce8da"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-update-evidence/owning.zsh",
+      "sha256": "0d013b565282038b5381a128392d34331dc55b5e6b68f834c213d98b0685278b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-update-evidence/record.mjs",
+      "sha256": "018f2e65c22c5ab98d02d771ba1d6cffb6d4ce89968455ec78519a8c33c6bfc0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-update-evidence/union.json",
+      "sha256": "e7dd5d0747941a35b46af95e820a5bbe3f781108242d560292803edc187d631d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-update-evidence/union.mjs",
+      "sha256": "c5cced85b6318e23eb472c925aa587584270b948e17ab694af8c0e2745aed02d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-update-evidence/verify.mjs",
+      "sha256": "4c835a8964c3975bf7f8cff14f36e6af86e28d0b1ec12112df327690b1a7a742"
+    },
+    {
+      "path": "docs/_data/action_metadata.json",
+      "sha256": "84c2aee0c3d270134481b9e02c0c671af21a45f9d00edb79ab9d0f21653ec0f9"
+    },
+    {
+      "path": "docs/_data/action_reference_links.json",
+      "sha256": "66cb4754455b50eb99053b4c1b4f3fafa75901348138c5528a64e000582ba6ec"
+    },
+    {
+      "path": "docs/_data/provenance.json",
+      "sha256": "c27af85d40afde27eb9e081e20abec34d70142cf854648a1e9f45cf789c8901e"
+    },
+    {
+      "path": "docs/_data/snippet_contracts.json",
+      "sha256": "1bff931d7e808ea4d788f23b3a760b8b0ede15c0930f5a9c091058d3bc1abb78"
+    },
+    {
+      "path": "docs/_sources/action-reference.md",
+      "sha256": "751c67f5e4ff0396aa5da75a414aec256542a26b79cb3e1a56ee028339915038"
+    },
+    {
+      "path": "docs/actions.json",
+      "sha256": "ea55e5d4cefb7c013b3144f88bcce40878132ac82262965a06dc301b49401c63"
+    },
+    {
+      "path": "docs/api/edge-routes.md",
+      "sha256": "d032c75dfd5dd7d673d997e7db428941872c5599146784fb6fbce283dc241d1f"
+    },
+    {
+      "path": "docs/assets/js/action-metadata.js",
+      "sha256": "09df43b12221decdcc1bb49c6f8b54b4b8fef94f35817591b1fc2c63f6dbec9b"
+    },
+    {
+      "path": "docs/doc-provenance.json",
+      "sha256": "c27af85d40afde27eb9e081e20abec34d70142cf854648a1e9f45cf789c8901e"
+    },
+    {
+      "path": "docs/llm/actions.json",
+      "sha256": "078420d0bf4f48db196f15950db096080db06d5e4396f190cac9446e5f9a8b96"
+    },
+    {
+      "path": "docs/llm/actions/applyGraphEdgeRoutesUpdate.json",
+      "sha256": "310f8824c5d1e3caf111abbf7786bdf00a22df573d61647476fd360fd858977b"
+    },
+    {
+      "path": "docs/llm/index.json",
+      "sha256": "88ec64d7c0a11454e81d853472898c1ea331b3e1a7a87af1018c649fe58dc99a"
+    },
+    {
+      "path": "docs/llm/pages.json",
+      "sha256": "c051d3b8263d4d1458360f17de01b83730a18e8fc57cc10a32bb8c50e7043e8a"
+    },
+    {
+      "path": "docs/llm/pages/api/edge-routes.txt",
+      "sha256": "184cd710e722e6903753d2ec2ea3037c098362d16c8e6015fcaee6b8fa9fb2be"
+    },
+    {
+      "path": "docs/llm/pages/reference/actions.txt",
+      "sha256": "a486ce645f3c5929069fcda818e3d734a44490774dceb969c68420f9db350bd4"
+    },
+    {
+      "path": "docs/llm/pages/reference/actions/charts-data.txt",
+      "sha256": "353498c488d4dae3f68b5217fc309d9a1c18bff60ecad72df23a6d18ccdcec65"
+    },
+    {
+      "path": "docs/llm/pages/reference/runtime.txt",
+      "sha256": "723a8ff6f2e1e13a2a1cc4b9d59396c84cdfdffc97418375641d65546cac52f4"
+    },
+    {
+      "path": "docs/llm/pages/reference/types.txt",
+      "sha256": "eb13af5dd15d6129e106df5eb53ad9b770ed865d4b22ed63d5051c04cca6a5b2"
+    },
+    {
+      "path": "docs/llm/pages/version.txt",
+      "sha256": "2e44af7a1ab6fe4e9778d7b6fd9f482f53743296522373db4f0557ecc0e6eddc"
+    },
+    {
+      "path": "docs/llm/types.json",
+      "sha256": "004a3f18e91057bda0c29e535ba4167bc57ab045d50bae58ac6de0e445d24248"
+    },
+    {
+      "path": "docs/llm/types/ApplyGraphEdgeRoutesOptions.txt",
+      "sha256": "0dae3884066f49c0c15422f4219173bebacedf69b3be1d50c88d61cb9e692422"
+    },
+    {
+      "path": "docs/llm/types/ApplyGraphEdgeRoutesUpdateOptions.txt",
+      "sha256": "e3532c28d60dc3ad72cb84ee890fa98b9e03e1b5a9fdba162a056fb6a10171e3"
+    },
+    {
+      "path": "docs/llm/types/PreparedGraphEdgeRoutesUpdate.txt",
+      "sha256": "711825a987efc4177013aba9bec3076772944a51c03940a098efca48ea3aa163"
+    },
+    {
+      "path": "docs/llms-full.txt",
+      "sha256": "4ff597cc4d9175d655806916c47d8eb180cbbf4de4410673d6f618930f68f5be"
+    },
+    {
+      "path": "docs/llms-manifest.json",
+      "sha256": "8575fbf0b0948118a36284398d9cf60c238aaa55ac245f0a3b15dc07f43303f4"
+    },
+    {
+      "path": "docs/reference/actions.md",
+      "sha256": "faea591f3b713ea0d75b0f83fb440baa74d2ba3a5dae971e5986dd9ee582d816"
+    },
+    {
+      "path": "docs/reference/actions/charts-data.md",
+      "sha256": "9b54a2419faa1d1643c4fe5600f2625b48466c0863309602d3546b8bd547985c"
+    },
+    {
+      "path": "docs/reference/runtime.md",
+      "sha256": "161f9a64379dc900a8a96d749032b13715cf0290bc24d8173d30f33abfd69b43"
+    },
+    {
+      "path": "docs/reference/types.md",
+      "sha256": "668761c166f0f14e873f05596cd7a7dbabc92378f05c3f70ef781c9250d68a45"
+    },
+    {
+      "path": "docs/search-index.json",
+      "sha256": "733e8415e7d79e8c489de6c356a8d95d44b3512a7c81cefc04adc996eaa66a18"
+    },
+    {
+      "path": "docs/types/graph.d.ts",
+      "sha256": "7ad73140abb741ffb934714fd6c776f7cf8aa91150f4c476b2f86763b3bd1777"
+    },
+    {
+      "path": "docs/types/index.d.ts",
+      "sha256": "bce89d0d28abd6127d136385fb58f8576215bb9cdebbd3f4f3419b402399cae1"
+    },
+    {
+      "path": "docs/types/program.d.ts",
+      "sha256": "1eb7e761fff2a5a197d23daf942ca1e67fc1bfbe10cf24ebdc9c3c362cc8546e"
+    },
+    {
+      "path": "knowledge/action-cards.json",
+      "sha256": "ea55e5d4cefb7c013b3144f88bcce40878132ac82262965a06dc301b49401c63"
+    },
+    {
+      "path": "knowledge/action-intents.json",
+      "sha256": "5d10b972c9efc794cd3290dc2439bf48f30665d8a477f2ecbe17f0234fee163a"
+    },
+    {
+      "path": "knowledge/action-relationships.json",
+      "sha256": "611ae6628174f054686cf00d5acca846d16d00b4bb64f0b3c30f231ae23bbf45"
+    },
+    {
+      "path": "scripts/action-card-metadata.js",
+      "sha256": "46d315af8b57f424906b8daaffb8a143b491fa6dd9a67db4da5acb5dddd9402f"
+    },
+    {
+      "path": "scripts/action-card-source.js",
+      "sha256": "2ef19726d8d21ddfa46c65e35ff42a05cfa181b4a75b6f1722a1ff122cab2e80"
+    },
+    {
+      "path": "scripts/action-relationship-source.js",
+      "sha256": "60d39705bd812de8a9747b6041227c1cba9ef9a607ef1626e4c8b7816c5038f0"
+    },
+    {
+      "path": "scripts/browser-bundle-size.js",
+      "sha256": "83e928376eb9b56e663bc69004072c826f3015cf93e1add11df57f6194ac8720"
+    },
+    {
+      "path": "scripts/coverage-policy.js",
+      "sha256": "c10b6de856f7ca608a3a36631b96fa2ad32700819a0fd30726bf725cea80510c"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "9eecdd3bd1214f4d602c026fee96a37e367ca48ab21d4a5263b13340656d11e9"
+    },
+    {
+      "path": "src/actions/flow/resources.js",
+      "sha256": "60351b7507d989582ec377c99f39291bc646f395fa3673afa57461567ba93c0e"
+    },
+    {
+      "path": "src/actions/graphs/edgeRoutes.js",
+      "sha256": "9d08900d9aa35cfb981b376271b172ac75ab53ccf34a6ec77fe09e4ccbe1ad8f"
+    },
+    {
+      "path": "src/actions/graphs/inference.js",
+      "sha256": "77ab751bf22c5a585b894756b402414ac5362e3f9d1589d9f497c2b459fce79c"
+    },
+    {
+      "path": "src/actions/graphs/layouts.js",
+      "sha256": "3fe8175d5b53857a76ac1a0fe8ae832dae4f5f3377b904c0a217de75a174217b"
+    },
+    {
+      "path": "src/actions/graphs/nativeUpdate.js",
+      "sha256": "46fb2be2e1acce3f178ee5125c1b7f128c1318de5ec4da8b27b2adecaa0b3641"
+    },
+    {
+      "path": "src/actions/graphs/resources.js",
+      "sha256": "b271e463e46f38acb180bca24ccaa7edbbdad6982dc070a7daf4ec772b83639c"
+    },
+    {
+      "path": "src/actions/hierarchy/resources.js",
+      "sha256": "27c048089e24528cceb427dd23ddd1df2cf5d2fa8488e3bdbc262ca8b0d30ae1"
+    },
+    {
+      "path": "src/actions/layouts/index.js",
+      "sha256": "5b8050d384e9fc16a58ffc006274fc4a7bce0233c0656205eb6602616acd9b28"
+    },
+    {
+      "path": "src/actions/theme/nativeRouteUpdate.js",
+      "sha256": "b09dd0402a3e0ddd52786bcb5c1caf5c6630a7ab68d4f0ff11a392d5cf8ef7ca"
+    },
+    {
+      "path": "src/actions/theme/reconcile.js",
+      "sha256": "952d588f127e745d0fc0fe1f02c7a281cefe17cc7932fbc66ae8826eeb93ff82"
+    },
+    {
+      "path": "src/core/action.js",
+      "sha256": "bf87498311fd659337568ba335c49d7672e8b1e3d857e126380f4aa5f3314a0e"
+    },
+    {
+      "path": "src/core/vocabulary.js",
+      "sha256": "82ed9bfe97f88f0f2b004c433cb2e5946064c34eceeedb61437f786068038567"
+    },
+    {
+      "path": "src/grammar/graph/routes/execution.js",
+      "sha256": "aeeb124e4b63b98e9436b193d3c0d25f069e7628620951cdfd4a684d6de00837"
+    },
+    {
+      "path": "src/inspectionDescriptors.js",
+      "sha256": "0f51b06e676d3ac89f4fd9c504fbc8c75549795c49b5ea620da783b2798a12a5"
+    },
+    {
+      "path": "src/materialization/graph/routeResource.js",
+      "sha256": "947359317d65d5ada1f973891cbfeec4b323443fc0331f29d851b2405e3332ee"
+    },
+    {
+      "path": "src/resources/graphInference.js",
+      "sha256": "a06d4c663f0602ddb877b240c7f8308fb5e591c46fe68920342f48111826b4e2"
+    },
+    {
+      "path": "src/resources/graphRoutes.js",
+      "sha256": "0e16e33271b2fe9533e2b8280fdc0bad9afda12bb6fca03ad28a231eadacd2a5"
+    },
+    {
+      "path": "src/resources/routeStages.js",
+      "sha256": "41efc903a7ac8e6ac5222004b0cea5dd5efdc9af9d320edf9e11dd320bcd146f"
+    },
+    {
+      "path": "test/capabilities.json",
+      "sha256": "7894ee396fe335acb83cb322e62480e3652c60d004697fe2cbcdf9e48a098dca"
+    },
+    {
+      "path": "test/contracts/action-input-matrix.test.js",
+      "sha256": "43b5f76545861b5caa9305dbe6bd4347dd7ac1f613c03acd98b525c39076fe58"
+    },
+    {
+      "path": "test/contracts/compact-action-cards.test.js",
+      "sha256": "c7957613b2ab1b1b1986aab9e4a9e3163d1852eda9a5aab4c5410d7931e9cc78"
+    },
+    {
+      "path": "test/contracts/graph-route-types.test.js",
+      "sha256": "43f08778d538fc7931c7fb8ad813f117d34506851d3afada0150605038bff976"
+    },
+    {
+      "path": "test/support/native-route-update.js",
+      "sha256": "e2867480f9af11c920bc2d58365d3c44716a86c02e708c359906775b54f762ec"
+    },
+    {
+      "path": "test/unit/actions/theme-native-route-update.test.js",
+      "sha256": "a22b434641d77d87391813386f8bd02097640aa8470934a10158a1600945372f"
+    },
+    {
+      "path": "test/unit/core/action-invocation-scope.test.js",
+      "sha256": "0ef072b135cd74e78cdf91a2d043880db3303f1af90a713e46d9b8f013567517"
+    },
+    {
+      "path": "test/unit/resources/graph-route-native-update.test.js",
+      "sha256": "0aadfa407b181264bfcb5e2b8a4d5b2cada52a58a6150039f10c2ce09d87ac06"
+    },
+    {
+      "path": "test/unit/resources/graph-route-request-ledger.test.js",
+      "sha256": "56ac0dcc9a0e49ca3cba8049ae2405c6838e8f299b697dd64789a7f5ddab3807"
+    },
+    {
+      "path": "types/graph.d.ts",
+      "sha256": "7ad73140abb741ffb934714fd6c776f7cf8aa91150f4c476b2f86763b3bd1777"
+    },
+    {
+      "path": "types/index.d.ts",
+      "sha256": "bce89d0d28abd6127d136385fb58f8576215bb9cdebbd3f4f3419b402399cae1"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "1eb7e761fff2a5a197d23daf942ca1e67fc1bfbe10cf24ebdc9c3c362cc8546e"
+    }
+  ],
+  "files": [
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/receipts/docs-final.log.gz",
+      "sha256": "75fbab99dc877d364ae0cd5034df35148987b9efd60ed682cd709b201406af17",
+      "uncompressedSha256": "ba43fbc41f567035750610f61b3fdcfcb64f57aba7d8249bacc188436bf54866"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/receipts/browser.json.gz",
+      "sha256": "8fe528dce5399592d3ce1b3ce5f05bc1ae6c7e6891ebf0804faf1ee9133a7f04",
+      "uncompressedSha256": "0d26d64bca5d1e69a951540d549a5a8c18cf3937e6f559cd532d889db03d2417"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/receipts/owning-node20.log.gz",
+      "sha256": "f0aa9bbc276ed7bb90932bd646c9bebef3575871c15956842ad662160ec3ff10",
+      "uncompressedSha256": "12d6c28c5b0b70d01fdc0c7f7acdfb18408abe390fe4cbd045a5003085fba943"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/receipts/installed-20.json.gz",
+      "sha256": "6c5dde2b3f0db2378103770789088866d88ca8a3d33e6276f67274d03ea39a8f",
+      "uncompressedSha256": "8723d109b651567d34cb1d75a4491a367d9100fd2eda281c87bf550d6f5c0830"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/receipts/owning-node22.log.gz",
+      "sha256": "e9f140ac2526c4c1d948817d83f33de13c74ceb1e760af6be83a4d777df39d40",
+      "uncompressedSha256": "bbbb50e5d89e79ff02f79330f39a6e4a5c13e2703d8de0869dc8b6f7a830ca6f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/receipts/installed-22.json.gz",
+      "sha256": "4b6f581d249826f50b4f2db6e90b26cc63e7bb4a4381e5c56ae15621f8bd22ae",
+      "uncompressedSha256": "4365e71f1b282c716570bcf6428a4643d46e92373d0c37651bf5860cc58c118a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/receipts/owning-node24.log.gz",
+      "sha256": "939ebbb4d22963eb0d7679ec29d6464979ec18044305559b5cf553a3959bd9fa",
+      "uncompressedSha256": "25b1fd0b154dae058a0bdc77057bde680782361d72f1b783c756bffddf4c05f9"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/receipts/installed-24.json.gz",
+      "sha256": "ee878c6521c4113307b643c98ab88ca878837614b80d7a39f541ad8cd5ffd72b",
+      "uncompressedSha256": "37366af8ff1a58054da9e919d845733cb0a746017131b4450ac664beb76060d2"
+    }
+  ],
+  "claims": {
+    "publicBLayoutUpdate": true,
+    "publicBResourceUpdate": true,
+    "fullBUnion": false,
+    "latency100ms": false,
+    "largeCapacity": false,
+    "publication": false
+  },
+  "limitations": [
+    "Current public update union contains five native resource edits on completed Full unit receivers only.",
+    "Direct14, focused21 and audited332 pending entries remain in union.json; composition/scoped/indirect viewport update work remains.",
+    "Initial own-data acquisition and clone remain synchronous with incomplete work/depth/whole-heap metering.",
+    "No cross-engine hash equivalence or whole-request 100ms guarantee."
+  ]
+}

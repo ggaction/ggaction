@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../../src/index.js";
 import { serializeProgram, deserializeProgram } from "../../../src/persistence.js";
-import { prepareGraphEdgeRoutes, createGraphRouteExecutor, computeGraphEdgeRoutesAsync } from "../../../src/graph.js";
+import { prepareGraphEdgeRoutes, createGraphRouteExecutor, computeGraphEdgeRoutesAsync, createGraphInferenceExecutor, prepareInferredGraphData, computeGraphInference } from "../../../src/graph.js";
 import { encodeRowKey } from "../../../src/core/itemIdentity.js";
 import { ROUTE_EXECUTION_MAXIMA } from "../../../src/grammar/graph/routes/execution.js";
 
@@ -179,6 +179,13 @@ test("native hierarchy layout updates keep the original tree and route materiali
     const result = program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "update" });
     assert.deepEqual(result.graphicSpec, ordinary.editLayout(args).graphicSpec);
     assert.equal(get(result, "layout", "hl").revision, 1); assert.equal(get(result, "edge-route", "route").revision, 1);
+    const hierarchyArgs = { target: "h", valueMode: "leaf-sum" };
+    const hierarchy = await prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editHierarchyData", args: hierarchyArgs } }, host(worker));
+    const revised = program.applyGraphEdgeRoutesUpdate({ prepared: hierarchy, requestToken: "update" });
+    assert.deepEqual(revised.graphicSpec, ordinary.editHierarchyData(hierarchyArgs).graphicSpec);
+    assert.equal(get(revised, "hierarchy", "h").revision, 1);
+    assert.equal(get(revised, "layout", "hl").revision, 1);
+    assert.equal(get(revised, "edge-route", "route").revision, 1);
     const before = serializeProgram(program);
     await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editLayout", args: { target: "hl", options: { depthGap: 40 } } } }, host(worker)), /anchors must match/);
     assert.equal(serializeProgram(program), before);
@@ -195,5 +202,93 @@ test("held completions share sample admission across heterogeneous route policie
     const before = serializeProgram(program);
     await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: edit() }, host(worker)), /small execution maxSamples/);
     assert.equal(serializeProgram(program), before);
+  } finally { worker.dispose(); }
+});
+
+
+test("native observed and flow graph edits refresh every layout and route through original writers", async () => {
+  const worker = executor();
+  try {
+    for (const flow of [false, true]) {
+      const action = flow ? "editFlowData" : "editGraphData";
+      const base = flow ? chart().createCanvas({ width: 400, height: 300, margin: 30 })
+        .createData({ id: "nodes", values: [{ id: 0 }, { id: 1 }] })
+        .createData({ id: "edges", values: [{ id: "e", source: 0, target: 1, value: 1 }] })
+        .createFlowData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "source", target: "target", value: "value" })
+        .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: 0, x: 0, y: 0 }, { key: 1, x: 10, y: 10 }] } }) : source();
+      const ordinary = base.bundleGraphEdges({ id: "route", method: "edge-path" }).createGraphPlot({ id: "plot", routes: "route" });
+      const program = (await bounded(base, worker)).createGraphPlot({ id: "plot", routes: "route" });
+      const args = { target: "graph", definition: { attributes: ["id"] } };
+      const before = serializeProgram(program), prepared = await prepareGraphEdgeRoutes(program, { kind: "update", edit: { action, args } }, host(worker));
+      const actual = program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "update" }), expected = ordinary[action](args);
+      for (const [kind, id] of [["graph", "graph"], ["layout", "layout"], ["edge-route", "route"]]) assert.equal(get(actual, kind, id).revision, 1);
+      assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
+      assert.deepEqual(get(actual, "edge-route", "route").result.routes, get(expected, "edge-route", "route").result.routes);
+      assert.equal(actual.trace.children.at(-1).children[0].op, action);
+      assert.deepEqual(actual.trace.children.at(-1).children[0].children.map(child => child.op), expected.trace.children.at(-1).children.map(child => child.op));
+      assert.deepEqual(deserializeProgram(serializeProgram(actual)).graphicSpec, actual.graphicSpec);
+      assert.equal(serializeProgram(program), before);
+    }
+  } finally { worker.dispose(); }
+});
+
+function inferenceWorker() {
+  return createGraphInferenceExecutor({ createWorker() {
+    const listeners = new Map();
+    return { addEventListener: (type, fn) => listeners.set(type, fn), removeEventListener: type => listeners.delete(type), terminate: () => listeners.clear(),
+      postMessage({ job }) { queueMicrotask(() => { try { listeners.get("message")?.({ data: computeGraphInference(structuredClone(job)) }); } catch (error) { listeners.get("error")?.({ error }); } }); } };
+  } });
+}
+
+test("native inference edits preserve raw and authentic prepared ownership through B", async () => {
+  const worker = executor(), inference = inferenceWorker();
+  const base = chart().createCanvas({ width: 400, height: 300, margin: 30 })
+    .createData({ id: "nodes", values: [{ id: 0, x: 0 }, { id: 1, x: 2 }, { id: 2, x: 6 }] })
+    .createInferredGraphData({ id: "graph", data: "nodes", nodeKey: "id", ruleId: "near", rule: "knn", features: ["x"], metric: "manhattan", options: { k: 1 } })
+    .layoutGraph({ id: "layout", graph: "graph", method: "fixed", options: { positions: [{ key: 0, x: 0, y: 0 }, { key: 1, x: 10, y: 10 }, { key: 2, x: 20, y: 0 }] } });
+  try {
+    const args = { target: "graph", definition: { options: { k: 2 } } };
+    const ordinary = base.bundleGraphEdges({ id: "route", method: "edge-path" }).createGraphPlot({ id: "plot", routes: "route" });
+    const program = (await bounded(base, worker)).createGraphPlot({ id: "plot", routes: "route" });
+    const expected = ordinary.editInferredGraphData(args), controller = new AbortController();
+    const inferenceHandle = await prepareInferredGraphData(program, { kind: "edit", ...args }, { requestToken: "inference", executor: inference, signal: controller.signal });
+    let authentic;
+    for (const input of [args, { prepared: inferenceHandle, requestToken: "inference" }]) {
+      const edit = { action: "editInferredGraphData", args: input };
+      const prepared = await prepareGraphEdgeRoutes(program, { kind: "update", edit }, host(worker));
+      const result = program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "update" });
+      assert.deepEqual(result.graphicSpec, expected.graphicSpec);
+      assert.deepEqual(get(result, "graph", "graph"), get(expected, "graph", "graph"));
+      assert.deepEqual(get(result, "edge-route", "route").result.routes, get(expected, "edge-route", "route").result.routes);
+      assert.deepEqual(deserializeProgram(serializeProgram(result)).graphicSpec, result.graphicSpec);
+      if (input.prepared) authentic = prepared;
+    }
+    for (const invalid of [{ prepared: structuredClone(inferenceHandle), requestToken: "inference" }, { prepared: inferenceHandle, requestToken: "wrong" }, { prepared: inferenceHandle, requestToken: "inference", target: "graph" }]) {
+      await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editInferredGraphData", args: invalid } }, host(worker)), /authentic|receiver|only/);
+    }
+    const before = serializeProgram(program), reason = Error("inference owner revoked"); controller.abort(reason);
+    assert.throws(() => program.applyGraphEdgeRoutesUpdate({ prepared: authentic, requestToken: "update" }), error => error === reason);
+    assert.equal(serializeProgram(program), before);
+  } finally { worker.dispose(); inference.dispose(); }
+});
+
+
+test("native graph route admission follows candidate graphs before downstream layout and route", async () => {
+  const worker = executor();
+  try {
+    const base = chart().createCanvas({ width: 400, height: 300, margin: 30 })
+      .createData({ id: "nodes", values: [{ id: 0 }, { id: 1 }, { id: 2 }] })
+      .createData({ id: "edges", values: [{ source: 0, target: 1, weight: 1 }, { source: 1, target: 2, weight: 2 }, { source: 0, target: 2, weight: 5 }] })
+      .createGraphData({ id: "original", nodes: "nodes", edges: "edges", nodeKey: "id", source: "source", target: "target", weight: "weight" })
+      .createInferredGraphData({ id: "graph", data: "nodes", nodeKey: "id", ruleId: "backbone", rule: "mst", candidateGraph: "original" })
+      .layoutGraph({ id: "layout", graph: "graph", method: "circular" });
+    const ordinary = base.bundleGraphEdges({ id: "route", method: "edge-path" }).createGraphPlot({ id: "plot", routes: "route" });
+    const program = (await bounded(base, worker)).createGraphPlot({ id: "plot", routes: "route" });
+    const args = { target: "original", definition: { weight: "weight" } };
+    const prepared = await prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editGraphData", args } }, host(worker));
+    assert.equal(prepared.inputHashes.length, 1);
+    const actual = program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "update" });
+    assert.deepEqual(actual.graphicSpec, ordinary.editGraphData(args).graphicSpec);
+    for (const [kind, id] of [["graph", "original"], ["graph", "graph"], ["layout", "layout"], ["edge-route", "route"]]) assert.equal(get(actual, kind, id).revision, 1);
   } finally { worker.dispose(); }
 });
