@@ -57,3 +57,29 @@ test('inference byte preflight rejects hostile, cyclic, deep and oversized input
   const attributes={a:[{x:1}],b:'source'},before=structuredClone(attributes);
   validateInferenceBytes(attributes,policy);assert.deepEqual(attributes,before);assert.ok(!Object.isFrozen(attributes));
 });
+
+test('JSON UTF-8 byte counts preserve every UTF-16 unit, escapes, paired boundaries and exact quotas', () => {
+  const nativeBytes = value => new TextEncoder().encode(canonicalJSON(encodeValue(value))).length;
+  // The native JSON implementation independently decides escaping, including
+  // well-formed JSON escapes for lone surrogates. No production byte helper.
+  for (let unit = 0; unit <= 0xffff; unit++) {
+    const value = String.fromCharCode(unit), expected = nativeBytes(value);
+    assert.equal(validateInferenceBytes(value, policy), expected, `U+${unit.toString(16)}`);
+    assert.equal(validateInferenceBytes(value, {...policy, maxBytes: expected}), expected);
+    assert.throws(() => validateInferenceBytes(value, {...policy, maxBytes: expected - 1}), /encoded bytes/);
+  }
+  const cases = ['','\b\t\n\f\r','\u0000\u000b\u001f','"\\','\u007f\u0080\u07ff\u0800\uffff',
+    '\ud800\udc00','\udbff\udfff','\ud800\ud800\udc00\udfff','\udc00\ud800x\udfff',
+    'a\ud800\udc00b\udbff\udfffc','é한🙂', 'x'.repeat(1024) + '\ud800'];
+  for (const text of cases) for (const value of [text, {[text]:text}, [text, undefined, -0]]) {
+    const expected = nativeBytes(value);
+    assert.equal(validateInferenceBytes(value, {...policy, maxBytes: expected}), expected);
+    assert.throws(() => validateInferenceBytes(value, {...policy, maxBytes: expected - 1}), /encoded bytes/);
+  }
+  let seed = 23;
+  for (let i = 0; i < 100; i++) {
+    const units = Array.from({length: 71}, () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed & 0xffff; });
+    const text = String.fromCharCode(...units), value = {[text]: [text, text.slice(1)]};
+    assert.equal(validateInferenceBytes(value, policy), nativeBytes(value));
+  }
+});

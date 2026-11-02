@@ -1,0 +1,93 @@
+{
+  "node": "v22.23.1",
+  "sha256": "ccd213beb7065be21e3107c737a90a8217d5026fe1c2ee164c3d82c249d26a6e",
+  "checks": [
+    {
+      "id": "data/inferred-graph-lifecycle",
+      "status": "passed",
+      "durationMs": 101.87870800000002
+    },
+    {
+      "id": "data/inferred-graph-explicit-capacity",
+      "status": "passed",
+      "durationMs": 1518.826
+    },
+    {
+      "id": "data/inferred-graph-bounded-execution",
+      "status": "passed",
+      "durationMs": 13291.115958
+    },
+    {
+      "id": "data/inferred-graph-worker-lifecycle",
+      "status": "passed",
+      "durationMs": 167.1889169999995
+    },
+    {
+      "id": "data/inferred-graph-worker-complete-grid",
+      "status": "passed",
+      "durationMs": 11868.101874999998
+    }
+  ],
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1064,
+      "minifiedBytes": 2739729,
+      "gzipBytes": 784568
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 625,
+      "minifiedBytes": 1446516,
+      "gzipBytes": 423440
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24779
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 113,
+      "minifiedBytes": 225913,
+      "gzipBytes": 67689
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 509,
+      "minifiedBytes": 1112884,
+      "gzipBytes": 332580
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 205,
+      "minifiedBytes": 410499,
+      "gzipBytes": 130861
+    }
+  ],
+  "types": "passed",
+  "snippets": [
+    {
+      "id": "graph-inference",
+      "status": "passed",
+      "sha256": "763a08ab408e0e4ebc51c3c1aee83c4c9e841ff22d1ab03e1017dbf6617a2726"
+    },
+    {
+      "id": "graph-inference-worker",
+      "status": "passed",
+      "sha256": "2dc2d94e53c93d1b8c754336235f3fbe50c0029a58677bfda99139ad5113e831"
+    }
+  ],
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "status": "passed"
+}

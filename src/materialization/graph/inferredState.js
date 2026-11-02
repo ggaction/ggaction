@@ -10,7 +10,7 @@ import { deriveSortedRows, normalizeSortTransform } from "../../grammar/sort.js"
 import { normalizeTemporalValue } from "../../grammar/scales/fields.js";
 import { stableFiniteSum } from "../../grammar/numeric.js";
 import { groupingIdentity } from "../../grammar/rowLineage.js";
-import { indexGraphModel } from "../../grammar/graph/model.js";
+import { validateCompletedInferenceModel } from "../../grammar/graph/inferenceJob.js";
 import { graphSourceRows, graphSourceKey, graphAttributes, graphFeatureVector } from "../../grammar/graph/fields.js";
 import { resolveGraphGroupHubs } from "../../grammar/graph/structural.js";
 import { prepareGraphMetricVectors } from "../../grammar/graph/preprocess.js";
@@ -77,7 +77,7 @@ function validateStored(resource) {
   equal(normalized, resource.options.definition, "definition defaults");
   exact(resource.result, ["model", "diagnostics"], "Inferred graph result");
   const { model, diagnostics } = resource.result, execution = Object.hasOwn(normalized, "execution") ? normalized.execution : undefined;
-  indexGraphModel(model, { maxNodes: normalized.maxNodes, maxEdges: normalized.maxEdges }, execution);
+  validateCompletedInferenceModel(model, { maxNodes: normalized.maxNodes, maxEdges: normalized.maxEdges }, execution);
   validateInferenceBytes(resource.result, execution, "Graph inference result bytes");
   const directed = normalized.rule === "sequence" || options.directed === true;
   if (model.selfLoops || model.directed !== directed || model.edges.some(edge => edge.origin !== "inferred" || edge.ruleId !== normalized.ruleId)) throw new TypeError("Inferred graph topology disagrees with its rule.");

@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+import {writeFileSync} from 'node:fs';
+import {Worker} from 'node:worker_threads';
+import {chart} from '../../src/index.js';
+import {createGraphInferenceExecutor,prepareInferredGraphData} from '../../src/graph.js';
+import {expectedGridNeighbors} from '../../test/oracles/inference-grid.js';
+const count=Number(process.argv[2]??10000),prefix=process.argv[3]??'before';
+const side=Math.ceil(Math.sqrt(count)),rows=Array.from({length:count},(_,i)=>{const id=count-1-i;return{id,x:id%side,y:Math.floor(id/side)};});
+const source=chart().createData({id:'points',keyField:'id',values:rows});
+let terminated=0;
+const executor=createGraphInferenceExecutor({createWorker(){
+ const w=new Worker(new URL('./profile-worker.mjs',import.meta.url),{workerData:{output:new URL(`./${prefix}-worker.json`,import.meta.url).pathname}}),listeners=new Map();
+ return {postMessage:m=>w.postMessage(m),terminate(){terminated++;w.terminate();},addEventListener(type,fn){const callback=type==='message'?data=>fn({data}):error=>fn({error});listeners.set(fn,callback);w.on(type,callback)},removeEventListener(type,fn){w.off(type,listeners.get(fn));listeners.delete(fn)}};
+}});
+globalThis.__inferenceProfiles=new Map();globalThis.__inferencePhase='prepare';const start=performance.now();
+const prepared=await prepareInferredGraphData(source,{kind:'create',id:'network',nodeKey:'id',ruleId:'nearest',rule:'knn',features:['x','y'],metric:'manhattan',options:{k:10,search:{algorithm:'kd-tree'}},maxEdges:count*10,execution:{policy:'bounded-inference@1',maxWork:100000000,maxBytes:134217728}},{executor,requestToken:'create'});
+const preparedAt=performance.now();globalThis.__inferencePhase='commit';const program=source.createInferredGraphData({prepared,requestToken:'create'}),committedAt=performance.now();
+const profiles=[...globalThis.__inferenceProfiles];globalThis.__inferencePhase='oracle';
+const resource=program.semanticSpec.resources.find(r=>r.kind==='graph'),model=resource.result.model,expected=expectedGridNeighbors(rows);
+assert.equal(model.nodes.length,count);assert.equal(model.edges.length,count*10);assert.equal(terminated,1);
+for(let i=0;i<expected.length;i++){const e=model.edges[i],want=expected[i];assert.equal(e.sourceKey,model.nodes[want.sourceIndex].key);assert.equal(e.targetKey,model.nodes[want.targetIndex].key);assert.equal(e.weight,want.weight);assert.equal(e.directed,true);assert.deepEqual(e.sourceRows,[want.sourceIndex,want.targetIndex]);}
+assert.equal(program.graphicSpec,source.graphicSpec);assert.equal(source.semanticSpec.resources.length,0);executor.dispose();
+const result={kind:'instrumented-single-run-not-P95',count,edges:model.edges.length,prepareMs:preparedAt-start,commitMs:committedAt-preparedAt,searchWork:resource.result.diagnostics.search.work,profiles};
+writeFileSync(new URL(`./${prefix}-main.json`,import.meta.url),JSON.stringify(result,null,2));console.log(JSON.stringify(result));

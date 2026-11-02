@@ -1,0 +1,38 @@
+{
+  "grammar/graph/inferenceBudget.js": {
+    "floor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "actual": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "grammar/graph/inferenceJob.js": {
+    "floor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "actual": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "materialization/graph/inferredState.js": {
+    "floor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "actual": {
+      "lines": 100,
+      "branches": 94.54,
+      "functions": 100
+    }
+  }
+}

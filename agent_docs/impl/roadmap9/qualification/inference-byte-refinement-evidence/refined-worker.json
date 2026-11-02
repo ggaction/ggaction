@@ -1,0 +1,97 @@
+{
+  "ms": 37140.29625,
+  "profiles": [
+    [
+      "[\"setup\",\"core/immutable.js:cloneAndFreeze\"]",
+      {
+        "calls": 87,
+        "ms": 0.42008699999951205
+      }
+    ],
+    [
+      "[\"worker\",\"core/immutable.js:cloneAndFreeze\"]",
+      {
+        "calls": 7,
+        "ms": 2112.7049169999964
+      }
+    ],
+    [
+      "[\"worker\",\"bytewalk:string-visits\"]",
+      {
+        "calls": 6957986,
+        "bytes": 303944845,
+        "byteBufferAllocations": 0
+      }
+    ],
+    [
+      "[\"worker\",\"grammar/graph/inferenceBudget.js:validateInferenceBytes\"]",
+      {
+        "calls": 8,
+        "ms": 14658.828375000003
+      }
+    ],
+    [
+      "[\"worker\",\"hash:encode\"]",
+      {
+        "calls": 2,
+        "ms": 1806.0314170000006
+      }
+    ],
+    [
+      "[\"worker\",\"hash:canonical\"]",
+      {
+        "calls": 2,
+        "ms": 4953.331124999996
+      }
+    ],
+    [
+      "[\"worker\",\"hash:digest\"]",
+      {
+        "calls": 2,
+        "ms": 5289.054499000004
+      }
+    ],
+    [
+      "[\"worker\",\"grammar/graph/inferenceJob.js:inferenceValueHash\"]",
+      {
+        "calls": 2,
+        "ms": 12048.496583999997
+      }
+    ],
+    [
+      "[\"worker\",\"grammar/graph/inferenceJob.js:createInferenceJob\"]",
+      {
+        "calls": 1,
+        "ms": 328.1585
+      }
+    ],
+    [
+      "[\"worker\",\"grammar/graph/inferenceJob.js:validateInferenceJob\"]",
+      {
+        "calls": 1,
+        "ms": 328.512291
+      }
+    ],
+    [
+      "[\"worker\",\"grammar/graph/model.js:createGraphModel\"]",
+      {
+        "calls": 1,
+        "ms": 8450.117417
+      }
+    ],
+    [
+      "[\"worker\",\"grammar/graph/input.js:resolveInferredGraphInput\"]",
+      {
+        "calls": 1,
+        "ms": 18251.520708999997
+      }
+    ],
+    [
+      "[\"worker\",\"grammar/graph/inferenceJob.js:computeInferenceJob\"]",
+      {
+        "calls": 1,
+        "ms": 37140.221959
+      }
+    ]
+  ]
+}

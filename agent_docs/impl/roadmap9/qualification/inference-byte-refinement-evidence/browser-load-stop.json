@@ -1,0 +1,6 @@
+{
+  "reason": "Parent requested pause new large checks while point capacity Node20 causes memory pressure; no code failure conclusion",
+  "ownedRoot": 21730,
+  "processes": [],
+  "outcome": "Already completed with exit0 before attempted signal; no live owned child was terminated"
+}

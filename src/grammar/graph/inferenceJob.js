@@ -8,13 +8,14 @@ import { normalizeGraphSourceOptions, resolveInferredGraphInput, INFERRED_GRAPH_
 import { inferenceDefinitionPolicy } from "./inferenceDefinition.js";
 import { graphSourceRows } from "./fields.js";
 import { graphLimits, indexGraphModel } from "./model.js";
-import { validateInferenceBytes, INFERENCE_MAX_BYTES } from "./inferenceBudget.js";
+import { validateInferenceBytes, normalizeInferenceExecution, INFERENCE_MAX_BYTES } from "./inferenceBudget.js";
 import { resolvedInferenceResult } from "./inferenceResult.js";
 
 const jobs = new WeakSet();
 // Only a completed validation followed by ownership establishes this proof.
 // A matching hash or a caller's frozen/structured-cloned value is insufficient.
 const completions = new WeakMap();
+const completedModels = new WeakMap();
 const transportDefault = Object.freeze({ policy: "bounded-inference@1", maxWork: 10_000_000, maxBytes: INFERENCE_MAX_BYTES });
 const active = signal => { if (signal !== undefined) AbortSignal.prototype.throwIfAborted.call(signal); };
 export const inferenceValueHash = value => contentDigest(canonicalJSON(encodeValue(value)));
@@ -100,5 +101,17 @@ export function validateInferenceCompletion(input, completion) {
   if (typeof completion.resultHash !== "string" || completion.resultHash !== inferenceValueHash(completion.result)) throw new TypeError("Inference completion result hash is stale.");
   const owned = cloneAndFreeze(completion);
   completions.set(owned, job);
+  completedModels.set(owned.result.model, job.definition);
   return owned;
+}
+
+// A completion establishes this model proof only after all transport validation
+// and deep ownership. A different policy or any clone takes the ordinary path.
+export function validateCompletedInferenceModel(model, options, execution) {
+  const limits = graphLimits(options), policy = normalizeInferenceExecution(execution);
+  const definition = completedModels.get(model);
+  const prior = definition === undefined ? undefined : optional(definition, "execution");
+  if (definition !== undefined && definition.maxNodes === limits.maxNodes && definition.maxEdges === limits.maxEdges &&
+      prior?.policy === policy?.policy && prior?.maxWork === policy?.maxWork && prior?.maxBytes === policy?.maxBytes) return;
+  indexGraphModel(model, limits, policy);
 }

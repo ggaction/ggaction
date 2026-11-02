@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createInferenceJob, validateInferenceJob, computeInferenceJob, validateInferenceCompletion, inferenceValueHash } from '../../../../src/grammar/graph/inferenceJob.js';
+import { createInferenceJob, validateInferenceJob, computeInferenceJob, validateInferenceCompletion, inferenceValueHash, validateCompletedInferenceModel } from '../../../../src/grammar/graph/inferenceJob.js';
 import { resolveInferredGraphInput } from '../../../../src/grammar/graph/input.js';
 import { resolvedInferenceResult } from '../../../../src/grammar/graph/inferenceResult.js';
 import { validateInferenceBytes } from '../../../../src/grammar/graph/inferenceBudget.js';
@@ -91,4 +91,32 @@ test('completion reuse requires the exact validated job and owned completion, ne
  assert.deepEqual(checked,owned);assert.notEqual(checked,sameCompletion);
  let reads=0;const accessor={...owned};Object.defineProperty(accessor,'result',{enumerable:true,get(){reads++;return owned.result;}});
  assert.throws(()=>validateInferenceCompletion(job,Object.freeze(accessor)),/accessor/);assert.equal(reads,0);
+});
+
+
+test('completed model proof requires its exact object and normalized limits and execution', () => {
+ const job=createInferenceJob({...payload(),definition:{...definition,maxNodes:3,maxEdges:3,execution}});
+ const completed=validateInferenceCompletion(job,structuredClone(computeInferenceJob(job))),model=completed.result.model;
+ const limits={maxNodes:3,maxEdges:3};
+ validateCompletedInferenceModel(model,limits,{...execution});
+ validateCompletedInferenceModel(model,{maxNodes:4,maxEdges:3},execution);
+ validateCompletedInferenceModel(model,{maxNodes:3,maxEdges:4},execution);
+ validateCompletedInferenceModel(model,limits,undefined);
+ validateCompletedInferenceModel(model,limits,{...execution,maxBytes:execution.maxBytes-1});
+ validateCompletedInferenceModel(structuredClone(model),limits,execution);
+ assert.throws(()=>validateCompletedInferenceModel(model,{maxNodes:2,maxEdges:3},execution),/nodes/);
+ assert.throws(()=>validateCompletedInferenceModel(model,{maxNodes:3,maxEdges:2},execution),/edges/);
+ assert.throws(()=>validateCompletedInferenceModel(model,limits,{...execution,maxWork:1}),/work/);
+ assert.throws(()=>validateCompletedInferenceModel(model,{...limits,extra:1},execution),/Unknown/);
+ assert.throws(()=>validateCompletedInferenceModel(model,limits,{...execution,extra:1}),/Unknown/);
+ const malformed=structuredClone(model);malformed.adjacency[0].outgoing=[];
+ assert.throws(()=>validateCompletedInferenceModel(Object.freeze(malformed),limits,execution),/adjacency/);
+ const replaced={...model,edges:model.edges.slice(1)};
+ assert.throws(()=>validateCompletedInferenceModel(replaced,limits,execution),/adjacency/);
+ let reads=0;const hostile={...model};Object.defineProperty(hostile,'nodes',{enumerable:true,get(){reads++;return model.nodes;}});
+ assert.throws(()=>validateCompletedInferenceModel(hostile,limits,execution),/accessors/);assert.equal(reads,0);
+ // Default-policy proofs cannot carry explicit bounded execution authority.
+ const ordinary=createInferenceJob(payload()),plain=validateInferenceCompletion(ordinary,computeInferenceJob(ordinary));
+ validateCompletedInferenceModel(plain.result.model,{maxNodes:ordinary.definition.maxNodes,maxEdges:ordinary.definition.maxEdges});
+ assert.throws(()=>validateCompletedInferenceModel(plain.result.model,{maxNodes:ordinary.definition.maxNodes,maxEdges:ordinary.definition.maxEdges},{...execution,maxWork:1}),/work/);
 });

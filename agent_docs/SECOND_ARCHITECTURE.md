@@ -4973,3 +4973,9 @@ encoded input/result byte 한도를 소유한다. 기본10M과 일반 model/layo
 `grammar/graph/inferenceJob.js`는 전체 completion 검증과 deep clone 이후에만 completion→정확한 normalized job을 비공개 WeakMap으로 연결한다. `materialization/graph/inferredState.js`는 준비된 resource의 기존 stored·binding 검증이 모두 끝난 후 동일 deep-owned resource의 stored 검사만 재사용한다. 이 증명은 plain freeze/일반 ownership flag/hash로 부여하지 않는다. Native resource envelope·constructor·revision·원행·source binding은 계속 검증하며 새 캐시 결과·저장 필드·공개 옵션을 만들지 않는다. 측정은 [재사용 기록](impl/roadmap9/qualification/inference-reuse.md)에 분리하고 전체 AT82 자격을 대체하지 않는다.
 
 이번 proof 재사용의 같은5926cc74 archive는3Node에서 검증됐으며 graph entry 실측67,610bytes의 최소 상한67,700, package1246entries/packed1,787,400/unpacked8,055,200을 적용했다. Full 및 다른 entry는 앞의 상한을 유지한다.
+
+### 추론 완료 모델과 UTF-8 사전 검사
+
+완료된 inferred graph의 model 검증 증명은 전체 completion 검증 및 deep ownership 이후에만 등록되며, 최초 stored 검사에서 exact model·동일 정규 limits/execution에 한해 index 재생성을 생략한다. 일반 graph index·source/metric binding 및 policy가 바뀐 검사는 유지한다. Inference byte owner는 JSON escape/UTF-8 길이를 직접 세어 기존 각 문자열·key의 lower-bound/전체quota·own-data 경계를 유지하면서 임시 escaped string/byte array를 제거한다. Core value codec/hash, 공개 transport/schema 및 solver/work 단위는 그대로다. 원10k/100k 계측과 독립 UTF-16 전수 검산은 [바이트 할당 기록](impl/roadmap9/qualification/inference-byte-refinement.md)에 두고 최종 AT82 성능 검증과 구분한다.
+
+이번 refinement의 package 실측1246entries/Node20packed1,787,748/unpacked8,056,744에 최소 한도1,787,800/8,056,800을 적용한다. Node24 Full785,925/graph67,837gzipbytes에 한도786,000/67,900을 적용하며 다른 entry는 유지한다. 최초 실패와 동일 archive 재검산은 위 refinement 기록에 보존한다.
