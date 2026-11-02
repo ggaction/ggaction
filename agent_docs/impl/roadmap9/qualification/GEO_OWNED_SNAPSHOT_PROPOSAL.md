@@ -34,3 +34,11 @@ Temporary seen WeakSet은 기존 입력 root가 이미 강하게 보유한 conta
 ## 채택 기록
 
 2026-11-02 Root는 revision `0d700c2b4`의 proposal과 exact diff를 검토하고 남은 사용자 포괄 승인 안의 내부 병목 개선으로 채택했다. 원 순회·scratch·descriptor·budget·오류 순서를 모두 유지한 뒤 deep-owned/ordinary-prototype/alias-free tree만 반환한다. shallow-owned, alias, null prototype, 잘못된 restore 입력의 fallback과 exact diagnostics를 제품 테스트로 고정한다. 전역 registry 변경이나 retained cache 추가는 승인 대상이 아니다. 큰 원규모 실행은 scalar 작업 종료 후 슬롯을 조율한다.
+
+## 제품 검증 checkpoint
+
+채택한 exact diff를 적용했고 설명 주석만 보탰다. Capability owning tests는 엄격한 owned identity 재사용, mutable caller 격리, alias distinctness, null-prototype 정상화, descriptor/cycle/finite JSON 검사, 원 error·count/work, depth/value/work 경계와 잘못된 restore의 semantic 거부를 고정한다. Geo/animation 394개와 집중 36개가 통과했으며 input.js line/branch/function 모두 100%다. Package/discovery 30개, source docs 248개, built docs 186 pages/1607 LLM 검증도 통과했다. 최초 docs 검사는 stale provenance 3개를 보고했으며 canonical generation 후 248/248로 통과했다.
+
+새 archive SHA256은 4fbdf2a66fe9a8396b43dcbc6fde2aba2ca0c5e39275a9fe37ef17115db52fa9다. Node20/24 strict pack bytes가 같고 1262 entries / 1,822,571 packed / 8,191,580 unpacked다. 원 최소 100B 올림에 따라 packed/unpacked ceilings만 1,822,600 / 8,191,600으로 올렸다. 3Node installed runtime·strict TS·실행 문서·6 bundles 및 source-free minified Chromium DPR1/2가 통과했다. Full gzip 788965B는 기존 cap 안이며 animation 343602B의 최소 100B 올림 cap만 343700으로 올렸다. 작은 20vertex 100cycle의 100개 old scene WeakRefs는 모두 회수됐다.
+
+[검증 manifest](geo-owned-snapshot-evidence/verification.json)는 동일 archive와 정확한 범위를 고정한다. 이 시점에 새 archive 원 100k와 원 100cycle/exclusive SLO는 미완료다. 앞선 archive의 큰 rebase 실패를 성공으로 바꾸지 않는다. 원본 read-only proof는 제품 적용 전 revision 0d700c2b4에서 실행하는 기록이다.
