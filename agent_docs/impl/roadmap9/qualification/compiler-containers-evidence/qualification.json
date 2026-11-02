@@ -1179,6 +1179,1335 @@
     "render.log": {
       "sha256": "63b88f8c52baf2a888e5d5ec76cc47d9506f1e8f9bfbb0948d23828fdfe67eb5",
       "bytes": 12481
+    },
+    "pin-provenance.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pin-machine.log": {
+      "sha256": "9d5f37929938983723667923bfd7c6f1802a50c4a0eddfbfd32ef30557b54d25",
+      "bytes": 45
+    },
+    "pin-llm.log": {
+      "sha256": "4b6bcf79b8d7c80c0d7976c40af2ecc0457b5792bd114ba0e84d609c15ec6eea",
+      "bytes": 73
+    },
+    "pin-docs.log": {
+      "sha256": "73106462edbc2689b53bf69c1bd80089659c16411dd8d05baa055dc9e858178e",
+      "bytes": 4233
+    },
+    "pin-pack.json": {
+      "sha256": "f833cf50316b5f6df57fa0fbb3262fa0c67e52f3a510ed96e1b77fb52273fbf2",
+      "bytes": 427
+    },
+    "pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
+  },
+  "sourceRevision": "ab8cb89b2a753fda5e819983db47d7376a97f39e",
+  "sourcePin": {
+    "sourceCommit": "ab8cb89b2a753fda5e819983db47d7376a97f39e",
+    "provenance": {
+      "schemaVersion": 1,
+      "status": "development",
+      "packageVersion": "0.0.26",
+      "contractId": "sha256:74348116ae692efc503e09fbc17b9a823e544bd89cfc4a134073b35de9f045bf",
+      "sourceCommit": "ab8cb89b2a753fda5e819983db47d7376a97f39e",
+      "sourceRef": "ab8cb89b2a753fda5e819983db47d7376a97f39e",
+      "exampleSourceRef": "64045b214475110de9621328bbe7d060c9149f04",
+      "baseline": {
+        "tag": "v0.0.13",
+        "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
+        "actionCount": 234
+      },
+      "actionCount": 379,
+      "actionAvailability": {
+        "createCanvas": {
+          "availableBy": "v0.0.13"
+        },
+        "editCanvas": {
+          "availableBy": "v0.0.13"
+        },
+        "fitCanvas": {
+          "availableBy": "v0.0.13"
+        },
+        "applyTextMetrics": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeTextMetrics": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "applyTheme": {
+          "availableBy": "v0.0.13"
+        },
+        "removeTheme": {
+          "availableBy": "v0.0.13"
+        },
+        "createData": {
+          "availableBy": "v0.0.13"
+        },
+        "applyDataUpdate": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "reviseData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeResource": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeCoordinate": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "bindMarkData": {
+          "availableBy": "v0.0.13"
+        },
+        "filterData": {
+          "availableBy": "v0.0.13"
+        },
+        "filterMarks": {
+          "availableBy": "v0.0.13"
+        },
+        "removeMarkFilter": {
+          "availableBy": "v0.0.13"
+        },
+        "setMarkVisibility": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeMarkVisibility": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "selectMarks": {
+          "availableBy": "v0.0.13"
+        },
+        "editMarkSelection": {
+          "availableBy": "v0.0.13"
+        },
+        "removeMarkHighlight": {
+          "availableBy": "v0.0.13"
+        },
+        "removeMarkSelection": {
+          "availableBy": "v0.0.13"
+        },
+        "highlightMarks": {
+          "availableBy": "v0.0.13"
+        },
+        "createDensityData": {
+          "availableBy": "v0.0.13"
+        },
+        "createSummaryData": {
+          "availableBy": "v0.0.13"
+        },
+        "createBinData": {
+          "availableBy": "v0.0.13"
+        },
+        "createFlattenData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createLookupData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createPivotData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createFoldData": {
+          "availableBy": "v0.0.13"
+        },
+        "createImageResource": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "replaceImageResource": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createFontResource": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "replaceFontResource": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createImageMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editImageMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createHierarchyData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editHierarchyData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "layoutHierarchy": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editLayout": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createTreePlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGraphPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGraphPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "bundleGraphEdges": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editEdgeRoute": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editTreePlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createPartitionPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editPartitionPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createTreemapPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editTreemapPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createParameter": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createCalendarLayout": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createTablePlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editTablePlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createTrailPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editTrailPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createWaterfallPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editWaterfallPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createOHLCPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editOHLCPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createPyramidPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editPyramidPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createCalendarPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editCalendarPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeometryData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createProjection": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editProjection": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "navigateProjection": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeometryData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeoLODData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeoLODData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeoRouteData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeoRouteData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeoJoinData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeoJoinData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createContourData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createDensityContourData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editContourData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeoShapeMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeoShapeMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeoPointMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeoPointMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeoLineMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeoLineMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGraticule": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGraticule": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeoAnnotation": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeoAnnotation": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createContourMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editContourMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createFlowData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editFlowData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "layoutFlow": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createFlowNodes": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editFlowNodes": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createFlowLinks": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editFlowLinks": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGraphData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createInferredGraphData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editInferredGraphData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGraphData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "layoutGraph": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editParameter": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeParameter": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createComputedData": {
+          "availableBy": "v0.0.13"
+        },
+        "createNormalizedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createCompleteData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createImputedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createStackData": {
+          "availableBy": "v0.0.13"
+        },
+        "createRegressionData": {
+          "availableBy": "v0.0.13"
+        },
+        "createRegressionStatisticsData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editRegressionStatisticsData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createIntervalData": {
+          "availableBy": "v0.0.13"
+        },
+        "createECDFData": {
+          "availableBy": "v0.0.13"
+        },
+        "createTimeUnitData": {
+          "availableBy": "v0.0.13"
+        },
+        "createWindowData": {
+          "availableBy": "v0.0.13"
+        },
+        "createBin2DData": {
+          "availableBy": "v0.0.13"
+        },
+        "createSortedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editDerivedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editComputedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editFilteredData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editFlattenData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editLookupData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editPivotData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editFoldData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editSummaryData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editBinData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editTimeUnitData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editWindowData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editDensityData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editStackData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editRegressionData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editSortedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editIntervalData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editECDFData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editNormalizedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editCompleteData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editImputedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editBin2DData": {
+          "availableBy": "v0.0.13"
+        },
+        "createPointMark": {
+          "availableBy": "v0.0.13"
+        },
+        "editPointMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createTickMark": {
+          "availableBy": "v0.0.13"
+        },
+        "editTickMark": {
+          "availableBy": "v0.0.13"
+        },
+        "jitterPoints": {
+          "availableBy": "v0.0.13"
+        },
+        "removeJitter": {
+          "availableBy": "v0.0.13"
+        },
+        "packPoints": {
+          "availableBy": "v0.0.13"
+        },
+        "removePointPacking": {
+          "availableBy": "v0.0.13"
+        },
+        "createLineMark": {
+          "availableBy": "v0.0.13"
+        },
+        "editLineMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createBarMark": {
+          "availableBy": "v0.0.13"
+        },
+        "editBarMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createAreaMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createArcMark": {
+          "availableBy": "v0.0.13"
+        },
+        "editArcMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createRectMark": {
+          "availableBy": "v0.0.13"
+        },
+        "editRectMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createRuleMark": {
+          "availableBy": "v0.0.13"
+        },
+        "editRuleMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createTextMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createTextPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createMarkLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editMarkLabelSelection": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editMarkLabelPlacement": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeMarkLabels": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createAnnotation": {
+          "availableBy": "v0.0.13"
+        },
+        "editAnnotation": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createStatisticalReference": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createOverlay": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createLayerPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createAdjacentPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editCompositionScales": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editOverlay": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createReferenceLine": {
+          "availableBy": "v0.0.13"
+        },
+        "createReferenceBand": {
+          "availableBy": "v0.0.13"
+        },
+        "editTextMark": {
+          "availableBy": "v0.0.13"
+        },
+        "layoutLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "removeLabelLayout": {
+          "availableBy": "v0.0.13"
+        },
+        "editAreaMark": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeX": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeY": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeTheta": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeR": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeX2": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeColor": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeStrokeDash": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeSize": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeShape": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeAngle": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeOpacity": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeRadius": {
+          "availableBy": "v0.0.13"
+        },
+        "encodePointRadius": {
+          "availableBy": "v0.0.13"
+        },
+        "removePointRadius": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeXOffset": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeYOffset": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeY2": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeYRange": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeXRange": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeGroup": {
+          "availableBy": "v0.0.13"
+        },
+        "layoutSeries": {
+          "availableBy": "v0.0.13"
+        },
+        "encodePathOrder": {
+          "availableBy": "v0.0.13"
+        },
+        "orderCategories": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeParallelCoordinates": {
+          "availableBy": "v0.0.13"
+        },
+        "removePathOrder": {
+          "availableBy": "v0.0.13"
+        },
+        "removeCategoryOrder": {
+          "availableBy": "v0.0.13"
+        },
+        "removeEncoding": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeText": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeDx": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "encodeDy": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "encodeHistogram": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeDensity": {
+          "availableBy": "v0.0.13"
+        },
+        "editDensity": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeHorizon": {
+          "availableBy": "v0.0.13"
+        },
+        "editHorizon": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeBarWidth": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeStroke": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeStrokeWidth": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeChannels": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createRegression": {
+          "availableBy": "v0.0.13"
+        },
+        "editRegression": {
+          "availableBy": "v0.0.13"
+        },
+        "createErrorBar": {
+          "availableBy": "v0.0.13"
+        },
+        "editErrorBar": {
+          "availableBy": "v0.0.13"
+        },
+        "createErrorBand": {
+          "availableBy": "v0.0.13"
+        },
+        "editErrorBand": {
+          "availableBy": "v0.0.13"
+        },
+        "editErrorBandBoundary": {
+          "availableBy": "v0.0.13"
+        },
+        "createBoxPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "editBoxPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createGradientPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "editGradientPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createViolinPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "editViolinPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createScatterPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createIntervalPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createRegressionPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createDotPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createLollipopPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createDumbbellPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "editEndpointPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createECDFPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "editECDFPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createLinePlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createPolarScatterPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createPolarLinePlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadarPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "editRadarPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createRugPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createStripPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createBeeswarmPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createRaincloudPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "editRaincloudPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createAreaPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createBarPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createHistogram": {
+          "availableBy": "v0.0.13"
+        },
+        "createPiePlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createRosePlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadialBarPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createDensityPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createHorizonPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createHeatmap": {
+          "availableBy": "v0.0.13"
+        },
+        "createParallelCoordinates": {
+          "availableBy": "v0.0.13"
+        },
+        "removeMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createParallelAxes": {
+          "availableBy": "v0.0.13"
+        },
+        "createParallelAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "editParallelAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "removeParallelAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "removeParallelAxes": {
+          "availableBy": "v0.0.13"
+        },
+        "createAxes": {
+          "availableBy": "v0.0.13"
+        },
+        "editAxes": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createXAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "createYAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "createThetaAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadialAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "createThetaAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadialAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "createThetaAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadialAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "createThetaAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadialAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "createThetaAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadialAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "editThetaAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "editRadialAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "editThetaAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "editRadialAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "editThetaAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editRadialAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editThetaAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "editRadialAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "createXAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "createYAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "editXAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "editYAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "createXAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "createYAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "editXAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "editYAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "createXAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "createYAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editXAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editYAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "createXAxisTicksAndLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "createYAxisTicksAndLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editXAxisTicksAndLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editYAxisTicksAndLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "createXAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "createYAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "editXAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "editYAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "editXAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "editYAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "editThetaAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "editRadialAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "removeXAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "removeYAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "removeThetaAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "removeRadialAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "createGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "createHorizontalGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "createVerticalGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "createThetaGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadialGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "editHorizontalGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "editVerticalGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "editThetaGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "editRadialGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "editGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "removeGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "createLegend": {
+          "availableBy": "v0.0.13"
+        },
+        "editLegend": {
+          "availableBy": "v0.0.13"
+        },
+        "editLegendBlock": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editLegendLayout": {
+          "availableBy": "v0.0.13"
+        },
+        "editLegendLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editLegendTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "editLegendSymbols": {
+          "availableBy": "v0.0.13"
+        },
+        "editLegendBorder": {
+          "availableBy": "v0.0.13"
+        },
+        "removeLegend": {
+          "availableBy": "v0.0.13"
+        },
+        "createGuides": {
+          "availableBy": "v0.0.13"
+        },
+        "createTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "editTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "removeTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "createCoordinate": {
+          "availableBy": "v0.0.13"
+        },
+        "editCoordinate": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createScale": {
+          "availableBy": "v0.0.13"
+        },
+        "editScale": {
+          "availableBy": "v0.0.13"
+        },
+        "editXScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editYScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editXOffsetScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editYOffsetScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editParallelScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editThetaScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editRScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editColorScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editStrokeScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editSizeScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editOpacityScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editShapeScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editStrokeWidthScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editStrokeDashScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createDerivedData": {
+          "availableBy": "v0.0.13"
+        },
+        "createRegressionBand": {
+          "availableBy": "v0.0.13"
+        },
+        "editRegressionBand": {
+          "availableBy": "v0.0.13"
+        },
+        "createRegressionLine": {
+          "availableBy": "v0.0.13"
+        },
+        "editRegressionLine": {
+          "availableBy": "v0.0.13"
+        },
+        "editCompositionLayout": {
+          "availableBy": "v0.0.13"
+        },
+        "replaceCompositionChild": {
+          "availableBy": "v0.0.13"
+        },
+        "insertCompositionChild": {
+          "availableBy": "v0.0.13"
+        },
+        "removeCompositionChild": {
+          "availableBy": "v0.0.13"
+        },
+        "reorderCompositionChildren": {
+          "availableBy": "v0.0.13"
+        },
+        "facet": {
+          "availableBy": "v0.0.13"
+        },
+        "facetGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "repeatCharts": {
+          "availableBy": "v0.0.13"
+        },
+        "editFacetSource": {
+          "availableBy": "v0.0.13"
+        },
+        "editFacetScales": {
+          "availableBy": "v0.0.13"
+        },
+        "editFacetGuides": {
+          "availableBy": "v0.0.13"
+        },
+        "editFacetHeaders": {
+          "availableBy": "v0.0.13"
+        },
+        "editSemantic": {
+          "availableBy": "v0.0.13"
+        },
+        "createGraphics": {
+          "availableBy": "v0.0.13"
+        },
+        "editGraphics": {
+          "availableBy": "v0.0.13"
+        }
+      }
+    },
+    "archiveUnchanged": "eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71",
+    "documentationTests": 18
   }
 }
