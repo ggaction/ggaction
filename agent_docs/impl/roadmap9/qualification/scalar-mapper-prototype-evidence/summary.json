@@ -1,0 +1,347 @@
+{
+  "status": "ready-for-review",
+  "sourceRevision": "b3da444d795248370c9c14bc6f158b01f67eff7a",
+  "node": "v22.23.1",
+  "inputSources": {
+    "src/grammar/scales/continuous.js": "97ad380ba556ceb332241d42c0a79297aec128d7551d97afe4e80d17ee03de13",
+    "src/grammar/scales/transformed.js": "b939a3e5276718a977caa4e4def86c44208dc06700aabcaf4b7335eddcc8e8e1",
+    "src/grammar/scales/mapping.js": "abd6f57612c14c1137f2fc7f013dc225ea3b713fd517a3b9c755b83967f65d95",
+    "src/grammar/animation/positions.js": "746ef92f9c8306b56e0f151e76c0d35d1ad39e9534b496bb0d36c8cb64730211"
+  },
+  "candidateSources": {
+    "scalar": {
+      "src/grammar/scales/continuous.js": "f5d933fcfdf2a918b6c5f847c5074da1d38ed9bf15dbf6a45f1108da81be650c",
+      "src/grammar/scales/transformed.js": "b9449a34e6b811dd0c3d57c7da500cfe405c082de19e2c5fac342009e055c9ba",
+      "src/grammar/scales/mapping.js": "78af1c0b9e282de10f4f40576d9a86583c36dc75c1df3c2c76c51033f0949fb4",
+      "src/grammar/animation/positions.js": "b3adaf1c56cd90d302bddc48856ab2063ff7f9b7a091332343cbc62679f1d63d"
+    },
+    "scalar-record": {
+      "src/grammar/scales/continuous.js": "f5d933fcfdf2a918b6c5f847c5074da1d38ed9bf15dbf6a45f1108da81be650c",
+      "src/grammar/scales/transformed.js": "b9449a34e6b811dd0c3d57c7da500cfe405c082de19e2c5fac342009e055c9ba",
+      "src/grammar/scales/mapping.js": "78af1c0b9e282de10f4f40576d9a86583c36dc75c1df3c2c76c51033f0949fb4",
+      "src/grammar/animation/positions.js": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7"
+    }
+  },
+  "productSourceModified": false,
+  "productAdoption": false,
+  "ownerTests": {
+    "scalar": 14,
+    "scalarAndRecord": 14
+  },
+  "oracle": {
+    "kind": "Evidence-only extracted scalar callback versus unchanged vector owner and independent literal oracle",
+    "node": "v22.23.1",
+    "comparisons": 91824,
+    "literals": 19,
+    "rejections": 26,
+    "getterCalls": 0,
+    "mutationIsolation": true,
+    "opaqueToken": true,
+    "productSourceModified": false,
+    "scope": "six types, finite extremes, signed zero, descending/collapsed domains, range reversal, clamp, transform parameters, missing/unknown and error class/message"
+  },
+  "ownership": {
+    "node": "v22.23.1",
+    "samples": 90,
+    "outputOwned": true,
+    "childrenOwned": true,
+    "callerInputsNeverStamped": true,
+    "mutatedCopiesRevalidated": true,
+    "recordVariant": true
+  },
+  "comparisons": {
+    "scalar": {
+      "linear": {
+        "file": "product-compare-linear.json",
+        "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+        "counts": [
+          {
+            "clones": 6035,
+            "ownedAdds": 10048,
+            "weakAdds": 16084,
+            "weakHas": 39151
+          },
+          {
+            "clones": 4035,
+            "ownedAdds": 8048,
+            "weakAdds": 12084,
+            "weakHas": 29155
+          }
+        ],
+        "versions": [
+          3,
+          4
+        ],
+        "allFullFrameMeaningWorkWireAssertionsPassed": true
+      },
+      "time": {
+        "file": "product-compare-scalar-time.json",
+        "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+        "counts": [
+          {
+            "clones": 6035,
+            "ownedAdds": 10048,
+            "weakAdds": 16084,
+            "weakHas": 39151
+          },
+          {
+            "clones": 4035,
+            "ownedAdds": 8048,
+            "weakAdds": 12084,
+            "weakHas": 29155
+          }
+        ],
+        "versions": [
+          3,
+          4
+        ],
+        "allFullFrameMeaningWorkWireAssertionsPassed": true
+      },
+      "log": {
+        "file": "product-compare-scalar-log.json",
+        "inputSHA256": "1f98d0eea5b555ec807fa1ec89e1dd40a1ec282928885c84a9317307093dadce",
+        "counts": [
+          {
+            "clones": 8035,
+            "ownedAdds": 12048,
+            "weakAdds": 20084,
+            "weakHas": 45151
+          },
+          {
+            "clones": 4037,
+            "ownedAdds": 8050,
+            "weakAdds": 12088,
+            "weakHas": 29161
+          }
+        ],
+        "versions": [
+          3,
+          4
+        ],
+        "allFullFrameMeaningWorkWireAssertionsPassed": true
+      },
+      "pow": {
+        "file": "product-compare-scalar-pow.json",
+        "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+        "counts": [
+          {
+            "clones": 8035,
+            "ownedAdds": 12048,
+            "weakAdds": 20084,
+            "weakHas": 45151
+          },
+          {
+            "clones": 4037,
+            "ownedAdds": 8050,
+            "weakAdds": 12088,
+            "weakHas": 29161
+          }
+        ],
+        "versions": [
+          3,
+          4
+        ],
+        "allFullFrameMeaningWorkWireAssertionsPassed": true
+      },
+      "sqrt": {
+        "file": "product-compare-scalar-sqrt.json",
+        "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+        "counts": [
+          {
+            "clones": 8035,
+            "ownedAdds": 12048,
+            "weakAdds": 20084,
+            "weakHas": 45151
+          },
+          {
+            "clones": 4037,
+            "ownedAdds": 8050,
+            "weakAdds": 12088,
+            "weakHas": 29161
+          }
+        ],
+        "versions": [
+          3,
+          4
+        ],
+        "allFullFrameMeaningWorkWireAssertionsPassed": true
+      },
+      "symlog": {
+        "file": "product-compare-scalar-symlog.json",
+        "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+        "counts": [
+          {
+            "clones": 8035,
+            "ownedAdds": 12048,
+            "weakAdds": 20084,
+            "weakHas": 45151
+          },
+          {
+            "clones": 4037,
+            "ownedAdds": 8050,
+            "weakAdds": 12088,
+            "weakHas": 29161
+          }
+        ],
+        "versions": [
+          3,
+          4
+        ],
+        "allFullFrameMeaningWorkWireAssertionsPassed": true
+      }
+    },
+    "scalar-record": {
+      "linear": {
+        "file": "product-compare-scalar-record-linear.json",
+        "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+        "counts": [
+          {
+            "clones": 6035,
+            "ownedAdds": 10048,
+            "weakAdds": 16084,
+            "weakHas": 39151
+          },
+          {
+            "clones": 2035,
+            "ownedAdds": 8048,
+            "weakAdds": 10084,
+            "weakHas": 23155
+          }
+        ],
+        "versions": [
+          3,
+          4
+        ],
+        "allFullFrameMeaningWorkWireAssertionsPassed": true
+      },
+      "time": {
+        "file": "product-compare-scalar-record-time.json",
+        "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+        "counts": [
+          {
+            "clones": 6035,
+            "ownedAdds": 10048,
+            "weakAdds": 16084,
+            "weakHas": 39151
+          },
+          {
+            "clones": 2035,
+            "ownedAdds": 8048,
+            "weakAdds": 10084,
+            "weakHas": 23155
+          }
+        ],
+        "versions": [
+          3,
+          4
+        ],
+        "allFullFrameMeaningWorkWireAssertionsPassed": true
+      },
+      "log": {
+        "file": "product-compare-scalar-record-log.json",
+        "inputSHA256": "1f98d0eea5b555ec807fa1ec89e1dd40a1ec282928885c84a9317307093dadce",
+        "counts": [
+          {
+            "clones": 8035,
+            "ownedAdds": 12048,
+            "weakAdds": 20084,
+            "weakHas": 45151
+          },
+          {
+            "clones": 2037,
+            "ownedAdds": 8050,
+            "weakAdds": 10088,
+            "weakHas": 23161
+          }
+        ],
+        "versions": [
+          3,
+          4
+        ],
+        "allFullFrameMeaningWorkWireAssertionsPassed": true
+      },
+      "pow": {
+        "file": "product-compare-scalar-record-pow.json",
+        "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+        "counts": [
+          {
+            "clones": 8035,
+            "ownedAdds": 12048,
+            "weakAdds": 20084,
+            "weakHas": 45151
+          },
+          {
+            "clones": 2037,
+            "ownedAdds": 8050,
+            "weakAdds": 10088,
+            "weakHas": 23161
+          }
+        ],
+        "versions": [
+          3,
+          4
+        ],
+        "allFullFrameMeaningWorkWireAssertionsPassed": true
+      },
+      "sqrt": {
+        "file": "product-compare-scalar-record-sqrt.json",
+        "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+        "counts": [
+          {
+            "clones": 8035,
+            "ownedAdds": 12048,
+            "weakAdds": 20084,
+            "weakHas": 45151
+          },
+          {
+            "clones": 2037,
+            "ownedAdds": 8050,
+            "weakAdds": 10088,
+            "weakHas": 23161
+          }
+        ],
+        "versions": [
+          3,
+          4
+        ],
+        "allFullFrameMeaningWorkWireAssertionsPassed": true
+      },
+      "symlog": {
+        "file": "product-compare-scalar-record-symlog.json",
+        "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+        "counts": [
+          {
+            "clones": 8035,
+            "ownedAdds": 12048,
+            "weakAdds": 20084,
+            "weakHas": 45151
+          },
+          {
+            "clones": 2037,
+            "ownedAdds": 8050,
+            "weakAdds": 10088,
+            "weakHas": 23161
+          }
+        ],
+        "versions": [
+          3,
+          4
+        ],
+        "allFullFrameMeaningWorkWireAssertionsPassed": true
+      }
+    }
+  },
+  "failures": [
+    {
+      "file": "first-time-fixture-failure.log.gz",
+      "classification": "Evidence fixture omitted fieldType temporal; corrected before successful time run"
+    }
+  ],
+  "limitations": [
+    "No original 100k run",
+    "No source-free archive/browser or critical coverage",
+    "No timing/P95/SLO claim",
+    "Callback extracted from current source by loader; product shared-helper extraction remains unimplemented",
+    "No retained-heap 100-cycle qualification"
+  ]
+}

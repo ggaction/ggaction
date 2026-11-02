@@ -1,0 +1,12 @@
+{
+  "kind": "Evidence-only extracted scalar callback versus unchanged vector owner and independent literal oracle",
+  "node": "v22.23.1",
+  "comparisons": 91824,
+  "literals": 19,
+  "rejections": 26,
+  "getterCalls": 0,
+  "mutationIsolation": true,
+  "opaqueToken": true,
+  "productSourceModified": false,
+  "scope": "six types, finite extremes, signed zero, descending/collapsed domains, range reversal, clamp, transform parameters, missing/unknown and error class/message"
+}
