@@ -630,6 +630,51 @@
     "build.log": {
       "sha256": "0e37ce6bca5b269a34e4ce911cf246bbf37d48d1ee21f8aab192efc04ff84694",
       "bytes": 420
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "51ec95ee37d997859ca47aa32f85f1552eaf3e6fffb7dcfe54f4d02abeb84c9b",
+      "bytes": 1810
+    },
+    "source-pin-pack.json": {
+      "sha256": "938c0e452fc5c020c11b6130c23c7c627cf7d27a31ad5b12f45e4efc6185cb4a",
+      "bytes": 383
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "upstream-review-merge.log": {
+      "sha256": "96bb6a194a796153cbd0c640642866371219451832063763d544b942a8d97c4e",
+      "bytes": 66
     }
+  },
+  "sourceRevision": "1e743f08b8ecf70f242ce6f66a5256f37fbe02af",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  },
+  "metadataIntegration": {
+    "upstreamReview": "36de5a4f9bd4990804ef94671a06c7041c5f7456",
+    "runtimePackageInputsChanged": false,
+    "documentationRepair": "Trim one upstream internal record blank EOF detected by diff-check; no runtime evidence change."
   }
 }

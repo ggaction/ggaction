@@ -4,7 +4,7 @@
 - [x] SHA8×3Node·critical100/100/100·소비 owner30·계약30·문서246
 - [x] 같은 archive3Node 각각 공개 runtime12·strict TS·문서·peers·6bundles
 - [x] Source minified offline animation browser1·문서186페이지/LLM1607개
-- [ ] Source pin과 같은 archive 재확인
+- [x] Source pin과 같은 archive 재확인
 - [ ] 비동기 encoder·원 큰 route·100ms·P95/heap 및 최종 STEP 완료
 
 [qualification.json](qualification.json)이 정확한 실행·재사용·할당·미완료 경계를 소유한다.
@@ -23,3 +23,5 @@ graph69473/animation340335/interaction137407B에 현재 최소 cap과 README Bas
 animation offline/embedded assets, route 저장/hash/worker 및 inference lifecycle의12공개 사례를
 strict types·정본 snippet·optional peers와 함께 세 Node에서 실행했다. 각6bundle도 통과했다.
 원 큰 Geo·point/partition fixture와 최종 P95는 이 체크포인트에서 새로 실행하지 않았다.
+
+Source `1e743f08b8ecf70f242ce6f66a5256f37fbe02af` pin 뒤 문서 계약9개와 같은 archive SHA가 통과했다. Read-only cursor 검토36de5도 병합했으며 제품/package 입력 변화0이다. 이를 새 whole-suite 또는 성능 검증으로 세지 않는다.

@@ -1,0 +1,59 @@
+{
+  "status": "research-prototype-only",
+  "node": "v22.23.1",
+  "source": {
+    "owner": "src/grammar/graph/inferenceBudget.js",
+    "ownerSHA256": "d2a8a405a44620653c2611775d20b6fde3fc8c430baf032e17553c89f3bf931a",
+    "stringBodySHA256": "b48aea7ed6a9c274856b8352ae285878154484983c0967ae2bc942b4d5421af3",
+    "transform": "inject one yield per original scalar loop iteration; original minimum check, all length arithmetic and final quota check retained",
+    "productChanges": 0
+  },
+  "groups": [
+    {
+      "name": "whole tagged bytes/hash, insertion and integer-key order, tags, hole, DAG, quotas",
+      "cases": 138
+    },
+    {
+      "name": "production scalar body/native JSON UTF16 count and split UTF8 bytes",
+      "units": 65536
+    },
+    {
+      "name": "strict descriptor and error boundaries; generic getter behavior unchanged",
+      "passed": true
+    },
+    {
+      "name": "string minimum quota before any escaping/TextEncoder allocation",
+      "allocations": 0,
+      "escapes": 0,
+      "fixedScratchBytes": 32
+    },
+    {
+      "name": "array minimum before descriptor allocation and oversized key quota",
+      "largeInspections": 0,
+      "getterReads": 0
+    },
+    {
+      "name": "actual macrotask abort at every small chunk boundary, terminal1/commit0/clear",
+      "boundaries": 16,
+      "maxObservedAbortLatencyMs": 0.18237499999997908,
+      "complete": {
+        "chunks": 17,
+        "terminal": 1,
+        "commits": 1,
+        "callbacks": 0,
+        "abortLatencyMs": null,
+        "digest": "36f203e2ba1677088ecaa6362e28b3a80fcb2fc6f7d0074e1972bb3eb75546d1"
+      }
+    }
+  ],
+  "productChanges": 0,
+  "largeExecutions": 0,
+  "performanceQualification": false,
+  "commitCounterMeaning": "final digest publication only; no native ChartProgram action is invoked",
+  "remaining": [
+    "wide native enumeration is indivisible",
+    "BigInt.toString is indivisible",
+    "immutable snapshot acquisition is outside cursor",
+    "no route/native authority or public async entry"
+  ]
+}

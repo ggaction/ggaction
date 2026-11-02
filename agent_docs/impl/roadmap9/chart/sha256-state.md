@@ -39,4 +39,3 @@ Full787529/Basic424889/SVG25480/Graph69401/Animation334243/Interaction131841에 
 
 검사는 root의 별도 Geo 기능 작업과 병행했고 성능/heap/P95 측정이 아니다. 큰 fixture와
 encoder/cancel scheduler/route v2는 실행·구현하지 않았다.
-

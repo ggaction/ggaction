@@ -4,7 +4,9 @@
 
 - [x] `a9994e302`의 기존 core·직접 call-site·route/asset/inference/animation 소비자 읽기 감사
 - [x] 키 순서·tag·signed zero·Unicode·padding·getter·기존 오류 우선순위 소형 baseline6묶음
-- [ ] Root의 구체 추출 범위 채택
+- [x] Root의 첫 SHA 추출 범위 채택 및 [제품 검증](sha256-state.md)
+- [x] 두 번째 개념의 [strict cursor 실행 검토](tagged-cursor-review.md) (제품0)
+- [ ] JSON scalar/cursor 제품 범위 채택
 - [ ] 공유 scalar owner 구현 및 sync compatibility·bounded cursor·취소 검증
 - [ ] Route v2 validation/hash/clone/worker/원자 commit 연결과 실제100ms 인수
 
