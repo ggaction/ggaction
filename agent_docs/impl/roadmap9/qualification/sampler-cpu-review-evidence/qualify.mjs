@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import {readFile,writeFile,readdir} from 'node:fs/promises';
+import {execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
+import {gzipSync} from 'node:zlib';
+import {transform} from './loader.mjs';
+const root=new URL('../../../../../',import.meta.url),artifacts=new URL('.artifacts/sampler-cpu-review/',root),here=new URL('.',import.meta.url),hash=value=>createHash('sha256').update(value).digest('hex');
+const receipt=JSON.parse(await readFile(new URL('receipt.json',artifacts))),summary=JSON.parse(await readFile(new URL('summary.json',artifacts)));
+assert.equal(receipt.sourceRevision,'fcb84891671a1f7b3427a9f15790809b147dc1d8');assert.equal(receipt.n,100000);assert.equal(receipt.inputSHA256,'b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f');assert.equal(receipt.stage,'complete');assert.ok(receipt.measurements.every(r=>r.verifiedCoordinates===100000));
+assert.equal(execFileSync('git',['diff','--name-only',receipt.sourceRevision,'--','src'],{cwd:root,encoding:'utf8'}).trim(),'');
+for(const[file,expected]of Object.entries(receipt.sourceSHA256))assert.equal(hash(await readFile(new URL(file,root))),expected,file);
+assert.equal(hash(await readFile(new URL('sample.cpuprofile',artifacts))),receipt.profileSHA256);
+const comparison=JSON.parse(await readFile(new URL('product-compare-compiler-finalize-linear.json',here)));for(const result of Object.values(comparison.comparisons)){assert.equal(result.nativeSHA256[0],result.nativeSHA256[1]);assert.equal(result.rebaseSHA256[0],result.rebaseSHA256[1]);for(const key of ['mixedGeoFullFrameAndMeaningEqual','fullNativeOfflineMeaningBatchRebaseEqual','timelineAndTimelineRebaseFullMeaningEqual','fallbackFullMeaningEqual','restoreReserializeExact'])assert.equal(result[key],true);assert.equal(result.counts[0].ownedAdds,result.counts[1].ownedAdds);assert.equal(result.counts[0].freezeCalls,result.counts[1].freezeCalls);}
+const boundary=JSON.parse(await readFile(new URL('boundary-lifetime.json',here)));for(const result of boundary.results){assert.equal(result.boundary.getterReads,0);assert.ok(Object.values(result.lifetime.oldObjectsAlive).every(value=>!value));}
+const tests={};for(const name of ['regression','render']){const content=await readFile(new URL(name+'.log',artifacts),'utf8');assert.match(content,/# fail 0\b/);tests[name]=Number(content.match(/# tests (\d+)/)[1]);}
+const evidence={};for(const file of await readdir(artifacts)){if(!/\.(json|mjs|log|cpuprofile)$/.test(file))continue;const raw=await readFile(new URL(file,artifacts));await writeFile(new URL(file+'.gz',here),gzipSync(raw));evidence[file]={bytes:raw.length,sha256:hash(raw)};}
+for(const file of await readdir(here))if(file.endsWith('.mjs')||file==='boundary-lifetime.json'||file==='product-compare-compiler-finalize-linear.json'){const raw=await readFile(new URL(file,here));evidence[file]={bytes:raw.length,sha256:hash(raw)};}
+const compiler=await readFile(new URL('src/renderers/canvasScene.js',root),'utf8');
+const record={status:'read-only-profile-and-compiler-container-review; no-product-adoption',sourceRevision:receipt.sourceRevision,productSourceChanges:0,originalProfile:receipt,summary,tests,prototype:{scope:'compiler completed local containers only; cache0; unchanged child ownership and validation',sourceSHA256:hash(compiler),transformedSHA256:hash(transform('renderers/canvasScene.js',compiler)),counts:comparison.comparisons['4'].counts.map(({clones,ownedAdds,weakAdds,weakHas,freezeCalls,cloneArraySlots,cloneRecordKeys})=>({clones,ownedAdds,weakAdds,weakHas,freezeCalls,cloneArraySlots,cloneRecordKeys})),actual1kWholeEquality:true,original100kCandidateRun:false,packageQualification:false,lifetime:{variants:2,oldObjects:8,cycles:5,alive:0}},limits:{performanceTargetMs:50,p95Qualified:false,hundredCycleQualified:false,structuralBatchAdopted:false},evidence};
+await writeFile(new URL('qualification.json',here),JSON.stringify(record,null,2)+'\n');console.log(JSON.stringify({source:record.sourceRevision,tests,counts:record.prototype.counts}));
