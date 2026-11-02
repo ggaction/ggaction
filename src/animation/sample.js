@@ -163,6 +163,9 @@ export function sampleTransitionWithBudget(input,timeMs,accountWork) {
   validateGeneratedItemLimit(nodes.length,"Animation sampled nodes",animationResourceLimits(transitionResources(plan))?.maxOutputNodes);
   // Extra family emissions may still contain mutable local nodes.
   const scene=cloneAndFreeze({version:2,width,height,nodes:nodes.every(isOwned)?freezeOwned(nodes):nodes});
+  // These completed decisions contain only local primitive fields or owned records.
+  for (const decision of decisions) freezeOwned(decision);
+  freezeOwned(decisions);
   const geos=geoFrame.finish();
   return finish(cloneAndFreeze({graphicSpec:canvasSceneProgram(scene).graphicSpec,scene,progress,decisions}),freezeOwned(positions),graphFrame.finish(),cartesian,partitionFrame.finish(),polars,geos,guides,geoTextFrame.finish(geos),axisFrame.finish());
 }

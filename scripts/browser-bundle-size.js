@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 426_300, // Shared tagged fragments: Node20/24 426,217 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 69_600, // Integrated JSON string counter: Node20 69,506 gzip bytes.
-  "ggaction/animation": 343_500, // Integrated numeric animation, scalar and metadata: Node20 343,480 gzip bytes.
+  "ggaction/animation": 343_600, // Integrated local frame records and numeric format: Node20 343,502 gzip bytes.
   "ggaction/interaction": 137_600 // Integrated tagged fragments and metadata: Node20 137,519 gzip bytes.
 });
 

@@ -1043,7 +1043,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 69,600 bytes |
 | `ggaction/interaction` | 137,600 bytes |
-| `ggaction/animation` | 343,500 bytes |
+| `ggaction/animation` | 343,600 bytes |
 
 
 
@@ -5182,3 +5182,19 @@ Node20·24packed1818357/unpacked8175416B이며 ceiling1261/1818400/8175500이다
 Animation gzip343480B에는 표의343500B를 적용했다.
 [통합 검증](impl/roadmap9/qualification/geo-format5-merged-evidence/qualification.json)은
 같은 archive3Node/browser 및 원1k 실제 기능과 upstream 원100k source-specific 증거를 구분한다.
+
+Sampled decision의 local primitive child record와 완성 vector는 기존 core ownership을 직접
+동결해 유지한다. 외부 decision 입력을 stamp하지 않으며 capture/native/offline 검증은 그대로다.
+Concrete scene compiler는 새 wrapper의 properties가 이미 owned일 때만 wrapper를 직접
+동결하고, caller-owned 또는 번역된 properties와 mutable clip groups는 기존 final clone을
+거친다. 모든 renderer의 fully materialized graphicSpec·native hit 권한은 유지한다.
+채택 및 동일 입력 검증은 [frame record 기록](impl/roadmap9/qualification/frame-owned-state.md)을 따른다.
+
+Frame local records 합산은1260entries/unpacked8165542B, Node22packed1812185B 및
+Node20packed1815549B이며 최소cap1260/1815600/8165600을 적용한다. Animation gzip341603B는
+표의341700B에 정합한다. Runtime guard·원 fixture·성능SLO는 바꾸지 않는다.
+
+Root frame local records와 format5 합산은1261entries/Node22packed1814874/Node20·24packed1818419/
+unpacked8175677B이며 ceiling1261/1818500/8175700이다. Animation gzip343502B에는 위 표의
+343600B를 적용했다. [통합 검증](impl/roadmap9/qualification/frame-owned-merged-evidence/qualification.json)은
+현재1343 owning 검사·설치본3Node/browser와 독립 원100k source-specific 증거를 구분한다.
