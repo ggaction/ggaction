@@ -40,7 +40,8 @@
       "cycles": 100,
       "vertices": 20,
       "alive": 0
-    }
+    },
+    "canonicalGeo": "all6cells/all12stages5warmup30measured completed; allP95failed"
   },
   "originalScale": {
     "source10k": "passed before raw optimization; unchanged footprint owner",
@@ -50,7 +51,7 @@
   },
   "open": [
     "original100k rebase/offline in final installed artifact",
-    "canonical camera/hit 5+30 DPR1/2",
+    "canonical camera/hit SLO attainment (all original cells measured and failed)",
     "original100cycle retention/lifetime"
   ],
   "guards": "default parts30000 / geometry1000000 / stroke1000000 / query2000000 / weighted union1000000 preserved",

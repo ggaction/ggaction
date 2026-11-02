@@ -5,7 +5,8 @@
 - [x] A3 제품 source/pin: dd1837f39 / 37d5fcfe4
 - [x] Global ownedValues와 traversal ancestors 호출 귀속 분리
 - [x] Source 미변경 load-hook prototype:1276projection pair/90geometry pair exact 검산
-- [ ] Root의 구체안 채택 기록 후 제품 source 적용
+- [x] Root가38c05b45f의 문서·exact patch를remainingApproval으로채택
+- [ ] 제품 source 적용
 - [ ] 완전 owner coverage 및 동일 archive3Node/browser/원100k 기능·canonical 성능 재검증
 
 이 문서는 제품에 아직 적용하지 않은 내부 변경안이다. Root는 remainingApproval 범위에서 구체적인 raw projection 경계 검토를 지시했다. 제품 source를 바꾸거나 공개 API·persistent schema·native authority를 추가하지 않는다. 새 시각 Gate도 없다.
@@ -35,3 +36,8 @@ Raw helper는 library의 공개 package entry에서 export하지 않고 내부 g
 ## 1k hit 정책 선택과 별도 성능 기록
 
 현재 A3 canonical driver의1k는 mark capacity와pathGeometry가모두생략된원scalar 경로다.10k/100k에서만기존채택patch의명시정책을연결한다.1k에서도새index를선택하려면동일원geometry의mark에capacity(maxProjectedPoints/maxPathCommands)를명시하고hitPreparation.pathGeometry도명시해야한다. 이는 좌표·queries·timer·5+30·SLO 변경이아니라 준비정책 선택이지만 현행default성능과다른측정대상이다. 현재진행중인canonicalrun을바꾸지않고default1k실패를보존한다. 후속명시정책의size범위변경은Root채택기록후별도측정한다.
+
+
+## 구체안 채택
+
+Root는2026-11-02에 revision `38c05b45f`의 이문서와 `proposal.patch`전체를 검토하고 remainingApproval 범위의 내부 병목 개선으로 채택했다. 단일 계산 owner, 기존 owned facade, stream전용raw중간결과, 최종freeze경계를 유지한다. 원입력/queries/timers/5+30/SLO를 바꾸지 않는 조건으로1k에도 explicit capacity/pathGeometry를 선택하는 후속 benchmark 준비정책을 함께 채택했다. 최초default1k성능실패는앞선A3report에남겼다. Global registry나ancestor구조는바꾸지않는다. 이채택기록을원격checkpoint로남긴후제품구현을진행한다.

@@ -1,0 +1,1756 @@
+{
+  "kind": "native-performance-measurement",
+  "archive": {
+    "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-geo-hit-a3/ggactionnewbrand/.artifacts/geo-hit-a3/archive-raw/ggaction-0.0.26.tgz",
+    "sha256": "bbb592a75661d3b9cdc09440ab4da304600933ca347e37fe03746b717b8f9680"
+  },
+  "sourceRevision": "37d5fcfe4268f16cb7819546c7745c40f6cbae76",
+  "sourceRevisionScope": "Checkout HEAD; executable harness bytes are pinned separately in inputs, including uncommitted changes. Runtime identity is the installed archive hash.",
+  "profile": {
+    "seed": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "warmups": 5,
+    "measured": 30,
+    "cycles": 100
+  },
+  "environment": {
+    "cpu": "Apple M4",
+    "cores": 10,
+    "ramBytes": 17179869184,
+    "os": "Darwin 27.0.0 arm64",
+    "node": "v22.23.1",
+    "start": "2026-11-02T11:36:52.628Z",
+    "loadStart": [
+      4.15966796875,
+      3.35400390625,
+      3.6513671875
+    ],
+    "browser": "153.0.8010.12",
+    "end": "2026-11-02T11:42:55.779Z",
+    "loadEnd": [
+      4.58251953125,
+      3.98193359375,
+      3.83740234375
+    ]
+  },
+  "scope": "Unchanged route/workload inputs. Combined lifecycle uses trusted Playwright mouse/capture, real PNG ImageBitmap decode/close, native ResizeObserver plus editCanvas/updateProgram, and real route workers. Half complete and half cancel; late decoded leases are disposed without session callbacks.",
+  "font": "No Text, labels or guides in measured graphics; host status text is outside measurement.",
+  "network": "Local bootstrap only, then offline; zero post-bootstrap HTTP requests required.",
+  "stages": {
+    "sourcePreparationMs": "one-time diagnostic, outside P95",
+    "computeMs": "worker public computation",
+    "prepareComputeValidateMs": "public preparation including worker startup, clone, computation and validation",
+    "applyMs": "native prepared commit",
+    "bundlingMs": "preparation plus apply",
+    "materializeMs": "native GraphPlot",
+    "canvasRenderMs": "synchronous commands",
+    "svgSerializeDomMs": "serialization and DOM insertion, excludes compositor paint"
+  },
+  "workloadScope": "Complete deterministic native point/hierarchy/Geo/data/inference inputs at every required size. Native authoring and independent numeric preflight precede timing. Public layout includes immutable action validation; data blocking slice is the entire synchronous deserialize/revise call. Unsupported cells remain failures of support; no downsampling. Inference uses exact k10 and a complete independent oracle. Source authoring and oracle initialization are outside timing. Worker time includes startup, copy, public compute and main validation; compute-only and native apply times are separate diagnostics. Production P95 is not final qualification by itself.",
+  "inputs": {
+    "scripts/benchmark-native.js": "310215fe3b592320da16d56a26337164dd7ab345d2e506997ace02f959fb057a",
+    "scripts/benchmarks/routes.browser.js": "e2364026412edca805c84a4219b8413a4089b52d6ae25df542c17176242e3843",
+    "scripts/benchmarks/routes.worker.js": "d52c9b779d4db10e66faff28751b12a13408b1d57c3bbfdfa4ff4f089857c729",
+    "scripts/benchmarks/workloads.browser.js": "37fbaf0038290cc57807810d881949db6ca725fa3eb57329c911d5f2dca5c5c6",
+    "scripts/benchmarks/inference.js": "cdbb92552b4bdf2cd0dad40ef2890120d3bce4097749bf6cb470b69fbed01f51",
+    "scripts/benchmarks/inference.worker.js": "7915a10d444189ce9adeec4ccfc429a45531ed0e6a3c6173f25b1f27de389e1b",
+    "test/oracles/inference-grid.js": "9def3438a82a59590be540bf2b5f079cc77ad208c429db59d4276f724a06dc1f",
+    "scripts/benchmarks/lifecycle.js": "d66082257f0db348fb6b601ff4ef830869c96ed05a3b03baf78ff0a2d4a0b502",
+    "app.js": {
+      "sha256": "c30c5e1ba48c687c394ae49d63c55ac10bbac5b3889b310d525680b2f3baaed7",
+      "bytes": 2849189
+    },
+    "worker.js": {
+      "sha256": "35aae067371c0684e2d8059ea6d3fdc9e34ac0b84f21ef09f57ce50222765791",
+      "bytes": 63106
+    },
+    "inference-worker.js": {
+      "sha256": "6284b94f3a366fae92a39dad30b0467090367b00a43c2c1ce2743ab4e3e527b0",
+      "bytes": 62535
+    },
+    "workloads.js": {
+      "sha256": "09050d41ce2d1770fc9ef0b33a18255edcf4da38533165f084f5ddd86ab6fe85",
+      "bytes": 3197018
+    }
+  },
+  "cases": [],
+  "workloads": [
+    {
+      "kind": "geo",
+      "count": 1000,
+      "ratio": 1,
+      "inputHash": "8028f2da2e9bbbcd45e287854f20e66f240d98da6dd30f88cc3a9d0bc2898fe6",
+      "requiredStages": [
+        "camera-preview",
+        "css-hit"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "camera-preview",
+          "status": "measured",
+          "preparationMs": 172.79999995231628,
+          "warmups": 5,
+          "measured": 30,
+          "samples": [
+            {
+              "cameraPreviewMs": 22.799999952316284
+            },
+            {
+              "cameraPreviewMs": 38.60000014305115
+            },
+            {
+              "cameraPreviewMs": 22.40000009536743
+            },
+            {
+              "cameraPreviewMs": 22.300000190734863
+            },
+            {
+              "cameraPreviewMs": 23.300000190734863
+            },
+            {
+              "cameraPreviewMs": 22.59999990463257
+            },
+            {
+              "cameraPreviewMs": 25.299999952316284
+            },
+            {
+              "cameraPreviewMs": 22.300000190734863
+            },
+            {
+              "cameraPreviewMs": 22.300000190734863
+            },
+            {
+              "cameraPreviewMs": 22.600000143051147
+            },
+            {
+              "cameraPreviewMs": 24.90000009536743
+            },
+            {
+              "cameraPreviewMs": 22.299999952316284
+            },
+            {
+              "cameraPreviewMs": 22.5
+            },
+            {
+              "cameraPreviewMs": 25.300000190734863
+            },
+            {
+              "cameraPreviewMs": 26
+            },
+            {
+              "cameraPreviewMs": 24.09999990463257
+            },
+            {
+              "cameraPreviewMs": 23
+            },
+            {
+              "cameraPreviewMs": 23
+            },
+            {
+              "cameraPreviewMs": 22.300000190734863
+            },
+            {
+              "cameraPreviewMs": 61.799999952316284
+            },
+            {
+              "cameraPreviewMs": 23
+            },
+            {
+              "cameraPreviewMs": 22.700000047683716
+            },
+            {
+              "cameraPreviewMs": 23.09999990463257
+            },
+            {
+              "cameraPreviewMs": 22.600000143051147
+            },
+            {
+              "cameraPreviewMs": 23.59999990463257
+            },
+            {
+              "cameraPreviewMs": 66.39999985694885
+            },
+            {
+              "cameraPreviewMs": 22.90000009536743
+            },
+            {
+              "cameraPreviewMs": 23.5
+            },
+            {
+              "cameraPreviewMs": 22.40000009536743
+            },
+            {
+              "cameraPreviewMs": 23.5
+            }
+          ],
+          "p50": {
+            "cameraPreviewMs": 23
+          },
+          "p95": {
+            "cameraPreviewMs": 61.799999952316284
+          },
+          "thresholds": {
+            "cameraPreviewMs": 16.7
+          },
+          "witness": {
+            "vertices": 1000,
+            "commands": 1999,
+            "first": {
+              "op": "M",
+              "x": 125.95195103069393,
+              "y": 212.34134149488435
+            },
+            "last": {
+              "op": "L",
+              "x": 274.0480489693061,
+              "y": 187.65865850511565
+            }
+          },
+          "outputHash": "fcc5e101730ae56b5d01429e49a88ab4584ea950efbc8be8084b615bd0981e7e",
+          "witnessHash": "39657f0106ed1d1b22e550f9e2cae6741c750427c21258464a1fd70076619055",
+          "successSLO": "failed-this-fixture"
+        },
+        {
+          "name": "css-hit",
+          "status": "measured",
+          "preparationMs": 69,
+          "warmups": 5,
+          "measured": 30,
+          "samples": [
+            {
+              "hitMs": 26
+            },
+            {
+              "hitMs": 124
+            },
+            {
+              "hitMs": 26.700000047683716
+            },
+            {
+              "hitMs": 26.5
+            },
+            {
+              "hitMs": 27.5
+            },
+            {
+              "hitMs": 26.09999990463257
+            },
+            {
+              "hitMs": 25.90000009536743
+            },
+            {
+              "hitMs": 47.200000047683716
+            },
+            {
+              "hitMs": 27.700000047683716
+            },
+            {
+              "hitMs": 27.5
+            },
+            {
+              "hitMs": 29.100000143051147
+            },
+            {
+              "hitMs": 27.40000009536743
+            },
+            {
+              "hitMs": 28.59999990463257
+            },
+            {
+              "hitMs": 27.5
+            },
+            {
+              "hitMs": 27.799999952316284
+            },
+            {
+              "hitMs": 28.200000047683716
+            },
+            {
+              "hitMs": 27.699999809265137
+            },
+            {
+              "hitMs": 28.299999952316284
+            },
+            {
+              "hitMs": 28.300000190734863
+            },
+            {
+              "hitMs": 27.700000047683716
+            },
+            {
+              "hitMs": 63
+            },
+            {
+              "hitMs": 27.899999856948853
+            },
+            {
+              "hitMs": 28.200000047683716
+            },
+            {
+              "hitMs": 72.20000004768372
+            },
+            {
+              "hitMs": 28.100000143051147
+            },
+            {
+              "hitMs": 28.59999990463257
+            },
+            {
+              "hitMs": 29.700000047683716
+            },
+            {
+              "hitMs": 28
+            },
+            {
+              "hitMs": 65.70000004768372
+            },
+            {
+              "hitMs": 34.299999952316284
+            }
+          ],
+          "p50": {
+            "hitMs": 28
+          },
+          "p95": {
+            "hitMs": 72.20000004768372
+          },
+          "thresholds": {
+            "hitMs": 20
+          },
+          "witness": {
+            "queries": 3,
+            "cssTransform": [
+              1.5,
+              0,
+              0,
+              1.5,
+              7,
+              11
+            ],
+            "candidateCount": 1,
+            "owner": "coast"
+          },
+          "outputHash": "af383bfc6056e1ac69cf9e76c07b0f09e050d210a5d730632698ba3fc148ccb2",
+          "witnessHash": "a50555d18cb8cbfe233e44c79f226b4adc1be50e62b7c0ba00a81eedda9f6fb8",
+          "successSLO": "failed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 82.39999985694885,
+      "witness": {
+        "vertices": 1000,
+        "commands": 1999,
+        "first": {
+          "op": "M",
+          "x": 147.6401224401701,
+          "y": 208.72664625997166
+        },
+        "last": {
+          "op": "L",
+          "x": 252.3598775598299,
+          "y": 191.27335374002834
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "geo",
+      "count": 10000,
+      "ratio": 1,
+      "inputHash": "eedbb01f96fbfa4448a4ebf9bf5398a660b990c042e05ebfea957b07b3a986cc",
+      "requiredStages": [
+        "camera-preview",
+        "css-hit"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "camera-preview",
+          "status": "measured",
+          "preparationMs": 1931,
+          "warmups": 5,
+          "measured": 30,
+          "samples": [
+            {
+              "cameraPreviewMs": 238.40000009536743
+            },
+            {
+              "cameraPreviewMs": 295.19999980926514
+            },
+            {
+              "cameraPreviewMs": 273.90000009536743
+            },
+            {
+              "cameraPreviewMs": 287.7999999523163
+            },
+            {
+              "cameraPreviewMs": 237.90000009536743
+            },
+            {
+              "cameraPreviewMs": 327.2000000476837
+            },
+            {
+              "cameraPreviewMs": 240.70000004768372
+            },
+            {
+              "cameraPreviewMs": 248.79999995231628
+            },
+            {
+              "cameraPreviewMs": 249
+            },
+            {
+              "cameraPreviewMs": 257.09999990463257
+            },
+            {
+              "cameraPreviewMs": 300.40000009536743
+            },
+            {
+              "cameraPreviewMs": 257.5
+            },
+            {
+              "cameraPreviewMs": 238.5
+            },
+            {
+              "cameraPreviewMs": 281.30000019073486
+            },
+            {
+              "cameraPreviewMs": 239.10000014305115
+            },
+            {
+              "cameraPreviewMs": 303.7999999523163
+            },
+            {
+              "cameraPreviewMs": 240.10000014305115
+            },
+            {
+              "cameraPreviewMs": 352.2000000476837
+            },
+            {
+              "cameraPreviewMs": 305.2000000476837
+            },
+            {
+              "cameraPreviewMs": 263.60000014305115
+            },
+            {
+              "cameraPreviewMs": 236.59999990463257
+            },
+            {
+              "cameraPreviewMs": 283.2000000476837
+            },
+            {
+              "cameraPreviewMs": 246.70000004768372
+            },
+            {
+              "cameraPreviewMs": 310.39999985694885
+            },
+            {
+              "cameraPreviewMs": 240.29999995231628
+            },
+            {
+              "cameraPreviewMs": 350.2999999523163
+            },
+            {
+              "cameraPreviewMs": 286.7999999523163
+            },
+            {
+              "cameraPreviewMs": 241
+            },
+            {
+              "cameraPreviewMs": 280.2000000476837
+            },
+            {
+              "cameraPreviewMs": 284.5
+            }
+          ],
+          "p50": {
+            "cameraPreviewMs": 263.60000014305115
+          },
+          "p95": {
+            "cameraPreviewMs": 350.2999999523163
+          },
+          "thresholds": {
+            "cameraPreviewMs": 33
+          },
+          "witness": {
+            "vertices": 10000,
+            "commands": 19999,
+            "first": {
+              "op": "M",
+              "x": 125.95195103069393,
+              "y": 212.34134149488435
+            },
+            "last": {
+              "op": "L",
+              "x": 274.0480489693061,
+              "y": 187.65865850511565
+            }
+          },
+          "outputHash": "04aa07d0924eb4c18ac7181076249ec2b793ddc22aa1757fc3a7b288695fc9c1",
+          "witnessHash": "a65c9852904a44ad3096300d1c313ab487e926f5cd3a844f4744bb9cc9e25a82",
+          "successSLO": "failed-this-fixture"
+        },
+        {
+          "name": "css-hit",
+          "status": "measured",
+          "preparationMs": 322.2999999523163,
+          "warmups": 5,
+          "measured": 30,
+          "samples": [
+            {
+              "hitMs": 1.7999999523162842
+            },
+            {
+              "hitMs": 1.9000000953674316
+            },
+            {
+              "hitMs": 3.5999999046325684
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 1.7999999523162842
+            },
+            {
+              "hitMs": 3.6000001430511475
+            },
+            {
+              "hitMs": 2.700000047683716
+            },
+            {
+              "hitMs": 2
+            },
+            {
+              "hitMs": 3.5
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 1.5999999046325684
+            },
+            {
+              "hitMs": 3.299999952316284
+            },
+            {
+              "hitMs": 1.3999998569488525
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 3.5
+            },
+            {
+              "hitMs": 60.5
+            },
+            {
+              "hitMs": 1.7000000476837158
+            },
+            {
+              "hitMs": 3.5
+            },
+            {
+              "hitMs": 24.90000009536743
+            },
+            {
+              "hitMs": 1.7000000476837158
+            },
+            {
+              "hitMs": 3.200000047683716
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 1.8999998569488525
+            },
+            {
+              "hitMs": 3.299999952316284
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 3.200000047683716
+            },
+            {
+              "hitMs": 2.4000000953674316
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 3.4000000953674316
+            }
+          ],
+          "p50": {
+            "hitMs": 1.9000000953674316
+          },
+          "p95": {
+            "hitMs": 24.90000009536743
+          },
+          "thresholds": {
+            "hitMs": 20
+          },
+          "witness": {
+            "queries": 3,
+            "cssTransform": [
+              1.5,
+              0,
+              0,
+              1.5,
+              7,
+              11
+            ],
+            "candidateCount": 1,
+            "owner": "coast"
+          },
+          "outputHash": "c08854220dbf765d37c81e2b360acf66d52ef6097a4e695fc3de6b99dbe53b05",
+          "witnessHash": "a50555d18cb8cbfe233e44c79f226b4adc1be50e62b7c0ba00a81eedda9f6fb8",
+          "successSLO": "failed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 621.4000000953674,
+      "witness": {
+        "vertices": 10000,
+        "commands": 19999,
+        "first": {
+          "op": "M",
+          "x": 147.6401224401701,
+          "y": 208.72664625997166
+        },
+        "last": {
+          "op": "L",
+          "x": 252.3598775598299,
+          "y": 191.27335374002834
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "geo",
+      "count": 100000,
+      "ratio": 1,
+      "inputHash": "3abb4487631f9099de7725acc9bf1fec159d3c6807f5abeba6e583ef3d5d5079",
+      "requiredStages": [
+        "camera-preview",
+        "css-hit"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "camera-preview",
+          "status": "measured",
+          "preparationMs": 23099.900000095367,
+          "warmups": 5,
+          "measured": 30,
+          "samples": [
+            {
+              "cameraPreviewMs": 2672.7999999523163
+            },
+            {
+              "cameraPreviewMs": 4009.0999999046326
+            },
+            {
+              "cameraPreviewMs": 2609.5999999046326
+            },
+            {
+              "cameraPreviewMs": 3180.2999999523163
+            },
+            {
+              "cameraPreviewMs": 4212.5
+            },
+            {
+              "cameraPreviewMs": 3979.4000000953674
+            },
+            {
+              "cameraPreviewMs": 2686.2999999523163
+            },
+            {
+              "cameraPreviewMs": 3187.9000000953674
+            },
+            {
+              "cameraPreviewMs": 4900.799999952316
+            },
+            {
+              "cameraPreviewMs": 2616.4000000953674
+            },
+            {
+              "cameraPreviewMs": 4886.200000047684
+            },
+            {
+              "cameraPreviewMs": 4108.299999952316
+            },
+            {
+              "cameraPreviewMs": 2664
+            },
+            {
+              "cameraPreviewMs": 3813.0999999046326
+            },
+            {
+              "cameraPreviewMs": 2614.800000190735
+            },
+            {
+              "cameraPreviewMs": 3211.2000000476837
+            },
+            {
+              "cameraPreviewMs": 4149.799999952316
+            },
+            {
+              "cameraPreviewMs": 3132
+            },
+            {
+              "cameraPreviewMs": 3367.5999999046326
+            },
+            {
+              "cameraPreviewMs": 3998
+            },
+            {
+              "cameraPreviewMs": 3895
+            },
+            {
+              "cameraPreviewMs": 2620.2000000476837
+            },
+            {
+              "cameraPreviewMs": 3884.300000190735
+            },
+            {
+              "cameraPreviewMs": 2661.2999999523163
+            },
+            {
+              "cameraPreviewMs": 4504.5
+            },
+            {
+              "cameraPreviewMs": 2615.2999999523163
+            },
+            {
+              "cameraPreviewMs": 3971.600000143051
+            },
+            {
+              "cameraPreviewMs": 2608.9000000953674
+            },
+            {
+              "cameraPreviewMs": 3958.7000000476837
+            },
+            {
+              "cameraPreviewMs": 2618.0999999046326
+            }
+          ],
+          "p50": {
+            "cameraPreviewMs": 3211.2000000476837
+          },
+          "p95": {
+            "cameraPreviewMs": 4886.200000047684
+          },
+          "thresholds": {
+            "cameraPreviewMs": 50
+          },
+          "witness": {
+            "vertices": 100000,
+            "commands": 199999,
+            "first": {
+              "op": "M",
+              "x": 125.95195103069393,
+              "y": 212.34134149488435
+            },
+            "last": {
+              "op": "L",
+              "x": 274.0480489693061,
+              "y": 187.65865850511565
+            }
+          },
+          "outputHash": "92d1e519306f0f7b5bc6e2858219857ebca1cb52f2614b8842094bd114bc9d8c",
+          "witnessHash": "21ead7dbda146abad5690ef705c750ad71e7042cf7e22ebf238854b1e52fd9f2",
+          "successSLO": "failed-this-fixture"
+        },
+        {
+          "name": "css-hit",
+          "status": "measured",
+          "preparationMs": 4370.200000047684,
+          "warmups": 5,
+          "measured": 30,
+          "samples": [
+            {
+              "hitMs": 19.59999990463257
+            },
+            {
+              "hitMs": 15.900000095367432
+            },
+            {
+              "hitMs": 34.10000014305115
+            },
+            {
+              "hitMs": 19.5
+            },
+            {
+              "hitMs": 15.600000143051147
+            },
+            {
+              "hitMs": 33.799999952316284
+            },
+            {
+              "hitMs": 18.899999856948853
+            },
+            {
+              "hitMs": 15.299999952316284
+            },
+            {
+              "hitMs": 33.69999980926514
+            },
+            {
+              "hitMs": 19.200000047683716
+            },
+            {
+              "hitMs": 15.700000047683716
+            },
+            {
+              "hitMs": 34.200000047683716
+            },
+            {
+              "hitMs": 19.40000009536743
+            },
+            {
+              "hitMs": 15.599999904632568
+            },
+            {
+              "hitMs": 815.1000001430511
+            },
+            {
+              "hitMs": 18
+            },
+            {
+              "hitMs": 16.199999809265137
+            },
+            {
+              "hitMs": 35.60000014305115
+            },
+            {
+              "hitMs": 18.5
+            },
+            {
+              "hitMs": 15.5
+            },
+            {
+              "hitMs": 35.799999952316284
+            },
+            {
+              "hitMs": 17.90000009536743
+            },
+            {
+              "hitMs": 15.599999904632568
+            },
+            {
+              "hitMs": 35.700000047683716
+            },
+            {
+              "hitMs": 17.700000047683716
+            },
+            {
+              "hitMs": 15.5
+            },
+            {
+              "hitMs": 35.200000047683716
+            },
+            {
+              "hitMs": 17.5
+            },
+            {
+              "hitMs": 15.5
+            },
+            {
+              "hitMs": 35.700000047683716
+            }
+          ],
+          "p50": {
+            "hitMs": 18.5
+          },
+          "p95": {
+            "hitMs": 35.799999952316284
+          },
+          "thresholds": {
+            "hitMs": 20
+          },
+          "witness": {
+            "queries": 3,
+            "cssTransform": [
+              1.5,
+              0,
+              0,
+              1.5,
+              7,
+              11
+            ],
+            "candidateCount": 1,
+            "owner": "coast"
+          },
+          "outputHash": "3edc358329ff9cea6c27646865e108b2fa7dd1ee5fbb9427842116a6dede4c9c",
+          "witnessHash": "a50555d18cb8cbfe233e44c79f226b4adc1be50e62b7c0ba00a81eedda9f6fb8",
+          "successSLO": "failed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 7197.5,
+      "witness": {
+        "vertices": 100000,
+        "commands": 199999,
+        "first": {
+          "op": "M",
+          "x": 147.6401224401701,
+          "y": 208.72664625997166
+        },
+        "last": {
+          "op": "L",
+          "x": 252.3598775598299,
+          "y": 191.27335374002834
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "geo",
+      "count": 1000,
+      "ratio": 2,
+      "inputHash": "8028f2da2e9bbbcd45e287854f20e66f240d98da6dd30f88cc3a9d0bc2898fe6",
+      "requiredStages": [
+        "camera-preview",
+        "css-hit"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "camera-preview",
+          "status": "measured",
+          "preparationMs": 181.09999990463257,
+          "warmups": 5,
+          "measured": 30,
+          "samples": [
+            {
+              "cameraPreviewMs": 35.200000047683716
+            },
+            {
+              "cameraPreviewMs": 23.300000190734863
+            },
+            {
+              "cameraPreviewMs": 22.799999952316284
+            },
+            {
+              "cameraPreviewMs": 23.200000047683716
+            },
+            {
+              "cameraPreviewMs": 23
+            },
+            {
+              "cameraPreviewMs": 46.89999985694885
+            },
+            {
+              "cameraPreviewMs": 22.799999952316284
+            },
+            {
+              "cameraPreviewMs": 22.300000190734863
+            },
+            {
+              "cameraPreviewMs": 22.799999952316284
+            },
+            {
+              "cameraPreviewMs": 25.299999952316284
+            },
+            {
+              "cameraPreviewMs": 22.90000009536743
+            },
+            {
+              "cameraPreviewMs": 22.399999856948853
+            },
+            {
+              "cameraPreviewMs": 25.700000047683716
+            },
+            {
+              "cameraPreviewMs": 25.600000143051147
+            },
+            {
+              "cameraPreviewMs": 25.200000047683716
+            },
+            {
+              "cameraPreviewMs": 24.5
+            },
+            {
+              "cameraPreviewMs": 23.40000009536743
+            },
+            {
+              "cameraPreviewMs": 23
+            },
+            {
+              "cameraPreviewMs": 24.200000047683716
+            },
+            {
+              "cameraPreviewMs": 54.200000047683716
+            },
+            {
+              "cameraPreviewMs": 22.90000009536743
+            },
+            {
+              "cameraPreviewMs": 23.299999952316284
+            },
+            {
+              "cameraPreviewMs": 22.799999952316284
+            },
+            {
+              "cameraPreviewMs": 23.90000009536743
+            },
+            {
+              "cameraPreviewMs": 23
+            },
+            {
+              "cameraPreviewMs": 22.899999856948853
+            },
+            {
+              "cameraPreviewMs": 65.79999995231628
+            },
+            {
+              "cameraPreviewMs": 22.699999809265137
+            },
+            {
+              "cameraPreviewMs": 24.59999990463257
+            },
+            {
+              "cameraPreviewMs": 24.09999990463257
+            }
+          ],
+          "p50": {
+            "cameraPreviewMs": 23.299999952316284
+          },
+          "p95": {
+            "cameraPreviewMs": 54.200000047683716
+          },
+          "thresholds": {
+            "cameraPreviewMs": 16.7
+          },
+          "witness": {
+            "vertices": 1000,
+            "commands": 1999,
+            "first": {
+              "op": "M",
+              "x": 125.95195103069393,
+              "y": 212.34134149488435
+            },
+            "last": {
+              "op": "L",
+              "x": 274.0480489693061,
+              "y": 187.65865850511565
+            }
+          },
+          "outputHash": "4e65b71915dc173258ad4226a20f661bedd8006382dcae235832565757342d60",
+          "witnessHash": "39657f0106ed1d1b22e550f9e2cae6741c750427c21258464a1fd70076619055",
+          "successSLO": "failed-this-fixture"
+        },
+        {
+          "name": "css-hit",
+          "status": "measured",
+          "preparationMs": 70,
+          "warmups": 5,
+          "measured": 30,
+          "samples": [
+            {
+              "hitMs": 27.40000009536743
+            },
+            {
+              "hitMs": 26.600000143051147
+            },
+            {
+              "hitMs": 26.799999952316284
+            },
+            {
+              "hitMs": 141.39999985694885
+            },
+            {
+              "hitMs": 26.700000047683716
+            },
+            {
+              "hitMs": 28
+            },
+            {
+              "hitMs": 26.200000047683716
+            },
+            {
+              "hitMs": 26
+            },
+            {
+              "hitMs": 47.39999985694885
+            },
+            {
+              "hitMs": 28
+            },
+            {
+              "hitMs": 28
+            },
+            {
+              "hitMs": 29
+            },
+            {
+              "hitMs": 28.299999952316284
+            },
+            {
+              "hitMs": 29.700000047683716
+            },
+            {
+              "hitMs": 27.700000047683716
+            },
+            {
+              "hitMs": 28.5
+            },
+            {
+              "hitMs": 29.600000143051147
+            },
+            {
+              "hitMs": 28.299999952316284
+            },
+            {
+              "hitMs": 28.200000047683716
+            },
+            {
+              "hitMs": 29.40000009536743
+            },
+            {
+              "hitMs": 28.09999990463257
+            },
+            {
+              "hitMs": 62.10000014305115
+            },
+            {
+              "hitMs": 29.899999856948853
+            },
+            {
+              "hitMs": 28.200000047683716
+            },
+            {
+              "hitMs": 69.5
+            },
+            {
+              "hitMs": 29.09999990463257
+            },
+            {
+              "hitMs": 29.200000047683716
+            },
+            {
+              "hitMs": 30.299999952316284
+            },
+            {
+              "hitMs": 28.899999856948853
+            },
+            {
+              "hitMs": 76.20000004768372
+            }
+          ],
+          "p50": {
+            "hitMs": 28.299999952316284
+          },
+          "p95": {
+            "hitMs": 76.20000004768372
+          },
+          "thresholds": {
+            "hitMs": 20
+          },
+          "witness": {
+            "queries": 3,
+            "cssTransform": [
+              1.5,
+              0,
+              0,
+              1.5,
+              7,
+              11
+            ],
+            "candidateCount": 1,
+            "owner": "coast"
+          },
+          "outputHash": "4f1a22f077cf724be631b5db212a1ebe2f8820432d85f6820a63a7ce84c8e298",
+          "witnessHash": "a50555d18cb8cbfe233e44c79f226b4adc1be50e62b7c0ba00a81eedda9f6fb8",
+          "successSLO": "failed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 79.20000004768372,
+      "witness": {
+        "vertices": 1000,
+        "commands": 1999,
+        "first": {
+          "op": "M",
+          "x": 147.6401224401701,
+          "y": 208.72664625997166
+        },
+        "last": {
+          "op": "L",
+          "x": 252.3598775598299,
+          "y": 191.27335374002834
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "geo",
+      "count": 10000,
+      "ratio": 2,
+      "inputHash": "eedbb01f96fbfa4448a4ebf9bf5398a660b990c042e05ebfea957b07b3a986cc",
+      "requiredStages": [
+        "camera-preview",
+        "css-hit"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "camera-preview",
+          "status": "measured",
+          "preparationMs": 1994,
+          "warmups": 5,
+          "measured": 30,
+          "samples": [
+            {
+              "cameraPreviewMs": 242
+            },
+            {
+              "cameraPreviewMs": 303.7000000476837
+            },
+            {
+              "cameraPreviewMs": 273.7000000476837
+            },
+            {
+              "cameraPreviewMs": 295
+            },
+            {
+              "cameraPreviewMs": 240.70000004768372
+            },
+            {
+              "cameraPreviewMs": 366.2999999523163
+            },
+            {
+              "cameraPreviewMs": 241.70000004768372
+            },
+            {
+              "cameraPreviewMs": 251.60000014305115
+            },
+            {
+              "cameraPreviewMs": 256.30000019073486
+            },
+            {
+              "cameraPreviewMs": 302.89999985694885
+            },
+            {
+              "cameraPreviewMs": 275
+            },
+            {
+              "cameraPreviewMs": 240.5
+            },
+            {
+              "cameraPreviewMs": 317
+            },
+            {
+              "cameraPreviewMs": 241.40000009536743
+            },
+            {
+              "cameraPreviewMs": 255.90000009536743
+            },
+            {
+              "cameraPreviewMs": 281.39999985694885
+            },
+            {
+              "cameraPreviewMs": 276.60000014305115
+            },
+            {
+              "cameraPreviewMs": 296.39999985694885
+            },
+            {
+              "cameraPreviewMs": 312.90000009536743
+            },
+            {
+              "cameraPreviewMs": 241.20000004768372
+            },
+            {
+              "cameraPreviewMs": 253
+            },
+            {
+              "cameraPreviewMs": 240.39999985694885
+            },
+            {
+              "cameraPreviewMs": 307.5
+            },
+            {
+              "cameraPreviewMs": 277.2000000476837
+            },
+            {
+              "cameraPreviewMs": 239.29999995231628
+            },
+            {
+              "cameraPreviewMs": 322.2999999523163
+            },
+            {
+              "cameraPreviewMs": 248.29999995231628
+            },
+            {
+              "cameraPreviewMs": 255.40000009536743
+            },
+            {
+              "cameraPreviewMs": 307.5
+            },
+            {
+              "cameraPreviewMs": 278.7999999523163
+            }
+          ],
+          "p50": {
+            "cameraPreviewMs": 273.7000000476837
+          },
+          "p95": {
+            "cameraPreviewMs": 322.2999999523163
+          },
+          "thresholds": {
+            "cameraPreviewMs": 33
+          },
+          "witness": {
+            "vertices": 10000,
+            "commands": 19999,
+            "first": {
+              "op": "M",
+              "x": 125.95195103069393,
+              "y": 212.34134149488435
+            },
+            "last": {
+              "op": "L",
+              "x": 274.0480489693061,
+              "y": 187.65865850511565
+            }
+          },
+          "outputHash": "8ec80c50daaf449ed123785f0c829944161d61ed7f1d079cb8105598d95224a2",
+          "witnessHash": "a65c9852904a44ad3096300d1c313ab487e926f5cd3a844f4744bb9cc9e25a82",
+          "successSLO": "failed-this-fixture"
+        },
+        {
+          "name": "css-hit",
+          "status": "measured",
+          "preparationMs": 321.2999999523163,
+          "warmups": 5,
+          "measured": 30,
+          "samples": [
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 1.7999999523162842
+            },
+            {
+              "hitMs": 52.799999952316284
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 1.7000000476837158
+            },
+            {
+              "hitMs": 3.4000000953674316
+            },
+            {
+              "hitMs": 1.7000000476837158
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 3.5
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 1.5999999046325684
+            },
+            {
+              "hitMs": 4.5
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 1.7999999523162842
+            },
+            {
+              "hitMs": 3.200000047683716
+            },
+            {
+              "hitMs": 2.1000001430511475
+            },
+            {
+              "hitMs": 2.0999999046325684
+            },
+            {
+              "hitMs": 29.59999990463257
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 3.1000001430511475
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 1.8999998569488525
+            },
+            {
+              "hitMs": 3.0999999046325684
+            },
+            {
+              "hitMs": 1.3000001907348633
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 4.200000047683716
+            },
+            {
+              "hitMs": 1.3999998569488525
+            },
+            {
+              "hitMs": 1.5
+            },
+            {
+              "hitMs": 3.200000047683716
+            }
+          ],
+          "p50": {
+            "hitMs": 1.7000000476837158
+          },
+          "p95": {
+            "hitMs": 29.59999990463257
+          },
+          "thresholds": {
+            "hitMs": 20
+          },
+          "witness": {
+            "queries": 3,
+            "cssTransform": [
+              1.5,
+              0,
+              0,
+              1.5,
+              7,
+              11
+            ],
+            "candidateCount": 1,
+            "owner": "coast"
+          },
+          "outputHash": "8490353068cc72850bae0dba37b13cde902192c38ce0178867910cc96280f006",
+          "witnessHash": "a50555d18cb8cbfe233e44c79f226b4adc1be50e62b7c0ba00a81eedda9f6fb8",
+          "successSLO": "failed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 629.0999999046326,
+      "witness": {
+        "vertices": 10000,
+        "commands": 19999,
+        "first": {
+          "op": "M",
+          "x": 147.6401224401701,
+          "y": 208.72664625997166
+        },
+        "last": {
+          "op": "L",
+          "x": 252.3598775598299,
+          "y": 191.27335374002834
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "geo",
+      "count": 100000,
+      "ratio": 2,
+      "inputHash": "3abb4487631f9099de7725acc9bf1fec159d3c6807f5abeba6e583ef3d5d5079",
+      "requiredStages": [
+        "camera-preview",
+        "css-hit"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "camera-preview",
+          "status": "measured",
+          "preparationMs": 23197.200000047684,
+          "warmups": 5,
+          "measured": 30,
+          "samples": [
+            {
+              "cameraPreviewMs": 2609.5
+            },
+            {
+              "cameraPreviewMs": 4802.599999904633
+            },
+            {
+              "cameraPreviewMs": 3920.2000000476837
+            },
+            {
+              "cameraPreviewMs": 2877.7999999523163
+            },
+            {
+              "cameraPreviewMs": 4469.399999856949
+            },
+            {
+              "cameraPreviewMs": 2656.600000143051
+            },
+            {
+              "cameraPreviewMs": 3913.4000000953674
+            },
+            {
+              "cameraPreviewMs": 2600.4000000953674
+            },
+            {
+              "cameraPreviewMs": 4012.2000000476837
+            },
+            {
+              "cameraPreviewMs": 2621.5
+            },
+            {
+              "cameraPreviewMs": 3900.5
+            },
+            {
+              "cameraPreviewMs": 2600.7000000476837
+            },
+            {
+              "cameraPreviewMs": 3850.2000000476837
+            },
+            {
+              "cameraPreviewMs": 2616.9000000953674
+            },
+            {
+              "cameraPreviewMs": 3171.5999999046326
+            },
+            {
+              "cameraPreviewMs": 5008.599999904633
+            },
+            {
+              "cameraPreviewMs": 2630
+            },
+            {
+              "cameraPreviewMs": 4820.5
+            },
+            {
+              "cameraPreviewMs": 3260.4000000953674
+            },
+            {
+              "cameraPreviewMs": 5072.100000143051
+            },
+            {
+              "cameraPreviewMs": 2620.2999999523163
+            },
+            {
+              "cameraPreviewMs": 4653.099999904633
+            },
+            {
+              "cameraPreviewMs": 3231.100000143051
+            },
+            {
+              "cameraPreviewMs": 5200.200000047684
+            },
+            {
+              "cameraPreviewMs": 2628.4000000953674
+            },
+            {
+              "cameraPreviewMs": 5305
+            },
+            {
+              "cameraPreviewMs": 4415.299999952316
+            },
+            {
+              "cameraPreviewMs": 2710.9000000953674
+            },
+            {
+              "cameraPreviewMs": 3206.0999999046326
+            },
+            {
+              "cameraPreviewMs": 5000.5
+            }
+          ],
+          "p50": {
+            "cameraPreviewMs": 3260.4000000953674
+          },
+          "p95": {
+            "cameraPreviewMs": 5200.200000047684
+          },
+          "thresholds": {
+            "cameraPreviewMs": 50
+          },
+          "witness": {
+            "vertices": 100000,
+            "commands": 199999,
+            "first": {
+              "op": "M",
+              "x": 125.95195103069393,
+              "y": 212.34134149488435
+            },
+            "last": {
+              "op": "L",
+              "x": 274.0480489693061,
+              "y": 187.65865850511565
+            }
+          },
+          "outputHash": "f1604d95b37c9782abcbcefed9a9b9db7c80c2451950e293e177e7f7c63697d0",
+          "witnessHash": "21ead7dbda146abad5690ef705c750ad71e7042cf7e22ebf238854b1e52fd9f2",
+          "successSLO": "failed-this-fixture"
+        },
+        {
+          "name": "css-hit",
+          "status": "measured",
+          "preparationMs": 3874.199999809265,
+          "warmups": 5,
+          "measured": 30,
+          "samples": [
+            {
+              "hitMs": 19.200000047683716
+            },
+            {
+              "hitMs": 15.699999809265137
+            },
+            {
+              "hitMs": 34.30000019073486
+            },
+            {
+              "hitMs": 590.8999998569489
+            },
+            {
+              "hitMs": 15.799999952316284
+            },
+            {
+              "hitMs": 33.69999980926514
+            },
+            {
+              "hitMs": 19.5
+            },
+            {
+              "hitMs": 15.200000047683716
+            },
+            {
+              "hitMs": 34
+            },
+            {
+              "hitMs": 19.299999952316284
+            },
+            {
+              "hitMs": 15.400000095367432
+            },
+            {
+              "hitMs": 34.5
+            },
+            {
+              "hitMs": 19.200000047683716
+            },
+            {
+              "hitMs": 15.700000047683716
+            },
+            {
+              "hitMs": 34.299999952316284
+            },
+            {
+              "hitMs": 19.09999990463257
+            },
+            {
+              "hitMs": 15.600000143051147
+            },
+            {
+              "hitMs": 34
+            },
+            {
+              "hitMs": 19.299999952316284
+            },
+            {
+              "hitMs": 15.700000047683716
+            },
+            {
+              "hitMs": 34.09999990463257
+            },
+            {
+              "hitMs": 19.299999952316284
+            },
+            {
+              "hitMs": 15.700000047683716
+            },
+            {
+              "hitMs": 34.299999952316284
+            },
+            {
+              "hitMs": 19.200000047683716
+            },
+            {
+              "hitMs": 15.900000095367432
+            },
+            {
+              "hitMs": 33.59999990463257
+            },
+            {
+              "hitMs": 19.5
+            },
+            {
+              "hitMs": 15.600000143051147
+            },
+            {
+              "hitMs": 34.19999980926514
+            }
+          ],
+          "p50": {
+            "hitMs": 19.299999952316284
+          },
+          "p95": {
+            "hitMs": 34.5
+          },
+          "thresholds": {
+            "hitMs": 20
+          },
+          "witness": {
+            "queries": 3,
+            "cssTransform": [
+              1.5,
+              0,
+              0,
+              1.5,
+              7,
+              11
+            ],
+            "candidateCount": 1,
+            "owner": "coast"
+          },
+          "outputHash": "0d3b51d40c9cd7ad512fe4d5799d4437e3c83767e0731e7612332bc8b729177b",
+          "witnessHash": "a50555d18cb8cbfe233e44c79f226b4adc1be50e62b7c0ba00a81eedda9f6fb8",
+          "successSLO": "failed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 7225.699999809265,
+      "witness": {
+        "vertices": 100000,
+        "commands": 199999,
+        "first": {
+          "op": "M",
+          "x": 147.6401224401701,
+          "y": 208.72664625997166
+        },
+        "last": {
+          "op": "L",
+          "x": 252.3598775598299,
+          "y": 191.27335374002834
+        }
+      },
+      "networkRequests": 0
+    }
+  ],
+  "lifecycle": [],
+  "observer": {
+    "scope": "only console progress after original timers/validation; original source and injected bytes hashed; no explicit GC during measured workload",
+    "sha256": "588dcdee0f0fdaf87ef500f09c8a6c01d7f2ee8bdadb5c2f438f62a816d98b17"
+  },
+  "status": "measurement-completed"
+}

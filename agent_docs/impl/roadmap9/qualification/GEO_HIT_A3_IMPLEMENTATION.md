@@ -66,3 +66,19 @@ Root는 위 실제제품 준비 병목을 확인하고, 원 계산·검증·과�
 [증거와 재실행 설명](geo-hit-a3-evidence/README.md), [source별 SHA와 미완료 목록](geo-hit-a3-evidence/verification.json)이 범위를 고정한다. 다음 개념은 공개 owned facade를 보존하며 내부 synchronous projection result 조립에서 반복 ownership 등록을 줄일 수 있는지 소형 oracle과 구체 계수로 먼저 확인하는 것이다. Canonical benchmark 입력·timers·SLO·5+30/DPR1·2와 원 모든좌표 검산 의무는 유지한다.
 
 제품 source commit은 `dd1837f399fed9e6afc78f0878a796cb576b2527`이며 이 후속 pin은 metadata-only다. 최종 frozen archive와 source별 SHA가 위 증거에 연결되어 있다.
+
+
+## 최초 canonical 성능: 실행 완료, SLO 실패
+
+같은 frozen archive bbb592a7에 원1k/10k/100k·DPR1/2·각5warmup+30measured를 전부 실행했다. 입력/원좌표/3CSSquery·timers·threshold는 그대로이며 timer 밖 console progress만 추가해 모든iteration을 보존했다. 측정 중 explicitGC는 없다. 모든12stage가 측정 완료됐지만 모든P95가 목표를 초과해 runnerexit1이었다. 기능 실패나 반복수 축소가 아니다.
+
+|DPR|vertices|camera P95 ms|hit P95 ms|
+|---|---|---|---|
+|1|1000|61.8|72.2|
+|1|10000|350.3|24.9|
+|1|100000|4886.2|35.8|
+|2|1000|54.2|76.2|
+|2|10000|322.3|29.6|
+|2|100000|5200.2|34.5|
+
+[전체 report](geo-hit-a3-evidence/canonical-p95.json)와 압축 progress가 실제값을 소유한다.1k는 기존 scalar default,10k/100k는 A3명시정책이다. Camera SLO16.7/33/50ms, hit20ms는 유지한다. 다음 후보의 성공과 섞지 않는다. 원100cycle 및 큰 rebase/offline 기능 의무도 유지한다. 재실행은 evidence `prepare-benchmark.py`를 checkout root에서 실행한 뒤 생성된 `.artifacts/geo-hit-a3/benchmark-native.mjs`에 원 `--archive`, `--output`, `--workload=geo`를 준다. 스크립트는 canonical driver의timed함수를변경하지않고밖의progress만추가한다.
