@@ -55,3 +55,5 @@ Root는2026-11-02에 revision `38c05b45f`의 이문서와 `proposal.patch`전체
 1k에도capacity/pathGeometry를명시하자원v3camera가Geo@2를선택하지못하는소형contract실패2개를확인했다. 승인된explicitcapacity와호환되는기존공개formatVersion5를모든Geo size에연결해34/34로복구했다. 원fixture/좌표/queries/timers/5+30/SLO는바뀌지않는다. 최초default1k의v3/scalar성능실패는앞선canonicalreport에보존한다. 새로운명시정책성능측정은별도결과로만판정한다.
 
 [검증 manifest](geo-raw-projection-evidence/verification.json)가 source SHA와실패범위를소유한다. Large실패로그/sample은같은폴더에압축보존했다. 다음개념은requireFlattened내 boolean/number반환용일시geometry의owned등록을줄이되공개flatten및오류diagnostics소유권을유지하는것이다. Root가이경계를채택했으며별도검산/제품checkpoint로이어간다.
+
+제품 source는 `83b4877402cdb5eaf30c84dbbdf271d368196613`이며 후속 pin은 metadata-only다.

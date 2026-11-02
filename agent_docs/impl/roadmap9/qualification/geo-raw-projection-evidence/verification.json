@@ -34,5 +34,6 @@
     "small100cycleOldSceneAlive": 0
   },
   "original100k": "native/full scalar/current passed; sequential and fresh rebase plan WeakSet rehash interrupted; rebase/offline remains open",
-  "performance": "new raw source canonical P95 pending; previous archive all6cells/all12stages failed SLO"
+  "performance": "new raw source canonical P95 pending; previous archive all6cells/all12stages failed SLO",
+  "sourceCommit": "83b4877402cdb5eaf30c84dbbdf271d368196613"
 }

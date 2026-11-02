@@ -1,0 +1,7 @@
+{
+  "kind": "read-only load-hook prototype; no product source change",
+  "pairs": 40,
+  "errors": 10,
+  "baselineAdds": 520,
+  "candidateAdds": 80
+}
