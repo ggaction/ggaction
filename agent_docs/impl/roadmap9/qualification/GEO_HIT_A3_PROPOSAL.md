@@ -5,11 +5,11 @@
 - [x] A1/A2 완료 source `45d086ecec9cc7b2d81f21625ebc79272612c439`에서 별도 review WT 생성
 - [x] 기존 실제 1k footprint/호출 계측과 현재 hit owner의 세 독립 제한 확인
 - [x] 아래 공개 정책·private index·비용·반례와 benchmark의 정확 diff 작성
-- [ ] Root 구체안 채택 기록
+- [x] Root 구체안 채택 기록
 - [ ] 소형 product/prototype 동등성, 원10k/100k 실제 footprint 및 query 검증
 - [ ] 동일 archive/browser P95·100cycle와 전체 consumer closure
 
-Gate 상태는 `ready-for-review`다. [기존 remainingApproval](../AUTHORIZATION.json)은 이 범위의 설계 구체화를 이미 승인했다. 사용자에게 재승인을 요구하지 않는다. Root가 이 정확 문서의 채택/수정 판단을 기록한 다음 제품을 구현한다. 이 commit은 문서·적용하지 않은 patch·정적 검증만 포함하며 Current/API/types/제품 source를 바꾸지 않는다. 새 시각 결과나 native 권한을 만들지 않는다.
+Gate 상태는 `approved`다. [기존 remainingApproval](../AUTHORIZATION.json)은 이 범위의 설계 구체화를 이미 승인했다. 사용자에게 재승인을 요구하지 않는다. Root가 이 정확 문서의 채택/수정 판단을 기록한 다음 제품을 구현한다. 이 commit은 문서·적용하지 않은 patch·정적 검증만 포함하며 Current/API/types/제품 source를 바꾸지 않는다. 새 시각 결과나 native 권한을 만들지 않는다.
 
 A1/A2의 native capacity/format5는 [완료 기록](GEO_CAPACITY_A2_IMPLEMENTATION.md)을 따른다. Scalar/Canvas compiler 최적화는 별도 owner가 진행하므로 이 안에 포함하지 않는다.
 
@@ -115,3 +115,7 @@ Focus anchor는 기존 **첫 유효 part 순서**를 보존해야 한다. 공간
 원 input generation/hash·counts·projection/precision/line width·원3CSSquery·oracle·warmups/측정횟수·타이머 위치·SLO는 변경하지 않는다. Small tier는 기존 default를 보존하고 필요한10k/100k에만 명시 capacity를 선택한다. `fullFrameSampleMs/cameraPreviewMs`는 계속 sampleTransition 단독이다. 별도 Canvas draw 계측은 다른 이름의 진단으로 추가할 수 있지만 기존50ms를 renderer 포함 수치로 교체하지 않는다.
 
 [정적 검증 영수증](geo-hit-a3-review/verification.json)은 두 patch의 순차 적용성, JS parse, 원fixture/threshold/timing 핵심문장 보존만 확인한다. Runtime·원큰입력·P95 통과 증거가 아니다.
+
+## 2026-11-02 Root 채택
+
+Root는 review commit `a14a50e3c19dbfe875e002503a7e65100be300a5`를 읽고 `remainingApproval`에 따라 pathGeometry의400k parts/2M geometry·stroke/16M index 준비 정책 및 indexed-query 실제 방문 과금 변경을 채택했다. 기존default30k/1M/query2M·오류·수학, own maxCommands와 명시 pathGeometry의 이중 조건, binding128M 재과금, union1M, clip/text 비상속을 유지한다. 제품 구현 전 작은 footprint 전수·scalar nearest/no-hit/focus oracle와 conservative lower-bound/극단값 검증을 먼저 확보한다. 기능 checkpoint는 공개정책·canonical benchmark의 두 patch·동일 archive 소비자까지 연결하며 미연결stub을 완료로 세지 않는다. 원100k는 scalar 작업 종료 뒤 root slot 조율을 거친다.
