@@ -21,6 +21,12 @@ chart().editLayout({target:'layout',node:{key:[1,'a'],x:1,y:2}});
 chart().editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
 createInteractionSession({program:basic(),bindings:[{type:'keyboard',targets:[{target:'points'}]}]});
 createInteractionSession({program:chart(),bindings:[{type:'keyboard',targets:[{target:{childPath:['a'],id:'points'},activation:{type:'select',selection:'picked',mode:'toggle'}},{target:'partition',activation:{type:'focusHierarchy'}}]}]});
+createInteractionSession({program:chart(),hitPreparation:{maxSceneNodes:100001,maxWork:128000000}});
+createInteractionSession({program:chart(),hitPreparation:{}});
+// @ts-expect-error preparation is a closed option record
+createInteractionSession({program:chart(),hitPreparation:{maxItems:100000}});
+// @ts-expect-error limits require numeric values
+createInteractionSession({program:chart(),hitPreparation:{maxWork:'128000000'}});
 const program = chart(); const session = createInteractionSession({ program, historyLimit: 50 });
 session.dispatch({type:'undo',origin:'user',transactionId:'back'});
 session.dispatch({type:'focus',move:'nextCandidate'});session.dispatch({type:'focus',move:'previousCandidate'});
@@ -188,6 +194,21 @@ session.dispatch({type:'setVisibility',target:'points',payload:{clear:true,chann
 createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'xy',mode:'intersect'}]});
 createInteractionSession({program,bindings:[{type:'brush',target:'bars',selection:'picked',axis:'y',channels:{y:'y2'}}]});
 createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',mode:'add'}]});
+createInteractionSession({program,bindings:[{type:'resize',target:{childPath:['left'],id:'points'},selection:'picked',axis:'xy',slop:4}]});
+createInteractionSession({program,bindings:[{type:'resize',target:'points',selection:'picked',axis:'theta',channels:{theta:'theta'}}]});
+createInteractionSession({program,bindings:[{type:'reorder',target:'bars',channel:'x',modifiers:{shift:true}}]});
+const handles=session.getSelectionHandles(); const handleVersion:number=handles.frameVersion;
+for(const handle of handles.handles){const x:number=handle.point.x;const id:string=handle.target.id;if(handle.axis==='theta'){const direction:'theta-start'|'theta-end'=handle.handle;}}
+// @ts-expect-error a resize binding needs an explicit axis
+createInteractionSession({program,bindings:[{type:'resize',target:'points',selection:'picked'}]});
+// @ts-expect-error region resize replaces its authored predicate
+createInteractionSession({program,bindings:[{type:'resize',target:'points',selection:'picked',axis:'x',mode:'toggle'}]});
+// @ts-expect-error only category position axes can be reordered
+createInteractionSession({program,bindings:[{type:'reorder',target:'bars',channel:'color'}]});
+// @ts-expect-error handles are readonly derived values
+handles.handles[0].point.x=3;
+// @ts-expect-error no caller-authored handle identity
+session.getSelectionHandles({handle:'x-min'});
 session.subscribe(event=>{if('phase' in event&&event.phase==='preview'){const preview=event.state.previewProgram;}});
 // @ts-expect-error one-axis brush cannot select the other axis
 createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'x',channels:{y:'y'}}]});

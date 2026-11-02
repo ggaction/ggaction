@@ -1,0 +1,93 @@
+{
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1256,
+    "packedBytes": 1805223,
+    "unpackedBytes": 8140092,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-position-frame-state/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "62a3f4646fd7834b79011ce8d4972c9f9705cfdb",
+    "sha256": "38c8c8180472902af0f7dbbe270fac213ffa896c709965c10f79fa01c67f473f"
+  },
+  "node": "v20.20.2",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed"
+    },
+    {
+      "id": "public-prepared-scales-and-animation",
+      "status": "passed"
+    },
+    {
+      "id": "strict-types",
+      "status": "passed"
+    },
+    {
+      "id": "doc:animation-offline",
+      "status": "passed"
+    },
+    {
+      "id": "doc:animation-capacity",
+      "status": "passed"
+    },
+    {
+      "id": "doc:animation-guides",
+      "status": "passed"
+    },
+    {
+      "id": "doc:animation-gradient-legend",
+      "status": "passed"
+    },
+    {
+      "id": "doc:animation-size-legend",
+      "status": "passed"
+    },
+    {
+      "id": "doc:animation-categorical-legend",
+      "status": "passed"
+    },
+    {
+      "id": "doc:animation-grouped-legend",
+      "status": "passed"
+    }
+  ],
+  "bundles": {
+    "ggaction": {
+      "gzipBytes": 787369,
+      "limit": 787400,
+      "status": "passed"
+    },
+    "ggaction/basic": {
+      "gzipBytes": 424738,
+      "limit": 424800,
+      "status": "passed"
+    },
+    "ggaction/svg": {
+      "gzipBytes": 24954,
+      "limit": 26000,
+      "status": "passed"
+    },
+    "ggaction/graph": {
+      "gzipBytes": 68878,
+      "limit": 68900,
+      "status": "passed"
+    },
+    "ggaction/animation": {
+      "gzipBytes": 339684,
+      "limit": 339700,
+      "status": "passed"
+    },
+    "ggaction/interaction": {
+      "gzipBytes": 136692,
+      "limit": 136700,
+      "status": "passed"
+    }
+  },
+  "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  }
+}

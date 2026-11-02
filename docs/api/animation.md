@@ -73,7 +73,8 @@ Patterns, gradients, unresolved host colors, changed text/fonts, and other chang
 static effects use the explicit `appearance` crossfade. An unchanged geographic
 pattern continues to use the native geometry and paint materialization rules.
 
-Saved transition plans use version 3 and the required
+Saved transition plans use version 3 by default, or version 4 when explicit node
+limits are requested. Both retain the required
 `premultiplied-linear-srgb@1` appearance kernel. Earlier development plan versions
 and missing or unknown kernels are rejected on restore. The outer animation
 envelope remains schema 1.
@@ -496,7 +497,7 @@ source data. General Text anchor interpolation remains outside this camera kerne
 
 | Function | Result and behavior |
 | --- | --- |
-| `planTransition({from, to, options:{durationMs, easing?, tracks?, markers?, composite?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
+| `planTransition({from, to, options:{durationMs, easing?, tracks?, markers?, composite?, maxEndpointNodes?, maxOutputNodes?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
 | `sampleTransition(plan, timeMs)` | Immutable `{graphicSpec, scene, progress, decisions}`. Finite time is clamped to the plan's duration. For zero duration, time zero selects the target. |
 | `serializeAnimation(plan, playback?)` | A JSON string containing the prepared endpoint payloads, kernel versions, and playback preferences. |
 | `deserializeAnimation(text)` | Immutable `{plan, playback}`. It validates the complete stored values before returning an authentic plan. |
@@ -511,6 +512,55 @@ A frame-rate grid does not add an off-grid ending frame. Use `timesMs` when an
 exact endpoint is required. A zero-duration plan exports one frame at zero.
 Requests are limited to 10,000 frames and 10,000,000 cumulative endpoint-node
 visits before sampling. Returned arrays and frames are immutable.
+
+## Request larger node limits
+
+Use explicit limits when the prepared endpoints or sampled output exceed the default
+10,000 nodes. Run this complete ES module, replacing the example rows with your data:
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run with ggaction installed; both endpoints and explicit rebase limits are included.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from 'ggaction';
+import { planTransition, sampleTransition } from 'ggaction/animation';
+
+const from = chart().createCanvas({ width: 300, height: 200, margin: 20 })
+  .createData({ id: 'rows', keyField: 'id', values: [{ id: 'a', x: 1, y: 2 }] })
+  .createPointMark({ id: 'points', maxItems: 100000 })
+  .encodeX({ field: 'x' }).encodeY({ field: 'y' });
+const to = from.reviseData({ source: 'rows', id: 'next',
+  values: [{ id: 'a', x: 2, y: 3 }] });
+const largerPlan = planTransition({ from, to, options: {
+  durationMs: 1000,
+  maxEndpointNodes: 200002,
+  maxOutputNodes: 100001
+} });
+const currentFrame = sampleTransition(largerPlan, 500);
+const rebasedPlan = planTransition({ from: currentFrame, to, options: {
+  durationMs: 1000,
+  maxEndpointNodes: 200002,
+  maxOutputNodes: 100001
+} });
+```
+
+`maxEndpointNodes` counts both endpoint scenes together; it accepts safe integers
+from 1 to 200002. `maxOutputNodes` counts each endpoint and every sampled scene;
+it accepts 1 to 100001. Each omitted value stays 10000. Explicit `undefined` is
+invalid. Backgrounds, guides, labels, and weighted concrete output count too.
+Point marks still need their own `maxItems` for more than 50,000 raw or materialized
+items; its maximum is 100,000. Other native collection owners retain their existing
+10,000-item limits. These options do not grant a primitive a native owner.
+
+Either explicit option selects version 4, including for smaller limits. With both
+omitted, version 3 and its existing limits remain. Repeat the required limits when
+rebasing or calling `player.interrupt`; they are never inherited from an earlier plan.
+Preparation and strict restoration retain the exact concrete values and validate
+all owners, identities, styles, and semantic mappings. A larger node limit does not
+promise a frame time or bypass frame-export, geometry, or playback work limits.
 
 ## Render the same frame
 
@@ -602,8 +652,18 @@ Restoration performs no network requests or semantic data inference. Unknown
 schemas or kernels, missing asset bytes, invalid identities, inconsistent
 prepared positions, and corrupted payloads reject the entire restore. The JSON
 limit is 64 MiB, decoded nesting is at most 128 levels, and encoded/decoded values
-are each bounded to 1,000,000 occurrences. Plan preparation also has a 10,000-node
-endpoint limit and a 10,000,000-unit work limit.
+are each bounded to 1,000,000 occurrences. Default version 3 also retains its
+10,000-node endpoint limit and 10,000,000-unit preparation work limit. Explicit
+version 4 stores the same actual endpoint and timeline values compactly, with a
+140,000,000-unit preparation bound, 12,000,000 expanded values, and separate
+16,000,000 descriptor/cell validation bounds. Payloads can still exceed these
+bounds through long strings, complex styles, or repeated expansion; restoration
+rejects the entire payload. Other geometry, timeline, sample, and batch limits
+remain unchanged. Existing version 3 animations remain readable.
+
+Version 4 encoding is lossless, but newly prepared plans with the same values can
+use different compact representations. A restored version 4 plan retains its
+stored representation for subsequent serialization.
 
 The same time and stored algorithm versions reproduce the same canonical scene.
 This does not assert identical font rasterization across operating systems.

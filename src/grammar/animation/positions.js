@@ -1,4 +1,4 @@
-import { cloneAndFreeze } from "../../core/immutable.js";
+import { cloneAndFreeze, freezeOwned } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateUnitInterval } from "../../core/validation.js";
 import { mapContinuousScaleValues } from "../scales/mapping.js";
@@ -8,6 +8,52 @@ import { interpolateNumber, interpolatePositiveScale } from "./values.js";
 export const ANIMATION_POSITION_VERSION = "semantic-continuous-position@1";
 const types = new Set(["linear", "time", "log", "pow", "sqrt", "symlog"]);
 const fade = reason => Object.freeze({ kind: "crossfade", reason });
+const preparedPositions = new WeakSet();
+const preparationContexts = new WeakMap();
+const sharedScales = new WeakSet();
+const sampledScales = new WeakMap();
+
+// One planner assembly owns this opaque, short-lived four-entry context. It is
+// never stored in a plan, frame or transport payload.
+export function createPositionPreparationContext() {
+  const context = Object.freeze({});
+  preparationContexts.set(context, { scales: [], cursor: 0 });
+  return context;
+}
+
+function sameScale(a, b) {
+  if (a.type !== b.type || a.clamp !== b.clamp) return false;
+  for (let index = 0; index < 2; index++) {
+    if (!Object.is(a.domain[index], b.domain[index]) || !Object.is(a.range[index], b.range[index])) return false;
+  }
+  for (const key of ["base", "exponent", "constant"]) {
+    if (Object.hasOwn(a, key) !== Object.hasOwn(b, key) || (Object.hasOwn(a, key) && !Object.is(a[key], b[key]))) return false;
+  }
+  return true;
+}
+
+function shareScale(scale, context) {
+  for (const previous of context.scales) if (sameScale(previous, scale)) return previous;
+  const owned = cloneAndFreeze(scale);
+  sharedScales.add(owned);
+  if (context.scales.length < 4) context.scales.push(owned);
+  else {
+    context.scales[context.cursor] = owned;
+    context.cursor = (context.cursor + 1) % 4;
+  }
+  return owned;
+}
+
+function rememberedScale(from, to, progress) {
+  const previous = sampledScales.get(from)?.get(to);
+  return previous !== undefined && Object.is(previous.progress, progress) ? previous.scale : undefined;
+}
+
+function rememberScale(from, to, progress, scale) {
+  let targets = sampledScales.get(from);
+  if (targets === undefined) sampledScales.set(from, targets = new WeakMap());
+  targets.set(to, { progress, scale });
+}
 
 function pair(value, label) {
   ownArray(value, label);
@@ -51,18 +97,33 @@ function compatibility(from, to) {
 
 // A planner supplies resolved semantic values and scale decisions. Never infer
 // a semantic track by inverting already drawn pixel positions.
-export function preparePositionInterpolation(fromInput, toInput) {
+export function preparePositionInterpolation(fromInput, toInput, context) {
+  const preparation = context === undefined ? undefined : preparationContexts.get(context);
+  if (context !== undefined && preparation === undefined) throw new TypeError("Animation position preparation requires its exact private context.");
   const from = normalizePositionEndpoint(fromInput), to = normalizePositionEndpoint(toInput);
   const reason = compatibility(from, to);
-  return reason === undefined ? cloneAndFreeze({ kind: "position", version: ANIMATION_POSITION_VERSION, from, to }) : fade(reason);
+  if (reason !== undefined) return fade(reason);
+  if (preparation !== undefined) {
+    from.scale = shareScale(from.scale, preparation);
+    to.scale = shareScale(to.scale, preparation);
+  }
+  const plan = cloneAndFreeze({ kind: "position", version: ANIMATION_POSITION_VERSION, from, to });
+  preparedPositions.add(plan);
+  return plan;
 }
 
 export function samplePositionInterpolation(plan, progress) {
   validateUnitInterval(progress, "Animation position progress");
-  ownRecord(plan, "Prepared animation position");
-  rejectUnknownProperties(plan, ["kind", "version", "from", "to"], "prepared animation position");
-  if (plan.kind !== "position" || plan.version !== ANIMATION_POSITION_VERSION) throw new TypeError("Animation position sampling requires a supported prepared position.");
-  const prepared = preparePositionInterpolation(plan.from, plan.to);
+  // Only this module's exact deeply owned result can reuse closed-record and
+  // endpoint validation.
+  // Structural copies and caller-frozen records retain the full data boundary.
+  let prepared = plan;
+  if (!preparedPositions.has(plan)) {
+    ownRecord(plan, "Prepared animation position");
+    rejectUnknownProperties(plan, ["kind", "version", "from", "to"], "prepared animation position");
+    if (plan.kind !== "position" || plan.version !== ANIMATION_POSITION_VERSION) throw new TypeError("Animation position sampling requires a supported prepared position.");
+    prepared = preparePositionInterpolation(plan.from, plan.to);
+  }
   if (prepared.kind !== "position") throw new TypeError("Prepared animation position endpoints are incompatible.");
   const { from, to } = prepared;
   if (progress === 0 || progress === 1) {
@@ -74,14 +135,24 @@ export function samplePositionInterpolation(plan, progress) {
   const at = (a, b) => interpolateNumber(a, b, progress);
   const domainAt = from.scale.type === "log"
     ? (a, b) => Math.sign(a) * interpolatePositiveScale(Math.abs(a), Math.abs(b), progress) : at;
-  const scale = { ...from.scale, domain: from.scale.domain.map((v, i) => domainAt(v, to.scale.domain[i])),
-    range: from.scale.range.map((v, i) => at(v, to.scale.range[i])) };
-  if (scale.domain[0] === scale.domain[1]) return fade("collapsed-domain");
+  const share = sharedScales.has(from.scale) && sharedScales.has(to.scale);
+  let scale = share ? rememberedScale(from.scale, to.scale, progress) : undefined;
+  const retain = share && scale === undefined;
+  if (scale === undefined) {
+    scale = { ...from.scale, domain: from.scale.domain.map((v, i) => domainAt(v, to.scale.domain[i])),
+      range: from.scale.range.map((v, i) => at(v, to.scale.range[i])) };
+    if (scale.domain[0] === scale.domain[1]) return fade("collapsed-domain");
+    // Only these newly-created arrays and closed scale are owned here.
+    freezeOwned(scale.domain); freezeOwned(scale.range); freezeOwned(scale);
+  }
   let position;
   try { position = mapContinuousScaleValues([value], scale)[0]; }
   catch (error) {
     if (!(error instanceof RangeError)) throw error;
     return fade("nonfinite-position");
   }
-  return Number.isFinite(position) ? cloneAndFreeze({ kind: "position", value, scale, position }) : fade("nonfinite-position");
+  if (!Number.isFinite(position)) return fade("nonfinite-position");
+  // A failed mapping or collapsed domain never publishes a partial cache entry.
+  if (retain) rememberScale(from.scale, to.scale, progress, scale);
+  return cloneAndFreeze({ kind: "position", value, scale, position });
 }

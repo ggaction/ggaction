@@ -89,12 +89,12 @@
     {
       "name": "startPoint",
       "required": false,
-      "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+      "type": "(StrokeStyleDetails & { maxItems?: number | undefined; clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
     },
     {
       "name": "endPoint",
       "required": false,
-      "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+      "type": "(StrokeStyleDetails & { maxItems?: number | undefined; clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
     },
     {
       "name": "connector",

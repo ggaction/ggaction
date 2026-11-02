@@ -1,0 +1,166 @@
+{
+  "kind": "actual product baseline425d76230 versus loader-only point node local freeze; counters are diagnostic, not SLO",
+  "node": "v24.22.1",
+  "rows": 1000,
+  "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+  "savedInputSHA256": "92ca02b3a446bc7da0f850d9f3062d4cc304044ed31cc2a4a993c88b62f1decc",
+  "source": {
+    "src/animation/sample.js": "c569a02ba99e46cae93cf63cb5dcbfb2d8b39e482c8f7a2f3bbaba6fc7e406e3"
+  },
+  "comparisons": {
+    "3": {
+      "nativeBytes": [
+        1822845,
+        1822845
+      ],
+      "nativeSHA256": [
+        "0db44a02f73f77404370d26f3fc68ec618105eaceac7a61eef899de32e8acbc3",
+        "0db44a02f73f77404370d26f3fc68ec618105eaceac7a61eef899de32e8acbc3"
+      ],
+      "rebaseBytes": [
+        2381600,
+        2381600
+      ],
+      "rebaseSHA256": [
+        "6455abce7000be4ef13c567235d9511e445db85cfbec8cc87579c16db39964e5",
+        "6455abce7000be4ef13c567235d9511e445db85cfbec8cc87579c16db39964e5"
+      ],
+      "counts": [
+        {
+          "clones": 11036,
+          "ownedAdds": 13048,
+          "weakAdds": 24085,
+          "weakHas": 52152,
+          "weakSources": {
+            "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+            "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+            "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/grammar/scales/continuous.js": 4000,
+            "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/sample.js": 10000,
+            "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/sample.js": 2011,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+            "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+            "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+            "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+            "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+            "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+          }
+        },
+        {
+          "clones": 6035,
+          "ownedAdds": 10048,
+          "weakAdds": 16084,
+          "weakHas": 39151,
+          "weakSources": {
+            "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+            "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+            "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/grammar/scales/continuous.js": 4000,
+            "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/sample.js": 2000,
+            "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/sample.js": 2010,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+            "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+            "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+            "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+            "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+            "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+          }
+        }
+      ],
+      "work": {
+        "Animation preparation work": 771686
+      },
+      "rebaseWork": {
+        "Animation preparation work": 451681
+      },
+      "mixedGeoFullFrameAndMeaningEqual": true,
+      "fullNativeOfflineMeaningBatchRebaseEqual": true,
+      "timelineAndTimelineRebaseFullMeaningEqual": true,
+      "fallbackFullMeaningEqual": true,
+      "restoreReserializeExact": true
+    },
+    "4": {
+      "nativeBytes": [
+        345803,
+        345803
+      ],
+      "nativeSHA256": [
+        "82df80d1c01bf06476bc71f7886d3098f4230d720609d38a65d8269327640628",
+        "82df80d1c01bf06476bc71f7886d3098f4230d720609d38a65d8269327640628"
+      ],
+      "rebaseBytes": [
+        422310,
+        422310
+      ],
+      "rebaseSHA256": [
+        "4b6a97c7a61fcafc298e4cac6ee217357602c248fca49825bd5fdad133a6263b",
+        "4b6a97c7a61fcafc298e4cac6ee217357602c248fca49825bd5fdad133a6263b"
+      ],
+      "counts": [
+        {
+          "clones": 11036,
+          "ownedAdds": 13048,
+          "weakAdds": 24085,
+          "weakHas": 52152,
+          "weakSources": {
+            "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+            "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+            "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/grammar/scales/continuous.js": 4000,
+            "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/sample.js": 10000,
+            "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/sample.js": 2011,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+            "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+            "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+            "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+            "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+            "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+          }
+        },
+        {
+          "clones": 6035,
+          "ownedAdds": 10048,
+          "weakAdds": 16084,
+          "weakHas": 39151,
+          "weakSources": {
+            "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+            "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+            "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/grammar/scales/continuous.js": 4000,
+            "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/sample.js": 2000,
+            "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/sample.js": 2010,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+            "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+            "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+            "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+            "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+            "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+            "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+          }
+        }
+      ],
+      "work": {
+        "Animation preparation work": 771686
+      },
+      "rebaseWork": {
+        "Animation preparation work": 451681
+      },
+      "mixedGeoFullFrameAndMeaningEqual": true,
+      "fullNativeOfflineMeaningBatchRebaseEqual": true,
+      "timelineAndTimelineRebaseFullMeaningEqual": true,
+      "fallbackFullMeaningEqual": true,
+      "restoreReserializeExact": true
+    }
+  }
+}

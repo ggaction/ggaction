@@ -1,0 +1,169 @@
+{
+  "scope": "Read-only diagnostic. Only Animation/Partition animation labels temporarily admit 200002 nodes / 200M work. Product global bounds, codec64MiB/1M values, fixture cardinality and SLO are unchanged. Not P95 qualification.",
+  "kind": "points",
+  "n": 100000,
+  "node": "v22.23.1",
+  "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+  "validationSourceSHA256": "3030d9c3835555c141c3b76cd6645ee055ac32c92e9c1916c9109f17c42d2abf",
+  "rootPositionProofSourceSHA256": "12f919cbed5026dd0ba4ad3f3fd918fb197cae5532ee865dbe22e7db58f8eb05",
+  "phases": {
+    "prepare": {
+      "ms": 151150.214792,
+      "audit": {
+        "guards": {
+          "Animation preparation work": {
+            "calls": 10800123,
+            "maximum": 78333686,
+            "originalLimit": 10000000
+          },
+          "Animation Geo groups": {
+            "calls": 2,
+            "maximum": 0,
+            "originalLimit": 10000
+          },
+          "Animation guide endpoint size": {
+            "calls": 2,
+            "maximum": 100001,
+            "originalLimit": 10000
+          },
+          "Animation guide preparation work": {
+            "calls": 2,
+            "maximum": 1,
+            "originalLimit": 10000000
+          },
+          "Animation point rows": {
+            "calls": 2,
+            "maximum": 100000,
+            "originalLimit": 10000
+          },
+          "Animation graph groups": {
+            "calls": 2,
+            "maximum": 0,
+            "originalLimit": 10000
+          },
+          "Animation partition groups": {
+            "calls": 2,
+            "maximum": 0,
+            "originalLimit": 10000
+          },
+          "Animation endpoint nodes": {
+            "calls": 1,
+            "maximum": 200002,
+            "originalLimit": 10000
+          },
+          "Animation Geo track preparation": {
+            "calls": 1,
+            "maximum": 200002,
+            "originalLimit": 10000000
+          },
+          "Animation Geo paired groups": {
+            "calls": 1,
+            "maximum": 0,
+            "originalLimit": 10000
+          },
+          "Animation owner identity work": {
+            "calls": 400000,
+            "maximum": 13,
+            "originalLimit": 10000000
+          }
+        },
+        "normalizePosition": 400000,
+        "preparePosition": 200000,
+        "samplePosition": 400000,
+        "proofHit": 400000
+      },
+      "memory": {
+        "rss": 400490496,
+        "heapTotal": 1321648128,
+        "heapUsed": 1267379376,
+        "external": 2324070,
+        "arrayBuffers": 46876
+      }
+    },
+    "sample": {
+      "ms": 112715.35258399998,
+      "audit": {
+        "guards": {
+          "Animation sampled nodes": {
+            "calls": 1,
+            "maximum": 100001,
+            "originalLimit": 10000
+          }
+        },
+        "normalizePosition": 0,
+        "preparePosition": 0,
+        "samplePosition": 200000,
+        "proofHit": 200000
+      },
+      "memory": {
+        "rss": 1026719744,
+        "heapTotal": 1886093312,
+        "heapUsed": 1839238576,
+        "external": 2332262,
+        "arrayBuffers": 55068
+      }
+    }
+  },
+  "product": {
+    "status": "rejected",
+    "name": "RangeError",
+    "message": "Animation preparation work must not exceed 10000000."
+  },
+  "verified": {
+    "rawRows": 100000,
+    "allNativeItems": 100000,
+    "endpoints": [
+      100001,
+      100001
+    ],
+    "sampledNodes": 100001
+  },
+  "transport": {
+    "total": {
+      "jsonBytes": 142546785,
+      "decodedValues": 7600057,
+      "encodedValues": 24000213
+    },
+    "fromGraphics": {
+      "jsonBytes": 52826551,
+      "decodedValues": 1700020,
+      "encodedValues": 5700074
+    },
+    "toGraphics": {
+      "jsonBytes": 52826193,
+      "decodedValues": 1700020,
+      "encodedValues": 5700074
+    },
+    "fromPositions": {
+      "jsonBytes": 18446891,
+      "decodedValues": 2100003,
+      "encodedValues": 6300009
+    },
+    "toPositions": {
+      "jsonBytes": 18446891,
+      "decodedValues": 2100003,
+      "encodedValues": 6300009
+    }
+  },
+  "scaleStorage": {
+    "scaleOccurrences": 400000,
+    "uniqueObjects": 400000,
+    "uniqueDefinitions": 3
+  },
+  "codec": {
+    "status": "rejected",
+    "name": "RangeError",
+    "message": "Animation envelope values exceed its limit."
+  },
+  "rebase": {
+    "status": "not-completed",
+    "reason": "Separate original diagnostic is still CPU-bound after 20 minutes; no rebase success claimed."
+  },
+  "peakFinalMemory": {
+    "rss": 1767718912,
+    "heapTotal": 2103820288,
+    "heapUsed": 2049127136,
+    "external": 2332262,
+    "arrayBuffers": 55068
+  }
+}

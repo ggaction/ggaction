@@ -1,0 +1,10 @@
+import{readFileSync,readdirSync,writeFileSync}from'node:fs';import{createHash}from'node:crypto';import{assertCriticalCoverage,parseCoverageTable,CRITICAL_COVERAGE_FLOORS}from'../scripts/coverage-policy.js';
+const focused=readFileSync('.artifacts/geo-capacity-coverage-2.log','utf8'),actual=parseCoverageTable(focused);
+const floors=Object.fromEntries(Object.entries(CRITICAL_COVERAGE_FLOORS).filter(([f])=>actual.has(f)&&f!=='persistence/validation.js'));assertCriticalCoverage(focused,floors);
+const functions=new Map(JSON.parse(readFileSync('.artifacts/geo-validation-function-ranges.json')).map(f=>[f.key,f]));
+for(const file of readdirSync('.artifacts/geo-validation-supplement-v8')){const d=JSON.parse(readFileSync('.artifacts/geo-validation-supplement-v8/'+file)),row=d.result.find(r=>r.url.endsWith('/src/persistence/validation.js'));if(!row)continue;for(const f of row.functions){const r=f.ranges[0],key=r.startOffset+':'+r.endOffset;const old=functions.get(key);functions.set(key,{key,name:f.functionName,count:r.count+(old?.count??0),line:old?.line,body:old?.body});}}
+const missing=[...functions.values()].filter(f=>f.count===0);if(missing.length)throw Error(JSON.stringify(missing));
+const persistence=parseCoverageTable(readFileSync('.artifacts/geo-capacity-persistence-attribution.log','utf8')).get('persistence/validation.js');
+const floor=CRITICAL_COVERAGE_FLOORS['persistence/validation.js'];if(persistence.lines<floor.lines||persistence.branches<floor.branches)throw Error('Persistence line/branch floor');
+const result={sourceSHA256:createHash('sha256').update(readFileSync('src/persistence/validation.js')).digest('hex'),focused:{floors,actual:Object.fromEntries(actual)},persistence:{kind:'same-source V8 function offset union across owning and 45 literal supplemental cases; no whole-suite coverage claim',owning:persistence,unionFunctionsPercent:100,functions:[...functions.values()]}};
+writeFileSync('.artifacts/geo-capacity-critical.json',JSON.stringify(result,null,2));console.log(JSON.stringify({criticalOwners:Object.keys(floors).length+1,persistenceFunctionCount:functions.size,missing}));

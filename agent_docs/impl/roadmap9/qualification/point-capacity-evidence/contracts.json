@@ -1,0 +1,58 @@
+{
+  "label": "suite-contracts",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/contracts/action-catalog.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/contracts/agent-docs-navigation.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/contracts/compact-action-cards.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/contracts/documentation-truth.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/contracts/package-boundaries.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/contracts/point-capacity-types.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 28560,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-11-01T16:45:49.428Z",
+  "finishedAt": "2026-11-01T16:46:17.989Z",
+  "source": {
+    "available": true,
+    "commit": "2ab9e9f64ea1689df5c3f75724019b92cd1c7efa",
+    "clean": false,
+    "statusSha256": "d736d911701f7d2d296d746f6f34a225eae144c2739008c98e6e0fc5af57d479"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "2ab9e9f64ea1689df5c3f75724019b92cd1c7efa",
+    "clean": false,
+    "statusSha256": "d736d911701f7d2d296d746f6f34a225eae144c2739008c98e6e0fc5af57d479"
+  },
+  "logSha256": "ed95c0b71f09530e84c239d782995e7a45204a5ae62fad07d3ab4594244d653a",
+  "discovery": {
+    "suite": "contracts",
+    "selectors": [
+      "contracts/point-capacity-types.test.js",
+      "contracts/compact-action-cards.test.js",
+      "contracts/action-catalog.test.js",
+      "contracts/package-boundaries.test.js",
+      "contracts/documentation-truth.test.js",
+      "contracts/agent-docs-navigation.test.js"
+    ],
+    "files": [
+      "test/contracts/action-catalog.test.js",
+      "test/contracts/agent-docs-navigation.test.js",
+      "test/contracts/compact-action-cards.test.js",
+      "test/contracts/documentation-truth.test.js",
+      "test/contracts/package-boundaries.test.js",
+      "test/contracts/point-capacity-types.test.js"
+    ]
+  },
+  "bytes": 8161,
+  "retainedBytes": 8161,
+  "truncated": false
+}

@@ -11,17 +11,17 @@ import { usesProportionalArcTheta } from "../grammar/arcs.js";
 import { invertPositionInterval } from "../grammar/scales/inversion.js";
 import { selectScreenPolygonKeys } from "../grammar/lassoSelection.js";
 import { nearestHitShape } from "../grammar/hitShapes.js";
-import { resolveHitCoordinates, transformHitPoint } from "../grammar/hitCoordinates.js";
 import { SELECTION_SET_MODES } from "../grammar/selectionSet.js";
 import { resolveClickSelection } from "./clickSelection.js";
 import { programHitOwnerPlacement, rebindProgramHitFrame } from "./hitProgram.js";
 import { scopeSelectionKeys } from "./selection.js";
 import { interactionOptions as options } from "./input.js";
+import { regionCoordinates } from "./regionCoordinates.js";
 
 const samePath = (a, b) => a.length === b.length && a.every((id, index) => id === b[index]);
 const inside = (point, b) => point.x >= b.x && point.x <= b.x + b.width && point.y >= b.y && point.y <= b.y + b.height;
 
-function scalesFor(owner, binding) {
+export function regionScales(owner, binding) {
   if (binding.type !== "brush") return {};
   const layer = requireLayer(owner.view, owner.target.id);
   const angular = Object.hasOwn(binding.channels, "theta");
@@ -59,38 +59,23 @@ export function normalizeRegionBinding(program, value, links) {
     for (const [key, channel] of Object.entries(channels)) if (!(key === "theta" ? ["theta"] : [key, `${key}2`]).includes(channel)) throw new TypeError("Brush channels must use their matching position axis.");
   }
   const result = cloneAndFreeze({ type: request.type, target, selection: request.selection, mode, ...(channels === undefined ? {} : { channels }) });
-  scalesFor(owner, result);
+  regionScales(owner, result);
   return result;
 }
 
 export function resolveRegionBinding(program, binding, allowMissing = false) {
   const owner = resolveClickSelection(program, binding.target, binding.selection, allowMissing);
-  if (owner) scalesFor(owner, binding);
+  if (owner) regionScales(owner, binding);
   return owner;
 }
 
-export function prepareRegionGesture(program, binding, base, scene, rootTransform, start, displayed = base) {
-  const owner = resolveRegionBinding(program, binding, true);
-  if (!owner) return null;
-  const placement = programHitOwnerPlacement(base, owner.target.childPath), offset = placement.offset;
-  const map = point => {
-    const mapped = resolveHitCoordinates({ point, rect: { left: 0, top: 0, width: scene.width, height: scene.height }, rootTransform,
-      childTransforms: [[1, 0, 0, 1, ...offset]] });
-    if (mapped.localPoint === null) throw new Error("Region gesture requires invertible current coordinates.");
-    return mapped.localPoint;
-  };
-  const layer = requireLayer(owner.view, owner.target.id), bounds = resolveCoordinateBounds(owner.view, layer.coordinate);
-  const localStart = map(start);
-  if (!inside(localStart, bounds)) return null;
-  const polarFrame = binding.channels?.theta === undefined ? undefined : resolveCoordinatePolarFrame(owner.view, layer.coordinate);
-  if (polarFrame !== undefined && (polarThetaAtPoint(localStart, polarFrame) === null || polarFrame.availableRadius === 0 ||
-    Math.hypot(localStart.x - polarFrame.centerX, localStart.y - polarFrame.centerY) > polarFrame.availableRadius)) return null;
+export function prepareRegionEntries(program, owner, base, scene, rootTransform, displayed, strict, account = () => {}, hitPreparation) {
   let work = 0;
-  const spend = count => validateWorkLimit(work += count, "Region gesture work");
+  const spend = count => { validateWorkLimit(work += count, "Region gesture work"); account(count); };
   const allowed = new Set(scopeSelectionKeys(program, owner.target, owner.resolved.items.filter(item => item.visible !== false).map(item => item.key), spend));
-  const frame = rebindProgramHitFrame(displayed, scene, displayed.version, rootTransform), items = new Map();
+  const frame = rebindProgramHitFrame(displayed, scene, displayed.version, rootTransform, hitPreparation);
   const selectedEntries = frame.entries.filter(entry => entry.metadata.ownerId === owner.target.id && samePath(entry.metadata.childPath, owner.target.childPath) && allowed.has(entry.metadata.itemKey));
-  if (binding.type === "brush") {
+  if (strict) {
     // Stored scale inversion cannot infer an arbitrary sampled animation's scale.
     const original = new Map(base.scene.nodes.map(node => [node.key, node]));
     const current = new Map(scene.nodes.map(node => [node.key, node]));
@@ -100,7 +85,23 @@ export function prepareRegionGesture(program, binding, base, scene, rootTransfor
       spend(currentNode.length + originalNode.length);
       if (currentNode !== originalNode) throw new Error("Brush scale inversion requires the owner's committed concrete frame.");
     }
-  } else {
+  }
+  return { selectedEntries, spend };
+}
+
+export function prepareRegionGesture(program, binding, base, scene, rootTransform, start, displayed = base, hitPreparation) {
+  const owner = resolveRegionBinding(program, binding, true);
+  if (!owner) return null;
+  const placement = programHitOwnerPlacement(base, owner.target.childPath), offset = placement.offset;
+  const coordinates = regionCoordinates(scene, rootTransform, offset), { map } = coordinates;
+  const layer = requireLayer(owner.view, owner.target.id), bounds = resolveCoordinateBounds(owner.view, layer.coordinate);
+  const localStart = map(start);
+  if (!inside(localStart, bounds)) return null;
+  const polarFrame = binding.channels?.theta === undefined ? undefined : resolveCoordinatePolarFrame(owner.view, layer.coordinate);
+  if (polarFrame !== undefined && (polarThetaAtPoint(localStart, polarFrame) === null || polarFrame.availableRadius === 0 ||
+    Math.hypot(localStart.x - polarFrame.centerX, localStart.y - polarFrame.centerY) > polarFrame.availableRadius)) return null;
+  const { selectedEntries, spend } = prepareRegionEntries(program, owner, base, scene, rootTransform, displayed, binding.type === "brush", undefined, hitPreparation), items = new Map();
+  if (binding.type !== "brush") {
     for (const entry of selectedEntries) {
       spend(1); const b = entry.shape.bounds;
       if (!b) continue;
@@ -115,9 +116,7 @@ export function prepareRegionGesture(program, binding, base, scene, rootTransfor
     const b = item.bounds, point = { x: b.left / 2 + b.right / 2, y: b.top / 2 + b.bottom / 2 };
     if (item.shapes.some(shape => Number.isFinite(nearestHitShape(shape, point, { slop: 0 }, spend).distance))) anchors.push({ key, point });
   }
-  return freezeOwned({ binding, owner, start: localStart, map, bounds, polarFrame, scales: scalesFor(owner, binding), anchors: cloneAndFreeze(anchors),
-    toRoot: point => transformHitPoint([1, 0, 0, 1, ...offset], point),
-    screenToRoot: point => resolveHitCoordinates({ point, rect: { left: 0, top: 0, width: scene.width, height: scene.height }, rootTransform, childTransforms: [] }).localPoint });
+  return freezeOwned({ binding, owner, start: localStart, ...coordinates, bounds, polarFrame, scales: regionScales(owner, binding), anchors: cloneAndFreeze(anchors) });
 }
 
 export function regionGestureCommand(context, points) {

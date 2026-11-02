@@ -1,0 +1,124 @@
+{
+  "kind": "Private product resource path; no instrumentation, no public option wiring, not SLO/P95",
+  "node": "v24.22.1",
+  "n": 100000,
+  "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+  "phases": {
+    "prepare": {
+      "ms": 23055.532249999997,
+      "accounting": {
+        "native": true,
+        "limits": {
+          "maxEndpointNodes": 200002,
+          "maxOutputNodes": 100001
+        },
+        "maximumWork": {
+          "Animation preparation work": 78333686
+        }
+      },
+      "columns": {
+        "logicalValues": 7600057,
+        "descriptorVisits": 7600056,
+        "cellVisits": 7600004,
+        "physicalValues": 604540,
+        "encodedValues": 608452,
+        "bytes": 33703134,
+        "validatedLogicalValues": 7600057
+      },
+      "fullLegacyWork": 97911711
+    },
+    "sample": {
+      "ms": 2788.8367089999992
+    },
+    "offline": {
+      "ms": 47400.959500000004,
+      "bytes": 33703431,
+      "accounting": {
+        "native": false,
+        "limits": {
+          "maxEndpointNodes": 200002,
+          "maxOutputNodes": 100001
+        },
+        "maximumWork": {
+          "Animation preparation work": 97911711
+        }
+      },
+      "columns": {
+        "logicalValues": 7600057,
+        "descriptorVisits": 5600048,
+        "physicalValues": 604540,
+        "encodedValues": 608452,
+        "bytes": 33703134
+      }
+    },
+    "rebase": {
+      "ms": 44498.208875,
+      "accounting": {
+        "native": true,
+        "limits": {
+          "maxEndpointNodes": 200002,
+          "maxOutputNodes": 100001
+        },
+        "maximumWork": {
+          "Animation preparation work": 46333687
+        }
+      },
+      "columns": {
+        "logicalValues": 10100086,
+        "descriptorVisits": 11500070,
+        "cellVisits": 11500023,
+        "physicalValues": 804915,
+        "encodedValues": 809470,
+        "bytes": 41204291,
+        "validatedLogicalValues": 10100086
+      },
+      "fullLegacyWork": 133456501
+    },
+    "rebaseOffline": {
+      "ms": 136050.71520799998,
+      "bytes": 41204588,
+      "accounting": {
+        "native": false,
+        "limits": {
+          "maxEndpointNodes": 200002,
+          "maxOutputNodes": 100001
+        },
+        "maximumWork": {
+          "Animation preparation work": 133456501
+        }
+      },
+      "columns": {
+        "logicalValues": 10100086,
+        "descriptorVisits": 8500059,
+        "physicalValues": 804915,
+        "encodedValues": 809470,
+        "bytes": 41204291
+      }
+    }
+  },
+  "stage": "all-native-offline-rebase-exact",
+  "memory": {
+    "rss": 3399761920,
+    "heapTotal": 3776823296,
+    "heapUsed": 3635880352,
+    "external": 14424288,
+    "arrayBuffers": 12148267
+  },
+  "allCoordinatesVerified": 100000,
+  "batch50Rejected": true,
+  "allRebaseCoordinatesVerified": 100000,
+  "finalMemory": {
+    "rss": 3399499776,
+    "heapTotal": 3776823296,
+    "heapUsed": 3635867824,
+    "external": 14424288,
+    "arrayBuffers": 12148267
+  },
+  "sourceSHA256": {
+    "src/animation/columnCodec.js": "ed1cb04fd5e2c90db3174db224f2edd2bdc10cfdb831d2da35ce21eacac00474",
+    "src/animation/resources.js": "fe5fc7515044e16191a272a6336f0f6c65b404dfcfcf9f51b2fd1e1844656333",
+    "src/animation/planner.js": "d6b6e19844199e4b51382e6d07c8d4b649b6439389727f64d82cfff8c1d78f86",
+    "src/animation/envelopeCodec.js": "0f4c5cf76b7e440cd847cd701d8d797463254398143934168b51f338ab68e7a9",
+    "src/animation/sample.js": "7be3f2ad64b1de769030ce6b219ea7acf9115db864c81e5189522456dd2125da"
+  }
+}

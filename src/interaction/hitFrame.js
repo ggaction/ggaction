@@ -1,3 +1,4 @@
+import { normalizeHitPreparation } from "../grammar/hitPolicy.js";
 import { freezeOwned } from "../core/immutable.js";
 import { ownRecord } from "../core/ownData.js";
 import { prepareHitIndex, hitIndex, nearestHitIndex } from "../grammar/hitIndex.js";
@@ -11,15 +12,16 @@ function request(frame) {
   }
   return frame;
 }
-function prepare(frame) {
-  const index = prepareHitIndex(frame.scene, frame.entries);
+function prepare(frame, policy) {
+  const index = prepareHitIndex(frame.scene, frame.entries, policy);
   return { index, scene: frame.scene, version: frame.version,
     snapshot: freezeOwned({ scene: frame.scene, version: frame.version, itemCount: index.itemCount, indexedCount: index.indexedCount }) };
 }
 
 /** Private, host-independent current-frame lifecycle. No listeners, timers or animation sampling. */
-export function createHitFrameBridge(initialFrame) {
-  let current = prepare(request(initialFrame));
+export function createHitFrameBridge(initialFrame, options) {
+  const policy = normalizeHitPreparation(options);
+  let current = prepare(request(initialFrame), policy);
   const live = () => {
     if (current === null) throw new Error("Hit frame bridge is disposed.");
     return current;
@@ -30,7 +32,7 @@ export function createHitFrameBridge(initialFrame) {
       const previous = live(); request(frame);
       // A late completed frame never rebuilds or replaces the current index.
       if (frame.version <= previous.version) return freezeOwned({ applied: false, version: previous.version, reason: "stale-frame" });
-      const next = prepare(frame);
+      const next = prepare(frame, policy);
       current = next;
       return freezeOwned({ applied: true, version: next.version });
     },

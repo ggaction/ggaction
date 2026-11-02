@@ -22,6 +22,10 @@ import { renderToPDFBuffer } from ${JSON.stringify(path.join(root,'types/pdf.js'
 const from=chart(),to=chart();
 const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}});
 planTransition({from:basic(),to:basic(),options:{durationMs:0}});
+const scoped=planTransition({from,to,options:{durationMs:100,maxEndpointNodes:200002,maxOutputNodes:100001}});
+const version:4=scoped.version;
+const legacyVersion:3=plan.version;
+planTransition({from:basic(),to:basic(),options:{durationMs:0,maxOutputNodes:10000}});
 const frame=sampleTransition(plan,50);
 for(const decision of frame.decisions)if(decision.kind==='semantic-kernel'){
   const guide:string|undefined=decision.guideKey;
@@ -55,7 +59,7 @@ render(frame,context);renderToSVG(frame);renderToPNGBuffer(frame);renderToPDFBuf
 const player=createAnimationPlayer({plan,...restored.playback,clock:{now:()=>0,
   requestFrame:callback=>'host-frame',cancelFrame:handle=>{const token:string=handle;}},render:frame=>renderToSVG(frame)});
 player.play().pause().seek(50).reverse().setRate(2).setRepeat(Infinity).cancel();
-player.interrupt({to,options:{durationMs:200},rate:-1});
+player.interrupt({to,options:{durationMs:200,maxEndpointNodes:200002,maxOutputNodes:100001},rate:-1});
 player.finished.then(result=>{const time:number=result.timeMs;const reason:string=result.reason;});
 const status:string=player.getState().status;player.getFrame()?.scene;player.dispose();
 // @ts-expect-error a plan cannot be authored as a plain object
@@ -72,6 +76,10 @@ restored.playback.rate=2;
 serializeAnimation(plan,{render(){}});
 // @ts-expect-error duration is required
 planTransition({from,to,options:{easing:'linear'}});
+// @ts-expect-error node limits require numbers
+planTransition({from,to,options:{durationMs:1,maxOutputNodes:"100001"}});
+// @ts-expect-error resource options are flat
+planTransition({from,to,options:{durationMs:1,capacity:{maxOutputNodes:100001}}});
 // @ts-expect-error easing is closed
 planTransition({from,to,options:{durationMs:1,easing:'spring'}});
 // @ts-expect-error a player requires an explicit clock

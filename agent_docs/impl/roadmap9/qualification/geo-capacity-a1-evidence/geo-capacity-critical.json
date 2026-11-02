@@ -1,0 +1,531 @@
+{
+  "sourceSHA256": "ffb7737a9088e18d722899dc88e50e1ac734e2c8c4bd602fafba68f9a891832a",
+  "focused": {
+    "floors": {
+      "actions/geo/marks.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/geo/capacity.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/geo/mark.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/geo/markGeometry.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/geo/stream.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/pathCommands.js": {
+        "lines": 80,
+        "branches": 75,
+        "functions": 80
+      },
+      "grammar/pathGeometry.js": {
+        "lines": 80,
+        "branches": 75,
+        "functions": 80
+      },
+      "grammar/pathTopology.js": {
+        "lines": 80,
+        "branches": 75,
+        "functions": 80
+      },
+      "materialization/geo/mark.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "selectors/graphicCapacity.js": {
+        "lines": 90,
+        "branches": 80,
+        "functions": 100
+      },
+      "grammar/schemas/concreteGraphic.js": {
+        "lines": 85,
+        "branches": 85,
+        "functions": 100
+      },
+      "grammar/schemas/graphicBounds.js": {
+        "lines": 85,
+        "branches": 75,
+        "functions": 90
+      }
+    },
+    "actual": {
+      "actions/geo/marks.js": {
+        "lines": 100,
+        "branches": 98.2,
+        "functions": 100
+      },
+      "actions/primitives/editGraphics.js": {
+        "lines": 92.58,
+        "branches": 95.57,
+        "functions": 91.67
+      },
+      "grammar/geo/capacity.js": {
+        "lines": 100,
+        "branches": 97.3,
+        "functions": 100
+      },
+      "grammar/geo/mark.js": {
+        "lines": 100,
+        "branches": 94.44,
+        "functions": 100
+      },
+      "grammar/geo/markGeometry.js": {
+        "lines": 100,
+        "branches": 95.92,
+        "functions": 100
+      },
+      "grammar/geo/stream.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "grammar/pathCommands.js": {
+        "lines": 100,
+        "branches": 97.73,
+        "functions": 100
+      },
+      "grammar/pathGeometry.js": {
+        "lines": 97.2,
+        "branches": 94.51,
+        "functions": 100
+      },
+      "grammar/pathTopology.js": {
+        "lines": 100,
+        "branches": 98.57,
+        "functions": 100
+      },
+      "grammar/schemas/concreteGraphic.js": {
+        "lines": 87.58,
+        "branches": 91.51,
+        "functions": 100
+      },
+      "grammar/schemas/graphic.js": {
+        "lines": 98.86,
+        "branches": 92.86,
+        "functions": 100
+      },
+      "grammar/schemas/graphicBounds.js": {
+        "lines": 91.54,
+        "branches": 90.86,
+        "functions": 92.59
+      },
+      "materialization/geo/mark.js": {
+        "lines": 100,
+        "branches": 96.3,
+        "functions": 100
+      },
+      "persistence/validation.js": {
+        "lines": 95.1,
+        "branches": 95.68,
+        "functions": 62
+      },
+      "selectors/graphicCapacity.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "all files": {
+        "lines": 95.44,
+        "branches": 95.49,
+        "functions": 90.17
+      }
+    }
+  },
+  "persistence": {
+    "kind": "same-source V8 function offset union across owning and 45 literal supplemental cases; no whole-suite coverage claim",
+    "owning": {
+      "lines": 99.74,
+      "branches": 98.09,
+      "functions": 92.31
+    },
+    "unionFunctionsPercent": 100,
+    "functions": [
+      {
+        "key": "0:52594",
+        "name": "",
+        "count": 337,
+        "line": 1,
+        "body": "import { validateGeoGraphicCapacity } from \"../grammar/geo/capacity.js\";\nimport { assertProgramSingleY } from \"../materialization/frameState.js\";\nimport { validateTableBinding } from \"../grammar/tablePlot.js\";\nimport { deriveTableData } fro"
+      },
+      {
+        "key": "7382:8565",
+        "name": "validateStoredColorLegendSampling",
+        "count": 194,
+        "line": 100,
+        "body": "function validateStoredColorLegendSampling(program, config, path) {\n  requireObject(config.sampling, path);\n  const sample = config.sampling;\n  exactKeys(sample, sample.mode === \"values\" ? [\"mode\", \"values\", \"count\"] : [\"mode\", \"count\"], pa"
+      },
+      {
+        "key": "8574:8706",
+        "name": "requireObject",
+        "count": 7871533,
+        "line": 115,
+        "body": "function requireObject(value, path) {\n  if (!isPlainObject(value)) throw invalidSnapshot(`${path} must be a plain object.`, path);\n}"
+      },
+      {
+        "key": "8715:8975",
+        "name": "exactKeys",
+        "count": 4208732,
+        "line": 119,
+        "body": "function exactKeys(value, keys, path) {\n  requireObject(value, path);\n  if (Object.keys(value).length !== keys.length || keys.some(key => !Object.hasOwn(value, key))) {\n    throw invalidSnapshot(`${path} must contain exactly: ${keys.join(\","
+      },
+      {
+        "key": "8846:8879",
+        "name": "",
+        "count": 19031538,
+        "line": 121,
+        "body": "key => !Object.hasOwn(value, key)"
+      },
+      {
+        "key": "8977:9206",
+        "name": "requireArray",
+        "count": 3512165,
+        "line": 126,
+        "body": "function requireArray(value, path) {\n  if (!Array.isArray(value) || Array.from({ length: value.length }, (_, i) => i).some(i => !Object.hasOwn(value, i))) {\n    throw invalidSnapshot(`${path} must be a dense array.`, path);\n  }\n}"
+      },
+      {
+        "key": "9082:9093",
+        "name": "",
+        "count": 4594899,
+        "line": 127,
+        "body": "(_, i) => i"
+      },
+      {
+        "key": "9100:9129",
+        "name": "",
+        "count": 4594899,
+        "line": 127,
+        "body": "i => !Object.hasOwn(value, i)"
+      },
+      {
+        "key": "9215:12428",
+        "name": "validateGraphic",
+        "count": 16202,
+        "line": 132,
+        "body": "function validateGraphic(graphic, path = \"payload.graphicSpec\", { legacy = false } = {}) {\n  const validateProperties = (type, properties) => {\n    validateConcreteGraphicProperties(type, properties);\n    if (legacy && Object.hasOwn(propert"
+      },
+      {
+        "key": "9335:9809",
+        "name": "validateProperties",
+        "count": 980782,
+        "line": 133,
+        "body": "(type, properties) => {\n    validateConcreteGraphicProperties(type, properties);\n    if (legacy && Object.hasOwn(properties, \"maxCommands\")) throw invalidSnapshot(\"Path maxCommands requires editable snapshot version 4.\", path);\n    if (lega"
+      },
+      {
+        "key": "10017:10207",
+        "name": "attachment",
+        "count": 137166,
+        "line": 143,
+        "body": "function attachment(id) {\n    if (typeof id !== \"string\" || !Object.hasOwn(graphic.objects, id)) {\n      throw invalidSnapshot(`Unknown graphic attachment \"${String(id)}\".`, path);\n    }\n  }"
+      },
+      {
+        "key": "10478:10551",
+        "name": "",
+        "count": 318034,
+        "line": 152,
+        "body": "key => ![\"type\", \"properties\", \"items\", \"children\", \"clip\"].includes(key)"
+      },
+      {
+        "key": "12437:13531",
+        "name": "validateTrace",
+        "count": 16239,
+        "line": 186,
+        "body": "function validateTrace(trace, ProgramClass, extensions, path = \"payload.trace\") {\n  const seen = new Set();\n  function visit(node, root) {\n    exactKeys(node, [\"id\", \"op\", \"description\", \"args\", \"children\"], path);\n    if (typeof node.descr"
+      },
+      {
+        "key": "12547:13276",
+        "name": "visit",
+        "count": 3236716,
+        "line": 188,
+        "body": "function visit(node, root) {\n    exactKeys(node, [\"id\", \"op\", \"description\", \"args\", \"children\"], path);\n    if (typeof node.description !== \"string\" || typeof node.op !== \"string\" ||\n        (root ? node.id !== \"program\" || node.op !== \"pr"
+      },
+      {
+        "key": "13242:13270",
+        "name": "",
+        "count": 3220477,
+        "line": 199,
+        "body": "child => visit(child, false)"
+      },
+      {
+        "key": "13533:14206",
+        "name": "validateSemanticProperties",
+        "count": 528399,
+        "line": 208,
+        "body": "function validateSemanticProperties(program, value, property) {\n  let parsed;\n  try { parsed = parseSemanticPath(property); } catch (error) {\n    if (!isPlainObject(value) || !Object.keys(value).length) throw error;\n    for (const [key, chi"
+      },
+      {
+        "key": "14215:50846",
+        "name": "validateProgramState",
+        "count": 16236,
+        "line": 221,
+        "body": "function validateProgramState(program, path, { allowMissingLookupSchemas = false, legacy = false } = {}) {\n  const semantic = program.semanticSpec;\n  exactKeys(semantic, [\"datasets\", \"layers\", \"scales\", \"coordinates\", \"guides\", \"title\", ..."
+      },
+      {
+        "key": "16161:16199",
+        "name": "",
+        "count": 467,
+        "line": 244,
+        "body": "row => row[transform.as] === undefined"
+      },
+      {
+        "key": "19487:19522",
+        "name": "",
+        "count": 37,
+        "line": 299,
+        "body": "entry => entry.id === resource.data"
+      },
+      {
+        "key": "19864:19899",
+        "name": "",
+        "count": 107,
+        "line": 305,
+        "body": "entry => entry.id === resource.data"
+      },
+      {
+        "key": "20147:20200",
+        "name": "",
+        "count": 33592,
+        "line": 310,
+        "body": "channel => resource.encoding?.[channel] !== undefined"
+      },
+      {
+        "key": "20252:20285",
+        "name": "",
+        "count": 57,
+        "line": 311,
+        "body": "item => item.id === resource.data"
+      },
+      {
+        "key": "22895:22913",
+        "name": "",
+        "count": 7740,
+        "line": 354,
+        "body": "axis => axis.ticks"
+      },
+      {
+        "key": "22954:23005",
+        "name": "",
+        "count": 31652,
+        "line": 355,
+        "body": "direction => program.guideConfigs.grid?.[direction]"
+      },
+      {
+        "key": "23580:23604",
+        "name": "",
+        "count": 218,
+        "line": 364,
+        "body": "owner => owner.id === id"
+      },
+      {
+        "key": "23781:23805",
+        "name": "",
+        "count": 193,
+        "line": 368,
+        "body": "owner => owner.id === id"
+      },
+      {
+        "key": "24118:24142",
+        "name": "",
+        "count": 191,
+        "line": 371,
+        "body": "owner => owner.id === id"
+      },
+      {
+        "key": "24550:24591",
+        "name": "",
+        "count": 188,
+        "line": 376,
+        "body": "item => axisLabelHasText(item.properties)"
+      },
+      {
+        "key": "24795:24819",
+        "name": "",
+        "count": 12,
+        "line": 381,
+        "body": "owner => owner.id === id"
+      },
+      {
+        "key": "25149:25173",
+        "name": "",
+        "count": 44,
+        "line": 386,
+        "body": "owner => owner.id === id"
+      },
+      {
+        "key": "26680:26708",
+        "name": "",
+        "count": 15,
+        "line": 413,
+        "body": "owner => owner.config?.ticks"
+      },
+      {
+        "key": "26724:26762",
+        "name": "",
+        "count": 15,
+        "line": 414,
+        "body": "ticks => ticks?.scale === config.scale"
+      },
+      {
+        "key": "26883:26978",
+        "name": "",
+        "count": 12,
+        "line": 416,
+        "body": "ticks => JSON.stringify(axisTickSelection(ticks)) !== JSON.stringify(axisTickSelection(config))"
+      },
+      {
+        "key": "27576:27600",
+        "name": "",
+        "count": 54,
+        "line": 427,
+        "body": "owner => owner.id === id"
+      },
+      {
+        "key": "29104:29148",
+        "name": "",
+        "count": 131,
+        "line": 451,
+        "body": "component => config[component] !== undefined"
+      },
+      {
+        "key": "30768:30796",
+        "name": "",
+        "count": 44,
+        "line": 475,
+        "body": "layer => layer.id === target"
+      },
+      {
+        "key": "30826:30851",
+        "name": "",
+        "count": 43,
+        "line": 475,
+        "body": "key => key !== \"channels\""
+      },
+      {
+        "key": "34224:34436",
+        "name": "",
+        "count": 28,
+        "line": 515,
+        "body": "(v,i)=>!Number.isFinite(v)||i>0&&v<=sample.values[i-1]||v<Math.min(...mapping.domain)||v>Math.max(...mapping.domain)||[mapping.colorScale,mapping.sizeScale].some(id=>program.resolvedScales[id].type==='log'&&v<=0)"
+      },
+      {
+        "key": "34767:34798",
+        "name": "",
+        "count": 9,
+        "line": 519,
+        "body": "layer=>layer.id===config.target"
+      },
+      {
+        "key": "35136:35194",
+        "name": "",
+        "count": 20,
+        "line": 523,
+        "body": "(area,index)=>!Object.is(area,definition.sizeAreas[index])"
+      },
+      {
+        "key": "38643:38675",
+        "name": "",
+        "count": 10,
+        "line": 563,
+        "body": "key => config[key] !== undefined"
+      },
+      {
+        "key": "40300:40335",
+        "name": "",
+        "count": 521,
+        "line": 585,
+        "body": "input => input.schema === undefined"
+      },
+      {
+        "key": "40539:40572",
+        "name": "",
+        "count": 173,
+        "line": 588,
+        "body": "id=>resources.get(\"data\").get(id)"
+      },
+      {
+        "key": "41420:41653",
+        "name": "",
+        "count": 79,
+        "line": 599,
+        "body": "(row, index) =>\n        !isPlainObject(row) || Object.keys(row).length !== Object.keys(expected[index]).length ||\n        Object.entries(expected[index]).some(([key, value]) => !Object.hasOwn(row, key) || !Object.is(row[key], value))"
+      },
+      {
+        "key": "42282:42505",
+        "name": "",
+        "count": 330,
+        "line": 612,
+        "body": "(index, offset) =>\n          !Number.isInteger(index) || index < 0 || index >= source.values.length ||\n          (offset > 0 && index <= indices[offset - 1]) || !sameLookupValue(dataset.values[offset], source.values[index])"
+      },
+      {
+        "key": "47092:47145",
+        "name": "",
+        "count": 372,
+        "line": 684,
+        "body": "key => key !== \"shadow\" || Object.hasOwn(config, key)"
+      },
+      {
+        "key": "49665:50105",
+        "name": "visit",
+        "count": 46944,
+        "line": 728,
+        "body": "function visit(resource) {\n      if (active.has(resource.id)) throw invalidSnapshot(`Cyclic ${kind} source \"${resource.id}\".`, path);\n      if (visited.has(resource.id)) return;\n      active.add(resource.id);\n      if (resource.source !== u"
+      },
+      {
+        "key": "50848:52593",
+        "name": "validateGuideVisibilityState",
+        "count": 15827,
+        "line": 752,
+        "body": "function validateGuideVisibilityState(program) {\n  const check = (visibility, allowed) => {\n    if (visibility === undefined) return;\n    if (!isPlainObject(visibility) || Object.entries(visibility).some(([key, value]) => !allowed.includes("
+      },
+      {
+        "key": "50913:51225",
+        "name": "check",
+        "count": 13209,
+        "line": 753,
+        "body": "(visibility, allowed) => {\n    if (visibility === undefined) return;\n    if (!isPlainObject(visibility) || Object.entries(visibility).some(([key, value]) => !allowed.includes(key) || typeof value !== \"boolean\"))\n      throw new TypeError(\"S"
+      },
+      {
+        "key": "51052:51122",
+        "name": "",
+        "count": 32,
+        "line": 755,
+        "body": "([key, value]) => !allowed.includes(key) || typeof value !== \"boolean\""
+      },
+      {
+        "key": "8286:8489",
+        "name": "",
+        "count": 724,
+        "line": 111,
+        "body": "(value, index) => !Number.isFinite(value) || index > 0 && value <= sample.values[index - 1] || value < Math.min(...scale.domain) || value > Math.max(...scale.domain) || scale.type === \"log\" && value <= 0"
+      },
+      {
+        "key": "41579:41652",
+        "name": "",
+        "count": 340,
+        "line": 601,
+        "body": "([key, value]) => !Object.hasOwn(row, key) || !Object.is(row[key], value)"
+      },
+      {
+        "key": "34386:34435",
+        "name": "",
+        "count": 54,
+        "line": 515,
+        "body": "id=>program.resolvedScales[id].type==='log'&&v<=0"
+      }
+    ]
+  }
+}

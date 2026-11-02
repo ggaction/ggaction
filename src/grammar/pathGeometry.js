@@ -148,7 +148,23 @@ function geometryOptions(tolerance, maxDepth) {
 
 // Input is transformed to scene CSS pixels before measuring subdivision error.
 export function flattenPathCommands(commands, options) {
+  return ownFlattenedGeometry(calculateFlattenedPathCommands(commands, options));
+}
+
+// Internal consumers may assemble this newly calculated tree in private state.
+// It grants no program ownership or validation shortcut to its caller.
+export function calculateFlattenedPathCommands(commands, options) {
   return flattenCommands(commands, options);
+}
+
+function ownFlattenedGeometry(result) {
+  for (const subpath of result.subpaths) {
+    subpath.points.forEach(freezeOwned);
+    freezeOwned(subpath.points); freezeOwned(subpath);
+  }
+  result.diagnostics.forEach(freezeOwned);
+  freezeOwned(result.subpaths); freezeOwned(result.diagnostics);
+  return freezeOwned(result);
 }
 
 // Private Trail bridge: width uses the same curve parameter and subdivision as
@@ -162,10 +178,10 @@ export function flattenVariableWidthPath(commands, widthCommands, options) {
   if (!Number.isFinite(bounds.top) || bounds.top < 0 || !Number.isFinite(bounds.bottom)) {
     throw new RangeError("Variable-width path curves must remain finite and nonnegative.");
   }
-  return flattenCommands(commands, options, widthCommands);
+  return ownFlattenedGeometry(flattenCommands(commands, options, widthCommands));
 }
 
-function flattenCommands(commands, { tolerance = 0.25, maxDepth = 20, maxPoints = MAX_FLATTENED_POINTS, transform = [1, 0, 0, 1, 0, 0] } = {}, widthCommands) {
+function flattenCommands(commands, { tolerance = 0.25, maxDepth = 20, maxPoints = MAX_FLATTENED_POINTS, maxCommands = MAX_PATH_COMMANDS, transform = [1, 0, 0, 1, 0, 0] } = {}, widthCommands) {
   geometryOptions(tolerance, maxDepth);
   if (!Number.isSafeInteger(maxPoints) || maxPoints < 1 || maxPoints > MAX_FLATTENED_POINTS) throw new RangeError("Path maxPoints must be an integer from 1 to 1000000.");
   if (!Array.isArray(transform) || transform.length !== 6 || !transform.every(Number.isFinite)) throw new TypeError("Path transform requires six finite numbers.");
@@ -177,8 +193,8 @@ function flattenCommands(commands, { tolerance = 0.25, maxDepth = 20, maxPoints 
   };
   const subpaths = [], diagnostics = [];
   let pointCount = 0;
-  const pointLimit = commandIndex => freezeOwned({ subpaths: freezeOwned([]), diagnostics: freezeOwned([freezeOwned({ code: "path-point-limit", limit: maxPoints, commandIndex })]) });
-  for (const { start, end, closed } of resolvePathSubpaths(commands)) {
+  const pointLimit = commandIndex => ({ subpaths: [], diagnostics: [{ code: "path-point-limit", limit: maxPoints, commandIndex }] });
+  for (const { start, end, closed } of resolvePathSubpaths(commands, maxCommands)) {
     const first = map(commands[start].x, commands[start].y, widthCommands?.[start].y), points = [first];
     let current = first, hasSegments = false;
     pointCount++;
@@ -212,9 +228,9 @@ function flattenCommands(commands, { tolerance = 0.25, maxDepth = 20, maxPoints 
       if (pointCount > maxPoints) return pointLimit(index);
       current = to;
     }
-    subpaths.push(freezeOwned({ closed, hasSegments, points: freezeOwned(points.map(value => freezeOwned(value))) }));
+    subpaths.push({ closed, hasSegments, points });
   }
-  return freezeOwned({ subpaths: freezeOwned(subpaths), diagnostics: freezeOwned(diagnostics.map(value => freezeOwned(value))) });
+  return { subpaths, diagnostics };
 }
 
 function requireFlattened(commands, options) {
@@ -264,7 +280,15 @@ export function pathStrokeDistance(commands, query, options) {
 
 export const arcControlFactor = delta => 4 / 3 * Math.tan(delta / 4);
 
-export function arcToCubicCommands({ centerX, centerY, radiusX, radiusY = radiusX, startAngle, endAngle, rotation = 0, tolerance = 0.25, maxDepth = 20 }) {
+export function arcToCubicCommands(input) {
+  const result = calculateArcCubicCommands(input);
+  result.commands.forEach(freezeOwned); result.diagnostics.forEach(freezeOwned);
+  freezeOwned(result.commands); freezeOwned(result.diagnostics);
+  return freezeOwned(result);
+}
+
+// Raw commands contain only new numeric records; the normal facade owns them.
+export function calculateArcCubicCommands({ centerX, centerY, radiusX, radiusY = radiusX, startAngle, endAngle, rotation = 0, tolerance = 0.25, maxDepth = 20 }) {
   geometryOptions(tolerance, maxDepth);
   if (![centerX, centerY, radiusX, radiusY, startAngle, endAngle, rotation].every(Number.isFinite) || radiusX <= 0 || radiusY <= 0) throw new RangeError("Arc requires finite geometry and positive radii.");
   const cosine = Math.cos(rotation), sine = Math.sin(rotation);
@@ -287,12 +311,12 @@ export function arcToCubicCommands({ centerX, centerY, radiusX, radiusY = radius
       const middle = interpolateNumber(start, end, 0.5);
       append(start, middle, depth + 1); append(middle, end, depth + 1); return;
     }
-    if (error > tolerance) diagnostics.push(freezeOwned({ code: "arc-subdivision-limit", maxDepth, error, tolerance }));
+    if (error > tolerance) diagnostics.push({ code: "arc-subdivision-limit", maxDepth, error, tolerance });
     if (commands.length >= MAX_PATH_COMMANDS) throw new RangeError("Arc exceeds the path command limit.");
     const command = { op: "C", x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, x: p3.x, y: p3.y };
     if (!Object.values(command).slice(1).every(Number.isFinite)) throw new RangeError("Arc coordinates must be finite.");
-    commands.push(freezeOwned(command));
+    commands.push(command);
   };
   for (let i = 0; i < count; i++) append(interpolateNumber(startAngle, endAngle, i / count), interpolateNumber(startAngle, endAngle, (i + 1) / count), 0);
-  return freezeOwned({ commands: freezeOwned(commands.map(value => freezeOwned(value))), diagnostics: freezeOwned(diagnostics) });
+  return { commands, diagnostics };
 }

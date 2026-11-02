@@ -1,0 +1,44 @@
+{
+  "ggaction": {
+    "specifier": "ggaction",
+    "chunks": 1,
+    "modules": 1060,
+    "minifiedBytes": 2739078,
+    "gzipBytes": 783817
+  },
+  "ggaction/basic": {
+    "specifier": "ggaction/basic",
+    "chunks": 1,
+    "modules": 626,
+    "minifiedBytes": 1450510,
+    "gzipBytes": 424552
+  },
+  "ggaction/svg": {
+    "specifier": "ggaction/svg",
+    "chunks": 1,
+    "modules": 44,
+    "minifiedBytes": 74850,
+    "gzipBytes": 25040
+  },
+  "ggaction/graph": {
+    "specifier": "ggaction/graph",
+    "chunks": 1,
+    "modules": 83,
+    "minifiedBytes": 149922,
+    "gzipBytes": 44767
+  },
+  "ggaction/animation": {
+    "specifier": "ggaction/animation",
+    "chunks": 1,
+    "modules": 510,
+    "minifiedBytes": 1114929,
+    "gzipBytes": 333182
+  },
+  "ggaction/interaction": {
+    "specifier": "ggaction/interaction",
+    "chunks": 1,
+    "modules": 214,
+    "minifiedBytes": 428130,
+    "gzipBytes": 136375
+  }
+}

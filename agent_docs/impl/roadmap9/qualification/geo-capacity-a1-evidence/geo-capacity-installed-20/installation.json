@@ -1,0 +1,11 @@
+{
+  "node": "v20.20.2",
+  "archive": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/.artifacts/geo-capacity-1c1381ee0b4b.tgz",
+    "sha256": "1c1381ee0b4b07056a4d530fda51128aca283f9a2a2af67e621995668a94ce7d",
+    "entryCount": 1246,
+    "packedBytes": 1788941,
+    "unpackedBytes": 8068202
+  },
+  "installed": "/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-wUgdyQ"
+}

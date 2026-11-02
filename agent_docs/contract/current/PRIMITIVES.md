@@ -91,7 +91,8 @@ revision ref를 같은 transaction에서 갱신한다. remove는 live consumer�
   attachment는 idempotent하다.
 - `type`: `"canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path" | "image" | "weighted-blend"`.
 - `length`: 일반 graphic은 `0..10,000` integer. semantic point layer와 selected materialized
-  dataset 및 graphic ID/type의 소유권이 증명된 circle/rect/path/collection만 50,000 inclusive다.
+  dataset 및 graphic ID/type의 소유권이 증명된 circle/rect/path/collection은 owner의 [Point capacity](MARKS.md#createpointmark)를
+  따른다(기본50,000, 명시 maxItems의 상한100,000; raw/output 모두 검산).
   retained child의 namespace도 실제 child owner까지 추적한다. 우회 flag나 trace 문자열은 사용하지 않는다.
   homogeneous drawable type에 지정하면 generated `items`를 만들며
   생략 시 single graphic, `0`이면 empty collection이다. heterogeneous `collection`은 `items` edit로 채운다.
@@ -153,7 +154,7 @@ Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. 
   - collection + outer array: item count와 길이가 같으면 index별 distribute. path `commands`처럼 property
     자체가 nested array인 경우 한 item value 단위를 보존한다.
   - `items`: heterogeneous collection의 typed concrete item array를 원자적으로 교체하며 최대 길이는
-    일반 graphic은 `10,000`, 위에서 정의한 point-owned collection만 `50,000`이다.
+    일반 graphic은 `10,000`, 위에서 정의한 point-owned collection은 owner capacity(기본 `50,000`, 명시 최대 `100,000`)다.
 - `children`: named Canvas/collection의 기존 직접 자식 ID의 정확한 순열을 편집한다. 기존 ID·parent·property·items·clip·object 선언 순서와 root order는 유지한다. 누락/추가/중복/다른 parent/비문자열과 generated item/drawable owner는 거부한다. 빈 container의 `[]`와 동일 순열도 허용한다. Caller array와 이전 상태는 불변이다. 실제 `children` field를 편집하며 property bag에 저장하지 않는다. Evidence: `test/unit/actions/primitives/graphic-child-order.test.js`.
 - `clip`: named non-Canvas owner의 node-level rectangle 또는 compound path를 편집한다. `value: {type:"path",commands,fillRule?}`는 아래 path grammar를 공유하며 fill 영역으로만 clip한다. `value: {x,y,width,height}`는 finite x/y와 nonnegative finite width/height를 요구하며 끝점도 finite여야 한다. 같은 parent frame에서 전체 items/subtree를 자르고 item properties/좌표/ID를 바꾸지 않는다. `false`는 optional field를 제거한다. Generated/inline item과 Canvas에는 지원하지 않는다. `items`/`length` 변경, renderer와 persistence가 같은 owner clip을 보존한다. Evidence: `test/unit/renderers/graphic-owner-clipping.test.js`.
 - `remove`: `true`일 때 property/value 없이 named graphic과 owned named subtree를 삭제하고 parent의
@@ -182,7 +183,14 @@ Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. 
   - ✅ Covered: type-specific canvas/circle/rect/line/text/path properties, `length`, heterogeneous `items`.
   - ✅ Covered: the shared concrete-property schema is table-tested by type and `editGraphics` exercises single,
     broadcast, distributed and heterogeneous application paths.
-  - ✅ Covered: finite `M | L | C | Z` path command arrays, maximum 30,000 commands, and command-order validation.
+  - ✅ Covered: finite `M | L | C | Z` path command arrays, default maximum 30,000 commands, and command-order validation.
+    Path-only `maxCommands` is an own enumerable integer declaration from 1 through 200000. Explicit undefined,
+    null, accessors, inherited values and out-of-range values reject. Lowering it below existing commands fails
+    atomically. Validate current capacity before cached command/topology reuse; an earlier larger declaration
+    grants no authority to a smaller one. Concrete scene, weighted source, bounds, flatten and graphic codec
+    preserve the declaration. A native Geo path must match its exact scoped binding policy. Clip paths and
+    existing path generators retain their independent defaults. This does not raise hit stroke/query limits.
+    Evidence: `test/unit/geo/capacity.test.js`.
     각 `M`이 새 subpath를 시작한다. `L/C`는 열린 subpath에서만 허용하고 `Z`는 그 subpath를 닫는다.
     `Z` 뒤에는 `M`만 허용한다. `M`, `M Z`, 연속 `M`은 zero-area position-only subpath로 유효하다.
     모든 command는 exact own data fields와 finite 좌표만 받으며 배열은 dense하다.

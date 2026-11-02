@@ -1,0 +1,18 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+null !== 0
+
+    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-node-review/ggactionnewbrand/.artifacts/frame-node-review/product-compare.mjs:45:280 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: null,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.22.1

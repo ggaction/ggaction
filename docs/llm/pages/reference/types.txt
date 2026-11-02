@@ -152,8 +152,8 @@ interface ChartProgramActions {
   editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;
   editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
   editBin2DData(options: TargetedOptions<EditBin2DDataOptions>): ChartProgram;
-  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { maxItems?: number | undefined; blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editPointMark(options: TargetedOptions<StrokeStyleDetails & { maxItems?: number | undefined; blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   createTickMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   editTickMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   jitterPoints(options: TargetedOptions<JitterPointsOptions>): ChartProgram;
@@ -2686,6 +2686,7 @@ export type CreateBeeswarmPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    maxItems?: number;
     clip?: boolean;
     radius?: number;
     shape?: PointShape;
@@ -3606,6 +3607,8 @@ export interface CreateScatterPlotOptions {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    /** Point raw and concrete item capacity; default 50000, maximum 100000. */
+    maxItems?: number;
     clip?: boolean;
     radius?: number;
     shape?: PointShape;
@@ -3649,6 +3652,7 @@ export type CreateStripPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    maxItems?: number;
     clip?: boolean;
     radius?: number;
     shape?: PointShape;
@@ -7806,6 +7810,17 @@ export interface GeoLineMarkOptions extends Omit<GeoSourceMarkOptions, "fill"> {
 
 Related types: [`GeoSourceMarkOptions`](../../../reference/types/#type-geosourcemarkoptions).
 
+### `GeoMarkCapacity` {#type-geomarkcapacity}
+
+ Expand GeoMarkCapacity
+
+```typescript
+export interface GeoMarkCapacity {
+  readonly maxProjectedPoints?: number;
+  readonly maxPathCommands?: number;
+}
+```
+
 ### `GeoMarkStyleOptions` {#type-geomarkstyleoptions}
 
  Expand GeoMarkStyleOptions
@@ -7816,6 +7831,8 @@ export interface GeoMarkStyleOptions {
   readonly clip?: boolean; readonly lineCap?: "butt" | "round" | "square"; readonly lineJoin?: "miter" | "round" | "bevel";
   readonly miterLimit?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false; readonly blend?: BlendMode;
 }
+/** Per-mark projected output budget. Each explicit value is an integer from 1 through 200000.
+ * Omitted fields use 10000 projected points and 30000 commands; omission on edit retains the binding. */
 ```
 
 Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`MarkOutline`](../../../reference/types/#type-markoutline) · [`MarkShadow`](../../../reference/types/#type-markshadow) · [`BlendMode`](../../../reference/types/#type-blendmode).
@@ -7849,6 +7866,7 @@ Related types: [`GeoSourceMarkOptions`](../../../reference/types/#type-geosource
 
 ```typescript
 export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
+  readonly capacity?: GeoMarkCapacity;
   readonly id?: string; readonly coordinate?: string; readonly geometry?: string;
   readonly interpolation?: "source-segment" | "great-circle";
   /** Explicit false removes a previous hint. */
@@ -7856,7 +7874,7 @@ export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
 }
 ```
 
-Related types: [`GeoMarkStyleOptions`](../../../reference/types/#type-geomarkstyleoptions).
+Related types: [`GeoMarkStyleOptions`](../../../reference/types/#type-geomarkstyleoptions) · [`GeoMarkCapacity`](../../../reference/types/#type-geomarkcapacity).
 
 ### `GeographicGeometry` {#type-geographicgeometry}
 
@@ -8293,6 +8311,7 @@ export type GraphicType =
 
 ```typescript
 export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
+  readonly capacity?: GeoMarkCapacity;
   readonly id?: string; readonly coordinate?: string; readonly fill?: "none";
   readonly stepDeg?: readonly [number, number];
   readonly extentDeg?: readonly [readonly [number, number], readonly [number, number]];
@@ -8300,7 +8319,7 @@ export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
 }
 ```
 
-Related types: [`GeoMarkStyleOptions`](../../../reference/types/#type-geomarkstyleoptions).
+Related types: [`GeoMarkStyleOptions`](../../../reference/types/#type-geomarkstyleoptions) · [`GeoMarkCapacity`](../../../reference/types/#type-geomarkcapacity).
 
 ### `GridDirectionOptions` {#type-griddirectionoptions}
 

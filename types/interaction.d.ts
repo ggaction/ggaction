@@ -141,6 +141,35 @@ export type BrushSelectionBinding = RegionSelectionBindingOptions & { readonly t
 export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
   readonly type: 'lasso';
 }
+/** Resize an existing persisted region. Idle handle drawing and keyboard controls belong to the host. */
+export type SelectionResizeBinding = GestureBindingOptions & {
+  readonly type: 'resize'; readonly target: InteractionTarget; readonly selection: string; readonly slop?: number;
+} & (
+  { readonly axis: 'xy'; readonly channels?: { readonly x?: 'x' | 'x2'; readonly y?: 'y' | 'y2' } }
+  | { readonly axis: 'x'; readonly channels?: { readonly x?: 'x' | 'x2'; readonly y?: never } }
+  | { readonly axis: 'y'; readonly channels?: { readonly y?: 'y' | 'y2'; readonly x?: never } }
+  | { readonly axis: 'theta'; readonly channels?: { readonly theta?: 'theta'; readonly x?: never; readonly y?: never } }
+);
+/** Drag a painted native categorical axis tick or label to reorder its existing categories. */
+export interface CategoryReorderBinding extends GestureBindingOptions {
+  readonly type: 'reorder'; readonly target: InteractionTarget; readonly channel: 'x' | 'y' | 'theta'; readonly slop?: number;
+}
+export type SelectionHandle = {
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  readonly selection: string;
+  /** CSS-local coordinates, with child placement and the mounted rootTransform already applied. */
+  readonly point: InteractionPoint;
+} & (
+  { readonly axis: 'x'; readonly handle: 'x-min' | 'x-max' }
+  | { readonly axis: 'y'; readonly handle: 'y-min' | 'y-max' }
+  | { readonly axis: 'xy'; readonly handle: 'x-min' | 'x-max' | 'y-min' | 'y-max' | 'x-min-y-min' | 'x-min-y-max' | 'x-max-y-min' | 'x-max-y-max' }
+  | { readonly axis: 'theta'; readonly handle: 'theta-start' | 'theta-end' }
+);
+export interface SelectionHandlesView {
+  /** Existing accepted scene version; this query adds no counter or persisted state. */
+  readonly frameVersion: number;
+  readonly handles: readonly SelectionHandle[];
+}
 /** Drag one current graph node; target must have an explicit plot origin and fixed or force layout. */
 export interface NodeMovementBinding extends GestureBindingOptions { readonly type: 'moveNode'; readonly target: InteractionTarget; }
 /** Drag the target annotation layer by native pixel offsets, preserving its semantic anchor. */
@@ -413,12 +442,22 @@ export interface InteractionSession {
   dispatch(command: InteractionCommand): InteractionDispatchResult;
   subscribe(listener: (event: InteractionEvent) => void): () => boolean;
   getState(): InteractionState;
+  /** Read currently eligible resize handles; throws after destruction. */
+  getSelectionHandles(): SelectionHandlesView;
   /** Observe the job current at this call. Subscriber/disposer exceptions reject this promise. */
   whenSettled(): Promise<InteractionSettlement>;
   destroy(): boolean;
 }
 export declare function createInteractionSession(options: {
   readonly program: InteractionProgram;
+  /** Session-local preparation only. Omitted/undefined fields retain the defaults.
+   * Entry, query, snapshot, selection and animation limits are unchanged. */
+  readonly hitPreparation?: {
+    /** Safe integer 1..200000. Default 100000, including background and nested nodes. */
+    readonly maxSceneNodes?: number;
+    /** Safe integer 1..128000000. Default 10000000, independently for binding and indexing. */
+    readonly maxWork?: number;
+  };
   /** Explicit host preparation. Candidate state commits only after this lease is ready. */
   readonly assetResolver?: (request: InteractionAssetRequest) => InteractionAssetLease | Promise<InteractionAssetLease>;
   /** Integer 0..10000, default 100. Zero disables undo/redo, but preserves the initial reset baseline. */
@@ -426,5 +465,5 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | KeyboardBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | AnnotationMovementBinding | NavigationBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | KeyboardBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | SelectionResizeBinding | CategoryReorderBinding | NodeMovementBinding | AnnotationMovementBinding | NavigationBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;

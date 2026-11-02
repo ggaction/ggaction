@@ -1,0 +1,222 @@
+{
+  "kind": "temporary source loader prepared-only fixed-four-slot interner and pair prototype; no product mutation, timings diagnostic only",
+  "node": "v24.22.1",
+  "sourceAggregate": "b1f2d096af4f54c60f0b5914e43bfa7b20e436f029586ac842cec80d9f343bc7",
+  "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+  "rows": 1000,
+  "prepare": {
+    "baseline": {
+      "ms": 101.22250000000008,
+      "operations": {
+        "cloneCalls": 53044,
+        "cloneAllocations": 57162,
+        "ownedAdds": 59172
+      },
+      "work": {
+        "Animation preparation work": 771686
+      }
+    },
+    "reuse": {
+      "ms": 97.33550000000002,
+      "operations": {
+        "cloneCalls": 53047,
+        "cloneAllocations": 53165,
+        "ownedAdds": 55175
+      },
+      "work": {
+        "Animation preparation work": 771686
+      }
+    }
+  },
+  "operations": {
+    "baseline": {
+      "cloneCalls": 9020,
+      "cloneAllocations": 14037,
+      "ownedAdds": 22042
+    },
+    "reuse": {
+      "cloneCalls": 9020,
+      "cloneAllocations": 14037,
+      "ownedAdds": 16048
+    }
+  },
+  "counts": {
+    "rawHits": 0,
+    "rawMisses": 0,
+    "normalizedHits": 47965,
+    "normalizedMisses": 285,
+    "intermediateHits": 100010,
+    "intermediateMisses": 106
+  },
+  "samples": {
+    "baseline": [
+      14.096915999999965,
+      37.881541999999854,
+      30.481958000000077,
+      12.980999999999995,
+      13.609291999999868,
+      17.93316700000014,
+      12.855707999999822,
+      12.272459000000026,
+      12.661124999999856,
+      17.730542000000014,
+      12.57899999999995,
+      13.505125000000135,
+      14.060500000000047,
+      18.207999999999856,
+      13.416917000000012,
+      14.539374999999836,
+      14.489291999999978,
+      18.114291999999978,
+      13.417625000000044,
+      13.728749999999764,
+      14.778249999999844,
+      12.778999999999996,
+      12.004415999999765,
+      13.40179199999966,
+      17.912417000000005,
+      12.602665999999772,
+      13.320208000000093,
+      12.291374999999789,
+      17.08258300000034,
+      12.28454099999999
+    ],
+    "reuse": [
+      16.854082999999946,
+      12.081040999999914,
+      11.754374999999982,
+      17.950165999999854,
+      15.980499999999893,
+      11.623125000000073,
+      11.372749999999996,
+      15.220707999999831,
+      15.803875000000062,
+      11.383000000000038,
+      11.671249999999873,
+      15.86695799999984,
+      16.086250000000064,
+      11.486915999999837,
+      11.816417000000001,
+      41.63037499999996,
+      10.943749999999909,
+      11.999499999999898,
+      130.81620799999973,
+      11.899207999999817,
+      11.333415999999943,
+      10.801708999999846,
+      15.39462500000036,
+      10.850750000000062,
+      11.680166999999983,
+      15.763958000000002,
+      15.702708999999686,
+      10.49308400000018,
+      10.438540999999987,
+      15.839416999999685
+    ]
+  },
+  "statistics": {
+    "baseline": {
+      "n": 30,
+      "median": 13.609291999999868,
+      "p95": 30.481958000000077,
+      "min": 12.004415999999765,
+      "max": 37.881541999999854,
+      "mean": 15.567327766666615
+    },
+    "reuse": {
+      "n": 30,
+      "median": 11.999499999999898,
+      "p95": 41.63037499999996,
+      "min": 10.438540999999987,
+      "max": 130.81620799999973,
+      "mean": 18.084627699999942
+    }
+  },
+  "wire": {
+    "3": {
+      "bytes": [
+        1822845,
+        1822845
+      ],
+      "sha256": [
+        "ba55ed8e343ae582c0adb5e118fd3bdb88248647b1e2e73bcadf60e65694eab5",
+        "ba55ed8e343ae582c0adb5e118fd3bdb88248647b1e2e73bcadf60e65694eab5"
+      ],
+      "exactBytes": true,
+      "decodedPlanDeepEqual": true,
+      "offlineFrameDeepEqual": true
+    },
+    "4": {
+      "bytes": [
+        345803,
+        345803
+      ],
+      "sha256": [
+        "26c1ba7765220ab8126515d7fac502a0791722924df1c301db23ad97d3e5ae22",
+        "26c1ba7765220ab8126515d7fac502a0791722924df1c301db23ad97d3e5ae22"
+      ],
+      "exactBytes": true,
+      "decodedPlanDeepEqual": true,
+      "offlineFrameDeepEqual": true
+    }
+  },
+  "rebaseWire": {
+    "3": {
+      "at": 37,
+      "bytes": [
+        2381600,
+        2381600
+      ],
+      "sha256": [
+        "5b907f7620e73fa4a32a6adc64c996e697d6a123ef5da750fa254991ca39e71d",
+        "5b907f7620e73fa4a32a6adc64c996e697d6a123ef5da750fa254991ca39e71d"
+      ],
+      "exactBytes": true,
+      "restoredPlanDeepEqual": true,
+      "restoredFrameDeepEqual": true,
+      "restoreReserializeExactEach": true,
+      "work": [
+        {
+          "Animation preparation work": 451681
+        },
+        {
+          "Animation preparation work": 451681
+        }
+      ]
+    },
+    "4": {
+      "at": 37,
+      "bytes": [
+        424178,
+        422310
+      ],
+      "sha256": [
+        "12feb51049fb31404939fd9c0cb1b703efae8fa9258c70be0ae73b61899674c9",
+        "e358df3633956dbeb46141304c959941389fa7b794a0ab78463f757e4f64cff1"
+      ],
+      "exactBytes": false,
+      "restoredPlanDeepEqual": true,
+      "restoredFrameDeepEqual": true,
+      "restoreReserializeExactEach": true,
+      "work": [
+        {
+          "Animation preparation work": 451681
+        },
+        {
+          "Animation preparation work": 451681
+        }
+      ]
+    }
+  },
+  "kernelCases": 272,
+  "prototypeGetterReads": {
+    "baseline": 2,
+    "reuse": 2
+  },
+  "contextMaximum": 4,
+  "rebaseWireAndFrameExact": true,
+  "callerFrozenNotCached": true,
+  "accessorGetterReads": 0,
+  "fullFrameEverySample": true,
+  "allCoordinatesEverySample": true
+}

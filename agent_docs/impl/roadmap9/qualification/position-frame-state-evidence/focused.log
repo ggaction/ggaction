@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: sampled point meaning stays immutable through ordered enters, exits and exact nested children
+ok 1 - sampled point meaning stays immutable through ordered enters, exits and exact nested children
+  ---
+  duration_ms: 52.574292
+  type: 'test'
+  ...
+# Subtest: local frame meaning preserves offline rebase and batch values without granting clone authority
+ok 2 - local frame meaning preserves offline rebase and batch values without granting clone authority
+  ---
+  duration_ms: 45.421
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 446.597042

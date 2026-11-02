@@ -1,0 +1,86 @@
+{
+  "kind": "consumer-isolation-functional-evidence",
+  "productSource": "8cbbc020c97c8db653ac09b4c769729083fbc368",
+  "archiveSHA256": "03d9cd8fb9b72c1c505676b5194a8d14460d183742dd63c215f8b4ec6aa33dde",
+  "originalLongLivedRun": "interrupted-incomplete-after-400-passed",
+  "isolatedRun": "404-passed",
+  "performanceQualified": false,
+  "retained100CycleQualified": false,
+  "files": [
+    {
+      "file": "canary-node20.log",
+      "bytes": 2069,
+      "sha256": "5da89c7f41f2d1c8c6cd3334fb0f542ffb6b185feb698c54ff98459483660928"
+    },
+    {
+      "file": "canary-node24.log",
+      "bytes": 1005,
+      "sha256": "c9d0ed51acd8bd883928bd25125f431a799627008ec54bc460881db9cab0f3cd"
+    },
+    {
+      "file": "execution-inputs.json",
+      "bytes": 697,
+      "sha256": "94d75ea6a706af9d06e96899c17da059427f92e244df842118ed8d619348c2bb"
+    },
+    {
+      "file": "full-node22-node-cases.json",
+      "bytes": 53927,
+      "sha256": "473ae2701c94ab202bb0a5e611a8237a1130365093babd902e6d2432675825ba"
+    },
+    {
+      "file": "full-node22-run.json",
+      "bytes": 2154,
+      "sha256": "bce3f06bdc83e24a91bf8b224b6d03e766e82c1fff071af7ae8eb711df971023"
+    },
+    {
+      "file": "full-node22.log",
+      "bytes": 2724,
+      "sha256": "ff31fefad3da379627e73c1884be0a367a6dbd6957a1d8de4aae67f22c4c220b"
+    },
+    {
+      "file": "manifest-node22.log",
+      "bytes": 546,
+      "sha256": "878afb03b4e837ba59bd09b2a55a60f1862d01a057ca0776ab09bf25d3dec9d7"
+    },
+    {
+      "file": "original-all-consumers-archive.json",
+      "bytes": 552,
+      "sha256": "0d92fdceee9010819ebd270ce620ed704fe02561687927f64671452c387fd196"
+    },
+    {
+      "file": "original-all-consumers-partial.json",
+      "bytes": 46129,
+      "sha256": "1e22a432eef3b72555e3faa5413cab50600cc3f9e88e910b9ad5d6d5755cc1c3"
+    },
+    {
+      "file": "original-consumer-interruption.json",
+      "bytes": 388,
+      "sha256": "07d1c4a58a40d538fbe6d8a6863439f398834b4521ece1d4ced61a4e668f0118"
+    },
+    {
+      "file": "original-consumer-native-sample-late.txt",
+      "bytes": 103340,
+      "sha256": "c648c204b3e1081572d8ea246a5abe8dd699cf5f4a332a72ae2438b11b9a2f07"
+    },
+    {
+      "file": "original-consumer-native-sample.txt",
+      "bytes": 103786,
+      "sha256": "1932e5098b0819176989868b481736e79c0e67b2db1ba487dc7bdafeed9d0922"
+    },
+    {
+      "file": "owning-node22.log",
+      "bytes": 5588,
+      "sha256": "51b18cd16dee3b8ce6362e02afd0dff67550e3213ad4754642cfa6886e569d8c"
+    },
+    {
+      "file": "replay.mjs",
+      "bytes": 3886,
+      "sha256": "7bc0d3919f677e52c1d45a2994924aff16bbf71d0ffbe751919f102de808d949"
+    },
+    {
+      "file": "statement-counts.json",
+      "bytes": 4562,
+      "sha256": "588e56a1345aa6520a2e5b17f90c01c9ac6b411ae1b7541893e1501121d86d74"
+    }
+  ]
+}

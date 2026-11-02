@@ -1,0 +1,178 @@
+{
+  "kind": "Private product resource path, phased plan lifetimes; no instrumentation; not SLO/P95",
+  "node": "v24.22.1",
+  "n": 10000,
+  "inputSHA256": "e204dd2c1ab81f7c75b8d32aa006841fcda7e1e140ffd6a983dc1d5b448e1a1e",
+  "phases": {
+    "prepare": {
+      "ms": 4447.664292,
+      "accounting": {
+        "native": true,
+        "limits": {
+          "maxEndpointNodes": 20002,
+          "maxOutputNodes": 10001
+        },
+        "maximumWork": {
+          "Animation preparation work": 6535934,
+          "Partition animation track work": 16950544
+        }
+      },
+      "columns": {
+        "logicalValues": 720136,
+        "descriptorVisits": 560067,
+        "cellVisits": 560006,
+        "interningWork": 9914328,
+        "internNodes": 139,
+        "uniqueLowerBound": {
+          "physicalValues": 60084,
+          "encodedValues": 60188,
+          "bytes": 2455061
+        },
+        "physicalValues": 220712,
+        "encodedValues": 541986,
+        "bytes": 8753321,
+        "validatedLogicalValues": 720136
+      },
+      "fullLegacyWork": 12785727
+    },
+    "sample": {
+      "ms": 1655.054209
+    },
+    "offline": {
+      "ms": 6213.588374999999,
+      "bytes": 8753616,
+      "accounting": {
+        "native": false,
+        "limits": {
+          "maxEndpointNodes": 20002,
+          "maxOutputNodes": 10001
+        },
+        "maximumWork": {
+          "Animation preparation work": 12785727,
+          "Partition animation track work": 16950544
+        }
+      },
+      "columns": {
+        "logicalValues": 720136,
+        "descriptorVisits": 440055,
+        "cellVisits": 560006,
+        "physicalValues": 220712,
+        "encodedValues": 541986,
+        "bytes": 8753321
+      }
+    },
+    "rebase": {
+      "ms": 3686.842125000001,
+      "accounting": {
+        "native": true,
+        "limits": {
+          "maxEndpointNodes": 20002,
+          "maxOutputNodes": 10001
+        },
+        "maximumWork": {
+          "Animation preparation work": 4715012,
+          "Partition animation track work": 16950544
+        }
+      },
+      "columns": {
+        "logicalValues": 1090200,
+        "descriptorVisits": 1010082,
+        "cellVisits": 1010026,
+        "interningWork": 12412455,
+        "internNodes": 273,
+        "uniqueLowerBound": {
+          "physicalValues": 80172,
+          "encodedValues": 80389,
+          "bytes": 3173292
+        },
+        "physicalValues": 241191,
+        "encodedValues": 563300,
+        "bytes": 9476860,
+        "validatedLogicalValues": 1090200
+      },
+      "fullLegacyWork": 15770738
+    },
+    "rebaseOffline": {
+      "ms": 5334.525332999998,
+      "bytes": 9477155,
+      "accounting": {
+        "native": false,
+        "limits": {
+          "maxEndpointNodes": 20002,
+          "maxOutputNodes": 10001
+        },
+        "maximumWork": {
+          "Animation preparation work": 15770738,
+          "Partition animation track work": 16950544
+        }
+      },
+      "columns": {
+        "logicalValues": 1090200,
+        "descriptorVisits": 770067,
+        "cellVisits": 1010026,
+        "physicalValues": 241191,
+        "encodedValues": 563300,
+        "bytes": 9476860
+      }
+    }
+  },
+  "lifetime": [
+    {
+      "stage": "native-plan-released",
+      "memory": {
+        "rss": 490094592,
+        "heapTotal": 296747008,
+        "heapUsed": 118495624,
+        "external": 19902705,
+        "arrayBuffers": 148239
+      }
+    },
+    {
+      "stage": "native-offline-plan-released",
+      "memory": {
+        "rss": 493486080,
+        "heapTotal": 314310656,
+        "heapUsed": 119696824,
+        "external": 20414233,
+        "arrayBuffers": 148239
+      }
+    },
+    {
+      "stage": "rebase-plan-and-source-frame-released",
+      "memory": {
+        "rss": 532660224,
+        "heapTotal": 291438592,
+        "heapUsed": 120634496,
+        "external": 21381276,
+        "arrayBuffers": 148239
+      }
+    },
+    {
+      "stage": "all-native-offline-rebase-exact",
+      "memory": {
+        "rss": 524075008,
+        "heapTotal": 318177280,
+        "heapUsed": 121808800,
+        "external": 22341312,
+        "arrayBuffers": 148239
+      }
+    }
+  ],
+  "allCoordinatesVerified": 10000,
+  "batch500Rejected": true,
+  "stage": "all-native-offline-rebase-exact",
+  "allRebaseCoordinatesVerified": 10000,
+  "sourceSHA256": {
+    "src/animation/columnCodec.js": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+    "src/animation/resources.js": "1e1f8280069e723f8b33b6980fdcff3eacdeaf148a86d9e57a9352f26b2f69fa",
+    "src/animation/planner.js": "c9ad5f855c2b9dc0fecbe70695dbfb95bd5214efe141b1e0dbfaa92febed35f1",
+    "src/animation/envelopeCodec.js": "875083e6375bc0b67aa8a6cd8574a850b0b93b9e4c5d1b212f53163d924937be",
+    "src/animation/sample.js": "db115d2b379fc50e8dd5a4aae923c726044e6a45380dd323c787929bb399b1a6",
+    "src/animation/frameEndpoint.js": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+    "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+    "src/materialization/animation/point.js": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+    "src/materialization/animation/guides.js": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+    "src/core/validation.js": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+    "src/selectors/graphicCapacity.js": "67bf3d75d92c9227d4f8ceb79afb2e45fa79828460c67d6c2cef06564148238a"
+  }
+}

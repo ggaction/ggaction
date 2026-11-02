@@ -1,16 +1,17 @@
+import { validateGeoGraphicCapacity } from "../../grammar/geo/capacity.js";
 import { validateGraphicIdentity, graphicIdentityId } from "../../grammar/schemas/graphicIdentity.js";
 import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { validateGraphicItemLimit } from "../../core/validation.js";
 import { closedAction } from "../../core/action.js";
 import { cloneAndFreeze, freezeOwned, isPlainObject } from "../../core/immutable.js";
-import { resolveGraphicItemCapacity } from "../../selectors/graphicCapacity.js";
+import { resolveGraphicItemCapacity, resolveGraphicGeoBinding } from "../../selectors/graphicCapacity.js";
 import {
   isPrimitiveDrawableGraphicType,
   isStructuralGraphicType,
   validateGraphicProperty,
   validateGraphicType
 } from "../../grammar/schemas/graphic.js";
-import { validateConcreteGraphicValue } from
+import { validateConcreteGraphicValue, validateConcreteGraphicProperties } from
   "../../grammar/schemas/concreteGraphic.js";
 import {
   collectGraphicSubtreeIds,
@@ -35,7 +36,8 @@ function validateCollectionItem(item, ownerId, index) {
   if (!isPlainObject(item.properties)) {
     throw new TypeError(`Collection item "${ownerId}:${index}" requires plain properties.`);
   }
-  for (const [property, value] of Object.entries(item.properties)) {
+  if (type === "path") validateConcreteGraphicProperties(type, item.properties);
+  else for (const [property, value] of Object.entries(item.properties)) {
     validateGraphicProperty(type, property);
     validateConcreteGraphicValue(type, property, value);
   }
@@ -97,12 +99,17 @@ export function replaceGraphicItems(program, target, baseType, items) {
   });
 }
 
+function validatePropertyEdit(type, properties, property, value) {
+  if (type === "path") validateConcreteGraphicProperties(type, { ...properties, [property]: value });
+  else validateConcreteGraphicValue(type, property, value);
+}
+
 function editGeneratedItem(owner, itemIndex, property, value) {
   const items = [...owner.items];
   const item = items[itemIndex];
   const type = item.type ?? owner.type;
   validateGraphicProperty(type, property);
-  validateConcreteGraphicValue(type, property, value);
+  validatePropertyEdit(type, item.properties, property, value);
   if (Object.is(item.properties[property], value)) return owner;
   items[itemIndex] = freezeOwned({
     ...item,
@@ -139,7 +146,7 @@ function editItems(owner, property, value, id, program) {
     const itemValue = Array.isArray(value) ? value[index] : value;
     const type = item.type ?? owner.type;
     validateGraphicProperty(type, property);
-    validateConcreteGraphicValue(type, property, itemValue);
+    validatePropertyEdit(type, item.properties, property, itemValue);
     if (Object.is(item.properties[property], itemValue)) return item;
     changed = true;
     return freezeOwned({
@@ -233,7 +240,7 @@ const editGraphics = /* @__PURE__ */ closedAction(
       }
       updated = editGeneratedItem(owner, found.itemIndex, validatedProperty, value);
     } else if (isStructuralGraphicType(owner.type)) {
-      validateConcreteGraphicValue(owner.type, validatedProperty, value);
+      validatePropertyEdit(owner.type, owner.properties, validatedProperty, value);
       updated = freezeOwned({
         ...owner,
         properties: setGraphicProperty(owner.properties, validatedProperty, value)
@@ -254,12 +261,13 @@ const editGraphics = /* @__PURE__ */ closedAction(
         })))
       });
     } else {
-      validateConcreteGraphicValue(owner.type, validatedProperty, value);
+      validatePropertyEdit(owner.type, owner.properties, validatedProperty, value);
       updated = freezeOwned({
         ...owner,
         properties: setGraphicProperty(owner.properties, validatedProperty, value)
       });
     }
+    validateGeoGraphicCapacity(resolveGraphicGeoBinding(this, ownerId), updated);
     if (updated === owner) return this;
     return this._clone({
       graphicSpec: freezeOwned({

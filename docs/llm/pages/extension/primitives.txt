@@ -243,9 +243,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -311,12 +311,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f4b389117b570ee6ae2399867dc709d6b04c457c/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b3da444d795248370c9c14bc6f158b01f67eff7a/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f4b389117b570ee6ae2399867dc709d6b04c457c/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b3da444d795248370c9c14bc6f158b01f67eff7a/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -458,3 +458,17 @@ the group. Transitions between different backdrop modes need an explicit policy.
 [Renderer limits and preparation](../../../api/rendering/#weighted-concrete-blends)
 apply to all sources. Graphic and editable serialization preserve the concrete
 sources without retaining callbacks or renderer objects.
+
+## Explicit path command capacity
+
+A concrete path may declare `properties.maxCommands`, an own enumerable integer
+from 1 through 200000. Its default remains 30000. Set `maxCommands` with
+`editGraphics` before assigning a larger command array. Lowering the declaration
+below the current command count rejects atomically. Explicit undefined, null,
+accessors and inherited declarations reject. Clips and existing native path
+builders keep their independent limits.
+
+The declaration travels with the concrete path through scenes, weighted sources,
+rendering and graphic persistence. Renderers still consume only concrete graphics.
+A Geo-owned path must match its mark's explicit capacity; use the Geo domain edit
+to change that policy. Path capacity does not raise hit stroke or query budgets.

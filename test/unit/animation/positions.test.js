@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { isOwned } from "../../../src/core/immutable.js";
 import { preparePositionInterpolation as prepare, samplePositionInterpolation as sample } from "../../../src/grammar/animation/positions.js";
 
 const endpoint = (value, scale = {}) => ({ value, scale: { type: "linear", domain: [0, 40], range: [0, 400], ...scale } });
@@ -100,4 +101,39 @@ test("closed descriptor-safe position boundaries reject invalid state without ev
   assert.throws(() => sample({ ...plan, extra: true }, .5));
   assert.throws(() => sample({ ...plan, version: "unknown" }, .5));
   assert.throws(() => sample({ ...plan, to: endpoint(2, { type: "time" }) }, .5));
+});
+
+test("owned position preparation and copied transport retain identical complete samples", () => {
+  for (const scale of [
+    {}, { type: "time" }, { type: "sqrt" }, { type: "pow", exponent: 3 },
+    { type: "symlog", constant: 2 }, { type: "log", domain: [1, 40], base: 2 },
+    { type: "log", domain: [-40, -1], base: 10 }, { domain: [40, 0], clamp: true }
+  ]) {
+    const negative = scale.type === "log" && scale.domain[0] < 0;
+    const plan = prepare(endpoint(negative ? -2 : 2, scale), endpoint(negative ? -30 : 30, { ...scale, range: [20, 820] }));
+    const copied = structuredClone(plan);
+    for (const t of [0, .1, .5, .9, 1]) assert.deepEqual(sample(plan, t), sample(copied, t));
+  }
+});
+
+test("copied and caller-frozen position plans never acquire an ownership proof", () => {
+  const plan = prepare(endpoint(2), endpoint(30));
+  const copied = structuredClone(plan);
+  assert.equal(sample(copied, .5).position, 160);
+  assert.equal(isOwned(copied.from.scale), false);
+  assert.equal(isOwned(copied.to.scale.domain), false);
+  assert.equal(Object.isFrozen(copied.to.scale.domain), false);
+  copied.to.scale.clamp = true;
+  assert.throws(() => sample(copied, .5), /incompatible/);
+  const shallow = Object.freeze({ ...plan, to: structuredClone(plan.to) });
+  assert.equal(sample(shallow, .5).position, 160);
+  shallow.to.scale.domain[0] = NaN;
+  assert.throws(() => sample(shallow, .5), /finite/);
+  let reads = 0;
+  const hostile = Object.freeze({ ...plan, from: { ...plan.from, scale: {
+    get type() { reads++; return "linear"; }
+  } } });
+  assert.throws(() => sample(hostile, .5), /accessors/);
+  assert.equal(reads, 0);
+  assert.equal(sample(plan, .5).position, 160);
 });

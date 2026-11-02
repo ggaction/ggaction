@@ -3,7 +3,7 @@ import {
   requireFiniteBounds,
   resolveTextBounds
 } from "../../core/textMetrics.js";
-import { resolvePathSubpaths } from "../pathTopology.js";
+import { resolvePathSubpaths, pathCommandCapacity, validatePathCommandCount } from "../pathTopology.js";
 import { resolvePathCommandBounds } from "../pathGeometry.js";
 export { resolvePathCommandBounds } from "../pathGeometry.js";
 import { graphicClipBounds, intersectClipBounds } from "./graphicClip.js";
@@ -275,9 +275,9 @@ function singlePathStrokeBounds(commands, bounds, strokeExtent, details) {
   return expanded;
 }
 
-function pathStrokeBounds(commands, bounds, strokeExtent, details) {
+function pathStrokeBounds(commands, bounds, strokeExtent, details, maxCommands) {
   if (!(strokeExtent > 0)) return bounds;
-  return unionBounds(resolvePathSubpaths(commands).map(({ start, end }) => {
+  return unionBounds(resolvePathSubpaths(commands, maxCommands).map(({ start, end }) => {
     const subpath = commands.slice(start, end + 1);
     return singlePathStrokeBounds(subpath, resolvePathCommandBounds(subpath), strokeExtent, details);
   }));
@@ -341,13 +341,15 @@ export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
   if (type === "path") {
     const commands = properties.commands;
     if (!Array.isArray(commands)) return undefined;
+    validatePathCommandCount(commands.length, "path.commands length", pathCommandCapacity(properties));
     const bounds = resolvePathCommandBounds(commands);
     if (bounds === undefined) return undefined;
     return pathStrokeBounds(
       commands,
       bounds,
       strokeExtent,
-      resolveStrokeDetails(properties)
+      resolveStrokeDetails(properties),
+      pathCommandCapacity(properties)
     );
   }
   return undefined;

@@ -1,0 +1,469 @@
+{
+  "status": "explicit-inference-policy-integrated; worker-and-final-native-qualification-pending",
+  "base": "ee7a9d739",
+  "incoming": "2f768950d",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1246,
+    "packedBytes": 1787845,
+    "unpackedBytes": 8062345,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-c9e16922e05ab97649257e6d9ae208891a736f489bb019f172b1ef21a074ed80.tgz",
+    "sha256": "c9e16922e05ab97649257e6d9ae208891a736f489bb019f172b1ef21a074ed80"
+  },
+  "sourceInputEquality": {
+    "incoming": "2f768950d",
+    "files": [
+      "src/actions/graphs/inference.js",
+      "src/grammar/graph/approximate.js",
+      "src/grammar/graph/candidateSubset.js",
+      "src/grammar/graph/fields.js",
+      "src/grammar/graph/inferenceBudget.js",
+      "src/grammar/graph/inferenceResult.js",
+      "src/grammar/graph/input.js",
+      "src/grammar/graph/model.js",
+      "src/grammar/graph/neighbors.js",
+      "src/grammar/graph/preprocess.js",
+      "src/grammar/graph/search.js",
+      "src/grammar/graph/spanning.js",
+      "src/grammar/graph/structural.js",
+      "src/materialization/graph/candidate.js",
+      "src/materialization/graph/inferredResource.js",
+      "src/materialization/graph/inferredState.js"
+    ],
+    "different": [],
+    "declarationsNote": "Program declarations retain the previously integrated explicit point capacity additions; inferred execution declaration matches incoming."
+  },
+  "checks": {
+    "owning.log": 210,
+    "contracts.log": 31,
+    "coverage-policy.log": 7,
+    "docs.log": 242
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "sha256": "c9e16922e05ab97649257e6d9ae208891a736f489bb019f172b1ef21a074ed80",
+      "checks": [
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed",
+          "durationMs": 305.25016600000004
+        },
+        {
+          "id": "data/inferred-graph-explicit-capacity",
+          "status": "passed",
+          "durationMs": 4287.825083000001
+        },
+        {
+          "id": "data/inferred-graph-bounded-execution",
+          "status": "passed",
+          "durationMs": 26304.044583000003
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1061,
+          "minifiedBytes": 2738626,
+          "gzipBytes": 785427
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 424647
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 84,
+          "minifiedBytes": 149716,
+          "gzipBytes": 44904
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113099,
+          "gzipBytes": 333793
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135989
+        }
+      ],
+      "types": "passed",
+      "snippet": {
+        "status": "passed",
+        "sha256": "763a08ab408e0e4ebc51c3c1aee83c4c9e841ff22d1ab03e1017dbf6617a2726"
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "node": "v22.23.1",
+      "sha256": "c9e16922e05ab97649257e6d9ae208891a736f489bb019f172b1ef21a074ed80",
+      "checks": [
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed",
+          "durationMs": 295.915125
+        },
+        {
+          "id": "data/inferred-graph-explicit-capacity",
+          "status": "passed",
+          "durationMs": 3701.8464170000007
+        },
+        {
+          "id": "data/inferred-graph-bounded-execution",
+          "status": "passed",
+          "durationMs": 22474.411500000002
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1061,
+          "minifiedBytes": 2738626,
+          "gzipBytes": 784023
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 423769
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24779
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 84,
+          "minifiedBytes": 149716,
+          "gzipBytes": 44742
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113099,
+          "gzipBytes": 332660
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135493
+        }
+      ],
+      "types": "passed",
+      "snippet": {
+        "status": "passed",
+        "sha256": "763a08ab408e0e4ebc51c3c1aee83c4c9e841ff22d1ab03e1017dbf6617a2726"
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "sha256": "c9e16922e05ab97649257e6d9ae208891a736f489bb019f172b1ef21a074ed80",
+      "checks": [
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed",
+          "durationMs": 223.68650000000002
+        },
+        {
+          "id": "data/inferred-graph-explicit-capacity",
+          "status": "passed",
+          "durationMs": 3545.8775410000003
+        },
+        {
+          "id": "data/inferred-graph-bounded-execution",
+          "status": "passed",
+          "durationMs": 20253.600958
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1061,
+          "minifiedBytes": 2738626,
+          "gzipBytes": 785427
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 424647
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 84,
+          "minifiedBytes": 149716,
+          "gzipBytes": 44904
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113099,
+          "gzipBytes": 333793
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135989
+        }
+      ],
+      "types": "passed",
+      "snippet": {
+        "status": "passed",
+        "sha256": "763a08ab408e0e4ebc51c3c1aee83c4c9e841ff22d1ab03e1017dbf6617a2726"
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    }
+  ],
+  "built": {
+    "pages": 186,
+    "selectiveArtifacts": 1604,
+    "status": "passed"
+  },
+  "coverageReuse": {
+    "sourceIdenticalTo": "2f768950d",
+    "criticalOwners": 16,
+    "source": "../inference-execution-evidence/critical.json",
+    "newCoverageRunClaimed": false
+  },
+  "limits": {
+    "entries": 1246,
+    "packedBytes": 1791600,
+    "unpackedBytes": 8062400,
+    "FullGzip": 785500,
+    "searchBytes": 1091600
+  },
+  "reuse": {
+    "upstreamLargeEditableCodec": "86,871,543 bytes exact roundtrip; program codec has no global 64MiB cap",
+    "browser": "Unchanged UI/renderer; prior root handles/point and upstream inference docs browser evidence reused. No new whole-browser run claimed."
+  },
+  "pending": [
+    "Dedicated inference worker integration",
+    "Original AT82 large performance P95/heap/100-cycle qualification",
+    "Final combined candidate required suites"
+  ],
+  "evidenceFiles": {
+    "reassert.json": {
+      "bytes": 393,
+      "sha256": "b67eba7a4569408121a8cb745dfec692179461d86f1b43175d06346472514b3b"
+    },
+    "pack22.json": {
+      "bytes": 391,
+      "sha256": "bddca56c4783396da4ca5a3f40817ed7f0ae7b552388be131650945089177071"
+    },
+    "installed-24.json": {
+      "bytes": 1670,
+      "sha256": "0871509d6e45a3e70789c844ab8c9950501745ca60653a79124fcc8ae7dd592f"
+    },
+    "pack20-initial.json": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "contracts.log": {
+      "bytes": 6421,
+      "sha256": "029255cd3b96125c3d59c93763b5ddf6eddf63df686ac4b29a039e3533723096"
+    },
+    "frozen.json": {
+      "bytes": 436,
+      "sha256": "0464922ad35659c4c1c4fc230bafe73980061751aaf1ce829faeba5c286b7d7b"
+    },
+    "source-equality.json": {
+      "bytes": 880,
+      "sha256": "142335eb2a15ecbb5a7c012b2d5115222c371b7233ff379b162d89b8c8defcaa"
+    },
+    "contracts-unmatched-selector.log": {
+      "bytes": 567,
+      "sha256": "5246266518e57cee53fa956337cb56913f5b451e055aee1231c8e3b0863f6884"
+    },
+    "installed-22.json": {
+      "bytes": 1668,
+      "sha256": "0521ac9901a0160cc1e5f79c4a18e81bba0dacabdd61d16990f44fd7b75d7170"
+    },
+    "pack24.json": {
+      "bytes": 391,
+      "sha256": "52a4519ab0a6d62eae8ab334e5f4b36ccad226f2c44201f924f1d77bfbed5e5b"
+    },
+    "docs.log": {
+      "bytes": 73802,
+      "sha256": "1960e30ec648621173ce4452387d803fa0712a83670e15c04e8bd44dc71f0d91"
+    },
+    "installed-20.json": {
+      "bytes": 1675,
+      "sha256": "4f8a61d7bba23c87a960cd5dc0e9363439d81fa13429423bc6f72dfa24cd9b81"
+    },
+    "contracts-initial.log": {
+      "bytes": 7255,
+      "sha256": "cabaf8b7bf62fb9a0e8efd97f182a5c5e18ac7f13ba98dd42a9b3ab1d76307a9"
+    },
+    "pack20.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "premeasure20.json": {
+      "bytes": 305,
+      "sha256": "56ad4b6c2650091d37d9b6f0cbf7dd1fbb0e7e1f5a56635af2fbfc4a9f38759f"
+    },
+    "pack22.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "reassert.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "docs-initial.log": {
+      "bytes": 75152,
+      "sha256": "e9bc95d4f32d0cd4d93b87af2f5db7d7c821ea05e1b1928153df8b7927743fc1"
+    },
+    "pack20.json": {
+      "bytes": 391,
+      "sha256": "d7679e72eb9542e87ecc30a10a1ce7041902c157206085f8a5a41c5c896f787b"
+    },
+    "installed22.log": {
+      "bytes": 1668,
+      "sha256": "0521ac9901a0160cc1e5f79c4a18e81bba0dacabdd61d16990f44fd7b75d7170"
+    },
+    "prepack.log": {
+      "bytes": 511,
+      "sha256": "679d3d58c964a5efad059a43152ea2a38ff75498cb011f46cf51b567ef00bf4b"
+    },
+    "premeasure-descriptor.json": {
+      "bytes": 227,
+      "sha256": "c248e2cbbb6c090b1c0ffb2dfa9964b0b28d2eeb5c59f7327971bc7aa4168cf4"
+    },
+    "owning.log": {
+      "bytes": 51627,
+      "sha256": "a3cb326fb84ddc1bb389154291266827a53f9cfd5268ae14d29ff1eebb2b90d2"
+    },
+    "built.log": {
+      "bytes": 179,
+      "sha256": "67024875fdede066f38e717a4250ab08cb32cfece20d998eeb7fbc933096d3ca"
+    },
+    "premeasure20.log": {
+      "bytes": 253,
+      "sha256": "3737838ec73af19ec5eeb67c94a46d174b1592611381225763a724b06e651bfc"
+    },
+    "installed20.log": {
+      "bytes": 1675,
+      "sha256": "4f8a61d7bba23c87a960cd5dc0e9363439d81fa13429423bc6f72dfa24cd9b81"
+    },
+    "coverage-policy.log": {
+      "bytes": 1390,
+      "sha256": "d3433a5801a4d2c2fb75cd99746fe74c57e0c16943b445e73f8776217efcfc33"
+    },
+    "evidence.py": {
+      "bytes": 4012,
+      "sha256": "fb134f26515d3ab5c7b2514640622d6a10365ebb1ffb810e06368d900063aed1"
+    },
+    "installed24.log": {
+      "bytes": 1670,
+      "sha256": "0871509d6e45a3e70789c844ab8c9950501745ca60653a79124fcc8ae7dd592f"
+    },
+    "generate.log": {
+      "bytes": 13431,
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5"
+    },
+    "pack24.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "pack20-initial.stderr": {
+      "bytes": 966,
+      "sha256": "bf82865e8933f8379c39347690813d0e1549b0279a7dc8c8ffedff04e4ff4a37"
+    },
+    "build.log": {
+      "bytes": 419,
+      "sha256": "3ebd7d02179554a896dd2a9adec8f05a47428f2b1e21f7701d59504f811922f4"
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "aa16231b1da92457c339c96da8c2d27ae84fb90b2db97102f5714e150f201dea",
+      "bytes": 1813
+    },
+    "source-pin-pack.json": {
+      "sha256": "7be4d81ea15220c6271a5521a594d4f7b9228ab50245a174dab62da2b4700eea",
+      "bytes": 396
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "sourceRevision": "a57f17e36a90a80e964ec1ffbc0000ff4eccacae",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

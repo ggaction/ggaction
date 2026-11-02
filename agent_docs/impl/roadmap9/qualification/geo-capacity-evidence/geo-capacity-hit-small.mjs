@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {nativeWorkloadInput} from '../../../../../scripts/benchmarks/workloads.browser.js';
+import {projectGeometry} from '../../../../../src/grammar/geo/stream.js';
+import {calculateFlattenedPathCommands} from '../../../../../src/grammar/pathGeometry.js';
+import {prepareHitStroke} from '../../../../../src/grammar/hitStroke.js';
+import {prepareHitShape,hitShapeWork,hitShape} from '../../../../../src/grammar/hitShapes.js';
+const n=1000,geometry=nativeWorkloadInput('geo',n).features[0].geometry;
+const result=projectGeometry(geometry,{type:'equirectangular',scalePx:100,translatePx:[200,200],precisionPx:0.5},{coordinateKind:'geographic'});
+const commands=result.parts[0].commands,stroke={width:2,lineCap:'butt',lineJoin:'miter',miterLimit:10};
+const flat=calculateFlattenedPathCommands(commands,{tolerance:.125/Math.max(1,Math.hypot(1.5,0,0,1.5))});
+const parts=prepareHitStroke(flat,stroke), sizes={};for(const p of parts)sizes[p.points?.length??p.type]=(sizes[p.points?.length??p.type]??0)+1;
+const shape=prepareHitShape({geometry:{type:'path',commands,fillRule:'nonzero'},paint:{fill:false,stroke,opacity:1},transform:[1.5,0,0,1.5,7,11],clips:[{geometry:{type:'rect',rect:{x:0,y:0,width:400,height:400}},transform:[1.5,0,0,1.5,7,11]}]});
+assert.ok(parts.length>=3*n-4&&parts.length<=4*n-5);assert.equal(sizes['3'],n-2);
+const compiledPointWork=parts.reduce((s,p)=>s+p.points.length+1,0)+5;assert.equal(hitShapeWork(shape),1+4*compiledPointWork+parts.length+1);
+const p={x:(commands[0].x+commands[1].x)/2*1.5+7,y:(commands[0].y+commands[1].y)/2*1.5+11};assert.equal(hitShape(shape,p,{slop:0}).hit,true);
+console.log(JSON.stringify({source:'ac96edb076fc9a299fa82e6ef18b63a2eb001845',mode:'small private numerical diagnostic, no guard changes',raw:n,commands:commands.length,parts:parts.length,partVertices:sizes,shapeConservativeQueryWork:hitShapeWork(shape),compiledPointWork,strokePreparationWork:commands.length+parts.reduce((s,p)=>s+p.points.length,0),projectionCalls:1,derived:{formula:'Only if original 2N-1 collinear-midpoint pattern and same stroke hold; not an observed 100k output',partsRange:['3*N-4','4*N-5'],compilePointWorkRange:['14*N-13','19*N-18'],conservativeQueryChargeRange:['59*N-54','80*N-75'],at100kRange:[5899946,7999925]}},null,2));

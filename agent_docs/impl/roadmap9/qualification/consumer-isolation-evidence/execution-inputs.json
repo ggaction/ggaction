@@ -1,0 +1,23 @@
+{
+  "base": "8cbbc020c97c8db653ac09b4c769729083fbc368",
+  "runnerCopiedByteIdentical": true,
+  "fixturesByteIdentical": 70,
+  "fixtureCaseCount": 404,
+  "productDiff": [],
+  "harness": [
+    {
+      "path": "scripts/consumers/node.js",
+      "sha256": "0add13dab83aee87aa266a768cb03ff7d426e4dc38d58c16f60bf9ed844708bf"
+    },
+    {
+      "path": "scripts/consumers/node-cases.mjs",
+      "sha256": "9c881eba34add2dc84a16d75976560c7ebd6e4e5decf692f824557fa06dfd0f5"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/manifest.json",
+      "sha256": "ab9d1ea1d7f2f73f403a4bf7e2d4a01f166b7d902bf97b582f9e875e980df8c9"
+    }
+  ],
+  "finalHarnessBytesUnchanged": true,
+  "nodeOptions": null
+}

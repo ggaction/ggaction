@@ -1,0 +1,607 @@
+{
+  "status": "point-position-vector-integrated; sample50ms-and-final-closeout-pending",
+  "base": "1b4371af8",
+  "upstreamSource": "425d76230728ce904479ef5a57799be7784213af",
+  "upstreamPin": "094386bfb5cc96d19cb07de6afea5c53772b19bd",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Only newly constructed point row/x/y local records bottom-up Object.freeze, then existing freezeOwned on complete positions vector after all branches. No node/provenance/renderer/core/API/schema/guard changes.",
+  "sourceSHA256": {
+    "src/animation/sample.js": "c569a02ba99e46cae93cf63cb5dcbfb2d8b39e482c8f7a2f3bbaba6fc7e406e3"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1258,
+    "packedBytes": 1808302,
+    "unpackedBytes": 8152265,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-f4b28ef3bb4e44451e52aa3dbaccd5f8ece739dd287159ab038b9129536bf1c0.tgz",
+    "sha256": "f4b28ef3bb4e44451e52aa3dbaccd5f8ece739dd287159ab038b9129536bf1c0"
+  },
+  "checks": {
+    "coverage.log": 759,
+    "boundaries.log": 37,
+    "render.log": 52
+  },
+  "critical": {
+    "animation/sample.js": {
+      "lines": 100.0,
+      "branches": 98.09,
+      "functions": 100.0
+    }
+  },
+  "consumers": [
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1258,
+        "packedBytes": 1808302,
+        "unpackedBytes": 8152265,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-f4b28ef3bb4e44451e52aa3dbaccd5f8ece739dd287159ab038b9129536bf1c0.tgz",
+        "sha256": "f4b28ef3bb4e44451e52aa3dbaccd5f8ece739dd287159ab038b9129536bf1c0"
+      },
+      "node": "v20.20.2",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 788792,
+          "limit": 788800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 426195,
+          "limit": 426200,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25672,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69473,
+          "limit": 69500,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 340714,
+          "limit": 340800,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137407,
+          "limit": 137500,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1258,
+        "packedBytes": 1808302,
+        "unpackedBytes": 8152265,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-f4b28ef3bb4e44451e52aa3dbaccd5f8ece739dd287159ab038b9129536bf1c0.tgz",
+        "sha256": "f4b28ef3bb4e44451e52aa3dbaccd5f8ece739dd287159ab038b9129536bf1c0"
+      },
+      "node": "v22.23.1",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 787373,
+          "limit": 788800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 425148,
+          "limit": 426200,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25558,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69305,
+          "limit": 69500,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 339567,
+          "limit": 340800,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 136875,
+          "limit": 137500,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1258,
+        "packedBytes": 1808302,
+        "unpackedBytes": 8152265,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-f4b28ef3bb4e44451e52aa3dbaccd5f8ece739dd287159ab038b9129536bf1c0.tgz",
+        "sha256": "f4b28ef3bb4e44451e52aa3dbaccd5f8ece739dd287159ab038b9129536bf1c0"
+      },
+      "node": "v24.22.1",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 788792,
+          "limit": 788800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 426195,
+          "limit": 426200,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25672,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69473,
+          "limit": 69500,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 340714,
+          "limit": 340800,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137407,
+          "limit": 137500,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    }
+  ],
+  "installedBrowser": {
+    "archiveSHA256": "f4b28ef3bb4e44451e52aa3dbaccd5f8ece739dd287159ab038b9129536bf1c0",
+    "sourceRootInputs": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "versions": [
+      3,
+      4
+    ],
+    "status": "passed"
+  },
+  "product1000": {
+    "kind": "actual product before 2fb36c76d versus current positions-vector local freeze; counters are diagnostic, not SLO",
+    "node": "v22.23.1",
+    "rows": 1000,
+    "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+    "savedInputSHA256": "b4b28d1e97a541bff28fc5cc9ca3ae9dd030efba7929e0fde80b516b61a1a213",
+    "source": {
+      "src/animation/sample.js": "c569a02ba99e46cae93cf63cb5dcbfb2d8b39e482c8f7a2f3bbaba6fc7e406e3"
+    },
+    "comparisons": {
+      "3": {
+        "nativeBytes": [
+          1822845,
+          1822845
+        ],
+        "nativeSHA256": [
+          "f445038cb0f5fd5497dacf2e66d8f62c8e808242a4c96d3344743da87c2997f0",
+          "f445038cb0f5fd5497dacf2e66d8f62c8e808242a4c96d3344743da87c2997f0"
+        ],
+        "rebaseBytes": [
+          2381600,
+          2381600
+        ],
+        "rebaseSHA256": [
+          "292c3629d218ff5be918e189140d95869fde6cf59800b3127bde41153d2b3d42",
+          "292c3629d218ff5be918e189140d95869fde6cf59800b3127bde41153d2b3d42"
+        ],
+        "counts": [
+          {
+            "clones": 14037,
+            "ownedAdds": 16048
+          },
+          {
+            "clones": 11036,
+            "ownedAdds": 13048
+          }
+        ],
+        "work": {
+          "Animation preparation work": 771686
+        },
+        "rebaseWork": {
+          "Animation preparation work": 451681
+        },
+        "fullNativeOfflineMeaningBatchRebaseEqual": true,
+        "restoreReserializeExact": true
+      },
+      "4": {
+        "nativeBytes": [
+          345803,
+          345803
+        ],
+        "nativeSHA256": [
+          "bfe8d1614136b0fff4637bb1ffe681c90f0947bca213dee5b2d621a98a58f24e",
+          "bfe8d1614136b0fff4637bb1ffe681c90f0947bca213dee5b2d621a98a58f24e"
+        ],
+        "rebaseBytes": [
+          422310,
+          422310
+        ],
+        "rebaseSHA256": [
+          "b380be2431c5f1f72cf940197bae59992dc030f7ad109cd85ba050e734595b61",
+          "b380be2431c5f1f72cf940197bae59992dc030f7ad109cd85ba050e734595b61"
+        ],
+        "counts": [
+          {
+            "clones": 14037,
+            "ownedAdds": 16048
+          },
+          {
+            "clones": 11036,
+            "ownedAdds": 13048
+          }
+        ],
+        "work": {
+          "Animation preparation work": 771686
+        },
+        "rebaseWork": {
+          "Animation preparation work": 451681
+        },
+        "fullNativeOfflineMeaningBatchRebaseEqual": true,
+        "restoreReserializeExact": true
+      }
+    }
+  },
+  "packMeasurements": {
+    "20": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1258,
+      "packedBytes": 1811562,
+      "unpackedBytes": 8152265,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/position-state-merged/pack20/ggaction-0.0.26.tgz",
+      "sha256": "a43534bc9ed90062cc5e334a5c14a9c2e1d499c6b15b105066982f5a2084d0af"
+    },
+    "22": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1258,
+      "packedBytes": 1808302,
+      "unpackedBytes": 8152265,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/position-state-merged/pack22/ggaction-0.0.26.tgz",
+      "sha256": "f4b28ef3bb4e44451e52aa3dbaccd5f8ece739dd287159ab038b9129536bf1c0"
+    },
+    "24": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1258,
+      "packedBytes": 1811562,
+      "unpackedBytes": 8152265,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/position-state-merged/pack24/ggaction-0.0.26.tgz",
+      "sha256": "a43534bc9ed90062cc5e334a5c14a9c2e1d499c6b15b105066982f5a2084d0af"
+    }
+  },
+  "artifactPolicy": {
+    "entries": 1258,
+    "packedBytes": 1811600,
+    "unpackedBytes": 8152300,
+    "animationGzip": 340800,
+    "actualUnpacked": 8152265,
+    "runtimeGuardChanges": 0
+  },
+  "reusedEvidence": [
+    {
+      "path": "../position-frame-state-evidence/qualification.json",
+      "boundary": "One runtime file byte-exact, reuse source-specific original100k native/offline/rebase/full-coordinate/work proof. Fresh root1k old/new,759owning,37contracts,52render and same new archive3Node+minified browser verify composition; no same-SHA100k/SLO claim."
+    },
+    {
+      "path": "../prepared-scale-merged-evidence/qualification.json",
+      "boundary": "Public docs/type/current contracts and non-sample owners unchanged. Reuse246docs/186built pages and prior two-file coverage; fresh installed strict TS/7docs/peers/6bundles cover changed sampler. Source pin regenerates provenance and nine doc contracts."
+    }
+  ],
+  "pending": [
+    "Node/frame local freeze and shared scalar mapper still proposals",
+    "Common sample50ms/Canvas and partition performance",
+    "Geo v5/native camera and hit limits",
+    "Data/route responsiveness and numeric bounded policy/native closure/large solvers",
+    "Long-lived mixed WeakSet attribution and retained100cycle",
+    "Final9commands/independent review/STEP057-077 closeout"
+  ],
+  "evidenceFiles": {
+    "boundaries.log": {
+      "sha256": "c7ad6bf6926a38fe772c152c8752cf94c7634ca8f9589b7e27e25317b7323fe7",
+      "bytes": 7268
+    },
+    "browser-installed.json": {
+      "sha256": "c040370d88a730838aade34a05b6ef4585f6878ebd962e37e17fbf8a0ea0e5f9",
+      "bytes": 200
+    },
+    "browser-installed.mjs": {
+      "sha256": "c9d159696166a96f80985f23c95fed6517a68eb10e81387d5dc84236a416e07e",
+      "bytes": 842
+    },
+    "coverage.log": {
+      "sha256": "0ab251c33d85566f30156f7bc6b98d48c37ef0623369f4a91b8dc28aec202048",
+      "bytes": 181612
+    },
+    "coverage.mjs": {
+      "sha256": "0e92b2a2a00434ff469ce4b528637645a04d00d0cc2161698b5c9f7ff8c7f899",
+      "bytes": 417
+    },
+    "evidence.py": {
+      "sha256": "d1e5c6c975dd0587435607060035364ce74ac33a211e9243b77b90c8640fc22e",
+      "bytes": 3773
+    },
+    "frozen.json": {
+      "sha256": "64b0f9411fb55cbb79567584551161b227353d0d28cb592d767e29b19db4f248",
+      "bytes": 436
+    },
+    "installed-20.json": {
+      "sha256": "fff2b3cd9cd5e29ebeb15062f83c92e975fa878e69113f43fc7c39e6b1a3d561",
+      "bytes": 2149
+    },
+    "installed-20.log": {
+      "sha256": "51953f94228d94833d90d5700fa4a6ea339a547dac8409c01c8e0b15e534b133",
+      "bytes": 1578
+    },
+    "installed-22.json": {
+      "sha256": "9b21f0d2601dd49a03c217a1f9e7982a5cd01082cc26661c1e9ae9f7d10cea46",
+      "bytes": 2149
+    },
+    "installed-22.log": {
+      "sha256": "bbc42571ed5735719b28078baf4f43ea1c204e63aaff25441ab0d612415f71b6",
+      "bytes": 1578
+    },
+    "installed-24.json": {
+      "sha256": "2d86c76336fcd3c0f6b119d29c853b96f7d0f94895d83cd1df724b97080b2089",
+      "bytes": 2149
+    },
+    "installed-24.log": {
+      "sha256": "e34fcb5b0137f00294c838e3c435a0955278efe40462c39f942b6bedb0eadc3d",
+      "bytes": 1578
+    },
+    "installed-browser.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack20.json": {
+      "sha256": "f79103eee15c153745bd61daf4a044650b35fc77add87f904715cfe69acf727e",
+      "bytes": 386
+    },
+    "pack20.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack22.json": {
+      "sha256": "b48eb1feefd23e00b718d60ed160724f7b8052e76959774be1b2a3469b83b818",
+      "bytes": 386
+    },
+    "pack22.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24.json": {
+      "sha256": "f0917817fa0a3b7b0b9ae72444f4d721120892ca264ad00d5a253b3e969dd6ed",
+      "bytes": 386
+    },
+    "pack24.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "product-compare.json": {
+      "sha256": "cbd8f665d293e0585915146b205dca509f154c0e8f60fec477a20e57e8b4da72",
+      "bytes": 2348
+    },
+    "product-compare.log": {
+      "sha256": "1d884905b20ed2835ca7dfe173315d77d8ccdd173d562b890e4f8427b65ee254",
+      "bytes": 1691
+    },
+    "product-compare.mjs": {
+      "sha256": "18a6fa8dea4ec8387296d846a9485c3e200ae6e2b69e1004fa1b0cd293022e61",
+      "bytes": 6019
+    },
+    "render.log": {
+      "sha256": "03d838fde8ecf88926ab94cd6b21c3cd5b63965c2bf1fcd7f5032d099e9f6cc5",
+      "bytes": 12482
+    },
+    "animation-small-installed.mjs": {
+      "sha256": "3617186df30d03ecb9198cf92b7106a01e1aea8eaf62aefc114a92e050646f56",
+      "bytes": 2838
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "7521620e752060a85a95a56f0b7db7adf5f782c887806b5fffca080a4c627c57",
+      "bytes": 1807
+    },
+    "source-pin-pack.json": {
+      "sha256": "d239b2f6c4f20cdf2da8a143c08d32256e6d5a8e3197eceada9a4d1c093c2c97",
+      "bytes": 391
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "sourceRevision": "070bc048b5c833a972f1d38cc0c3820166f5c254",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

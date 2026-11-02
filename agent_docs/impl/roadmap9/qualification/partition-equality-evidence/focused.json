@@ -1,0 +1,64 @@
+{
+  "label": "suite-unit",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-animation-capacity/ggactionnewbrand/test/unit/animation/offline.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-animation-capacity/ggactionnewbrand/test/unit/animation/partition-cells.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-animation-capacity/ggactionnewbrand/test/unit/animation/partition-group-equality.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-animation-capacity/ggactionnewbrand/test/unit/animation/partition-projection.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-animation-capacity/ggactionnewbrand/test/unit/animation/partition-state.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-animation-capacity/ggactionnewbrand/test/unit/animation/partition-transition.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-animation-capacity/ggactionnewbrand/test/unit/animation/partition.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-animation-capacity/ggactionnewbrand/test/unit/animation/rebase.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 5020,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-11-01T17:14:36.184Z",
+  "finishedAt": "2026-11-01T17:14:41.205Z",
+  "source": {
+    "available": true,
+    "commit": "def731fe2aa1a56ffdb11fbc0c595a16488a8988",
+    "clean": false,
+    "statusSha256": "1a55e176545ab179b1cf3e2d0f5965282017f497e7197be88f1eee24e79f6564"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "def731fe2aa1a56ffdb11fbc0c595a16488a8988",
+    "clean": false,
+    "statusSha256": "1a55e176545ab179b1cf3e2d0f5965282017f497e7197be88f1eee24e79f6564"
+  },
+  "logSha256": "8e3606fdc1206099882d05585d3d28ff93f17303180d1fa72f19c853f475b629",
+  "discovery": {
+    "suite": "unit",
+    "selectors": [
+      "unit/animation/partition-group-equality.test.js",
+      "unit/animation/partition-transition.test.js",
+      "unit/animation/partition-projection.test.js",
+      "unit/animation/partition-state.test.js",
+      "unit/animation/partition-cells.test.js",
+      "unit/animation/partition.test.js",
+      "unit/animation/offline.test.js",
+      "unit/animation/rebase.test.js"
+    ],
+    "files": [
+      "test/unit/animation/offline.test.js",
+      "test/unit/animation/partition-cells.test.js",
+      "test/unit/animation/partition-group-equality.test.js",
+      "test/unit/animation/partition-projection.test.js",
+      "test/unit/animation/partition-state.test.js",
+      "test/unit/animation/partition-transition.test.js",
+      "test/unit/animation/partition.test.js",
+      "test/unit/animation/rebase.test.js"
+    ]
+  },
+  "bytes": 10993,
+  "retainedBytes": 10993,
+  "truncated": false
+}

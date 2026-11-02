@@ -233,3 +233,16 @@ const graphPreviewFrame:TransitionFrame|null=animationSession.getState().preview
 const frameAssets=animationSession.getState().frameAssets;
 // @ts-expect-error scene and authentic sample are mutually exclusive
 animationSession.dispatch({type:'frame',frame:animationFrame,scene:animationFrame.scene,version:2,generation:0});
+createInteractionSession({program,bindings:[{type:'resize',target:{childPath:['right'],id:'points'},selection:'picked',axis:'xy',slop:6},{type:'reorder',target:'bars',channel:'theta',modifiers:{shift:true}}]});
+const selectionHandles=session.getSelectionHandles();const handleVersion:number=selectionHandles.frameVersion;
+for(const handle of selectionHandles.handles){const x:number=handle.point.x;const id:string=handle.target.id;if(handle.axis==='theta'){const endpoint:'theta-start'|'theta-end'=handle.handle;}}
+// @ts-expect-error region resize requires an explicit native axis
+createInteractionSession({program,bindings:[{type:'resize',target:'points',selection:'picked'}]});
+// @ts-expect-error category handles cannot target color
+createInteractionSession({program,bindings:[{type:'reorder',target:'points',channel:'color'}]});
+// @ts-expect-error handles are readonly
+selectionHandles.handles[0].point.x=0;
+
+createInteractionSession({program:chart(),hitPreparation:{maxSceneNodes:100001,maxWork:128000000}});
+// @ts-expect-error preparation cannot change the query limit
+createInteractionSession({program:chart(),hitPreparation:{maxQueryWork:3000000}});

@@ -1,7 +1,7 @@
 import { clippedBoundaryDistance, clippedBoundaryPoint } from "./hitClipDistance.js";
 import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
-import { flattenPathCommands, pathFillContains, pathStrokeDistance, arcToCubicCommands, resolvePathCommandBounds } from "./pathGeometry.js";
+import { calculateFlattenedPathCommands, pathFillContains, pathStrokeDistance, calculateArcCubicCommands, resolvePathCommandBounds } from "./pathGeometry.js";
 import { validatePathCommands, validatePathFillRule, MAX_PATH_COMMANDS } from "./pathCommands.js";
 import { resolveHitCoordinates, transformHitPoint } from "./hitCoordinates.js";
 import { prepareHitStroke, MAX_HIT_STROKE_WORK } from "./hitStroke.js";
@@ -77,11 +77,11 @@ function flattenedCommands(flat) {
 }
 function circleCommands(circle, tolerance) {
   if (circle.radius === 0) return [{ op: "M", x: circle.x, y: circle.y }];
-  return [...requireComplete(arcToCubicCommands({ centerX: circle.x, centerY: circle.y,
+  return [...requireComplete(calculateArcCubicCommands({ centerX: circle.x, centerY: circle.y,
     radiusX: circle.radius, startAngle: 0, endAngle: 2 * Math.PI, tolerance })).commands, { op: "Z" }];
 }
 function compilePath(commands, transform, fillRule, budget) {
-  const flat = requireComplete(flattenPathCommands(commands, { tolerance: 0.125, transform }));
+  const flat = requireComplete(calculateFlattenedPathCommands(commands, { tolerance: 0.125, transform }));
   work(flat.subpaths.reduce((sum, item) => sum + item.points.length, 0), budget);
   const points = flattenedCommands(flat);
   return { commands: points, fillRule, bounds: resolvePathCommandBounds(points) };
@@ -95,10 +95,25 @@ function closeFillCommands(commands) {
   if (closed.length && closed.at(-1).op !== "Z") closed.push({ op: "Z" });
   return closed;
 }
-function compileGeometry(normalized, transform, tolerance, budget, close = false) {
-  const paths = normalized.circle ? [circleCommands(normalized.circle, tolerance)] : normalized.paths;
+function compileGeometry(normalized, transform, tolerance, budget, close = false, preparedPaths) {
+  const paths = preparedPaths ?? (normalized.circle ? [circleCommands(normalized.circle, tolerance)] : normalized.paths);
   return paths.map(commands => ({ ...compilePath(close ? closeFillCommands(commands) : commands, transform, normalized.fillRule, budget),
     ...(normalized.circle ? { circle: normalized.circle, transform } : {}) }));
+}
+// These parts and commands are created only by compileGeometry in this call.
+// Keep the private tree immutable without cloning it into program-owned state.
+function freezeGeometryParts(parts) {
+  for (const part of parts) {
+    part.commands.forEach(Object.freeze);
+    Object.freeze(part.commands); Object.freeze(part.bounds);
+    if (part.circle) {
+      Object.freeze(part.circle);
+      // Unlike the derived commands, this array may belong to the caller.
+      part.transform = cloneAndFreeze(part.transform);
+    }
+    Object.freeze(part);
+  }
+  return Object.freeze(parts);
 }
 function toleranceFor(transform) {
   transformHitPoint(transform, { x: 0, y: 0 });
@@ -148,7 +163,7 @@ export function prepareHitShape(input) {
     // Validate even an empty text geometry or invisible shape's stroke options.
     prepareHitStroke({ subpaths: [] }, paint.stroke);
     for (const commands of paths) {
-      const flat = requireComplete(flattenPathCommands(commands, { tolerance }));
+      const flat = requireComplete(calculateFlattenedPathCommands(commands, { tolerance }));
       const parts = prepareHitStroke(flat, paint.stroke);
       if (strokeParts.length + parts.length > MAX_HIT_SHAPE_PARTS) throw new RangeError("Hit stroke parts exceed their work budget.");
       strokeParts.push(...parts);
@@ -159,7 +174,7 @@ export function prepareHitShape(input) {
     .filter(diagnostic => diagnostic.code === "hit-transform-singular");
   const emptyFill = shape.circle?.radius === 0 || (["rect", "image"].includes(input.geometry.type) &&
     (input.geometry.rect.width === 0 || input.geometry.rect.height === 0));
-  const fill = paint.fill && !emptyFill ? compileGeometry(shape, input.transform, tolerance, budget, true) : [];
+  const fill = paint.fill && !emptyFill ? compileGeometry(shape, input.transform, tolerance, budget, true, shape.circle ? paths : undefined) : [];
   const strokes = strokeParts.map(part => compileGeometry(part.type === "circle"
     ? { circle: part, fillRule: "nonzero" } : { paths: [part.commands], fillRule: "nonzero" }, input.transform, tolerance, budget)[0]);
   const clips = clipInputs.map(clip => compileGeometry(clip.normalized, clip.transform, clip.tolerance, budget, true));
@@ -170,7 +185,8 @@ export function prepareHitShape(input) {
     if (!Object.values(bounds).every(Number.isFinite)) throw new RangeError("Hit bounds overflow.");
   }
   const result = cloneAndFreeze({ type: input.geometry.type, bounds, diagnostics });
-  states.set(result, cloneAndFreeze({ fill, strokes, clips, opacity: paint.opacity, transform: input.transform,
+  states.set(result, Object.freeze({ fill: freezeGeometryParts(fill), strokes: freezeGeometryParts(strokes),
+    clips: Object.freeze(clips.map(freezeGeometryParts)), opacity: paint.opacity, transform: cloneAndFreeze(input.transform),
     work: 1 + 4 * budget.value + fill.length + strokes.length + clips.length }));
   return result;
 }

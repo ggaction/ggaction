@@ -63,3 +63,12 @@ node agent_docs/impl/roadmap9/chart/json-string-count-evidence/verify.mjs
 각 Node 설치 재현은 그 executable의 dirname을 PATH 앞에 둔다.
 기존 archive는 freeze를 다시 수행하지 않고 `.artifacts/json-string-count/fixed.json`으로
 세 Node가 동일 파일을 읽었다. source-free runner는 10k case를 선택하지 않는다.
+
+## Root 통합
+
+기준 `9b87a0cfc`에 stable `5ec4f4b40`을 합쳤다. 두 runtime owner는 byte 동일하며
+root36source/critical100%, Node20/24각12UTF16/hash,868기존결과·오류·metadata/getter0 및
+동일 새 archive3Node의12public cases·type·문서·6bundle을 검산했다.
+[통합 기록](../qualification/json-count-merged-evidence/qualification.json)은 원 budget 실패와
+최소 artifact ceiling 교정을 보존한다. Node20의 먼저 통과한 runtime은 재실행하지 않고
+동일 measured bundle에 바뀐 ceiling만 다시 검산했다. Async100ms/large/P95는 남는다.

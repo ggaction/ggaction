@@ -1,0 +1,189 @@
+{
+  "status": "combined-lifecycle-tool-integrated; cold-diagnostic-only; final-warm100-and-P95-pending",
+  "base": "e80a915aa",
+  "incoming": "2c72d4144063117048ce03749f3f2c20aa8579b8",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "runtimeTypesPublicContractsAndPackedInputsChanged": false,
+  "archive": {
+    "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9.tgz",
+    "sha256": "37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9"
+  },
+  "harnessInputs": {
+    "scripts/benchmark-native.js": "b29398bca4c1488c1bf7daeb4ca9c23b8243c1a7e135a62af4856b4a01fc5b1a",
+    "scripts/benchmarks/routes.browser.js": "e2364026412edca805c84a4219b8413a4089b52d6ae25df542c17176242e3843",
+    "scripts/benchmarks/routes.worker.js": "d52c9b779d4db10e66faff28751b12a13408b1d57c3bbfdfa4ff4f089857c729",
+    "scripts/benchmarks/workloads.browser.js": "96de184180385ec9baaac8c9a89828bd7ff180f1300dc2372e49d4c3e269b5fb",
+    "test/oracles/inference-grid.js": "9def3438a82a59590be540bf2b5f079cc77ad208c429db59d4276f724a06dc1f",
+    "scripts/benchmarks/lifecycle.js": "d66082257f0db348fb6b601ff4ef830869c96ed05a3b03baf78ff0a2d4a0b502",
+    "app.js": {
+      "sha256": "24b32213a76f2f79c4b6cedb4a5344c9df67056b3796ebce19f917edf38d16f3",
+      "bytes": 2814039
+    },
+    "worker.js": {
+      "sha256": "6ecd3cd9ced53af277a4a8dac6c2a57bc1b89b1e1ddd186418bf76fe00e6a547",
+      "bytes": 57398
+    },
+    "workloads.js": {
+      "sha256": "d0de5981f94fa40118c263fcbc683095d4ef10c840233648fb25f7b477be6990",
+      "bytes": 3126097
+    }
+  },
+  "checks": {
+    "contracts": 52,
+    "actualDpr": [
+      1,
+      2
+    ],
+    "trustedMouseCapture": true,
+    "actualPngBitmapDecodeRenderClose": true,
+    "nativeResizeObserverAndPreparedUpdate": true,
+    "realRouteWorkerCompletionAbort": true,
+    "all9ResourceAnd10HarnessCountersZero": true,
+    "cycles": [
+      {
+        "ratio": 1,
+        "cycles": 4,
+        "balance": {
+          "completed": 2,
+          "cancelled": 2
+        },
+        "slopeBytesPerCycle": 1432736.4,
+        "growthBytes": 6731760,
+        "heapStatus": "not-qualified-diagnostic",
+        "abortStatus": "not-qualified-diagnostic",
+        "abortAcknowledgementP95Ms": 1.2000000476837158,
+        "abortThresholdMs": 100
+      },
+      {
+        "ratio": 2,
+        "cycles": 4,
+        "balance": {
+          "completed": 2,
+          "cancelled": 2
+        },
+        "slopeBytesPerCycle": 2688074,
+        "growthBytes": 10911032,
+        "heapStatus": "not-qualified-diagnostic",
+        "abortStatus": "not-qualified-diagnostic",
+        "abortAcknowledgementP95Ms": 0.40000009536743164,
+        "abortThresholdMs": 100
+      }
+    ],
+    "performanceQualified": false
+  },
+  "independentReview": {
+    "kind": "intermediate-read-only-diagnostic; not-final-AT60",
+    "audit": "independent-audit.json.gz",
+    "probe": "independent-probe.mjs.gz",
+    "harnessRevision": "2c72d4144",
+    "archive": "37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9",
+    "ratio": 1,
+    "cycles": 12,
+    "minified": false,
+    "usedSizeAt0_4_12": [
+      4639092,
+      11332156,
+      11818544
+    ],
+    "retainer": "ownedValues -> WeakSet -> internal table4194324bytes; unchanged4-to12",
+    "nativeListenerCounts": [
+      13,
+      13,
+      13
+    ],
+    "conclusion": "Cold growth largely persistent WeakSet capacity and lazy compilation/JIT; no confirmed runtime lifetime leak. Non-minified12cycle snapshot instrumentation is not final performance evidence."
+  },
+  "repairedFinding": {
+    "finding": "Full benchmark recorded abortP95 but exit predicate checked only heap status",
+    "repair": "Single lifecycleAbortTiming owner requires actual finite nonnegative cancellation samples; inclusive100msP95; diagnostic staysnotqualified; full exit checksheap+abortStatus",
+    "tests": "actual100/101 boundary, missing/NaN/negative samples, emptyactualcancelset and nearest-rank50samplepercentile",
+    "independentReadReview": "Root repair reviewed; no additional actionable finding in this scope"
+  },
+  "remaining": [
+    "Final CPU-exclusive exactcandidate warm5/100cycle DPR1/2 heap and abort; warm5/30 workloadP95",
+    "Originalall-size resource admission and publichandle/worker work",
+    "Actual577consumers/79ATgroups, ninecommands, independentwholeAT60review andprotectedAT61delivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "contracts.log": {
+      "sha256": "7a16ce0f1418158edae32395d4cd113f5ffad453121710b6a38ae9efc5aec49b",
+      "bytes": 11120,
+      "saved": "contracts.log.gz"
+    },
+    "contracts-final.log": {
+      "sha256": "7bc77ff84136a35b54d2d8fdb5dc681cf0f84ee61afba3292c393a2332f66e2d",
+      "bytes": 11405,
+      "saved": "contracts-final.log.gz"
+    },
+    "diagnostic.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "saved": "diagnostic.log.gz"
+    },
+    "diagnostic/report.json": {
+      "sha256": "fb2cfe770258ba93081839538849ba0c9eb7a775b957f8d4a27b7d67d268dd0a",
+      "bytes": 19700,
+      "saved": "diagnostic-report.json.gz"
+    },
+    "diagnostic-final.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "saved": "diagnostic-final.log.gz"
+    },
+    "diagnostic-final/report.json": {
+      "sha256": "d3f9ff26108f60be5423e20f3d6c5c86db5da76951d41660ec79b975b323977b",
+      "bytes": 19858,
+      "saved": "diagnostic-final-report.json.gz"
+    },
+    "independent-audit.json": {
+      "sha256": "bf069a7cf999c85dd1420dd9c8e580c0d6943ee102a043b00a7b90b57b7fc14b",
+      "bytes": 4992,
+      "saved": "independent-audit.json.gz"
+    },
+    "independent-result.json": {
+      "sha256": "34fd1b8783b224c98cf4f5a265fcdfa6fab3821c5335f3160e9d9ba829d899ac",
+      "bytes": 2144,
+      "saved": "independent-result.json.gz"
+    },
+    "independent-probe.mjs": {
+      "sha256": "c3169d639ce3f6bec8faae7a14f291c877c9c1e4ad19188eaf21dfab5a7844ac",
+      "bytes": 2500,
+      "saved": "independent-probe.mjs.gz"
+    },
+    "independent-lifecycle.mjs": {
+      "sha256": "6542e8715adc2f36d5731e97268dd5114fe4a7baef1d5072cf5bf1086c9c9af3",
+      "bytes": 3621,
+      "saved": "independent-lifecycle.mjs.gz"
+    },
+    "independent-retainer-path.txt": {
+      "sha256": "0bff378882391bfeb8c9f2ebbff717afdbabd4aed5e83df53df2884ba49a5e6b",
+      "bytes": 3936,
+      "saved": "independent-retainer-path.txt.gz"
+    },
+    "independent-snapshot-summary.txt": {
+      "sha256": "57a24cd4ca805f17c90ba499d4fd8ac01e676604527d56e116e6ea76e13d72b3",
+      "bytes": 15809,
+      "saved": "independent-snapshot-summary.txt.gz"
+    },
+    "independent-lifetime-counts.txt": {
+      "sha256": "10fc074e1f93d8606c00ecfbc7f10d3cbc7c7a4cc1fe96ccb3ed5058ac54d284",
+      "bytes": 13531,
+      "saved": "independent-lifetime-counts.txt.gz"
+    },
+    "independent-retainers.py": {
+      "sha256": "aeb650c98f5f682066d1dca51e513a446972e8536b10a6f295ace7334c79f7e5",
+      "bytes": 1034,
+      "saved": "independent-retainers.py.gz"
+    },
+    "independent-summarize.py": {
+      "sha256": "346a4de5189c68e09ec99b9e7e8ca1bc9184dcd229f37aa891034c9554720384",
+      "bytes": 720,
+      "saved": "independent-summarize.py.gz"
+    },
+    "independent-lifetime.py": {
+      "sha256": "418e88c97e5802fdbe292ae7387b0ac4dd9447c63c921a04711f64e386f7e1cf",
+      "bytes": 1318,
+      "saved": "independent-lifetime.py.gz"
+    }
+  }
+}

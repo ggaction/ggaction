@@ -2,7 +2,7 @@
 
 ## Classification and entry
 
-`ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy?, historyLimit?, assetResolver? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
+`ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy?, historyLimit?, assetResolver?, hitPreparation? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
 
 `bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, at most one keyboard binding, up to 256 editing pointer bindings, and up to 256 explicit linked-selection/filter bindings described below, with 259 total records maximum. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including clock, are rejected. Asset preparation is opt-in as specified below.
 
@@ -15,6 +15,7 @@
 - Alternatively, `dispatch({type:"frame",frame:TransitionFrame,version,generation})` accepts an authentic native animation sample under the contract below. Exactly one of `scene` or `frame` is required.
 - `updateProgram(program, {history?,origin?} = {})` prepares the full replacement before committing it, increments frameVersion, generation and session revision, and clears transient hits. Earlier immutable programs and their indices are unchanged. Existing mounted bindings remain active.
 - `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}` with type inspect, contextMenu, leave, frame, program, mount, unmount, or destroy; program events also include `selectionChanges`, `origin` and the history policy below. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
+- `getSelectionHandles()` returns the frozen derived resize view described under selection-region handles below. It uses the existing accepted `frameVersion`; it does not allocate a new counter or persist state. It throws after destruction.
 - `getState()` returns `{program,previewProgram,previewFrame,scene,frameVersion,generation,revision,hit,focus,linkedSelections,history,assets,previewAssets,animationFrame,frameAssets,preparation,mounted,destroyed}`. It remains readable after destruction and contains no DOM nodes; prepared handles are runtime-only.
 - `destroy()` removes listeners and disposes the active index once; first call returns true and later calls false. Pending work is discarded. Later dispatch, mount, subscribe, or updateProgram calls throw a disposed error.
 
@@ -44,9 +45,13 @@ Filled paths honor nonzero/evenodd holes, strokes honor widths, dash gaps, caps 
 
 ## Bounds and unsupported operations
 
-Preparation supports at most 100,000 scene nodes and a 10,000,000-unit cumulative work budget; a query has a 2,000,000-unit budget. External frame snapshot work is bounded before canonical concrete validation. Guide layout reuse accounts for sample comparisons before computation. Frames containing accessors, cycles, unsupported objects, excessive work or mismatched semantic cardinality are rejected atomically.
+Preparation defaults to at most 100,000 scene nodes and independently bounded 10,000,000-unit binding and index work. `createInteractionSession` accepts optional `hitPreparation: {maxSceneNodes?, maxWork?}`. Omission, `undefined`, `{}`, and own undefined fields retain the defaults. `maxSceneNodes` is a safe integer from 1 through 200,000; `maxWork` is a safe integer from 1 through 128,000,000. Each binding and index preparation has its own maxWork bound (at most 256,000,000 combined), not one shared allowance. The closed plain record rejects null, unknown fields and accessors without reading inherited optional properties.
 
-Hit tie ordering uses exact UTF-16 lexicographic comparison and charges the code units actually read, including shared prefixes; it does not repeatedly charge unread key suffixes. Input validation and metadata serialization retain their full work accounting. Item, preparation and query limits are unchanged. Evidence: `test/unit/grammar/hit-index.test.js` and the full 10,000-point CSS-hit regression in `test/unit/hit-program.test.js`; these correctness checks are not a performance qualification.
+The policy is snapshotted for one session, is absent from program/state/codec, and cannot be changed by commands, frames or mount options. It applies to initial, nested aggregate, current-frame, preview, replacement, history, mount and async commit preparation. Background and every actual child node count; there is no free background exemption. Cached native bases recheck the current count and recharge their original preparation work. Exact fully validated immutable metadata can reuse its normalized info, identity key and signature; every reuse recharges its full original validation and serialization cost against the current policy. Caller-owned, cloned, ordinarily frozen and partially owned metadata receive full validation and isolated normalization. Native owner, source revision, epoch, asset, clip and exact frame authority remain independent requirements. Failed candidates leave the previous program, scene and history intact.
+
+Indexed entries and lineage arrays remain limited to 100,000; a query retains its 2,000,000-unit budget. Shape/path, 10,000,000-unit external snapshot, selection, keyboard and animation limits are unchanged. Explicit preparation does not grant those consumers larger budgets or prove a latency target. External frame snapshot work is bounded before canonical concrete validation. Guide layout reuse accounts for sample comparisons before computation. Frames containing accessors, cycles, unsupported objects, excessive work or mismatched semantic cardinality are rejected atomically.
+
+Hit tie ordering uses exact UTF-16 lexicographic comparison and charges the code units actually read, including shared prefixes; it does not repeatedly charge unread key suffixes. Input validation and metadata serialization retain their full work accounting. Item and query limits are unchanged; the session preparation option above is the only explicit extension. Evidence: `test/unit/grammar/hit-index.test.js` and the full 10,000-point CSS-hit regression in `test/unit/hit-program.test.js`; these correctness checks are not a performance qualification.
 
 Native navigation, keyboard focus and async asset preparation follow their sections below. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
 
@@ -388,6 +393,66 @@ Evidence: `test/unit/selection-region.test.js`, `test/unit/actions/selection/reg
 `test/unit/interaction-region-gesture.test.js`, `test/contracts/interaction-types.test.js`.
 
 
+### Selection-region and category handles
+
+Full sessions accept `{type:"resize",target,selection,axis,channels?,slop?,priority?,modifiers?}`.
+`axis` is required and is exactly `x`, `y`, `xy`, or `theta`; channels use the same matching
+x/x2, y/y2 and theta bindings as brush. Resize always replaces an existing persistent region
+through the native `select` command. It does not resize the Canvas or observe its host size.
+Item-key and lasso selections, empty regions, noncontiguous category runs, regions with unmatched
+channels, and boundaries outside the native domain have no handles. Cartesian numeric regions
+must contain one interval per axis. A zero-width interval, coincident projected handles or an
+equidistant nearest hit rejects explicitly. No array-order choice resolves different handles.
+
+`getSelectionHandles()` returns `{frameVersion,handles}`. Each frozen handle contains
+`{target,selection,axis,handle,point:{x,y}}`; target is the normalized scoped native mark target,
+and selection is its exact existing selection ID. There is no format version or separate handle
+counter. `frameVersion` is the existing accepted scene version, including during a selection
+preview. Values are recomputed for the current native program or accepted preview; the query
+never writes state. The handle vocabulary is `x-min|x-max`, `y-min|y-max`, the four
+`x-min-y-min|x-min-y-max|x-max-y-min|x-max-y-max` corners for xy, and `theta-start|theta-end`.
+Single-axis handles use the other plot dimension's midpoint; xy includes four edge midpoints
+and four corners. Min/max name domain endpoints even under reversed scales. Theta preserves
+the authored directed arc, using consistent saved screenAngles or an unambiguous native inverse.
+A full coincident arc and contradictory metadata do not invent a direction.
+
+Points are CSS-local to the mounted surface, with native child placement and the declared
+rootTransform applied once. DPR is not multiplied. Plot, Canvas and collection clips restrict
+eligibility. The host draws idle handles and provides ARIA/focus controls from this exact query;
+the controller draws no idle DOM or graphics. Pointer hit uses these same points and the existing
+CSS slop (mouse/pen 3, touch 6 by default). A singular transform rejects. Bounds use the native
+linear/log/time or resolved ordinal/band/point forward mapper; drag values use the existing native
+inverse. For categories, the fixed category's center anchors the inverse so touching band edges
+do not add its neighbor; the queried handles and preview remain on the selected bands' outer
+edges. Returning to the authored boundary restores the original predicate. Crossing a numeric
+boundary preserves the untouched endpoint's inclusive flag. Arbitrary independently sampled
+geometry cannot supply an inferred native scale and rejects before capture or publication.
+
+`{type:"reorder",target,channel,slop?,priority?,modifiers?}` binds an existing nominal/ordinal
+x, y or theta position to its actual painted native axis tick/label values. It never parses displayed
+label strings. Missing ticks, titles and mark bodies are not handles. The owner, source field,
+resolved scale and shared-scale compatibility use the native category-order resolver. The dragged
+typed value is inserted into the ordered native domain as the pointer crosses other category
+centers, then the existing `reorder` command calls `orderCategories`; marks, axes and linked
+legends rematerialize through that action. Reversed ranges use their resolved direction once.
+Theta uses the scale's explicit directed domain cut, including the full-circle start. An ambiguous
+non-native cut rejects rather than guessing a rotation.
+
+Both bindings use default priority 60 and the existing modifier/ambiguity rules. A click-sized tap
+or a final order/region equal to the baseline adds no history. Accepted previews use one host RAF,
+retain the exact down program, and commit once on up. Resize reuses the transient region overlay;
+reorder previews the immutable native candidate. Escape, pointercancel, lost capture, blur,
+replacement, unmount and destruction discard previews and pending callbacks. Invalid inverse,
+capability, clip or native command results preserve the committed program/history. Existing
+asset preparation and linked-selection atomic closure apply. Host keyboard controls use the same
+`dispatch({type:"select",...mode:"replace"})` or `dispatch({type:"reorder",...values})` commands;
+this API does not add a second keyboard model. The inspected-chart browser example demonstrates
+both paths for Canvas and SVG. Existing 10M work bounds also cover derived handle queries.
+
+Evidence: `test/unit/selection-handles.test.js`, `test/unit/interaction-handles.test.js`,
+`test/browser/interaction-handles.browser.js`, `test/contracts/interaction-types.test.js`, and
+`scripts/consumers/fixtures/node/interaction-handles.mjs`.
+
 ### Angular brush
 
 `{type:"brush",axis:"theta",target,selection,channels?:{theta:"theta"},mode?}` requires the explicit owner's
@@ -646,7 +711,7 @@ test/browser/interaction-session.browser.js and installed interaction fixtures.
 
 ## Atomic asset preparation
 
-`createInteractionSession({program,bindings?,selectionPolicy?,historyLimit?,assetResolver?})` accepts
+`createInteractionSession({program,bindings?,selectionPolicy?,historyLimit?,assetResolver?,hitPreparation?})` accepts
 an optional explicit host callback. It receives `{program,signal,sessionGeneration,transactionId,
 baseRevision,resourceRevisionVector}`. The program is the immutable native candidate; no DOM event
 or mutable source is passed. The vector contains every dataset and stored resource in each composition

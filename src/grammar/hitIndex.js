@@ -4,10 +4,9 @@ import { validateInputReference } from "../core/resourceReference.js";
 import { transformHitPoint } from "./hitCoordinates.js";
 import { hitShape, nearestHitShape, hitShapeWork, normalizeHitQuery } from "./hitShapes.js";
 
-export const MAX_HIT_INDEX_ITEMS = 100_000;
-export const MAX_HIT_INDEX_WORK = 10_000_000;
-export const MAX_HIT_QUERY_WORK = 2_000_000;
-const states = new WeakMap(), identity = [1, 0, 0, 1, 0, 0];
+import { MAX_HIT_INDEX_ITEMS, MAX_HIT_QUERY_WORK, normalizeHitPreparation } from "./hitPolicy.js";
+export { MAX_HIT_INDEX_ITEMS, MAX_HIT_INDEX_WORK, MAX_HIT_QUERY_WORK } from "./hitPolicy.js";
+const states = new WeakMap(), metadataProofs = new WeakMap(), identity = [1, 0, 0, 1, 0, 0];
 function spend(work, count = 1) {
   work.value += count;
   if (work.value > work.limit) throw new RangeError("Hit index exceeds its work budget.");
@@ -42,6 +41,9 @@ function strings(value, work, unique = false) {
   return value;
 }
 function metadata(value, work) {
+  const previous = metadataProofs.get(value);
+  if (previous !== undefined) { spend(work, previous.cost); return previous; }
+  const initial = work.value;
   exact(value, ["itemKey", "ownerId", "role", "childPath", "rowKeys", "resourceRefs"], "Hit metadata");
   const itemKey = text(value.itemKey, work), ownerId = text(value.ownerId, work), role = text(value.role, work);
   const childPath = strings(value.childPath, work), rowKeys = strings(value.rowKeys, work, true);
@@ -49,22 +51,32 @@ function metadata(value, work) {
   if (!Array.isArray(refs) || refs.length > MAX_HIT_INDEX_ITEMS) throw new RangeError("Hit resource refs exceed their item budget.");
   ownArray(refs, "Hit resource refs"); spend(work, refs.length);
   const resourceRefs = [], used = new Set();
+  let reusable = isOwned(value) && isOwned(childPath) && isOwned(rowKeys) && isOwned(refs) &&
+    Object.keys(value).join(",") === "itemKey,ownerId,role,childPath,rowKeys,resourceRefs";
   for (const ref of refs) {
     ownRecord(ref, "Hit resource ref");
     // Supply an own-data null-prototype view to the existing revision validator.
     const copy = Object.assign(Object.create(null), ref); validateInputReference(copy);
     const normalized = ref.kind === "data" ? { kind: ref.kind, id: ref.id, logicalId: ref.logicalId, revision: ref.revision }
       : { kind: ref.kind, id: ref.id, revision: ref.revision };
+    reusable &&= isOwned(ref) && Object.keys(ref).join(",") === Object.keys(normalized).join(",");
     const key = JSON.stringify(normalized); text(key, work);
     if (used.has(key)) throw new TypeError("Hit resource refs must be unique.");
     used.add(key); resourceRefs.push(normalized);
   }
-  return cloneAndFreeze({ itemKey, ownerId, role, childPath, rowKeys, resourceRefs });
+  // Only the exact fully validated owned tree can retain its original identity.
+  // Caller records and shallow ownership still produce an isolated normal form.
+  const info = reusable ? value : cloneAndFreeze({ itemKey, ownerId, role, childPath, rowKeys, resourceRefs });
+  const semanticKey = JSON.stringify([childPath, ownerId, itemKey]), signature = JSON.stringify(info);
+  spend(work, signature.length);
+  const proof = { info, semanticKey, signature, cost: work.value - initial };
+  metadataProofs.set(info, proof);
+  return proof;
 }
-function sceneKeys(scene, work) {
+function sceneKeys(scene, work, maxSceneNodes) {
   ownRecord(scene, "Hit scene");
   if (!isOwned(scene) || !Object.hasOwn(scene, "version") || scene.version !== 2 || !Object.hasOwn(scene, "nodes") || !isOwned(scene.nodes) ||
-      !Array.isArray(scene.nodes) || scene.nodes.length > MAX_HIT_INDEX_ITEMS) throw new TypeError("Hit index requires an immutable owned Canvas scene within its item budget.");
+      !Array.isArray(scene.nodes) || scene.nodes.length > maxSceneNodes) throw new TypeError("Hit index requires an immutable owned Canvas scene within its item budget.");
   ownArray(scene.nodes, "Hit scene nodes");
   const keys = new Set();
   for (const node of scene.nodes) {
@@ -125,8 +137,9 @@ function candidateOrder(a, b, work, nearest = false) {
 }
 
 /** Bind explicit node/semantic mappings to one immutable current scene; no resource inference. */
-export function prepareHitIndex(scene, entries) {
-  const work = { value: 0, limit: MAX_HIT_INDEX_WORK }, available = sceneKeys(scene, work);
+export function prepareHitIndex(scene, entries, options) {
+  const policy = normalizeHitPreparation(options);
+  const work = { value: 0, limit: policy.maxWork }, available = sceneKeys(scene, work, policy.maxSceneNodes);
   if (!Array.isArray(entries) || entries.length > MAX_HIT_INDEX_ITEMS) throw new RangeError("Hit entries exceed their item budget.");
   ownArray(entries, "Hit entries"); spend(work, entries.length);
   const used = new Set(), semantic = new Map(), items = [], diagnostics = [];
@@ -136,9 +149,7 @@ export function prepareHitIndex(scene, entries) {
     if (!available.has(nodeKey) || used.has(nodeKey)) throw new TypeError("Hit entries require unique nodes from their exact scene.");
     if (!Number.isSafeInteger(entry.zIndex)) throw new TypeError("Hit entry requires an explicit safe integer zIndex.");
     used.add(nodeKey);
-    const cost = hitShapeWork(entry.shape), info = metadata(entry.metadata, work);
-    const semanticKey = JSON.stringify([info.childPath, info.ownerId, info.itemKey]), signature = JSON.stringify(info);
-    spend(work, signature.length);
+    const cost = hitShapeWork(entry.shape), { info, semanticKey, signature } = metadata(entry.metadata, work);
     if (semantic.has(semanticKey) && semantic.get(semanticKey) !== signature) throw new TypeError("Duplicate hit primitives require identical semantic metadata.");
     semantic.set(semanticKey, signature);
     for (const diagnostic of entry.shape.diagnostics) { spend(work); diagnostics.push({ itemKey: info.itemKey, ...diagnostic }); }

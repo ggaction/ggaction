@@ -1,0 +1,9 @@
+{
+  "archiveSHA256": "03d9cd8fb9b72c1c505676b5194a8d14460d183742dd63c215f8b4ec6aa33dde",
+  "installedIntegrity": "sha512-Ll3k597E2Umc+j3kCGIU5PhLqm9fzvZQNDFbs8CSlAuTv/R2xlPT/4fkyxtpHq0biYkmBmkYq/eNlvITF+1ygw==",
+  "canonicalIntegrityMatches": true,
+  "node": "v22.23.1",
+  "consumer": "/private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-19GtRm",
+  "sourceRevision": "8cbbc020c",
+  "note": "Canonical all-contracts functional execution; temporarily suspended own process tree while P used large slot, not a timing/SLO result."
+}

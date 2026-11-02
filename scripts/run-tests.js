@@ -197,11 +197,6 @@ export function hashUntrackedInputs(files, root = repositoryRoot) {
 
 async function run(suite, selectors, shard) {
   const files = collectTestFiles(suite, testRoot, selectors);
-  for (const selector of selectors) {
-    if (!files.some(file => matchesSelector(file, testRoot, selector))) {
-      throw new Error(`Test selector "${selector}" matches no tests in suite "${suite}".`);
-    }
-  }
   if (files.length === 0) {
     if (suite === "gates" && selectors.length === 0) {
       process.stdout.write("No active gate tests.\n");
@@ -209,6 +204,11 @@ async function run(suite, selectors, shard) {
     }
     const suffix = selectors.length === 0 ? "" : ` matching ${selectors.join(", ")}`;
     throw new Error(`No test files found for suite "${suite}"${suffix}.`);
+  }
+  for (const selector of selectors) {
+    if (!files.some(file => matchesSelector(file, testRoot, selector))) {
+      throw new Error(`Test selector "${selector}" matches no tests in suite "${suite}".`);
+    }
   }
   const coverage = suite === "coverage";
   if (shard !== undefined) {

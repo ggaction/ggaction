@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:3685155d76b569468f6e5640a4be598061c97aae25aff163442061169bb262a5. Status: development. Runtime source: f4b389117b570ee6ae2399867dc709d6b04c457c. Release baseline: v0.0.13.
+Contract: sha256:9f8191c20902a699f4bada8db7b7f42b0184d32666de226da449940a9a806c56. Status: development. Runtime source: b3da444d795248370c9c14bc6f158b01f67eff7a. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -213,11 +213,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/f4b389117b570ee6ae2399867dc709d6b04c457c/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/b3da444d795248370c9c14bc6f158b01f67eff7a/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/f4b389117b570ee6ae2399867dc709d6b04c457c/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/b3da444d795248370c9c14bc6f158b01f67eff7a/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -652,15 +652,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/64045b214475110de9621328bbe7d060c9149f04/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -805,7 +805,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -823,7 +823,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/64045b214475110de9621328bbe7d060c9149f04/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -936,7 +936,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/64045b214475110de9621328bbe7d060c9149f04/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1106,7 +1106,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/64045b214475110de9621328bbe7d060c9149f04/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1328,15 +1328,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/64045b214475110de9621328bbe7d060c9149f04/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1472,7 +1472,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1486,15 +1486,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/64045b214475110de9621328bbe7d060c9149f04/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1592,7 +1592,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1606,15 +1606,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/64045b214475110de9621328bbe7d060c9149f04/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1723,7 +1723,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1739,15 +1739,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/64045b214475110de9621328bbe7d060c9149f04/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1872,7 +1872,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1941,7 +1941,7 @@ Wiggle moves the shared baseline to reduce thickness-weighted movement of the la
 It preserves every sample's thickness and series order. Each connected run begins at zero;
 an all-zero sample keeps the previous baseline. Numeric or temporal x positions must be aligned,
 with no custom path order. Use `missing:'break'` to break all layers together at a null measure.
-The [canonical rendered program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/streamgraph/program.js)
+The [canonical rendered program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/streamgraph/program.js)
 fixes a small two-series example, including a layer that ends at zero thickness.
 
 The wiggle value scale must support zero; logarithmic value scales are rejected.
@@ -1979,7 +1979,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1989,15 +1989,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/64045b214475110de9621328bbe7d060c9149f04/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2122,7 +2122,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2155,7 +2155,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2166,8 +2166,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2263,15 +2263,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/64045b214475110de9621328bbe7d060c9149f04/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2368,15 +2368,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/64045b214475110de9621328bbe7d060c9149f04/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2482,8 +2482,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2492,7 +2492,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/64045b214475110de9621328bbe7d060c9149f04/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2792,7 +2792,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -2906,8 +2906,8 @@ Use the [Getting Started browser module setup](./getting-started/) with a
 
 ## Complete program
 
-Run this entry in the [example directory](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/marginal/)
-after installing ggaction. Its [program.js](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/marginal/program.js)
+Run this entry in the [example directory](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/marginal/)
+after installing ggaction. Its [program.js](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/marginal/program.js)
 contains the public action chain; `fixture.js` declares the rows, boundaries,
 domains and panel dimensions. Replace the source import in that module with
 `import { chart, hconcat, vconcat } from "ggaction"` for an installed application.
@@ -2937,7 +2937,7 @@ coordinates remain separate observations; duplicate explicit keys are rejected.
 Zero is a valid observation. An empty array has no inferred field schema and
 cannot create this recipe's bins.
 
-The linked [selection example](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/marginal/selection.js)
+The linked [selection example](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/marginal/selection.js)
 uses public `getMarkItems` to read one bin's exact source rows, then calls
 `highlightMarks` with the same row indices in each explicitly named child.
 It checks current logical source identity and revision before linking. It never
@@ -2977,8 +2977,8 @@ Use the [Getting Started browser module setup](./getting-started/) with a
 
 ## Complete program
 
-Run this entry in the [example directory](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/bullet/)
-after installing ggaction. The linked [program.js](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/bullet/program.js)
+Run this entry in the [example directory](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/bullet/)
+after installing ggaction. The linked [program.js](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/bullet/program.js)
 contains the public action chain and `fixture.js` supplies the observations and
 reference ranges. Replace that module's source import with
 `import { chart } from "ggaction"` in an installed application.
@@ -3038,7 +3038,7 @@ Use the [Getting Started browser module setup](./getting-started/) with a
 
 ## Complete program
 
-Run this entry beside the canonical [program.js](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/linked-overlay/program.js)
+Run this entry beside the canonical [program.js](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/linked-overlay/program.js)
 after installing ggaction and replacing its source import with
 `import { chart } from "ggaction"`.
 
@@ -3744,7 +3744,7 @@ its source measurements. Each child owns its data, marks, scales and guides.
 The analytical axis and legend explain the point chart; the resource view keeps
 its native layout, thickness and styles.
 
-Copy the [resource comparison module](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/program-composition/resource-comparison.js)
+Copy the [resource comparison module](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/program-composition/resource-comparison.js)
 beside this browser module, set its `chart`/`hconcat` import to `from "ggaction"`,
 and provide `<canvas id="chart"></canvas>`. The helper
 builds both children from the same rows, including distinct numeric `1` and
@@ -6392,7 +6392,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -6717,7 +6717,7 @@ Point marks represent individual observations or derived items. Their semantic
 type is `point`; circle, square, diamond, and other symbols are graphical
 realizations of that meaning.
 
-## `createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
+## `createPointMark({ id?, data?, maxItems?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 This heading shows common options. For the full callable contract and all branches, see [`createPointMark`](./reference/actions/marks/#createpointmark) and the [exact declarations](./reference/types/).
 
@@ -6725,6 +6725,7 @@ This heading shows common options. For the full callable contract and all branch
 | --- | --- | --- |
 | `id` | valid user-defined ID | first point mark uses `"point"` |
 | `data` | existing dataset ID | current dataset |
+| `maxItems` | integer from `1` to `100000` | `50000` |
 | `shape` | supported constant shape | `"circle"` |
 | `fill` | non-empty color string | theme color; conflicts with `encodeColor` |
 | `opacity` | number from `0` to `1` | `1` |
@@ -6750,13 +6751,22 @@ point is layered after one compatible source, omitted data, coordinate, x, and y
 encodings are inherited and persisted. Ambiguous sources require an explicit
 target or resource ID.
 
-A point layer supports at most **50,000 selected data rows**, including rows
-subsequently skipped by the missing-value policy. Creation, data revisions,
-property-array edits, facets, and editable snapshots use the same inclusive
-boundary. A 50,001-row point layer fails atomically with the structured
-`resource-limit` diagnostic `Point mark item count`. No sampling or layer
-splitting occurs. Ordinary extension graphics retain their 10,000-item limit;
-path-command and work limits are independent.
+A point layer defaults to **50,000 selected data rows**. Set `maxItems: 100000`
+to admit up to 100,000 rows explicitly. The limit checks both the raw selected
+rows, including rows later skipped by the missing-value policy, and concrete
+items. Creation, data revisions, property arrays, facets, and editable snapshots
+share the same owner capacity. Each retained composition child keeps its own
+limit; their combined total may exceed 100,000. An overflow fails atomically
+with the structured `resource-limit` diagnostic `Point mark item count`.
+
+Pass the same option through a facade's point style, such as
+`createScatterPlot({ x: "x", y: "y", point: { maxItems: 100000 } })`.
+`editPointMark({ maxItems })` changes the existing limit; omission preserves it.
+Explicit `maxItems: undefined` removes it and restores the 50,000 default.
+Lowering or removing the limit fails if the current raw rows or items exceed it.
+No sampling or layer splitting occurs. Ordinary extension graphics retain their
+10,000-item limit. Path commands, work, animation, and hit testing have separate
+limits; a larger point capacity does not guarantee a frame rate or latency.
 
 Radius is an encoding-owned graphical value rather than a `createPointMark`
 option. Until a constant or field-driven size is authored, materialization uses
@@ -6765,7 +6775,7 @@ Use `encodePointRadius({ value })` for another constant radius or `encodeSize`
 for a field-driven area mapping. `removePointRadius()` returns an explicitly
 sized point mark to the theme radius without changing Polar position.
 
-## `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`
+## `editPointMark({ target?, maxItems?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`
 
 This heading shows common options. For the full callable contract and all branches, see [`editPointMark`](./reference/actions/marks/#editpointmark) and the [exact declarations](./reference/types/).
 
@@ -11139,7 +11149,8 @@ Patterns, gradients, unresolved host colors, changed text/fonts, and other chang
 static effects use the explicit `appearance` crossfade. An unchanged geographic
 pattern continues to use the native geometry and paint materialization rules.
 
-Saved transition plans use version 3 and the required
+Saved transition plans use version 3 by default, or version 4 when explicit node
+limits are requested. Both retain the required
 `premultiplied-linear-srgb@1` appearance kernel. Earlier development plan versions
 and missing or unknown kernels are rejected on restore. The outer animation
 envelope remains schema 1.
@@ -11542,7 +11553,7 @@ source data. General Text anchor interpolation remains outside this camera kerne
 
 | Function | Result and behavior |
 | --- | --- |
-| `planTransition({from, to, options:{durationMs, easing?, tracks?, markers?, composite?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
+| `planTransition({from, to, options:{durationMs, easing?, tracks?, markers?, composite?, maxEndpointNodes?, maxOutputNodes?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
 | `sampleTransition(plan, timeMs)` | Immutable `{graphicSpec, scene, progress, decisions}`. Finite time is clamped to the plan's duration. For zero duration, time zero selects the target. |
 | `serializeAnimation(plan, playback?)` | A JSON string containing the prepared endpoint payloads, kernel versions, and playback preferences. |
 | `deserializeAnimation(text)` | Immutable `{plan, playback}`. It validates the complete stored values before returning an authentic plan. |
@@ -11557,6 +11568,51 @@ A frame-rate grid does not add an off-grid ending frame. Use `timesMs` when an
 exact endpoint is required. A zero-duration plan exports one frame at zero.
 Requests are limited to 10,000 frames and 10,000,000 cumulative endpoint-node
 visits before sampling. Returned arrays and frames are immutable.
+
+## Request larger node limits
+
+Use explicit limits when the prepared endpoints or sampled output exceed the default
+10,000 nodes. Run this complete ES module, replacing the example rows with your data:
+
+> **Executable complete.** Run with ggaction installed; both endpoints and explicit rebase limits are included.
+
+```javascript
+import { chart } from 'ggaction';
+import { planTransition, sampleTransition } from 'ggaction/animation';
+
+const from = chart().createCanvas({ width: 300, height: 200, margin: 20 })
+  .createData({ id: 'rows', keyField: 'id', values: [{ id: 'a', x: 1, y: 2 }] })
+  .createPointMark({ id: 'points', maxItems: 100000 })
+  .encodeX({ field: 'x' }).encodeY({ field: 'y' });
+const to = from.reviseData({ source: 'rows', id: 'next',
+  values: [{ id: 'a', x: 2, y: 3 }] });
+const largerPlan = planTransition({ from, to, options: {
+  durationMs: 1000,
+  maxEndpointNodes: 200002,
+  maxOutputNodes: 100001
+} });
+const currentFrame = sampleTransition(largerPlan, 500);
+const rebasedPlan = planTransition({ from: currentFrame, to, options: {
+  durationMs: 1000,
+  maxEndpointNodes: 200002,
+  maxOutputNodes: 100001
+} });
+```
+
+`maxEndpointNodes` counts both endpoint scenes together; it accepts safe integers
+from 1 to 200002. `maxOutputNodes` counts each endpoint and every sampled scene;
+it accepts 1 to 100001. Each omitted value stays 10000. Explicit `undefined` is
+invalid. Backgrounds, guides, labels, and weighted concrete output count too.
+Point marks still need their own `maxItems` for more than 50,000 raw or materialized
+items; its maximum is 100,000. Other native collection owners retain their existing
+10,000-item limits. These options do not grant a primitive a native owner.
+
+Either explicit option selects version 4, including for smaller limits. With both
+omitted, version 3 and its existing limits remain. Repeat the required limits when
+rebasing or calling `player.interrupt`; they are never inherited from an earlier plan.
+Preparation and strict restoration retain the exact concrete values and validate
+all owners, identities, styles, and semantic mappings. A larger node limit does not
+promise a frame time or bypass frame-export, geometry, or playback work limits.
 
 ## Render the same frame
 
@@ -11640,8 +11696,18 @@ Restoration performs no network requests or semantic data inference. Unknown
 schemas or kernels, missing asset bytes, invalid identities, inconsistent
 prepared positions, and corrupted payloads reject the entire restore. The JSON
 limit is 64 MiB, decoded nesting is at most 128 levels, and encoded/decoded values
-are each bounded to 1,000,000 occurrences. Plan preparation also has a 10,000-node
-endpoint limit and a 10,000,000-unit work limit.
+are each bounded to 1,000,000 occurrences. Default version 3 also retains its
+10,000-node endpoint limit and 10,000,000-unit preparation work limit. Explicit
+version 4 stores the same actual endpoint and timeline values compactly, with a
+140,000,000-unit preparation bound, 12,000,000 expanded values, and separate
+16,000,000 descriptor/cell validation bounds. Payloads can still exceed these
+bounds through long strings, complex styles, or repeated expansion; restoration
+rejects the entire payload. Other geometry, timeline, sample, and batch limits
+remain unchanged. Existing version 3 animations remain readable.
+
+Version 4 encoding is lossless, but newly prepared plans with the same values can
+use different compact representations. A restored version 4 plan retains its
+stored representation for subsequent serialization.
 
 The same time and stored algorithm versions reproduce the same canonical scene.
 This does not assert identical font rasterization across operating systems.
@@ -11684,6 +11750,98 @@ the session does not infer them. Client coordinates subtract the current element
 rectangle once. Device pixel ratio is never multiplied into hit coordinates.
 Slop remains in CSS pixels under scale or rotation. Use matching logical dimensions
 for the rendered chart and surface when no root matrix is supplied.
+
+## Bound hit preparation
+
+Large native scenes can opt into a larger preparation allowance for one session:
+
+> **Executable complete.** Run the complete ES module with public imports. The explicit preparation allowance belongs only to this immutable program session.
+
+```javascript
+import { chart } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+const program = chart().createCanvas({ width: 400, height: 400 })
+  .createData({ values: [{ x: 1, y: 2 }] })
+  .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "y" });
+const session = createInteractionSession({ program, bindings: [],
+  hitPreparation: { maxSceneNodes: 100001, maxWork: 128000000 }
+});
+console.log(session.getState().scene.nodes.length);
+session.destroy();
+```
+
+The defaults are 100,000 scene nodes and 10,000,000 work units for each of native
+binding and spatial indexing. Omitted or `undefined` fields keep those defaults.
+`maxSceneNodes` accepts safe integers from 1 to 200,000; `maxWork` accepts 1 to
+128,000,000. Backgrounds and nested children count toward the same scene limit.
+The policy stays fixed for that session through mounting, edits, history and
+current-frame replacement. Invalid or over-budget candidates leave the accepted
+program and picture intact.
+
+This option keeps the separate 100,000 hit-entry and 2,000,000 query-work limits,
+along with existing snapshot, selection and animation limits. Increasing preparation
+allows more bounded work; it does not promise a frame rate or reduce memory usage.
+For 100,000 authored points, the mark also needs its explicit `maxItems: 100000`
+capacity, and a background requires an additional scene node.
+
+## Resize a selection or reorder categories
+
+Use a `resize` binding to edit an existing region selection, or a `reorder` binding
+to drag a categorical axis tick or label. These are Full authoring bindings.
+Selection resize is separate from resizing a Canvas or observing a DOM element.
+
+> **Executable complete.** Run the complete ES module with its inline observations and public imports. Inspect native CSS handle coordinates and replace the same persistent region with an explicit command.
+
+```javascript
+import { chart } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+const program = chart().createCanvas({ width: 300, height: 200, margin: 0 })
+  .createData({ values: [{ x: 2, y: 3 }, { x: 8, y: 7 }] })
+  .createPointMark({ id: "points" })
+  .encodeX({ field: "x", scale: { domain: [0, 10], nice: false } })
+  .encodeY({ field: "y" })
+  .selectMarks({ id: "window", target: "points",
+    region: { x: { ranges: [{ min: 2, max: 6 }] } } });
+const session = createInteractionSession({ program, bindings: [
+  { type: "resize", target: "points", selection: "window", axis: "x" }
+] });
+const handles = session.getSelectionHandles();
+console.log(handles.handles.map(({ handle, point }) => ({ handle, point })));
+session.dispatch({ type: "select", target: "points", payload: {
+  id: "window", mode: "replace", select: { region: { x: { ranges: [{ min: 2, max: 8 }] } } }
+} });
+session.destroy();
+```
+
+Mount the session on the rendered surface to enable pointer dragging. Draw idle UI
+from `getSelectionHandles()` and give it focusable host controls with descriptive
+ARIA labels. The query returns immutable `{frameVersion,handles}`; each handle has
+an exact scoped `target`, `selection`, `axis`, `handle` name and CSS-local `point`.
+Its frameVersion is the existing scene version, not a new handle counter. Root
+transforms and child placement are already applied. Use these same points when
+drawing the UI; do not multiply by DPR. The [browser recipe](./recipes/inspect-chart/)
+includes mouse, touch and keyboard controls for Canvas and SVG.
+
+Axes are `x`, `y`, `xy`, or directed `theta`. XY supplies four edge midpoints and
+four corners. Linear, log, time and contiguous categorical regions reuse their
+native forward/inverse scales. Empty, non-region or clipped-away boundaries have
+no handles. Coincident or equally nearest different handles reject explicitly.
+The pointer uses the standard 3 CSS-pixel mouse/pen slop or 6 for touch. Resize
+replaces the region and keeps the untouched numeric endpoint's inclusivity.
+
+For an existing categorical mark and its native axis, bind
+`{type:"reorder",target:"bars",channel:"x"}`. `channel` also accepts `y` or `theta`.
+Only the actual axis tick/label identifies the typed category; mark bodies and
+axis titles do not. Moving across category centers uses the native `orderCategories`
+action and updates dependent marks, axes and legends. A keyboard control can use
+`session.dispatch({type:"reorder",target:"bars",payload:{channel:"x",values:["B","C","A"]}})`
+to apply the same order.
+
+Both bindings default to priority 60. Use explicit priorities or disjoint modifiers
+when competing bindings could apply. A drag previews on host RAF, then commits one
+history entry. Escape and capture loss cancel; a tap or unchanged result creates no
+history. The existing native scale must still describe the displayed owner;
+independently transformed animation pixels are not inverted into data values.
 
 ## Observe the mounted surface size
 
@@ -11940,8 +12098,8 @@ Mounting another element removes the old listeners. Unmount is idempotent.
 work; it returns true once and false thereafter. Terminal state remains readable;
 mutating session methods reject further work.
 
-Preparation is limited to 100,000 scene nodes and 10,000,000 work units; queries
-are limited to 2,000,000 units. Work includes geometry, metadata and guide sample
+Preparation uses the session's [hit preparation limits](./api/interaction/#bound-hit-preparation);
+queries remain limited to 2,000,000 units. Work includes geometry, metadata and guide sample
 comparisons. The session does not persist host objects or hover state. Keyboard navigation and asset loading are not editing commands; the optional resolver prepares assets before accepting a candidate. PNG/PDF exports remain static.
 
 ## Commit selections and parameters
@@ -13444,6 +13602,17 @@ export function createInspectionChart() {
     .createTitle({ text: "Inspect overlapping observations" });
 }
 
+export function createSelectionHandleChart() {
+  return createInspectionChart().selectMarks({ id: "window", target: "observations", region: { x: { ranges: [{ min: 2, max: 6 }] } } })
+    .highlightMarks({ selection: "window", color: "#dc2626", dimOthers: false, bringToFront: false });
+}
+
+export function createCategoryHandleChart() {
+  return chart().createCanvas({ width: 420, height: 300, margin: { left: 70, right: 30, top: 30, bottom: 80 } })
+    .createData({ id: "categories", values: [{ category: "A", value: 2 }, { category: "B", value: 5 }, { category: "C", value: 3 }] })
+    .createBarPlot({ id: "bars", x: "category", y: "value" });
+}
+
 const program = createInspectionChart();
 render(program, document.querySelector("#chart").getContext("2d"));
 ```
@@ -13505,7 +13674,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -13571,7 +13740,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -14007,7 +14176,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -14609,7 +14778,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -24131,7 +24300,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `stroke` | Optional / branch-dependent | `string \| Omit<{ target?: string \| undefined; field: string; value?: undefined; fieldType?: "nominal" \| "ordinal" \| undefined; temporalUnit?: undefined; scale?: CategoricalColorScaleOptions \| undefined; }, "coordinate" \| "target"> \| Omit<...> \| Omit<...> \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
@@ -24202,7 +24371,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `value` | Required | `EndpointValueChannel` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
@@ -24243,7 +24412,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `value` | Required | `EndpointValueChannel` |
 | `baseline` | Optional / branch-dependent | `number \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `stem` | Optional / branch-dependent | `(RuleStyleOptions & { clip?: boolean \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -24285,8 +24454,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `start` | Required | `EndpointValueChannel` |
 | `end` | Required | `EndpointValueChannel` |
-| `startPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
-| `endPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `startPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `endPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `connector` | Optional / branch-dependent | `(RuleStyleOptions & { clip?: boolean \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| (EndpointLabelOptions & { endpoint?: "both" \| "end" \| "start" \| undefined; }) \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -24461,7 +24630,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `yOffset` | Optional / branch-dependent | `ErrorBarOffsetChannel \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `errorBar` | Optional / branch-dependent | `IntervalPlotErrorBarOptions \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianSeparateGuideOptions \| undefined` |
 | `x` | Required | `string \| ErrorBarIntervalChannel \| ErrorBarPositionChannel` |
@@ -24507,7 +24676,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorMappedPointGuideOptions \| undefined` |
 | `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
 | `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
@@ -24606,7 +24775,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `Omit<StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }, "clip"> \| undefined` |
+| `point` | Optional / branch-dependent | `Omit<StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }, "clip"> \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| PolarPointGuideOptions \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
@@ -24832,7 +25001,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorMappedPointGuideOptions \| undefined` |
 | `x` | Required | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; }` |
 | `y` | Optional / branch-dependent | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; } \| undefined` |
@@ -24875,7 +25044,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `packing` | Optional / branch-dependent | `false \| BeeswarmPackingOptions \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorMappedPointGuideOptions \| undefined` |
 | `x` | Required | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; }` |
@@ -26889,7 +27058,7 @@ Each declared action has an exact signature and its own stable link. Option tabl
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createPointMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+createPointMark(options?: TargetedOptions<StrokeStyleDetails & { maxItems?: number | undefined; blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
 Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`PointShape`](./reference/types/#type-pointshape) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
@@ -26903,6 +27072,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `maxItems` | Optional / branch-dependent | `number \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
@@ -26920,11 +27090,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createPointMark({ blend?, shadow?, clip?, id?, data?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ blend?, shadow?, clip?, id?, data?, maxItems?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a point mark using fourteen named shapes or polygons with area/radius normalization.
-`stroke: false` disables the outline and its width at creation. [Marks](./api/marks/)
+`stroke: false` disables the outline and its width at creation. Point `maxItems` defaults to 50,000 and accepts explicit values through 100,000. [Marks](./api/marks/)
 
 ## `createTickMark`
 
@@ -27724,7 +27894,7 @@ binding clears it. Domains and tick values are already normalized timestamps.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+editPointMark(options: TargetedOptions<StrokeStyleDetails & { maxItems?: number | undefined; blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
 Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`PointShape`](./reference/types/#type-pointshape) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
@@ -27738,6 +27908,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `maxItems` | Optional / branch-dependent | `number \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
@@ -27753,10 +27924,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editPointMark({ blend?, shadow?, clip?, target?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
+editPointMark({ blend?, shadow?, clip?, target?, maxItems?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
-Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
+Change point shape, appearance, or `maxItems` capacity and rematerialize its concrete items.
+Explicit `maxItems: undefined` restores the 50,000 default after raw/item preflight.
 `stroke: false` disables the outline and its width. [Marks](./api/marks/)
 
 ## `editTickMark`
@@ -28995,6 +29167,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
@@ -29039,6 +29212,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
 | `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
@@ -29072,6 +29246,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
@@ -29129,6 +29304,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
 | `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
@@ -29174,6 +29350,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
@@ -29217,6 +29394,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
 | `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
@@ -29351,6 +29529,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fill` | Optional / branch-dependent | `"none" \| undefined` |
@@ -29405,6 +29584,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fill` | Optional / branch-dependent | `"none" \| undefined` |
 | `stepDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
@@ -36818,7 +36998,7 @@ These blocks are generated from the declaration file owned by each package entry
 export type { CreateGeoRouteDataOptions, EditGeoRouteDataOptions, GeoRouteResource } from "./program.js";
 export type { GeoCameraOperation, NavigateProjectionOptions, ProjectionViewport } from "./program.js";
 export type { GeoAnnotationAnchor, GeoAnnotationOptions, EditGeoAnnotationOptions, GeoAnnotationBinding } from "./program.js";
-export type { GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
+export type { GeoMarkCapacity, GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
 export type { TableCellPaint, TableLabelPaint, TableBandPaint, TableSparklinePaint, TableFooterOptions, TableSparklineCell, TableColumn, CreateTablePlotOptions, EditTablePlotOptions } from "./program.js";
 export type { TrailBodyPaint, TrailPosition, TrailPlotOptions, CreateTrailPlotOptions, EditTrailPlotOptions } from "./program.js";
 export type { WaterfallBarPaint, WaterfallConnectorPaint, WaterfallLabelPaint, WaterfallX, WaterfallColor, WaterfallWidth, CreateWaterfallPlotOptions, EditWaterfallPlotOptions } from "./program.js";
@@ -38117,6 +38297,35 @@ export type BrushSelectionBinding = RegionSelectionBindingOptions & { readonly t
 export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
   readonly type: 'lasso';
 }
+/** Resize an existing persisted region. Idle handle drawing and keyboard controls belong to the host. */
+export type SelectionResizeBinding = GestureBindingOptions & {
+  readonly type: 'resize'; readonly target: InteractionTarget; readonly selection: string; readonly slop?: number;
+} & (
+  { readonly axis: 'xy'; readonly channels?: { readonly x?: 'x' | 'x2'; readonly y?: 'y' | 'y2' } }
+  | { readonly axis: 'x'; readonly channels?: { readonly x?: 'x' | 'x2'; readonly y?: never } }
+  | { readonly axis: 'y'; readonly channels?: { readonly y?: 'y' | 'y2'; readonly x?: never } }
+  | { readonly axis: 'theta'; readonly channels?: { readonly theta?: 'theta'; readonly x?: never; readonly y?: never } }
+);
+/** Drag a painted native categorical axis tick or label to reorder its existing categories. */
+export interface CategoryReorderBinding extends GestureBindingOptions {
+  readonly type: 'reorder'; readonly target: InteractionTarget; readonly channel: 'x' | 'y' | 'theta'; readonly slop?: number;
+}
+export type SelectionHandle = {
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  readonly selection: string;
+  /** CSS-local coordinates, with child placement and the mounted rootTransform already applied. */
+  readonly point: InteractionPoint;
+} & (
+  { readonly axis: 'x'; readonly handle: 'x-min' | 'x-max' }
+  | { readonly axis: 'y'; readonly handle: 'y-min' | 'y-max' }
+  | { readonly axis: 'xy'; readonly handle: 'x-min' | 'x-max' | 'y-min' | 'y-max' | 'x-min-y-min' | 'x-min-y-max' | 'x-max-y-min' | 'x-max-y-max' }
+  | { readonly axis: 'theta'; readonly handle: 'theta-start' | 'theta-end' }
+);
+export interface SelectionHandlesView {
+  /** Existing accepted scene version; this query adds no counter or persisted state. */
+  readonly frameVersion: number;
+  readonly handles: readonly SelectionHandle[];
+}
 /** Drag one current graph node; target must have an explicit plot origin and fixed or force layout. */
 export interface NodeMovementBinding extends GestureBindingOptions { readonly type: 'moveNode'; readonly target: InteractionTarget; }
 /** Drag the target annotation layer by native pixel offsets, preserving its semantic anchor. */
@@ -38389,12 +38598,22 @@ export interface InteractionSession {
   dispatch(command: InteractionCommand): InteractionDispatchResult;
   subscribe(listener: (event: InteractionEvent) => void): () => boolean;
   getState(): InteractionState;
+  /** Read currently eligible resize handles; throws after destruction. */
+  getSelectionHandles(): SelectionHandlesView;
   /** Observe the job current at this call. Subscriber/disposer exceptions reject this promise. */
   whenSettled(): Promise<InteractionSettlement>;
   destroy(): boolean;
 }
 export declare function createInteractionSession(options: {
   readonly program: InteractionProgram;
+  /** Session-local preparation only. Omitted/undefined fields retain the defaults.
+   * Entry, query, snapshot, selection and animation limits are unchanged. */
+  readonly hitPreparation?: {
+    /** Safe integer 1..200000. Default 100000, including background and nested nodes. */
+    readonly maxSceneNodes?: number;
+    /** Safe integer 1..128000000. Default 10000000, independently for binding and indexing. */
+    readonly maxWork?: number;
+  };
   /** Explicit host preparation. Candidate state commits only after this lease is ready. */
   readonly assetResolver?: (request: InteractionAssetRequest) => InteractionAssetLease | Promise<InteractionAssetLease>;
   /** Integer 0..10000, default 100. Zero disables undo/redo, but preserves the initial reset baseline. */
@@ -38402,7 +38621,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | KeyboardBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | AnnotationMovementBinding | NavigationBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | KeyboardBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | SelectionResizeBinding | CategoryReorderBinding | NodeMovementBinding | AnnotationMovementBinding | NavigationBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
 ```
 
@@ -38515,12 +38734,16 @@ export interface TransitionOptions {
   readonly tracks?: readonly AnimationTrack[];
   readonly markers?: readonly AnimationMarker[];
   readonly composite?: 'reject' | 'priority';
+  /** Explicit endpoint sum; safe integer 1..200002. Omission keeps 10000. */
+  readonly maxEndpointNodes?: number;
+  /** Explicit endpoint/sample count; safe integer 1..100001. Omission keeps 10000. */
+  readonly maxOutputNodes?: number;
 }
 /** Created only by planTransition or deserializeAnimation. */
 export interface TransitionPlan {
   readonly [transitionPlan]: true;
   readonly kind: 'transition-plan';
-  readonly version: 3;
+  readonly version: 3 | 4;
   readonly durationMs: number;
   readonly easing: AnimationEasing;
 }
@@ -38575,11 +38798,18 @@ export interface RestoredAnimation {
 export type AnimationFrameOptions =
   | { readonly timesMs: readonly number[]; readonly fps?: never }
   | { readonly fps: number; readonly timesMs?: never };
-export declare function planTransition(input: {
+type TransitionRequest<Options extends TransitionOptions = TransitionOptions> = {
   readonly from: AnimationProgram | TransitionFrame;
   readonly to: AnimationProgram | TransitionFrame;
-  readonly options: TransitionOptions;
-}): TransitionPlan;
+  readonly options: Options;
+};
+export declare function planTransition(input: TransitionRequest<TransitionOptions & {
+  readonly maxEndpointNodes?: never; readonly maxOutputNodes?: never;
+}>): TransitionPlan & { readonly version: 3 };
+export declare function planTransition(input: TransitionRequest<TransitionOptions & (
+  { readonly maxEndpointNodes: number } | { readonly maxOutputNodes: number }
+)>): TransitionPlan & { readonly version: 4 };
+export declare function planTransition(input: TransitionRequest): TransitionPlan;
 export declare function sampleTransition(plan: TransitionPlan, timeMs: number): TransitionFrame;
 export declare function serializeAnimation(plan: TransitionPlan, playback?: PlaybackOptions): string;
 export declare function deserializeAnimation(text: string): RestoredAnimation;
@@ -38822,8 +39052,8 @@ interface ChartProgramActions {
   editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;
   editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
   editBin2DData(options: TargetedOptions<EditBin2DDataOptions>): ChartProgram;
-  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { maxItems?: number | undefined; blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editPointMark(options: TargetedOptions<StrokeStyleDetails & { maxItems?: number | undefined; blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   createTickMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   editTickMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   jitterPoints(options: TargetedOptions<JitterPointsOptions>): ChartProgram;
@@ -41356,6 +41586,7 @@ export type CreateBeeswarmPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    maxItems?: number;
     clip?: boolean;
     radius?: number;
     shape?: PointShape;
@@ -42276,6 +42507,8 @@ export interface CreateScatterPlotOptions {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    /** Point raw and concrete item capacity; default 50000, maximum 100000. */
+    maxItems?: number;
     clip?: boolean;
     radius?: number;
     shape?: PointShape;
@@ -42319,6 +42552,7 @@ export type CreateStripPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    maxItems?: number;
     clip?: boolean;
     radius?: number;
     shape?: PointShape;
@@ -46476,6 +46710,17 @@ export interface GeoLineMarkOptions extends Omit<GeoSourceMarkOptions, "fill"> {
 
 Related types: [`GeoSourceMarkOptions`](./reference/types/#type-geosourcemarkoptions).
 
+### `GeoMarkCapacity` {#type-geomarkcapacity}
+
+ Expand GeoMarkCapacity
+
+```typescript
+export interface GeoMarkCapacity {
+  readonly maxProjectedPoints?: number;
+  readonly maxPathCommands?: number;
+}
+```
+
 ### `GeoMarkStyleOptions` {#type-geomarkstyleoptions}
 
  Expand GeoMarkStyleOptions
@@ -46486,6 +46731,8 @@ export interface GeoMarkStyleOptions {
   readonly clip?: boolean; readonly lineCap?: "butt" | "round" | "square"; readonly lineJoin?: "miter" | "round" | "bevel";
   readonly miterLimit?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false; readonly blend?: BlendMode;
 }
+/** Per-mark projected output budget. Each explicit value is an integer from 1 through 200000.
+ * Omitted fields use 10000 projected points and 30000 commands; omission on edit retains the binding. */
 ```
 
 Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow) · [`BlendMode`](./reference/types/#type-blendmode).
@@ -46519,6 +46766,7 @@ Related types: [`GeoSourceMarkOptions`](./reference/types/#type-geosourcemarkopt
 
 ```typescript
 export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
+  readonly capacity?: GeoMarkCapacity;
   readonly id?: string; readonly coordinate?: string; readonly geometry?: string;
   readonly interpolation?: "source-segment" | "great-circle";
   /** Explicit false removes a previous hint. */
@@ -46526,7 +46774,7 @@ export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
 }
 ```
 
-Related types: [`GeoMarkStyleOptions`](./reference/types/#type-geomarkstyleoptions).
+Related types: [`GeoMarkStyleOptions`](./reference/types/#type-geomarkstyleoptions) · [`GeoMarkCapacity`](./reference/types/#type-geomarkcapacity).
 
 ### `GeographicGeometry` {#type-geographicgeometry}
 
@@ -46963,6 +47211,7 @@ export type GraphicType =
 
 ```typescript
 export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
+  readonly capacity?: GeoMarkCapacity;
   readonly id?: string; readonly coordinate?: string; readonly fill?: "none";
   readonly stepDeg?: readonly [number, number];
   readonly extentDeg?: readonly [readonly [number, number], readonly [number, number]];
@@ -46970,7 +47219,7 @@ export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
 }
 ```
 
-Related types: [`GeoMarkStyleOptions`](./reference/types/#type-geomarkstyleoptions).
+Related types: [`GeoMarkStyleOptions`](./reference/types/#type-geomarkstyleoptions) · [`GeoMarkCapacity`](./reference/types/#type-geomarkcapacity).
 
 ### `GridDirectionOptions` {#type-griddirectionoptions}
 
@@ -53235,9 +53484,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -53303,12 +53552,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f4b389117b570ee6ae2399867dc709d6b04c457c/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b3da444d795248370c9c14bc6f158b01f67eff7a/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f4b389117b570ee6ae2399867dc709d6b04c457c/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b3da444d795248370c9c14bc6f158b01f67eff7a/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -53450,6 +53699,20 @@ the group. Transitions between different backdrop modes need an explicit policy.
 [Renderer limits and preparation](./api/rendering/#weighted-concrete-blends)
 apply to all sources. Graphic and editable serialization preserve the concrete
 sources without retaining callbacks or renderer objects.
+
+## Explicit path command capacity
+
+A concrete path may declare `properties.maxCommands`, an own enumerable integer
+from 1 through 200000. Its default remains 30000. Set `maxCommands` with
+`editGraphics` before assigning a larger command array. Lowering the declaration
+below the current command count rejects atomically. Explicit undefined, null,
+accessors and inherited declarations reject. Clips and existing native path
+builders keep their independent limits.
+
+The declaration travels with the concrete path through scenes, weighted sources,
+rendering and graphic persistence. Renderers still consume only concrete graphics.
+A Geo-owned path must match its mark's explicit capacity; use the Geo domain edit
+to change that policy. Path capacity does not raise hit stroke or query budgets.
 
 <!-- Source: /api/data/summaries-and-shaping/ -->
 
@@ -54464,7 +54727,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -54517,7 +54780,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -54763,7 +55026,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -54815,7 +55078,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/repeat-charts).
 
 ## Space between plots
 
@@ -55522,7 +55785,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -56435,9 +56698,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:3685155d76b569468f6e5640a4be598061c97aae25aff163442061169bb262a5` |
-| Example and dataset source | `6644a8aefe0bb27990807bc1bbcd1ebf37e20912` |
-| Runtime source commit | `f4b389117b570ee6ae2399867dc709d6b04c457c` |
+| Contract fingerprint | `sha256:9f8191c20902a699f4bada8db7b7f42b0184d32666de226da449940a9a806c56` |
+| Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
+| Runtime source commit | `b3da444d795248370c9c14bc6f158b01f67eff7a` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 379 |
 | Declared actions in that release | 234 |
@@ -56974,12 +57237,12 @@ option does not apply to Polar or Parallel labels.
 # Place a retained image
 
 Prepare image bytes explicitly, then use one image mark to control its fit,
-alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/image-assets/)
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/image-assets/)
 uses one pinned SVG asset for six placements and retains the bytes for offline export.
 
 ## Prepare and place
 
-The canonical [example program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/image-assets/program.js) loads its
+The canonical [example program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/image-assets/program.js) loads its
 inline asset through `prepareImageResource` and applies the returned handle to the
 same immutable program. Its application-owned decoder reports the source dimensions.
 The synchronous `createImageResource` action stores the validated bytes. Then
@@ -57084,13 +57347,13 @@ Use `editImageMark({target:"image",shadow:{color:"#0008",offsetX:4,offsetY:4,blu
 # Prepare fonts before text layout
 
 Keep font loading explicit, measure with the loaded bytes, and save the final
-text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/font-assets/)
+text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/font-assets/)
 uses licensed Korean and monochrome emoji subsets with fixed content hashes.
 It includes a combining accent and a wrapped Korean title.
 
 ## Load, measure, apply
 
-The canonical [program](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/font-assets/program.js)
+The canonical [program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/font-assets/program.js)
 first creates a title using the requested font families. Its initial estimated
 layout is a usable immutable program while loading runs. For each named font,
 `prepareFontResource` asks the application to load and decode bytes and verifies
@@ -57101,7 +57364,7 @@ original receiver using the current request token.
 measure every width needed by the existing layout. `applyTextMetrics` commits the
 exact profile and rematerializes the title. Widths that have not been measured
 cannot silently use an estimate. A late result for an edited receiver is stale.
-The [host adapter](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/font-assets/host.js)
+The [host adapter](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/font-assets/host.js)
 uses browser `FontFace` and Canvas measurement, or a native Canvas in Node.
 
 ## Draw the prepared text
@@ -57268,7 +57531,7 @@ A hierarchy describes parent-child meaning. A layout computes positions, and a p
 
 ## Run the maintained examples
 
-Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 
@@ -57618,7 +57881,7 @@ The library validates the complete model, source binding, metric weights and
 saved diagnostics before exposing a prepared handle.
 
 This complete Node ES-module example uses the adjacent
-[`inference-worker.mjs`](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/graph-inference/worker.mjs) file. Save that
+[`inference-worker.mjs`](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/graph-inference/worker.mjs) file. Save that
 worker beside the host module. In a browser, use a module `Worker` directly as the
 factory result and have its message handler call the same `computeGraphInference`;
 Node-specific worker adapters are not needed in the browser.
@@ -57913,7 +58176,7 @@ The long A–C connection follows the existing A–B–C path, with two corner c
 All three original edges remain independently selectable.
 
 This complete ES module uses the same data and action flow as the
-[executable example](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/edge-routes/program.js).
+[executable example](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/edge-routes/program.js).
 
 ```javascript
 import { chart } from 'ggaction';
@@ -57959,10 +58222,10 @@ axis and legend belong to that child; editing them leaves the route child's nati
 positions, route references and stroke unchanged. Equal row keys do not create an
 automatic link: revise both source datasets with explicit child targets.
 
-Copy [comparison.js](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/edge-routes/comparison.js),
-[program.js](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/edge-routes/program.js),
-[options.js](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/edge-routes/options.js)
-and [data.js](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/edge-routes/data.js)
+Copy [comparison.js](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/edge-routes/comparison.js),
+[program.js](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/edge-routes/program.js),
+[options.js](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/edge-routes/options.js)
+and [data.js](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/edge-routes/data.js)
 beside this ES module and use `ggaction` for the helpers' public package imports.
 
 ```javascript
@@ -58032,7 +58295,7 @@ Body and label styles accept `outline:{color,width}|false` and `shadow:{color,of
 
 # Partition tutorial
 
-A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
+A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
 
 ## Run the icicle
 
@@ -58562,7 +58825,7 @@ For feedback, select `method: "cyclic"`. All edges remain represented, including
 self-loops when the flow graph explicitly enables them. Outside lanes are part
 of the stored bounds, so fitting and clipping include their full extent.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/flow-layouts/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/flow-layouts/program.js)
 also demonstrates vertical flow and typed per-item colors. The browser example,
 primitive comparisons and generated figures use that one program.
 See [Flow Data and Sankey Layouts](./api/flows/) for exact options, selection
@@ -58932,6 +59195,48 @@ const map = chart().createCanvas({ width: 400, height: 300, margin: 0 })
   .createProjection({ id: "plane", type: "identity" })
   .createCoordinate({ type: "geo" })
   .createGeoShapeMark({ fill: "#93c5fd", stroke: "#1e40af", clip: true });
+```
+
+### Projected output limits
+
+Geo shape, point, line and graticule marks accept `capacity` on create or edit.
+`maxProjectedPoints` limits the mark's total projected points (default 10000),
+and `maxPathCommands` limits its total commands and each stream's refined/output
+point counts (default 30000). Each explicit integer may be 1 through 200000.
+For example, add `capacity: { maxProjectedPoints: 200000, maxPathCommands: 200000 }`
+to the `createGeoShapeMark` call above when that larger output is needed.
+
+Omitting capacity during an edit retains it; `{}` resets both defaults. Explicit
+undefined, null, accessors, inherited fields and unknown keys reject. Edits that
+exceed either budget fail before changing the chart. The policy stays with the
+mark binding through source, projection and Canvas edits. Geometry is neither
+simplified nor split to fit a budget. Graphic-item, generator, work and clip limits
+still apply independently, and some refined or clipped inputs may exceed the
+explicit maximum. Large-path typed camera animation and hit stroke/query budgets
+are independent; raising this native output policy does not raise those limits.
+
+### Explicit capacity example
+
+This complete Node.js program keeps every source position and declares the
+projected output budget on its line mark. Projection edits retain that policy.
+
+> **Executable complete.** Install ggaction and run this complete ES module in Node.js 20 or later.
+
+```javascript
+import { chart } from "ggaction";
+
+const capacityProgram = chart().createCanvas({ width: 400, height: 400, margin: 20 })
+  .createGeometryData({
+    id: "route", format: "geojson", coordinateKind: "geographic",
+    values: { type: "LineString", coordinates: [[-30, -5], [0, 5], [30, -5]] }
+  })
+  .createProjection({ id: "map", type: "equirectangular", scalePx: 100, translatePx: [200, 200] })
+  .createCoordinate({ type: "geo" })
+  .createGeoLineMark({
+    id: "routeLine", stroke: "#2563eb", strokeWidth: 2,
+    capacity: { maxProjectedPoints: 200000, maxPathCommands: 200000 }
+  })
+  .editProjection({ scalePx: 150 });
 ```
 
 ## `createGeoShapeMark`
@@ -59538,7 +59843,7 @@ example uses one point of weight two. The kernel example uses the same point,
 a triangular product kernel and bandwidth [1, 1]. On this grid their sampled
 values agree, while their estimation policies remain explicit.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/contours/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/contours/program.js)
 contains all five variants. Browser examples, primitive comparisons and images
 use that one program. See [Contours and two-dimensional density](./api/contours/)
 for exact options, limits, guide mappings, edits and source revision behavior.
@@ -59804,7 +60109,7 @@ With missing: "omit", unobserved dates have no cells. Their locations remain
 empty, so later dates never shift into those gaps. This variant hides month
 boundaries to emphasize the missing cells.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/calendar/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/calendar/program.js)
 contains all three variants. Its program is shared by browser examples, renderer
 pairs and generated images. See [Calendar plots](./api/calendar/) for exact
 options, selection, aggregation, edits and source revision behavior.
@@ -59919,7 +60224,7 @@ and translation; Canvas resizing alone does not silently fit the geometry.
 
 See [Geometry and projections](./api/geometry/) for exact options, revisions,
 selection, coordinate compatibility and current limitations. The
-[shared example source](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/geographic-marks/program.js)
+[shared example source](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/geographic-marks/program.js)
 is used by this tutorial, the browser examples and the primitive comparisons.
 
 ## Keep labels attached to their features
@@ -59999,9 +60304,9 @@ An explicit analytical child can map those values to positions, colors, an axis
 and a legend. These guides describe that child: they do not turn the graticule's
 projection geometry into Cartesian field encodings or scales.
 
-Copy [comparison.js](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/geographic-marks/comparison.js),
-[program.js](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/geographic-marks/program.js)
-and [fixture.js](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/geographic-marks/fixture.js)
+Copy [comparison.js](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/geographic-marks/comparison.js),
+[program.js](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/geographic-marks/program.js)
+and [fixture.js](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/geographic-marks/fixture.js)
 into a `geographic-marks` folder beside this module, using the helpers' public
 `ggaction` and `ggaction/inspection` imports.
 
@@ -60156,7 +60461,7 @@ Directions are explicit. `orientation: "up"`, `"right"` or `"left"` changes
 the direction of progress; it does not sort the source rows. A pointed ending
 is an explicit `lastStage: "point"` choice for width mode.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/6644a8aefe0bb27990807bc1bbcd1ebf37e20912/examples/pyramid/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/pyramid/program.js)
 drives the browser examples, primitive comparisons and generated images.
 See [Pyramid plots](./api/pyramid/) for labels, percentages, color, selection
 and editing options.

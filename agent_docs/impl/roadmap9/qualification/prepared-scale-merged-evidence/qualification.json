@@ -1,0 +1,697 @@
+{
+  "status": "prepared-scales-integrated; sample50ms-and-final-closeout-pending",
+  "base": "04ce0871f",
+  "upstreamSource": "f689244fc4369d3cd949ca2d6c11998480972d55",
+  "upstreamPin": "2fb36c76d79d7f5c85cbc931e7413772af2dc858",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Exact two-file prepared scale interning and one-slot sampled scale reuse, max4 normalized scales per assembly; existing value mapping/finite/error/work checks retained.",
+  "sourceSHA256": {
+    "src/animation/planner.js": "0b76bbedc126d10937b5f7a999dd46ef7d554a22466aa9dcdc46de037bb9e576",
+    "src/grammar/animation/positions.js": "746ef92f9c8306b56e0f151e76c0d35d1ad39e9534b496bb0d36c8cb64730211"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1258,
+    "packedBytes": 1808245,
+    "unpackedBytes": 8152110,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-90d5ff490f8dcddf329a547e8a2722dc1e77ee84a2d26779550ec1ab72b52bbf.tgz",
+    "sha256": "90d5ff490f8dcddf329a547e8a2722dc1e77ee84a2d26779550ec1ab72b52bbf"
+  },
+  "checks": {
+    "coverage.log": 757,
+    "boundaries.log": 37,
+    "manifest.log": 2,
+    "docs.log": 246,
+    "render.log": 52,
+    "source-browser.log": 1
+  },
+  "critical": {
+    "planner.js": {
+      "lines": 100.0,
+      "branches": 93.82,
+      "functions": 100.0
+    },
+    "positions.js": {
+      "lines": 100.0,
+      "branches": 98.43,
+      "functions": 100.0
+    }
+  },
+  "consumers": [
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1258,
+        "packedBytes": 1808245,
+        "unpackedBytes": 8152110,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-90d5ff490f8dcddf329a547e8a2722dc1e77ee84a2d26779550ec1ab72b52bbf.tgz",
+        "sha256": "90d5ff490f8dcddf329a547e8a2722dc1e77ee84a2d26779550ec1ab72b52bbf"
+      },
+      "node": "v20.20.2",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 788792,
+          "limit": 788800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 426195,
+          "limit": 426200,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25672,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69473,
+          "limit": 69500,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 340708,
+          "limit": 340800,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137407,
+          "limit": 137500,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1258,
+        "packedBytes": 1808245,
+        "unpackedBytes": 8152110,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-90d5ff490f8dcddf329a547e8a2722dc1e77ee84a2d26779550ec1ab72b52bbf.tgz",
+        "sha256": "90d5ff490f8dcddf329a547e8a2722dc1e77ee84a2d26779550ec1ab72b52bbf"
+      },
+      "node": "v22.23.1",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 787373,
+          "limit": 788800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 425148,
+          "limit": 426200,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25558,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69305,
+          "limit": 69500,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 339562,
+          "limit": 340800,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 136875,
+          "limit": 137500,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1258,
+        "packedBytes": 1808245,
+        "unpackedBytes": 8152110,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-90d5ff490f8dcddf329a547e8a2722dc1e77ee84a2d26779550ec1ab72b52bbf.tgz",
+        "sha256": "90d5ff490f8dcddf329a547e8a2722dc1e77ee84a2d26779550ec1ab72b52bbf"
+      },
+      "node": "v24.22.1",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 788792,
+          "limit": 788800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 426195,
+          "limit": 426200,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25672,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69473,
+          "limit": 69500,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 340708,
+          "limit": 340800,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137407,
+          "limit": 137500,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    }
+  ],
+  "installedBrowser": {
+    "archiveSHA256": "90d5ff490f8dcddf329a547e8a2722dc1e77ee84a2d26779550ec1ab72b52bbf",
+    "sourceRootInputs": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "versions": [
+      3,
+      4
+    ],
+    "status": "passed"
+  },
+  "product1000": {
+    "kind": "actual product before d6dece68e versus current two-file change; counters are diagnostic, not SLO",
+    "node": "v22.23.1",
+    "rows": 1000,
+    "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+    "savedInputSHA256": "45bb880a9581cd81b60aee36685e0f267dfd0e7c6e6ba9f02ee53b98c1556a0e",
+    "source": {
+      "src/animation/planner.js": "0b76bbedc126d10937b5f7a999dd46ef7d554a22466aa9dcdc46de037bb9e576",
+      "src/grammar/animation/positions.js": "746ef92f9c8306b56e0f151e76c0d35d1ad39e9534b496bb0d36c8cb64730211"
+    },
+    "comparisons": {
+      "3": {
+        "nativeBytes": [
+          1822845,
+          1822845
+        ],
+        "nativeSHA256": [
+          "06578dcf934f544322c6e5275bd0032e2baf5246ebb1b10bc5d028178427403c",
+          "06578dcf934f544322c6e5275bd0032e2baf5246ebb1b10bc5d028178427403c"
+        ],
+        "rebaseBytes": [
+          2381600,
+          2381600
+        ],
+        "rebaseSHA256": [
+          "8010d2f620bf1334d7e4aba099e028641193d7f6ff51b350c2e8f51f70f87484",
+          "8010d2f620bf1334d7e4aba099e028641193d7f6ff51b350c2e8f51f70f87484"
+        ],
+        "counts": [
+          {
+            "clones": 14037,
+            "ownedAdds": 22042
+          },
+          {
+            "clones": 14037,
+            "ownedAdds": 16048
+          }
+        ],
+        "work": {
+          "Animation preparation work": 771686
+        },
+        "rebaseWork": {
+          "Animation preparation work": 451681
+        },
+        "fullNativeOfflineMeaningBatchRebaseEqual": true,
+        "restoreReserializeExact": true
+      },
+      "4": {
+        "nativeBytes": [
+          345803,
+          345803
+        ],
+        "nativeSHA256": [
+          "12b3ec06e3db0c2d506cd72c6d4fe034a6ef51095e80fceab9d7c5aaeb3b4021",
+          "12b3ec06e3db0c2d506cd72c6d4fe034a6ef51095e80fceab9d7c5aaeb3b4021"
+        ],
+        "rebaseBytes": [
+          424178,
+          422310
+        ],
+        "rebaseSHA256": [
+          "d9fd5a6038f42fc2e23f75c174f606ee481e55befc178043ef8db2cb3ae28118",
+          "caa6dec3d682c1b513ed7bc139688d2b1be227b8c93285f962eff12d4198663f"
+        ],
+        "counts": [
+          {
+            "clones": 14037,
+            "ownedAdds": 22042
+          },
+          {
+            "clones": 14037,
+            "ownedAdds": 16048
+          }
+        ],
+        "work": {
+          "Animation preparation work": 771686
+        },
+        "rebaseWork": {
+          "Animation preparation work": 451681
+        },
+        "fullNativeOfflineMeaningBatchRebaseEqual": true,
+        "restoreReserializeExact": true
+      }
+    }
+  },
+  "packMeasurements": {
+    "20": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1258,
+      "packedBytes": 1811511,
+      "unpackedBytes": 8152110,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/prepared-scale-merged/pack20/ggaction-0.0.26.tgz",
+      "sha256": "0512e7e36f92de224ac7f527be62d7f9409e3adb801fcf28c30ad45a776c6fa1"
+    },
+    "22": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1258,
+      "packedBytes": 1808245,
+      "unpackedBytes": 8152110,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/prepared-scale-merged/pack22/ggaction-0.0.26.tgz",
+      "sha256": "90d5ff490f8dcddf329a547e8a2722dc1e77ee84a2d26779550ec1ab72b52bbf"
+    },
+    "24": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1258,
+      "packedBytes": 1811511,
+      "unpackedBytes": 8152110,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/prepared-scale-merged/pack24/ggaction-0.0.26.tgz",
+      "sha256": "0512e7e36f92de224ac7f527be62d7f9409e3adb801fcf28c30ad45a776c6fa1"
+    }
+  },
+  "documentation": {
+    "builtPages": 186,
+    "llmArtifacts": 1607
+  },
+  "manifestIntegration": {
+    "modules": 71,
+    "cases": 406,
+    "isolatedCases": 4,
+    "note": "Retain root Geo cases, isolation flags and corrected AST counts; append two new point-scale public cases."
+  },
+  "artifactPolicy": {
+    "entries": 1258,
+    "packedBytes": 1811600,
+    "unpackedBytes": 8152200,
+    "animationGzip": 340800,
+    "measuredNode20Packed": 1811511,
+    "measuredNode20AnimationGzip": 340708,
+    "runtimeGuardsChanged": false
+  },
+  "reusedEvidence": [
+    {
+      "path": "../prepared-scale-reuse-evidence/qualification.json",
+      "boundary": "Both changed runtime files byte-exact; reuse source-specific original100k scalar/work/full-frame functional proof. Root fresh full757 owning, actual1k before/after and same new archive three-Node small public/type/docs/bundle + production-minified browser verify composition. No same-SHA100k or SLO claim."
+    },
+    {
+      "path": "../sha256-merged-evidence/qualification.json",
+      "boundary": "SHA state and all non-animation owners unchanged; direct scalar/hash proof retained. No new whole-suite or long-lived100cycle claim."
+    }
+  ],
+  "initialFailuresRetained": [
+    "Unknown action-contracts selector rejected before execution; corrected to actual action-catalog owner.",
+    "Documented animation bundle ceiling initially stale after measured cap update; corrected canonical architecture table and reran9contracts.",
+    "Node20 pack1811511 exceeded old1810900; unpacked8152110 measured and new minimum artifact ceilings recorded.",
+    "Evidence-only installed script initially resolved wrong relative script path, corrected before successful same-archive runs."
+  ],
+  "pending": [
+    "Common sample50ms/Canvas and partition performance",
+    "Geo camera v5/native consistency and hit limits",
+    "Data responsiveness, route bounded policy/native closure, large solvers",
+    "Long-lived mixed workload WeakSet attribution and retained100cycle",
+    "Final9commands/independent review/STEP057-077 closeout"
+  ],
+  "evidenceFiles": {
+    "boundaries-selector-first.log": {
+      "sha256": "3db1e2414fa1b59e970c69ff7b166f9a87ce21053609c0a113ef377e329f458b",
+      "bytes": 559
+    },
+    "boundaries.log": {
+      "sha256": "6ce779418377ca775eb3cb4aa81d8eab301a364835c7a053f9141934477a5608",
+      "bytes": 7258
+    },
+    "browser-installed.json": {
+      "sha256": "a5eb21a7785c158326621ee179a920e32ad62ed75b0d1ddf715460652ac330cd",
+      "bytes": 200
+    },
+    "browser-installed.mjs": {
+      "sha256": "d2bbc6eb4b16dedfaab539b43f5444ddaed8b5199a9b717fe157f0045cbbeebc",
+      "bytes": 842
+    },
+    "build.log": {
+      "sha256": "223b9e814ce21b25c8b228d9b99d1796ba859c22ffa68a6e0984bfe5f197fdf7",
+      "bytes": 419
+    },
+    "built.log": {
+      "sha256": "870bce70acc90ff20afe8b62fe05fe460070fbe831ed46e0745147e8047a92a8",
+      "bytes": 102
+    },
+    "coverage.log": {
+      "sha256": "871c0b7e7d334ef9e6f0fcfc7360d05057b96bef77f2934d84cd1dca9547d509",
+      "bytes": 181251
+    },
+    "coverage.mjs": {
+      "sha256": "5074ce932b90cba724ac4902ba9ef4136b6bf86ba2f340d2f1ca586e7358c016",
+      "bytes": 479
+    },
+    "docs.log": {
+      "sha256": "a7a85cd2e2ddcccab0810658cb6dfa45dd4c092ee359bab74c0ffd473c734432",
+      "bytes": 74836
+    },
+    "evidence.py": {
+      "sha256": "09546e602d6370d95819e60a407f8c0f1169dfd4e7eaea2d3a93d0598cd410d0",
+      "bytes": 4954
+    },
+    "frozen.json": {
+      "sha256": "aaf310d82f8dde2cc24f7b9ab07093d493ac06d66c005fd6ceeaed8ed7d0b973",
+      "bytes": 436
+    },
+    "installed-20-path-first.log": {
+      "sha256": "f06b88b6ad56590eafa4b16401e445835383e4a08fe30ebb4017fab493b4cc65",
+      "bytes": 1071
+    },
+    "installed-20.json": {
+      "sha256": "58460c9ebbc19447f94b64729fa6d0eae66d9be36a5a8058ce1f0cda7177ed7d",
+      "bytes": 2149
+    },
+    "installed-20.log": {
+      "sha256": "1e5a026cd43cd66c94d5d339410aa379f7139fab7046ce3d3d5fda52a995d25f",
+      "bytes": 1578
+    },
+    "installed-22.json": {
+      "sha256": "5b80e7ad0adb7ff63239c8bbb9fc9a24a79b4b68e9de11cd896874604008007d",
+      "bytes": 2149
+    },
+    "installed-22.log": {
+      "sha256": "1d905886df180cab6e325151749531a4f14c139f10fe58957340fcdde6600156",
+      "bytes": 1578
+    },
+    "installed-24.json": {
+      "sha256": "09a204a7924c86fedaba7342254022940af7e61763d7f241f8691ac87c577919",
+      "bytes": 2149
+    },
+    "installed-24.log": {
+      "sha256": "0844dfc594dd674681d1e7826b36131b1716ca136751864c1182375859e58bc6",
+      "bytes": 1578
+    },
+    "installed-browser.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "manifest.log": {
+      "sha256": "fc035ae11ed4ce269febde18446e3dfd41980e825a1a703f96d600efdb18c2d6",
+      "bytes": 548
+    },
+    "pack20-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack20-first.log": {
+      "sha256": "2b9b07e2dd1ace41244df6c908aaed653285326a58e013f63f41e443389c78a5",
+      "bytes": 966
+    },
+    "pack20.json": {
+      "sha256": "af4115b2b758f28b795ad9934303a63c9cc18eec0cfa9681a335f89a693ea495",
+      "bytes": 386
+    },
+    "pack20.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack22.json": {
+      "sha256": "6109c72eb762c24747b01a85269cfc5ddc0b7ef440bbc13a6df49829723c7818",
+      "bytes": 386
+    },
+    "pack22.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24.json": {
+      "sha256": "7bd0724635ce25134085b3c8ca4f6929f6fc173b0356ac613a7f289fdf8a544b",
+      "bytes": 386
+    },
+    "pack24.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "premeasure20.json": {
+      "sha256": "8eb15f0d1c1290c649ec825bc28297d895369fe80a5137780fb2bf6147e98f23",
+      "bytes": 919
+    },
+    "premeasure20.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "prepack.log": {
+      "sha256": "ce429dc5ad98865663a6ccf4abd71dd5a0e27db5a2820b52edde1aa558711b45",
+      "bytes": 506
+    },
+    "product-compare.json": {
+      "sha256": "c3644b0489362a31eab6ffc19e843fa6a2af6fe7c924c568b52907c9da7c3fb6",
+      "bytes": 2445
+    },
+    "product-compare.log": {
+      "sha256": "8c36d7c6c4a191ff3c52c0a66b32ec9b685420dd6ed3b261fc7daf2ffc31491d",
+      "bytes": 1782
+    },
+    "product-compare.mjs": {
+      "sha256": "eb7b03b7f60fa96d0bd6044ab2fc401922f2e7314051437bb8f56bd5f9ed7e9d",
+      "bytes": 6077
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "record-contracts-first.log": {
+      "sha256": "a4f4d66082fa1e55600bfbc5ef79c8ef717ade6f8751695f9d844bd7aa21746b",
+      "bytes": 3279
+    },
+    "render.log": {
+      "sha256": "361639d1f25e86411315309f62fe3f559ffb6da9e5085ea585f170b55cb7cde0",
+      "bytes": 12469
+    },
+    "source-browser.log": {
+      "sha256": "647b9129b8b5530736a40d7d748401b202072aa445975dc15cac968bc73e47d1",
+      "bytes": 364
+    },
+    "animation-small-installed.mjs": {
+      "sha256": "3617186df30d03ecb9198cf92b7106a01e1aea8eaf62aefc114a92e050646f56",
+      "bytes": 2838
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "e27d2063387909b9a2b556d78b17f7aa45dd5db716d4401a4024f2e6e78fa2e7",
+      "bytes": 1810
+    },
+    "source-pin-pack.json": {
+      "sha256": "e2bff111b1968cf8cb11af3d26f6797b61ce83ee477ea7491b38779fd6bd7c97",
+      "bytes": 391
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "sourceRevision": "3353efe0c16a7e4c8d72d3ac9d69a4b4fbf8a3e1",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

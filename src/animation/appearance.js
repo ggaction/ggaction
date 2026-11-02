@@ -9,6 +9,7 @@ export const ANIMATION_APPEARANCE_VERSION = ANIMATION_COLOR_VERSION;
 const properties = new Set(['fill', 'stroke', 'opacity', 'strokeWidth']);
 const plans = new WeakSet();
 const fallback = cloneAndFreeze({ kind: 'crossfade', reason: 'appearance' });
+const emptyPatch = cloneAndFreeze({});
 function rgba(value) {
   if (value === 'none') return [0, 0, 0, 0];
   const { r, g, b, a } = parsePaintColor(value);
@@ -57,6 +58,7 @@ export function prepareAnimationAppearance(from, to) {
 export function sampleAnimationAppearance(plan, progress) {
   if (!plans.has(plan)) throw new TypeError('Appearance sampling requires an authentic compatible plan.');
   validateUnitInterval(progress, 'Appearance progress');
+  if (plan.entries.length === 0) return emptyPatch;
   return cloneAndFreeze(Object.fromEntries(plan.entries.map(entry => {
     if (entry.kind === 'number') return [entry.key, interpolateNumber(entry.from, entry.to, progress)];
     if (progress === 0 || progress === 1) return [entry.key, progress === 0 ? entry.source : entry.target];

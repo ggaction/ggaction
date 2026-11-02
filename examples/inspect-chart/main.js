@@ -3,6 +3,12 @@ import { renderToSVG } from "../../src/renderers/svg.js";
 import { createInteractionSession } from "../../src/interaction.js";
 import { createInspectionChart } from "./program.js";
 
+import { mountHandleExamples } from "./handles.js";
+
+const handleSessions = mountHandleExamples(document.querySelector("#handles"));
+window.__handleSessions = handleSessions;
+window.addEventListener("pagehide", () => handleSessions.forEach(({ session }) => session.destroy()), { once: true });
+
 const program = createInspectionChart(), canvas = document.querySelector("#chart");
 render(program, canvas.getContext("2d"), { pixelRatio: window.devicePixelRatio });
 document.querySelector("#vector").innerHTML = renderToSVG(program);

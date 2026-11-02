@@ -12,6 +12,23 @@ identity/meaning만 저장하여 공통 scene compiler가 graphicSpec을 재생�
 endpoint는 기존 frame 객체이며 serializer는 그 진단 view도 보존한다. 이 private 경계는
 일반 player/session 또는 offline hit의 완성을 뜻하지 않는다.
 
+중간 point sample의 위치 의미는 finite primitive와 exact owned scale을 담는 새 local
+row/x/y만 bottom-up 동결하고, 전체 emission 순서를 완성한 vector root에 기존 core ownership을
+부여한다. Provenance 등록의 기존 clone 경계는 그대로 root를 재사용한다. 개별 local child를
+core registry에 추가하지 않으며 caller freeze/clone에 frame 권한을 주거나 과거 frame/plan 참조를
+추가하지 않는다. Node·scene·graphic 물질화와 renderer 입력 경계는 그대로다.
+
+비공개 `animation/columnCodec.js`는 실제 준비값의 shape별 dense column과 정확 scalar runs만
+소유한다. 원 concrete 값·own key 순서·undefined·hole을 무손실 복원하며 의미를 생성하지 않는다.
+`animation/resources.js`의 opaque scope는 native owner 검증과 offline 데이터 검산의 권한을
+구별한다. Planner와 sampler는 기존 기본 경로를 유지하며 이 명시 private scope에서만 준비
+traversal과 node 상계를 선택한다. Sample의 기존 canonical native proof에서 현재 owner만 읽어
+명시 rebase scope를 새로 만들며 별도 frame scope나 과거 plan/frame을 참조하지 않는다.
+공개 planner는 두 node 옵션을 모두 생략하면 기존v3를 사용하고 명시 요청만v4의 endpoint/timeline
+Node와 공통 vectors로 저장한다. 동일 codec 뒤 strict actual graphic 검산을 재사용하며 native 권한을
+offline에 복원하지 않는다. 정확 공개 quota·wire format은 [Animation 계약](contract/current/ANIMATION.md),
+원100k 검증 checkpoint는 [private codec 기록](impl/roadmap9/qualification/animation-codec-private.md)을 따른다.
+
 축에 의존하는 animation 범례 lane은 같은 scope의 canonical guide 참조만 저장한다.
 `animation/guideTracks.js`는 각 축의 현재 timeline 의미와 실제 node style을 읽고,
 `materialization/animation/legendAxisLaneState.js`가 공통 native clearance/lane owner로
@@ -838,6 +855,13 @@ Worker 결과와 저장 route는 같은 exact ref·hash·결과 validator를 거
 
 ### `ggaction/interaction`
 
+선택영역 resize/category reorder의 pointer adapter는 기존 session transaction과
+native select/orderCategories를 재사용한다. `getSelectionHandles()`는 기존 frameVersion과
+native region→CSS forward 좌표의 불변 파생 조회이며 idle UI/ARIA는 host가 소유한다.
+정확한 clip은 hitProgram의 기존 authentic traversal association에서 읽고, category assignment는
+`materialization/categoryOrder.js` 한 곳을 action/interaction이 공유한다. 세부 계약은
+[INTERACTION](contract/current/INTERACTION.md#selection-region-and-category-handles)에 둔다.
+
 Browser-safe session/controller entry다. Explicit current scene inspection과 Full native selection·parameter
 commands를 연결하고 runtime bindings·event·listener 수명을 소유한다. Default authoring entry나
 renderer에 DOM 의존성을 넣지 않는다. 정확한 공개 옵션과 현재 지원 범위는
@@ -994,12 +1018,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 787,000 bytes |
-| `ggaction/basic` | 424,400 bytes |
+| `ggaction` | 788,800 bytes |
+| `ggaction/basic` | 426,200 bytes |
 | `ggaction/svg` | 26,000 bytes |
-| `ggaction/graph` | 68,900 bytes |
-| `ggaction/interaction` | 131,400 bytes |
-| `ggaction/animation` | 333,700 bytes |
+| `ggaction/graph` | 69,600 bytes |
+| `ggaction/interaction` | 137,500 bytes |
+| `ggaction/animation` | 340,900 bytes |
 
 
 
@@ -2882,13 +2906,24 @@ Corner item block은 기존 layout owner가 실제 title/item bounds와12px gap�
 
 ### 열네 승인 기능의 누적 통합 측정
 
+### Explicit concrete path capacity
+
+Geo의 실행 용량은 exact native binding이 소유하며 materializer가 path별 concrete 선언으로 전달한다.
+Path topology/value schema가 현재 선언을 cache보다 먼저 검산하고, bounds·flatten·renderer·scene·codec는
+같은 backend-neutral properties를 소비한다. Primitive edit와 editable restore는 selector가 찾은 실제 retained
+scoped Geo binding을 grammar 검증에 전달해 선언과 대조한다. Standalone concrete는 native 권한을 주장하지 않고 독립 schema를
+만족한다. Clip/generator/hit/animation 보호 경계에는 이 선언을 자동으로 전파하지 않는다. 정확한 옵션과
+기본값은 [GEOMETRY](contract/current/GEOMETRY.md) 및 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
+
 ### Point-owned graphic capacity
 
 > 과거 checkpoint 수치 포함. 현재 한도는 실행 검사에서 확인한다.
 
 Point 생성·편집과 editable persistence는 selector가 증명한 semantic point/selected values/graphic
 ID·type 소유권을 공통 core guard에 전달한다. Namespace가 적용된 composition snapshot은 실제
-retained child owner까지 추적하며 별도 bypass state를 저장하지 않는다. 일반 generated-item/work
+retained child owner까지 추적하며 별도 bypass state를 저장하지 않는다. 명시 point capacity는 기존
+`materializationConfigs.marks`에 한 번 저장하고 selector가 retained owner의 값을 전달한다.
+기본 한도와 raw/output 검산, 편집 제거 및 restore는 같은 core guard를 공유한다. 일반 generated-item/work
 및 graphic-only structural validation 경계는 바꾸지 않았다. 정확한 수치는 MARKS/PRIMITIVES가 소유한다.
 Node22.23.1/npm10.9.8/macOS canonical artifact 실측은570entries, packed803124, unpacked3939523이다.
 승인된 유한 기능 증가에 따라 entries570/packed804000/unpacked3940000으로 최소 상향했다.
@@ -3659,10 +3694,24 @@ viewport로 제한하고 scene adapter/index/frame은 후속 경계다. 자세�
 cap을818/1,209,000/5,542,000으로 최소 갱신했다. Public entry와 browser import graph는 변하지 않는다.
 
 
+`grammar/hitPolicy.js`가 session-local hit preparation의 기본·명시 상한과 own-data 정규화를
+단일 소유한다. `interaction/session.js`는 불변 정책을 모든 native/current-frame/commit 경로에
+전달하고 binding과 index는 각자의 work bound를 유지한다. 기존 snapshot·query·selection
+한도는 이 정책과 독립이다. 정확한 공개 범위는 [INTERACTION](contract/current/INTERACTION.md)이 소유한다.
+
 `grammar/hitIndex.js`는 현재 owned CanvasScene identity와 명시 node/semantic mapping을 결합하는 private
 순수 공간 인덱스다. BVH broad phase와 기존 hitShapes narrow phase를 분리하고 누적 work를 제한한다.
-Row/resource lineage는 입력의 exact ref를 보존하며 의미 중복만 합친다. Renderer/semantic state/codec에는
+Row/resource lineage는 입력의 exact ref를 보존하며 의미 중복만 합친다. 완전히 검증한 exact owned metadata의 normal form/semantic key/signature/cost만 private WeakMap으로 재사용하며 매 정책의 기존 비용은 그대로 다시 과금한다. Caller/clone/frozen/부분 owned 입력은 전체 검증과 격리를 유지하고 scene/shape/source/asset 권한을 이 proof로 대체하지 않는다. Renderer/semantic state/codec에는
 새 저장 값을 추가하지 않는다. Guide materializer와 public runtime 연결은 [STEP048](impl/roadmap9/interaction/STEP048.md)에 남긴다.
+`hitShapes`의 native 계산으로 만든 commands/parts는 기존 private states WeakMap 안에서만
+불변으로 보관한다. 고정 깊이 assembly는 새 내부 tree를 직접 freeze하고 caller transform만
+기존 immutable owner로 격리한다. Prepared 외피의 ownership과 WeakMap authenticity, 모든
+native 계산·bounds·clip 검증·보수적 work는 동일하며 이 private tree를 program ownership이나
+외부 caller proof로 사용하지 않는다.
+Shared `pathGeometry`는 같은 입력 검증과 numeric 계산을 raw local tree로 준비하고 기존
+외부 함수가 deep frozen/owned 결과를 반환한다. Hit 준비의 세 내부 계산만 raw 결과를 직접
+소비해 위 private assembly로 보관한다. 계산식·한도·오류·기존 facade와 Trail/query/renderer의
+소유 반환은 동일하며 raw 결과에 별도 program 권한이나 cache authority를 부여하지 않는다.
 실측819 entries/5,552,006unpacked/최대1,210,811packed bytes에 cap819/1,211,000/5,553,000을 적용했다.
 ### Flow data and layout ownership
 
@@ -4965,6 +5014,17 @@ adapter를 합쳐3entries가 추가된다. Canonical staging의 Node20/22/24 실
 Full gzip Node20 실측784,092에 cap784,100을 적용했다. 근거와 미완료 large/worker 경계는
 [inference capacity 기록](impl/roadmap9/qualification/inference-capacity.md)을 따른다.
 
+2026-11-01 selection-region resize/category reorder handles의 canonical staged package는
+Node20/24에서 1,787,562 packed bytes, Node22에서 1,784,332 bytes, 공통 1,244 entries /
+8,048,978 unpacked bytes다. 새 pure handle/adapter와 기존 category assignment의 공유 owner
+반영으로 현재 package ceilings를 1,244 / 1,787,600 / 8,049,000으로 측정에 맞춘다.
+이 artifact-size 증분은 성능 SLO나 runtime work 한도의 변경이 아니다.
+
+동일 handles archive의 여섯 entry 설치 측정에서 interaction만 기존 131,400 상한을 넘었다.
+Node20/24 135,989 / Node22 135,493 gzip bytes로 당시 상한은 136,000이었다. 실제 native
+region forward/inverse·scoped clip·category assignment 공유를 포함한 213개 browser modules이며
+나머지 다섯 entry 크기는 기준과 같다. 첫 상한 실패와 동일 저장 측정의 재검증을 구분해 보존한다.
+
 명시 inferred execution은 `grammar/graph/inferenceBudget.js`에서 기존 owner별 work 단위와
 encoded input/result byte 한도를 소유한다. 기본10M과 일반 model/layout/graphic/route 경계는 그대로다.
 `inferenceResult.js`는 기존 result/diagnostics 조립을 공유하며 새 worker나 public entry를 추가하지 않는다.
@@ -4994,3 +5054,57 @@ encoded input/result byte 한도를 소유한다. 기본10M과 일반 model/layo
 완료된 inferred graph의 model 검증 증명은 전체 completion 검증 및 deep ownership 이후에만 등록되며, 최초 stored 검사에서 exact model·동일 정규 limits/execution에 한해 index 재생성을 생략한다. 일반 graph index·source/metric binding 및 policy가 바뀐 검사는 유지한다. Inference byte owner는 JSON escape/UTF-8 길이를 직접 세어 기존 각 문자열·key의 lower-bound/전체quota·own-data 경계를 유지하면서 임시 escaped string/byte array를 제거한다. Core value codec/hash, 공개 transport/schema 및 solver/work 단위는 그대로다. 원10k/100k 계측과 독립 UTF-16 전수 검산은 [바이트 할당 기록](impl/roadmap9/qualification/inference-byte-refinement.md)에 두고 최종 AT82 성능 검증과 구분한다.
 
 이번 refinement의 package 실측1246entries/Node20packed1,787,748/unpacked8,056,744에 최소 한도1,787,800/8,056,800을 적용한다. Node24 Full785,925/graph67,837gzipbytes에 한도786,000/67,900을 적용하며 다른 entry는 유지한다. 최초 실패와 동일 archive 재검산은 위 refinement 기록에 보존한다.
+
+Root의 기존 point capacity·interaction handles와 합친 validation refinement는1251entries/Node22packed1,791,884/unpacked8,087,760bytes이며 Node20packed1,795,679bytes다. 실제 합산값에 최소 한도1251/1,795,700/8,087,800을 적용한다. Node20 Full786,154/graph67,837gzipbytes에 현재 표의786,200/67,900 한도를 적용하며 다른 entry는 유지한다. 원 입력과 성능 SLO는 바꾸지 않는다.
+
+### Session-local hit preparation qualification
+
+새 hit preparation owner를 포함한 canonical package는
+Node20/24에서 1,789,653 packed bytes, Node22에서 1,786,249 bytes, 공통 1,245 entries /
+8,056,862 unpacked bytes로 관측했다. 현재 package ceilings는 이 입력에 맞춘
+1,245 / 1,789,700 / 8,056,900이며, 이는 성능 SLO나 전체 release qualification을 뜻하지 않는다.
+
+Metadata exact-proof 최소 수리를 포함한 최종 입력은 Node22에서 packed1,786,508bytes,
+Node20/24에서1,789,984bytes이며1245entries/8,057,659unpacked bytes다. 원 정책 입력의
+cap 실패와 중단은 qualification 기록에 보존하고 최종 package ceiling은
+1245/1,790,000/8,057,700으로 실제 입력에 맞췄다. 같은 호출의 circle 명령 재사용을 포함한
+다음 입력은 Node20 packed1,790,007/Node22 packed1,786,525, 공통8,057,727unpacked bytes로
+관측하여 현재 package ceiling은1245/1,790,100/8,057,800이다. 기존 비용 과금은 동일하며
+성능 SLO나 전체 release qualification을 뜻하지 않는다.
+
+Hit preparation의691dfd archive에서 Node20 interaction bundle은136,584gzip bytes로 측정됐다.
+원136,000초과를 보존하고 현재 최소 한도136,600에서 같은 측정값을 재평가한다.
+이 bundle 결과는 원100k runtime의10분 초과 중단과 별개이며 runtime 성공으로 집계하지 않는다.
+
+Private hit assembly와 shared path raw 계산/frozen facade 분리까지 포함한 현재 입력은
+1245entries/8,059,160unpacked, packed Node20/24 1,790,460 / Node22 1,786,971bytes다.
+현재 package ceiling은1245/1,790,500/8,059,200이며 Full/interaction bundle ceiling은784,400/136,700이다.
+이 크기 정합은 원100k runtime이나 성능 SLO 성공을 뜻하지 않는다.
+
+Root의 inference worker·point·position sampling과 합친 session hit preparation은1252entries / Node22packed1793316 / Node20·24packed1797146 / unpacked8093926bytes다. 실제 합산값에 package1252/1797200/8094000을 적용한다. Node20 Full786220/interaction136692gzipbytes에 표의786300/136700 한도를 적용하고 animation333881은333900 안이다. 문서 검색1093282bytes는 최소cap1093300으로 정합했다. 이 artifact 크기 정합은 runtime guard 또는 성능 SLO 변경이 아니다.
+
+Root 합산 공개version4는1254entries/Node22packed1802294/Node20·24packed1805641/unpacked8129912bytes다. 실제 입력에 최소cap1254/1805700/8130000을 적용한다. Node20 animation339303gzipbytes에는 표의339400cap, Basic424738에는424800을 적용하며 Full786299는786300안이다. 검색1093920에는1094000cap이다. Package guard와 runtime 자원guard·원성능SLO를 구분한다. 실제 same-tar 원100k point/10k partition·3Node·브라우저 검증은 [합산증거](impl/roadmap9/qualification/animation-v4-merged-evidence/qualification.json)를 따른다.
+
+Root route 저장 합산은1256entries/Node22packed1804523/Node20·24packed1807911/unpacked8137423bytes이며 최소cap1256/1808000/8137500이다. Full787369·graph68878gzip에는 표의787400/68900cap을 적용한다. 다른 entry·runtime guard·수학과 package export 경계는 유지한다. [합산 검증](impl/roadmap9/qualification/route-storage-merged-evidence/qualification.json)은 원 큰 solver/P95를 완료로 세지 않는다.
+Geo explicit capacity의 단일 정규화 owner를 추가한 A1 package 실측은 1246 entries,
+8,068,202 unpacked bytes, Node22 packed 1,788,941 / Node20 1,792,600 bytes이다.
+현재 ceiling은 1246 / 1,792,700 / 8,068,300으로 실제 입력만 반영한다.
+
+Root Geo A1 합산은1257entries/Node22packed1806540/Node20·24packed1809929/unpacked8146465bytes이며 cap1257/1810000/8146500이다. 실제 최대Full788278/Basic425529/SVG25178/graph68925/animation339775/interaction136880gzipB에 표의 한도를 적용하고 search1095666에는1095700cap을 적용한다. [설치본 검증](impl/roadmap9/qualification/geo-a1-merged-evidence/qualification.json)은 A2 camera·큰 hit·SLO 완료와 구분한다.
+
+Root SHA 합산은1258entries/Node22packed1807573/Node20·24packed1810854/unpacked8149596bytes이며 cap1258/1810900/8149600이다. 실제 최대Full788792/Basic426195/SVG25672/graph69473/animation340335/interaction137407gzipB에는 표의 한도를 적용한다. [합산 검증](impl/roadmap9/qualification/sha256-merged-evidence/qualification.json)은 원 hash·복사 경계와 async/heap/P95 미완료를 구분한다.
+
+Prepared point scale 통합은1258entries/Node22packed1808245/Node20·24packed1811511/unpacked8152110bytes이며 cap1258/1811600/8152200이다. Animation gzip 최대340708B에는 표의340800B를 적용한다. [합산 검증](impl/roadmap9/qualification/prepared-scale-merged-evidence/qualification.json)은 source-specific100k와 fresh1k·동일 archive3Node를 구별하며 원50ms 및 최종 통합을 남긴다.
+
+Point positions vector의 local freeze 통합은 source155B만 추가해1258entries/unpacked8152265B이며 cap8152300B다. 다른 artifact/runtime 한도는 유지한다. [통합 검증](impl/roadmap9/qualification/position-state-merged-evidence/qualification.json)은 현재 샘플러의1k 동등성과 original100k source-specific 결과를 구별한다.
+
+JSON string count owner 합산은1259entries/Node22packed1808438/Node20·24packed1811708/unpacked8152539B이며 cap1259/1811800/8152600이다. graph gzip69506B에는 표의69600B를 적용한다. [통합 검증](impl/roadmap9/qualification/json-count-merged-evidence/qualification.json)은 기존 scalar/error 동등성과 아직 남은 async 경계를 구별한다.
+
+Point sampler는 concrete validator를 통과한 새 properties와 node 외피의 core ownership을
+유지하고, 그 호출의 새 offset/rectangle clip tuple만 지역 동결한다. 모든 emission 뒤 node가
+각각 owned인 경우에만 nodes vector를 완성하며 raw Geo/GeoText/axis node가 있으면 기존
+scene clone 경계를 따른다. Hit/renderer/meaning 권한은 그대로다.
+이번 합산은1259entries/Node22packed1808620/Node20·24packed1811870/unpacked8152972B이며
+cap1259/1811900/8153000이다. Animation gzip340806B에는 표의340900B를 적용한다.
+[통합 검증](impl/roadmap9/qualification/point-node-merged-evidence/qualification.json)은 실제 원100k
+모든 좌표·offline·rebase와 아직 별도인50ms/P95·100cycle 의무를 구별한다.

@@ -1,5 +1,6 @@
+import { validateAnimationResourceWork } from "./resources.js";
 import { prepareAnimationAppearance } from "./appearance.js";
-import { cloneAndFreeze } from "../core/immutable.js";
+import { cloneAndFreeze, isOwned } from "../core/immutable.js";
 import { validateWorkLimit } from "../core/validation.js";
 import { preparePartitionAnimationState, samplePartitionAnimationState } from "../grammar/animation/partitionState.js";
 import { interpolateNumber } from "../grammar/animation/values.js";
@@ -14,8 +15,8 @@ function roles(state) {
   for (const item of state.items) if (item !== null) values[item.group].add(JSON.stringify([item.key, item.role]));
   return values;
 }
-export function partitionTrackPreparation(from, to, a, b) {
-  const pairs = [], indices = new Map(), aRoles = roles(a), bRoles = roles(b); let work = 0;
+export function partitionTrackPreparation(from, to, a, b, resources) {
+  const pairs = [], indices = new Map(), equalities = new WeakMap(), aRoles = roles(a), bRoles = roles(b); let work = 0;
   const track = match => {
     const source = a.items[match.sourceIndex], target = b.items[match.targetIndex];
     if (source === null && target === null) return undefined;
@@ -27,14 +28,20 @@ export function partitionTrackPreparation(from, to, a, b) {
     if (!clipInterpolationCompatible(first, last)) return fade("clip-topology");
     const key = JSON.stringify([source.group, target.group]); let pair = indices.get(key);
     if (pair === undefined) {
-      for (const group of [a.groups[source.group], b.groups[target.group]]) validateWorkLimit(work += partitionAnimationGroupWork(group) * 4, "Partition animation track work");
+      for (const group of [a.groups[source.group], b.groups[target.group]]) validateAnimationResourceWork(work += partitionAnimationGroupWork(group) * 4, "Partition animation track work",resources);
       const firstRoles = aRoles[source.group], lastRoles = bRoles[target.group], visibility = firstRoles.size !== lastRoles.size || [...firstRoles].some(role => !lastRoles.has(role));
       const plan = preparePartitionAnimationState(a.groups[source.group].meaning, b.groups[target.group].meaning);
       pair = pairs.length; indices.set(key, pair); pairs.push({ sourceGroup: source.group, targetGroup: target.group, plan, ...(visibility ? { reason: "visibility" } : {}) });
     }
     const prepared = pairs[pair], reason = prepared.reason ?? prepared.plan.reason ?? (prepared.plan.track.mode === "crossfade" ? prepared.plan.track.reason : undefined);
     if (reason) return fade(reason);
-    if (sameConcreteValue(a.groups[source.group], b.groups[target.group]) && sameConcreteValue(first, last)) return { ...match, kind: "exact" };
+    const sourceGroup = a.groups[source.group], targetGroup = b.groups[target.group];
+    let equality = equalities.get(prepared);
+    if (equality?.from !== sourceGroup || equality?.to !== targetGroup) {
+      equality = { from: sourceGroup, to: targetGroup, value: sameConcreteValue(sourceGroup, targetGroup) };
+      if (isOwned(sourceGroup) && isOwned(targetGroup)) equalities.set(prepared, equality);
+    }
+    if (equality.value && sameConcreteValue(first, last)) return { ...match, kind: "exact" };
     const appearance = prepareAnimationAppearance(partitionAnimationPaint(first.properties), partitionAnimationPaint(last.properties));
     if (appearance.kind === "crossfade") return fade(appearance.reason);
     return { ...match, kind: "semantic-partition", pair, appearance };

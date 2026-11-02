@@ -724,6 +724,10 @@
       {
         "type": "file",
         "path": "browser/graticule-composition.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/geographic-capacity.browser.js"
       }
     ],
     "grammar": [
@@ -993,6 +997,10 @@
       },
       {
         "type": "file",
+        "path": "unit/grammar/hit-index-proof.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/grammar/hit-shapes.test.js"
       },
       {
@@ -1086,6 +1094,34 @@
       {
         "type": "file",
         "path": "unit/grammar/mark-visibility.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-handles.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/selection-handles.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/interaction-handles.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-policy.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-hit-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/hit-preparation.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "charts/cross-feature-integration/variants/capacity/hit.render.js"
       }
     ],
     "horizon": [

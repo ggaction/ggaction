@@ -135,6 +135,11 @@
       "type": "BlendMode | undefined"
     },
     {
+      "name": "capacity",
+      "required": false,
+      "type": "GeoMarkCapacity | undefined"
+    },
+    {
       "name": "id",
       "required": false,
       "type": "string | undefined"

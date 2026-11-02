@@ -1,0 +1,247 @@
+[
+  {
+    "id": "guides/overflow-summary-line",
+    "before": 1,
+    "after": 7
+  },
+  {
+    "id": "conditional-encoding/fresh-process-lifecycle",
+    "before": 10,
+    "after": 2
+  },
+  {
+    "id": "conditional-encoding/renderers-and-scene",
+    "before": 22,
+    "after": 21
+  },
+  {
+    "id": "conditional-encoding/position-text-lifecycle",
+    "before": 23,
+    "after": 22
+  },
+  {
+    "id": "paint/structured-filled-marks",
+    "before": 10,
+    "after": 1
+  },
+  {
+    "id": "paint/structured-text",
+    "before": 7,
+    "after": 1
+  },
+  {
+    "id": "images/resource-lifecycle",
+    "before": 12,
+    "after": 11
+  },
+  {
+    "id": "fonts/renderers-scene-handles",
+    "before": 6,
+    "after": 11
+  },
+  {
+    "id": "data/observed-graph-lifecycle",
+    "before": 16,
+    "after": 20
+  },
+  {
+    "id": "paint/outline-basic-and-codec",
+    "before": 8,
+    "after": 1
+  },
+  {
+    "id": "paint/outline-image-hierarchy-composition",
+    "before": 20,
+    "after": 19
+  },
+  {
+    "id": "data/inferred-graph-lifecycle",
+    "before": 22,
+    "after": 38
+  },
+  {
+    "id": "flow/full-basic-lifecycle",
+    "before": 13,
+    "after": 16
+  },
+  {
+    "id": "contour/full-basic-lifecycle",
+    "before": 12,
+    "after": 13
+  },
+  {
+    "id": "responsive/full-basic-resize-restore",
+    "before": 1,
+    "after": 13
+  },
+  {
+    "id": "responsive/renderers-scene-codec",
+    "before": 1,
+    "after": 10
+  },
+  {
+    "id": "selection/logical-item-update",
+    "before": 1,
+    "after": 28
+  },
+  {
+    "id": "selection/logical-scoped-update",
+    "before": 1,
+    "after": 7
+  },
+  {
+    "id": "nested/shared-layout-lifecycle",
+    "before": 1,
+    "after": 13
+  },
+  {
+    "id": "nested/projected-graph-source",
+    "before": 1,
+    "after": 5
+  },
+  {
+    "id": "nested/renderers-scene-codec",
+    "before": 1,
+    "after": 10
+  },
+  {
+    "id": "edge-routes/bounded-hierarchy-spans",
+    "before": 9,
+    "after": 18
+  },
+  {
+    "id": "edge-routes/bounded-long-paths",
+    "before": 5,
+    "after": 13
+  },
+  {
+    "id": "edge-routes/own-host-options",
+    "before": 5,
+    "after": 10
+  },
+  {
+    "id": "geometry/full-basic-identity",
+    "before": 11,
+    "after": 10
+  },
+  {
+    "id": "geometry/fresh-process-offline",
+    "before": 8,
+    "after": 9
+  },
+  {
+    "id": "geometry/topology-atomic-failure",
+    "before": 9,
+    "after": 8
+  },
+  {
+    "id": "geographic-join/typed-fields-and-atomic-revision",
+    "before": 9,
+    "after": 11
+  },
+  {
+    "id": "geographic-join/offline-fresh-process",
+    "before": 3,
+    "after": 6
+  },
+  {
+    "id": "geographic-join/four-renderer-source-geometry-parity",
+    "before": 6,
+    "after": 12
+  },
+  {
+    "id": "geographic-levels/hysteresis-selection-and-atomicity",
+    "before": 10,
+    "after": 12
+  },
+  {
+    "id": "geographic-levels/offline-fresh-process",
+    "before": 4,
+    "after": 7
+  },
+  {
+    "id": "geographic-levels/four-renderer-current-level-parity",
+    "before": 6,
+    "after": 1
+  },
+  {
+    "id": "geographic-annotations/feature-anchor-and-atomicity",
+    "before": 7,
+    "after": 9
+  },
+  {
+    "id": "geographic-annotations/offline-fresh-process",
+    "before": 3,
+    "after": 6
+  },
+  {
+    "id": "geographic-annotations/four-renderer-native-text-parity",
+    "before": 5,
+    "after": 9
+  },
+  {
+    "id": "geographic-camera/fresh-process-restored-native-navigation",
+    "before": 6,
+    "after": 8
+  },
+  {
+    "id": "geographic-labels/native-source-and-selection",
+    "before": 9,
+    "after": 11
+  },
+  {
+    "id": "geographic-labels/offline-restored-source-revision",
+    "before": 4,
+    "after": 7
+  },
+  {
+    "id": "geographic-labels/four-renderer-native-text-parity",
+    "before": 5,
+    "after": 9
+  },
+  {
+    "id": "trail/public-lifecycle",
+    "before": 14,
+    "after": 15
+  },
+  {
+    "id": "trail/offline-scene-renderers",
+    "before": 11,
+    "after": 13
+  },
+  {
+    "id": "animation/implicit-legend-lanes-offline-native",
+    "before": 1,
+    "after": 18
+  },
+  {
+    "id": "animation-geo/current-frame-interruption",
+    "before": 9,
+    "after": 14
+  },
+  {
+    "id": "animation-geo/immutable-failure",
+    "before": 5,
+    "after": 8
+  },
+  {
+    "id": "geographic-routes/source-and-atomic-revision",
+    "before": 9,
+    "after": 10
+  },
+  {
+    "id": "geographic-routes/offline-restored-edit",
+    "before": 4,
+    "after": 5
+  },
+  {
+    "id": "geographic-routes/four-renderer-native-line-parity",
+    "before": 11,
+    "after": 14
+  },
+  {
+    "id": "animation-axis-reflow/offline-fonts-network-free",
+    "before": 5,
+    "after": 1
+  }
+]

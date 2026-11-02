@@ -1,0 +1,55 @@
+TAP version 13
+# Subtest: default cases share a process while explicit isolated cases retain Node arguments and installed imports
+ok 1 - default cases share a process while explicit isolated cases retain Node arguments and installed imports
+  ---
+  duration_ms: 120.78325
+  ...
+# Subtest: isolated throw, exit-zero without receipt, and nonzero exit all fail and do not omit later cases
+ok 2 - isolated throw, exit-zero without receipt, and nonzero exit all fail and do not omit later cases
+  ---
+  duration_ms: 166.593167
+  ...
+# Subtest: duplicate and forged child receipts cannot replace the expected ordered case
+ok 3 - duplicate and forged child receipts cannot replace the expected ordered case
+  ---
+  duration_ms: 140.660625
+  ...
+# Subtest: module case omissions or duplicates fail every declared case in both execution modes
+ok 4 - module case omissions or duplicates fail every declared case in both execution modes
+  ---
+  duration_ms: 203.683042
+  ...
+# Subtest: timeouts clean isolated descendants and then run the next case
+ok 5 - timeouts clean isolated descendants and then run the next case
+  ---
+  duration_ms: 324.506667
+  ...
+# Subtest: parent cancellation cleans the active child and marks remaining cases without running them
+ok 6 - parent cancellation cleans the active child and marks remaining cases without running them
+  ---
+  duration_ms: 93.100833
+  ...
+# Subtest: manifest isolation metadata and global identities are closed before imports
+ok 7 - manifest isolation metadata and global identities are closed before imports
+  ---
+  duration_ms: 113.890875
+  ...
+# Subtest: a successful receipt cannot conceal a nonzero child exit
+ok 8 - a successful receipt cannot conceal a nonzero child exit
+  ---
+  duration_ms: 99.498125
+  ...
+# Subtest: successful cases leave no unreferenced descendants in their process group
+ok 9 - successful cases leave no unreferenced descendants in their process group
+  ---
+  duration_ms: 110.890541
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1415.440708

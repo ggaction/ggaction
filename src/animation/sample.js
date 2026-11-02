@@ -1,3 +1,4 @@
+import { animationResourceLimits } from "./resources.js";
 import { sampleAxisLabelTracks } from "./axisLabelTracks.js";
 import { axisLabelFrameCollector } from "./axisLabelFrames.js";
 import { sampleGeoTextTracks } from "./geoTextTracks.js";
@@ -10,11 +11,11 @@ import { validateGeneratedItemLimit, validateWorkLimit } from "../core/validatio
 import { samplePolarInterpolation } from "../grammar/animation/polarState.js";
 import { sampleCartesianInterpolation } from "../grammar/animation/cartesianState.js";
 import { partitionTrackSamples, samplePartitionTrack, partitionFrameCollector, partitionAnimationPaint } from "./partitionTracks.js";
-import { cloneAndFreeze } from "../core/immutable.js";
+import { cloneAndFreeze, freezeOwned, isOwned } from "../core/immutable.js";
 import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 import { samplePositionInterpolation } from "../grammar/animation/positions.js";
 import { transitionSampleState,interpolateNumber } from "../grammar/animation/values.js";
-import { requireTransitionPlan, transitionEndpointPositions, transitionEndpointFrame, transitionGraphs, transitionCartesian, transitionPartitions, transitionPolars, transitionGeos, transitionGuides, transitionGeoTexts, transitionAxisLabels, transitionTimeline, transitionOwners } from "./planner.js";
+import { requireTransitionPlan, transitionResources, transitionEndpointPositions, transitionEndpointFrame, transitionGraphs, transitionCartesian, transitionPartitions, transitionPolars, transitionGeos, transitionGuides, transitionGeoTexts, transitionAxisLabels, transitionTimeline, transitionOwners } from "./planner.js";
 import { sampleTransitionTimeline } from "./timelineSample.js";
 import { registerAnimationFrame, registerAnimationFrameView, animationFrameProvenance, animationPlanProvenance } from "./frameProvenance.js";
 import { blendAnimationNodes,fadeAnimationNode,interpolateNodeFrame } from "./concrete.js";
@@ -134,8 +135,14 @@ export function sampleTransitionWithBudget(input,timeMs,accountWork) {
       if(x.kind==="position"&&y.kind==="position"){
         const properties={...to.properties,...appearance(),x:x.position,y:y.position,radius:interpolateNumber(from.properties.radius,to.properties.radius,progress)};
         validateConcreteGraphicProperties("circle",properties);decisions.push({...metadata,kind:"semantic-kernel",kernel:"cartesian-point"});
-        positions.push({x:{value:x.value,scale:x.scale},y:{value:y.value,scale:y.scale}});cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);
-        return cloneAndFreeze({...to,properties,...interpolateNodeFrame(from,to,progress)});
+        // These records contain only finite sampled values and exact owned scales.
+        positions.push(Object.freeze({x:Object.freeze({value:x.value,scale:x.scale}),y:Object.freeze({value:y.value,scale:y.scale})}));cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);
+        const frame=interpolateNodeFrame(from,to,progress);
+        // Only this call's new tuples are frozen locally; path clips stay owned.
+        Object.freeze(frame.offset);Object.freeze(frame.clip);
+        for(const clip of frame.clips)if(Array.isArray(clip))Object.freeze(clip);
+        Object.freeze(frame.clips);
+        return freezeOwned({...to,properties:freezeOwned(properties),...frame});
       }
       reason=x.reason??y.reason;
     }
@@ -153,10 +160,11 @@ export function sampleTransitionWithBudget(input,timeMs,accountWork) {
     guides.push(guideState.from[sourceIndex]);decisions.push({kind:"exit",sourceIndex,...(ownerKey===undefined?{}:{ownerKey}),...(guideState.ambiguousFrom.has(sourceIndex)?{reason:"guide-ambiguity"}:{})});nodes.push(fadeAnimationNode(from,1-timeline.progress(ownerKey),key));
     positions.push(meaning(fromPositions[sourceIndex]));cartesian.push(meaning(cartesianState.from[sourceIndex]));polars.push(meaning(polarState.from[sourceIndex]));appendGraph("from",sourceIndex);appendPartition("from",sourceIndex);geoFrame.append(null);geoTextFrame.append(null);axisFrame.append(null);
   }
-  validateGeneratedItemLimit(nodes.length,"Animation sampled nodes");
-  const scene=cloneAndFreeze({version:2,width,height,nodes});
+  validateGeneratedItemLimit(nodes.length,"Animation sampled nodes",animationResourceLimits(transitionResources(plan))?.maxOutputNodes);
+  // Extra family emissions may still contain mutable local nodes.
+  const scene=cloneAndFreeze({version:2,width,height,nodes:nodes.every(isOwned)?freezeOwned(nodes):nodes});
   const geos=geoFrame.finish();
-  return finish(cloneAndFreeze({graphicSpec:canvasSceneProgram(scene).graphicSpec,scene,progress,decisions}),positions,graphFrame.finish(),cartesian,partitionFrame.finish(),polars,geos,guides,geoTextFrame.finish(geos),axisFrame.finish());
+  return finish(cloneAndFreeze({graphicSpec:canvasSceneProgram(scene).graphicSpec,scene,progress,decisions}),freezeOwned(positions),graphFrame.finish(),cartesian,partitionFrame.finish(),polars,geos,guides,geoTextFrame.finish(geos),axisFrame.finish());
 }
 
 // Offline frame export adds only a time label while retaining authentic meaning.

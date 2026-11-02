@@ -20,7 +20,7 @@ for (const kind of ['points', 'partition', 'geo', 'data']) test(`native benchmar
 });
 
 test('native benchmark preserves every required size and SLO including unsupported cells', () => {
-  assert.deepEqual(workloadSizes, { points: [1000,10000,100000], partition: [100,1000,10000], geo: [1000,10000,100000], data: [1000,10000,100000] });
+  assert.deepEqual(workloadSizes, { points: [1000,10000,100000], partition: [100,1000,10000], geo: [1000,10000,100000], data: [1000,10000,100000], inference: [100,1000,10000] });
   assert.deepEqual(workloadThresholds.points, {hitMs:[8,12,20],fullFrameSampleMs:[16.7,33,50]});
   assert.deepEqual(workloadThresholds.partition,{kernelMs:[10,50,300],gesturePreviewMs:[33,33,33]});
   assert.deepEqual(workloadThresholds.geo,{cameraPreviewMs:[16.7,33,50],hitMs:[20,20,20]});
@@ -40,6 +40,8 @@ test('native benchmark rejects omitted data and distinguishes native bounds from
   }
   assert.equal(isNativeLimit(new RangeError('Animation nodes must not exceed 10000.')),true);
   assert.equal(isNativeLimit(new RangeError('Hit index exceeds its work budget.')),true);
+  assert.equal(isNativeLimit(new RangeError('Hit program exceeds its item budget.')),true);
+  assert.equal(isNativeLimit(new Error('Hit program exceeds its item budget.')),false);
   assert.equal(isNativeLimit(new Error('Workload assertion: missing source vertex')),false);
   assert.equal(isNativeLimit(new Error('unexpected limit message must not exceed')),false);
   assert.equal(isNativeLimit(new TypeError('unknown projection type')),false);

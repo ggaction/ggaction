@@ -1,0 +1,173 @@
+{
+  "kind": "source-diagnostic-not-qualification",
+  "sourceRevision": "9cb510f05028fed315c7cad2e62bff82c5e6f8e7",
+  "recordBaseRevision": "def731fe2aa1a56ffdb11fbc0c595a16488a8988",
+  "productionChanges": false,
+  "policyImplemented": false,
+  "sourceOnly": true,
+  "browserArchive": null,
+  "p95Measured": false,
+  "sloResult": "not-run",
+  "defaultAdmission": "rejected item budget",
+  "observationMode": "node/work guards record then continue; schemas, full native geometry and query limits unchanged",
+  "inputCount": 100000,
+  "sceneCount": 100001,
+  "entryCount": 100000,
+  "inputHash": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+  "observationSceneHash": "1282dc66a29d682afde1ed990f803b9c14a4dcd14a77a12b7260735a8b937bfd",
+  "geometryAll": true,
+  "inputUnchanged": true,
+  "create": {
+    "bindingWork": 36288915,
+    "indexWork": 104395304
+  },
+  "mount": {
+    "bindingWork": 15900000,
+    "indexWork": 103546184
+  },
+  "queryWork": [
+    1499,
+    4156,
+    2158
+  ],
+  "rawIdentityUtf16": 13188890,
+  "node24Memory": {
+    "rss": 2104541184,
+    "heapTotal": 2006466560,
+    "heapUsed": 1959632648,
+    "external": 2421657,
+    "arrayBuffers": 148247
+  },
+  "interruptedNode22": [
+    "observe-original-interrupted.json.gz",
+    "observe-gc-interrupted.json.gz"
+  ],
+  "unresolved": [
+    "explicit product policy pending root concrete review",
+    "long preparation/large heap",
+    "Node20/22/24 unmodified product qualification",
+    "DPR1/2 fixed archive final P95"
+  ],
+  "instrumentedOwners": {
+    "src/interaction/hitProgram.js": "410d24770aeaa88df6656daf9d633f165aa20cfc091d53ae187c5d504f89f9a5",
+    "src/interaction/sceneFrame.js": "81e6dfbffc9876c30ab0619a88099618f9d691b40acd83dc3230e010ed316ad6",
+    "src/grammar/hitIndex.js": "22b403f0ebb0ddca982fa3e0b2e9412742bd80e4d4e8d78e872b8699317d79e5"
+  },
+  "phaseAttribution": "Totals/per-index calls exact; phase buckets include following nodeKey charge in previous semanticSignature phase. Do not read bucket labels as exclusive semantic costs.",
+  "artifacts": [
+    {
+      "path": "probe-v1.mjs.gz",
+      "sha256": "fa389d2286461480320b33b68d43bd8717d0cc5cd3e6021b65685921b3d0e3a6",
+      "uncompressedSha256": "a374cdbdd1c80afdf8ae9a2f5b03c037c4d58ae0094ac7693386b5c206bb25b0",
+      "uncompressedBytes": 3470
+    },
+    {
+      "path": "probe-gc.mjs.gz",
+      "sha256": "822c18741a81efd331ae62210dccb91cebce5e9c1f68b117a75ee1b4bdafd475",
+      "uncompressedSha256": "adc93581ea822593fa1f89c29d4c685aa081c34e53dbd0775aa32ad6ffe04261",
+      "uncompressedBytes": 3758
+    },
+    {
+      "path": "loader-v1.mjs.gz",
+      "sha256": "803da2607384f48cf6e8ef2d6dff0d84e521eba547c40e31f804ae73374e9826",
+      "uncompressedSha256": "7aabde771d817e62ef6b213cf609f824b9465188311d1dce7285a535b2975f74",
+      "uncompressedBytes": 4634
+    },
+    {
+      "path": "loader.mjs.gz",
+      "sha256": "028add8060055980532ddde7d80b519fb00b4793ee8031cbf28463331324405c",
+      "uncompressedSha256": "ed0d4b19e456c66822e44faf9421863951a22981b1387181be30e382aa6bec51",
+      "uncompressedBytes": 5209
+    },
+    {
+      "path": "loader-gc.mjs.gz",
+      "sha256": "ab45a5640e9be166018a4a1944cd0bb31f32629c44cc1cbde4b3e84e5e6a0391",
+      "uncompressedSha256": "361407ba020e0b737f46f68768fd063d38c0a393b552626271ed2a2cfd582084",
+      "uncompressedBytes": 5469
+    },
+    {
+      "path": "public-100k.json.gz",
+      "sha256": "0746cb92570be29170d8c884542a528a17c2aec9533b21c4daedf6dadf3ad2a7",
+      "uncompressedSha256": "80f21ac4d5ab16b5ef0db70580e8264b227886e64b0d677a5f8f443177c4bed2",
+      "uncompressedBytes": 1985
+    },
+    {
+      "path": "public-100k.log.gz",
+      "sha256": "a13bff337d7bab386b0834d94ef724b77a03e7aa1543c3ea5a31cfdceb8b5fc7",
+      "uncompressedSha256": "9d5ed63aa2db1853ea6517438eb2859217f30f66f7086dba90fb00ea13fa4a7f",
+      "uncompressedBytes": 159
+    },
+    {
+      "path": "instrumented-10k.json.gz",
+      "sha256": "9f692efe17399b070ffd80ed2e9e503bcb6a26ffd4f562e9f0eb0bb93a401296",
+      "uncompressedSha256": "daf47966ead03ea8ca7d10ed4ed8eaacfaa5583a5fc2ab85f5c933615d5efb02",
+      "uncompressedBytes": 2104
+    },
+    {
+      "path": "instrumented-10k.log.gz",
+      "sha256": "ed43ea23ca56a308497cadb338f959df3178bb6e49bbfc57a06a07b76ca5da7b",
+      "uncompressedSha256": "aa35b67ebcb052c9d230f465c6af588bcb4f61d2e64ba7941781fa344a6c4e9b",
+      "uncompressedBytes": 1392
+    },
+    {
+      "path": "profile-10k.json.gz",
+      "sha256": "af31ce5eb1125e991260ec20819e4bbdd6a82eb846aa044e2d86c84dc1cec92d",
+      "uncompressedSha256": "d134ebd319182454d90e447ba5d75ef50dc3838bfd454b2328c6279eefbb5d0b",
+      "uncompressedBytes": 2367
+    },
+    {
+      "path": "profile-10k.log.gz",
+      "sha256": "2cbf370b62afdcbe6748d03a76b75170cfa910fd923c5b4e91b4e216f65e4ef4",
+      "uncompressedSha256": "c4773d0d399209d951543a6c7a4af9b14bdb239f3ff43503ab4dbae9926da7c4",
+      "uncompressedBytes": 1387
+    },
+    {
+      "path": "hit-10k.cpuprofile.gz",
+      "sha256": "0a29281f1059f6034c418c8d6e17f5ed56b3eea33f00702f103602f51a9cf37c",
+      "uncompressedSha256": "7e3b707f9e0b333aa97f5dd81ad2e77c826c30f9f722ec0c47ef4455d988ea43",
+      "uncompressedBytes": 327004
+    },
+    {
+      "path": "process-sample.txt.gz",
+      "sha256": "d433eb86010f4a1c3c4a4a953259495ec2172a05119f0c114aca0ebeba60f4ac",
+      "uncompressedSha256": "fd470acc8dddab665ca55a98d81393834443689ca0b708cc8e2a6c21321061d6",
+      "uncompressedBytes": 89736
+    },
+    {
+      "path": "instrumented-100k-observe.log.gz",
+      "sha256": "fe1bf04783b99ddeb0c0d6ee1d5ea9c0f08d5761599676952bd5151473cb0643",
+      "uncompressedSha256": "41c20c31f277aca2ffa706bca4dcd216f0a8ed719b3a326b0c5622791dafeda3",
+      "uncompressedBytes": 1238
+    },
+    {
+      "path": "observe-original-interrupted.json.gz",
+      "sha256": "d56cc60edcc3fb4b1057f2ef277824fb1fd2073be22b908b0f3062dc1fd19929",
+      "uncompressedSha256": "0fe4f9c6202d6ec520084a8449d94965d013202f7d80b3de24e842b271685728",
+      "uncompressedBytes": 374
+    },
+    {
+      "path": "instrumented-100k-gc-observe.log.gz",
+      "sha256": "f8e9296529a52cea5e38a6e0c618b23e4ccc57d14c6cfb0253166721053299b1",
+      "uncompressedSha256": "288c2c1d64454de2a07e6a7fa9b7aa622cb47536c2188f19c8f0f114b32a949e",
+      "uncompressedBytes": 3063
+    },
+    {
+      "path": "observe-gc-interrupted.json.gz",
+      "sha256": "14d4e6bfc594554cb06494d10267515818bfc25774696d4aef2ba2cec1f63652",
+      "uncompressedSha256": "969b46e665f6d45cb97ae6104cff1ebb865527534e7b885115b4b0d3d828b0cf",
+      "uncompressedBytes": 487
+    },
+    {
+      "path": "instrumented-100k-node24-observe.json.gz",
+      "sha256": "865fb12ef7948dde1ca413d82514ad0494e17204e7fc759080880e5005d2c6e1",
+      "uncompressedSha256": "9b45bdc5f52ff746bcbe2cc1246c7453b41237a70cbba9db9fa065a03f610c74",
+      "uncompressedBytes": 4823
+    },
+    {
+      "path": "instrumented-100k-node24-observe.log.gz",
+      "sha256": "324f1d8f03bc6c94c0c7c1b6ec7611126b9b0a84d49aba4604f2664b738dbb33",
+      "uncompressedSha256": "2fa90b00e24bec6bcb475c516f260277e35067742201ae4bb0c6ea9bd356a53a",
+      "uncompressedBytes": 7571
+    }
+  ]
+}

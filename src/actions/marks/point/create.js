@@ -22,10 +22,11 @@ import {
   validateMarkOptions
 } from "../shared.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
+import { validatePointItemCapacity } from "../../../core/validation.js";
 
 const OPTIONS = Object.freeze([
   "blend",
-  "clip", "id", "data", "missing", "shape", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth",
+  "clip", "id", "data", "maxItems", "missing", "shape", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -41,6 +42,7 @@ export const createPointMark = /* @__PURE__ */ action(
     requestedMarkOutline(args);
     requestedMarkShadow(args);
     requestedStrokeDetails(args, "createPointMark");
+    const maxItems = validatePointItemCapacity(args.maxItems);
     const id = resolveMarkId(this, args.id, {
       defaultId: "point",
       label: "Point mark id",
@@ -79,13 +81,13 @@ export const createPointMark = /* @__PURE__ */ action(
     }
     next = applyMarkBlend(next, id, args);
     next = applyLayeredMarkInheritance(next, id, inherited)
+      ._withMarkConfig(id, { shape, ...(args.maxItems === undefined ? {} : { maxItems }) })
       .createGraphics({
         id,
         type: graphicType,
         length: dataset.values.length,
         ...resolveMarkGraphicPlacement(next, { data, markType: "point" })
-      })
-      ._withMarkConfig(id, { shape });
+      });
     const created = materializeInheritedMark(next, id);
     const appearance = Object.fromEntries(
       ["clip", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth", ...STROKE_STYLE_PROPERTIES]

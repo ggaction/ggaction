@@ -1,0 +1,680 @@
+{
+  "status": "private-sha256-state-integrated; async-encoding-and-native-performance-pending",
+  "base": "7a87859c4",
+  "upstreamSource": "db163e237bd93c1d79999303859d78de78f71250",
+  "upstreamPin": "94f46b080582f352caedded5281cf4e6927a54bc",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Private SHA scalar create/update/finish/clear state and existing sync wrappers only; canonicalJSON/valueEncoding/coercion/native byte copy/SAB rejection/API/schema/runtime guards unchanged.",
+  "sourceSHA256": {
+    "src/core/contentDigest.js": "f6ec75ffc60526a974789a5f679ba384c802c75cc41287d4a212b926ba3b4de4",
+    "src/core/sha256.js": "a94e9caced46162e33d653cd07b5a36d0626cf4e5e46424644c9273f5e4ca979"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1258,
+    "packedBytes": 1807573,
+    "unpackedBytes": 8149596,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-2ccfbd6c5bd5a40b34a9d8ba579296fea78ceef4101577f9ad7c743cdfa2c3dd.tgz",
+    "sha256": "2ccfbd6c5bd5a40b34a9d8ba579296fea78ceef4101577f9ad7c743cdfa2c3dd"
+  },
+  "checks": {
+    "owning.log": 8,
+    "coverage.log": 8,
+    "owning-20.log": 8,
+    "owning-24.log": 8,
+    "consuming-owners.log": 30,
+    "contracts-final.log": 30,
+    "docs.log": 246,
+    "animation-browser.log": 1
+  },
+  "critical": {
+    "core/sha256.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100,
+      "floor": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      }
+    }
+  },
+  "consumers": [
+    {
+      "node": "v20.20.2",
+      "sha256": "2ccfbd6c5bd5a40b34a9d8ba579296fea78ceef4101577f9ad7c743cdfa2c3dd",
+      "checks": [
+        {
+          "id": "images/resource-lifecycle",
+          "status": "passed",
+          "durationMs": 28.04883300000006
+        },
+        {
+          "id": "images/renderer-scene-offline",
+          "status": "passed",
+          "durationMs": 10.523458000000005
+        },
+        {
+          "id": "fonts/resource-metrics-offline",
+          "status": "passed",
+          "durationMs": 389.767375
+        },
+        {
+          "id": "animation/offline-fresh-process",
+          "status": "passed",
+          "durationMs": 214.67041700000004
+        },
+        {
+          "id": "animation/embedded-assets-fresh-process",
+          "status": "passed",
+          "durationMs": 318.27541599999995
+        },
+        {
+          "id": "animation/immutable-schedules-and-corruption",
+          "status": "passed",
+          "durationMs": 11.001999999999953
+        },
+        {
+          "id": "edge-routes/packed-density-samples",
+          "status": "passed",
+          "durationMs": 992.760417
+        },
+        {
+          "id": "edge-routes/ordered-force-storage",
+          "status": "passed",
+          "durationMs": 583.1438330000001
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed",
+          "durationMs": 162.12295799999993
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed",
+          "durationMs": 365.25295800000004
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed",
+          "durationMs": 64.0308329999998
+        },
+        {
+          "id": "data/inferred-graph-worker-lifecycle",
+          "status": "passed",
+          "durationMs": 149.13820799999985
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1069,
+          "minifiedBytes": 2748902,
+          "gzipBytes": 788792
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 627,
+          "minifiedBytes": 1452567,
+          "gzipBytes": 426195
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 45,
+          "minifiedBytes": 76627,
+          "gzipBytes": 25672
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 116,
+          "minifiedBytes": 230699,
+          "gzipBytes": 69473
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 513,
+          "minifiedBytes": 1136471,
+          "gzipBytes": 340335
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 215,
+          "minifiedBytes": 429907,
+          "gzipBytes": 137407
+        }
+      ],
+      "types": "passed",
+      "snippet": {
+        "status": "passed",
+        "sha256": "37511e8bdd17a1c88e7d6bcb6f776037421ca49c0da7d90134ae0d493be2ed31"
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "node": "v22.23.1",
+      "sha256": "2ccfbd6c5bd5a40b34a9d8ba579296fea78ceef4101577f9ad7c743cdfa2c3dd",
+      "checks": [
+        {
+          "id": "images/resource-lifecycle",
+          "status": "passed",
+          "durationMs": 24.11629199999993
+        },
+        {
+          "id": "images/renderer-scene-offline",
+          "status": "passed",
+          "durationMs": 15.99249999999995
+        },
+        {
+          "id": "fonts/resource-metrics-offline",
+          "status": "passed",
+          "durationMs": 430.4352089999999
+        },
+        {
+          "id": "animation/offline-fresh-process",
+          "status": "passed",
+          "durationMs": 272.77141700000016
+        },
+        {
+          "id": "animation/embedded-assets-fresh-process",
+          "status": "passed",
+          "durationMs": 375.43487500000015
+        },
+        {
+          "id": "animation/immutable-schedules-and-corruption",
+          "status": "passed",
+          "durationMs": 9.787417000000005
+        },
+        {
+          "id": "edge-routes/packed-density-samples",
+          "status": "passed",
+          "durationMs": 915.0349160000001
+        },
+        {
+          "id": "edge-routes/ordered-force-storage",
+          "status": "passed",
+          "durationMs": 553.932166
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed",
+          "durationMs": 168.8196250000001
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed",
+          "durationMs": 399.82520799999975
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed",
+          "durationMs": 63.15133300000025
+        },
+        {
+          "id": "data/inferred-graph-worker-lifecycle",
+          "status": "passed",
+          "durationMs": 158.4152079999999
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1069,
+          "minifiedBytes": 2748902,
+          "gzipBytes": 787373
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 627,
+          "minifiedBytes": 1452567,
+          "gzipBytes": 425148
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 45,
+          "minifiedBytes": 76627,
+          "gzipBytes": 25558
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 116,
+          "minifiedBytes": 230699,
+          "gzipBytes": 69305
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 513,
+          "minifiedBytes": 1136471,
+          "gzipBytes": 339190
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 215,
+          "minifiedBytes": 429907,
+          "gzipBytes": 136875
+        }
+      ],
+      "types": "passed",
+      "snippet": {
+        "status": "passed",
+        "sha256": "37511e8bdd17a1c88e7d6bcb6f776037421ca49c0da7d90134ae0d493be2ed31"
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "sha256": "2ccfbd6c5bd5a40b34a9d8ba579296fea78ceef4101577f9ad7c743cdfa2c3dd",
+      "checks": [
+        {
+          "id": "images/resource-lifecycle",
+          "status": "passed",
+          "durationMs": 28.822125000000028
+        },
+        {
+          "id": "images/renderer-scene-offline",
+          "status": "passed",
+          "durationMs": 9.632292000000007
+        },
+        {
+          "id": "fonts/resource-metrics-offline",
+          "status": "passed",
+          "durationMs": 412.6038339999999
+        },
+        {
+          "id": "animation/offline-fresh-process",
+          "status": "passed",
+          "durationMs": 235.17999999999984
+        },
+        {
+          "id": "animation/embedded-assets-fresh-process",
+          "status": "passed",
+          "durationMs": 323.612042
+        },
+        {
+          "id": "animation/immutable-schedules-and-corruption",
+          "status": "passed",
+          "durationMs": 8.117749999999887
+        },
+        {
+          "id": "edge-routes/packed-density-samples",
+          "status": "passed",
+          "durationMs": 802.3232090000001
+        },
+        {
+          "id": "edge-routes/ordered-force-storage",
+          "status": "passed",
+          "durationMs": 475.89237500000036
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed",
+          "durationMs": 160.93245899999965
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed",
+          "durationMs": 367.58187499999985
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed",
+          "durationMs": 58.677458000000115
+        },
+        {
+          "id": "data/inferred-graph-worker-lifecycle",
+          "status": "passed",
+          "durationMs": 141.77520800000002
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1069,
+          "minifiedBytes": 2748902,
+          "gzipBytes": 788792
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 627,
+          "minifiedBytes": 1452567,
+          "gzipBytes": 426195
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 45,
+          "minifiedBytes": 76627,
+          "gzipBytes": 25672
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 116,
+          "minifiedBytes": 230699,
+          "gzipBytes": 69473
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 513,
+          "minifiedBytes": 1136471,
+          "gzipBytes": 340335
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 215,
+          "minifiedBytes": 429907,
+          "gzipBytes": 137407
+        }
+      ],
+      "types": "passed",
+      "snippet": {
+        "status": "passed",
+        "sha256": "37511e8bdd17a1c88e7d6bcb6f776037421ca49c0da7d90134ae0d493be2ed31"
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    }
+  ],
+  "packMeasurements": {
+    "20": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1258,
+      "packedBytes": 1810854,
+      "unpackedBytes": 8149596,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/sha256-merged/pack20/ggaction-0.0.26.tgz",
+      "sha256": "5678afe0860dc7de472b49a42362f99ca5f06c0df8f6e24a470d631bc3dd37e3"
+    },
+    "22": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1258,
+      "packedBytes": 1807573,
+      "unpackedBytes": 8149596,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/sha256-merged/pack22/ggaction-0.0.26.tgz",
+      "sha256": "2ccfbd6c5bd5a40b34a9d8ba579296fea78ceef4101577f9ad7c743cdfa2c3dd"
+    },
+    "24": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1258,
+      "packedBytes": 1810854,
+      "unpackedBytes": 8149596,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/sha256-merged/pack24/ggaction-0.0.26.tgz",
+      "sha256": "5678afe0860dc7de472b49a42362f99ca5f06c0df8f6e24a470d631bc3dd37e3"
+    }
+  },
+  "documentation": {
+    "builtPages": 186,
+    "llmArtifacts": 1607
+  },
+  "allocationBoundary": {
+    "numericPayloadBytes": 352,
+    "fullInputPaddingCopy": false,
+    "originalInputCopyAndTextEncoder": true,
+    "stateClearFinally": true,
+    "retainedHeapClaim": false,
+    "no100msOrP95Claim": true
+  },
+  "reusedEvidence": [
+    {
+      "path": "../../chart/sha256-state-evidence/qualification.json",
+      "boundary": "Two runtime files byte-exact upstream; reuse direct-callsite audit and old scalar/order review. Root fresh three-Node independent SHA vectors plus twelve same-tar public runtime cases verify integrated consumers."
+    },
+    {
+      "path": "../geo-a1-merged-evidence/qualification.json",
+      "boundary": "Geo ownership/projection/path code unchanged; prior actual original100k four-renderer proofs remain source-specific. No new large test or same-SHA Geo/browser execution claimed for this SHA archive."
+    }
+  ],
+  "artifactPolicy": {
+    "entries": 1258,
+    "packedBytes": 1810900,
+    "unpackedBytes": 8149600,
+    "bundleCaps": {
+      "ggaction": 788800,
+      "ggaction/basic": 426200,
+      "ggaction/svg": 26000,
+      "ggaction/graph": 69500,
+      "ggaction/animation": 340400,
+      "ggaction/interaction": 137500
+    },
+    "runtimeGuardChanges": 0
+  },
+  "initialFailuresRetained": [
+    "pack20-first.log:1258entries exceed previous1257; observed1810854-byte archive retained",
+    "premeasure20.json: five integrated bundle actual gzip values exceed old artifact ceilings; only measured ceilings adjusted"
+  ],
+  "pending": [
+    "JSON scalar/strict encoder and mutable snapshot/large-record/BigInt main-thread responsiveness",
+    "Route v2 numeric policy/native update closure/original1k10k solver admission",
+    "Common animation50ms/partition and Geo camera/hit performance",
+    "Long-lived mixed workload WeakSet stall attribution and retained100cycle",
+    "Final9commands/independent review/STEP057-077 closeout"
+  ],
+  "evidenceFiles": {
+    "coverage.log": {
+      "sha256": "f9c0bf3d77aa0452d85d04e05eb03a34fcdb52ab1dcb241d8b5cdf7a23e84153",
+      "bytes": 2466
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "pack22.json": {
+      "sha256": "48f8b8db23f1e6b10b4f7a2abfc5b431a214b2c0e154c576c85e40a5ac491302",
+      "bytes": 378
+    },
+    "installed-24.json": {
+      "sha256": "e371599b7ac50e77edef18229c8e1becaee753dcc4fb95aa31e4376f9a4e1180",
+      "bytes": 2816
+    },
+    "contracts-final.log": {
+      "sha256": "8435062d4af42423297276a91de03639987ff37971c4bfa4cd10f054a6e99976",
+      "bytes": 6354
+    },
+    "contracts.log": {
+      "sha256": "0c74ee0cbaaf440b4991c6fe18035c87db8c20b99a9ebe625080d13e355568cb",
+      "bytes": 4750
+    },
+    "record-contracts.log": {
+      "sha256": "3306eba726c6867ec5daaa5dd70030799b504d13fc012606cfa383688e18f782",
+      "bytes": 1812
+    },
+    "source.json": {
+      "sha256": "8477c87c9bec716a1704c7b09082d4b117aeb376d970e28a93f55c172611bc4c",
+      "bytes": 194
+    },
+    "frozen.json": {
+      "sha256": "e14d708ce3641fb8a56888450f7e2da60fd47b3d367da05a133a2348c2074047",
+      "bytes": 436
+    },
+    "installed-24.log": {
+      "sha256": "e371599b7ac50e77edef18229c8e1becaee753dcc4fb95aa31e4376f9a4e1180",
+      "bytes": 2816
+    },
+    "pack20.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "owning-20.log": {
+      "sha256": "27054e67925d31060aec7bbba122a62870ac82bbe9d1c97a43a0c647e9585e96",
+      "bytes": 1793
+    },
+    "coverage.mjs": {
+      "sha256": "6c7cbf33996f54061d9c1d0bf1f3527cc2ec5c58ebbc2408177d711d43ebda43",
+      "bytes": 457
+    },
+    "pack22.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "installed-22.json": {
+      "sha256": "db1fa469a2a89e891ee7dbb3fb263688c5727866ee8d1b51e491b8caabd31e63",
+      "bytes": 2812
+    },
+    "consuming-owners.log": {
+      "sha256": "1575e0a5b0982a91543264ad14c49779b40f18dc278214f2cebe19fe7c639652",
+      "bytes": 6945
+    },
+    "pack24.json": {
+      "sha256": "ddbe4a7c57095ca1373c2d85668341b11717820dde516e6b24ed25bb2d05da54",
+      "bytes": 378
+    },
+    "installed-22.log": {
+      "sha256": "db1fa469a2a89e891ee7dbb3fb263688c5727866ee8d1b51e491b8caabd31e63",
+      "bytes": 2812
+    },
+    "pack20-first-observed.json": {
+      "sha256": "dafc90ba39d11452ae2af40ddcc0e5ae51a402145991c41e8bc7ff728b98f5d0",
+      "bytes": 109
+    },
+    "owning-24.log": {
+      "sha256": "b79392b4e5bb27af9bf2afd285d8b132b3f6677fef830c381562ea41519ee6fb",
+      "bytes": 868
+    },
+    "pack20-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs.log": {
+      "sha256": "6cbc09aa6bb039e8f6cc9d56e30e0aea9f9a1f66d1d63865c9af8efe9037266f",
+      "bytes": 74782
+    },
+    "installed-20.log": {
+      "sha256": "452952a1f374e2c027f9cb72dc71d0d0a8ad67ff21a5dd631c192ad1a78fd8d4",
+      "bytes": 2808
+    },
+    "pack24.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "installed-20.json": {
+      "sha256": "452952a1f374e2c027f9cb72dc71d0d0a8ad67ff21a5dd631c192ad1a78fd8d4",
+      "bytes": 2808
+    },
+    "premeasure20.json": {
+      "sha256": "2b4326cd25e2f57aacad8177be56959b16c5ed5eeba710fda2eb60f0888fc78b",
+      "bytes": 919
+    },
+    "pack20.json": {
+      "sha256": "ca5511d95aa2829132c3d439b306a031271ac0eb7266733269a1286cb88b0bad",
+      "bytes": 378
+    },
+    "prepack.log": {
+      "sha256": "baf19b5303dea581ea2f6e3d0b7ac399326e03073a6de17d5dcd8ce0340f22f2",
+      "bytes": 498
+    },
+    "animation-browser.log": {
+      "sha256": "f190820f10a8d06c433b5c47072390fd75e2b9fe2a21ffa71692044e9aca51c4",
+      "bytes": 362
+    },
+    "owning.log": {
+      "sha256": "d36614a3e72ed0ce4e009bf37da0cacbad18d5e6c324c82a00a72316bf09a857",
+      "bytes": 1908
+    },
+    "machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "built.log": {
+      "sha256": "870bce70acc90ff20afe8b62fe05fe460070fbe831ed46e0745147e8047a92a8",
+      "bytes": 102
+    },
+    "pack20-first.log": {
+      "sha256": "a634806c2d8a804306b087a39c2bdb380d058fc92a51916f147c64309c23a17d",
+      "bytes": 966
+    },
+    "premeasure20.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "evidence.py": {
+      "sha256": "dc6819b55ae12ec5ca34c437559acb9efb73846a0e72d824d09bf6577f39cd0c",
+      "bytes": 3872
+    },
+    "build.log": {
+      "sha256": "0e37ce6bca5b269a34e4ce911cf246bbf37d48d1ee21f8aab192efc04ff84694",
+      "bytes": 420
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "51ec95ee37d997859ca47aa32f85f1552eaf3e6fffb7dcfe54f4d02abeb84c9b",
+      "bytes": 1810
+    },
+    "source-pin-pack.json": {
+      "sha256": "938c0e452fc5c020c11b6130c23c7c627cf7d27a31ad5b12f45e4efc6185cb4a",
+      "bytes": 383
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "upstream-review-merge.log": {
+      "sha256": "96bb6a194a796153cbd0c640642866371219451832063763d544b942a8d97c4e",
+      "bytes": 66
+    }
+  },
+  "sourceRevision": "1e743f08b8ecf70f242ce6f66a5256f37fbe02af",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  },
+  "metadataIntegration": {
+    "upstreamReview": "36de5a4f9bd4990804ef94671a06c7041c5f7456",
+    "runtimePackageInputsChanged": false,
+    "documentationRepair": "Trim one upstream internal record blank EOF detected by diff-check; no runtime evidence change."
+  }
+}

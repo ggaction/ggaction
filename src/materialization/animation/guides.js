@@ -112,8 +112,8 @@ function scopedGuides(program, namespaces, spend, axislabels) {
   return result;
 }
 
-export function projectGuideAnimationState(program, endpoint, axislabels) {
-  validateGeneratedItemLimit(endpoint.scene.nodes.length, "Animation guide endpoint size");
+export function projectGuideAnimationState(program, endpoint, axislabels, maxOutputNodes) {
+  validateGeneratedItemLimit(endpoint.scene.nodes.length, "Animation guide endpoint size", maxOutputNodes);
   const states = new Map();
   let work = 0;
   const spend = (count = 1) => validateWorkLimit(work += count, "Animation guide preparation work");

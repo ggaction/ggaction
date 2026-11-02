@@ -29,6 +29,7 @@ const STRIP_OPTIONS = Object.freeze([
   "id", "data", "coordinate", "x", "y", "color", "size", "shape", "point", "jitter", "guides", "missing"
 ]);
 const POINT_OPTIONS = Object.freeze([
+  "maxItems",
   "clip",   "radius", "shape", "fill", "opacity", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);

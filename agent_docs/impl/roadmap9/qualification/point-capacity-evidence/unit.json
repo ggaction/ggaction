@@ -1,0 +1,70 @@
+{
+  "label": "suite-unit",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/unit/actions/charts/endpoint-facades.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/unit/actions/charts/interval-regression-facades.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/unit/actions/charts/scatter-stroke-facade.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/unit/actions/marks/create-point-mark.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/unit/actions/marks/edit-point-mark.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/unit/actions/marks/point-capacity.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/unit/actions/marks/point-explicit-capacity.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/unit/core/validation.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/unit/persistence/program.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/unit/selectors/graphic-capacity.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 201209,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-11-01T16:43:52.707Z",
+  "finishedAt": "2026-11-01T16:47:13.916Z",
+  "source": {
+    "available": true,
+    "commit": "2ab9e9f64ea1689df5c3f75724019b92cd1c7efa",
+    "clean": false,
+    "statusSha256": "5ff16660e6a55d9d4a494a33031157a8e4fb186928053102c06549a50329745e"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "2ab9e9f64ea1689df5c3f75724019b92cd1c7efa",
+    "clean": false,
+    "statusSha256": "d736d911701f7d2d296d746f6f34a225eae144c2739008c98e6e0fc5af57d479"
+  },
+  "logSha256": "75962aedd423fd2943ae74a34f69feac3e9c9623738ac5d21f041e0b2d08abf5",
+  "discovery": {
+    "suite": "unit",
+    "selectors": [
+      "unit/actions/marks/point-explicit-capacity.test.js",
+      "unit/actions/marks/point-capacity.test.js",
+      "unit/actions/marks/create-point-mark.test.js",
+      "unit/actions/marks/edit-point-mark.test.js",
+      "unit/actions/charts/scatter-stroke-facade.test.js",
+      "unit/actions/charts/endpoint-facades.test.js",
+      "unit/persistence/program.test.js",
+      "unit/selectors/graphic-capacity.test.js",
+      "unit/core/validation.test.js",
+      "unit/actions/charts/interval-regression-facades.test.js"
+    ],
+    "files": [
+      "test/unit/actions/charts/endpoint-facades.test.js",
+      "test/unit/actions/charts/interval-regression-facades.test.js",
+      "test/unit/actions/charts/scatter-stroke-facade.test.js",
+      "test/unit/actions/marks/create-point-mark.test.js",
+      "test/unit/actions/marks/edit-point-mark.test.js",
+      "test/unit/actions/marks/point-capacity.test.js",
+      "test/unit/actions/marks/point-explicit-capacity.test.js",
+      "test/unit/core/validation.test.js",
+      "test/unit/persistence/program.test.js",
+      "test/unit/selectors/graphic-capacity.test.js"
+    ]
+  },
+  "bytes": 14402,
+  "retainedBytes": 14402,
+  "truncated": false
+}

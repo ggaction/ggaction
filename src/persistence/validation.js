@@ -1,3 +1,4 @@
+import { validateGeoGraphicCapacity } from "../grammar/geo/capacity.js";
 import { assertProgramSingleY } from "../materialization/frameState.js";
 import { validateTableBinding } from "../grammar/tablePlot.js";
 import { deriveTableData } from "../grammar/tableData.js";
@@ -49,7 +50,7 @@ import { isSizeShapeChannels, resolveSizeShapeMapping } from "../grammar/legendC
 import { describeLegendBlock, validateLegendChannels } from "../grammar/legendBlocks.js";
 import { localLegendPosition } from "../grammar/legendGroups.js";
 import { normalizeLegendBorderDash } from "../grammar/legendBorder.js";
-import { validateGraphicItemLimit } from "../core/validation.js";
+import { validateGraphicItemLimit, validatePointItemCapacity } from "../core/validation.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
 import { validateAxisLabelFlushThreshold, validateAxisTextPlacement,
@@ -58,7 +59,7 @@ import { validateTickSelectionRounding, axisTickSelection } from "../grammar/tic
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { validateRegressionFitStatistics, requireRegressionStatisticsSource, regressionStatisticsRows } from "../grammar/regression/statistics.js";
-import { resolveGraphicItemCapacity } from "../selectors/graphicCapacity.js";
+import { resolveGraphicItemCapacity, resolveGraphicGeoBinding } from "../selectors/graphicCapacity.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
 import { validateTickColorChannels } from "../grammar/scales/colorConsumers.js";
 import { normalizeColorInterpolationOptions } from "../grammar/scales/color.js";
@@ -131,6 +132,7 @@ function requireArray(value, path) {
 export function validateGraphic(graphic, path = "payload.graphicSpec", { legacy = false } = {}) {
   const validateProperties = (type, properties) => {
     validateConcreteGraphicProperties(type, properties);
+    if (legacy && Object.hasOwn(properties, "maxCommands")) throw invalidSnapshot("Path maxCommands requires editable snapshot version 4.", path);
     if (legacy && Object.hasOwn(properties, "fillRule")) throw invalidSnapshot("Path fillRule requires editable snapshot version 4.", path);
     if (legacy && properties.commands !== undefined) validateLegacyPathCommands(properties.commands);
   };
@@ -691,6 +693,12 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     const markConfig = program.markConfigs[id];
     const markType = resources.get("mark").get(id).mark.type;
+    if (Object.hasOwn(markConfig, "maxItems")) {
+      if (markType !== "point" || markConfig.maxItems === undefined) {
+        throw invalidSnapshot(`Mark config "${id}" maxItems requires an explicit point capacity.`, path);
+      }
+      validatePointItemCapacity(markConfig.maxItems);
+    }
     if (markConfig.outline !== undefined && (!MARK_OUTLINE_TYPES.includes(markType) || markType === "bar") ||
         markConfig.barAppearance?.outline !== undefined && markType !== "bar") {
       throw invalidSnapshot(`Mark config "${id}" has an unsupported outline owner.`, path);
@@ -731,6 +739,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
   assertProgramSingleY(program, { materialized: true });
   validateConcreteFontBindings(program);
   for (const [id, graphic] of Object.entries(program.graphicSpec.objects)) {
+    validateGeoGraphicCapacity(resolveGraphicGeoBinding(program, id), graphic);
     if (!legacy) for (const item of graphic.items ?? []) {
       if (item.identity !== undefined) resolveGraphicLineage(program, item.identity);
     }

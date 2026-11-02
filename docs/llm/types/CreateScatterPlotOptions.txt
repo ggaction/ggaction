@@ -11,6 +11,8 @@ export interface CreateScatterPlotOptions {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    /** Point raw and concrete item capacity; default 50000, maximum 100000. */
+    maxItems?: number;
     clip?: boolean;
     radius?: number;
     shape?: PointShape;

@@ -1,4 +1,5 @@
 export interface GraphicObject {
+  /** Path properties may declare maxCommands (integer 1..200000; omitted 30000). Clips keep their own limit. */
   /** Optional named non-Canvas owner clip in its unchanged parent frame. */
   readonly clip?: GraphicClip;
   readonly type: GraphicType;

@@ -3,3 +3,5 @@ export interface GeoMarkStyleOptions {
   readonly clip?: boolean; readonly lineCap?: "butt" | "round" | "square"; readonly lineJoin?: "miter" | "round" | "bevel";
   readonly miterLimit?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false; readonly blend?: BlendMode;
 }
+/** Per-mark projected output budget. Each explicit value is an integer from 1 through 200000.
+ * Omitted fields use 10000 projected points and 30000 commands; omission on edit retains the binding. */

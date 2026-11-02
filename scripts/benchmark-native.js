@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import { build } from "esbuild";
 import { chromium } from "playwright";
 import { preparePackageConsumer } from "./package-consumer.js";
+import { runLifecycleCycle, lifecycleBalance, lifecycleAbortTiming } from "./benchmarks/lifecycle.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const sha = value => createHash("sha256").update(value).digest("hex");
@@ -21,7 +22,7 @@ for (const argument of process.argv.slice(2)) {
 }
 if (!args.has("--archive") || !args.has("--output")) throw new Error("Native benchmark requires --archive=<local.tgz> and --output=<directory>.");
 const workload = args.get("--workload") ?? "all";
-if (!["all", "routes", "memory", "workloads", "points", "partition", "geo", "data"].includes(workload)) throw new Error("Native benchmark workload must be all, routes, memory, workloads, points, partition, geo or data.");
+if (!["all", "routes", "memory", "workloads", "points", "partition", "geo", "data", "inference"].includes(workload)) throw new Error("Native benchmark workload must be all, routes, memory, workloads, points, partition, geo, data or inference.");
 const diagnostic = args.has("--diagnostic");
 const archive = path.resolve(args.get("--archive")), out = path.resolve(args.get("--output"));
 const bytes = await readFile(archive);
@@ -35,26 +36,33 @@ const report = {
   profile: { seed: 0, dpr: [1, 2], warmups: diagnostic ? 0 : 5, measured: diagnostic ? 1 : 30, cycles: diagnostic ? 4 : 100 },
   environment: { cpu: os.cpus()[0].model, cores: os.cpus().length, ramBytes: os.totalmem(),
     os: `${os.type()} ${os.release()} ${os.arch()}`, node: process.version, start: new Date().toISOString(), loadStart: os.loadavg() },
-  scope: "Unchanged full native route fixtures; real DOM inspect mount, Blob route worker, alternating completion and abort. Memory fixture has no editing gesture, ResizeObserver or asset decoder; their combined heap obligation remains separate.",
+  scope: "Unchanged route/workload inputs. Combined lifecycle uses trusted Playwright mouse/capture, real PNG ImageBitmap decode/close, native ResizeObserver plus editCanvas/updateProgram, and real route workers. Half complete and half cancel; late decoded leases are disposed without session callbacks.",
   font: "No Text, labels or guides in measured graphics; host status text is outside measurement.",
   network: "Local bootstrap only, then offline; zero post-bootstrap HTTP requests required.",
   stages: { sourcePreparationMs: "one-time diagnostic, outside P95", computeMs: "worker public computation",
     prepareComputeValidateMs: "public preparation including worker startup, clone, computation and validation", applyMs: "native prepared commit",
     bundlingMs: "preparation plus apply", materializeMs: "native GraphPlot", canvasRenderMs: "synchronous commands",
     svgSerializeDomMs: "serialization and DOM insertion, excludes compositor paint" },
-  workloadScope: "Complete deterministic native point/hierarchy/Geo/data inputs at every required size. Native authoring and independent numeric preflight precede timing. Public layout includes immutable action validation; data blocking slice is the entire synchronous deserialize/revise call. Unsupported cells remain failures of support; no downsampling. Production P95 is not final qualification by itself.",
+  workloadScope: "Complete deterministic native point/hierarchy/Geo/data/inference inputs at every required size. Native authoring and independent numeric preflight precede timing. Public layout includes immutable action validation; data blocking slice is the entire synchronous deserialize/revise call. Unsupported cells remain failures of support; no downsampling. Inference uses exact k10 and a complete independent oracle. Source authoring and oracle initialization are outside timing. Worker time includes startup, copy, public compute and main validation; compute-only and native apply times are separate diagnostics. Production P95 is not final qualification by itself.",
   inputs: {}, cases: [], workloads: [], lifecycle: []
 };
-const files = ["scripts/benchmark-native.js", "scripts/benchmarks/routes.browser.js", "scripts/benchmarks/routes.worker.js", "scripts/benchmarks/workloads.browser.js"];
+const files = ["scripts/benchmark-native.js", "scripts/benchmarks/routes.browser.js", "scripts/benchmarks/routes.worker.js", "scripts/benchmarks/workloads.browser.js", "scripts/benchmarks/inference.js", "scripts/benchmarks/inference.worker.js", "test/oracles/inference-grid.js", "scripts/benchmarks/lifecycle.js"];
 for (const file of files) report.inputs[file] = sha(await readFile(path.join(root, file)));
 const persist = () => writeFile(path.join(out, "report.json"), JSON.stringify(report, null, 2) + "\n");
 let consumer, browser, server;
 try {
   consumer = await preparePackageConsumer({ packageSpec: archive });
   const assets = new Map();
-  for (const [file, output] of [["routes.browser.js", "app.js"], ["routes.worker.js", "worker.js"], ["workloads.browser.js", "workloads.js"]]) {
+  // Copy only the independently pinned benchmark oracle, never checkout runtime.
+  // Relative imports then resolve inside the same installed consumer directory.
+  const workloadDirectory = path.join(consumer.directory, "scripts/benchmarks");
+  await mkdir(workloadDirectory, { recursive: true });
+  await writeFile(path.join(workloadDirectory, "inference.js"), await readFile(path.join(root, "scripts/benchmarks/inference.js")));
+  await mkdir(path.join(consumer.directory, "test/oracles"), { recursive: true });
+  await writeFile(path.join(consumer.directory, "test/oracles/inference-grid.js"), await readFile(path.join(root, "test/oracles/inference-grid.js")));
+  for (const [file, output] of [["routes.browser.js", "app.js"], ["routes.worker.js", "worker.js"], ["inference.worker.js", "inference-worker.js"], ["workloads.browser.js", "workloads.js"]]) {
     const result = await build({ stdin: { contents: await readFile(new URL(`benchmarks/${file}`, import.meta.url), "utf8"),
-      resolveDir: consumer.directory, sourcefile: file }, absWorkingDir: consumer.directory,
+      resolveDir: file === "workloads.browser.js" ? workloadDirectory : consumer.directory, sourcefile: file }, absWorkingDir: consumer.directory,
       bundle: true, minify: true, format: "esm", platform: "browser", target: "es2022", write: false, metafile: true });
     const sources = Object.keys(result.metafile.inputs).filter(name => name !== file);
     assert.ok(sources.every(name => path.resolve(consumer.directory, name).startsWith(consumer.directory + path.sep)), "source checkout entered installed bundle");
@@ -133,12 +141,14 @@ try {
       }
       if (["all", "memory"].includes(workload)) {
         const { page, errors, requests } = await open(), cdp = await context.newCDPSession(page);
-        await page.evaluate(() => nativeBenchmark.resetLifecycle());
-        for (let i = 0; i < (diagnostic ? 0 : 5); i++) await page.evaluate(input => nativeBenchmark.lifecycle(input.i, input.ratio), { i, ratio });
+        const fixture = await page.evaluate(() => nativeBenchmark.resetLifecycle());
+        for (let i = 0; i < (diagnostic ? 0 : 5); i++) await runLifecycleCycle(page, i, ratio);
         const samples = [], results = [];
         for (let i = 0; i <= report.profile.cycles; i++) {
           if (i) {
-            const result = await page.evaluate(input => nativeBenchmark.lifecycle(input.i, input.ratio), { i, ratio });
+            const result = await runLifecycleCycle(page, i, ratio).catch(async error => {
+              report.lifecycleFailure = { cycle: i, ratio, snapshot: await page.evaluate(() => nativeBenchmark.lifecycleSnapshot()) }; throw error;
+            });
             assert.ok(Object.values(result.counters).every(value => value === 0), JSON.stringify(result)); results.push(result);
           }
           await cdp.send("HeapProfiler.collectGarbage");
@@ -147,11 +157,10 @@ try {
         const n = samples.length, meanX = (n - 1) / 2, meanY = samples.reduce((sum, x) => sum + x.usedSize, 0) / n;
         const slope = samples.reduce((sum, x) => sum + (x.cycle - meanX) * (x.usedSize - meanY), 0) / samples.reduce((sum, x) => sum + (x.cycle - meanX) ** 2, 0);
         const growth = samples.at(-1).usedSize - samples[0].usedSize;
-        const abort = results.filter(x => x.status === "aborted").map(x => x.abortAcknowledgementMs).sort((a, b) => a - b);
-        report.lifecycle.push({ ratio, cycles: report.profile.cycles, samples, results, gc: "CDP collectGarbage before every sample",
+        report.lifecycle.push({ ratio, cycles: report.profile.cycles, balance: lifecycleBalance(results), fixture, samples, results, gc: "CDP collectGarbage before every sample",
           slopeBytesPerCycle: slope, growthBytes: growth, thresholds: { slopeBytesPerCycle: 10240, growthBytes: 2097152 },
           heapStatus: diagnostic ? "not-qualified-diagnostic" : slope <= 10240 && growth <= 2097152 ? "passed-this-fixture" : "failed-this-fixture",
-          abortAcknowledgementP95Ms: abort[Math.ceil(abort.length * .95) - 1] });
+          ...lifecycleAbortTiming(results, diagnostic) });
         assert.deepEqual(errors, []); assert.deepEqual(requests, []); await cdp.detach(); await page.close(); await persist();
       }
     } finally { await context.close(); }
@@ -163,6 +172,6 @@ try {
   report.environment.end = new Date().toISOString(); report.environment.loadEnd = os.loadavg(); await persist();
   await browser?.close(); if (server) await new Promise(resolve => server.close(resolve)); await consumer?.cleanup();
 }
-if (!diagnostic && (report.cases.some(value => value.successSLO !== "passed-this-fixture") || report.lifecycle.some(value => value.heapStatus !== "passed-this-fixture") || report.workloads.some(value => value.stages.some(stage => stage.successSLO !== "passed-this-fixture")))) process.exitCode = 1;
+if (!diagnostic && (report.cases.some(value => value.successSLO !== "passed-this-fixture") || report.lifecycle.some(value => value.heapStatus !== "passed-this-fixture" || value.abortStatus !== "passed-this-fixture") || report.workloads.some(value => value.stages.some(stage => stage.successSLO !== "passed-this-fixture")))) process.exitCode = 1;
 
 if (diagnostic && report.workloads.some(value => value.stages.some(stage => stage.status === "failed"))) process.exitCode = 1;
