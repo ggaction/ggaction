@@ -55,3 +55,5 @@ heterogeneous admission과 held-result sample 수명, 전체 final actionStack/t
 [qualification](route-layout-stages-evidence/qualification.json)은 source bytes, 공통 archive와
 압축 raw receipts를 결박한다. Public B/전체 union/final actionStack·theme/data·composition/fit/
 전체100ms/원 large capacity는 미완료이며 이 checkpoint가 대체하지 않는다.
+
+검증 source commit은 `cece0c5dfca920fe312fca6e5289542773fbbe0c`이며 후행 metadata pin은 실행 bytes를 바꾸지 않는다.
