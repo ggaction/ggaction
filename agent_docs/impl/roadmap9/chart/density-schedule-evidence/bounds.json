@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "source": "90ae731513ec85a8eb5bd378a82d5904d1be6da4",
+  "productDefaultsUnchanged": {
+    "maxNodes": 100000,
+    "maxEdges": 1000000,
+    "maxCandidatePairs": 10000000,
+    "maxSamples": 10000000
+  },
+  "rows": [
+    {
+      "edges": 100,
+      "channels": 1,
+      "perEdgeCap": 4096,
+      "maximumS": 409600,
+      "maximumFieldCells": 65536,
+      "sampleChargeUpper": {
+        "beforeField": 2457800,
+        "field": 2523336,
+        "resample": 2113736,
+        "finalization": 819200
+      },
+      "numericBytesUpper": {
+        "packedLive": 6554004,
+        "packedPreparation": 6586764
+      },
+      "iterationPointObjectUpper": 1236992,
+      "interpretation": "Conservative arithmetic ceiling; no allocation, solver, heap estimate or large admission."
+    },
+    {
+      "edges": 100,
+      "channels": 8,
+      "perEdgeCap": 4096,
+      "maximumS": 409600,
+      "maximumFieldCells": 524288,
+      "sampleChargeUpper": {
+        "beforeField": 2457800,
+        "field": 2982088,
+        "resample": 2572488,
+        "finalization": 819200
+      },
+      "numericBytesUpper": {
+        "packedLive": 6554004,
+        "packedPreparation": 6586764
+      },
+      "iterationPointObjectUpper": 1236992,
+      "interpretation": "Conservative arithmetic ceiling; no allocation, solver, heap estimate or large admission."
+    },
+    {
+      "edges": 1000,
+      "channels": 1,
+      "perEdgeCap": 4096,
+      "maximumS": 4096000,
+      "maximumFieldCells": 65536,
+      "sampleChargeUpper": {
+        "beforeField": 24578000,
+        "field": 24643536,
+        "resample": 20547536,
+        "finalization": 8192000
+      },
+      "numericBytesUpper": {
+        "packedLive": 65540004,
+        "packedPreparation": 65572764
+      },
+      "iterationPointObjectUpper": 12296192,
+      "interpretation": "Conservative arithmetic ceiling; no allocation, solver, heap estimate or large admission."
+    },
+    {
+      "edges": 1000,
+      "channels": 8,
+      "perEdgeCap": 4096,
+      "maximumS": 4096000,
+      "maximumFieldCells": 524288,
+      "sampleChargeUpper": {
+        "beforeField": 24578000,
+        "field": 25102288,
+        "resample": 21006288,
+        "finalization": 8192000
+      },
+      "numericBytesUpper": {
+        "packedLive": 65540004,
+        "packedPreparation": 65572764
+      },
+      "iterationPointObjectUpper": 12296192,
+      "interpretation": "Conservative arithmetic ceiling; no allocation, solver, heap estimate or large admission."
+    },
+    {
+      "edges": 10000,
+      "channels": 1,
+      "perEdgeCap": 4096,
+      "maximumS": 40960000,
+      "maximumFieldCells": 65536,
+      "sampleChargeUpper": {
+        "beforeField": 245780000,
+        "field": 245845536,
+        "resample": 204885536,
+        "finalization": 81920000
+      },
+      "numericBytesUpper": {
+        "packedLive": 655400004,
+        "packedPreparation": 655432764
+      },
+      "iterationPointObjectUpper": 122888192,
+      "interpretation": "Conservative arithmetic ceiling; no allocation, solver, heap estimate or large admission."
+    },
+    {
+      "edges": 10000,
+      "channels": 8,
+      "perEdgeCap": 4096,
+      "maximumS": 40960000,
+      "maximumFieldCells": 524288,
+      "sampleChargeUpper": {
+        "beforeField": 245780000,
+        "field": 246304288,
+        "resample": 205344288,
+        "finalization": 81920000
+      },
+      "numericBytesUpper": {
+        "packedLive": 655400004,
+        "packedPreparation": 655432764
+      },
+      "iterationPointObjectUpper": 122888192,
+      "interpretation": "Conservative arithmetic ceiling; no allocation, solver, heap estimate or large admission."
+    }
+  ],
+  "missing": [
+    "Actual 20-iteration sample counts and final bytes for original100/1000/10000.",
+    "Native source/model/index and caller input object counts.",
+    "Array/reference counts, Map bucket capacity, allocator overhead and collector residency.",
+    "Tagged encoding/canonical text/UTF8/hash padding and structured-clone packet coexistence."
+  ]
+}

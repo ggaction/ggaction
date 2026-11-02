@@ -134,6 +134,13 @@ resource write 권한은 `preparedResourceContext.js`를 재사용한다. 위14�
 6. 준비·실패·취소·late worker는 원 committed program/selection/history/trace를 바꾸지 않는다.
    Final 검증 실패 시 worker와 모든 staged 결과를 해제한다. 결과 없는 순환 retry는 하지 않는다.
 
+## 직접14개 이후의 후속 구체화
+
+[추가 ledger](route-bounded-policy-ledger.md)의 native phase 표와 [source-pinned 후보 목록](density-schedule-evidence/native-union.json)은
+guide/encoding/mark/theme/composition 누락을 확인하기 위한332개 실제 action 상위집합이다.
+목록 생성이 최소 union/adapter 구현/인수 완료의 증거는 아니다. 실제 native dependency phase와
+positive closure를 대조해 닫을 것이며, 기본 primitive와 관계없는 arbitrary action을 허용하지 않는다.
+
 ## 구현 전 남은 결정과 증거
 
 - 원 density20회 실제 S/T 및 final packet bytes. 초기 count 또는 최악 산식을 실제 완료로 쓰지 않는다.
