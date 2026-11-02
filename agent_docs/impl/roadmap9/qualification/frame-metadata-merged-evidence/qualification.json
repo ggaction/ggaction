@@ -1,6 +1,5 @@
 {
   "status": "functional-checkpoint-verified",
-  "sourceRevisionPendingPin": true,
   "baseSourceRevision": "10103dc24",
   "authorization": "../AUTHORIZATION.json#remainingApproval",
   "archive": {
@@ -290,6 +289,30 @@
     "prototype-product-observer.mjs": {
       "sha256": "bd275e56d24550b0953cb3820a770c92c5dcdf56d6243ac99f74c2235499cb4d",
       "bytes": 1215
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "9205a798c9ab2075af2bcc22c000963fae12bb1116d01b81cda1cc5879a210d6",
+      "bytes": 1809
+    },
+    "source-pin-pack.json": {
+      "sha256": "87ae19445a31b83e5c7d2afaa0b40e618a85a0a8f451f8e4814a8c8c00ad506b",
+      "bytes": 391
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
   },
   "coverage": {
@@ -309,5 +332,17 @@
     "pack20.stderr: prior packed artifact ceiling",
     "node20.json: prior animation bundle ceiling; same measurement rechecked",
     "prototype boundary-loader-order-failure.log: import ordering, corrected before success"
-  ]
+  ],
+  "sourceRevision": "bfca15ef60e8394a27c857410212fcfeab387652",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
 }
