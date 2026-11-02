@@ -1,0 +1,58 @@
+{
+  "geo-a2-columns-candidates.json": {
+    "bytes": 21935,
+    "sha256": "7b5198ac0362d12198383d6dbd4f86080d0aacb448207e8609771772ec2f08e2"
+  },
+  "geo-a2-columns-candidates.log": {
+    "bytes": 8315,
+    "sha256": "6df4b2279f91a21740a2e1c0a82f3b85d75a328de77a8f2b1fb5afe2542ed46e"
+  },
+  "geo-a2-columns-candidates.mjs": {
+    "bytes": 8910,
+    "sha256": "f9b013fe2f72592332c7d59326e47ef5ff7554fc98d26a4f6d10bd425ed4c226"
+  },
+  "geo-a2-columns-small.json": {
+    "bytes": 8201,
+    "sha256": "70c1c74fa3b2d0ea2fe573d3db34c200a84d3aeb07eacc333bd879af6f8b387d"
+  },
+  "geo-a2-columns-small.log": {
+    "bytes": 1397,
+    "sha256": "4fcd87d479895cce211dfb9bc250207fa53f45c16e43df20b4a6e35e8abe8aa2"
+  },
+  "geo-a2-columns-small.mjs": {
+    "bytes": 3872,
+    "sha256": "ee8fae26b2286ac933b73d73be83be155442f7bda7a6b856c8267bc6565991f1"
+  },
+  "geo-a2-count-proof.json": {
+    "bytes": 2380,
+    "sha256": "97a8fd94980ebdc948298718f7ac6fda388f5bb0b4414cd52a1f8a77544fbe81"
+  },
+  "geo-a2-count-proof.log": {
+    "bytes": 2381,
+    "sha256": "fdf9b72510916e5369253fbd0ab58007fb2fc5291518b22a05ba0d08dc82968c"
+  },
+  "geo-a2-count-proof.mjs": {
+    "bytes": 3566,
+    "sha256": "efad6ebb36b0a36ce8c1be4b2392b28943744076b0d4acc3ccc6abc8384fc68d"
+  },
+  "geo-a2-legacy-goldens.json": {
+    "bytes": 2262,
+    "sha256": "78a134b9948617e63d603760d5ce496a70d03500eac3235cb86a58362c188fcb"
+  },
+  "geo-a2-legacy-goldens.log": {
+    "bytes": 2263,
+    "sha256": "b4582cacfd7e936a35e9692e497ffa1891037c55c4e119e52f260129f23cc131"
+  },
+  "geo-a2-legacy-goldens.mjs": {
+    "bytes": 2679,
+    "sha256": "0ef68dbfaa5abf9d0eb7e6b692fb242eedf3b1203da3fbf35942cc778923f7e8"
+  },
+  "geo-a2-legacy-v3.json": {
+    "bytes": 10407,
+    "sha256": "822ac7ff7df1edb9874803a92205dda9494251cbafa66702f0623c133a59d3fe"
+  },
+  "geo-a2-legacy-v4.json": {
+    "bytes": 12085,
+    "sha256": "408a6613bfec1bb1ead1009a5b5498c9cbe542845253bb2a16645215fe2e9f53"
+  }
+}
