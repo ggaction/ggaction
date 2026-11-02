@@ -6,7 +6,7 @@
 - [x] 같은 canonical archive의 Node20/22/24 각각 runtime5개·strict type·문서2개·optional peers·bundle6개 통과
 - [x] 실제 Chromium worker의 원100/1000/10000노드와 모든 간선·원행·가중치 검산
 - [x] 문서186페이지·LLM1606개 identity 검사
-- [ ] 소스 commit pin 및 동일 archive 재확인
+- [x] 소스 commit pin 및 동일 archive 재확인
 - [ ] 최종 combined AT82 반복 P95·retained heap·100cycle와 STEP057–070 종료
 
 정확한 입력·실행 결과·첫 실패는 [qualification.json](qualification.json)이 소유한다.
@@ -26,6 +26,10 @@ Node20 최초 packed cap 실패와 suite selector 오류는 원 log로 보존한
 원100000간선과 search work31,318,394를 전수 유지했다.
 이 관측이10초 아래라도 warmup5/측정30의 P95 또는 최종 성능 지원 통과로 세지 않는다.
 최종 합산 후보의 전체9명령·577consumer·79ATgroup 및 보호된 최종 전달은 열려 있다.
+
+소스 `5c07283cefeb08f9eca0e40bf5ab1e70c13c094b` pin 이후 문서 계약9개가 통과했고,
+재포장한 archive SHA도 위 canonical archive와 동일하다. 메타데이터 기록이 runtime이나
+package 입력을 바꾸지 않았으며 추가 전체 suite 실행으로 세지 않는다.
 
 재현은 저장된 `evidence.py.gz`를 artifact 디렉터리에 복원하여 실행한다.
 설치 harness는 기존 `qualification/inference-worker-evidence/installed.mjs`를 재사용하며,
