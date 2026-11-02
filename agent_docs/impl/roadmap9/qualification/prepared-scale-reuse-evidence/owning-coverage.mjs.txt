@@ -1,0 +1,5 @@
+import {collectTestFiles} from '../../scripts/run-tests.js';
+import {spawn} from 'node:child_process';
+const files=collectTestFiles('unit',undefined,['capability:animation']);
+const args=['--test','--test-concurrency=4','--experimental-test-coverage','--test-coverage-include=src/grammar/animation/positions.js','--test-coverage-include=src/animation/planner.js',...files];
+const child=spawn(process.execPath,args,{stdio:'inherit'});child.on('exit',code=>process.exitCode=code);

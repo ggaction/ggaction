@@ -1,0 +1,7 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+import {preparePackageConsumer} from '../../scripts/package-consumer.js';
+import {run,root} from '../../scripts/consumers/runtime.js';
+const artifact=JSON.parse(await readFile('.artifacts/prepared-scale/package.json','utf8'));
+const consumer=await preparePackageConsumer({packageSpec:artifact.file});
+try{run(process.execPath,['scripts/run-tests.js','browser','test/browser/animation-offline.browser.js'],root,{env:{...process.env,GGACTION_ANIMATION_PACKAGE_ROOT:path.join(consumer.directory,'node_modules','ggaction')}});await writeFile('.artifacts/prepared-scale/browser-installed.json',JSON.stringify({archiveSHA256:artifact.sha256,sourceRootInputs:0,dpr:[1,2],versions:[3,4],status:'passed'},null,2)+'\n');}finally{await consumer.cleanup();}

@@ -1,0 +1,106 @@
+{
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1256,
+    "packedBytes": 1805166,
+    "unpackedBytes": 8139937,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-prepared-scales/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "93e0789121eb2c0d42ba5a36ce986f8fd431b062",
+    "sha256": "ebaf0bbb61f178caafe4895a1991671841cb209ea84e671f74e14d7821ceb4b9"
+  },
+  "node": "v20.20.2",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed"
+    },
+    {
+      "id": "public-prepared-scales-and-animation",
+      "status": "passed"
+    },
+    {
+      "id": "strict-types",
+      "status": "passed"
+    },
+    {
+      "id": "doc:animation-offline",
+      "status": "passed"
+    },
+    {
+      "id": "doc:animation-capacity",
+      "status": "passed"
+    },
+    {
+      "id": "doc:animation-guides",
+      "status": "passed"
+    },
+    {
+      "id": "doc:animation-gradient-legend",
+      "status": "passed"
+    },
+    {
+      "id": "doc:animation-size-legend",
+      "status": "passed"
+    },
+    {
+      "id": "doc:animation-categorical-legend",
+      "status": "passed"
+    },
+    {
+      "id": "doc:animation-grouped-legend",
+      "status": "passed"
+    }
+  ],
+  "bundles": {
+    "ggaction": {
+      "gzipBytes": 787369,
+      "limit": 787400,
+      "status": "passed",
+      "previousLimit": 787400
+    },
+    "ggaction/basic": {
+      "gzipBytes": 424738,
+      "limit": 424800,
+      "status": "passed",
+      "previousLimit": 424800
+    },
+    "ggaction/svg": {
+      "gzipBytes": 24954,
+      "limit": 26000,
+      "status": "passed",
+      "previousLimit": 26000
+    },
+    "ggaction/graph": {
+      "gzipBytes": 68878,
+      "limit": 68900,
+      "status": "passed",
+      "previousLimit": 68900
+    },
+    "ggaction/animation": {
+      "gzipBytes": 339677,
+      "limit": 339700,
+      "status": "passed",
+      "previousLimit": 339400
+    },
+    "ggaction/interaction": {
+      "gzipBytes": 136692,
+      "limit": 136700,
+      "status": "passed",
+      "previousLimit": 136700
+    }
+  },
+  "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "budgetRecheck": {
+    "input": ".artifacts/prepared-scale/consumer-20.20.2-before-cap.json",
+    "onlyAnimationCapChanged": true,
+    "reusedExactMeasurements": true,
+    "archiveSHA256Verified": true,
+    "publicRuntimeTypesDocsPeersAlreadyPassed": true
+  }
+}

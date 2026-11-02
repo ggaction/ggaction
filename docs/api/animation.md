@@ -661,5 +661,9 @@ bounds through long strings, complex styles, or repeated expansion; restoration
 rejects the entire payload. Other geometry, timeline, sample, and batch limits
 remain unchanged. Existing version 3 animations remain readable.
 
+Version 4 encoding is lossless, but newly prepared plans with the same values can
+use different compact representations. A restored version 4 plan retains its
+stored representation for subsequent serialization.
+
 The same time and stored algorithm versions reproduce the same canonical scene.
 This does not assert identical font rasterization across operating systems.

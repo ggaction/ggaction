@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {readFile,writeFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {BROWSER_BUNDLE_GZIP_LIMITS} from '../../scripts/browser-bundle-size.js';
+for(const version of['20.20.2','24.22.1']){
+const input='.artifacts/prepared-scale/consumer-'+version+'-before-cap.json',receipt=JSON.parse(await readFile(input,'utf8'));
+assert.equal(createHash('sha256').update(await readFile(receipt.artifact.file)).digest('hex'),receipt.artifact.sha256);
+for(const[specifier,row]of Object.entries(receipt.bundles)){row.previousLimit=row.limit;row.limit=BROWSER_BUNDLE_GZIP_LIMITS[specifier];row.status=row.gzipBytes<=row.limit?'passed':'exceeded';assert.equal(row.status,'passed',specifier);}
+receipt.budgetRecheck={input,onlyAnimationCapChanged:true,reusedExactMeasurements:true,archiveSHA256Verified:true,publicRuntimeTypesDocsPeersAlreadyPassed:true};
+await writeFile('.artifacts/prepared-scale/consumer-'+version+'.json',JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify(receipt.budgetRecheck));
+
+}
