@@ -150,7 +150,16 @@ separate runners. Editable Node fixtures are grouped by contract owner and
 registered in `fixtures/node/manifest.json`. Every case gets its own status,
 duration, and original error in `.artifacts/consumers/node-cases.json`; independent
 qualification phases continue after a failure and write `qualification.json`.
-The package install is shared and its directory is always reclaimed.
+The package install is shared and its directory is always reclaimed. By default,
+Node cases run in one process. The explicit module metadata `isolation: "case"`
+runs each declared case in a fresh Node process using that same installation,
+working directory, environment, and consumer Node arguments. Each child must
+supply exactly one matching receipt and a consistent exit status; missing,
+duplicate, or malformed receipts fail the case. The parent preserves manifest
+order and continues after failures. Its existing deadline also applies to each
+isolated case, with process-tree cleanup on timeout or cancellation. Isolation
+resets process lifetime between these cases; it does not establish retained-state
+or performance qualification.
 
 Type contract tests use `test/support/typescript.js`, which preserves each
 fixture's compiler options and negative assertions, invokes the compiler through

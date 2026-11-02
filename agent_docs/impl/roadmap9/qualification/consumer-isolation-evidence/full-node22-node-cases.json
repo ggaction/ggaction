@@ -1,0 +1,2442 @@
+[
+  {
+    "id": "composition/content-facet",
+    "status": "passed",
+    "durationMs": 38.337833000000046,
+    "pid": 8461
+  },
+  {
+    "id": "composition/program",
+    "status": "passed",
+    "durationMs": 873.426125,
+    "pid": 8461
+  },
+  {
+    "id": "composition/deserialize-program",
+    "status": "passed",
+    "durationMs": 45.78708299999994,
+    "pid": 8461
+  },
+  {
+    "id": "composition/shared-lane",
+    "status": "passed",
+    "durationMs": 131.31583299999988,
+    "pid": 8461
+  },
+  {
+    "id": "composition/create-canvas",
+    "status": "passed",
+    "durationMs": 113.37895900000012,
+    "pid": 8461
+  },
+  {
+    "id": "composition/windowed",
+    "status": "passed",
+    "durationMs": 114.09116700000004,
+    "pid": 8461
+  },
+  {
+    "id": "composition/parent-legend",
+    "status": "passed",
+    "durationMs": 106.40770799999996,
+    "pid": 8461
+  },
+  {
+    "id": "composition/parent-combined",
+    "status": "passed",
+    "durationMs": 61.897665999999845,
+    "pid": 8461
+  },
+  {
+    "id": "composition/initial-headers",
+    "status": "passed",
+    "durationMs": 9.125917000000072,
+    "pid": 8461
+  },
+  {
+    "id": "composition/many-panels",
+    "status": "passed",
+    "durationMs": 545.6991250000003,
+    "pid": 8461
+  },
+  {
+    "id": "composition/compact-facet",
+    "status": "passed",
+    "durationMs": 32.71470900000031,
+    "pid": 8461
+  },
+  {
+    "id": "composition/plot-anchored-facet",
+    "status": "passed",
+    "durationMs": 11.824874999999793,
+    "pid": 8461
+  },
+  {
+    "id": "composition/package-polar-rows",
+    "status": "passed",
+    "durationMs": 26.854041999999936,
+    "pid": 8461
+  },
+  {
+    "id": "composition/package-parallel-unit",
+    "status": "passed",
+    "durationMs": 15.234750000000076,
+    "pid": 8461
+  },
+  {
+    "id": "package-entries/create-canvas",
+    "status": "passed",
+    "durationMs": 9.11933399999998,
+    "pid": 8461
+  },
+  {
+    "id": "package-entries/create-canvas-2",
+    "status": "passed",
+    "durationMs": 27.980583000000024,
+    "pid": 8461
+  },
+  {
+    "id": "package-entries/clip-base",
+    "status": "passed",
+    "durationMs": 5.818459000000075,
+    "pid": 8461
+  },
+  {
+    "id": "package-entries/long-line",
+    "status": "passed",
+    "durationMs": 293.5335829999999,
+    "pid": 8461
+  },
+  {
+    "id": "package-entries/create-canvas-3",
+    "status": "passed",
+    "durationMs": 5774.274459,
+    "pid": 8461
+  },
+  {
+    "id": "package-entries/precomputed-box",
+    "status": "passed",
+    "durationMs": 29.462792000000263,
+    "pid": 8461
+  },
+  {
+    "id": "package-entries/text-plot",
+    "status": "passed",
+    "durationMs": 25.917499999999563,
+    "pid": 8461
+  },
+  {
+    "id": "package-entries/exponential-regression",
+    "status": "passed",
+    "durationMs": 12.982082999998966,
+    "pid": 8461
+  },
+  {
+    "id": "package-entries/create-canvas-4",
+    "status": "passed",
+    "durationMs": 54.030541999998604,
+    "pid": 8461
+  },
+  {
+    "id": "package-entries/create-canvas-5",
+    "status": "passed",
+    "durationMs": 11.371666999999434,
+    "pid": 8461
+  },
+  {
+    "id": "package-entries/centered",
+    "status": "passed",
+    "durationMs": 8.14641599999959,
+    "pid": 8461
+  },
+  {
+    "id": "package-entries/entry-surface",
+    "status": "passed",
+    "durationMs": 0.2969169999996666,
+    "pid": 8461
+  },
+  {
+    "id": "guides/three-channel-interval-legend",
+    "status": "passed",
+    "durationMs": 155.68545799999993,
+    "pid": 8461
+  },
+  {
+    "id": "guides/overflow-summary-line",
+    "status": "passed",
+    "durationMs": 36.080040999999255,
+    "pid": 8461
+  },
+  {
+    "id": "guides/axis-label-edge-threshold",
+    "status": "passed",
+    "durationMs": 26.380708999999115,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-horizontal-grid",
+    "status": "passed",
+    "durationMs": 20.11016600000039,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas",
+    "status": "passed",
+    "durationMs": 43.51445800000147,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-2",
+    "status": "passed",
+    "durationMs": 136.61804200000006,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-3",
+    "status": "passed",
+    "durationMs": 38.606958000000304,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-4",
+    "status": "passed",
+    "durationMs": 49.94995799999924,
+    "pid": 8461
+  },
+  {
+    "id": "guides/underlay-plot",
+    "status": "passed",
+    "durationMs": 49.41374999999971,
+    "pid": 8461
+  },
+  {
+    "id": "guides/spaced-base",
+    "status": "passed",
+    "durationMs": 53.19449999999961,
+    "pid": 8461
+  },
+  {
+    "id": "guides/spaced-basic",
+    "status": "passed",
+    "durationMs": 13.81500000000051,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-5",
+    "status": "passed",
+    "durationMs": 202.2909579999996,
+    "pid": 8461
+  },
+  {
+    "id": "guides/polygon-vertices",
+    "status": "passed",
+    "durationMs": 161.3236250000009,
+    "pid": 8461
+  },
+  {
+    "id": "guides/mapped-size",
+    "status": "passed",
+    "durationMs": 87.33908399999927,
+    "pid": 8461
+  },
+  {
+    "id": "guides/independent-ramp",
+    "status": "passed",
+    "durationMs": 59.67645799999991,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-6",
+    "status": "passed",
+    "durationMs": 141.9941659999986,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-7",
+    "status": "passed",
+    "durationMs": 301.84091699999954,
+    "pid": 8461
+  },
+  {
+    "id": "guides/blank-lines",
+    "status": "passed",
+    "durationMs": 12.594957999999679,
+    "pid": 8461
+  },
+  {
+    "id": "guides/subtitle-line-spacing",
+    "status": "passed",
+    "durationMs": 14.157083000000057,
+    "pid": 8461
+  },
+  {
+    "id": "guides/blank-legend",
+    "status": "passed",
+    "durationMs": 29.387917000000016,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-8",
+    "status": "passed",
+    "durationMs": 201.5393750000003,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-9",
+    "status": "passed",
+    "durationMs": 82.46054200000071,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-10",
+    "status": "passed",
+    "durationMs": 130.45091700000012,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-11",
+    "status": "passed",
+    "durationMs": 50.23016699999971,
+    "pid": 8461
+  },
+  {
+    "id": "guides/inside-legend",
+    "status": "passed",
+    "durationMs": 111.40600000000086,
+    "pid": 8461
+  },
+  {
+    "id": "guides/stroked",
+    "status": "passed",
+    "durationMs": 153.3244160000013,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-12",
+    "status": "passed",
+    "durationMs": 106.175792,
+    "pid": 8461
+  },
+  {
+    "id": "guides/category-sizes",
+    "status": "passed",
+    "durationMs": 71.34054199999991,
+    "pid": 8461
+  },
+  {
+    "id": "guides/bounded-combined-seed",
+    "status": "passed",
+    "durationMs": 79.74004100000093,
+    "pid": 8461
+  },
+  {
+    "id": "guides/installed-appearance",
+    "status": "passed",
+    "durationMs": 161.27508300000045,
+    "pid": 8461
+  },
+  {
+    "id": "guides/installed-display-axis",
+    "status": "passed",
+    "durationMs": 10.982042000001456,
+    "pid": 8461
+  },
+  {
+    "id": "guides/installed-facet-headers",
+    "status": "passed",
+    "durationMs": 29.107624999998734,
+    "pid": 8461
+  },
+  {
+    "id": "guides/polar-base",
+    "status": "passed",
+    "durationMs": 755.8810410000006,
+    "pid": 8461
+  },
+  {
+    "id": "guides/axis-lifecycle",
+    "status": "passed",
+    "durationMs": 29.91716699999961,
+    "pid": 8461
+  },
+  {
+    "id": "guides/fitted-labels",
+    "status": "passed",
+    "durationMs": 240.0141249999997,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-13",
+    "status": "passed",
+    "durationMs": 48.74987499999952,
+    "pid": 8461
+  },
+  {
+    "id": "guides/transition-rows",
+    "status": "passed",
+    "durationMs": 2100.938417000001,
+    "pid": 8461
+  },
+  {
+    "id": "guides/joint-pie",
+    "status": "passed",
+    "durationMs": 22.01179200000115,
+    "pid": 8461
+  },
+  {
+    "id": "guides/ordered-pie",
+    "status": "passed",
+    "durationMs": 45.58891600000061,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-14",
+    "status": "passed",
+    "durationMs": 104.2768329999999,
+    "pid": 8461
+  },
+  {
+    "id": "guides/measured-radius",
+    "status": "passed",
+    "durationMs": 54.858124999998836,
+    "pid": 8461
+  },
+  {
+    "id": "guides/parallel-facade",
+    "status": "passed",
+    "durationMs": 61.10216700000092,
+    "pid": 8461
+  },
+  {
+    "id": "guides/shape-legend-base",
+    "status": "passed",
+    "durationMs": 45.45858399999997,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-15",
+    "status": "passed",
+    "durationMs": 226.42291600000135,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-16",
+    "status": "passed",
+    "durationMs": 148.05066699999952,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-17",
+    "status": "passed",
+    "durationMs": 185.9808750000011,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-18",
+    "status": "passed",
+    "durationMs": 371.8552500000005,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-19",
+    "status": "passed",
+    "durationMs": 168.70595800000046,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-20",
+    "status": "passed",
+    "durationMs": 431.3995410000007,
+    "pid": 8461
+  },
+  {
+    "id": "guides/legend-content-base",
+    "status": "passed",
+    "durationMs": 402.8988339999996,
+    "pid": 8461
+  },
+  {
+    "id": "guides/entry-surface",
+    "status": "passed",
+    "durationMs": 0.17866700000013225,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-21",
+    "status": "passed",
+    "durationMs": 207.52037500000006,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-22",
+    "status": "passed",
+    "durationMs": 273.0194169999995,
+    "pid": 8461
+  },
+  {
+    "id": "guides/bottom-legend-base",
+    "status": "passed",
+    "durationMs": 27.87962499999776,
+    "pid": 8461
+  },
+  {
+    "id": "guides/edited-size-legend",
+    "status": "passed",
+    "durationMs": 51.95716699999684,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-23",
+    "status": "passed",
+    "durationMs": 46.75129200000083,
+    "pid": 8461
+  },
+  {
+    "id": "guides/discrete-size",
+    "status": "passed",
+    "durationMs": 21.908542000001034,
+    "pid": 8461
+  },
+  {
+    "id": "guides/create-canvas-24",
+    "status": "passed",
+    "durationMs": 289.97087499999907,
+    "pid": 8461
+  },
+  {
+    "id": "guides/weighted-rules",
+    "status": "passed",
+    "durationMs": 226.63837500000227,
+    "pid": 8461
+  },
+  {
+    "id": "guides/comparison-rows",
+    "status": "passed",
+    "durationMs": 87.67170800000167,
+    "pid": 8461
+  },
+  {
+    "id": "guides/entry-surface-2",
+    "status": "passed",
+    "durationMs": 0.8027079999992566,
+    "pid": 8461
+  },
+  {
+    "id": "guides/histogram-labels",
+    "status": "passed",
+    "durationMs": 53.858791999999085,
+    "pid": 8461
+  },
+  {
+    "id": "guides/reference-rect",
+    "status": "passed",
+    "durationMs": 22.75895799999853,
+    "pid": 8461
+  },
+  {
+    "id": "guides/source-text-scale",
+    "status": "passed",
+    "durationMs": 40.81512499999735,
+    "pid": 8461
+  },
+  {
+    "id": "guides/standalone-axis",
+    "status": "passed",
+    "durationMs": 34.52170800000022,
+    "pid": 8461
+  },
+  {
+    "id": "guides/explicit-rotations",
+    "status": "passed",
+    "durationMs": 14.206916999999521,
+    "pid": 8461
+  },
+  {
+    "id": "guides/semantic-labels",
+    "status": "passed",
+    "durationMs": 107.1060830000024,
+    "pid": 8461
+  },
+  {
+    "id": "guides/legend-base",
+    "status": "passed",
+    "durationMs": 48.272124999999505,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/edit-y-scale",
+    "status": "passed",
+    "durationMs": 27.392667000000074,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/create-canvas",
+    "status": "passed",
+    "durationMs": 100.3604579999992,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/palette-base",
+    "status": "passed",
+    "durationMs": 20.790667000001122,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/interval-rows",
+    "status": "passed",
+    "durationMs": 43.098540999999386,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/numeric-area",
+    "status": "passed",
+    "durationMs": 38.27129100000093,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/blended-bar",
+    "status": "passed",
+    "durationMs": 55.744833000000654,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/resource-cleanup",
+    "status": "passed",
+    "durationMs": 2.2547080000003916,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/entry-surface",
+    "status": "passed",
+    "durationMs": 0.20591699999931734,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/entry-surface-2",
+    "status": "passed",
+    "durationMs": 0.16191699999762932,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/polar-frame",
+    "status": "passed",
+    "durationMs": 13.893084000003,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/basic-themed",
+    "status": "passed",
+    "durationMs": 10.54741699999795,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/scatter-facade",
+    "status": "passed",
+    "durationMs": 8.54975000000195,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/basic-scatter",
+    "status": "passed",
+    "durationMs": 10.359916000001249,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/rule-source",
+    "status": "passed",
+    "durationMs": 21.95833400000265,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/filled-band",
+    "status": "passed",
+    "durationMs": 44.18566700000156,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/create-canvas-2",
+    "status": "passed",
+    "durationMs": 26.19141600000148,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/timed-horizon",
+    "status": "passed",
+    "durationMs": 24.34333300000071,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/horizon",
+    "status": "passed",
+    "durationMs": 38.697416999999405,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/area-rows",
+    "status": "passed",
+    "durationMs": 95.56370799999786,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/line-facade",
+    "status": "passed",
+    "durationMs": 24.90779200000179,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/ordered-line-facade",
+    "status": "passed",
+    "durationMs": 13.114541999999346,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/offset-scale-facade",
+    "status": "passed",
+    "durationMs": 36.050624999999854,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/ordered-categories",
+    "status": "passed",
+    "durationMs": 17.663875000002008,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/midpoint-plot",
+    "status": "passed",
+    "durationMs": 80.45491699999911,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/binned-heatmap-facade",
+    "status": "passed",
+    "durationMs": 32.61420800000269,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/gradient-plot-facade",
+    "status": "passed",
+    "durationMs": 121.68595900000219,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/weighted-arcs",
+    "status": "passed",
+    "durationMs": 7.0943330000009155,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/text-datum",
+    "status": "passed",
+    "durationMs": 9.75104199999987,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/annotation-source",
+    "status": "passed",
+    "durationMs": 37.350249999999505,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/utc-text",
+    "status": "passed",
+    "durationMs": 12.005249999998341,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/text-source",
+    "status": "passed",
+    "durationMs": 18.028666999998677,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/font-weight-program",
+    "status": "passed",
+    "durationMs": 9.195749999998952,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/sequential-count",
+    "status": "passed",
+    "durationMs": 11.823416000002908,
+    "pid": 8461
+  },
+  {
+    "id": "encodings/direct-sequential-count",
+    "status": "passed",
+    "durationMs": 1.719082999999955,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/create-canvas",
+    "status": "passed",
+    "durationMs": 1.9199999999982538,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface",
+    "status": "passed",
+    "durationMs": 0.20583299999998417,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-2",
+    "status": "passed",
+    "durationMs": 0.1741249999977299,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-3",
+    "status": "passed",
+    "durationMs": 0.15370900000198162,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-4",
+    "status": "passed",
+    "durationMs": 0.16849999999976717,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-5",
+    "status": "passed",
+    "durationMs": 0.15399999999863212,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-6",
+    "status": "passed",
+    "durationMs": 0.15216700000019046,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-7",
+    "status": "passed",
+    "durationMs": 0.008541999999579275,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-8",
+    "status": "passed",
+    "durationMs": 0.14683399999921676,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/radar-wide",
+    "status": "passed",
+    "durationMs": 12.490125000000262,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/radar-profile-summary",
+    "status": "passed",
+    "durationMs": 61.35099999999875,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-9",
+    "status": "passed",
+    "durationMs": 0.2614999999968859,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-10",
+    "status": "passed",
+    "durationMs": 0.3396659999998519,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-11",
+    "status": "passed",
+    "durationMs": 0.17754100000092876,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-12",
+    "status": "passed",
+    "durationMs": 0.19129199999952107,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-13",
+    "status": "passed",
+    "durationMs": 0.19520899999770336,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-14",
+    "status": "passed",
+    "durationMs": 0.19358399999691756,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-15",
+    "status": "passed",
+    "durationMs": 0.17300000000250293,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-16",
+    "status": "passed",
+    "durationMs": 0.1539580000026035,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-17",
+    "status": "passed",
+    "durationMs": 0.13745900000139954,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-18",
+    "status": "passed",
+    "durationMs": 0.13491699999940465,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-19",
+    "status": "passed",
+    "durationMs": 0.13570900000195252,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-20",
+    "status": "passed",
+    "durationMs": 0.1468750000021828,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/binned",
+    "status": "passed",
+    "durationMs": 8.458000000002357,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/create-canvas-2",
+    "status": "passed",
+    "durationMs": 19.924666999999317,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/regression-opt-out",
+    "status": "passed",
+    "durationMs": 31.48737500000061,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-21",
+    "status": "passed",
+    "durationMs": 0.20879099999729078,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/entry-surface-22",
+    "status": "passed",
+    "durationMs": 0.045707999997830484,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/bar-facade",
+    "status": "passed",
+    "durationMs": 10.212584000000788,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/histogram-facade",
+    "status": "passed",
+    "durationMs": 13.31316599999991,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/heatmap-facade",
+    "status": "passed",
+    "durationMs": 16.08245900000111,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/violin-plot-facade",
+    "status": "passed",
+    "durationMs": 16.392250000000786,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/create-canvas-3",
+    "status": "passed",
+    "durationMs": 14.445083000002342,
+    "pid": 8461
+  },
+  {
+    "id": "authoring/reference-facades",
+    "status": "passed",
+    "durationMs": 28.871666999999434,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/bootstrap-rows",
+    "status": "passed",
+    "durationMs": 10.080165999999736,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/extracted",
+    "status": "passed",
+    "durationMs": 27.932582999997976,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/calendar",
+    "status": "passed",
+    "durationMs": 7.198166999998648,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/installed-data-flow",
+    "status": "passed",
+    "durationMs": 51.276999999998225,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/monthly",
+    "status": "passed",
+    "durationMs": 2.368749999997817,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/local-week",
+    "status": "passed",
+    "durationMs": 6.006124999999884,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/summarized",
+    "status": "passed",
+    "durationMs": 3.1479590000017197,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/large-summary",
+    "status": "passed",
+    "durationMs": 540.5190829999992,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/weighted-summary",
+    "status": "passed",
+    "durationMs": 4.31433399999878,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/reusable-bins",
+    "status": "passed",
+    "durationMs": 1.0244170000005397,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/folded",
+    "status": "passed",
+    "durationMs": 0.3888330000008864,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/computed",
+    "status": "passed",
+    "durationMs": 1.6111669999991136,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/classified",
+    "status": "passed",
+    "durationMs": 0.6472500000018044,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/completed",
+    "status": "passed",
+    "durationMs": 0.7252079999998386,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/stacked",
+    "status": "passed",
+    "durationMs": 0.6029170000001614,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/elapsed",
+    "status": "passed",
+    "durationMs": 0.4758339999971213,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/normal-interval",
+    "status": "passed",
+    "durationMs": 0.4460419999995793,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/normal-regression",
+    "status": "passed",
+    "durationMs": 2.342041000003519,
+    "pid": 8461
+  },
+  {
+    "id": "selection/keyed-revision",
+    "status": "passed",
+    "durationMs": 32.919292000002315,
+    "pid": 8461
+  },
+  {
+    "id": "selection/row-provenance",
+    "status": "passed",
+    "durationMs": 22.345166999999492,
+    "pid": 8461
+  },
+  {
+    "id": "selection/temporal-rect",
+    "status": "passed",
+    "durationMs": 2.7289999999993597,
+    "pid": 8461
+  },
+  {
+    "id": "extension/compound-path",
+    "status": "passed",
+    "durationMs": 25.881416000000172,
+    "pid": 8461
+  },
+  {
+    "id": "extension/passthrough",
+    "status": "passed",
+    "durationMs": 0.33100000000194996,
+    "pid": 8461
+  },
+  {
+    "id": "guides/label-relative-axis-title",
+    "status": "passed",
+    "durationMs": 40.13683299999684,
+    "pid": 8461
+  },
+  {
+    "id": "guides/prospective-numeric-axis-title-replay",
+    "status": "passed",
+    "durationMs": 28.906208000000333,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/pivot",
+    "status": "passed",
+    "durationMs": 7.537875000001804,
+    "pid": 8461
+  },
+  {
+    "id": "regression/quadratic-loess",
+    "status": "passed",
+    "durationMs": 13.942708999999013,
+    "pid": 8461
+  },
+  {
+    "id": "data-transforms/calendar-completion",
+    "status": "passed",
+    "durationMs": 12.618374999998196,
+    "pid": 8461
+  },
+  {
+    "id": "parameters/fresh-process-lifecycle",
+    "status": "passed",
+    "durationMs": 449.84375,
+    "pid": 8461
+  },
+  {
+    "id": "parameters/renderers-and-scene",
+    "status": "passed",
+    "durationMs": 10.488458000003448,
+    "pid": 8461
+  },
+  {
+    "id": "prepared-data/full-and-basic-create",
+    "status": "passed",
+    "durationMs": 14.132499999999709,
+    "pid": 8461
+  },
+  {
+    "id": "prepared-data/fresh-process-offline-refresh",
+    "status": "passed",
+    "durationMs": 354.3703749999986,
+    "pid": 8461
+  },
+  {
+    "id": "prepared-data/authenticity-and-freshness",
+    "status": "passed",
+    "durationMs": 25.17266699999891,
+    "pid": 8461
+  },
+  {
+    "id": "prepared-data/renderers-and-scene",
+    "status": "passed",
+    "durationMs": 13.253333999997267,
+    "pid": 8461
+  },
+  {
+    "id": "conditional-encoding/fresh-process-lifecycle",
+    "status": "passed",
+    "durationMs": 667.7646249999998,
+    "pid": 8461
+  },
+  {
+    "id": "conditional-encoding/renderers-and-scene",
+    "status": "passed",
+    "durationMs": 6.914832999998907,
+    "pid": 8461
+  },
+  {
+    "id": "conditional-encoding/bar-blend-lifecycle",
+    "status": "passed",
+    "durationMs": 45.58983299999818,
+    "pid": 8461
+  },
+  {
+    "id": "conditional-encoding/position-text-lifecycle",
+    "status": "passed",
+    "durationMs": 369.8031250000022,
+    "pid": 8461
+  },
+  {
+    "id": "paint/structured-filled-marks",
+    "status": "passed",
+    "durationMs": 25.862374999996973,
+    "pid": 8461
+  },
+  {
+    "id": "paint/structured-text",
+    "status": "passed",
+    "durationMs": 28.0748330000024,
+    "pid": 8461
+  },
+  {
+    "id": "paint/fresh-codec",
+    "status": "passed",
+    "durationMs": 320.8886249999996,
+    "pid": 8461
+  },
+  {
+    "id": "images/resource-lifecycle",
+    "status": "passed",
+    "durationMs": 6.731958000000304,
+    "pid": 8461
+  },
+  {
+    "id": "images/renderer-scene-offline",
+    "status": "passed",
+    "durationMs": 4.020125000002736,
+    "pid": 8461
+  },
+  {
+    "id": "hierarchy/full-basic-lifecycle",
+    "status": "passed",
+    "durationMs": 13.192165999997087,
+    "pid": 8461
+  },
+  {
+    "id": "hierarchy/fresh-process-edit-revise",
+    "status": "passed",
+    "durationMs": 696.8300830000007,
+    "pid": 8461
+  },
+  {
+    "id": "hierarchy/renderers-and-scene",
+    "status": "passed",
+    "durationMs": 55.66754200000287,
+    "pid": 8461
+  },
+  {
+    "id": "fonts/axis-reflow-closure",
+    "status": "passed",
+    "durationMs": 373.39000000000306,
+    "pid": 8461
+  },
+  {
+    "id": "fonts/resource-metrics-offline",
+    "status": "passed",
+    "durationMs": 367.5543340000004,
+    "pid": 8461
+  },
+  {
+    "id": "fonts/renderers-scene-handles",
+    "status": "passed",
+    "durationMs": 59.73687500000233,
+    "pid": 8461
+  },
+  {
+    "id": "fonts/resource-backed-labels",
+    "status": "passed",
+    "durationMs": 227.06270799999766,
+    "pid": 8461
+  },
+  {
+    "id": "data/observed-graph-lifecycle",
+    "status": "passed",
+    "durationMs": 27.58354099999997,
+    "pid": 8461
+  },
+  {
+    "id": "paint/outline-basic-and-codec",
+    "status": "passed",
+    "durationMs": 7.00762499999837,
+    "pid": 8461
+  },
+  {
+    "id": "paint/outline-text-and-fresh-edit",
+    "status": "passed",
+    "durationMs": 324.7883330000004,
+    "pid": 8461
+  },
+  {
+    "id": "paint/outline-image-hierarchy-composition",
+    "status": "passed",
+    "durationMs": 19.791958000001614,
+    "pid": 8461
+  },
+  {
+    "id": "theme/resource-plot-renderer-lifecycle",
+    "status": "passed",
+    "durationMs": 24.03349999999773,
+    "pid": 8461
+  },
+  {
+    "id": "data/inferred-graph-lifecycle",
+    "status": "passed",
+    "durationMs": 41.35391600000003,
+    "pid": 8461
+  },
+  {
+    "id": "data/inferred-graph-explicit-capacity",
+    "status": "passed",
+    "durationMs": 1405.831542,
+    "pid": 8461
+  },
+  {
+    "id": "data/inferred-graph-bounded-execution",
+    "status": "passed",
+    "durationMs": 11496.571292,
+    "pid": 8461
+  },
+  {
+    "id": "paint/blend-facade-text-and-rule",
+    "status": "passed",
+    "durationMs": 34.335125000005064,
+    "pid": 8461
+  },
+  {
+    "id": "paint/blend-nine-owners-and-basic",
+    "status": "passed",
+    "durationMs": 7.51954200000182,
+    "pid": 8461
+  },
+  {
+    "id": "paint/blend-glyph-output-and-fresh-edit",
+    "status": "passed",
+    "durationMs": 758.1255840000013,
+    "pid": 8461
+  },
+  {
+    "id": "paint/shadow-basic-codec-scene",
+    "status": "passed",
+    "durationMs": 118.95874999999796,
+    "pid": 8461
+  },
+  {
+    "id": "paint/shadow-text-font-outline-native",
+    "status": "passed",
+    "durationMs": 101.57704199999716,
+    "pid": 8461
+  },
+  {
+    "id": "paint/shadow-stale-density-fresh-process",
+    "status": "passed",
+    "durationMs": 831.437708999998,
+    "pid": 8461
+  },
+  {
+    "id": "flow/full-basic-lifecycle",
+    "status": "passed",
+    "durationMs": 18.467832999995153,
+    "pid": 8461
+  },
+  {
+    "id": "flow/fresh-process-source-revision",
+    "status": "passed",
+    "durationMs": 346.7690829999992,
+    "pid": 8461
+  },
+  {
+    "id": "flow/renderers-scene-codec",
+    "status": "passed",
+    "durationMs": 28.054125000002387,
+    "pid": 8461
+  },
+  {
+    "id": "paint/resource-role-effects",
+    "status": "passed",
+    "durationMs": 1229.6334580000039,
+    "pid": 8461
+  },
+  {
+    "id": "paint/image-alpha-shadow",
+    "status": "passed",
+    "durationMs": 12.021834000006493,
+    "pid": 8461
+  },
+  {
+    "id": "contour/full-basic-lifecycle",
+    "status": "passed",
+    "durationMs": 68.29841600000509,
+    "pid": 8461
+  },
+  {
+    "id": "contour/fresh-process-source-revision",
+    "status": "passed",
+    "durationMs": 447.21191700000054,
+    "pid": 8461
+  },
+  {
+    "id": "contour/renderers-scene-codec",
+    "status": "passed",
+    "durationMs": 3723.9140410000036,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/editing-arbitration",
+    "status": "passed",
+    "durationMs": 32.887500000004366,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/prepared-native-preview",
+    "status": "passed",
+    "durationMs": 7.6785410000011325,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/native-camera-navigation",
+    "status": "passed",
+    "durationMs": 12.890957999996317,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/geographic-label-screen-history",
+    "status": "passed",
+    "durationMs": 10.45850000000064,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/observed-resize-prepared-native-policy",
+    "status": "passed",
+    "durationMs": 6.77812499999709,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/prepared-update",
+    "status": "passed",
+    "durationMs": 36.17254200000025,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/asset-preparation",
+    "status": "passed",
+    "durationMs": 4.883833000007144,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/history",
+    "status": "passed",
+    "durationMs": 13.845958999998402,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/annotation-drag",
+    "status": "passed",
+    "durationMs": 3.882167000003392,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/screen-annotation",
+    "status": "passed",
+    "durationMs": 5.238708000004408,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/geographic-annotation-edit",
+    "status": "passed",
+    "durationMs": 3.431624999997439,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/annotation-edit",
+    "status": "passed",
+    "durationMs": 28.168291000001773,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/geographic-representation",
+    "status": "passed",
+    "durationMs": 26.85645900000236,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/node-movement",
+    "status": "passed",
+    "durationMs": 36.72204199999396,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/geographic-context",
+    "status": "passed",
+    "durationMs": 11.552958000000217,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/partition-host-focus",
+    "status": "passed",
+    "durationMs": 12.600125000004482,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/context-host-request",
+    "status": "passed",
+    "durationMs": 8.35770799999591,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/legend-visibility-filter-composition",
+    "status": "passed",
+    "durationMs": 26.450457999999344,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/full-basic-immutable-inspection",
+    "status": "passed",
+    "durationMs": 57.12162499999977,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/current-frame-and-restored-program",
+    "status": "passed",
+    "durationMs": 56.55716599999869,
+    "pid": 8461
+  },
+  {
+    "id": "interaction/guide-and-host-cleanup",
+    "status": "passed",
+    "durationMs": 87.78612499999872,
+    "pid": 8461
+  },
+  {
+    "id": "responsive/full-basic-resize-restore",
+    "status": "passed",
+    "durationMs": 139.5114160000012,
+    "pid": 8461
+  },
+  {
+    "id": "responsive/renderers-scene-codec",
+    "status": "passed",
+    "durationMs": 64.60087499999645,
+    "pid": 8461
+  },
+  {
+    "id": "selection/logical-item-update",
+    "status": "passed",
+    "durationMs": 27.336875000000873,
+    "pid": 8461
+  },
+  {
+    "id": "selection/logical-scoped-update",
+    "status": "passed",
+    "durationMs": 7.770750000003318,
+    "pid": 8461
+  },
+  {
+    "id": "calendar/full-basic-lifecycle",
+    "status": "passed",
+    "durationMs": 12.688625000002503,
+    "pid": 8461
+  },
+  {
+    "id": "calendar/fresh-process-source-revision",
+    "status": "passed",
+    "durationMs": 373.61758300000656,
+    "pid": 8461
+  },
+  {
+    "id": "calendar/shared-resource-source-union",
+    "status": "passed",
+    "durationMs": 61.21595900000102,
+    "pid": 8461
+  },
+  {
+    "id": "calendar/renderers-scene-codec",
+    "status": "passed",
+    "durationMs": 223.33604200000264,
+    "pid": 8461
+  },
+  {
+    "id": "nested/shared-layout-lifecycle",
+    "status": "passed",
+    "durationMs": 1507.9155000000028,
+    "pid": 8461
+  },
+  {
+    "id": "nested/projected-graph-source",
+    "status": "passed",
+    "durationMs": 9.492415999993682,
+    "pid": 8461
+  },
+  {
+    "id": "nested/renderers-scene-codec",
+    "status": "passed",
+    "durationMs": 457.2610829999976,
+    "pid": 8461
+  },
+  {
+    "id": "edge-routes/packed-density-samples",
+    "status": "passed",
+    "durationMs": 869.2747089999975,
+    "pid": 8461
+  },
+  {
+    "id": "edge-routes/ordered-force-storage",
+    "status": "passed",
+    "durationMs": 513.7522499999977,
+    "pid": 8461
+  },
+  {
+    "id": "edge-routes/symmetric-force-pairs",
+    "status": "passed",
+    "durationMs": 21.148207999998704,
+    "pid": 8461
+  },
+  {
+    "id": "edge-routes/bounded-hierarchy-spans",
+    "status": "passed",
+    "durationMs": 17423.565834,
+    "pid": 8461
+  },
+  {
+    "id": "edge-routes/bounded-long-paths",
+    "status": "passed",
+    "durationMs": 12766.706833000004,
+    "pid": 8461
+  },
+  {
+    "id": "edge-routes/own-host-options",
+    "status": "passed",
+    "durationMs": 71.02937499999825,
+    "pid": 8461
+  },
+  {
+    "id": "edge-routes/responsive-source-and-guide-closure",
+    "status": "passed",
+    "durationMs": 144.57979099999648,
+    "pid": 8461
+  },
+  {
+    "id": "edge-routes/worker-authority-and-cache",
+    "status": "passed",
+    "durationMs": 174.4300840000069,
+    "pid": 8461
+  },
+  {
+    "id": "edge-routes/offline-restore-and-revision",
+    "status": "passed",
+    "durationMs": 449.1124160000036,
+    "pid": 8461
+  },
+  {
+    "id": "edge-routes/four-renderers-and-scene",
+    "status": "passed",
+    "durationMs": 12.993666999987909,
+    "pid": 8461
+  },
+  {
+    "id": "geometry/full-basic-identity",
+    "status": "passed",
+    "durationMs": 2.2652499999967404,
+    "pid": 8461
+  },
+  {
+    "id": "geometry/fresh-process-offline",
+    "status": "passed",
+    "durationMs": 319.4496669999935,
+    "pid": 8461
+  },
+  {
+    "id": "geometry/topology-atomic-failure",
+    "status": "passed",
+    "durationMs": 2.7794169999979204,
+    "pid": 8461
+  },
+  {
+    "id": "geometry/declared-winding-offline-renderers",
+    "status": "passed",
+    "durationMs": 331.78312500000175,
+    "pid": 8461
+  },
+  {
+    "id": "projection/full-basic-fit-lifecycle",
+    "status": "passed",
+    "durationMs": 5.512875000000349,
+    "pid": 8461
+  },
+  {
+    "id": "projection/fresh-process-offline-fit",
+    "status": "passed",
+    "durationMs": 321.3619159999944,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-marks/full-basic-coordinates-and-consumers",
+    "status": "passed",
+    "durationMs": 31.7242499999993,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-marks/fresh-process-offline-edit",
+    "status": "passed",
+    "durationMs": 329.70554199999606,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-marks/four-renderers-scene-and-holes",
+    "status": "passed",
+    "durationMs": 4.873125000012806,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-join/typed-fields-and-atomic-revision",
+    "status": "passed",
+    "durationMs": 12.031709000002593,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-join/offline-fresh-process",
+    "status": "passed",
+    "durationMs": 345.9369169999991,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-join/four-renderer-source-geometry-parity",
+    "status": "passed",
+    "durationMs": 6.510832999992999,
+    "pid": 8461
+  },
+  {
+    "id": "pyramid/public-lifecycle",
+    "status": "passed",
+    "durationMs": 9.774749999996857,
+    "pid": 8461
+  },
+  {
+    "id": "pyramid/offline-scene-renderers",
+    "status": "passed",
+    "durationMs": 11.949874999991152,
+    "pid": 8461
+  },
+  {
+    "id": "pyramid/fresh-process-and-nested",
+    "status": "passed",
+    "durationMs": 328.012917,
+    "pid": 8461
+  },
+  {
+    "id": "ohlc/public-lifecycle",
+    "status": "passed",
+    "durationMs": 14.298042000009445,
+    "pid": 8461
+  },
+  {
+    "id": "ohlc/offline-scene-renderers",
+    "status": "passed",
+    "durationMs": 11.252875000005588,
+    "pid": 8461
+  },
+  {
+    "id": "ohlc/fresh-process-and-nested",
+    "status": "passed",
+    "durationMs": 337.25720900000306,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-levels/hysteresis-selection-and-atomicity",
+    "status": "passed",
+    "durationMs": 13.359958999993978,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-levels/offline-fresh-process",
+    "status": "passed",
+    "durationMs": 333.07683399999223,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-levels/four-renderer-current-level-parity",
+    "status": "passed",
+    "durationMs": 20.557667000000947,
+    "pid": 8461
+  },
+  {
+    "id": "waterfall/public-lifecycle",
+    "status": "passed",
+    "durationMs": 12.039334000000963,
+    "pid": 8461
+  },
+  {
+    "id": "waterfall/offline-scene-renderers",
+    "status": "passed",
+    "durationMs": 11.690709000002244,
+    "pid": 8461
+  },
+  {
+    "id": "waterfall/fresh-process-and-nested",
+    "status": "passed",
+    "durationMs": 336.42266599999857,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-annotations/feature-anchor-and-atomicity",
+    "status": "passed",
+    "durationMs": 4.39570900000399,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-annotations/offline-fresh-process",
+    "status": "passed",
+    "durationMs": 322.0007500000065,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-annotations/four-renderer-native-text-parity",
+    "status": "passed",
+    "durationMs": 6.082832999993116,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-encodings/conditional-references-and-atomicity",
+    "status": "passed",
+    "durationMs": 19.29962499999965,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-encodings/fresh-process-conditional-source-revision",
+    "status": "passed",
+    "durationMs": 352.4742499999993,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-encodings/four-renderer-conditional-parity",
+    "status": "passed",
+    "durationMs": 11.8830830000079,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-encodings/fields-guides-and-atomic-edits",
+    "status": "passed",
+    "durationMs": 13.720666999986861,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-encodings/fresh-process-field-source-revision",
+    "status": "passed",
+    "durationMs": 356.0804589999898,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-encodings/four-renderer-feature-area-parity",
+    "status": "passed",
+    "durationMs": 6.583834000004572,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-camera/explicit-native-view-lifecycle",
+    "status": "passed",
+    "durationMs": 4.763082999998005,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-camera/fresh-process-restored-native-navigation",
+    "status": "passed",
+    "durationMs": 345.3830420000013,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-camera/four-renderer-anchored-view-parity",
+    "status": "passed",
+    "durationMs": 5.473083000004408,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-labels/native-source-and-selection",
+    "status": "passed",
+    "durationMs": 6.500541000001249,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-labels/offline-restored-source-revision",
+    "status": "passed",
+    "durationMs": 333.2184589999961,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-labels/four-renderer-native-text-parity",
+    "status": "passed",
+    "durationMs": 6.1993750000110595,
+    "pid": 8461
+  },
+  {
+    "id": "trail/public-lifecycle",
+    "status": "passed",
+    "durationMs": 14.246583999993163,
+    "pid": 8461
+  },
+  {
+    "id": "trail/offline-scene-renderers",
+    "status": "passed",
+    "durationMs": 12.555915999997524,
+    "pid": 8461
+  },
+  {
+    "id": "trail/fresh-process-and-nested",
+    "status": "passed",
+    "durationMs": 336.11945800000103,
+    "pid": 8461
+  },
+  {
+    "id": "stream-baselines/public-lifecycle",
+    "status": "passed",
+    "durationMs": 47.456208000003244,
+    "pid": 8461
+  },
+  {
+    "id": "stream-baselines/offline-scene-renderers",
+    "status": "passed",
+    "durationMs": 19.237667000008514,
+    "pid": 8461
+  },
+  {
+    "id": "stream-baselines/fresh-process-nested",
+    "status": "passed",
+    "durationMs": 347.8888330000045,
+    "pid": 8461
+  },
+  {
+    "id": "table/public-lifecycle",
+    "status": "passed",
+    "durationMs": 32.28170800000953,
+    "pid": 8461
+  },
+  {
+    "id": "table/offline-clipped-scene-renderers",
+    "status": "passed",
+    "durationMs": 22.673042000009445,
+    "pid": 8461
+  },
+  {
+    "id": "table/fresh-process-and-nested",
+    "status": "passed",
+    "durationMs": 352.8509999999951,
+    "pid": 8461
+  },
+  {
+    "id": "weighted-blend/linear-pixels-and-four-renderers",
+    "status": "passed",
+    "durationMs": 5.387667000002693,
+    "pid": 8461
+  },
+  {
+    "id": "weighted-blend/fresh-process-codec-and-scene",
+    "status": "passed",
+    "durationMs": 318.55379200000607,
+    "pid": 8461
+  },
+  {
+    "id": "weighted-blend/endpoints-limits-and-immutable-failure",
+    "status": "passed",
+    "durationMs": 4.9201670000038575,
+    "pid": 8461
+  },
+  {
+    "id": "composition-recipes/marginal",
+    "status": "passed",
+    "durationMs": 86.57091599999694,
+    "pid": 8461
+  },
+  {
+    "id": "composition-recipes/bullet",
+    "status": "passed",
+    "durationMs": 34.31008400001156,
+    "pid": 8461
+  },
+  {
+    "id": "composition-recipes/combo",
+    "status": "passed",
+    "durationMs": 50.813707999986946,
+    "pid": 8461
+  },
+  {
+    "id": "accessible-items/native-grain-and-basic",
+    "status": "passed",
+    "durationMs": 4.622875000000931,
+    "pid": 8461
+  },
+  {
+    "id": "accessible-items/nested-scoped-membership",
+    "status": "passed",
+    "durationMs": 2.4057079999911366,
+    "pid": 8461
+  },
+  {
+    "id": "accessible-items/fresh-process-filter-and-selection",
+    "status": "passed",
+    "durationMs": 322.5413750000007,
+    "pid": 8461
+  },
+  {
+    "id": "keyboard-focus/current-paint-and-basic",
+    "status": "passed",
+    "durationMs": 7.043375000008382,
+    "pid": 8461
+  },
+  {
+    "id": "keyboard-focus/nested-native-selection-and-offline-restore",
+    "status": "passed",
+    "durationMs": 352.9798330000049,
+    "pid": 8461
+  },
+  {
+    "id": "keyboard-focus/native-hierarchy-paths",
+    "status": "passed",
+    "durationMs": 11.612458999996306,
+    "pid": 8461
+  },
+  {
+    "id": "static-delivery/interacted-native-offline-four-formats",
+    "status": "passed",
+    "durationMs": 1024.1632919999975,
+    "pid": 8461
+  },
+  {
+    "id": "static-delivery/native-endpoints-animation-replay",
+    "status": "passed",
+    "durationMs": 1201.1253750000033,
+    "pid": 8461
+  },
+  {
+    "id": "animation/grouped-legend-offline-native",
+    "status": "passed",
+    "durationMs": 1718.342583000005,
+    "pid": 8461
+  },
+  {
+    "id": "animation/categorical-legend-offline-native",
+    "status": "passed",
+    "durationMs": 803.5685000000085,
+    "pid": 8461
+  },
+  {
+    "id": "animation/size-legend-offline-native",
+    "status": "passed",
+    "durationMs": 812.3016250000073,
+    "pid": 8461
+  },
+  {
+    "id": "animation/dependent-title-offline-native",
+    "status": "passed",
+    "durationMs": 746.5078749999957,
+    "pid": 8461
+  },
+  {
+    "id": "animation/axis-label-layout-offline-native",
+    "status": "passed",
+    "durationMs": 1148.4504999999917,
+    "pid": 8461
+  },
+  {
+    "id": "animation/legend-offline-native",
+    "status": "passed",
+    "durationMs": 2257.8640000000014,
+    "pid": 8461
+  },
+  {
+    "id": "animation/geographic-text-offline-native",
+    "status": "passed",
+    "durationMs": 710.0024169999961,
+    "pid": 8461
+  },
+  {
+    "id": "animation/guides-offline-native",
+    "status": "passed",
+    "durationMs": 283.4100000000035,
+    "pid": 8461
+  },
+  {
+    "id": "animation/polar-offline-native",
+    "status": "passed",
+    "durationMs": 810.4565830000065,
+    "pid": 8461
+  },
+  {
+    "id": "animation/bounded-repeated-interruption",
+    "status": "passed",
+    "durationMs": 231.38812500001222,
+    "pid": 8461
+  },
+  {
+    "id": "animation/public-player-interruption",
+    "status": "passed",
+    "durationMs": 3.6228750000009313,
+    "pid": 8461
+  },
+  {
+    "id": "animation/offline-fresh-process",
+    "status": "passed",
+    "durationMs": 237.95754100001068,
+    "pid": 8461
+  },
+  {
+    "id": "animation/four-public-renderers",
+    "status": "passed",
+    "durationMs": 7.845832999999402,
+    "pid": 8461
+  },
+  {
+    "id": "animation/embedded-assets-fresh-process",
+    "status": "passed",
+    "durationMs": 375.4824590000062,
+    "pid": 8461
+  },
+  {
+    "id": "animation/immutable-schedules-and-corruption",
+    "status": "passed",
+    "durationMs": 5.344458000006853,
+    "pid": 8461
+  },
+  {
+    "id": "animation/cartesian-native-families",
+    "status": "passed",
+    "durationMs": 145.29370799999742,
+    "pid": 8461
+  },
+  {
+    "id": "animation/cartesian-offline-renderers",
+    "status": "passed",
+    "durationMs": 242.39479199999187,
+    "pid": 8461
+  },
+  {
+    "id": "animation/guide-anchors-offline-native",
+    "status": "passed",
+    "durationMs": 1132.3731659999903,
+    "pid": 8461
+  },
+  {
+    "id": "animation/axis-legend-clearance-offline-native",
+    "status": "passed",
+    "durationMs": 601.7929999999906,
+    "pid": 8461
+  },
+  {
+    "id": "animation/implicit-legend-lanes-offline-native",
+    "status": "passed",
+    "durationMs": 699.633084000001,
+    "pid": 8461
+  },
+  {
+    "id": "animation-graph/offline-four-renderers",
+    "status": "passed",
+    "durationMs": 618.5477910000045,
+    "pid": 8461
+  },
+  {
+    "id": "animation-graph/current-frame-interruption",
+    "status": "passed",
+    "durationMs": 39.718499999988126,
+    "pid": 8461
+  },
+  {
+    "id": "animation-graph/topology-and-immutable-failure",
+    "status": "passed",
+    "durationMs": 18.117749999990338,
+    "pid": 8461
+  },
+  {
+    "id": "animation-partition/offline-four-renderers",
+    "status": "passed",
+    "durationMs": 586.3039580000041,
+    "pid": 8461
+  },
+  {
+    "id": "animation-partition/current-frame-interruption",
+    "status": "passed",
+    "durationMs": 176.5992499999993,
+    "pid": 8461
+  },
+  {
+    "id": "animation-partition/fallback-and-immutable-failure",
+    "status": "passed",
+    "durationMs": 16.05724999999802,
+    "pid": 8461
+  },
+  {
+    "id": "interaction-animation/four-route-player-lifecycle",
+    "status": "passed",
+    "durationMs": 7899.176250000004,
+    "pid": 8461
+  },
+  {
+    "id": "interaction-animation/geographic-route-seam-current-hit",
+    "status": "passed",
+    "durationMs": 82.25937500000873,
+    "pid": 8461
+  },
+  {
+    "id": "interaction-animation/overlapping-edge-four-formats",
+    "status": "passed",
+    "durationMs": 175.67362500001036,
+    "pid": 8461
+  },
+  {
+    "id": "interaction-animation/native-frame-four-formats",
+    "status": "passed",
+    "durationMs": 10.034958000003826,
+    "pid": 8461
+  },
+  {
+    "id": "interaction-animation/player-frame-leases",
+    "status": "passed",
+    "durationMs": 123.82745900000737,
+    "pid": 8461
+  },
+  {
+    "id": "interaction-animation/fresh-offline-native-scope",
+    "status": "passed",
+    "durationMs": 516.0789579999982,
+    "pid": 8461
+  },
+  {
+    "id": "interaction-animation/geographic-projection-membership",
+    "status": "passed",
+    "durationMs": 12.2689160000009,
+    "pid": 8461
+  },
+  {
+    "id": "interaction-animation/geographic-label-source-lifecycle",
+    "status": "passed",
+    "durationMs": 15.357250000000931,
+    "pid": 8461
+  },
+  {
+    "id": "interaction-animation/current-graph-drag-four-formats",
+    "status": "passed",
+    "durationMs": 31.434500000003027,
+    "pid": 8461
+  },
+  {
+    "id": "animation-geo/offline-four-renderers",
+    "status": "passed",
+    "durationMs": 523.8597499999887,
+    "pid": 8461
+  },
+  {
+    "id": "animation-geo/current-frame-interruption",
+    "status": "passed",
+    "durationMs": 18.786416000002646,
+    "pid": 8461
+  },
+  {
+    "id": "animation-geo/immutable-failure",
+    "status": "passed",
+    "durationMs": 7.900999999998021,
+    "pid": 8461
+  },
+  {
+    "id": "animation-appearance/offline-four-renderers",
+    "status": "passed",
+    "durationMs": 357.16616700000304,
+    "pid": 8461
+  },
+  {
+    "id": "animation-appearance/current-frame-interruption",
+    "status": "passed",
+    "durationMs": 19.817125000001397,
+    "pid": 8461
+  },
+  {
+    "id": "animation-appearance/current-ink-selection",
+    "status": "passed",
+    "durationMs": 8.401249999995343,
+    "pid": 8461
+  },
+  {
+    "id": "animation-timeline/nonlinear-offline-four-renderers",
+    "status": "passed",
+    "durationMs": 520.7227090000088,
+    "pid": 8461
+  },
+  {
+    "id": "animation-timeline/player-marker-lifetimes",
+    "status": "passed",
+    "durationMs": 8.641875000001164,
+    "pid": 8461
+  },
+  {
+    "id": "animation-timeline/current-hit-selection-rebase",
+    "status": "passed",
+    "durationMs": 26.13354199999594,
+    "pid": 8461
+  },
+  {
+    "id": "animation-cartesian-completion/native-four-renderers",
+    "status": "passed",
+    "durationMs": 106.55941700001131,
+    "pid": 8461
+  },
+  {
+    "id": "animation-cartesian-completion/offline-network-free",
+    "status": "passed",
+    "durationMs": 656.7391669999924,
+    "pid": 8461
+  },
+  {
+    "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+    "status": "passed",
+    "durationMs": 212.94695900000806,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-routes/source-and-atomic-revision",
+    "status": "passed",
+    "durationMs": 27.642042000006768,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-routes/offline-restored-edit",
+    "status": "passed",
+    "durationMs": 444.0380839999998,
+    "pid": 8461
+  },
+  {
+    "id": "geographic-routes/four-renderer-native-line-parity",
+    "status": "passed",
+    "durationMs": 24.40862499999639,
+    "pid": 8461
+  },
+  {
+    "id": "animation-geotext-expressions/current-four-renderers",
+    "status": "passed",
+    "durationMs": 91.61066700000083,
+    "pid": 8461
+  },
+  {
+    "id": "animation-geotext-expressions/offline-network-free",
+    "status": "passed",
+    "durationMs": 648.5807500000083,
+    "pid": 8461
+  },
+  {
+    "id": "animation-geotext-expressions/current-hit-rebase",
+    "status": "passed",
+    "durationMs": 101.42012500000419,
+    "pid": 8461
+  },
+  {
+    "id": "animation-axis-reflow/dependent-title-legend-native-offline",
+    "status": "passed",
+    "durationMs": 518.5636249999952,
+    "pid": 8461
+  },
+  {
+    "id": "animation-axis-reflow/current-native-fonts-four-renderers",
+    "status": "passed",
+    "durationMs": 78.62025000000722,
+    "pid": 8461
+  },
+  {
+    "id": "animation-axis-reflow/offline-fonts-network-free",
+    "status": "passed",
+    "durationMs": 1458.8390000000072,
+    "pid": 8461
+  },
+  {
+    "id": "animation-axis-reflow/raw-current-hit-retime-rebase",
+    "status": "passed",
+    "durationMs": 183.77795800000604,
+    "pid": 8461
+  },
+  {
+    "id": "interaction-handles/scoped-region-pointer-and-command",
+    "status": "passed",
+    "durationMs": 22.933499999999185,
+    "pid": 8461
+  },
+  {
+    "id": "interaction-handles/typed-category-pointer-and-command",
+    "status": "passed",
+    "durationMs": 108.78408300000592,
+    "pid": 8461
+  },
+  {
+    "id": "interaction-handles/ambiguity-and-cancel-atomicity",
+    "status": "passed",
+    "durationMs": 9.00595799999428,
+    "pid": 8461
+  },
+  {
+    "id": "data/inferred-graph-worker-lifecycle",
+    "status": "passed",
+    "durationMs": 156.95004199999676,
+    "pid": 8461
+  },
+  {
+    "id": "data/inferred-graph-worker-complete-grid",
+    "status": "passed",
+    "durationMs": 11618.206250000003,
+    "pid": 8461
+  },
+  {
+    "id": "hit-preparation/all-100000-native-points",
+    "status": "passed",
+    "durationMs": 64071.117792000005,
+    "pid": 9041,
+    "isolation": "case",
+    "parentPid": 8461,
+    "exitCode": 0,
+    "signal": null
+  },
+  {
+    "id": "hit-preparation/closed-session-policy-atomic-replacement",
+    "status": "passed",
+    "durationMs": 423.09495799999996,
+    "pid": 9167,
+    "isolation": "case",
+    "parentPid": 8461,
+    "exitCode": 0,
+    "signal": null
+  },
+  {
+    "id": "geographic-capacity/all-original-vertices-and-atomic-native-closure",
+    "status": "passed",
+    "durationMs": 25490.07875,
+    "pid": 9168,
+    "isolation": "case",
+    "parentPid": 8461,
+    "exitCode": 0,
+    "signal": null
+  },
+  {
+    "id": "geographic-capacity/source-free-four-backend-and-scene",
+    "status": "passed",
+    "durationMs": 559.5109160000001,
+    "pid": 9212,
+    "isolation": "case",
+    "parentPid": 8461,
+    "exitCode": 0,
+    "signal": null
+  }
+]

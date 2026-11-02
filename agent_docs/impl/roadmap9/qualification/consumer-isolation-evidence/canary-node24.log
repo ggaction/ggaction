@@ -1,0 +1,17 @@
+✔ default cases share a process while explicit isolated cases retain Node arguments and installed imports (113.52175ms)
+✔ isolated throw, exit-zero without receipt, and nonzero exit all fail and do not omit later cases (159.554625ms)
+✔ duplicate and forged child receipts cannot replace the expected ordered case (144.664667ms)
+✔ module case omissions or duplicates fail every declared case in both execution modes (222.78125ms)
+✔ timeouts clean isolated descendants and then run the next case (333.798459ms)
+✔ parent cancellation cleans the active child and marks remaining cases without running them (83.574084ms)
+✔ manifest isolation metadata and global identities are closed before imports (100.928125ms)
+✔ a successful receipt cannot conceal a nonzero child exit (100.2535ms)
+✔ successful cases leave no unreferenced descendants in their process group (101.00775ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1410.598541

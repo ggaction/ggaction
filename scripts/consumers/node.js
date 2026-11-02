@@ -1,3 +1,4 @@
+import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
@@ -46,23 +47,14 @@ export async function testNodeConsumer(directory) {
   for (const entry of manifest) {
     await writeFile(path.join(directory, entry.file), await readFile(new URL(`./fixtures/node/${entry.file}`, import.meta.url)));
   }
-  const runner = `
-    import { writeFile } from "node:fs/promises";
-    const records = [];
-    for (const file of ${JSON.stringify(manifest.map(entry => entry.file))}) {
-      const { cases } = await import("./" + file);
-      for (const entry of cases) {
-        const start = performance.now();
-        try { await entry.run(); records.push({ id: entry.id, status: "passed", durationMs: performance.now() - start }); }
-        catch (error) { records.push({ id: entry.id, status: "failed", durationMs: performance.now() - start, error: error.stack }); }
-        await writeFile("node-cases.json", JSON.stringify(records, null, 2));
-      }
-    }
-    const failures = records.filter(record => record.status === "failed");
-    if (failures.length) { console.error(JSON.stringify(failures, null, 2)); process.exitCode = 1; }
-  `;
-  await writeFile(path.join(directory, "consumer.mjs"), runner);
-  try { run(process.execPath, ["consumer.mjs"], directory); }
+  await writeFile(path.join(directory, "node-manifest.json"), JSON.stringify(manifest));
+  await writeFile(path.join(directory, "consumer.mjs"), await readFile(new URL("./node-cases.mjs", import.meta.url)));
+  try {
+    run(process.execPath, ["consumer.mjs"], directory);
+    const records = JSON.parse(await readFile(path.join(directory, "node-cases.json"), "utf8"));
+    assert.deepEqual(records.map(record => record.id), manifest.flatMap(entry => entry.cases.map(item => item.id)), "Installed consumer receipt must include every case exactly once in manifest order.");
+    assert.ok(records.every(record => record.status === "passed"), "Installed consumer receipt contains failures.");
+  }
   finally {
     const receipt = await readFile(path.join(directory, "node-cases.json"), "utf8").catch(() => "[]");
     await mkdir(path.join(root, ".artifacts/consumers"), { recursive: true });
