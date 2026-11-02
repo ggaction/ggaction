@@ -29,5 +29,7 @@
     "original100k native/current/rebase/offline on this archive",
     "original100cycle",
     "exclusive original canonical5+30/DPR1/2 SLO"
-  ]
+  ],
+  "sourceCommit": "e38fa24c7e7192353fe96884202598c6e59c5742",
+  "sourcePinArchive": "same bytes after source commit"
 }

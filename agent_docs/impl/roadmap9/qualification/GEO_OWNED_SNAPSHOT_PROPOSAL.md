@@ -4,7 +4,7 @@
 
 - [x] Root가 다음 병목으로 지정한 normalizeAnimationGeoGroup / snapshotGeometryJSON 검토
 - [x] 제품 미변경 loader prototype 및 exact diff 고정
-- [ ] 구체 경계 채택 기록 후 제품 및 owning tests 반영
+- [x] 구체 경계 채택 기록 후 제품 및 owning tests 반영
 - [ ] 동일 archive 검증 및 원 100k rebase/offline, 원 100cycle, exclusive 성능 검증
 
 ## 현재 병목과 제안
@@ -42,3 +42,5 @@ Temporary seen WeakSet은 기존 입력 root가 이미 강하게 보유한 conta
 새 archive SHA256은 4fbdf2a66fe9a8396b43dcbc6fde2aba2ca0c5e39275a9fe37ef17115db52fa9다. Node20/24 strict pack bytes가 같고 1262 entries / 1,822,571 packed / 8,191,580 unpacked다. 원 최소 100B 올림에 따라 packed/unpacked ceilings만 1,822,600 / 8,191,600으로 올렸다. 3Node installed runtime·strict TS·실행 문서·6 bundles 및 source-free minified Chromium DPR1/2가 통과했다. Full gzip 788965B는 기존 cap 안이며 animation 343602B의 최소 100B 올림 cap만 343700으로 올렸다. 작은 20vertex 100cycle의 100개 old scene WeakRefs는 모두 회수됐다.
 
 [검증 manifest](geo-owned-snapshot-evidence/verification.json)는 동일 archive와 정확한 범위를 고정한다. 이 시점에 새 archive 원 100k와 원 100cycle/exclusive SLO는 미완료다. 앞선 archive의 큰 rebase 실패를 성공으로 바꾸지 않는다. 원본 read-only proof는 제품 적용 전 revision 0d700c2b4에서 실행하는 기록이다.
+
+제품 source는 `e38fa24c7e7192353fe96884202598c6e59c5742`로 고정했다. 후속 metadata-only pin에서 source docs 248 및 built 186/1607을 다시 검증했고 strict pack SHA256이 동일했다.
