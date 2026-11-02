@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { chart, hconcat } from "../../../src/index.js";
 import { serializeProgram } from "../../../src/persistence.js";
 import { pathFillContains } from "../../../src/grammar/pathGeometry.js";
+import { cloneAndFreeze } from "../../../src/core/immutable.js";
 import { projectGeoAnimationGroup } from "../../../src/materialization/animation/geo.js";
 import { normalizeAnimationGeoGroup, prepareGeoInterpolation, sampleGeoInterpolation, resolveAnimationGeoGeometry, ANIMATION_GEO_VERSION } from "../../../src/grammar/animation/geoState.js";
 const feature = (id,geometry) => ({type:"Feature",id,properties:{id},geometry});
@@ -18,6 +19,27 @@ function make(features,parameters={},mode="point",options={}) {
 const group = program => projectGeoAnimationGroup(program,program.semanticSpec.layers.find(layer=>layer.id==="map"));
 const close=(actual,expected)=>assert.ok(Math.abs(actual-expected)<1e-9,`${actual} != ${expected}`);
 const props=program=>program.graphicSpec.objects.map.items.map(node=>({type:node.type,properties:node.properties}));
+
+test("Geo normalization reuses owned trees while restored input retains validation and isolation",()=>{
+  const original=group(make([point("city",[10,20])])),restored=JSON.parse(JSON.stringify(original));
+  assert.equal(normalizeAnimationGeoGroup(original),original);
+  const normalized=normalizeAnimationGeoGroup(restored);
+  assert.deepEqual(normalized,original);assert.notEqual(normalized,restored);
+  restored.features[0].geometry.coordinates[0]=40;
+  assert.equal(normalized.features[0].geometry.coordinates[0],10);
+  for(const mutate of [
+    value=>value.features[0].geometry.coordinates[1]=91,
+    value=>value.features[0].geometry.extra=true,
+    value=>value.key='[ [], "map" ]',
+    value=>value.parameters.scalePx=-1
+  ]){
+    const invalid=structuredClone(original);mutate(invalid);
+    const errors=[invalid,cloneAndFreeze(invalid)].map(input=>{
+      try{normalizeAnimationGeoGroup(input);assert.fail("Invalid restored state must fail.");}catch(error){return{name:error.name,message:error.message};}
+    });
+    assert.deepEqual(errors[1],errors[0]);assert.notEqual(errors[0].name,"AssertionError");
+  }
+});
 function nativeEqual(prepared,program) {
   const actual=resolveAnimationGeoGeometry(prepared).features.flatMap(feature=>feature.parts),expected=props(program);
   assert.equal(actual.length,expected.length);

@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-owned-Geo-snapshot-integration",
+  "base": "d5715ca1d",
+  "upstream": "542a3b931",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1268,
+    "packedBytes": 1826860,
+    "unpackedBytes": 8227795,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-bd12cfd9633d36ab22c3a0cebd06b9405050aec681cec3171573d10804686342.tgz",
+    "sha256": "bd12cfd9633d36ab22c3a0cebd06b9405050aec681cec3171573d10804686342"
+  },
+  "sourceHashes": {
+    "src/grammar/geo/input.js": "ee894799290ea02bda2535d666c899bafc868e662df66273cb727a568e0b132b"
+  },
+  "evidenceFiles": {
+    "installed.log": {
+      "sha256": "48d7aabaadd7e5c85f9bb84bc463edad4a2e4ffc4e3166a3063dd702c319e36e",
+      "bytes": 3457
+    },
+    "pack.json": {
+      "sha256": "c86bf80488e60e5d88e9551221632b39fd2185671779c6be30a5b3ce7986f7ad",
+      "bytes": 384
+    },
+    "cap-docs.log": {
+      "sha256": "7f66b78d58577aeacd8193e402121132bb28f756d747a07bb4fc246d7f79ca9c",
+      "bytes": 756
+    },
+    "prepack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "boundaries.log": {
+      "sha256": "3463829c9aecfe79fd35e1b97821cb864af7f0a3927b3ffc94025f79965dfa45",
+      "bytes": 8148
+    },
+    "installed.json": {
+      "sha256": "56f432c981abed53e1fce9741e419ffab8bda270d30ca8f7abf06b3dfc382eba",
+      "bytes": 4860
+    },
+    "prepack24.json": {
+      "sha256": "bf5ef2e8e51149e6e73af6db6a4bd39d62d920c318e69673a11d0ab835552d89",
+      "bytes": 298
+    },
+    "prepack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "record.py": {
+      "sha256": "3b31e692704c7a9fbfab9453f7adc028243594514344a5824f39aacd354ca7c5",
+      "bytes": 4571
+    },
+    "prepack.json": {
+      "sha256": "4588c722ea55fa0b30e5207856dc7d681b71abb9201afc807019e67824e0c781",
+      "bytes": 296
+    },
+    "pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "owning.log": {
+      "sha256": "ddc6948e587aee4d131500f853b91cbf2ac54565153078d54963470447d61140",
+      "bytes": 104590
+    }
+  },
+  "checks": {
+    "inputCoverage": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "sameArchiveNodeVersions": [
+      20,
+      22,
+      24
+    ],
+    "strictTypes": true,
+    "browserDPR": [
+      1,
+      2
+    ],
+    "browserBundles": 6,
+    "owning": 427,
+    "boundaries": 40,
+    "cap-docs": 3
+  },
+  "upstreamOriginal100k": {
+    "archiveSHA256": "4fbdf2a66fe9a8396b43dcbc6fde2aba2ca0c5e39275a9fe37ef17115db52fa9",
+    "result": {
+      "status": "passed",
+      "pid": 17616,
+      "start": "2026-11-02T12:29:09.291Z",
+      "end": "2026-11-02T12:32:16.707Z",
+      "commandsPerFrame": 199999,
+      "nativeParts": 339849,
+      "scalarReferenceQueries": 4,
+      "footprintHash": "ed299020fa7f2b61130344c9f359aa59ffc13007c0c1453170aed5cd125b9284",
+      "offline": "no native hit authority"
+    },
+    "sameOwnedSnapshotSource": true,
+    "scope": "Upstream installed archive. This merged checkpoint does not claim a new original100k run."
+  },
+  "remaining": [
+    "original workloads on final combined archive",
+    "exclusive canonical 5+30 performance",
+    "original canonical 100cycle lifetime",
+    "final roadmap qualification"
+  ]
+}

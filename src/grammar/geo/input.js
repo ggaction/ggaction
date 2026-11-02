@@ -1,5 +1,5 @@
 import { ownArray, ownRecord } from "../../core/ownData.js";
-import { cloneAndFreeze } from "../../core/immutable.js";
+import { cloneAndFreeze, isOwned } from "../../core/immutable.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
 
 export const GEO_LIMITS = Object.freeze({ maxFeatures: 100_000, maxPositions: 1_000_000, maxArcs: 100_000, maxValues: 2_000_000, maxDepth: 128 });
@@ -26,6 +26,8 @@ export function createGeometryBudget(input = {}) {
 // alias is copied like JSON, while an ancestor cycle is rejected.
 export function snapshotGeometryJSON(input, budget) {
   const ancestors = new WeakSet(), stack = [];
+  let reusable = isOwned(input);
+  const seen = reusable ? new WeakSet() : undefined;
   function enter(value, depth) {
     budget.count("values"); budget.charge();
     if (depth > budget.limits.maxDepth) throw new RangeError("Geometry JSON nesting exceeds maxDepth.");
@@ -40,6 +42,12 @@ export function snapshotGeometryJSON(input, budget) {
     } else ownRecord(value, "Geometry JSON object");
     const keys = Object.keys(value), output = array ? [] : {};
     budget.charge(keys.length); ancestors.add(value);
+    // Keep the complete validation/copy traversal even for owned input. Reuse
+    // only exact trees: aliases and null prototypes require JSON-copy semantics.
+    if (reusable) {
+      if (!isOwned(value) || !array && Object.getPrototypeOf(value) !== Object.prototype || seen.has(value)) reusable = false;
+      else seen.add(value);
+    }
     stack.push({ input: value, output, keys, depth, index: 0 });
     return output;
   }
@@ -51,5 +59,5 @@ export function snapshotGeometryJSON(input, budget) {
     const value = enter(frame.input[key], frame.depth + 1);
     Object.defineProperty(frame.output, key, { value, writable: true, enumerable: true, configurable: true });
   }
-  return cloneAndFreeze(output);
+  return reusable ? input : cloneAndFreeze(output);
 }
