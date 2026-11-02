@@ -5,7 +5,8 @@
 - [x] SHA 안정 `94f46b080`을 유지한 evidence-local prototype
 - [x] 기존 tagged bytes/hash와 소형 exact 검산, UTF16 전수 및 실제 macrotask 취소
 - [x] source owner 재사용·private signature·실패/할당 경계 구체화
-- [ ] 제품 scalar/cursor 추출 채택 및 구현
+- [x] 후속 [JSON string count만 제품 추출](json-string-count.md) — writer/cursor 제외
+- [ ] 제품 writer/cursor 추출 채택 및 구현
 - [ ] 외부 mutable 입력 snapshot/넓은 record/BigInt/route v2 준비 연결
 
 [전체 승인](../AUTHORIZATION.json)의 remainingApproval과 root의 2026-11-02 read-only
@@ -19,12 +20,14 @@ BigInt의 tag와 unsupported scalar diagnostic을 새 목록으로 만들지 않
 
 ## source count owner를 재사용하는 방법
 
-현재 `grammar/graph/inferenceBudget.js`의 `string`은 closure 안에 있다. 제품 파일을 바꾸지
+검토 기준 `36de5a4f9`의 `grammar/graph/inferenceBudget.js`에서 `string`은 closure 안에 있다. 제품 파일을 바꾸지
 않고 [build.mjs](tagged-cursor-evidence/build.mjs)가 **정확한 해당 본문**을 읽어 임시
 `.artifacts/tagged-cursor/scalar.generated.mjs`에 쓴다. 기존 `length+2` minimum guard,
 각 escape/UTF8 width 덧셈, 마지막 quota 검사는 그대로다. 각 원 loop iteration 끝에
 `{start,end,bytes}` 관측용 yield만 삽입하며 원 source/body SHA를 결과에 고정한다.
 이 변환은 연구 재현 도구이며 제품 런타임에서 source text를 읽거나 동적 생성하지 않는다.
+이 검토의 실행·source pin 재현은 해당 기준 checkout에서 수행한다. 후속 count 추출은
+위 별도 기록이 소유하며, 당시 증거의 source hash를 새 제품에 맞춰 덮어쓰지 않는다.
 
 문자 출력은 native `JSON.stringify`에 최대 2 UTF16 units만 넘겨 quote 내부 atom을 얻고
 TextEncoder로 변환한다. Counter가 판단한 width와 매 atom 길이를 비교한다. 유효 surrogate

@@ -102,6 +102,12 @@ wrapper는 같은 scalar owner를 동기로 끝까지 실행하고 `finally`에�
 제거했지만 UTF-8 입력 생성·byte 복사 및 호출의 동기 성질은 유지한다.
 비동기 encoder·취소 지연 보장은 이 추출만으로 제공하지 않는다.
 
+JSON 문자열의 escape/UTF8 byte 수는 비공개 `core/jsonText.js` 한 곳에서 계산한다.
+inference byte preflight는 문자열 및 key마다 이 owner를 호출하되, own-data 순회와
+tag·정책·누적 offset은 기존 grammar owner가 유지한다. 최소 크기를 먼저 검사하여
+거부된 문자열의 escape/UTF8 allocation을 피하며, generic value encoder나 canonical JSON의
+읽기·순서·오류 계약은 변경하지 않는다. 비동기 writer나 공개 cursor는 제공하지 않는다.
+
 ## 명시 asset preparation 경계
 
 Image와 font의 bytes/hash/host callback 준비는 `resources/assetPreparation.js`가 공유하며,
@@ -1019,9 +1025,9 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction` | 788,800 bytes |
 | `ggaction/basic` | 426,200 bytes |
 | `ggaction/svg` | 26,000 bytes |
-| `ggaction/graph` | 69,500 bytes |
+| `ggaction/graph` | 69,600 bytes |
 | `ggaction/interaction` | 137,500 bytes |
-| `ggaction/animation` | 340,800 bytes |
+| `ggaction/animation` | 340,900 bytes |
 
 
 
@@ -5096,3 +5102,14 @@ Prepared point scale 통합은1258entries/Node22packed1808245/Node20·24packed18
 
 Point positions vector의 local freeze 통합은 source155B만 추가해1258entries/unpacked8152265B이며 cap8152300B다. 다른 artifact/runtime 한도는 유지한다. [통합 검증](impl/roadmap9/qualification/position-state-merged-evidence/qualification.json)은 현재 샘플러의1k 동등성과 original100k source-specific 결과를 구별한다.
 Private columns@2 codec 추가의 package 실측은1259entries/Node22packed1809598/Node20·24packed1812879/unpacked8156156bytes이며 최소 cap1259/1812900/8156200이다. 기존 v3/v4 공개 writer와 reader는 유지되고 공개 format5는 아직 연결되지 않았다. [private 검증](impl/roadmap9/qualification/GEO_CAPACITY_A2_IMPLEMENTATION.md)은 후속 공개 Geo@2 검증과 구분한다.
+
+JSON string count owner 합산은1259entries/Node22packed1808438/Node20·24packed1811708/unpacked8152539B이며 cap1259/1811800/8152600이다. graph gzip69506B에는 표의69600B를 적용한다. [통합 검증](impl/roadmap9/qualification/json-count-merged-evidence/qualification.json)은 기존 scalar/error 동등성과 아직 남은 async 경계를 구별한다.
+
+Point sampler는 concrete validator를 통과한 새 properties와 node 외피의 core ownership을
+유지하고, 그 호출의 새 offset/rectangle clip tuple만 지역 동결한다. 모든 emission 뒤 node가
+각각 owned인 경우에만 nodes vector를 완성하며 raw Geo/GeoText/axis node가 있으면 기존
+scene clone 경계를 따른다. Hit/renderer/meaning 권한은 그대로다.
+이번 합산은1259entries/Node22packed1808620/Node20·24packed1811870/unpacked8152972B이며
+cap1259/1811900/8153000이다. Animation gzip340806B에는 표의340900B를 적용한다.
+[통합 검증](impl/roadmap9/qualification/point-node-merged-evidence/qualification.json)은 실제 원100k
+모든 좌표·offline·rebase와 아직 별도인50ms/P95·100cycle 의무를 구별한다.

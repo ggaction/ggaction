@@ -1,0 +1,120 @@
+{
+  "node": "v20.20.2",
+  "sha256": "69c45bcacf6c9290b2efbeed52fdf69d604a8be77d5e9d4012a9f8226037dc9d",
+  "checks": [
+    {
+      "id": "images/resource-lifecycle",
+      "status": "passed",
+      "durationMs": 23.921083000000067
+    },
+    {
+      "id": "images/renderer-scene-offline",
+      "status": "passed",
+      "durationMs": 8.855207999999948
+    },
+    {
+      "id": "fonts/resource-metrics-offline",
+      "status": "passed",
+      "durationMs": 345.76099999999997
+    },
+    {
+      "id": "animation/offline-fresh-process",
+      "status": "passed",
+      "durationMs": 189.33462500000007
+    },
+    {
+      "id": "animation/embedded-assets-fresh-process",
+      "status": "passed",
+      "durationMs": 283.62754099999984
+    },
+    {
+      "id": "animation/immutable-schedules-and-corruption",
+      "status": "passed",
+      "durationMs": 10.972082999999884
+    },
+    {
+      "id": "edge-routes/packed-density-samples",
+      "status": "passed",
+      "durationMs": 898.8059590000003
+    },
+    {
+      "id": "edge-routes/ordered-force-storage",
+      "status": "passed",
+      "durationMs": 539.8180000000002
+    },
+    {
+      "id": "edge-routes/worker-authority-and-cache",
+      "status": "passed",
+      "durationMs": 147.05025000000023
+    },
+    {
+      "id": "edge-routes/offline-restore-and-revision",
+      "status": "passed",
+      "durationMs": 326.41079200000013
+    },
+    {
+      "id": "data/inferred-graph-lifecycle",
+      "status": "passed",
+      "durationMs": 58.155333999999584
+    },
+    {
+      "id": "data/inferred-graph-worker-lifecycle",
+      "status": "passed",
+      "durationMs": 138.75562499999978
+    }
+  ],
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1068,
+      "minifiedBytes": 2744213,
+      "gzipBytes": 787526
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 626,
+      "minifiedBytes": 1448317,
+      "gzipBytes": 424889
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 45,
+      "minifiedBytes": 75768,
+      "gzipBytes": 25480
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 117,
+      "minifiedBytes": 230351,
+      "gzipBytes": 69417
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 510,
+      "minifiedBytes": 1114661,
+      "gzipBytes": 334243
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 206,
+      "minifiedBytes": 412276,
+      "gzipBytes": 131841
+    }
+  ],
+  "types": "passed",
+  "snippet": {
+    "status": "passed",
+    "sha256": "37511e8bdd17a1c88e7d6bcb6f776037421ca49c0da7d90134ae0d493be2ed31"
+  },
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "status": "passed"
+}

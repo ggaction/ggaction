@@ -11,7 +11,7 @@ import { validateGeneratedItemLimit, validateWorkLimit } from "../core/validatio
 import { samplePolarInterpolation } from "../grammar/animation/polarState.js";
 import { sampleCartesianInterpolation } from "../grammar/animation/cartesianState.js";
 import { partitionTrackSamples, samplePartitionTrack, partitionFrameCollector, partitionAnimationPaint } from "./partitionTracks.js";
-import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
+import { cloneAndFreeze, freezeOwned, isOwned } from "../core/immutable.js";
 import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 import { samplePositionInterpolation } from "../grammar/animation/positions.js";
 import { transitionSampleState,interpolateNumber } from "../grammar/animation/values.js";
@@ -137,7 +137,12 @@ export function sampleTransitionWithBudget(input,timeMs,accountWork) {
         validateConcreteGraphicProperties("circle",properties);decisions.push({...metadata,kind:"semantic-kernel",kernel:"cartesian-point"});
         // These records contain only finite sampled values and exact owned scales.
         positions.push(Object.freeze({x:Object.freeze({value:x.value,scale:x.scale}),y:Object.freeze({value:y.value,scale:y.scale})}));cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);
-        return cloneAndFreeze({...to,properties,...interpolateNodeFrame(from,to,progress)});
+        const frame=interpolateNodeFrame(from,to,progress);
+        // Only this call's new tuples are frozen locally; path clips stay owned.
+        Object.freeze(frame.offset);Object.freeze(frame.clip);
+        for(const clip of frame.clips)if(Array.isArray(clip))Object.freeze(clip);
+        Object.freeze(frame.clips);
+        return freezeOwned({...to,properties:freezeOwned(properties),...frame});
       }
       reason=x.reason??y.reason;
     }
@@ -156,7 +161,8 @@ export function sampleTransitionWithBudget(input,timeMs,accountWork) {
     positions.push(meaning(fromPositions[sourceIndex]));cartesian.push(meaning(cartesianState.from[sourceIndex]));polars.push(meaning(polarState.from[sourceIndex]));appendGraph("from",sourceIndex);appendPartition("from",sourceIndex);geoFrame.append(null);geoTextFrame.append(null);axisFrame.append(null);
   }
   validateGeneratedItemLimit(nodes.length,"Animation sampled nodes",animationResourceLimits(transitionResources(plan))?.maxOutputNodes);
-  const scene=cloneAndFreeze({version:2,width,height,nodes});
+  // Extra family emissions may still contain mutable local nodes.
+  const scene=cloneAndFreeze({version:2,width,height,nodes:nodes.every(isOwned)?freezeOwned(nodes):nodes});
   const geos=geoFrame.finish();
   return finish(cloneAndFreeze({graphicSpec:canvasSceneProgram(scene).graphicSpec,scene,progress,decisions}),freezeOwned(positions),graphFrame.finish(),cartesian,partitionFrame.finish(),polars,geos,guides,geoTextFrame.finish(geos),axisFrame.finish());
 }
