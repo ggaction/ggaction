@@ -1,6 +1,6 @@
 # Point frame positions의 local freeze 검증
 
-상태: 구현·소형·원100k 검증 완료, source pin 마감 중. 기준 `2fb36c76d`.
+상태: 구현·소형·원100k 및 same-archive3Node 검증 완료. 제품 body `425d76230`, metadata source pin은 이 body를 가리킨다. 기준 `2fb36c76d`.
 기존 [설계](frame-local-freeze-design.md#2026-11-02-첫-단계-채택)와
 `AUTHORIZATION.json#remainingApproval`을 Root가2026-11-02 구체 채택했다.
 이 checkpoint는 설계 첫 단계만 구현하며 node/properties/scene/decision/core/renderer,
@@ -84,3 +84,6 @@ source-free3Node/문서/브라우저 검증이 병행됐고 다른 대형 검사
 Root의 직접 read-only 검토에서 새blocking finding0을 확인했다. 구현 source는
 `src/animation/sample.js` 하나이며 SHA256은
 `c569a02ba99e46cae93cf63cb5dcbfb2d8b39e482c8f7a2f3bbaba6fc7e406e3`이다.
+
+Source pin 재생성 뒤 문서18/18이 통과했고 재pack SHA256도 같은38c8c818…473f다.
+따라서 위3Node/브라우저 소비자 근거는 동일 archive에 그대로 적용된다. Metadata pin은 runtime/type0변경이다.
