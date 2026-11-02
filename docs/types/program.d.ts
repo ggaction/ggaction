@@ -1903,14 +1903,22 @@ export type EdgeRouteMethod = "hierarchical" | "force-directed" | "density" | "e
 export interface EdgeRouteLimits {
   readonly maxNodes?: number; readonly maxEdges?: number; readonly maxCandidatePairs?: number; readonly maxSamples?: number;
 }
-export interface EdgeRouteCommonOptions { readonly zeroLength?: "point"; readonly limits?: EdgeRouteLimits; }
-export interface HierarchicalEdgeRouteOptions extends EdgeRouteCommonOptions {
+export interface EdgeRouteExecution {
+  readonly policy: "bounded-route@1";
+  readonly maxWork: number; readonly maxCandidatePairs: number; readonly maxSamples: number;
+  readonly maxBufferBytes: number; readonly maxBytes: number;
+}
+export type EdgeRouteCommonOptions = { readonly zeroLength?: "point" } & (
+  { readonly execution?: never; readonly limits?: EdgeRouteLimits }
+  | { readonly execution: EdgeRouteExecution; readonly limits?: Pick<EdgeRouteLimits, "maxNodes" | "maxEdges"> }
+);
+export type HierarchicalEdgeRouteOptions = EdgeRouteCommonOptions & {
   readonly hierarchy?: string; readonly hierarchyLayout?: string;
   readonly mapping: readonly { readonly nodeKey: RowKey; readonly hierarchyKey: RowKeyScalar }[];
   readonly strength?: number; readonly tolerance?: number; readonly maxSubdivisions?: number;
 }
-export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { readonly compatibilityThreshold?: number; }
-export interface EdgePathRouteOptions extends EdgeRouteCommonOptions { readonly exponent?: number; readonly maxStretch?: number; }
+export type ForceDirectedEdgeRouteOptions = EdgeRouteCommonOptions & { readonly compatibilityThreshold?: number; };
+export type EdgePathRouteOptions = EdgeRouteCommonOptions & { readonly exponent?: number; readonly maxStretch?: number; };
 export type EdgeRouteDefinition =
   { readonly method: "hierarchical"; readonly options: HierarchicalEdgeRouteOptions }
   | { readonly method: "force-directed"; readonly options?: ForceDirectedEdgeRouteOptions }
@@ -1950,6 +1958,13 @@ export interface EdgeRouteResource {
   readonly result: EdgeRouteResult & { readonly inputHash: string; readonly resultHash: string;
     readonly viewport: null | { readonly x: number; readonly y: number; readonly width: number; readonly height: number } };
   readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+}
+export interface EdgeRouteResourceV2 extends Omit<EdgeRouteResource, "algorithmVersion" | "options" | "result"> {
+  readonly algorithmVersion: "2";
+  readonly options: { readonly method: EdgeRouteMethod; readonly coordinateSpace: "world" | "screen";
+    readonly options: Readonly<Record<string, unknown>> & { readonly execution: EdgeRouteExecution;
+      readonly limits: Readonly<Required<Pick<EdgeRouteLimits, "maxNodes" | "maxEdges">>> } };
+  readonly result: EdgeRouteResource["result"] & { readonly diagnostics: EdgeRouteResult["diagnostics"] & { readonly peakBufferBytes: number } };
 }
 export interface GraphPin { readonly key: RowKey; readonly fx: number; readonly fy: number; }
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
@@ -2759,7 +2774,7 @@ export interface SemanticGeoCoordinate {
 export type SemanticCoordinate = SemanticNativeCoordinate | SemanticGeoCoordinate;
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | GeometrySourceResource | GeoRouteResource | GeoJoinResource | GeoLODResource | CalendarLayoutResource | EdgeRouteResource | ProjectionResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | GeometrySourceResource | GeoRouteResource | GeoJoinResource | GeoLODResource | CalendarLayoutResource | EdgeRouteResource | EdgeRouteResourceV2 | ProjectionResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];

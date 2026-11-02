@@ -34,7 +34,7 @@ Chart authoring. Apply a nonempty patch to layout binding, placement, node/edge 
 
 ## Stored edge routes
 
-Set `routes` to an [edge route resource](../../../api/edge-routes/) from the same graph and layout. Omission preserves an edited plot’s binding; `routes:false` restores native curves. Bundled paths retain original edge identities and row membership. Native `parallelGap` and `loopRadius` apply after routes are detached.
+Set `routes` to an [edge route resource](../../../api/edge-routes/) from the same graph and layout. Omission preserves an edited plot’s binding; `routes:false` restores native curves. Bundled paths retain original edge identities and row membership. [Explicit bounded execution](../../../api/edge-routes/#explicit-bounded-execution) prepares version 2 routes with required worker budgets and deadlines. Native `parallelGap` and `loopRadius` apply after routes are detached.
 
 ## Labels and identity
 

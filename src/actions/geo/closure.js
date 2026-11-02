@@ -30,7 +30,7 @@ export function geographicConsumerIds(program, revised) {
 
 // One ordered closure for authored geometry and route-derived geometry. Callers
 // supply all already-computed roots before any dependent geometry is prepared.
-export function prepareGeoResourceRevisions(program, resources) {
+export function prepareGeoResourceRevisions(program, resources, routeScope) {
   const candidates = new Map(resources.map(resource => [key(resource), resource])), revised = new Map(), entries = [];
   for (const previous of program.semanticSpec.resources) {
     const next = candidates.get(key(previous));
@@ -63,7 +63,7 @@ export function prepareGeoResourceRevisions(program, resources) {
   const layers = mapLayerResourceBindings(program.semanticSpec.layers, rebind);
   const preview = { ...program, semanticSpec: { ...program.semanticSpec, coordinates, layers,
     resources: resources.map(resource => candidates.get(key(resource))) } };
-  validateResourceGraph(preview, program.constructor);
+  validateResourceGraph(preview, program.constructor, routeScope);
   const markIds = geographicConsumerIds(preview, revised);
   preflightGeoConsumers(preview, markIds);
   return { entries, resources: preview.semanticSpec.resources, markIds, preview };

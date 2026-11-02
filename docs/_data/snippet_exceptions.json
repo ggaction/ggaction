@@ -2917,5 +2917,19 @@
     "mode": "contextual-fragment",
     "owner": "docs/api/animation.md",
     "reason": "This browser continuation uses restored from the first complete example and a host Canvas element. The host explicitly supplies requestAnimationFrame and performance.now; controller behavior is verified by the public player tests."
+  },
+  {
+    "id": "docs/api/edge-routes.md#explicit-bounded-execution:1",
+    "sha256": "d85555f9cf121e477af3b9829296037226c8cc51b02fb9374f770de6a3120760",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/edge-routes.md",
+    "reason": "The host fragment needs the caller-owned graph g and layout l plus the separately served ES module worker. Its exact code is checked in the installed bounded-route browser qualification."
+  },
+  {
+    "id": "docs/api/edge-routes.md#explicit-bounded-execution:2",
+    "sha256": "6ee07b3b6e36d419a09aca519c1af4275b08366844e0bb814c683e343b3f0a38",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/edge-routes.md",
+    "reason": "This complete worker module runs in a separate Worker global and produces a completion packet rather than a ChartProgram. Its exact code is checked with the accompanying installed host fragment in browser qualification."
   }
 ]

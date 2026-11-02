@@ -4,3 +4,4 @@ export { createGraphRouteExecutor } from "./resources/graphRouteExecutor.js";
 export { computeInferenceJob as computeGraphInference } from "./grammar/graph/inferenceJob.js";
 export { prepareInferredGraphData } from "./resources/graphInference.js";
 export { createGraphInferenceExecutor } from "./resources/graphInferenceExecutor.js";
+export { computeGraphEdgeRoutesAsync } from "./resources/graphRouteCompute.js";

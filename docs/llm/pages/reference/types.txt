@@ -5045,7 +5045,7 @@ export interface ECDFOutputFields {
  Expand EdgePathRouteOptions
 
 ```typescript
-export interface EdgePathRouteOptions extends EdgeRouteCommonOptions { readonly exponent?: number; readonly maxStretch?: number; }
+export type EdgePathRouteOptions = EdgeRouteCommonOptions & { readonly exponent?: number; readonly maxStretch?: number; };
 ```
 
 Related types: [`EdgeRouteCommonOptions`](../../../reference/types/#type-edgeroutecommonoptions).
@@ -5055,10 +5055,13 @@ Related types: [`EdgeRouteCommonOptions`](../../../reference/types/#type-edgerou
  Expand EdgeRouteCommonOptions
 
 ```typescript
-export interface EdgeRouteCommonOptions { readonly zeroLength?: "point"; readonly limits?: EdgeRouteLimits; }
+export type EdgeRouteCommonOptions = { readonly zeroLength?: "point" } & (
+  { readonly execution?: never; readonly limits?: EdgeRouteLimits }
+  | { readonly execution: EdgeRouteExecution; readonly limits?: Pick<EdgeRouteLimits, "maxNodes" | "maxEdges"> }
+);
 ```
 
-Related types: [`EdgeRouteLimits`](../../../reference/types/#type-edgeroutelimits).
+Related types: [`EdgeRouteLimits`](../../../reference/types/#type-edgeroutelimits) · [`EdgeRouteExecution`](../../../reference/types/#type-edgerouteexecution).
 
 ### `EdgeRouteDefinition` {#type-edgeroutedefinition}
 
@@ -5073,6 +5076,18 @@ export type EdgeRouteDefinition =
 ```
 
 Related types: [`HierarchicalEdgeRouteOptions`](../../../reference/types/#type-hierarchicaledgerouteoptions) · [`ForceDirectedEdgeRouteOptions`](../../../reference/types/#type-forcedirectededgerouteoptions) · [`EdgeRouteCommonOptions`](../../../reference/types/#type-edgeroutecommonoptions) · [`EdgePathRouteOptions`](../../../reference/types/#type-edgepathrouteoptions).
+
+### `EdgeRouteExecution` {#type-edgerouteexecution}
+
+ Expand EdgeRouteExecution
+
+```typescript
+export interface EdgeRouteExecution {
+  readonly policy: "bounded-route@1";
+  readonly maxWork: number; readonly maxCandidatePairs: number; readonly maxSamples: number;
+  readonly maxBufferBytes: number; readonly maxBytes: number;
+}
+```
 
 ### `EdgeRouteLimits` {#type-edgeroutelimits}
 
@@ -7685,7 +7700,7 @@ export interface FoldDataOutputFields {
  Expand ForceDirectedEdgeRouteOptions
 
 ```typescript
-export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { readonly compatibilityThreshold?: number; }
+export type ForceDirectedEdgeRouteOptions = EdgeRouteCommonOptions & { readonly compatibilityThreshold?: number; };
 ```
 
 Related types: [`EdgeRouteCommonOptions`](../../../reference/types/#type-edgeroutecommonoptions).
@@ -8422,7 +8437,7 @@ Related types: [`NonPointBandPositionScaleOptions`](../../../reference/types/#ty
  Expand HierarchicalEdgeRouteOptions
 
 ```typescript
-export interface HierarchicalEdgeRouteOptions extends EdgeRouteCommonOptions {
+export type HierarchicalEdgeRouteOptions = EdgeRouteCommonOptions & {
   readonly hierarchy?: string; readonly hierarchyLayout?: string;
   readonly mapping: readonly { readonly nodeKey: RowKey; readonly hierarchyKey: RowKeyScalar }[];
   readonly strength?: number; readonly tolerance?: number; readonly maxSubdivisions?: number;

@@ -76,8 +76,8 @@ function cycleExceedsStretch(group, adjacency, lengths, excluded, source, target
   return false;
 }
 
-export function bundleEdgePathRoutes(input, optionsInput = {}, signal) {
-  const options = normalizeEdgePathOptions(optionsInput), context = prepareRouteInput(input, signal), { edges, budget } = context;
+export function bundleEdgePathRoutes(input, optionsInput = {}, signal, scope) {
+  const options = normalizeEdgePathOptions(optionsInput), context = prepareRouteInput(input, signal, scope), { edges, budget } = context;
   budget.charge(edges.length * (Math.ceil(Math.log2(Math.max(1, edges.length))) + 8));
   const lengths = edges.map(edge => routeLength([edge.source, edge.target])), costs = lengths.map(length => length ** options.exponent);
   if (!costs.every(Number.isFinite)) throw new RangeError("Edge route geometric cost must be finite.");

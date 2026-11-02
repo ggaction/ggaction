@@ -32,6 +32,7 @@ export function resolveEdgeRouteRequest(program, args, previous) {
   const method = args.method ?? previous?.options.method;
   const patch = Object.assign(Object.create(null), Object.hasOwn(args, "options") ? ownRecord(args.options, "Edge route options") : {});
   const preserve = previous !== undefined && method === previous.options.method;
+  if (previous?.algorithmVersion === "2" && !preserve && !Object.hasOwn(patch, "execution")) throw new TypeError("Changing a bounded route method requires explicit execution policy.");
   const input = Object.assign(Object.create(null), preserve ? previous.options.options : {}, patch);
   if (Object.values(input).some(value => value === undefined || value === null)) throw new TypeError("Edge route options cannot contain null or undefined.");
   if (preserve && patch.limits) input.limits = { ...previous.options.options.limits, ...ownRecord(patch.limits, "Route limits") };
@@ -45,4 +46,14 @@ export function resolveEdgeRouteRequest(program, args, previous) {
   const intent = normalizeRouteIntent(method, options, args.coordinateSpace ?? previous?.options.coordinateSpace);
   return { id: previous?.id ?? args.id, revision: previous === undefined ? 0 : previous.revision + 1,
     program, graph, layout, hierarchy, hierarchyLayout, intent };
+}
+
+
+// Only classify the new host option; normal request validation still owns every
+// error and resource choice. A failed lookup never admits a deadline for v1.
+export function permitsRouteDeadline(program, args, editing) {
+  if (args.options !== null && typeof args.options === "object" && Object.hasOwn(args.options, "execution")) return true;
+  if (!editing) return false;
+  try { return resolveEdgeRouteResource(program, args.target).algorithmVersion === "2"; }
+  catch { return false; }
 }

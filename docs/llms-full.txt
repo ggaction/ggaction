@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:35d351c7e7850f2dad114aca97ad2ecfd87fbe302d4568c4d6197b18a3fd975b. Status: development. Runtime source: 97d9e30ee6ab21901fdf2820cd2c46f3b6685456. Release baseline: v0.0.13.
+Contract: sha256:88fc8c3e04a071002fb37453ae68bec6aede403ace12793f6572fa10db580e48. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/97d9e30ee6ab21901fdf2820cd2c46f3b6685456/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/97d9e30ee6ab21901fdf2820cd2c46f3b6685456/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -19810,7 +19810,7 @@ documentation interaction tests run in Playwright Chromium. Library renderer com
 | `ggaction/diagnostics` | Browser or Node.js 20+ | Read structured error details |
 | `ggaction/animation` | Browser or Node.js 20+ | Prepare, play, save, restore, and export immutable transition frames |
 | `ggaction/scene` | Browser or Node.js 20+ | Read transition scenes and draw native Canvas scenes |
-| `ggaction/graph` | Browser or Node.js 20+ | Prepare graph routes with explicit worker and cache ownership |
+| `ggaction/graph` | Browser or Node.js 20+ | Prepare graph routes with explicit worker ownership; version 2 uses required budgets and deadlines |
 | `ggaction/interaction` | Browser or Node.js 20+ | Inspect current marks and guides; DOM-free until mounted |
 
 CommonJS `require("ggaction")` is not a supported entry. Use ESM source files
@@ -37065,7 +37065,7 @@ export type { ConditionalEncodingOptions } from "./program.js";
 export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
 export type { GraphPosition, GraphPin, GraphLayoutLimits, GraphFixedOptions, GraphCircularOptions, GraphForceOptions, LayoutGraphOptions, GraphLayoutResource } from "./program.js";
 export type { GraphNodePaint, GraphEdgePaint, GraphLabelPaint, GraphLabelsOptions, GraphPlotOptions, EditGraphPlotOptions } from "./program.js";
-export type { EdgeRouteMethod, EdgeRouteLimits, EdgeRouteCommonOptions, HierarchicalEdgeRouteOptions, ForceDirectedEdgeRouteOptions, EdgePathRouteOptions, EdgeRouteDefinition, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, ApplyGraphEdgeRoutesOptions, EdgeRoutePoint, EdgeRouteVector, EdgeRouteResult, EdgeRouteResource } from "./program.js";
+export type { EdgeRouteMethod, EdgeRouteLimits, EdgeRouteCommonOptions, HierarchicalEdgeRouteOptions, ForceDirectedEdgeRouteOptions, EdgePathRouteOptions, EdgeRouteDefinition, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, ApplyGraphEdgeRoutesOptions, EdgeRoutePoint, EdgeRouteVector, EdgeRouteResult, EdgeRouteResource, EdgeRouteResourceV2, EdgeRouteExecution } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
@@ -38687,9 +38687,16 @@ export interface GraphRouteCompletion {
   readonly inputHash: string; readonly resultHash: string;
   readonly result: EdgeRouteResult & { readonly options: Readonly<Record<string, unknown>> };
 }
+export interface GraphRouteJobV2 extends Omit<GraphRouteJob, "schemaVersion"> {
+  readonly schemaVersion: 2;
+}
+export interface GraphRouteCompletionV2 extends GraphRouteCompletion {
+  readonly schemaVersion: 2;
+  readonly result: GraphRouteCompletion["result"] & { readonly diagnostics: EdgeRouteResult["diagnostics"] & { readonly peakBufferBytes: number } };
+}
 /** A browser Worker satisfies this protocol. One request owns one worker until completion, error or cancellation. */
 export interface GraphRouteWorker {
-  postMessage(message: { readonly job: GraphRouteJob }): void;
+  postMessage(message: { readonly job: GraphRouteJob | GraphRouteJobV2 }): void;
   addEventListener(type: "message", listener: (event: { readonly data: unknown }) => void): void;
   addEventListener(type: "error", listener: (event: { readonly error: unknown }) => void): void;
   removeEventListener(type: "message", listener: (event: { readonly data: unknown }) => void): void;
@@ -38698,14 +38705,19 @@ export interface GraphRouteWorker {
 }
 export interface GraphRouteExecutor {
   compute(job: GraphRouteJob, options?: { readonly signal?: AbortSignal }): Promise<GraphRouteCompletion>;
+  compute(job: GraphRouteJobV2, options: { readonly signal?: AbortSignal; readonly deadlineMs: number }): Promise<GraphRouteCompletionV2>;
   evict(inputHash?: string): void;
   dispose(): void;
 }
 export type GraphEdgeRoutesRequest = ({ readonly kind: "create" } & BundleGraphEdgesOptions)
   | ({ readonly kind: "edit" } & EditEdgeRouteOptions);
-export interface GraphEdgeRoutesHost { readonly requestToken: string; readonly signal?: AbortSignal; readonly executor?: GraphRouteExecutor; }
+export type GraphEdgeRoutesHost = { readonly requestToken: string; readonly signal?: AbortSignal } & (
+  { readonly executor?: GraphRouteExecutor; readonly deadlineMs?: never }
+  | { readonly executor: GraphRouteExecutor; readonly deadlineMs: number }
+);
 export function createGraphRouteExecutor(options?: { readonly createWorker?: () => GraphRouteWorker }): GraphRouteExecutor;
 export function computeGraphEdgeRoutes(job: GraphRouteJob, signal?: AbortSignal): GraphRouteCompletion;
+export function computeGraphEdgeRoutesAsync(job: GraphRouteJobV2, signal?: AbortSignal): Promise<GraphRouteCompletionV2>;
 export function prepareGraphEdgeRoutes(program: ChartProgram, request: GraphEdgeRoutesRequest, host: GraphEdgeRoutesHost): Promise<PreparedGraphEdgeRoutes>;
 
 import type { CreateInferredGraphDataOptions, EditInferredGraphDataOptions, PreparedInferredGraphData, GraphModel, GraphInferenceDiagnostics } from "./program.js";
@@ -43992,7 +44004,7 @@ export interface ECDFOutputFields {
  Expand EdgePathRouteOptions
 
 ```typescript
-export interface EdgePathRouteOptions extends EdgeRouteCommonOptions { readonly exponent?: number; readonly maxStretch?: number; }
+export type EdgePathRouteOptions = EdgeRouteCommonOptions & { readonly exponent?: number; readonly maxStretch?: number; };
 ```
 
 Related types: [`EdgeRouteCommonOptions`](./reference/types/#type-edgeroutecommonoptions).
@@ -44002,10 +44014,13 @@ Related types: [`EdgeRouteCommonOptions`](./reference/types/#type-edgeroutecommo
  Expand EdgeRouteCommonOptions
 
 ```typescript
-export interface EdgeRouteCommonOptions { readonly zeroLength?: "point"; readonly limits?: EdgeRouteLimits; }
+export type EdgeRouteCommonOptions = { readonly zeroLength?: "point" } & (
+  { readonly execution?: never; readonly limits?: EdgeRouteLimits }
+  | { readonly execution: EdgeRouteExecution; readonly limits?: Pick<EdgeRouteLimits, "maxNodes" | "maxEdges"> }
+);
 ```
 
-Related types: [`EdgeRouteLimits`](./reference/types/#type-edgeroutelimits).
+Related types: [`EdgeRouteLimits`](./reference/types/#type-edgeroutelimits) · [`EdgeRouteExecution`](./reference/types/#type-edgerouteexecution).
 
 ### `EdgeRouteDefinition` {#type-edgeroutedefinition}
 
@@ -44020,6 +44035,18 @@ export type EdgeRouteDefinition =
 ```
 
 Related types: [`HierarchicalEdgeRouteOptions`](./reference/types/#type-hierarchicaledgerouteoptions) · [`ForceDirectedEdgeRouteOptions`](./reference/types/#type-forcedirectededgerouteoptions) · [`EdgeRouteCommonOptions`](./reference/types/#type-edgeroutecommonoptions) · [`EdgePathRouteOptions`](./reference/types/#type-edgepathrouteoptions).
+
+### `EdgeRouteExecution` {#type-edgerouteexecution}
+
+ Expand EdgeRouteExecution
+
+```typescript
+export interface EdgeRouteExecution {
+  readonly policy: "bounded-route@1";
+  readonly maxWork: number; readonly maxCandidatePairs: number; readonly maxSamples: number;
+  readonly maxBufferBytes: number; readonly maxBytes: number;
+}
+```
 
 ### `EdgeRouteLimits` {#type-edgeroutelimits}
 
@@ -46632,7 +46659,7 @@ export interface FoldDataOutputFields {
  Expand ForceDirectedEdgeRouteOptions
 
 ```typescript
-export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { readonly compatibilityThreshold?: number; }
+export type ForceDirectedEdgeRouteOptions = EdgeRouteCommonOptions & { readonly compatibilityThreshold?: number; };
 ```
 
 Related types: [`EdgeRouteCommonOptions`](./reference/types/#type-edgeroutecommonoptions).
@@ -47369,7 +47396,7 @@ Related types: [`NonPointBandPositionScaleOptions`](./reference/types/#type-nonp
  Expand HierarchicalEdgeRouteOptions
 
 ```typescript
-export interface HierarchicalEdgeRouteOptions extends EdgeRouteCommonOptions {
+export type HierarchicalEdgeRouteOptions = EdgeRouteCommonOptions & {
   readonly hierarchy?: string; readonly hierarchyLayout?: string;
   readonly mapping: readonly { readonly nodeKey: RowKey; readonly hierarchyKey: RowKeyScalar }[];
   readonly strength?: number; readonly tolerance?: number; readonly maxSubdivisions?: number;
@@ -53599,12 +53626,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/97d9e30ee6ab21901fdf2820cd2c46f3b6685456/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/97d9e30ee6ab21901fdf2820cd2c46f3b6685456/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -56745,9 +56772,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:35d351c7e7850f2dad114aca97ad2ecfd87fbe302d4568c4d6197b18a3fd975b` |
+| Contract fingerprint | `sha256:88fc8c3e04a071002fb37453ae68bec6aede403ace12793f6572fa10db580e48` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
-| Runtime source commit | `97d9e30ee6ab21901fdf2820cd2c46f3b6685456` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 379 |
 | Declared actions in that release | 234 |
@@ -57790,7 +57817,7 @@ Chart authoring. Apply a nonempty patch to layout binding, placement, node/edge 
 
 ## Stored edge routes
 
-Set `routes` to an [edge route resource](./api/edge-routes/) from the same graph and layout. Omission preserves an edited plot’s binding; `routes:false` restores native curves. Bundled paths retain original edge identities and row membership. Native `parallelGap` and `loopRadius` apply after routes are detached.
+Set `routes` to an [edge route resource](./api/edge-routes/) from the same graph and layout. Omission preserves an edited plot’s binding; `routes:false` restores native curves. Bundled paths retain original edge identities and row membership. [Explicit bounded execution](./api/edge-routes/#explicit-bounded-execution) prepares version 2 routes with required worker budgets and deadlines. Native `parallelGap` and `loopRadius` apply after routes are detached.
 
 ## Labels and identity
 
@@ -58136,7 +58163,8 @@ positions. Strength is in [0,1], tolerance is positive, and subdivisions are an
 integer from 1 to 4096. Force compatibility is in [0,1]; edge-path exponent is positive
 and maxStretch is at least one.
 
-All methods accept `zeroLength:"point"` and `limits`. Coincident endpoints retain
+All methods accept `zeroLength:"point"` and `limits`. Without `execution`, the
+original synchronous policy applies. Coincident endpoints retain
 a point route and a diagnostic, with no invented junctions. Empty graphs produce
 empty complete routes. Limits can lower the default maxima: 100,000 nodes,
 1,000,000 edges, 10,000,000 candidate pairs, and 10,000,000 active samples. A shared
@@ -58176,7 +58204,7 @@ preserves an existing plot's binding. Native `parallelGap` and `loopRadius` appl
 when the binding is removed. Node radius trims the visible path and arrows follow
 its final tangent; stored center anchors stay unchanged.
 
-Graph, source, layout and hierarchy edits preflight every dependent route and
+For the original synchronous policy, graph, source, layout and hierarchy edits preflight every dependent route and
 plot, then update their revisions and graphics once. Failures preserve the old
 program and trace. Remove consuming marks or detach routes before removing a
 route resource. Remove authored routes before their input resources. Serialization
@@ -58214,6 +58242,92 @@ error, cancellation and disposal detach listeners and terminate each request's
 worker. Disposal rejects pending work and prevents reuse. Late replies cannot
 apply an older preparation. Keep the executor alive only for the host workflow
 that owns it, then call `dispose()`.
+
+## Explicit bounded execution
+
+**Advanced host API, Full authoring.** Set `options.execution` to opt into stored
+route version 2. Every policy field is required; there are no numeric defaults.
+
+| Field | Maximum | Meaning |
+| --- | ---: | --- |
+| `policy` | `"bounded-route@1"` | Exact policy name |
+| `maxWork` | 8,000,000,000 | Cumulative native route work units for preparation and application |
+| `maxCandidatePairs` | 50,000,000 | Cumulative candidate pairs |
+| `maxSamples` | 16,777,216 | Peak active route samples under the existing counting rules |
+| `maxBufferBytes` | 134,217,728 | Live reserved typed buffers and hash scratch bytes |
+| `maxBytes` | 134,217,728 | Each complete canonical tagged job or completion packet in UTF-8 bytes |
+
+Numeric values must be positive safe integers no greater than these maxima.
+`options.limits` then accepts only `maxNodes` and `maxEdges`, with the same defaults
+and maxima as before. The execution policy is the sole owner of the other limits.
+The buffer quota does not measure the entire JavaScript heap. Capacity admission
+also does not guarantee completion time or responsiveness for every input.
+
+For version 2, preparation requires an executor with `createWorker` and an explicit
+`deadlineMs`, a positive safe integer at most 30,000. The deadline covers preparation
+through native consumer preflight. Cancellation or expiry terminates the worker and
+returns no handle. Synchronous sections can finish before expiry is observed; this
+API does not promise a maximum main-thread pause. The final application checks the
+original signal and adds its validation work to the preparation total.
+
+The following host fragment assumes `program` already contains graph `g` and its
+layout `l`, and `route-worker.js` is served as an ES module:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+import { createGraphRouteExecutor, prepareGraphEdgeRoutes } from "ggaction/graph";
+
+const executor = createGraphRouteExecutor({
+  createWorker: () => new Worker("./route-worker.js", { type: "module" })
+});
+try {
+  const prepared = await prepareGraphEdgeRoutes(program, {
+    kind: "create", id: "routes", graph: "g", layout: "l", method: "force-directed",
+    options: { execution: {
+      policy: "bounded-route@1", maxWork: 8_000_000_000,
+      maxCandidatePairs: 50_000_000, maxSamples: 16_777_216,
+      maxBufferBytes: 134_217_728, maxBytes: 134_217_728
+    } }
+  }, { requestToken: "routes-1", executor, deadlineMs: 30_000 });
+  program = program.bundleGraphEdges({ prepared, requestToken: "routes-1" });
+} finally {
+  executor.dispose();
+}
+```
+
+The corresponding complete worker module uses the explicit async entry:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `self`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+import { computeGraphEdgeRoutesAsync } from "ggaction/graph";
+
+self.onmessage = async ({ data: { job } }) => {
+  self.postMessage(await computeGraphEdgeRoutesAsync(job));
+};
+```
+
+Version 2 jobs and completions have `schemaVersion:2`; the stored resource has
+`algorithmVersion:"2"`. Use `GraphRouteJobV2`, `GraphRouteCompletionV2` and
+`EdgeRouteResourceV2` when declaring these values. The async entry rejects version
+1 jobs, and the original synchronous entry rejects version 2 jobs. Version 2
+`diagnostics.work` includes worker job validation and solver work;
+`peakBufferBytes` reports the worker's observed peak. Host validation and application
+costs are additionally checked against the request budget. Stored hashes cover the
+same canonical tagged value format, including typed keys and signed zero.
+
+One bounded request exclusively owns its executor until completion. It clears any
+previous version 1 cache, does not cache its result, and rejects concurrent work.
+Version 1 retains its original synchronous fallback, cache, limits and protocol.
+
+Create or edit a version 2 route through `prepareGraphEdgeRoutes`, then use the
+ordinary authentic prepared application. A same-method edit retains the stored
+execution policy; a method change requires an explicit replacement policy. Raw
+synchronous route creation or recomputation rejects version 2 intent. Automatic
+source/layout/viewport revision of version 2 routes is not supported by this path.
+Stored version 2 vectors still restore offline and render through every existing
+backend. Consumer materialization remains an explicit wrapped action after prepare.
 
 <!-- Source: /tutorials/edge-routes/ -->
 

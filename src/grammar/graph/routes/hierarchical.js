@@ -63,9 +63,9 @@ function ancestorPath(source, target, hierarchy, budget) {
   return [...left, a, ...right.reverse()];
 }
 
-export function bundleHierarchicalRoutes(routeInput, input, optionsInput = {}, signal) {
+export function bundleHierarchicalRoutes(routeInput, input, optionsInput = {}, signal, scope) {
   const options = normalizeHierarchicalRouteOptions(optionsInput);
-  const context = prepareRouteInput(routeInput, signal), hierarchy = validateRouteHierarchy(input, context);
+  const context = prepareRouteInput(routeInput, signal, scope), hierarchy = validateRouteHierarchy(input, context);
   const routes = [], details = new Map();
   let heldSamples = context.edges.length * 2;
   for (const edge of context.edges) {

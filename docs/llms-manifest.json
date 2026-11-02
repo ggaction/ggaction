@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:35d351c7e7850f2dad114aca97ad2ecfd87fbe302d4568c4d6197b18a3fd975b",
-    "sourceCommit": "97d9e30ee6ab21901fdf2820cd2c46f3b6685456",
+    "contractId": "sha256:88fc8c3e04a071002fb37453ae68bec6aede403ace12793f6572fa10db580e48",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "120f2e10447a7766c3ee1d1fa56f23c216e88cd495b45aa460991520894e71e2"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1945,8 +1945,8 @@
         "compatibility-checklist",
         "related"
       ],
-      "bytes": 4382,
-      "sha256": "ea86d18ca8be680618b8a48eff33c23fb3f4a19b65416f102aa577cd028f7ee0"
+      "bytes": 4419,
+      "sha256": "6f9c2c3b11aa1aa03398099399673e600c8651e4cec1b482f80e8615d50d1bd0"
     },
     {
       "order": 113,
@@ -2654,8 +2654,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 89904,
-      "sha256": "a29d98664cead43cb1b71e3f172b749c09db3c658dd4bbf288c82b13841b8ae9"
+      "bytes": 90698,
+      "sha256": "caafa4e6280b18ef8ab95f374ee9cb55e58d1cedd01d88779e5d93424f9d9a27"
     },
     {
       "order": 132,
@@ -2957,6 +2957,7 @@
         "type-edgepathrouteoptions",
         "type-edgeroutecommonoptions",
         "type-edgeroutedefinition",
+        "type-edgerouteexecution",
         "type-edgeroutelimits",
         "type-edgeroutemethod",
         "type-editannotationoptions",
@@ -3593,8 +3594,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 516278,
-      "sha256": "764993b45bf161dff1f603a1fee13905a058ff968f9159016145208ae3b510d1"
+      "bytes": 516805,
+      "sha256": "85d55698c68a59c00c650f3588b91ab860490724aaa002ed19c097b1d2733f0d"
     },
     {
       "order": 133,
@@ -3630,8 +3631,8 @@
         "blend-concrete-sources-for-one-item",
         "explicit-path-command-capacity"
       ],
-      "bytes": 24063,
-      "sha256": "342ab5b7a22e5751986accca5198447811ea2b242a3a3d883d2d36d6f952773f"
+      "bytes": 23991,
+      "sha256": "00a37c2ae0031fa731e91b37a06c6e38ce730eeeab136f5a77c243d1229136ea"
     },
     {
       "order": 135,
@@ -3971,8 +3972,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "7f0d693fb0fedaf14e4db70ff74b7aa65272f628db3403ad0e011183556fde5c"
+      "bytes": 3000,
+      "sha256": "d4e2d2888dd3ff3461655a2d1341d5145523512e829c4aa29cd246b7db33824f"
     },
     {
       "order": 156,
@@ -4075,8 +4076,8 @@
         "prepare-inference-in-a-worker",
         "outlines-and-shadows"
       ],
-      "bytes": 16896,
-      "sha256": "c123ebf28430dd1d958e4a43f1851ee91691f115866089b0ce374c3223c28d53"
+      "bytes": 17042,
+      "sha256": "979cd362b3a23718e3c43c1265e85b9a927cbaadb067c53073648b43d6da5839"
     },
     {
       "order": 162,
@@ -4101,10 +4102,11 @@
         "bundlegraphedges",
         "editedgeroute",
         "bind-revise-and-inspect",
-        "prepare-in-a-worker"
+        "prepare-in-a-worker",
+        "explicit-bounded-execution"
       ],
-      "bytes": 6220,
-      "sha256": "2d4f52beb325770287255d501a4622724888ebd24d5bd3a29a0a88482a49597c"
+      "bytes": 11078,
+      "sha256": "bbc9a2933f95bda129f18ded9284dca9df7862d7473b06f1b23e1ad375dc88c6"
     },
     {
       "order": 164,

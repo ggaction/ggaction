@@ -5209,3 +5209,23 @@ Caller state·native 권한·4renderer가 읽는 fully materialized graphicSpec�
 Compiler 완성container 체크포인트는1261entries/Node22packed1815075/Node20·24packed1818620/
 unpacked8176200B이며 ceiling1261/1818700/8176200이다. Interaction gzip137641B는 위 표의
 137700B에 정합한다. Runtime work/node/byte guards와 원100k·50ms 목표는 동일하다.
+
+### Explicit bounded edge-route preparation
+
+명시 route v2는 persisted execution policy 한 곳과 native 요청 accounting을 사용한다.
+기존 동기 v1 path와 원 solver/guard를 보존하며 worker entry만 명시 async schema2로 분리한다.
+Job/result의 strict tagged streaming과 domain 검산은 원 grammar owner가 맡고,
+macrotask/deadline/worker 수명은 host owner가 맡는다. Immutable snapshot 뒤에만 yield하며
+SHA/cursor 소유권을 새 proof로 해석하지 않는다.
+
+Full assembly의 `registerEdgeRouteActions`는 exact constructor에 한 번만 native planner를
+연결한다. 전용 private lookup은 상속 fallback·외부 extension 옵션·다른 resource kind를 받지
+않고 원 prepared WeakMap의 인증을 대체하지 않는다. 따라서 graph host package가 Full action
+assembly나 renderer를 import하지 않으면서 같은 geo/graph consumer plan owner를 호출한다.
+Worker의 compute-only import는 순수 계산 경계를 유지한다.
+
+준비는 exact refs와 전체 consumer preflight 및 기존 wrapped operation plan을 기록하고,
+적용은 준비 누적 accounting에서 이어진 검산을 거쳐 원 preparedResourceContext와
+editSemantic/materialization child action을 수행한다. Candidate ChartProgram 반환이나
+제2facade proof는 없다. 원 action wrapper의 trace/theme/completion 책임도 유지한다.
+정확한 정책·한계는 [EDGE_ROUTES](contract/current/EDGE_ROUTES.md#명시-bounded-route-v2)가 소유한다.

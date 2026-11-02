@@ -1,0 +1,692 @@
+{
+  "status": "verified-native-create-edit-checkpoint",
+  "base": "af936021b",
+  "proposal": "f9aa772b60a1de6d96652468b48c10868ba648fc",
+  "adoption": [
+    "012ecf039",
+    "a3f385c69"
+  ],
+  "archive": {
+    "node": "v20.20.2",
+    "file": "/Users/hyeonjeon/.codex/worktrees/route-v2-native/ggactionnewbrand/.artifacts/route-v2-native/final-package/ggaction-0.0.26.tgz",
+    "sha256": "f55a48de094c1153174ea81f2671f74f2ddba90f2bfcc4c283e6b7a1751ccbcb",
+    "entries": 1266,
+    "packedBytes": 1823649,
+    "unpackedBytes": 8196860
+  },
+  "sources": [
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "sha256": "f20d8d12580907135b233da00466b0efe2f2fac0e4d91c7a13db243b304b87cb"
+    },
+    {
+      "path": "agent_docs/contract/current/EDGE_ROUTES.md",
+      "sha256": "7c8318786d0cf5f18f7e1a42ad450542b5509d07a9187edbea5f65b1bbab6bd8"
+    },
+    {
+      "path": "docs/api/edge-routes.md",
+      "sha256": "726e2052c4ba9afbee7db427e87cdd7dcf4811b29d30b2e990b69ea205266d9b"
+    },
+    {
+      "path": "docs/api/graphs.md",
+      "sha256": "61cfa2054cd4b498a261f244a5329f587eab386be22a9a62dd79b576c651cef8"
+    },
+    {
+      "path": "docs/compatibility.md",
+      "sha256": "b3cedf76e09c62487c43c1526457a2eeb504815fd66d89a22ddae36560c6a301"
+    },
+    {
+      "path": "scripts/browser-bundle-size.js",
+      "sha256": "503aed3568c60eae31e4e782f13f94131418644ebfa3c23d328051d68aaf1434"
+    },
+    {
+      "path": "scripts/coverage-policy.js",
+      "sha256": "72d4efc302e4a10fd59fb41650406485b8aac92b2025a1a098425f5175bfd691"
+    },
+    {
+      "path": "scripts/generate-doc-search-index.js",
+      "sha256": "c4219e3125b65ef9203c1070dead0ec816f1eb6aae2ad166f04393759d5bb7ff"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "1ae64ed8b224e42d8e12d5edbc03a28292777c7c9a48202d05d1213198fb8a7c"
+    },
+    {
+      "path": "src/actions/geo/closure.js",
+      "sha256": "014045dac9cb636ed8defd5cd712cfe3bf0075a73d08bbe725066c8e249fa6c9"
+    },
+    {
+      "path": "src/actions/graphs/edgeRoutes.js",
+      "sha256": "110e448982767a98fe2ad631f46c147947e928cef5103526d3f111234135ce64"
+    },
+    {
+      "path": "src/actions/graphs/routePlan.js",
+      "sha256": "5365f40b27fdb82442b8c0c13c73aafb878029917492b988684f586eba72b8df"
+    },
+    {
+      "path": "src/actions/primitives/preparedResourceContext.js",
+      "sha256": "40fce715f9f52ea52d5ff08d5f2c25b025e6a76a667280492e5d4c6a2a8cc686"
+    },
+    {
+      "path": "src/actions/primitives/resourceState.js",
+      "sha256": "4c9fe00b9c594acf95a1b10aa74ffe308ab6611b483f53f67b9af97a2b0306d1"
+    },
+    {
+      "path": "src/core/encodedValueCursor.js",
+      "sha256": "f8675ff2afe9bbb0f1e8d2d71ce41f97a8290e31674037dbdd870e1258df8f0c"
+    },
+    {
+      "path": "src/core/jsonText.js",
+      "sha256": "87e5a44427dd30b5efa568bd50eecf01b0a7093eccba8d8d003a3536c1189bb4"
+    },
+    {
+      "path": "src/core/sha256.js",
+      "sha256": "a94e9caced46162e33d653cd07b5a36d0626cf4e5e46424644c9273f5e4ca979"
+    },
+    {
+      "path": "src/core/valueEncoding.js",
+      "sha256": "ea59303f02796696ed3bdab1ce21995c93a6b15b625f2db4a907a4e6af733b10"
+    },
+    {
+      "path": "src/grammar/graph/routes/budget.js",
+      "sha256": "0dd2d73fb0f528bf443319b3fd9eb13516198702e3d52a694adfabfb803456dd"
+    },
+    {
+      "path": "src/grammar/graph/routes/common.js",
+      "sha256": "a77b78900cf37467b4e7104493ef340ca35412df75ddd86728061f652b4af2be"
+    },
+    {
+      "path": "src/grammar/graph/routes/density.js",
+      "sha256": "369af12e82e68ab11055e5bb8af45b80ce88a98db8393e07c2780bf26e88161d"
+    },
+    {
+      "path": "src/grammar/graph/routes/densitySamples.js",
+      "sha256": "f64995259b65aa1e095940b30a3645979ae142ae81a7fe19021977992b170145"
+    },
+    {
+      "path": "src/grammar/graph/routes/edgePath.js",
+      "sha256": "72a0004992860d904586f74cf81e8780db5e197900330b291cb103ef4ee94851"
+    },
+    {
+      "path": "src/grammar/graph/routes/execution.js",
+      "sha256": "8ebd2e35f4f8cac82799fb4d375cd239b048bcef382d320305b75db72e01c448"
+    },
+    {
+      "path": "src/grammar/graph/routes/forceDirected.js",
+      "sha256": "3354a06bedd23ae141eff03c2538c6de6a31face453abb0435941c56395ac0d6"
+    },
+    {
+      "path": "src/grammar/graph/routes/forceNeighbors.js",
+      "sha256": "07a25b7ae0355673cbfdeb78afb41dc334082962d53311a172cbd703cf80f1fa"
+    },
+    {
+      "path": "src/grammar/graph/routes/hierarchical.js",
+      "sha256": "a2c09bbccc7bf4a4239af5e1eb1ff4ade41caf993c579061454c791fc1a41397"
+    },
+    {
+      "path": "src/grammar/graph/routes/job.js",
+      "sha256": "6c06c3fc93d9f60b6fc3a1c7afd09081e03796825d1626e09e36fe33da11b9a2"
+    },
+    {
+      "path": "src/grammar/graph/routes/options.js",
+      "sha256": "ca1682357adb7a5e175d6e0614ce4575930a4d52c7c8b2dc76581f798f10a782"
+    },
+    {
+      "path": "src/grammar/graph/routes/result.js",
+      "sha256": "25d92549431c68a05ccbaa107107e8c94abe97ed0dd62258724d5a2602e26c99"
+    },
+    {
+      "path": "src/grammar/graph/routes/resultProvenance.js",
+      "sha256": "23bac788b90c1c16d331fea510ca9081baa4ede5520bbf74ed310e651e3384c7"
+    },
+    {
+      "path": "src/grammar/graph/routes/valueHash.js",
+      "sha256": "552cc07d659c40b6ac3bf3610c462f9e7d88912cd05c39a2a5f018a694a9cd89"
+    },
+    {
+      "path": "src/graph.js",
+      "sha256": "427c520333196679ce59a89528f66e26160e0b4dd2bdced00955f50faa8fa0ea"
+    },
+    {
+      "path": "src/materialization/graph/routeInput.js",
+      "sha256": "0a82fc776f434ee995111519b60d845f5a0631ecc88d429d5956006f5e37ab49"
+    },
+    {
+      "path": "src/materialization/graph/routeRequest.js",
+      "sha256": "d83b93fb8fb0e5809552e0721677778e13c59346c34392c1c6f9566c5cc83ea0"
+    },
+    {
+      "path": "src/materialization/graph/routeResource.js",
+      "sha256": "7a75171fcc20d1f8520ee1cc25e8334f6abcb34b99339ed7a87d5b3f9926367f"
+    },
+    {
+      "path": "src/materialization/graph/routeState.js",
+      "sha256": "c07c4b1c891391a0b68f4bfa54e0f4e5c21676c6696f9fe343139076358ef2f7"
+    },
+    {
+      "path": "src/materialization/resourceState.js",
+      "sha256": "f71c4f8df7844c24748bbafe30d76473a7b9a213ea304b9b436d4ba1dd2ef8ad"
+    },
+    {
+      "path": "src/resources/graphRouteCompute.js",
+      "sha256": "89ad40b39e61fd6b534db1eaf6ca2ffdfadc2f8ebb9ff2afc6872f9aff869739"
+    },
+    {
+      "path": "src/resources/graphRouteExecutor.js",
+      "sha256": "71edd1c72a325ce3b17ede96976acbeb5588356f3e664e539ba0ba23b7581e58"
+    },
+    {
+      "path": "src/resources/graphRouteWorker.js",
+      "sha256": "90a728b9f68f82d8dd5f74a06cc1d6e11f77dc524c0f621bd0812be89a28e477"
+    },
+    {
+      "path": "src/resources/graphRoutes.js",
+      "sha256": "d5d3e5f368321c5bae835b277a7be832328943390273b755cc29ecd3ad93be38"
+    },
+    {
+      "path": "src/resources/routeStages.js",
+      "sha256": "3064c0eb72b6b5ef386951ef1e37b2fc457f95a95da8cc79bfefb34e406989c5"
+    },
+    {
+      "path": "test/capabilities.json",
+      "sha256": "9ea150e8dfc727d0d3a6aaadbc344bb5b5d92bcf4dfb7f99128e73edf9586bb5"
+    },
+    {
+      "path": "test/contracts/graph-route-package.test.js",
+      "sha256": "88cea129acf7322b934f8328c90a38fc2f0a1cdaedd1acf96092547a2b3b9621"
+    },
+    {
+      "path": "test/contracts/graph-route-types.test.js",
+      "sha256": "6156564752ec1773b71b8d265601051a339e0ddd3ef15adb2f8eb2348d7163b2"
+    },
+    {
+      "path": "test/contracts/package-boundaries.test.js",
+      "sha256": "9321e288f8bc34aa4ae61a2c5f817fbe4b3317206a7b0f8967e01329bd848e89"
+    },
+    {
+      "path": "test/unit/grammar/graph/routes/execution.test.js",
+      "sha256": "f1d5af303b02da8f6bc14cefa0413ae02b2a595707816dce97597fb7ab3104fd"
+    },
+    {
+      "path": "test/unit/resources/graph-route-bounded.test.js",
+      "sha256": "c74f6769caa6491db669313be9a21f1722e72a5c933910d461061f56d27071f8"
+    },
+    {
+      "path": "types/graph.d.ts",
+      "sha256": "67bff886f574edb7619c99efa763343a1b7cc373b06002112359390471fccfee"
+    },
+    {
+      "path": "types/index.d.ts",
+      "sha256": "9eac06001ed9123355a0ff71f50bd076367cf9df5a0ecda653b49bfa1fa29fa5"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "07ac642c9b7797880381e9511d5f29b9b84ac45d23a79cafbdb7782291f11d2b"
+    }
+  ],
+  "packedSources": [
+    {
+      "path": "src/actions/geo/closure.js",
+      "sha256": "014045dac9cb636ed8defd5cd712cfe3bf0075a73d08bbe725066c8e249fa6c9"
+    },
+    {
+      "path": "src/actions/graphs/edgeRoutes.js",
+      "sha256": "110e448982767a98fe2ad631f46c147947e928cef5103526d3f111234135ce64"
+    },
+    {
+      "path": "src/actions/graphs/routePlan.js",
+      "sha256": "5365f40b27fdb82442b8c0c13c73aafb878029917492b988684f586eba72b8df"
+    },
+    {
+      "path": "src/actions/primitives/preparedResourceContext.js",
+      "sha256": "40fce715f9f52ea52d5ff08d5f2c25b025e6a76a667280492e5d4c6a2a8cc686"
+    },
+    {
+      "path": "src/actions/primitives/resourceState.js",
+      "sha256": "4c9fe00b9c594acf95a1b10aa74ffe308ab6611b483f53f67b9af97a2b0306d1"
+    },
+    {
+      "path": "src/core/encodedValueCursor.js",
+      "sha256": "f8675ff2afe9bbb0f1e8d2d71ce41f97a8290e31674037dbdd870e1258df8f0c"
+    },
+    {
+      "path": "src/core/jsonText.js",
+      "sha256": "87e5a44427dd30b5efa568bd50eecf01b0a7093eccba8d8d003a3536c1189bb4"
+    },
+    {
+      "path": "src/core/sha256.js",
+      "sha256": "a94e9caced46162e33d653cd07b5a36d0626cf4e5e46424644c9273f5e4ca979"
+    },
+    {
+      "path": "src/core/valueEncoding.js",
+      "sha256": "ea59303f02796696ed3bdab1ce21995c93a6b15b625f2db4a907a4e6af733b10"
+    },
+    {
+      "path": "src/grammar/graph/routes/budget.js",
+      "sha256": "0dd2d73fb0f528bf443319b3fd9eb13516198702e3d52a694adfabfb803456dd"
+    },
+    {
+      "path": "src/grammar/graph/routes/common.js",
+      "sha256": "a77b78900cf37467b4e7104493ef340ca35412df75ddd86728061f652b4af2be"
+    },
+    {
+      "path": "src/grammar/graph/routes/density.js",
+      "sha256": "369af12e82e68ab11055e5bb8af45b80ce88a98db8393e07c2780bf26e88161d"
+    },
+    {
+      "path": "src/grammar/graph/routes/densitySamples.js",
+      "sha256": "f64995259b65aa1e095940b30a3645979ae142ae81a7fe19021977992b170145"
+    },
+    {
+      "path": "src/grammar/graph/routes/edgePath.js",
+      "sha256": "72a0004992860d904586f74cf81e8780db5e197900330b291cb103ef4ee94851"
+    },
+    {
+      "path": "src/grammar/graph/routes/execution.js",
+      "sha256": "8ebd2e35f4f8cac82799fb4d375cd239b048bcef382d320305b75db72e01c448"
+    },
+    {
+      "path": "src/grammar/graph/routes/forceDirected.js",
+      "sha256": "3354a06bedd23ae141eff03c2538c6de6a31face453abb0435941c56395ac0d6"
+    },
+    {
+      "path": "src/grammar/graph/routes/forceNeighbors.js",
+      "sha256": "07a25b7ae0355673cbfdeb78afb41dc334082962d53311a172cbd703cf80f1fa"
+    },
+    {
+      "path": "src/grammar/graph/routes/hierarchical.js",
+      "sha256": "a2c09bbccc7bf4a4239af5e1eb1ff4ade41caf993c579061454c791fc1a41397"
+    },
+    {
+      "path": "src/grammar/graph/routes/job.js",
+      "sha256": "6c06c3fc93d9f60b6fc3a1c7afd09081e03796825d1626e09e36fe33da11b9a2"
+    },
+    {
+      "path": "src/grammar/graph/routes/options.js",
+      "sha256": "ca1682357adb7a5e175d6e0614ce4575930a4d52c7c8b2dc76581f798f10a782"
+    },
+    {
+      "path": "src/grammar/graph/routes/result.js",
+      "sha256": "25d92549431c68a05ccbaa107107e8c94abe97ed0dd62258724d5a2602e26c99"
+    },
+    {
+      "path": "src/grammar/graph/routes/resultProvenance.js",
+      "sha256": "23bac788b90c1c16d331fea510ca9081baa4ede5520bbf74ed310e651e3384c7"
+    },
+    {
+      "path": "src/grammar/graph/routes/valueHash.js",
+      "sha256": "552cc07d659c40b6ac3bf3610c462f9e7d88912cd05c39a2a5f018a694a9cd89"
+    },
+    {
+      "path": "src/graph.js",
+      "sha256": "427c520333196679ce59a89528f66e26160e0b4dd2bdced00955f50faa8fa0ea"
+    },
+    {
+      "path": "src/materialization/graph/routeInput.js",
+      "sha256": "0a82fc776f434ee995111519b60d845f5a0631ecc88d429d5956006f5e37ab49"
+    },
+    {
+      "path": "src/materialization/graph/routeRequest.js",
+      "sha256": "d83b93fb8fb0e5809552e0721677778e13c59346c34392c1c6f9566c5cc83ea0"
+    },
+    {
+      "path": "src/materialization/graph/routeResource.js",
+      "sha256": "7a75171fcc20d1f8520ee1cc25e8334f6abcb34b99339ed7a87d5b3f9926367f"
+    },
+    {
+      "path": "src/materialization/graph/routeState.js",
+      "sha256": "c07c4b1c891391a0b68f4bfa54e0f4e5c21676c6696f9fe343139076358ef2f7"
+    },
+    {
+      "path": "src/materialization/resourceState.js",
+      "sha256": "f71c4f8df7844c24748bbafe30d76473a7b9a213ea304b9b436d4ba1dd2ef8ad"
+    },
+    {
+      "path": "src/resources/graphRouteCompute.js",
+      "sha256": "89ad40b39e61fd6b534db1eaf6ca2ffdfadc2f8ebb9ff2afc6872f9aff869739"
+    },
+    {
+      "path": "src/resources/graphRouteExecutor.js",
+      "sha256": "71edd1c72a325ce3b17ede96976acbeb5588356f3e664e539ba0ba23b7581e58"
+    },
+    {
+      "path": "src/resources/graphRouteWorker.js",
+      "sha256": "90a728b9f68f82d8dd5f74a06cc1d6e11f77dc524c0f621bd0812be89a28e477"
+    },
+    {
+      "path": "src/resources/graphRoutes.js",
+      "sha256": "d5d3e5f368321c5bae835b277a7be832328943390273b755cc29ecd3ad93be38"
+    },
+    {
+      "path": "src/resources/routeStages.js",
+      "sha256": "3064c0eb72b6b5ef386951ef1e37b2fc457f95a95da8cc79bfefb34e406989c5"
+    },
+    {
+      "path": "types/graph.d.ts",
+      "sha256": "67bff886f574edb7619c99efa763343a1b7cc373b06002112359390471fccfee"
+    },
+    {
+      "path": "types/index.d.ts",
+      "sha256": "9eac06001ed9123355a0ff71f50bd076367cf9df5a0ecda653b49bfa1fa29fa5"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "07ac642c9b7797880381e9511d5f29b9b84ac45d23a79cafbdb7782291f11d2b"
+    }
+  ],
+  "files": [
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/bounded-first.log.gz",
+      "sha256": "a0e5ef9e29d133ff25d9ce6ef67930afdb10be4356259483d390334f8b00dadb",
+      "uncompressedSha256": "06508b7af1d2fbd87fb295d63e1404f82666e2631d63fe51f87fe4ee4031485e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/browser-docs.log.gz",
+      "sha256": "9298dce54bf392993a9493aeb9e73ca8686cda6e639868ea1721bdafaec7b12f",
+      "uncompressedSha256": "82133193782e4c675b6b9f6aabc8fa5637817e5714c87931835d458e25a59373"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/browser-final.log.gz",
+      "sha256": "9298dce54bf392993a9493aeb9e73ca8686cda6e639868ea1721bdafaec7b12f",
+      "uncompressedSha256": "82133193782e4c675b6b9f6aabc8fa5637817e5714c87931835d458e25a59373"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/browser-first.log.gz",
+      "sha256": "2b6e75a0d722d7b00c61493571c934e7821746b0f54c8b4a26f784b7f4926a7d",
+      "uncompressedSha256": "cc81b6089d2b703b611ffad2ebaf52bc7a9e04143762ea32ce230ebdad2720f1"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/browser-source.log.gz",
+      "sha256": "9298dce54bf392993a9493aeb9e73ca8686cda6e639868ea1721bdafaec7b12f",
+      "uncompressedSha256": "82133193782e4c675b6b9f6aabc8fa5637817e5714c87931835d458e25a59373"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/browser.json.gz",
+      "sha256": "7831877b1de1076771d37a6e4fc05d27485c2d66fa9a5d368f3f33d8aa2454e3",
+      "uncompressedSha256": "83a79ffe89965841a237f148976ea18b8322df0be8bee9e13f29f35b1c08cc0c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/bundle-binding.json.gz",
+      "sha256": "8a059437c2f8371224fbdba92d624b5f30a9a2998065b27b970429741c3e4813",
+      "uncompressedSha256": "f43c72c042a2db1a377b9fbf4555df31b664a1a7717decc127a5a15f9f15becd"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/bundle-preflight.json.gz",
+      "sha256": "9bbdbec965429e1e9fb8bc55c100cac76404aa88ae293f327a78e0f68f3b9c63",
+      "uncompressedSha256": "70dc945f13ef36972bb98f5e34c3497f056cbbfcb4eb82a1bb61384f7aefeeb8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/core-first.log.gz",
+      "sha256": "656f10c72d987a8660dd770ae41eeaf6c46154786904b6aa26a1897c8702a990",
+      "uncompressedSha256": "7316bc3dbe66e9b427c9faf7ea426a0aa994fd1ecac8f345adcbcc4e11f1cc96"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/coverage20-final.log.gz",
+      "sha256": "699148e24e551dcab07ad217518f3209c72af8d4f77d12cba7a40045d6dd5af2",
+      "uncompressedSha256": "145a732b84d63d03c138c5b4d117bbde8e8b95743273b8e0cb7046fc5d9441e6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/coverage20-pinned.log.gz",
+      "sha256": "2694c9dd52c0f82471f4c6de93c66f4f11e40a18c8dcc3a62d744a9659d50bf9",
+      "uncompressedSha256": "e614344f425246bd1df671e2b8508009d94d8e0bd22181b2a6e838462aa1a1e3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/coverage20-source.log.gz",
+      "sha256": "0d8e4c447742c0edd0eb3c3abbc42056e0697721f6b4e4454bb506cf33f6237e",
+      "uncompressedSha256": "a96ca4d75546f9308749f9a070609864bc3cf1074972c6e168a7c4551afc85c8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/coverage20.log.gz",
+      "sha256": "ebd2b5d2dc499727450217d32e41fe4f8555ee9fe1ad1009d7b14e37efc65585",
+      "uncompressedSha256": "2d16b9f52098bd06546d6318f4a97d91acd74116007034420faf2ffc8a29e975"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/coverage22-complete.log.gz",
+      "sha256": "2ab87ec28f7509c7053a6f941516d133ecf17a37593a0a8a061b1a9a2a8c52d7",
+      "uncompressedSha256": "77aa8ecfe9ec95636ccb32703545cc66d636ecfce24df65bce6b50d65e4d961c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/coverage22-final.log.gz",
+      "sha256": "bcc12632e43f02d6555c3270f27d627fecda5c5b8eba3f14042c664f8c2cb1d3",
+      "uncompressedSha256": "7153b2d87922089b6b668c72320e407bc95dc2c7a30492815538a0774b18293a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/coverage22-pinned.log.gz",
+      "sha256": "16737c24cd14fe2f7d3c3d77c1eba4915a8cb61412aa14ce3dc70ba1e27721d8",
+      "uncompressedSha256": "e75cb2cef5403e9d1d1c98c946955c55469a112fa7d7d4405245f45a069a6849"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/coverage22-source.log.gz",
+      "sha256": "890722dad8c05a64c69a90715df40e00ed8f3ae4e967901b17e6bfc6d1438625",
+      "uncompressedSha256": "fa2c4159e61346423295d767b5be20353c95bae13b616fe5fcd86fc4c7fca611"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/coverage24-final.log.gz",
+      "sha256": "68147c37dd3581d39a9df20899f094b7f9126985d51794363b8cdbb91766e703",
+      "uncompressedSha256": "522edbe7231f35fbd47d93dda1f15dc3000060fef7c16e74f857237011853d05"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/coverage24-pinned.log.gz",
+      "sha256": "73e8f29bf00818083db554cbb04128debe2a7013d1d2b21838a4feb82849e7d5",
+      "uncompressedSha256": "0f7360b16fb702523d06e1156a2349141692687dfd123c1d1856e9480ca055a3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/docs-contracts-final.log.gz",
+      "sha256": "fa3714c8ed15610d5946f2ecedded584178779706ad92203ff637c77398559de",
+      "uncompressedSha256": "42f073c59beebcc7903d0af20767a28e85657aa7d3b2fedbe68eba78f4580486"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/docs-contracts.log.gz",
+      "sha256": "a24fa32675b4eb3edfb2c81d112a05bb3e8cea3a4bb7baad4d378af383cc437b",
+      "uncompressedSha256": "d18098864438bd8a6dd42f59e768376b54aa32e9df12e67a53c386d225d7f160"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/execution-first.log.gz",
+      "sha256": "f43cf518f57146751c9fec7f108e69b47fa322a02c20045e6a2c951319de2482",
+      "uncompressedSha256": "6a38f3d095a522594ae6d6511c2d2b9e2f498ded1f729551c09b6c17846168c1"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/freeze-final.log.gz",
+      "sha256": "0ff4967242018b3a78bfe10f02b015629698ac3043bb1851a44efe86f927ffaf",
+      "uncompressedSha256": "2368f805cb2c96d0759ad2c5b1ae98e32f70add10759bb101f97231b1000a649"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/frozen-first.json.gz",
+      "sha256": "8c4cbf888461147850e1ae814e9fd574122377fd556378e8112a270715725a60",
+      "uncompressedSha256": "f00c78de3f5bcc34cd1c95840aadef05d6fc2ba3a925f07b6d368ffd4d8d9c74"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/frozen.json.gz",
+      "sha256": "40a3d314b77b2f80606f0495afbda7d1aba7c1b2ff79ca0ad55f54b20442e997",
+      "uncompressedSha256": "e76e8280c348caeb448912407d1de6a0865fb68f4d86d21c3ef600828996166a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/installed-20.json.gz",
+      "sha256": "ec9cdf54897a225424cdf1d873ce7c26a7113f346140441a120feba0ea65cb3d",
+      "uncompressedSha256": "973aa8af43370ed3be88915886eeded500710d883fbf2341a722c1f1278cdfd0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/installed-22.json.gz",
+      "sha256": "c796a189bc93cc72331a61edf09e1c1af7f4606860d6d8562e6c6804f9839b5e",
+      "uncompressedSha256": "54c4fe307f13df333024a590f9a5fd74474b0c070eccab00e847da614c3236ec"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/installed-24.json.gz",
+      "sha256": "62351c671253fea5cba44a643a78b2b53bde1c1c317d4056da0ad0df88245a64",
+      "uncompressedSha256": "0adcbb8911c394b289f9ec315567f5d88688190f5206c37f018bccaf7706ccd6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/installed20-numeric.log.gz",
+      "sha256": "ec9cdf54897a225424cdf1d873ce7c26a7113f346140441a120feba0ea65cb3d",
+      "uncompressedSha256": "973aa8af43370ed3be88915886eeded500710d883fbf2341a722c1f1278cdfd0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/installed20-source.log.gz",
+      "sha256": "2beddcb476b694bad069db5e6663c522026f117f292a6c9b7193359ce5b85483",
+      "uncompressedSha256": "a9d732f7ec0bdc31c999ebff05d8fd1ab1d248e4f963bae6c097ff56f84d0655"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/installed20.log.gz",
+      "sha256": "0914be2ce72f4da1e56e1a2e75caefcd4fd3973b35876df28e0c9d193538bf85",
+      "uncompressedSha256": "9f2af85c082ed2da0622afc9d0d7548c59f4609c91b9194b913f30920e09b3c0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/installed22-numeric.log.gz",
+      "sha256": "c796a189bc93cc72331a61edf09e1c1af7f4606860d6d8562e6c6804f9839b5e",
+      "uncompressedSha256": "54c4fe307f13df333024a590f9a5fd74474b0c070eccab00e847da614c3236ec"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/installed22-source.log.gz",
+      "sha256": "9d19074d35491f6cd952b9703d896881e894639669ea0e19d079ff61c7db133c",
+      "uncompressedSha256": "0fcf7c4f275c6089caa778296261957c4d635c802d63c5ec6f80be472c5a70b6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/installed22.log.gz",
+      "sha256": "3ebad2c7c6229da6660dce9bd501acce1e4b9a1e8096bb4f404fa35683bb2254",
+      "uncompressedSha256": "7eb278346c467881241ff390376b65a10ceb9b8986a58fb380eb4ba8119a2bd4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/installed24-numeric.log.gz",
+      "sha256": "62351c671253fea5cba44a643a78b2b53bde1c1c317d4056da0ad0df88245a64",
+      "uncompressedSha256": "0adcbb8911c394b289f9ec315567f5d88688190f5206c37f018bccaf7706ccd6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/installed24-source.log.gz",
+      "sha256": "26ccdd58616004c3e9ca8fe66dea33b62af35caac014e96871514b4d82c37e47",
+      "uncompressedSha256": "c915d02862090cda958f40711cb181c6de74fe0a8c59a96dbdc8dae9b353252a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/installed24.log.gz",
+      "sha256": "e53b5e89aa6a759135a275a051fb73a8e2b765a1665aa35a269b16597d888bef",
+      "uncompressedSha256": "fee2c8941a8e7c8225c6408c709182dfa4dac9885755c135ca7e179708821334"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/numeric-20.json.gz",
+      "sha256": "9096fe5fdb56063d41fbc6a7db38faa0cdde435929897e0d9e590caadffaae64",
+      "uncompressedSha256": "9c30ba6f19ce8003c549cd53dd1a9949416b344d51df66a40f24c06c2f62da5f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/numeric-22.json.gz",
+      "sha256": "623ccbe1880d6dbbabc364e5fc29037eeec16c776745f938b2e882dd17a428d9",
+      "uncompressedSha256": "5dd98a4f1cc2722a6391a615383673f1a7f44ceb5ac4ccdb5ac051af2d07f17f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/numeric-24.json.gz",
+      "sha256": "7ed1fdb1187fb64148c99bbd8c3de067888cad0ca3246e645df686220bf0122f",
+      "uncompressedSha256": "7c1e3a140f22cec0ceeb98cf898898100d4f0a39a6b55f7a6fdb0f3ea56c48c8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/numeric-comparison.json.gz",
+      "sha256": "6e596b33cf9102ba0cdd70031d13ea8ba4f3148be8cc77824cd6d05fa941ec2c",
+      "uncompressedSha256": "8545970aa7ada8685f94f98fbe7bbbe7c87c28dd4aa61eaa78d171b4928c3e92"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/numeric-comparison.log.gz",
+      "sha256": "62dededf765d7a7594bfa41d6a58a293334a5ddd999a0baf7622a50fe86f5a5a",
+      "uncompressedSha256": "2e191d5c54f37eeb145fded063153de9bad6975ab02e241105e62cd52dd34c9e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/pack-final-measure20.json.gz",
+      "sha256": "cfa1271d0831fe1acf03478e8b5161b73d4abb5cd9d6b369d4c39429ef76f9a8",
+      "uncompressedSha256": "04ee9ee89246653dd1cff5fc9f71391ee26eaaf479c4089adf4bab068be83aa2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/pack-final-measure22.json.gz",
+      "sha256": "feb7a3bf8da74f9b0e7bcfa8148a6a3fb428d219c2a2ebc10768dc52af61ef79",
+      "uncompressedSha256": "14de55b098fb7a664bb009e3db3af2d3ea09215175682d96ff8d6b005d48c120"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/pack-final-measure24.json.gz",
+      "sha256": "069923aae966ebd6c98ecd36866c1d85e08ff9ec77c38d5b2b7f92d507716f89",
+      "uncompressedSha256": "1894e26e6a8a11040b30334dbaef4adbc05241cacde5bbeda7ded9338252d2a1"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/pack-first.log.gz",
+      "sha256": "a1c0b51d7b4bd1e2f2e72a307efdc3fbb4519e41cd393b90f7f672ed9df206b2",
+      "uncompressedSha256": "95a6ed2a392627525cfa6c4ec59508ebd752b3d83d9615f21cbfb4f69e993b48"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/pack-measure20.json.gz",
+      "sha256": "8387a438b7818b1eca40b5e968a618ad45f8f6e896771cb9308611bf80a538a8",
+      "uncompressedSha256": "9f10323572af5b086616aa5157dcc8d390b9df8e2db6a29d2c96666ba5871e24"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/pack-measure22.json.gz",
+      "sha256": "0e142756cfdf24e78e3718c44733dc6d3aad0758da1aed21fece4ff01468b4fa",
+      "uncompressedSha256": "2a7d84f9c4c88363ac763384752a18691ac6cd124e0d2f1ed6b63772095cbdfa"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/pack-measure24.json.gz",
+      "sha256": "9f77cf2f787b8997f1895e99fab6335b025af316e523a3a835b873885d0534e3",
+      "uncompressedSha256": "dac9dca9d887d89092474e661cd4a15de6826dc082dd97718e74ae2d05696468"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/pack-native20.json.gz",
+      "sha256": "4a16285585c48c27a2404519f26ed0e9e860bf40bf79d1b64e6091ea8458db8d",
+      "uncompressedSha256": "73a1f5fbf814ff8565238f1e2b9b5fbcabb951875ae3e69d318eb7b5d8107d7a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/pack-native24.json.gz",
+      "sha256": "07dd3de85fe394fca58ccf01fac38fe1825a46f41ae033955d8b0a1a1ec90472",
+      "uncompressedSha256": "00ad320b4023dd7c9f86d81ce8eb6323e5a31ba53ff70b57c10554f41243d044"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/pack-second.log.gz",
+      "sha256": "a1c0b51d7b4bd1e2f2e72a307efdc3fbb4519e41cd393b90f7f672ed9df206b2",
+      "uncompressedSha256": "95a6ed2a392627525cfa6c4ec59508ebd752b3d83d9615f21cbfb4f69e993b48"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/premeasure.mjs.gz",
+      "sha256": "8071901fdb2a9bf7828582c76eb68c374130183891c8300d5fb732d62e651976",
+      "uncompressedSha256": "05becd46c1cff5ba0ce5a3c25f883ea1f15fff095a359fad33eeab950ed700c9"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/provenance.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/route-v2-executor-v1.log.gz",
+      "sha256": "8fa9a9d668a5e0a6caf0babfedca716a944fb83fce818061e67ec215649d5b68",
+      "uncompressedSha256": "17ff50d8422e3767ddf967a8ec9d18ef0803f2f5dde24faebd972aab98e7b43b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/route-v2-job-first.log.gz",
+      "sha256": "ee8bc4c4cb9f222e197310ac7d8a474617afabf9661b0dad421ab998df510f49",
+      "uncompressedSha256": "28bf839b84f797f7e20bcf9d6ae8b3f48f9c504830f90613646e3d71db4a172b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/route-v2-pure-first.log.gz",
+      "sha256": "83ee8e38a196b0c53b12dc4e05b6d04cbbe5dc140b3f8191cc238bbef7571c11",
+      "uncompressedSha256": "b1b47f008d7afdf7b05f79a98ddb6d8260aa7bc8ffb383b2f9c3697d51fe410b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/route-v2-validation-first.log.gz",
+      "sha256": "802f59ca12c009067e2e5971df81cd24614d309663e3b4b315d79a6230df56e5",
+      "uncompressedSha256": "103b71d12f233a070ffab46f8e4d1ad44e71b3fc0f59e66e53b47d47f1d830f2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-native-evidence/receipts/types-first.log.gz",
+      "sha256": "bc0109fb55355a4008172dca8dc873c77533c09d1d8bf0ab67c2d9c248463363",
+      "uncompressedSha256": "611c8a61eded17cea4abc5eef806aad844df280c24ec8f3e558f3e5415814c1e"
+    }
+  ],
+  "coverageLogs": {
+    "20": "coverage20-pinned.log",
+    "22": "coverage22-complete.log",
+    "24": "coverage24-pinned.log"
+  },
+  "claims": {
+    "nativeCreateEdit": true,
+    "fullBUpdateUnion": false,
+    "wholePipeline100ms": false,
+    "density1k10kCapacity": false,
+    "publicationOrDeployment": false
+  },
+  "remaining": [
+    "Complete original B native update union without wildcard or reduced scope.",
+    "Measure synchronous snapshot, wide keys, BigInt decimal, structured clone/postMessage, geometry validation and final materialization.",
+    "Run original large density fixtures only with root CPU slot."
+  ],
+  "sourceCommit": "a29ec070ea47a24315de93acbd3e00d91ca977bf"
+}

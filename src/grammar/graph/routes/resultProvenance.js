@@ -78,8 +78,10 @@ export function validateRouteDiagnostics(job, result, context) {
   const extra = method === "force-directed" ? ["compatibilityPairs", "displacementCaps", "totalIterations", "schedule"]
     : method === "density" ? ["gridSize", "step", "iterations", "schedule"]
       : method === "edge-path" ? ["processingOrder", "lockedEdges", "bundledEdges"] : [];
-  exact(d, ["work", "candidatePairs", "peakSamples", ...extra], "Route diagnostics");
-  integer(d.work, 10_000_000, "Route work");
+  const execution = job.schemaVersion === 2 ? job.intent.options.execution : undefined;
+  exact(d, ["work", "candidatePairs", "peakSamples", ...(execution === undefined ? [] : ["peakBufferBytes"]), ...extra], "Route diagnostics");
+  integer(d.work, execution?.maxWork ?? 10_000_000, "Route work");
+  if (execution !== undefined) integer(d.peakBufferBytes, execution.maxBufferBytes, "Route buffer bytes");
   integer(d.candidatePairs, context.budget.limits.maxCandidatePairs, "Route candidate pairs");
   integer(d.peakSamples, context.budget.limits.maxSamples, "Route peak samples");
   const active = context.edges.some(edge => Math.hypot(edge.target.x - edge.source.x, edge.target.y - edge.source.y) > (method === "force-directed" ? FDEB_EPSILON : 0));

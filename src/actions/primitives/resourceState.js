@@ -5,7 +5,7 @@ import { findStoredResource, requireStoredResource, resolveInputReference, dataI
 import { validateResourceGraph, validateStoredResource, resourceDependencies, orderResourceDependencies, planStoredResourceRemoval, collectParameterInputReferences } from "../../materialization/resourceState.js";
 import { dataSourceValueHash } from "../../grammar/dataSourcePayload.js";
 import { dataSourcesForDataset, validateDataSourceState } from "../../materialization/dataSourceState.js";
-import { preparedResourceResults, preparedResourceDataReplacements, preparedResourceDataRooted, preparedResourceDataProjection, preparedResourceScreenRooted } from "./preparedResourceContext.js";
+import { preparedResourceRouteScope, preparedResourceResults, preparedResourceDataReplacements, preparedResourceDataRooted, preparedResourceDataProjection, preparedResourceScreenRooted } from "./preparedResourceContext.js";
 import { mapLayerResourceBindings, mapCoordinateResourceBindings } from "../../core/resourceReferences.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 
@@ -137,7 +137,7 @@ export function replaceStoredResource(program, parsed, value, args) {
   const layers = mapLayerResourceBindings(program.semanticSpec.layers, rebindConsumer);
   const coordinates = mapCoordinateResourceBindings(program.semanticSpec.coordinates, rebindConsumer);
   const semanticSpec = { ...program.semanticSpec, resources: cloneAndFreeze(resources), layers: cloneAndFreeze(layers), coordinates: cloneAndFreeze(coordinates) };
-  validateResourceGraph({ ...program, semanticSpec }, program.constructor);
+  validateResourceGraph({ ...program, semanticSpec }, program.constructor, preparedResourceRouteScope(args, program));
   const selections = program.materializationConfigs.selections;
   const rebound = selections === undefined ? undefined : Object.fromEntries(Object.entries(selections).map(([id, definition]) => {
     const revision = revisions.get(JSON.stringify([definition.resource?.kind, definition.resource?.id]));

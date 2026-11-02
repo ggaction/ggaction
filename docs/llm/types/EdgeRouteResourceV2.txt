@@ -1,0 +1,7 @@
+export interface EdgeRouteResourceV2 extends Omit<EdgeRouteResource, "algorithmVersion" | "options" | "result"> {
+  readonly algorithmVersion: "2";
+  readonly options: { readonly method: EdgeRouteMethod; readonly coordinateSpace: "world" | "screen";
+    readonly options: Readonly<Record<string, unknown>> & { readonly execution: EdgeRouteExecution;
+      readonly limits: Readonly<Required<Pick<EdgeRouteLimits, "maxNodes" | "maxEdges">>> } };
+  readonly result: EdgeRouteResource["result"] & { readonly diagnostics: EdgeRouteResult["diagnostics"] & { readonly peakBufferBytes: number } };
+}

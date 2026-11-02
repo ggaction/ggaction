@@ -37,7 +37,7 @@ export function validateStoredResource(resource, ProgramClass) {
   exact(resource, ["kind", "id", "revision", "algorithmVersion", "ownership", "inputs", "options", "result", "provenance"], "Resource");
   if (!STORED_RESOURCE_KINDS.includes(resource.kind)) throw error("Unsupported resource kind.", "unsupported-format");
   validateUserId(resource.id, "Resource id"); validateResourceRevision(resource.revision);
-  if (resource.algorithmVersion !== "1") throw error("Unsupported resource algorithm version.", "unsupported-format");
+  if (resource.algorithmVersion !== "1" && !(resource.kind === "edge-route" && resource.algorithmVersion === "2")) throw error("Unsupported resource algorithm version.", "unsupported-format");
   const ownership = resource.ownership;
   ownRecord(ownership, "Resource ownership");
   exact(ownership, ownership?.mode === "generated" ? ["mode", "owner"] : ["mode"], "Resource ownership");
@@ -94,7 +94,7 @@ export function resourceDependencies(resource) {
   return [...resource.inputs, ...(resource.ownership.mode === "generated" ? [resource.ownership.owner] : [])];
 }
 
-export function validateResourceGraph(program, ProgramClass = program.constructor) {
+export function validateResourceGraph(program, ProgramClass = program.constructor, routeScope) {
   if (program.materializationConfigs?.textMetrics?.schemaVersion === 2) normalizeFontMetricProfile(program.materializationConfigs?.textMetrics);
   const resources = program.semanticSpec.resources;
   if (!Array.isArray(resources)) throw error("Semantic resources must be an array.");
@@ -141,7 +141,7 @@ export function validateResourceGraph(program, ProgramClass = program.constructo
   for (const layer of program.semanticSpec.layers ?? []) {
     if (geographicCoordinates.has(layer.coordinate) !== (layer.mark?.type === "geo" || geoLabelSource(program, layer) !== undefined)) throw error("Geo coordinates require geographic marks and exact coordinate bindings.");
   }
-  for (const resource of resources) getBuiltinResourceKindHandler(ProgramClass, resource.kind)?.validateBindings(program, resource);
+  for (const resource of resources) getBuiltinResourceKindHandler(ProgramClass, resource.kind)?.validateBindings(program, resource, resource.kind === "edge-route" ? routeScope : undefined);
 }
 
 // Iterative postorder keeps a valid deep DAG within the work budget and avoids

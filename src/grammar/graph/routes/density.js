@@ -35,8 +35,8 @@ function densityBounds(routes, bandwidth) {
   return { x: (minX + maxX - side) / 2 - bandwidth, y: (minY + maxY - side) / 2 - bandwidth, width: side + 2 * bandwidth, height: side + 2 * bandwidth };
 }
 
-export function bundleDensityRoutes(input, optionsInput = {}, signal) {
-  const options = normalizeDensityRouteOptions(optionsInput), context = prepareRouteInput(input, signal);
+export function bundleDensityRoutes(input, optionsInput = {}, signal, scope) {
+  const options = normalizeDensityRouteOptions(optionsInput), context = prepareRouteInput(input, signal, scope);
   let routes = context.edges.map(edge => [edge.source, edge.target]);
   const active = routes.some(points => routeLength(points) > 0), schedule = [];
   if (active) {

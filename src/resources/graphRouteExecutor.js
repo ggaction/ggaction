@@ -1,10 +1,14 @@
+import { createRouteLedger } from "../grammar/graph/routes/execution.js";
+import { isRouteJobV2, routeJobExecution, validateRouteJobStages } from "../grammar/graph/routes/job.js";
+import { createRouteDeadline, drainRouteStages } from "./routeStages.js";
+import { runBoundedRouteWorker } from "./graphRouteWorker.js";
 import { ownRecord } from "../core/ownData.js";
 import { rejectUnknownProperties } from "../core/validation.js";
 import { annotateError } from "../core/diagnostics.js";
 import { validateRouteJob, computeRouteJob } from "../grammar/graph/routes/job.js";
 import { validateRouteResult } from "../grammar/graph/routes/result.js";
 
-const executors = new WeakSet();
+const executors = new WeakMap();
 const MAX_PENDING = 8, MAX_ENTRIES = 8, MAX_CACHED_SAMPLES = 1_000_000;
 const inactive = () => annotateError(new Error("Graph route executor is disposed."), { code: "stale-result" });
 const assertActive = signal => { if (signal !== undefined) AbortSignal.prototype.throwIfAborted.call(signal); };
@@ -18,7 +22,7 @@ export function createGraphRouteExecutor(options = {}) {
   if (Object.hasOwn(options, "createWorker") && typeof options.createWorker !== "function") throw new TypeError("Route createWorker must be a function.");
   const createWorker = options.createWorker;
   const cache = new Map(), pending = new Set();
-  let disposed = false, cachedSamples = 0;
+  let disposed = false, cachedSamples = 0, boundedPending = false;
   function evict(inputHash) {
     if (inputHash === undefined) { cache.clear(); cachedSamples = 0; return; }
     if (typeof inputHash !== "string" || !/^[a-f0-9]{64}$/.test(inputHash)) throw new TypeError("Route cache eviction requires an input hash.");
@@ -33,10 +37,28 @@ export function createGraphRouteExecutor(options = {}) {
     cache.set(job.inputHash, { result, samples }); cachedSamples += samples;
     return result;
   }
+  async function computeBounded(input, args, scope) {
+    if (disposed) throw inactive();
+    if (createWorker === undefined) throw new TypeError("Bounded routes require a createWorker executor.");
+    if (pending.size !== 0) throw annotateError(new RangeError("Bounded routes require an idle executor."), { code: "resource-limit" });
+    const lifetime = createRouteDeadline(args.signal, args.deadlineMs);
+    const task = { cancel: lifetime.cancel };
+    pending.add(task); boundedPending = true; evict();
+    try {
+      lifetime.check();
+      const execution = routeJobExecution(input), ledger = scope?.ledger ?? createRouteLedger(execution, lifetime.signal);
+      const iterator = validateRouteJobStages(input, { execution, ledger, signal: lifetime.signal }); input = undefined;
+      const job = await drainRouteStages(iterator, lifetime.signal, lifetime.check);
+      return await runBoundedRouteWorker(createWorker, job, lifetime, { execution, ledger, signal: lifetime.signal });
+    } finally { lifetime.close(); pending.delete(task); boundedPending = false; }
+  }
   async function compute(input, args = {}) {
     if (disposed) throw inactive();
     args = Object.assign(Object.create(null), ownRecord(args, "Route computation options"));
-    rejectUnknownProperties(args, ["signal"], "route computation");
+    const bounded = isRouteJobV2(input);
+    rejectUnknownProperties(args, bounded ? ["signal", "deadlineMs"] : ["signal"], "route computation");
+    if (bounded) return computeBounded(input, args);
+    if (boundedPending) throw annotateError(new RangeError("Route executor has a pending bounded request."), { code: "resource-limit" });
     const signal = args.signal; assertActive(signal);
     const job = validateRouteJob(input), cached = cache.get(job.inputHash);
     if (cached !== undefined) {
@@ -88,6 +110,15 @@ export function createGraphRouteExecutor(options = {}) {
     for (const task of [...pending]) task.cancel(inactive());
   }
   const executor = Object.freeze({ compute, evict, dispose });
-  executors.add(executor);
+  executors.set(executor, computeBounded);
   return executor;
+}
+
+
+// Reuse the existing instance authority to share a native request ledger.
+// No caller-supplied ledger is accepted by the public executor.compute method.
+export function computePreparedRoute(executor, job, args, scope) {
+  const compute = executors.get(executor);
+  if (compute === undefined) throw new TypeError("Route executor must be created by createGraphRouteExecutor.");
+  return compute(job, args, scope);
 }

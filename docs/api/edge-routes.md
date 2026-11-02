@@ -41,7 +41,8 @@ positions. Strength is in [0,1], tolerance is positive, and subdivisions are an
 integer from 1 to 4096. Force compatibility is in [0,1]; edge-path exponent is positive
 and maxStretch is at least one.
 
-All methods accept `zeroLength:"point"` and `limits`. Coincident endpoints retain
+All methods accept `zeroLength:"point"` and `limits`. Without `execution`, the
+original synchronous policy applies. Coincident endpoints retain
 a point route and a diagnostic, with no invented junctions. Empty graphs produce
 empty complete routes. Limits can lower the default maxima: 100,000 nodes,
 1,000,000 edges, 10,000,000 candidate pairs, and 10,000,000 active samples. A shared
@@ -81,7 +82,7 @@ preserves an existing plot's binding. Native `parallelGap` and `loopRadius` appl
 when the binding is removed. Node radius trims the visible path and arrows follow
 its final tangent; stored center anchors stay unchanged.
 
-Graph, source, layout and hierarchy edits preflight every dependent route and
+For the original synchronous policy, graph, source, layout and hierarchy edits preflight every dependent route and
 plot, then update their revisions and graphics once. Failures preserve the old
 program and trace. Remove consuming marks or detach routes before removing a
 route resource. Remove authored routes before their input resources. Serialization
@@ -119,3 +120,98 @@ error, cancellation and disposal detach listeners and terminate each request's
 worker. Disposal rejects pending work and prevents reuse. Late replies cannot
 apply an older preparation. Keep the executor alive only for the host workflow
 that owns it, then call `dispose()`.
+
+
+## Explicit bounded execution
+
+**Advanced host API, Full authoring.** Set `options.execution` to opt into stored
+route version 2. Every policy field is required; there are no numeric defaults.
+
+| Field | Maximum | Meaning |
+| --- | ---: | --- |
+| `policy` | `"bounded-route@1"` | Exact policy name |
+| `maxWork` | 8,000,000,000 | Cumulative native route work units for preparation and application |
+| `maxCandidatePairs` | 50,000,000 | Cumulative candidate pairs |
+| `maxSamples` | 16,777,216 | Peak active route samples under the existing counting rules |
+| `maxBufferBytes` | 134,217,728 | Live reserved typed buffers and hash scratch bytes |
+| `maxBytes` | 134,217,728 | Each complete canonical tagged job or completion packet in UTF-8 bytes |
+
+Numeric values must be positive safe integers no greater than these maxima.
+`options.limits` then accepts only `maxNodes` and `maxEdges`, with the same defaults
+and maxima as before. The execution policy is the sole owner of the other limits.
+The buffer quota does not measure the entire JavaScript heap. Capacity admission
+also does not guarantee completion time or responsiveness for every input.
+
+For version 2, preparation requires an executor with `createWorker` and an explicit
+`deadlineMs`, a positive safe integer at most 30,000. The deadline covers preparation
+through native consumer preflight. Cancellation or expiry terminates the worker and
+returns no handle. Synchronous sections can finish before expiry is observed; this
+API does not promise a maximum main-thread pause. The final application checks the
+original signal and adds its validation work to the preparation total.
+
+The following host fragment assumes `program` already contains graph `g` and its
+layout `l`, and `route-worker.js` is served as an ES module:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import { createGraphRouteExecutor, prepareGraphEdgeRoutes } from "ggaction/graph";
+
+const executor = createGraphRouteExecutor({
+  createWorker: () => new Worker("./route-worker.js", { type: "module" })
+});
+try {
+  const prepared = await prepareGraphEdgeRoutes(program, {
+    kind: "create", id: "routes", graph: "g", layout: "l", method: "force-directed",
+    options: { execution: {
+      policy: "bounded-route@1", maxWork: 8_000_000_000,
+      maxCandidatePairs: 50_000_000, maxSamples: 16_777_216,
+      maxBufferBytes: 134_217_728, maxBytes: 134_217_728
+    } }
+  }, { requestToken: "routes-1", executor, deadlineMs: 30_000 });
+  program = program.bundleGraphEdges({ prepared, requestToken: "routes-1" });
+} finally {
+  executor.dispose();
+}
+```
+
+The corresponding complete worker module uses the explicit async entry:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `self`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import { computeGraphEdgeRoutesAsync } from "ggaction/graph";
+
+self.onmessage = async ({ data: { job } }) => {
+  self.postMessage(await computeGraphEdgeRoutesAsync(job));
+};
+```
+
+Version 2 jobs and completions have `schemaVersion:2`; the stored resource has
+`algorithmVersion:"2"`. Use `GraphRouteJobV2`, `GraphRouteCompletionV2` and
+`EdgeRouteResourceV2` when declaring these values. The async entry rejects version
+1 jobs, and the original synchronous entry rejects version 2 jobs. Version 2
+`diagnostics.work` includes worker job validation and solver work;
+`peakBufferBytes` reports the worker's observed peak. Host validation and application
+costs are additionally checked against the request budget. Stored hashes cover the
+same canonical tagged value format, including typed keys and signed zero.
+
+One bounded request exclusively owns its executor until completion. It clears any
+previous version 1 cache, does not cache its result, and rejects concurrent work.
+Version 1 retains its original synchronous fallback, cache, limits and protocol.
+
+Create or edit a version 2 route through `prepareGraphEdgeRoutes`, then use the
+ordinary authentic prepared application. A same-method edit retains the stored
+execution policy; a method change requires an explicit replacement policy. Raw
+synchronous route creation or recomputation rejects version 2 intent. Automatic
+source/layout/viewport revision of version 2 routes is not supported by this path.
+Stored version 2 vectors still restore offline and render through every existing
+backend. Consumer materialization remains an explicit wrapped action after prepare.
