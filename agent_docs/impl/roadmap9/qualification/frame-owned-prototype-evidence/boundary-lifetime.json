@@ -1,0 +1,281 @@
+{
+  "node": "v22.23.1",
+  "results": [
+    {
+      "variant": "baseline",
+      "boundary": {
+        "allSevenCompilerTypes": true,
+        "mutableUpdateInvalidates": true,
+        "callerUnownedUnfrozen": true,
+        "ownedExactPropertiesReuse": true,
+        "translatedPropertiesCopied": true,
+        "allOutputDescendantsOwned": true,
+        "getterReads": 0,
+        "errors": {
+          "getter": {
+            "name": "TypeError",
+            "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+          },
+          "duplicate": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "badClip": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "badOffset": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "functionThenBadNode": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "functionOnly": {
+            "name": "TypeError",
+            "message": "Cannot store a function at state.graphicSpec.objects.node-1.properties.extra in a ChartProgram."
+          },
+          "cycle": {
+            "name": "TypeError",
+            "message": "Converting circular structure to JSON\n    --> starting at object with constructor 'Object'\n    --- property 'self' closes the circle"
+          },
+          "badVersion": {
+            "name": "TypeError",
+            "message": "renderTransitionScene requires a version 2 Canvas scene."
+          },
+          "shallowFrozenGetter": {
+            "name": "TypeError",
+            "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+          }
+        },
+        "mutableJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+        "ownedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+        "translatedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":2,\"y\":3,\"width\":90,\"height\":70},\"children\":[\"clip-1\"]},\"clip-1\":{\"type\":\"canvas\",\"properties\":{\"x\":3,\"y\":4,\"width\":80,\"height\":60},\"children\":[\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\",\"node-8\"]},\"node-2\":{\"type\":\"circle\",\"properties\":{\"x\":5,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-3\":{\"type\":\"rect\",\"properties\":{\"x\":6,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-4\":{\"type\":\"line\",\"properties\":{\"x\":7,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-5\":{\"type\":\"path\",\"properties\":{\"x\":8,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-6\":{\"type\":\"text\",\"properties\":{\"x\":9,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-7\":{\"type\":\"image\",\"properties\":{\"x\":10,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-8\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":11,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}}},\"order\":[\"canvas\"]}}",
+        "partialJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}"
+      },
+      "lifetime": {
+        "cycles": 5,
+        "retained": "plan and current frame",
+        "oldObjectsAlive": {
+          "frame": false,
+          "scene": false,
+          "graphicSpec": false,
+          "decisions": false,
+          "decision": false,
+          "node": false,
+          "properties": false,
+          "wrapper": false
+        },
+        "notHundredCycleQualification": true
+      }
+    },
+    {
+      "variant": "decisions",
+      "boundary": {
+        "allSevenCompilerTypes": true,
+        "mutableUpdateInvalidates": true,
+        "callerUnownedUnfrozen": true,
+        "ownedExactPropertiesReuse": true,
+        "translatedPropertiesCopied": true,
+        "allOutputDescendantsOwned": true,
+        "getterReads": 0,
+        "errors": {
+          "getter": {
+            "name": "TypeError",
+            "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+          },
+          "duplicate": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "badClip": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "badOffset": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "functionThenBadNode": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "functionOnly": {
+            "name": "TypeError",
+            "message": "Cannot store a function at state.graphicSpec.objects.node-1.properties.extra in a ChartProgram."
+          },
+          "cycle": {
+            "name": "TypeError",
+            "message": "Converting circular structure to JSON\n    --> starting at object with constructor 'Object'\n    --- property 'self' closes the circle"
+          },
+          "badVersion": {
+            "name": "TypeError",
+            "message": "renderTransitionScene requires a version 2 Canvas scene."
+          },
+          "shallowFrozenGetter": {
+            "name": "TypeError",
+            "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+          }
+        },
+        "mutableJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+        "ownedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+        "translatedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":2,\"y\":3,\"width\":90,\"height\":70},\"children\":[\"clip-1\"]},\"clip-1\":{\"type\":\"canvas\",\"properties\":{\"x\":3,\"y\":4,\"width\":80,\"height\":60},\"children\":[\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\",\"node-8\"]},\"node-2\":{\"type\":\"circle\",\"properties\":{\"x\":5,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-3\":{\"type\":\"rect\",\"properties\":{\"x\":6,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-4\":{\"type\":\"line\",\"properties\":{\"x\":7,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-5\":{\"type\":\"path\",\"properties\":{\"x\":8,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-6\":{\"type\":\"text\",\"properties\":{\"x\":9,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-7\":{\"type\":\"image\",\"properties\":{\"x\":10,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-8\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":11,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}}},\"order\":[\"canvas\"]}}",
+        "partialJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}"
+      },
+      "lifetime": {
+        "cycles": 5,
+        "retained": "plan and current frame",
+        "oldObjectsAlive": {
+          "frame": false,
+          "scene": false,
+          "graphicSpec": false,
+          "decisions": false,
+          "decision": false,
+          "node": false,
+          "properties": false,
+          "wrapper": false
+        },
+        "notHundredCycleQualification": true
+      }
+    },
+    {
+      "variant": "wrappers",
+      "boundary": {
+        "allSevenCompilerTypes": true,
+        "mutableUpdateInvalidates": true,
+        "callerUnownedUnfrozen": true,
+        "ownedExactPropertiesReuse": true,
+        "translatedPropertiesCopied": true,
+        "allOutputDescendantsOwned": true,
+        "getterReads": 0,
+        "errors": {
+          "getter": {
+            "name": "TypeError",
+            "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+          },
+          "duplicate": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "badClip": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "badOffset": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "functionThenBadNode": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "functionOnly": {
+            "name": "TypeError",
+            "message": "Cannot store a function at state.graphicSpec.objects.node-1.properties.extra in a ChartProgram."
+          },
+          "cycle": {
+            "name": "TypeError",
+            "message": "Converting circular structure to JSON\n    --> starting at object with constructor 'Object'\n    --- property 'self' closes the circle"
+          },
+          "badVersion": {
+            "name": "TypeError",
+            "message": "renderTransitionScene requires a version 2 Canvas scene."
+          },
+          "shallowFrozenGetter": {
+            "name": "TypeError",
+            "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+          }
+        },
+        "mutableJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+        "ownedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+        "translatedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":2,\"y\":3,\"width\":90,\"height\":70},\"children\":[\"clip-1\"]},\"clip-1\":{\"type\":\"canvas\",\"properties\":{\"x\":3,\"y\":4,\"width\":80,\"height\":60},\"children\":[\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\",\"node-8\"]},\"node-2\":{\"type\":\"circle\",\"properties\":{\"x\":5,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-3\":{\"type\":\"rect\",\"properties\":{\"x\":6,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-4\":{\"type\":\"line\",\"properties\":{\"x\":7,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-5\":{\"type\":\"path\",\"properties\":{\"x\":8,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-6\":{\"type\":\"text\",\"properties\":{\"x\":9,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-7\":{\"type\":\"image\",\"properties\":{\"x\":10,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-8\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":11,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}}},\"order\":[\"canvas\"]}}",
+        "partialJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}"
+      },
+      "lifetime": {
+        "cycles": 5,
+        "retained": "plan and current frame",
+        "oldObjectsAlive": {
+          "frame": false,
+          "scene": false,
+          "graphicSpec": false,
+          "decisions": false,
+          "decision": false,
+          "node": false,
+          "properties": false,
+          "wrapper": false
+        },
+        "notHundredCycleQualification": true
+      }
+    },
+    {
+      "variant": "both",
+      "boundary": {
+        "allSevenCompilerTypes": true,
+        "mutableUpdateInvalidates": true,
+        "callerUnownedUnfrozen": true,
+        "ownedExactPropertiesReuse": true,
+        "translatedPropertiesCopied": true,
+        "allOutputDescendantsOwned": true,
+        "getterReads": 0,
+        "errors": {
+          "getter": {
+            "name": "TypeError",
+            "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+          },
+          "duplicate": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "badClip": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "badOffset": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "functionThenBadNode": {
+            "name": "TypeError",
+            "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+          },
+          "functionOnly": {
+            "name": "TypeError",
+            "message": "Cannot store a function at state.graphicSpec.objects.node-1.properties.extra in a ChartProgram."
+          },
+          "cycle": {
+            "name": "TypeError",
+            "message": "Converting circular structure to JSON\n    --> starting at object with constructor 'Object'\n    --- property 'self' closes the circle"
+          },
+          "badVersion": {
+            "name": "TypeError",
+            "message": "renderTransitionScene requires a version 2 Canvas scene."
+          },
+          "shallowFrozenGetter": {
+            "name": "TypeError",
+            "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+          }
+        },
+        "mutableJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+        "ownedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+        "translatedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":2,\"y\":3,\"width\":90,\"height\":70},\"children\":[\"clip-1\"]},\"clip-1\":{\"type\":\"canvas\",\"properties\":{\"x\":3,\"y\":4,\"width\":80,\"height\":60},\"children\":[\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\",\"node-8\"]},\"node-2\":{\"type\":\"circle\",\"properties\":{\"x\":5,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-3\":{\"type\":\"rect\",\"properties\":{\"x\":6,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-4\":{\"type\":\"line\",\"properties\":{\"x\":7,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-5\":{\"type\":\"path\",\"properties\":{\"x\":8,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-6\":{\"type\":\"text\",\"properties\":{\"x\":9,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-7\":{\"type\":\"image\",\"properties\":{\"x\":10,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-8\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":11,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}}},\"order\":[\"canvas\"]}}",
+        "partialJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}"
+      },
+      "lifetime": {
+        "cycles": 5,
+        "retained": "plan and current frame",
+        "oldObjectsAlive": {
+          "frame": false,
+          "scene": false,
+          "graphicSpec": false,
+          "decisions": false,
+          "decision": false,
+          "node": false,
+          "properties": false,
+          "wrapper": false
+        },
+        "notHundredCycleQualification": true
+      }
+    }
+  ]
+}
