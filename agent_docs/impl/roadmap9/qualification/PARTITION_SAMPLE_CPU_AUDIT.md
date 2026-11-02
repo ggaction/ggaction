@@ -19,6 +19,8 @@ root 포함 1,000-node star hierarchy 및 Canvas 폭400→600의 공개 plan/sam
 Node22 CPU profiler에서 완전한 중간 frame을10회 관측하고 마지막 frame의 모든 cell
 꼭짓점과1,000개 partition decision을 독립 식으로 검산했다. 원 입력 hash, 실행한 source
 hash, raw CPU profile은 [증거 폴더](partition-sample-audit-evidence/)에 보존한다.
+재현 runner는 source hash를 먼저 검산하며 선택적인 첫 인자로 출력 directory를 받는다.
+생략하면 `.artifacts/partition-sample-audit`에 쓰고 동봉된 증거를 덮어쓰지 않는다.
 
 동시에 다른 기능 검사가 실행됐고 profiler overhead도 있으므로 **최종 시간/P95/SLO 자격이
 아니다**. raw 10회는101–193ms이며 최종 원 workload의 warmup5/30회를 대신하지 않는다.

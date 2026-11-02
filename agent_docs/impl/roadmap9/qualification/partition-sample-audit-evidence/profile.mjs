@@ -1,10 +1,17 @@
 import assert from 'node:assert/strict';
 import { Session } from 'node:inspector';
-import { writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { chart } from '../../../../../src/index.js';
 import { planTransition, sampleTransition } from '../../../../../src/animation.js';
 
+const root = fileURLToPath(new URL('../../../../../', import.meta.url));
+const manifest = JSON.parse(await readFile(new URL('./source-hashes.json', import.meta.url), 'utf8'));
+for (const [file, sha] of Object.entries(manifest.files)) assert.equal(createHash('sha256').update(await readFile(resolve(root,file))).digest('hex'), sha, `Source changed: ${file}`);
+const output = resolve(process.argv[2] ?? resolve(root,'.artifacts/partition-sample-audit'));
+await mkdir(output,{recursive:true});
 const n = 1000, values = [{key:'root',parent:null,value:0}, ...Array.from({length:n-1},(_,key)=>({key,parent:'root',value:1}))];
 const from = chart().createCanvas({width:400,height:400,margin:20,plotBorder:false})
   .createData({id:'rows',keyField:'key',values}).createHierarchyData({id:'hierarchy',key:'key',parent:'parent',value:'value'})
@@ -36,6 +43,6 @@ for(let i=0;i<profile.samples.length;i++){
 }
 const sorted=map=>[...map].sort((a,b)=>b[1]-a[1]).slice(0,40);
 const result={scope:'Read-only CPU attribution, original 1k class; concurrent execution, not P95 or SLO qualification.',nodes:n,samples:10,node:process.version,inputSHA256:createHash('sha256').update(JSON.stringify(values)).digest('hex'),timesMs:times,verifiedCells:n,frameSHA256:createHash('sha256').update(JSON.stringify(frame)).digest('hex'),inclusive:sorted(totals),self:sorted(own)};
-await writeFile(new URL('./sample.cpuprofile',import.meta.url),JSON.stringify(profile));
-await writeFile(new URL('./profile.json',import.meta.url),JSON.stringify(result,null,2)+'\n');
+await writeFile(resolve(output,'sample.cpuprofile'),JSON.stringify(profile));
+await writeFile(resolve(output,'profile.json'),JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify(result,null,2));
