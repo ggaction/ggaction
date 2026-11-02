@@ -1,0 +1,14 @@
+{
+  "cycles": 100,
+  "rawVertices": 20,
+  "oldSceneWeakRefs": 100,
+  "alive": 0,
+  "kind": "small installed lifecycle retention; supplemental Geo smoke, not canonical memory100cycle or P95",
+  "memory": {
+    "rss": 144424960,
+    "heapTotal": 68780032,
+    "heapUsed": 28352832,
+    "external": 1873787,
+    "arrayBuffers": 29675
+  }
+}

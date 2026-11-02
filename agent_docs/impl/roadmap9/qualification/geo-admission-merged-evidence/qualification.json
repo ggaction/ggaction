@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-Geo-sample-admission-integration",
+  "base": "c8bac0e77",
+  "upstream": "e4182d027",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1268,
+    "packedBytes": 1827390,
+    "unpackedBytes": 8230130,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-50705bf2ba2e6b3729a506e7c803967164cff7bcedd6b32997b939e8a65503be.tgz",
+    "sha256": "50705bf2ba2e6b3729a506e7c803967164cff7bcedd6b32997b939e8a65503be"
+  },
+  "sourceHashes": {
+    "src/animation/geoTracks.js": "9e3c8ecbcdd4372338d6eb6a5f2bd5f848c3ee4eff4c7f021d8a4541e87f13d4",
+    "src/grammar/animation/geoState.js": "ef4d162e535dcc042af022f392b5c9ddc13eff90201f2062136d12ce288b3035",
+    "src/materialization/animation/geoPresentation.js": "56e96d1236205e377a5325b0ef2245d941b06c1dfa92e24b333a07ff4a573991"
+  },
+  "evidenceFiles": {
+    "installed.log": {
+      "sha256": "a4e38196d44812db3baaa66ad5c843fb378782a36e61f178048ca73e6c00a205",
+      "bytes": 3457
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "pack.json": {
+      "sha256": "c88c38e82594be2b4cf23674d7e39787c2e5482dcfdd39a77caa1c8f5c182c2f",
+      "bytes": 383
+    },
+    "critical-coverage.json": {
+      "sha256": "0f90a7c37d1bfc01fd12ef0748af07d6759b26d7fe4a9f67df1b72d7ed323a64",
+      "bytes": 323
+    },
+    "run.py": {
+      "sha256": "ba88da47b5efccf226c2d89453280a5292a0bf6bcf84426d0a0cdf675402e499",
+      "bytes": 1596
+    },
+    "cap-docs.log": {
+      "sha256": "693e99eec62d68ec15a80952bc97b42e5e9845dcb52131ec2a1ba046febce32a",
+      "bytes": 77023
+    },
+    "caps.json": {
+      "sha256": "5774c49912e8e75768a543f8690a92286d349dabed494cdfef9f4470de365502",
+      "bytes": 171
+    },
+    "boundaries.log": {
+      "sha256": "ba41fd4b9e93b7d618d321836f134a2fe7cf8d0e63af7b0c9875f0a6158ba2ee",
+      "bytes": 24481
+    },
+    "consumer.json": {
+      "sha256": "9e021a598b4dcbda12160009cdfd9f7682a8a9610841af1f194aa39243cfbdd7",
+      "bytes": 181
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "installed.json": {
+      "sha256": "6cccc8b5ac052ef06d49a3aa06fa4bfd067097501beb4795655919aadd8af5ae",
+      "bytes": 4860
+    },
+    "prepack24.json": {
+      "sha256": "7d848f614305df543533f2c8921200706ab66eda2c36a9e1a4ce8757fed9f8a6",
+      "bytes": 299
+    },
+    "prepack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "record.py": {
+      "sha256": "d166b6e0202f3422bf3b2a8e53d5a3e87bc5b980041b67290e181ec434d5eb57",
+      "bytes": 4689
+    },
+    "pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "prepack22.json": {
+      "sha256": "4314b7abf92c69bc5b87eb5851705397508d957f6943d314d238aad7fee9ca4f",
+      "bytes": 299
+    },
+    "prepack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "owning.log": {
+      "sha256": "3ad49295eb6cfd13b675d5a0c015dc32a09ea6ac1731842b95c789a9001387d2",
+      "bytes": 170336
+    },
+    "machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "pack24.json": {
+      "sha256": "44a278e792a8c6e2efc13d4d735d8338561ab9e3235caefd832c43c9d3c7eb7d",
+      "bytes": 385
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "checks": {
+    "sameArchiveNodeVersions": [
+      20,
+      22,
+      24
+    ],
+    "strictTypes": true,
+    "browserDPR": [
+      1,
+      2
+    ],
+    "browserBundles": 6,
+    "owning": 135,
+    "boundaries": 105,
+    "cap-docs": 257,
+    "criticalCoverage": {
+      "animation/geoTracks.js": {
+        "lines": 100,
+        "branches": 98.02,
+        "functions": 100
+      },
+      "grammar/animation/geoState.js": {
+        "lines": 100,
+        "branches": 98.02,
+        "functions": 100
+      },
+      "materialization/animation/geoPresentation.js": {
+        "lines": 100,
+        "branches": 95.29,
+        "functions": 100
+      }
+    }
+  },
+  "upstreamOriginal100k": {
+    "archiveSHA256": "52ae6397eacbab02df8f7cae8978c426667cdd1b69dbddc683d6aac71be93d85",
+    "verified": true,
+    "scope": "Upstream installed archive. This integration does not claim a new original100k run."
+  },
+  "remaining": [
+    "original workloads on final combined archive",
+    "exclusive canonical 5+30 performance",
+    "original canonical 100cycle lifetime",
+    "final roadmap qualification"
+  ],
+  "packagingNode24": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1268,
+    "packedBytes": 1830985,
+    "unpackedBytes": 8230130,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/geo-admission-merged/pack24/ggaction-0.0.26.tgz",
+    "sha256": "c9d215f8bbb059ec638ffd658f8a031e108e41f9000cfead7029f46f0cf1614b"
+  }
+}

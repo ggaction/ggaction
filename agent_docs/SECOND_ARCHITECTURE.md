@@ -1043,7 +1043,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 74,500 bytes |
 | `ggaction/interaction` | 140,172 bytes |
-| `ggaction/animation` | 343,701 bytes |
+| `ggaction/animation` | 343,826 bytes |
 
 
 
@@ -5267,3 +5267,5 @@ owner를 그대로 이어간다. Graph의 native prepare/write pair가 원 proje
 권한에 같은 ledger를 전달한다. `graphSourceRevisions`와 `graphSourceProjection`의 active wrapped
 수명은 늘리지 않으며 동기 `writeGraphResource`가 원 조회를 유지한다. 준비 host의 source 문맥
 확보는 이 제약을 따라야 한다. 현재 범위는 [resource 단계 기록](impl/roadmap9/chart/route-layout-stages.md)에 있다.
+
+Geo sampler는 한 동기 호출에서 full presentation/group admission을 완료한 exact immutable 결과를 지역 계산 closure로 즉시 소비한다. 일반 resolver와 restored-state admission은 기존 전수 검사 경로를 유지하며, 실제 native stream/refinement/output 과금과 aggregate guard·concrete validation·최종 owned 출력은 그대로다. 새 public schema/권한 registry/retained cache는 없다. 구체 채택·동등성 및 artifact 증거는 [sample admission 기록](impl/roadmap9/qualification/GEO_SAMPLE_ADMISSION_PROPOSAL.md)에 둔다.

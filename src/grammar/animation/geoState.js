@@ -60,7 +60,18 @@ export function normalizeAnimationGeoGroup(input) {
 // The native stream owns clipping, refinement, winding, holes and complements.
 // Return every current part; endpoint command counts never constrain a frame.
 export function resolveAnimationGeoGeometry(input, capacityEnabled = false) {
-  const group = normalizeAnimationGeoGroup(input), features = [];
+  return resolveNormalizedAnimationGeoGeometry(normalizeAnimationGeoGroup(input), capacityEnabled);
+}
+
+// Internal synchronous preparation always admits the complete input. Only this
+// closure can reach the calculation with that exact normalized immutable group.
+export function prepareAnimationGeoGeometry(input) {
+  const group = normalizeAnimationGeoGroup(input);
+  return capacityEnabled => resolveNormalizedAnimationGeoGeometry(group, capacityEnabled);
+}
+
+function resolveNormalizedAnimationGeoGeometry(group, capacityEnabled) {
+  const features = [];
   const capacity = capacityEnabled ? geoBindingCapacity(group.binding) : undefined; let work = 0, points = 0;
   for (const feature of group.features) {
     const geometry = group.binding.mode === "graticule" ? feature.geometry : geoMarkGeometry(feature.geometry, group.binding, group.parameters);

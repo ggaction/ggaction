@@ -66,3 +66,5 @@ Self 관측은 ownDataProperties 93.66ms, ownArray 29.30ms, snapshot 36.46ms, ca
 **후보 C2 — 첫 내부 presentation의 owned leaf 공유.** 1021개의 불필요한 geometry 재등록을 줄이는 작은 보완이다. 하지만 cloneAndFreeze의 전체 관측 비용은 약18ms/10samples에 불과하므로 C2만으로 원100k camera의 50ms 목표를 해결한다고 기대하지 않는다. 내부 조립의 새 경로만 소유하고 exact geometry leaf를 공유하되 원 JSON alias/오류·timeline 경계를 검산해야 한다.
 
 C1/C2 이후에도 native stream의 실제 수학·command 생성/검증 비용이 남는다. 다음 후보를 단순 endpoint command lerp나 affine 재사용으로 정하면 clip/horizon/seam·scale 의존 adaptive refinement·great-circle/radiusDeg·signed-zero와 native 연산 순서가 반례다. 원 stream과 exact 결과/작업량을 보장하는 구체 certificate가 없으면 적용하지 않는다. 공개 column schema/renderer 계약 변경을 미리 필요하다고 결론내리지 않고, 최종 합산 archive의 exclusive stage profile로 다음 결정을 좁힌다.
+
+C1의 후속 concrete diff와 반례/작업량 proof는 [Geo sample admission 제안](GEO_SAMPLE_ADMISSION_PROPOSAL.md)에 기록했다. Root가 같은 호출의 exact immutable 결과를 즉시 소비하는 방향을 허용했으며, 현재 기록은 제품 미적용 remote review checkpoint다. C2는 계속 별도 후속 범위다.

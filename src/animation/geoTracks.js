@@ -4,7 +4,7 @@ import { canonicalJSON } from "../core/contentDigest.js";
 import { validateUnitInterval, validateGeneratedItemLimit, validateWorkLimit } from "../core/validation.js";
 import { prepareGeoInterpolation, sampleGeoInterpolation } from "../grammar/animation/geoState.js";
 import { interpolateNumber } from "../grammar/animation/values.js";
-import { normalizeGeoAnimationPresentation, resolveGeoAnimationPresentation, geoAnimationItemKey } from "../materialization/animation/geoPresentation.js";
+import { normalizeGeoAnimationPresentation, resolveSampledGeoPresentation, geoAnimationItemKey } from "../materialization/animation/geoPresentation.js";
 import { clipInterpolationCompatible, interpolateNodeFrame } from "./concrete.js";
 
 const prepared = new WeakSet();
@@ -77,12 +77,11 @@ export function sampleGeoTracks(state,progress,accountWork,timeline) {
     if(group.interpolation===null)continue;
     const current=timeline?.progress(group.to.geometry.key)??progress;
     const geometry=sampleGeoInterpolation(group.interpolation,current).group;
-    const presentation=normalizeGeoAnimationPresentation({...group.to,geometry,
+    const {presentation,resolved}=resolveSampledGeoPresentation({...group.to,geometry,
       styles:group.to.styles.map((style,index)=>{const native=group.appearances[index]===null?style:{...style,...sampleAnimationAppearance(group.appearances[index],current)};
         const patch=timeline?.geoStyle(group.targetGroup,geometry.features[index].key);return patch===undefined?native:{...native,...patch};}),
       plotOrigin:group.from.plotOrigin.map((value,index)=>interpolateNumber(value,group.to.plotOrigin[index],current)),
-      frame:interpolateNodeFrame(group.from.frame,group.to.frame,current)});
-    const resolved=resolveGeoAnimationPresentation(presentation,capacityTracks.has(state));
+      frame:interpolateNodeFrame(group.from.frame,group.to.frame,current)},capacityTracks.has(state));
     validateWorkLimit(work+=resolved.diagnostics.work,"Animation Geo sampled work");
     accountWork?.(resolved.diagnostics.work);
     if(!capacityTracks.has(state)||!Object.hasOwn(geometry.binding,"capacity"))validateGeneratedItemLimit(points+=resolved.diagnostics.points,"Animation Geo sampled points");

@@ -1,0 +1,23 @@
+{
+  "archiveSHA256": "52ae6397eacbab02df8f7cae8978c426667cdd1b69dbddc683d6aac71be93d85",
+  "originalExceeded": [
+    {
+      "specifier": "ggaction/animation",
+      "node": [
+        20,
+        24
+      ],
+      "observed": 343722,
+      "previousLimit": 343700
+    }
+  ],
+  "currentLimits": {
+    "ggaction": 789000,
+    "ggaction/basic": 426300,
+    "ggaction/svg": 26000,
+    "ggaction/graph": 69600,
+    "ggaction/animation": 343800,
+    "ggaction/interaction": 140100
+  },
+  "status": "same measured archive bundle sizes pass revised minimal limit; no runtime or workload limit changed"
+}

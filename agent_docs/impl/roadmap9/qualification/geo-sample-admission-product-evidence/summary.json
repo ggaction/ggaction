@@ -1,0 +1,67 @@
+{
+  "status": "source implementation verified; final aggregate performance remains open",
+  "proposal": "e4ce7d2f3",
+  "adoption": "f6b794673",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1262,
+    "packedBytes": 1822931,
+    "unpackedBytes": 8192955,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-geo-hit-a3/ggactionnewbrand/.artifacts/geo-hit-a3/sample-admission/archive24/ggaction-0.0.26.tgz",
+    "sha256": "52ae6397eacbab02df8f7cae8978c426667cdd1b69dbddc683d6aac71be93d85"
+  },
+  "sourceHashes": {
+    "src/animation/geoTracks.js": "9e3c8ecbcdd4372338d6eb6a5f2bd5f848c3ee4eff4c7f021d8a4541e87f13d4",
+    "src/grammar/animation/geoState.js": "ef4d162e535dcc042af022f392b5c9ddc13eff90201f2062136d12ce288b3035",
+    "src/materialization/animation/geoPresentation.js": "56e96d1236205e377a5325b0ef2245d941b06c1dfa92e24b333a07ff4a573991"
+  },
+  "checks": {
+    "geoAnimation": 135,
+    "formatPackageDiscovery": 55,
+    "packageArtifact": 7,
+    "node20NewAdmission": 4,
+    "sourceDocs": 248,
+    "builtPages": 186,
+    "builtLLMArtifacts": 1607,
+    "sameArchiveNode": [
+      20,
+      22,
+      24
+    ],
+    "sameArchiveRuntimeStrictTypesDocsSixBundles": true,
+    "sourceFreeMinifiedBrowserDPR": [
+      1,
+      2
+    ],
+    "original100kAllNativeCurrentRebaseCoordinatesAndQueries": true,
+    "offlineAuthorityRejected": true,
+    "smallSamplerWeakRefsCollected": 100
+  },
+  "criticalCoverage": {
+    "animation/geoTracks.js": [
+      100,
+      98.02,
+      100
+    ],
+    "grammar/animation/geoState.js": [
+      100,
+      98.02,
+      100
+    ],
+    "materialization/animation/geoPresentation.js": [
+      100,
+      95.29,
+      100
+    ]
+  },
+  "open": [
+    "exclusive combined-archive Geo P95 original5+30/DPR1,2",
+    "canonical memory100cycle combined archive",
+    "overall STEP077 qualification"
+  ],
+  "scope": "C1 only; no C2/cache/registry/public schema change",
+  "sourceCheckpoint": "8a3faba88",
+  "metadataPinArchiveSHA256": "52ae6397eacbab02df8f7cae8978c426667cdd1b69dbddc683d6aac71be93d85"
+}
