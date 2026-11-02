@@ -188,3 +188,7 @@ Batch의 논리 row 식별은 `(graphic object ID, row index)`로 명시한다. 
 새 mode에서 legacy `graphicSpec.objects[pointId]` 접근을 그대로 제공한다고 약속하지 않는다.
 그 필요가 있는 caller는 legacy mode 또는 명시적인 eager inspection adapter를 선택한다.
 이는 scene/graphicSpec의 실제 concrete data를 변경하거나 renderer가 scene를 읽는 이유가 되지 않는다.
+
+저장 codec·공통 primitive authoring/복원·정확한 overload·소비자별 logical quota의 마감 선택은
+[format6 구체안](batch-frame-format6-proposal.md)이 소유한다. 이 후속안은 별도 legacy adapter를
+추가하지 않으며 기존 legacy mode 선택으로 닫는다. 아직 runtime 제품 채택 기록은 아니다.
