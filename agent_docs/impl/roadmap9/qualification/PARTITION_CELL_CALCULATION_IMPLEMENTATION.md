@@ -70,3 +70,5 @@ node agent_docs/impl/roadmap9/qualification/partition-cell-product-evidence/inst
 ```
 
 원1k 기능 검사는 앞의 `large-installed.mjs` 명령에`--nodes=1000`을 추가한다. 기본 원10k는 별도 슬롯에서 동일 archive로 실행한다. 측정 SLO·original count·guard를 낮추지 않는다.
+
+제품 source checkpoint는 `b5a88bed2`이며 `codex/roadmap9-partition-sampling`에 push했다. 이후 이 source pin 기록은 metadata만 변경하며 package 입력은 동일하다. 원10k와 최종 합산 P95는 계속 미완료로 유지한다.

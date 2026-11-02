@@ -1,5 +1,5 @@
 {
-  "sourceStatus": "applied adopted patch; source checkpoint follows this receipt",
+  "sourceStatus": "verified source checkpoint committed and pushed; original10k and final P95 remain open",
   "proposal": "5e1f2add6427659b68f73d9a92f5bc87ca63c12a",
   "adoption": "2b7b12f5b",
   "productCases": 907,
@@ -54,5 +54,6 @@
     "Original10k complete",
     "Final SLO pass",
     "Canonical memory100cycle pass"
-  ]
+  ],
+  "sourceRevision": "b5a88bed2"
 }
