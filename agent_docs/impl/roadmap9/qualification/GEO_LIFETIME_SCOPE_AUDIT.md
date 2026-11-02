@@ -38,3 +38,31 @@ Canonical memory fixture는 `resetLifecycle()`의 20-node/20-edge graph + 실제
 - `normalizeGeoAnimationPresentation → normalizeAnimationGeoGroup`, `resolveGeoAnimationPresentation → normalizeGeoAnimationPresentation → resolveAnimationGeoGeometry → normalizeAnimationGeoGroup → projectGeometry`의 반복 검증/정규화·canonicalJSON, 최종 concrete validation과 불변 출력 생성도 후속 프로파일 대상이다. 이 호출 횟수만으로 각 비용의 크기나 제거 안전성을 단정하지 않는다. 전역 registry 변경·retained cache·수학 변경은 제안하지 않는다.
 
 현재 542a3b931의 100k 기능 완주와 이전 rebase 정체 로그는 모두 보존한다. 원 canonical memory·최종 Geo P95·전체 STEP077 완료 판정은 계속 열려 있다.
+
+## 1k CPU attribution과 최소 다음 변경안
+
+Source e38fa24c7의 Node inspector로 원 1k 입력에서 준비 뒤 5번 warmup, 별도 10번 sample을 관찰했다. 이는 canonical browser 5+30을 대체하지 않는 작은 attribution이다. 모든 1999 commands를 다시 확인했다. [raw profile](geo-lifetime-audit/sample.cpuprofile.gz)과 [요약](geo-lifetime-audit/cpu-summary.json)을 보존한다. 아래 inclusive 시간은 서로 중첩되므로 합산하지 않는다. Inspector 자체 post 53ms 및 GC는 제품 stage 합산에서 분리한다.
+
+| 경로 | 10 samples 관측 inclusive ms | 의미 |
+| --- | ---: | --- |
+| sampleTransitionWithBudget | 275.70 | sampler 전체 |
+| sampleGeoTracks | 272.54 | 거의 전부 native Geo 생성 경로 |
+| resolveGeoAnimationPresentation | 209.49 | geometry 및 concrete 생성 |
+| normalizeGeoAnimationPresentation | 115.21 | 반복 presentation 검사 포함 |
+| snapshotGeometryJSON | 115.01 | scratch·descriptor·quota 순회 |
+| projectGeometry | 108.04 | source 검사 + native 수학 + 출력 |
+| normalizeAnimationGeoGroup | 101.37 | 반복 group 검사·geometry canonical 비교 |
+| cloneAndFreeze | 18.17 | 불변 출력/중간 복사 |
+| validateConcreteGraphicProperties | 10.04 | path/concrete 검산 |
+| captureFrameMeaning | 0.42 | meaning/native identity·출처 |
+| canvasSceneProgram | 0.17 | 이미 소유한 graphic 경계 |
+
+Self 관측은 ownDataProperties 93.66ms, ownArray 29.30ms, snapshot 36.46ms, canonicalJSON 14.00ms다. 따라서 이 작은 Geo fixture에서는 scalar point에서처럼 node당 meaning/proof가 우선 병목이라는 근거가 없다. Geo는 한 path 안의 1999 commands인 반면 의미 item은 한 개다. 반복 source/container 검증 및 native stream을 먼저 조사한다. 이 계수로 원 100k에서 정확한 비율이나 50ms 달성을 외삽하지 않는다.
+
+**최소 후보 C1 — 한 호출 안에서 검증된 presentation/group을 즉시 소비한다.** 현재 sampleGeoTracks가 presentation을 normalize한 뒤 resolveGeoAnimationPresentation이 같은 immutable presentation을 다시 normalize하고, resolveAnimationGeoGeometry가 같은 group을 세 번째 normalize한다. 입력 normalize와 이미 검증된 값을 소비하는 내부 계산 함수를 분리하고, sampler는 한 번 normalize한 결과와 resolved concrete를 함께 받는 경로를 쓸 수 있다. 일반 wrapper·restore·raw caller는 기존 full admission을 유지한다. 목표는 presentation2→1, group3→1이며 stream과 final concrete validation, public output, 기존 work diagnostics/aggregate guard는 유지한다. Retained cache나 새 API/schema가 필요하지 않은 후보다. 아직 구체 diff/proof를 채택하거나 구현하지 않았다.
+
+반례는 mutable caller/얕은 owned, accessor/cycle/prototype/alias, malformed restored projection/geometry, near 2M values/10M work, multi-group aggregate work, hidden/outside-clip feature, timeline style 및 current/rebase 입력이다. 동일 호출의 exact owned 결과만 연결해야 하며 일반 input의 검사 생략에 사용하면 안 된다. 사라지는 두 번째 admission은 같은 immutable object·같은 limits에서 첫 번째와 동일한 진단임을 prove해야 한다. Native stream의 별도 geometry normalization과 실제 refinement/output budget은 C1에서 건드리지 않는다.
+
+**후보 C2 — 첫 내부 presentation의 owned leaf 공유.** 1021개의 불필요한 geometry 재등록을 줄이는 작은 보완이다. 하지만 cloneAndFreeze의 전체 관측 비용은 약18ms/10samples에 불과하므로 C2만으로 원100k camera의 50ms 목표를 해결한다고 기대하지 않는다. 내부 조립의 새 경로만 소유하고 exact geometry leaf를 공유하되 원 JSON alias/오류·timeline 경계를 검산해야 한다.
+
+C1/C2 이후에도 native stream의 실제 수학·command 생성/검증 비용이 남는다. 다음 후보를 단순 endpoint command lerp나 affine 재사용으로 정하면 clip/horizon/seam·scale 의존 adaptive refinement·great-circle/radiusDeg·signed-zero와 native 연산 순서가 반례다. 원 stream과 exact 결과/작업량을 보장하는 구체 certificate가 없으면 적용하지 않는다. 공개 column schema/renderer 계약 변경을 미리 필요하다고 결론내리지 않고, 최종 합산 archive의 exclusive stage profile로 다음 결정을 좁힌다.
