@@ -4,6 +4,7 @@ import test from "node:test";
 import { ChartProgram } from "../../src/ChartProgram.js";
 import { action, actionSource, getWrappedActionMetadata, invokeWrappedActionImplementation } from "../../src/core/action.js";
 import { chart } from "../../src/index.js";
+import { nativeRouteUpdateCase } from "../support/native-route-update.js";
 import { buildActionRelationships } from "../../scripts/action-relationship-source.js";
 
 test("every cataloged public action rejects malformed and unknown options on a valid source state", async () => {
@@ -14,6 +15,9 @@ test("every cataloged public action rejects malformed and unknown options on a v
     for (const { name } of catalog.actions) {
       const original = ChartProgram.prototype[name];
       originals.set(name, original);
+      // These exact native wrappers own prepared invocation authority. Replacing
+      // them would test a different, deliberately rejected authoring program.
+      if (["editLayout", "applyGraphEdgeRoutesUpdate"].includes(name)) continue;
       ChartProgram.prototype[name] = action(getWrappedActionMetadata(original), function (args = {}) {
         const result = invokeWrappedActionImplementation(original, this, args);
         if (!calls.has(name)) calls.set(name, { source: actionSource(this), args });
@@ -24,6 +28,9 @@ test("every cataloged public action rejects malformed and unknown options on a v
   } finally {
     for (const [name, original] of originals) ChartProgram.prototype[name] = original;
   }
+  const native = await nativeRouteUpdateCase();
+  calls.set("editLayout", { source: native.base, args: native.editArgs });
+  calls.set("applyGraphEdgeRoutesUpdate", { source: native.source, args: native.args });
   assert.deepEqual([...calls.keys()].sort(), catalog.actions.map(action => action.name).sort());
   const acceptedUnknown = [];
   for (const [name, { source, args }] of calls) {

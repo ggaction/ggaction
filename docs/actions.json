@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 379,
+  "count": 380,
   "cards": [
     {
       "schemaVersion": 3,
@@ -43562,6 +43562,78 @@
       "snippet": "program.editEdgeRoute({ target: \"routes\", options: { exponent: 3 } })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editedgeroute"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "applyGraphEdgeRoutesUpdate",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Apply an authentic prepared native layout revision on its exact original Full unit receiver.",
+      "signature": "applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;",
+      "intents": [
+        "apply graph edge routes update",
+        "apply",
+        "set defaults",
+        "chart setup",
+        "data and scales",
+        "prepared native route update",
+        "layout and route revision"
+      ],
+      "lifecycle": "Immutable create-only",
+      "resources": {
+        "prerequisites": [
+          "authentic prepared native route update",
+          "exact original Full unit receiver"
+        ],
+        "owns": [
+          "native layout revision and affected consumers"
+        ],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editLayout"
+      ],
+      "editableVia": [
+        "applyGraphEdgeRoutesUpdate",
+        "editEdgeRoute",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "authentic prepared native route update",
+          "exact original Full unit receiver"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "prepared",
+          "required": true,
+          "type": "PreparedGraphEdgeRoutesUpdate"
+        },
+        {
+          "name": "requestToken",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "applyGraphEdgeRoutesUpdate({ prepared, requestToken })"
+      ],
+      "snippet": "program.applyGraphEdgeRoutesUpdate({ prepared: preparedRouteUpdate, requestToken: currentToken })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#applygraphedgeroutesupdate"
     },
     {
       "schemaVersion": 3,

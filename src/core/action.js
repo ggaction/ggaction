@@ -7,11 +7,21 @@ import { ownDataProperties } from "./ownData.js";
 const metadataByWrappedAction = new WeakMap();
 const implementationByWrappedAction = new WeakMap();
 const sourceByEnteredAction = new WeakMap();
+const invocationScopes = new WeakMap();
 const summariesByArguments = new WeakMap();
 let actionCompletionHook;
 const targetDispatchers = new WeakMap();
 const resultValidators = new WeakMap();
 const UNSCOPED_PRIMITIVES = new Set(["createGraphics", "editGraphics", "editSemantic", "createData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "createGraphData", "createInferredGraphData", "createFlowData"]);
+
+// Private built-in wiring only. The original wrapper still owns the complete
+// invocation and its return value; the owner grants no action/result authority.
+export function bindActionInvocationScope(wrapped, enter) {
+  if (!metadataByWrappedAction.has(wrapped) || typeof enter !== "function") throw new TypeError("Expected a wrapped action and invocation owner.");
+  if (invocationScopes.has(wrapped)) throw new TypeError("Invocation owner is already bound.");
+  invocationScopes.set(wrapped, enter);
+  return wrapped;
+}
 
 // Prepared updates must compare their base with the caller's receiver, before
 // _enterAction creates the immutable trace branch. This evidence is valid only
@@ -288,33 +298,46 @@ export function action(metadata, implementation) {
       if (!dispatch && scope === "composition") this._assertCompositionProgram(ownedMetadata.op);
   
       const summarizedArgs = summariesByArguments.get(args) ?? summarizeArgs(args);
-      const entered = this._enterAction({
-        ...ownedMetadata,
-        args: summarizedArgs
-      });
-      sourceByEnteredAction.set(entered, this);
-      try {
-        let result = dispatch ? dispatch(entered, wrappedAction, args) : implementation.call(entered, args);
+      const invoke = () => {
+        const entered = this._enterAction({
+          ...ownedMetadata,
+          args: summarizedArgs
+        });
+        sourceByEnteredAction.set(entered, this);
+        try {
+          let result = dispatch ? dispatch(entered, wrappedAction, args) : implementation.call(entered, args);
   
-        if (!(result instanceof this.constructor)) {
-          throw new TypeError(`${ownedMetadata.op} must return a ChartProgram.`);
-        }
-
-        if (this.actionStack.length === 0 && actionCompletionHook !== undefined) {
-          result = actionCompletionHook(result, {
-            source: this,
-            metadata: ownedMetadata,
-            args: summarizedArgs
-          });
           if (!(result instanceof this.constructor)) {
-            throw new TypeError("Action completion hook must return a ChartProgram.");
+            throw new TypeError(`${ownedMetadata.op} must return a ChartProgram.`);
           }
-        }
 
-        if (this.actionStack.length === 0) validateActionResult(this.constructor, result);
-        return result._exitAction();
-      } finally {
-        sourceByEnteredAction.delete(entered);
+          if (this.actionStack.length === 0 && actionCompletionHook !== undefined) {
+            result = actionCompletionHook(result, {
+              source: this,
+              metadata: ownedMetadata,
+              args: summarizedArgs
+            });
+            if (!(result instanceof this.constructor)) {
+              throw new TypeError("Action completion hook must return a ChartProgram.");
+            }
+          }
+
+          if (this.actionStack.length === 0) validateActionResult(this.constructor, result);
+          return result._exitAction();
+        } finally {
+          sourceByEnteredAction.delete(entered);
+        }
+      };
+      const enterScope = invocationScopes.get(wrappedAction);
+      if (enterScope === undefined) return invoke();
+      const closeScope = enterScope(this, args);
+      if (typeof closeScope !== "function") throw new TypeError("Invocation scope must return a synchronous closer.");
+      let result, succeeded = false;
+      try { result = invoke(); succeeded = true; return result; }
+      finally {
+        if (succeeded) closeScope({ result });
+        // A cleanup failure cannot replace the original native/validation error.
+        else { try { closeScope(); } catch { /* The invocation error wins. */ } }
       }
     } catch (error) {
       throw annotateError(error, { code: "action-failed", operation: ownedMetadata.op });

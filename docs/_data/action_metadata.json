@@ -2843,6 +2843,14 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "applyGraphEdgeRoutesUpdate": {
+    "operation": "apply",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "createGeometryData": {
     "operation": "create",
     "authoringRoles": [

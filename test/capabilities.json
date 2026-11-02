@@ -510,6 +510,18 @@
       {
         "type": "file",
         "path": "browser/edge-route-composition.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-route-native-update.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-route-request-ledger.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-native-route-update.test.js"
       }
     ],
     "expressions": [

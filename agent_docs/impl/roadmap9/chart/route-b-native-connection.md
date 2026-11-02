@@ -2,6 +2,11 @@
 
 ## 상태와 승인 근거
 
+Root는 `99907a314`의 구체안과 overlay를 읽고 기존 remainingApproval 범위로 once-only
+core-private synchronous invocation scope를 채택했다. 새 B 실제 editLayout의 준비부터
+원 native wrapper·primitive/materializer·completion theme까지 연결하며, close 실패가 원
+invoke 오류를 대체하지 않도록 하는 조건이다. 아래 검토 기록은 그 채택 이전 실험을 보존한다.
+
 기준 source는 `3427ae56f`이다. [B 표면 선택](route-native-update-boundary.md)과
 [v2 채택](route-v2-adoption.md)은 유지한다. Root가 기존 remainingApproval 안에서
 요청한 **최소 core-private 패치의 검토안**이며 제품 core/API를 변경하지 않았다.
@@ -13,6 +18,30 @@ graph/hierarchy revision의 private continuation도 있다. 그러나 이 iterat
 진척률은 아니다. `prepareGraphEdgeRoutes({kind:"update",edit:{action,args}})`와
 `applyGraphEdgeRoutesUpdate({prepared,requestToken})`는 아직 실행 가능한 제품 경로가 아니다.
 이 문서 다음 구현은 아래 첫 실행 경로를 닫는 데 필요한 변경으로 한정한다.
+
+## 채택 후 제품 연결 상태
+
+현재 작업은 원 prepared registry에서 native `editLayout`의 graph/hierarchy layout 준비와
+최종 apply를 연결한다. World/screen 및 mixed v1/v2 route, GraphPlot/TreePlot/GeoLine consumer,
+실제 completion theme를 사용한다. 첫 child는 exact native action/요약 args이고 뒤에 올 수 있는
+completion siblings는 inspection에서 제외하며 같은 native child가 중복되면 해석하지 않는다.
+위의 “제품 경로가 아니다”는 `99907a314` 검토 시점 기록이고 이 절은 이후 구현 상태다.
+
+단일 ledger는 준비 중 실제 native wrapper preflight의 검산 비용을 기록한 뒤, 최종 실제 apply의
+검산 비용도 추가한다. 이는 같은 계산을 가상으로 두 번 charge하는 것이 아니라 두 번 수행한
+서로 다른 실제 실행 비용이다. Worker work는 완료 검산 때 재추가하지 않는다. Preflight 후보는
+버리고 최종 wrapper가 원 primitive/materializer를 다시 실제 실행하므로 그 비용을 무료 처리하지
+않는다. Handle 재사용은 각 적용이 준비 완료 accounting의 독립 copy에서 시작한다.
+
+Nested own-data scan의 `seen`은 반복 방문 종료용이다. 뒤의 원 `cloneAndFreeze`가 ancestor
+cycle을 첫 await 이전에 거부한다. 함수·비평범 객체·accessor·extra array property는 각 원 own-data
+경계에서 거부한다. Sparse array의 native 값 검증은 원 layout owner가 유지한다. 최초 descriptor
+scan/clone은 nonpreemptible이며 깊이·전체 allocation·work의 별도 수치 상계가 아직 없고, 현재
+ledger의 work에는 그 acquisition 비용이 완전히 계량되지 않는다. 이 제한과 전체100ms 미검증은
+후속 의무로 남긴다. V1의 snapshot/getter/error 순서는 변경하지 않는다.
+
+나머지 B union은 위 구현으로 완료되지 않는다. 아래 data/fit 및 간접 native action 연결을
+계속해야 하며 source-free/3Node/browser/source pin 완료 전에는 coherent checkpoint로 내보내지 않는다.
 
 ## 첫 공개 실행까지 필요한 최소 묶음
 
@@ -109,3 +138,42 @@ Root composite는 별도 실제 측정값을 소유한다. 이전 `3427ae56f` ar
 
 원100ms는 초기 snapshot/wide keys/BigInt/clone/postMessage/geometry/materialization 등
 잔여 동기 구간을 포함해 여전히 미검증이다. 1k/10k 원 density·P95·100cycle도 완료되지 않았다.
+
+
+## 후속 native union 상태표
+
+[기계 판독 matrix](route-native-update-evidence/union.json)는 기존332개 후보의 이름/contract/source를
+보존하고 직접14개, focused derived19개+전용2개를 각각 기록한다. 현재 `editLayout`도 unit
+실행만 부분 연결됐으며 scoped/composition/facet와 추가 viewport jobs는 별도 남아 있다.
+우선 작업 owner는 graph/hierarchy native resource plan, data/source identity와 원 handle,
+Canvas/fit의 ordered probe, composition/facet의 exact child closure다. 목록 생성은 인수 증거가 아니다.
+
+동시 sample 검산은 각 job/completion의 private scope에서만 이전 retained 결과 수를 더한다.
+종료된 worker peak를 저장 resource 검산에서 retained 결과에 재가산하지 않는다. 작은 exact
+반례는 단일 peak30/maxSamples32 허용과, 이전 완료4+다음 worker peak30의 같은 작은 policy
+초과 거부다. 원 solver의 sample count와 각 resource execution 수치는 그대로다.
+
+
+## Native layout checkpoint 검증
+
+Node20.20.2/22.23.1/24.22.1에서 각각361개 owning test가 통과했다. `core/action.js`,
+`encodedValueCursor.js`, `jsonText.js`, `valueEncoding.js`는100/100/100이며 원 route/native owner
+critical floors를 유지한다. 문서·타입·public catalog·action input·package 경계30개도 통과했다.
+
+동일 SHA `d332353cc928e0edff2a678b2cbd0af24e0710e8676dfb0b915e8287d8b5a7a8`의 source-free
+archive를 세 Node에 설치했다. 각 엔진에서 네 method×world/screen8개 실제 Worker 사례의
+create/edit/native update·원 v1 기하·정확 tagged bytes/hash·타입·취소/수명·6bundle을 확인했다.
+각 설치의 Worker24개가 모두 종료되고 listener0이다. Chromium은3method의 Canvas/SVG/offline
+restore, 실제 문서3조각, create/update×abort/deadline4개 publication0을 확인했다.
+브라우저 Worker11개 종료/listener0이며 latency qualification은 하지 않는다.
+
+Package는1268entries/1,828,988packed/8,221,607unpacked bytes다. Node20·24 최대 gzip은
+Full795139/Basic426828/svg25672/graph75678/animation341583/interaction137529bytes이며
+원100B 단위 최소 ceiling을 적용했다. graph 전체123modules에 Full assembly/renderers0,
+순수 worker38modules 경계를 유지한다. Root 합산은 독립 재측정 대상으로 남는다.
+
+[qualification/source pin](route-native-update-evidence/qualification.json)과
+[재현 명령](route-native-update-evidence/README.md)이 이 checkpoint의 증거다.
+이는 completed unit의 graph/hierarchy editLayout **부분 연결**이며 아래 matrix의 전체 B native
+union, 추가 viewport jobs, 원 large capacity 및100ms 완료를 뜻하지 않는다. 다음 native owner
+구현은 이 검증된 checkpoint를 commit/push한 뒤 이어간다.

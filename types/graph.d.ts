@@ -1,5 +1,5 @@
-import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, EdgeRouteResult, InputRef } from "./program.js";
-export type { PreparedGraphEdgeRoutes } from "./program.js";
+import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EdgeRouteResult, InputRef } from "./program.js";
+export type { PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate } from "./program.js";
 
 declare const graphRouteJob: unique symbol;
 /** Immutable structured-clone job supplied to the worker by prepareGraphEdgeRoutes. */
@@ -33,8 +33,10 @@ export interface GraphRouteExecutor {
   evict(inputHash?: string): void;
   dispose(): void;
 }
-export type GraphEdgeRoutesRequest = ({ readonly kind: "create" } & BundleGraphEdgesOptions)
+export type GraphEdgeRoutesAuthoringRequest = ({ readonly kind: "create" } & BundleGraphEdgesOptions)
   | ({ readonly kind: "edit" } & EditEdgeRouteOptions);
+export interface GraphEdgeRoutesUpdateRequest { readonly kind: "update"; readonly edit: { readonly action: "editLayout"; readonly args: EditLayoutOptions }; }
+export type GraphEdgeRoutesRequest = GraphEdgeRoutesAuthoringRequest | GraphEdgeRoutesUpdateRequest;
 export type GraphEdgeRoutesHost = { readonly requestToken: string; readonly signal?: AbortSignal } & (
   { readonly executor?: GraphRouteExecutor; readonly deadlineMs?: never }
   | { readonly executor: GraphRouteExecutor; readonly deadlineMs: number }
@@ -42,7 +44,8 @@ export type GraphEdgeRoutesHost = { readonly requestToken: string; readonly sign
 export function createGraphRouteExecutor(options?: { readonly createWorker?: () => GraphRouteWorker }): GraphRouteExecutor;
 export function computeGraphEdgeRoutes(job: GraphRouteJob, signal?: AbortSignal): GraphRouteCompletion;
 export function computeGraphEdgeRoutesAsync(job: GraphRouteJobV2, signal?: AbortSignal): Promise<GraphRouteCompletionV2>;
-export function prepareGraphEdgeRoutes(program: ChartProgram, request: GraphEdgeRoutesRequest, host: GraphEdgeRoutesHost): Promise<PreparedGraphEdgeRoutes>;
+export function prepareGraphEdgeRoutes(program: ChartProgram, request: GraphEdgeRoutesAuthoringRequest, host: GraphEdgeRoutesHost): Promise<PreparedGraphEdgeRoutes>;
+export function prepareGraphEdgeRoutes(program: ChartProgram, request: GraphEdgeRoutesUpdateRequest, host: { readonly requestToken: string; readonly signal?: AbortSignal; readonly executor: GraphRouteExecutor; readonly deadlineMs: number }): Promise<PreparedGraphEdgeRoutesUpdate>;
 
 import type { CreateInferredGraphDataOptions, EditInferredGraphDataOptions, PreparedInferredGraphData, GraphModel, GraphInferenceDiagnostics } from "./program.js";
 export type { PreparedInferredGraphData } from "./program.js";

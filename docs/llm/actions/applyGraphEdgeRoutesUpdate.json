@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 3,
+  "name": "applyGraphEdgeRoutesUpdate",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Apply an authentic prepared native layout revision on its exact original Full unit receiver.",
+  "signature": "applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;",
+  "intents": [
+    "apply graph edge routes update",
+    "apply",
+    "set defaults",
+    "chart setup",
+    "data and scales",
+    "prepared native route update",
+    "layout and route revision"
+  ],
+  "lifecycle": "Immutable create-only",
+  "resources": {
+    "prerequisites": [
+      "authentic prepared native route update",
+      "exact original Full unit receiver"
+    ],
+    "owns": [
+      "native layout revision and affected consumers"
+    ],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editLayout"
+  ],
+  "editableVia": [
+    "applyGraphEdgeRoutesUpdate",
+    "editEdgeRoute",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "authentic prepared native route update",
+      "exact original Full unit receiver"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "prepared",
+      "required": true,
+      "type": "PreparedGraphEdgeRoutesUpdate"
+    },
+    {
+      "name": "requestToken",
+      "required": true,
+      "type": "string"
+    }
+  ],
+  "callPatterns": [
+    "applyGraphEdgeRoutesUpdate({ prepared, requestToken })"
+  ],
+  "snippet": "program.applyGraphEdgeRoutesUpdate({ prepared: preparedRouteUpdate, requestToken: currentToken })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#applygraphedgeroutesupdate"
+}

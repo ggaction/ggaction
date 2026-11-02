@@ -5472,6 +5472,39 @@ editEdgeRoute({ target?, graph?, layout?, method?, options?, coordinateSpace? })
 Apply a nonempty patch to a stored route and refresh each consuming GraphPlot once. Same-method options preserve omitted values; a changed method starts from its defaults. Exact preparation handles also support `{prepared,requestToken}`. See [Edge routes](../../api/edge-routes.md) for validation, async lifetime, source revision and Canvas invalidation.
 
 
+## `applyGraphEdgeRoutesUpdate`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;
+```
+
+Named option contracts: [`ApplyGraphEdgeRoutesUpdateOptions`](./../types.md#type-applygraphedgeroutesupdateoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedGraphEdgeRoutesUpdate` |
+| `requestToken` | Required | `string` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+applyGraphEdgeRoutesUpdate({ prepared, requestToken })
+```
+
+Apply an authentic prepared native layout revision on its exact original Full unit receiver. Prepare with `kind:"update", edit:{action:"editLayout",args}` through `ggaction/graph`; the original action, affected route consumers and theme completion execute synchronously with the shared budget. See [Edge routes](../../api/edge-routes.md#applygraphedgeroutesupdate).
+
+
 ## `createGeometryData`
 
 **API layer:** user-facing. **Authoring roles:** H2.

@@ -1032,10 +1032,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 793,300 bytes |
-| `ggaction/basic` | 426,400 bytes |
+| `ggaction` | 795,200 bytes |
+| `ggaction/basic` | 426,900 bytes |
 | `ggaction/svg` | 26,000 bytes |
-| `ggaction/graph` | 74,500 bytes |
+| `ggaction/graph` | 75,700 bytes |
 | `ggaction/interaction` | 137,600 bytes |
 | `ggaction/animation` | 341,600 bytes |
 
@@ -5211,3 +5211,24 @@ owner를 그대로 이어간다. Graph의 native prepare/write pair가 원 proje
 권한에 같은 ledger를 전달한다. `graphSourceRevisions`와 `graphSourceProjection`의 active wrapped
 수명은 늘리지 않으며 동기 `writeGraphResource`가 원 조회를 유지한다. 준비 host의 source 문맥
 확보는 이 제약을 따라야 한다. 현재 범위는 [resource 단계 기록](impl/roadmap9/chart/route-layout-stages.md)에 있다.
+
+
+### Prepared native route invocation
+
+Full의 exact constructor planner binding은 native update resolve/prepare/apply owner도 연결한다.
+현재 공개 연결은 graph/hierarchy `editLayout`이며 나머지 승인된 B union은 후속 의무다.
+Host는 deep-owned native args와 원 generator plan을 준비하고 original prepared WeakMap만
+사용한다. `core/action.js`의 private once-only scope binding은 원 동기 wrapper의 enter부터
+native child, completion theme, result validator, exit까지 범위를 유지한다. Prepare await 동안
+scope는 없고 최종 apply에서 exact plan을 한 번 소비한다. finally가 중첩 문맥을 복원하며
+cleanup 실패는 이미 발생한 invoke 오류를 대체하지 않는다. 공개 action/core async나 일반 replay
+registry는 추가하지 않는다.
+
+테마의 live native metadata는 exact Full class reader와 authentic current invocation에서만
+확보한다. 저장 trace의 closed native first-child 해석은 authored-source inspection 데이터일 뿐
+prepare/resource write 권한이 아니다. 후속 completion siblings는 일반 flatten하지 않는다.
+실제 preflight invocation 비용과 이후 실제 apply 비용을 각각 합산하며, 후보 program은 버린다.
+최초 own-data descriptor scan과 clone의 동기 비용/전체 heap 상계는 별도 잔여이고 현재 ledger
+work가 그 비용을 모두 측정한다는 뜻이 아니다. 정확한 범위·한계와 source evidence는
+[Current](contract/current/EDGE_ROUTES.md#applygraphedgeroutesupdate)와
+[구현 기록](impl/roadmap9/chart/route-b-native-connection.md)이 소유한다.

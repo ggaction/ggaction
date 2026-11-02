@@ -347,6 +347,7 @@
   "editCalendarPlot": "/reference/actions/marks/#editcalendarplot",
   "bundleGraphEdges": "/reference/actions/charts-data/#bundlegraphedges",
   "editEdgeRoute": "/reference/actions/charts-data/#editedgeroute",
+  "applyGraphEdgeRoutesUpdate": "/reference/actions/charts-data/#applygraphedgeroutesupdate",
   "createGeometryData": "/reference/actions/charts-data/#creategeometrydata",
   "editGeometryData": "/reference/actions/charts-data/#editgeometrydata",
   "createGeoJoinData": "/reference/actions/charts-data/#creategeojoindata",

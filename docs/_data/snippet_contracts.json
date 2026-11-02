@@ -1895,6 +1895,22 @@
     "executable": false
   },
   {
+    "file": "api/edge-routes.md",
+    "block": 3,
+    "heading": "`applyGraphEdgeRoutesUpdate`",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [
+      "target: \"l\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: \"l\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "612509051012efb8b1075fbe39e3ce9ab9c6879fe6370906d8e78034965f8904",
+    "executable": false
+  },
+  {
     "file": "api/encodings.md",
     "block": 1,
     "heading": "Choose appearance with conditions",

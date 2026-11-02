@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:07a80f1a726831d5d044f64c0271fab6859331d82aa4d2c34d5bc583fff62317",
+  "contractId": "sha256:efa2a22308ff4ad5037813914c73142c7abe01e78978965e50a07323942c0629",
   "sourceCommit": null,
   "sourceRef": "main",
   "exampleSourceRef": "64045b214475110de9621328bbe7d060c9149f04",
@@ -11,7 +11,7 @@
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 379,
+  "actionCount": 380,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -179,6 +179,10 @@
       "status": "development"
     },
     "editEdgeRoute": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "applyGraphEdgeRoutesUpdate": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

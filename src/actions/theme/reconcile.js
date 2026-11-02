@@ -18,6 +18,7 @@ import {
 import { isOwned } from "../../core/immutable.js";
 import { findLayer } from "../../selectors/layers.js";
 import { reconcileFollowingRegressions } from "../regression/follow.js";
+import { nativeRouteAuthoredNode, nativeRouteCompletionMetadata } from "./nativeRouteUpdate.js";
 
 let rematerializeThemeHighlights = program => program;
 
@@ -1145,7 +1146,8 @@ function explicitOverrides(program, node) {
 // is derived from immutable trace; it is not another persisted history.
 export function collectThemeAuthoredSources(program) {
   const overrides = new Set(), sources = new Map();
-  for (const node of program.trace.children) {
+  for (const recorded of program.trace.children) {
+    const node = nativeRouteAuthoredNode(recorded);
     if (["applyTheme", "removeTheme"].includes(node.op)) continue;
     clearRecreatedOverrides(overrides, node.op, node.args);
     clearRemovedResources(overrides, node);
@@ -1171,6 +1173,7 @@ function axisTypographyChanged(before, after) {
 }
 
 export function reconcileProgramTheme(program, { source, metadata }) {
+  metadata = nativeRouteCompletionMetadata(program, { source, metadata });
   // Intrinsic facet legends replay resolved intent in a private scratch unit.
   // The parent action owns theme reconciliation, including typography reflow.
   if (program.context.facetLegendIntrinsic === true) return program;

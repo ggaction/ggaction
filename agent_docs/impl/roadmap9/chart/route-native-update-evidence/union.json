@@ -1,0 +1,2260 @@
+{
+  "schemaVersion": 1,
+  "scope": "Implementation matrix; membership never grants runtime permission or completion.",
+  "historical": {
+    "source": "90ae731513ec85a8eb5bd378a82d5904d1be6da4",
+    "sha256": "97f1f0aa3afbc477f105588a3f9aab2380d5f462cb92d4b11a46d795777c0f18",
+    "count": 332
+  },
+  "direct": [
+    {
+      "action": "editGraphData",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editInferredGraphData",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editFlowData",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editHierarchyData",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editLayout",
+      "status": "partial-unit-native-connection",
+      "implemented": [
+        "graph layout exact native options/node",
+        "hierarchy layout exact native order/options",
+        "world/screen affected route revision",
+        "mixed v1/v2 dependency order",
+        "GraphPlot/TreePlot/GeoLine consumer closure"
+      ],
+      "remaining": [
+        "scoped/composition/facet receiver dispatch",
+        "indirect viewport mutation requiring additional prepared screen jobs",
+        "full native union qualification"
+      ]
+    },
+    {
+      "action": "reviseData",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editDerivedData",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editParameter",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "applyDataUpdate",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "filterMarks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeMarkFilter",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editCanvas",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "fitCanvas",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "navigateProjection",
+      "status": "pending-public-native-connection"
+    }
+  ],
+  "focusedDerivedAliases": [
+    {
+      "action": "editComputedData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editFilteredData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editFlattenData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editLookupData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editFoldData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editSummaryData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editBinData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editTimeUnitData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editWindowData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editDensityData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editStackData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editRegressionData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editSortedData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editIntervalData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editECDFData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editNormalizedData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editCompleteData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editPivotData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editImputedData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/edit.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editBin2DData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/bin2d.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    },
+    {
+      "action": "editRegressionStatisticsData",
+      "status": "pending-public-native-connection",
+      "owner": "src/actions/data/regressionStatistics.js",
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+    }
+  ],
+  "audited": [
+    {
+      "action": "editCanvas",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "fitCanvas",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "applyTextMetrics",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeTextMetrics",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "applyTheme",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeTheme",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "applyDataUpdate",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "restriction": "authentic exact-base/token source preparation only",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "reviseData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeCoordinate",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "bindMarkData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "filterData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editGraphData",
+      "contract": "agent_docs/contract/current/GRAPHS.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editInferredGraphData",
+      "contract": "agent_docs/contract/current/GRAPHS.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editParameter",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeParameter",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editBin2DData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editDerivedData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editFilteredData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editTimeUnitData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editWindowData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editDensityData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRegressionData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRegressionStatisticsData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editCoordinate",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editXScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editYScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editXOffsetScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editYOffsetScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editParallelScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editThetaScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editColorScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editStrokeScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editSizeScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editOpacityScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editShapeScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editStrokeWidthScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editStrokeDashScale",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "replaceImageResource",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeResource",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editHierarchyData",
+      "contract": "agent_docs/contract/current/HIERARCHY.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editLayout",
+      "contract": "agent_docs/contract/current/LAYOUTS.md",
+      "domain": "core",
+      "status": "partial-unit-native-connection",
+      "implemented": [
+        "graph layout exact native options/node",
+        "hierarchy layout exact native order/options",
+        "world/screen affected route revision",
+        "mixed v1/v2 dependency order",
+        "GraphPlot/TreePlot/GeoLine consumer closure"
+      ],
+      "remaining": [
+        "scoped/composition/facet receiver dispatch",
+        "indirect viewport mutation requiring additional prepared screen jobs",
+        "full native union qualification"
+      ]
+    },
+    {
+      "action": "replaceFontResource",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editFlowData",
+      "contract": "agent_docs/contract/current/FLOWS.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editContourData",
+      "contract": "agent_docs/contract/current/CONTOURS.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editGeometryData",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editGeoJoinData",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editGeoRouteData",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editGeoLODData",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editProjection",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "navigateProjection",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "restriction": "resize only; other native operations remain ordinary projection actions",
+      "domain": "core",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editComputedData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editLookupData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editFlattenData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editFoldData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editPivotData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editSummaryData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editBinData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editStackData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editIntervalData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editECDFData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editNormalizedData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editSortedData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editCompleteData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editImputedData",
+      "contract": "agent_docs/contract/current/CORE.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRegression",
+      "contract": "agent_docs/contract/current/STATISTICS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRegression",
+      "contract": "agent_docs/contract/current/STATISTICS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createErrorBar",
+      "contract": "agent_docs/contract/current/STATISTICS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editErrorBar",
+      "contract": "agent_docs/contract/current/STATISTICS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createErrorBand",
+      "contract": "agent_docs/contract/current/STATISTICS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editErrorBand",
+      "contract": "agent_docs/contract/current/STATISTICS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editErrorBandBoundary",
+      "contract": "agent_docs/contract/current/STATISTICS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createBoxPlot",
+      "contract": "agent_docs/contract/current/COMPOSITE_MARKS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editBoxPlot",
+      "contract": "agent_docs/contract/current/COMPOSITE_MARKS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createGradientPlot",
+      "contract": "agent_docs/contract/current/GRADIENT_PLOTS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editGradientPlot",
+      "contract": "agent_docs/contract/current/GRADIENT_PLOTS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createViolinPlot",
+      "contract": "agent_docs/contract/current/VIOLIN_PLOTS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editViolinPlot",
+      "contract": "agent_docs/contract/current/VIOLIN_PLOTS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRegressionBand",
+      "contract": "agent_docs/contract/current/STATISTICS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRegressionBand",
+      "contract": "agent_docs/contract/current/STATISTICS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRegressionLine",
+      "contract": "agent_docs/contract/current/STATISTICS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRegressionLine",
+      "contract": "agent_docs/contract/current/STATISTICS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createDensityPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createHorizonPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "statistics",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createPointMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createTickMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createStatisticalReference",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createReferenceLine",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createReferenceBand",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createMarkLabels",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editMarkLabelSelection",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editMarkLabelPlacement",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeMarkLabels",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createAnnotation",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editAnnotation",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createTextMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editTextMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "layoutLabels",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeLabelLayout",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editPointMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editTickMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "jitterPoints",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeJitter",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "packPoints",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removePointPacking",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createLineMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editLineMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createBarMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editBarMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createAreaMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRuleMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRuleMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editAreaMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createArcMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editArcMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRectMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRectMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createOverlay",
+      "contract": "agent_docs/contract/current/OVERLAYS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editOverlay",
+      "contract": "agent_docs/contract/current/OVERLAYS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createImageMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editImageMark",
+      "contract": "agent_docs/contract/current/MARKS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createFlowNodes",
+      "contract": "agent_docs/contract/current/FLOWS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editFlowNodes",
+      "contract": "agent_docs/contract/current/FLOWS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createFlowLinks",
+      "contract": "agent_docs/contract/current/FLOWS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editFlowLinks",
+      "contract": "agent_docs/contract/current/FLOWS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createContourMark",
+      "contract": "agent_docs/contract/current/CONTOURS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editContourMark",
+      "contract": "agent_docs/contract/current/CONTOURS.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createCalendarPlot",
+      "contract": "agent_docs/contract/current/CALENDAR.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editCalendarPlot",
+      "contract": "agent_docs/contract/current/CALENDAR.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createGeoShapeMark",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editGeoShapeMark",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createGeoPointMark",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editGeoPointMark",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createGeoLineMark",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editGeoLineMark",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createGeoAnnotation",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editGeoAnnotation",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createGraticule",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editGraticule",
+      "contract": "agent_docs/contract/current/GEOMETRY.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createPyramidPlot",
+      "contract": "agent_docs/contract/current/PYRAMID.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editPyramidPlot",
+      "contract": "agent_docs/contract/current/PYRAMID.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createOHLCPlot",
+      "contract": "agent_docs/contract/current/OHLC.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editOHLCPlot",
+      "contract": "agent_docs/contract/current/OHLC.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createWaterfallPlot",
+      "contract": "agent_docs/contract/current/WATERFALL.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editWaterfallPlot",
+      "contract": "agent_docs/contract/current/WATERFALL.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createTrailPlot",
+      "contract": "agent_docs/contract/current/TRAIL.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editTrailPlot",
+      "contract": "agent_docs/contract/current/TRAIL.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createTablePlot",
+      "contract": "agent_docs/contract/current/TABLE.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editTablePlot",
+      "contract": "agent_docs/contract/current/TABLE.md",
+      "domain": "marks",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeX",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeY",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeChannels",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeX2",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeColor",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeStrokeDash",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeStroke",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeStrokeWidth",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeSize",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeShape",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeAngle",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeOpacity",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeRadius",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeTheta",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeR",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodePointRadius",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removePointRadius",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeXOffset",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeYOffset",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeY2",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeYRange",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeXRange",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeGroup",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodePathOrder",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeParallelCoordinates",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removePathOrder",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "orderCategories",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeCategoryOrder",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeEncoding",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeText",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeDx",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeDy",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeHistogram",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeDensity",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editDensity",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeHorizon",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editHorizon",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "encodeBarWidth",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "layoutSeries",
+      "contract": "agent_docs/contract/current/ENCODINGS.md",
+      "domain": "encodings",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createParallelAxes",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createParallelAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editParallelAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeParallelAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeParallelAxes",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createAxes",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createXAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createYAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createXAxisLine",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createYAxisLine",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editXAxisLine",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editYAxisLine",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createXAxisTicks",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createYAxisTicks",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editXAxisTicks",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editYAxisTicks",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createXAxisLabels",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createYAxisLabels",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editXAxisLabels",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editYAxisLabels",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createXAxisTicksAndLabels",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createYAxisTicksAndLabels",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editXAxisTicksAndLabels",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editYAxisTicksAndLabels",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createXAxisTitle",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createYAxisTitle",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editXAxisTitle",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editYAxisTitle",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editAxes",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editXAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editYAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeXAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeYAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createThetaAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRadialAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editThetaAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRadialAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeThetaAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeRadialAxis",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createThetaAxisLine",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editThetaAxisLine",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRadialAxisLine",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRadialAxisLine",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createThetaAxisTicks",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editThetaAxisTicks",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRadialAxisTicks",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRadialAxisTicks",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createThetaAxisLabels",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editThetaAxisLabels",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRadialAxisLabels",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRadialAxisLabels",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createThetaAxisTitle",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editThetaAxisTitle",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRadialAxisTitle",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRadialAxisTitle",
+      "contract": "agent_docs/contract/current/AXES.md",
+      "domain": "axes",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createGrid",
+      "contract": "agent_docs/contract/current/GRID.md",
+      "domain": "grid",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createHorizontalGrid",
+      "contract": "agent_docs/contract/current/GRID.md",
+      "domain": "grid",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createVerticalGrid",
+      "contract": "agent_docs/contract/current/GRID.md",
+      "domain": "grid",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editHorizontalGrid",
+      "contract": "agent_docs/contract/current/GRID.md",
+      "domain": "grid",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editVerticalGrid",
+      "contract": "agent_docs/contract/current/GRID.md",
+      "domain": "grid",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editGrid",
+      "contract": "agent_docs/contract/current/GRID.md",
+      "domain": "grid",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeGrid",
+      "contract": "agent_docs/contract/current/GRID.md",
+      "domain": "grid",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createThetaGrid",
+      "contract": "agent_docs/contract/current/GRID.md",
+      "domain": "grid",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRadialGrid",
+      "contract": "agent_docs/contract/current/GRID.md",
+      "domain": "grid",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editThetaGrid",
+      "contract": "agent_docs/contract/current/GRID.md",
+      "domain": "grid",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRadialGrid",
+      "contract": "agent_docs/contract/current/GRID.md",
+      "domain": "grid",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createLegend",
+      "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+      "domain": "legend_and_title",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editLegend",
+      "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+      "domain": "legend_and_title",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editLegendBlock",
+      "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+      "domain": "legend_and_title",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editLegendLayout",
+      "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+      "domain": "legend_and_title",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editLegendLabels",
+      "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+      "domain": "legend_and_title",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editLegendTitle",
+      "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+      "domain": "legend_and_title",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editLegendSymbols",
+      "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+      "domain": "legend_and_title",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editLegendBorder",
+      "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+      "domain": "legend_and_title",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createGuides",
+      "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+      "domain": "legend_and_title",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeLegend",
+      "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+      "domain": "legend_and_title",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createTitle",
+      "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+      "domain": "legend_and_title",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editTitle",
+      "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+      "domain": "legend_and_title",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeTitle",
+      "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+      "domain": "legend_and_title",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "filterMarks",
+      "contract": "agent_docs/contract/current/MARK_SELECTION.md",
+      "domain": "mark-selection",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeMarkFilter",
+      "contract": "agent_docs/contract/current/MARK_SELECTION.md",
+      "domain": "mark-selection",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "setMarkVisibility",
+      "contract": "agent_docs/contract/current/MARK_SELECTION.md",
+      "domain": "mark-selection",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeMarkVisibility",
+      "contract": "agent_docs/contract/current/MARK_SELECTION.md",
+      "domain": "mark-selection",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "selectMarks",
+      "contract": "agent_docs/contract/current/MARK_SELECTION.md",
+      "domain": "mark-selection",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editMarkSelection",
+      "contract": "agent_docs/contract/current/MARK_SELECTION.md",
+      "domain": "mark-selection",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeMarkHighlight",
+      "contract": "agent_docs/contract/current/MARK_SELECTION.md",
+      "domain": "mark-selection",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeMarkSelection",
+      "contract": "agent_docs/contract/current/MARK_SELECTION.md",
+      "domain": "mark-selection",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "highlightMarks",
+      "contract": "agent_docs/contract/current/MARK_SELECTION.md",
+      "domain": "mark-selection",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editCompositionLayout",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "replaceCompositionChild",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "insertCompositionChild",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "removeCompositionChild",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "reorderCompositionChildren",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "facet",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "facetGrid",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "repeatCharts",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editFacetSource",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editFacetHeaders",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editFacetScales",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editFacetGuides",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createLayerPlot",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createAdjacentPlot",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editCompositionScales",
+      "contract": "agent_docs/contract/current/COMPOSITION.md",
+      "domain": "composition",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createScatterPlot",
+      "contract": "agent_docs/contract/current/BASIC_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createTextPlot",
+      "contract": "agent_docs/contract/current/BASIC_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createDotPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createLollipopPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createDumbbellPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editEndpointPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createECDFPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editECDFPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createIntervalPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRegressionPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createLinePlot",
+      "contract": "agent_docs/contract/current/BASIC_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createPolarScatterPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createPolarLinePlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRadarPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRadarPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRugPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createStripPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createBeeswarmPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRaincloudPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editRaincloudPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createBarPlot",
+      "contract": "agent_docs/contract/current/BASIC_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createHistogram",
+      "contract": "agent_docs/contract/current/BASIC_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createHeatmap",
+      "contract": "agent_docs/contract/current/BASIC_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createParallelCoordinates",
+      "contract": "agent_docs/contract/current/BASIC_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createPiePlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRosePlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createRadialBarPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createAreaPlot",
+      "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createTreePlot",
+      "contract": "agent_docs/contract/current/HIERARCHY.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editTreePlot",
+      "contract": "agent_docs/contract/current/HIERARCHY.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createTreemapPlot",
+      "contract": "agent_docs/contract/current/HIERARCHY.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editTreemapPlot",
+      "contract": "agent_docs/contract/current/HIERARCHY.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createGraphPlot",
+      "contract": "agent_docs/contract/current/GRAPHS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editGraphPlot",
+      "contract": "agent_docs/contract/current/GRAPHS.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "createPartitionPlot",
+      "contract": "agent_docs/contract/current/PARTITION.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    },
+    {
+      "action": "editPartitionPlot",
+      "contract": "agent_docs/contract/current/PARTITION.md",
+      "domain": "charts",
+      "status": "pending-public-native-connection"
+    }
+  ],
+  "nextDependencies": [
+    {
+      "family": "graph/hierarchy edits",
+      "owners": [
+        "actions/graphs/resources.js",
+        "actions/graphs/layouts.js",
+        "actions/hierarchy/resources.js"
+      ],
+      "needs": "Native resource plan/apply consumption through original wrapper; prepared inference keeps original registry."
+    },
+    {
+      "family": "source/data/derived/parameters",
+      "owners": [
+        "actions/data/revise.js",
+        "actions/data/edit.js",
+        "actions/data/sourceContext.js",
+        "materialization/revisionIdentity.js"
+      ],
+      "needs": "Resolve source/row/derived identities once; preserve speculative/actual native branches; bind transient identity context only during synchronous iterator steps."
+    },
+    {
+      "family": "Canvas/fit/projection",
+      "owners": [
+        "actions/canvas/actions.js",
+        "actions/canvas/fitting.js",
+        "materialization/canvasResourceRevision.js"
+      ],
+      "needs": "Own viewport plans and ordered native probes; terminal abort/deadline/quota never become ordinary fit failure; preserve original editCanvas trace."
+    },
+    {
+      "family": "composition/facet/indirect consumers",
+      "owners": [
+        "actions/composition/",
+        "actions/guides/",
+        "actions/theme/"
+      ],
+      "needs": "Exact childPath/base/root refs and complete affected union; preserve theme completion and no wildcard action adapter."
+    }
+  ],
+  "limitations": [
+    "Snapshot acquisition and deep clone remain synchronous with incompletely metered initial work/depth/heap.",
+    "No whole-request 100ms proof.",
+    "No large density/FDEB capacity completion claim.",
+    "Public native update currently admits only editLayout on completed Full unit receivers."
+  ]
+}

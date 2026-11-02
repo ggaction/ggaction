@@ -111,6 +111,11 @@ export function editHierarchyLayout(program, args, previous) {
 }
 
 export function* editHierarchyLayoutStages(program, args, previous, scope) {
+  const plan = yield* planHierarchyLayoutStages(program, args, previous, scope);
+  return applyHierarchyLayoutPlan(program, plan, scope);
+}
+
+export function* planHierarchyLayoutStages(program, args, previous, scope) {
   const patch = patchOptions(args, ["target"]);
   if (patch.options !== undefined) ownRecord(patch.options, "Hierarchy layout options");
   const priorOptions = { ...previous.options.options };
@@ -122,6 +127,11 @@ export function* editHierarchyLayoutStages(program, args, previous, scope) {
     hierarchy: resolveInputReference(program, previous.inputs[0]), options, program });
   const routes = yield* prepareEdgeRouteRevisionStages(program, program.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate), scope);
   const views = preflightHierarchyLayouts(program, routes.resources, [resource]);
+  return { resource, routes, views };
+}
+
+export function applyHierarchyLayoutPlan(program, { resource, routes, views }, scope) {
+  scope?.ledger.check();
   const entered = applyPartitionViews(program, views);
   const next = withPreparedResourceResults(entered, { property: `resource[layout:${resource.id}]`, value: resource }, routes.entries, args => entered.editSemantic(args), [], scope);
   return materializeEdgeRouteConsumers(materializeLayouts(next, new Set([resource.id]), program), routes.ids);

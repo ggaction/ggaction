@@ -194,7 +194,55 @@ Version 1 retains its original synchronous fallback, cache, limits and protocol.
 Create or edit a version 2 route through `prepareGraphEdgeRoutes`, then use the
 ordinary authentic prepared application. A same-method edit retains the stored
 execution policy; a method change requires an explicit replacement policy. Raw
-synchronous route creation or recomputation rejects version 2 intent. Automatic
-source/layout/viewport revision of version 2 routes is not supported by this path.
+synchronous route creation or recomputation rejects version 2 intent. Native layout revisions use the explicit prepared update below. Source, viewport,
+fit and other native update actions remain outside the current public update union.
 Stored version 2 vectors still restore offline and render through every existing
 backend. Consumer materialization remains an explicit wrapped action after prepare.
+
+## `applyGraphEdgeRoutesUpdate`
+
+```ts
+applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;
+```
+
+Prepare an `editLayout` on the exact completed Full unit program that owns at least
+one affected version 2 route. Both graph and hierarchy layout edits use their
+original native validators, primitives, route consumers and theme completion.
+Other update actions are not yet part of this public union. Scoped, composition
+and facet receivers remain pending. If native completion requires additional
+viewport route computation beyond the prepared layout plan, preparation rejects
+that path; it does not silently run a synchronous fallback.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "l"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+const preparedUpdate = await prepareGraphEdgeRoutes(program, {
+  kind: "update",
+  edit: { action: "editLayout", args: { target: "l", node: { key: 1, x: 25, y: 10 } } }
+}, { requestToken: "layout-2", executor, deadlineMs: 30_000 });
+program = program.applyGraphEdgeRoutesUpdate({
+  prepared: preparedUpdate, requestToken: "layout-2"
+});
+```
+
+Preparation snapshots arguments before its first await and checks the complete
+request against every affected version 2 policy. It includes native preparation,
+worker results, consumer validation and wrapped preflight completion. Applying
+starts from that accounting snapshot and checks the additional native apply costs.
+Previously completed route samples held while later routes compute count toward
+the same peak. Packet size limits remain specific to each job and completion.
+
+The handle is bound to the exact original receiver, constructor, native action,
+request token and signal. Copies, restored traces, replaced actions and stale bases
+cannot authorize application. The receiver stays unchanged on failure. Canceling
+the original signal also revokes an already prepared handle. Reuse on the same
+immutable receiver starts a separate application from the same preparation costs.
+
+Preparation opens no action invocation scope while awaiting work. Application
+runs the original synchronous native action once, records it as the first child,
+then completes normal materialization and theme reconciliation. Stored trace
+inspection reads only that exact native child; later completion siblings grant
+no authoring or execution authority. Full request latency, including synchronous
+snapshot, cloning, posting and final materialization, has no verified 100ms bound.
+The initial descriptor scan and deep clone also have no separate depth, total heap
+or fully metered work bound in the current request ledger.

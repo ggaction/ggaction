@@ -1150,6 +1150,10 @@
     "GeoRouteData": [
       "geographic graph routes",
       "retained edge route geometry"
+    ],
+    "GraphEdgeRoutesUpdate": [
+      "prepared native route update",
+      "layout and route revision"
     ]
   },
   "summaryOverrides": {
@@ -2422,6 +2426,14 @@
       "target": "routeGeometry",
       "routes": "routes",
       "coordinateKind": "geographic"
+    },
+    "applyGraphEdgeRoutesUpdate": {
+      "prepared": {
+        "$code": "preparedRouteUpdate"
+      },
+      "requestToken": {
+        "$code": "currentToken"
+      }
     }
   },
   "callPatternOverrides": {

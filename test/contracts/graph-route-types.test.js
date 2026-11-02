@@ -38,6 +38,18 @@ executor.compute(jobV2,{signal,deadlineMs:30000});
 prepareGraphEdgeRoutes(program,{kind:"create",id:"bounded",method:"density",options:{execution}},{requestToken:"bounded",executor,deadlineMs:30000});
 declare const storedV2: EdgeRouteResourceV2;
 const resourceVersion: "2" = storedV2.algorithmVersion;
+const updated = await prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editLayout",args:{target:"layout",node:{key:1,x:20,y:5}}}},{requestToken:"update",executor,deadlineMs:30000});
+program.applyGraphEdgeRoutesUpdate({prepared:updated,requestToken:"update"});
+// @ts-expect-error native update handles cannot create an edge route
+program.bundleGraphEdges({prepared:updated,requestToken:"update"});
+// @ts-expect-error authoring handles cannot apply a native update
+program.applyGraphEdgeRoutesUpdate({prepared,requestToken:"update"});
+// @ts-expect-error native update requires an explicit worker deadline
+prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editLayout",args:{options:{}}}},{requestToken:"update",executor});
+// @ts-expect-error native action union is closed
+prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"arbitrary",args:{}}},{requestToken:"update",executor,deadlineMs:30000});
+// @ts-expect-error Basic cannot apply native graph route updates
+basicChart().applyGraphEdgeRoutesUpdate({prepared:updated,requestToken:"update"});
 // @ts-expect-error bounded policies require every numeric field
 const incomplete: EdgeRouteExecution = {policy:"bounded-route@1",maxWork:1000};
 // @ts-expect-error v2 limits have no second pair/sample authority

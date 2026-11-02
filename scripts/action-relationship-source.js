@@ -1,3 +1,4 @@
+import { nativeRouteUpdateCase } from "../test/support/native-route-update.js";
 import { programTraceOwners } from "../test/support/program-traces.js";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
@@ -475,7 +476,7 @@ export async function buildActionRelationships() {
   const preparedBase = chart();
   const prepared = await prepareDataUpdate(preparedBase, { kind: "create", id: "received",
     source: { kind: "inline", values: [{ x: 1 }] } }, { requestToken: "received" });
-  const programs = [...annotationEditingPrograms(), ...await fontResourcePrograms(), ...await imageResourcePrograms(), preparedBase.applyDataUpdate({ prepared, requestToken: "received" }), ...buildActionRelationshipPrograms(), chart()
+  const programs = [(await nativeRouteUpdateCase()).result, ...annotationEditingPrograms(), ...await fontResourcePrograms(), ...await imageResourcePrograms(), preparedBase.applyDataUpdate({ prepared, requestToken: "received" }), ...buildActionRelationshipPrograms(), chart()
     .createCanvas({ width: 500, height: 400, margin: 70 })
     .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
     .createScatterPlot({ x: "x", y: "y" })
