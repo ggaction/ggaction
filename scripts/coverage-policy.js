@@ -292,6 +292,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
 
 export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
   "core/sha256.js": Object.freeze({ lines: 100, branches: 100, functions: 100 }),
+  "core/jsonText.js": Object.freeze({ lines: 100, branches: 100, functions: 100 }),
   "actions/encodings/conditional.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "materialization/legendEncodings.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "materialization/overlayGeometry.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),

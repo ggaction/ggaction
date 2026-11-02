@@ -81,6 +81,12 @@ wrapper는 같은 scalar owner를 동기로 끝까지 실행하고 `finally`에�
 제거했지만 UTF-8 입력 생성·byte 복사 및 호출의 동기 성질은 유지한다.
 비동기 encoder·취소 지연 보장은 이 추출만으로 제공하지 않는다.
 
+JSON 문자열의 escape/UTF8 byte 수는 비공개 `core/jsonText.js` 한 곳에서 계산한다.
+inference byte preflight는 문자열 및 key마다 이 owner를 호출하되, own-data 순회와
+tag·정책·누적 offset은 기존 grammar owner가 유지한다. 최소 크기를 먼저 검사하여
+거부된 문자열의 escape/UTF8 allocation을 피하며, generic value encoder나 canonical JSON의
+읽기·순서·오류 계약은 변경하지 않는다. 비동기 writer나 공개 cursor는 제공하지 않는다.
+
 ## 명시 asset preparation 경계
 
 Image와 font의 bytes/hash/host callback 준비는 `resources/assetPreparation.js`가 공유하며,
