@@ -1,0 +1,32 @@
+# 이미 소유한 Geo JSON snapshot의 중복 복사 제거
+
+## 진행 상태
+
+- [x] Root가 다음 병목으로 지정한 normalizeAnimationGeoGroup / snapshotGeometryJSON 검토
+- [x] 제품 미변경 loader prototype 및 exact diff 고정
+- [ ] 구체 경계 채택 기록 후 제품 및 owning tests 반영
+- [ ] 동일 archive 검증 및 원 100k rebase/offline, 원 100cycle, exclusive 성능 검증
+
+## 현재 병목과 제안
+
+Raw projection/query의 원 100k native/current는 통과했으나 rebase plan의 global ownedValues WeakSet rehash는 남아 있다. 이전 stack은 snapshotGeometryJSON → normalizeAnimationGeoGroup → prepareGeoInterpolation을 포함한다. snapshot은 이미 owned인 geometry도 전수 검사하며 scratch tree를 만들고, cloneAndFreeze가 이를 다시 복사해 모든 container를 global registry에 등록한다.
+
+[정확 diff](geo-owned-snapshot-review/proposal.patch)는 input.js의 마지막 clone에만 재사용 조건을 추가한다. **원 전체 descriptor 검사·ancestor cycle 검사·순회 순서·raw scratch 생성·예산 count/charge·오류 순서를 그대로 유지한다.** 그 순회가 성공한 후 모든 조건을 만족하면 기존 input을 반환한다.
+
+1. root와 매 방문 container가 현재 isOwned registry에 있다. Object.freeze만으로는 인정하지 않는다.
+2. record의 prototype은 Object.prototype이다. null-prototype record는 원 snapshot이 보통 object로 변환하므로 재사용하지 않는다. 배열은 기존 ownArray가 ordinary Array.prototype을 검증한다.
+3. 어떤 container도 두 번 방문하지 않는다. 반복 alias는 기존 JSON 복사처럼 서로 다른 출력 branch여야 하므로 재사용하지 않는다.
+
+어느 조건이든 실패하면 전체 원 cloneAndFreeze(output)를 실행한다. root가 unowned면 eligibility용 seen 자체를 만들지 않는다. 유효한 owned tree에서만 마지막 재복사/등록이 사라진다. shallow freezeOwned root+mutable child도 전체 fallback이므로 caller isolation을 보존한다. prototype key와 signed zero, 순서·깊이·quota는 원 output과 같다. 이 private helper의 identity만 이미 owned인 tree로 유지한다. 이후 semantic normalization과 native authority 검증은 생략하지 않는다. 잘못된 restore 입력은 기존 검사와 동일하게 거부한다.
+
+Temporary seen WeakSet은 기존 입력 root가 이미 강하게 보유한 container를 같은 synchronous 순회 동안만 기록한다. retained cache나 새 global registry가 아니며 함수가 반환되면 폐기된다. 최악 O(container count) 임시 entry가 추가되며 원 maxValues 2M/maxDepth 128/work 10M 경계와 원 scratch 할당은 그대로다. registry 회전·삭제·reset, 검증 성공 캐시, 새로운 공개 옵션은 없다. alias fallback 뒤에는 더 이상 seen을 키우지 않는다. 이 변경으로 모든 long-lived 병목이 해결된다고 예측하지 않는다.
+
+## 소형 검산
+
+[proof](geo-owned-snapshot-review/proof.mjs)를 .artifacts/geo-hit-a3/snapshot-reuse/proof.mjs로 복사하고 repository root에서 node로 실행한다. Loader만 바꾸며 제품 source를 수정하지 않는다. 원 baseline 모듈과 후보는 같은 core registry를 사용한다.
+
+41 snapshot 쌍(오류 17개)은 출력·name/message·모든 diagnostics count/work가 같았다. 8개 strict owned tree만 identity를 재사용했다. owned 등록은 2052 → 27이었다. 이것은 소형 사례 계수이며 100k 성능 측정이 아니다. 원 zigzag 1000좌표 geometry 및 native animation group을 포함하며 별도 semantic normalization 3쌍도 같았다.
+
+검사 대상은 mutable/frozen/owned 및 shallow-owned, owned/mutable 반복 alias, null prototype, accessor 읽기 0회, cycle, sparse/extra array, symbol/nonenumerable, NaN/undefined, prototype key, ±0, maxDepth/maxValues 및 작업량 0–7의 정확 경계다. Alias 출력의 서로 다른 identity와 caller 변경 후 snapshot 격리도 확인했다. 원 제품은 이 검토 checkpoint에서 변경하지 않았다.
+
+제품화 시 owning tests는 이력 문서를 의존하지 않고 같은 invariants를 직접 검산한다. 관련 geometry/animation 회귀·owner coverage·same archive 3Node/browser와 원 100k rebase/offline 검증을 이어간다. 원 canonical 5+30/DPR1·2 및 100cycle, 모든 기존 guard/SLO는 유지한다.
