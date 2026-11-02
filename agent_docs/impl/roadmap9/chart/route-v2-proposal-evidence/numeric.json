@@ -1,0 +1,80 @@
+{
+  "status": "proposal-only-static-selection",
+  "candidate": {
+    "policy": "bounded-route@1",
+    "maxWork": 8000000000,
+    "maxCandidatePairs": 50000000,
+    "maxSamples": 16777216,
+    "maxBufferBytes": 134217728,
+    "maxBytes": 134217728
+  },
+  "defaults": "execution omitted preserves v1; every v2 numeric field explicit, no numeric defaults",
+  "force": [
+    {
+      "edges": 100,
+      "pairs": 4950,
+      "compatible": 750,
+      "scheduleWork": 1090500,
+      "preparationUpper": 10000000,
+      "finalizationWork": 27200,
+      "completeForceWorkUpper": 11201850,
+      "neighborNumericUpper": 426788,
+      "peakSamples": 7000,
+      "limitation": "preparation upper is the preserved existing native 10M preflight; schedule/compatibility evidence reused, no solver run"
+    },
+    {
+      "edges": 1000,
+      "pairs": 499500,
+      "compatible": 80500,
+      "scheduleWork": 72225000,
+      "preparationUpper": 10000000,
+      "finalizationWork": 272000,
+      "completeForceWorkUpper": 90988500,
+      "neighborNumericUpper": 1285956,
+      "peakSamples": 70000,
+      "limitation": "preparation upper is the preserved existing native 10M preflight; schedule/compatibility evidence reused, no solver run"
+    },
+    {
+      "edges": 10000,
+      "pairs": 49995000,
+      "compatible": 8145000,
+      "scheduleWork": 6887850000,
+      "preparationUpper": 10000000,
+      "finalizationWork": 2720000,
+      "completeForceWorkUpper": 7750485000,
+      "neighborNumericUpper": 106150020,
+      "peakSamples": 700000,
+      "limitation": "preparation upper is the preserved existing native 10M preflight; schedule/compatibility evidence reused, no solver run"
+    }
+  ],
+  "bytes": {
+    "fixtureKey": "[\"scalar\",[[\"number\",9999]]]",
+    "perRouteUpper": 6084,
+    "forceCompletion10000Upper": 60851065,
+    "scope": "fixed benchmark force result envelope only; no arbitrary graph attribute or density bound"
+  },
+  "density": {
+    "original100Observed": {
+      "work": 87128940,
+      "peakSamples": 434107,
+      "packedPreparationBytes": 1097148,
+      "completionBytes": 9821768
+    },
+    "first10000": {
+      "samples": 2230000,
+      "charge": 13400000,
+      "packedPreparationBytes": 35752764
+    },
+    "later1000and10000": "unmeasured; caps may reject later iterations, full support not established"
+  },
+  "constraints": {
+    "perEdgeSamples": 4096,
+    "forceIterations": 165,
+    "densityIterations": 20,
+    "deadlineCandidateMs": 30000,
+    "requestCounters": "aggregate across jobs and fit passes; no reset"
+  },
+  "largeRun": false,
+  "heapBound": false,
+  "latencyQualified": false
+}
