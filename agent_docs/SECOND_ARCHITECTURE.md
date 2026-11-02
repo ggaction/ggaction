@@ -12,6 +12,12 @@ identity/meaning만 저장하여 공통 scene compiler가 graphicSpec을 재생�
 endpoint는 기존 frame 객체이며 serializer는 그 진단 view도 보존한다. 이 private 경계는
 일반 player/session 또는 offline hit의 완성을 뜻하지 않는다.
 
+중간 point sample의 위치 의미는 finite primitive와 exact owned scale을 담는 새 local
+row/x/y만 bottom-up 동결하고, 전체 emission 순서를 완성한 vector root에 기존 core ownership을
+부여한다. Provenance 등록의 기존 clone 경계는 그대로 root를 재사용한다. 개별 local child를
+core registry에 추가하지 않으며 caller freeze/clone에 frame 권한을 주거나 과거 frame/plan 참조를
+추가하지 않는다. Node·scene·graphic 물질화와 renderer 입력 경계는 그대로다.
+
 비공개 `animation/columnCodec.js`는 실제 준비값의 shape별 dense column과 정확 scalar runs만
 소유한다. 원 concrete 값·own key 순서·undefined·hole을 무손실 복원하며 의미를 생성하지 않는다.
 `animation/resources.js`의 opaque scope는 native owner 검증과 offline 데이터 검산의 권한을
@@ -5083,3 +5089,5 @@ Root Geo A1 합산은1257entries/Node22packed1806540/Node20·24packed1809929/unp
 Root SHA 합산은1258entries/Node22packed1807573/Node20·24packed1810854/unpacked8149596bytes이며 cap1258/1810900/8149600이다. 실제 최대Full788792/Basic426195/SVG25672/graph69473/animation340335/interaction137407gzipB에는 표의 한도를 적용한다. [합산 검증](impl/roadmap9/qualification/sha256-merged-evidence/qualification.json)은 원 hash·복사 경계와 async/heap/P95 미완료를 구분한다.
 
 Prepared point scale 통합은1258entries/Node22packed1808245/Node20·24packed1811511/unpacked8152110bytes이며 cap1258/1811600/8152200이다. Animation gzip 최대340708B에는 표의340800B를 적용한다. [합산 검증](impl/roadmap9/qualification/prepared-scale-merged-evidence/qualification.json)은 source-specific100k와 fresh1k·동일 archive3Node를 구별하며 원50ms 및 최종 통합을 남긴다.
+
+Point positions vector의 local freeze 통합은 source155B만 추가해1258entries/unpacked8152265B이며 cap8152300B다. 다른 artifact/runtime 한도는 유지한다. [통합 검증](impl/roadmap9/qualification/position-state-merged-evidence/qualification.json)은 현재 샘플러의1k 동등성과 original100k source-specific 결과를 구별한다.

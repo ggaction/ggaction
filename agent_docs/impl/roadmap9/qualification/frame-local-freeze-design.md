@@ -1,6 +1,6 @@
 # Point sampled frame local freeze와 whole-frame proof 검토
 
-상태: `planned`, 미구현. [공통 sampling 감사](frame-sampling.md)의1k 실제 귀속에서
+상태: 첫 단계 `approved`, 구현/검증 완료([검증 기록](position-frame-state.md)). 2–5 단계는 `planned`, 미구현. [공통 sampling 감사](frame-sampling.md)의1k 실제 귀속에서
 도출한 후속 후보다. Root의 2026-11-02 읽기 전용 설계 지시에 따른 review 자료이며,
 제품 구현 채택은 별도다. `AUTHORIZATION.json#remainingApproval` 범위의 검토를 재사용한다.
 이번 commit은 core/renderer/animation 제품 파일을 바꾸지 않는다.
@@ -68,3 +68,26 @@ plan/time/progress·prototype getter/descriptor·style/clip/weighted blend·time
 mutation 불가와 provenance의 이전 plan/frame 참조0을 확인한다. Exact artifact consumers와
 heap 회수 측정 없이 SLO/수명 완료로 세지 않는다. 이 단계의 resource/node/work 및 v3/v4
 schema 정책은 변경하지 않는다.
+
+
+## 2026-11-02 첫 단계 채택
+
+Root는 기존 `AUTHORIZATION.json#remainingApproval`과 b′ 검토에 이어 첫 단계만 구체
+채택했다. 안정 기준은 `2fb36c76d79d7f5c85cbc931e7413772af2dc858`이며 별도
+`codex/roadmap9-position-frame-state` branch에서 진행한다. 새 point row/x/y 세 record를
+bottom-up `Object.freeze`하고, 모든 emission/exit와 기존 node 검증이 끝난 positions vector
+root만 `freezeOwned`한다. `registerAnimationFrame`의 clone 경계와 node/properties/scene/
+decision/core/renderer 구현은 그대로다. 이 변화는 deep immutable root가 이미 동결된 local
+자손을 소유한다는 기존 규칙을 이용하며, 외부 frozen/copy에는 권한을 부여하지 않는다.
+
+Exact/enter/exit의 non-null row는 `assemble`의 preparedPositions 전체 clone 경계를 지난
+값이다. Offline 입력도 semantic/actual graphic 검산과 clone 후 같은 경계에 들어온다.
+그 밖의 branch와 추가 geographic/guide emission은 null slot만 넣는다. 새 point row는
+finite value primitive와 기존 exact deep-owned scale만 갖는다. Endpoint side 단축 경로는
+변경하지 않는다. 새 cache/provenance field/이전 plan 또는 frame 참조는 없다.
+
+검증은 1k old/new 전체 frame/meaning/batch/rebase·v3/native-v4 bytes·sampled-v4 replay,
+실제 clone/ownership operation, owning/critical과 source-free 소비자를 구분해 기록한다.
+원100k는 별도 large slot을 받은 뒤 직렬로 검산한다. Timing은 진단이며50ms/P95/retained
+heap 통과가 아니다. 장수명 WeakSet rehash의 root OS sample 관측은 별도 가설이고 이
+변경의 효과로 단정하지 않는다. Global ownership 교체와 scalar mapper는 채택 범위 밖이다.

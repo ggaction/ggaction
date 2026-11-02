@@ -1,0 +1,118 @@
+TAP version 13
+# Subtest: covers every maintained chart program or an explicit documentation-only exclusion
+ok 1 - covers every maintained chart program or an explicit documentation-only exclusion
+  ---
+  duration_ms: 12.594
+  type: 'test'
+  ...
+# Subtest: matches the public derived-transform union to its one normative tag table
+ok 2 - matches the public derived-transform union to its one normative tag table
+  ---
+  duration_ms: 2.036292
+  type: 'test'
+  ...
+# Subtest: keeps the chart picker, workflow programs, snippet contracts, and provenance fresh
+ok 3 - keeps the chart picker, workflow programs, snippet contracts, and provenance fresh
+  ---
+  duration_ms: 421.998958
+  type: 'test'
+  ...
+# Subtest: release provenance requires the matching version and exact runtime fingerprint
+ok 4 - release provenance requires the matching version and exact runtime fingerprint
+  ---
+  duration_ms: 637.487667
+  type: 'test'
+  ...
+# Subtest: keeps the hierarchical lesson geometrically equivalent before intentional styling
+ok 5 - keeps the hierarchical lesson geometrically equivalent before intentional styling
+  ---
+  duration_ms: 24.196166
+  type: 'test'
+  ...
+# Subtest: anchors completion, imputation, and window prose to literal expected values
+ok 6 - anchors completion, imputation, and window prose to literal expected values
+  ---
+  duration_ms: 24.86675
+  type: 'test'
+  ...
+# Subtest: distinguishes required runtime failures from CI-version recommendations
+ok 7 - distinguishes required runtime failures from CI-version recommendations
+  ---
+  duration_ms: 1.532833
+  type: 'test'
+  ...
+# Subtest: the resource cleanup recipe demonstrates rejection before dependency-safe removal
+ok 8 - the resource cleanup recipe demonstrates rejection before dependency-safe removal
+  ---
+  duration_ms: 19.266209
+  type: 'test'
+  ...
+# Subtest: Related navigation remains the final section of public documentation
+ok 9 - Related navigation remains the final section of public documentation
+  ---
+  duration_ms: 18.296584
+  type: 'test'
+  ...
+# Subtest: every authoring workflow has exact-code execution metadata and a browser entry
+ok 10 - every authoring workflow has exact-code execution metadata and a browser entry
+  ---
+  duration_ms: 0.607166
+  type: 'test'
+  ...
+# Subtest: example source links resolve to the exact checked-in canonical programs
+ok 11 - example source links resolve to the exact checked-in canonical programs
+  ---
+  duration_ms: 1804.442
+  type: 'test'
+  ...
+# Subtest: weighted distribution recipes preserve mass and separate density from cumulative probability
+ok 12 - weighted distribution recipes preserve mass and separate density from cumulative probability
+  ---
+  duration_ms: 30.162375
+  type: 'test'
+  ...
+# Subtest: every public JavaScript block is executable, generated, or a reviewed hash-pinned contextual exception
+ok 13 - every public JavaScript block is executable, generated, or a reviewed hash-pinned contextual exception
+  ---
+  duration_ms: 63.688834
+  type: 'test'
+  ...
+# Subtest: selective LLM artifacts retain current content, dependency routes, and shared identity
+ok 14 - selective LLM artifacts retain current content, dependency routes, and shared identity
+  ---
+  duration_ms: 491.248
+  type: 'test'
+  ...
+# Subtest: all published declarations compile in isolation without skipLibCheck
+ok 15 - all published declarations compile in isolation without skipLibCheck
+  ---
+  duration_ms: 196.953292
+  type: 'test'
+  ...
+# Subtest: each manifest module has an exact runtime reference and architecture owner
+ok 16 - each manifest module has an exact runtime reference and architecture owner
+  ---
+  duration_ms: 1.609333
+  type: 'test'
+  ...
+# Subtest: compatibility guidance follows the CI Node and browser matrix
+ok 17 - compatibility guidance follows the CI Node and browser matrix
+  ---
+  duration_ms: 0.693625
+  type: 'test'
+  ...
+# Subtest: page editing links resolve to maintained sources including generated workflow owners
+ok 18 - page editing links resolve to maintained sources including generated workflow owners
+  ---
+  duration_ms: 28.889875
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4804.065833
