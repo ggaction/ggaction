@@ -54,3 +54,5 @@ prepared plan 재사용만으로 전체 병목을 해결했다고 볼 수 없다
 
 원10k 기능과 최종33ms preview 의무는 이 조사 후에도 그대로 남는다. 완료 번호는
 STEP056이며 이 기록으로057–070이나077을 완료 처리하지 않는다.
+
+후속 [cell 내부 계산 제안](PARTITION_CELL_CALCULATION_PROPOSAL.md)은 c8bac0e77 기반의4파일 read-only diff와907건 exact A/B를 고정했다. 각 cell의 첫 검사를 유지하면서 그 호출 안의 반복 frame/kernel 검사·임시점 동결만 줄이며, 제품 적용 및 원10k/P95는 아직 별도다.
