@@ -1,0 +1,32 @@
+import {parse} from 'acorn';
+const targets=new Map([
+ ['grammar/graph/inferenceJob.js',['createInferenceJob','validateInferenceJob','computeInferenceJob','validateInferenceCompletion','inferenceValueHash']],
+ ['grammar/graph/inferenceBudget.js',['validateInferenceBytes']],
+ ['grammar/graph/input.js',['resolveInferredGraphInput']],
+ ['grammar/graph/model.js',['indexGraphModel','createGraphModel']],
+ ['materialization/graph/inferredState.js',['validateStored','validateBindings']],
+ ['materialization/graph/inferredResource.js',['completedInferredGraphResource']],
+ ['materialization/resourceState.js',['validateResourceGraph','validateStoredResource']],
+ ['core/immutable.js',['cloneAndFreeze']],
+]);
+export async function load(url,context,next){
+ const result=await next(url,context);const name=[...targets.keys()].find(name=>url.endsWith('/src/'+name));
+ if(!name)return result;
+ let source=String(result.source);
+ if(name==='grammar/graph/inferenceJob.js')source=source.replace('value => contentDigest(canonicalJSON(encodeValue(value)))',`value => {const values=[['encode',()=>encodeValue(value)],['canonical',v=>canonicalJSON(v)],['digest',v=>contentDigest(v)]];let current=value;for(const [stage,run]of values){const start=performance.now();current=run(current);const key=JSON.stringify([globalThis.__inferencePhase??'setup','hash:'+stage]);const records=globalThis.__inferenceProfiles??=new Map();const record=records.get(key)??{calls:0,ms:0};record.calls++;record.ms+=performance.now()-start;records.set(key,record);}return current;}`);
+ if(name==='grammar/graph/inferenceBudget.js')source=source.replace('add(new TextEncoder().encode(JSON.stringify(text)).length);',`const encoded=new TextEncoder().encode(JSON.stringify(text));const key=JSON.stringify([globalThis.__inferencePhase??'setup','bytewalk:string-allocations']);const records=globalThis.__inferenceProfiles??=new Map();const record=records.get(key)??{calls:0,bytes:0};record.calls++;record.bytes+=encoded.length;records.set(key,record);add(encoded.length);`);
+ if(name==='grammar/graph/inferenceBudget.js')source=source.replace('    add(length);',`const key=JSON.stringify([globalThis.__inferencePhase??'setup','bytewalk:string-visits']);const records=globalThis.__inferenceProfiles??=new Map();const record=records.get(key)??{calls:0,bytes:0,byteBufferAllocations:0};record.calls++;record.bytes+=length;records.set(key,record);add(length);`);
+ const ast=parse(source,{ecmaVersion:'latest',sourceType:'module'}),edits=[];
+ const wrap=(body,key)=>{
+  const start=`const __profileStart=performance.now();try{`;
+  const end=`}finally{const key=JSON.stringify([globalThis.__inferencePhase??'setup',${JSON.stringify(key)}]);const profiles=globalThis.__inferenceProfiles??=(new Map());const record=profiles.get(key)??{calls:0,ms:0};record.calls++;record.ms+=performance.now()-__profileStart;profiles.set(key,record);}`;
+  if(body.type==='BlockStatement'){edits.push([body.start+1,start],[body.end-1,end]);}
+  else{edits.push([body.start,`{${start}return (`],[body.end,`);${end}}`]);}
+ };
+ for(let node of ast.body){if(node.type==='ExportNamedDeclaration')node=node.declaration;if(!node)continue;
+  if(node.type==='FunctionDeclaration'&&targets.get(name).includes(node.id.name))wrap(node.body,name+':'+node.id.name);
+  if(node.type==='VariableDeclaration')for(const d of node.declarations)if(targets.get(name).includes(d.id.name)&&d.init?.type==='ArrowFunctionExpression')wrap(d.init.body,name+':'+d.id.name);
+ }
+ for(const [offset,text] of edits.sort((a,b)=>b[0]-a[0]))source=source.slice(0,offset)+text+source.slice(offset);
+ return {...result,source};
+}

@@ -1,5 +1,5 @@
 import { createInferenceJob, validateInferenceJob, validateInferenceCompletion } from "../../grammar/graph/inferenceJob.js";
-import { inferredGraphResourceHandler } from "./inferredState.js";
+import { validatePreparedInferredResource } from "./inferredState.js";
 import { resolvedInferenceResult } from "../../grammar/graph/inferenceResult.js";
 import { resolveGraphCandidateModel } from "./candidate.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
@@ -30,7 +30,5 @@ export function completedInferredGraphResource({ program, id, revision = 0, data
   const resource = cloneAndFreeze({ kind: "graph", id, revision, algorithmVersion: "1", ownership: { mode: "authored" },
     inputs: job.inputs, options: { roles: { nodes: 0, edges: 0 }, definition: job.definition }, result: checked.result,
     provenance: { origin: "inferred", sourceRows: graphRowReferences(data, "node") } });
-  inferredGraphResourceHandler.validateStored(resource);
-  inferredGraphResourceHandler.validateBindings(program, resource);
-  return resource;
+  return validatePreparedInferredResource(program, resource);
 }

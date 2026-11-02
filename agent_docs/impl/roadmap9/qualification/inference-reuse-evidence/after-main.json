@@ -1,0 +1,129 @@
+{
+  "kind": "instrumented-single-run-not-P95",
+  "count": 10000,
+  "edges": 100000,
+  "prepareMs": 23088.334708000002,
+  "commitMs": 1154.226999999999,
+  "searchWork": 31318394,
+  "profiles": [
+    [
+      "[\"prepare\",\"materialization/resourceState.js:validateResourceGraph\"]",
+      {
+        "calls": 1,
+        "ms": 0.045291000000020176
+      }
+    ],
+    [
+      "[\"prepare\",\"core/immutable.js:cloneAndFreeze\"]",
+      {
+        "calls": 9,
+        "ms": 331.1816250000019
+      }
+    ],
+    [
+      "[\"prepare\",\"grammar/graph/inferenceBudget.js:validateInferenceBytes\"]",
+      {
+        "calls": 6,
+        "ms": 2354.4189589999996
+      }
+    ],
+    [
+      "[\"prepare\",\"grammar/graph/inferenceJob.js:inferenceValueHash\"]",
+      {
+        "calls": 2,
+        "ms": 3392.0624169999983
+      }
+    ],
+    [
+      "[\"prepare\",\"grammar/graph/inferenceJob.js:createInferenceJob\"]",
+      {
+        "calls": 1,
+        "ms": 149.22970900000007
+      }
+    ],
+    [
+      "[\"prepare\",\"grammar/graph/inferenceJob.js:validateInferenceJob\"]",
+      {
+        "calls": 4,
+        "ms": 0.03104200000188939
+      }
+    ],
+    [
+      "[\"prepare\",\"grammar/graph/model.js:indexGraphModel\"]",
+      {
+        "calls": 2,
+        "ms": 1216.6994579999991
+      }
+    ],
+    [
+      "[\"prepare\",\"grammar/graph/inferenceJob.js:validateInferenceCompletion\"]",
+      {
+        "calls": 2,
+        "ms": 5335.170457999999
+      }
+    ],
+    [
+      "[\"prepare\",\"materialization/graph/inferredState.js:validateStored\"]",
+      {
+        "calls": 1,
+        "ms": 1798.1953329999997
+      }
+    ],
+    [
+      "[\"prepare\",\"materialization/graph/inferredState.js:validateBindings\"]",
+      {
+        "calls": 1,
+        "ms": 1129.8608750000021
+      }
+    ],
+    [
+      "[\"prepare\",\"materialization/graph/inferredResource.js:completedInferredGraphResource\"]",
+      {
+        "calls": 1,
+        "ms": 2938.426166999998
+      }
+    ],
+    [
+      "[\"commit\",\"core/immutable.js:cloneAndFreeze\"]",
+      {
+        "calls": 11,
+        "ms": 12.874792999991769
+      }
+    ],
+    [
+      "[\"commit\",\"materialization/graph/inferredState.js:validateStored\"]",
+      {
+        "calls": 2,
+        "ms": 0.01483399999779067
+      }
+    ],
+    [
+      "[\"commit\",\"materialization/resourceState.js:validateStoredResource\"]",
+      {
+        "calls": 2,
+        "ms": 3.600416999997833
+      }
+    ],
+    [
+      "[\"commit\",\"grammar/graph/inferenceBudget.js:validateInferenceBytes\"]",
+      {
+        "calls": 1,
+        "ms": 30.793291999998473
+      }
+    ],
+    [
+      "[\"commit\",\"materialization/graph/inferredState.js:validateBindings\"]",
+      {
+        "calls": 1,
+        "ms": 1144.4412909999992
+      }
+    ],
+    [
+      "[\"commit\",\"materialization/resourceState.js:validateResourceGraph\"]",
+      {
+        "calls": 1,
+        "ms": 1148.4787079999987
+      }
+    ]
+  ]
+}

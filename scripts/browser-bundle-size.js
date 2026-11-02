@@ -5,10 +5,10 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 786_000, // Integrated inference worker: Node20 785,911 gzip bytes.
+  ggaction: 786_200, // Integrated inference validation reuse: Node20 786,154 gzip bytes.
   "ggaction/basic": 424_700, // Explicit point capacity: Node20/24 424,647 gzip bytes.
   "ggaction/svg": 26_000,
-  "ggaction/graph": 67_600, // All six graph helpers: Node20 67,555 gzip bytes.
+  "ggaction/graph": 67_900, // Exact inference validation reuse: Node20 67,837 gzip bytes.
   "ggaction/animation": 333_800, // Owned partition comparisons: Node20 333,793 gzip bytes.
   "ggaction/interaction": 136_000
 });

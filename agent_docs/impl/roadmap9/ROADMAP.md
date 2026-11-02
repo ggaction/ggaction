@@ -1,6 +1,6 @@
 # Roadmap 9 — Native 확장
 
-2026-11-02 사용자의 재개 요청으로 작업을 이어간다. 명시 inferred execution의 문서 pin을 마쳤고, 전용 추론 worker와 Full prepared create/edit을 루트에 통합했다([합산 검증](qualification/inference-worker-merged-evidence/qualification.json)). 원10000노드·100000간선 전체 기능 검산과 동일 archive3Node 설치는 통과했으나 실제 큰 입력 prepare/commit의 단발 관측은 성능 SLO 미달이며 최종 AT82 자격은 남는다. 순차 완료 번호는 STEP056으로 유지한다. 이전 [중단 기록](qualification/PAUSE_HANDOFF_2026-11-01.md)은 중단 시점의 보존 기록이다.
+2026-11-02 사용자의 재개 요청으로 작업을 이어간다. 전용 추론 worker와 Full prepared create/edit을 루트에 통합했고([worker 검증](qualification/inference-worker-merged-evidence/qualification.json)), 정확한 동일 객체의 검증 증명 재사용 및 임시 문자열 바이트 배열 제거를 합쳤다([최신 합산 검증](qualification/inference-validation-merged-evidence/qualification.json)). 원10000노드·100000간선 전체 기능 검산과 동일 archive3Node 설치를 통과했다. 실제 브라우저 단발 prepare8.203초·commit0.447초는 기능 진단이며 최종 AT82의 반복 P95·메모리·수명 자격은 남는다. 순차 완료 번호는 STEP056으로 유지한다. 이전 [중단 기록](qualification/PAUSE_HANDOFF_2026-11-01.md)은 중단 시점의 보존 기록이다.
 
 상태: 활성. 정식 누적 closeout은 **Phase 0–3 / STEP-001–016**까지 기록했다. 이후 개별 구현·검증은 **STEP-056 Marginal·Bullet·Combo recipe**까지 진행했으며 여러 interaction 및 animation 기반을 병렬로 구현하고 있다. 개별 checkpoint와 전체 통합 완료는 구분한다. [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 활성 위치를 소유한다.
 
