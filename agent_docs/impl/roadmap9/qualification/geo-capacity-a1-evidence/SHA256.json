@@ -60,8 +60,8 @@
     "sha256": "92f3ceef6fa9a847b43a4258548e75bb632d72788ebfdd47ef47cf350e817761"
   },
   "geo-capacity-docs-browser.mjs": {
-    "bytes": 7170,
-    "sha256": "e49aea488114418bc785841a04fa817c8bb91cf37f6e822846d272a7eb224f5e"
+    "bytes": 7604,
+    "sha256": "31fff8a182e80cd924e2d4d576e32aa5c6322ccf65beb8e8c420b79e4e3df669"
   },
   "geo-capacity-docs-owning.log.gz": {
     "bytes": 1521,
@@ -234,6 +234,50 @@
   "geo-capacity-persistence-coverage.mjs": {
     "bytes": 518,
     "sha256": "c5d982f748faeeba10f90a9af6c2e420520243b086bea497adccc482e07edb2d"
+  },
+  "geo-capacity-pin-archive.log.gz": {
+    "bytes": 302,
+    "sha256": "62c4dab8376b1eae92a2585ddaddc7f815ea71fe367dd749095f3e2066b48f0b"
+  },
+  "geo-capacity-pin-browser-2.log.gz": {
+    "bytes": 123,
+    "sha256": "c5f572b8aab698a27201c9d00d47ac23fd40df0298e302c68823c0efeae6ebee"
+  },
+  "geo-capacity-pin-browser.log.gz": {
+    "bytes": 531,
+    "sha256": "622caa39a27dcf7118f58e03980a3e861e6b32ea309cb2e7334efef20a12a768"
+  },
+  "geo-capacity-pin-build-2.log.gz": {
+    "bytes": 205,
+    "sha256": "2f4b2009819332942dc89eb8d5b55583f474f5edbcc9975a4889d0901578ed0e"
+  },
+  "geo-capacity-pin-build.log.gz": {
+    "bytes": 206,
+    "sha256": "2845e25b714a7f32ce74680a3d53c5db7e0e9434cb51960eb9d4afa99c93982f"
+  },
+  "geo-capacity-pin-built-2.log.gz": {
+    "bytes": 108,
+    "sha256": "340c78f250d413935aea88fcbd4fd33bad94b276c6fd68ea97f0ea0ad9004029"
+  },
+  "geo-capacity-pin-built.log.gz": {
+    "bytes": 108,
+    "sha256": "340c78f250d413935aea88fcbd4fd33bad94b276c6fd68ea97f0ea0ad9004029"
+  },
+  "geo-capacity-pin-docs-2.log.gz": {
+    "bytes": 1523,
+    "sha256": "5487cf82945588bb3fc16ed6cb624579e75f78437fa4602f4164e20028312d49"
+  },
+  "geo-capacity-pin-docs.log.gz": {
+    "bytes": 1516,
+    "sha256": "e5ea700ed061b2f47ff2f120bf856ea52698a41243ba0ff536c264523dd3cf65"
+  },
+  "geo-capacity-pin-generation.log.gz": {
+    "bytes": 341,
+    "sha256": "753c29aaa15eae0c1e8cd240d6fd69e036b3f1f82317a1aac5dc94a764b3ce07"
+  },
+  "geo-capacity-pin-llm-repair.log.gz": {
+    "bytes": 71,
+    "sha256": "c2b4c2f72cf8b81fb051bf59115a4adde97a7a72c8a70a2c253a8233b94ccf2b"
   },
   "geo-capacity-render-small-2.log.gz": {
     "bytes": 205033,

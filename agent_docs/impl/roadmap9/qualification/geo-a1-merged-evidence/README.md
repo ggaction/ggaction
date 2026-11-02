@@ -5,7 +5,7 @@
 - [x] 같은 archive Node20/22/24 각각 원1k/10k/100k public2·strict TS·문서·peers·6bundles
 - [x] 같은 archive의 production minified Chromium 원100k·199999commands·DPR1/2·offline network0
 - [x] Source Chromium2·문서186페이지/LLM1607개
-- [ ] Source pin과 같은 archive 재확인
+- [x] Source pin과 같은 archive 재확인
 - [ ] A2 animation·큰 stroke hit/query·P95/heap/100cycle·최종 STEP 완료
 
 [qualification.json](qualification.json)이 실제 실행·재사용·실패 수리와 미완료를 소유한다.
@@ -32,3 +32,5 @@ Root persistence source는 upstream과 byte-exact다. 광역3292/3010 owning 및
 V8 53함수 합집합을 재사용하되 단일 canonical coverage100%로 세지 않는다. Root440의 report는
 persistence functions62%를 그대로 보존하며 다른12 critical floor를 별도 검산했다.
 A2 camera capacity·큰 stroke/query·전체 취소·실시간/P95·최종9명령은 미완료다.
+
+Source `34b6c86f671e3d17e0c5350c9ed5bc99a0a4034b` pin 뒤 문서 계약9개·같은 archive SHA·186페이지/1607LLM이 통과했다. Upstream metadata064ad32c도 병합했다. 기존 extension 도식의 320폭 키보드 스크롤 결함은 upstream tabindex 수리로 해결하고 두 페이지×네 폭의8검사를 root에서 재실행했다. Runtime/package 입력 변화0이며 새 whole-suite/P95로 세지 않는다.

@@ -173,6 +173,7 @@ try {
    await assertResponsiveContainment(page,path.join(siteRoot,route+'/index.html'),width);
    await assertAccessible(page,route+' '+width);
    assert.ok((await page.locator('.docs-content').innerText()).includes(route==='api/geometry'?'maxProjectedPoints':'maxCommands'));
+   if(route==='extension/primitives' && width===320) { const flow=page.locator('.docs-concept-flow'); await flow.focus(); assert.equal(await flow.evaluate(e=>e===document.activeElement),true); const before=await flow.evaluate(e=>e.scrollLeft); await page.keyboard.press('ArrowRight'); await page.waitForFunction(()=>document.querySelector('.docs-concept-flow').scrollLeft>0); assert.ok(await flow.evaluate(e=>e.scrollLeft)>before); }
    assert.deepEqual(errors,[]); console.log(JSON.stringify({page:route,width,status:'passed'}));await page.close();}
   } finally {await context.close();}
  }
