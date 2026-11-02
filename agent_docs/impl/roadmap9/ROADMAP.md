@@ -18,7 +18,7 @@ Geo의 명시 native/path 용량 A1을 합쳤다([같은 archive3Node·productio
 
 공통 SHA scalar block-state를 추출해 전체 입력 길이의 padding 복사를 제거했다([같은 tar3Node 공개12사례](qualification/sha256-merged-evidence/qualification.json)). 기존 hash·sync API·한도는 유지하며 비동기 encoder/100ms·장수명 WeakSet 정체·최종 P95는 별도 미완료다.
 
-Private immutable value cursor를 통합했다([core3owner100%·같은 tar3Node·실제 timer 취소](qualification/strict-cursor-merged-evidence/qualification.json)). 공개 route v2는 [구체안 채택](chart/route-v2-adoption.md) 뒤 제품 구현 중이며 기존 v1의 sync/hash/guard를 유지한다. 이 cursor만으로 초기 snapshot·worker 전송·최종 물질화의100ms를 충족했다고 주장하지 않는다.
+Private immutable value cursor를 통합했다([core3owner100%·같은 tar3Node·실제 timer 취소](qualification/strict-cursor-merged-evidence/qualification.json)). 공개 route v2의 native create/edit를 통합했다([합산3Node·실제 worker 검증](qualification/route-v2-merged.md)). 기존 v1의 sync/hash/guard를 유지하며 후행 native continuation과 전체100ms/P95는 열린다. 이 cursor만으로 초기 snapshot·worker 전송·최종 물질화의100ms를 충족했다고 주장하지 않는다.
 
 Point sampler는 prepared scalar·sampled identity projection·local frame record 재사용을 합쳤다([최신 통합1343 owning·같은 tar3Node/browser](qualification/frame-owned-merged-evidence/qualification.json)). 실제1k 전체 frame/meaning/native/offline/rebase/timeline/work/wire 동등성을 유지하면서 반복 clone을6034→2034→31로 줄였고, [완성 compiler container 통합](qualification/compiler-containers-merged.md)으로31→26 및 큰dictionary의 추가 복사를 제거했다. 원100k 기능 검산은 각 source-specific 증거로 보존한다. 준비 뒤GC를 수행한 [별도 원100k 진단](qualification/sampler-cpu-review.md)도 약0.9–1.3초로 공통 sampler50ms와 차이가 크며, 전체 일반 회귀10405개 통과와 별개로 P95·100cycle·구조적 병목 해결이 남아 있다. 순차 완료 번호는 STEP056이다.
 
