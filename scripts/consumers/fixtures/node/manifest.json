@@ -1966,5 +1966,18 @@
       }
     ],
     "isolation": "case"
+  },
+  {
+    "file": "animation-point-scales.mjs",
+    "cases": [
+      {
+        "id": "animation-point-scales/native-default-and-explicit-meaning",
+        "statements": 1
+      },
+      {
+        "id": "animation-point-scales/sampled-rebase-offline-replay",
+        "statements": 1
+      }
+    ]
   }
 ]

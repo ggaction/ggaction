@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:4321a36d2221f5df6c6c71bbaeff050cbe915d7304daa99915cb7cd904b1c7fc. Status: development. Runtime source: 1e743f08b8ecf70f242ce6f66a5256f37fbe02af. Release baseline: v0.0.13.
+Contract: sha256:2c662763d2568df4d2e9704aee2b2fdb63d2a3d447c47b5a6407d1016273d976. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/1e743f08b8ecf70f242ce6f66a5256f37fbe02af/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/1e743f08b8ecf70f242ce6f66a5256f37fbe02af/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11704,6 +11704,10 @@ version 4 stores the same actual endpoint and timeline values compactly, with a
 bounds through long strings, complex styles, or repeated expansion; restoration
 rejects the entire payload. Other geometry, timeline, sample, and batch limits
 remain unchanged. Existing version 3 animations remain readable.
+
+Version 4 encoding is lossless, but newly prepared plans with the same values can
+use different compact representations. A restored version 4 plan retains its
+stored representation for subsequent serialization.
 
 The same time and stored algorithm versions reproduce the same canonical scene.
 This does not assert identical font rasterization across operating systems.
@@ -53548,12 +53552,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/1e743f08b8ecf70f242ce6f66a5256f37fbe02af/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/1e743f08b8ecf70f242ce6f66a5256f37fbe02af/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -56694,9 +56698,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:4321a36d2221f5df6c6c71bbaeff050cbe915d7304daa99915cb7cd904b1c7fc` |
+| Contract fingerprint | `sha256:2c662763d2568df4d2e9704aee2b2fdb63d2a3d447c47b5a6407d1016273d976` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
-| Runtime source commit | `1e743f08b8ecf70f242ce6f66a5256f37fbe02af` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 379 |
 | Declared actions in that release | 234 |

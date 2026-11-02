@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 426_200, // Explicit point capacity: Node20 426,195 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 69_500, // Integrated route storage: Node20 69,473 gzip bytes.
-  "ggaction/animation": 340_400, // Integrated version4 codec: Node20 340,335 gzip bytes.
+  "ggaction/animation": 340_800, // Integrated prepared scales: Node20 340,708 gzip bytes.
   "ggaction/interaction": 137_500 // Explicit hit preparation: Node20 137,407 gzip bytes.
 });
 

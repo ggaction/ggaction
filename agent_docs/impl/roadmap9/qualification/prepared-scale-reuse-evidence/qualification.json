@@ -1,0 +1,126 @@
+{
+  "status": "verified",
+  "base": "d6dece68e807150a6523350f240b4d451f410139",
+  "reviewCheckpoint": "1234c719b13bc04d6957e2cda0a5975229c38275",
+  "adopted": "2026-11-02 root; AUTHORIZATION.json#remainingApproval; prepared-only b-prime",
+  "runtimeSource": {
+    "src/animation/planner.js": "0b76bbedc126d10937b5f7a999dd46ef7d554a22466aa9dcdc46de037bb9e576",
+    "src/grammar/animation/positions.js": "746ef92f9c8306b56e0f151e76c0d35d1ad39e9534b496bb0d36c8cb64730211"
+  },
+  "actual100000Source": {
+    "src/animation/columnCodec.js": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+    "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+    "src/animation/planner.js": "0b76bbedc126d10937b5f7a999dd46ef7d554a22466aa9dcdc46de037bb9e576",
+    "src/animation/envelopeCodec.js": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+    "src/animation/sample.js": "db115d2b379fc50e8dd5a4aae923c726044e6a45380dd323c787929bb399b1a6",
+    "src/animation/frameEndpoint.js": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+    "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+    "src/materialization/animation/point.js": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+    "src/materialization/animation/guides.js": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+    "src/core/validation.js": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+    "src/selectors/graphicCapacity.js": "67bf3d75d92c9227d4f8ceb79afb2e45fa79828460c67d6c2cef06564148238a",
+    "src/grammar/animation/positions.js": "746ef92f9c8306b56e0f151e76c0d35d1ad39e9534b496bb0d36c8cb64730211",
+    "src/animation/appearance.js": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+    "types/animation.d.ts": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323"
+  },
+  "owning": {
+    "passed": 757,
+    "failed": 0
+  },
+  "critical": {
+    "animation/planner.js": {
+      "lines": 100,
+      "branches": 93.82,
+      "functions": 100
+    },
+    "grammar/animation/positions.js": {
+      "lines": 100,
+      "branches": 98.43,
+      "functions": 100
+    }
+  },
+  "boundaries": 45,
+  "docs": {
+    "initialPassed": 244,
+    "initialFailed": 1,
+    "initialFailure": "provenance stale",
+    "repairedFocused": 18,
+    "sourcePinPending": false,
+    "pinnedFocusedPassed": 18
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1256,
+    "packedBytes": 1805166,
+    "unpackedBytes": 8139937,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-prepared-scales/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "93e0789121eb2c0d42ba5a36ce986f8fd431b062",
+    "sha256": "ebaf0bbb61f178caafe4895a1991671841cb209ea84e671f74e14d7821ceb4b9"
+  },
+  "installedNodes": [
+    "20.20.2",
+    "22.23.1",
+    "24.22.1"
+  ],
+  "consumerRuntimeTypesDocsPeersPassed": true,
+  "budgetRechecksOnly": [
+    20,
+    24
+  ],
+  "browser": {
+    "source": 1,
+    "installed": 1,
+    "dpr": [
+      1,
+      2
+    ],
+    "versions": [
+      3,
+      4
+    ],
+    "installedSourceRootInputs": 0
+  },
+  "large": {
+    "rows": 100000,
+    "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+    "actualPath": true,
+    "nativeOfflineRebaseAllCoordinates": true,
+    "fullOfflineFrameDeepEqual": true,
+    "batch50Rejected": true,
+    "logicalValues": 10100086,
+    "legacyWork": [
+      78333686,
+      97911711,
+      46333687,
+      133456501
+    ],
+    "nativeBytes": 33703073,
+    "rebaseBytes": 41202280,
+    "sampleMsDiagnostic": 2811.3762499999975,
+    "heapCapMiB": 6144,
+    "heapCapIncreased": false,
+    "SLOPassed": false,
+    "heapPassed": false,
+    "concurrentSmallWork": true
+  },
+  "artifactBudgetAdoption": {
+    "unpacked": {
+      "previous": 8137500,
+      "actual": 8139937,
+      "new": 8140000
+    },
+    "animationGzip": {
+      "previous": 339400,
+      "actualNode20And24": 339677,
+      "new": 339700
+    },
+    "otherBudgetsUnchanged": true
+  },
+  "newPublicAPIs": 0,
+  "schemaAndKernelChanges": 0,
+  "coreRendererMaterializationChanges": 0,
+  "sourceCommit": "f689244fc4369d3cd949ca2d6c11998480972d55",
+  "archiveAfterSourcePinByteIdentical": true
+}

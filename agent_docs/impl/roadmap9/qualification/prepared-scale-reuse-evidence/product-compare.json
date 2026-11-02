@@ -1,0 +1,85 @@
+{
+  "kind": "actual product before d6dece68e versus current two-file change; counters are diagnostic, not SLO",
+  "node": "v24.22.1",
+  "rows": 1000,
+  "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+  "savedInputSHA256": "b3081fc47e8c2848e9e33f8d1674548f9db33125bd4d2bee7c6d911351f0705d",
+  "source": {
+    "src/animation/planner.js": "0b76bbedc126d10937b5f7a999dd46ef7d554a22466aa9dcdc46de037bb9e576",
+    "src/grammar/animation/positions.js": "746ef92f9c8306b56e0f151e76c0d35d1ad39e9534b496bb0d36c8cb64730211"
+  },
+  "comparisons": {
+    "3": {
+      "nativeBytes": [
+        1822845,
+        1822845
+      ],
+      "nativeSHA256": [
+        "bc53fce03c666933e73495918a06d1b5012c2989c92c439608effacee65113dc",
+        "bc53fce03c666933e73495918a06d1b5012c2989c92c439608effacee65113dc"
+      ],
+      "rebaseBytes": [
+        2381600,
+        2381600
+      ],
+      "rebaseSHA256": [
+        "bb8492a048159864278d963d57549897986f20ff12bab53f83372e21f73f906a",
+        "bb8492a048159864278d963d57549897986f20ff12bab53f83372e21f73f906a"
+      ],
+      "counts": [
+        {
+          "clones": 14037,
+          "ownedAdds": 22042
+        },
+        {
+          "clones": 14037,
+          "ownedAdds": 16048
+        }
+      ],
+      "work": {
+        "Animation preparation work": 771686
+      },
+      "rebaseWork": {
+        "Animation preparation work": 451681
+      },
+      "fullNativeOfflineMeaningBatchRebaseEqual": true,
+      "restoreReserializeExact": true
+    },
+    "4": {
+      "nativeBytes": [
+        345803,
+        345803
+      ],
+      "nativeSHA256": [
+        "3cc8338fdf7daae0d68dab5a624b7b5b856328479213f910a86a7db39549e2a4",
+        "3cc8338fdf7daae0d68dab5a624b7b5b856328479213f910a86a7db39549e2a4"
+      ],
+      "rebaseBytes": [
+        424178,
+        422310
+      ],
+      "rebaseSHA256": [
+        "d92820238e259a60cf427c2beccff33af3779587f3b576ac8ea6ae1d27485d08",
+        "cb85828315b36fff33c05a6152cb6e7f84a0da6b38966fc2b9a5b6e3bd94480b"
+      ],
+      "counts": [
+        {
+          "clones": 14037,
+          "ownedAdds": 22042
+        },
+        {
+          "clones": 14037,
+          "ownedAdds": 16048
+        }
+      ],
+      "work": {
+        "Animation preparation work": 771686
+      },
+      "rebaseWork": {
+        "Animation preparation work": 451681
+      },
+      "fullNativeOfflineMeaningBatchRebaseEqual": true,
+      "restoreReserializeExact": true
+    }
+  }
+}

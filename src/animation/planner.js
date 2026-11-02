@@ -33,7 +33,7 @@ import { animationFrameProvenance, registerAnimationPlan } from "./frameProvenan
 import { prepareFrameEndpoint, validateSampledEndpointMetadata } from "./frameEndpoint.js";
 import { canvasSceneProgram } from "../renderers/canvasScene.js";
 import { projectPointAnimationPositions } from "../materialization/animation/point.js";
-import { ANIMATION_POSITION_VERSION, preparePositionInterpolation, samplePositionInterpolation } from "../grammar/animation/positions.js";
+import { ANIMATION_POSITION_VERSION, createPositionPreparationContext, preparePositionInterpolation, samplePositionInterpolation } from "../grammar/animation/positions.js";
 import { validateGraphic } from "../persistence/validation.js";
 import { validatePointAnimationPosition } from "../grammar/animation/pointState.js";
 import { easeProgress } from "../grammar/animation/values.js";
@@ -102,7 +102,7 @@ function frameTracks(from, to) {
         ? { kind: "exact" } : { kind: "crossfade", reason: "canvas-background" }) }];
   });
 }
-function track(match,from,to,a,b) {
+function track(match,from,to,a,b,context) {
   const metadata={...match},source=from.scene.nodes[match.sourceIndex],target=to.scene.nodes[match.targetIndex];
   const fade=reason=>{validateAnimationFallbackReason(reason);return {...metadata,kind:"crossfade",reason};};
   if(source.type!==target.type)return fade("primitive-kind");
@@ -115,7 +115,7 @@ function track(match,from,to,a,b) {
   const style=value=>Object.fromEntries(Object.entries(value).filter(([key])=>!["x","y","radius"].includes(key)));
   const appearance=prepareAnimationAppearance(style(source.properties),style(target.properties));
   if(appearance.kind==="crossfade")return fade(appearance.reason);
-  const x=preparePositionInterpolation(a.x,b.x),y=preparePositionInterpolation(a.y,b.y);
+  const x=preparePositionInterpolation(a.x,b.x,context),y=preparePositionInterpolation(a.y,b.y,context);
   if(x.kind==="crossfade"||y.kind==="crossfade")return fade(x.reason??y.reason);
   for(const [value,channel]of [[x,"x"],[y,"y"]]) {
     if(samplePositionInterpolation(value,0).position!==source.properties[channel]||samplePositionInterpolation(value,1).position!==target.properties[channel])return fade("edited-position");
@@ -148,7 +148,8 @@ function assemble(from,to,a,b,options,graphs,cartesian,partitions,polars,geos,gu
   const guidePreparation=prepareGuideTracks({...from,guides:guides.from,axislabels:axislabels.from},{...to,guides:guides.to,axislabels:axislabels.to});
   const graphPreparation=graphTrackPreparation(from,to,graphs.from,graphs.to);
   const partitionPreparation=partitionTrackPreparation(from,to,partitions.from,partitions.to,resources);
-  let tracks=matching.matches.filter(match=>!geoPreparation.skipFrom.has(match.sourceIndex)&&!geoPreparation.skipTo.has(match.targetIndex)&&!geoTextPreparation.skipFrom.has(match.sourceIndex)&&!geoTextPreparation.skipTo.has(match.targetIndex)).map(match=>geoTextPreparation.fallbackTrack(match)??geoPreparation.fallbackTrack(match)??partitionPreparation.track(match)??graphPreparation.track(match)??preparePolarTrack(match,from,to,polars.from[match.sourceIndex],polars.to[match.targetIndex])??prepareCartesianTrack(match,from,to,cartesian.from[match.sourceIndex],cartesian.to[match.targetIndex])??track(match,from,to,a[match.sourceIndex],b[match.targetIndex]));
+  const pointContext=createPositionPreparationContext();
+  let tracks=matching.matches.filter(match=>!geoPreparation.skipFrom.has(match.sourceIndex)&&!geoPreparation.skipTo.has(match.targetIndex)&&!geoTextPreparation.skipFrom.has(match.sourceIndex)&&!geoTextPreparation.skipTo.has(match.targetIndex)).map(match=>geoTextPreparation.fallbackTrack(match)??geoPreparation.fallbackTrack(match)??partitionPreparation.track(match)??graphPreparation.track(match)??preparePolarTrack(match,from,to,polars.from[match.sourceIndex],polars.to[match.targetIndex])??prepareCartesianTrack(match,from,to,cartesian.from[match.sourceIndex],cartesian.to[match.targetIndex])??track(match,from,to,a[match.sourceIndex],b[match.targetIndex],pointContext));
   tracks.push(...guidePreparation.tracks.map(axisPreparation.fallbackTrack));
   const owners=Object.fromEntries([['from',from],['to',to]].map(([side,endpoint])=>[side,endpoint.identities.map((identity,index)=>identity!==undefined?graphicAnimationOwnerKey(identity):guides[side][index]===null?undefined:guideAnimationOwnerKey(guides[side][index].identity))]));
   tracks=tracks.map(track=>owners.to[track.targetIndex]===undefined?track:{...track,ownerKey:owners.to[track.targetIndex]});

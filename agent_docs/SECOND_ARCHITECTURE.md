@@ -1011,7 +1011,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 69,500 bytes |
 | `ggaction/interaction` | 137,500 bytes |
-| `ggaction/animation` | 340,400 bytes |
+| `ggaction/animation` | 340,800 bytes |
 
 
 
@@ -5081,3 +5081,5 @@ Geo explicit capacity의 단일 정규화 owner를 추가한 A1 package 실측�
 Root Geo A1 합산은1257entries/Node22packed1806540/Node20·24packed1809929/unpacked8146465bytes이며 cap1257/1810000/8146500이다. 실제 최대Full788278/Basic425529/SVG25178/graph68925/animation339775/interaction136880gzipB에 표의 한도를 적용하고 search1095666에는1095700cap을 적용한다. [설치본 검증](impl/roadmap9/qualification/geo-a1-merged-evidence/qualification.json)은 A2 camera·큰 hit·SLO 완료와 구분한다.
 
 Root SHA 합산은1258entries/Node22packed1807573/Node20·24packed1810854/unpacked8149596bytes이며 cap1258/1810900/8149600이다. 실제 최대Full788792/Basic426195/SVG25672/graph69473/animation340335/interaction137407gzipB에는 표의 한도를 적용한다. [합산 검증](impl/roadmap9/qualification/sha256-merged-evidence/qualification.json)은 원 hash·복사 경계와 async/heap/P95 미완료를 구분한다.
+
+Prepared point scale 통합은1258entries/Node22packed1808245/Node20·24packed1811511/unpacked8152110bytes이며 cap1258/1811600/8152200이다. Animation gzip 최대340708B에는 표의340800B를 적용한다. [합산 검증](impl/roadmap9/qualification/prepared-scale-merged-evidence/qualification.json)은 source-specific100k와 fresh1k·동일 archive3Node를 구별하며 원50ms 및 최종 통합을 남긴다.

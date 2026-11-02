@@ -374,7 +374,9 @@ shape별 dense columns와 정확 shape selection을 가진다. Shape는 `{keys}`
 `{literal:null|undefined}` 또는 `{hole:true}`이며 absent/own undefined/actual hole/null을 구별한다.
 Selection은 `{constant:shapeIndex}`, `{vector:index}` 또는 `{runs:[[count,shapeIndex],...]}`다.
 Columns는 `[shapeIndex,[[field,column],...]]`이며 각 shape의 원 key 순서·field 전체와 정확히
-일치한다. Scalar column은 `{constant:scalar}`, `{vector:index}`, `{runs:[[count,scalar],...]}`이며
+일치한다. Column의 `{constant:value}`는 scalar 또는 기존 plain literal data를 보존하며
+각 row의 실제 logical expansion을 그대로 검산한다. Scalar column의 나머지 표현은
+`{vector:index}`, `{runs:[[count,scalar],...]}`이며
 nested column은 `{node:Node}`다. 각 column은 해당 shape의 실제 row 수와 길이가 같아야 한다.
 Array shape의 keys는 원 length 안의 canonical index만 허용한다. Runs의 양의 safe
 integer count 합, ref 범위와 길이, shape index/빈도 및 field별 정확 column 수를 확장 할당 전에
@@ -382,6 +384,9 @@ integer count 합, ref 범위와 길이, shape index/빈도 및 field별 정확 
 임의 편집/style/clip/IDs/lineage는 원 값 그대로이며 지원하지 않는 mix는 기존 literal로 보존한다.
 원 actual graphic을 복원한 뒤 기존 semantic-forward/identity/geometry validators로 검산하며
 semantic-to-graphic compiler나 pixel 역산을 실행하지 않는다.
+새 version4 계획은 같은 값이어도 lossless compact 선택이 달라질 수 있어 계획 사이의
+canonical byte 표현을 보장하지 않는다. 복원한 version4 계획은 원 wire 표현을 보존하며,
+같은 packageVersion/playback으로 재직렬화하면 저장한 bytes를 유지한다. Version3 replay는 그대로다.
 
 digest는 기존 tagged value의 canonical JSON SHA256이다. 실제 endpoint graphicSpec의
 image/font base64 bytes와 semantic position·Cartesian geometry·완료 graph layout/route·normalized partition 준비값을 보존한다. hash만 저장하지 않는다.
