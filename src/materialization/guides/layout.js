@@ -1,4 +1,4 @@
-import { withResponsiveLayout } from "../responsiveLayout.js";
+import { withResponsiveLayoutStages } from "../responsiveLayout.js";
 import { restoreGuideVisibilityPaint, applyGuideVisibilityPaint } from "./visibility.js";
 import { restoreLegendItemsOffset, applyLegendItemsOffset } from "../legendItemsOffset.js";
 import {resetLegendClipGraphics, hasLegendClipGraphics}from"../legendClip.js";
@@ -10,7 +10,7 @@ import { applyMaterializationPlan } from "../planner.js";
 import { assertGuideCollisionBlocks } from "../../layout/guideCollisions.js";
 import { resolveGuideCollisionBlocks } from "./resources.js";
 import { hasPlotUnderlays } from "../plotDrawOrder.js";
-import { prepareCanvasResourceRevision, applyCanvasResourceRevision } from "../canvasResourceRevision.js";
+import { prepareCanvasResourceRevisionStages, applyCanvasResourceRevision, finishCanvasStages } from "../canvasResourceRevision.js";
 export { resolveGuideCollisionBlocks } from "./resources.js";
 
 // Whole-axis edits can replace label and relative-title siblings together.
@@ -24,8 +24,8 @@ export function withPendingRelativeAxisTitle(program, axisId, apply) {
   return result._clone({ context });
 }
 
-function applyGuidePass(program, apply) {
-  let result = apply(program);
+function* applyGuidePassStages(program, apply) {
+  let result = yield* apply(program);
   if (hasLegendClipGraphics(program) && !hasLegendClipGraphics(result) &&
       Object.values(result.guideConfigs.legend ?? {}).some(config => config.clipHeight !== undefined)) {
     result = result.rematerializeLegend();
@@ -61,16 +61,23 @@ function validateFinalGuideLayout(program) {
 
 // Defer cross-guide checks while sibling materializers still carry old
 // coordinates. The scope is transient and never survives a returned program.
-export function withGuideLayoutTransaction(program, apply, { validateCandidate } = {}) {
-  if (program.context.deferGuideLayoutValidation === true) return apply(program);
+export function withGuideLayoutTransaction(program, apply, options = {}) {
+  return finishCanvasStages(withGuideLayoutTransactionStages(program, function* (candidate) { return apply(candidate); }, options));
+}
+
+export function* withGuideLayoutTransactionStages(program, apply, { validateCandidate } = {}, scope) {
+  if (program.context.deferGuideLayoutValidation === true) return yield* apply(program);
   if (program.materializationConfigs.canvas?.responsive !== undefined) {
-    const result = withResponsiveLayout(program, candidate => applyGuidePass(candidate, current => {
-      const applied = apply(resetLegendClipGraphics(restoreLegendItemsOffset(restoreGuideVisibilityPaint(current))));
-      // A source action already computes its route closure against this pass's
-      // bounds. Guide-only edits still need their viewport-dependent results.
-      const settled = applyCanvasResourceRevision(applied, prepareCanvasResourceRevision(applied));
-      return applyMaterializationPlan(settled, planCanvasRematerialization(settled));
-    }), validateCandidate);
+    const result = yield* withResponsiveLayoutStages(program, function* (candidate) {
+      return yield* applyGuidePassStages(candidate, function* (current) {
+        const applied = yield* apply(resetLegendClipGraphics(restoreLegendItemsOffset(restoreGuideVisibilityPaint(current))));
+        // A source action already computes its route closure against this pass's
+        // bounds. Guide-only edits still need their viewport-dependent results.
+        const resources = yield* prepareCanvasResourceRevisionStages(applied, scope);
+        const settled = applyCanvasResourceRevision(applied, resources);
+        return applyMaterializationPlan(settled, planCanvasRematerialization(settled));
+      });
+    }, validateCandidate);
     return validateFinalGuideLayout(result);
   }
   const plot = program.materializationConfigs.canvas?.plot;
@@ -86,8 +93,8 @@ export function withGuideLayoutTransaction(program, apply, { validateCandidate }
           ._withCanvasConfig({ ...candidate.materializationConfigs.canvas, margin });
         candidate = applyMaterializationPlan(candidate, planCanvasRematerialization(candidate));
       }
-      result = applyGuidePass(candidate, apply);
-      const resources = prepareCanvasResourceRevision(result);
+      result = yield* applyGuidePassStages(candidate, apply);
+      const resources = yield* prepareCanvasResourceRevisionStages(result, scope);
       if (resources !== undefined) {
         result = applyCanvasResourceRevision(result, resources);
         result = applyMaterializationPlan(result, planCanvasRematerialization(result));

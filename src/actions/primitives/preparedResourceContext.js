@@ -35,8 +35,8 @@ export function withPreparedProjectedResourceResults(program, args, replacements
 
 // Canvas revisions may invalidate several independent screen-space routes.
 // This private authority permits only their next viewport-bound results.
-export function withPreparedScreenRouteResults(program, args, replacements, operation) {
-  return bindPreparedResources(program, args, replacements, operation, [], false, { screenRooted: true });
+export function withPreparedScreenRouteResults(program, args, replacements, operation, routeScope) {
+  return bindPreparedResources(program, args, replacements, operation, [], false, { screenRooted: true, routeScope });
 }
 
 function bindPreparedResources(program, args, replacements, operation, dataReplacements, dataRooted, { projected = false, screenRooted = false, routeScope } = {}) {

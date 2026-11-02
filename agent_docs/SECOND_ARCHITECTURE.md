@@ -5196,3 +5196,12 @@ exact candidate refs를 소유한다. 기존 v1 진입점은 동일 generator를
 consumer preflight를 계속 사용하며 core action wrapper를 async로 바꾸거나 candidate program을
 직접 최종 결과로 내보내지 않는다. 이 단계 추출은 전체 B native update 지원을 뜻하지 않는다.
 구체 연결 상태는 [native 단계 기록](impl/roadmap9/chart/route-native-stages.md)을 따른다.
+
+
+Canvas의 후속 private 단계도 기존 exact-constructor `canvasResourceRevision` handler의
+`prepareStages`를 사용한다. Full screen-route owner의 원 one-use plan/primitive context가 권한을
+유지하고 Basic에는 solver나 host 의존성이 들어가지 않는다. Canvas edit, guide overflow 및
+responsive pass는 각 owner의 동일 generator locals에서 실제 경로 완료를 기다린다. 기존 동기
+진입점은 이를 즉시 소비하며 원 guide pass·overflow cap·occupied bounds 및 context 복원을 유지한다.
+이는 private 준비 단계이며 fit/probe의 wrapped action 및 전체 B dispatch 연결을 대신하지 않는다.
+구체 검증과 미완료 범위는 [Canvas 단계 기록](impl/roadmap9/chart/route-screen-stages.md)을 따른다.

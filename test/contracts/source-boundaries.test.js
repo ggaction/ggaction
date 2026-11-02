@@ -176,7 +176,8 @@ test("Basic source preparation excludes Full revision and facet orchestration", 
   }
   assert.ok(visited.has(path.join(root, "resources", "dataUpdate.js")));
   for (const file of ["resources/dataUpdateFull.js", "actions/data/sourceEdit.js", "actions/data/sourcePlan.js", "actions/parameters/edit.js",
-    "resources/fontResource.js", "resources/textMetricsFull.js", "actions/fonts/index.js", "resources/graphRoutes.js", "resources/graphRouteExecutor.js", "actions/graphs/edgeRoutes.js"]) {
+    "resources/fontResource.js", "resources/textMetricsFull.js", "actions/fonts/index.js", "resources/graphRoutes.js", "resources/graphRouteExecutor.js", "actions/graphs/edgeRoutes.js", "actions/graphs/screenRoutes.js",
+    "grammar/graph/routes/job.js", "resources/routeStages.js", "materialization/graph/routeResource.js"]) {
     assert.equal(visited.has(path.join(root, file)), false, file);
   }
 });
