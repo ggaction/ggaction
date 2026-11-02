@@ -10,10 +10,12 @@ import { normalizeProjectionOptions } from "../geo/projectionOptions.js";
 import { validateGeoSourceBinding } from "../geo/mark.js";
 import { prepareGeoCameraInterpolation, sampleGeoCameraInterpolation } from "../geo/cameraInterpolation.js";
 import { geoMarkGeometry, validateGeoMarkGeometry, geoPartGeometry } from "../geo/markGeometry.js";
+import { geoBindingCapacity } from "../geo/capacity.js";
 import { projectGeometry } from "../geo/stream.js";
 import { interpolateNumber } from "./values.js";
 
 export const ANIMATION_GEO_VERSION = "native-geo-camera@1";
+export const ANIMATION_GEO_CAPACITY_VERSION = "native-geo-camera@2";
 const fallbackReasons = new Set(["geo-identity", "geo-binding", "geo-feature-topology", "geo-feature-geometry", "edited-geo-graphics", "projection-type", "projection-parameters"]);
 export const isGeoAnimationFallbackReason = reason => fallbackReasons.has(reason);
 const plans = new WeakSet();
@@ -57,17 +59,19 @@ export function normalizeAnimationGeoGroup(input) {
 
 // The native stream owns clipping, refinement, winding, holes and complements.
 // Return every current part; endpoint command counts never constrain a frame.
-export function resolveAnimationGeoGeometry(input) {
-  const group = normalizeAnimationGeoGroup(input), features = []; let work = 0, points = 0;
+export function resolveAnimationGeoGeometry(input, capacityEnabled = false) {
+  const group = normalizeAnimationGeoGroup(input), features = [];
+  const capacity = capacityEnabled ? geoBindingCapacity(group.binding) : undefined; let work = 0, points = 0;
   for (const feature of group.features) {
     const geometry = group.binding.mode === "graticule" ? feature.geometry : geoMarkGeometry(feature.geometry, group.binding, group.parameters);
     const projected = projectGeometry(geometry, group.parameters, { coordinateKind: group.coordinateKind,
+      ...(capacity === undefined ? {} : { maxPoints: capacity.maxProjectedPoints }),
       interpolation: group.binding.interpolation ?? "source-segment",
       ...(group.binding.routeHint === undefined ? {} : { routeHint: group.binding.routeHint }),
       ...(feature.polygonWinding === undefined || group.binding.radiusDeg !== undefined ? {} : { polygonWinding: feature.polygonWinding }) });
     validateWorkLimit(work += projected.diagnostics.work, "Animation geographic stream work");
-    validateGeneratedItemLimit(points += projected.diagnostics.outputPoints, "Animation geographic output points");
-    features.push({ key: feature.key, parts: geoPartGeometry(projected.parts, feature.radiusPx) });
+    validateGeneratedItemLimit(points += projected.diagnostics.outputPoints, "Animation geographic output points", capacity?.maxProjectedPoints);
+    features.push({ key: feature.key, parts: geoPartGeometry(projected.parts, feature.radiusPx, capacityEnabled && Object.hasOwn(group.binding,"capacity") ? capacity.maxPathCommands : undefined) });
   }
   return cloneAndFreeze({ features, diagnostics: { work, points } });
 }

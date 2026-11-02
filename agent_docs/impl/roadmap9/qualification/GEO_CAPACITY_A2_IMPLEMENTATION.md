@@ -29,8 +29,8 @@ Root의 2026-11-02 최종 go는 [AUTHORIZATION.remainingApproval](../AUTHORIZATI
 - [x] 제품 변경 전 legacy capacity fallback/byte/frame baseline
 - [x] private columns2 구현·엄격 수치/변조/증폭·기존 columns1 회귀·critical 검사
 - [x] private checkpoint commit/push (`e3ecebe47`, format5 branch 통합 시 owner57·경계23 재검증)
-- [ ] 공개 format5/Geo2 연결과 전체 소비자 closure
-- [ ] 동일 archive3Node·실제 browser·원100k 및 batch 가드 검증
+- [x] 공개 format5/Geo2 연결과 전체 소비자 closure
+- [x] 동일 archive3Node·실제 browser·원100k 및 batch 가드 검증
 
 ## Private 검증 결과
 
@@ -45,3 +45,19 @@ Root의 2026-11-02 최종 go는 [AUTHORIZATION.remainingApproval](../AUTHORIZATI
 ## 재개 통합 검증
 
 Root `070bc048b` 기반 format5 branch에서 private source 두 파일을 그대로 병합했다. Node22 owner57/57 및 package/discovery23/23을 새로 통과했다. 원 three-Node/critical 결과는 동일 private source 증거를 재사용하며 새 공개 format5 결과로 확대하지 않는다.
+
+## Public format5와 Geo2 기능 검증
+
+명시 own `formatVersion:5`에만 `animation-columns@2`를 연결했다. 실제 own capacity를 가진 native Geo group이 있으면 `native-geo-camera@2`를 저장하며, 기본 group만 있으면 기존 Geo kernel을 유지한다. 원 v3/v4 선택·전송 bytes·fallback은 고정 legacy payload와 함께 검증했다. 타임라인·offline·현재 frame rebase에도 같은 exact closure와 원 quota를 적용하고, 복원된 frame은 native 의미 변경 권한을 얻지 않는다. Group별 path capacity 검사는 기존 node 순회에서 묶으므로 group×node 재탐색을 만들지 않는다.
+
+최종 [qualification](geo-format5-evidence/qualification.json)의 archive SHA256은 `762a402903f0cd58172683aa916b3af7b645f7327fb9ab41a35f3b0e5e3fd64c`다. 이 실제 설치본으로 Node20/22/24에서 선택 runtime·strict type·animation 문서8개·6개 browser entry를 검증했다. Source-free production minified browser는 v3/v4/v5 각각 DPR1/2를 통과했으며, Geo2 native/offline Canvas PNG와 SVG 및 설치 소비자의 PDF vector를 비교했다.
+
+- 원 A1 입력의 1k/10k/100k 점에서 각각1999/19999/199999 commands 전체와 모든 좌표를 독립 수식으로 검산했다. Native t0/.5/t1, 현재 frame rebase, 전체 offline frame 및 bytes 왕복이 통과했다. 최종100k 최대 좌표 오차는3.98e-13 미만이다.
+- 원100k native10,682,358B/rebase10,686,134B이며 준비 work5,779,050, 실제 단일 sample callback work2,088,916이다. 기존 batch10M에서4개는 통과하고5개는 거부된다. 1k에서 기존 v3/v4/v5 callback 배열도 정확히 같다. 기본 aggregate10000·명시 group 정책·전체work10M·원 physical/expanded/storage/descriptor 한도를 변경하지 않았다.
+- Animation owner810/810, 마지막 multiple-group/rebase 보강1/1, source/package/discovery37/37, artifact10/10, manifest1/1, docs247/247, final provenance/package9/9, budget docs3/3, renderer52/52를 통과했다. Cartesian·Polar·guide·GeoText·Graph·Partition의28 family fixture를 v3/v5 whole-frame 및 offline/rebase로 비교했다.
+- 변경 source4owner critical line/function100%; branch는 planner94.47%, geoTracks100%, geoState97.96%, geoPresentation95.29%다. 전체 repository suite를 새로 완주했다는 주장은 아니다.
+- 실제 package1260entries/unpacked8,163,107B, packed Node22 1,811,425B / Node20·24 1,814,701B에 cap1260/1,814,800/8,163,200을 적용했다. Animation gzip 최대342,693B에 cap342,700, 검색1,096,414B에 cap1,096,500을 적용했다. 최초 초과·시험 oracle 오류·optional peer 설치 누락 로그와 이전 archive 증거는 별도 보존했다.
+
+재현 스크립트는 qualification 폴더의 `large.mjs`, `format5-installed.mjs` 및 압축된 browser helper다. 원 작업 위치는 각각 `.artifacts/format5-resume/large.mjs`, `.artifacts/format5-installed.mjs`, `.artifacts/format5-resume/browser-installed.mjs`이며 archive를 `.artifacts/format5-resume/extracted/package`에 풀어 실행한다. 압축 원 로그·영수증과 각 SHA는 qualification의 `evidenceFiles`에 있다.
+
+이 checkpoint는 공개5/Geo2 기능 admission을 닫는다. Canvas 50ms/P95, 원100cycle, 큰 Geo hit/query, 전체 STEP077 통합 및 보호된 release는 별도 남는다.

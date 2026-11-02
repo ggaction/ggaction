@@ -10,16 +10,18 @@ import {createCanvas} from '@napi-rs/canvas';
 
 const options={durationMs:100,easing:'linear'};
 const hash=value=>createHash('sha256').update(value).digest('hex');
-function endpoints(){
+function endpoints(numeric=false){
  const from=chart().createCanvas({width:400,height:300,margin:0})
   .createGeometryData({id:'world',format:'geojson',coordinateKind:'geographic',featureKey:'id',values:{type:'FeatureCollection',features:[{type:'Feature',id:'a',properties:{},geometry:{type:'Point',coordinates:[0,0]}}]}})
   .createProjection({id:'map',type:'orthographic',scalePx:100,translatePx:[-200,150],clipExtentPx:[[0,0],[400,300]]})
-  .createCoordinate({type:'geo'}).createGeoPointMark({id:'places',radiusPx:12,fill:'red',strokeWidth:0});
+  .createCoordinate({type:'geo'}).createGeoPointMark({id:'places',radiusPx:12,fill:'red',strokeWidth:0,...(numeric?{capacity:{maxProjectedPoints:200000,maxPathCommands:200000}}:{})});
  return {from,to:from.editProjection({translatePx:[600,150]})};
 }
 export const cases=[
  {id:'animation-geo/offline-four-renderers',async run(){
-  const {from,to}=endpoints(),plan=planTransition({from,to,options}),frame=sampleTransition(plan,50);
+  for(const formatVersion of [undefined,5]){
+  const options={durationMs:100,easing:'linear',...(formatVersion===5?{formatVersion}:{})};
+  const {from,to}=endpoints(options.formatVersion===5),plan=planTransition({from,to,options}),frame=sampleTransition(plan,50);
   assert.ok(frame.decisions.some(value=>value.kernel==='native-geo'));
   assert.equal(sampleTransition(plan,0).graphicSpec,from.graphicSpec);
   assert.equal(sampleTransition(plan,100).graphicSpec,to.graphicSpec);
@@ -41,6 +43,7 @@ export const cases=[
    console.log(JSON.stringify({scene:hash(JSON.stringify(frame.scene)),svg:hash(renderToSVG(frame)),png:hash(png.buffer),canvas:hash(await canvas.encode('png')),pdf:Buffer.from(pdf.buffer).subarray(0,4).toString(),network}));
   `],{input:serializeAnimation(plan),encoding:'utf8',timeout:30000});
   assert.equal(child.status,0,child.stderr);assert.deepEqual(JSON.parse(child.stdout),expected);
+  }
  }},
  {id:'animation-geo/current-frame-interruption',async run(){
   const {from,to}=endpoints(),plan=planTransition({from,to,options}),clock={now:()=>0,requestFrame(){throw Error('Paused player scheduled a callback');},cancelFrame(){}};
@@ -60,5 +63,18 @@ export const cases=[
   assert.throws(()=>planTransition({from:structuredClone(frame),to,options}),/ChartProgram/);
   assert.deepEqual(sampleTransition(plan,50),frame);assert.equal(JSON.stringify(from),snapshot);
   assert.equal(frame.decisions.find(decision=>decision.kind==='geographic').targetIndex,undefined);
+ }},
+ {id:'animation-geo/numeric-capacity-path-four-renderers',async run(){
+  const from=chart().createCanvas({width:400,height:400,margin:20,plotBorder:false})
+   .createGeometryData({id:'world',format:'geojson',coordinateKind:'geographic',values:{type:'FeatureCollection',features:[{type:'Feature',id:'line',properties:{},geometry:{type:'LineString',coordinates:Array.from({length:1000},(_,i)=>[-30+60*i/999,(i%2?1:-1)*5])}}]}})
+   .createProjection({id:'map',type:'equirectangular',scalePx:100,translatePx:[200,200],precisionPx:.5}).createCoordinate({type:'geo'})
+   .createGeoLineMark({id:'coast',stroke:'#2563eb',strokeWidth:2,capacity:{maxProjectedPoints:200000,maxPathCommands:200000}});
+  const plan=planTransition({from,to:from.editProjection({scalePx:200}),options:{...options,formatVersion:5}}),native=sampleTransition(plan,50),offline=sampleTransition(deserializeAnimation(serializeAnimation(plan)).plan,50);
+  assert.equal(offline.scene.nodes[1].properties.commands.length,1999);assert.equal(offline.scene.nodes[1].properties.maxCommands,200000);
+  assert.deepEqual(offline,native);assert.equal(renderToSVG(offline),renderToSVG(native));
+  const canvases=[native,offline].map(frame=>{const canvas=createCanvas(1,1);render(frame,canvas.getContext('2d'));return canvas;});
+  assert.deepEqual(await canvases[0].encode('png'),await canvases[1].encode('png'));
+  const png=await renderToPNGBuffer(offline),pdf=await renderToPDFBuffer(offline);
+  assert.deepEqual(png.buffer,await canvases[1].encode('png'));assert.equal(pdf.buffer.subarray(0,5).toString(),'%PDF-');assert.doesNotMatch(pdf.buffer.toString('latin1'),/\/Subtype\s*\/Image/);
  }}
 ];

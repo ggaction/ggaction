@@ -1,0 +1,8 @@
+import assert from 'node:assert/strict';import {readFile,writeFile,copyFile} from 'node:fs/promises';import path from 'node:path';
+import {testOptionalDependencies} from '../scripts/consumers/optional-peers.js';
+import {preparePackageConsumer} from '../scripts/package-consumer.js';import {run,root} from '../scripts/consumers/runtime.js';import {documentationPrograms} from '../scripts/doc-snippets.js';
+const artifact=JSON.parse(await readFile('.artifacts/format5-resume/archive.json','utf8')),consumer=await preparePackageConsumer({packageSpec:artifact.file});
+const records=[];try{await testOptionalDependencies(consumer);const example=(await documentationPrograms()).find(v=>v.id==='animation-numeric-format');assert.ok(example);await writeFile(path.join(consumer.directory,'numeric-doc.mjs'),example.code);await copyFile(path.join(root,'scripts/consumers/fixtures/node/animation-geo.mjs'),path.join(consumer.directory,'animation-geo.mjs'));
+await writeFile(path.join(consumer.directory,'numeric-path.mjs'),"const {cases}=await import('./animation-geo.mjs');await cases.find(v=>v.id==='animation-geo/numeric-capacity-path-four-renderers').run();");
+for(const binary of['/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node','/opt/homebrew/Cellar/node@22/22.23.1/bin/node','/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node'])for(const file of['numeric-doc.mjs','numeric-path.mjs']){run(binary,[file],consumer.directory);records.push({binary,file,status:'passed'});await writeFile('.artifacts/format5-resume/followup-installed.json',JSON.stringify({archiveSHA256:artifact.sha256,records},null,2));}
+}finally{await consumer.cleanup();}

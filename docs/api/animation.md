@@ -74,10 +74,58 @@ static effects use the explicit `appearance` crossfade. An unchanged geographic
 pattern continues to use the native geometry and paint materialization rules.
 
 Saved transition plans use version 3 by default, or version 4 when explicit node
-limits are requested. Both retain the required
+limits are requested. Explicit `formatVersion: 5` selects lossless numeric transport,
+including native geographic capacity. All three retain the required
 `premultiplied-linear-srgb@1` appearance kernel. Earlier development plan versions
 and missing or unknown kernels are rejected on restore. The outer animation
 envelope remains schema 1.
+
+## Preserve geographic capacity in saved animations
+
+Use `formatVersion: 5` when geographic endpoints declare their own capacity.
+The option uses lossless numeric storage and carries each native geographic
+group's projected point and path command limits through sampling and restoration.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run with ggaction installed; geographic source, capacity, both endpoints and offline replay are included.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from 'ggaction';
+import { planTransition, sampleTransition, serializeAnimation,
+  deserializeAnimation } from 'ggaction/animation';
+
+const from = chart().createCanvas({ width: 400, height: 300, margin: 0 })
+  .createGeometryData({ id: 'world', format: 'geojson', coordinateKind: 'geographic',
+    values: { type: 'FeatureCollection', features: [{ type: 'Feature', id: 'coast',
+      properties: {}, geometry: { type: 'LineString', coordinates: [[-30, -5], [0, 5], [30, -5]] } }] } })
+  .createProjection({ id: 'map', type: 'equirectangular', scalePx: 100,
+    translatePx: [200, 150] })
+  .createCoordinate({ type: 'geo' })
+  .createGeoLineMark({ id: 'coast', stroke: '#2563eb',
+    capacity: { maxProjectedPoints: 200000, maxPathCommands: 200000 } });
+const to = from.editProjection({ scalePx: 200 });
+const numericPlan = planTransition({
+  from, to, options: { durationMs: 1000, formatVersion: 5 }
+});
+const replay = deserializeAnimation(serializeAnimation(numericPlan));
+const frame = sampleTransition(replay.plan, 500);
+```
+
+Both node limits still default to 10,000; request larger node limits explicitly
+when needed. Format 5 preserves exact coordinates, including negative zero, and
+keeps the existing byte, work, expansion, and batch limits. It does not promise a
+particular animation speed. Default geographic groups retain their aggregate
+10,000 projected point limit. Groups with different capacity policies use the
+existing binding crossfade.
+
+Repeat `formatVersion: 5` when rebasing or interrupting a capacity animation.
+Restored animations keep their exact saved bytes and concrete graphics; they do
+not regain native source authority. Existing version 3 and 4 animations remain
+readable, with their original behavior and storage. Other explicit format values,
+including `3`, `4`, and `undefined`, are rejected.
 
 ## Set keyframes and markers
 
@@ -497,7 +545,7 @@ source data. General Text anchor interpolation remains outside this camera kerne
 
 | Function | Result and behavior |
 | --- | --- |
-| `planTransition({from, to, options:{durationMs, easing?, tracks?, markers?, composite?, maxEndpointNodes?, maxOutputNodes?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
+| `planTransition({from, to, options:{durationMs, easing?, tracks?, markers?, composite?, maxEndpointNodes?, maxOutputNodes?, formatVersion?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
 | `sampleTransition(plan, timeMs)` | Immutable `{graphicSpec, scene, progress, decisions}`. Finite time is clamped to the plan's duration. For zero duration, time zero selects the target. |
 | `serializeAnimation(plan, playback?)` | A JSON string containing the prepared endpoint payloads, kernel versions, and playback preferences. |
 | `deserializeAnimation(text)` | Immutable `{plan, playback}`. It validates the complete stored values before returning an authentic plan. |
@@ -555,8 +603,8 @@ Point marks still need their own `maxItems` for more than 50,000 raw or material
 items; its maximum is 100,000. Other native collection owners retain their existing
 10,000-item limits. These options do not grant a primitive a native owner.
 
-Either explicit option selects version 4, including for smaller limits. With both
-omitted, version 3 and its existing limits remain. Repeat the required limits when
+Without `formatVersion`, either explicit node option selects version 4, including
+for smaller limits. With all three omitted, version 3 and its existing limits remain. Repeat the required limits when
 rebasing or calling `player.interrupt`; they are never inherited from an earlier plan.
 Preparation and strict restoration retain the exact concrete values and validate
 all owners, identities, styles, and semantic mappings. A larger node limit does not

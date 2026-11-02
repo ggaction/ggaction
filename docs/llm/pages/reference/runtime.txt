@@ -1752,6 +1752,8 @@ export type AnimationTrack =
 export interface AnimationMarker { readonly id: string; readonly timeMs: number; }
 export interface TransitionOptions {
   readonly durationMs: number;
+  /** Explicit lossless numeric transport and native geographic capacity. */
+  readonly formatVersion?: 5;
   readonly easing?: AnimationEasing;
   readonly tracks?: readonly AnimationTrack[];
   readonly markers?: readonly AnimationMarker[];
@@ -1765,7 +1767,7 @@ export interface TransitionOptions {
 export interface TransitionPlan {
   readonly [transitionPlan]: true;
   readonly kind: 'transition-plan';
-  readonly version: 3 | 4;
+  readonly version: 3 | 4 | 5;
   readonly durationMs: number;
   readonly easing: AnimationEasing;
 }
@@ -1826,11 +1828,12 @@ type TransitionRequest<Options extends TransitionOptions = TransitionOptions> = 
   readonly options: Options;
 };
 export declare function planTransition(input: TransitionRequest<TransitionOptions & {
-  readonly maxEndpointNodes?: never; readonly maxOutputNodes?: never;
+  readonly formatVersion?: never; readonly maxEndpointNodes?: never; readonly maxOutputNodes?: never;
 }>): TransitionPlan & { readonly version: 3 };
-export declare function planTransition(input: TransitionRequest<TransitionOptions & (
+export declare function planTransition(input: TransitionRequest<TransitionOptions & { readonly formatVersion?: never } & (
   { readonly maxEndpointNodes: number } | { readonly maxOutputNodes: number }
 )>): TransitionPlan & { readonly version: 4 };
+export declare function planTransition(input: TransitionRequest<TransitionOptions & { readonly formatVersion: 5 }>): TransitionPlan & { readonly version: 5 };
 export declare function planTransition(input: TransitionRequest): TransitionPlan;
 export declare function sampleTransition(plan: TransitionPlan, timeMs: number): TransitionFrame;
 export declare function serializeAnimation(plan: TransitionPlan, playback?: PlaybackOptions): string;

@@ -4,6 +4,7 @@ import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
 import { createGeometryBudget, snapshotGeometryJSON } from "../../grammar/geo/input.js";
 import { normalizeGeoStyle } from "../../grammar/geo/mark.js";
+import { validateGeoGraphicCapacity } from "../../grammar/geo/capacity.js";
 import { geoPartsTopology } from "../../grammar/geo/markGeometry.js";
 import { validateAnimationPlacement } from "../../grammar/animation/placement.js";
 import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
@@ -77,9 +78,9 @@ export function normalizeGeoAnimationPresentation(input) {
   return value;
 }
 
-export function resolveGeoAnimationPresentation(input) {
+export function resolveGeoAnimationPresentation(input, capacityEnabled = false) {
   const presentation = normalizeGeoAnimationPresentation(input), { geometry, styles, plotOrigin } = presentation;
-  const projected = resolveAnimationGeoGeometry(geometry), graphics = [];
+  const projected = resolveAnimationGeoGeometry(geometry, capacityEnabled), graphics = [];
   const lineage = { kind: "resource", resource: geometry.binding.geometry ?? geometry.projection };
   for (const [index, feature] of projected.features.entries()) {
     const key = geoAnimationItemKey(geometry, feature.key), topology = geoPartsTopology(feature.parts);
@@ -89,6 +90,7 @@ export function resolveGeoAnimationPresentation(input) {
     }
   }
   validateGeneratedItemLimit(graphics.length, "Animated Geo parts");
+  if(capacityEnabled)validateGeoGraphicCapacity(geometry.binding,{items:graphics});
   const concrete = materializeFillItemsInPlot(graphics, { plotOrigin });
   for (const graphic of concrete) validateConcreteGraphicProperties(graphic.type, graphic.properties);
   return cloneAndFreeze({ graphics: concrete, frame: presentation.frame, diagnostics: projected.diagnostics });
@@ -96,7 +98,7 @@ export function resolveGeoAnimationPresentation(input) {
 
 // An empty native collection still owns a frame and drawing-order slot. Traverse
 // explicit composition children rather than inferring scopes from visible nodes.
-export function projectGeoAnimationPresentations(program, endpoint) {
+export function projectGeoAnimationPresentations(program, endpoint, capacityEnabled = false) {
   if (endpoint.graphicSpec !== program.graphicSpec || !Array.isArray(endpoint.collections)) throw new TypeError("Geo animation admission requires its exact native endpoint.");
   const placements = new Map(endpoint.collections.map(value => [value.graphicId, value]));
   const drawingOrder = new Map(endpoint.collections.map((value, index) => [value.graphicId, index])), groupOrder = new Map(), origins = new Map();
@@ -135,7 +137,7 @@ export function projectGeoAnimationPresentations(program, endpoint) {
   }
   groups.sort((a, b) => groupOrder.get(a.presentation.geometry.key) - groupOrder.get(b.presentation.geometry.key));
   groups.forEach((group, index) => byOwner.set(group.presentation.geometry.key, index));
-  const expected = groups.map(({ presentation }) => new Map(resolveGeoAnimationPresentation(presentation).graphics.map(graphic => [token(graphic.identity), graphic])));
+  const expected = groups.map(({ presentation }) => new Map(resolveGeoAnimationPresentation(presentation, capacityEnabled).graphics.map(graphic => [token(graphic.identity), graphic])));
   for (const [index, identity] of endpoint.identities.entries()) {
     if (identity === undefined) continue;
     const [scope, owner, kind, grain] = JSON.parse(identity.key), group = byOwner.get(JSON.stringify([scope, owner]));
@@ -153,7 +155,7 @@ export function projectGeoAnimationPresentations(program, endpoint) {
     groups[group].reason = "edited-geo-graphics";
   }
   const state = cloneAndFreeze({ groups, items });
-  validateGeoAnimationPresentations(state, endpoint);
+  validateGeoAnimationPresentations(state, endpoint, capacityEnabled);
   nativeOrigins.set(state, groups.map(group => origins.get(group.presentation.geometry.key)));
   return state;
 }
@@ -161,7 +163,7 @@ export function projectGeoAnimationPresentations(program, endpoint) {
 
 // Offline and sampled endpoints use this same closed admission. A group may be
 // wholly hidden, but its exact identity and explicit drawing-order slot remain.
-export function validateGeoAnimationPresentations(input, endpoint) {
+export function validateGeoAnimationPresentations(input, endpoint, capacityEnabled = false) {
   const state = snapshotGeometryJSON(input, createGeometryBudget());
   closed(state, ["groups", "items"], "Animation Geo state");
   ownArray(state.groups, "Animation Geo groups"); ownArray(state.items, "Animation Geo items");
@@ -176,11 +178,12 @@ export function validateGeoAnimationPresentations(input, endpoint) {
     if (owners.has(key)) throw new TypeError("Animation Geo owners must be unique."); owners.set(key, index);
     featureKeys.push(new Set(presentation.geometry.features.map(feature => geoAnimationItemKey(presentation.geometry, feature.key))));
     if (Object.hasOwn(group, "reason") && group.reason !== "edited-geo-graphics") throw new TypeError("Unknown Geo group fallback reason.");
-    const resolved = resolveGeoAnimationPresentation(presentation);
+    const resolved = resolveGeoAnimationPresentation(presentation, capacityEnabled);
     validateWorkLimit(work += resolved.diagnostics.work, "Animation Geo state work");
-    validateGeneratedItemLimit(points += resolved.diagnostics.points, "Animation Geo state points");
+    if(!capacityEnabled||!Object.hasOwn(presentation.geometry.binding,"capacity"))validateGeneratedItemLimit(points += resolved.diagnostics.points, "Animation Geo state points");
     expected.push(new Map(resolved.graphics.map(graphic => [token(graphic.identity), graphic])));
   }
+  const capacityItems=capacityEnabled?state.groups.map(()=>[]):undefined;
   for (const [index, item] of state.items.entries()) {
     const identity = endpoint.identities[index], owner = identity === undefined ? undefined : JSON.stringify(JSON.parse(identity.key).slice(0, 2));
     if (item === null) {
@@ -195,9 +198,11 @@ export function validateGeoAnimationPresentations(input, endpoint) {
     represented[item.group].add(token(identity));
     if (Object.hasOwn(item, "reason") && (item.reason !== "edited-geo-graphics" || group.reason !== item.reason)) throw new TypeError("Unknown or inconsistent Geo item fallback reason.");
     const node = endpoint.scene.nodes[index];
+    capacityItems?.[item.group].push(node);
     if (!item.reason && (node.type !== graphic.type || !same(node.properties, graphic.properties) || node.topology !== identity.topology || !same({offset:node.offset,clip:node.clip,clips:node.clips},group.presentation.frame))) throw new TypeError("Geo prepared meaning differs from the concrete endpoint.");
     if (index < group.insertion) throw new TypeError("Geo item precedes its explicit collection slot.");
   }
+  if(capacityEnabled)for(const [groupIndex,group] of state.groups.entries())validateGeoGraphicCapacity(group.presentation.geometry.binding,{items:capacityItems[groupIndex]});
   for (const [index, group] of state.groups.entries()) if (!group.reason && represented[index].size !== expected[index].size) throw new TypeError("Geo state omitted a materialized native part.");
   return state;
 }

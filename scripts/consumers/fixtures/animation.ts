@@ -130,3 +130,9 @@ const sized = chart().createCanvas({ width: 600, height: 400, margin: 100 })
 const sizeFrame: TransitionFrame = sampleTransition(planTransition({ from: sized,
   to: sized.editScale({ id: "size", range: [0, 400] }), options: { durationMs: 100 } }), 50);
 void sizeFrame;
+
+const numericPlan = planTransition({from, to, options:{durationMs:100, formatVersion:5}});
+const numericVersion: 5 = numericPlan.version;
+const numericWithLimits: 5 = planTransition({from, to, options:{durationMs:100, formatVersion:5, maxOutputNodes:10000}}).version;
+// @ts-expect-error Only the explicit numeric format is selectable.
+planTransition({from, to, options:{durationMs:100, formatVersion:4}});

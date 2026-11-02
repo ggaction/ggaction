@@ -23,12 +23,14 @@ core registry에 추가하지 않으며 caller freeze/clone에 frame 권한을 �
 별도 private columns@2는 compound 내부까지 같은 Node를 내려가고,
 `animation/numericColumns.js`가 finite Float64의 정확 little-endian 저장과 canonical base64를
 검산한다. Reader는 원 전송 한도와 모든 pool 저장·logical occurrence·reference 비용을 복원
-할당 전에 과금한다. 이 private reader/writer 추가는 공개 format 선택이나 Geo 지원을 바꾸지 않는다.
+할당 전에 과금한다. 공개 format5가 명시적으로 이 codec을 선택하며 실제 값과 원 expanded 비용을 유지한다.
+Geo@2는 기존 native capacity owner를 각 group의 stream/path 선언으로 전달하고
+default group aggregate와 전체 work/batch guard는 유지한다. Renderer는 concrete만 읽는다.
 `animation/resources.js`의 opaque scope는 native owner 검증과 offline 데이터 검산의 권한을
 구별한다. Planner와 sampler는 기존 기본 경로를 유지하며 이 명시 private scope에서만 준비
 traversal과 node 상계를 선택한다. Sample의 기존 canonical native proof에서 현재 owner만 읽어
 명시 rebase scope를 새로 만들며 별도 frame scope나 과거 plan/frame을 참조하지 않는다.
-공개 planner는 두 node 옵션을 모두 생략하면 기존v3를 사용하고 명시 요청만v4의 endpoint/timeline
+공개 planner는 formatVersion 없이 두 node 옵션을 모두 생략하면 기존v3를 사용하고 node 명시 요청은v4의 endpoint/timeline
 Node와 공통 vectors로 저장한다. 동일 codec 뒤 strict actual graphic 검산을 재사용하며 native 권한을
 offline에 복원하지 않는다. 정확 공개 quota·wire format은 [Animation 계약](contract/current/ANIMATION.md),
 원100k 검증 checkpoint는 [private codec 기록](impl/roadmap9/qualification/animation-codec-private.md)을 따른다.
@@ -1027,7 +1029,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 69,600 bytes |
 | `ggaction/interaction` | 137,500 bytes |
-| `ggaction/animation` | 340,900 bytes |
+| `ggaction/animation` | 342,700 bytes |
 
 
 
@@ -5113,3 +5115,5 @@ scene clone 경계를 따른다. Hit/renderer/meaning 권한은 그대로다.
 cap1259/1811900/8153000이다. Animation gzip340806B에는 표의340900B를 적용한다.
 [통합 검증](impl/roadmap9/qualification/point-node-merged-evidence/qualification.json)은 실제 원100k
 모든 좌표·offline·rebase와 아직 별도인50ms/P95·100cycle 의무를 구별한다.
+
+명시 format5/Geo2 공개 연결의 package 실측은1260entries/Node22packed1811425/Node20·24packed1814701/unpacked8163107B이며 최소cap1260/1814800/8163200이다. Animation gzip 최대342693B에는 표의342700B, 검색1096414B에는1096500B를 적용한다. [기능 검증](impl/roadmap9/qualification/GEO_CAPACITY_A2_IMPLEMENTATION.md)은 동일 archive의3Node·source-free browser·원100k 모든 좌표/offline/rebase와 기존10M batch 경계를 확인하며, Canvas50ms/P95·원100cycle·Geo hit/query 및 최종 통합과 구분한다.
