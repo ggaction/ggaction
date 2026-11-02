@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "status": "passed-current-normal-and-built-docs; overall-roadmap-pending",
+  "sourceRevision": "4e7de7b9e",
+  "runStartRevision": "78db81e6a",
+  "runEndRevision": "fca3bddc5b25fd70028371c3f7336555a4a65cac",
+  "duringRunChanges": "roadmap/review records only; no runtime, test, public-doc or package input changed",
+  "node": "v22.23.1",
+  "normal": {
+    "command": "npm test",
+    "exitCode": 0,
+    "tests": 10405,
+    "pass": 10405,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "durationMs": 641198.343542,
+    "scope": [
+      "unit",
+      "contracts",
+      "charts",
+      "gates",
+      "docs"
+    ]
+  },
+  "builtDocs": {
+    "commands": [
+      "PATH=/opt/homebrew/opt/ruby@3.3/bin:$PATH npm run docs:build",
+      "node scripts/check-built-docs.js _site",
+      "npm run test:docs:browser"
+    ],
+    "exitCodes": [
+      0,
+      0,
+      0
+    ],
+    "htmlPages": 186,
+    "selectiveArtifacts": 1607,
+    "responsivePages": 186,
+    "allPageWidths": [
+      320,
+      390,
+      768
+    ],
+    "desktopSearchAndNavigation": true,
+    "visualReview": "automated browser assertions; no new manual screenshot review"
+  },
+  "previousArtifactReference": {
+    "sha256": "a96e0950acde523e58142b70848117f568993749c55d33bccc4b82e26a2ad80f",
+    "qualification": "../frame-owned-merged-evidence/qualification.json",
+    "newInstalledSweep": false
+  },
+  "limits": {
+    "wholeNineCommandsPassed": false,
+    "performanceQualified": false,
+    "hundredCycleQualified": false,
+    "native577ConsumersQualified": false,
+    "step057Through077Closed": false
+  },
+  "evidence": {
+    "normal.log": {
+      "bytes": 2326274,
+      "sha256": "8b0b24bb4fe0b2d13e39955f586d7511284e3c9b99bda27d67193224600b8349"
+    },
+    "docs-build.log": {
+      "bytes": 420,
+      "sha256": "9816e891c63acdc5ccae50d74fbfb73762443e14a71546b2cb5433568c73c857"
+    },
+    "docs-built.log": {
+      "bytes": 102,
+      "sha256": "870bce70acc90ff20afe8b62fe05fe460070fbe831ed46e0745147e8047a92a8"
+    },
+    "docs-browser.log": {
+      "bytes": 157,
+      "sha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3"
+    }
+  }
+}
