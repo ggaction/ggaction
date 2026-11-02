@@ -27,6 +27,6 @@
     "small100cycleOldSceneAlive": 0
   },
   "original100k": "native/all scalar/reference footprints/current passed; subsequent rebase plan WeakSet rehash interrupted; rebase/offline and original100cycle remain open",
-  "performance": "pending new canonical5+30/DPR1/2; original SLO unchanged",
+  "performance": "Intermediate diagnostic only: original 6 cells / 12 stages each 5+30 completed, exit 1. Four 1k/10k hit cells under 20ms; 100k hit and every camera cell exceed SLO. Root 443-test/bundle/small-batch work overlapped; final exclusive qualification remains open.",
   "sourceCommit": "9a524620333a2008889433a63d8ee8c1556a589c"
 }

@@ -29,3 +29,18 @@ Root는2026-11-02에 `requireFlattened`가boolean/number판정에만사용하는
 새canonical은이frozenarchive와명시정책모든size를사용해원1k/10k/100k·DPR1/2·5warmup+30measured를그대로측정한다. 최초default1k실패와새결과는별도report로보관한다. 입력·timers·SLO와오류guard는바꾸지않는다.
 
 제품source는 `9a524620333a2008889433a63d8ee8c1556a589c`이며후속pin은metadata-only다.
+
+## 원조건 성능 중간 진단
+
+2026-11-02 12:03:15–12:07:44 UTC, PID 2522는 동일 frozen archive의 원 6 cells / 12 stages를 각각 5 warmup + 30 measured로 마쳤으며 SLO 미달로 exit 1이었다. 측정 중 explicit GC, 입력·query·타이머·SLO 변경은 없다. 1k는 앞서 채택한 명시 capacity/index/format5 정책이며 기존 default 1k 결과와 구분한다.
+
+| DPR | 크기 | camera P95 ms | hit P95 ms |
+| --- | --- | --- | --- |
+| 1 | 1k | 22.2 | 0.7 |
+| 1 | 10k | 249.2 | 4.2 |
+| 1 | 100k | 3262.0 | 26.6 |
+| 2 | 1k | 24.9 | 0.9 |
+| 2 | 10k | 282.8 | 3.3 |
+| 2 | 100k | 3233.7 | 25.9 |
+
+1k/10k hit 4 cells는 20ms 안에 들었지만 100k hit 2 cells와 camera 6 cells는 원 목표를 넘었다. Root의 443개 검증이 약 41초 겹쳤고 설치 bundle·소형 batch 검증도 병행되었다. 따라서 이 결과는 **중간 진단이며 최종 성능 qualification이 아니다**. Source가 안정되면 CPU 경쟁 작업도 중지한 exclusive 구간에서 다시 검증한다. 원 [report](geo-raw-path-query-evidence/canonical-p95.json), 전체 iteration progress와 stdout gzip을 보존했다. 원 100k rebase/offline, 원 100cycle과 최종 SLO는 계속 미완료다.
