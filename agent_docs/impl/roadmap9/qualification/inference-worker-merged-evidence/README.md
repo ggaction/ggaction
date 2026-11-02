@@ -7,7 +7,8 @@
 - [x] root owning227·contracts45·coverage-policy7·docs243·실제 Chromium worker 검증
 - [x] 동일 archive Node20/22/24 각각5runtime·strict타입·문서2·optional peers·6bundle
 - [x] 실제 문서 build186페이지·1606 selective LLM artifacts 검증
-- [ ] source commit 이후 문서 pin 및 최종 combined AT82 성능 자격
+- [x] source commit 이후 문서 pin 및 동일 archive hash 재확인
+- [ ] 최종 combined AT82 성능 자격
 
 공개 `ggaction/graph` helper3개와 Full create/edit의 배타적 prepared 적용을 합쳤다. Native 수학·원10000nodes/100000edges·행·기본10M·전역 graphic/layout/route 한도는 그대로다. Runtime19파일은 incoming과 동일하다. 기존 declaration의 point100k 추가와 설치 manifest의 handle3개를 보존했고, 겹친 문서 snippet marker를 구분해 worker 예제도 등록했다. Current GRAPHS의 오래된 “worker 지원 없음” 문구는 새 canonical worker 단락으로 연결했다.
 
