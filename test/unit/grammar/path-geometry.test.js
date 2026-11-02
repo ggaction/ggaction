@@ -162,3 +162,24 @@ test("fill queries retain nonzero area below the squared-number underflow range"
     }
   }
 });
+
+
+test("scalar path queries keep public flattening and diagnostic error trees owned", () => {
+  const commands = structuredClone(cubicCommands), before = structuredClone(commands);
+  const settings = {maxDepth:0,tolerance:1e-12}, expected = flattenPathCommands(commands,settings);
+  assertOwnedTree(expected); assert.ok(expected.diagnostics.length > 0);
+  for (const query of [pathFillContains,pathStrokeDistance]) {
+    assert.throws(()=>query(commands,{x:1,y:2},settings), error => {
+      assert.equal(error.name,"RangeError");
+      assert.equal(error.message,"Path geometry exceeded its subdivision budget.");
+      assert.deepEqual(error.diagnostics,expected.diagnostics);
+      assertOwnedTree(error.diagnostics); return true;
+    });
+  }
+  const owned = flattenPathCommands(commands); assertOwnedTree(owned);
+  const point = {x:-0,y:-0};
+  assert.equal(pathFillContains(commands,point),true);
+  assert.equal(pathStrokeDistance(commands,point),0);
+  assert.deepEqual(commands,before); assert.deepEqual(point,{x:-0,y:-0});
+  assertOwnedTree(owned);
+});

@@ -5241,3 +5241,5 @@ editSemantic/materialization child action을 수행한다. Candidate ChartProgra
 제2facade proof는 없다. 원 action wrapper의 trace/theme/completion 책임도 유지한다.
 정확한 정책·한계는 [EDGE_ROUTES](contract/current/EDGE_ROUTES.md#명시-bounded-route-v2)가 소유한다.
 Geo projection grammar의 단일 private 계산 kernel은 source-segment streaming 중 일시 result를 raw record로 조립한다. 기존 projection kernel facade는 반환을 cloneAndFreeze로 닫고, stream은 raw point를 동기적으로만 읽어 새 concrete commands를 만든 뒤 기존 projectGeometry 최종 owned 경계를 유지한다. 수학·검증·작업량·native authority의 소유자는 바뀌지 않는다.
+
+경로의boolean/number판정은기존flatten계산의일시rawgeometry를동기적으로읽는다. 공개flatten반환과subdivision오류diagnostics는기존owned/frozen경계를유지한다. 수학·topology검증·budget·hitindex방문과금은변경하지않는다.

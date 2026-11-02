@@ -234,10 +234,10 @@ function flattenCommands(commands, { tolerance = 0.25, maxDepth = 20, maxPoints 
 }
 
 function requireFlattened(commands, options) {
-  const geometry = flattenPathCommands(commands, options);
+  const geometry = calculateFlattenedPathCommands(commands, options);
   if (geometry.diagnostics.length) {
     const error = new RangeError("Path geometry exceeded its subdivision budget.");
-    error.diagnostics = geometry.diagnostics;
+    error.diagnostics = ownFlattenedGeometry(geometry).diagnostics;
     throw error;
   }
   return geometry;
