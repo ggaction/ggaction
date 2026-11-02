@@ -1,0 +1,114 @@
+[
+  {
+    "explicit": false,
+    "mixed": false,
+    "nodeProof": [
+      {
+        "localNodesComplete": true,
+        "nodes": 2
+      }
+    ],
+    "allDescendantsFrozen": true,
+    "mutableCloneAuthority": false,
+    "offlineAndRebaseExact": true
+  },
+  {
+    "explicit": false,
+    "mixed": true,
+    "nodeProof": [
+      {
+        "localNodesComplete": false,
+        "nodes": 6
+      }
+    ],
+    "allDescendantsFrozen": true,
+    "mutableCloneAuthority": false,
+    "offlineAndRebaseExact": true
+  },
+  {
+    "explicit": true,
+    "mixed": false,
+    "nodeProof": [
+      {
+        "localNodesComplete": true,
+        "nodes": 2
+      }
+    ],
+    "allDescendantsFrozen": true,
+    "mutableCloneAuthority": false,
+    "offlineAndRebaseExact": true
+  },
+  {
+    "explicit": true,
+    "mixed": true,
+    "nodeProof": [
+      {
+        "localNodesComplete": false,
+        "nodes": 6
+      }
+    ],
+    "allDescendantsFrozen": true,
+    "mutableCloneAuthority": false,
+    "offlineAndRebaseExact": true
+  },
+  {
+    "explicit": false,
+    "pathClip": true,
+    "timeline": false,
+    "nodeProof": [
+      {
+        "localNodesComplete": true,
+        "nodes": 2
+      }
+    ],
+    "allDescendantsFrozen": true,
+    "callerClipOwned": false,
+    "callerClipFrozen": false,
+    "offlineExact": true
+  },
+  {
+    "explicit": false,
+    "pathClip": true,
+    "timeline": true,
+    "nodeProof": [
+      {
+        "localNodesComplete": true,
+        "nodes": 2
+      }
+    ],
+    "allDescendantsFrozen": true,
+    "callerClipOwned": false,
+    "callerClipFrozen": false,
+    "offlineExact": true
+  },
+  {
+    "explicit": true,
+    "pathClip": true,
+    "timeline": false,
+    "nodeProof": [
+      {
+        "localNodesComplete": true,
+        "nodes": 2
+      }
+    ],
+    "allDescendantsFrozen": true,
+    "callerClipOwned": false,
+    "callerClipFrozen": false,
+    "offlineExact": true
+  },
+  {
+    "explicit": true,
+    "pathClip": true,
+    "timeline": true,
+    "nodeProof": [
+      {
+        "localNodesComplete": true,
+        "nodes": 2
+      }
+    ],
+    "allDescendantsFrozen": true,
+    "callerClipOwned": false,
+    "callerClipFrozen": false,
+    "offlineExact": true
+  }
+]

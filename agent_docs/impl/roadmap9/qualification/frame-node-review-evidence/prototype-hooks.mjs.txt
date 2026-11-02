@@ -1,0 +1,22 @@
+import {registerHooks} from 'node:module';
+const source=new URL('../../src/',import.meta.url).href;
+const mode=process.env.FRAME_NODE_PROTOTYPE;const enabled=mode==='1'||mode==='owned-node';
+registerHooks({load(url,context,next){const result=next(url,context);if(!url.startsWith(source))return result;const file=url.slice(source.length);let content=String(result.source);
+ if(enabled&&file==='animation/sample.js'){
+  content=content.replace('import { cloneAndFreeze, freezeOwned }','import { cloneAndFreeze, freezeOwned, isOwned }');
+  const needle='return cloneAndFreeze({...to,properties,...interpolateNodeFrame(from,to,progress)});';
+  const at=content.indexOf(needle,content.indexOf('if(track.kind==="semantic-point")'));
+  if(at<0)throw Error('Point source seam changed');
+  content=content.slice(0,at)+`const local=interpolateNodeFrame(from,to,progress);
+        Object.freeze(local.offset);Object.freeze(local.clip);
+        for(const clip of local.clips)if(Array.isArray(clip))Object.freeze(clip);
+        Object.freeze(local.clips);
+        return ${mode==='owned-node'?'freezeOwned':'Object.freeze'}({...to,properties:freezeOwned(properties),...local});`+content.slice(at+needle.length);
+  content=content.replace('const scene=cloneAndFreeze({version:2,width,height,nodes});','const localNodesComplete=nodes.every(isOwned);if(globalThis.__nodeProof)globalThis.__nodeProof.push({localNodesComplete,nodes:nodes.length});\n  const scene=cloneAndFreeze({version:2,width,height,nodes:localNodesComplete?freezeOwned(nodes):nodes});');
+ }
+ if(file==='core/immutable.js'){
+  content=content.replace('const clone = array ? new Array(input.length) : {};','const clone = array ? new Array(input.length) : {};if(globalThis.__counts)globalThis.__counts.clones++;');
+  content=content.replace('ownedValues.add(value);','ownedValues.add(value);if(globalThis.__counts)globalThis.__counts.ownedAdds++;');
+ }
+ if(file==='animation/resources.js')content=content.replace('export function validateAnimationResourceWork(value,label,scope) {','export function validateAnimationResourceWork(value,label,scope) {if(globalThis.__work)globalThis.__work[label]=Math.max(globalThis.__work[label]??0,value);');
+ return {...result,source:content};}});

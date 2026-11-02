@@ -1,0 +1,64 @@
+TAP version 13
+# Subtest: content expressions both follow current logarithmic camera, with exact native endpoints
+ok 1 - content expressions both follow current logarithmic camera, with exact native endpoints
+  ---
+  duration_ms: 108.618167
+  type: 'test'
+  ...
+# Subtest: changed geographic Text expressions follow spherical rotation and independent native offsets
+ok 2 - changed geographic Text expressions follow spherical rotation and independent native offsets
+  ---
+  duration_ms: 42.482917
+  type: 'test'
+  ...
+# Subtest: from-only collision leaders keep their current native geometry and precede labels
+ok 3 - from-only collision leaders keep their current native geometry and precede labels
+  ---
+  duration_ms: 74.030208
+  type: 'test'
+  ...
+# Subtest: middle-only current Text visibility, empty content and nested clips use the native projection
+ok 4 - middle-only current Text visibility, empty content and nested clips use the native projection
+  ---
+  duration_ms: 77.839167
+  type: 'test'
+  ...
+# Subtest: flat expression rebases retain actual current state and fail atomically above 64 sources
+ok 5 - flat expression rebases retain actual current state and fail atomically above 64 sources
+  ---
+  duration_ms: 548.683584
+  type: 'test'
+  ...
+# Subtest: closed expression transport rejects invalid weight, font, source, raw anchor and concrete output
+ok 6 - closed expression transport rejects invalid weight, font, source, raw anchor and concrete output
+  ---
+  duration_ms: 15.752042
+  type: 'test'
+  ...
+# Subtest: mixed source revisions keep target raw lineage and independent actual font metric origins
+ok 7 - mixed source revisions keep target raw lineage and independent actual font metric origins
+  ---
+  duration_ms: 71.708
+  type: 'test'
+  ...
+# Subtest: empty formatted fields retain raw source membership while explicit empty Text keeps native output
+ok 8 - empty formatted fields retain raw source membership while explicit empty Text keeps native output
+  ---
+  duration_ms: 92.643625
+  type: 'test'
+  ...
+# Subtest: explicit timeline style applies to every expression and rejects ambiguous current opacity
+ok 9 - explicit timeline style applies to every expression and rejects ambiguous current opacity
+  ---
+  duration_ms: 56.584333
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1515.33675

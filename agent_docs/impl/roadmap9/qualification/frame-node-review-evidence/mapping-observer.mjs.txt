@@ -1,0 +1,12 @@
+import {registerHooks} from 'node:module';
+const source=new URL('../../src/grammar/scales/',import.meta.url).href;
+registerHooks({load(url,context,next){const result=next(url,context);if(!url.startsWith(source))return result;let content=String(result.source),file=url.slice(source.length);
+ const observe=(needle,body)=>content=content.replace(needle,needle+'if(globalThis.__mappingCounts){'+body+'}');
+ if(file==='mapping.js')observe('export function mapContinuousScaleValues(values, scale) {','globalThis.__mappingCounts.mapping++;globalThis.__mappingCounts.inputItems+=values.length;');
+ if(file==='continuous.js')observe('export function mapLinearValues(values, domain, range, options = {}) {','globalThis.__mappingCounts.linear++;');
+ if(file==='validation.js')observe('export function validatePair(value, label) {','globalThis.__mappingCounts.pairs++;globalThis.__mappingCounts.pairItems+=value.length;');
+ if(file==='transformed.js'){
+  observe('export function normalizeTransformParameters(type, options = {}) {','globalThis.__mappingCounts.parameters++;');
+  observe('export function validateTransformedDomain(type, domain, options = {}) {','globalThis.__mappingCounts.transformedDomain++;');
+ }
+ return {...result,source:content};}});
