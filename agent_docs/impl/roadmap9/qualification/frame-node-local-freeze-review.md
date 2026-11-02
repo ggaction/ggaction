@@ -102,7 +102,7 @@ offline/rebase full frame 보존을 확인했다. 최종 owning은 enter/exit, n
 후보로만 남기며 이 설계에 포함하지 않았다.
 
 
-확장된 wholeframe 비교 결과는 child당53,238,184B의 binary output이다. 첫 base64/stdout
+확장된 wholeframe 비교 결과는 baseline53,238,184B/prototype53,238,114B의 binary output이다. V8의 내부 참조 표현 크기와 값 동등성은 구분하며, 같은 값의 전체 frame/meaning과 위 animation wire bytes를 직접 비교했다. 첫 base64/stdout
 harness의64MiB pipe 상한 실패를 보존하고, 입력/phase/검산을 줄이거나 heap을 늘리지 않고
 동일 전체 결과를 local binary file로 넘겨 해결했다. 최종 비교는 정상 종료했다.
 [원 비교 결과](frame-node-review-evidence/product-compare.json)와 [source/harness pin](frame-node-review-evidence/qualification.json)에
