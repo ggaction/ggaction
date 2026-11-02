@@ -6,7 +6,7 @@ clock·render callback을 가진 일시적 controller다.
 
 ## 계획과 sample
 
-`planTransition({from,to,options:{durationMs,easing?,tracks?,markers?,composite?,maxEndpointNodes?,maxOutputNodes?}})`은 닫힌 Full/Basic 프로그램을
+`planTransition({from,to,options:{durationMs,easing?,tracks?,markers?,composite?,maxEndpointNodes?,maxOutputNodes?,formatVersion?}})`은 닫힌 Full/Basic 프로그램을
 받아 authentic frozen plan을 반환한다. from/to는 authentic sampled frame도 허용한다.
 durationMs는0이상 finite, easing은 `linear|cubic-in-out`이며 기본값은 cubic-in-out이다.
 양 endpoint의 실제 materialized graphics와 typed identity·row grain을 사용한다.
@@ -33,7 +33,7 @@ linear/time/log/pow/sqrt/symlog의 기존 버전 kernel을 사용하며 log pixe
 추정하지 않는다. topology·지원되지 않는 style·coordinate·scale policy가 호환되지 않거나
 현재 typed family가 없는 항목은 명시한 reason과 공통 weighted concrete crossfade다.
 새 item은 enter, 사라진 item은 exit이며 role/childPath/typed key를 보존한다.
-두 node 옵션을 모두 생략하면 version3의 준비 누적work10,000,000과 양 endpoint 총node10,000,
+formatVersion과 두 node 옵션을 모두 생략하면 version3의 준비 누적work10,000,000과 양 endpoint 총node10,000,
 출력node10,000 한도 및 기존 실패 순서를 그대로 적용한다.
 
 ## 명시 node 용량과 version4
@@ -44,7 +44,7 @@ linear/time/log/pow/sqrt/symlog의 기존 버전 kernel을 사용하며 log pixe
 거부한다. Background·guide·label·weighted concrete output도 실제 개수에 포함한다.
 Point의 maxItems는 animation 옵션에 자동 전달하지 않는다.
 
-한 옵션이라도 own으로 명시하면 version4와 transition kernel4를 선택한다. 닫힌 native
+formatVersion 없이 한 node 옵션이라도 own으로 명시하면 version4와 transition kernel4를 선택한다. 닫힌 native
 프로그램과 retained child의 원 raw/items 및 실제 collection 소유자를 전수 검산한다.
 Point는 자기 maxItems의 기본50000/명시최대100000을 보존하며 다른 native family의 각
 owner10000과 primitive/graphic-only 한도는 그대로다. 서로 다른 native owner가 장식과 함께
@@ -61,6 +61,31 @@ Sample/rebase는 원 concrete/meaning/scale/identity의 현재 flat proof만 유
 `player.interrupt`에도 두 옵션 중 필요한 값을 다시 명시해야 한다. 이전 plan의 숫자를 자동
 상속하지 않으며 생략 시 version3의 기존 한도에서 거부될 수 있다. Exact sampled endpoint는
 원 객체다. Offline은 동일 strict 검산 뒤 재생·재기준 가능하지만 native source 권한을 복원하지 않는다.
+
+## 명시 format5와 지리 용량
+
+`formatVersion:5`를 own으로 명시하면 version5·transition5와 `animation-columns@2`를 선택한다.
+그 외 명시값(null/undefined/3/4 포함)은 거부한다. Node 두 옵션을 생략할 수 있으며 각 기본10000과
+기존 명시 최대·scope quota를 그대로 적용한다. 기존 options의 v3/v4 선택·bytes·reader는 유지한다.
+
+Format5는 같은 실제 endpoint/timeline을 저장하며 compound 내부를 손실 없이 내려간다.
+Vector는 기존 dense scalar array 또는 정확 `{kind:"float64-le",length,base64}`다. 후자는 finite
+IEEE754 little-endian이며 -0을 보존한다. Canonical ASCII base64/padding·8×length와 storage
+cell 비용을 할당 전에 검사하고 unused pool·반복 ref도 원 logical/cell/descriptor 비용을 과금한다.
+Envelope64MiB, encoded/decoded 각1M, depth128 및 expanded12M/cells16M/prepared140M을 늘리지 않는다.
+
+Own Geo binding capacity가 하나라도 있으면 `native-geo-camera@2`, 없으면 기존@1이다.
+각 group의 maxProjectedPoints·maxPathCommands는 native owner의 정책을 그대로 사용한다.
+실제 path.maxCommands는 binding과 정확히 같아야 하며 낮은 정책/위조는 복원·rebase에서도 거부한다.
+Default group들의 aggregate projected point10000과 전체 Geo work10M·batch10M은 유지한다.
+서로 다른 capacity의 전환은 기존 geo-binding fallback이며 기존 v3/v4 own capacity의
+edited-geo-graphics fallback을 바꾸지 않는다. 현재 capacity frame은 새 rebase에서도 format5를
+명시해야 typed capacity를 유지한다. 이전 plan의 옵션이나 native 권한을 offline에 상속하지 않는다.
+
+Version5는 version4와 같은 top-level fields를 가지며 kernels.columns를 추가로 요구한다.
+Unknown/mismatched version·kernel은 column 확장 전에 거부하고, 실제 family·capacity와 manifest를
+복원 뒤 다시 대조한다. Restored wire bytes·native exact endpoint·sample/timeline/rebase/renderer
+입력은 보존한다. 저장 형식 선택은 재생 시간 보장이 아니다.
 
 ## 완료된 Graph 배치 전환
 
@@ -317,7 +342,7 @@ appearance 사유 crossfade다. 동일 structured Geo style의 native part 재�
 재기준하고 별도 semantic state나 이전 plan 연쇄를 보존하지 않는다. Decision kernel은 해당
 geometry owner를 그대로 사용한다. Native hit/focus는 현재 paint·opacity·clip footprint를 읽는다.
 
-Transition plan/kernel은 version3이며 required kernels.appearance는
+기본 Transition plan/kernel은 version3이며 명시 node 옵션은4, formatVersion5는5다. Required kernels.appearance는
 `premultiplied-linear-srgb@1`이다. 미발행 개발 plan version1·2나 빠진/unknown appearance kernel은
 복원을 거부한다. Envelope schema1은 그대로이고 새 public function이나 ChartProgram 저장
 resource는 추가하지 않는다.

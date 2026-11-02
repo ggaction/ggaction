@@ -1,0 +1,98 @@
+[
+  {
+    "n": 1000,
+    "kind": "native",
+    "physical": 22507,
+    "encoded": 59491,
+    "logical": 22254,
+    "descriptor": 81,
+    "cells": 18,
+    "intern": 164,
+    "vectors": [
+      [
+        2,
+        2
+      ]
+    ]
+  },
+  {
+    "n": 1000,
+    "kind": "sampled",
+    "physical": 22737,
+    "encoded": 60078,
+    "logical": 22303,
+    "descriptor": 117,
+    "cells": 60,
+    "intern": 550,
+    "vectors": [
+      [
+        2,
+        2
+      ]
+    ]
+  },
+  {
+    "n": 1500,
+    "kind": "native",
+    "physical": 33507,
+    "encoded": 88491,
+    "logical": 33254,
+    "descriptor": 81,
+    "cells": 18,
+    "intern": 164,
+    "vectors": [
+      [
+        2,
+        2
+      ]
+    ]
+  },
+  {
+    "n": 1500,
+    "kind": "sampled",
+    "physical": 33737,
+    "encoded": 89078,
+    "logical": 33303,
+    "descriptor": 117,
+    "cells": 60,
+    "intern": 550,
+    "vectors": [
+      [
+        2,
+        2
+      ]
+    ]
+  },
+  {
+    "n": 2000,
+    "kind": "native",
+    "physical": 44507,
+    "encoded": 117491,
+    "logical": 44254,
+    "descriptor": 81,
+    "cells": 18,
+    "intern": 164,
+    "vectors": [
+      [
+        2,
+        2
+      ]
+    ]
+  },
+  {
+    "n": 2000,
+    "kind": "sampled",
+    "physical": 44737,
+    "encoded": 118078,
+    "logical": 44303,
+    "descriptor": 117,
+    "cells": 60,
+    "intern": 550,
+    "vectors": [
+      [
+        2,
+        2
+      ]
+    ]
+  }
+]

@@ -1,0 +1,17 @@
+file:///Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-capacity/ggactionnewbrand/src/core/validation.js:36
+    throw annotateError(new RangeError(`${label} must not exceed ${maximum}.`), { code: "resource-limit", optionPath: label, limit: maximum, actual: value });
+                        ^
+
+RangeError: Geographic refined points must not exceed 10.
+    at validateGeneratedItemLimit (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-capacity/ggactionnewbrand/src/core/validation.js:36:25)
+    at countPrepared (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-capacity/ggactionnewbrand/src/grammar/geo/stream.js:83:31)
+    at lineCoordinates (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-capacity/ggactionnewbrand/src/grammar/geo/stream.js:43:16)
+    at projectGeometry (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-capacity/ggactionnewbrand/src/grammar/geo/stream.js:98:74)
+    at resolveGeoMark (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-capacity/ggactionnewbrand/src/materialization/geo/mark.js:26:23)
+    at preflightGeoConsumers (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-capacity/ggactionnewbrand/src/actions/geo/closure.js:19:31)
+    at ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-capacity/ggactionnewbrand/src/actions/geo/marks.js:65:7)
+    at ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-capacity/ggactionnewbrand/src/core/action.js:334:27)
+    at ChartProgram.wrappedAction [as createGeoLineMark] (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-capacity/ggactionnewbrand/src/core/action.js:297:89)
+    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-capacity/ggactionnewbrand/.artifacts/geo-animation-capacity/legacy.mjs:10:447
+
+Node.js v22.23.1

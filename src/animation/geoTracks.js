@@ -8,6 +8,7 @@ import { normalizeGeoAnimationPresentation, resolveGeoAnimationPresentation, geo
 import { clipInterpolationCompatible, interpolateNodeFrame } from "./concrete.js";
 
 const prepared = new WeakSet();
+const capacityTracks = new WeakSet();
 const same = (a,b) => canonicalJSON(a) === canonicalJSON(b);
 export const emptyAnimationGeos = length => cloneAndFreeze({groups:[],items:Array(length).fill(null)});
 function subset(presentation, keys) {
@@ -17,7 +18,7 @@ function subset(presentation, keys) {
 
 // Pair whole owners before looking at visible nodes. A hidden feature has an
 // explicit collection slot and source identity, never a fabricated scene index.
-export function prepareGeoTracks(from,to) {
+export function prepareGeoTracks(from,to,capacityEnabled=false) {
   const groups=[],pairs=new Map(),skipFrom=new Set(),skipTo=new Set(),sourceGroups=new Map(from.groups.map((group,index)=>[group.presentation.geometry.key,index]));
   let work=from.items.length+to.items.length;validateWorkLimit(work,"Animation Geo track preparation");
   const indices=state=>{const result=state.groups.map(()=>[]);state.items.forEach((item,index)=>{if(item!==null)result[item.group].push(index);});return result;};
@@ -54,7 +55,7 @@ export function prepareGeoTracks(from,to) {
     pairs.set(JSON.stringify([sourceGroup,targetGroup]),index);
   }
   validateGeneratedItemLimit(groups.length,"Animation Geo paired groups");
-  const value=cloneAndFreeze({groups});prepared.add(value);
+  const value=cloneAndFreeze({groups});prepared.add(value);if(capacityEnabled)capacityTracks.add(value);
   const reasons=value.groups.map(group=>new Map(group.fallback.map(failure=>[failure.key,failure.reason])));
   const fallbackTrack=match=>{
     const a=from.items[match.sourceIndex],b=to.items[match.targetIndex];
@@ -81,10 +82,10 @@ export function sampleGeoTracks(state,progress,accountWork,timeline) {
         const patch=timeline?.geoStyle(group.targetGroup,geometry.features[index].key);return patch===undefined?native:{...native,...patch};}),
       plotOrigin:group.from.plotOrigin.map((value,index)=>interpolateNumber(value,group.to.plotOrigin[index],current)),
       frame:interpolateNodeFrame(group.from.frame,group.to.frame,current)});
-    const resolved=resolveGeoAnimationPresentation(presentation);
+    const resolved=resolveGeoAnimationPresentation(presentation,capacityTracks.has(state));
     validateWorkLimit(work+=resolved.diagnostics.work,"Animation Geo sampled work");
     accountWork?.(resolved.diagnostics.work);
-    validateGeneratedItemLimit(points+=resolved.diagnostics.points,"Animation Geo sampled points");
+    if(!capacityTracks.has(state)||!Object.hasOwn(geometry.binding,"capacity"))validateGeneratedItemLimit(points+=resolved.diagnostics.points,"Animation Geo sampled points");
     const byFeature=new Map(presentation.geometry.features.map(feature=>[geoAnimationItemKey(geometry,feature.key),[]]));
     for(const graphic of resolved.graphics)byFeature.get(graphic.identity.key).push(graphic);
     const emissions=group.slots.map(slot=>({slot:slot.index,key:slot.key,graphics:byFeature.get(geoAnimationItemKey(geometry,slot.key))}));

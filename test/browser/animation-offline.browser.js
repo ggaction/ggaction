@@ -23,24 +23,24 @@ test('offline animation frames share embedded assets in browser Canvas and SVG a
       const target=path.resolve(args.resolveDir,args.path);
       if(target.startsWith(sourcePrefix))return {path:path.join(installed,'src',target.slice(sourcePrefix.length))};
     });}}]:[];
-    const bundle=await build({plugins,stdin:{contents:`export {animationAssetEndpoints} from './test/support/animation-asset-frame.js';export * from './src/animation.js';export {render,prepareImageRendering,prepareFontRendering} from './src/index.js';export {renderToSVG} from './src/renderers/svg.js';`,resolveDir:root},bundle:true,minify:true,platform:'browser',format:'esm',write:false,metafile:true});
+    const bundle=await build({plugins,stdin:{contents:`export {animationAssetEndpoints} from './test/support/animation-asset-frame.js';export * from './src/animation.js';export {chart,render,prepareImageRendering,prepareFontRendering} from './src/index.js';export {renderToSVG} from './src/renderers/svg.js';`,resolveDir:root},bundle:true,minify:true,platform:'browser',format:'esm',write:false,metafile:true});
     assert.ok(Object.keys(bundle.metafile.inputs).every(name=>!name.includes('node:')&&!name.includes('/renderers/png')&&!name.includes('/renderers/pdf')));
     if(installed)assert.ok(Object.keys(bundle.metafile.inputs).every(name=>!path.resolve(root,name).startsWith(sourcePrefix)));
     if(installed)assert.ok(Object.keys(bundle.metafile.inputs).some(name=>path.resolve(root,name)===path.join(installed,'src','animation.js')));
     await writeFile(path.join(directory,'frame.js'),bundle.outputFiles[0].contents);
     await writeFile(path.join(directory,'index.html'),'<!doctype html><html lang="en"><title>Offline animation</title><link rel="icon" href="data:,"><p id="status">Ready</p><canvas aria-label="Offline point transition with embedded assets"></canvas></html>');
     server=await startStaticServer(directory);browser=await chromium.launch({headless:true});
-    for(const [ratio,explicit] of [[1,false],[2,false],[1,true],[2,true]]){
+    for(const [ratio,version] of [[1,3],[2,3],[1,4],[2,4],[1,5],[2,5]]){
       const context=await browser.newContext({deviceScaleFactor:ratio});
       try{
         const opened=await openBrowserPage(context,server.baseUrl,{waitFor:()=>document.querySelector('#status').textContent==='Ready'});
         await opened.page.evaluate(async()=>{globalThis.animation=await import('/frame.js');});
         await context.setOffline(true);
-        const result=await opened.page.evaluate(async({font,ratio,explicit})=>{
+        const result=await opened.page.evaluate(async({font,ratio,version})=>{
           const {animationAssetEndpoints,planTransition,serializeAnimation,deserializeAnimation,exportAnimationFrames,render,prepareImageRendering,prepareFontRendering,renderToSVG}=globalThis.animation;
           let networkCalls=0;globalThis.fetch=()=>{networkCalls++;throw Error('offline');};
           const {from,to}=animationAssetEndpoints(font,bytes=>btoa(String.fromCharCode(...bytes)));
-          const plan=planTransition({from,to,options:{durationMs:100,easing:'linear',...(explicit?{maxEndpointNodes:200002,maxOutputNodes:100001}:{})}});
+          const plan=planTransition({from,to,options:{durationMs:100,easing:'linear',...(version===4?{maxEndpointNodes:200002,maxOutputNodes:100001}:version===5?{formatVersion:5}:{})}});
           const restored=deserializeAnimation(serializeAnimation(plan));
           const frames=exportAnimationFrames(restored.plan,{timesMs:[0,50,100]}),records=[];
           for(const frame of frames){
@@ -62,9 +62,20 @@ test('offline animation frames share embedded assets in browser Canvas and SVG a
               records.push({timeMs:frame.timeMs,canvas:pixels(canvas),svg:pixels(svg),size:[canvas.width,canvas.height]});
             }finally{fonts.dispose();}
           }
+          if(version===5){
+            const {chart,sampleTransition}=globalThis.animation;
+            const source=chart().createCanvas({width:400,height:300,margin:0,plotBorder:false})
+              .createGeometryData({id:'world',format:'geojson',coordinateKind:'geographic',values:{type:'FeatureCollection',features:[{type:'Feature',id:'line',properties:{},geometry:{type:'LineString',coordinates:Array.from({length:1000},(_,i)=>[-30+60*i/999,(i%2?1:-1)*5])}}]}})
+              .createProjection({id:'map',type:'equirectangular',scalePx:100,translatePx:[200,150]}).createCoordinate({type:'geo'})
+              .createGeoLineMark({id:'coast',stroke:'red',capacity:{maxProjectedPoints:200000,maxPathCommands:200000}});
+            const geographic=planTransition({from:source,to:source.editProjection({scalePx:200}),options:{durationMs:100,formatVersion:5}});
+            const actual=sampleTransition(geographic,50),offline=sampleTransition(deserializeAnimation(serializeAnimation(geographic)).plan,50);
+            const surfaces=[actual,offline].map(frame=>{const target=document.createElement('canvas');render(frame,target.getContext('2d'),{pixelRatio:ratio});return target.toDataURL();});
+            if(surfaces[0]!==surfaces[1]||renderToSVG(actual)!==renderToSVG(offline)||offline.scene.nodes[1].properties.maxCommands!==200000)throw Error('Numeric geographic browser replay differs');
+          }
           document.querySelector('#status').textContent='Complete';return {records,networkCalls,version:restored.plan.version};
-        },{font,ratio,explicit});
-        assert.equal(result.networkCalls,0);assert.equal(result.version,explicit?4:3);
+        },{font,ratio,version});
+        assert.equal(result.networkCalls,0);assert.equal(result.version,version);
         for(const record of result.records){assert.deepEqual(record.size,[300*ratio,200*ratio]);
           record.canvas.forEach((pixel,i)=>pixel.forEach((value,c)=>assert.ok(Math.abs(value-record.svg[i][c])<=1,JSON.stringify(record))));}
         assert.deepEqual(result.records[0].canvas.slice(0,4),[[255,0,0,255],[0,0,255,255],[0,128,0,255],[255,255,255,255]]);

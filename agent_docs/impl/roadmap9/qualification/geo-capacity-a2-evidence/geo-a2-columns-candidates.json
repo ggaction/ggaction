@@ -1,0 +1,810 @@
+{
+  "kind": "design-only candidate descent and binary-vector accounting; not product/public support",
+  "ref": "d6dece68e",
+  "sources": {
+    "src/animation/columnCodec.js": {
+      "expected": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+      "pointReceipt": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+      "actual": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a"
+    },
+    "src/animation/resources.js": {
+      "expected": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+      "pointReceipt": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+      "actual": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03"
+    },
+    "src/animation/planner.js": {
+      "expected": "cf3fed95f4cc89dd8c276c2c4a31e31db8f14189a38b91764d95c7ae6789baac",
+      "pointReceipt": "cf3fed95f4cc89dd8c276c2c4a31e31db8f14189a38b91764d95c7ae6789baac",
+      "actual": "cf3fed95f4cc89dd8c276c2c4a31e31db8f14189a38b91764d95c7ae6789baac"
+    },
+    "src/animation/envelopeCodec.js": {
+      "expected": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+      "pointReceipt": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+      "actual": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82"
+    },
+    "src/animation/sample.js": {
+      "expected": "db115d2b379fc50e8dd5a4aae923c726044e6a45380dd323c787929bb399b1a6",
+      "pointReceipt": "db115d2b379fc50e8dd5a4aae923c726044e6a45380dd323c787929bb399b1a6",
+      "actual": "db115d2b379fc50e8dd5a4aae923c726044e6a45380dd323c787929bb399b1a6"
+    },
+    "src/animation/frameEndpoint.js": {
+      "expected": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+      "pointReceipt": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+      "actual": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91"
+    },
+    "src/animation/partitionTracks.js": {
+      "expected": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+      "pointReceipt": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+      "actual": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc"
+    },
+    "src/materialization/animation/point.js": {
+      "expected": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+      "pointReceipt": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+      "actual": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e"
+    },
+    "src/materialization/animation/guides.js": {
+      "expected": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+      "pointReceipt": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+      "actual": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2"
+    },
+    "src/core/validation.js": {
+      "expected": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+      "pointReceipt": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+      "actual": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110"
+    },
+    "src/selectors/graphicCapacity.js": {
+      "expected": "67bf3d75d92c9227d4f8ceb79afb2e45fa79828460c67d6c2cef06564148238a",
+      "pointReceipt": "67bf3d75d92c9227d4f8ceb79afb2e45fa79828460c67d6c2cef06564148238a",
+      "actual": "80301d027d2887c620c83909a5db5aeb0546eac77397c7ba63c618ae139beceb"
+    },
+    "src/grammar/animation/positions.js": {
+      "expected": "6a9f29ed0a103a6bf7321a7eecb936970f367d0b21fd5382fe60ab122bd0e7a8",
+      "pointReceipt": "12f919cbed5026dd0ba4ad3f3fd918fb197cae5532ee865dbe22e7db58f8eb05",
+      "actual": "6a9f29ed0a103a6bf7321a7eecb936970f367d0b21fd5382fe60ab122bd0e7a8"
+    },
+    "src/animation/appearance.js": {
+      "expected": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+      "pointReceipt": "143f9f9968267ab542bb092262a355e072eb393584917b5a09f3ff12f94db0a9",
+      "actual": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28"
+    },
+    "types/animation.d.ts": {
+      "expected": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323",
+      "pointReceipt": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323",
+      "actual": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323"
+    }
+  },
+  "cases": [
+    {
+      "n": 1000,
+      "kind": "native",
+      "current": {
+        "logicalValues": 22254,
+        "descriptorVisits": 81,
+        "cellVisits": 18,
+        "interningWork": 164,
+        "internNodes": 42,
+        "uniqueLowerBound": {
+          "physicalValues": 29,
+          "encodedValues": 75,
+          "bytes": 349
+        },
+        "physicalValues": 22507,
+        "encodedValues": 59491,
+        "bytes": 339218,
+        "validatedLogicalValues": 22254
+      },
+      "candidate": {
+        "logicalValues": 22254,
+        "descriptorVisits": 22253,
+        "cellVisits": 22010,
+        "interningWork": 72164,
+        "internNodes": 92,
+        "uniqueLowerBound": {
+          "physicalValues": 10051,
+          "encodedValues": 10137,
+          "bytes": 141639
+        },
+        "physicalValues": 11067,
+        "encodedValues": 12875,
+        "bytes": 156402,
+        "validatedLogicalValues": 22254
+      },
+      "reader": {
+        "logicalValues": 22254,
+        "descriptorVisits": 16203,
+        "cellVisits": 22010
+      },
+      "originalPreparationWork": 68756,
+      "groupBudget": {
+        "features": 1,
+        "positions": 1000,
+        "arcs": 0,
+        "values": 3044,
+        "work": 13471
+      },
+      "groupStateBudget": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 3077,
+        "work": 11771
+      },
+      "presentationBudget": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 3067,
+        "work": 11642
+      },
+      "wire": {
+        "physicalValues": 1064,
+        "bytes": 111696,
+        "estimatedEncodedValues": 2890,
+        "estimatedEncodedBytes": 122175,
+        "envelopeBytes": 122326
+      },
+      "binary": {
+        "physicalValues": 1090,
+        "bytes": 111699,
+        "estimatedEncodedValues": 2940,
+        "estimatedEncodedBytes": 122398,
+        "envelopeBytes": 122549
+      },
+      "vectors": [
+        {
+          "length": 1999,
+          "first": 147.6401224401701,
+          "last": 252.3598775598299,
+          "unique": 1999
+        },
+        {
+          "length": 1999,
+          "first": 208.72664625997166,
+          "last": 191.27335374002834,
+          "unique": 3
+        },
+        {
+          "length": 2,
+          "first": 0,
+          "last": 1,
+          "unique": 2
+        },
+        {
+          "length": 1000,
+          "first": -30,
+          "last": 30,
+          "unique": 1000
+        },
+        {
+          "length": 1000,
+          "first": -5,
+          "last": 5,
+          "unique": 2
+        },
+        {
+          "length": 1999,
+          "first": 95.28024488034023,
+          "last": 304.7197551196598,
+          "unique": 1999
+        },
+        {
+          "length": 1999,
+          "first": 217.4532925199433,
+          "last": 182.5467074800567,
+          "unique": 3
+        }
+      ],
+      "roundtrip": true
+    },
+    {
+      "n": 1000,
+      "kind": "sampled",
+      "current": {
+        "logicalValues": 22303,
+        "descriptorVisits": 117,
+        "cellVisits": 60,
+        "interningWork": 550,
+        "internNodes": 109,
+        "uniqueLowerBound": {
+          "physicalValues": 81,
+          "encodedValues": 186,
+          "bytes": 970
+        },
+        "physicalValues": 22737,
+        "encodedValues": 60078,
+        "bytes": 342433,
+        "validatedLogicalValues": 22303
+      },
+      "candidate": {
+        "logicalValues": 22303,
+        "descriptorVisits": 22302,
+        "cellVisits": 22052,
+        "interningWork": 72550,
+        "internNodes": 159,
+        "uniqueLowerBound": {
+          "physicalValues": 10103,
+          "encodedValues": 10248,
+          "bytes": 142168
+        },
+        "physicalValues": 11327,
+        "encodedValues": 13586,
+        "bytes": 160156,
+        "validatedLogicalValues": 22303
+      },
+      "reader": {
+        "logicalValues": 22303,
+        "descriptorVisits": 16233,
+        "cellVisits": 22052
+      },
+      "originalPreparationWork": 69410,
+      "groupBudget": {
+        "features": 1,
+        "positions": 1000,
+        "arcs": 0,
+        "values": 3044,
+        "work": 13471
+      },
+      "groupStateBudget": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 3077,
+        "work": 11771
+      },
+      "presentationBudget": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 3067,
+        "work": 11642
+      },
+      "wire": {
+        "physicalValues": 1318,
+        "bytes": 112969,
+        "estimatedEncodedValues": 3587,
+        "estimatedEncodedBytes": 125951,
+        "envelopeBytes": 126102
+      },
+      "binary": {
+        "physicalValues": 1350,
+        "bytes": 112986,
+        "estimatedEncodedValues": 3651,
+        "estimatedEncodedBytes": 126244,
+        "envelopeBytes": 126395
+      },
+      "vectors": [
+        {
+          "length": 1999,
+          "first": 125.95195103069393,
+          "last": 274.0480489693061,
+          "unique": 1999
+        },
+        {
+          "length": 1999,
+          "first": 212.34134149488435,
+          "last": 187.65865850511565,
+          "unique": 3
+        },
+        {
+          "length": 2,
+          "first": 0,
+          "last": 1,
+          "unique": 2
+        },
+        {
+          "length": 1000,
+          "first": -30,
+          "last": 30,
+          "unique": 1000
+        },
+        {
+          "length": 1000,
+          "first": -5,
+          "last": 5,
+          "unique": 2
+        },
+        {
+          "length": 1999,
+          "first": 95.28024488034023,
+          "last": 304.7197551196598,
+          "unique": 1999
+        },
+        {
+          "length": 1999,
+          "first": 217.4532925199433,
+          "last": 182.5467074800567,
+          "unique": 3
+        }
+      ],
+      "roundtrip": true
+    },
+    {
+      "n": 1500,
+      "kind": "native",
+      "current": {
+        "logicalValues": 33254,
+        "descriptorVisits": 81,
+        "cellVisits": 18,
+        "interningWork": 164,
+        "internNodes": 42,
+        "uniqueLowerBound": {
+          "physicalValues": 29,
+          "encodedValues": 75,
+          "bytes": 349
+        },
+        "physicalValues": 33507,
+        "encodedValues": 88491,
+        "bytes": 504615,
+        "validatedLogicalValues": 33254
+      },
+      "candidate": {
+        "logicalValues": 33254,
+        "descriptorVisits": 33253,
+        "cellVisits": 33010,
+        "interningWork": 108164,
+        "internNodes": 92,
+        "uniqueLowerBound": {
+          "physicalValues": 15051,
+          "encodedValues": 15137,
+          "bytes": 212195
+        },
+        "physicalValues": 16067,
+        "encodedValues": 17875,
+        "bytes": 226958,
+        "validatedLogicalValues": 33254
+      },
+      "reader": {
+        "logicalValues": 33254,
+        "descriptorVisits": 24203,
+        "cellVisits": 33010
+      },
+      "originalPreparationWork": 103756,
+      "groupBudget": {
+        "features": 1,
+        "positions": 1500,
+        "arcs": 0,
+        "values": 4544,
+        "work": 20471
+      },
+      "groupStateBudget": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 4577,
+        "work": 17771
+      },
+      "presentationBudget": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 4567,
+        "work": 17642
+      },
+      "wire": {
+        "physicalValues": 1064,
+        "bytes": 165032,
+        "estimatedEncodedValues": 2890,
+        "estimatedEncodedBytes": 175511,
+        "envelopeBytes": 175662
+      },
+      "binary": {
+        "physicalValues": 1090,
+        "bytes": 165035,
+        "estimatedEncodedValues": 2940,
+        "estimatedEncodedBytes": 175734,
+        "envelopeBytes": 175885
+      },
+      "vectors": [
+        {
+          "length": 2999,
+          "first": 147.6401224401701,
+          "last": 252.3598775598299,
+          "unique": 2999
+        },
+        {
+          "length": 2999,
+          "first": 208.72664625997166,
+          "last": 191.27335374002834,
+          "unique": 3
+        },
+        {
+          "length": 2,
+          "first": 0,
+          "last": 1,
+          "unique": 2
+        },
+        {
+          "length": 1500,
+          "first": -30,
+          "last": 30,
+          "unique": 1500
+        },
+        {
+          "length": 1500,
+          "first": -5,
+          "last": 5,
+          "unique": 2
+        },
+        {
+          "length": 2999,
+          "first": 95.28024488034023,
+          "last": 304.7197551196598,
+          "unique": 2999
+        },
+        {
+          "length": 2999,
+          "first": 217.4532925199433,
+          "last": 182.5467074800567,
+          "unique": 3
+        }
+      ],
+      "roundtrip": true
+    },
+    {
+      "n": 1500,
+      "kind": "sampled",
+      "current": {
+        "logicalValues": 33303,
+        "descriptorVisits": 117,
+        "cellVisits": 60,
+        "interningWork": 550,
+        "internNodes": 109,
+        "uniqueLowerBound": {
+          "physicalValues": 81,
+          "encodedValues": 186,
+          "bytes": 970
+        },
+        "physicalValues": 33737,
+        "encodedValues": 89078,
+        "bytes": 507805,
+        "validatedLogicalValues": 33303
+      },
+      "candidate": {
+        "logicalValues": 33303,
+        "descriptorVisits": 33302,
+        "cellVisits": 33052,
+        "interningWork": 108550,
+        "internNodes": 159,
+        "uniqueLowerBound": {
+          "physicalValues": 15103,
+          "encodedValues": 15248,
+          "bytes": 212699
+        },
+        "physicalValues": 16327,
+        "encodedValues": 18586,
+        "bytes": 230687,
+        "validatedLogicalValues": 33303
+      },
+      "reader": {
+        "logicalValues": 33303,
+        "descriptorVisits": 24233,
+        "cellVisits": 33052
+      },
+      "originalPreparationWork": 104410,
+      "groupBudget": {
+        "features": 1,
+        "positions": 1500,
+        "arcs": 0,
+        "values": 4544,
+        "work": 20471
+      },
+      "groupStateBudget": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 4577,
+        "work": 17771
+      },
+      "presentationBudget": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 4567,
+        "work": 17642
+      },
+      "wire": {
+        "physicalValues": 1318,
+        "bytes": 166305,
+        "estimatedEncodedValues": 3587,
+        "estimatedEncodedBytes": 179287,
+        "envelopeBytes": 179438
+      },
+      "binary": {
+        "physicalValues": 1350,
+        "bytes": 166322,
+        "estimatedEncodedValues": 3651,
+        "estimatedEncodedBytes": 179580,
+        "envelopeBytes": 179731
+      },
+      "vectors": [
+        {
+          "length": 2999,
+          "first": 125.95195103069393,
+          "last": 274.0480489693061,
+          "unique": 2999
+        },
+        {
+          "length": 2999,
+          "first": 212.34134149488435,
+          "last": 187.65865850511565,
+          "unique": 3
+        },
+        {
+          "length": 2,
+          "first": 0,
+          "last": 1,
+          "unique": 2
+        },
+        {
+          "length": 1500,
+          "first": -30,
+          "last": 30,
+          "unique": 1500
+        },
+        {
+          "length": 1500,
+          "first": -5,
+          "last": 5,
+          "unique": 2
+        },
+        {
+          "length": 2999,
+          "first": 95.28024488034023,
+          "last": 304.7197551196598,
+          "unique": 2999
+        },
+        {
+          "length": 2999,
+          "first": 217.4532925199433,
+          "last": 182.5467074800567,
+          "unique": 3
+        }
+      ],
+      "roundtrip": true
+    },
+    {
+      "n": 2000,
+      "kind": "native",
+      "current": {
+        "logicalValues": 44254,
+        "descriptorVisits": 81,
+        "cellVisits": 18,
+        "interningWork": 164,
+        "internNodes": 42,
+        "uniqueLowerBound": {
+          "physicalValues": 29,
+          "encodedValues": 75,
+          "bytes": 349
+        },
+        "physicalValues": 44507,
+        "encodedValues": 117491,
+        "bytes": 669971,
+        "validatedLogicalValues": 44254
+      },
+      "candidate": {
+        "logicalValues": 44254,
+        "descriptorVisits": 44253,
+        "cellVisits": 44010,
+        "interningWork": 144164,
+        "internNodes": 92,
+        "uniqueLowerBound": {
+          "physicalValues": 20051,
+          "encodedValues": 20137,
+          "bytes": 282781
+        },
+        "physicalValues": 21067,
+        "encodedValues": 22875,
+        "bytes": 297544,
+        "validatedLogicalValues": 44254
+      },
+      "reader": {
+        "logicalValues": 44254,
+        "descriptorVisits": 32203,
+        "cellVisits": 44010
+      },
+      "originalPreparationWork": 138756,
+      "groupBudget": {
+        "features": 1,
+        "positions": 2000,
+        "arcs": 0,
+        "values": 6044,
+        "work": 27471
+      },
+      "groupStateBudget": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 6077,
+        "work": 23771
+      },
+      "presentationBudget": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 6067,
+        "work": 23642
+      },
+      "wire": {
+        "physicalValues": 1064,
+        "bytes": 218360,
+        "estimatedEncodedValues": 2890,
+        "estimatedEncodedBytes": 228839,
+        "envelopeBytes": 228990
+      },
+      "binary": {
+        "physicalValues": 1090,
+        "bytes": 218363,
+        "estimatedEncodedValues": 2940,
+        "estimatedEncodedBytes": 229062,
+        "envelopeBytes": 229213
+      },
+      "vectors": [
+        {
+          "length": 3999,
+          "first": 147.6401224401701,
+          "last": 252.3598775598299,
+          "unique": 3999
+        },
+        {
+          "length": 3999,
+          "first": 208.72664625997166,
+          "last": 191.27335374002834,
+          "unique": 3
+        },
+        {
+          "length": 2,
+          "first": 0,
+          "last": 1,
+          "unique": 2
+        },
+        {
+          "length": 2000,
+          "first": -30,
+          "last": 30,
+          "unique": 2000
+        },
+        {
+          "length": 2000,
+          "first": -5,
+          "last": 5,
+          "unique": 2
+        },
+        {
+          "length": 3999,
+          "first": 95.28024488034023,
+          "last": 304.7197551196598,
+          "unique": 3999
+        },
+        {
+          "length": 3999,
+          "first": 217.4532925199433,
+          "last": 182.5467074800567,
+          "unique": 3
+        }
+      ],
+      "roundtrip": true
+    },
+    {
+      "n": 2000,
+      "kind": "sampled",
+      "current": {
+        "logicalValues": 44303,
+        "descriptorVisits": 117,
+        "cellVisits": 60,
+        "interningWork": 550,
+        "internNodes": 109,
+        "uniqueLowerBound": {
+          "physicalValues": 81,
+          "encodedValues": 186,
+          "bytes": 970
+        },
+        "physicalValues": 44737,
+        "encodedValues": 118078,
+        "bytes": 673052,
+        "validatedLogicalValues": 44303
+      },
+      "candidate": {
+        "logicalValues": 44303,
+        "descriptorVisits": 44302,
+        "cellVisits": 44052,
+        "interningWork": 144550,
+        "internNodes": 159,
+        "uniqueLowerBound": {
+          "physicalValues": 20103,
+          "encodedValues": 20248,
+          "bytes": 283176
+        },
+        "physicalValues": 21327,
+        "encodedValues": 23586,
+        "bytes": 301164,
+        "validatedLogicalValues": 44303
+      },
+      "reader": {
+        "logicalValues": 44303,
+        "descriptorVisits": 32233,
+        "cellVisits": 44052
+      },
+      "originalPreparationWork": 139410,
+      "groupBudget": {
+        "features": 1,
+        "positions": 2000,
+        "arcs": 0,
+        "values": 6044,
+        "work": 27471
+      },
+      "groupStateBudget": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 6077,
+        "work": 23771
+      },
+      "presentationBudget": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 6067,
+        "work": 23642
+      },
+      "wire": {
+        "physicalValues": 1318,
+        "bytes": 219633,
+        "estimatedEncodedValues": 3587,
+        "estimatedEncodedBytes": 232615,
+        "envelopeBytes": 232766
+      },
+      "binary": {
+        "physicalValues": 1350,
+        "bytes": 219650,
+        "estimatedEncodedValues": 3651,
+        "estimatedEncodedBytes": 232908,
+        "envelopeBytes": 233059
+      },
+      "vectors": [
+        {
+          "length": 3999,
+          "first": 125.95195103069393,
+          "last": 274.0480489693061,
+          "unique": 3999
+        },
+        {
+          "length": 3999,
+          "first": 212.34134149488435,
+          "last": 187.65865850511565,
+          "unique": 3
+        },
+        {
+          "length": 2,
+          "first": 0,
+          "last": 1,
+          "unique": 2
+        },
+        {
+          "length": 2000,
+          "first": -30,
+          "last": 30,
+          "unique": 2000
+        },
+        {
+          "length": 2000,
+          "first": -5,
+          "last": 5,
+          "unique": 2
+        },
+        {
+          "length": 3999,
+          "first": 95.28024488034023,
+          "last": 304.7197551196598,
+          "unique": 3999
+        },
+        {
+          "length": 3999,
+          "first": 217.4532925199433,
+          "last": 182.5467074800567,
+          "unique": 3
+        }
+      ],
+      "roundtrip": true
+    }
+  ]
+}

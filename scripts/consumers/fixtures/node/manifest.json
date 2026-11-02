@@ -1791,7 +1791,7 @@
     "cases": [
       {
         "id": "animation-geo/offline-four-renderers",
-        "statements": 14
+        "statements": 1
       },
       {
         "id": "animation-geo/current-frame-interruption",
@@ -1800,6 +1800,10 @@
       {
         "id": "animation-geo/immutable-failure",
         "statements": 8
+      },
+      {
+        "id": "animation-geo/numeric-capacity-path-four-renderers",
+        "statements": 12
       }
     ]
   },

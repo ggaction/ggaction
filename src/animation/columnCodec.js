@@ -1,3 +1,4 @@
+import { animationNumericVectorFootprint, packAnimationNumericVector, inspectAnimationNumericVector } from "./numericColumns.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { validateGeneratedItemLimit } from "../core/validation.js";
@@ -41,10 +42,13 @@ function treeSize(value, ancestors = new Set(), depth = 0, scope) {
   ancestors.delete(value); validateAnimationColumnCount(size,"expandedValues",scope); return size;
 }
 
-export function prepareAnimationColumns(input, scope) {
+export function prepareAnimationColumns(input, scope) { return prepareColumns(input, scope, 1); }
+export function prepareAnimationColumnsV2(input, scope) { return prepareColumns(input, scope, 2); }
+function prepareColumns(input, scope, version) {
   // Count every logical occurrence even when the compact representation shares it.
   const logicalValues = treeSize(input,new Set(),0,scope), vectors = [], ancestors = new Set();
-  let descriptorVisits = 0, cellVisits = 0, interningWork = 0, internNodes = 0;
+  let descriptorVisits = 0, cellVisits = 0, interningWork = 0, internNodes = 0, storageCells = 0;
+  const numericValues = [];
   const uniqueLowerBound={physicalValues:0,encodedValues:0,bytes:0};
   const internLimit=animationColumnLimits(scope).preparedTraversalWork;
   const negativeZero=Symbol("negative zero"),shapeIndex=Symbol("shape index"),interned=internMap();
@@ -71,8 +75,8 @@ export function prepareAnimationColumns(input, scope) {
     const last=parts.at(-1);internValue(last);
     if(!branch.has(last))branch.set(last,internCandidates());return branch.get(last);
   }
-  function retainUnique(value) {
-    const size=inspectPhysical(value);
+  function retainUnique(value) { retainSize(inspectPhysical(value)); }
+  function retainSize(size) {
     const physical=uniqueLowerBound.physicalValues+size.physicalValues;
     const encoded=uniqueLowerBound.encodedValues+size.encodedValues;
     const bytes=uniqueLowerBound.bytes+size.bytes;
@@ -85,18 +89,24 @@ export function prepareAnimationColumns(input, scope) {
   }
   function rowColumn(rows, key) {
     // Reject the next dense allocation before materializing its input cells.
-    validateAnimationColumnCount(cellVisits + rows.length,"cells",scope);
+    validateAnimationColumnCount(storageCells + cellVisits + rows.length,"cells",scope);
     return column(rows.map(row=>row[key]));
   }
   function vector(values) {
     const candidates=bucket(interned,[values.length,values[0],values.at(-1)]);
-    for(const index of candidates)if(values.every((value,i)=>sameScalar(value,vectors[index][i])))return index;
-    retainUnique(values);
-    const index=vectors.length;vectors.push(values);candidates.push(index);return index;
+    for(const index of candidates)if(values.every((value,i)=>sameScalar(value,(version===1?vectors:numericValues)[index][i])))return index;
+    let stored=values;
+    if(version===2){
+      storageCells+=values.length;validateAnimationColumnCount(storageCells+cellVisits,"cells",scope);
+      if(values.every(value=>typeof value==="number"&&Number.isFinite(value))){
+        retainSize(animationNumericVectorFootprint(values.length));stored=packAnimationNumericVector(values);
+      }else retainUnique(values);
+    }else retainUnique(values);
+    const index=vectors.length;vectors.push(stored);if(version===2)numericValues.push(values);candidates.push(index);return index;
   }
   function column(values) {
-    cellVisits += values.length; validateAnimationColumnCount(cellVisits,"cells",scope);
-    if (values.every(value=>equal(value,values[0]))) return {constant:values[0]};
+    cellVisits += values.length; validateAnimationColumnCount(storageCells+cellVisits,"cells",scope);
+    if (values.every(value=>equal(value,values[0]))) return version===1||scalar(values[0]) ? {constant:values[0]} : {node:{array:values.map(lower)}};
     if (values.every(scalar)) {
       const runs=[];
       for(const value of values){const last=runs.at(-1);if(last&&equal(last[1],value))last[0]++;else runs.push([1,value]);}
@@ -151,35 +161,47 @@ export function prepareAnimationColumns(input, scope) {
         const columns=[];
         shapes.forEach((definition,index)=>{if(Object.hasOwn(definition,"keys"))columns.push([index,definition.keys.map(key=>[key,rowColumn(groups[index],key)])]);});
         result={records:{length:value.length,shapes,shape:column(shape),columns}};
-      } else result={literal:value};
+      } else result=version===2&&value.length===1&&Object.hasOwn(value,0)&&!scalar(value[0]) ? {array:[lower(value[0])]} : {literal:value};
     } else {
       ownRecord(value,label); const entries=Object.entries(value); descriptors(entries.length);
       result={object:entries.map(([key,child])=>[key,lower(child)])};
     }
     ancestors.delete(value);return result;
   }
-  const compact={kind:"animation-columns",version:1,root:lower(input),vectors};
+  const compact={kind:"animation-columns",version,root:lower(input),vectors};
   validateAnimationColumnCount(descriptorVisits,"descriptors",scope);
   const physical=inspectPhysical(compact);
-  const checked=validateAnimationColumns(compact,scope);
-  return {compact:cloneAndFreeze(compact),metrics:{logicalValues,descriptorVisits,cellVisits,interningWork,internNodes,uniqueLowerBound,...physical,validatedLogicalValues:checked.logicalValues}};
+  const checked=validateColumns(compact,scope,version);
+  return {compact:cloneAndFreeze(compact),metrics:{logicalValues,descriptorVisits,cellVisits,...(version===2?{storageCells}:{}),interningWork,internNodes,uniqueLowerBound,...physical,validatedLogicalValues:checked.logicalValues}};
 }
 
-export function validateAnimationColumns(input, scope) {
+export function validateAnimationColumns(input, scope) { return validateColumns(input, scope, 1); }
+export function validateAnimationColumnsV2(input, scope) { return validateColumns(input, scope, 2); }
+function validateColumns(input, scope, version) {
   // This independent physical byte/descriptor walk also runs for native preparation.
   const physical=inspectPhysical(input);
   fields(input,["kind","version","root","vectors"]);
-  if(input.kind!=="animation-columns"||input.version!==1) throw new TypeError(`${label} has an unsupported version.`);
+  if(input.kind!=="animation-columns"||input.version!==version) throw new TypeError(`${label} has an unsupported version.`);
   ownArray(input.vectors,label);
-  for(const vector of input.vectors){ownArray(vector,label);if(!vector.every(scalar))throw new TypeError(`${label} vectors require scalar values.`);}
+  const vectors=[];let storageCells=0;
+  for(const vector of input.vectors){
+    let proof;
+    if(version===2&&!Array.isArray(vector))proof=inspectAnimationNumericVector(vector);
+    else {ownArray(vector,label);if(!vector.every(scalar))throw new TypeError(`${label} vectors require scalar values.`);proof={length:vector.length,at:i=>vector[i]};}
+    if(version===2){storageCells+=proof.length;validateAnimationColumnCount(storageCells,"cells",scope);}
+    vectors.push(proof);
+  }
+  // Account every declared pool entry, including unused or duplicate entries,
+  // before reading its numeric cells or allocating any expanded rows.
+  if(version===2)for(const vector of vectors)if(Object.hasOwn(vector,"validateFinite"))vector.validateFinite();
   const nodeProof=new Map(),shapeKeySets=new Map(); let descriptorVisits=0,cellVisits=0;
   const descriptors=count=>{descriptorVisits+=count;validateAnimationColumnCount(descriptorVisits,"descriptors",scope);};
-  const ref=(index,length)=>{integer(index,input.vectors.length-1);const vector=input.vectors[index];if(vector.length!==length)throw new RangeError(`${label} vector length differs from its rows.`);return vector;};
+  const ref=(index,length)=>{integer(index,input.vectors.length-1);const vector=vectors[index];if(vector.length!==length)throw new RangeError(`${label} vector length differs from its rows.`);return vector;};
   function column(value,length,selector=false) {
-    cellVisits+=length;validateAnimationColumnCount(cellVisits,"cells",scope);
+    cellVisits+=length;validateAnimationColumnCount(storageCells+cellVisits,"cells",scope);
     const tag=variant(value,selector?["constant","vector","runs"]:["constant","vector","runs","node"]);
-    if(tag==="constant"){const size=treeSize(value.constant);validateAnimationColumnCount(size*length,"expandedValues",scope);return {at:()=>value.constant,logicalSum:size*length};}
-    if(tag==="vector"){const vector=ref(value.vector,length);return{at:i=>vector[i],logicalSum:length};}
+    if(tag==="constant"){const size=version===1?treeSize(value.constant):treeSize(value.constant,new Set(),0,scope);validateAnimationColumnCount(size*length,"expandedValues",scope);return {at:()=>value.constant,logicalSum:size*length};}
+    if(tag==="vector"){const vector=ref(value.vector,length);return{at:i=>vector.at(i),logicalSum:length};}
     if(tag==="runs"){
       ownArray(value.runs,label);let count=0;const ends=[];
       for(const run of value.runs){ownArray(run,label);if(run.length!==2||!Number.isSafeInteger(run[0])||run[0]<=0||!scalar(run[1]))throw new TypeError(`${label} has an invalid scalar run.`);count+=run[0];integer(count,length);ends.push(count);}
@@ -201,10 +223,15 @@ export function validateAnimationColumns(input, scope) {
     shapeKeySets.set(value,keys);return value;
   }
   function node(value) {
-    if(nodeProof.has(value))return nodeProof.get(value);
+    if(nodeProof.has(value)){
+      const proof=nodeProof.get(value);
+      if(version===2){descriptors(proof.descriptorCost);cellVisits+=proof.cellCost;validateAnimationColumnCount(storageCells+cellVisits,"cells",scope);}
+      return proof;
+    }
+    const startDescriptors=descriptorVisits,startCells=cellVisits;
     const tag=variant(value,["literal","object","array","records"]);let proof;
     if(tag==="literal") {
-      const logical=treeSize(value.literal),array=Array.isArray(value.literal);
+      const logical=version===1?treeSize(value.literal):treeSize(value.literal,new Set(),0,scope),array=Array.isArray(value.literal);
       proof={logical,array,length:array?value.literal.length:undefined,at:i=>value.literal[i],restore:()=>value.literal};
     } else if(tag==="object") {
       ownArray(value.object,label);const seen=new Set();let logical=1;
@@ -242,12 +269,18 @@ export function validateAnimationColumns(input, scope) {
       };
       proof={logical,array:true,length:rows.length,at:restoreRow,restore:()=>{const result=new Array(rows.length);for(let i=0;i<rows.length;i++)if(!Object.hasOwn(shapes[selected(i)],"hole"))result[i]=restoreRow(i);return result;}};
     }
-    validateAnimationColumnCount(proof.logical,"expandedValues",scope);nodeProof.set(value,proof);return proof;
+    validateAnimationColumnCount(proof.logical,"expandedValues",scope);
+    if(version===2){proof.descriptorCost=descriptorVisits-startDescriptors;proof.cellCost=cellVisits-startCells;}
+    nodeProof.set(value,proof);return proof;
   }
   const root=node(input.root);
-  return {logicalValues:root.logical,descriptorVisits,cellVisits,...physical,restore:root.restore};
+  return {logicalValues:root.logical,descriptorVisits,cellVisits,...(version===2?{storageCells}:{}),...physical,restore:root.restore};
 }
 
 export function restoreAnimationColumns(input, scope) {
   return validateAnimationColumns(input,scope).restore();
+}
+
+export function restoreAnimationColumnsV2(input, scope) {
+  return validateAnimationColumnsV2(input,scope).restore();
 }

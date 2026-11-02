@@ -1,0 +1,422 @@
+{
+  "status": "verified-format5-geographic-merged-checkpoint",
+  "basis": "af936021b",
+  "upstream": "45d086ecec9cc7b2d81f21625ebc79272612c439",
+  "authorization": "../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1261,
+    "packedBytes": 1814814,
+    "unpackedBytes": 8175416,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-ce849e2c88589a284289b57f8ae339db2e7c9b19be164ba91055912794439cc6.tgz",
+    "sha256": "ce849e2c88589a284289b57f8ae339db2e7c9b19be164ba91055912794439cc6"
+  },
+  "sourceInputs": {
+    "src/animation/planner.js": "e240a9aa415ae79def9716f8ad1f58792a20fd56575a30dcd36fdef97b2a46ac",
+    "src/animation/geoTracks.js": "1953480c098e824a4521637668583d7a8211e6036359a358e4a84c34106e1591",
+    "src/grammar/animation/geoState.js": "921dad0fc1fa84a41f6c2a8877c0719bddc2525a9bd81220e4ae3bd023278570",
+    "src/materialization/animation/geoPresentation.js": "5ef1c5afa4cf39b87b116541b0a78922b9d2911b8033a82a94aa14d1dcfb8ea8",
+    "src/animation/columnCodec.js": "968674bb4fb632026de774dc07dc2797f2c99454de4bb731fe404f60e1c2508b",
+    "src/animation/numericColumns.js": "6db7cff74e73bd6b2a96aa08207d314f4896bce886ea1787935156d302dfcd5d",
+    "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+    "src/animation/frames.js": "d67006ab0deaaa48d43dc7f10d9b9eb59891cc094826886423e0b20a998f8cf7",
+    "src/animation/sample.js": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+    "src/grammar/geo/stream.js": "da1307c795183bf752c0ac5c2065aeee41986f677361ca6e7a8738ccbb8a331a",
+    "src/grammar/geo/capacity.js": "f9dea6d520ffdf9982c903b56299a2952802ec1baf79663ac730dfb2c2476b6f",
+    "src/grammar/geo/markGeometry.js": "2755410c1ce2e611ee810ebb468470b298b4ba91df23c55259715fe1c361952e",
+    "types/animation.d.ts": "264f37f74af70f162fce1486d18a4b95cae19d1f0337c360b9936c2955a90e98"
+  },
+  "exactUpstreamAndArchiveSources": true,
+  "checks": {
+    "owning": 818,
+    "contracts": 37,
+    "docs-freshness-recheck": 18,
+    "doc-ceiling-recheck": 3
+  },
+  "documentation": {
+    "firstRun": {
+      "tests": 247,
+      "passed": 246,
+      "failed": 1,
+      "failure": "stale generated provenance"
+    },
+    "repair": "regenerated provenance/machine/llms; entire owning freshness file18 passed",
+    "fullDocsSuiteRerun": false
+  },
+  "critical": {
+    "planner.js": [
+      100,
+      94.47,
+      100
+    ],
+    "geoTracks.js": [
+      100,
+      100,
+      100
+    ],
+    "geoState.js": [
+      100,
+      97.96,
+      100
+    ],
+    "geoPresentation.js": [
+      100,
+      95.29,
+      100
+    ]
+  },
+  "installed": {
+    "20": {
+      "runtime": "animation + point scales + geographic animation including installed 4-renderer numeric path",
+      "types": "passed",
+      "docs": 8,
+      "bundles": 6,
+      "sameArchive": true,
+      "policyRecheckOnly": true
+    },
+    "22": {
+      "runtime": "animation + point scales + geographic animation including installed 4-renderer numeric path",
+      "types": "passed",
+      "docs": 8,
+      "bundles": 6,
+      "sameArchive": true,
+      "policyRecheckOnly": false
+    },
+    "24": {
+      "runtime": "animation + point scales + geographic animation including installed 4-renderer numeric path",
+      "types": "passed",
+      "docs": 8,
+      "bundles": 6,
+      "sameArchive": true,
+      "policyRecheckOnly": true
+    }
+  },
+  "browser": {
+    "archiveSHA256": "ce849e2c88589a284289b57f8ae339db2e7c9b19be164ba91055912794439cc6",
+    "sourceRootInputs": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "versions": [
+      3,
+      4,
+      5
+    ],
+    "status": "passed"
+  },
+  "original1000": {
+    "node": "v22.23.1",
+    "pid": 55690,
+    "archive": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1261,
+      "packedBytes": 1814814,
+      "unpackedBytes": 8175416,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-ce849e2c88589a284289b57f8ae339db2e7c9b19be164ba91055912794439cc6.tgz",
+      "sha256": "ce849e2c88589a284289b57f8ae339db2e7c9b19be164ba91055912794439cc6"
+    },
+    "kind": "original 1000-point subset functional integration; upstream original100k source-specific only; no P95 claim",
+    "cases": [
+      {
+        "count": 1000,
+        "start": "2026-11-02T10:18:49.460Z",
+        "phases": [
+          {
+            "id": "prepare",
+            "version": 5
+          },
+          {
+            "id": "native-coordinate",
+            "t": 0,
+            "commands": 1999,
+            "maxError": 1.7053025658242404e-13,
+            "hash": "2a723fb43565281fc12937139b5663d253e4d905b53caddb71d62f404c2f8e75"
+          },
+          {
+            "id": "native-coordinate",
+            "t": 50,
+            "commands": 1999,
+            "maxError": 2.8421709430404007e-13,
+            "hash": "1ed2a72f9a573542835851a79b54ee27011369cce9feea515fd90b1d3aab20c5"
+          },
+          {
+            "id": "native-coordinate",
+            "t": 100,
+            "commands": 1999,
+            "maxError": 3.410605131648481e-13,
+            "hash": "4b4067edbf8e5c3f3412e550fc5c1fa8fad43fb1c351337b96513bc2b43b9707"
+          },
+          {
+            "id": "offline-native",
+            "wholeFrames": true
+          },
+          {
+            "id": "rebase-coordinates",
+            "commands": 1999,
+            "maxError": 2.8421709430404007e-13,
+            "hash": "4496593ce81ee8f951ea185b33fa3703ef3441e9ebee5c965ac2e002e0f1fd9e"
+          },
+          {
+            "id": "offline-rebase",
+            "wholeFrames": true
+          },
+          {
+            "id": "batch-four",
+            "frames": 4
+          }
+        ],
+        "rawHash": "8028f2da2e9bbbcd45e287854f20e66f240d98da6dd30f88cc3a9d0bc2898fe6",
+        "resources": {
+          "native": true,
+          "limits": {
+            "maxEndpointNodes": 10000,
+            "maxOutputNodes": 10000
+          },
+          "maximumWork": {
+            "Animation preparation work": 51054
+          }
+        },
+        "columns": {
+          "logicalValues": 22254,
+          "descriptorVisits": 22253,
+          "cellVisits": 22010,
+          "storageCells": 9998,
+          "interningWork": 72164,
+          "internNodes": 92,
+          "uniqueLowerBound": {
+            "physicalValues": 74,
+            "encodedValues": 202,
+            "bytes": 107635
+          },
+          "physicalValues": 1090,
+          "encodedValues": 2940,
+          "bytes": 122398,
+          "validatedLogicalValues": 22254
+        },
+        "singleSampleWork": 18916,
+        "nativeBytes": 122334,
+        "rebaseBytes": 126110,
+        "status": "passed"
+      }
+    ]
+  },
+  "packSizes": [
+    {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1261,
+      "packedBytes": 1814814,
+      "unpackedBytes": 8175416,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/geo-format5-merged/pack22/ggaction-0.0.26.tgz",
+      "sha256": "ce849e2c88589a284289b57f8ae339db2e7c9b19be164ba91055912794439cc6"
+    },
+    {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1261,
+      "packedBytes": 1818357,
+      "unpackedBytes": 8175416,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/geo-format5-merged/pack20/ggaction-0.0.26.tgz",
+      "sha256": "2b92f0b642552a65feded0c90113e3670afb384fc5f41264aa10226621ee66b8"
+    },
+    {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1261,
+      "packedBytes": 1818357,
+      "unpackedBytes": 8175416,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/geo-format5-merged/pack24/ggaction-0.0.26.tgz",
+      "sha256": "2b92f0b642552a65feded0c90113e3670afb384fc5f41264aa10226621ee66b8"
+    }
+  ],
+  "artifactCeilings": [
+    1261,
+    1818400,
+    8175500
+  ],
+  "bundleCeilings": {
+    "ggaction": 788900,
+    "ggaction/basic": 426300,
+    "ggaction/svg": 26000,
+    "ggaction/graph": 69600,
+    "ggaction/animation": 343500,
+    "ggaction/interaction": 137600
+  },
+  "reusedEvidence": {
+    "privateColumnsCritical": "exact upstream source: columnCodec100/98.33/100 numericColumns100/100/100; included functional regressions in merged animation suite",
+    "original100k": "upstream source-specific all-coordinate/native/offline/rebase; batch4pass/5reject; exact13inputs, not repeated combined-root large run",
+    "familyClosure": "upstream28family; merged owning818 includes all current animation tests"
+  },
+  "limitations": [
+    "Canvas common sampler50ms/P95 not qualified",
+    "Geo hit/query capacity separate A3",
+    "100cycle retained heap not qualified",
+    "Final full suite not complete"
+  ],
+  "evidenceFiles": {
+    "browser-installed.json": {
+      "sha256": "0bda0a915f78a02ab4378808a411c64c5852561e2d4c7b045fef122cf4e9ed5d",
+      "bytes": 207
+    },
+    "browser-installed.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "browser-installed.mjs": {
+      "sha256": "aefb86a9792946159db73ec5c435e6215e764a4a4b2204b33ab127aa10c2ae57",
+      "bytes": 838
+    },
+    "budget-recheck20.json": {
+      "sha256": "713baa7ba82d0d94bc41c7a1dd4dff5e4664858e54f3037c3914c6e3c72f8b50",
+      "bytes": 794
+    },
+    "budget-recheck24.json": {
+      "sha256": "0e7ea01ffe06c7bfe8c1ac1d8ce186f0085cbd914451606b53c05d26373812da",
+      "bytes": 794
+    },
+    "contracts.log": {
+      "sha256": "88265e052e1f5bacf26fedf2b14ce98364e1673f3faf254740ec67b95395a115",
+      "bytes": 7274
+    },
+    "doc-ceiling-recheck.log": {
+      "sha256": "c9c9567dd898dbe871146d1908af76968cf99f212ae5eef09da440f5286ffdc3",
+      "bytes": 758
+    },
+    "docs-freshness-recheck.log": {
+      "sha256": "d05ecff54f9b3136dbbb31bbb0a713a1161d3d70f3b8a6f01a314808c75e2906",
+      "bytes": 4238
+    },
+    "docs-llms-final.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "docs-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "docs-machine-final.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "docs-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "docs-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "docs.log": {
+      "sha256": "b435ac502932011aaad1ebc7e5a4369c434094bdb8d5d85929307e9682c73ba3",
+      "bytes": 75789
+    },
+    "format5-followup-installed.mjs": {
+      "sha256": "5825a0260e5710f0469f33589b92be9bbb33dcc038eb02b2a3593dc70db88303",
+      "bytes": 1678
+    },
+    "format5-installed.mjs": {
+      "sha256": "b3cfe2093eef1ab2c0f6f3db992a36f2884f12df0d4a02f9811bf1365003fcbe",
+      "bytes": 2896
+    },
+    "frozen.json": {
+      "sha256": "22da1cf607348b5959ae48b19d1c4e8ab508ce883992c07a018c68a120c54daf",
+      "bytes": 436
+    },
+    "installed-20.json": {
+      "sha256": "839797254f4819146edea4726543fab7ac5abd6aefd31d1a6e15b5dc92d90958",
+      "bytes": 2246
+    },
+    "installed-22.json": {
+      "sha256": "4ce7e3a63c8d60bdd80435fe64a1de94d4bc9c416df7b73e6d8eef23e7686c0c",
+      "bytes": 2231
+    },
+    "installed-24.json": {
+      "sha256": "e0af60eba0c815c6e86689f4e05f3f29ed395286e06b43483758a0fe00adf069",
+      "bytes": 2246
+    },
+    "installed20.log": {
+      "sha256": "d69bca0696c732d570d79e073a13433c091c5f3d1e40b291b6e8512dbd3c68b2",
+      "bytes": 2149
+    },
+    "installed22.log": {
+      "sha256": "a01ea05a905f7e9248625ff3c81504a75307efc0a2ddb85c7863625b7745af26",
+      "bytes": 1634
+    },
+    "installed24.log": {
+      "sha256": "9e7cc37449faabeb9f1d23f2f41687211c33294aa36cd08797156d68b9787e86",
+      "bytes": 2167
+    },
+    "original-1000.json": {
+      "sha256": "66ba7bd2f290adbf050ba61faa4a02fe0b1de7b4b9ff2e8d653993e098c78c25",
+      "bytes": 2898
+    },
+    "original-1000.log": {
+      "sha256": "2397125b3cb3028d30433350f80bfdf1be06b15f08b6e8a4b52e1c137008a7b5",
+      "bytes": 1461
+    },
+    "original-1000.mjs": {
+      "sha256": "aab5cd165c96b57a15d5f7ea2c7efbd502816bd3a3101ab9f905f5b561b4e20f",
+      "bytes": 5134
+    },
+    "owning.log": {
+      "sha256": "8b52d498a05f9fcf80b088d92bb2848f0112855fd505a2bab719774dcbdb174d",
+      "bytes": 196860
+    },
+    "owning.mjs": {
+      "sha256": "abc8d6bcbce4bf5b11ef2cc749842a80aa6b52b72d9e4d007c7548962341fb47",
+      "bytes": 567
+    },
+    "pack20-final.json": {
+      "sha256": "0c7cf5b5c8ef94ae9fbab17bce61b8271f0aec2ace210cb8206ffd56d75c136b",
+      "bytes": 383
+    },
+    "pack20-final.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack20.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack20.log": {
+      "sha256": "833fce414010e54c972c3625ee6ad0d532a889536c770335bcb65ff05266a457",
+      "bytes": 966
+    },
+    "pack22.json": {
+      "sha256": "a86da7271bd50fffd4433e828a9f789cca3eb02c373a679533c61dc878a0ec83",
+      "bytes": 383
+    },
+    "pack22.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24-final.json": {
+      "sha256": "4e49a1dcc62b601ba7d13c28f455d6284d14a3ba2a048bd22564c1652617b772",
+      "bytes": 383
+    },
+    "pack24-final.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "premeasure.json": {
+      "sha256": "402dde762bde8d852126960ecb0db14056db9145a06f193d5a1db1c672a568a7",
+      "bytes": 298
+    },
+    "premeasure.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "record.py": {
+      "sha256": "047215f054bd7ac22828e5a21d75744c712519e841059a705b458cbd3449ebd1",
+      "bytes": 4300
+    }
+  }
+}

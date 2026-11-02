@@ -732,6 +732,16 @@
     "rendering": "authoring-only"
   },
   {
+    "id": "animation-numeric-format",
+    "file": "api/animation.md",
+    "contains": "const numericPlan =",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "from,to",
+    "prerequisites": "Run with ggaction installed; geographic source, capacity, both endpoints and offline replay are included.",
+    "rendering": "authoring-only"
+  },
+  {
     "id": "animation-guides",
     "file": "api/animation.md",
     "contains": ".createVerticalGrid({ values: [5] })",

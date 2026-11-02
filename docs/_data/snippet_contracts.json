@@ -16,6 +16,18 @@
   {
     "file": "api/animation.md",
     "block": 2,
+    "heading": "Preserve geographic capacity in saved animations",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run with ggaction installed; geographic source, capacity, both endpoints and offline replay are included.",
+    "sha256": "2823c5fc3f88a37bd556dd9ea36553c95dc88db1d02588130f1197ae643064b1",
+    "executable": true
+  },
+  {
+    "file": "api/animation.md",
+    "block": 3,
     "heading": "Move axes, labels, and grids",
     "mode": "complete",
     "environment": "node-esm",
@@ -27,7 +39,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 3,
+    "block": 4,
     "heading": "Move axes, labels, and grids",
     "mode": "complete",
     "environment": "node-esm",
@@ -41,7 +53,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 4,
+    "block": 5,
     "heading": "Move axes, labels, and grids",
     "mode": "complete",
     "environment": "node-esm",
@@ -53,7 +65,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 5,
+    "block": 6,
     "heading": "Move axes, labels, and grids",
     "mode": "complete",
     "environment": "node-esm",
@@ -65,7 +77,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 6,
+    "block": 7,
     "heading": "Move axes, labels, and grids",
     "mode": "complete",
     "environment": "node-esm",
@@ -77,7 +89,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 7,
+    "block": 8,
     "heading": "Request larger node limits",
     "mode": "complete",
     "environment": "node-esm",
@@ -91,7 +103,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 8,
+    "block": 9,
     "heading": "Render the same frame",
     "mode": "fragment",
     "environment": "esm-context",
@@ -103,7 +115,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 9,
+    "block": 10,
     "heading": "Play with an explicit clock",
     "mode": "fragment",
     "environment": "browser-module",

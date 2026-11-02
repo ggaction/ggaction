@@ -34,11 +34,17 @@ slot을 교체하며 endpoint normalization·row value 검산·원 work 과금�
 
 비공개 `animation/columnCodec.js`는 실제 준비값의 shape별 dense column과 정확 scalar runs만
 소유한다. 원 concrete 값·own key 순서·undefined·hole을 무손실 복원하며 의미를 생성하지 않는다.
+별도 private columns@2는 compound 내부까지 같은 Node를 내려가고,
+`animation/numericColumns.js`가 finite Float64의 정확 little-endian 저장과 canonical base64를
+검산한다. Reader는 원 전송 한도와 모든 pool 저장·logical occurrence·reference 비용을 복원
+할당 전에 과금한다. 공개 format5가 명시적으로 이 codec을 선택하며 실제 값과 원 expanded 비용을 유지한다.
+Geo@2는 기존 native capacity owner를 각 group의 stream/path 선언으로 전달하고
+default group aggregate와 전체 work/batch guard는 유지한다. Renderer는 concrete만 읽는다.
 `animation/resources.js`의 opaque scope는 native owner 검증과 offline 데이터 검산의 권한을
 구별한다. Planner와 sampler는 기존 기본 경로를 유지하며 이 명시 private scope에서만 준비
 traversal과 node 상계를 선택한다. Sample의 기존 canonical native proof에서 현재 owner만 읽어
 명시 rebase scope를 새로 만들며 별도 frame scope나 과거 plan/frame을 참조하지 않는다.
-공개 planner는 두 node 옵션을 모두 생략하면 기존v3를 사용하고 명시 요청만v4의 endpoint/timeline
+공개 planner는 formatVersion 없이 두 node 옵션을 모두 생략하면 기존v3를 사용하고 node 명시 요청은v4의 endpoint/timeline
 Node와 공통 vectors로 저장한다. 동일 codec 뒤 strict actual graphic 검산을 재사용하며 native 권한을
 offline에 복원하지 않는다. 정확 공개 quota·wire format은 [Animation 계약](contract/current/ANIMATION.md),
 원100k 검증 checkpoint는 [private codec 기록](impl/roadmap9/qualification/animation-codec-private.md)을 따른다.
@@ -1037,7 +1043,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 69,600 bytes |
 | `ggaction/interaction` | 137,600 bytes |
-| `ggaction/animation` | 341,600 bytes |
+| `ggaction/animation` | 343,500 bytes |
 
 
 
@@ -5111,6 +5117,7 @@ Root SHA 합산은1258entries/Node22packed1807573/Node20·24packed1810854/unpack
 Prepared point scale 통합은1258entries/Node22packed1808245/Node20·24packed1811511/unpacked8152110bytes이며 cap1258/1811600/8152200이다. Animation gzip 최대340708B에는 표의340800B를 적용한다. [합산 검증](impl/roadmap9/qualification/prepared-scale-merged-evidence/qualification.json)은 source-specific100k와 fresh1k·동일 archive3Node를 구별하며 원50ms 및 최종 통합을 남긴다.
 
 Point positions vector의 local freeze 통합은 source155B만 추가해1258entries/unpacked8152265B이며 cap8152300B다. 다른 artifact/runtime 한도는 유지한다. [통합 검증](impl/roadmap9/qualification/position-state-merged-evidence/qualification.json)은 현재 샘플러의1k 동등성과 original100k source-specific 결과를 구별한다.
+Private columns@2 codec 추가의 package 실측은1259entries/Node22packed1809598/Node20·24packed1812879/unpacked8156156bytes이며 최소 cap1259/1812900/8156200이다. 기존 v3/v4 공개 writer와 reader는 유지되고 공개 format5는 아직 연결되지 않았다. [private 검증](impl/roadmap9/qualification/GEO_CAPACITY_A2_IMPLEMENTATION.md)은 후속 공개 Geo@2 검증과 구분한다.
 
 JSON string count owner 합산은1259entries/Node22packed1808438/Node20·24packed1811708/unpacked8152539B이며 cap1259/1811800/8152600이다. graph gzip69506B에는 표의69600B를 적용한다. [통합 검증](impl/roadmap9/qualification/json-count-merged-evidence/qualification.json)은 기존 scalar/error 동등성과 아직 남은 async 경계를 구별한다.
 
@@ -5167,3 +5174,11 @@ Node20·24packed1815492/unpacked8165281B이며 ceiling1260/1815500/8165300이다
 Animation gzip341583B에는 위 표의341600B를 적용한다.
 [통합 검증](impl/roadmap9/qualification/prepared-scalar-merged-evidence/qualification.json)은
 1k 전체 동등성 및 원100k source-specific 증거와 미완료50ms/P95·100cycle을 구별한다.
+
+명시 format5/Geo2 공개 연결의 package 실측은1260entries/Node22packed1811425/Node20·24packed1814701/unpacked8163107B이며 최소cap1260/1814800/8163200이다. Animation gzip 최대342693B에는 표의342700B, 검색1096414B에는1096500B를 적용한다. [기능 검증](impl/roadmap9/qualification/GEO_CAPACITY_A2_IMPLEMENTATION.md)은 동일 archive의3Node·source-free browser·원100k 모든 좌표/offline/rebase와 기존10M batch 경계를 확인하며, Canvas50ms/P95·원100cycle·Geo hit/query 및 최종 통합과 구분한다.
+
+Root format5/Geo2·scalar·metadata·private cursor 합산은1261entries/Node22packed1814814/
+Node20·24packed1818357/unpacked8175416B이며 ceiling1261/1818400/8175500이다.
+Animation gzip343480B에는 표의343500B를 적용했다.
+[통합 검증](impl/roadmap9/qualification/geo-format5-merged-evidence/qualification.json)은
+같은 archive3Node/browser 및 원1k 실제 기능과 upstream 원100k source-specific 증거를 구분한다.

@@ -1,0 +1,295 @@
+TAP version 13
+# Subtest: private columns preserve independent literal rows including absence undefined holes tuples and key order
+ok 1 - private columns preserve independent literal rows including absence undefined holes tuples and key order
+  ---
+  duration_ms: 7.903375
+  ...
+# Subtest: scalar runs preserve exact repeated values and complete logical row count
+ok 2 - scalar runs preserve exact repeated values and complete logical row count
+  ---
+  duration_ms: 1.818292
+  ...
+# Subtest: exact scalar vectors intern values while preserving signed zero and typed values
+ok 3 - exact scalar vectors intern values while preserving signed zero and typed values
+  ---
+  duration_ms: 0.876625
+  ...
+# Subtest: literal fallback and snapshots preserve mixed data styles and later caller mutation
+ok 4 - literal fallback and snapshots preserve mixed data styles and later caller mutation
+  ---
+  duration_ms: 3.736625
+  ...
+# Subtest: external array nodes and shared descriptor nodes retain their logical expansion charge
+ok 5 - external array nodes and shared descriptor nodes retain their logical expansion charge
+  ---
+  duration_ms: 0.890708
+  ...
+# Subtest: native sampled and partition payloads retain every field and existing semantic validation
+ok 6 - native sampled and partition payloads retain every field and existing semantic validation
+  ---
+  duration_ms: 162.227875
+  ...
+# Subtest: closed external headers nodes and object entries reject malformed data
+ok 7 - closed external headers nodes and object entries reject malformed data
+  ---
+  duration_ms: 0.331542
+  ...
+# Subtest: external lengths references shapes and dense columns reject forged descriptors
+ok 8 - external lengths references shapes and dense columns reject forged descriptors
+  ---
+  duration_ms: 0.83675
+  ...
+# Subtest: scalar run lengths values overflow and expansion fail before materialization
+ok 9 - scalar run lengths values overflow and expansion fail before materialization
+  ---
+  duration_ms: 4.163916
+  ...
+# Subtest: plain-data boundaries reject getters cycles and executable data before reading
+ok 10 - plain-data boundaries reject getters cycles and executable data before reading
+  ---
+  duration_ms: 1.191291
+  ...
+# Subtest: external nested array columns and mixed literal columns restore every actual cell
+ok 11 - external nested array columns and mixed literal columns restore every actual cell
+  ---
+  duration_ms: 0.586667
+  ...
+# Subtest: closed shape variants never read inherited optional getters
+ok 12 - closed shape variants never read inherited optional getters
+  ---
+  duration_ms: 1.538
+  ...
+# Subtest: wide closed row shapes preserve all fields their order and exact accounting
+ok 13 - wide closed row shapes preserve all fields their order and exact accounting
+  ---
+  duration_ms: 96.296042
+  ...
+# Subtest: preallocation encoding estimates match independent literal tagged layouts and UTF8 byte counts
+ok 14 - preallocation encoding estimates match independent literal tagged layouts and UTF8 byte counts
+  ---
+  duration_ms: 0.812334
+  ...
+# Subtest: encoded expansion and escaped bytes fail in the estimate before tagged output allocation
+ok 15 - encoded expansion and escaped bytes fail in the estimate before tagged output allocation
+  ---
+  duration_ms: 719.723667
+  ...
+# Subtest: intern buckets compare complete scalar vectors and ordered shape keys after collisions
+ok 16 - intern buckets compare complete scalar vectors and ordered shape keys after collisions
+  ---
+  duration_ms: 4.780625
+  ...
+# Subtest: unique retained lower bounds reject escaped accumulation while exact duplicates remain valid
+ok 17 - unique retained lower bounds reject escaped accumulation while exact duplicates remain valid
+  ---
+  duration_ms: 152.688958
+  ...
+# Subtest: independent intern work and envelope allocation enforce their exact fixed bounds
+ok 18 - independent intern work and envelope allocation enforce their exact fixed bounds
+  ---
+  duration_ms: 436.085208
+  ...
+# Subtest: envelope walks read only their own stack tags and preserve every resource guard
+ok 19 - envelope walks read only their own stack tags and preserve every resource guard
+  ---
+  duration_ms: 937.682209
+  ...
+# Subtest: animation envelope reuses the tagged codec for exact numeric values, holes and embedded bytes
+ok 20 - animation envelope reuses the tagged codec for exact numeric values, holes and embedded bytes
+  ---
+  duration_ms: 5.327375
+  ...
+# Subtest: animation envelope rejects unknown schema, extra fields, broken JSON and payload corruption
+ok 21 - animation envelope rejects unknown schema, extra fields, broken JSON and payload corruption
+  ---
+  duration_ms: 0.90225
+  ...
+# Subtest: animation serialization rejects accessors, cyclic and executable input without invoking it
+ok 22 - animation serialization rejects accessors, cyclic and executable input without invoking it
+  ---
+  duration_ms: 0.174917
+  ...
+# Subtest: animation envelope bounds encoded text, depth and work before recursive decoding
+ok 23 - animation envelope bounds encoded text, depth and work before recursive decoding
+  ---
+  duration_ms: 1007.481042
+  ...
+# Subtest: UTF-8 and JSON escaping contribute to the byte budget before whole-output allocation
+ok 24 - UTF-8 and JSON escaping contribute to the byte budget before whole-output allocation
+  ---
+  duration_ms: 1363.366208
+  ...
+# Subtest: explicit node options alone select version4 while omitted options preserve version3 bytes and failure order
+ok 25 - explicit node options alone select version4 while omitted options preserve version3 bytes and failure order
+  ---
+  duration_ms: 96.734083
+  ...
+# Subtest: explicit limits validate exact safe bounds own undefined and complete endpoint counts atomically
+ok 26 - explicit limits validate exact safe bounds own undefined and complete endpoint counts atomically
+  ---
+  duration_ms: 3415.754875
+  ...
+# Subtest: version4 public replay preserves concrete values timeline all decisions Basic and partition frames
+ok 27 - version4 public replay preserves concrete values timeline all decisions Basic and partition frames
+  ---
+  duration_ms: 127.160209
+  ...
+# Subtest: version4 restore rejects forged metadata refs shapes actual graphic values and sample views before authentic output
+ok 28 - version4 restore rejects forged metadata refs shapes actual graphic values and sample views before authentic output
+  ---
+  duration_ms: 158.098667
+  ...
+# Subtest: player interruption preserves explicit node options and rejected changes preserve the active run
+ok 29 - player interruption preserves explicit node options and rejected changes preserve the active run
+  ---
+  duration_ms: 2436.991333
+  ...
+# Subtest: all continuous point kernels retain complete native and offline frames through version4
+ok 30 - all continuous point kernels retain complete native and offline frames through version4
+  ---
+  duration_ms: 87.279708
+  ...
+# Subtest: version4 header rejection precedes column allocation and inherited views are never read
+ok 31 - version4 header rejection precedes column allocation and inherited views are never read
+  ---
+  duration_ms: 17.362458
+  ...
+# Subtest: plan version dispatch reads only an own data descriptor without executing either getter
+ok 32 - plan version dispatch reads only an own data descriptor without executing either getter
+  ---
+  duration_ms: 8.9515
+  ...
+# Subtest: legacy geographic version 3 preserves bytes and frames for capacity default
+ok 33 - legacy geographic version 3 preserves bytes and frames for capacity default
+  ---
+  duration_ms: 85.165041
+  ...
+# Subtest: legacy geographic version 4 preserves bytes and frames for capacity default
+ok 34 - legacy geographic version 4 preserves bytes and frames for capacity default
+  ---
+  duration_ms: 42.070083
+  ...
+# Subtest: legacy geographic version 3 preserves bytes and frames for capacity 1000
+ok 35 - legacy geographic version 3 preserves bytes and frames for capacity 1000
+  ---
+  duration_ms: 13.747542
+  ...
+# Subtest: legacy geographic version 4 preserves bytes and frames for capacity 1000
+ok 36 - legacy geographic version 4 preserves bytes and frames for capacity 1000
+  ---
+  duration_ms: 25.452542
+  ...
+# Subtest: legacy geographic version 3 preserves bytes and frames for capacity 200000
+ok 37 - legacy geographic version 3 preserves bytes and frames for capacity 200000
+  ---
+  duration_ms: 10.643834
+  ...
+# Subtest: legacy geographic version 4 preserves bytes and frames for capacity 200000
+ok 38 - legacy geographic version 4 preserves bytes and frames for capacity 200000
+  ---
+  duration_ms: 22.675917
+  ...
+# Subtest: finite Float64 vectors preserve literal little-endian bits and signed extremes
+ok 39 - finite Float64 vectors preserve literal little-endian bits and signed extremes
+  ---
+  duration_ms: 2.337
+  ...
+# Subtest: closed numeric headers and canonical base64 reject corruption before expansion
+ok 40 - closed numeric headers and canonical base64 reject corruption before expansion
+  ---
+  duration_ms: 0.909167
+  ...
+# Subtest: numeric interpretation is fixed LE while semantic proof and digest own different guarantees
+ok 41 - numeric interpretation is fixed LE while semantic proof and digest own different guarantees
+  ---
+  duration_ms: 6.160625
+  ...
+# Subtest: version2 descends singleton and identical compound rows without losing numeric paths or aliases
+ok 42 - version2 descends singleton and identical compound rows without losing numeric paths or aliases
+  ---
+  duration_ms: 25.314458
+  ...
+# Subtest: compound descent preserves own undefined holes prototypes and field order
+ok 43 - compound descent preserves own undefined holes prototypes and field order
+  ---
+  duration_ms: 7.177958
+  ...
+# Subtest: version2 exact pools count unused storage and all repeated references before restored rows
+ok 44 - version2 exact pools count unused storage and all repeated references before restored rows
+  ---
+  duration_ms: 3.173084
+  ...
+# Subtest: pool storage is charged even when the root never references a shared stored vector
+ok 45 - pool storage is charged even when the root never references a shared stored vector
+  ---
+  duration_ms: 485.115
+  ...
+# Subtest: mixed scalar vectors and runs remain lossless while finite repeated columns intern exactly
+ok 46 - mixed scalar vectors and runs remain lossless while finite repeated columns intern exactly
+  ---
+  duration_ms: 5.02825
+  ...
+# Subtest: private numeric columns carry native and sampled geographic commands without regeneration
+ok 47 - private numeric columns carry native and sampled geographic commands without regeneration
+  ---
+  duration_ms: 2243.481541
+  ...
+# Subtest: private explicit scope preserves native endpoints offline values and flat rebase ownership
+ok 48 - private explicit scope preserves native endpoints offline values and flat rebase ownership
+  ---
+  duration_ms: 112.608917
+  ...
+# Subtest: native scoped admission retains nested owners and each nonpoint collection limit
+ok 49 - native scoped admission retains nested owners and each nonpoint collection limit
+  ---
+  duration_ms: 95.682083
+  ...
+# Subtest: closed limits token identity and explicit optin cannot be forged by shallow freezes
+ok 50 - closed limits token identity and explicit optin cannot be forged by shallow freezes
+  ---
+  duration_ms: 16.819417
+  ...
+# Subtest: scoped work preserves exact canonical charges while every other owner stays at ten million
+ok 51 - scoped work preserves exact canonical charges while every other owner stays at ten million
+  ---
+  duration_ms: 7.910833
+  ...
+# Subtest: scope work counters remain own data under inherited optional getters
+ok 52 - scope work counters remain own data under inherited optional getters
+  ---
+  duration_ms: 0.1655
+  ...
+# Subtest: native point admission never reads an inherited capacity option
+ok 53 - native point admission never reads an inherited capacity option
+  ---
+  duration_ms: 7.361708
+  ...
+# Subtest: scoped expansion is preflighted separately from legacy literal accounting
+ok 54 - scoped expansion is preflighted separately from legacy literal accounting
+  ---
+  duration_ms: 7.295916
+  ...
+# Subtest: frame resource admission requires authentication and source omission preserves the ordinary path
+ok 55 - frame resource admission requires authentication and source omission preserves the ordinary path
+  ---
+  duration_ms: 69.513
+  ...
+# Subtest: one hundred distinct rebases admit only the current canonical native owners
+ok 56 - one hundred distinct rebases admit only the current canonical native owners
+  ---
+  duration_ms: 643.747458
+  ...
+# Subtest: scoped endpoint counts distinguish bodies guides backgrounds and anonymous rows
+ok 57 - scoped endpoint counts distinguish bodies guides backgrounds and anonymous rows
+  ---
+  duration_ms: 6.072667
+  ...
+1..57
+# tests 57
+# suites 0
+# pass 57
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7064.231083
