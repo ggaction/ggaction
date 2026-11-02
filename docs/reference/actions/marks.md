@@ -2314,6 +2314,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
@@ -2362,6 +2363,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
 | `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
@@ -2399,6 +2401,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
@@ -2460,6 +2463,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
 | `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
@@ -2509,6 +2513,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
@@ -2556,6 +2561,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
 | `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
@@ -2702,6 +2708,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fill` | Optional / branch-dependent | `"none" \| undefined` |
@@ -2760,6 +2767,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fill` | Optional / branch-dependent | `"none" \| undefined` |
 | `stepDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |

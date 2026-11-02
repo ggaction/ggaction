@@ -981,12 +981,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 784,400 bytes |
-| `ggaction/basic` | 424,700 bytes |
+| `ggaction` | 785,300 bytes |
+| `ggaction/basic` | 425,500 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 136,700 bytes |
-| `ggaction/animation` | 333,800 bytes |
+| `ggaction/interaction` | 136,900 bytes |
+| `ggaction/animation` | 334,400 bytes |
 
 
 
@@ -2868,6 +2868,15 @@ Corner item block은 기존 layout owner가 실제 title/item bounds와12px gap�
 ### 첫 네 기능 통합의 검색 측정
 
 ### 열네 승인 기능의 누적 통합 측정
+
+### Explicit concrete path capacity
+
+Geo의 실행 용량은 exact native binding이 소유하며 materializer가 path별 concrete 선언으로 전달한다.
+Path topology/value schema가 현재 선언을 cache보다 먼저 검산하고, bounds·flatten·renderer·scene·codec는
+같은 backend-neutral properties를 소비한다. Primitive edit와 editable restore는 selector가 찾은 실제 retained
+scoped Geo binding을 grammar 검증에 전달해 선언과 대조한다. Standalone concrete는 native 권한을 주장하지 않고 독립 schema를
+만족한다. Clip/generator/hit/animation 보호 경계에는 이 선언을 자동으로 전파하지 않는다. 정확한 옵션과
+기본값은 [GEOMETRY](contract/current/GEOMETRY.md) 및 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
 
 ### Point-owned graphic capacity
 
@@ -5002,3 +5011,7 @@ Private hit assembly와 shared path raw 계산/frozen facade 분리까지 포함
 1245entries/8,059,160unpacked, packed Node20/24 1,790,460 / Node22 1,786,971bytes다.
 현재 package ceiling은1245/1,790,500/8,059,200이며 Full/interaction bundle ceiling은784,400/136,700이다.
 이 크기 정합은 원100k runtime이나 성능 SLO 성공을 뜻하지 않는다.
+
+Geo explicit capacity의 단일 정규화 owner를 추가한 A1 package 실측은 1246 entries,
+8,068,202 unpacked bytes, Node22 packed 1,788,941 / Node20 1,792,600 bytes이다.
+현재 ceiling은 1246 / 1,792,700 / 8,068,300으로 실제 입력만 반영한다.

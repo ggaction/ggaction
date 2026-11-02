@@ -429,9 +429,33 @@ offline restoration retain the same meaning. Evidence: `test/unit/geo/encodings.
 `test/contracts/realistic-geographic-encodings.test.js` (five authentic datasets × three ordinary and three
 conditional recipes), and the geographic field renderer/installed consumers.
 
+### Explicit projected-output capacity
+
+Geo shape, point, line and graticule create/edit options accept `capacity?: { maxProjectedPoints?: number,
+maxPathCommands?: number }`. Each explicit field is an integer from 1 through 200000. Omitted fields
+normalize to 10000 projected points and 30000 path commands; an omitted object on edit retains the
+previous binding. An explicit object replaces the policy, so `{}` resets both values to defaults.
+Only own enumerable data fields are accepted; unknown, inherited, accessor, undefined and null values
+reject. Annotation and source-resource options do not accept this mark execution policy.
+
+The exact native binding stores the normalized policy once. It limits the mark's aggregate projected
+output points and aggregate path commands. Each stream also checks its refined points, output points
+and commands against maxPathCommands before returning complete output. Refinement, clipping, winding,
+projection arithmetic, graphic count 10000 and work 10M are unchanged. Circle/graticule generator
+limits are independent. No vertices are dropped and a path is never split to satisfy a limit.
+Each emitted path copies the explicit maxPathCommands to concrete `properties.maxCommands`; omitted
+capacity preserves the previous graphic shape. Direct edits and editable restore require that declaration
+to match the exact scoped Geo owner. Creation, capacity/source/projection/Canvas edits preflight before
+writes. Standalone concrete paths follow the [primitive capacity contract](PRIMITIVES.md#editgraphics).
+
+This capacity applies to native materialization, concrete scenes, graphic/editable persistence and the
+four renderers. Typed camera animation capacity transport and large-path hit preparation remain separate
+limitations; increasing this option does not increase animation, stroke or query budgets. Evidence:
+`test/unit/geo/capacity.test.js`, `test/contracts/geo-mark-types.test.js`.
+
 ## `createGeoShapeMark`
 
-- Signature: `createGeoShapeMark({id?,coordinate?,geometry?,interpolation?,routeHint?,style?})`; style is the flattened native style options described above.
+- Signature: `createGeoShapeMark({id?,coordinate?,geometry?,interpolation?,routeHint?,capacity?,style?})`; style is the flattened native style options described above.
 - Create mixed feature shapes. Omission uses documented inference and defaults.
 
 ### Formal values — `createGeoShapeMark`
@@ -447,7 +471,7 @@ conditional recipes), and the geographic field renderer/installed consumers.
 
 ## `editGeoShapeMark`
 
-- Signature: `editGeoShapeMark({target?,coordinate?,geometry?,interpolation?,routeHint?,style?})`; style is the flattened native style options described above.
+- Signature: `editGeoShapeMark({target?,coordinate?,geometry?,interpolation?,routeHint?,capacity?,style?})`; style is the flattened native style options described above.
 - Edit mixed feature shapes. An edit keeps all omitted decisions.
 
 ### Formal values — `editGeoShapeMark`
@@ -463,7 +487,7 @@ conditional recipes), and the geographic field renderer/installed consumers.
 
 ## `createGeoPointMark`
 
-- Signature: `createGeoPointMark({id?,coordinate?,geometry?,interpolation?,routeHint?,radiusDeg?,style?})`; style is the flattened native style options described above.
+- Signature: `createGeoPointMark({id?,coordinate?,geometry?,interpolation?,routeHint?,radiusDeg?,capacity?,style?})`; style is the flattened native style options described above.
 - Create point features. Omission uses documented inference and defaults.
 
 ### Formal values — `createGeoPointMark`
@@ -479,7 +503,7 @@ conditional recipes), and the geographic field renderer/installed consumers.
 
 ## `editGeoPointMark`
 
-- Signature: `editGeoPointMark({target?,coordinate?,geometry?,interpolation?,routeHint?,radiusDeg?,style?})`; style is the flattened native style options described above.
+- Signature: `editGeoPointMark({target?,coordinate?,geometry?,interpolation?,routeHint?,radiusDeg?,capacity?,style?})`; style is the flattened native style options described above.
 - Edit point features. An edit keeps all omitted decisions.
 
 ### Formal values — `editGeoPointMark`
@@ -495,7 +519,7 @@ conditional recipes), and the geographic field renderer/installed consumers.
 
 ## `createGeoLineMark`
 
-- Signature: `createGeoLineMark({id?,coordinate?,geometry?,interpolation?,routeHint?,style?})`; style is the flattened native style options described above.
+- Signature: `createGeoLineMark({id?,coordinate?,geometry?,interpolation?,routeHint?,capacity?,style?})`; style is the flattened native style options described above.
 - Create line features. Omission uses documented inference and defaults.
 
 ### Formal values — `createGeoLineMark`
@@ -511,7 +535,7 @@ conditional recipes), and the geographic field renderer/installed consumers.
 
 ## `editGeoLineMark`
 
-- Signature: `editGeoLineMark({target?,coordinate?,geometry?,interpolation?,routeHint?,style?})`; style is the flattened native style options described above.
+- Signature: `editGeoLineMark({target?,coordinate?,geometry?,interpolation?,routeHint?,capacity?,style?})`; style is the flattened native style options described above.
 - Edit line features. An edit keeps all omitted decisions.
 
 ### Formal values — `editGeoLineMark`
@@ -527,7 +551,7 @@ conditional recipes), and the geographic field renderer/installed consumers.
 
 ## `createGraticule`
 
-- Signature: `createGraticule({id?,coordinate?,stepDeg?,extentDeg?,precisionDeg?,style?})`; style is the flattened native style options described above.
+- Signature: `createGraticule({id?,coordinate?,stepDeg?,extentDeg?,precisionDeg?,capacity?,style?})`; style is the flattened native style options described above.
 - Create longitude and latitude lines. Omission uses documented inference and defaults.
 - stepDeg defaults to[10,10], extentDeg to[[-180,-80],[180,80]], precisionDeg to2.5. Steps are(0,180], precision is(0,10], corners are strictly ordered within longitude±180/latitude±90. Lines occur at integer step multiples; the duplicate180 meridian is omitted for a full world. No geometry resource is synthesized.
 
@@ -556,7 +580,7 @@ step edit는 새 원값/item을 만든다. 둘 다 기존 analytical snapshot을
 
 ## `editGraticule`
 
-- Signature: `editGraticule({target?,coordinate?,stepDeg?,extentDeg?,precisionDeg?,style?})`; style is the flattened native style options described above.
+- Signature: `editGraticule({target?,coordinate?,stepDeg?,extentDeg?,precisionDeg?,capacity?,style?})`; style is the flattened native style options described above.
 - Edit longitude and latitude lines. An edit keeps all omitted decisions.
 - stepDeg defaults to[10,10], extentDeg to[[-180,-80],[180,80]], precisionDeg to2.5. Steps are(0,180], precision is(0,10], corners are strictly ordered within longitude±180/latitude±90. Lines occur at integer step multiples; the duplicate180 meridian is omitted for a full world. No geometry resource is synthesized.
 

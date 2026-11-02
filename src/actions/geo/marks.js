@@ -1,3 +1,4 @@
+import { normalizeGeoCapacity } from "../../grammar/geo/capacity.js";
 import { preflightGeoConsumers } from "./closure.js";
 import { getLayerScaleIds } from "../../materialization/marks/index.js";
 import { registerGeoAnnotationActions } from "./annotation.js";
@@ -31,7 +32,7 @@ export const materializeGeoMark = /* @__PURE__ */ closedAction(
 function facade(mode, editing, name) {
   const op = `${editing ? "edit" : "create"}${name}`, graticule = mode === "graticule";
   return closedAction({ op, description: `${editing ? "Edit" : "Create"} geographic ${mode} geometry through a shared projection.` },
-    [editing ? "target" : "id", "coordinate", ...(graticule ? ["stepDeg", "extentDeg", "precisionDeg"] : ["geometry", "interpolation", "routeHint", ...(mode === "point" ? ["radiusDeg"] : [])]), ...GEO_STYLE_FIELDS], function (args = {}) {
+    [editing ? "target" : "id", "coordinate", "capacity", ...(graticule ? ["stepDeg", "extentDeg", "precisionDeg"] : ["geometry", "interpolation", "routeHint", ...(mode === "point" ? ["radiusDeg"] : [])]), ...GEO_STYLE_FIELDS], function (args = {}) {
       if (Object.values(args).some(value => value === undefined)) throw new TypeError("Geographic mark options cannot be undefined.");
       if (editing && !Object.keys(args).some(key => key !== "target")) throw new TypeError("Geographic mark edit requires a nonempty patch.");
       const previous = editing ? resolveEligibleLayer(this, { target: args.target, predicate: layer => layer.mark.type === "geo" && layer.geoBinding.mode === mode, label: op }) : undefined;
@@ -53,6 +54,8 @@ function facade(mode, editing, name) {
         }
         if (radiusDeg !== undefined) binding.radiusDeg = radiusDeg; else delete binding.radiusDeg;
       }
+      const capacity = Object.hasOwn(args, "capacity") ? normalizeGeoCapacity(args.capacity) : previous !== undefined && Object.hasOwn(previous.geoBinding, "capacity") ? previous.geoBinding.capacity : undefined;
+      if (capacity !== undefined) binding.capacity = capacity;
       if ((previous?.encoding?.color !== undefined || previous?.conditionals?.color !== undefined) && Object.hasOwn(args, mode === "line" ? "stroke" : "fill")) throw new TypeError("Geographic color is field-bound; remove its encoding or use encodeColor with a constant value.");
       if ((previous?.encoding?.size !== undefined || previous?.conditionals?.size !== undefined) && ["radiusPx", "radiusDeg"].some(key => Object.hasOwn(args, key))) throw new TypeError("Geographic size is field-bound; remove its encoding or use encodeSize with a constant value.");
       const style = Object.fromEntries(GEO_STYLE_FIELDS.filter(key => Object.hasOwn(args, key)).map(key => [key, args[key]]));

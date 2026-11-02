@@ -2410,7 +2410,14 @@ export interface GeoMarkStyleOptions {
   readonly clip?: boolean; readonly lineCap?: "butt" | "round" | "square"; readonly lineJoin?: "miter" | "round" | "bevel";
   readonly miterLimit?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false; readonly blend?: BlendMode;
 }
+/** Per-mark projected output budget. Each explicit value is an integer from 1 through 200000.
+ * Omitted fields use 10000 projected points and 30000 commands; omission on edit retains the binding. */
+export interface GeoMarkCapacity {
+  readonly maxProjectedPoints?: number;
+  readonly maxPathCommands?: number;
+}
 export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
+  readonly capacity?: GeoMarkCapacity;
   readonly id?: string; readonly coordinate?: string; readonly geometry?: string;
   readonly interpolation?: "source-segment" | "great-circle";
   /** Explicit false removes a previous hint. */
@@ -2423,6 +2430,7 @@ export type GeoPointMarkOptions = GeoSourceMarkOptions & (
 );
 export interface GeoLineMarkOptions extends Omit<GeoSourceMarkOptions, "fill"> { readonly fill?: "none"; }
 export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
+  readonly capacity?: GeoMarkCapacity;
   readonly id?: string; readonly coordinate?: string; readonly fill?: "none";
   readonly stepDeg?: readonly [number, number];
   readonly extentDeg?: readonly [readonly [number, number], readonly [number, number]];
@@ -2446,9 +2454,10 @@ export type GeoAnnotationBinding = { readonly mode: "annotation"; readonly text:
 
 export type GeoMarkBinding = GeoAnnotationBinding | {
   readonly mode: "shape" | "point" | "line";
+  readonly capacity?: Required<GeoMarkCapacity>;
   readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number };
   readonly interpolation: "source-segment" | "great-circle"; readonly routeHint?: readonly [number, number]; readonly radiusDeg?: number;
-} | { readonly mode: "graticule"; readonly graticule: Required<Pick<GraticuleOptions, "stepDeg" | "extentDeg" | "precisionDeg">> };
+} | { readonly mode: "graticule"; readonly capacity?: Required<GeoMarkCapacity>; readonly graticule: Required<Pick<GraticuleOptions, "stepDeg" | "extentDeg" | "precisionDeg">> };
 export interface ContourGridFrame {
   readonly origin: readonly [number, number]; readonly dx: number; readonly dy: number;
   readonly width: number; readonly height: number;
@@ -2788,6 +2797,7 @@ export interface GraphicWeightedBlendProperties {
 }
 
 export interface GraphicObject {
+  /** Path properties may declare maxCommands (integer 1..200000; omitted 30000). Clips keep their own limit. */
   /** Optional named non-Canvas owner clip in its unchanged parent frame. */
   readonly clip?: GraphicClip;
   readonly type: GraphicType;

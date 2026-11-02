@@ -520,3 +520,17 @@ the group. Transitions between different backdrop modes need an explicit policy.
 [Renderer limits and preparation](../api/rendering.md#weighted-concrete-blends)
 apply to all sources. Graphic and editable serialization preserve the concrete
 sources without retaining callbacks or renderer objects.
+
+## Explicit path command capacity
+
+A concrete path may declare `properties.maxCommands`, an own enumerable integer
+from 1 through 200000. Its default remains 30000. Set `maxCommands` with
+`editGraphics` before assigning a larger command array. Lowering the declaration
+below the current command count rejects atomically. Explicit undefined, null,
+accessors and inherited declarations reject. Clips and existing native path
+builders keep their independent limits.
+
+The declaration travels with the concrete path through scenes, weighted sources,
+rendering and graphic persistence. Renderers still consume only concrete graphics.
+A Geo-owned path must match its mark's explicit capacity; use the Geo domain edit
+to change that policy. Path capacity does not raise hit stroke or query budgets.

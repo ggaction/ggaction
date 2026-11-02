@@ -181,7 +181,7 @@ export function flattenVariableWidthPath(commands, widthCommands, options) {
   return ownFlattenedGeometry(flattenCommands(commands, options, widthCommands));
 }
 
-function flattenCommands(commands, { tolerance = 0.25, maxDepth = 20, maxPoints = MAX_FLATTENED_POINTS, transform = [1, 0, 0, 1, 0, 0] } = {}, widthCommands) {
+function flattenCommands(commands, { tolerance = 0.25, maxDepth = 20, maxPoints = MAX_FLATTENED_POINTS, maxCommands = MAX_PATH_COMMANDS, transform = [1, 0, 0, 1, 0, 0] } = {}, widthCommands) {
   geometryOptions(tolerance, maxDepth);
   if (!Number.isSafeInteger(maxPoints) || maxPoints < 1 || maxPoints > MAX_FLATTENED_POINTS) throw new RangeError("Path maxPoints must be an integer from 1 to 1000000.");
   if (!Array.isArray(transform) || transform.length !== 6 || !transform.every(Number.isFinite)) throw new TypeError("Path transform requires six finite numbers.");
@@ -194,7 +194,7 @@ function flattenCommands(commands, { tolerance = 0.25, maxDepth = 20, maxPoints 
   const subpaths = [], diagnostics = [];
   let pointCount = 0;
   const pointLimit = commandIndex => ({ subpaths: [], diagnostics: [{ code: "path-point-limit", limit: maxPoints, commandIndex }] });
-  for (const { start, end, closed } of resolvePathSubpaths(commands)) {
+  for (const { start, end, closed } of resolvePathSubpaths(commands, maxCommands)) {
     const first = map(commands[start].x, commands[start].y, widthCommands?.[start].y), points = [first];
     let current = first, hasSegments = false;
     pointCount++;

@@ -1,0 +1,56 @@
+{
+  "node": "v20.20.2",
+  "platform": "darwin",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2240.093833
+    },
+    {
+      "id": "runtime",
+      "status": "passed",
+      "durationMs": 29762.308667
+    },
+    {
+      "id": "strict-types",
+      "status": "passed",
+      "durationMs": 299.76254199999676
+    },
+    {
+      "id": "documentation",
+      "status": "passed",
+      "durationMs": 1006.7687080000032
+    },
+    {
+      "id": "bundle:ggaction",
+      "status": "passed",
+      "durationMs": 8135.014791000001
+    },
+    {
+      "id": "bundle:ggaction/basic",
+      "status": "passed",
+      "durationMs": 2095.103833000001
+    },
+    {
+      "id": "bundle:ggaction/svg",
+      "status": "passed",
+      "durationMs": 96.93079100000614
+    },
+    {
+      "id": "bundle:ggaction/graph",
+      "status": "passed",
+      "durationMs": 268.66258299999754
+    },
+    {
+      "id": "bundle:ggaction/animation",
+      "status": "passed",
+      "durationMs": 1171.2800829999978
+    },
+    {
+      "id": "bundle:ggaction/interaction",
+      "status": "passed",
+      "durationMs": 736.0614999999962
+    }
+  ]
+}

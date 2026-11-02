@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { getErrorDetails } from "../../../src/core/diagnostics.js";
-import { namespaceGraphicId, resolveGraphicItemCapacity } from "../../../src/selectors/graphicCapacity.js";
+import { namespaceGraphicId, resolveGraphicItemCapacity, resolveGraphicGeoBinding } from "../../../src/selectors/graphicCapacity.js";
 
 function pointProgram(id, count) {
   return {
@@ -47,4 +47,15 @@ test("retained point capacity comes from the exact child rather than parent conf
   assert.deepEqual(resolveGraphicItemCapacity(parent, { id, label: "Point samples" }), {
     pointOwned: true, rawCount: 3, maxItems: 3, graphicType: "circle", label: "Point samples"
   });
+});
+
+
+test("geographic declarations resolve exact scoped owners and reject ambiguous ownership", () => {
+  const local = "coast", id = namespaceGraphicId("layout-cell", local), binding = { mode: "line", capacity: { maxProjectedPoints: 4, maxPathCommands: 4 } };
+  const child = { semanticSpec: { layers: [{ id: local, mark: { type: "geo" }, geoBinding: binding }] }, graphicSpec: { objects: { [local]: {} } } };
+  const parent = { semanticSpec: { layers: [] }, compositionSpec: { id: "layout", children: ["cell", "absent"] }, children: { cell: child } };
+  assert.equal(resolveGraphicGeoBinding(parent, id), binding);
+  assert.equal(resolveGraphicGeoBinding(parent, "other"), undefined);
+  parent.semanticSpec.layers.push({ id, mark: { type: "geo" }, geoBinding: binding });
+  assert.throws(() => resolveGraphicGeoBinding(parent, id), /ambiguous/);
 });

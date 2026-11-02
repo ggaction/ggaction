@@ -44889,6 +44889,11 @@
           "type": "BlendMode | undefined"
         },
         {
+          "name": "capacity",
+          "required": false,
+          "type": "GeoMarkCapacity | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -45059,6 +45064,11 @@
           "type": "BlendMode | undefined"
         },
         {
+          "name": "capacity",
+          "required": false,
+          "type": "GeoMarkCapacity | undefined"
+        },
+        {
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
@@ -45178,6 +45188,11 @@
       },
       "options": [
         {
+          "name": "capacity",
+          "required": false,
+          "type": "GeoMarkCapacity | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -45274,7 +45289,7 @@
         }
       ],
       "callPatterns": [
-        "createGeoPointMark({ id?, coordinate?, target?, geometry?, interpolation?, routeHint?, fill?, stroke? })"
+        "createGeoPointMark({ id?, coordinate?, target?, capacity?, geometry?, interpolation?, routeHint?, fill? })"
       ],
       "snippet": "program.createGeoPointMark({ id: \"cities\", geometry: \"geometry\", coordinate: \"main\" })",
       "errors": [],
@@ -45411,6 +45426,11 @@
           "name": "blend",
           "required": false,
           "type": "BlendMode | undefined"
+        },
+        {
+          "name": "capacity",
+          "required": false,
+          "type": "GeoMarkCapacity | undefined"
         },
         {
           "name": "coordinate",
@@ -45592,6 +45612,11 @@
           "type": "BlendMode | undefined"
         },
         {
+          "name": "capacity",
+          "required": false,
+          "type": "GeoMarkCapacity | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -45755,6 +45780,11 @@
           "name": "blend",
           "required": false,
           "type": "BlendMode | undefined"
+        },
+        {
+          "name": "capacity",
+          "required": false,
+          "type": "GeoMarkCapacity | undefined"
         },
         {
           "name": "coordinate",
@@ -46296,6 +46326,11 @@
       },
       "options": [
         {
+          "name": "capacity",
+          "required": false,
+          "type": "GeoMarkCapacity | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -46382,7 +46417,7 @@
         }
       ],
       "callPatterns": [
-        "createGraticule({ id?, coordinate?, target?, fill?, stepDeg?, extentDeg?, precisionDeg?, stroke? })"
+        "createGraticule({ id?, coordinate?, target?, capacity?, fill?, stepDeg?, extentDeg?, precisionDeg? })"
       ],
       "snippet": "program.createGraticule({ id: \"grid\", stepDeg: [20, 20] })",
       "errors": [],
@@ -46511,6 +46546,11 @@
           "name": "blend",
           "required": false,
           "type": "BlendMode | undefined"
+        },
+        {
+          "name": "capacity",
+          "required": false,
+          "type": "GeoMarkCapacity | undefined"
         },
         {
           "name": "coordinate",

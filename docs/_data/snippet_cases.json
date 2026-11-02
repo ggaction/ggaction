@@ -855,5 +855,15 @@
     "result": "program",
     "prerequisites": "Run the complete ES module with public imports. The explicit preparation allowance belongs only to this immutable program session.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "geographic-capacity",
+    "file": "api/geometry.md",
+    "contains": "const capacityProgram = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "capacityProgram",
+    "prerequisites": "Install ggaction and run this complete ES module in Node.js 20 or later.",
+    "rendering": "authoring-only"
   }
 ]

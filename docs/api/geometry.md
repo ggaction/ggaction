@@ -391,6 +391,52 @@ const map = chart().createCanvas({ width: 400, height: 300, margin: 0 })
   .createGeoShapeMark({ fill: "#93c5fd", stroke: "#1e40af", clip: true });
 ```
 
+### Projected output limits
+
+Geo shape, point, line and graticule marks accept `capacity` on create or edit.
+`maxProjectedPoints` limits the mark's total projected points (default 10000),
+and `maxPathCommands` limits its total commands and each stream's refined/output
+point counts (default 30000). Each explicit integer may be 1 through 200000.
+For example, add `capacity: { maxProjectedPoints: 200000, maxPathCommands: 200000 }`
+to the `createGeoShapeMark` call above when that larger output is needed.
+
+Omitting capacity during an edit retains it; `{}` resets both defaults. Explicit
+undefined, null, accessors, inherited fields and unknown keys reject. Edits that
+exceed either budget fail before changing the chart. The policy stays with the
+mark binding through source, projection and Canvas edits. Geometry is neither
+simplified nor split to fit a budget. Graphic-item, generator, work and clip limits
+still apply independently, and some refined or clipped inputs may exceed the
+explicit maximum. Large-path typed camera animation and hit stroke/query budgets
+are independent; raising this native output policy does not raise those limits.
+
+### Explicit capacity example
+
+This complete Node.js program keeps every source position and declares the
+projected output budget on its line mark. Projection edits retain that policy.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Install ggaction and run this complete ES module in Node.js 20 or later.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const capacityProgram = chart().createCanvas({ width: 400, height: 400, margin: 20 })
+  .createGeometryData({
+    id: "route", format: "geojson", coordinateKind: "geographic",
+    values: { type: "LineString", coordinates: [[-30, -5], [0, 5], [30, -5]] }
+  })
+  .createProjection({ id: "map", type: "equirectangular", scalePx: 100, translatePx: [200, 200] })
+  .createCoordinate({ type: "geo" })
+  .createGeoLineMark({
+    id: "routeLine", stroke: "#2563eb", strokeWidth: 2,
+    capacity: { maxProjectedPoints: 200000, maxPathCommands: 200000 }
+  })
+  .editProjection({ scalePx: 150 });
+```
+
 ## `createGeoShapeMark`
 
 **Chart authoring.**

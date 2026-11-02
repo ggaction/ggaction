@@ -1,3 +1,4 @@
+import { validateGeoGraphicCapacity } from "../grammar/geo/capacity.js";
 import { assertProgramSingleY } from "../materialization/frameState.js";
 import { validateTableBinding } from "../grammar/tablePlot.js";
 import { deriveTableData } from "../grammar/tableData.js";
@@ -58,7 +59,7 @@ import { validateTickSelectionRounding, axisTickSelection } from "../grammar/tic
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { validateRegressionFitStatistics, requireRegressionStatisticsSource, regressionStatisticsRows } from "../grammar/regression/statistics.js";
-import { resolveGraphicItemCapacity } from "../selectors/graphicCapacity.js";
+import { resolveGraphicItemCapacity, resolveGraphicGeoBinding } from "../selectors/graphicCapacity.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
 import { validateTickColorChannels } from "../grammar/scales/colorConsumers.js";
 import { normalizeColorInterpolationOptions } from "../grammar/scales/color.js";
@@ -131,6 +132,7 @@ function requireArray(value, path) {
 export function validateGraphic(graphic, path = "payload.graphicSpec", { legacy = false } = {}) {
   const validateProperties = (type, properties) => {
     validateConcreteGraphicProperties(type, properties);
+    if (legacy && Object.hasOwn(properties, "maxCommands")) throw invalidSnapshot("Path maxCommands requires editable snapshot version 4.", path);
     if (legacy && Object.hasOwn(properties, "fillRule")) throw invalidSnapshot("Path fillRule requires editable snapshot version 4.", path);
     if (legacy && properties.commands !== undefined) validateLegacyPathCommands(properties.commands);
   };
@@ -737,6 +739,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
   assertProgramSingleY(program, { materialized: true });
   validateConcreteFontBindings(program);
   for (const [id, graphic] of Object.entries(program.graphicSpec.objects)) {
+    validateGeoGraphicCapacity(resolveGraphicGeoBinding(program, id), graphic);
     if (!legacy) for (const item of graphic.items ?? []) {
       if (item.identity !== undefined) resolveGraphicLineage(program, item.identity);
     }

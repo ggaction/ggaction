@@ -1,0 +1,2 @@
+import{createPackageArtifact}from'../scripts/package-artifact.js';import{copyFile,writeFile}from'node:fs/promises';import path from'node:path';
+const a=await createPackageArtifact();const file=path.resolve('.artifacts/geo-capacity-'+a.sha256.slice(0,12)+'.tgz');await copyFile(a.file,file);const record={file,sha256:a.sha256,entryCount:a.entryCount,packedBytes:a.size,unpackedBytes:a.unpackedSize};await writeFile('.artifacts/geo-capacity-archive.json',JSON.stringify(record,null,2));console.log(record);

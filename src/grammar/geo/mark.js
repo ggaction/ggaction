@@ -1,3 +1,4 @@
+import { geoBindingCapacity } from "./capacity.js";
 import { validateGeoEncodings } from "./encoding.js";
 import { validateGeoAnnotationBinding } from "./annotation.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
@@ -50,7 +51,8 @@ export function validateGeoSourceBinding(binding) {
   ownRecord(binding, "Geographic mark binding");
   if (!GEO_MODES.includes(binding.mode) || binding.mode === "annotation") throw new TypeError("Unknown geographic mark mode.");
   const graticule = binding.mode === "graticule";
-  rejectUnknownProperties(binding, graticule ? ["mode", "graticule"] : ["mode", "geometry", "interpolation", "routeHint", "radiusDeg"], "geographic mark binding");
+  rejectUnknownProperties(binding, graticule ? ["mode", "graticule", "capacity"] : ["mode", "geometry", "interpolation", "routeHint", "radiusDeg", "capacity"], "geographic mark binding");
+  geoBindingCapacity(binding);
   if (graticule) {
     ownRecord(binding.graticule, "Stored graticule");
     if (["stepDeg", "extentDeg", "precisionDeg"].some(key => !Object.hasOwn(binding.graticule, key))) throw new TypeError("Stored graticule requires all resolved fields.");
