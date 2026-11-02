@@ -8,14 +8,14 @@
 - [x] 공개·저장·worker 후보를 구체화해 root 검토 자료로 기록
 - [x] root의 구체안 정합 확인: 기존 remainingApproval 범위로 채택, 2026-11-01
 - [x] 채택된 execution 정책 구현·검증 checkpoint ([진행 기록](inference-execution.md))
-- [ ] 실제 worker·source revise·취소/오류/늦은 결과·3Node·Chromium 검증
+- [x] 실제 worker·source revise·취소/오류/늦은 결과·3Node·Chromium 검증 ([worker checkpoint](inference-worker.md))
 - [ ] 최종 combined archive의 원 AT82 P95/heap/100cycle qualification
 
 [전체 승인](../AUTHORIZATION.json)의 remainingApproval 범위로 검토한다. 아래 API와 실행 옵션은
-**채택된 구체안이며 전체 worker 구현은 아직 완료되지 않았다.** 사용자 재승인 질문을 만들지 않는다.
+**채택된 구체안이며 worker source6644a8aef 및 [진행 기록](inference-worker.md)에서 구현·검증했다. 최종 AT82 성능 자격은 미완료다.** 사용자 재승인 질문을 만들지 않는다.
 기준 runtime은 `c48f89e9d`, 완료 증거는 `c9389b765`다. 공유 animation owner와 point capacity는 범위 밖이다.
 
-## 현재 구현과 원 요구
+## 설계 당시 구현과 원 요구
 
 원 [graph-inference](../../../../study/coverage-expansion-2026-10-27/roadmap/contracts/graph-inference.ko.md)는
 exact metric·typed tie·원 sourceRows·동일 graph schema를 보존한다. `maxNodes`/`maxEdges`는 이미

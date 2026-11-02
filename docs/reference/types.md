@@ -118,8 +118,8 @@ interface ChartProgramActions {
   createFlowLinks(options?: TargetedOptions<FlowLinksOptions>): ChartProgram;
   editFlowLinks(options: TargetedOptions<EditFlowLinksOptions>): ChartProgram;
   createGraphData(options: CreateGraphDataOptions): ChartProgram;
-  createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
-  editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
+  createInferredGraphData(options: CreateInferredGraphDataOptions | ApplyInferredGraphOptions): ChartProgram;
+  editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions> | ApplyInferredGraphOptions): ChartProgram;
   editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
   layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
@@ -641,6 +641,21 @@ export interface ApplyImageResourceOptions<Kind extends "create" | "replace"> {
 </details>
 
 Related types: [`PreparedImageResource`](#type-preparedimageresource).
+
+### `ApplyInferredGraphOptions` {#type-applyinferredgraphoptions}
+
+<details markdown="1">
+<summary>Expand ApplyInferredGraphOptions</summary>
+
+```typescript
+export type ApplyInferredGraphOptions = { readonly prepared: PreparedInferredGraphData; readonly requestToken: string } & {
+  readonly [K in "id" | "data" | "candidateGraph" | "nodeKey" | "ruleId" | "rule" | "features" | "metric" | "preprocess" | "attributes" | "options" | "maxNodes" | "maxEdges" | "execution" | "target" | "definition"]?: never;
+};
+```
+
+</details>
+
+Related types: [`PreparedInferredGraphData`](#type-preparedinferredgraphdata).
 
 ### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
 
@@ -3589,7 +3604,7 @@ Related types: [`ImageMarkOptions`](#type-imagemarkoptions).
 ```typescript
 export type CreateInferredGraphDataOptions = { readonly id: string; readonly data?: string } & (
   (GraphNeighborDefinition | GraphMetricMstDefinition | GraphStructuralDefinition) & { readonly candidateGraph?: never } |
-  GraphCandidateMstDefinition & { readonly candidateGraph: string });
+  GraphCandidateMstDefinition & { readonly candidateGraph: string }) & { readonly prepared?: never; readonly requestToken?: never };
 ```
 
 </details>
@@ -6908,9 +6923,12 @@ Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`Imp
 
 ```typescript
 export interface EditInferredGraphDataOptions {
+  readonly prepared?: never; readonly requestToken?: never;
   readonly target?: string; readonly data?: string; readonly candidateGraph?: string | null;
   readonly definition?: Partial<InferredGraphDefinition>;
 }
+declare const preparedInferredGraph: unique symbol;
+/** Opaque result bound to the exact Full receiver, action kind and request token. */
 ```
 
 </details>
@@ -13242,6 +13260,20 @@ export interface PreparedImageResource<Kind extends "create" | "replace" = "crea
   readonly [preparedImageResourceBrand]: Kind;
   readonly kind: "image-resource";
   readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+```
+
+</details>
+
+### `PreparedInferredGraphData` {#type-preparedinferredgraphdata}
+
+<details markdown="1">
+<summary>Expand PreparedInferredGraphData</summary>
+
+```typescript
+export interface PreparedInferredGraphData {
+  readonly [preparedInferredGraph]: true; readonly kind: "graph-inference-preparation";
+  readonly request: { readonly kind: "create" | "edit"; readonly id: string }; readonly inputHash: string;
 }
 ```
 

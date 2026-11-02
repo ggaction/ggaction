@@ -48,8 +48,8 @@ function projectionVectors(preparation) {
   });
 }
 
-export function searchApproximateGraph(preparation, policy, ranks, search, execution) {
-  const validateWorkLimit = inferenceWorkValidator(execution);
+export function searchApproximateGraph(preparation, policy, ranks, search, execution, signal) {
+  const validateWorkLimit = inferenceWorkValidator(execution, signal);
   const n = preparation.vectors.length, k = n < 2 ? 0 : policy.k;
   const dimension = preparation.vectors.reduce((maximum, vector) => Math.max(maximum, vector.length), 0);
   const metricCost = Math.max(1, dimension) * (preparation.metric === "jaccard" ? 24 + Math.ceil(Math.log2(Math.max(dimension, 2))) : 24);

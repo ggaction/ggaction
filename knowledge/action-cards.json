@@ -2253,7 +2253,7 @@
       "layer": "user-facing",
       "domain": "core",
       "summary": "Revise an inferred graph and its dependent layouts and plots.",
-      "signature": "editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;",
+      "signature": "editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions> | ApplyInferredGraphOptions): ChartProgram;",
       "intents": [
         "edit inferred graph data",
         "edit",
@@ -2310,6 +2310,16 @@
       },
       "options": [
         {
+          "name": "prepared",
+          "required": false,
+          "type": "PreparedInferredGraphData | undefined"
+        },
+        {
+          "name": "requestToken",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
@@ -2331,7 +2341,7 @@
         }
       ],
       "callPatterns": [
-        "editInferredGraphData({ target?, data?, candidateGraph?, definition? })"
+        "editInferredGraphData({ target?, data?, prepared?, requestToken?, candidateGraph?, definition? })"
       ],
       "snippet": "program.editInferredGraphData({ target: \"neighbors\", definition: { options: { k: 2 } } })",
       "errors": [],
@@ -2343,7 +2353,7 @@
       "layer": "user-facing",
       "domain": "core",
       "summary": "Infer a graph using nearest neighbors, radius, similarity, a spanning tree, groups, or ordered sequences.",
-      "signature": "createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;",
+      "signature": "createInferredGraphData(options: CreateInferredGraphDataOptions | ApplyInferredGraphOptions): ChartProgram;",
       "intents": [
         "create inferred graph data",
         "create",
@@ -2402,24 +2412,14 @@
       },
       "options": [
         {
-          "name": "id",
-          "required": true,
-          "type": "string"
+          "name": "prepared",
+          "required": false,
+          "type": "PreparedInferredGraphData | undefined"
         },
         {
-          "name": "data",
+          "name": "requestToken",
           "required": false,
           "type": "string | undefined"
-        },
-        {
-          "name": "nodeKey",
-          "required": true,
-          "type": "GraphKeyField"
-        },
-        {
-          "name": "ruleId",
-          "required": true,
-          "type": "string"
         },
         {
           "name": "attributes",
@@ -2427,14 +2427,14 @@
           "type": "readonly string[] | undefined"
         },
         {
-          "name": "maxNodes",
+          "name": "candidateGraph",
           "required": false,
-          "type": "number | undefined"
+          "type": "string | undefined"
         },
         {
-          "name": "maxEdges",
+          "name": "data",
           "required": false,
-          "type": "number | undefined"
+          "type": "string | undefined"
         },
         {
           "name": "execution",
@@ -2442,19 +2442,24 @@
           "type": "GraphInferenceExecution | undefined"
         },
         {
-          "name": "rule",
-          "required": true,
-          "type": "\"group\" | \"knn\" | \"mst\" | \"radius\" | \"sequence\" | \"similarity\""
-        },
-        {
-          "name": "options",
-          "required": false,
-          "type": "{ readonly forest?: boolean | undefined; } | { readonly fields: readonly string[]; readonly missing?: \"error\" | \"include\" | \"omit-node\" | undefined; readonly mode?: \"clique\" | \"star\" | undefined; readonly hubKey?: RowKey | undefined; readonly hubs?: readonly { ...; }[] | undefined; } | ... 5 more ... | undefined"
-        },
-        {
           "name": "features",
           "required": false,
           "type": "readonly string[] | { readonly set: string; } | { readonly longitude: string; readonly latitude: string; } | undefined"
+        },
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "maxEdges",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "maxNodes",
+          "required": false,
+          "type": "number | undefined"
         },
         {
           "name": "metric",
@@ -2462,18 +2467,33 @@
           "type": "\"cosine\" | \"euclidean\" | \"great-circle\" | \"jaccard\" | \"manhattan\" | undefined"
         },
         {
+          "name": "nodeKey",
+          "required": false,
+          "type": "GraphKeyField | undefined"
+        },
+        {
+          "name": "options",
+          "required": false,
+          "type": "{ readonly forest?: boolean | undefined; } | { readonly fields: readonly string[]; readonly missing?: \"error\" | \"include\" | \"omit-node\" | undefined; readonly mode?: \"clique\" | \"star\" | undefined; readonly hubKey?: RowKey | undefined; readonly hubs?: readonly { ...; }[] | undefined; } | ... 5 more ... | undefined"
+        },
+        {
           "name": "preprocess",
           "required": false,
           "type": "\"minmax\" | \"none\" | \"standardize\" | undefined"
         },
         {
-          "name": "candidateGraph",
+          "name": "rule",
+          "required": false,
+          "type": "\"group\" | \"knn\" | \"mst\" | \"radius\" | \"sequence\" | \"similarity\" | undefined"
+        },
+        {
+          "name": "ruleId",
           "required": false,
           "type": "string | undefined"
         }
       ],
       "callPatterns": [
-        "createInferredGraphData({ id, nodeKey, ruleId, rule, data?, attributes?, maxNodes?, maxEdges? })"
+        "createInferredGraphData({ data?, id?, prepared?, requestToken?, attributes?, candidateGraph?, execution?, features? })"
       ],
       "snippet": "program.createInferredGraphData({ id: \"neighbors\", data: \"points\", nodeKey: \"id\", ruleId: \"nearest\", rule: \"knn\", features: [\"x\"], metric: \"euclidean\" })",
       "errors": [],

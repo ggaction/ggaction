@@ -22,13 +22,19 @@ export function normalizeInferenceExecution(input) {
 
 // Each existing owner keeps its accumulator and charge formula. An explicit
 // inference policy does not change layout, graphics, route or global limits.
-export function inferenceWorkValidator(execution) {
+export function checkInferenceSignal(signal) {
+  if (signal !== undefined) AbortSignal.prototype.throwIfAborted.call(signal);
+}
+
+export function inferenceWorkValidator(execution, signal) {
+  checkInferenceSignal(signal);
   const policy = normalizeInferenceExecution(execution);
-  return policy === undefined ? validateWorkLimit
+  const validate = policy === undefined ? validateWorkLimit
     : (value, label) => {
       if (!Number.isSafeInteger(value) || value < 0) throw new RangeError(`${label} must be a nonnegative safe integer.`);
       return validateGeneratedItemLimit(value, label, policy.maxWork);
     };
+  return signal === undefined ? validate : (value, label) => { checkInferenceSignal(signal); return validate(value, label); };
 }
 
 // Exact UTF-8 length of canonicalJSON(encodeValue(value)), without allocating

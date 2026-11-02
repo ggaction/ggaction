@@ -828,6 +828,14 @@
       {
         "type": "file",
         "path": "browser/resource-composition.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/graph-inference.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-inference-host.test.js"
       }
     ],
     "guides": [

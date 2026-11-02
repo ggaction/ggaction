@@ -1,0 +1,88 @@
+{
+  "status": "verified-checkpoint",
+  "authorization": "../../AUTHORIZATION.json",
+  "decision": "32c26e969",
+  "base": "2f768950d",
+  "scope": "Dedicated inferred-graph worker, unchanged native math/default limits, authentic atomic application",
+  "owning": {
+    "first": 161,
+    "supplement": 15,
+    "latestJobHost": 17,
+    "overlap": true,
+    "criticalOwners": 19
+  },
+  "boundaries": 38,
+  "contracts": 35,
+  "archive": "d0083b94a5fe141f53af9c39c5091438f73691ef52cfd55af37598e8b026faf2",
+  "installed": {
+    "nodes": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "eachRuntime": 5,
+    "eachTypes": 1,
+    "eachSnippets": 2,
+    "eachBundles": 6,
+    "worker10000Nodes100000Edges": true,
+    "initialNode20BundleFailure": "installed20.json",
+    "sameMeasurementReassessment": "installed20-reassessed.json"
+  },
+  "browser": {
+    "actualWorker": true,
+    "sizes": [
+      100,
+      1000,
+      10000
+    ],
+    "k": 10,
+    "allEdges": true,
+    "oracle": "test/oracles/inference-grid.js",
+    "qualification": false,
+    "log": "browser-final.log.gz"
+  },
+  "firstFailures": [
+    "initial.log.gz",
+    "host-third.log.gz",
+    "browser-first.log.gz",
+    "types-first.log.gz",
+    "snippets-first.log.gz",
+    "docs-first.log.gz",
+    "installed20.json"
+  ],
+  "pending": [
+    "Final combined AT82 P95/retained heap/100cycle performance qualification"
+  ],
+  "qualification": false,
+  "source": "6644a8aefe0bb27990807bc1bbcd1ebf37e20912",
+  "docs": {
+    "sourceTests": 242,
+    "sourcePin": "6644a8aefe0bb27990807bc1bbcd1ebf37e20912",
+    "preflight": "passed",
+    "build": "passed",
+    "builtPages": 186,
+    "llmArtifacts": 1606,
+    "responsiveBrowser": "passed",
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ],
+    "desktopSearchAndAccessibility": "passed"
+  },
+  "package": {
+    "entries": 1246,
+    "packed20": 1787002,
+    "unpacked": 8054266,
+    "caps": {
+      "entries": 1246,
+      "packed": 1787100,
+      "unpacked": 8054300
+    },
+    "bundleCaps": {
+      "Full": 785700,
+      "graph": 67600
+    },
+    "canonicalRepackExact": true
+  }
+}

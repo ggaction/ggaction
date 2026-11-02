@@ -14,8 +14,8 @@ export function graphKeyField(value, label) {
   return Array.isArray(value) ? graphFields(value, label) : requireStringValue(value, label);
 }
 
-export function graphSourceRows(values, maximum, label, execution) {
-  const validateWorkLimit = inferenceWorkValidator(execution);
+export function graphSourceRows(values, maximum, label, execution, signal) {
+  const validateWorkLimit = inferenceWorkValidator(execution, signal);
   if (Array.isArray(values)) {
     validateGeneratedItemLimit(values.length, label, maximum);
     validateWorkLimit(values.length * 64, "Graph source work");
@@ -55,8 +55,8 @@ export function graphFeatureFields(features, metric) {
   return Object.fromEntries(keys.map(key => [key, features[key]]));
 }
 
-export function graphFeatureVector(row, fields, execution) {
-  const validateWorkLimit = inferenceWorkValidator(execution);
+export function graphFeatureVector(row, fields, execution, signal) {
+  const validateWorkLimit = inferenceWorkValidator(execution, signal);
   if (Array.isArray(fields)) return fields.map(field => graphFieldValue(row, field));
   if (Object.hasOwn(fields, "set")) {
     const values = graphFieldValue(row, fields.set);

@@ -1,4 +1,4 @@
-import { inferenceWorkValidator } from "./inferenceBudget.js";
+import { inferenceWorkValidator, checkInferenceSignal } from "./inferenceBudget.js";
 import { graphLimits } from "./model.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
@@ -30,11 +30,11 @@ export function normalizeGraphStructuralOptions(input, sequence) {
   return { ruleId, missing, mode, ...(hasKey ? { hubKey: options.hubKey } : {}), ...(hasHubs ? { hubs: options.hubs } : {}) };
 }
 
-function prepare(keys, tuples, missing, limits, execution) {
+function prepare(keys, tuples, missing, limits, execution, signal) {
   if (Array.isArray(keys)) validateGeneratedItemLimit(keys.length, "Graph structural nodes", limits.maxNodes);
   ownArray(keys, "Graph structural keys"); ownArray(tuples, "Graph grouping tuples");
   if (keys.length !== tuples.length) throw new Error("Graph keys and grouping tuples must have equal length.");
-  const validateWorkLimit = inferenceWorkValidator(execution);
+  const validateWorkLimit = inferenceWorkValidator(execution, signal);
   let work = keys.length * (64 + 8 * Math.ceil(Math.log2(Math.max(2, keys.length))));
   const charge = value => {
     if (typeof value === "string") work += value.length * 8;
@@ -84,8 +84,8 @@ function chargeKey(preparation, key, validateWorkLimit) {
   chargeValues(preparation, Array.isArray(key) ? key : [key], validateWorkLimit);
 }
 
-export function resolveGraphGroupHubs(options, preparation, execution) {
-  const validateWorkLimit = inferenceWorkValidator(execution);
+export function resolveGraphGroupHubs(options, preparation, execution, signal) {
+  const validateWorkLimit = inferenceWorkValidator(execution, signal);
   const hubs = new Map(), indexes = new Map(preparation.tokens.map((key, index) => [key, index]));
   if (Object.hasOwn(options, "hubKey")) {
     chargeKey(preparation, options.hubKey, validateWorkLimit);
@@ -112,13 +112,14 @@ export function resolveGraphGroupHubs(options, preparation, execution) {
   return hubs;
 }
 
-export function inferGraphGroups(keys, tuples, input, limits = {}, execution) {
-  const validateWorkLimit = inferenceWorkValidator(execution);
+export function inferGraphGroups(keys, tuples, input, limits = {}, execution, signal) {
+  const validateWorkLimit = inferenceWorkValidator(execution, signal);
   limits = graphLimits(limits);
-  const options = normalizeGraphStructuralOptions(input, false), preparation = prepare(keys, tuples, options.missing, limits, execution);
-  const hubs = resolveGraphGroupHubs(options, preparation, execution);
+  const options = normalizeGraphStructuralOptions(input, false), preparation = prepare(keys, tuples, options.missing, limits, execution, signal);
+  const hubs = resolveGraphGroupHubs(options, preparation, execution, signal);
   let count = 0, identityWork = 0;
   for (const [group, members] of preparation.groups) {
+    checkInferenceSignal(signal);
     if (options.mode === "star" && members.length > 1 && !hubs.has(group)) throw new Error("Graph star requires an explicit hub for every non-singleton group.");
     count += options.mode === "clique" ? members.length * (members.length - 1) / 2 : Math.max(0, members.length - 1);
     for (const index of members) {
@@ -130,6 +131,7 @@ export function inferGraphGroups(keys, tuples, input, limits = {}, execution) {
   validateWorkLimit(preparation.work + identityWork + count * (64 + options.ruleId.length * 8 + 16 * Math.ceil(Math.log2(Math.max(2, count)))), "Graph group work");
   const edges = [];
   for (const [group, members] of preparation.groups) {
+    checkInferenceSignal(signal);
     if (options.mode === "clique") {
       for (let a = 0; a < members.length; a++) for (let b = a + 1; b < members.length; b++) edges.push(edge(keys, members[a], members[b], options.ruleId, false));
     } else for (const index of members) if (hubs.has(group) && index !== hubs.get(group)) edges.push(edge(keys, hubs.get(group), index, options.ruleId, false));
@@ -137,10 +139,10 @@ export function inferGraphGroups(keys, tuples, input, limits = {}, execution) {
   return finish(keys, edges, preparation, options);
 }
 
-export function inferGraphSequence(keys, tuples, orderValues, input, limits = {}, execution) {
-  const validateWorkLimit = inferenceWorkValidator(execution);
+export function inferGraphSequence(keys, tuples, orderValues, input, limits = {}, execution, signal) {
+  const validateWorkLimit = inferenceWorkValidator(execution, signal);
   limits = graphLimits(limits);
-  const options = normalizeGraphStructuralOptions(input, true), preparation = prepare(keys, tuples, options.missing, limits, execution);
+  const options = normalizeGraphStructuralOptions(input, true), preparation = prepare(keys, tuples, options.missing, limits, execution, signal);
   ownArray(orderValues, "Graph sequence order");
   if (orderValues.length !== keys.length) throw new Error("Graph sequence order and keys must have equal length.");
   chargeValues(preparation, orderValues, validateWorkLimit);

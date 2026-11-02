@@ -986,10 +986,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 785,500 bytes |
+| `ggaction` | 786,000 bytes |
 | `ggaction/basic` | 424,700 bytes |
 | `ggaction/svg` | 26,000 bytes |
-| `ggaction/graph` | 46,000 bytes |
+| `ggaction/graph` | 67,600 bytes |
 | `ggaction/interaction` | 136,000 bytes |
 | `ggaction/animation` | 333,800 bytes |
 
@@ -4977,3 +4977,12 @@ encoded input/result byte 한도를 소유한다. 기본10M과 일반 model/layo
 최소cap1,241/1,780,500/8,031,400을 적용한다. Full gzip Node20 실측785,207에785,300cap이며
 다른 entry는 기존 한도를 유지한다. 입력 전체 원행과100k간선을 보존한 증거 및 아직 미구현 worker는
 [inference execution 기록](impl/roadmap9/qualification/inference-execution.md)을 따른다.
+
+
+### Inferred graph worker preparation
+
+`ggaction/graph`의 전용 inference executor는 명시 host worker factory, pending 한 건, 요청별 worker 수명을 소유한다. 기존 route executor의 cache·정책과 합치지 않는다. Pure `grammar/graph/inferenceJob.js`는 전체 immutable 입력, exact revision vector와 consistency hash, encoded job/completion byte 검증을 담당한다. Worker는 기존 inference 계산과 work 단위를 재사용하며 signal checkpoint를 받는다.
+
+`materialization/graph/inferenceRequest.js`는 동기 action과 비동기 prepare의 동일 native 요청 해석을 소유한다. 완료된 model·diagnostics는 기존 stored/source binding 검증을 통과한 뒤 `resources/graphInference.js`의 private WeakMap handle로 묶인다. 기존 create/edit action은 exact receiver·kind·token만 허용하고 원래 resource closure를 한 번 적용한다. Renderer·global work·layout·graphic 한도는 그대로다. 동기 source revision closure는 자동 비동기화하지 않는다. Exact public 계약은 [GRAPHS](contract/current/GRAPHS.md#inferred-graph-worker-preparation)에 둔다.
+
+같은 d0083b94 archive의 Node20/22/24는 원노드10000/간선100000 worker 사례를 포함한 각5runtime·strict type·문서2개·6 entry bundle을 검증했다. 최소 실측 상한은 Full785,700 / graph67,600, package1246entries / 1,787,100packed / 8,054,300unpacked다. 나머지 entry 한도는 유지한다. 최초 한도 실패와 재검산 및 성능 미완료는 [worker 증거](impl/roadmap9/qualification/inference-worker-evidence/summary.json)에 분리한다.

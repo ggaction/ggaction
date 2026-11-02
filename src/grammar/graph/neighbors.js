@@ -1,4 +1,4 @@
-import { inferenceWorkValidator } from "./inferenceBudget.js";
+import { inferenceWorkValidator, checkInferenceSignal } from "./inferenceBudget.js";
 import { graphLimits } from "./model.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
@@ -43,8 +43,8 @@ export function normalizeGraphNeighborOptions(options) {
 
 // Return selected raw-source indexes and stable typed identities. The domain
 // adapter, not this pure kernel, supplies graph nodes and row provenance.
-export function inferGraphNeighbors(keys, vectors, options, limits = {}, execution) {
-  const validateWorkLimit = inferenceWorkValidator(execution);
+export function inferGraphNeighbors(keys, vectors, options, limits = {}, execution, signal) {
+  const validateWorkLimit = inferenceWorkValidator(execution, signal);
   limits = graphLimits(limits);
   const policy = normalizeGraphNeighborOptions(options);
   if (Array.isArray(keys)) validateGeneratedItemLimit(keys.length, "Graph neighbor nodes", limits.maxNodes);
@@ -56,7 +56,7 @@ export function inferGraphNeighbors(keys, vectors, options, limits = {}, executi
   if (new Set(tokens).size !== tokens.length) throw new Error("Graph node keys must be unique.");
   const featureOptions = Object.fromEntries(["metric", "preprocess", "missing", "zeroVector"]
     .filter(key => Object.hasOwn(options, key)).map(key => [key, options[key]]));
-  const preparation = prepareGraphMetricVectors(vectors, featureOptions, limits, execution);
+  const preparation = prepareGraphMetricVectors(vectors, featureOptions, limits, execution, signal);
   const searchInput = Object.hasOwn(options, "search") ? options.search : undefined;
   const searchPolicy = normalizeGraphSearch(searchInput, policy, preparation);
   const indexes = preparation.sourceIndices, n = indexes.length;
@@ -75,6 +75,7 @@ export function inferGraphNeighbors(keys, vectors, options, limits = {}, executi
   const neighbors = policy.rule === "knn" ? Array.from({ length: n }, () => []) : undefined;
   const edges = [], seen = new Set();
   function add(a, b, weight) {
+    checkInferenceSignal(signal);
     if (!policy.directed && ranks[a] > ranks[b]) [a, b] = [b, a];
     const pairKey = `${a}:${b}`;
     if (seen.has(pairKey)) return;
@@ -89,12 +90,13 @@ export function inferGraphNeighbors(keys, vectors, options, limits = {}, executi
   let searchResult;
   if (searchPolicy.algorithm !== "brute-force") {
     const found = searchPolicy.mode === "approximate"
-      ? searchApproximateGraph(preparation, policy, ranks, searchPolicy, execution)
-      : searchExactGraph(preparation, policy, ranks, searchPolicy, limits, execution);
+      ? searchApproximateGraph(preparation, policy, ranks, searchPolicy, execution, signal)
+      : searchExactGraph(preparation, policy, ranks, searchPolicy, limits, execution, signal);
     searchResult = found.search;
     if (neighbors) found.rows.forEach((row, i) => { neighbors[i] = row; });
     else for (const { a, b, distance } of found.pairs) { add(a, b, distance); if (policy.directed) add(b, a, distance); }
   } else for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) {
+    checkInferenceSignal(signal);
     const result = graphMetricPair(preparation.vectors[a], preparation.vectors[b], metricOptions);
     if (neighbors) {
       neighbors[a].push({ index: b, distance: result.distance });

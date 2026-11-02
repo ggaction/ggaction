@@ -160,12 +160,96 @@ own stored policy.
 typed values and diagnostics. It does not bound total JavaScript heap use.
 Graphical item limits and layout or route computation limits remain separate.
 Large inference results do not imply support for rendering the entire graph or
-meeting a latency target. Inference remains synchronous in this API.
+meeting a latency target. Ordinary inference action calls remain synchronous.
 
 Inference supports the Full entry point. Resource-backed graph plots currently
 reject automatic facet partitioning. Mark filtering keeps the inferred topology;
 create an explicitly filtered dataset and a separate inferred graph when you need
 recomputation.
+
+## Prepare inference in a worker
+
+`ggaction/graph` exports three advanced resource helpers:
+`createGraphInferenceExecutor({ createWorker })`, `computeGraphInference(job, signal?)`,
+and `prepareInferredGraphData(program, request, { executor, requestToken, signal? })`.
+The request is `{ kind: 'create', ...createOptions }` or `{ kind: 'edit', ...editOptions }`.
+Only a settled Full program can prepare inference. The ordinary create/edit methods
+remain synchronous.
+
+A worker factory is required. Each request owns one fresh worker, and an executor
+accepts one pending request; another request fails instead of joining a queue.
+There is no result cache. The worker must call `computeGraphInference` with the
+unchanged job and return its completion. The host supplies this trusted computation
+provider; consistency hashes do not certify a provider's mathematical honesty.
+The library validates the complete model, source binding, metric weights and
+saved diagnostics before exposing a prepared handle.
+
+This complete Node ES-module example uses the adjacent
+[`inference-worker.mjs`](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/graph-inference/worker.mjs) file. Save that
+worker beside the host module. In a browser, use a module `Worker` directly as the
+factory result and have its message handler call the same `computeGraphInference`;
+Node-specific worker adapters are not needed in the browser.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { Worker } from 'node:worker_threads';
+import { chart } from 'ggaction';
+import { createGraphInferenceExecutor, prepareInferredGraphData } from 'ggaction/graph';
+
+const base = chart().createData({ id: 'points', keyField: 'id', values: [
+  { id: 'a', x: 0 }, { id: 'b', x: 1 }, { id: 'c', x: 4 }
+] });
+const executor = createGraphInferenceExecutor({ createWorker() {
+  const worker = new Worker(new URL('./inference-worker.mjs', import.meta.url));
+  const listeners = new Map();
+  return {
+    postMessage(message) { worker.postMessage(message); },
+    addEventListener(type, listener) {
+      const wrapped = value => listener(type === 'message' ? { data: value } : { error: value });
+      listeners.set(listener, wrapped); worker.on(type, wrapped);
+    },
+    removeEventListener(type, listener) {
+      worker.off(type, listeners.get(listener)); listeners.delete(listener);
+    },
+    terminate() { void worker.terminate(); }
+  };
+} });
+let program;
+try {
+  const prepared = await prepareInferredGraphData(base, {
+    kind: 'create', id: 'neighbors', nodeKey: 'id', ruleId: 'nearest',
+    rule: 'knn', features: ['x'], metric: 'manhattan', options: { k: 1 }
+  }, { executor, requestToken: 'neighbors-1' });
+  program = base.createInferredGraphData({ prepared, requestToken: 'neighbors-1' });
+} finally {
+  executor.dispose();
+}
+```
+
+Preparation does not change the program or its trace. Apply the authentic handle
+with the exact original receiver, action kind and request token. Prepared application
+accepts only `prepared` and `requestToken`; it cannot be mixed with ordinary source
+or edit fields. A changed or restored program, another token, or a cloned handle
+fails. Prepared edits run the existing dependency refresh and remain atomic on failure.
+Stored resources contain no worker, promise, request token or handle.
+
+Pass an `AbortSignal` to cancel preparation. Cancellation and `dispose()` terminate
+the request's worker and remove its listeners once; late messages cannot publish
+results. Disposing twice is harmless, and a disposed executor rejects new work.
+An aborted signal takes precedence over inspecting job input. A prepared handle
+remains revocable by its original signal until application.
+
+Each encoded job and completion is limited to 128 MiB, or the smaller explicit
+`execution.maxBytes`. The existing inference work and capacity policies still apply.
+These are admission bounds, not total heap or latency guarantees. Worker startup,
+message copying, main-thread input preparation, result validation and the explicit
+commit remain real costs. Source revisions still use their existing synchronous
+resource closure; preparation does not silently turn it into an asynchronous update.
 
 ## Outlines and shadows
 

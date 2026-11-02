@@ -1,0 +1,3 @@
+export type ApplyInferredGraphOptions = { readonly prepared: PreparedInferredGraphData; readonly requestToken: string } & {
+  readonly [K in "id" | "data" | "candidateGraph" | "nodeKey" | "ruleId" | "rule" | "features" | "metric" | "preprocess" | "attributes" | "options" | "maxNodes" | "maxEdges" | "execution" | "target" | "definition"]?: never;
+};

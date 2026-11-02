@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "graph-inference-host": { prefix: "resources/graphInference", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Inference preparation and dedicated workers must bind exact native inputs and settle cancellation, cleanup and atomic publication exactly once." },
   "parallel-guide-geometry": { prefix: "grammar/parallelGuides.js", floor: { lines: 100, branches: 100, functions: 100 }, rationale: "Native field axes and prepared transitions must share exact placement, component geometry and explicit alignment." },
   "native-position-offset": { prefix: "grammar/positionOffset.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Native and animated offsets must share signed band placement, finite results and missing-value behavior." },
   "native-rule-span": { prefix: "grammar/ruleGeometry.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Static and animated rule caps and median spans share exact forward geometry." },

@@ -699,10 +699,10 @@ column belongs in `definition.target`. See [observed graph data](../../api/data/
 **Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
+editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions> | ApplyInferredGraphOptions): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditInferredGraphDataOptions`](./../types.md#type-editinferredgraphdataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditInferredGraphDataOptions`](./../types.md#type-editinferredgraphdataoptions) · [`ApplyInferredGraphOptions`](./../types.md#type-applyinferredgraphoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -711,6 +711,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `prepared` | Optional / branch-dependent | `PreparedInferredGraphData \| undefined` |
+| `requestToken` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `candidateGraph` | Optional / branch-dependent | `string \| null \| undefined` |
@@ -721,7 +723,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editInferredGraphData({ target?, data?, candidateGraph?, definition? })
+editInferredGraphData({ target?, data?, candidateGraph?, definition? }) or editInferredGraphData({ prepared, requestToken })
 ```
 
 Revise an inferred graph and its dependent layouts and plots. Use
@@ -736,10 +738,10 @@ See [graph inference](../../api/graphs.md#graph-inference).
 **Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
+createInferredGraphData(options: CreateInferredGraphDataOptions | ApplyInferredGraphOptions): ChartProgram;
 ```
 
-Named option contracts: [`CreateInferredGraphDataOptions`](./../types.md#type-createinferredgraphdataoptions).
+Named option contracts: [`CreateInferredGraphDataOptions`](./../types.md#type-createinferredgraphdataoptions) · [`ApplyInferredGraphOptions`](./../types.md#type-applyinferredgraphoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -748,27 +750,29 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `id` | Required | `string` |
-| `data` | Optional / branch-dependent | `string \| undefined` |
-| `nodeKey` | Required | `GraphKeyField` |
-| `ruleId` | Required | `string` |
+| `prepared` | Optional / branch-dependent | `PreparedInferredGraphData \| undefined` |
+| `requestToken` | Optional / branch-dependent | `string \| undefined` |
 | `attributes` | Optional / branch-dependent | `readonly string[] \| undefined` |
-| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
-| `maxEdges` | Optional / branch-dependent | `number \| undefined` |
-| `execution` | Optional / branch-dependent | `GraphInferenceExecution \| undefined` |
-| `rule` | Required | `"group" \| "knn" \| "mst" \| "radius" \| "sequence" \| "similarity"` |
-| `options` | Optional / branch-dependent | `{ readonly forest?: boolean \| undefined; } \| { readonly fields: readonly string[]; readonly missing?: "error" \| "include" \| "omit-node" \| undefined; readonly mode?: "clique" \| "star" \| undefined; readonly hubKey?: RowKey \| undefined; readonly hubs?: readonly { ...; }[] \| undefined; } \| ... 5 more ... \| undefined` |
-| `features` | Optional / branch-dependent | `readonly string[] \| { readonly set: string; } \| { readonly longitude: string; readonly latitude: string; } \| undefined` |
-| `metric` | Optional / branch-dependent | `"cosine" \| "euclidean" \| "great-circle" \| "jaccard" \| "manhattan" \| undefined` |
-| `preprocess` | Optional / branch-dependent | `"minmax" \| "none" \| "standardize" \| undefined` |
 | `candidateGraph` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `execution` | Optional / branch-dependent | `GraphInferenceExecution \| undefined` |
+| `features` | Optional / branch-dependent | `readonly string[] \| { readonly set: string; } \| { readonly longitude: string; readonly latitude: string; } \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `maxEdges` | Optional / branch-dependent | `number \| undefined` |
+| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
+| `metric` | Optional / branch-dependent | `"cosine" \| "euclidean" \| "great-circle" \| "jaccard" \| "manhattan" \| undefined` |
+| `nodeKey` | Optional / branch-dependent | `GraphKeyField \| undefined` |
+| `options` | Optional / branch-dependent | `{ readonly forest?: boolean \| undefined; } \| { readonly fields: readonly string[]; readonly missing?: "error" \| "include" \| "omit-node" \| undefined; readonly mode?: "clique" \| "star" \| undefined; readonly hubKey?: RowKey \| undefined; readonly hubs?: readonly { ...; }[] \| undefined; } \| ... 5 more ... \| undefined` |
+| `preprocess` | Optional / branch-dependent | `"minmax" \| "none" \| "standardize" \| undefined` |
+| `rule` | Optional / branch-dependent | `"group" \| "knn" \| "mst" \| "radius" \| "sequence" \| "similarity" \| undefined` |
+| `ruleId` | Optional / branch-dependent | `string \| undefined` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges?, execution? })
+createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges?, execution? }) or createInferredGraphData({ prepared, requestToken })
 ```
 
 Infer a graph using nearest neighbors, radius, similarity, a spanning tree,

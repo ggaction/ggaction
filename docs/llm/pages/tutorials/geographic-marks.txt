@@ -41,7 +41,7 @@ and translation; Canvas resizing alone does not silently fit the geometry.
 
 See [Geometry and projections](../../../api/geometry/) for exact options, revisions,
 selection, coordinate compatibility and current limitations. The
-[shared example source](https://github.com/ggaction/ggaction/blob/5046dcc5e26ec9dfb5f6707951c3bb0fcd72e0cf/examples/geographic-marks/program.js)
+[shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-animation-timeline-public/examples/geographic-marks/program.js)
 is used by this tutorial, the browser examples and the primitive comparisons.
 
 ## Keep labels attached to their features
@@ -121,9 +121,9 @@ An explicit analytical child can map those values to positions, colors, an axis
 and a legend. These guides describe that child: they do not turn the graticule's
 projection geometry into Cartesian field encodings or scales.
 
-Copy [comparison.js](https://github.com/ggaction/ggaction/blob/5046dcc5e26ec9dfb5f6707951c3bb0fcd72e0cf/examples/geographic-marks/comparison.js),
-[program.js](https://github.com/ggaction/ggaction/blob/5046dcc5e26ec9dfb5f6707951c3bb0fcd72e0cf/examples/geographic-marks/program.js)
-and [fixture.js](https://github.com/ggaction/ggaction/blob/5046dcc5e26ec9dfb5f6707951c3bb0fcd72e0cf/examples/geographic-marks/fixture.js)
+Copy [comparison.js](https://github.com/ggaction/ggaction/blob/codex/roadmap9-animation-timeline-public/examples/geographic-marks/comparison.js),
+[program.js](https://github.com/ggaction/ggaction/blob/codex/roadmap9-animation-timeline-public/examples/geographic-marks/program.js)
+and [fixture.js](https://github.com/ggaction/ggaction/blob/codex/roadmap9-animation-timeline-public/examples/geographic-marks/fixture.js)
 into a `geographic-marks` folder beside this module, using the helpers' public
 `ggaction` and `ggaction/inspection` imports.
 

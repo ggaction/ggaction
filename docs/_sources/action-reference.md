@@ -611,7 +611,7 @@ column belongs in `definition.target`. See [observed graph data](../api/data/sou
 ### `createInferredGraphData`
 
 ```javascript
-createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges?, execution? })
+createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges?, execution? }) or createInferredGraphData({ prepared, requestToken })
 ```
 
 Infer a graph using nearest neighbors, radius, similarity, a spanning tree,
@@ -621,7 +621,7 @@ See [graph inference](../api/graphs.md#graph-inference).
 ### `editInferredGraphData`
 
 ```javascript
-editInferredGraphData({ target?, data?, candidateGraph?, definition? })
+editInferredGraphData({ target?, data?, candidateGraph?, definition? }) or editInferredGraphData({ prepared, requestToken })
 ```
 
 Revise an inferred graph and its dependent layouts and plots. Use
