@@ -1,6 +1,6 @@
 import { translateFillPaint } from "../grammar/paint.js";
 import { validateGraphicClip, translateGraphicClip } from "../grammar/schemas/graphicClip.js";
-import { isOwned, cloneAndFreeze } from "../core/immutable.js";
+import { isOwned, cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { contentDigest } from "../core/contentDigest.js";
 import { translateWeightedBlendSources } from "../grammar/schemas/weightedBlend.js";
@@ -65,8 +65,9 @@ function compile(scene) {
     activeClips = clips;
     const group = groups.at(-1), origin = origins.at(-1);
     const id = `node-${index++}`;
-    objects[id] = { type: node.type, properties: position(node.properties,
+    const object = { type: node.type, properties: position(node.properties,
       node.offset[0] - origin[0], node.offset[1] - origin[1]) };
+    objects[id] = isOwned(object.properties) ? freezeOwned(object) : object;
     group.children.push(id);
   }
   return { graphicSpec: { objects, order: ['canvas'] } };

@@ -21,7 +21,7 @@ test('point frame tuples preserve native hit authority and immutable path clips 
   const ordinary=planTransition({from,to,options:options(explicit)}),sampled=sampleTransition(ordinary,50),decision=sampled.decisions.find(d=>d.kernel==='cartesian-point');
   const plan=timeline?planTransition({from,to,options:{...options(explicit),tracks:[{target:{itemKey:decision.itemKey},property:'fill',kernel:'color',keyframes:[{timeMs:0,value:'black'},{timeMs:50,value:'red'},{timeMs:100,value:'black'}]}]}}):ordinary;
   const frame=sampleTransition(plan,37),node=frame.scene.nodes[frame.decisions.findIndex(d=>d.kernel==='cartesian-point')],path=node.clips.find(clip=>!Array.isArray(clip));
-  frozen(frame);assert.ok(isOwned(frame.scene.nodes));assert.ok(isOwned(node));assert.ok(isOwned(node.properties));assert.ok(isOwned(path));
+  frozen(frame);assert.ok(isOwned(frame.decisions));assert.ok(frame.decisions.every(isOwned));assert.ok(isOwned(frame.scene.nodes));assert.ok(isOwned(node));assert.ok(isOwned(node.properties));assert.ok(isOwned(path));
   assert.throws(()=>{node.offset[0]=999;},TypeError);assert.throws(()=>{node.clip[0]=999;},TypeError);assert.throws(()=>{node.properties.x=999;},TypeError);assert.throws(()=>{path.commands[0].x=999;},TypeError);
   const bridge=createHitFrameBridge(prepareAnimationHitFrame(frame));
   try{assert.equal(bridge.hit({x:node.properties.x+node.offset[0],y:node.properties.y+node.offset[1]},{slop:0}).target.itemKey,decision.itemKey);}finally{bridge.dispose();}
@@ -38,7 +38,7 @@ test('mixed point, geographic text and axis emissions finish as immutable owned 
   const compose=(point,geo)=>hconcat({id:'mixed',programs:[{id:'point',program:point},{id:'geo',program:geo}]}),from=compose(p,g),to=compose(q,g.editProjection({scalePx:2})),saved=JSON.stringify([from,to]);
   const plan=planTransition({from,to,options:options(explicit)}),frame=sampleTransition(plan,37);
   assert.ok(frame.decisions.some(d=>d.kernel==='cartesian-point'));assert.ok(frame.decisions.some(d=>d.kernel==='native-geo-text'));assert.ok(frame.scene.nodes.some(node=>node.type==='text'));
-  frozen(frame);for(const node of frame.scene.nodes)assert.ok(isOwned(node));
+  frozen(frame);assert.ok(isOwned(frame.decisions));assert.ok(frame.decisions.every(isOwned));for(const node of frame.scene.nodes)assert.ok(isOwned(node));
   assert.throws(()=>{frame.scene.nodes[0].clip[0]=999;},TypeError);assert.throws(()=>{frame.scene.nodes.push(frame.scene.nodes[0]);},TypeError);
   replay(plan,37);const next=planTransition({from:frame,to,options:options(explicit)});replay(next,50);
   const proof=animationFrameProvenance(sampleTransition(next,50));assert.equal(Object.hasOwn(proof,'plan'),false);assert.equal(Object.hasOwn(proof,'previous'),false);

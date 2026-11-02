@@ -52,3 +52,30 @@ test('Canvas scenes preserve owner plot clips, multiline text and translated nes
   assert.deepEqual(scene.nodes.map(n=>n.clip),createTransitionScene(program).nodes.map(n=>n.clip));
  }
 });
+
+test('scene compiler keeps caller isolation and owned concrete descendants through translation',async()=>{
+ const {canvasSceneProgram}=await import('../../src/renderers/canvasScene.js');
+ const {cloneAndFreeze,isOwned}=await import('../../src/core/immutable.js');
+ const source=createTransitionScene(scatter(),{format:'canvas'});
+ const assertOwned=value=>{if(value===null||typeof value!=='object')return;assert.ok(isOwned(value));assert.ok(Object.isFrozen(value));for(const child of Object.values(value))assertOwned(child);};
+ for(const translated of[false,true]){
+  const mutable=structuredClone(source);if(translated)for(const node of mutable.nodes)node.offset=[node.offset[0]+10,node.offset[1]+20];
+  const snapshot=JSON.stringify(mutable),owned=cloneAndFreeze(mutable),program=canvasSceneProgram(owned);
+  assertOwned(program);assert.equal(canvasSceneProgram(owned),program);
+  assert.deepEqual(program,canvasSceneProgram(mutable));assert.equal(JSON.stringify(mutable),snapshot);
+  assert.equal(isOwned(mutable),false);assert.equal(isOwned(mutable.nodes[0].properties),false);assert.equal(Object.isFrozen(mutable.nodes[0].properties),false);
+  const old=canvasSceneProgram(mutable);mutable.nodes.find(node=>node.type==='circle').properties.fill='red';
+  assert.notEqual(canvasSceneProgram(mutable),old);assert.deepEqual(old,program);
+ }
+ const partial=structuredClone(source);partial.nodes[0].properties=cloneAndFreeze(partial.nodes[0].properties);assertOwned(canvasSceneProgram(partial));assert.equal(isOwned(partial.nodes[1].properties),false);
+});
+
+test('scene compiler preserves accessor rejection and later-node validation before final property copying',async()=>{
+ const {canvasSceneProgram}=await import('../../src/renderers/canvasScene.js');
+ const make=()=>structuredClone(createTransitionScene(scatter(),{format:'canvas'}));
+ let reads=0;const getter=make();Object.defineProperty(getter.nodes[0].properties,'extra',{enumerable:true,get(){reads++;return 1;}});
+ for(const input of[getter,Object.freeze(getter)])assert.throws(()=>canvasSceneProgram(input),/accessors are not supported/);assert.equal(reads,0);
+ const scene=make();scene.nodes[0].properties.extra=()=>1;scene.nodes[1].type='invalid';
+ assert.throws(()=>canvasSceneProgram(scene),/unique keys, concrete properties, offsets and clips/);
+ scene.nodes[1].type='circle';assert.throws(()=>canvasSceneProgram(scene),/Cannot store a function at state.graphicSpec.objects.node-\d+.properties.extra/);
+});
