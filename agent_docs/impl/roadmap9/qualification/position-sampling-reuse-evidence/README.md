@@ -5,7 +5,7 @@
 - [x] critical8개:100/96.20/100, 경계20·package7·문서243·실제 Canvas/SVG browser2개
 - [x] 같은 tar Node20/22/24 각각 runtime6·strict types·peers·bundle6개
 - [x] 문서186페이지·선택 LLM1606개
-- [ ] source pin 및 같은 archive 재확인
+- [x] source pin 및 같은 archive 재확인
 - [ ] 원100k sample·Canvas 재생과 최종 native P95/heap/lifecycle
 
 정확한 실행 범위와 원자료는 [qualification.json](qualification.json)이 소유한다.
@@ -24,3 +24,5 @@ Canonical archive `7a58b485728c4e47ef37d30455bfce6cfdef6af630bd8c43ade98eb7ad16d
 unpacked8088155bytes다. 실측에 따라 packed1795800/unpacked8088200과
 animation gzip333900(실측333816)만 재평가했다. 원 pack 실패와 premeasure를 원자료로 보존한다.
 재현 harness는 이전 [source-free installed consumer](../frame-appearance-reuse-evidence/installed.mjs)를 재사용한다.
+
+소스 `0b86ddebd41788295a8836ff4546f0cd4cba8154` pin 이후 문서 계약9개와 같은 archive 재확인이 통과했다. 메타데이터 검증을 새 runtime 또는 전체 suite 실행으로 세지 않는다.
