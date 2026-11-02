@@ -36,7 +36,7 @@ const program = new ChartProgram()
 Ordinary chart authors use complete-axis `underlay` and Canvas `plotBorder`
 options for guide placement; direct child IDs belong to extension authoring.
 
-<div class="docs-concept-flow" role="img" aria-label="Extension actions compose editSemantic, createGraphics, and editGraphics primitives">
+<div class="docs-concept-flow" role="img" tabindex="0" aria-label="Extension actions compose editSemantic, createGraphics, and editGraphics primitives">
   <span>editSemantic<strong>meaning</strong></span>
   <span>createGraphics<strong>identity</strong></span>
   <span>editGraphics<strong>concrete value</strong></span>

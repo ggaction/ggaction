@@ -2,7 +2,7 @@
 
 ## 상태와 승인
 
-- A1 제품 소스·기능 검증 완료. 이 문서를 포함한 source commit 뒤 문서 source pin과 변경 페이지 검증을 별도 metadata checkpoint로 마감한다.
+- A1 제품 소스·기능 검증 완료. Source `784b2165c7f1d691d2f4951e26ebf2d46d0ea5f4`는 push됐고, 이 후속 metadata checkpoint가 문서 source pin과 변경 페이지 검증을 마감한다.
 - 검토 source `62e51bb42`의 [구체안 A](GEO_CAPACITY_PROPOSAL.md)를 기준으로 한다. 2026-11-02 root가 기존 [remainingApproval](../AUTHORIZATION.json)의 범위에서 구현 순서 1을 명시 채택했다. 새 질문이나 별도 승인 범위를 만들지 않았다.
 - Native binding `capacity`와 concrete path `maxCommands`의 own/closed/default/최대값, native create/edit/source revise/projection/Canvas closure, 네 renderer·scene·codec·weighted bounds·flatten 전달이 이번 checkpoint다. 정확한 공개 계약은 [GEOMETRY](../../../contract/current/GEOMETRY.md)와 [PRIMITIVES](../../../contract/current/PRIMITIVES.md)가 소유한다.
 - 기존 clip/generator/graphic count/work/hit stroke/query 한도와 투영 수학·원 vertex는 유지했다. `src/core/validation.js` 변경은 없으며 후행 P 합산의 explicit generated ceiling 200002를 낮추지 않는다. Geo 고유 explicit ceiling 200000은 Geo/path normalizer에서 닫는다.
@@ -66,3 +66,11 @@ GEO_EVIDENCE_PREFIX=geo-capacity-final-installed node .artifacts/geo-capacity-in
 ```
 
 큰 원100k와 renderer/설치 실행은 CPU 슬롯을 조율해 직렬 수행했다. 모든 프로세스는 자연 종료했고 large 슬롯을 반환했다. 이후 root 통합에서 P v4의 넓은 명시 endpoint 한도와 기존 정책을 보존한다. A2는 camera state/closed payload/strict restore/sample capacity 의미를 그 안정 union에서 별도로 구현·검증해야 한다.
+
+## Source pin 후 최종 확인
+
+- 공개 source pin은 `784b2165c7f1d691d2f4951e26ebf2d46d0ea5f4`이며 src/types 전체는 최종 large receipt와 byte 동일하다. 재생성 후 canonical package를 다시 생성해 archive `6fb7f03f…34f13`의 정확 SHA256 동일성을 확인했다. 설치를 반복하거나 새 archive의 결과로 바꾸지 않았다.
+- Source-pin 문서 owning31/31, built186pages/1604LLM, 변경2page(`api/geometry`, `extension/primitives`)×1440/320/390/768 총8개의 containment/Axe/console 검사를 통과했다.
+- 첫 source-pin browser 실행은 기존 Primitive 도식의320폭 `scrollable-region-focusable` 1개를 발견했다. 해당 도식에 `tabindex=0`만 추가하고 실제 focus+ArrowRight scroll까지 확인했다. 원 실패 로그와 회복8개를 별도 보존한다. 이 문서 전용 수정은 package/runtime 입력을 바꾸지 않는다.
+- Browser 원100k 2건은 repository ES modules의 canonical browser-host 검사다. 동일 archive의 설치 검사는 Node public runtime과6 production entry bundles이며, 설치된 production browser100k 성능 qualification으로 합쳐 주장하지 않는다.
+- 변경 runtime은15 owner JS와 generated `inspectionDescriptors.js` 1개, 선언2개다. Core/generated ceiling과 renderer 구현/animation kernel은 변경0. 최종 source/pin 차이는 docs/evidence뿐이다.
