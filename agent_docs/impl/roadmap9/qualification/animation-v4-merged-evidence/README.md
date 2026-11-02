@@ -6,7 +6,7 @@
 - [x] 같은 archive 실제 설치물의 원point100000·partition10000 native/offline/sample/rebase 전수
 - [x] 같은 archive production minified Chromium v3/v4·DPR1/2·Canvas/SVG·offline assets
 - [x] Source minified offline browser1·appearance/sampling browser2·네 renderer52·문서186페이지/LLM1606개
-- [ ] Source pin과 같은 archive 재확인
+- [x] Source pin과 같은 archive 재확인
 - [ ] Common sample50ms와 최종 native P95·heap/lifecycle·STEP057–070/077
 
 [qualification.json](qualification.json)이 실행·재사용·수리·미완료의 정확 범위를 소유한다.
@@ -36,3 +36,5 @@ SVG24954/graph67866/animation339303/interaction136692B다. animation cap만33940
 `browser-installed.mjs`는 같은 tar의 minified source로만 브라우저를 만들고 metafile에서 repository src가
 없음을 검산한다. 임베디드 image/font와 network0·두 renderer·두 DPR·v3/v4를 검사한다.
 기존 unminified 첫 실행은 별도 보존한다. Root rendering helpers와 public entry의 경계는 그대로다.
+
+Source `7092b87d7939d709260d310cd417c0f2a7abe4fa` pin 뒤 문서 계약9개와 같은 archive SHA 재확인이 통과했다. Upstream metadata pin1064af592도 함께 병합했으며 runtime/type/package 입력 변화0이다. 이를 새 whole-suite 또는 성능 실행으로 세지 않는다.
