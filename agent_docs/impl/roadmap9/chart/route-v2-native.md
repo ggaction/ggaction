@@ -92,3 +92,5 @@ engine 간 solver 전체 bit 동일성을 보장하지 않는다. 해시는 각 
 provenance/schedule 별 첫 차이·최대 차이·전체 차이를 기록한다. 모든 원 결과와 비교 receipt를
 압축 보존했다. bandwidth 연산 차이 외 다른 엔진 수학 연산이 기여하지 않았다는 인과 배제까지
 증명하지는 않았으며, 엔진 간 geometry/hash 동일성을 주장하지 않는다.
+
+검증 source commit은 `a29ec070ea47a24315de93acbd3e00d91ca977bf`이며 이 뒤 metadata pin은 실행 bytes를 바꾸지 않는다.
