@@ -1,0 +1,34 @@
+{
+  "source": "ac96edb076fc9a299fa82e6ef18b63a2eb001845",
+  "mode": "small private numerical diagnostic, no guard changes",
+  "raw": 1000,
+  "commands": 1999,
+  "parts": 3297,
+  "partVertices": {
+    "3": 998,
+    "4": 2299
+  },
+  "shapeConservativeQueryWork": 65267,
+  "compiledPointWork": 15492,
+  "strokePreparationWork": 14189,
+  "projectionCalls": 1,
+  "derived": {
+    "formula": "Only if original 2N-1 collinear-midpoint pattern and same stroke hold; not an observed 100k output",
+    "partsRange": [
+      "3*N-4",
+      "4*N-5"
+    ],
+    "compilePointWorkRange": [
+      "14*N-13",
+      "19*N-18"
+    ],
+    "conservativeQueryChargeRange": [
+      "59*N-54",
+      "80*N-75"
+    ],
+    "at100kRange": [
+      5899946,
+      7999925
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "source": "ac96edb076fc9a299fa82e6ef18b63a2eb001845",
+  "qualification": false,
+  "mode": "source/static + original 1k diagnostic only",
+  "runtimeChanged": false,
+  "original10k100kReexecuted": false,
+  "evidence": {
+    "geo-capacity-small-audit.mjs": "0bab81b5884ef74b1c18859e0ae6c41a4acad2fdcf4a81fd04afe3e7e815bf8d",
+    "geo-capacity-small-audit.json": "83adff7a7cd1067d6c3a416ab640309aac6b8504277c18f47f0ab96f5c860e84",
+    "geo-capacity-calls.mjs": "5b2dda918096f9e156d3a370f86a3c51ba42d404c54f3df38f211a9fd4e16418",
+    "geo-capacity-loader.mjs": "56d004acf0012faa60f9b9e8e759a645b1bd7e3928861f89b252703227b77a17",
+    "geo-capacity-calls.json": "2374841595d12dd2dfdf2d136ce7606c3c766259ae0dfbfa5793a5ded16e1860",
+    "geo-capacity-calls-initial.err": "2b160d9e6444dfd719ba6d5a288c12730b22e2b17a211ae269f060c50842a964",
+    "geo-capacity-hit-small.mjs": "3440e5175daa5d134c5ccb821a283b4338ea5f004bb67759b8de4d52f77df1c3",
+    "geo-capacity-hit-small.json": "7de551b0ca0b5fae0e495d2834b940f2e81baca4ccc4c134e48399ea6ce715c9",
+    "geo-capacity-hit-small-original-hypothesis.err": "c6c1890760acd8c25f31566b44d147ebc868e53e4f4671838cfd0ccc74b964e5",
+    "geo-capacity-count-proof.mjs": "62993894792883ddb226483219888f4108ee83fc602992845c3446108b244570",
+    "geo-capacity-count-proof.json": "d320cc6e06c448eb66bd670f0723ca2f03ca5d40c2b88ae34c7f823b8787f55a"
+  },
+  "inputs": {
+    "src/grammar/geo/stream.js": "7f2b5bb17ac0184b7b3fde20ac285752fd8b638487c0142f10ba7af92561a669",
+    "src/materialization/geo/mark.js": "dca5f09841b8cdb4fe273e7e681ffe24611695310ed0eb04b4f30710906def8c",
+    "src/grammar/animation/geoState.js": "d9a3732c4e621ae04d4694727a4089bf99ea9ab73a778d69b5f93a89f94eca0f",
+    "src/animation/geoTracks.js": "c31c23d3fa61c3c578efb22749203258f83671bbcfd8567af28b0389255dc569",
+    "src/materialization/animation/geoPresentation.js": "d7ba6150757981fa2c305a7729a9fb4707a1fcf1f73198fb824f5419d9704231",
+    "src/grammar/pathTopology.js": "423fb56a06ce1940e28636c5450468e1ed09f5eb50d4fedfceac30216c109e32",
+    "src/grammar/hitShapes.js": "7ecde953aa500e9ec340624075681dd2fd6af4be7dbeacb7bfcc2ecb4c3aa613",
+    "src/grammar/hitStroke.js": "7b44c644834329cff29e7ad84b75f34e68efeef1ec61e322fe1f7b11edbfe3f3",
+    "src/grammar/hitIndex.js": "df25c5040d01d2bae638d576145397e186982c79fdb7aa44774b4ffd7dc5b804",
+    "src/animation/envelopeCodec.js": "cbad5ad7bc3dde627b37347776f79e3e9bce59af15d1a756553fed0f58722668",
+    "scripts/benchmarks/workloads.browser.js": "3612d851f6023a818fc8b6b1aebbc096e98ca5621dd56721875784352b34f4a2",
+    "src/grammar/geo/projectionMath.js": "45d1e2677b42af4c76e92a3f34da34a4590842e1806fe28a48a8fd6a69b61fda",
+    "src/grammar/geo/projectionOptions.js": "0823d794815ef95aa555589db3cb04f2844d5bb3c63498a1566b9f62f6db492e",
+    "node_modules/geographic-math/src/projection/resample.js": "878c3eddfb44d4ff02a2ec155f879e3db059ee93ea1e8660a6edec8a3a8fb0b0",
+    "node_modules/geographic-math/src/clip/antimeridian.js": "b7a4f9bde59d267abe5dfaeda19367425b8096eb6b3a18965caa0f136f295a06"
+  }
+}
