@@ -1,7 +1,7 @@
 import { cloneAndFreeze, freezeOwned } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateUnitInterval } from "../../core/validation.js";
-import { mapContinuousScaleValues } from "../scales/mapping.js";
+import { mapContinuousScaleValues, prepareContinuousScaleScalar, mapPreparedContinuousScaleValue } from "../scales/mapping.js";
 import { normalizeTransformParameters } from "../scales/transformed.js";
 import { interpolateNumber, interpolatePositiveScale } from "./values.js";
 
@@ -46,13 +46,13 @@ function shareScale(scale, context) {
 
 function rememberedScale(from, to, progress) {
   const previous = sampledScales.get(from)?.get(to);
-  return previous !== undefined && Object.is(previous.progress, progress) ? previous.scale : undefined;
+  return previous !== undefined && Object.is(previous.progress, progress) ? previous : undefined;
 }
 
-function rememberScale(from, to, progress, scale) {
+function rememberScale(from, to, progress, scale, mapper) {
   let targets = sampledScales.get(from);
   if (targets === undefined) sampledScales.set(from, targets = new WeakMap());
-  targets.set(to, { progress, scale });
+  targets.set(to, { progress, scale, mapper });
 }
 
 function pair(value, label) {
@@ -128,7 +128,7 @@ export function samplePositionInterpolation(plan, progress) {
   const { from, to } = prepared;
   if (progress === 0 || progress === 1) {
     const exact = progress === 0 ? from : to;
-    return cloneAndFreeze({ kind: "position", ...exact,
+    return freezeOwned({ kind: "position", ...exact,
       position: mapContinuousScaleValues([exact.value], exact.scale)[0] });
   }
   const value = interpolateNumber(from.value, to.value, progress);
@@ -136,7 +136,9 @@ export function samplePositionInterpolation(plan, progress) {
   const domainAt = from.scale.type === "log"
     ? (a, b) => Math.sign(a) * interpolatePositiveScale(Math.abs(a), Math.abs(b), progress) : at;
   const share = sharedScales.has(from.scale) && sharedScales.has(to.scale);
-  let scale = share ? rememberedScale(from.scale, to.scale, progress) : undefined;
+  const remembered = share ? rememberedScale(from.scale, to.scale, progress) : undefined;
+  let scale = remembered?.scale;
+  let mapper = remembered?.mapper;
   const retain = share && scale === undefined;
   if (scale === undefined) {
     scale = { ...from.scale, domain: from.scale.domain.map((v, i) => domainAt(v, to.scale.domain[i])),
@@ -146,13 +148,13 @@ export function samplePositionInterpolation(plan, progress) {
     freezeOwned(scale.domain); freezeOwned(scale.range); freezeOwned(scale);
   }
   let position;
-  try { position = mapContinuousScaleValues([value], scale)[0]; }
+  try { mapper ??= prepareContinuousScaleScalar(scale); position = mapPreparedContinuousScaleValue(mapper, value); }
   catch (error) {
     if (!(error instanceof RangeError)) throw error;
     return fade("nonfinite-position");
   }
   if (!Number.isFinite(position)) return fade("nonfinite-position");
   // A failed mapping or collapsed domain never publishes a partial cache entry.
-  if (retain) rememberScale(from.scale, to.scale, progress, scale);
-  return cloneAndFreeze({ kind: "position", value, scale, position });
+  if (retain) rememberScale(from.scale, to.scale, progress, scale, mapper);
+  return freezeOwned({ kind: "position", value, scale, position });
 }

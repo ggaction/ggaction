@@ -1,0 +1,2080 @@
+{
+  "status": "prepared-scalar-and-owned-position-record-verified; common50ms-and-final-closeout-pending",
+  "base": "b3da444d7",
+  "reviewRevision": "fa704a7cdb8b152de334437de5bfc7c4fa84415e",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "sourceSHA256": {
+    "src/grammar/animation/positions.js": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+    "src/grammar/scales/continuous.js": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+    "src/grammar/scales/transformed.js": "608c235d7a236f86d536eb555c1405db8e814759ef6a1bcd0f5d7c037fb31312",
+    "src/grammar/scales/mapping.js": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1259,
+    "packedBytes": 1809509,
+    "unpackedBytes": 8156711,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/.artifacts/prepared-scalar/archives/ggaction-c92a7375fe6955945fd18bb4a5a17b658abca047b7bbf9e433ea10c4123f7143.tgz",
+    "sha256": "c92a7375fe6955945fd18bb4a5a17b658abca047b7bbf9e433ea10c4123f7143"
+  },
+  "archiveSources": {
+    "src/grammar/animation/positions.js": {
+      "sourceSHA256": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+      "packageSHA256": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+      "canonicalCompaction": false
+    },
+    "src/grammar/scales/continuous.js": {
+      "sourceSHA256": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+      "packageSHA256": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+      "canonicalCompaction": false
+    },
+    "src/grammar/scales/transformed.js": {
+      "sourceSHA256": "608c235d7a236f86d536eb555c1405db8e814759ef6a1bcd0f5d7c037fb31312",
+      "packageSHA256": "b81967a641fc200f9534bf78d700edee80ab8aa4659dac383b40246ce64adbf4",
+      "canonicalCompaction": true
+    },
+    "src/grammar/scales/mapping.js": {
+      "sourceSHA256": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+      "packageSHA256": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+      "canonicalCompaction": false
+    },
+    "src/animation/columnCodec.js": {
+      "sourceSHA256": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+      "packageSHA256": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+      "canonicalCompaction": false
+    },
+    "src/animation/resources.js": {
+      "sourceSHA256": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+      "packageSHA256": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+      "canonicalCompaction": false
+    },
+    "src/animation/planner.js": {
+      "sourceSHA256": "0b76bbedc126d10937b5f7a999dd46ef7d554a22466aa9dcdc46de037bb9e576",
+      "packageSHA256": "0b76bbedc126d10937b5f7a999dd46ef7d554a22466aa9dcdc46de037bb9e576",
+      "canonicalCompaction": false
+    },
+    "src/animation/envelopeCodec.js": {
+      "sourceSHA256": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+      "packageSHA256": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+      "canonicalCompaction": false
+    },
+    "src/animation/sample.js": {
+      "sourceSHA256": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+      "packageSHA256": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+      "canonicalCompaction": false
+    },
+    "src/animation/frameEndpoint.js": {
+      "sourceSHA256": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+      "packageSHA256": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+      "canonicalCompaction": false
+    },
+    "src/animation/partitionTracks.js": {
+      "sourceSHA256": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+      "packageSHA256": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+      "canonicalCompaction": false
+    },
+    "src/materialization/animation/point.js": {
+      "sourceSHA256": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+      "packageSHA256": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+      "canonicalCompaction": false
+    },
+    "src/materialization/animation/guides.js": {
+      "sourceSHA256": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+      "packageSHA256": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+      "canonicalCompaction": false
+    },
+    "src/core/validation.js": {
+      "sourceSHA256": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+      "packageSHA256": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+      "canonicalCompaction": false
+    },
+    "src/selectors/graphicCapacity.js": {
+      "sourceSHA256": "80301d027d2887c620c83909a5db5aeb0546eac77397c7ba63c618ae139beceb",
+      "packageSHA256": "80301d027d2887c620c83909a5db5aeb0546eac77397c7ba63c618ae139beceb",
+      "canonicalCompaction": false
+    },
+    "src/animation/appearance.js": {
+      "sourceSHA256": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+      "packageSHA256": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+      "canonicalCompaction": false
+    },
+    "types/animation.d.ts": {
+      "sourceSHA256": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323",
+      "packageSHA256": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323",
+      "canonicalCompaction": false
+    }
+  },
+  "checks": {
+    "focused.log": 19,
+    "coverage.log": 1097,
+    "boundaries.log": 34,
+    "coverage-policy.log": 7,
+    "artifact-contracts.log": 16,
+    "render.log": 52
+  },
+  "critical": {
+    "grammar/animation/positions.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 98.46,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "grammar/scales/continuous.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 97.74,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "grammar/scales/transformed.js": {
+      "actual": {
+        "lines": 95.39,
+        "branches": 92.7,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "grammar/scales/mapping.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      }
+    }
+  },
+  "scalar": {
+    "node": "v22.23.1",
+    "baseline": "b3da444d7",
+    "comparisons": 91824,
+    "exactValueSignedZeroAndErrorClassMessage": true,
+    "newVectorAndPreparedScalarEqual": true,
+    "originalVectorAndProductEqual": true
+  },
+  "comparisons": {
+    "linear": {
+      "kind": "actual product b3da444d7 versus actual prepared scalar and position record product; counters are diagnostic, not SLO",
+      "node": "v22.23.1",
+      "variant": "product",
+      "scaleType": "linear",
+      "rows": 1000,
+      "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+      "savedInputSHA256": "3b0bb91edee41631b4a8c534e1179e56f24c85907e0261d92eff997b225ffd41",
+      "source": {
+        "src/animation/sample.js": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+        "src/grammar/animation/positions.js": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+        "src/grammar/scales/mapping.js": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+        "src/grammar/scales/continuous.js": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+        "src/grammar/scales/transformed.js": "608c235d7a236f86d536eb555c1405db8e814759ef6a1bcd0f5d7c037fb31312"
+      },
+      "comparisons": {
+        "3": {
+          "nativeBytes": [
+            1822845,
+            1822845
+          ],
+          "nativeSHA256": [
+            "e9ac83ddd4d874a56ae612000a8f4d604d61fc40ef60b94ea997a207ea4abcb0",
+            "e9ac83ddd4d874a56ae612000a8f4d604d61fc40ef60b94ea997a207ea4abcb0"
+          ],
+          "rebaseBytes": [
+            2381600,
+            2381600
+          ],
+          "rebaseSHA256": [
+            "24b7522ea6d74b4bbd47bb58b75668e0e5c9887d5a6d801565e3371bcc8e19c6",
+            "24b7522ea6d74b4bbd47bb58b75668e0e5c9887d5a6d801565e3371bcc8e19c6"
+          ],
+          "counts": [
+            {
+              "clones": 6035,
+              "ownedAdds": 10048,
+              "weakAdds": 16084,
+              "weakHas": 39151,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+                "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/continuous.js": 4000,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            },
+            {
+              "clones": 2035,
+              "ownedAdds": 8048,
+              "weakAdds": 10084,
+              "weakHas": 23155,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            }
+          ],
+          "work": {
+            "Animation preparation work": 771686
+          },
+          "rebaseWork": {
+            "Animation preparation work": 451681
+          },
+          "mixedGeoFullFrameAndMeaningEqual": true,
+          "fullNativeOfflineMeaningBatchRebaseEqual": true,
+          "timelineAndTimelineRebaseFullMeaningEqual": true,
+          "fallbackFullMeaningEqual": true,
+          "restoreReserializeExact": true
+        },
+        "4": {
+          "nativeBytes": [
+            345803,
+            345803
+          ],
+          "nativeSHA256": [
+            "1cff24dcb38c626c59a8e600cbf5d9bfb8f13bdd4e2164f9471899660a0fc7ea",
+            "1cff24dcb38c626c59a8e600cbf5d9bfb8f13bdd4e2164f9471899660a0fc7ea"
+          ],
+          "rebaseBytes": [
+            422310,
+            422310
+          ],
+          "rebaseSHA256": [
+            "120e049e85b5cb7408decadfc8d9cd132bf812a43ebef699944f88525c5cf912",
+            "120e049e85b5cb7408decadfc8d9cd132bf812a43ebef699944f88525c5cf912"
+          ],
+          "counts": [
+            {
+              "clones": 6035,
+              "ownedAdds": 10048,
+              "weakAdds": 16084,
+              "weakHas": 39151,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+                "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/continuous.js": 4000,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            },
+            {
+              "clones": 2035,
+              "ownedAdds": 8048,
+              "weakAdds": 10084,
+              "weakHas": 23155,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            }
+          ],
+          "work": {
+            "Animation preparation work": 771686
+          },
+          "rebaseWork": {
+            "Animation preparation work": 451681
+          },
+          "mixedGeoFullFrameAndMeaningEqual": true,
+          "fullNativeOfflineMeaningBatchRebaseEqual": true,
+          "timelineAndTimelineRebaseFullMeaningEqual": true,
+          "fallbackFullMeaningEqual": true,
+          "restoreReserializeExact": true
+        }
+      }
+    },
+    "time": {
+      "kind": "actual product b3da444d7 versus actual prepared scalar and position record product; counters are diagnostic, not SLO",
+      "node": "v22.23.1",
+      "variant": "product",
+      "scaleType": "time",
+      "rows": 1000,
+      "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+      "savedInputSHA256": "3136b6173b3a026734c38add07c8bde6cc0c9fb322e3db0b26e25a45f3afa208",
+      "source": {
+        "src/animation/sample.js": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+        "src/grammar/animation/positions.js": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+        "src/grammar/scales/mapping.js": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+        "src/grammar/scales/continuous.js": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+        "src/grammar/scales/transformed.js": "608c235d7a236f86d536eb555c1405db8e814759ef6a1bcd0f5d7c037fb31312"
+      },
+      "comparisons": {
+        "3": {
+          "nativeBytes": [
+            1818845,
+            1818845
+          ],
+          "nativeSHA256": [
+            "85548e4739858ecc85289206685ae3be69bc8dda129231027928a59f1c97360b",
+            "85548e4739858ecc85289206685ae3be69bc8dda129231027928a59f1c97360b"
+          ],
+          "rebaseBytes": [
+            2377600,
+            2377600
+          ],
+          "rebaseSHA256": [
+            "952d4ed1346ca36dd4d7ea3e383cecb0fdda92de659106560de90063352ecd28",
+            "952d4ed1346ca36dd4d7ea3e383cecb0fdda92de659106560de90063352ecd28"
+          ],
+          "counts": [
+            {
+              "clones": 6035,
+              "ownedAdds": 10048,
+              "weakAdds": 16084,
+              "weakHas": 39151,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+                "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/continuous.js": 4000,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            },
+            {
+              "clones": 2035,
+              "ownedAdds": 8048,
+              "weakAdds": 10084,
+              "weakHas": 23155,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            }
+          ],
+          "work": {
+            "Animation preparation work": 771686
+          },
+          "rebaseWork": {
+            "Animation preparation work": 451681
+          },
+          "mixedGeoFullFrameAndMeaningEqual": true,
+          "fullNativeOfflineMeaningBatchRebaseEqual": true,
+          "timelineAndTimelineRebaseFullMeaningEqual": true,
+          "fallbackFullMeaningEqual": true,
+          "restoreReserializeExact": true
+        },
+        "4": {
+          "nativeBytes": [
+            345799,
+            345799
+          ],
+          "nativeSHA256": [
+            "6e4f8b47635bd0a6a873487c5f2e4e679e139b3b75461f89684064a6d1af3194",
+            "6e4f8b47635bd0a6a873487c5f2e4e679e139b3b75461f89684064a6d1af3194"
+          ],
+          "rebaseBytes": [
+            422306,
+            422306
+          ],
+          "rebaseSHA256": [
+            "3bc8e705baf143bb2d3a61faef17a0893c2b3dab76a4f8e4a770bfb1ef0c9b1a",
+            "3bc8e705baf143bb2d3a61faef17a0893c2b3dab76a4f8e4a770bfb1ef0c9b1a"
+          ],
+          "counts": [
+            {
+              "clones": 6035,
+              "ownedAdds": 10048,
+              "weakAdds": 16084,
+              "weakHas": 39151,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+                "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/continuous.js": 4000,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            },
+            {
+              "clones": 2035,
+              "ownedAdds": 8048,
+              "weakAdds": 10084,
+              "weakHas": 23155,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            }
+          ],
+          "work": {
+            "Animation preparation work": 771686
+          },
+          "rebaseWork": {
+            "Animation preparation work": 451681
+          },
+          "mixedGeoFullFrameAndMeaningEqual": true,
+          "fullNativeOfflineMeaningBatchRebaseEqual": true,
+          "timelineAndTimelineRebaseFullMeaningEqual": true,
+          "fallbackFullMeaningEqual": true,
+          "restoreReserializeExact": true
+        }
+      }
+    },
+    "log": {
+      "kind": "actual product b3da444d7 versus actual prepared scalar and position record product; counters are diagnostic, not SLO",
+      "node": "v22.23.1",
+      "variant": "product",
+      "scaleType": "log",
+      "rows": 1000,
+      "inputSHA256": "1f98d0eea5b555ec807fa1ec89e1dd40a1ec282928885c84a9317307093dadce",
+      "savedInputSHA256": "ad391a5fb95666e7cb0246cc8c9fe8fe1075154297f3bc17b95c4fe8adb202bd",
+      "source": {
+        "src/animation/sample.js": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+        "src/grammar/animation/positions.js": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+        "src/grammar/scales/mapping.js": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+        "src/grammar/scales/continuous.js": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+        "src/grammar/scales/transformed.js": "608c235d7a236f86d536eb555c1405db8e814759ef6a1bcd0f5d7c037fb31312"
+      },
+      "comparisons": {
+        "3": {
+          "nativeBytes": [
+            1841631,
+            1841631
+          ],
+          "nativeSHA256": [
+            "a0b4b06c6a614c7fa6e506762d60278e2915fd647a2ccc85a431bae87977a5d5",
+            "a0b4b06c6a614c7fa6e506762d60278e2915fd647a2ccc85a431bae87977a5d5"
+          ],
+          "rebaseBytes": [
+            2410834,
+            2410834
+          ],
+          "rebaseSHA256": [
+            "e51f2e73c2b7ae499d1059096afbd6583718e51fcecaf52eb1125fd0363e0394",
+            "e51f2e73c2b7ae499d1059096afbd6583718e51fcecaf52eb1125fd0363e0394"
+          ],
+          "counts": [
+            {
+              "clones": 8035,
+              "ownedAdds": 12048,
+              "weakAdds": 20084,
+              "weakHas": 45151,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4000,
+                "    at mapTransformedValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 2000,
+                "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/continuous.js": 2000,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            },
+            {
+              "clones": 2037,
+              "ownedAdds": 8050,
+              "weakAdds": 10088,
+              "weakHas": 23161,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            }
+          ],
+          "work": {
+            "Animation preparation work": 771686
+          },
+          "rebaseWork": {
+            "Animation preparation work": 451681
+          },
+          "mixedGeoFullFrameAndMeaningEqual": true,
+          "fullNativeOfflineMeaningBatchRebaseEqual": true,
+          "timelineAndTimelineRebaseFullMeaningEqual": true,
+          "fallbackFullMeaningEqual": true,
+          "restoreReserializeExact": true
+        },
+        "4": {
+          "nativeBytes": [
+            347292,
+            347292
+          ],
+          "nativeSHA256": [
+            "abd88d7d20e861eb24342c1ed91ca630372cbc66494b34abbbc04f5cae03dd3b",
+            "abd88d7d20e861eb24342c1ed91ca630372cbc66494b34abbbc04f5cae03dd3b"
+          ],
+          "rebaseBytes": [
+            423215,
+            423215
+          ],
+          "rebaseSHA256": [
+            "d6d7041091a4c9a546ba5eedfd0a5cbb13549da2855e128fa99120f2c2010e03",
+            "d6d7041091a4c9a546ba5eedfd0a5cbb13549da2855e128fa99120f2c2010e03"
+          ],
+          "counts": [
+            {
+              "clones": 8035,
+              "ownedAdds": 12048,
+              "weakAdds": 20084,
+              "weakHas": 45151,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4000,
+                "    at mapTransformedValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 2000,
+                "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/continuous.js": 2000,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            },
+            {
+              "clones": 2037,
+              "ownedAdds": 8050,
+              "weakAdds": 10088,
+              "weakHas": 23161,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            }
+          ],
+          "work": {
+            "Animation preparation work": 771686
+          },
+          "rebaseWork": {
+            "Animation preparation work": 451681
+          },
+          "mixedGeoFullFrameAndMeaningEqual": true,
+          "fullNativeOfflineMeaningBatchRebaseEqual": true,
+          "timelineAndTimelineRebaseFullMeaningEqual": true,
+          "fallbackFullMeaningEqual": true,
+          "restoreReserializeExact": true
+        }
+      }
+    },
+    "pow": {
+      "kind": "actual product b3da444d7 versus actual prepared scalar and position record product; counters are diagnostic, not SLO",
+      "node": "v22.23.1",
+      "variant": "product",
+      "scaleType": "pow",
+      "rows": 1000,
+      "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+      "savedInputSHA256": "9e6756ba8ea401251ac7b691c98bc82f01c3beab21f805448db3bea7ee1e38cc",
+      "source": {
+        "src/animation/sample.js": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+        "src/grammar/animation/positions.js": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+        "src/grammar/scales/mapping.js": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+        "src/grammar/scales/continuous.js": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+        "src/grammar/scales/transformed.js": "608c235d7a236f86d536eb555c1405db8e814759ef6a1bcd0f5d7c037fb31312"
+      },
+      "comparisons": {
+        "3": {
+          "nativeBytes": [
+            1847040,
+            1847040
+          ],
+          "nativeSHA256": [
+            "6e372311fe76b80ff22652f3605b3e4fcf2b6ecdcebb6a09c8be4f23c5b08ad6",
+            "6e372311fe76b80ff22652f3605b3e4fcf2b6ecdcebb6a09c8be4f23c5b08ad6"
+          ],
+          "rebaseBytes": [
+            2406017,
+            2406017
+          ],
+          "rebaseSHA256": [
+            "343a88de89a1d96e542912ebcbdd4c9a63e2e594d08fb18adbce15acf12f1466",
+            "343a88de89a1d96e542912ebcbdd4c9a63e2e594d08fb18adbce15acf12f1466"
+          ],
+          "counts": [
+            {
+              "clones": 8035,
+              "ownedAdds": 12048,
+              "weakAdds": 20084,
+              "weakHas": 45151,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4000,
+                "    at mapTransformedValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 2000,
+                "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/continuous.js": 2000,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            },
+            {
+              "clones": 2037,
+              "ownedAdds": 8050,
+              "weakAdds": 10088,
+              "weakHas": 23161,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            }
+          ],
+          "work": {
+            "Animation preparation work": 771686
+          },
+          "rebaseWork": {
+            "Animation preparation work": 451681
+          },
+          "mixedGeoFullFrameAndMeaningEqual": true,
+          "fullNativeOfflineMeaningBatchRebaseEqual": true,
+          "timelineAndTimelineRebaseFullMeaningEqual": true,
+          "fallbackFullMeaningEqual": true,
+          "restoreReserializeExact": true
+        },
+        "4": {
+          "nativeBytes": [
+            346116,
+            346116
+          ],
+          "nativeSHA256": [
+            "5c7e9bf3d61cd5986f7b41dd3f5759af5ed6695c94a4180c98bd42bccf135f5a",
+            "5c7e9bf3d61cd5986f7b41dd3f5759af5ed6695c94a4180c98bd42bccf135f5a"
+          ],
+          "rebaseBytes": [
+            422798,
+            422798
+          ],
+          "rebaseSHA256": [
+            "9f7e7bacbb9bc61326a578e313fcb6eb45fa535375d4d7a04e0f179518d51e97",
+            "9f7e7bacbb9bc61326a578e313fcb6eb45fa535375d4d7a04e0f179518d51e97"
+          ],
+          "counts": [
+            {
+              "clones": 8035,
+              "ownedAdds": 12048,
+              "weakAdds": 20084,
+              "weakHas": 45151,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4000,
+                "    at mapTransformedValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 2000,
+                "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/continuous.js": 2000,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            },
+            {
+              "clones": 2037,
+              "ownedAdds": 8050,
+              "weakAdds": 10088,
+              "weakHas": 23161,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            }
+          ],
+          "work": {
+            "Animation preparation work": 771686
+          },
+          "rebaseWork": {
+            "Animation preparation work": 451681
+          },
+          "mixedGeoFullFrameAndMeaningEqual": true,
+          "fullNativeOfflineMeaningBatchRebaseEqual": true,
+          "timelineAndTimelineRebaseFullMeaningEqual": true,
+          "fallbackFullMeaningEqual": true,
+          "restoreReserializeExact": true
+        }
+      }
+    },
+    "sqrt": {
+      "kind": "actual product b3da444d7 versus actual prepared scalar and position record product; counters are diagnostic, not SLO",
+      "node": "v22.23.1",
+      "variant": "product",
+      "scaleType": "sqrt",
+      "rows": 1000,
+      "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+      "savedInputSHA256": "532075fd217ecd2ae30e7e8c8d430cdff3d4cdcbf5f821b49a78a5c02a6a8fd4",
+      "source": {
+        "src/animation/sample.js": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+        "src/grammar/animation/positions.js": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+        "src/grammar/scales/mapping.js": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+        "src/grammar/scales/continuous.js": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+        "src/grammar/scales/transformed.js": "608c235d7a236f86d536eb555c1405db8e814759ef6a1bcd0f5d7c037fb31312"
+      },
+      "comparisons": {
+        "3": {
+          "nativeBytes": [
+            1820834,
+            1820834
+          ],
+          "nativeSHA256": [
+            "c0423c897311f319ca03035c96352b029d1a6be9d205957c4902c3739d7bb1fa",
+            "c0423c897311f319ca03035c96352b029d1a6be9d205957c4902c3739d7bb1fa"
+          ],
+          "rebaseBytes": [
+            2379159,
+            2379159
+          ],
+          "rebaseSHA256": [
+            "aacecf4a61a551ad0479bec8b459e5ac42a4a4fe1f4e4cd4a2f757306bd815cb",
+            "aacecf4a61a551ad0479bec8b459e5ac42a4a4fe1f4e4cd4a2f757306bd815cb"
+          ],
+          "counts": [
+            {
+              "clones": 8035,
+              "ownedAdds": 12048,
+              "weakAdds": 20084,
+              "weakHas": 45151,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4000,
+                "    at mapTransformedValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 2000,
+                "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/continuous.js": 2000,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            },
+            {
+              "clones": 2037,
+              "ownedAdds": 8050,
+              "weakAdds": 10088,
+              "weakHas": 23161,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            }
+          ],
+          "work": {
+            "Animation preparation work": 771686
+          },
+          "rebaseWork": {
+            "Animation preparation work": 451681
+          },
+          "mixedGeoFullFrameAndMeaningEqual": true,
+          "fullNativeOfflineMeaningBatchRebaseEqual": true,
+          "timelineAndTimelineRebaseFullMeaningEqual": true,
+          "fallbackFullMeaningEqual": true,
+          "restoreReserializeExact": true
+        },
+        "4": {
+          "nativeBytes": [
+            347788,
+            347788
+          ],
+          "nativeSHA256": [
+            "0db1c1220dd3cbeb45099a9be343c0c6c714380d59596e7d34f7705e5f838a52",
+            "0db1c1220dd3cbeb45099a9be343c0c6c714380d59596e7d34f7705e5f838a52"
+          ],
+          "rebaseBytes": [
+            423865,
+            423865
+          ],
+          "rebaseSHA256": [
+            "18486d0bf67b2ae369c7f6eb23b00eb942a3c970574e26f928dc652bc7bc5162",
+            "18486d0bf67b2ae369c7f6eb23b00eb942a3c970574e26f928dc652bc7bc5162"
+          ],
+          "counts": [
+            {
+              "clones": 8035,
+              "ownedAdds": 12048,
+              "weakAdds": 20084,
+              "weakHas": 45151,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4000,
+                "    at mapTransformedValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 2000,
+                "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/continuous.js": 2000,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            },
+            {
+              "clones": 2037,
+              "ownedAdds": 8050,
+              "weakAdds": 10088,
+              "weakHas": 23161,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            }
+          ],
+          "work": {
+            "Animation preparation work": 771686
+          },
+          "rebaseWork": {
+            "Animation preparation work": 451681
+          },
+          "mixedGeoFullFrameAndMeaningEqual": true,
+          "fullNativeOfflineMeaningBatchRebaseEqual": true,
+          "timelineAndTimelineRebaseFullMeaningEqual": true,
+          "fallbackFullMeaningEqual": true,
+          "restoreReserializeExact": true
+        }
+      }
+    },
+    "symlog": {
+      "kind": "actual product b3da444d7 versus actual prepared scalar and position record product; counters are diagnostic, not SLO",
+      "node": "v22.23.1",
+      "variant": "product",
+      "scaleType": "symlog",
+      "rows": 1000,
+      "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+      "savedInputSHA256": "5ab525cdd05959b44fd84b5587c9e3d98941a15abd858bb02180f787777c9692",
+      "source": {
+        "src/animation/sample.js": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+        "src/grammar/animation/positions.js": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+        "src/grammar/scales/mapping.js": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+        "src/grammar/scales/continuous.js": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+        "src/grammar/scales/transformed.js": "608c235d7a236f86d536eb555c1405db8e814759ef6a1bcd0f5d7c037fb31312"
+      },
+      "comparisons": {
+        "3": {
+          "nativeBytes": [
+            1858928,
+            1858928
+          ],
+          "nativeSHA256": [
+            "480a3a9f46a0e161e8b4485ec299e56d4de69b460bf6cf23692f290d07755882",
+            "480a3a9f46a0e161e8b4485ec299e56d4de69b460bf6cf23692f290d07755882"
+          ],
+          "rebaseBytes": [
+            2417161,
+            2417161
+          ],
+          "rebaseSHA256": [
+            "771c29e201aa7839e1aa506379df275fbb4e850a12b284424750fd7be26c83e9",
+            "771c29e201aa7839e1aa506379df275fbb4e850a12b284424750fd7be26c83e9"
+          ],
+          "counts": [
+            {
+              "clones": 8035,
+              "ownedAdds": 12048,
+              "weakAdds": 20084,
+              "weakHas": 45151,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4000,
+                "    at mapTransformedValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 2000,
+                "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/continuous.js": 2000,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            },
+            {
+              "clones": 2037,
+              "ownedAdds": 8050,
+              "weakAdds": 10088,
+              "weakHas": 23161,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            }
+          ],
+          "work": {
+            "Animation preparation work": 771686
+          },
+          "rebaseWork": {
+            "Animation preparation work": 451681
+          },
+          "mixedGeoFullFrameAndMeaningEqual": true,
+          "fullNativeOfflineMeaningBatchRebaseEqual": true,
+          "timelineAndTimelineRebaseFullMeaningEqual": true,
+          "fallbackFullMeaningEqual": true,
+          "restoreReserializeExact": true
+        },
+        "4": {
+          "nativeBytes": [
+            348014,
+            348014
+          ],
+          "nativeSHA256": [
+            "dd119eb63f6906d098b723dcb7365aa57c57223477a58f07a3518f39c599352a",
+            "dd119eb63f6906d098b723dcb7365aa57c57223477a58f07a3518f39c599352a"
+          ],
+          "rebaseBytes": [
+            423952,
+            423952
+          ],
+          "rebaseSHA256": [
+            "be92a497db4f64dcd4ff7463ff06dfd2a428c34dd9880dceb9308181bc11ca98",
+            "be92a497db4f64dcd4ff7463ff06dfd2a428c34dd9880dceb9308181bc11ca98"
+          ],
+          "counts": [
+            {
+              "clones": 8035,
+              "ownedAdds": 12048,
+              "weakAdds": 20084,
+              "weakHas": 45151,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4000,
+                "    at mapTransformedValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 2000,
+                "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/continuous.js": 2000,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            },
+            {
+              "clones": 2037,
+              "ownedAdds": 8050,
+              "weakAdds": 10088,
+              "weakHas": 23161,
+              "weakSources": {
+                "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTracks.js": 2,
+                "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+                "    at normalizeTransformParameters (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/grammar/scales/transformed.js": 4,
+                "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2000,
+                "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/sample.js": 2010,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoFrames.js": 6,
+                "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/graphTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+                "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+                "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+                "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 2001,
+                "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/endpoints.js": 5,
+                "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/src/animation/frameProvenance.js": 6
+              }
+            }
+          ],
+          "work": {
+            "Animation preparation work": 771686
+          },
+          "rebaseWork": {
+            "Animation preparation work": 451681
+          },
+          "mixedGeoFullFrameAndMeaningEqual": true,
+          "fullNativeOfflineMeaningBatchRebaseEqual": true,
+          "timelineAndTimelineRebaseFullMeaningEqual": true,
+          "fallbackFullMeaningEqual": true,
+          "restoreReserializeExact": true
+        }
+      }
+    }
+  },
+  "large": {
+    "kind": "Public version4 actual API path, phased plan lifetimes; no instrumentation; not SLO/P95",
+    "node": "v24.22.1",
+    "pid": 46252,
+    "execArgv": [
+      "--expose-gc",
+      "--max-old-space-size=6144"
+    ],
+    "n": 100000,
+    "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+    "phases": {
+      "prepare": {
+        "ms": 23439.418625,
+        "accounting": {
+          "native": true,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 78333686
+          }
+        },
+        "columns": {
+          "logicalValues": 7600057,
+          "descriptorVisits": 7600056,
+          "cellVisits": 7600004,
+          "interningWork": 93556546,
+          "internNodes": 208,
+          "uniqueLowerBound": {
+            "physicalValues": 600110,
+            "encodedValues": 600258,
+            "bytes": 33650049
+          },
+          "physicalValues": 604540,
+          "encodedValues": 608452,
+          "bytes": 33703134,
+          "validatedLogicalValues": 7600057
+        }
+      },
+      "sample": {
+        "ms": 1890.1633750000037,
+        "timing": "pure sample without post-prepare GC; not P95/SLO",
+        "coordinateOracleMs": 11.024457999999868
+      },
+      "offline": {
+        "ms": 29034.141083000002,
+        "bytes": 33703073,
+        "sha256": "021a18a6abc9e5f240ee553248204ff7fd191be7891b3be09308abf8dedeaef3",
+        "accounting": {
+          "native": false,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 97911711
+          }
+        },
+        "decodedPayload": {
+          "physicalValues": 604516,
+          "bytes": 23180528,
+          "estimatedEncodedValues": 608406,
+          "estimatedEncodedBytes": 33702922
+        },
+        "encodedEnvelope": {
+          "physicalValues": 608411,
+          "bytes": 33703073
+        }
+      },
+      "rebase": {
+        "ms": 19338.038916000005,
+        "accounting": {
+          "native": true,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 46333687
+          }
+        },
+        "columns": {
+          "logicalValues": 10100086,
+          "descriptorVisits": 9300070,
+          "cellVisits": 9300023,
+          "interningWork": 119734738,
+          "internNodes": 270,
+          "uniqueLowerBound": {
+            "physicalValues": 800160,
+            "encodedValues": 800371,
+            "bytes": 41146770
+          },
+          "physicalValues": 804781,
+          "encodedValues": 809068,
+          "bytes": 41202411,
+          "validatedLogicalValues": 10100086
+        }
+      },
+      "rebaseOffline": {
+        "ms": 61176.72516700001,
+        "bytes": 41202280,
+        "sha256": "c1cde264af3f32dc2de9904c4f97562094ee06dc2cee5915aab0fad9166e0360",
+        "accounting": {
+          "native": false,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 133456501
+          }
+        },
+        "decodedPayload": {
+          "physicalValues": 804751,
+          "bytes": 29781479,
+          "estimatedEncodedValues": 809008,
+          "estimatedEncodedBytes": 41202129
+        },
+        "encodedEnvelope": {
+          "physicalValues": 809013,
+          "bytes": 41202280
+        }
+      }
+    },
+    "lifetime": [
+      {
+        "stage": "native-plan-released",
+        "memory": {
+          "rss": 1625243648,
+          "heapTotal": 869433344,
+          "heapUsed": 536456120,
+          "external": 36097327,
+          "arrayBuffers": 148239
+        }
+      },
+      {
+        "stage": "native-offline-plan-released",
+        "memory": {
+          "rss": 2105425920,
+          "heapTotal": 965115904,
+          "heapUsed": 679231288,
+          "external": 36128839,
+          "arrayBuffers": 148239
+        }
+      },
+      {
+        "stage": "rebase-plan-and-source-frame-released",
+        "memory": {
+          "rss": 1652768768,
+          "heapTotal": 985710592,
+          "heapUsed": 686649720,
+          "external": 43626709,
+          "arrayBuffers": 148239
+        }
+      },
+      {
+        "stage": "all-native-offline-rebase-exact",
+        "memory": {
+          "rss": 2241806336,
+          "heapTotal": 978632704,
+          "heapUsed": 686808680,
+          "external": 43626709,
+          "arrayBuffers": 148239
+        }
+      }
+    ],
+    "allCoordinatesVerified": 100000,
+    "batch50Rejected": true,
+    "stage": "all-native-offline-rebase-exact",
+    "allRebaseCoordinatesVerified": 100000,
+    "rebaseEncoding": {
+      "previousBytes": 41204160,
+      "actualBytes": 41202280,
+      "losslessRepresentationChangeAllowed": true
+    },
+    "sourceSHA256": {
+      "src/animation/columnCodec.js": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+      "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+      "src/animation/planner.js": "0b76bbedc126d10937b5f7a999dd46ef7d554a22466aa9dcdc46de037bb9e576",
+      "src/animation/envelopeCodec.js": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+      "src/animation/sample.js": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+      "src/animation/frameEndpoint.js": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+      "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+      "src/materialization/animation/point.js": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+      "src/materialization/animation/guides.js": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+      "src/core/validation.js": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+      "src/selectors/graphicCapacity.js": "80301d027d2887c620c83909a5db5aeb0546eac77397c7ba63c618ae139beceb",
+      "src/grammar/animation/positions.js": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+      "src/grammar/scales/continuous.js": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+      "src/grammar/scales/transformed.js": "608c235d7a236f86d536eb555c1405db8e814759ef6a1bcd0f5d7c037fb31312",
+      "src/grammar/scales/mapping.js": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+      "src/animation/appearance.js": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+      "types/animation.d.ts": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323"
+    }
+  },
+  "retention": {
+    "node": "v22.23.1",
+    "cycles": 5,
+    "liveMappers": 7,
+    "borrowedReferences": 21,
+    "retainedBorrowedReferences": 0,
+    "scope": "Small explicit-GC reachability proof only, not retained-heap 100-cycle qualification"
+  },
+  "consumers": [
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1259,
+        "packedBytes": 1809509,
+        "unpackedBytes": 8156711,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/.artifacts/prepared-scalar/archives/ggaction-c92a7375fe6955945fd18bb4a5a17b658abca047b7bbf9e433ea10c4123f7143.tgz",
+        "sha256": "c92a7375fe6955945fd18bb4a5a17b658abca047b7bbf9e433ea10c4123f7143"
+      },
+      "node": "v20.20.2",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 788833,
+          "limit": 788900,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 426214,
+          "limit": 426300,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25672,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69506,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 341294,
+          "limit": 341300,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137425,
+          "limit": 137500,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1259,
+        "packedBytes": 1809509,
+        "unpackedBytes": 8156711,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/.artifacts/prepared-scalar/archives/ggaction-c92a7375fe6955945fd18bb4a5a17b658abca047b7bbf9e433ea10c4123f7143.tgz",
+        "sha256": "c92a7375fe6955945fd18bb4a5a17b658abca047b7bbf9e433ea10c4123f7143"
+      },
+      "node": "v22.23.1",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 787422,
+          "limit": 788900,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 425179,
+          "limit": 426300,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25558,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69341,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 340138,
+          "limit": 341300,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 136898,
+          "limit": 137500,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1259,
+        "packedBytes": 1809509,
+        "unpackedBytes": 8156711,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/.artifacts/prepared-scalar/archives/ggaction-c92a7375fe6955945fd18bb4a5a17b658abca047b7bbf9e433ea10c4123f7143.tgz",
+        "sha256": "c92a7375fe6955945fd18bb4a5a17b658abca047b7bbf9e433ea10c4123f7143"
+      },
+      "node": "v24.22.1",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 788833,
+          "limit": 788900,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 426214,
+          "limit": 426300,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25672,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69506,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 341294,
+          "limit": 341300,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137425,
+          "limit": 137500,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    }
+  ],
+  "browser": {
+    "archiveSHA256": "c92a7375fe6955945fd18bb4a5a17b658abca047b7bbf9e433ea10c4123f7143",
+    "sourceRootInputs": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "versions": [
+      3,
+      4
+    ],
+    "status": "passed"
+  },
+  "packs": [
+    {
+      "node": 20,
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1259,
+      "packedBytes": 1812731,
+      "unpackedBytes": 8156711,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/.artifacts/prepared-scalar/final-pack20/ggaction-0.0.26.tgz",
+      "sha256": "9620733158bf67037a42913fab02f7e291272445f70bd5b8969624d4ff9c1b87"
+    },
+    {
+      "node": 22,
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1259,
+      "packedBytes": 1809509,
+      "unpackedBytes": 8156711,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/.artifacts/prepared-scalar/final-pack22/ggaction-0.0.26.tgz",
+      "sha256": "c92a7375fe6955945fd18bb4a5a17b658abca047b7bbf9e433ea10c4123f7143"
+    },
+    {
+      "node": 24,
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1259,
+      "packedBytes": 1812731,
+      "unpackedBytes": 8156711,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-scalar-mapper-review/ggactionnewbrand/.artifacts/prepared-scalar/final-pack24/ggaction-0.0.26.tgz",
+      "sha256": "9620733158bf67037a42913fab02f7e291272445f70bd5b8969624d4ff9c1b87"
+    }
+  ],
+  "failuresPreserved": [
+    {
+      "file": "pack-first.stderr",
+      "reason": "Original unpacked size ceiling exceeded; raised only to measured 8156800"
+    },
+    {
+      "file": "pack20-first.stderr",
+      "reason": "Original packed size ceiling exceeded; raised only to measured 1812800"
+    },
+    {
+      "file": "consumer20-first.json",
+      "reason": "All runtime/type/docs/peers passed; only measured Full/Basic/animation bundle ceilings exceeded before minimal synchronization"
+    },
+    {
+      "file": "consumer24-first.json",
+      "reason": "Same measured bundle-only failure; retained original receipt"
+    },
+    {
+      "file": "artifact-contract-selector-failure.log",
+      "reason": "Nonexistent evidence runner selector rejected before tests; corrected selector and rerun"
+    },
+    {
+      "file": "artifact-readme-cap-failure.log",
+      "reason": "README Basic ceiling was stale; synchronized README and repeated final archive/runtime/browser verification"
+    }
+  ],
+  "commands": [
+    "node .artifacts/prepared-scalar/owning-coverage.mjs",
+    "node .artifacts/prepared-scalar/scalar-compare.mjs",
+    "SCALAR_TYPE=<linear|time|log|pow|sqrt|symlog> node .artifacts/prepared-scalar/product-compare.mjs",
+    "node --expose-gc --max-old-space-size=6144 .artifacts/prepared-scalar/product-100000-phased.mjs",
+    "node --expose-gc .artifacts/prepared-scalar/mapper-retention.mjs",
+    "node .artifacts/animation-small-installed.mjs .artifacts/prepared-scalar/frozen.json <receipt>",
+    "node .artifacts/prepared-scalar/browser-installed.mjs"
+  ],
+  "limitations": [
+    "Single original100k functional run with phased lifetimes; sample clock excludes oracle but has no post-prepare GC and concurrent small package work, not P95 or comparable speedup",
+    "Small explicit-GC 21 borrowed-reference proof does not establish retained-heap 100-cycle qualification",
+    "Common sampler-to-Canvas 50ms, whole final9 checks and STEP057-077 closeout remain pending"
+  ],
+  "evidenceFiles": {
+    "artifact-contract-selector-failure.log": {
+      "sha256": "4fafd762791859c67df564d2b5f36f0a1bb91477930c498b727199da3d35afc9",
+      "bytes": 595
+    },
+    "artifact-contracts.log": {
+      "sha256": "88498f388dd3bd4610d85254883da33e591da649ec37103be4bcf6e618c205be",
+      "bytes": 3420
+    },
+    "artifact-readme-cap-failure.log": {
+      "sha256": "bc3b35f409ac62a73b671b8139199830a259d329e17bf566b92aac406c5594bd",
+      "bytes": 30797
+    },
+    "boundaries.log": {
+      "sha256": "70fd5fabe4f1415127dff2a11be8600bb57685905fd2273b075775a4d132a9b2",
+      "bytes": 6629
+    },
+    "browser-installed-before-readme.json": {
+      "sha256": "2d85d18f967251b96a3973a2f844963f67347fc9c7d731cf9818963ba36c2757",
+      "bytes": 200
+    },
+    "browser-installed-before-readme.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "browser-installed.json": {
+      "sha256": "8f37bf8a2dd6109bc91bf53e004948ff3db91b5f3c73914139796fdb831f4920",
+      "bytes": 200
+    },
+    "browser-installed.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "browser-installed.mjs": {
+      "sha256": "ad3abc57c31d1e303e2341ea3a5718a8c98110c2b0f3d58405f7122ca4e2e17b",
+      "bytes": 830
+    },
+    "budget-recheck20.json": {
+      "sha256": "7066e1b0cd124f8a56328e8655cb8ce5c450ceaf3fa68e8465f49361da0aa5c1",
+      "bytes": 2358
+    },
+    "budget-recheck24.json": {
+      "sha256": "6b321bc0f80aa1fe5a9ab928149113d76cfe33c31f255b09c7b7f96594462772",
+      "bytes": 2358
+    },
+    "consumer20-first.json": {
+      "sha256": "c97cd9afd8f851fb6e373e74dcabfa8d8dcaa32626d14614a366f48918ea5ca9",
+      "bytes": 2181
+    },
+    "consumer20-first.log": {
+      "sha256": "f97d09aaacd5ea7dae7f299c0b134337daf4cc674f1912b4d56a5b1072535b42",
+      "bytes": 2108
+    },
+    "consumer20.json": {
+      "sha256": "7ca5b377ebfd92318f051f1f09c0867c1e38b0caea045c0b99185f161647060f",
+      "bytes": 2162
+    },
+    "consumer20.log": {
+      "sha256": "5b47800cc8904379e0ec3da0dc273a78f6452842a26a3cfd208963a77009db73",
+      "bytes": 1591
+    },
+    "consumer22-first.json": {
+      "sha256": "a5f06bfe002e62559017fa285fafc3b741748dc7424c222d5bd036f5de25e6ff",
+      "bytes": 2162
+    },
+    "consumer22-first.log": {
+      "sha256": "af36404f2652104a0aa15d5e8370e797f4893c30f64d8ab4eb825df045630bc2",
+      "bytes": 1591
+    },
+    "consumer22.json": {
+      "sha256": "0d7df8f2ec1195dba71461d80715ab5b67e52c68e6c701673e9115446969534a",
+      "bytes": 2162
+    },
+    "consumer22.log": {
+      "sha256": "1edf3eaff7b552cc1060c1825ca6e7cfaa6770fe83ade26af76a4b44220cdb6b",
+      "bytes": 1591
+    },
+    "consumer24-first.json": {
+      "sha256": "1312f4f414b89203bed2acffcac1c7184512d5ae95be39d3c6f7e0bd7e052bd4",
+      "bytes": 2181
+    },
+    "consumer24-first.log": {
+      "sha256": "097d48fdc694da52b6d31622e6cd3adc2c29969466e08d6fed1a8d20052f4720",
+      "bytes": 2126
+    },
+    "consumer24.json": {
+      "sha256": "49e5d2906ad09cca80aa7d74bf3af5458c61a68fa5e16068277348aaadb6c9a7",
+      "bytes": 2162
+    },
+    "consumer24.log": {
+      "sha256": "04147218313b15161b312116a3f70ca2feb32552a41646e61195cbdd1ee52419",
+      "bytes": 1591
+    },
+    "coverage-policy.log": {
+      "sha256": "8b4b5b7b4291f9f5a81d4a9fa2d89df825f3895816b45e2abbd5864bba604588",
+      "bytes": 1395
+    },
+    "coverage.log": {
+      "sha256": "b17b76075fc319722e34c78ca4d685b0daf37e0dc9adcb23f7114082a45a5711",
+      "bytes": 253642
+    },
+    "final-pack20.json": {
+      "sha256": "752a0dd50380a4792cb736716556de76a471a0e47e624f4d49e905e8c7869d26",
+      "bytes": 395
+    },
+    "final-pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "final-pack22.json": {
+      "sha256": "62173f564f70e60a64dbfe37ed377eeeb39c79bb1fa788af1ce48ad26bab2809",
+      "bytes": 395
+    },
+    "final-pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "final-pack24.json": {
+      "sha256": "58f5069c2d06aea0865bd4428a29eaba5c26add1a18b1443f3ae543a8d5428b1",
+      "bytes": 395
+    },
+    "final-pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "focused.log": {
+      "sha256": "0b69bbfcf9d05576e636071a290acd7b28401e6ee78314941cf0ef8714804f66",
+      "bytes": 4507
+    },
+    "frozen-before-readme.json": {
+      "sha256": "b29413e9a5da1c987adb6fabbc24613bfeeb37ddb56d7714b76e7fed3a961d89",
+      "bytes": 449
+    },
+    "frozen.json": {
+      "sha256": "df1e9f04f41e2fa768df91934016d34420f4344dac45e4b3feba25e8a2629bb5",
+      "bytes": 449
+    },
+    "mapper-retention.json": {
+      "sha256": "099936e80d67b1b0b21b310ee6b3ccab1d2b124b4668a27e9de11d938757b7d7",
+      "bytes": 222
+    },
+    "mapper-retention.log": {
+      "sha256": "5c1b073631b2511b8da9155ed2838c0903674e403e4add1336c78c26b99ef040",
+      "bytes": 197
+    },
+    "mapper-retention.mjs": {
+      "sha256": "8c952e49382a3f3419aac94619731d20d5fcdd3ae82f0650f465feaff8a3a68b",
+      "bytes": 1543
+    },
+    "owning-coverage.mjs": {
+      "sha256": "78a745fcd6c526ba6ea2bb6362d6e748b78ddcfbcbf9d50d5e94c4ba4fef3971",
+      "bytes": 723
+    },
+    "pack-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack-first.stderr": {
+      "sha256": "8e789982a8f108367ab3f65f7eaa30d4a8792932b2bb9b7a7e41770d89027f68",
+      "bytes": 927
+    },
+    "pack20-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack20-first.stderr": {
+      "sha256": "f8bd940b1538c7abaa3e9467f614cc1688a73c59b581b358715f3178d40b2282",
+      "bytes": 1002
+    },
+    "pack20.json": {
+      "sha256": "902405c71a49273d79fea9bf31fdde6ccc716b771a2c38e06ecef57013b83d63",
+      "bytes": 389
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack22.json": {
+      "sha256": "eef576c2b2c3b3b15a792be7292358348200de0ec3bd25f52d95c143217a74d3",
+      "bytes": 389
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24.json": {
+      "sha256": "50f725d00e17c51f8fa76d2b7e7aa92d0fc60f3c5eea5f7e1a993a85e09fa46c",
+      "bytes": 389
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "product-100000-phased.json": {
+      "sha256": "304d8922730e87849b26dc6eff5c11d93e7de31df80d31530f57d4e08292b068",
+      "bytes": 6479
+    },
+    "product-100000-phased.log": {
+      "sha256": "53ad12f98b3e3aed9ff469174c2eb3d8700bae5badd898d4e10ca5b531ee275c",
+      "bytes": 5095
+    },
+    "product-100000-phased.mjs": {
+      "sha256": "a2b8379920b6b1aa21702ff749913f2db796b8806d5b32da6ea648aacf3d0571",
+      "bytes": 6230
+    },
+    "product-compare-product-linear.json": {
+      "sha256": "45af442e2ba56c7731bfd062abc4830d831a465389f0ff5d4a256fca144c699f",
+      "bytes": 12899
+    },
+    "product-compare-product-log.json": {
+      "sha256": "f871878a41d09cac4b9b40af8327d199e15c0c2da04105ccaa8a914e0c3742ff",
+      "bytes": 13954
+    },
+    "product-compare-product-pow.json": {
+      "sha256": "374347eaff03738739ef48ce25f98686c260ff754d5f1d1a5d32828a3f045057",
+      "bytes": 13954
+    },
+    "product-compare-product-sqrt.json": {
+      "sha256": "f8f3b4424b56505bd1cb032b7a87266e5eeab364c3182cb121408eb546796754",
+      "bytes": 13955
+    },
+    "product-compare-product-symlog.json": {
+      "sha256": "5ea20336148527bdbebfebce894ef4daa43f9b0950545ddf1ac28a5a0064aa57",
+      "bytes": 13957
+    },
+    "product-compare-product-time.json": {
+      "sha256": "4a4f9bfe73df6230f9db2820506ccebe8e12bbd8a38416670f7597d6d92f86d9",
+      "bytes": 12897
+    },
+    "product-compare.mjs": {
+      "sha256": "a43a0a68aa459dee5eb452111698cc48119c55bb6074b748b3905454057c52bd",
+      "bytes": 9468
+    },
+    "product-linear.log": {
+      "sha256": "b63159d0cbfbfea524bcd8d2e2098d61516f9a173d12f664344109650abb1f1c",
+      "bytes": 11162
+    },
+    "product-log.log": {
+      "sha256": "0197a5ce35e59870929dd0aa7043d8f6e0ffb0d246046eb9a8d67c111cb3a717",
+      "bytes": 12133
+    },
+    "product-observer.mjs": {
+      "sha256": "ee8727119d5222578749e3a3e8d7834c2c424835090b8b2ccb4570ece47092b0",
+      "bytes": 1291
+    },
+    "product-pow.log": {
+      "sha256": "e2e8ee8740fd2c56d89089c3354e18f5844cc15bec2f97ae276b3806be1fd243",
+      "bytes": 12133
+    },
+    "product-sqrt.log": {
+      "sha256": "c9554581e772f8b9fdafd5c1a05cde26daa0720c710cd6e71d49433844972a0f",
+      "bytes": 12134
+    },
+    "product-symlog.log": {
+      "sha256": "6e8dd6808223b5c815e4427c0f93c82c18b41e5f5745b837c57158183cddf666",
+      "bytes": 12136
+    },
+    "product-time.log": {
+      "sha256": "5a1a81a5988fa2a36c7e5b5511fd19bddabfbe32d75e204c30b3172202d6bfae",
+      "bytes": 11160
+    },
+    "record.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "record.mjs": {
+      "sha256": "5648d99d31459cb53ac1fbc8deb3856f1f52c12ee0e14bf4d11ba5f213002cf3",
+      "bytes": 7492
+    },
+    "render.log": {
+      "sha256": "991f86dc0e6dc00b01ed768d6b1af9b76f020c808ea7a60b6f5803480fa50fa0",
+      "bytes": 12463
+    },
+    "scalar-compare.json": {
+      "sha256": "21960d6f3469ffde81406224258bd21eb004110b61a7ae0b9f8f27bf2f92ceb2",
+      "bytes": 212
+    },
+    "scalar-compare.log": {
+      "sha256": "2afaffbbb10c6ba7c565ef3e8f3144c810a9308f097a1a10fdd1b8ab302b66c5",
+      "bytes": 187
+    },
+    "scalar-compare.mjs": {
+      "sha256": "3a8da4b5772fab7f248ecd446d73e8696257218aea0a77e8928f33c10bc51bdc",
+      "bytes": 2989
+    }
+  }
+}

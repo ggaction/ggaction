@@ -278,6 +278,31 @@ export function resolveMappingRange(range, { reverse = false } = {}) {
     : validated;
 }
 
+function mapTransformedValue(value, validatedDomain, resolvedRange, type, parameters, clamp, span, hasUnknown, unknown) {
+  const valid = Number.isFinite(value) && !(type === "log" && (
+    value === 0 || Math.sign(value) !== Math.sign(validatedDomain[0])
+  ));
+  if (!valid) {
+    if (hasUnknown) return unknown;
+    throw new TypeError(`Scale type "${type}" received an invalid value.`);
+  }
+  let proportion = transformedProportion(
+    value,
+    validatedDomain,
+    type,
+    parameters
+  );
+  if (clamp) proportion = Math.max(0, Math.min(1, proportion));
+  const direct = resolvedRange[0] + proportion * span;
+  return Number.isFinite(span) && Number.isFinite(direct) && (
+    proportion !== 1 ||
+    Math.abs(direct - resolvedRange[1]) <=
+      Number.EPSILON * Math.abs(resolvedRange[1])
+  )
+    ? direct
+    : interpolateNumber(resolvedRange[0], resolvedRange[1], proportion);
+}
+
 export function mapTransformedValues(
   values,
   domain,
@@ -297,29 +322,19 @@ export function mapTransformedValues(
   const resolvedRange = resolveMappingRange(range, { reverse });
   const span = resolvedRange[1] - resolvedRange[0];
   return cloneAndFreeze(values.map(value => {
-    const valid = Number.isFinite(value) && !(type === "log" && (
-      value === 0 || Math.sign(value) !== Math.sign(validatedDomain[0])
-    ));
-    if (!valid) {
-      if (hasUnknown) return unknown;
-      throw new TypeError(`Scale type "${type}" received an invalid value.`);
-    }
-    let proportion = transformedProportion(
-      value,
-      validatedDomain,
-      type,
-      parameters
-    );
-    if (clamp) proportion = Math.max(0, Math.min(1, proportion));
-    const direct = resolvedRange[0] + proportion * span;
-    return Number.isFinite(span) && Number.isFinite(direct) && (
-      proportion !== 1 ||
-      Math.abs(direct - resolvedRange[1]) <=
-        Number.EPSILON * Math.abs(resolvedRange[1])
-    )
-      ? direct
-      : interpolateNumber(resolvedRange[0], resolvedRange[1], proportion);
+    return mapTransformedValue(value, validatedDomain, resolvedRange, type, parameters, clamp, span, hasUnknown, unknown);
   }));
+}
+
+// Inputs are internal plain snapshots; the returned closure retains only the
+// validated immutable pairs, normalized parameters and primitive policy values.
+export function prepareTransformedScalar(domain, range, { type, clamp = false, ...options }) {
+  if (typeof clamp !== "boolean") throw new TypeError("Scale clamp must be a boolean.");
+  const parameters = normalizeTransformParameters(type, options);
+  const validatedDomain = validateTransformedDomain(type, domain, options);
+  const resolvedRange = resolveMappingRange(range);
+  const span = resolvedRange[1] - resolvedRange[0];
+  return value => mapTransformedValue(value, validatedDomain, resolvedRange, type, parameters, clamp, span, false, undefined);
 }
 
 export function transformedTicks(type, domain, count, options = {}) {

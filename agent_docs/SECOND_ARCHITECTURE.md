@@ -18,6 +18,13 @@ row/x/y만 bottom-up 동결하고, 전체 emission 순서를 완성한 vector ro
 core registry에 추가하지 않으며 caller freeze/clone에 frame 권한을 주거나 과거 frame/plan 참조를
 추가하지 않는다. Node·scene·graphic 물질화와 renderer 입력 경계는 그대로다.
 
+위치 sampler의 private scalar token은 scale owner의 기존 계산 helper를 재사용한다.
+Closed scale을 검산한 뒤 immutable pair·transform parameters와 primitive policy만 closure에 보관하고,
+exact from/to pair의 기존 한 progress slot에 scale와 mapper를 함께 둔다. 첫 finite mapping 성공 뒤에만
+slot을 교체하며 endpoint normalization·row value 검산·원 work 과금은 유지한다. 일반 vector 함수의
+검증/unknown 처리 순서는 바꾸지 않는다. 새 position result record는 primitive와 exact owned scale만
+가지므로 core-owned로 직접 등록하며 caller copy/freeze에는 준비 권한을 부여하지 않는다.
+
 비공개 `animation/columnCodec.js`는 실제 준비값의 shape별 dense column과 정확 scalar runs만
 소유한다. 원 concrete 값·own key 순서·undefined·hole을 무손실 복원하며 의미를 생성하지 않는다.
 `animation/resources.js`의 opaque scope는 native owner 검증과 offline 데이터 검산의 권한을
@@ -1018,12 +1025,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 788,800 bytes |
-| `ggaction/basic` | 426,200 bytes |
+| `ggaction` | 788,900 bytes |
+| `ggaction/basic` | 426,300 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 69,600 bytes |
 | `ggaction/interaction` | 137,500 bytes |
-| `ggaction/animation` | 340,900 bytes |
+| `ggaction/animation` | 341,300 bytes |
 
 
 
@@ -5108,3 +5115,12 @@ scene clone 경계를 따른다. Hit/renderer/meaning 권한은 그대로다.
 cap1259/1811900/8153000이다. Animation gzip340806B에는 표의340900B를 적용한다.
 [통합 검증](impl/roadmap9/qualification/point-node-merged-evidence/qualification.json)은 실제 원100k
 모든 좌표·offline·rebase와 아직 별도인50ms/P95·100cycle 의무를 구별한다.
+
+
+Prepared scalar와 local position record checkpoint는 기존 계산 owner의 shared callback과
+exact private token만 추가한다. 원 public vector validation/unknown 처리와 native/offline work/wire는
+같다. 독립 archive는1259entries, Node22packed1809509, Node20/24packed1812731,
+unpacked8156711bytes로 cap1259/1812800/8156800을 적용했다. Full/Basic/animation gzip 측정은
+788833/426214/341294이며 현재 실행 cap은 위 표가 소유한다. 실제6type1k 및 원100k와 source-free
+검증은 [구현 기록](impl/roadmap9/qualification/prepared-scalar-state.md)을 따른다. 이 연산 감소는
+공통 sampler50ms 또는 retained-heap100cycle의 완료를 뜻하지 않는다.
