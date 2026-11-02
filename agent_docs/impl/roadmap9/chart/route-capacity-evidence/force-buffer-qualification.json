@@ -1,0 +1,24 @@
+{
+  "status": "evidence-only storage prototype; product capacity and performance remain pending",
+  "authorization": "../../AUTHORIZATION.json",
+  "baseline": "fa943e864982783ae8ae10bc18a4257ea8f0b2bb",
+  "designCheckpoint": "7e4770c4038202815b4a61269544789fa2ee02a6",
+  "checks": [
+    "Node22 original100 + four small boundary cases, 825 full scalar/current comparisons",
+    "Node22 pre-allocation bytes, abort cleanup, finite-overflow rejection",
+    "prototype source SHA and baseline source SHA verification",
+    "local documentation links",
+    "syntax and git diff --check",
+    "product source/types/shared animation/benchmark tools unchanged"
+  ],
+  "scopeLimitations": [
+    "JS array/Map/object overhead, caller inputs, scalar-oracle harness and old/new point buffers are not in this neighbor ledger",
+    "No full solver/public finalization/worker/codec/packet byte benchmark",
+    "No 1k or 10k solver run, SLO or P95 claim",
+    "No bounds or charges reduced"
+  ],
+  "files": {
+    "force-buffer-prototype.mjs": "77e1242c71aff09b53c7835b52aea9aa411c03f444a1def2c5cfb800600f0e5d",
+    "force-buffer-prototype.json": "77df0a12f1faab35e7f5bcf9fe34ebaa773f620fad2b14d2a95c72d0aa933b02"
+  }
+}

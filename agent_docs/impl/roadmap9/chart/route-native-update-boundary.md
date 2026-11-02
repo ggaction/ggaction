@@ -109,9 +109,11 @@ B. 기존 `prepareGraphEdgeRoutes`에 kind:update를 넣고 전용 Full
 하위에는 실제 native action과 기존 primitive trace가 남는다. Scope는 '기존 bounded route에 영향을
 주는 위 closed native edit'뿐이며 일반 action 실행기나 transaction/plugin API가 아니다.
 
-**현재 권고는 B**다. Prepared reader/abort/Full·exact constructor는 현재 route preparation owner,
-resource write 권한은 `preparedResourceContext.js`를 재사용한다. 다만 root가 이 새 public apply
-이름·반환/trace 및 요청 union을 채택하기 전에는 source/types에 추가하지 않는다.
+**Root는2026-11-02 기존 remainingApproval 아래 B 전용 apply 표면 방향을 채택했다.**
+Prepared reader/abort/Full·exact constructor는 현재 route preparation owner,
+resource write 권한은 `preparedResourceContext.js`를 재사용한다. 위14개만으로 간접 guide/composition
+소비자까지 지원 완료라고 집계하지 않는다. 구체 수치 cap과 완전한 요청 union은 후행이며,
+현재 checkpoint에는 public source/types 변경이 없다.
 
 ## 준비와 원자 commit 계획
 
@@ -138,7 +140,7 @@ resource write 권한은 `preparedResourceContext.js`를 재사용한다. 다만
 - FDEB8,145,000 compatible pairs를 보유하는 typed upper-triangle layout와 fixed maxBufferBytes.
 - 전체 prepare deadline과 main bytewalk/hash의 yield 경계. Worker terminate만으로 main abort100ms를
   보장한다고 주장하지 않는다.
-- 위14개 이후 간접 viewport/facet/composition native union의 완전한 범위 및 commit 표면 채택.
+- 위14개 이후 간접 viewport/facet/composition native union의 완전한 범위와 구체 commit 검산.
 - 선택한 request별 실패 원자성, repeated responsive job, exact row/revision/token, Full/Basic/constructor,
   stale/abort/late/completion bytes와 실제 동일 archive 검증.
 

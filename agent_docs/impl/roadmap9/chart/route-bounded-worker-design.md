@@ -138,7 +138,8 @@ bounded chunk/yield와 deadline 확인이 필요하다. Cancellation은 cache lo
 
 Root는2026-11-02 기존 remainingApproval 아래 **B**를 채택했다. 큰 opt-in route가 붙은
 source/layout/viewport 편집은 준비→worker→원자 commit으로 닫는다. 임의의 sync closure
-확대(A)는 채택하지 않았다. 수치 cap, closed edit union 및 commit facade는 아직 제품 채택 전이다.
+확대(A)는 채택하지 않았다. 이후 root는 기존 remainingApproval 아래 route 전용 apply 표면의
+방향도 채택했다. 수치 cap과 간접 guide/composition까지 포함하는 closed edit union은 아직 미완성이다.
 
 [실제 호출 경계와 최소안](route-native-update-boundary.md)에 직접 graph/hierarchy/source/
 filter/Canvas owner의 전수 call-site와22 derived editors를 기록한다. 단순한4-action union은
@@ -151,9 +152,9 @@ filter/Canvas owner의 전수 call-site와22 derived editors를 기록한다. �
 않는다. 기존22 derived editor의 정의/ID 배정 및 `prepareDataUpdate`가 확정한 source identity를
 재사용해야 한다. 단순 예외 후 action 전체를 새 UUID로 반복 실행하는 구현은 제외한다.
 
-여러 기존 facade에 동일 prepared union을 추가하는 안과 route 전용 apply action 하나를 두는
-안을 비교한 뒤 root가 최소 표면을 고정한다. 어느 안도 generic plugin/transaction API를 만들지
-않으며, `editSemantic`/`createGraphics`/`editGraphics`는 ordinary prepared update 허용 목록에
+여러 기존 facade에 동일 prepared union을 추가하는 안과 비교하여 route 전용 apply action 하나를
+두는 방향을 선택했다. Generic plugin/transaction API는 만들지 않으며,
+`editSemantic`/`createGraphics`/`editGraphics`는 ordinary prepared update 허용 목록에
 들어가지 않는다. 준비되지 않은 큰 closure는 이전 program/trace를 보존하며 명시 실패한다.
 기존작은 입력의 native 편집, 기존 worker cache 및 action trace 의미는 그대로다.
 
@@ -171,6 +172,30 @@ FDEB의 다음 독립 후보는 upper-triangle typed neighbors다. 현재 symmet
 순서도 보존된다. target Uint32+compatibility Float64+reverse Uint8에13A bytes, offset/degree에
 8E+4 bytes이며 원10k A=8,145,000에서105,965,004B다. 작은 oracle와 raw signed-zero/overflow를
 먼저 고정하고, 최종 byte cap/배열 chunk 소유 정책 채택 전에는 제품 결과에 연결하지 않는다.
+
+### 원100 typed storage prototype
+
+[실행 코드](route-capacity-evidence/force-buffer-prototype.mjs)와
+[검산 결과](route-capacity-evidence/force-buffer-prototype.json)는 제품 밖 연구다. 원100의750개
+compatible pair를 upper triangle 순서로 target/weight/reverse typed arrays에 넣고, offset와
+양방향 degree를 보존한다. 원165 iteration마다 모든 좌표·endpoint·displacement cap count를
+기존 ordered scalar 및 symmetric kernel 모두와 deepEqual로 비교했다. 최종 hash도 앞선 원100
+감사와 동일하다. 별도17-record chunk 경계, directed/반대방향, ±0/동일위치, threshold1,
+epsilon 이하 입력 및 overflow를 검증했다. Abort와 byte reservation 거부 후 부분 buffer는 해제된다.
+
+Prototype의 reserve는 각 typed array 묶음 할당 전에 수행한다. Chunk는 append 후 연결된 채로
+소비하며 마지막에 큰 연속 배열로 복사하지 않는다. 이 연구에서 사용한32768-record chunk를
+원10k의 이미 검산한 A=8,145,000에 산술 적용하면249chunks, 이웃 buffer106,150,020B다.
+이는 마지막 chunk의185,016B 빈 공간을 포함한 **정적 상계**이며 실제10k 할당/solver 검증이 아니다.
+원100은 candidate 상계4950에 맞춘 첫 chunk를 사용하여65,154B이고,17-record chunk는10,749B다.
+Chunk 크기는 아직 제품 정책으로 채택하지 않았다.
+
+원100 candidate+schedule charge1,174,650은 그대로다. 새 storage가 후보·수학 work를 줄인다고
+계산하지 않는다. Source/index/finalization/신규 buffer write 계측을 포함한 전체 정책 ledger는
+후행이며 이 수치를 전체 job cost라고 부르지 않는다. 현재 prototype는 point 배열을 기존 객체로
+유지한다. Old/new point buffers, caller 입력, JS wrapper, oracle 보조 배열, encode/hash/completion
+packet은 이웃 buffer ledger 밖에 명시적으로 남아 있다. 16MiB prototype reserve ceiling은 작은
+연구의 실패 검사용이며 제품 상한 제안이 아니다. 제품 source와 default guard는 변경하지 않았다.
 
 ## 구현 순서와 완료 판정
 
