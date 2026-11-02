@@ -148,11 +148,47 @@
     "pack24.stderr": {
       "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
       "bytes": 208
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "9f692cfadcc9c7d1e826521424a2e4a1bca8b2b4e6a27876fd8e92a1bf481929",
+      "bytes": 1813
+    },
+    "source-pin-pack.json": {
+      "sha256": "982c92cea47aa5bf5d685ec77442141b468d4d92c742ed332f74e681ee8934e0",
+      "bytes": 387
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
   },
   "remaining": [
     "original100k data load/revise/blocking P95",
     "100cycle retained memory",
     "final combined full qualification"
-  ]
+  ],
+  "sourceRevision": "97d9e30ee6ab21901fdf2820cd2c46f3b6685456",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
 }
