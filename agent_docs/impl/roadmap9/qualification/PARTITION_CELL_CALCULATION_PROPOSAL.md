@@ -7,7 +7,8 @@
 - [x] 907건 baseline/candidate 출력·오류·수학·역산·work 비교
 - [x] 원1k 공개 sample의1,000cell 전수 oracle, current/rebase/offline/SVG
 - [x] 후보 loader로 기존 owning tests57개 통과
-- [ ] Root concrete checkpoint 검토·채택 후 제품 적용
+- [x] Root concrete checkpoint 검토·채택
+- [ ] 채택된 exact diff 제품 적용
 - [ ] 제품 critical coverage·동일 archive·원10k 기능 및 최종 합산 성능
 
 Root는2026-11-02에 기존 [remainingApproval](../AUTHORIZATION.json#remainingApproval) 범위의 내부 최적화로 구체 read-only 후보를 요청했다. 새 사용자 승인 질문·새 공개 API/schema 결정은 없다. **이 checkpoint는 제품 미적용 상태**이며, root가 four-file diff와 반례 증거를 먼저 검토한다. 기반은`c8bac0e77`이고 기존 clean Partition managed worktree에서 이전 branch를 보존한 채`codex/roadmap9-partition-sampling` branch를 만들었다. Geo C1 작업 트리는 그대로 보존했다.
@@ -68,3 +69,7 @@ PARTITION_PROOF_MODE=candidate node --import ./agent_docs/impl/roadmap9/qualific
 ## 이후 제품 검증
 
 Root의 concrete checkpoint 검토 후 동일 diff를 적용하고 핵심 반례를 capability tests로 옮긴다. 수정 owner critical coverage, native/current/rebase/offline·renderer·동일 archive3Node·retention을 확인한다. 원10k 큰 실행은 scalar와 슬롯을 조율하며, 원33ms preview/300ms layout와5+30/DPR1·2를 최종 합산 archive의 exclusive 측정으로 검증한다. STEP057–070/077 및 원 전체 범위는 계속 남아 있다. Root의2026-11-02 지시에 따라 scalar의 단독 canonical3Node100k CPU구간에는 긴 owning/coverage/대규모 측정을 보류한다.
+
+## 구체안 채택 기록
+
+2026-11-02 root는 remote checkpoint `5e1f2add6427659b68f73d9a92f5bc87ca63c12a`의 문서·907건 summary·위 SHA의 4파일 patch를 검토하고 기존 사용자 remainingApproval 범위에서 채택했다. 동일 diff의 제품 적용과 capability owner 반례 편입을 진행한다. 공개 API/format 변화는 없으며 generic wrapper의 오류 순서·최종 deep freeze·64회 역산·.2px tessellation·4096 상한·기존 work를 유지한다. 새 사용자 승인을 요구하지 않는다. 원10k/current/rebase/offline 및 최종 합산 P95 의무는 유지한다. scalar canonical3Node → root Geo 합산 → scalar full coverage CPU 순서 동안 작성·작은 검사만 진행하며 긴 검증은 root와 조율한다. 이 채택 기록을 제품 수정 전에 별도 commit/push한다.
