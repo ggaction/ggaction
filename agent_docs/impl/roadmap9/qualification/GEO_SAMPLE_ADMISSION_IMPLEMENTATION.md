@@ -11,7 +11,7 @@
 - [x] built docs 186 pages / selective LLM artifacts1607
 - [x] frozen archive 원100k native/current/rebase/offline 기능 완료
 - [x] 추가 소형 Geo sampler lifecycle smoke
-- [ ] source checkpoint와 metadata source pin
+- [x] source checkpoint와 metadata source pin
 - [ ] 최종 합산 archive의 exclusive Geo P95 및 canonical memory100cycle
 
 ## 적용 경계
@@ -46,3 +46,5 @@ Archive SHA256 **`52ae6397eacbab02df8f7cae8978c426667cdd1b69dbddc683d6aac71be93d
 PID28930은2026-11-02T13:15:28.460Z 시작하여13:19:08.931Z에exit0으로끝났다. native/current/rebase 각각199999commands 전수와 원3CSS질의를 검산했다. 최대좌표오차는 native2.061e-13/current3.269e-13/rebase3.553e-13이다. Native339849parts/1939096footprintcommands 전체 ordered hash는 원`ed299020fa7f2b61130344c9f359aa59ffc13007c0c1453170aed5cd125b9284`와 같다. 네 scalar reference query가 모든part를 비교했고 current339791parts/rebase339697parts 및 native 권한 없는 offline format5 거부를 확인했다. No-hit에서 nearest 전수탐색의 기존 geometry work budget 오류는 그대로 명시적 제한이며 무제한 nearest 성공으로 집계하지 않는다. 원 로그와 [설치본 결과](geo-sample-admission-product-evidence/large-installed.json)를 보존했다. Preparation3518.01ms는 기능 실행의 진단값일 뿐 P95/성능향상 주장이 아니다.
 
 같은 설치본의20vertex sampler/current-hit 갱신100회 추가smoke에서 scene WeakRef100개가 모두 회수됐다. 종료 뒤8macrotask/GC조건의 보조 수명 검사이며 canonical memory heap-slope나 원100k×100 결과가 아니다. [summary](geo-sample-admission-product-evidence/summary.json)는 source hashes와 이 checkpoint의 남은 범위를 고정한다.
+
+Source checkpoint는`8a3faba88`이다. 그 source pin으로 provenance/machine/LLM을 재생성하고 검산·Jekyll build/built186pages·1607artifacts를 다시 확인했다. Pin 후 strict pack의SHA는같은`52ae6397…`이므로3Node/browser/원100k증거의 제품bytes는바뀌지않았다. Metadata-only후속commit은이sourcecommit을가리킨다.

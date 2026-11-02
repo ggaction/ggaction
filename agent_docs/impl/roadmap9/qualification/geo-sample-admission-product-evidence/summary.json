@@ -61,5 +61,7 @@
     "canonical memory100cycle combined archive",
     "overall STEP077 qualification"
   ],
-  "scope": "C1 only; no C2/cache/registry/public schema change"
+  "scope": "C1 only; no C2/cache/registry/public schema change",
+  "sourceCheckpoint": "8a3faba88",
+  "metadataPinArchiveSHA256": "52ae6397eacbab02df8f7cae8978c426667cdd1b69dbddc683d6aac71be93d85"
 }
