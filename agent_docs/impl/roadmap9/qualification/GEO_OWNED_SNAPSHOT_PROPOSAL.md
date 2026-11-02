@@ -44,3 +44,9 @@ Temporary seen WeakSet은 기존 입력 root가 이미 강하게 보유한 conta
 [검증 manifest](geo-owned-snapshot-evidence/verification.json)는 동일 archive와 정확한 범위를 고정한다. 이 시점에 새 archive 원 100k와 원 100cycle/exclusive SLO는 미완료다. 앞선 archive의 큰 rebase 실패를 성공으로 바꾸지 않는다. 원본 read-only proof는 제품 적용 전 revision 0d700c2b4에서 실행하는 기록이다.
 
 제품 source는 `e38fa24c7e7192353fe96884202598c6e59c5742`로 고정했다. 후속 metadata-only pin에서 source docs 248 및 built 186/1607을 다시 검증했고 strict pack SHA256이 동일했다.
+
+## 동일 archive 원 100k 전체 기능
+
+PID 17616는 2026-11-02T12:29:09.291Z부터 2026-11-02T12:32:16.707Z까지 동일 installed archive에서 원 100k 전체 기능을 실행해 exit 0으로 마쳤다. Native 199999 좌표, 339849 parts/1939096 footprint commands와 기존 exact hash, 전체 part를 읽는 scalar 4 queries, current 및 rebase 각각 199999 좌표/3 CSS queries가 통과했다. Rebase 339697 parts, 최대 좌표오차 3.55e-13, 방문 work 25881/58941/31235이며 모든 owner/distance가 맞다. 마지막 format5 serialize/deserialize 후 offline frame에 native hit authority가 없음을 확인했다.
+
+이전 archive에서 반복 정체했던 rebase plan을 이번에는 통과했다. 2초 native sample은 다양한 계산 경로를 보였으며 이전 758/758 rehash 독점 정체와 다르다. 원 기능 입력·수학·guard·oracle 범위는 유지했고 scalar reference-only batch 사이 GC와 기능 phase 사이 GC는 이전 진단 환경 그대로다. 이것은 장기 원100cycle 또는 GC 없는 canonical P95의 통과가 아니다. [원 결과](geo-owned-snapshot-evidence/large-installed.json), 실행 helper, stdout과 sample gzip을 보존했다.
