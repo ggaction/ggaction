@@ -7,6 +7,7 @@ import {renderToSVG} from 'ggaction/svg';
 import {renderToPNGBuffer} from 'ggaction/png';
 import {renderToPDFBuffer} from 'ggaction/pdf';
 import {createCanvas} from '@napi-rs/canvas';
+import {createInteractionSession} from 'ggaction/interaction';
 
 const options={durationMs:100,easing:'linear'};
 const hash=value=>createHash('sha256').update(value).digest('hex');
@@ -17,7 +18,32 @@ function endpoints(numeric=false){
   .createCoordinate({type:'geo'}).createGeoPointMark({id:'places',radiusPx:12,fill:'red',strokeWidth:0,...(numeric?{capacity:{maxProjectedPoints:200000,maxPathCommands:200000}}:{})});
  return {from,to:from.editProjection({translatePx:[600,150]})};
 }
+function indexedPathHits() {
+ const pathGeometry={maxParts:400000,maxWork:2000000,maxIndexWork:16000000},hitPreparation={maxWork:128000000,pathGeometry};
+ const from=chart().createCanvas({width:400,height:400,margin:20,plotBorder:false})
+  .createGeometryData({id:'world',format:'geojson',coordinateKind:'geographic',values:{type:'FeatureCollection',features:[{type:'Feature',id:'line',properties:{},geometry:{type:'LineString',coordinates:Array.from({length:1000},(_,i)=>[-30+60*i/999,(i%2?1:-1)*5])}}]}})
+  .createProjection({id:'map',type:'equirectangular',scalePx:100,translatePx:[200,200],precisionPx:.5}).createCoordinate({type:'geo'})
+  .createGeoLineMark({id:'coast',stroke:'#2563eb',strokeWidth:2,capacity:{maxProjectedPoints:200000,maxPathCommands:200000}});
+ const native=createInteractionSession({program:from,bindings:[],hitPreparation}),scalar=createInteractionSession({program:from,bindings:[]});
+ const host={addEventListener(){},removeEventListener(){},getBoundingClientRect:()=>({left:0,top:0,width:400,height:400})};
+ native.mount(host);scalar.mount(host);
+ for(const i of[0,499,998]){
+  const point={x:200+100*(-30+60*(i+.5)/999)*Math.PI/180,y:200};
+  for(const session of[native,scalar])session.dispatch({type:'inspect',point,slop:0});
+  assert.deepEqual(native.getState().hit.candidates,scalar.getState().hit.candidates);
+  assert.equal(native.getState().hit.target.ownerId,'coast');assert.ok(native.getState().hit.statistics.work<scalar.getState().hit.statistics.work);
+ }
+ const plan=planTransition({from,to:from.editProjection({scalePx:200}),options:{...options,formatVersion:5}}),frame=sampleTransition(plan,50);
+ native.dispatch({type:'frame',frame,version:native.getState().frameVersion+1,generation:native.getState().generation});
+ const before=native.getState(),offline=sampleTransition(deserializeAnimation(serializeAnimation(plan)).plan,50);
+ assert.throws(()=>native.dispatch({type:'frame',frame:offline,version:before.frameVersion+1,generation:before.generation}),/native/);
+ assert.equal(native.getState().animationFrame,frame);
+ assert.throws(()=>createInteractionSession({program:from,bindings:[],hitPreparation:{...hitPreparation,pathGeometry:{...pathGeometry,maxParts:1}}}),/parts/);
+ assert.throws(()=>createInteractionSession({program:from,bindings:[],hitPreparation:{pathGeometry:{maxIndexWork:16000001}}}),/maxIndexWork/);
+ scalar.destroy();native.destroy();
+}
 export const cases=[
+ {id:'animation-geo/indexed-native-path-hit-policy',run(){indexedPathHits();}},
  {id:'animation-geo/offline-four-renderers',async run(){
   for(const formatVersion of [undefined,5]){
   const options={durationMs:100,easing:'linear',...(formatVersion===5?{formatVersion}:{})};

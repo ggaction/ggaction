@@ -9,8 +9,8 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 426_300, // Shared tagged fragments: Node20/24 426,217 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 74_500, // Exact Full planner binding: Node20/24 74,445 gzip bytes.
-  "ggaction/animation": 343_607, // Integrated bounded route: Node20/24 343,607 gzip bytes.
-  "ggaction/interaction": 137_700 // Completed compiler containers: Node20 137,641 gzip bytes.
+  "ggaction/animation": 343_663, // Integrated raw projection: Node20/24 343,663 gzip bytes.
+  "ggaction/interaction": 140_172 // Integrated path hit index: Node20/24 140,172 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {

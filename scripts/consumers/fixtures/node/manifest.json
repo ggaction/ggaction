@@ -1790,6 +1790,10 @@
     "file": "animation-geo.mjs",
     "cases": [
       {
+        "id": "animation-geo/indexed-native-path-hit-policy",
+        "statements": 1
+      },
+      {
         "id": "animation-geo/offline-four-renderers",
         "statements": 1
       },

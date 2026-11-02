@@ -2,7 +2,7 @@ import { cloneAndFreeze, freezeOwned, isOwned } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { validateInputReference } from "../core/resourceReference.js";
 import { transformHitPoint } from "./hitCoordinates.js";
-import { hitShape, nearestHitShape, hitShapeWork, normalizeHitQuery } from "./hitShapes.js";
+import { hitShape, nearestHitShape, hitShapeWork, hitShapeUsesIndex, validateHitShapePolicy, normalizeHitQuery } from "./hitShapes.js";
 
 import { MAX_HIT_INDEX_ITEMS, MAX_HIT_QUERY_WORK, normalizeHitPreparation } from "./hitPolicy.js";
 export { MAX_HIT_INDEX_ITEMS, MAX_HIT_INDEX_WORK, MAX_HIT_QUERY_WORK } from "./hitPolicy.js";
@@ -149,6 +149,7 @@ export function prepareHitIndex(scene, entries, options) {
     if (!available.has(nodeKey) || used.has(nodeKey)) throw new TypeError("Hit entries require unique nodes from their exact scene.");
     if (!Number.isSafeInteger(entry.zIndex)) throw new TypeError("Hit entry requires an explicit safe integer zIndex.");
     used.add(nodeKey);
+    validateHitShapePolicy(entry.shape, policy.pathGeometry);
     const cost = hitShapeWork(entry.shape), { info, semanticKey, signature } = metadata(entry.metadata, work);
     if (semantic.has(semanticKey) && semantic.get(semanticKey) !== signature) throw new TypeError("Duplicate hit primitives require identical semantic metadata.");
     semantic.set(semanticKey, signature);
@@ -181,7 +182,7 @@ function queryIndex(index, scene, point, options, scope, work = { value: 0, limi
       }
       if (!within(item.shape.bounds, screenPoint, query.slop)) continue;
       let result = testedShapes.get(item.shape);
-      if (result === undefined) { spend(work, item.cost); result = (scope ? nearestHitShape : hitShape)(item.shape, screenPoint, query, count => spend(work, count)); testedShapes.set(item.shape, result); tested++; }
+      if (result === undefined) { if (!hitShapeUsesIndex(item.shape)) spend(work, item.cost); result = (scope ? nearestHitShape : hitShape)(item.shape, screenPoint, query, count => spend(work, count)); testedShapes.set(item.shape, result); tested++; }
       if (result.diagnostics !== item.shape.diagnostics) for (const diagnostic of result.diagnostics) {
         const key = JSON.stringify([item.semanticKey, diagnostic.code, diagnostic.transformIndex]); spend(work, key.length);
         if (!diagnosticKeys.has(key)) { diagnosticKeys.add(key); diagnostics.push(freezeOwned({ itemKey: item.metadata.itemKey, ...diagnostic })); }

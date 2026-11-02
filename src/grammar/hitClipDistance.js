@@ -1,9 +1,9 @@
 import { flattenPathCommands, pathFillContains, segmentDistance } from "./pathGeometry.js";
 import { interpolateNumber } from "./numeric.js";
 
-function segments(commands) {
+function segments(commands, maximum) {
   const result = [];
-  for (const path of flattenPathCommands(commands).subpaths) {
+  for (const path of flattenPathCommands(commands, maximum === undefined ? undefined : { maxCommands: maximum }).subpaths) {
     for (let index = 1; index < path.points.length; index++) result.push([path.points[index - 1], path.points[index]]);
     if (path.closed && path.points.length > 1) result.push([path.points.at(-1), path.points[0]]);
   }
@@ -32,12 +32,12 @@ const pointAt = ([a, b], t) => ({ x: interpolateNumber(a.x, b.x, t), y: interpol
 function visitClippedBoundary(part, clips, spend, visit, extraCuts) {
   const edgeCount = part.commands.length + clips.reduce((sum, parts) => sum + parts.reduce((total, clip) => total + clip.commands.length, 0), 0);
   spend(edgeCount);
-  const boundaries = clips.flatMap(parts => parts.flatMap(clip => segments(clip.commands)));
+  const boundaries = clips.flatMap(parts => parts.flatMap(clip => segments(clip.commands, clip.maxCommands)));
   const admitted = point => {
     spend(edgeCount);
     return clips.every(parts => parts.some(clip => pathFillContains(clip.commands, point, { fillRule: clip.fillRule })));
   };
-  for (const edge of segments(part.commands)) {
+  for (const edge of segments(part.commands, part.maxCommands)) {
     const cuts = [0, 1, ...(extraCuts?.(edge) ?? [])];
     for (const boundary of boundaries) { spend(1); cuts.push(...crossing(edge, boundary)); }
     cuts.sort((a, b) => { spend(1); return a - b; });

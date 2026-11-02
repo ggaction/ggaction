@@ -9,7 +9,7 @@ import { canvasSceneSnapshot } from "../sceneSnapshot.js";
 import { namespaceGraphicId } from "../selectors/graphicCapacity.js";
 import { validateGraphicIdentity, namespaceItemKey } from "../grammar/schemas/graphicIdentity.js";
 import { MAX_HIT_INDEX_ITEMS, normalizeHitPreparation } from "../grammar/hitPolicy.js";
-import { hitShapeWork } from "../grammar/hitShapes.js";
+import { hitShapePreparationWork } from "../grammar/hitShapes.js";
 import { prepareConcreteHitShape } from "./hitConcrete.js";
 import { guideHitMetadata, guideHitItemKey } from "./hitGuides.js";
 import { animationFrameProvenance } from "../animation/frameProvenance.js";
@@ -162,8 +162,8 @@ export function prepareProgramHitFrame(program, version = 0, budget, options) {
       itemMetadata = cloneAndFreeze({ itemKey, ownerId: guide.ownerId, role: guide.role,
         childPath: context.childPath, rowKeys: [], resourceRefs: [] });
     }
-    const shape = prepareConcreteHitShape(snapshot.scene.nodes[i], context.program.materializationConfigs.textMetrics);
-    spend(budget, hitShapeWork(shape));
+    const shape = prepareConcreteHitShape(snapshot.scene.nodes[i], context.program.materializationConfigs.textMetrics, undefined, policy.pathGeometry);
+    spend(budget, hitShapePreparationWork(shape));
     profiles.set(source.nodeKey, context.program.materializationConfigs.textMetrics);
     entries.push(freezeOwned({ nodeKey: source.nodeKey, zIndex: i, metadata: itemMetadata, shape }));
   }
@@ -216,8 +216,8 @@ export function rebindProgramHitFrame(base, scene, version, rootTransform = [1, 
       throw new TypeError("Interaction frame node identity or topology is not owned by its current program.");
     }
     if (!metadata.has(node.key)) return;
-    const shape = prepareConcreteHitShape(node, source.profiles.get(node.key), rootTransform);
-    spend(budget, hitShapeWork(shape));
+    const shape = prepareConcreteHitShape(node, source.profiles.get(node.key), rootTransform, policy.pathGeometry);
+    spend(budget, hitShapePreparationWork(shape));
     entries.push(freezeOwned({ nodeKey: node.key, zIndex, metadata: metadata.get(node.key), shape }));
   });
   const frame = freezeOwned({ scene: owned, entries: freezeOwned(entries), version });
@@ -301,8 +301,8 @@ export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1
     if (original.metadata === undefined) return;
     const values = source.metrics.map(origin => resolve(origin).metrics);
     const metrics = node.type === "weighted-blend" ? values : values[0];
-    const shape = prepareConcreteHitShape(node, metrics, rootTransform);
-    spend(budget, hitShapeWork(shape)); profiles.set(node.key, metrics);
+    const shape = prepareConcreteHitShape(node, metrics, rootTransform, policy.pathGeometry);
+    spend(budget, hitShapePreparationWork(shape)); profiles.set(node.key, metrics);
     entries.push(freezeOwned({ nodeKey: node.key, zIndex, metadata: original.metadata, shape }));
     if (original.geographicSource !== undefined) geographicSources.set(original.metadata.itemKey, original.geographicSource);
   });

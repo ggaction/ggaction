@@ -1,0 +1,27 @@
+{
+  "kind": "read-only A3 proposal static checks; no runtime qualification",
+  "baseRevision": "45d086ecec9cc7b2d81f21625ebc79272612c439",
+  "baseFile": "scripts/benchmarks/workloads.browser.js",
+  "baseSHA256": "cb142f56aa925a9746b2fa8d4df2dc6982f2091b75691aa32b9d07a15d8cd1de",
+  "checks": {
+    "sequentialPatches": true,
+    "nodeSyntax": true,
+    "protectedFragments": 7,
+    "productSourceUnchanged": true
+  },
+  "proposedIndexBufferUpperBound": {
+    "parts": 400000,
+    "leaves": 50000,
+    "nodes": 99999,
+    "depth": 17,
+    "nodeBytes": 4799952,
+    "peakBuffersBytes": 9600976,
+    "retainedBuffersBytes": 6399952,
+    "excludes": "JS footprint/commands/allocator overhead; not a heap result"
+  },
+  "patches": {
+    "existing-policy": "b59b673dce7800f6eca818c6d226d7810f05cda35b3dca1281ea8a90ed68f590",
+    "a3-policy": "c65419ba3a58a84b3581db4c1e09369c10cee306b76f0d79841e165f2662df19"
+  },
+  "runtime": "not run; source math, workload guards and product unchanged"
+}

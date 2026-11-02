@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:88fc8c3e04a071002fb37453ae68bec6aede403ace12793f6572fa10db580e48. Status: development. Runtime source: 181d3a88b953e1ee76332e2b7e0570c47ea54bb6. Release baseline: v0.0.13.
+Contract: sha256:746e52492692e2202ed71263c338cf57bb9197df19aedc89e99dd12cba6f04f2. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/181d3a88b953e1ee76332e2b7e0570c47ea54bb6/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/181d3a88b953e1ee76332e2b7e0570c47ea54bb6/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11827,6 +11827,43 @@ along with existing snapshot, selection and animation limits. Increasing prepara
 allows more bounded work; it does not promise a frame rate or reduce memory usage.
 For 100,000 authored points, the mark also needs its explicit `maxItems: 100000`
 capacity, and a background requires an additional scene node.
+
+For a native geographic path with an explicit capacity, opt into bounded path
+preparation separately. This complete example keeps the original geometry and
+uses the existing query limit:
+
+> **Executable complete.** Run this complete ES module with public package imports. Concrete path capacity and session preparation are explicit.
+
+```javascript
+import { chart } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+const pathProgram = chart().createCanvas({ width: 400, height: 400, margin: 20 })
+  .createGeometryData({ id: "world", format: "geojson", coordinateKind: "geographic",
+    values: { type: "FeatureCollection", features: [{ type: "Feature", id: "route",
+      properties: {}, geometry: { type: "LineString", coordinates: [[-30, -5], [0, 5], [30, -5]] } }] } })
+  .createProjection({ id: "map", type: "equirectangular", scalePx: 100, translatePx: [200, 200] })
+  .createCoordinate({ type: "geo" })
+  .createGeoLineMark({ id: "coast", stroke: "#2563eb", strokeWidth: 2,
+    capacity: { maxProjectedPoints: 200000, maxPathCommands: 200000 } });
+const pathSession = createInteractionSession({ program: pathProgram, bindings: [],
+  hitPreparation: { maxWork: 128000000,
+    pathGeometry: { maxParts: 400000, maxWork: 2000000, maxIndexWork: 16000000 } }
+});
+pathSession.dispatch({ type: "inspect", point: { x: 200, y: 200 }, slop: 3 });
+console.log(pathSession.getState().hit.candidates.length);
+pathSession.destroy();
+```
+
+Omitting `pathGeometry` retains the original path behavior. An own record enables
+indexed processing only for paths with their own `maxCommands`; `{}` keeps the
+30,000-part and 1,000,000-work defaults. `maxParts` allows 1..400,000;
+`maxWork` allows 1..2,000,000 independently for stroke and geometry preparation;
+`maxIndexWork` allows 1..16,000,000 and defaults to 10,000,000. All values are safe
+integers. Own undefined fields keep their defaults. Clips, text, other primitives,
+and the existing weighted-union bound do not inherit these larger allowances.
+Queries charge the footprints they actually test within the original 2,000,000
+work limit. Complex or overlapping paths can still fail that bound. Exact stroke,
+clip, nearest and focus behavior is preserved; no frame-rate guarantee is implied.
 
 ## Resize a selection or reorder categories
 
@@ -38657,6 +38694,16 @@ export declare function createInteractionSession(options: {
     readonly maxSceneNodes?: number;
     /** Safe integer 1..128000000. Default 10000000, independently for binding and indexing. */
     readonly maxWork?: number;
+    /** Explicit indexed preparation only for paths with their own maxCommands declaration.
+     * Omission preserves the existing path/clip/primitive preparation and query behavior. */
+    readonly pathGeometry?: {
+      /** Safe integer 1..400000. Default 30000 stroke parts per path. */
+      readonly maxParts?: number;
+      /** Safe integer 1..2000000. Default 1000000 independently for stroke and geometry work. */
+      readonly maxWork?: number;
+      /** Safe integer 1..16000000. Default 10000000 additional index build work per path. */
+      readonly maxIndexWork?: number;
+    };
   };
   /** Explicit host preparation. Candidate state commits only after this lease is ready. */
   readonly assetResolver?: (request: InteractionAssetRequest) => InteractionAssetLease | Promise<InteractionAssetLease>;
@@ -53626,12 +53673,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/181d3a88b953e1ee76332e2b7e0570c47ea54bb6/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/181d3a88b953e1ee76332e2b7e0570c47ea54bb6/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -56772,9 +56819,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:88fc8c3e04a071002fb37453ae68bec6aede403ace12793f6572fa10db580e48` |
+| Contract fingerprint | `sha256:746e52492692e2202ed71263c338cf57bb9197df19aedc89e99dd12cba6f04f2` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
-| Runtime source commit | `181d3a88b953e1ee76332e2b7e0570c47ea54bb6` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 379 |
 | Declared actions in that release | 234 |

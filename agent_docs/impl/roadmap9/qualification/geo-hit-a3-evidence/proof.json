@@ -1,0 +1,19 @@
+{
+  "kind": "read-only numeric prototype; no product change",
+  "parts": 3297,
+  "footprintSHA256": "156b572476f447f3be4456c6531e6679adeccf22b21321f7004e9dc9e278df88",
+  "indexBuildWork": 52328,
+  "nodes": 825,
+  "distanceOracles": 87,
+  "maxVisited": 472,
+  "focusAnchor": {
+    "x": 148.64010440460396,
+    "y": 208.73265215765596
+  },
+  "guards": "unchanged",
+  "limitations": [
+    "No public policy integration yet",
+    "No large runtime/P95",
+    "General indexed nearest clip/focus integration still required"
+  ]
+}

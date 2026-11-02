@@ -1,0 +1,33 @@
+{
+  "kind": "read-only load-hook prototype; source unmodified; not performance qualification",
+  "projectionPairs": 1276,
+  "geometryPairs": 90,
+  "counts": [
+    {
+      "vertices": 20,
+      "baseline": 305,
+      "prototype": 77,
+      "saved": 228,
+      "diagnostics": {
+        "preparedPoints": 38,
+        "outputPoints": 39,
+        "commands": 39,
+        "work": 376
+      },
+      "hash": "10ba92e040cb4cf2ba07d19fec3c8caf0fe6ba81476c0feec204367e3371ebd2"
+    },
+    {
+      "vertices": 1000,
+      "baseline": 15005,
+      "prototype": 3017,
+      "saved": 11988,
+      "diagnostics": {
+        "preparedPoints": 1998,
+        "outputPoints": 1999,
+        "commands": 1999,
+        "work": 18916
+      },
+      "hash": "60d777344fa4cc2124cf2974f4caec92b31679bda24d50453dea0cf82526c76a"
+    }
+  ]
+}

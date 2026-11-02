@@ -1642,6 +1642,16 @@ export declare function createInteractionSession(options: {
     readonly maxSceneNodes?: number;
     /** Safe integer 1..128000000. Default 10000000, independently for binding and indexing. */
     readonly maxWork?: number;
+    /** Explicit indexed preparation only for paths with their own maxCommands declaration.
+     * Omission preserves the existing path/clip/primitive preparation and query behavior. */
+    readonly pathGeometry?: {
+      /** Safe integer 1..400000. Default 30000 stroke parts per path. */
+      readonly maxParts?: number;
+      /** Safe integer 1..2000000. Default 1000000 independently for stroke and geometry work. */
+      readonly maxWork?: number;
+      /** Safe integer 1..16000000. Default 10000000 additional index build work per path. */
+      readonly maxIndexWork?: number;
+    };
   };
   /** Explicit host preparation. Candidate state commits only after this lease is ready. */
   readonly assetResolver?: (request: InteractionAssetRequest) => InteractionAssetLease | Promise<InteractionAssetLease>;

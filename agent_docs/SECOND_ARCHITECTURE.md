@@ -1042,8 +1042,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/basic` | 426,300 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 74,500 bytes |
-| `ggaction/interaction` | 137,700 bytes |
-| `ggaction/animation` | 343,607 bytes |
+| `ggaction/interaction` | 140,172 bytes |
+| `ggaction/animation` | 343,663 bytes |
 
 
 
@@ -3718,11 +3718,22 @@ cap을818/1,209,000/5,542,000으로 최소 갱신했다. Public entry와 browser
 단일 소유한다. `interaction/session.js`는 불변 정책을 모든 native/current-frame/commit 경로에
 전달하고 binding과 index는 각자의 work bound를 유지한다. 기존 snapshot·query·selection
 한도는 이 정책과 독립이다. 정확한 공개 범위는 [INTERACTION](contract/current/INTERACTION.md)이 소유한다.
+명시 concrete path capacity와 `pathGeometry` 정책이 함께 있는 경우에만 `grammar/hitPartIndex.js`가
+동일 painted footprint의 private bounded BVH를 소유한다. `hitShapes`는 보수적 lower bound로
+후보 방문을 줄이되 원 거리·clip·focus 계산을 유지하고 실제 방문한 부분과 node work를 과금한다.
+기존 default preparation/query/weighted union 경계는 그대로이며, index build 비용도 binding에서
+다시 과금한다. 이 임시 인덱스는 program·scene·codec·renderer 상태나 native authority가 아니다.
 
 `grammar/hitIndex.js`는 현재 owned CanvasScene identity와 명시 node/semantic mapping을 결합하는 private
 순수 공간 인덱스다. BVH broad phase와 기존 hitShapes narrow phase를 분리하고 누적 work를 제한한다.
 Row/resource lineage는 입력의 exact ref를 보존하며 의미 중복만 합친다. 완전히 검증한 exact owned metadata의 normal form/semantic key/signature/cost만 private WeakMap으로 재사용하며 매 정책의 기존 비용은 그대로 다시 과금한다. Caller/clone/frozen/부분 owned 입력은 전체 검증과 격리를 유지하고 scene/shape/source/asset 권한을 이 proof로 대체하지 않는다. Renderer/semantic state/codec에는
 새 저장 값을 추가하지 않는다. Guide materializer와 public runtime 연결은 [STEP048](impl/roadmap9/interaction/STEP048.md)에 남긴다.
+
+명시 indexed path의 `hitStroke` 중간 결과는 같은 계산 owner의 raw assembly로만 전달하고,
+`hitShapes`가 새 CSS commands를 만든 뒤 기존 private freeze 경계에 보관한다. 중간 points는
+읽기만 하며 최종 commands에 caller 참조를 남기지 않는다. 일반 prepared stroke facade의
+owned immutable 결과·authenticity와 기본 경로는 그대로다. 임시 계산 tree를 program-owned
+WeakSet에 중복 등록하지 않으며 native 권한이나 비용 면제로 사용하지 않는다.
 `hitShapes`의 native 계산으로 만든 commands/parts는 기존 private states WeakMap 안에서만
 불변으로 보관한다. 고정 깊이 assembly는 새 내부 tree를 직접 freeze하고 caller transform만
 기존 immutable owner로 격리한다. Prepared 외피의 ownership과 WeakMap authenticity, 모든
@@ -5229,3 +5240,4 @@ Worker의 compute-only import는 순수 계산 경계를 유지한다.
 editSemantic/materialization child action을 수행한다. Candidate ChartProgram 반환이나
 제2facade proof는 없다. 원 action wrapper의 trace/theme/completion 책임도 유지한다.
 정확한 정책·한계는 [EDGE_ROUTES](contract/current/EDGE_ROUTES.md#명시-bounded-route-v2)가 소유한다.
+Geo projection grammar의 단일 private 계산 kernel은 source-segment streaming 중 일시 result를 raw record로 조립한다. 기존 projection kernel facade는 반환을 cloneAndFreeze로 닫고, stream은 raw point를 동기적으로만 읽어 새 concrete commands를 만든 뒤 기존 projectGeometry 최종 owned 경계를 유지한다. 수학·검증·작업량·native authority의 소유자는 바뀌지 않는다.
