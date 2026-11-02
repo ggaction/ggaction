@@ -15,6 +15,18 @@ import { projectSampledAnimationEndpoint } from "./endpoints.js";
 import { animationPlanProvenance } from "./frameProvenance.js";
 import { validateAnimationFallbackReason, sameConcreteValue } from "./concrete.js";
 
+// Each live plan remembers only its last immutable identity vector. Sharing
+// these records never retains an earlier sampled frame or its concrete scene.
+const sampledIdentities=new WeakMap();
+function frameIdentities(plan,identities){
+  const previous=sampledIdentities.get(plan);
+  let same=previous!==undefined&&previous.length===identities.length;
+  for(let index=0;same&&index<identities.length;index++){
+    same=(index in identities)===(index in previous)&&identities[index]===previous[index];
+  }
+  return same?previous:cloneAndFreeze(identities);
+}
+
 // Capture correspondence once while the authentic plan is available. No earlier
 // plan or sampled endpoint is retained by the resulting frame meaning.
 export function captureFrameMeaning(frame, plan, timeMs, geographic = [], axislabels = []) {
@@ -40,7 +52,7 @@ export function captureFrameMeaning(frame, plan, timeMs, geographic = [], axisla
       return background === undefined ? [] : [{ index, owner: background.owner }];
     });
   }
-  const endpoint = exact ?? projectSampledAnimationEndpoint(frame, cloneAndFreeze(identities), cloneAndFreeze(backgrounds));
+  const endpoint = exact ?? projectSampledAnimationEndpoint(frame, frameIdentities(plan,identities), cloneAndFreeze(backgrounds));
   const proof = animationPlanProvenance(plan);
   let native;
   if (proof?.from !== undefined && proof.to !== undefined) {
@@ -59,6 +71,7 @@ export function captureFrameMeaning(frame, plan, timeMs, geographic = [], axisla
     for (const node of nodes) { owners.add(node.origin.program); for (const origin of node.metrics) owners.add(origin.program); }
     native = Object.freeze({ nodes: Object.freeze(nodes), owners: Object.freeze([...owners]), placement });
   }
+  if(exact===undefined)sampledIdentities.set(plan,endpoint.identities);
   return Object.freeze({ endpoint, native });
 }
 

@@ -18,6 +18,13 @@ row/x/y만 bottom-up 동결하고, 전체 emission 순서를 완성한 vector ro
 core registry에 추가하지 않으며 caller freeze/clone에 frame 권한을 주거나 과거 frame/plan 참조를
 추가하지 않는다. Node·scene·graphic 물질화와 renderer 입력 경계는 그대로다.
 
+Sampled identity metadata는 현재 decision 검산 후 exact identity reference vector가 같을 때만
+재사용한다. `frameEndpoint.js`는 live plan의 마지막 vector 하나를 weak key로 기억하고,
+`endpoints.js`는 그 검산된 vector에 matching과 현재 node key 순서의 source projection만
+보관한다. 각 frame의 scene·graphicSpec·native origin은 새 결과를 유지하며 cache 값은
+과거 frame/scene/program/plan을 보유하지 않는다. Node key 또는 identity가 달라지면 해당
+projection을 재구성하고 caller clone/freeze에는 검산 proof를 부여하지 않는다.
+
 비공개 `animation/columnCodec.js`는 실제 준비값의 shape별 dense column과 정확 scalar runs만
 소유한다. 원 concrete 값·own key 순서·undefined·hole을 무손실 복원하며 의미를 생성하지 않는다.
 `animation/resources.js`의 opaque scope는 native owner 검증과 offline 데이터 검산의 권한을
@@ -1023,7 +1030,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 69,600 bytes |
 | `ggaction/interaction` | 137,500 bytes |
-| `ggaction/animation` | 340,900 bytes |
+| `ggaction/animation` | 341,100 bytes |
 
 
 
@@ -5108,3 +5115,9 @@ scene clone 경계를 따른다. Hit/renderer/meaning 권한은 그대로다.
 cap1259/1811900/8153000이다. Animation gzip340806B에는 표의340900B를 적용한다.
 [통합 검증](impl/roadmap9/qualification/point-node-merged-evidence/qualification.json)은 실제 원100k
 모든 좌표·offline·rebase와 아직 별도인50ms/P95·100cycle 의무를 구별한다.
+
+Sampled identity metadata의 마지막 vector 및 matching/source projection 재사용은
+[현재 checkpoint](impl/roadmap9/qualification/frame-metadata-reuse.md)에 기록한다.
+현재 합산 archive는1259entries/Node22packed1809081/Node20·24packed1812333/unpacked8154283B이며
+ceiling은1259/1812400/8154300이다. Animation gzip341046B의 ceiling341100B는 위 표와 같다.
+원100k 기능 검증은 통과했지만 GC 조건이 다른 시간 기록으로 처리량 향상을 주장하지 않는다.

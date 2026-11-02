@@ -4,6 +4,9 @@ import {validateGraphicIdentity} from "../grammar/schemas/graphicIdentity.js";
 import {matchItemIdentities} from "../grammar/animation/matching.js";
 
 const endpoints = new WeakSet();
+// Exact immutable identity vectors own at most one matching/source projection.
+// Values contain no scene, frame, program or native authority.
+const sampledMappings = new WeakMap();
 
 // This private boundary accepts already-owned native graphic state. Offline
 // input must first pass the graphic codec; a caller's shallow freeze is not
@@ -50,14 +53,22 @@ export function projectAnimationEndpoint(program) {
 export function projectSampledAnimationEndpoint(frame, identities, backgrounds) {
   if(!isOwned(frame.graphicSpec)||!isOwned(frame.scene)||!isOwned(identities)||!isOwned(backgrounds)||identities.length!==frame.scene.nodes.length)
     throw new TypeError("Sampled animation endpoint requires owned scene and identity mappings.");
-  const matching=identities.map(identity=>{
+  const prepared=sampledMappings.get(identities);
+  const matching=prepared?.matching??freezeOwned(identities.map(identity=>{
     if(identity===undefined)return undefined;
     validateGraphicIdentity(identity);return freezeOwned({key:identity.key,role:identity.role});
-  });
-  matchItemIdentities(matching,[]);
+  }));
+  if(prepared===undefined)matchItemIdentities(matching,[]);
+  const nodes=frame.scene.nodes;
+  let sameSources=prepared!==undefined&&prepared.sources.length===nodes.length;
+  for(let index=0;sameSources&&index<nodes.length;index++){
+    sameSources=(index in nodes)===(index in prepared.sources)&&
+      (!(index in nodes)||nodes[index].key===prepared.sources[index].nodeKey);
+  }
+  const sources=sameSources?prepared.sources:freezeOwned(nodes.map((node,index)=>freezeOwned({nodeKey:node.key,graphicId:`animation/node/${index}`})));
   const endpoint=freezeOwned({format:"sampled",graphicSpec:frame.graphicSpec,scene:frame.scene,identities,backgrounds,
-    sources:freezeOwned(frame.scene.nodes.map((node,index)=>freezeOwned({nodeKey:node.key,graphicId:`animation/node/${index}`}))),
-    canvases:freezeOwned([]),matching:freezeOwned(matching)});
+    sources,canvases:freezeOwned([]),matching});
+  sampledMappings.set(identities,{matching,sources});
   endpoints.add(endpoint);return endpoint;
 }
 

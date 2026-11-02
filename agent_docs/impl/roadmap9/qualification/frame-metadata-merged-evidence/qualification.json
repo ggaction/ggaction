@@ -1,0 +1,313 @@
+{
+  "status": "functional-checkpoint-verified",
+  "sourceRevisionPendingPin": true,
+  "baseSourceRevision": "10103dc24",
+  "authorization": "../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1259,
+    "packedBytes": 1809081,
+    "unpackedBytes": 8154283,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-972e1de9ed174dd654b5ee2c15426efe6dc430765bef1a7a3911004f975a44a7.tgz",
+    "sha256": "972e1de9ed174dd654b5ee2c15426efe6dc430765bef1a7a3911004f975a44a7"
+  },
+  "runtimeFiles": [
+    "src/animation/endpoints.js",
+    "src/animation/frameEndpoint.js"
+  ],
+  "sourceSHA256": {
+    "src/animation/endpoints.js": "4152afb99633d3fe3e3f7cd65c6a5b9b02dfdd0e036a7b10c2dad40c1b2236b2",
+    "src/animation/frameEndpoint.js": "618634cbbdc930d986fae7a9a129d54f106e338ca9094e57f71decad51f94b3d",
+    "src/animation/columnCodec.js": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+    "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+    "src/animation/planner.js": "0b76bbedc126d10937b5f7a999dd46ef7d554a22466aa9dcdc46de037bb9e576",
+    "src/animation/envelopeCodec.js": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+    "src/animation/sample.js": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+    "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+    "src/materialization/animation/point.js": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+    "src/materialization/animation/guides.js": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+    "src/core/validation.js": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+    "src/selectors/graphicCapacity.js": "80301d027d2887c620c83909a5db5aeb0546eac77397c7ba63c618ae139beceb",
+    "src/grammar/animation/positions.js": "746ef92f9c8306b56e0f151e76c0d35d1ad39e9534b496bb0d36c8cb64730211",
+    "src/animation/appearance.js": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+    "types/animation.d.ts": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323"
+  },
+  "checks": {
+    "owning": 764,
+    "contracts": 34,
+    "render": 52,
+    "docs-contract": 3,
+    "sameArchiveNodeMajors": [
+      20,
+      22,
+      24
+    ],
+    "installedMinifiedBrowser": {
+      "archiveSHA256": "972e1de9ed174dd654b5ee2c15426efe6dc430765bef1a7a3911004f975a44a7",
+      "sourceRootInputs": 0,
+      "dpr": [
+        1,
+        2
+      ],
+      "versions": [
+        3,
+        4
+      ],
+      "status": "passed"
+    },
+    "boundary": {
+      "status": "passed",
+      "firstAndLaterFrameCurrent": true,
+      "stableIdentityMatchingSourcesReused": true,
+      "changedNodeKeysRebuilt": true,
+      "invalidNewIdentityRejected": 3,
+      "callerCloneFreezeRejected": true,
+      "invalidDecisionStillChecked": true,
+      "offlineNativeAuthority": false,
+      "oldFrameSceneGraphicNodePropertiesCollected": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "planStillLive": true
+    },
+    "original100k": {
+      "coordinates": 100000,
+      "rebaseCoordinates": 100000,
+      "offlineWholeFrameExact": true,
+      "work": [
+        78333686,
+        97911711,
+        46333687,
+        133456501
+      ],
+      "sampleDiagnostics": {
+        "firstSampleMs": 6216.567166999994,
+        "repeatSampleMs": 7810.521708,
+        "oracleOutsideTimer": true
+      },
+      "preSampleGC": false
+    },
+    "reusedUnchangedDocs": {
+      "from": "point-node-merged-evidence/qualification.json",
+      "docsSuite": 246,
+      "builtPages": 186,
+      "scope": "No public doc/source generator changes; fresh 3 documentation truth and installed 7 animation snippets per Node."
+    }
+  },
+  "limitations": [
+    "50ms sampler-to-Canvas and P95 not qualified",
+    "100-cycle retained heap not qualified",
+    "Native sample diagnostics 6216.6/7810.5ms without pre-sample GC are not directly comparable with earlier post-GC profile",
+    "Small agent work concurrent; no speedup claim",
+    "Final full suite and remaining Roadmap9 scope remain pending"
+  ],
+  "evidenceFiles": {
+    "node24.json": {
+      "sha256": "c467ceb45e52324ee370242dba6b1b4959f96d1e4009d1dfe42cc58781e4e683",
+      "bytes": 2149
+    },
+    "pack.json": {
+      "sha256": "2b46dad6dd54edf998c931e84162ba212dd9f1824fc23026c5a6a960528fbd86",
+      "bytes": 384
+    },
+    "render.log": {
+      "sha256": "67a734ffcc1575878294f3732ee2968a250db2da54613a0d4496aa3450a73cc3",
+      "bytes": 12486
+    },
+    "product-compare.log": {
+      "sha256": "6345b3326c0e7ae05573b7b4bbcdbaf6d6027347db7d980289db2e8d8e601810",
+      "bytes": 10326
+    },
+    "pack-retry.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "process-sample.log": {
+      "sha256": "6707b5180d288d64c22dc1d511fd7250e39ee797caf4988fd12dd8e1bed11b96",
+      "bytes": 229
+    },
+    "contracts.log": {
+      "sha256": "7628887acb1ec0be3eb044e24a3cddb1f42e9f3b253df4599af31d09674c027f",
+      "bytes": 6632
+    },
+    "docs-contract.log": {
+      "sha256": "deb7d18dbb6a6cf4a6eb1fd92c1efd7859f52556dcd3a2a4a574dab8ab924d38",
+      "bytes": 756
+    },
+    "frozen.json": {
+      "sha256": "a4d926821f588aad4007713d74e030d448d5a8a62913a74f7ec9975fe1330fd7",
+      "bytes": 436
+    },
+    "product-observer.mjs": {
+      "sha256": "09f24334fb955c3566fc4f505e3e73531903f9c887eb1b5b04a5afe752a2489d",
+      "bytes": 1199
+    },
+    "product-compare.mjs": {
+      "sha256": "d4895a4b3b24aa8dd1ba7654cc8cbe073ea39528d483eae96dd5c69866c3713e",
+      "bytes": 8743
+    },
+    "browser-installed.json": {
+      "sha256": "c83e98f22dbb7bff16de1f23555470b29d4e64faf82974d7cfb8992de3d0fb3b",
+      "bytes": 200
+    },
+    "node22.json": {
+      "sha256": "57f43baf9b41e9f1321e1955f7935a7aab609135026e67e4320c1786f7e38bc4",
+      "bytes": 2149
+    },
+    "pack24.json": {
+      "sha256": "ca01c1aa46f7bcd68b15daa2cecbc6eed7f40e807d9f2404f395576518e435ba",
+      "bytes": 386
+    },
+    "boundary.log": {
+      "sha256": "fe646d639e3feb881972c0697caed86a934114a15a0ad5b1e024da1ec21e9ccb",
+      "bytes": 350
+    },
+    "pack20-retry.json": {
+      "sha256": "95bc0c4a6945e8471c81a71307d11aab85b48b3c154d34846059b16798b04e67",
+      "bytes": 386
+    },
+    "node20.json": {
+      "sha256": "d38de2940a47852c6c8b66e519fe2b846835935bdf5d1750af3bc9854dea2563",
+      "bytes": 2164
+    },
+    "pack20.stderr": {
+      "sha256": "2d6e67d07b801dbf590e9b797b41f7062817e2bbcd9f8895fd424d6d92077f4f",
+      "bytes": 966
+    },
+    "product-100000-phased.log": {
+      "sha256": "06964908052a476cc12064a1c4e1458dd29acdd2b0ac0fce654f2aaa2ca83868",
+      "bytes": 4854
+    },
+    "browser-installed.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "product-100000-phased-partial.json": {
+      "sha256": "5e17b0a98c5fe61e923172417ff6d86be52b1f9074db17b261f4612581f27207",
+      "bytes": 4496
+    },
+    "process-sample.txt": {
+      "sha256": "7643b5d6b4da414bb46f1123e805d281719982643cbc1dc2de66572d6440a946",
+      "bytes": 312432
+    },
+    "budget-recheck20.json": {
+      "sha256": "5c97c3e1af84404cafc536ce3babe69ca00976dfb8c613f32a5b587a7fee6b96",
+      "bytes": 806
+    },
+    "pack20-retry.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack.stderr": {
+      "sha256": "782101610e9d01aa4d4c4d9285cbb382fb602e4925c1f7bb03572bed2a089693",
+      "bytes": 891
+    },
+    "pack20.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "owning.log": {
+      "sha256": "24702285b1a6e9fbb4ff289c3d5fa79976c8d3df72c6c00b5256bd0b4132ab82",
+      "bytes": 182964
+    },
+    "node22.log": {
+      "sha256": "858b80dba3b68e1c4cc052cae66bde77705eb7b1e3abc27314e2a5b66abfce7b",
+      "bytes": 1578
+    },
+    "product-compare.json": {
+      "sha256": "219b8af1e4203e5bd9e5690af75af55a598358f764a4f28e831dde32ea7b27e3",
+      "bytes": 12037
+    },
+    "boundary.mjs": {
+      "sha256": "8512b956d2c7d2334158cb3a570d93db5c0e45780d785045a036d69a31588673",
+      "bytes": 4094
+    },
+    "node20.log": {
+      "sha256": "d5c519cabf6065548f5d7807a790158c3e29bd775733e2b64e811501393fdb40",
+      "bytes": 2082
+    },
+    "boundary.json": {
+      "sha256": "29eb2fb903992f05561744dc75d935bab8d88fe626b2b251696ab0a8f4e8232b",
+      "bytes": 419
+    },
+    "owning-coverage.mjs": {
+      "sha256": "98808d01640f18c1e33ee2fbc3c0c60f4765d3d375b73f4f02843e927fafb65f",
+      "bytes": 477
+    },
+    "node24.log": {
+      "sha256": "b0a36807041d0d40ed777503b1c97ef82ebc09cfb9964614c14fc5a703d794a2",
+      "bytes": 1578
+    },
+    "browser-installed.mjs": {
+      "sha256": "56079fbbe13035cdd88263d9ebcfc92f5fb4524d5656849aba7926c7d303aebb",
+      "bytes": 842
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "product-100000-phased.json": {
+      "sha256": "6a5e29b5009daf5ba0e2b1b67ba93dad6a386616817b9d4ec2b90605512989c4",
+      "bytes": 6226
+    },
+    "product-100000-phased.mjs": {
+      "sha256": "3e50135f4298715256e5bb0924ffa50ea52e1cd95363f4fb6f2546202ba7beb8",
+      "bytes": 6265
+    },
+    "prototype-animation.log": {
+      "sha256": "df556acb24aceb9193627990b7e3e9113fcff957420ff62e3a34793488db85f1",
+      "bytes": 181491
+    },
+    "prototype-product-compare.json": {
+      "sha256": "6028def3436cfd33d3d6f2502f46fce4b1a2651fb439301564c334b1c421593f",
+      "bytes": 12036
+    },
+    "prototype-boundary.json": {
+      "sha256": "29eb2fb903992f05561744dc75d935bab8d88fe626b2b251696ab0a8f4e8232b",
+      "bytes": 419
+    },
+    "prototype-boundary-loader-order-failure.log": {
+      "sha256": "c29b21a449275168d2196979cd2cd57528a7011b9776bda27625d17364bf4b31",
+      "bytes": 3182
+    },
+    "prototype-boundary.log": {
+      "sha256": "fe646d639e3feb881972c0697caed86a934114a15a0ad5b1e024da1ec21e9ccb",
+      "bytes": 350
+    },
+    "prototype-endpoints.mjs": {
+      "sha256": "6d5f5acad398540613ec2326aef9b94167e03fd05b933fe7022bee2856432439",
+      "bytes": 4540
+    },
+    "prototype-frameEndpoint.mjs": {
+      "sha256": "a5aedb6ec22249a31f0cb57bee39cbf090e7cd091fbaf7c03adab4cd76d13585",
+      "bytes": 13616
+    },
+    "prototype-product-observer.mjs": {
+      "sha256": "bd275e56d24550b0953cb3820a770c92c5dcdf56d6243ac99f74c2235499cb4d",
+      "bytes": 1215
+    }
+  },
+  "coverage": {
+    "endpoints": [
+      100,
+      100,
+      100
+    ],
+    "frameEndpoint": [
+      100,
+      96.48,
+      100
+    ]
+  },
+  "failuresPreserved": [
+    "pack.stderr: prior unpacked artifact ceiling",
+    "pack20.stderr: prior packed artifact ceiling",
+    "node20.json: prior animation bundle ceiling; same measurement rechecked",
+    "prototype boundary-loader-order-failure.log: import ordering, corrected before success"
+  ]
+}
