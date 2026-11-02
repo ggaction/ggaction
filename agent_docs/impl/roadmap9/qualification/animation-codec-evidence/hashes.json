@@ -24,6 +24,7 @@
   "private-frozen-owning-coverage.log.gz": "f03bf8324d272bc635ab7c150d531463cf46d64ad4e94fa4914429c8e19fc1ae",
   "private-frozen-render.log.gz": "60c5fe334263a363995d9a875fe0cb2e7874df8ebb45d1fc80ef1c8991bbd594",
   "private-package.json": "c348679e6c815226717f1c0e0574894d677b41feccc6e5254980f3e0f20c5a8a",
+  "private-pinned-docs.log.gz": "ed23cdb2fe390ae7465866aa73470020a45bdbe004ec2ba3220f589131a91d74",
   "private-sealed-docs.log.gz": "2730fe7556f2fa7e251149674da4557f98881a8b42b6b8b5f2539b370aebff33",
   "private-small-consumer-node20-before-bundle-cap.log.gz": "d745320b43696f12f645b56b3b64cc472e2701b74697364d7788396a2a08f185",
   "private-small-consumer-node20-first.log.gz": "aaf5bae97ee6d05dec8ba2df7f7572fc612903b39bc6668ddd832c7cd0bd8baa",

@@ -12,6 +12,9 @@
 - [초기 capacity 제안](animation-capacity.md)과 [중단·재개 기록](animation-codec-resume.md)의
   과거 진단 및 당시 미해결 경계는 역사다. 채택된 현재 private 정책은 이 문서가 소유한다.
 
+제품 source checkpoint는 `f5423fc6877fb137b4af52d8e693d1f792a461de`이며 원격 branch에
+push했다. 그 commit을 가리키는 provenance/machine/LLM 재생성 후 docs242/242를 다시 통과했다.
+
 ## 서로 다른 work 단위와 고정 상계
 
 Canonical planner work는 값 방문마다1, 문자열 UTF-16 길이, 모든 own key의 UTF-16 길이를
