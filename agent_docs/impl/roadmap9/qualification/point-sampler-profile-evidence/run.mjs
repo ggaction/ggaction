@@ -1,0 +1,43 @@
+import assert from 'node:assert/strict';
+import {mkdir,writeFile,readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {Session} from 'node:inspector';
+import {execFileSync} from 'node:child_process';
+import {chart} from '../../../../../src/index.js';
+import {planTransition,sampleTransition} from '../../../../../src/animation.js';
+const folder='.artifacts/point-sampler-profile';
+await mkdir(folder,{recursive:true});
+const n=100000,side=Math.ceil(Math.sqrt(n));
+const rows=Array.from({length:n},(_,id)=>({id,x:(id%side+1)/(side+1),y:(Math.floor(id/side)+1)/(side+1)}));
+const hash=x=>createHash('sha256').update(x).digest('hex');
+const result={kind:'Uninstrumented public sampler timing then V8 CPU attribution; original 100000 points; not SLO or P95',node:process.version,pid:process.pid,execArgv:process.execArgv,n,inputSHA256:hash(JSON.stringify(rows)),sourceRevision:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),measurements:[],stage:'fixture'};
+async function save(stage){result.stage=stage;await writeFile(folder+'/receipt.json',JSON.stringify(result,null,2)+'\n');console.log(stage);}
+await save('endpoints-start');
+const from=chart().createCanvas({width:400,height:400,margin:20,plotBorder:false}).createData({id:'rows',keyField:'id',values:rows}).createPointMark({id:'points',maxItems:100000}).encodeX({field:'x',scale:{id:'x',domain:[0,1],nice:false}}).encodeY({field:'y',scale:{id:'y',domain:[0,1],nice:false}});
+const to=from.editScale({id:'x',domain:[0,2],nice:false}),limits={maxEndpointNodes:200002,maxOutputNodes:100001},options={durationMs:100,easing:'linear'};
+const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-7*Math.max(1,Math.abs(b)));
+function verify(frame,domain){const circles=frame.scene.nodes.filter(node=>node.type==='circle');assert.equal(circles.length,n);assert.equal(frame.decisions.filter(d=>d.kernel==='cartesian-point').length,n);for(let i=0;i<n;i++){close(circles[i].properties.x,20+360*rows[i].x/domain);close(circles[i].properties.y,380-360*rows[i].y);}}
+
+await save('prepare-start');
+const plan=planTransition({from,to,options:{...options,...limits}});
+assert.equal(plan.version,4);
+global.gc();
+await save('uninstrumented-sample-start');
+let start=performance.now();
+let frame=sampleTransition(plan,50);
+const samplerMs=performance.now()-start;
+start=performance.now();verify(frame,1.5);const oracleMs=performance.now()-start;
+result.measurements.push({kind:'uninstrumented-first-sample',samplerMs,oracleMs,verifiedCoordinates:n,memory:process.memoryUsage()});
+frame=undefined;global.gc();await save('profile-start');
+const session=new Session();session.connect();
+const post=(method,params={})=>new Promise((resolve,reject)=>session.post(method,params,(error,result)=>error?reject(error):resolve(result)));
+await post('Profiler.enable');await post('Profiler.setSamplingInterval',{interval:1000});await post('Profiler.start');
+start=performance.now();frame=sampleTransition(plan,50);const profiledSamplerMs=performance.now()-start;
+const {profile}=await post('Profiler.stop');await post('Profiler.disable');session.disconnect();
+start=performance.now();verify(frame,1.5);const profiledOracleMs=performance.now()-start;
+result.measurements.push({kind:'profiled-second-sample',samplerMs:profiledSamplerMs,oracleMs:profiledOracleMs,verifiedCoordinates:n,memory:process.memoryUsage()});
+await writeFile(folder+'/sample.cpuprofile',JSON.stringify(profile));
+result.profileSHA256=hash(JSON.stringify(profile));
+result.sourceSHA256={};
+for(const file of ['src/animation/sample.js','src/animation/frameEndpoint.js','src/grammar/animation/positions.js','src/grammar/scales/mapping.js','src/grammar/scales/continuous.js','src/core/immutable.js'])result.sourceSHA256[file]=hash(await readFile(file));
+frame=undefined;global.gc();await save('complete');console.log(JSON.stringify(result));

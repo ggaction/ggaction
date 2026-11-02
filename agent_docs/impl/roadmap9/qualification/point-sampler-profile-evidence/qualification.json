@@ -1,0 +1,70 @@
+{
+  "status": "diagnostic-complete",
+  "sourceRevision": "648dfe381c753f0e1973f31253de52f8d4079018",
+  "runtimeChanges": 0,
+  "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+  "n": 100000,
+  "node": "v24.22.1",
+  "measurements": [
+    {
+      "kind": "uninstrumented-first-sample",
+      "samplerMs": 1120.093582999998,
+      "oracleMs": 20.070917000000918,
+      "verifiedCoordinates": 100000,
+      "memory": {
+        "rss": 1587085312,
+        "heapTotal": 1117765632,
+        "heapUsed": 888246192,
+        "external": 2657939,
+        "arrayBuffers": 148243
+      }
+    },
+    {
+      "kind": "profiled-second-sample",
+      "samplerMs": 1095.5488750000004,
+      "oracleMs": 9.313582999999198,
+      "verifiedCoordinates": 100000,
+      "memory": {
+        "rss": 1592721408,
+        "heapTotal": 1035993088,
+        "heapUsed": 937570584,
+        "external": 2657979,
+        "arrayBuffers": 148243
+      }
+    }
+  ],
+  "sourceSHA256": {
+    "src/animation/sample.js": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+    "src/animation/frameEndpoint.js": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+    "src/grammar/animation/positions.js": "746ef92f9c8306b56e0f151e76c0d35d1ad39e9534b496bb0d36c8cb64730211",
+    "src/grammar/scales/mapping.js": "abd6f57612c14c1137f2fc7f013dc225ea3b713fd517a3b9c755b83967f65d95",
+    "src/grammar/scales/continuous.js": "97ad380ba556ceb332241d42c0a79297aec128d7551d97afe4e80d17ee03de13",
+    "src/core/immutable.js": "1ec67bd4b674532050ef8351474840d7b947418469b79d976395b63c7bf62fc2"
+  },
+  "evidenceFiles": {
+    "receipt.json": {
+      "sha256": "302162396a4a7e3b84ceb1c631161e600bdbf2913bd52f0e6b1b17f45819eea1",
+      "bytes": 1865
+    },
+    "summary.json": {
+      "sha256": "55251f9a84701b71557382fd72f1a18f9199b4df1277bde927621c1dc9ba6aaf",
+      "bytes": 6407
+    },
+    "sample.cpuprofile": {
+      "sha256": "b52ee68814af0a861baf430a7bfca2e3fa0f398c3b04a6b099b0edcd526f78f8",
+      "bytes": 31425
+    },
+    "run.log": {
+      "sha256": "1c8b54b06d31e0cf535c054dd655c8b764d9ed38b9c7fb0740e8fd0b259a7fbd",
+      "bytes": 1632
+    }
+  },
+  "limits": {
+    "SLO": "not-qualified",
+    "P95": false,
+    "CanvasIncluded": false,
+    "retained100Cycles": false,
+    "concurrentSmallAgentWork": true,
+    "profileIncludesInspectorPostOverhead": true
+  }
+}
