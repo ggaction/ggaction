@@ -656,6 +656,42 @@
     "animation-small-installed.mjs": {
       "sha256": "3617186df30d03ecb9198cf92b7106a01e1aea8eaf62aefc114a92e050646f56",
       "bytes": 2838
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "e27d2063387909b9a2b556d78b17f7aa45dd5db716d4401a4024f2e6e78fa2e7",
+      "bytes": 1810
+    },
+    "source-pin-pack.json": {
+      "sha256": "e2bff111b1968cf8cb11af3d26f6797b61ce83ee477ea7491b38779fd6bd7c97",
+      "bytes": 391
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
+  },
+  "sourceRevision": "3353efe0c16a7e4c8d72d3ac9d69a4b4fbf8a3e1",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
   }
 }
