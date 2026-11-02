@@ -67,3 +67,26 @@ test("shared arrays reject forward, cyclic, malformed and out-of-range reference
     assert.throws(() => decodeValue(value), /Invalid encoded value/);
   }
 });
+
+
+test("decoded cells retain own data descriptors without invoking inherited setters", () => {
+  let calls = 0;
+  const inherited = "codecInheritedCell", readOnly = "codecReadOnlyCell";
+  Object.defineProperty(Object.prototype, inherited, { configurable: true, set() { calls++; } });
+  Object.defineProperty(Object.prototype, readOnly, { configurable: true, value: "prototype" });
+  try {
+    const decoded = decodeValue(["object", [["ordinary", 1], [inherited, 2], [readOnly, 3],
+      ["__proto__", ["object", [["value", 4]]]], ["constructor", "cell"]]]);
+    assert.equal(calls, 0);
+    assert.equal(Object.getPrototypeOf(decoded), Object.prototype);
+    assert.deepEqual(Object.keys(decoded), ["ordinary", inherited, readOnly, "__proto__", "constructor"]);
+    for (const [key, value] of [["ordinary", 1], [inherited, 2], [readOnly, 3], ["constructor", "cell"]]) {
+      assert.deepEqual(Object.getOwnPropertyDescriptor(decoded, key), {
+        value, enumerable: true, writable: true, configurable: true
+      });
+    }
+    assert.deepEqual(decoded.__proto__, { value: 4 });
+  } finally {
+    delete Object.prototype[inherited]; delete Object.prototype[readOnly];
+  }
+});

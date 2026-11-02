@@ -44,9 +44,13 @@ export function decodeValue(value, path = "payload", references) {
     const result = {};
     for (const entry of payload) {
       if (!Array.isArray(entry) || entry.length !== 2 || typeof entry[0] !== "string" || Object.hasOwn(result, entry[0])) return invalid();
-      Object.defineProperty(result, entry[0], {
-        value: decodeValue(entry[1], `${path}.${entry[0]}`, references ?? []), enumerable: true, writable: true, configurable: true
+      const child = decodeValue(entry[1], `${path}.${entry[0]}`, references ?? []);
+      // Ordinary cells use a data assignment; inherited keys still require an
+      // own definition so setters and read-only prototype properties cannot run.
+      if (entry[0] in Object.prototype) Object.defineProperty(result, entry[0], {
+        value: child, enumerable: true, writable: true, configurable: true
       });
+      else result[entry[0]] = child;
     }
     return result;
   }

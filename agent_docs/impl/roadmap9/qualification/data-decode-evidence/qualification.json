@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-internal-decoder-checkpoint",
+  "base": "8452aaae9",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1261,
+    "packedBytes": 1815172,
+    "unpackedBytes": 8176459,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-c638f7d7144f9739b456fa13cf2efac6b26a8d75f0efdd9e7f784fb6956e69ed.tgz",
+    "sha256": "c638f7d7144f9739b456fa13cf2efac6b26a8d75f0efdd9e7f784fb6956e69ed"
+  },
+  "checks": {
+    "persistenceAndAnimation": 59,
+    "codecCoverage": {
+      "lines": 100,
+      "branches": 98.48,
+      "functions": 100
+    },
+    "boundariesAndPackage": 27,
+    "finalPackageLimit": 7,
+    "sameArchiveNodeVersions": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "installedCanonicalDataRows": 1000,
+    "installedLoadAndRevise": true,
+    "installedTaggedValuesAndBytes": true,
+    "browserBundles": 6
+  },
+  "sourceHashes": {
+    "src/persistence/codec.js": "666215dda78b4b0cdc52ab55eaf010fd48558c19634fabf9d4288bbd20141b65",
+    "test/unit/persistence/codec.test.js": "1eb851249f793b38f6418445997f2b376b4d7e3d3a8aa531b7cd55e550804660",
+    "scripts/package-artifact.js": "ce35bce42ec95dc2013d18ace5c0c5324034f17a25a6dd698d2a7f0bf3b8e48d"
+  },
+  "diagnostic": {
+    "baseline-a": {
+      "medianMs": 13.739562499999977,
+      "rangeMs": [
+        9.826166000000057,
+        18.108334000000013
+      ]
+    },
+    "candidate": {
+      "medianMs": 11.306541999999979,
+      "rangeMs": [
+        8.051249999999982,
+        15.484375
+      ]
+    },
+    "baseline-b": {
+      "medianMs": 14.850603999999976,
+      "rangeMs": [
+        10.857583999999974,
+        19.785625000000095
+      ]
+    },
+    "interpretation": "Read-only actual 1k full-load probe, 5 warmups/10 measurements with explicit GC before each; not canonical P95, 100k, or SLO."
+  },
+  "evidenceFiles": {
+    "installed.log": {
+      "sha256": "6db75182b4f12bea1aa6b82a583659881aed76ceb03720562671ff72b049f3ac",
+      "bytes": 2357
+    },
+    "coverage.log": {
+      "sha256": "f61f977da395e6e2318cbc96b695332420b63acfc02b61f6346850f2628249e1",
+      "bytes": 2023
+    },
+    "pack.json": {
+      "sha256": "2ea036a147042d2ae4187b1841bb1b5b5424c40c551572e10be92d2d37e36ffa",
+      "bytes": 380
+    },
+    "pack-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "run.mjs": {
+      "sha256": "1f46f60f04b0f9b7160c99a28242934edb98c663a4ab279edf92c97ade26b32a",
+      "bytes": 728
+    },
+    "baseline-b.json": {
+      "sha256": "a599bb9d16eaec5cffe6c7e40c0bc7b21d51e94f2cd1069ba9cf46c86cd01098",
+      "bytes": 347
+    },
+    "candidate.json": {
+      "sha256": "07406173b241a2b030c86b15a9e1a89d01096f241d2338e2f2c8033f2c6809f1",
+      "bytes": 333
+    },
+    "pack20-final.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "installed.mjs": {
+      "sha256": "8aace58c94dffeeca8dbd8a7fc11c8cc9478da58bed9ddef9617bf1a7284ca8d",
+      "bytes": 3160
+    },
+    "pack24.json": {
+      "sha256": "0cc485e4a5b13538b4a79139c9d65034c44f8d13dc63046db263e2b3b553ac5b",
+      "bytes": 382
+    },
+    "package-final.log": {
+      "sha256": "b24e3ea8da54a36dd2fff8617b922d8245533062d517bd01f7b22e46a25f8d06",
+      "bytes": 1716
+    },
+    "boundaries.log": {
+      "sha256": "b4e63e3d19e4ce92e2997cf07021501a3771eaa6884e0f676767829a8d2059f0",
+      "bytes": 5714
+    },
+    "installed.json": {
+      "sha256": "5855c2b71bf5d8495972c94186d23b1304ed9cad8711f6a564fc5548aa8125b9",
+      "bytes": 4238
+    },
+    "loader.mjs": {
+      "sha256": "4bff83dd9ec0278d7cbe0cef8ce930a2d2d4aacdd2b38f67acd2b1e2fa273832",
+      "bytes": 878
+    },
+    "pack20.stderr": {
+      "sha256": "6a23f32f30969a92a70142abd68ccba596481cdada2f98165dff2f151e0844ec",
+      "bytes": 966
+    },
+    "pack20-final.json": {
+      "sha256": "9f06ff9bdbe2a1f6b9b0f65b595da53ae9c1428424cc9b521fa7ffc18a6087ba",
+      "bytes": 382
+    },
+    "pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "tests.log": {
+      "sha256": "2b29dc850c5395f6904f9bf6cb14987845f4a819389a4097653dd406d519a128",
+      "bytes": 13914
+    },
+    "pack20.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "baseline-a.json": {
+      "sha256": "944859dd0dafba186fc09427e54b20632e8e2ee55e82df2ebe9371080b7e6cbf",
+      "bytes": 347
+    },
+    "pack-first.stderr": {
+      "sha256": "6c95594ad03147073c53a022f23f66fdf0307d45499b33855b6ab7adebd01e91",
+      "bytes": 891
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "remaining": [
+    "original100k data load/revise/blocking P95",
+    "100cycle retained memory",
+    "final combined full qualification"
+  ]
+}
