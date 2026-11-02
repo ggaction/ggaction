@@ -1,0 +1,220 @@
+{
+  "status": "review-only-native-invocation-scope",
+  "base": "3427ae56f",
+  "sources": [
+    {
+      "path": "src/core/action.js",
+      "sha256": "3ea581b0ba3c725630a734d29c8bc3dd5f61a350f7cf2c3682aa0dd29abeac65"
+    },
+    {
+      "path": "src/resources/graphRoutes.js",
+      "sha256": "d5d3e5f368321c5bae835b277a7be832328943390273b755cc29ecd3ad93be38"
+    },
+    {
+      "path": "src/actions/graphs/layouts.js",
+      "sha256": "b54ab60d43185c410209b7b5db61ad6462e2ac3ae35bc73d6ee148c6737a94e6"
+    },
+    {
+      "path": "src/actions/theme/reconcile.js",
+      "sha256": "ff18fe84bf5c6da83081b76b5c34d022c4f493ebc9d220c876a5124f0082ed59"
+    },
+    {
+      "path": "src/actions/canvas/fitting.js",
+      "sha256": "7118b7c28963fea89efa9273c78369675349d79484ee0c6f40225f552e631aa0"
+    },
+    {
+      "path": "src/actions/data/edit.js",
+      "sha256": "c7c02eb54acbfaa1ab66221036e246a7d3e429fd8fc351df6a41ca3c7f7128e1"
+    },
+    {
+      "path": "src/actions/data/revise.js",
+      "sha256": "adf61ad5dd234ae37a4081c0d721c76995e52e290f64d303686d817aa822db0c"
+    },
+    {
+      "path": "src/materialization/revisionIdentity.js",
+      "sha256": "d0e23090117b9e2866cece4fe1d38ec1e27b847f710192c36d0022556f462276"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-b-native-connection.md",
+      "sha256": "d96e08a78cfdc6a2fa4fb16e78632a79cb114f5779b59b27385e6856ddc5cca7"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-b-scope-evidence/prototype.mjs",
+      "sha256": "13b9ef349ca716d7c50b7593e2417c2effd4d696627ebcc900a358a925b48248"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-b-scope-evidence/theme-counterexample.mjs",
+      "sha256": "55cea07b992578ed0befd60cb4eab9f71ffbe93eae417c067ce40edd6ed4cfd5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-b-scope-evidence/record.mjs",
+      "sha256": "1765cf8aad0cbe3f957da9f96ac4c525d38ed9e9ddaf9a97ed7fca4ececcb2e4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-b-scope-evidence/verify.mjs",
+      "sha256": "eed2e9bebc4ae101be81b966f756dde79e4bf9f970b01e5a6f7f1663220a292f"
+    },
+    {
+      "path": "README.md",
+      "sha256": "9bf545ad4e7d36ebdc20d779258db04144786a2c43f013289a1809527f323133"
+    },
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "sha256": "eaf4ae440c40c49569f979c357430de42f6f0661d8a42b24bf4c67416afabaa4"
+    },
+    {
+      "path": "scripts/browser-bundle-size.js",
+      "sha256": "44582ff30592159103b9823c51f72af87680c7c32731340d68bb8f130cf9fdff"
+    }
+  ],
+  "runs": [
+    {
+      "prototype": {
+        "productRuntimeChanged": false,
+        "publicBImplemented": false,
+        "routeAuthorityTested": false,
+        "node": "v20.20.2",
+        "sourceActionSha256": "3ea581b0ba3c725630a734d29c8bc3dd5f61a350f7cf2c3682aa0dd29abeac65",
+        "overlayActionSha256": "fe1a2b9d80ed67c8a703c54ccd9998cb42605aac26639a8a0c7cecb00096cd09",
+        "passed": 12,
+        "cases": [
+          "scope spans enter, original child, theme, validator and exit exactly once",
+          "enter failure preserves the original error and closes scope",
+          "native failure preserves the original error and closes scope",
+          "theme failure preserves the original error and closes scope",
+          "validator failure preserves the original error and closes scope",
+          "exit failure preserves the original error and closes scope",
+          "stale, clone, token, constructor and native override reject before opening",
+          "abort before entry leaves no scope",
+          "reentrant invocation restores the outer scope",
+          "no invocation scope is retained across preparation await",
+          "binding is once only and absent from public options",
+          "unbound v1 action result, trace, error and lifecycle are unchanged"
+        ]
+      },
+      "theme": {
+        "productBImplemented": false,
+        "expectedFailureReproduced": true,
+        "directBackground": "red",
+        "nestedBackground": "red",
+        "directAfterThemeChange": "red",
+        "nestedAfterThemeChange": "red",
+        "nativeChild": "editCanvas",
+        "directAuthoredSource": {
+          "kind": "explicit",
+          "action": "editCanvas"
+        },
+        "nestedAuthoredSource": null,
+        "appearanceDifferenceObserved": false,
+        "directThemeStateRemoved": true,
+        "nestedThemeStateRemoved": false,
+        "reason": "Theme authored-source inspection loses the explicit native action; this fixture retains red appearance."
+      }
+    },
+    {
+      "prototype": {
+        "productRuntimeChanged": false,
+        "publicBImplemented": false,
+        "routeAuthorityTested": false,
+        "node": "v22.23.1",
+        "sourceActionSha256": "3ea581b0ba3c725630a734d29c8bc3dd5f61a350f7cf2c3682aa0dd29abeac65",
+        "overlayActionSha256": "fe1a2b9d80ed67c8a703c54ccd9998cb42605aac26639a8a0c7cecb00096cd09",
+        "passed": 12,
+        "cases": [
+          "scope spans enter, original child, theme, validator and exit exactly once",
+          "enter failure preserves the original error and closes scope",
+          "native failure preserves the original error and closes scope",
+          "theme failure preserves the original error and closes scope",
+          "validator failure preserves the original error and closes scope",
+          "exit failure preserves the original error and closes scope",
+          "stale, clone, token, constructor and native override reject before opening",
+          "abort before entry leaves no scope",
+          "reentrant invocation restores the outer scope",
+          "no invocation scope is retained across preparation await",
+          "binding is once only and absent from public options",
+          "unbound v1 action result, trace, error and lifecycle are unchanged"
+        ]
+      },
+      "theme": {
+        "productBImplemented": false,
+        "expectedFailureReproduced": true,
+        "directBackground": "red",
+        "nestedBackground": "red",
+        "directAfterThemeChange": "red",
+        "nestedAfterThemeChange": "red",
+        "nativeChild": "editCanvas",
+        "directAuthoredSource": {
+          "kind": "explicit",
+          "action": "editCanvas"
+        },
+        "nestedAuthoredSource": null,
+        "appearanceDifferenceObserved": false,
+        "directThemeStateRemoved": true,
+        "nestedThemeStateRemoved": false,
+        "reason": "Theme authored-source inspection loses the explicit native action; this fixture retains red appearance."
+      }
+    },
+    {
+      "prototype": {
+        "productRuntimeChanged": false,
+        "publicBImplemented": false,
+        "routeAuthorityTested": false,
+        "node": "v24.22.1",
+        "sourceActionSha256": "3ea581b0ba3c725630a734d29c8bc3dd5f61a350f7cf2c3682aa0dd29abeac65",
+        "overlayActionSha256": "fe1a2b9d80ed67c8a703c54ccd9998cb42605aac26639a8a0c7cecb00096cd09",
+        "passed": 12,
+        "cases": [
+          "scope spans enter, original child, theme, validator and exit exactly once",
+          "enter failure preserves the original error and closes scope",
+          "native failure preserves the original error and closes scope",
+          "theme failure preserves the original error and closes scope",
+          "validator failure preserves the original error and closes scope",
+          "exit failure preserves the original error and closes scope",
+          "stale, clone, token, constructor and native override reject before opening",
+          "abort before entry leaves no scope",
+          "reentrant invocation restores the outer scope",
+          "no invocation scope is retained across preparation await",
+          "binding is once only and absent from public options",
+          "unbound v1 action result, trace, error and lifecycle are unchanged"
+        ]
+      },
+      "theme": {
+        "productBImplemented": false,
+        "expectedFailureReproduced": true,
+        "directBackground": "red",
+        "nestedBackground": "red",
+        "directAfterThemeChange": "red",
+        "nestedAfterThemeChange": "red",
+        "nativeChild": "editCanvas",
+        "directAuthoredSource": {
+          "kind": "explicit",
+          "action": "editCanvas"
+        },
+        "nestedAuthoredSource": null,
+        "appearanceDifferenceObserved": false,
+        "directThemeStateRemoved": true,
+        "nestedThemeStateRemoved": false,
+        "reason": "Theme authored-source inspection loses the explicit native action; this fixture retains red appearance."
+      }
+    }
+  ],
+  "docs": {
+    "passed": 4,
+    "receipt": "documentation.tap",
+    "sha256": "e1841e44836c01ae4018b96b7373aa1dc338660420cafc5dfd3167ba6c42fec7"
+  },
+  "claims": {
+    "productRuntimeChanged": false,
+    "publicBImplemented": false,
+    "routeAuthorityTested": false,
+    "fullNativeUnion": false,
+    "latency100ms": false,
+    "sourceFreePackageRequalified": false
+  },
+  "remaining": [
+    "Adopt and implement the private invocation scope only for the authentic B facade.",
+    "Connect native preparation through materialization and theme before publishing an update handle.",
+    "Preserve native theme authored-source inspection and removeTheme completion metadata.",
+    "Integrate data identities, fit probes and the full indirect native union."
+  ]
+}
