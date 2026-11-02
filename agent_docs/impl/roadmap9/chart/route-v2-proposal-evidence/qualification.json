@@ -1,0 +1,234 @@
+{
+  "status": "ready-for-review-proposal-only",
+  "source": "207e18ac7e87aab25ff2c56f8e3eeacf10186d81",
+  "authorization": "../AUTHORIZATION.json#remainingApproval",
+  "proposal": "../route-v2-proposal.md",
+  "productChanges": 0,
+  "largeRun": false,
+  "sources": [
+    {
+      "path": "src/core/jsonText.js",
+      "sha256": "87e5a44427dd30b5efa568bd50eecf01b0a7093eccba8d8d003a3536c1189bb4"
+    },
+    {
+      "path": "src/core/valueEncoding.js",
+      "sha256": "ea59303f02796696ed3bdab1ce21995c93a6b15b625f2db4a907a4e6af733b10"
+    },
+    {
+      "path": "src/core/encodedValueCursor.js",
+      "sha256": "f8675ff2afe9bbb0f1e8d2d71ce41f97a8290e31674037dbdd870e1258df8f0c"
+    },
+    {
+      "path": "src/core/sha256.js",
+      "sha256": "a94e9caced46162e33d653cd07b5a36d0626cf4e5e46424644c9273f5e4ca979"
+    },
+    {
+      "path": "src/core/immutable.js",
+      "sha256": "1ec67bd4b674532050ef8351474840d7b947418469b79d976395b63c7bf62fc2"
+    },
+    {
+      "path": "src/core/ownData.js",
+      "sha256": "fa81e2edca5037e2c1f13a82240e5d70097e292073b05e3bbe682b68358dad7d"
+    },
+    {
+      "path": "src/core/contentDigest.js",
+      "sha256": "f6ec75ffc60526a974789a5f679ba384c802c75cc41287d4a212b926ba3b4de4"
+    },
+    {
+      "path": "src/core/itemIdentity.js",
+      "sha256": "8b9f8141dfcf7c7508f602fa297ecc97f0a34efdcd88eaed53344b048e735899"
+    },
+    {
+      "path": "src/core/validation.js",
+      "sha256": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110"
+    },
+    {
+      "path": "src/grammar/graph/routes/job.js",
+      "sha256": "24a57135c8f03db848ead02a05c37dd754648a9299571d7931a5ec50cacc2784"
+    },
+    {
+      "path": "src/grammar/graph/routes/result.js",
+      "sha256": "8189f68bdf53fc13edff90545dc81bd26e928ff2a1ef4efadd84f15f59d4f1dc"
+    },
+    {
+      "path": "src/grammar/graph/routes/resultProvenance.js",
+      "sha256": "7d3e10ac06153fcd83a3e0cbd46dea2abd306f71bd6e43e6c4c8aab747656b3f"
+    },
+    {
+      "path": "src/grammar/graph/routes/options.js",
+      "sha256": "52f8d263587e6d9c2107a11de8f33ffa9ee1e84ae6e88d19cb3c77a0f6b96ece"
+    },
+    {
+      "path": "src/grammar/graph/routes/budget.js",
+      "sha256": "f32d00a6b734ffc23bb95f294ea73ac68645fdf25fb4c91045acb60662231568"
+    },
+    {
+      "path": "src/grammar/graph/routes/common.js",
+      "sha256": "1fdad8bb7f6c6d7e9b011048240851a2515a290261da573db276303380e0caf4"
+    },
+    {
+      "path": "src/grammar/graph/routes/forceDirected.js",
+      "sha256": "c304473a35e1b938a212970e86cb2674afb8f2b76e5e728773b4ed897b1a19ef"
+    },
+    {
+      "path": "src/grammar/graph/routes/forceNeighbors.js",
+      "sha256": "0792585f944cfc10e01336c651966ddc111a0b86106ae70f09480ff4f61382f1"
+    },
+    {
+      "path": "src/grammar/graph/routes/density.js",
+      "sha256": "545fce10c98ee3ee65e639bf5f110bedb6ab9b5dc366eb793242522c6626f885"
+    },
+    {
+      "path": "src/grammar/graph/routes/densitySamples.js",
+      "sha256": "cd4370571f1713849f364a6cd8847e961d59da01a8a99c2738870bb0b7adf54d"
+    },
+    {
+      "path": "src/grammar/graph/routes/densityField.js",
+      "sha256": "33cf23bb9a77435a9a6a10736133e3a87c8712090d0d4d04a44dfd632613481b"
+    },
+    {
+      "path": "src/grammar/graph/routes/hierarchical.js",
+      "sha256": "23d1a04c1b83dae5b5f9607b2f2594d7ca298a58632a59f0d3a749735ebf490c"
+    },
+    {
+      "path": "src/resources/graphRoutes.js",
+      "sha256": "12c65acdc4e373b68caf8f9cd995fa71bba86e575992b1cd6443d0ac751f142a"
+    },
+    {
+      "path": "src/resources/graphRouteExecutor.js",
+      "sha256": "569fd8360d8dca1b5d02e6384bf5d3505a8a23ae1673633f9aa711638ba885b6"
+    },
+    {
+      "path": "src/materialization/graph/routeResource.js",
+      "sha256": "e35e0e38cd5d4cd37535fb5f44fd0eed907173fadcc844bd4f8d9ced02a0f0a9"
+    },
+    {
+      "path": "src/materialization/graph/routeInput.js",
+      "sha256": "dfd73991a2ec5cd2cc6f8955f6fd3a9620cd220aebd145702bd4ed9b97f092bf"
+    },
+    {
+      "path": "src/materialization/graph/routeRequest.js",
+      "sha256": "52f2eea511a3deaeb64d450008f3c626606595b6ae9df0d244a04cfab387c07e"
+    },
+    {
+      "path": "src/materialization/graph/routeState.js",
+      "sha256": "7b05f3a3b6d78b9a62a8c0bedbd214f4be8b3f92f55c3a5570558de48f38a8bd"
+    },
+    {
+      "path": "types/graph.d.ts",
+      "sha256": "2fdc4a873cfb6bf55e8f3c49b5bde706be062bab1714676d527d215681b86658"
+    },
+    {
+      "path": "scripts/benchmarks/routes.browser.js",
+      "sha256": "e2364026412edca805c84a4219b8413a4089b52d6ae25df542c17176242e3843"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/audit.mjs",
+      "sha256": "4ad43c3151b23cd73f1bfb40cb81ab1a24df1487b9346e44965c497e43d3de4a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/audit20.json",
+      "sha256": "821eb04a00772aa4019714d9f588d131c31e5c6411b4e4001c4746fdcef28bbc"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/audit20.log.gz",
+      "sha256": "a04e3e623460c92e5bae308ffde058085c9c85c2d57f262dbb2a2d469a670640"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/audit22-first-fixture.log.gz",
+      "sha256": "41af9f9a19556e17a24c7a29a50dcb4032b86b2f85e7487bd6c5ac66e81c47bf"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/audit22-second-fixture.log.gz",
+      "sha256": "65b7d0c8c2391de824afbc54c47c7a08f9b55eeabc33c73570c59ebb14c68740"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/audit22-third-fixture.log.gz",
+      "sha256": "005e77b8216773268cf947500edfbd2ab8832f9bd809ecc48444bfff090c8f8c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/audit22.json",
+      "sha256": "f13be1432a2b8e3fbaa0f7d653c444e2848ab5ca4f5e5175d2746fc1edbe5908"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/audit22.log.gz",
+      "sha256": "a04e3e623460c92e5bae308ffde058085c9c85c2d57f262dbb2a2d469a670640"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/audit24.json",
+      "sha256": "52e0346b69d6b537459ec03845e3d2c2e1295461b9426517b2732a0e1b07c904"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/audit24.log.gz",
+      "sha256": "a04e3e623460c92e5bae308ffde058085c9c85c2d57f262dbb2a2d469a670640"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/extraction.json",
+      "sha256": "91f24f86638100a9db4d0768a2d50f8f82ee14e80c145ed7b8c27b5c964fbb69"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/job-stages.mjs",
+      "sha256": "417aa5ddc2a4e466771d47c405b8f392d018dd589caf938c9f264d94ad8b90c8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/numeric.json",
+      "sha256": "92360d6c639d8ffd4e060ba299aa8446e3c8f30d40171a1d3d78406e0a354137"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/numeric.mjs",
+      "sha256": "b98275101f34f94f33c465f94b744343ba8a57f733cdfdd19b3a887a7056c1a5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/verify.mjs",
+      "sha256": "f8e0ed887bc22ff78e9fc1034323b30c9785f62a1d4a935e8f6018999343e7a2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal.md",
+      "sha256": "09536c0d07c967772334f32477673f1e35e7735dd2ce71b458aabaea2cb3df3b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-capacity-evidence/audit.json",
+      "sha256": "c545b99cbcfe5d9859cde2ba944363776b7ee7a14aed569db89cc6b660a7c1f8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/density-schedule-evidence/original100-22.json.gz",
+      "sha256": "fe58f2cab5fd56dbdf8a8b3d7e2b4858c4ad0dd73ca723a230d832fbf88d7740"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/density-schedule-evidence/native-union.json",
+      "sha256": "97f1f0aa3afbc477f105588a3f9aab2380d5f462cb92d4b11a46d795777c0f18"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/chart/route-v2-proposal-evidence/numeric-draft-correction.log.gz",
+      "sha256": "8911c62fd51c74cac4bc0066b35a43271b9ce41a2431cff71bb23c930aa1f584"
+    }
+  ],
+  "initialFailures": [
+    "audit22-first-fixture.log.gz",
+    "audit22-second-fixture.log.gz",
+    "audit22-third-fixture.log.gz"
+  ],
+  "verification": {
+    "nativeJobs": 24,
+    "chunkAbortChecks": 48,
+    "runtimeVersions": [
+      "v20.20.2",
+      "v22.23.1",
+      "v24.22.1"
+    ],
+    "productionNativeHandlePublished": false,
+    "latencyQualified": false,
+    "newArchive": false
+  },
+  "remaining": [
+    "root adoption of numeric/API/schema proposal",
+    "density original1000/10000 complete ledger",
+    "initial snapshot/wide key/BigInt boundedness",
+    "whole packet transport and result validation",
+    "complete native update union and final materialization",
+    "whole prepare100ms/heap/P95/100cycle"
+  ],
+  "draftCorrection": "24-character finite number bound rejected by 25-character negative fraction counterexample; final 60,851,065 bytes envelope, unchanged 128MiB proposal cap"
+}
