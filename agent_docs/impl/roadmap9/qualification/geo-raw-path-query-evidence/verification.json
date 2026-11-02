@@ -1,0 +1,31 @@
+{
+  "status": "verified synchronous query calculation; original long-lived obligations open",
+  "sourceSHA256": {
+    "src/grammar/pathGeometry.js": "8bc3434123845f1a6089bfd4eb3f3ea0eb53330f46ba3c9ac8caf5022079b0fc"
+  },
+  "archiveSHA256": "9e622bc170ed67f36b9e34bb55289b5da356e2eddfa5074b3792edb5af444ae5",
+  "checks": {
+    "pathHitInteractionTests": 494,
+    "focusedTests": 22,
+    "pathGeometryCoverage": {
+      "line": 97.2,
+      "branch": 93.83,
+      "function": 100
+    },
+    "sourceDocs": 248,
+    "packageDiscovery": 24,
+    "builtDocs": 186,
+    "nodeMajors": [
+      20,
+      22,
+      24
+    ],
+    "browserDPR": [
+      1,
+      2
+    ],
+    "small100cycleOldSceneAlive": 0
+  },
+  "original100k": "native/all scalar/reference footprints/current passed; subsequent rebase plan WeakSet rehash interrupted; rebase/offline and original100cycle remain open",
+  "performance": "pending new canonical5+30/DPR1/2; original SLO unchanged"
+}
