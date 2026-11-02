@@ -184,7 +184,7 @@ export function prepareNativeWorkload(kind, count, input = nativeWorkloadInput(k
     program = canvas().createGeometryData({ id: 'world', format: 'geojson', coordinateKind: 'geographic', featureKey: 'id', values: input })
       .createProjection({ id: 'projection', type: 'equirectangular', scalePx: 100, translatePx: [200, 200], precisionPx: 0.5 })
       .createCoordinate({ type: 'geo' }).createGeoLineMark({ id: 'coast', stroke: '#2563eb', strokeWidth: 2,
-        ...(count >= 10000 ? { capacity: { maxProjectedPoints: 200000, maxPathCommands: 200000 } } : {}) });
+        capacity: { maxProjectedPoints: 200000, maxPathCommands: 200000 } });
     const checkGeo = (value, scale) => {
       const nodes = (value.scene ?? scene(value)).nodes.filter(node => node.type === 'path');
       check(nodes.length === 1, 'one nonempty line part');
@@ -202,10 +202,10 @@ export function prepareNativeWorkload(kind, count, input = nativeWorkloadInput(k
     witness = checkGeo(program, 100);
     stages.push({ name: 'camera-preview', prepare: () => samplingStage(program, program.editProjection({ scalePx: 200 }), 'cameraPreviewMs', frame => {
       check(frame.decisions.some(value => value.kernel === 'native-geo'), 'native geographic projection kernel'); return checkGeo(frame, Math.sqrt(20000));
-    }, count >= 10000 ? { ...sampleOptions, formatVersion: 5 } : sampleOptions)() });
+    }, { ...sampleOptions, formatVersion: 5 })() });
     const coordinates = input.features[0].geometry.coordinates, indices = [0, Math.floor((count - 1) / 2), count - 2];
-    stages.push({ name: 'css-hit', prepare: hitStage(program, indices.map(i => [200 + 50 * (coordinates[i][0] + coordinates[i+1][0]) * Math.PI / 180, 200 - 50 * (coordinates[i][1] + coordinates[i+1][1]) * Math.PI / 180]), 'coast', undefined, count >= 10000 ? { maxWork: 128000000,
-      pathGeometry: { maxParts: 400000, maxWork: 2000000, maxIndexWork: 16000000 } } : undefined) });
+    stages.push({ name: 'css-hit', prepare: hitStage(program, indices.map(i => [200 + 50 * (coordinates[i][0] + coordinates[i+1][0]) * Math.PI / 180, 200 - 50 * (coordinates[i][1] + coordinates[i+1][1]) * Math.PI / 180]), 'coast', undefined, { maxWork: 128000000,
+      pathGeometry: { maxParts: 400000, maxWork: 2000000, maxIndexWork: 16000000 } }) });
   }
   check(JSON.stringify(input) === original, 'caller input unchanged');
   return { stages, witness, assertImmutable() { check(JSON.stringify(input) === original, 'caller input changed'); } };

@@ -7,7 +7,7 @@ import { createGeometryBudget, snapshotGeometryJSON } from "./input.js";
 import { normalizeGeometry } from "./geometry.js";
 import { normalizeProjectionOptions, projectionTuple, longitudeDegrees } from "./projectionOptions.js";
 import { buildProjectionMath, streamGeometryMath, sphericalMidpoint, orientGeometryRingsMath } from "./projectionMath.js";
-import { createProjectionKernel } from "./projections.js";
+import { createProjectionCalculation } from "./projections.js";
 
 function antipodal(a, b) {
   const rad = Math.PI / 180, p = a[1] * rad, q = b[1] * rad;
@@ -77,7 +77,7 @@ export function projectGeometry(geometry, projectionInput, input = {}) {
   }
   const settings = { coordinateKind, interpolation, routeHint }, budget = createGeometryBudget();
   const source = snapshotGeometryJSON(geometry, budget), normalized = normalizeGeometry(source, coordinateKind, budget).geometry;
-  const math = buildProjectionMath(options), kernel = createProjectionKernel(options);
+  const math = buildProjectionMath(options), kernel = createProjectionCalculation(options);
   let preparedPoints = 0, outputPoints = 0, commands = 0, events = 0, bounds = null;
   const parts = [];
   const countPrepared = () => validateGeneratedItemLimit(++preparedPoints, "Geographic refined points", maxPoints);

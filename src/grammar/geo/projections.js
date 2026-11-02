@@ -22,22 +22,24 @@ function streamedPoint(projection, input) {
 }
 function inExtent(point, extent) { return point.every((value, index) => value >= extent[0][index] && value < extent[1][index]); }
 
-export function createProjectionKernel(input) {
+// Private synchronous result; the ordinary kernel owns its returned snapshot.
+function intermediate(point, reason = null, component = null) { return { point, reason, component }; }
+export function createProjectionCalculation(input) {
   const options = normalizeProjectionOptions(input), descriptor = projectionDescriptor(options.type);
   const { parts, rotate } = buildProjectionMath(options);
   function forward(value) {
     const point = sourcePoint(value, descriptor.spherical);
     if (options.type === "orthographic") {
       const rotated = rotate(point);
-      if (Math.cos(rotated[0] * RADIANS) * Math.cos(rotated[1] * RADIANS) < -1e-14) return result(null, "outside-visible-domain");
+      if (Math.cos(rotated[0] * RADIANS) * Math.cos(rotated[1] * RADIANS) < -1e-14) return intermediate(null, "outside-visible-domain");
     }
     let nonFinite = false;
     for (const part of parts) {
       if (!finitePoint(part.projection(point))) { nonFinite = true; continue; }
       const projected = streamedPoint(part.projection, point);
-      if (projected) return result(projected, null, part.id);
+      if (projected) return intermediate(projected, null, part.id);
     }
-    return result(null, nonFinite ? "non-finite-projection" : "outside-visible-domain");
+    return intermediate(null, nonFinite ? "non-finite-projection" : "outside-visible-domain");
   }
   function inverse(value, settings = {}) {
     const point = projectionTuple(value, [2], "Inverse screen point");
@@ -45,15 +47,23 @@ export function createProjectionKernel(input) {
     rejectUnknownProperties(settings, ["component"], "projection inverse");
     if (Object.hasOwn(settings, "component") && (!descriptor.composite || !parts.some(part => part.id === settings.component))) throw new TypeError("Inverse component is not supported by this projection.");
     const part = descriptor.composite ? [...parts.slice(1), parts[0]].find(candidate => inExtent(point, candidate.extent)) : parts[0];
-    if (!part || settings.component !== undefined && settings.component !== part.id) return result(null, "outside-visible-domain");
+    if (!part || settings.component !== undefined && settings.component !== part.id) return intermediate(null, "outside-visible-domain");
     const candidate = part.projection.invert(point);
-    if (!finitePoint(candidate) || descriptor.spherical && Math.abs(candidate[1]) > 90 + 1e-9) return result(null, "outside-invertible-domain");
+    if (!finitePoint(candidate) || descriptor.spherical && Math.abs(candidate[1]) > 90 + 1e-9) return intermediate(null, "outside-invertible-domain");
     if (descriptor.spherical) { candidate[0] = longitudeDegrees(candidate[0]); candidate[1] = Math.max(-90, Math.min(90, candidate[1])); }
     const projected = forward(candidate);
-    if (!projected.point || projected.component !== part.id || Math.hypot(projected.point[0] - point[0], projected.point[1] - point[1]) > Math.min(0.25, Math.max(1, options.scalePx) * 1e-8)) return result(null, "outside-visible-domain");
-    return result(candidate, null, part.id);
+    if (!projected.point || projected.component !== part.id || Math.hypot(projected.point[0] - point[0], projected.point[1] - point[1]) > Math.min(0.25, Math.max(1, options.scalePx) * 1e-8)) return intermediate(null, "outside-visible-domain");
+    return intermediate(candidate, null, part.id);
   }
   return Object.freeze({ options, descriptor, forward, inverse });
+}
+
+export function createProjectionKernel(input) {
+  const kernel = createProjectionCalculation(input);
+  return Object.freeze({ ...kernel,
+    forward(value) { return cloneAndFreeze(kernel.forward(value)); },
+    inverse(value, settings) { return cloneAndFreeze(kernel.inverse(value, settings)); }
+  });
 }
 
 // Raw mathematics uses radians and y-up, without camera or screen clipping.

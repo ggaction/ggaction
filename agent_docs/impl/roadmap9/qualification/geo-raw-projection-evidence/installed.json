@@ -1,0 +1,206 @@
+{
+  "archiveSHA256": "3318022beb1d20910cf310c0ed5e4e153191eee07885d593389f3c5d43e89739",
+  "directory": "/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-2PCfFJ",
+  "records": [
+    {
+      "binary": "/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node",
+      "file": "runtime.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node",
+      "file": "doc.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node",
+      "file": "bundles.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node",
+      "file": "interaction.mts",
+      "status": "passed"
+    },
+    {
+      "binary": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+      "file": "runtime.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+      "file": "doc.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+      "file": "bundles.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+      "file": "interaction.mts",
+      "status": "passed"
+    },
+    {
+      "binary": "/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "file": "runtime.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "file": "doc.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "file": "bundles.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "file": "interaction.mts",
+      "status": "passed"
+    },
+    {
+      "browser": "source-free minified installed artifact",
+      "dpr": [
+        1,
+        2
+      ],
+      "status": "passed"
+    }
+  ],
+  "bundles20": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1070,
+      "minifiedBytes": 2749277,
+      "gzipBytes": 788912
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 627,
+      "minifiedBytes": 1452722,
+      "gzipBytes": 426250
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 45,
+      "minifiedBytes": 76627,
+      "gzipBytes": 25672
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 216,
+      "minifiedBytes": 437318,
+      "gzipBytes": 140077
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 117,
+      "minifiedBytes": 230823,
+      "gzipBytes": 69522
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 514,
+      "minifiedBytes": 1145831,
+      "gzipBytes": 343556
+    }
+  ],
+  "bundles22": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1070,
+      "minifiedBytes": 2749277,
+      "gzipBytes": 787509
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 627,
+      "minifiedBytes": 1452722,
+      "gzipBytes": 425209
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 45,
+      "minifiedBytes": 76627,
+      "gzipBytes": 25558
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 216,
+      "minifiedBytes": 437318,
+      "gzipBytes": 139423
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 117,
+      "minifiedBytes": 230823,
+      "gzipBytes": 69356
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 514,
+      "minifiedBytes": 1145831,
+      "gzipBytes": 342368
+    }
+  ],
+  "bundles24": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1070,
+      "minifiedBytes": 2749277,
+      "gzipBytes": 788912
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 627,
+      "minifiedBytes": 1452722,
+      "gzipBytes": 426250
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 45,
+      "minifiedBytes": 76627,
+      "gzipBytes": 25672
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 216,
+      "minifiedBytes": 437318,
+      "gzipBytes": 140077
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 117,
+      "minifiedBytes": 230823,
+      "gzipBytes": 69522
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 514,
+      "minifiedBytes": 1145831,
+      "gzipBytes": 343556
+    }
+  ]
+}

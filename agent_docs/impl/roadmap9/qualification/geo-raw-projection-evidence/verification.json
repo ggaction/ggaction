@@ -1,0 +1,38 @@
+{
+  "status": "verified-internal-change; long-lived large rebase unresolved",
+  "archiveSHA256": "3318022beb1d20910cf310c0ed5e4e153191eee07885d593389f3c5d43e89739",
+  "sourceSHA256": {
+    "src/grammar/geo/projections.js": "3c61b7d7da668cfae9df0f90c109e446f8250457ed166802ed57e72535a17335",
+    "src/grammar/geo/stream.js": "1049c25e20d60e5fb45426cc8a25abf1ed636b8ec6691c4cedb47b9352b67576",
+    "scripts/benchmarks/workloads.browser.js": "2f5fe8833fff37f44528aab47ccdfc494d03f2754d91e336dbfb75fb9344a1fa"
+  },
+  "checks": {
+    "geoAnimationRegression": 389,
+    "focusedAndCanonicalContract": 34,
+    "projectionCoverage": {
+      "line": 100,
+      "branch": 97.37,
+      "function": 100
+    },
+    "streamCoverage": {
+      "line": 100,
+      "branch": 100,
+      "function": 100
+    },
+    "sourceDocs": 248,
+    "packageDiscovery": 24,
+    "builtDocs": 186,
+    "nodeMajors": [
+      20,
+      22,
+      24
+    ],
+    "browserDPR": [
+      1,
+      2
+    ],
+    "small100cycleOldSceneAlive": 0
+  },
+  "original100k": "native/full scalar/current passed; sequential and fresh rebase plan WeakSet rehash interrupted; rebase/offline remains open",
+  "performance": "new raw source canonical P95 pending; previous archive all6cells/all12stages failed SLO"
+}

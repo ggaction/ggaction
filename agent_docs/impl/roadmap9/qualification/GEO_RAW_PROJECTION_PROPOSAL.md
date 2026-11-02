@@ -6,8 +6,9 @@
 - [x] Global ownedValues와 traversal ancestors 호출 귀속 분리
 - [x] Source 미변경 load-hook prototype:1276projection pair/90geometry pair exact 검산
 - [x] Root가38c05b45f의 문서·exact patch를remainingApproval으로채택
-- [ ] 제품 source 적용
-- [ ] 완전 owner coverage 및 동일 archive3Node/browser/원100k 기능·canonical 성능 재검증
+- [x] 제품 source 적용, public facade/stream 경계와 소유권 검사
+- [x] owner389회귀·coverage 및 동일 archive3Node/browser·원100k native/current
+- [ ] 원100k rebase/offline 전체 기능, canonical SLO, 원100cycle
 
 이 문서는 제품에 아직 적용하지 않은 내부 변경안이다. Root는 remainingApproval 범위에서 구체적인 raw projection 경계 검토를 지시했다. 제품 source를 바꾸거나 공개 API·persistent schema·native authority를 추가하지 않는다. 새 시각 Gate도 없다.
 
@@ -41,3 +42,16 @@ Raw helper는 library의 공개 package entry에서 export하지 않고 내부 g
 ## 구체안 채택
 
 Root는2026-11-02에 revision `38c05b45f`의 이문서와 `proposal.patch`전체를 검토하고 remainingApproval 범위의 내부 병목 개선으로 채택했다. 단일 계산 owner, 기존 owned facade, stream전용raw중간결과, 최종freeze경계를 유지한다. 원입력/queries/timers/5+30/SLO를 바꾸지 않는 조건으로1k에도 explicit capacity/pathGeometry를 선택하는 후속 benchmark 준비정책을 함께 채택했다. 최초default1k성능실패는앞선A3report에남겼다. Global registry나ancestor구조는바꾸지않는다. 이채택기록을원격checkpoint로남긴후제품구현을진행한다.
+
+
+## 제품 checkpoint 증거
+
+채택 source를 적용했고 원projection/stream및animation389tests가통과했다. Projection100line/97.37branch/100function, stream100/100/100이다. 공개forward/inverse owned/frozen·raw중간결과non-owned·caller isolation 검사를추가했다. 기존canonical소형contract와합쳐34tests, docs248, package/discovery24, built186pages/1607LLM이통과했다. 직전A3browser문서레이아웃검증은같은레이아웃/본문에서재사용한다.
+
+새 frozen archive는 `3318022beb1d20910cf310c0ed5e4e153191eee07885d593389f3c5d43e89739`이며Node20/24strictpack동일bytes,1262entries/1,822,370packed/8,191,091unpacked다. Samearchive3Node runtime·types·실행문서·6bundle와source-free browserDPR1/2통과. Fullgzip788,912B에최소789,000cap; 나머지cap은유지했다. 작은20vertex100cycle oldscene100/100회수다.
+
+원100k의모든199999좌표·339849parts/1939096footprintcommands hash·4query scalar전수·current모든좌표와CSS3query는통과했다. Native준비2,789.52ms였으며원footprint/count/work도같다. 그러나이후rebaseplan에서globalWeakSet rehash가재현돼PID97230을중단했다(758/758sample). 별도fresh PID97769도원initialplan은완료했으나rebaseplan759/759rehash로중단했다. 큰rebase/offline나long-lived완료로기록하지않는다. 제품수정이투영의임시등록을줄인것과남은snapshot/query등록문제를분리한다.
+
+1k에도capacity/pathGeometry를명시하자원v3camera가Geo@2를선택하지못하는소형contract실패2개를확인했다. 승인된explicitcapacity와호환되는기존공개formatVersion5를모든Geo size에연결해34/34로복구했다. 원fixture/좌표/queries/timers/5+30/SLO는바뀌지않는다. 최초default1k의v3/scalar성능실패는앞선canonicalreport에보존한다. 새로운명시정책성능측정은별도결과로만판정한다.
+
+[검증 manifest](geo-raw-projection-evidence/verification.json)가 source SHA와실패범위를소유한다. Large실패로그/sample은같은폴더에압축보존했다. 다음개념은requireFlattened내 boolean/number반환용일시geometry의owned등록을줄이되공개flatten및오류diagnostics소유권을유지하는것이다. Root가이경계를채택했으며별도검산/제품checkpoint로이어간다.

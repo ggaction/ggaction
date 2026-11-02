@@ -5209,3 +5209,5 @@ Root frame local records와 format5 합산은1261entries/Node22packed1814874/Nod
 unpacked8175677B이며 ceiling1261/1818500/8175700이다. Animation gzip343502B에는 위 표의
 343600B를 적용했다. [통합 검증](impl/roadmap9/qualification/frame-owned-merged-evidence/qualification.json)은
 현재1343 owning 검사·설치본3Node/browser와 독립 원100k source-specific 증거를 구분한다.
+
+Geo projection grammar의 단일 private 계산 kernel은 source-segment streaming 중 일시 result를 raw record로 조립한다. 기존 projection kernel facade는 반환을 cloneAndFreeze로 닫고, stream은 raw point를 동기적으로만 읽어 새 concrete commands를 만든 뒤 기존 projectGeometry 최종 owned 경계를 유지한다. 수학·검증·작업량·native authority의 소유자는 바뀌지 않는다.
