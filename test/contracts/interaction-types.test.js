@@ -21,6 +21,12 @@ chart().editLayout({target:'layout',node:{key:[1,'a'],x:1,y:2}});
 chart().editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
 createInteractionSession({program:basic(),bindings:[{type:'keyboard',targets:[{target:'points'}]}]});
 createInteractionSession({program:chart(),bindings:[{type:'keyboard',targets:[{target:{childPath:['a'],id:'points'},activation:{type:'select',selection:'picked',mode:'toggle'}},{target:'partition',activation:{type:'focusHierarchy'}}]}]});
+createInteractionSession({program:chart(),hitPreparation:{maxSceneNodes:100001,maxWork:128000000}});
+createInteractionSession({program:chart(),hitPreparation:{}});
+// @ts-expect-error preparation is a closed option record
+createInteractionSession({program:chart(),hitPreparation:{maxItems:100000}});
+// @ts-expect-error limits require numeric values
+createInteractionSession({program:chart(),hitPreparation:{maxWork:'128000000'}});
 const program = chart(); const session = createInteractionSession({ program, historyLimit: 50 });
 session.dispatch({type:'undo',origin:'user',transactionId:'back'});
 session.dispatch({type:'focus',move:'nextCandidate'});session.dispatch({type:'focus',move:'previousCandidate'});

@@ -845,5 +845,15 @@
     "result": "program",
     "prerequisites": "Run the complete ES module with its inline observations and public imports. Inspect native CSS handle coordinates and replace the same persistent region with an explicit command.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "interaction-hit-preparation",
+    "file": "api/interaction.md",
+    "contains": "hitPreparation: { maxSceneNodes: 100001",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete ES module with public imports. The explicit preparation allowance belongs only to this immutable program session.",
+    "rendering": "authoring-only"
   }
 ]

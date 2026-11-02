@@ -1913,5 +1913,18 @@
         "statements": 19
       }
     ]
+  },
+  {
+    "file": "hit-preparation.mjs",
+    "cases": [
+      {
+        "id": "hit-preparation/all-100000-native-points",
+        "statements": 11
+      },
+      {
+        "id": "hit-preparation/closed-session-policy-atomic-replacement",
+        "statements": 6
+      }
+    ]
   }
 ]

@@ -7,13 +7,14 @@
 - [x] unmodified public admission의 원 거부와 실제 source/scene hash 보존
 - [x] 기존 10k admitted 경로의 생성/mount 중복 work와 CPU 진단
 - [x] 100k 관측 실행 전체 종료 및 owner별 최대 work 확정
-- [ ] 통합 담당의 구체 정책 검토
+- [x] 통합 담당의 구체 정책 검토와 기존 remainingApproval 범위 채택
 - [ ] 제품 구현과 Current/type/public docs/실제 설치 소비자 검증
 
 기준 source는 `9cb510f05028fed315c7cad2e62bff82c5e6f8e7`이다. 현재 WT는 관측 종료 후 root 안정 `def731fe2`로 fast-forward했다. 이 ref는 관측한9cb source를 포함하며
 계측한 hitProgram/hitIndex/sceneFrame의 원 bytes는 동일하다. 관측 자체를 def731 재실행으로 주장하지 않는다.
 Root 지시와 [remainingApproval](../AUTHORIZATION.json)의 기존 전체 승인 안에서 구체화한다.
-제품 공개 정책은 아래 진단·구체안을 root가 검토한 뒤 구현한다. 지금은 production 변경 0이다.
+아래 본문은 production 변경0인 원 진단 checkpoint의 검토 자료다. 이후 root 채택과 구현 진행은
+하단 채택 기록 및 [정책 checkpoint](HIT_PREPARATION.md)에 구분한다.
 이 기록은 STEP071/AT56/077, P95 또는 최종 qualification 완료가 아니다.
 
 ## 원 입력과 실패
@@ -192,3 +193,23 @@ const session = createInteractionSession({
   current authentic sample/weighted/current font origins, direct caller clone negative.
 - Node20/22/24 동일tar public entry/strictTS/docs/bundles와 browser DPR1/2는 source 안정 후.
   최종 P95는 root가 exclusive CPU의 최종 combined archive에서 시행한다.
+
+## 구현 채택 기록 (2026-11-01)
+
+Root가 이 문서 전체를 읽고 `AUTHORIZATION.json#remainingApproval` 범위의 구체안으로 채택했다.
+기본100000/10M, 명시200000/128M 및 독립 binding/index 최대256M, 기존entries/query/snapshot/selection/animation 한도 불변을 승인했다.
+정책 정본은 import 역전을 피하도록 `src/grammar/hitPolicy.js`에 두며 기존 hitIndex 상수 export는 보존한다.
+handles 안정 `93d1c1109`에서 별도 branch를 만들고 진단758만 cherry-pick했다.
+최소 정책 연결을 먼저 검증하며 exact-object metadata/scene/shape 중복 제거는 다음 별도 checkpoint다.
+현재 구현에서 session의 다섯 private bound wrappers와 region/resize/edge helper의 명시 인자가 모든 준비 경로에 동일 정책을 전달한다.
+이 값은 persisted state나 frame authority가 아니며 실제 성능 qualification은 수행하지 않는다.
+
+## 11월2일 최소 metadata proof 수리의 채택
+
+원 동일 tar Node20 기능검증이 기본 heap에서10:20 동안 끝나지 않아 해당 child만 중단했다.
+OS sample과 원 실패를 보존한 뒤 root는 qualification에 필요한 exact metadata proof 재사용을
+정책 checkpoint에 포함하도록 허용했다. 최초 full validation 뒤 exact canonical owned tree의
+info/semanticKey/signature/cost만 재사용하고 기존 보수 비용을 현재 policy에 다시 과금한다.
+Caller/clone/frozen/shallow-owned 입력과 scene/shape/source/asset 권한은 우회하지 않는다.
+Core global WeakSet, heap, fixture, query·selection·animation cap, SLO는 변경하지 않는다.
+Scene/shape 중복 제거는 여전히 후행 독립 checkpoint다.

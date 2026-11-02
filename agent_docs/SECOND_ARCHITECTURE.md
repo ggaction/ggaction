@@ -981,11 +981,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 784,300 bytes |
+| `ggaction` | 784,400 bytes |
 | `ggaction/basic` | 424,700 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 136,000 bytes |
+| `ggaction/interaction` | 136,700 bytes |
 | `ggaction/animation` | 333,800 bytes |
 
 
@@ -3648,10 +3648,24 @@ viewport로 제한하고 scene adapter/index/frame은 후속 경계다. 자세�
 cap을818/1,209,000/5,542,000으로 최소 갱신했다. Public entry와 browser import graph는 변하지 않는다.
 
 
+`grammar/hitPolicy.js`가 session-local hit preparation의 기본·명시 상한과 own-data 정규화를
+단일 소유한다. `interaction/session.js`는 불변 정책을 모든 native/current-frame/commit 경로에
+전달하고 binding과 index는 각자의 work bound를 유지한다. 기존 snapshot·query·selection
+한도는 이 정책과 독립이다. 정확한 공개 범위는 [INTERACTION](contract/current/INTERACTION.md)이 소유한다.
+
 `grammar/hitIndex.js`는 현재 owned CanvasScene identity와 명시 node/semantic mapping을 결합하는 private
 순수 공간 인덱스다. BVH broad phase와 기존 hitShapes narrow phase를 분리하고 누적 work를 제한한다.
-Row/resource lineage는 입력의 exact ref를 보존하며 의미 중복만 합친다. Renderer/semantic state/codec에는
+Row/resource lineage는 입력의 exact ref를 보존하며 의미 중복만 합친다. 완전히 검증한 exact owned metadata의 normal form/semantic key/signature/cost만 private WeakMap으로 재사용하며 매 정책의 기존 비용은 그대로 다시 과금한다. Caller/clone/frozen/부분 owned 입력은 전체 검증과 격리를 유지하고 scene/shape/source/asset 권한을 이 proof로 대체하지 않는다. Renderer/semantic state/codec에는
 새 저장 값을 추가하지 않는다. Guide materializer와 public runtime 연결은 [STEP048](impl/roadmap9/interaction/STEP048.md)에 남긴다.
+`hitShapes`의 native 계산으로 만든 commands/parts는 기존 private states WeakMap 안에서만
+불변으로 보관한다. 고정 깊이 assembly는 새 내부 tree를 직접 freeze하고 caller transform만
+기존 immutable owner로 격리한다. Prepared 외피의 ownership과 WeakMap authenticity, 모든
+native 계산·bounds·clip 검증·보수적 work는 동일하며 이 private tree를 program ownership이나
+외부 caller proof로 사용하지 않는다.
+Shared `pathGeometry`는 같은 입력 검증과 numeric 계산을 raw local tree로 준비하고 기존
+외부 함수가 deep frozen/owned 결과를 반환한다. Hit 준비의 세 내부 계산만 raw 결과를 직접
+소비해 위 private assembly로 보관한다. 계산식·한도·오류·기존 facade와 Trail/query/renderer의
+소유 반환은 동일하며 raw 결과에 별도 program 권한이나 cache authority를 부여하지 않는다.
 실측819 entries/5,552,006unpacked/최대1,210,811packed bytes에 cap819/1,211,000/5,553,000을 적용했다.
 ### Flow data and layout ownership
 
@@ -4961,6 +4975,30 @@ Node20/24에서 1,787,562 packed bytes, Node22에서 1,784,332 bytes, 공통 1,2
 이 artifact-size 증분은 성능 SLO나 runtime work 한도의 변경이 아니다.
 
 동일 handles archive의 여섯 entry 설치 측정에서 interaction만 기존 131,400 상한을 넘었다.
-Node20/24 135,989 / Node22 135,493 gzip bytes로 현재 상한은 136,000이다. 실제 native
+Node20/24 135,989 / Node22 135,493 gzip bytes로 당시 상한은 136,000이었다. 실제 native
 region forward/inverse·scoped clip·category assignment 공유를 포함한 213개 browser modules이며
 나머지 다섯 entry 크기는 기준과 같다. 첫 상한 실패와 동일 저장 측정의 재검증을 구분해 보존한다.
+
+### Session-local hit preparation qualification
+
+새 hit preparation owner를 포함한 canonical package는
+Node20/24에서 1,789,653 packed bytes, Node22에서 1,786,249 bytes, 공통 1,245 entries /
+8,056,862 unpacked bytes로 관측했다. 현재 package ceilings는 이 입력에 맞춘
+1,245 / 1,789,700 / 8,056,900이며, 이는 성능 SLO나 전체 release qualification을 뜻하지 않는다.
+
+Metadata exact-proof 최소 수리를 포함한 최종 입력은 Node22에서 packed1,786,508bytes,
+Node20/24에서1,789,984bytes이며1245entries/8,057,659unpacked bytes다. 원 정책 입력의
+cap 실패와 중단은 qualification 기록에 보존하고 최종 package ceiling은
+1245/1,790,000/8,057,700으로 실제 입력에 맞췄다. 같은 호출의 circle 명령 재사용을 포함한
+다음 입력은 Node20 packed1,790,007/Node22 packed1,786,525, 공통8,057,727unpacked bytes로
+관측하여 현재 package ceiling은1245/1,790,100/8,057,800이다. 기존 비용 과금은 동일하며
+성능 SLO나 전체 release qualification을 뜻하지 않는다.
+
+Hit preparation의691dfd archive에서 Node20 interaction bundle은136,584gzip bytes로 측정됐다.
+원136,000초과를 보존하고 현재 최소 한도136,600에서 같은 측정값을 재평가한다.
+이 bundle 결과는 원100k runtime의10분 초과 중단과 별개이며 runtime 성공으로 집계하지 않는다.
+
+Private hit assembly와 shared path raw 계산/frozen facade 분리까지 포함한 현재 입력은
+1245entries/8,059,160unpacked, packed Node20/24 1,790,460 / Node22 1,786,971bytes다.
+현재 package ceiling은1245/1,790,500/8,059,200이며 Full/interaction bundle ceiling은784,400/136,700이다.
+이 크기 정합은 원100k runtime이나 성능 SLO 성공을 뜻하지 않는다.

@@ -2,7 +2,7 @@
 
 ## Classification and entry
 
-`ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy?, historyLimit?, assetResolver? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
+`ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy?, historyLimit?, assetResolver?, hitPreparation? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
 
 `bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, at most one keyboard binding, up to 256 editing pointer bindings, and up to 256 explicit linked-selection/filter bindings described below, with 259 total records maximum. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including clock, are rejected. Asset preparation is opt-in as specified below.
 
@@ -45,9 +45,13 @@ Filled paths honor nonzero/evenodd holes, strokes honor widths, dash gaps, caps 
 
 ## Bounds and unsupported operations
 
-Preparation supports at most 100,000 scene nodes and a 10,000,000-unit cumulative work budget; a query has a 2,000,000-unit budget. External frame snapshot work is bounded before canonical concrete validation. Guide layout reuse accounts for sample comparisons before computation. Frames containing accessors, cycles, unsupported objects, excessive work or mismatched semantic cardinality are rejected atomically.
+Preparation defaults to at most 100,000 scene nodes and independently bounded 10,000,000-unit binding and index work. `createInteractionSession` accepts optional `hitPreparation: {maxSceneNodes?, maxWork?}`. Omission, `undefined`, `{}`, and own undefined fields retain the defaults. `maxSceneNodes` is a safe integer from 1 through 200,000; `maxWork` is a safe integer from 1 through 128,000,000. Each binding and index preparation has its own maxWork bound (at most 256,000,000 combined), not one shared allowance. The closed plain record rejects null, unknown fields and accessors without reading inherited optional properties.
 
-Hit tie ordering uses exact UTF-16 lexicographic comparison and charges the code units actually read, including shared prefixes; it does not repeatedly charge unread key suffixes. Input validation and metadata serialization retain their full work accounting. Item, preparation and query limits are unchanged. Evidence: `test/unit/grammar/hit-index.test.js` and the full 10,000-point CSS-hit regression in `test/unit/hit-program.test.js`; these correctness checks are not a performance qualification.
+The policy is snapshotted for one session, is absent from program/state/codec, and cannot be changed by commands, frames or mount options. It applies to initial, nested aggregate, current-frame, preview, replacement, history, mount and async commit preparation. Background and every actual child node count; there is no free background exemption. Cached native bases recheck the current count and recharge their original preparation work. Exact fully validated immutable metadata can reuse its normalized info, identity key and signature; every reuse recharges its full original validation and serialization cost against the current policy. Caller-owned, cloned, ordinarily frozen and partially owned metadata receive full validation and isolated normalization. Native owner, source revision, epoch, asset, clip and exact frame authority remain independent requirements. Failed candidates leave the previous program, scene and history intact.
+
+Indexed entries and lineage arrays remain limited to 100,000; a query retains its 2,000,000-unit budget. Shape/path, 10,000,000-unit external snapshot, selection, keyboard and animation limits are unchanged. Explicit preparation does not grant those consumers larger budgets or prove a latency target. External frame snapshot work is bounded before canonical concrete validation. Guide layout reuse accounts for sample comparisons before computation. Frames containing accessors, cycles, unsupported objects, excessive work or mismatched semantic cardinality are rejected atomically.
+
+Hit tie ordering uses exact UTF-16 lexicographic comparison and charges the code units actually read, including shared prefixes; it does not repeatedly charge unread key suffixes. Input validation and metadata serialization retain their full work accounting. Item and query limits are unchanged; the session preparation option above is the only explicit extension. Evidence: `test/unit/grammar/hit-index.test.js` and the full 10,000-point CSS-hit regression in `test/unit/hit-program.test.js`; these correctness checks are not a performance qualification.
 
 Native navigation, keyboard focus and async asset preparation follow their sections below. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
 
@@ -707,7 +711,7 @@ test/browser/interaction-session.browser.js and installed interaction fixtures.
 
 ## Atomic asset preparation
 
-`createInteractionSession({program,bindings?,selectionPolicy?,historyLimit?,assetResolver?})` accepts
+`createInteractionSession({program,bindings?,selectionPolicy?,historyLimit?,assetResolver?,hitPreparation?})` accepts
 an optional explicit host callback. It receives `{program,signal,sessionGeneration,transactionId,
 baseRevision,resourceRevisionVector}`. The program is the immutable native candidate; no DOM event
 or mutable source is passed. The vector contains every dataset and stored resource in each composition

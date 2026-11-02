@@ -977,6 +977,10 @@
       },
       {
         "type": "file",
+        "path": "unit/grammar/hit-index-proof.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/grammar/hit-shapes.test.js"
       },
       {
@@ -1082,6 +1086,22 @@
       {
         "type": "file",
         "path": "browser/interaction-handles.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-policy.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-hit-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/hit-preparation.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "charts/cross-feature-integration/variants/capacity/hit.render.js"
       }
     ],
     "horizon": [

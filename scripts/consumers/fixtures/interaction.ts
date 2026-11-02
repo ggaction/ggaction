@@ -242,3 +242,7 @@ createInteractionSession({program,bindings:[{type:'resize',target:'points',selec
 createInteractionSession({program,bindings:[{type:'reorder',target:'points',channel:'color'}]});
 // @ts-expect-error handles are readonly
 selectionHandles.handles[0].point.x=0;
+
+createInteractionSession({program:chart(),hitPreparation:{maxSceneNodes:100001,maxWork:128000000}});
+// @ts-expect-error preparation cannot change the query limit
+createInteractionSession({program:chart(),hitPreparation:{maxQueryWork:3000000}});

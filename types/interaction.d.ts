@@ -450,6 +450,14 @@ export interface InteractionSession {
 }
 export declare function createInteractionSession(options: {
   readonly program: InteractionProgram;
+  /** Session-local preparation only. Omitted/undefined fields retain the defaults.
+   * Entry, query, snapshot, selection and animation limits are unchanged. */
+  readonly hitPreparation?: {
+    /** Safe integer 1..200000. Default 100000, including background and nested nodes. */
+    readonly maxSceneNodes?: number;
+    /** Safe integer 1..128000000. Default 10000000, independently for binding and indexing. */
+    readonly maxWork?: number;
+  };
   /** Explicit host preparation. Candidate state commits only after this lease is ready. */
   readonly assetResolver?: (request: InteractionAssetRequest) => InteractionAssetLease | Promise<InteractionAssetLease>;
   /** Integer 0..10000, default 100. Zero disables undo/redo, but preserves the initial reset baseline. */
