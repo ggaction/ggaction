@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "status": "diagnostic audit; no new product runtime or performance qualification",
+  "authorization": "../../AUTHORIZATION.json",
+  "sourceCommit": "aea5bd365",
+  "metadataBase": "1b91a9fed",
+  "fixtureReference": "0bd402486:scripts/benchmarks/routes.browser.js",
+  "node": "v22.23.1",
+  "capture": "Actual prepare/compute stopped immediately before iteration0 field construction; original input, limits and product files unchanged. No later iteration or completion is claimed.",
+  "checks": "Independent needed-cell keys exactly equal every get key read by current sampleRouteGradient for all interior samples.",
+  "rows": [
+    {
+      "size": 100,
+      "iteration": 0,
+      "directed": false,
+      "samples": 22200,
+      "interiorSamples": 22000,
+      "actualReads": 352000,
+      "gradientCalls": 88000,
+      "uniqueGradients": 25212,
+      "endpointLowerBound": 22200,
+      "twentyBaseAtEndpointCount": 10656000,
+      "neededCells": 31492,
+      "gridCells": 65536,
+      "rows": 514642,
+      "candidates": 10115328,
+      "queriedCandidates": 8879176,
+      "unqueriedCandidates": 1236152,
+      "queriedFraction": 0.8777941753346999
+    },
+    {
+      "size": 1000,
+      "iteration": 0,
+      "directed": false,
+      "samples": 223000,
+      "interiorSamples": 221000,
+      "actualReads": 3536000,
+      "gradientCalls": 884000,
+      "uniqueGradients": 32344,
+      "endpointLowerBound": 223000,
+      "twentyBaseAtEndpointCount": 107040000,
+      "neededCells": 33324,
+      "gridCells": 65536,
+      "rows": 5169546,
+      "candidates": 101634772,
+      "queriedCandidates": 91294704,
+      "unqueriedCandidates": 10340068,
+      "queriedFraction": 0.8982624962252093
+    }
+  ],
+  "scalarDrift": {
+    "x": 0.001,
+    "y": 0.03,
+    "bandwidth": 0.05,
+    "originalHypotKernel": 0.4090881600000002,
+    "expandedSquaredKernel": 0.4090881600000001,
+    "acceptedAsExactOptimization": false
+  },
+  "policyFinding": "sampleCount*24 is an undecomposed estimate present since17c646406, not a counted set of24 JS primitive operations. The core10M bound accepts caller-defined work units.",
+  "omittedRuntimeProposals": [
+    "No lazy field",
+    "No gradient cache",
+    "No polynomial expansion",
+    "No guard increase or sample/iteration reduction"
+  ],
+  "remaining": [
+    "Original density100/1000/10000 admission",
+    "Original FDEB1000/10000 admission",
+    "Combined archive DPR1/2 P95 and100cycles",
+    "Bounded execution policy requires explicit concrete implementation decision"
+  ],
+  "sourceSHA256": {
+    "src/core/validation.js": "21c32af580a7ac10dd50a76f48f6311bb8bebab0fb3255924342ccda6dfdfdbe",
+    "src/grammar/graph/routes/budget.js": "f32d00a6b734ffc23bb95f294ea73ac68645fdf25fb4c91045acb60662231568",
+    "src/grammar/graph/routes/density.js": "dc21e5f9d746cb4a553f9e96b3617594a837b80619303d242629b205b3781539",
+    "src/grammar/graph/routes/densityField.js": "9f3921ba9c91989f1014a27adfe76339016d9f92f808c8dd8103a94135e647cf"
+  },
+  "metadataChecks": {
+    "installedFixtureManifest": 1,
+    "internalDocumentation": 7
+  },
+  "manifestCorrection": {
+    "source": "Root integration discovery report",
+    "id": "edge-routes/symmetric-force-pairs",
+    "statements": 4,
+    "runtimeChanges": false
+  }
+}

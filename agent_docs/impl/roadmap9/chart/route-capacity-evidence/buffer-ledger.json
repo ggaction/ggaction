@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "status": "static managed-buffer model only; not measured heap, full solver admission, or product policy",
+  "source": "fa943e864982783ae8ae10bc18a4257ea8f0b2bb",
+  "scope": {
+    "fixtureEdges": 10000,
+    "initialSamples": 2230000,
+    "nextSamplesAssumption": 2230000,
+    "gridCellsUndirected": 65536,
+    "edgeScratchMaximum": 4096
+  },
+  "force": {
+    "compatibleUndirectedPairs": 8145000,
+    "neighborFormat": "upper triangle, original ascending edge/neighbor order",
+    "targetUint32Bytes": 32580000,
+    "compatibilityFloat64Bytes": 65160000,
+    "reverseUint8Bytes": 8145000,
+    "offsetAndDegreeUint32Bytes": 80004,
+    "neighborTypedTotal": 105965004,
+    "oldAndFreshPointBuffersFinalCycle": 10880000,
+    "limits": "No candidate cap, work charge, or scalar-order reduction is claimed."
+  },
+  "density": {
+    "symbols": {
+      "S": "old samples",
+      "T": "next samples",
+      "C": "65536 undirected or 8*65536 directed cells",
+      "P": "4096 maximum samples per edge",
+      "E": "original edge count"
+    },
+    "allocations": [
+      {
+        "name": "old coordinate Float64",
+        "bytes": "16*S",
+        "lifetime": "whole iteration; never overwrite while field or next routes read it"
+      },
+      {
+        "name": "retained tangent Float64",
+        "bytes": "8*S",
+        "lifetime": "same initial atan2 result feeds field and gradient; avoids repeated tangent arithmetic"
+      },
+      {
+        "name": "next coordinate Float64",
+        "bytes": "16*T",
+        "lifetime": "append complete per-edge output; atomic swap after all edges"
+      },
+      {
+        "name": "field Float64 and presence Uint8",
+        "bytes": "9*C",
+        "lifetime": "same sample/channel/cell sum order; zero-valued inserted cells retain presence"
+      },
+      {
+        "name": "old/new offset Uint32",
+        "bytes": "8*(E+1)",
+        "lifetime": "exact edge order, no narrowing past supported sample count"
+      },
+      {
+        "name": "per-edge segment/weighted/advect/smooth/resample scratch",
+        "bytes": "64*P",
+        "lifetime": "conservative reusable scratch bound; exact layout must be proven before implementation"
+      },
+      {
+        "name": "original endpoint coordinate snapshots",
+        "bytes": "32*E",
+        "lifetime": "original exact endpoints including signed zero through finalization"
+      }
+    ],
+    "conservativeFormulaBytes": "24*S+16*T+9*C+8*(E+1)+64*P+32*E",
+    "firstSameSizeBytes": 90451976,
+    "conservativeLiveSlotFormula": "2*S+T+C+5*P+2*E",
+    "firstSameSizeLiveSlots": 6796016,
+    "priorRecomputeTangentModelBytes": 72611976,
+    "priorRecomputeTangentModelLiveSlots": 4566016,
+    "limits": "No 20-iteration S/T sequence has been executed beyond default guard. The initial count is not substituted for later counts."
+  },
+  "unaccountedSeparately": [
+    "JS objects/Map/array wrappers and GC overhead",
+    "caller immutable input and result object materialization",
+    "worker clone/transfer and main validation staging",
+    "canonical encode/hash/string plus completion packet",
+    "multi-route DAG and responsive repeated candidate lifetime"
+  ],
+  "productPolicyCaps": null
+}

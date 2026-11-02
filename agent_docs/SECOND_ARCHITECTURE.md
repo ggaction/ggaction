@@ -997,10 +997,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 786,300 bytes |
+| `ggaction` | 787,400 bytes |
 | `ggaction/basic` | 424,800 bytes |
 | `ggaction/svg` | 26,000 bytes |
-| `ggaction/graph` | 67,900 bytes |
+| `ggaction/graph` | 68,900 bytes |
 | `ggaction/interaction` | 136,700 bytes |
 | `ggaction/animation` | 339,400 bytes |
 
@@ -5054,3 +5054,5 @@ Private hit assembly와 shared path raw 계산/frozen facade 분리까지 포함
 Root의 inference worker·point·position sampling과 합친 session hit preparation은1252entries / Node22packed1793316 / Node20·24packed1797146 / unpacked8093926bytes다. 실제 합산값에 package1252/1797200/8094000을 적용한다. Node20 Full786220/interaction136692gzipbytes에 표의786300/136700 한도를 적용하고 animation333881은333900 안이다. 문서 검색1093282bytes는 최소cap1093300으로 정합했다. 이 artifact 크기 정합은 runtime guard 또는 성능 SLO 변경이 아니다.
 
 Root 합산 공개version4는1254entries/Node22packed1802294/Node20·24packed1805641/unpacked8129912bytes다. 실제 입력에 최소cap1254/1805700/8130000을 적용한다. Node20 animation339303gzipbytes에는 표의339400cap, Basic424738에는424800을 적용하며 Full786299는786300안이다. 검색1093920에는1094000cap이다. Package guard와 runtime 자원guard·원성능SLO를 구분한다. 실제 same-tar 원100k point/10k partition·3Node·브라우저 검증은 [합산증거](impl/roadmap9/qualification/animation-v4-merged-evidence/qualification.json)를 따른다.
+
+Root route 저장 합산은1256entries/Node22packed1804523/Node20·24packed1807911/unpacked8137423bytes이며 최소cap1256/1808000/8137500이다. Full787369·graph68878gzip에는 표의787400/68900cap을 적용한다. 다른 entry·runtime guard·수학과 package export 경계는 유지한다. [합산 검증](impl/roadmap9/qualification/route-storage-merged-evidence/qualification.json)은 원 큰 solver/P95를 완료로 세지 않는다.

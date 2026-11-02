@@ -1,4 +1,4 @@
-import { validateRoutePoints } from "./polyline.js";
+export { routeDensitySamples } from "./densitySamples.js";
 
 const TAU = 2 * Math.PI;
 export const DENSITY_EPSILON = 1e-9;
@@ -8,18 +8,6 @@ export function compactRouteKernel(distanceOverBandwidth) {
   return residual * residual;
 }
 
-export function routeDensitySamples(points) {
-  validateRoutePoints(points);
-  const lengths = points.slice(1).map((point, index) => Math.hypot(point.x - points[index].x, point.y - points[index].y));
-  if (!lengths.every(Number.isFinite)) throw new RangeError("Density route segment length must be finite.");
-  return points.map((point, index) => {
-    const previous = points[Math.max(0, index - 1)], next = points[Math.min(points.length - 1, index + 1)];
-    let dx = next.x - previous.x, dy = next.y - previous.y;
-    if (dx === 0 && dy === 0) { dx = next.x - point.x; dy = next.y - point.y; }
-    const weight = (lengths[index - 1] ?? 0) / 2 + (lengths[index] ?? 0) / 2;
-    return { ...point, weight, angle: Math.atan2(dy, dx) };
-  });
-}
 
 export function directionChannels(angle) {
   const coordinate = ((angle % TAU + TAU) % TAU) * 8 / TAU, lower = Math.floor(coordinate), fraction = coordinate - lower;
@@ -28,37 +16,54 @@ export function directionChannels(angle) {
 
 // Trusted normalized samples and finite positive grid dimensions from the solver.
 // Sparse cells are numerically identical to a zero-filled dense reference grid.
-export function createRouteDensityField(samples, bounds, { bandwidth, size, directed }, budget) {
+function densityField(sampleCount, bounds, { bandwidth, size, directed }, budget) {
   const cells = new Map(), dx = bounds.width / (size - 1), dy = bounds.height / (size - 1);
-  budget.charge(samples.length);
-  for (const sample of samples) {
-    if (sample.weight === 0) continue;
-    if (!Number.isFinite(sample.weight)) throw new RangeError("Route density must be finite.");
-    const channels = directed ? directionChannels(sample.angle) : [[0, 1]];
-    const x0 = Math.max(0, Math.ceil((sample.x - bandwidth - bounds.x) / dx)), x1 = Math.min(size - 1, Math.floor((sample.x + bandwidth - bounds.x) / dx));
-    const y0 = Math.max(0, Math.ceil((sample.y - bandwidth - bounds.y) / dy)), y1 = Math.min(size - 1, Math.floor((sample.y + bandwidth - bounds.y) / dy));
+  budget.charge(sampleCount);
+  const add = (sampleX, sampleY, weight, angle) => {
+    if (weight === 0) return;
+    if (!Number.isFinite(weight)) throw new RangeError("Route density must be finite.");
+    const channels = directed ? directionChannels(angle) : [[0, 1]];
+    const x0 = Math.max(0, Math.ceil((sampleX - bandwidth - bounds.x) / dx)), x1 = Math.min(size - 1, Math.floor((sampleX + bandwidth - bounds.x) / dx));
+    const y0 = Math.max(0, Math.ceil((sampleY - bandwidth - bounds.y) / dy)), y1 = Math.min(size - 1, Math.floor((sampleY + bandwidth - bounds.y) / dy));
     for (let y = y0; y <= y1; y++) {
-      const deltaY = bounds.y + y * dy - sample.y;
+      const deltaY = bounds.y + y * dy - sampleY;
       // A row intersects the compact kernel in a circle chord. Keep one extra
       // column at either end so rounded boundary arithmetic cannot remove ink;
       // the original radial kernel still decides every retained contribution.
       const radius = Math.sqrt(Math.max(0, (bandwidth - Math.abs(deltaY)) * (bandwidth + Math.abs(deltaY))));
-      const first = Math.max(x0, Math.ceil((sample.x - radius - bounds.x) / dx) - 1);
-      const last = Math.min(x1, Math.floor((sample.x + radius - bounds.x) / dx) + 1);
+      const first = Math.max(x0, Math.ceil((sampleX - radius - bounds.x) / dx) - 1);
+      const last = Math.min(x1, Math.floor((sampleX + radius - bounds.x) / dx) + 1);
       budget.charge(1 + Math.max(0, last - first + 1) * channels.length);
       for (let x = first; x <= last; x++) {
-        const value = sample.weight * compactRouteKernel(Math.hypot(bounds.x + x * dx - sample.x, deltaY) / bandwidth);
+        const value = weight * compactRouteKernel(Math.hypot(bounds.x + x * dx - sampleX, deltaY) / bandwidth);
         if (value === 0) continue;
         for (const [channel, fraction] of channels) {
           const key = (channel * size + y) * size + x, next = (cells.get(key) ?? 0) + value * fraction;
           if (!Number.isFinite(next)) throw new RangeError("Route density must be finite.");
-          if (!cells.has(key)) budget.samples(samples.length + cells.size + 1);
+          if (!cells.has(key)) budget.samples(sampleCount + cells.size + 1);
           cells.set(key, next);
         }
       }
     }
+  };
+  return { add, field: { cells, bounds: { ...bounds }, size, dx, dy, directed } };
+}
+
+export function createRouteDensityField(samples, bounds, options, budget) {
+  const { add, field } = densityField(samples.length, bounds, options, budget);
+  for (const sample of samples) add(sample.x, sample.y, sample.weight, sample.angle);
+  return field;
+}
+
+export function createPackedRouteDensityField(routes, samples, bounds, options, budget) {
+  const { add, field } = densityField(samples.count, bounds, options, budget);
+  for (let edge = 0; edge < routes.length; edge++) {
+    const offset = samples.offsets[edge], points = routes[edge];
+    for (let index = 0; index < points.length; index++) {
+      add(points[index].x, points[index].y, samples.weights[offset + index], samples.angles[offset + index]);
+    }
   }
-  return { cells, bounds: { ...bounds }, size, dx, dy, directed };
+  return field;
 }
 
 export function routeDensityAt(field, x, y, angle = 0) {
@@ -88,10 +93,10 @@ export function sampleRouteGradient(field, point, angle) {
   return { x: corners.reduce((sum, gradient, index) => sum + gradient.x * weights[index], 0), y: corners.reduce((sum, gradient, index) => sum + gradient.y * weights[index], 0) };
 }
 
-export function advectDensityRoute(points, samples, field, step) {
+function advectRoute(points, angleAt, field, step) {
   const next = points.map((point, index) => {
     if (index === 0 || index === points.length - 1) return { ...point };
-    const gradient = sampleRouteGradient(field, point, samples[index].angle), norm = Math.hypot(gradient.x, gradient.y);
+    const gradient = sampleRouteGradient(field, point, angleAt(index)), norm = Math.hypot(gradient.x, gradient.y);
     if (!Number.isFinite(norm)) throw new RangeError("Route density gradient must be finite.");
     if (norm <= DENSITY_EPSILON) return { ...point };
     const { bounds } = field;
@@ -101,4 +106,13 @@ export function advectDensityRoute(points, samples, field, step) {
     x: next[index - 1].x / 4 + point.x / 2 + next[index + 1].x / 4,
     y: next[index - 1].y / 4 + point.y / 2 + next[index + 1].y / 4
   });
+}
+
+export function advectDensityRoute(points, samples, field, step) {
+  return advectRoute(points, index => samples[index].angle, field, step);
+}
+
+export function advectPackedDensityRoute(points, samples, edge, field, step) {
+  const offset = samples.offsets[edge];
+  return advectRoute(points, index => samples.angles[offset + index], field, step);
 }

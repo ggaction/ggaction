@@ -3,7 +3,8 @@ import { ownRecord } from "../../../core/ownData.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit } from "../../../core/validation.js";
 import { prepareRouteInput, finalizeRouteResult } from "./common.js";
 import { routeLength, resampleRoute } from "./polyline.js";
-import { routeDensitySamples, createRouteDensityField, advectDensityRoute } from "./densityField.js";
+import { prepareDensitySamples, disposeDensitySamples } from "./densitySamples.js";
+import { createPackedRouteDensityField, advectPackedDensityRoute } from "./densityField.js";
 
 export const DENSITY_ROUTE_POLICY = Object.freeze({ gridSize: 256, iterations: 20, step: 0.005 });
 const { gridSize: GRID_SIZE, iterations: ITERATIONS, step: STEP } = DENSITY_ROUTE_POLICY;
@@ -27,9 +28,9 @@ function resampleDensityRoutes(routes, bandwidth, budget, heldSamples = 0) {
   return routes.map((points, index) => resampleRoute(points, counts[index]));
 }
 
-function densityBounds(samples, bandwidth) {
+function densityBounds(routes, bandwidth) {
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-  for (const { x, y } of samples) { minX = Math.min(minX, x); minY = Math.min(minY, y); maxX = Math.max(maxX, x); maxY = Math.max(maxY, y); }
+  for (const points of routes) for (const { x, y } of points) { minX = Math.min(minX, x); minY = Math.min(minY, y); maxX = Math.max(maxX, x); maxY = Math.max(maxY, y); }
   const side = Math.max(1, maxX - minX, maxY - minY);
   return { x: (minX + maxX - side) / 2 - bandwidth, y: (minY + maxY - side) / 2 - bandwidth, width: side + 2 * bandwidth, height: side + 2 * bandwidth };
 }
@@ -45,11 +46,13 @@ export function bundleDensityRoutes(input, optionsInput = {}, signal) {
       const bandwidth = densityRouteBandwidth(iteration), sampleCount = routes.reduce((sum, points) => sum + points.length, 0);
       // Include old/new routes, weighted samples, smoothing and resampling buffers.
       context.budget.samples(sampleCount * 6 + context.edges.length * 2); context.budget.charge(sampleCount * 24);
-      const samples = routes.map(routeDensitySamples), flat = samples.flat();
-      const fieldBudget = { charge: context.budget.charge, samples: count => context.budget.samples(count + flat.length * 5 + context.edges.length * 2) };
-      const field = createRouteDensityField(flat, densityBounds(flat, bandwidth), { bandwidth, size: GRID_SIZE, directed: context.model.directed }, fieldBudget);
-      routes = resampleDensityRoutes(routes.map((points, index) => advectDensityRoute(points, samples[index], field, STEP)), bandwidth, context.budget, field.cells.size + flat.length * 3 + context.edges.length * 2);
-      schedule.push({ iteration, bandwidth, fieldCells: field.cells.size, samples: routes.reduce((sum, points) => sum + points.length, 0) });
+      const samples = prepareDensitySamples(routes, context.budget);
+      try {
+        const fieldBudget = { charge: context.budget.charge, samples: count => context.budget.samples(count + sampleCount * 5 + context.edges.length * 2) };
+        const field = createPackedRouteDensityField(routes, samples, densityBounds(routes, bandwidth), { bandwidth, size: GRID_SIZE, directed: context.model.directed }, fieldBudget);
+        routes = resampleDensityRoutes(routes.map((points, index) => advectPackedDensityRoute(points, samples, index, field, STEP)), bandwidth, context.budget, field.cells.size + sampleCount * 3 + context.edges.length * 2);
+        schedule.push({ iteration, bandwidth, fieldCells: field.cells.size, samples: routes.reduce((sum, points) => sum + points.length, 0) });
+      } finally { disposeDensitySamples(samples); }
     }
   }
   const result = finalizeRouteResult(context, "density-v1", context.edges.map((edge, index) => ({ edgeKey: edge.key, points: routes[index], ...(edge.source.x === edge.target.x && edge.source.y === edge.target.y ? { reason: "zero-length" } : {}) })));

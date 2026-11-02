@@ -1237,6 +1237,14 @@
     "file": "edge-routes.mjs",
     "cases": [
       {
+        "id": "edge-routes/packed-density-samples",
+        "statements": 13
+      },
+      {
+        "id": "edge-routes/ordered-force-storage",
+        "statements": 12
+      },
+      {
         "id": "edge-routes/symmetric-force-pairs",
         "statements": 4
       },

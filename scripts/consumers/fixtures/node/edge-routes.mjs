@@ -25,6 +25,46 @@ const streams = buffer => [...buffer.toString("latin1").matchAll(/stream\r?\n([\
 });
 
 export const cases = [
+  { id: "edge-routes/packed-density-samples", async run() {
+    const base = chart().createCanvas({ width: 320, height: 240, margin: 0 })
+      .createData({ id: "nodes", keyField: "id", values: [0, 1, 2, 3].map(id => ({ id })) })
+      .createData({ id: "edges", keyField: "id", values: [{ id: 10, source: 0, target: 1 }, { id: 2, source: 3, target: 2 }] })
+      .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "source", target: "target", directed: true })
+      .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: 0, x: -0, y: 0 }, { key: 1, x: 300, y: 0 }, { key: 2, x: 0, y: 6 }, { key: 3, x: 300, y: 6 }] } });
+    const before = serializeProgram(base), direct = base.bundleGraphEdges({ id: "routes", method: "density" }), result = route(direct).result;
+    const prepared = await prepareGraphEdgeRoutes(base, { kind: "create", id: "routes", method: "density" }, { requestToken: "density" });
+    assert.deepEqual(route(base.bundleGraphEdges({ prepared, requestToken: "density" })).result, result);
+    assert.equal(result.diagnostics.iterations, 20); assert.equal(result.diagnostics.schedule.length, 20);
+    assert.deepEqual(result.routes.map(item => [item.commands[0], item.commands.at(-1)]), [
+      [{ op: "M", x: -0, y: 0 }, { op: "L", x: 300, y: 0 }], [{ op: "M", x: 300, y: 6 }, { op: "L", x: 0, y: 6 }]
+    ]);
+    assert.ok(result.routes.every(item => item.commands.every(point => Number.isFinite(point.x) && Number.isFinite(point.y))));
+    assert.deepEqual(route(deserializeProgram(serializeProgram(direct))).result, result);
+    const edited = direct.editEdgeRoute({ target: "routes", options: { zeroLength: "point" } });
+    assert.equal(route(edited).revision, 1); assert.deepEqual(route(edited).result, result); assert.equal(serializeProgram(base), before);
+  } },
+  { id: "edge-routes/ordered-force-storage", async run() {
+    const count = 100, nodes = Array.from({ length: count }, (_, id) => ({ id }));
+    const edges = nodes.map(({ id }) => ({ id, source: id, target: (id + Math.floor(count / 3)) % count }));
+    const positions = nodes.map(({ id }) => ({ key: id, x: 200 + 150 * Math.cos(2 * Math.PI * id / count), y: 200 + 150 * Math.sin(2 * Math.PI * id / count) }));
+    const base = chart().createData({ id: "nodes", values: nodes, keyField: "id" }).createData({ id: "edges", values: edges, keyField: "id" })
+      .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "source", target: "target", directed: false })
+      .layoutGraph({ id: "layout", method: "fixed", options: { positions } });
+    const original = serializeProgram(base), direct = base.bundleGraphEdges({ id: "routes", method: "force-directed" });
+    const result = route(direct).result, prepared = await prepareGraphEdgeRoutes(base, { kind: "create", id: "routes", method: "force-directed" }, { requestToken: "ordered" });
+    assert.deepEqual(route(base.bundleGraphEdges({ prepared, requestToken: "ordered" })).result, result);
+    assert.deepEqual([result.diagnostics.work, result.diagnostics.candidatePairs, result.diagnostics.peakSamples, result.diagnostics.compatibilityPairs, result.diagnostics.totalIterations], [1264670, 4950, 7000, 750, 165]);
+    assert.equal(result.routes.length, count);
+    result.routes.forEach((item, i) => {
+      const source = positions[i], target = positions[(i + Math.floor(count / 3)) % count];
+      assert.deepEqual(item.commands[0], { op: "M", x: source.x, y: source.y });
+      assert.deepEqual(item.commands.at(-1), { op: "L", x: target.x, y: target.y });
+      assert.equal(item.commands.length, 34); assert.equal(item.controlPoints.length, 34);
+      assert.ok(item.commands.every(point => Number.isFinite(point.x) && Number.isFinite(point.y)));
+    });
+    assert.deepEqual(route(deserializeProgram(serializeProgram(direct))).result, result);
+    assert.equal(serializeProgram(base), original);
+  } },
   { id: "edge-routes/symmetric-force-pairs", async run() {
     const base = chart().createCanvas({ width: 320, height: 240, margin: 0 })
       .createData({ id: "nodes", keyField: "id", values: ["a", "b", "c", "d"].map(id => ({ id })) })

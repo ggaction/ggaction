@@ -1,0 +1,85 @@
+{
+  "owners": 16,
+  "coverage": {
+    "grammar/graph/routes/budget.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/common.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/compatibility.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/density.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/densityField.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/edgePath.js": {
+      "lines": 99.26,
+      "branches": 99.04,
+      "functions": 100
+    },
+    "grammar/graph/routes/forceDirected.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/forceNeighbors.js": {
+      "lines": 100,
+      "branches": 96.43,
+      "functions": 100
+    },
+    "grammar/graph/routes/hierarchical.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/job.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/options.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/polyline.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/result.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/resultProvenance.js": {
+      "lines": 100,
+      "branches": 97.96,
+      "functions": 100
+    },
+    "grammar/graph/routes/shortestPath.js": {
+      "lines": 98.77,
+      "branches": 97.92,
+      "functions": 100
+    },
+    "grammar/graph/routes/spline.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  }
+}
