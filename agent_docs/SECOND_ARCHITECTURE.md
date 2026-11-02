@@ -72,6 +72,15 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 현재 한도는 package/consumer/search 검사의 상수와 현재 실행 결과가 기준이다.
 아래 설명에 남은 과거 checkpoint 수치를 현재 제한으로 해석하지 않는다.
 
+## 내부 content hash 계산 경계
+
+`core/contentDigest.js`는 기존 동기 문자열 변환·byte 복사·canonical JSON을 소유한다.
+SHA-256의 block 압축과 유한한 tail 상태는 비공개 `core/sha256.js`로 분리하며,
+wrapper는 같은 scalar owner를 동기로 끝까지 실행하고 `finally`에서 상태를 정리한다.
+이 상태는 program·transport·공개 API에 들어가지 않는다. 전체 입력 크기의 padded copy를
+제거했지만 UTF-8 입력 생성·byte 복사 및 호출의 동기 성질은 유지한다.
+비동기 encoder·취소 지연 보장은 이 추출만으로 제공하지 않는다.
+
 ## 명시 asset preparation 경계
 
 Image와 font의 bytes/hash/host callback 준비는 `resources/assetPreparation.js`가 공유하며,
