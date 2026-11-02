@@ -1,4 +1,5 @@
 import { isPlainObject } from "../../core/immutable.js";
+import { countJSONStringBytes } from "../../core/jsonText.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
 
@@ -45,23 +46,7 @@ export function validateInferenceBytes(value, execution, label = "Graph inferenc
   let bytes = 0;
   const add = count => validateGeneratedItemLimit(bytes += count, label, policy.maxBytes);
   const string = text => {
-    // Every UTF-16 unit contributes at least one encoded byte. Reject huge
-    // values before JSON escaping or UTF-8 allocation.
-    validateGeneratedItemLimit(bytes + text.length + 2, label, policy.maxBytes);
-    // JSON's quotes/escapes and UTF-8 width can be counted without allocating
-    // an escaped string, TextEncoder and byte buffer for every property/key.
-    let length = 2;
-    for (let index = 0; index < text.length; index++) {
-      const unit = text.charCodeAt(index);
-      if (unit === 34 || unit === 92 || unit === 8 || unit === 9 || unit === 10 || unit === 12 || unit === 13) length += 2;
-      else if (unit < 32) length += 6;
-      else if (unit < 128) length++;
-      else if (unit < 2048) length += 2;
-      else if (unit >= 0xd800 && unit <= 0xdbff && text.charCodeAt(index + 1) >= 0xdc00 && text.charCodeAt(index + 1) <= 0xdfff) {
-        length += 4; index++;
-      } else length += unit >= 0xd800 && unit <= 0xdfff ? 6 : 3;
-    }
-    add(length);
+    bytes += countJSONStringBytes(text, bytes, policy.maxBytes, label);
   };
   const ancestors = new Set();
   function visit(item, depth) {

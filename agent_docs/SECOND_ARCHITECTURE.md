@@ -98,6 +98,12 @@ wrapper는 같은 scalar owner를 동기로 끝까지 실행하고 `finally`에�
 제거했지만 UTF-8 입력 생성·byte 복사 및 호출의 동기 성질은 유지한다.
 비동기 encoder·취소 지연 보장은 이 추출만으로 제공하지 않는다.
 
+JSON 문자열의 escape/UTF8 byte 수는 비공개 `core/jsonText.js` 한 곳에서 계산한다.
+inference byte preflight는 문자열 및 key마다 이 owner를 호출하되, own-data 순회와
+tag·정책·누적 offset은 기존 grammar owner가 유지한다. 최소 크기를 먼저 검사하여
+거부된 문자열의 escape/UTF8 allocation을 피하며, generic value encoder나 canonical JSON의
+읽기·순서·오류 계약은 변경하지 않는다. 비동기 writer나 공개 cursor는 제공하지 않는다.
+
 ## 명시 asset preparation 경계
 
 Image와 font의 bytes/hash/host callback 준비는 `resources/assetPreparation.js`가 공유하며,
@@ -1015,7 +1021,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction` | 788,800 bytes |
 | `ggaction/basic` | 426,200 bytes |
 | `ggaction/svg` | 26,000 bytes |
-| `ggaction/graph` | 69,500 bytes |
+| `ggaction/graph` | 69,600 bytes |
 | `ggaction/interaction` | 137,500 bytes |
 | `ggaction/animation` | 340,800 bytes |
 
@@ -5091,3 +5097,5 @@ Root SHA 합산은1258entries/Node22packed1807573/Node20·24packed1810854/unpack
 Prepared point scale 통합은1258entries/Node22packed1808245/Node20·24packed1811511/unpacked8152110bytes이며 cap1258/1811600/8152200이다. Animation gzip 최대340708B에는 표의340800B를 적용한다. [합산 검증](impl/roadmap9/qualification/prepared-scale-merged-evidence/qualification.json)은 source-specific100k와 fresh1k·동일 archive3Node를 구별하며 원50ms 및 최종 통합을 남긴다.
 
 Point positions vector의 local freeze 통합은 source155B만 추가해1258entries/unpacked8152265B이며 cap8152300B다. 다른 artifact/runtime 한도는 유지한다. [통합 검증](impl/roadmap9/qualification/position-state-merged-evidence/qualification.json)은 현재 샘플러의1k 동등성과 original100k source-specific 결과를 구별한다.
+
+JSON string count owner 합산은1259entries/Node22packed1808438/Node20·24packed1811708/unpacked8152539B이며 cap1259/1811800/8152600이다. graph gzip69506B에는 표의69600B를 적용한다. [통합 검증](impl/roadmap9/qualification/json-count-merged-evidence/qualification.json)은 기존 scalar/error 동등성과 아직 남은 async 경계를 구별한다.

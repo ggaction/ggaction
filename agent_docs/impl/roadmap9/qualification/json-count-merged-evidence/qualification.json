@@ -1,0 +1,589 @@
+{
+  "status": "json-string-count-owner-integrated; async-responsiveness-and-final-closeout-pending",
+  "base": "9b87a0cfc",
+  "upstreamSource": "f4b389117b570ee6ae2399867dc709d6b04c457c",
+  "upstreamPin": "5ec4f4b40402521f902f643c9d49365b9658db52",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Single private JSON string byte-count owner and existing inference delegation. Exact UTF16/escape/minimum/final quota order preserved; generic encodeValue/canonicalJSON/hash/API/schema/guards unchanged.",
+  "sourceSHA256": {
+    "src/core/jsonText.js": "eb46930467af6d2b6dd60a30232974e909303e1152e00874560925e10f941532",
+    "src/grammar/graph/inferenceBudget.js": "3e1df3e6705331bc57832016637005ccd9625e443971a8fbf1c9e2925d7c8190"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1259,
+    "packedBytes": 1808438,
+    "unpackedBytes": 8152539,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-4078cb0700c88267f26a9051d24e295d6ba6ff3af145d10f893216252c30675a.tgz",
+    "sha256": "4078cb0700c88267f26a9051d24e295d6ba6ff3af145d10f893216252c30675a"
+  },
+  "checks": {
+    "coverage": 36,
+    "owning-20": 12,
+    "owning-24": 12,
+    "boundaries": 37
+  },
+  "critical": {
+    "jsonText.js": [
+      100.0,
+      100.0,
+      100.0
+    ],
+    "inferenceBudget.js": [
+      100.0,
+      100.0,
+      100.0
+    ]
+  },
+  "differential": {
+    "node": "v22.23.1",
+    "baseline": "36de5a4f9bd4990804ef94671a06c7041c5f7456",
+    "baselineSourceSHA256": "d2a8a405a44620653c2611775d20b6fde3fc8c430baf032e17553c89f3bf931a",
+    "comparisons": 868,
+    "getterCalls": 0,
+    "result": "exact values and error class/message/details"
+  },
+  "consumers": [
+    {
+      "node": "v20.20.2",
+      "sha256": "4078cb0700c88267f26a9051d24e295d6ba6ff3af145d10f893216252c30675a",
+      "checks": [
+        {
+          "id": "images/resource-lifecycle",
+          "status": "passed",
+          "durationMs": 22.84983299999999
+        },
+        {
+          "id": "images/renderer-scene-offline",
+          "status": "passed",
+          "durationMs": 10.156584000000066
+        },
+        {
+          "id": "fonts/resource-metrics-offline",
+          "status": "passed",
+          "durationMs": 330.25366599999995
+        },
+        {
+          "id": "animation/offline-fresh-process",
+          "status": "passed",
+          "durationMs": 185.4190000000001
+        },
+        {
+          "id": "animation/embedded-assets-fresh-process",
+          "status": "passed",
+          "durationMs": 271.063083
+        },
+        {
+          "id": "animation/immutable-schedules-and-corruption",
+          "status": "passed",
+          "durationMs": 9.576041000000032
+        },
+        {
+          "id": "edge-routes/packed-density-samples",
+          "status": "passed",
+          "durationMs": 855.1449170000001
+        },
+        {
+          "id": "edge-routes/ordered-force-storage",
+          "status": "passed",
+          "durationMs": 543.3196250000001
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed",
+          "durationMs": 142.5042500000004
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed",
+          "durationMs": 306.47991699999966
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed",
+          "durationMs": 55.33625000000029
+        },
+        {
+          "id": "data/inferred-graph-worker-lifecycle",
+          "status": "passed",
+          "durationMs": 133.70816700000023
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1070,
+          "minifiedBytes": 2748955,
+          "gzipBytes": 788787
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 627,
+          "minifiedBytes": 1452567,
+          "gzipBytes": 426195
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 45,
+          "minifiedBytes": 76627,
+          "gzipBytes": 25672
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 117,
+          "minifiedBytes": 230750,
+          "gzipBytes": 69506
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 513,
+          "minifiedBytes": 1137730,
+          "gzipBytes": 340714
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 215,
+          "minifiedBytes": 429907,
+          "gzipBytes": 137407
+        }
+      ],
+      "types": "passed",
+      "snippet": {
+        "status": "passed",
+        "sha256": "37511e8bdd17a1c88e7d6bcb6f776037421ca49c0da7d90134ae0d493be2ed31"
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "bundle-limit-failed",
+      "finalBudgetRecheck": {
+        "source": ".artifacts/json-count-merged/installed-20.json",
+        "sha256": "4078cb0700c88267f26a9051d24e295d6ba6ff3af145d10f893216252c30675a",
+        "limits": {
+          "ggaction": 788800,
+          "ggaction/basic": 426200,
+          "ggaction/svg": 26000,
+          "ggaction/graph": 69600,
+          "ggaction/animation": 340800,
+          "ggaction/interaction": 137500
+        },
+        "status": "passed",
+        "runtimeRepeated": false
+      }
+    },
+    {
+      "node": "v22.23.1",
+      "sha256": "4078cb0700c88267f26a9051d24e295d6ba6ff3af145d10f893216252c30675a",
+      "checks": [
+        {
+          "id": "images/resource-lifecycle",
+          "status": "passed",
+          "durationMs": 22.828082999999992
+        },
+        {
+          "id": "images/renderer-scene-offline",
+          "status": "passed",
+          "durationMs": 12.969832999999994
+        },
+        {
+          "id": "fonts/resource-metrics-offline",
+          "status": "passed",
+          "durationMs": 376.58633299999997
+        },
+        {
+          "id": "animation/offline-fresh-process",
+          "status": "passed",
+          "durationMs": 241.72245799999996
+        },
+        {
+          "id": "animation/embedded-assets-fresh-process",
+          "status": "passed",
+          "durationMs": 329.31566599999996
+        },
+        {
+          "id": "animation/immutable-schedules-and-corruption",
+          "status": "passed",
+          "durationMs": 9.041541000000052
+        },
+        {
+          "id": "edge-routes/packed-density-samples",
+          "status": "passed",
+          "durationMs": 813.990417
+        },
+        {
+          "id": "edge-routes/ordered-force-storage",
+          "status": "passed",
+          "durationMs": 489.94733300000007
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed",
+          "durationMs": 147.58920899999976
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed",
+          "durationMs": 359.4194580000003
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed",
+          "durationMs": 51.145166999999674
+        },
+        {
+          "id": "data/inferred-graph-worker-lifecycle",
+          "status": "passed",
+          "durationMs": 137.53287499999988
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1070,
+          "minifiedBytes": 2748955,
+          "gzipBytes": 787383
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 627,
+          "minifiedBytes": 1452567,
+          "gzipBytes": 425148
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 45,
+          "minifiedBytes": 76627,
+          "gzipBytes": 25558
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 117,
+          "minifiedBytes": 230750,
+          "gzipBytes": 69341
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 513,
+          "minifiedBytes": 1137730,
+          "gzipBytes": 339567
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 215,
+          "minifiedBytes": 429907,
+          "gzipBytes": 136875
+        }
+      ],
+      "types": "passed",
+      "snippet": {
+        "status": "passed",
+        "sha256": "37511e8bdd17a1c88e7d6bcb6f776037421ca49c0da7d90134ae0d493be2ed31"
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "sha256": "4078cb0700c88267f26a9051d24e295d6ba6ff3af145d10f893216252c30675a",
+      "checks": [
+        {
+          "id": "images/resource-lifecycle",
+          "status": "passed",
+          "durationMs": 23.040791999999897
+        },
+        {
+          "id": "images/renderer-scene-offline",
+          "status": "passed",
+          "durationMs": 8.80520899999999
+        },
+        {
+          "id": "fonts/resource-metrics-offline",
+          "status": "passed",
+          "durationMs": 351.362166
+        },
+        {
+          "id": "animation/offline-fresh-process",
+          "status": "passed",
+          "durationMs": 198.05495899999994
+        },
+        {
+          "id": "animation/embedded-assets-fresh-process",
+          "status": "passed",
+          "durationMs": 282.965416
+        },
+        {
+          "id": "animation/immutable-schedules-and-corruption",
+          "status": "passed",
+          "durationMs": 6.739374999999882
+        },
+        {
+          "id": "edge-routes/packed-density-samples",
+          "status": "passed",
+          "durationMs": 728.6910829999999
+        },
+        {
+          "id": "edge-routes/ordered-force-storage",
+          "status": "passed",
+          "durationMs": 425.152834
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed",
+          "durationMs": 141.26516599999968
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed",
+          "durationMs": 316.6668340000001
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed",
+          "durationMs": 45.16366700000026
+        },
+        {
+          "id": "data/inferred-graph-worker-lifecycle",
+          "status": "passed",
+          "durationMs": 128.4493339999999
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1070,
+          "minifiedBytes": 2748955,
+          "gzipBytes": 788787
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 627,
+          "minifiedBytes": 1452567,
+          "gzipBytes": 426195
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 45,
+          "minifiedBytes": 76627,
+          "gzipBytes": 25672
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 117,
+          "minifiedBytes": 230750,
+          "gzipBytes": 69506
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 513,
+          "minifiedBytes": 1137730,
+          "gzipBytes": 340714
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 215,
+          "minifiedBytes": 429907,
+          "gzipBytes": 137407
+        }
+      ],
+      "types": "passed",
+      "snippet": {
+        "status": "passed",
+        "sha256": "37511e8bdd17a1c88e7d6bcb6f776037421ca49c0da7d90134ae0d493be2ed31"
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    }
+  ],
+  "packMeasurements": {
+    "20": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1259,
+      "packedBytes": 1811708,
+      "unpackedBytes": 8152539,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/json-count-merged/pack20/ggaction-0.0.26.tgz",
+      "sha256": "efca4786677bec072fbd8388fbdac5bfa6cacc4ff974e56bc921625a4647d3b9"
+    },
+    "22": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1259,
+      "packedBytes": 1808438,
+      "unpackedBytes": 8152539,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/json-count-merged/pack22/ggaction-0.0.26.tgz",
+      "sha256": "4078cb0700c88267f26a9051d24e295d6ba6ff3af145d10f893216252c30675a"
+    },
+    "24": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1259,
+      "packedBytes": 1811708,
+      "unpackedBytes": 8152539,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/json-count-merged/pack24/ggaction-0.0.26.tgz",
+      "sha256": "efca4786677bec072fbd8388fbdac5bfa6cacc4ff974e56bc921625a4647d3b9"
+    }
+  },
+  "artifactPolicy": {
+    "entries": 1259,
+    "packedBytes": 1811800,
+    "unpackedBytes": 8152600,
+    "graphGzip": 69600,
+    "actualPackedMax": 1811708,
+    "actualUnpacked": 8152539,
+    "actualGraphGzipMax": 69506,
+    "runtimeGuardChanges": 0
+  },
+  "reusedEvidence": [
+    {
+      "path": "../../chart/json-string-count-evidence/qualification.json",
+      "boundary": "Two runtime files byte-exact. Root fresh36source/critical,all UTF16/hash12tests on Node20/24,868differential and same new archive12publiccases/type/doc/6bundle on three Nodes verify composition. Upstream small lifecycle source-specific evidence retained; no new100k/100ms/P95 claim."
+    },
+    {
+      "path": "../prepared-scale-merged-evidence/qualification.json",
+      "boundary": "Public docs/types and non-inference owners unchanged; reuse246docs/186built pages, fresh source pin runs nine doc contracts."
+    }
+  ],
+  "initialFailuresRetained": [
+    "Node20 packed1811708 exceeded previous1811600; minimum ceiling1811800.",
+    "Node20 graph gzip69506 exceeded69500. Original receipt preserved; new69600 ceiling revalidated without repeating passing runtime. Node22/24 passed updated policy."
+  ],
+  "pending": [
+    "Strict resumable writer/native snapshot connection and external snapshot/BigInt/wide-record boundaries",
+    "Route bounded execution/native closure/original1k10k solver admission",
+    "Common sample50ms/partition/Geo camera and hit performance",
+    "Long-lived mixed WeakSet attribution/retained100cycle",
+    "Final9commands/independent review/STEP057-077 closeout"
+  ],
+  "evidenceFiles": {
+    "boundaries.log": {
+      "sha256": "d2be0a7deace53c4ffd3d520912d8d6d8bf6f5ef96b48e9ab3b24bdf66e0efb5",
+      "bytes": 7265
+    },
+    "budget-recheck20.json": {
+      "sha256": "87959ff8597ba488c4084f82ba3658e09804831da1f8cd1c3681eacadac4727c",
+      "bytes": 393
+    },
+    "compare.log": {
+      "sha256": "535d69156e1d1c8bfbcd4d1792ca05567901edd6e920be98a8c822bd93b66cd0",
+      "bytes": 254
+    },
+    "compare.mjs": {
+      "sha256": "cebbb9874443776df9e3e7d16b699b79168dde3246db4c25e2b18a5fcad1eb8c",
+      "bytes": 2548
+    },
+    "coverage.log": {
+      "sha256": "e796285d4df24e462b7168a5c29cf5e27c5b6413b2805659be542a7b132459fa",
+      "bytes": 9620
+    },
+    "differential.json": {
+      "sha256": "7ce5b86cccb931a81b4de6ebd201f5e1b41f67b219db6257e861ebc0d01e9729",
+      "bytes": 279
+    },
+    "evidence.py": {
+      "sha256": "15caf93ee5713feb8eae0927b8dfda8429d5ab4b707e9fab1802a121e9d949dd",
+      "bytes": 4035
+    },
+    "frozen.json": {
+      "sha256": "a98d0fa2379264faf8b4f117d306891ee484c3fd229c3ad6164b7f4d33f0b768",
+      "bytes": 436
+    },
+    "installed-20.json": {
+      "sha256": "c009497c1915c6fd4411044dcee7b6b0bdbcbb9285a0a5445a65eb72af90e21f",
+      "bytes": 2826
+    },
+    "installed-20.log": {
+      "sha256": "fe00fb8f7a26b5501a314c52b3ecd52c92daeb99c42c4e972973e3f1ed29e703",
+      "bytes": 3313
+    },
+    "installed-22.json": {
+      "sha256": "4cd9ae3e3644a49fefaa10152def5f49bf347ed7ded5591de956a52c80bdffa9",
+      "bytes": 2818
+    },
+    "installed-22.log": {
+      "sha256": "4cd9ae3e3644a49fefaa10152def5f49bf347ed7ded5591de956a52c80bdffa9",
+      "bytes": 2818
+    },
+    "installed-24.json": {
+      "sha256": "8d9d8c88642a83dd34f214814ad216f6568b1b8ab1ca9868c0e4ac059141cb7e",
+      "bytes": 2797
+    },
+    "installed-24.log": {
+      "sha256": "8d9d8c88642a83dd34f214814ad216f6568b1b8ab1ca9868c0e4ac059141cb7e",
+      "bytes": 2797
+    },
+    "installed.mjs": {
+      "sha256": "c77a0bc3bd632a137a14451591109ab5bb96bc0b18ee235e0236093861e7d07a",
+      "bytes": 4075
+    },
+    "owning-20.log": {
+      "sha256": "236d1540530e5f325498dc5eb47cff5ead326e11c51a9bff69bf32048a640415",
+      "bytes": 2640
+    },
+    "owning-24.log": {
+      "sha256": "60e802229a7030c4b18a06c8b6260b0c7a467f4aacb2fd3601dc0fd4ac10cdb4",
+      "bytes": 1259
+    },
+    "pack20-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack20-first.log": {
+      "sha256": "509296e51a3407bd04b50257991875cfb38e1beca582f5fcb095c7f1503e9bb0",
+      "bytes": 966
+    },
+    "pack20.json": {
+      "sha256": "230df8382cbbd252f12ee3693631660e31a9aab68ca4521074e607a2c6d40a88",
+      "bytes": 382
+    },
+    "pack20.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack22.json": {
+      "sha256": "4bbf75942d61382fde8cdc8d5c2a94814a4ffccca857ed5a1cb748181a4da5ba",
+      "bytes": 382
+    },
+    "pack22.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24.json": {
+      "sha256": "68c19d50ba52beff4206e67c4ba81eb20daf6dd23f8f2c70cf45c4e365111e3b",
+      "bytes": 382
+    },
+    "pack24.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  }
+}
