@@ -1,0 +1,345 @@
+{
+  "scope": "Read-only CPU attribution, original 1k class; concurrent execution, not P95 or SLO qualification.",
+  "nodes": 1000,
+  "samples": 10,
+  "node": "v22.23.1",
+  "inputSHA256": "dfe300b478fb1d3b701848ef166eb05b20a1f6cbbd6d298c303fe04394e02f98",
+  "timesMs": [
+    189.97474999999986,
+    148.3782500000002,
+    144.75254200000018,
+    192.56679099999974,
+    165.08987500000012,
+    150.73225000000002,
+    138.55975000000035,
+    128.35804099999996,
+    114.69924999999967,
+    101.01741700000002
+  ],
+  "verifiedCells": 1000,
+  "frameSHA256": "b1e9c2ddebd685dc6d7e0d51a4bfdbffb8feca303d956ee7d02b7ec75e3280f4",
+  "inclusive": [
+    [
+      "(root) :0",
+      1637.4579999999173
+    ],
+    [
+      "(anonymous) file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/partition-sample-audit/profile.mjs:0",
+      1487.9999999999468
+    ],
+    [
+      "sampleTransition animation/sample.js:27",
+      1324.3759999999686
+    ],
+    [
+      "sampleTransitionWithBudget animation/sample.js:33",
+      1322.7519999999688
+    ],
+    [
+      "sampleNode animation/sample.js:78",
+      1246.8779999999786
+    ],
+    [
+      "(anonymous) animation/partitionTracks.js:53",
+      1079.877000000028
+    ],
+    [
+      "resolvePartitionAnimationGeometry materialization/animation/partitionGeometry.js:17",
+      914.5400000000271
+    ],
+    [
+      "(anonymous) materialization/animation/partitionGeometry.js:20",
+      912.122000000027
+    ],
+    [
+      "partitionBendCellGeometry grammar/hierarchy/partitionCell.js:10",
+      898.4520000000257
+    ],
+    [
+      "ownDataProperties core/ownData.js:5",
+      593.1959999999996
+    ],
+    [
+      "bendPartitionPoint grammar/hierarchy/partitionBend.js:8",
+      528.8239999999902
+    ],
+    [
+      "ownRecord core/ownData.js:17",
+      523.9429999999896
+    ],
+    [
+      "mapPartitionBendPoint grammar/hierarchy/partitionAdapter.js:50",
+      471.1489999999906
+    ],
+    [
+      "insetPartitionBendCell grammar/hierarchy/partitionBend.js:31",
+      319.84199999999663
+    ],
+    [
+      "cloneAndFreeze core/immutable.js:26",
+      295.72999999999723
+    ],
+    [
+      "depth grammar/hierarchy/partitionBend.js:35",
+      231.58000000000004
+    ],
+    [
+      "freezeOwned core/immutable.js:12",
+      173.91299999999998
+    ],
+    [
+      "samplePartitionAnimationState grammar/animation/partitionState.js:97",
+      164.42000000000004
+    ],
+    [
+      "samplePartitionInterpolation grammar/hierarchy/partitionInterpolation.js:57",
+      164.17000000000004
+    ],
+    [
+      "post node:inspector:118",
+      160.167
+    ],
+    [
+      "(anonymous) file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/partition-sample-audit/profile.mjs:15",
+      160.167
+    ],
+    [
+      "post file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/partition-sample-audit/profile.mjs:15",
+      160.167
+    ],
+    [
+      "state grammar/hierarchy/partitionInterpolation.js:15",
+      150.21600000000004
+    ],
+    [
+      "(garbage collector) :0",
+      149.45800000000006
+    ],
+    [
+      "ownArray core/ownData.js:23",
+      101.29200000000007
+    ],
+    [
+      "preparePartitionInterpolation grammar/hierarchy/partitionInterpolation.js:46",
+      96.00300000000004
+    ],
+    [
+      "partitionRadius grammar/hierarchy/partitionMapping.js:27",
+      89.13000000000005
+    ],
+    [
+      "validateConcreteGraphicProperties grammar/schemas/concreteGraphic.js:133",
+      73.83000000000004
+    ],
+    [
+      "record grammar/hierarchy/partitionAdapter.js:10",
+      68.16300000000003
+    ],
+    [
+      "record grammar/hierarchy/partitionInterpolation.js:11",
+      67.46100000000004
+    ],
+    [
+      "validateConcreteGraphicValue grammar/schemas/concreteGraphic.js:38",
+      66.95500000000004
+    ],
+    [
+      "copy core/immutable.js:28",
+      64.13900000000005
+    ],
+    [
+      "validatePathCommands grammar/pathCommands.js:71",
+      62.499000000000024
+    ],
+    [
+      "resolvePathSubpaths grammar/pathTopology.js:90",
+      56.875000000000014
+    ],
+    [
+      "inverse grammar/hierarchy/partitionBend.js:39",
+      50.95200000000003
+    ],
+    [
+      "validatePartitionInterval grammar/hierarchy/partitionMapping.js:10",
+      44.99700000000006
+    ],
+    [
+      "commandShape grammar/pathTopology.js:81",
+      36.50200000000004
+    ],
+    [
+      "canvasSceneProgram renderers/canvasScene.js:101",
+      22.249000000000006
+    ],
+    [
+      "rejectUnknownProperties core/validation.js:129",
+      20.620000000000008
+    ],
+    [
+      "compile renderers/canvasScene.js:23",
+      19.874000000000006
+    ]
+  ],
+  "self": [
+    [
+      "ownDataProperties core/ownData.js:5",
+      593.1959999999996
+    ],
+    [
+      "freezeOwned core/immutable.js:12",
+      173.91299999999998
+    ],
+    [
+      "post node:inspector:118",
+      160
+    ],
+    [
+      "(garbage collector) :0",
+      149.45800000000006
+    ],
+    [
+      "cloneAndFreeze core/immutable.js:26",
+      72.38900000000008
+    ],
+    [
+      "copy core/immutable.js:28",
+      56.71900000000004
+    ],
+    [
+      "bendPartitionPoint grammar/hierarchy/partitionBend.js:8",
+      30.75100000000003
+    ],
+    [
+      "state grammar/hierarchy/partitionInterpolation.js:15",
+      28.96400000000005
+    ],
+    [
+      "partitionBendCellGeometry grammar/hierarchy/partitionCell.js:10",
+      26.255000000000035
+    ],
+    [
+      "mapPartitionBendPoint grammar/hierarchy/partitionAdapter.js:50",
+      26.248000000000022
+    ],
+    [
+      "ownArray core/ownData.js:23",
+      20.37700000000001
+    ],
+    [
+      "sampleNode animation/sample.js:78",
+      20.124000000000006
+    ],
+    [
+      "isPlainObject core/immutable.js:3",
+      19.790000000000003
+    ],
+    [
+      "(anonymous) core/validation.js:130",
+      17.287000000000003
+    ],
+    [
+      "sampleTransitionWithBudget animation/sample.js:33",
+      16.872000000000003
+    ],
+    [
+      "partitionAnimationPaint animation/partitionTracks.js:12",
+      15.835999999999999
+    ],
+    [
+      "commandShape grammar/pathTopology.js:81",
+      14.873
+    ],
+    [
+      "compile renderers/canvasScene.js:23",
+      12.958
+    ],
+    [
+      "insetPartitionBendCell grammar/hierarchy/partitionBend.js:31",
+      12.042
+    ],
+    [
+      "validatePathCommand grammar/pathTopology.js:38",
+      9.462
+    ],
+    [
+      "(anonymous) grammar/pathTopology.js:82",
+      8.625
+    ],
+    [
+      "resolvePathSubpaths grammar/pathTopology.js:90",
+      7.496000000000001
+    ],
+    [
+      "(anonymous) materialization/animation/partitionGeometry.js:20",
+      7.251999999999999
+    ],
+    [
+      "dense grammar/pathTopology.js:67",
+      7.207
+    ],
+    [
+      "isOwned core/immutable.js:22",
+      6.1259999999999994
+    ],
+    [
+      "(anonymous) grammar/hierarchy/partitionInterpolation.js:69",
+      5.999
+    ],
+    [
+      "indexIdentities grammar/animation/matching.js:6",
+      5.917
+    ],
+    [
+      "bounds materialization/animation/partitionGeometry.js:11",
+      5.875999999999999
+    ],
+    [
+      "validatePartitionInterval grammar/hierarchy/partitionMapping.js:10",
+      5.792
+    ],
+    [
+      "depth grammar/hierarchy/partitionBend.js:35",
+      5.622000000000001
+    ],
+    [
+      "record grammar/hierarchy/partitionAdapter.js:10",
+      5.499
+    ],
+    [
+      "validatePathCommands grammar/pathCommands.js:71",
+      5.457999999999999
+    ],
+    [
+      "validateConcreteGraphicProperties grammar/schemas/concreteGraphic.js:133",
+      5.292
+    ],
+    [
+      "partitionAnimationItemGeometry materialization/animation/partitionGeometry.js:22",
+      5.252999999999999
+    ],
+    [
+      "partitionRadius grammar/hierarchy/partitionMapping.js:27",
+      5.205000000000001
+    ],
+    [
+      "rejectUnknownProperties core/validation.js:129",
+      3.332999999999999
+    ],
+    [
+      "(anonymous) grammar/hierarchy/partitionCell.js:23",
+      3.2909999999999995
+    ],
+    [
+      "preparePartitionInterpolation grammar/hierarchy/partitionInterpolation.js:46",
+      3.2049999999999996
+    ],
+    [
+      "samplePartitionInterpolation grammar/hierarchy/partitionInterpolation.js:57",
+      3.1249999999999996
+    ],
+    [
+      "(anonymous) grammar/hierarchy/partitionInterpolation.js:13",
+      3.124
+    ]
+  ]
+}
