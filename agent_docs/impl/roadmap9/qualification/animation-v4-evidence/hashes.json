@@ -23,6 +23,7 @@
   "measure-package.mjs.txt": "afec4c6e0a0ad4d2dc32ddfacd857b6d81f020e34ed05b0fef7bdc5f2c59e11f",
   "owning-coverage.mjs.txt": "f8e406983f8fa9d6f63b110b0f9fffadec18191d75b71e2bbb943d8466b70e9d",
   "package.json": "f27471411e45b4967c4cfdd1e5cb3397387de2fc19fda9d390fcc692aa805257",
+  "pinned-docs.log.gz": "3f7c10d72aa928f5df32c76c44a7999d39494d747caf310c9d9c0cd97fd2c3e0",
   "pre-descriptor/product-100000-phased.json": "f30b31a95ef4f7ab51cea76b3f4dc9366b9ed2cb33ee72550f083f71bcc3eee2",
   "pre-descriptor/product-100000-phased.log": "29798802178b8f985969a4ac1b60d3bf2a63fa4fb11334be8f8f461f0c8a6357",
   "pre-descriptor/product-100000-phased.mjs.txt": "a66b729e22fbd579c322c761ab9c29a3702c5459b4439a8c5b7a665a3ee1082e",
@@ -35,5 +36,5 @@
   "product-partition-10000-phased.json": "7b90bd35c634a7147cceafad2abd926adf97249bb30e4cde8f48dc2b8fa7d054",
   "product-partition-10000-phased.log": "e07e3f52b80aa1c0b0db338a03766d283461097e2d94b587af2b22646551efe2",
   "product-partition-10000-phased.mjs.txt": "354272142da260205d362f19cdfefd6e33a64c558757c3b8c91ea9272cb5a699",
-  "qualification-inputs.json": "81c1de51d8a33070e0b19e3894192890ff46c1a6d9c08dc6b03df5d409d91aaa"
+  "qualification-inputs.json": "12ba1372e36efb29d229ad86a63fa349c1c3d98b49b323462c434380a2bc5851"
 }

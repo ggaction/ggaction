@@ -17,6 +17,9 @@ Private source checkpoint `f5423fc6877fb137b4af52d8e693d1f792a461de`, provenance
 현재 정확 API·limits·wire는 [Animation Current 계약](../../../contract/current/ANIMATION.md)이
 소유한다. 이 문서는 채택 근거·실측·검증 범위·미완료 성능 의무만 보존한다.
 
+제품 source checkpoint `b4585c221eca54ce567a30748aa5fd42a6286bde`를 commit/push했고,
+그 commit으로 provenance/machine/LLM을 pin한 뒤 docs243/243를 다시 통과했다.
+
 ## 공개 경계와 호환
 
 두 node 옵션이 own-absent면 기존 version3 경로와 work/오류 순서를 호출한다. 하나라도 명시하면
