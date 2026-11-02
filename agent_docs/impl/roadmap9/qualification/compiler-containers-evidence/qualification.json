@@ -1,0 +1,2513 @@
+{
+  "status": "compiler-completed-containers-verified; original50ms-and-final-closeout-pending",
+  "base": "fca3bddc5b25fd70028371c3f7336555a4a65cac",
+  "reviewRevision": "14f3daf7c586fcda9926569ff832e10a32703a2e",
+  "approval": "../compiler-containers-adoption.md",
+  "sourceSHA256": {
+    "src/renderers/canvasScene.js": "2256ac01ddaafd61ae7d69b7abedbb5c4039711bd697330d60f7e27cbb5b2cf2"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1261,
+    "packedBytes": 1815075,
+    "unpackedBytes": 8176200,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/.artifacts/compiler-containers/archives/ggaction-eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71.tgz",
+    "sha1": "341174919052ee2d4c074632a2685c9fb5e67a45",
+    "sha256": "eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71"
+  },
+  "archiveSources": {
+    "src/animation/columnCodec.js": {
+      "sourceSHA256": "968674bb4fb632026de774dc07dc2797f2c99454de4bb731fe404f60e1c2508b",
+      "packageSHA256": "968674bb4fb632026de774dc07dc2797f2c99454de4bb731fe404f60e1c2508b",
+      "canonicalCompaction": false
+    },
+    "src/animation/resources.js": {
+      "sourceSHA256": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+      "packageSHA256": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+      "canonicalCompaction": false
+    },
+    "src/animation/planner.js": {
+      "sourceSHA256": "e240a9aa415ae79def9716f8ad1f58792a20fd56575a30dcd36fdef97b2a46ac",
+      "packageSHA256": "e240a9aa415ae79def9716f8ad1f58792a20fd56575a30dcd36fdef97b2a46ac",
+      "canonicalCompaction": false
+    },
+    "src/animation/envelopeCodec.js": {
+      "sourceSHA256": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+      "packageSHA256": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+      "canonicalCompaction": false
+    },
+    "src/animation/sample.js": {
+      "sourceSHA256": "34f72d55de9f6e8da2aa020df68ece29dfabb73fbf0bf5bbac7bb5984c51df08",
+      "packageSHA256": "34f72d55de9f6e8da2aa020df68ece29dfabb73fbf0bf5bbac7bb5984c51df08",
+      "canonicalCompaction": false
+    },
+    "src/animation/frameEndpoint.js": {
+      "sourceSHA256": "618634cbbdc930d986fae7a9a129d54f106e338ca9094e57f71decad51f94b3d",
+      "packageSHA256": "618634cbbdc930d986fae7a9a129d54f106e338ca9094e57f71decad51f94b3d",
+      "canonicalCompaction": false
+    },
+    "src/animation/partitionTracks.js": {
+      "sourceSHA256": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+      "packageSHA256": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+      "canonicalCompaction": false
+    },
+    "src/materialization/animation/point.js": {
+      "sourceSHA256": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+      "packageSHA256": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+      "canonicalCompaction": false
+    },
+    "src/materialization/animation/guides.js": {
+      "sourceSHA256": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+      "packageSHA256": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+      "canonicalCompaction": false
+    },
+    "src/core/validation.js": {
+      "sourceSHA256": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+      "packageSHA256": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+      "canonicalCompaction": false
+    },
+    "src/selectors/graphicCapacity.js": {
+      "sourceSHA256": "80301d027d2887c620c83909a5db5aeb0546eac77397c7ba63c618ae139beceb",
+      "packageSHA256": "80301d027d2887c620c83909a5db5aeb0546eac77397c7ba63c618ae139beceb",
+      "canonicalCompaction": false
+    },
+    "src/grammar/animation/positions.js": {
+      "sourceSHA256": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+      "packageSHA256": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+      "canonicalCompaction": false
+    },
+    "src/grammar/scales/continuous.js": {
+      "sourceSHA256": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+      "packageSHA256": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+      "canonicalCompaction": false
+    },
+    "src/grammar/scales/transformed.js": {
+      "sourceSHA256": "608c235d7a236f86d536eb555c1405db8e814759ef6a1bcd0f5d7c037fb31312",
+      "packageSHA256": "b81967a641fc200f9534bf78d700edee80ab8aa4659dac383b40246ce64adbf4",
+      "canonicalCompaction": true
+    },
+    "src/grammar/scales/mapping.js": {
+      "sourceSHA256": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+      "packageSHA256": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+      "canonicalCompaction": false
+    },
+    "src/animation/appearance.js": {
+      "sourceSHA256": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+      "packageSHA256": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+      "canonicalCompaction": false
+    },
+    "src/renderers/canvasScene.js": {
+      "sourceSHA256": "2256ac01ddaafd61ae7d69b7abedbb5c4039711bd697330d60f7e27cbb5b2cf2",
+      "packageSHA256": "2256ac01ddaafd61ae7d69b7abedbb5c4039711bd697330d60f7e27cbb5b2cf2",
+      "canonicalCompaction": false
+    },
+    "src/animation/endpoints.js": {
+      "sourceSHA256": "4152afb99633d3fe3e3f7cd65c6a5b9b02dfdd0e036a7b10c2dad40c1b2236b2",
+      "packageSHA256": "4152afb99633d3fe3e3f7cd65c6a5b9b02dfdd0e036a7b10c2dad40c1b2236b2",
+      "canonicalCompaction": false
+    },
+    "types/animation.d.ts": {
+      "sourceSHA256": "264f37f74af70f162fce1486d18a4b95cae19d1f0337c360b9936c2955a90e98",
+      "packageSHA256": "264f37f74af70f162fce1486d18a4b95cae19d1f0337c360b9936c2955a90e98",
+      "canonicalCompaction": false
+    }
+  },
+  "checks": {
+    "coverage": 1344,
+    "boundaries-final": 13,
+    "render": 52
+  },
+  "critical": {
+    "renderers/canvasScene.js": {
+      "actual": {
+        "lines": 99.07,
+        "branches": 97.7,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    }
+  },
+  "comparison": {
+    "kind": "actual product fca3bddc5 versus adopted compiler local container product; counters are diagnostic, not SLO",
+    "node": "v22.23.1",
+    "variant": "product",
+    "scaleType": "linear",
+    "rows": 1000,
+    "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+    "savedInputSHA256": "82d4bac72bd9ec70ea6e942d2748866dfbf931019d8a3bb228bd3449914f50a8",
+    "source": {
+      "src/animation/sample.js": "34f72d55de9f6e8da2aa020df68ece29dfabb73fbf0bf5bbac7bb5984c51df08",
+      "src/renderers/canvasScene.js": "2256ac01ddaafd61ae7d69b7abedbb5c4039711bd697330d60f7e27cbb5b2cf2"
+    },
+    "comparisons": {
+      "3": {
+        "nativeBytes": [
+          1822845,
+          1822845
+        ],
+        "nativeSHA256": [
+          "e99b24f2d2970faf9f07580ada7d5adc70a26aad68633c00fcc8f7709355141d",
+          "e99b24f2d2970faf9f07580ada7d5adc70a26aad68633c00fcc8f7709355141d"
+        ],
+        "rebaseBytes": [
+          2381600,
+          2381600
+        ],
+        "rebaseSHA256": [
+          "a480b209857c207a9e4cb5733848a3f78c202fda78edfee2698dd97f07ea5374",
+          "a480b209857c207a9e4cb5733848a3f78c202fda78edfee2698dd97f07ea5374"
+        ],
+        "counts": [
+          {
+            "clones": 31,
+            "ownedAdds": 6044,
+            "weakAdds": 6076,
+            "weakHas": 17145,
+            "weakSources": {
+              "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/geoTracks.js": 2,
+              "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+              "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/sample.js": 2000,
+              "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/sample.js": 1008,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/geoFrames.js": 6,
+              "    at compile (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/renderers/canvasScene.js": 1001,
+              "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/renderers/canvasScene.js": 14,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/graphTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+              "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/frameEndpoint.js": 4,
+              "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/endpoints.js": 3,
+              "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/frameProvenance.js": 6
+            }
+          },
+          {
+            "clones": 26,
+            "ownedAdds": 6044,
+            "weakAdds": 6071,
+            "weakHas": 16136,
+            "weakSources": {
+              "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/geoTracks.js": 2,
+              "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+              "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/sample.js": 2000,
+              "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/sample.js": 1008,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/geoFrames.js": 6,
+              "    at compile (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/renderers/canvasScene.js": 1010,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/graphTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+              "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/frameEndpoint.js": 4,
+              "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/endpoints.js": 3,
+              "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/frameProvenance.js": 6
+            }
+          }
+        ],
+        "work": {
+          "Animation preparation work": 771686
+        },
+        "rebaseWork": {
+          "Animation preparation work": 451681
+        },
+        "mixedGeoFullFrameAndMeaningEqual": true,
+        "fullNativeOfflineMeaningBatchRebaseEqual": true,
+        "timelineAndTimelineRebaseFullMeaningEqual": true,
+        "fallbackFullMeaningEqual": true,
+        "restoreReserializeExact": true
+      },
+      "4": {
+        "nativeBytes": [
+          345803,
+          345803
+        ],
+        "nativeSHA256": [
+          "42aaf7c4811ca4e619df304689300fcd9a34f85666a4483f7743d9dde74b6a21",
+          "42aaf7c4811ca4e619df304689300fcd9a34f85666a4483f7743d9dde74b6a21"
+        ],
+        "rebaseBytes": [
+          422310,
+          422310
+        ],
+        "rebaseSHA256": [
+          "2933ce271377b37828ad8b28aeddfcd726d888f2c52b9687ce48dd6f02d765ed",
+          "2933ce271377b37828ad8b28aeddfcd726d888f2c52b9687ce48dd6f02d765ed"
+        ],
+        "counts": [
+          {
+            "clones": 31,
+            "ownedAdds": 6044,
+            "weakAdds": 6076,
+            "weakHas": 17145,
+            "weakSources": {
+              "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/geoTracks.js": 2,
+              "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+              "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/sample.js": 2000,
+              "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/sample.js": 1008,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/geoFrames.js": 6,
+              "    at compile (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/renderers/canvasScene.js": 1001,
+              "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/renderers/canvasScene.js": 14,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/graphTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+              "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/frameEndpoint.js": 4,
+              "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/endpoints.js": 3,
+              "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/frameProvenance.js": 6
+            }
+          },
+          {
+            "clones": 26,
+            "ownedAdds": 6044,
+            "weakAdds": 6071,
+            "weakHas": 16136,
+            "weakSources": {
+              "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/geoTracks.js": 2,
+              "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+              "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/sample.js": 2000,
+              "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/sample.js": 1008,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/geoFrames.js": 6,
+              "    at compile (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/renderers/canvasScene.js": 1010,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/graphTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+              "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/frameEndpoint.js": 4,
+              "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/endpoints.js": 3,
+              "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/src/animation/frameProvenance.js": 6
+            }
+          }
+        ],
+        "work": {
+          "Animation preparation work": 771686
+        },
+        "rebaseWork": {
+          "Animation preparation work": 451681
+        },
+        "mixedGeoFullFrameAndMeaningEqual": true,
+        "fullNativeOfflineMeaningBatchRebaseEqual": true,
+        "timelineAndTimelineRebaseFullMeaningEqual": true,
+        "fallbackFullMeaningEqual": true,
+        "restoreReserializeExact": true
+      }
+    }
+  },
+  "large": {
+    "kind": "Public version4 actual API path, phased plan lifetimes; no instrumentation; not SLO/P95",
+    "node": "v24.22.1",
+    "pid": 80923,
+    "execArgv": [
+      "--expose-gc",
+      "--max-old-space-size=6144"
+    ],
+    "n": 100000,
+    "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+    "phases": {
+      "prepare": {
+        "ms": 15284.347582999999,
+        "accounting": {
+          "native": true,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 78333686
+          }
+        },
+        "columns": {
+          "logicalValues": 7600057,
+          "descriptorVisits": 7600056,
+          "cellVisits": 7600004,
+          "interningWork": 93556546,
+          "internNodes": 208,
+          "uniqueLowerBound": {
+            "physicalValues": 600110,
+            "encodedValues": 600258,
+            "bytes": 33650049
+          },
+          "physicalValues": 604540,
+          "encodedValues": 608452,
+          "bytes": 33703134,
+          "validatedLogicalValues": 7600057
+        }
+      },
+      "sample": {
+        "ms": 872.5583330000009,
+        "timing": "pure sample after explicit post-prepare GC; not P95/SLO",
+        "coordinateOracleMs": 8.783583000000363
+      },
+      "offline": {
+        "ms": 26959.328917000003,
+        "bytes": 33703073,
+        "sha256": "aea452166337aba0e1a352a0c6374a2d54cf60864ebfc50abbb60320d4808366",
+        "accounting": {
+          "native": false,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 97911711
+          }
+        },
+        "decodedPayload": {
+          "physicalValues": 604516,
+          "bytes": 23180528,
+          "estimatedEncodedValues": 608406,
+          "estimatedEncodedBytes": 33702922
+        },
+        "encodedEnvelope": {
+          "physicalValues": 608411,
+          "bytes": 33703073
+        }
+      },
+      "rebase": {
+        "ms": 17836.242916999996,
+        "accounting": {
+          "native": true,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 46333687
+          }
+        },
+        "columns": {
+          "logicalValues": 10100086,
+          "descriptorVisits": 9300070,
+          "cellVisits": 9300023,
+          "interningWork": 119734738,
+          "internNodes": 270,
+          "uniqueLowerBound": {
+            "physicalValues": 800160,
+            "encodedValues": 800371,
+            "bytes": 41146770
+          },
+          "physicalValues": 804781,
+          "encodedValues": 809068,
+          "bytes": 41202411,
+          "validatedLogicalValues": 10100086
+        }
+      },
+      "rebaseOffline": {
+        "ms": 36346.837917,
+        "bytes": 41202280,
+        "sha256": "0ccc23bd2d21ade280446164b54afff1a00cbe06e8885f949e110dc2906c616a",
+        "accounting": {
+          "native": false,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 133456501
+          }
+        },
+        "decodedPayload": {
+          "physicalValues": 804751,
+          "bytes": 29781479,
+          "estimatedEncodedValues": 809008,
+          "estimatedEncodedBytes": 41202129
+        },
+        "encodedEnvelope": {
+          "physicalValues": 809013,
+          "bytes": 41202280
+        }
+      }
+    },
+    "lifetime": [
+      {
+        "stage": "native-plan-released",
+        "memory": {
+          "rss": 1573814272,
+          "heapTotal": 945160192,
+          "heapUsed": 536883952,
+          "external": 36098946,
+          "arrayBuffers": 148495
+        }
+      },
+      {
+        "stage": "native-offline-plan-released",
+        "memory": {
+          "rss": 1861419008,
+          "heapTotal": 990773248,
+          "heapUsed": 678699064,
+          "external": 36129095,
+          "arrayBuffers": 148495
+        }
+      },
+      {
+        "stage": "rebase-plan-and-source-frame-released",
+        "memory": {
+          "rss": 1833811968,
+          "heapTotal": 1023950848,
+          "heapUsed": 686253720,
+          "external": 43628302,
+          "arrayBuffers": 148495
+        }
+      },
+      {
+        "stage": "all-native-offline-rebase-exact",
+        "memory": {
+          "rss": 1974910976,
+          "heapTotal": 989872128,
+          "heapUsed": 686323560,
+          "external": 43626965,
+          "arrayBuffers": 148495
+        }
+      }
+    ],
+    "allCoordinatesVerified": 100000,
+    "batch50Rejected": true,
+    "stage": "all-native-offline-rebase-exact",
+    "allRebaseCoordinatesVerified": 100000,
+    "rebaseEncoding": {
+      "previousBytes": 41204160,
+      "actualBytes": 41202280,
+      "losslessRepresentationChangeAllowed": true
+    },
+    "sourceSHA256": {
+      "src/animation/columnCodec.js": "968674bb4fb632026de774dc07dc2797f2c99454de4bb731fe404f60e1c2508b",
+      "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+      "src/animation/planner.js": "e240a9aa415ae79def9716f8ad1f58792a20fd56575a30dcd36fdef97b2a46ac",
+      "src/animation/envelopeCodec.js": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+      "src/animation/sample.js": "34f72d55de9f6e8da2aa020df68ece29dfabb73fbf0bf5bbac7bb5984c51df08",
+      "src/animation/frameEndpoint.js": "618634cbbdc930d986fae7a9a129d54f106e338ca9094e57f71decad51f94b3d",
+      "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+      "src/materialization/animation/point.js": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+      "src/materialization/animation/guides.js": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+      "src/core/validation.js": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+      "src/selectors/graphicCapacity.js": "80301d027d2887c620c83909a5db5aeb0546eac77397c7ba63c618ae139beceb",
+      "src/grammar/animation/positions.js": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+      "src/grammar/scales/continuous.js": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+      "src/grammar/scales/transformed.js": "608c235d7a236f86d536eb555c1405db8e814759ef6a1bcd0f5d7c037fb31312",
+      "src/grammar/scales/mapping.js": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+      "src/animation/appearance.js": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+      "src/renderers/canvasScene.js": "2256ac01ddaafd61ae7d69b7abedbb5c4039711bd697330d60f7e27cbb5b2cf2",
+      "src/animation/endpoints.js": "4152afb99633d3fe3e3f7cd65c6a5b9b02dfdd0e036a7b10c2dad40c1b2236b2",
+      "types/animation.d.ts": "264f37f74af70f162fce1486d18a4b95cae19d1f0337c360b9936c2955a90e98"
+    }
+  },
+  "boundary": {
+    "node": "v22.23.1",
+    "results": [
+      {
+        "variant": "baseline",
+        "boundary": {
+          "allSevenCompilerTypes": true,
+          "mutableUpdateInvalidates": true,
+          "callerUnownedUnfrozen": true,
+          "ownedExactPropertiesReuse": true,
+          "translatedPropertiesCopied": true,
+          "allOutputDescendantsOwned": true,
+          "getterReads": 0,
+          "errors": {
+            "getter": {
+              "name": "TypeError",
+              "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+            },
+            "duplicate": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "badClip": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "badOffset": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "functionThenBadNode": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "functionOnly": {
+              "name": "TypeError",
+              "message": "Cannot store a function at state.graphicSpec.objects.node-1.properties.extra in a ChartProgram."
+            },
+            "cycle": {
+              "name": "TypeError",
+              "message": "Converting circular structure to JSON\n    --> starting at object with constructor 'Object'\n    --- property 'self' closes the circle"
+            },
+            "badVersion": {
+              "name": "TypeError",
+              "message": "renderTransitionScene requires a version 2 Canvas scene."
+            },
+            "shallowFrozenGetter": {
+              "name": "TypeError",
+              "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+            }
+          },
+          "mutableJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+          "ownedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+          "translatedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":2,\"y\":3,\"width\":90,\"height\":70},\"children\":[\"clip-1\"]},\"clip-1\":{\"type\":\"canvas\",\"properties\":{\"x\":3,\"y\":4,\"width\":80,\"height\":60},\"children\":[\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\",\"node-8\"]},\"node-2\":{\"type\":\"circle\",\"properties\":{\"x\":5,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-3\":{\"type\":\"rect\",\"properties\":{\"x\":6,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-4\":{\"type\":\"line\",\"properties\":{\"x\":7,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-5\":{\"type\":\"path\",\"properties\":{\"x\":8,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-6\":{\"type\":\"text\",\"properties\":{\"x\":9,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-7\":{\"type\":\"image\",\"properties\":{\"x\":10,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-8\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":11,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}}},\"order\":[\"canvas\"]}}",
+          "partialJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}"
+        },
+        "lifetime": {
+          "cycles": 5,
+          "retained": "plan and current frame",
+          "oldObjectsAlive": {
+            "frame": false,
+            "scene": false,
+            "graphicSpec": false,
+            "decisions": false,
+            "decision": false,
+            "node": false,
+            "properties": false,
+            "wrapper": false
+          },
+          "notHundredCycleQualification": true
+        }
+      },
+      {
+        "variant": "product",
+        "boundary": {
+          "allSevenCompilerTypes": true,
+          "mutableUpdateInvalidates": true,
+          "callerUnownedUnfrozen": true,
+          "ownedExactPropertiesReuse": true,
+          "translatedPropertiesCopied": true,
+          "allOutputDescendantsOwned": true,
+          "getterReads": 0,
+          "errors": {
+            "getter": {
+              "name": "TypeError",
+              "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+            },
+            "duplicate": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "badClip": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "badOffset": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "functionThenBadNode": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "functionOnly": {
+              "name": "TypeError",
+              "message": "Cannot store a function at state.graphicSpec.objects.node-1.properties.extra in a ChartProgram."
+            },
+            "cycle": {
+              "name": "TypeError",
+              "message": "Converting circular structure to JSON\n    --> starting at object with constructor 'Object'\n    --- property 'self' closes the circle"
+            },
+            "badVersion": {
+              "name": "TypeError",
+              "message": "renderTransitionScene requires a version 2 Canvas scene."
+            },
+            "shallowFrozenGetter": {
+              "name": "TypeError",
+              "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+            }
+          },
+          "mutableJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+          "ownedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+          "translatedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":2,\"y\":3,\"width\":90,\"height\":70},\"children\":[\"clip-1\"]},\"clip-1\":{\"type\":\"canvas\",\"properties\":{\"x\":3,\"y\":4,\"width\":80,\"height\":60},\"children\":[\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\",\"node-8\"]},\"node-2\":{\"type\":\"circle\",\"properties\":{\"x\":5,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-3\":{\"type\":\"rect\",\"properties\":{\"x\":6,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-4\":{\"type\":\"line\",\"properties\":{\"x\":7,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-5\":{\"type\":\"path\",\"properties\":{\"x\":8,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-6\":{\"type\":\"text\",\"properties\":{\"x\":9,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-7\":{\"type\":\"image\",\"properties\":{\"x\":10,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-8\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":11,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}}},\"order\":[\"canvas\"]}}",
+          "partialJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}"
+        },
+        "lifetime": {
+          "cycles": 5,
+          "retained": "plan and current frame",
+          "oldObjectsAlive": {
+            "frame": false,
+            "scene": false,
+            "graphicSpec": false,
+            "decisions": false,
+            "decision": false,
+            "node": false,
+            "properties": false,
+            "wrapper": false
+          },
+          "notHundredCycleQualification": true
+        }
+      }
+    ]
+  },
+  "consumers": [
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1261,
+        "packedBytes": 1815075,
+        "unpackedBytes": 8176200,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/.artifacts/compiler-containers/archives/ggaction-eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71.tgz",
+        "sha1": "341174919052ee2d4c074632a2685c9fb5e67a45",
+        "sha256": "eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71"
+      },
+      "node": "v20.20.2",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-numeric-format",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 788878,
+          "limit": 788900,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 426250,
+          "limit": 426300,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25672,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69522,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 343586,
+          "limit": 343600,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137641,
+          "limit": 137700,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1261,
+        "packedBytes": 1815075,
+        "unpackedBytes": 8176200,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/.artifacts/compiler-containers/archives/ggaction-eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71.tgz",
+        "sha1": "341174919052ee2d4c074632a2685c9fb5e67a45",
+        "sha256": "eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71"
+      },
+      "node": "v22.23.1",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-numeric-format",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 787457,
+          "limit": 788900,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 425209,
+          "limit": 426300,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25558,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69356,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 342408,
+          "limit": 343600,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137116,
+          "limit": 137700,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1261,
+        "packedBytes": 1815075,
+        "unpackedBytes": 8176200,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/.artifacts/compiler-containers/archives/ggaction-eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71.tgz",
+        "sha1": "341174919052ee2d4c074632a2685c9fb5e67a45",
+        "sha256": "eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71"
+      },
+      "node": "v24.22.1",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-numeric-format",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 788878,
+          "limit": 788900,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 426250,
+          "limit": 426300,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25672,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69522,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 343586,
+          "limit": 343600,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137641,
+          "limit": 137700,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    }
+  ],
+  "browser": {
+    "archiveSHA256": "eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71",
+    "sourceRootInputs": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "versions": [
+      3,
+      4
+    ],
+    "status": "passed"
+  },
+  "packs": [
+    {
+      "node": 20,
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1261,
+      "packedBytes": 1818620,
+      "unpackedBytes": 8176200,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+      "sha1": "fa8f804693fc72df065ab1c0413fd1c27f5ad2d6",
+      "sha256": "2f44bec8c7ef44a37dccc7c4bbf7cefb08834241848d882abbb989c88f3b8cea"
+    },
+    {
+      "node": 22,
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1261,
+      "packedBytes": 1815075,
+      "unpackedBytes": 8176200,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+      "sha1": "341174919052ee2d4c074632a2685c9fb5e67a45",
+      "sha256": "eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71"
+    },
+    {
+      "node": 24,
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1261,
+      "packedBytes": 1818620,
+      "unpackedBytes": 8176200,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-compiler-containers/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+      "sha1": "fa8f804693fc72df065ab1c0413fd1c27f5ad2d6",
+      "sha256": "2f44bec8c7ef44a37dccc7c4bbf7cefb08834241848d882abbb989c88f3b8cea"
+    }
+  ],
+  "failuresPreserved": [
+    {
+      "file": "pack-first.stderr",
+      "reason": "Unpacked8176200 exceeds8175700; exact measured8176200"
+    },
+    {
+      "file": "pack20-first.stderr",
+      "reason": "Node20 packed1818620 exceeds1818500; minimum100-byte ceiling1818700"
+    },
+    {
+      "file": "consumer20-first.json",
+      "reason": "Runtime/types/docs/peers pass; interaction137641 exceeds137600; minimum100-byte ceiling137700"
+    },
+    {
+      "file": "boundaries-selector-failure.log",
+      "reason": "Wrong suite and path selector; corrected contracts suite passed13"
+    },
+    {
+      "file": "boundaries-selector-second-failure.log",
+      "reason": "Wrong unit suite; corrected contracts suite passed13"
+    }
+  ],
+  "limitations": [
+    "Original100k single functional sample after post-prepare GC; not speedup/P95/SLO",
+    "8 old references per variant gone after5GC is small retention evidence, not100cycle qualification",
+    "Public API/types/schema/cache/authority unchanged; includes Geo5 base but no batch representation adoption"
+  ],
+  "evidenceFiles": {
+    "boundaries-final.log": {
+      "sha256": "d1624980d275cae110d367b2d8b20fcae8082beff9f3d6708cc3ca23c7f22dcf",
+      "bytes": 2776
+    },
+    "boundaries-selector-failure.log": {
+      "sha256": "75e03ad9c9e270da292fbe6601ccffdbb368b08987c3659265fe172b075c2697",
+      "bytes": 594
+    },
+    "boundaries-selector-second-failure.log": {
+      "sha256": "094c8cd779f983cf959892446c0b6bb32a5967e31b6878bcceef6e645fa8f301",
+      "bytes": 594
+    },
+    "boundaries.log": {
+      "sha256": "88a1c0ba9693e3d29ecb25b798178a1903611b3fe29d6e6763ca7e5131249371",
+      "bytes": 2772
+    },
+    "boundary-lifetime.json": {
+      "sha256": "66856b45f34e6e11c53808d6cadb84802c0fa42fce426653113a7c762e8fa101",
+      "bytes": 18757
+    },
+    "boundary-lifetime.log": {
+      "sha256": "6551a47a6926adca0ea51c79606abcf28658aeba5544b2bf2e6f5429be53a7bc",
+      "bytes": 17153
+    },
+    "boundary-lifetime.mjs": {
+      "sha256": "9e04705943740419dfa8066a1292d3a3e7d69609a18d5531020aff694ce89ccb",
+      "bytes": 6256
+    },
+    "browser-installed.json": {
+      "sha256": "8f5ab25a60d17cd94bacbf691a1b887e5cfc3461f168478a4d8650116229feef",
+      "bytes": 200
+    },
+    "browser-installed.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "browser-installed.mjs": {
+      "sha256": "ea187e67718f4fe7c29f24e7fe01691c6712d4a104aba0c6e0b50fcecd468f60",
+      "bytes": 838
+    },
+    "consumer20-first.json": {
+      "sha256": "66471994b79222032ecba5cf37a358e91b34baa789059ba7b71d56cb97b253fe",
+      "bytes": 2318
+    },
+    "consumer20-first.log": {
+      "sha256": "b9ce51d50943d891b58110663353b58801c5e7a3e336b52ebb12ca34fbc21bb3",
+      "bytes": 2212
+    },
+    "consumer20.json": {
+      "sha256": "abe799c10052e1d5c14c3c6da108cda47a82f52b59f987fc1c366fab1d6a8ef7",
+      "bytes": 2303
+    },
+    "consumer20.log": {
+      "sha256": "c4fc1c181351e2677c2aeae6f3139439c7073a8fbd7c867f0e26f3a587fd00e1",
+      "bytes": 1700
+    },
+    "consumer22.json": {
+      "sha256": "e7be3167f0173c1c7c46b32ef97398dd2919389040ff16966ded4016f5a11fe1",
+      "bytes": 2303
+    },
+    "consumer22.log": {
+      "sha256": "d29f8d05c7caf8871f7b18d26a9e109d5e5a5d10ce1c225b77f302ea00da639f",
+      "bytes": 1700
+    },
+    "consumer24.json": {
+      "sha256": "91df2f9bb06daf81db22e9ff48b663754ce43fa4f213dec78122dd2d3ce6a919",
+      "bytes": 2303
+    },
+    "consumer24.log": {
+      "sha256": "a4b8571ad924ec772d30b410bba8c4b90525aa07be2941ce021b1a62220f395c",
+      "bytes": 1700
+    },
+    "coverage.log": {
+      "sha256": "4d8b94cc3e55a9f6ad553da146aecacbbcb3f1b1265a36e5afdd9860d77ec893",
+      "bytes": 320464
+    },
+    "final-pack20.json": {
+      "sha256": "62433ac6d6f08f63f73462bfef119f39a24fce6c09233c4f0e6d252a818bd6ab",
+      "bytes": 427
+    },
+    "final-pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "final-pack22.json": {
+      "sha256": "f833cf50316b5f6df57fa0fbb3262fa0c67e52f3a510ed96e1b77fb52273fbf2",
+      "bytes": 427
+    },
+    "final-pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "final-pack24.json": {
+      "sha256": "62433ac6d6f08f63f73462bfef119f39a24fce6c09233c4f0e6d252a818bd6ab",
+      "bytes": 427
+    },
+    "final-pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "frozen.json": {
+      "sha256": "651fc6c5fe06b3f3bfa3f9a519cc90884ea1e9edfc2aad916420b57592757631",
+      "bytes": 506
+    },
+    "owning-coverage.mjs": {
+      "sha256": "97dfe82ddc901ee141119aa0520673e4b082375bf31b45fcade21a8a14a93ec7",
+      "bytes": 541
+    },
+    "pack-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack-first.stderr": {
+      "sha256": "ee88bc61816888fbcc95966154cfe60b6ad7ce7dcfef64a7ed75d3cba984b96e",
+      "bytes": 873
+    },
+    "pack20-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack20-first.stderr": {
+      "sha256": "3ebcd58011ef9b2eb2341b26143a83bebbedc132f10d84c6df3ffbe372776cf9",
+      "bytes": 948
+    },
+    "pack22.json": {
+      "sha256": "f833cf50316b5f6df57fa0fbb3262fa0c67e52f3a510ed96e1b77fb52273fbf2",
+      "bytes": 427
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "product-100000-phased.json": {
+      "sha256": "ca619fe00ed7a432a86772bea1f055619d5d4b8f1a76ae32215de25af4fdf281",
+      "bytes": 6692
+    },
+    "product-100000-phased.log": {
+      "sha256": "47c29ca338df6e367bb602e34c73afb7e1ac8b9b4bfda22a80d548e85e0a4011",
+      "bytes": 5296
+    },
+    "product-100000-phased.mjs": {
+      "sha256": "61c5982b972e6a74c5b63ef2fb9fda3bc28333f454e5c0103bd6e1ff674435e6",
+      "bytes": 6313
+    },
+    "product-compare-product-linear.json": {
+      "sha256": "ee0a031996e49c91c6f62d802042bd6c3305cf16bd19c5461580a2e3a799a2dd",
+      "bytes": 11871
+    },
+    "product-compare.mjs": {
+      "sha256": "85f562697cbfb2ec968b2ad8e435f638f1539f1da1d66146e1e17441c395fad6",
+      "bytes": 9337
+    },
+    "product-linear.log": {
+      "sha256": "4304d8aac525cfc15ca9f70f9eea5d852223fc7712d4007cfaa2400ec47fa73f",
+      "bytes": 10208
+    },
+    "product-observer.mjs": {
+      "sha256": "93c5c332998f28d702dd25aa47cec574cfb67f75cefd0f5b24efc5cf43f816c3",
+      "bytes": 1344
+    },
+    "record.mjs": {
+      "sha256": "4b2fce77b0fc4d0ef86d5f8939910c9e0764c20baaacdf757524883d61bf23f4",
+      "bytes": 6073
+    },
+    "render.log": {
+      "sha256": "63b88f8c52baf2a888e5d5ec76cc47d9506f1e8f9bfbb0948d23828fdfe67eb5",
+      "bytes": 12481
+    },
+    "pin-provenance.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pin-machine.log": {
+      "sha256": "9d5f37929938983723667923bfd7c6f1802a50c4a0eddfbfd32ef30557b54d25",
+      "bytes": 45
+    },
+    "pin-llm.log": {
+      "sha256": "4b6bcf79b8d7c80c0d7976c40af2ecc0457b5792bd114ba0e84d609c15ec6eea",
+      "bytes": 73
+    },
+    "pin-docs.log": {
+      "sha256": "73106462edbc2689b53bf69c1bd80089659c16411dd8d05baa055dc9e858178e",
+      "bytes": 4233
+    },
+    "pin-pack.json": {
+      "sha256": "f833cf50316b5f6df57fa0fbb3262fa0c67e52f3a510ed96e1b77fb52273fbf2",
+      "bytes": 427
+    },
+    "pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "sourceRevision": "ab8cb89b2a753fda5e819983db47d7376a97f39e",
+  "sourcePin": {
+    "sourceCommit": "ab8cb89b2a753fda5e819983db47d7376a97f39e",
+    "provenance": {
+      "schemaVersion": 1,
+      "status": "development",
+      "packageVersion": "0.0.26",
+      "contractId": "sha256:74348116ae692efc503e09fbc17b9a823e544bd89cfc4a134073b35de9f045bf",
+      "sourceCommit": "ab8cb89b2a753fda5e819983db47d7376a97f39e",
+      "sourceRef": "ab8cb89b2a753fda5e819983db47d7376a97f39e",
+      "exampleSourceRef": "64045b214475110de9621328bbe7d060c9149f04",
+      "baseline": {
+        "tag": "v0.0.13",
+        "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
+        "actionCount": 234
+      },
+      "actionCount": 379,
+      "actionAvailability": {
+        "createCanvas": {
+          "availableBy": "v0.0.13"
+        },
+        "editCanvas": {
+          "availableBy": "v0.0.13"
+        },
+        "fitCanvas": {
+          "availableBy": "v0.0.13"
+        },
+        "applyTextMetrics": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeTextMetrics": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "applyTheme": {
+          "availableBy": "v0.0.13"
+        },
+        "removeTheme": {
+          "availableBy": "v0.0.13"
+        },
+        "createData": {
+          "availableBy": "v0.0.13"
+        },
+        "applyDataUpdate": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "reviseData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeResource": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeCoordinate": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "bindMarkData": {
+          "availableBy": "v0.0.13"
+        },
+        "filterData": {
+          "availableBy": "v0.0.13"
+        },
+        "filterMarks": {
+          "availableBy": "v0.0.13"
+        },
+        "removeMarkFilter": {
+          "availableBy": "v0.0.13"
+        },
+        "setMarkVisibility": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeMarkVisibility": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "selectMarks": {
+          "availableBy": "v0.0.13"
+        },
+        "editMarkSelection": {
+          "availableBy": "v0.0.13"
+        },
+        "removeMarkHighlight": {
+          "availableBy": "v0.0.13"
+        },
+        "removeMarkSelection": {
+          "availableBy": "v0.0.13"
+        },
+        "highlightMarks": {
+          "availableBy": "v0.0.13"
+        },
+        "createDensityData": {
+          "availableBy": "v0.0.13"
+        },
+        "createSummaryData": {
+          "availableBy": "v0.0.13"
+        },
+        "createBinData": {
+          "availableBy": "v0.0.13"
+        },
+        "createFlattenData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createLookupData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createPivotData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createFoldData": {
+          "availableBy": "v0.0.13"
+        },
+        "createImageResource": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "replaceImageResource": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createFontResource": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "replaceFontResource": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createImageMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editImageMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createHierarchyData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editHierarchyData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "layoutHierarchy": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editLayout": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createTreePlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGraphPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGraphPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "bundleGraphEdges": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editEdgeRoute": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editTreePlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createPartitionPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editPartitionPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createTreemapPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editTreemapPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createParameter": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createCalendarLayout": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createTablePlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editTablePlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createTrailPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editTrailPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createWaterfallPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editWaterfallPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createOHLCPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editOHLCPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createPyramidPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editPyramidPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createCalendarPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editCalendarPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeometryData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createProjection": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editProjection": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "navigateProjection": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeometryData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeoLODData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeoLODData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeoRouteData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeoRouteData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeoJoinData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeoJoinData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createContourData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createDensityContourData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editContourData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeoShapeMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeoShapeMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeoPointMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeoPointMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeoLineMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeoLineMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGraticule": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGraticule": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGeoAnnotation": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGeoAnnotation": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createContourMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editContourMark": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createFlowData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editFlowData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "layoutFlow": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createFlowNodes": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editFlowNodes": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createFlowLinks": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editFlowLinks": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createGraphData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createInferredGraphData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editInferredGraphData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editGraphData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "layoutGraph": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editParameter": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeParameter": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createComputedData": {
+          "availableBy": "v0.0.13"
+        },
+        "createNormalizedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createCompleteData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createImputedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createStackData": {
+          "availableBy": "v0.0.13"
+        },
+        "createRegressionData": {
+          "availableBy": "v0.0.13"
+        },
+        "createRegressionStatisticsData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editRegressionStatisticsData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createIntervalData": {
+          "availableBy": "v0.0.13"
+        },
+        "createECDFData": {
+          "availableBy": "v0.0.13"
+        },
+        "createTimeUnitData": {
+          "availableBy": "v0.0.13"
+        },
+        "createWindowData": {
+          "availableBy": "v0.0.13"
+        },
+        "createBin2DData": {
+          "availableBy": "v0.0.13"
+        },
+        "createSortedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editDerivedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editComputedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editFilteredData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editFlattenData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editLookupData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editPivotData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editFoldData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editSummaryData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editBinData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editTimeUnitData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editWindowData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editDensityData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editStackData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editRegressionData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editSortedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editIntervalData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editECDFData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editNormalizedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editCompleteData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editImputedData": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editBin2DData": {
+          "availableBy": "v0.0.13"
+        },
+        "createPointMark": {
+          "availableBy": "v0.0.13"
+        },
+        "editPointMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createTickMark": {
+          "availableBy": "v0.0.13"
+        },
+        "editTickMark": {
+          "availableBy": "v0.0.13"
+        },
+        "jitterPoints": {
+          "availableBy": "v0.0.13"
+        },
+        "removeJitter": {
+          "availableBy": "v0.0.13"
+        },
+        "packPoints": {
+          "availableBy": "v0.0.13"
+        },
+        "removePointPacking": {
+          "availableBy": "v0.0.13"
+        },
+        "createLineMark": {
+          "availableBy": "v0.0.13"
+        },
+        "editLineMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createBarMark": {
+          "availableBy": "v0.0.13"
+        },
+        "editBarMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createAreaMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createArcMark": {
+          "availableBy": "v0.0.13"
+        },
+        "editArcMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createRectMark": {
+          "availableBy": "v0.0.13"
+        },
+        "editRectMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createRuleMark": {
+          "availableBy": "v0.0.13"
+        },
+        "editRuleMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createTextMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createTextPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createMarkLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editMarkLabelSelection": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editMarkLabelPlacement": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "removeMarkLabels": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createAnnotation": {
+          "availableBy": "v0.0.13"
+        },
+        "editAnnotation": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createStatisticalReference": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createOverlay": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createLayerPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createAdjacentPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editCompositionScales": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editOverlay": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createReferenceLine": {
+          "availableBy": "v0.0.13"
+        },
+        "createReferenceBand": {
+          "availableBy": "v0.0.13"
+        },
+        "editTextMark": {
+          "availableBy": "v0.0.13"
+        },
+        "layoutLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "removeLabelLayout": {
+          "availableBy": "v0.0.13"
+        },
+        "editAreaMark": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeX": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeY": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeTheta": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeR": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeX2": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeColor": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeStrokeDash": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeSize": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeShape": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeAngle": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeOpacity": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeRadius": {
+          "availableBy": "v0.0.13"
+        },
+        "encodePointRadius": {
+          "availableBy": "v0.0.13"
+        },
+        "removePointRadius": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeXOffset": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeYOffset": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeY2": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeYRange": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeXRange": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeGroup": {
+          "availableBy": "v0.0.13"
+        },
+        "layoutSeries": {
+          "availableBy": "v0.0.13"
+        },
+        "encodePathOrder": {
+          "availableBy": "v0.0.13"
+        },
+        "orderCategories": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeParallelCoordinates": {
+          "availableBy": "v0.0.13"
+        },
+        "removePathOrder": {
+          "availableBy": "v0.0.13"
+        },
+        "removeCategoryOrder": {
+          "availableBy": "v0.0.13"
+        },
+        "removeEncoding": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeText": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeDx": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "encodeDy": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "encodeHistogram": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeDensity": {
+          "availableBy": "v0.0.13"
+        },
+        "editDensity": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeHorizon": {
+          "availableBy": "v0.0.13"
+        },
+        "editHorizon": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeBarWidth": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeStroke": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeStrokeWidth": {
+          "availableBy": "v0.0.13"
+        },
+        "encodeChannels": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createRegression": {
+          "availableBy": "v0.0.13"
+        },
+        "editRegression": {
+          "availableBy": "v0.0.13"
+        },
+        "createErrorBar": {
+          "availableBy": "v0.0.13"
+        },
+        "editErrorBar": {
+          "availableBy": "v0.0.13"
+        },
+        "createErrorBand": {
+          "availableBy": "v0.0.13"
+        },
+        "editErrorBand": {
+          "availableBy": "v0.0.13"
+        },
+        "editErrorBandBoundary": {
+          "availableBy": "v0.0.13"
+        },
+        "createBoxPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "editBoxPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createGradientPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "editGradientPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createViolinPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "editViolinPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createScatterPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createIntervalPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createRegressionPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createDotPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createLollipopPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createDumbbellPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "editEndpointPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createECDFPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "editECDFPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createLinePlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createPolarScatterPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createPolarLinePlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadarPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "editRadarPlot": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createRugPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createStripPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createBeeswarmPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createRaincloudPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "editRaincloudPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createAreaPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createBarPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createHistogram": {
+          "availableBy": "v0.0.13"
+        },
+        "createPiePlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createRosePlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadialBarPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createDensityPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createHorizonPlot": {
+          "availableBy": "v0.0.13"
+        },
+        "createHeatmap": {
+          "availableBy": "v0.0.13"
+        },
+        "createParallelCoordinates": {
+          "availableBy": "v0.0.13"
+        },
+        "removeMark": {
+          "availableBy": "v0.0.13"
+        },
+        "createParallelAxes": {
+          "availableBy": "v0.0.13"
+        },
+        "createParallelAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "editParallelAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "removeParallelAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "removeParallelAxes": {
+          "availableBy": "v0.0.13"
+        },
+        "createAxes": {
+          "availableBy": "v0.0.13"
+        },
+        "editAxes": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createXAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "createYAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "createThetaAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadialAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "createThetaAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadialAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "createThetaAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadialAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "createThetaAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadialAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "createThetaAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadialAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "editThetaAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "editRadialAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "editThetaAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "editRadialAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "editThetaAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editRadialAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editThetaAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "editRadialAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "createXAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "createYAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "editXAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "editYAxisLine": {
+          "availableBy": "v0.0.13"
+        },
+        "createXAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "createYAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "editXAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "editYAxisTicks": {
+          "availableBy": "v0.0.13"
+        },
+        "createXAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "createYAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editXAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editYAxisLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "createXAxisTicksAndLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "createYAxisTicksAndLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editXAxisTicksAndLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editYAxisTicksAndLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "createXAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "createYAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "editXAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "editYAxisTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "editXAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "editYAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "editThetaAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "editRadialAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "removeXAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "removeYAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "removeThetaAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "removeRadialAxis": {
+          "availableBy": "v0.0.13"
+        },
+        "createGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "createHorizontalGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "createVerticalGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "createThetaGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "createRadialGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "editHorizontalGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "editVerticalGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "editThetaGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "editRadialGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "editGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "removeGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "createLegend": {
+          "availableBy": "v0.0.13"
+        },
+        "editLegend": {
+          "availableBy": "v0.0.13"
+        },
+        "editLegendBlock": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editLegendLayout": {
+          "availableBy": "v0.0.13"
+        },
+        "editLegendLabels": {
+          "availableBy": "v0.0.13"
+        },
+        "editLegendTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "editLegendSymbols": {
+          "availableBy": "v0.0.13"
+        },
+        "editLegendBorder": {
+          "availableBy": "v0.0.13"
+        },
+        "removeLegend": {
+          "availableBy": "v0.0.13"
+        },
+        "createGuides": {
+          "availableBy": "v0.0.13"
+        },
+        "createTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "editTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "removeTitle": {
+          "availableBy": "v0.0.13"
+        },
+        "createCoordinate": {
+          "availableBy": "v0.0.13"
+        },
+        "editCoordinate": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createScale": {
+          "availableBy": "v0.0.13"
+        },
+        "editScale": {
+          "availableBy": "v0.0.13"
+        },
+        "editXScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editYScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editXOffsetScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editYOffsetScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editParallelScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editThetaScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editRScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editColorScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editStrokeScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editSizeScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editOpacityScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editShapeScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editStrokeWidthScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "editStrokeDashScale": {
+          "introducedAfter": "v0.0.13",
+          "status": "development"
+        },
+        "createDerivedData": {
+          "availableBy": "v0.0.13"
+        },
+        "createRegressionBand": {
+          "availableBy": "v0.0.13"
+        },
+        "editRegressionBand": {
+          "availableBy": "v0.0.13"
+        },
+        "createRegressionLine": {
+          "availableBy": "v0.0.13"
+        },
+        "editRegressionLine": {
+          "availableBy": "v0.0.13"
+        },
+        "editCompositionLayout": {
+          "availableBy": "v0.0.13"
+        },
+        "replaceCompositionChild": {
+          "availableBy": "v0.0.13"
+        },
+        "insertCompositionChild": {
+          "availableBy": "v0.0.13"
+        },
+        "removeCompositionChild": {
+          "availableBy": "v0.0.13"
+        },
+        "reorderCompositionChildren": {
+          "availableBy": "v0.0.13"
+        },
+        "facet": {
+          "availableBy": "v0.0.13"
+        },
+        "facetGrid": {
+          "availableBy": "v0.0.13"
+        },
+        "repeatCharts": {
+          "availableBy": "v0.0.13"
+        },
+        "editFacetSource": {
+          "availableBy": "v0.0.13"
+        },
+        "editFacetScales": {
+          "availableBy": "v0.0.13"
+        },
+        "editFacetGuides": {
+          "availableBy": "v0.0.13"
+        },
+        "editFacetHeaders": {
+          "availableBy": "v0.0.13"
+        },
+        "editSemantic": {
+          "availableBy": "v0.0.13"
+        },
+        "createGraphics": {
+          "availableBy": "v0.0.13"
+        },
+        "editGraphics": {
+          "availableBy": "v0.0.13"
+        }
+      }
+    },
+    "archiveUnchanged": "eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71",
+    "documentationTests": 18
+  }
+}

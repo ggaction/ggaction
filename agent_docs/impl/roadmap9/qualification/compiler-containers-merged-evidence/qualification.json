@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-identical-source-and-archive-merge",
+  "base": "a3f385c69",
+  "upstreamSource": "ab8cb89b2a753fda5e819983db47d7376a97f39e",
+  "upstreamPin": "aa18606de9146c8cf508cf789948125011ea6ab0",
+  "upstreamQualification": "../compiler-containers-evidence/qualification.json",
+  "inputEquality": {
+    "against": "aa18606de9146c8cf508cf789948125011ea6ab0",
+    "paths": [
+      "src",
+      "types",
+      "knowledge",
+      "README.md",
+      "CHANGELOG.md",
+      "LICENSE",
+      "package.json",
+      "scripts",
+      "test",
+      "docs"
+    ],
+    "differentFiles": 0,
+    "rawEvidenceHashesVerified": 48,
+    "timing": "before root source pin regeneration"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1261,
+    "packedBytes": 1815075,
+    "unpackedBytes": 8176200,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71.tgz",
+    "sha256": "eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71"
+  },
+  "rootChecks": {
+    "compiler": 7,
+    "boundaries": 20,
+    "strictPackExactArchive": true
+  },
+  "reusedExactUpstream": {
+    "owning": 1344,
+    "render": 52,
+    "boundary": 13,
+    "docs": 18,
+    "installedNodes": [
+      20,
+      22,
+      24
+    ],
+    "browserDPR": [
+      1,
+      2
+    ],
+    "original100k": "source functional native/offline/rebase/work/wire; 19 source/declaration files canonically match archive; not a new installed100k execution",
+    "sampleMs": 872.561,
+    "performanceQualified": false,
+    "hundredCycleQualified": false
+  },
+  "evidence": {
+    "pack.json": {
+      "bytes": 389,
+      "sha256": "e5f6ef761d9820cd83e2c1fa57b5a155b65b4291253ff7818b1b3bb25540e79b"
+    },
+    "pack.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "boundaries.log": {
+      "bytes": 4115,
+      "sha256": "3fbd7b2b9bdb3d09836ea60677f06a15e24690bd6b687586335c85fec19416a7"
+    },
+    "compiler.log": {
+      "bytes": 1872,
+      "sha256": "55bf451fed7eb189673be59c369581dd02c462c452aaf65ffcd706e501a60bcd"
+    }
+  }
+}

@@ -1042,7 +1042,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/basic` | 426,300 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 69,600 bytes |
-| `ggaction/interaction` | 137,600 bytes |
+| `ggaction/interaction` | 137,700 bytes |
 | `ggaction/animation` | 343,600 bytes |
 
 
@@ -5198,3 +5198,14 @@ Root frame local records와 format5 합산은1261entries/Node22packed1814874/Nod
 unpacked8175677B이며 ceiling1261/1818500/8175700이다. Animation gzip343502B에는 위 표의
 343600B를 적용했다. [통합 검증](impl/roadmap9/qualification/frame-owned-merged-evidence/qualification.json)은
 현재1343 owning 검사·설치본3Node/browser와 독립 원100k source-specific 증거를 구분한다.
+
+Concrete scene compiler는 모든 node/clip 검증과 translation을 마친 후 생성 순서대로 raw group과
+borrowed/translated wrapper를 원 오류 경로로 snapshot한다. Compiler가 직접 만든 ID-only
+children 및 완성된 objects/order/graphicSpec/program은 child ownership이 끝난 뒤 직접 동결한다.
+Caller state·native 권한·4renderer가 읽는 fully materialized graphicSpec은 그대로이며 cache를
+추가하지 않는다. [채택 및 검증](impl/roadmap9/qualification/compiler-containers-state.md)은
+50ms/P95·100cycle과 별도로 기록한다.
+
+Compiler 완성container 체크포인트는1261entries/Node22packed1815075/Node20·24packed1818620/
+unpacked8176200B이며 ceiling1261/1818700/8176200이다. Interaction gzip137641B는 위 표의
+137700B에 정합한다. Runtime work/node/byte guards와 원100k·50ms 목표는 동일하다.
