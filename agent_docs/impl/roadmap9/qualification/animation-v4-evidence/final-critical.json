@@ -1,0 +1,122 @@
+{
+  "scope": "Affected owners only; not global full-source coverage",
+  "metrics": {
+    "animation/columnCodec.js": {
+      "lines": 100,
+      "branches": 98.05,
+      "functions": 100
+    },
+    "animation/envelopeCodec.js": {
+      "lines": 100,
+      "branches": 98.55,
+      "functions": 100
+    },
+    "animation/frameEndpoint.js": {
+      "lines": 100,
+      "branches": 96.28,
+      "functions": 100
+    },
+    "animation/partitionTracks.js": {
+      "lines": 100,
+      "branches": 94.29,
+      "functions": 100
+    },
+    "animation/planner.js": {
+      "lines": 100,
+      "branches": 93.75,
+      "functions": 100
+    },
+    "animation/resources.js": {
+      "lines": 100,
+      "branches": 97.75,
+      "functions": 100
+    },
+    "animation/sample.js": {
+      "lines": 100,
+      "branches": 98.09,
+      "functions": 100
+    },
+    "core/validation.js": {
+      "lines": 89.17,
+      "branches": 91.18,
+      "functions": 95.24
+    },
+    "materialization/animation/guides.js": {
+      "lines": 100,
+      "branches": 99.38,
+      "functions": 100
+    },
+    "materialization/animation/point.js": {
+      "lines": 100,
+      "branches": 96.47,
+      "functions": 100
+    },
+    "selectors/graphicCapacity.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 98.99,
+      "branches": 96.4,
+      "functions": 99.61
+    }
+  },
+  "floors": {
+    "animation/columnCodec.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/envelopeCodec.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/frameEndpoint.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/partitionTracks.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/planner.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/resources.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/sample.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "core/validation.js": {
+      "lines": 80,
+      "branches": 75,
+      "functions": 80
+    },
+    "materialization/animation/guides.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/animation/point.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "selectors/graphicCapacity.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    }
+  }
+}

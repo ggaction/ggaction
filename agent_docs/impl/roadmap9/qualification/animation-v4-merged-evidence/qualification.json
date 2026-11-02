@@ -1,0 +1,994 @@
+{
+  "status": "combined-public-version4-native-offline-rebase-verified; native-performance-pending",
+  "base": "65e7aa8fc",
+  "upstreamSource": "b4585c221eca54ce567a30748aa5fd42a6286bde",
+  "upstreamPin": "1064af5923b692db8566290fd0ef9d9fd858c569",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Adopt exact private lossless codec/resource scopes and public explicit node options/version4; preserve v3 omission/strict work/default guards. Root retains verified owned position sampling and empty appearance reuse.",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1254,
+    "packedBytes": 1802294,
+    "unpackedBytes": 8129912,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-fb87270d3054b91275f948f5d4352d88598c5cef7f16b4efcfe5d20b67da8c6d.tgz",
+    "sha256": "fb87270d3054b91275f948f5d4352d88598c5cef7f16b4efcfe5d20b67da8c6d"
+  },
+  "checks": {
+    "owning-coverage.log": 757,
+    "contracts-browser-final.log": 48,
+    "docs.log": 245,
+    "animation-browser.log": 2,
+    "browser-installed.log": 1,
+    "browser-source.log": 1,
+    "render.log": 52
+  },
+  "critical": {
+    "animation/columnCodec.js": {
+      "lines": 100,
+      "branches": 98.05,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "animation/resources.js": {
+      "lines": 100,
+      "branches": 97.75,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "animation/planner.js": {
+      "lines": 100,
+      "branches": 93.75,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "animation/envelopeCodec.js": {
+      "lines": 100,
+      "branches": 98.55,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "animation/sample.js": {
+      "lines": 100,
+      "branches": 98.09,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "animation/frameEndpoint.js": {
+      "lines": 100,
+      "branches": 96.28,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "animation/partitionTracks.js": {
+      "lines": 100,
+      "branches": 94.29,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "materialization/animation/point.js": {
+      "lines": 100,
+      "branches": 96.47,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "materialization/animation/guides.js": {
+      "lines": 100,
+      "branches": 99.38,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "core/validation.js": {
+      "lines": 89.17,
+      "branches": 91.18,
+      "functions": 95.24,
+      "floor": {
+        "lines": 80,
+        "branches": 75,
+        "functions": 80
+      }
+    },
+    "selectors/graphicCapacity.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100,
+      "floor": {
+        "lines": 90,
+        "branches": 80,
+        "functions": 100
+      }
+    }
+  },
+  "consumers": [
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1254,
+        "packedBytes": 1802294,
+        "unpackedBytes": 8129912,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-fb87270d3054b91275f948f5d4352d88598c5cef7f16b4efcfe5d20b67da8c6d.tgz",
+        "sha256": "fb87270d3054b91275f948f5d4352d88598c5cef7f16b4efcfe5d20b67da8c6d"
+      },
+      "node": "v20.20.2",
+      "directory": "/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-fSh8cn",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-v3-v4-native-offline-rebase",
+          "status": "passed"
+        },
+        {
+          "id": "types",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 786299,
+          "limit": 786300,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 424738,
+          "limit": 424800,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 24954,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 67866,
+          "limit": 67900,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 339303,
+          "limit": 339400,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 136692,
+          "limit": 136700,
+          "status": "passed"
+        }
+      }
+    },
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1254,
+        "packedBytes": 1802294,
+        "unpackedBytes": 8129912,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-fb87270d3054b91275f948f5d4352d88598c5cef7f16b4efcfe5d20b67da8c6d.tgz",
+        "sha256": "fb87270d3054b91275f948f5d4352d88598c5cef7f16b4efcfe5d20b67da8c6d"
+      },
+      "node": "v22.23.1",
+      "directory": "/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-q2YSbB",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-v3-v4-native-offline-rebase",
+          "status": "passed"
+        },
+        {
+          "id": "types",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 784947,
+          "limit": 786300,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 423868,
+          "limit": 424800,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 24779,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 67718,
+          "limit": 67900,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 338185,
+          "limit": 339400,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 136200,
+          "limit": 136700,
+          "status": "passed"
+        }
+      }
+    },
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1254,
+        "packedBytes": 1802294,
+        "unpackedBytes": 8129912,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-fb87270d3054b91275f948f5d4352d88598c5cef7f16b4efcfe5d20b67da8c6d.tgz",
+        "sha256": "fb87270d3054b91275f948f5d4352d88598c5cef7f16b4efcfe5d20b67da8c6d"
+      },
+      "node": "v24.22.1",
+      "directory": "/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-D90YHe",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-v3-v4-native-offline-rebase",
+          "status": "passed"
+        },
+        {
+          "id": "types",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 786299,
+          "limit": 786300,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 424738,
+          "limit": 424800,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 24954,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 67866,
+          "limit": 67900,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 339303,
+          "limit": 339400,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 136692,
+          "limit": 136700,
+          "status": "passed"
+        }
+      }
+    }
+  ],
+  "largeInstalled": {
+    "node": "v24.22.1",
+    "archive": "fb87270d3054b91275f948f5d4352d88598c5cef7f16b4efcfe5d20b67da8c6d",
+    "sourceFree": true,
+    "fixtures": [
+      {
+        "name": "product-100000-phased",
+        "status": "passed",
+        "sourceSHA256": {
+          "src/animation/columnCodec.js": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+          "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+          "src/animation/planner.js": "cf3fed95f4cc89dd8c276c2c4a31e31db8f14189a38b91764d95c7ae6789baac",
+          "src/animation/envelopeCodec.js": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+          "src/animation/sample.js": "db115d2b379fc50e8dd5a4aae923c726044e6a45380dd323c787929bb399b1a6",
+          "src/animation/frameEndpoint.js": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+          "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+          "src/materialization/animation/point.js": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+          "src/materialization/animation/guides.js": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+          "src/core/validation.js": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+          "src/selectors/graphicCapacity.js": "67bf3d75d92c9227d4f8ceb79afb2e45fa79828460c67d6c2cef06564148238a",
+          "src/grammar/animation/positions.js": "6a9f29ed0a103a6bf7321a7eecb936970f367d0b21fd5382fe60ab122bd0e7a8",
+          "src/animation/appearance.js": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+          "types/animation.d.ts": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323"
+        },
+        "result": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/animation-v4-merged/large/product-100000-phased.json"
+      },
+      {
+        "name": "product-partition-10000-phased",
+        "status": "passed",
+        "sourceSHA256": {
+          "src/animation/columnCodec.js": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+          "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+          "src/animation/planner.js": "cf3fed95f4cc89dd8c276c2c4a31e31db8f14189a38b91764d95c7ae6789baac",
+          "src/animation/envelopeCodec.js": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+          "src/animation/sample.js": "db115d2b379fc50e8dd5a4aae923c726044e6a45380dd323c787929bb399b1a6",
+          "src/animation/frameEndpoint.js": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+          "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+          "src/materialization/animation/point.js": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+          "src/materialization/animation/guides.js": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+          "src/core/validation.js": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+          "src/selectors/graphicCapacity.js": "67bf3d75d92c9227d4f8ceb79afb2e45fa79828460c67d6c2cef06564148238a",
+          "src/grammar/animation/positions.js": "6a9f29ed0a103a6bf7321a7eecb936970f367d0b21fd5382fe60ab122bd0e7a8",
+          "src/animation/appearance.js": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+          "types/animation.d.ts": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323"
+        },
+        "result": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/animation-v4-merged/large/product-partition-10000-phased.json"
+      }
+    ],
+    "status": "passed"
+  },
+  "fixtures": {
+    "product-100000-phased": {
+      "kind": "Public version4 actual API path, phased plan lifetimes; no instrumentation; not SLO/P95",
+      "node": "v24.22.1",
+      "n": 100000,
+      "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+      "phases": {
+        "prepare": {
+          "ms": 15936.5955,
+          "accounting": {
+            "native": true,
+            "limits": {
+              "maxEndpointNodes": 200002,
+              "maxOutputNodes": 100001
+            },
+            "maximumWork": {
+              "Animation preparation work": 78333686
+            }
+          },
+          "columns": {
+            "logicalValues": 7600057,
+            "descriptorVisits": 7600056,
+            "cellVisits": 7600004,
+            "interningWork": 93556546,
+            "internNodes": 208,
+            "uniqueLowerBound": {
+              "physicalValues": 600110,
+              "encodedValues": 600258,
+              "bytes": 33650049
+            },
+            "physicalValues": 604540,
+            "encodedValues": 608452,
+            "bytes": 33703134,
+            "validatedLogicalValues": 7600057
+          }
+        },
+        "sample": {
+          "ms": 2222.983709
+        },
+        "offline": {
+          "ms": 41338.87325,
+          "bytes": 33703073,
+          "sha256": "5862cf719459b2c9f282978031a3e38523e16d20e97d73f737a0f441af37a991",
+          "accounting": {
+            "native": false,
+            "limits": {
+              "maxEndpointNodes": 200002,
+              "maxOutputNodes": 100001
+            },
+            "maximumWork": {
+              "Animation preparation work": 97911711
+            }
+          },
+          "decodedPayload": {
+            "physicalValues": 604516,
+            "bytes": 23180528,
+            "estimatedEncodedValues": 608406,
+            "estimatedEncodedBytes": 33702922
+          },
+          "encodedEnvelope": {
+            "physicalValues": 608411,
+            "bytes": 33703073
+          }
+        },
+        "rebase": {
+          "ms": 21799.581000000006,
+          "accounting": {
+            "native": true,
+            "limits": {
+              "maxEndpointNodes": 200002,
+              "maxOutputNodes": 100001
+            },
+            "maximumWork": {
+              "Animation preparation work": 46333687
+            }
+          },
+          "columns": {
+            "logicalValues": 10100086,
+            "descriptorVisits": 11500070,
+            "cellVisits": 11500023,
+            "interningWork": 130934738,
+            "internNodes": 328,
+            "uniqueLowerBound": {
+              "physicalValues": 800192,
+              "encodedValues": 800447,
+              "bytes": 41147116
+            },
+            "physicalValues": 804915,
+            "encodedValues": 809470,
+            "bytes": 41204291,
+            "validatedLogicalValues": 10100086
+          }
+        },
+        "rebaseOffline": {
+          "ms": 43369.18720900001,
+          "bytes": 41204160,
+          "sha256": "d0229172c29d715953744331ac56bf6f033569867cc6832b93c744f19bfa5000",
+          "accounting": {
+            "native": false,
+            "limits": {
+              "maxEndpointNodes": 200002,
+              "maxOutputNodes": 100001
+            },
+            "maximumWork": {
+              "Animation preparation work": 133456501
+            }
+          },
+          "decodedPayload": {
+            "physicalValues": 804885,
+            "bytes": 29781921,
+            "estimatedEncodedValues": 809410,
+            "estimatedEncodedBytes": 41204009
+          },
+          "encodedEnvelope": {
+            "physicalValues": 809415,
+            "bytes": 41204160
+          }
+        }
+      },
+      "lifetime": [
+        {
+          "stage": "native-plan-released",
+          "memory": {
+            "rss": 1913536512,
+            "heapTotal": 1015726080,
+            "heapUsed": 712994144,
+            "external": 69800239,
+            "arrayBuffers": 148239
+          }
+        },
+        {
+          "stage": "native-offline-plan-released",
+          "memory": {
+            "rss": 2034466816,
+            "heapTotal": 988463104,
+            "heapUsed": 721374856,
+            "external": 69830414,
+            "arrayBuffers": 148239
+          }
+        },
+        {
+          "stage": "rebase-plan-and-source-frame-released",
+          "memory": {
+            "rss": 1460076544,
+            "heapTotal": 1007747072,
+            "heapUsed": 729020344,
+            "external": 84832557,
+            "arrayBuffers": 148239
+          }
+        },
+        {
+          "stage": "all-native-offline-rebase-exact",
+          "memory": {
+            "rss": 2461237248,
+            "heapTotal": 988348416,
+            "heapUsed": 729202416,
+            "external": 84832557,
+            "arrayBuffers": 148239
+          }
+        }
+      ],
+      "allCoordinatesVerified": 100000,
+      "batch50Rejected": true,
+      "stage": "all-native-offline-rebase-exact",
+      "allRebaseCoordinatesVerified": 100000,
+      "sourceSHA256": {
+        "src/animation/columnCodec.js": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+        "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+        "src/animation/planner.js": "cf3fed95f4cc89dd8c276c2c4a31e31db8f14189a38b91764d95c7ae6789baac",
+        "src/animation/envelopeCodec.js": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+        "src/animation/sample.js": "db115d2b379fc50e8dd5a4aae923c726044e6a45380dd323c787929bb399b1a6",
+        "src/animation/frameEndpoint.js": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+        "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+        "src/materialization/animation/point.js": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+        "src/materialization/animation/guides.js": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+        "src/core/validation.js": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+        "src/selectors/graphicCapacity.js": "67bf3d75d92c9227d4f8ceb79afb2e45fa79828460c67d6c2cef06564148238a",
+        "src/grammar/animation/positions.js": "6a9f29ed0a103a6bf7321a7eecb936970f367d0b21fd5382fe60ab122bd0e7a8",
+        "src/animation/appearance.js": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+        "types/animation.d.ts": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323"
+      }
+    },
+    "product-partition-10000-phased": {
+      "kind": "Public version4 actual API path, phased plan lifetimes; no instrumentation; not SLO/P95",
+      "node": "v24.22.1",
+      "n": 10000,
+      "inputSHA256": "e204dd2c1ab81f7c75b8d32aa006841fcda7e1e140ffd6a983dc1d5b448e1a1e",
+      "phases": {
+        "prepare": {
+          "ms": 3376.4137500000006,
+          "accounting": {
+            "native": true,
+            "limits": {
+              "maxEndpointNodes": 20002,
+              "maxOutputNodes": 10001
+            },
+            "maximumWork": {
+              "Animation preparation work": 6535934,
+              "Partition animation track work": 16950544
+            }
+          },
+          "columns": {
+            "logicalValues": 720136,
+            "descriptorVisits": 560067,
+            "cellVisits": 560006,
+            "interningWork": 9914328,
+            "internNodes": 139,
+            "uniqueLowerBound": {
+              "physicalValues": 60084,
+              "encodedValues": 60188,
+              "bytes": 2455061
+            },
+            "physicalValues": 220712,
+            "encodedValues": 541986,
+            "bytes": 8753321,
+            "validatedLogicalValues": 720136
+          }
+        },
+        "sample": {
+          "ms": 754.4079590000001
+        },
+        "offline": {
+          "ms": 3933.353666000001,
+          "bytes": 8753223,
+          "sha256": "6f61499fc39b246c9a4c6c37a39931ac7e47e1ca834915ad4323438f37d32b47",
+          "accounting": {
+            "native": false,
+            "limits": {
+              "maxEndpointNodes": 20002,
+              "maxOutputNodes": 10001
+            },
+            "maximumWork": {
+              "Animation preparation work": 12785727,
+              "Partition animation track work": 16950544
+            }
+          },
+          "decodedPayload": {
+            "physicalValues": 220685,
+            "bytes": 4959551,
+            "estimatedEncodedValues": 541933,
+            "estimatedEncodedBytes": 8753072
+          },
+          "encodedEnvelope": {
+            "physicalValues": 541938,
+            "bytes": 8753223
+          }
+        },
+        "rebase": {
+          "ms": 2723.45875,
+          "accounting": {
+            "native": true,
+            "limits": {
+              "maxEndpointNodes": 20002,
+              "maxOutputNodes": 10001
+            },
+            "maximumWork": {
+              "Animation preparation work": 4715012,
+              "Partition animation track work": 16950544
+            }
+          },
+          "columns": {
+            "logicalValues": 1090200,
+            "descriptorVisits": 1010082,
+            "cellVisits": 1010026,
+            "interningWork": 12412455,
+            "internNodes": 273,
+            "uniqueLowerBound": {
+              "physicalValues": 80172,
+              "encodedValues": 80389,
+              "bytes": 3173292
+            },
+            "physicalValues": 241191,
+            "encodedValues": 563300,
+            "bytes": 9476860,
+            "validatedLogicalValues": 1090200
+          }
+        },
+        "rebaseOffline": {
+          "ms": 4513.410833,
+          "bytes": 9476692,
+          "sha256": "2ade7bb84901170d7e97956d62257ca564dceebca081fda9cb0fe50304152f9a",
+          "accounting": {
+            "native": false,
+            "limits": {
+              "maxEndpointNodes": 20002,
+              "maxOutputNodes": 10001
+            },
+            "maximumWork": {
+              "Animation preparation work": 15770738,
+              "Partition animation track work": 16950544
+            }
+          },
+          "decodedPayload": {
+            "physicalValues": 241158,
+            "bytes": 5621201,
+            "estimatedEncodedValues": 563233,
+            "estimatedEncodedBytes": 9476541
+          },
+          "encodedEnvelope": {
+            "physicalValues": 563238,
+            "bytes": 9476692
+          }
+        }
+      },
+      "lifetime": [
+        {
+          "stage": "native-plan-released",
+          "memory": {
+            "rss": 513474560,
+            "heapTotal": 295436288,
+            "heapUsed": 118467392,
+            "external": 19901864,
+            "arrayBuffers": 148239
+          }
+        },
+        {
+          "stage": "native-offline-plan-released",
+          "memory": {
+            "rss": 597213184,
+            "heapTotal": 298844160,
+            "heapUsed": 119672080,
+            "external": 19933376,
+            "arrayBuffers": 148239
+          }
+        },
+        {
+          "stage": "rebase-plan-and-source-frame-released",
+          "memory": {
+            "rss": 608305152,
+            "heapTotal": 319488000,
+            "heapUsed": 120819216,
+            "external": 21380365,
+            "arrayBuffers": 148239
+          }
+        },
+        {
+          "stage": "all-native-offline-rebase-exact",
+          "memory": {
+            "rss": 624984064,
+            "heapTotal": 319488000,
+            "heapUsed": 120881000,
+            "external": 21379002,
+            "arrayBuffers": 148239
+          }
+        }
+      ],
+      "allCoordinatesVerified": 10000,
+      "batch500Rejected": true,
+      "stage": "all-native-offline-rebase-exact",
+      "allRebaseCoordinatesVerified": 10000,
+      "sourceSHA256": {
+        "src/animation/columnCodec.js": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+        "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+        "src/animation/planner.js": "cf3fed95f4cc89dd8c276c2c4a31e31db8f14189a38b91764d95c7ae6789baac",
+        "src/animation/envelopeCodec.js": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+        "src/animation/sample.js": "db115d2b379fc50e8dd5a4aae923c726044e6a45380dd323c787929bb399b1a6",
+        "src/animation/frameEndpoint.js": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+        "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+        "src/materialization/animation/point.js": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+        "src/materialization/animation/guides.js": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+        "src/core/validation.js": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+        "src/selectors/graphicCapacity.js": "67bf3d75d92c9227d4f8ceb79afb2e45fa79828460c67d6c2cef06564148238a",
+        "src/grammar/animation/positions.js": "6a9f29ed0a103a6bf7321a7eecb936970f367d0b21fd5382fe60ab122bd0e7a8",
+        "src/animation/appearance.js": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+        "types/animation.d.ts": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323"
+      }
+    }
+  },
+  "browserInstalled": {
+    "node": "v22.23.1",
+    "status": "passed",
+    "archive": "fb87270d3054b91275f948f5d4352d88598c5cef7f16b4efcfe5d20b67da8c6d",
+    "browser": "Chromium",
+    "versions": [
+      3,
+      4
+    ],
+    "ratios": [
+      1,
+      2
+    ],
+    "sourceFree": true,
+    "sourcePrefixExclusion": "asserted by esbuild metafile"
+  },
+  "built": {
+    "pages": 186,
+    "selectiveArtifacts": 1606
+  },
+  "sourceComparison": {
+    "matched": {
+      "src/animation/columnCodec.js": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+      "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+      "src/animation/planner.js": "cf3fed95f4cc89dd8c276c2c4a31e31db8f14189a38b91764d95c7ae6789baac",
+      "src/animation/envelopeCodec.js": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+      "src/animation/sample.js": "db115d2b379fc50e8dd5a4aae923c726044e6a45380dd323c787929bb399b1a6",
+      "src/animation/frameEndpoint.js": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+      "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+      "src/materialization/animation/point.js": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+      "src/materialization/animation/guides.js": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+      "src/core/validation.js": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+      "src/selectors/graphicCapacity.js": "67bf3d75d92c9227d4f8ceb79afb2e45fa79828460c67d6c2cef06564148238a",
+      "types/animation.d.ts": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323"
+    },
+    "changed": {
+      "src/grammar/animation/positions.js": "6a9f29ed0a103a6bf7321a7eecb936970f367d0b21fd5382fe60ab122bd0e7a8",
+      "src/animation/appearance.js": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28"
+    }
+  },
+  "limits": {
+    "entries": 1254,
+    "packedBytes": 1805700,
+    "unpackedBytes": 8130000,
+    "FullGzip": 786300,
+    "BasicGzip": 424800,
+    "animationGzip": 339400,
+    "searchBytes": 1094000
+  },
+  "corrections": [
+    "Initial41contracts had only README Basic424700 vs required424800 mismatch. Synchronized README and final48contracts passed.",
+    "First strict pack rejected1254entries over1252; combined archive observed maximum1805641packed/8129912unpacked and animation339303gzip over339300. Applied only minimal artifact ceilings, preserving first failures/premeasure.",
+    "Initial docs failed only combined search1093920 over1093300; final245passed after minimum1094000 ceiling. Runtime guards/fixtures/SLO unchanged.",
+    "First installed browser run was unminified; retained separately. Final source and installed browser use production minification and independently assert package origin/no repository src in metafile."
+  ],
+  "reuse": {
+    "nodeRender": "All52 current animation renderer tests rerun on combined source, along with production browser v3/v4 DPR1/2 and original same-tar100k/10k native/offline/rebase.",
+    "docsUI": "Shared UI/CSS/prose placement unchanged; root docs245 and built186/LLM1606 rerun; upstream responsive/Axe evidence reused."
+  },
+  "pending": [
+    "Original100k common sample P95\u226450ms; actual2222.98ms diagnostic remains above target",
+    "Original partition gesture/kernel P95 and Geo camera/hit admission/performance",
+    "Final native heap/lifecycle/9commands/independent review",
+    "Sequential STEP057-070 and protected final release delivery"
+  ],
+  "evidenceFiles": {
+    "large.log": {
+      "sha256": "889f4681d22ba819fae9c1e762f082f01fc0f33e5946e05244731bd2bdc829f4",
+      "bytes": 12359
+    },
+    "pack22.json": {
+      "sha256": "d0e6cbe4bc706b6042eb7435245e644a0bbaac57069fc4258db67211fea1c0fc",
+      "bytes": 384
+    },
+    "browser-source.log": {
+      "sha256": "ac4051fd168209c178c106ec3f360215973688cf1d757591c8a6151e5671766a",
+      "bytes": 358
+    },
+    "render.log": {
+      "sha256": "89dc56d5467604fbab27bb8aebfc6d793a6f162068b7556a31826c004fedb20a",
+      "bytes": 12455
+    },
+    "consumer-24.json": {
+      "sha256": "21e506e761bc7ac8aeafae7e1136fa5885e508df26032d4eed1984a05b22cf6c",
+      "bytes": 1473
+    },
+    "contracts-final.log": {
+      "sha256": "b84adb190b9ff1bda5cb72968463f0ad1b0eaa82e11f4f0042844f2b658d9844",
+      "bytes": 9968
+    },
+    "contracts.log": {
+      "sha256": "d1026a60738018ac61da13a88c54d52269c0bdbad92775213385c9cd5990db3e",
+      "bytes": 35737
+    },
+    "frozen.json": {
+      "sha256": "11f5d8aad4fd2d4110d47218e424265e082121fc8f70a1bfbba3b3cae5575151",
+      "bytes": 436
+    },
+    "consumer-22.json": {
+      "sha256": "e0dc05874755a49ca1d6565ecb5bb81eeb9e91b8e8fc60226decff27bd087c62",
+      "bytes": 1473
+    },
+    "pack20.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "browser-installed.json": {
+      "sha256": "8863066cdc7073faa62b6e0d05aeff2598d468f0a038f607775bc086f054fb2e",
+      "bytes": 300
+    },
+    "browser-installed-unminified.log": {
+      "sha256": "a2b5e5a4be5be775bbe97f832e9ec8413323351517c6dbc0405cbddfd966bf41",
+      "bytes": 364
+    },
+    "consumer-24.log": {
+      "sha256": "eb73b9637d7ff3639d7fd79484e39625bb6ad65aa80ffa9392f56e903b39880b",
+      "bytes": 1107
+    },
+    "pack22.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24.json": {
+      "sha256": "3009aad46ded4325f1ba34097e3f412105d64042a1773e47fd055ea71918b238",
+      "bytes": 384
+    },
+    "consumer-20.log": {
+      "sha256": "e61cc039586d10b71c3cc64ff4002a8c507b30b9060d0d65d6814b3a4b1fe5fa",
+      "bytes": 1107
+    },
+    "pack20-first-observed.json": {
+      "sha256": "26586f3954fcbbb356cbd92997e969e163ee492cb7dc84d83b3856e8ff4544b7",
+      "bytes": 103
+    },
+    "pack20-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "consumer-22.log": {
+      "sha256": "e603a8d3406c5fba71620e4805d97ec4762637c4c584891590e3030f17d0aeeb",
+      "bytes": 1107
+    },
+    "docs.log": {
+      "sha256": "5cad149bd24c8e2ce7df316c26174eb5745c93e5e6075f0870dd11edb60c4153",
+      "bytes": 74544
+    },
+    "pack24.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "consumer-20.json": {
+      "sha256": "8c95e5d5d02ab9fd83a2bdf91ce8fdc3e076b0bdc8251e7332a6bf5960917aac",
+      "bytes": 1473
+    },
+    "premeasure20.json": {
+      "sha256": "e96595e1d86a0bf751603465eb7d468148b20de307e77fda1c15d383ddbcb6af",
+      "bytes": 305
+    },
+    "consumer.mjs": {
+      "sha256": "efdfeb8690c7e0f5cf920513f89c4a73948c034295a889c25cbcae7007f60e38",
+      "bytes": 5136
+    },
+    "browser-installed.log": {
+      "sha256": "20c275fdc733f9e7a7ae78afce5fa652630e6ab73cbe41dfec385704336ecf30",
+      "bytes": 364
+    },
+    "contracts-browser-final.log": {
+      "sha256": "047ddf2e2b11d233be93f859c1b5281def23aa14dd6cbef3696621c9107ab655",
+      "bytes": 9966
+    },
+    "owning-coverage.log": {
+      "sha256": "5663cf0c1a987e9fb45de0052278053cc6667e2469ba1b6d399b4857926872ba",
+      "bytes": 194820
+    },
+    "pack20.json": {
+      "sha256": "b0f889757141b5a82bf2646ede7c79911bd48a7fcb3f796b6c3b8326fe832025",
+      "bytes": 384
+    },
+    "prepack.log": {
+      "sha256": "8709773a0fb9bb7660768e79c26d42edd1cb387f74839fe85bee49c0b2a23449",
+      "bytes": 504
+    },
+    "animation-browser.log": {
+      "sha256": "b1b6d01331abefba80afe460e615a8fa3915f5b1bd865085ff14ae772952f634",
+      "bytes": 1387
+    },
+    "built.log": {
+      "sha256": "16305e5926be746711cfe72bc6671fdf6880e924b51217fec344f785e933a341",
+      "bytes": 102
+    },
+    "pack20-first.log": {
+      "sha256": "515178cd098ec8776aad61587d736ad3a3351c02257263dc6439620f6cc9335f",
+      "bytes": 966
+    },
+    "premeasure20.log": {
+      "sha256": "5f2e3b0c8ab664f1623d6f6080cd2ebc4bedea1b5ff40ec6e601adb6b53d8c9e",
+      "bytes": 253
+    },
+    "evidence.py": {
+      "sha256": "2507001e98fe4a3a74f878e8d3cd6c32ea8e8fe33fba5601714b816736a1b3da",
+      "bytes": 5256
+    },
+    "owning-coverage.mjs": {
+      "sha256": "f8e406983f8fa9d6f63b110b0f9fffadec18191d75b71e2bbb943d8466b70e9d",
+      "bytes": 1005
+    },
+    "generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "docs-first.log": {
+      "sha256": "e0d7f19dac00fac1d3412b1c6261ae765f30a3fe36327cfd27488124092e42ae",
+      "bytes": 75940
+    },
+    "upstream-source-comparison.json": {
+      "sha256": "0aef3393198d15be4c7677a342ff22b3c616cb4dc9f4b23c33cfc06b8c6de39e",
+      "bytes": 1510
+    },
+    "build.log": {
+      "sha256": "13eb9b09dbd1a1083297c2e926cd3fd94e9ac8c81268016342a067a8b4256f3d",
+      "bytes": 420
+    },
+    "critical.json": {
+      "sha256": "f4dc963ca1431c7e78733f0e5e8e635f1c13842966bef961b8cefb10943735c4",
+      "bytes": 2055
+    },
+    "large/qualification.json": {
+      "sha256": "045f0ade7d042f215587c2667d750b6987a724cf35660d9ec768942d215ace2d",
+      "bytes": 3766
+    },
+    "large/product-100000-phased.executed.mjs.txt": {
+      "sha256": "a12d22fef1aede90e0ee292286a29e33733313f682f089250e03ec252e853817",
+      "bytes": 5887
+    },
+    "large/product-partition-10000-phased.json": {
+      "sha256": "e8729c97b6520bc49e06c7946bf3abc7227d00d0bb90909fdc21eb6c58d743b4",
+      "bytes": 5983
+    },
+    "large/product-partition-10000-phased-partial.json": {
+      "sha256": "4b109103fe8dbefb40a1db1bbbd1307fec44d8ac02b915d0d21cd74b866ed627",
+      "bytes": 4490
+    },
+    "large/product-100000-phased-partial.json": {
+      "sha256": "16ca96f235654609a1c7d9d34b6b0e3111d8f38d4324ab3b408d2eb67cff1077",
+      "bytes": 4313
+    },
+    "large/product-partition-10000-phased.executed.mjs.txt": {
+      "sha256": "cee740c0cf9d094e2ce17a7ecbe105cfab3d5650a6fed72d3fda9b0aa0d26c3f",
+      "bytes": 6097
+    },
+    "large/product-100000-phased.json": {
+      "sha256": "3f22e9f9ab8abca2d90b1d21df6daf37fbdbcdbfd5fe8178fafed8d1c28bdb62",
+      "bytes": 5806
+    }
+  }
+}

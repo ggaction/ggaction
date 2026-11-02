@@ -1,3 +1,4 @@
+import { animationResourceLimits } from "./resources.js";
 import { sampleAxisLabelTracks } from "./axisLabelTracks.js";
 import { axisLabelFrameCollector } from "./axisLabelFrames.js";
 import { sampleGeoTextTracks } from "./geoTextTracks.js";
@@ -14,7 +15,7 @@ import { cloneAndFreeze } from "../core/immutable.js";
 import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 import { samplePositionInterpolation } from "../grammar/animation/positions.js";
 import { transitionSampleState,interpolateNumber } from "../grammar/animation/values.js";
-import { requireTransitionPlan, transitionEndpointPositions, transitionEndpointFrame, transitionGraphs, transitionCartesian, transitionPartitions, transitionPolars, transitionGeos, transitionGuides, transitionGeoTexts, transitionAxisLabels, transitionTimeline, transitionOwners } from "./planner.js";
+import { requireTransitionPlan, transitionResources, transitionEndpointPositions, transitionEndpointFrame, transitionGraphs, transitionCartesian, transitionPartitions, transitionPolars, transitionGeos, transitionGuides, transitionGeoTexts, transitionAxisLabels, transitionTimeline, transitionOwners } from "./planner.js";
 import { sampleTransitionTimeline } from "./timelineSample.js";
 import { registerAnimationFrame, registerAnimationFrameView, animationFrameProvenance, animationPlanProvenance } from "./frameProvenance.js";
 import { blendAnimationNodes,fadeAnimationNode,interpolateNodeFrame } from "./concrete.js";
@@ -153,7 +154,7 @@ export function sampleTransitionWithBudget(input,timeMs,accountWork) {
     guides.push(guideState.from[sourceIndex]);decisions.push({kind:"exit",sourceIndex,...(ownerKey===undefined?{}:{ownerKey}),...(guideState.ambiguousFrom.has(sourceIndex)?{reason:"guide-ambiguity"}:{})});nodes.push(fadeAnimationNode(from,1-timeline.progress(ownerKey),key));
     positions.push(meaning(fromPositions[sourceIndex]));cartesian.push(meaning(cartesianState.from[sourceIndex]));polars.push(meaning(polarState.from[sourceIndex]));appendGraph("from",sourceIndex);appendPartition("from",sourceIndex);geoFrame.append(null);geoTextFrame.append(null);axisFrame.append(null);
   }
-  validateGeneratedItemLimit(nodes.length,"Animation sampled nodes");
+  validateGeneratedItemLimit(nodes.length,"Animation sampled nodes",animationResourceLimits(transitionResources(plan))?.maxOutputNodes);
   const scene=cloneAndFreeze({version:2,width,height,nodes});
   const geos=geoFrame.finish();
   return finish(cloneAndFreeze({graphicSpec:canvasSceneProgram(scene).graphicSpec,scene,progress,decisions}),positions,graphFrame.finish(),cartesian,partitionFrame.finish(),polars,geos,guides,geoTextFrame.finish(geos),axisFrame.finish());

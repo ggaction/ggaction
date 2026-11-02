@@ -1,0 +1,17 @@
+{
+  "kind": "diagnostic-interruption",
+  "originalProcess": 40823,
+  "minimumObservedElapsed": "22m01s before SIGTERM",
+  "reason": "Sampled rebase was still CPU-bound. Parent explicitly authorized termination after preserving completed stages and OS samples.",
+  "completedStages": [
+    "native-products",
+    "diagnostic-endpoints",
+    "prepared",
+    "all-coordinates-verified",
+    "transport-measured"
+  ],
+  "rebaseCompleted": false,
+  "osSampleOwner": "723/723 late main-thread samples were WeakSet.add / WeakCollectionSet / hash-table rehash; JIT symbols do not identify a reliable JS source owner. No speculative source repair.",
+  "samplingProbe": "SIGUSR1 did not establish a target inspector; another process occupied9229. No other process was inspected or changed.",
+  "followingProbe": "Repeat preserved each completed phase and deliberately omitted rebase. Timing is single diagnostic Node22, not P95; other agents were running."
+}

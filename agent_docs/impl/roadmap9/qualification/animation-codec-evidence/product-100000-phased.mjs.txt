@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import {writeFile,mkdir,readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {chart} from '../../src/index.js';
+import {planTransitionWithResources,exportScopedTransition,restoreScopedTransition,exportTransitionPlan,transitionResources,transitionColumnMetrics} from '../../src/animation/planner.js';
+import {sampleTransition,exportAnimationFrames} from '../../src/animation.js';
+import {encodeAnimationEnvelope,decodeAnimationEnvelope} from '../../src/animation/envelopeCodec.js';
+import {validateAnimationColumns} from '../../src/animation/columnCodec.js';
+import {animationResourceAccounting} from '../../src/animation/resources.js';
+
+// Full original fixture and every phase/oracle; at most one prepared plan lives
+// across a phase. Explicit GC observes reference lifetime, not retained-heap SLO.
+assert.equal(typeof global.gc,'function');
+const n=100000,side=Math.ceil(Math.sqrt(n));
+const rows=Array.from({length:n},(_,id)=>({id,x:(id%side+1)/(side+1),y:(Math.floor(id/side)+1)/(side+1)}));
+const folder='.artifacts/animation-columns';await mkdir(folder,{recursive:true});
+const hash=x=>createHash('sha256').update(x).digest('hex');
+const result={kind:'Private product resource path, phased plan lifetimes; no instrumentation; not SLO/P95',node:process.version,n,inputSHA256:hash(JSON.stringify(rows)),phases:{},lifetime:[]};
+async function stage(name){global.gc();result.stage=name;result.lifetime.push({stage:name,memory:process.memoryUsage()});await writeFile(folder+'/product-100000-phased-partial.json',JSON.stringify(result,null,2)+'\n');console.log(name);}
+function work(input){const pending=[input];let count=0;while(pending.length){const value=pending.pop();count++;if(typeof value==='string')count+=value.length;else if(value!==null&&typeof value==='object')for(const[key,child]of Object.entries(value)){count+=key.length;pending.push(child);}}return count;}
+const from=chart().createCanvas({width:400,height:400,margin:20,plotBorder:false}).createData({id:'rows',keyField:'id',values:rows}).createPointMark({id:'points',maxItems:100000}).encodeX({field:'x',scale:{id:'x',domain:[0,1],nice:false}}).encodeY({field:'y',scale:{id:'y',domain:[0,1],nice:false}});
+const to=from.editScale({id:'x',domain:[0,2],nice:false}),limits={maxEndpointNodes:200002,maxOutputNodes:100001},options={durationMs:100,easing:'linear'};
+const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-7*Math.max(1,Math.abs(b)));
+function verify(frame,domain){const circles=frame.scene.nodes.filter(node=>node.type==='circle');assert.equal(circles.length,n);assert.equal(frame.decisions.filter(d=>d.kernel==='cartesian-point').length,n);for(let i=0;i<n;i++){close(circles[i].properties.x,20+360*rows[i].x/domain);close(circles[i].properties.y,380-360*rows[i].y);}}
+function nativePhase(){let start=performance.now();const plan=planTransitionWithResources({from,to,options},limits);result.phases.prepare={ms:performance.now()-start,accounting:animationResourceAccounting(transitionResources(plan)),columns:transitionColumnMetrics(plan),fullLegacyWork:work(exportTransitionPlan(plan))};start=performance.now();const frame=sampleTransition(plan,50);verify(frame,1.5);result.phases.sample={ms:performance.now()-start};result.allCoordinatesVerified=n;assert.throws(()=>exportAnimationFrames(plan,{timesMs:Array.from({length:50},(_,i)=>i)}),/Animation frame export work/);result.batch50Rejected=true;const text=encodeAnimationEnvelope(exportScopedTransition(plan));return{frame,text};}
+function offlinePhase(text,expected,domain){const start=performance.now(),plan=restoreScopedTransition(decodeAnimationEnvelope(text)),frame=sampleTransition(plan,50);verify(frame,domain);assert.deepEqual(frame,expected);const columns=validateAnimationColumns(exportScopedTransition(plan).columns,transitionResources(plan));delete columns.restore;const receipt={ms:performance.now()-start,bytes:Buffer.byteLength(text),accounting:animationResourceAccounting(transitionResources(plan)),columns};assert.equal(receipt.accounting.native,false);return receipt;}
+function rebasePhase(frame){const start=performance.now(),plan=planTransitionWithResources({from:frame,to,options},limits);assert.equal(sampleTransition(plan,0),frame);const next=sampleTransition(plan,50);verify(next,1.75);result.allRebaseCoordinatesVerified=n;result.phases.rebase={ms:performance.now()-start,accounting:animationResourceAccounting(transitionResources(plan)),columns:transitionColumnMetrics(plan),fullLegacyWork:work(exportTransitionPlan(plan))};const text=encodeAnimationEnvelope(exportScopedTransition(plan));return{frame:next,text};}
+let native=nativePhase();await stage('native-plan-released');
+result.phases.offline=offlinePhase(native.text,native.frame,1.5);native.text=undefined;await stage('native-offline-plan-released');
+let rebase=rebasePhase(native.frame);native=undefined;await stage('rebase-plan-and-source-frame-released');
+result.phases.rebaseOffline=offlinePhase(rebase.text,rebase.frame,1.75);rebase=undefined;await stage('all-native-offline-rebase-exact');
+assert.equal(result.phases.offline.bytes,33703431);assert.equal(result.phases.rebaseOffline.bytes,41204588);assert.equal(result.phases.prepare.fullLegacyWork,97911711);assert.equal(result.phases.rebase.fullLegacyWork,133456501);
+result.sourceSHA256={};for(const file of['src/animation/columnCodec.js','src/animation/resources.js','src/animation/planner.js','src/animation/envelopeCodec.js','src/animation/sample.js','src/animation/frameEndpoint.js','src/animation/partitionTracks.js','src/materialization/animation/point.js','src/materialization/animation/guides.js','src/core/validation.js','src/selectors/graphicCapacity.js'])result.sourceSHA256[file]=hash(await readFile(file));
+await writeFile(folder+'/product-100000-phased.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));

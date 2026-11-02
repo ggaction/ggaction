@@ -20,14 +20,14 @@ function position(input) {
   const keys = ["type", "domain", "range", "clamp", ...(scale.type === "log" ? ["base"] : scale.type === "pow" ? ["exponent"] : scale.type === "symlog" ? ["constant"] : [])];
   return cloneAndFreeze({ value: input.value, scale: Object.fromEntries(keys.filter(key => Object.hasOwn(scale, key)).map(key => [key, scale[key]])) });
 }
-function layerPositions(program, layer) {
+function layerPositions(program, layer, rowLimit) {
   if (layer.mark.type !== "point") return unavailable("unsupported-family");
   if (layer.derivedBindings?.overlay) return unavailable("overlay-position");
   if (requireCoordinate(program, layer.coordinate).type !== "cartesian") return unavailable("coordinate-family");
   if (["xOffset", "yOffset"].some(channel => hasPositionBinding(layer, channel))) return unavailable("offset-position");
   if (program.materializationConfigs.jitters?.[layer.id] || program.materializationConfigs.pointPacking?.[layer.id]) return unavailable("computed-point-position");
   const dataset = applyItemMissingPolicy(layer, requireDataset(program, layer.data));
-  validateGeneratedItemLimit(dataset.values.length, "Animation point rows");
+  validateGeneratedItemLimit(dataset.values.length, "Animation point rows", rowLimit?.(program,layer));
   const resolvers = { resolveMarkItems, resolveMarkSourceItems };
   const values = Object.fromEntries(["x", "y"].map(channel => [channel,
     resolveRowEncodingValues(program, layer, dataset, channel, resolvers, { mapped: false, includeScale: true })]));
@@ -44,7 +44,7 @@ function layerPositions(program, layer) {
 
 // Resolve once per native final layer grain, then join by the persisted item key.
 // Draw order and source row indices never establish correspondence.
-export function projectPointAnimationPositions(program, endpoint) {
+export function projectPointAnimationPositions(program, endpoint, rowLimit) {
   const layers = new Map();
   return Object.freeze(endpoint.identities.map((identity,index) => {
     if (identity === undefined) return unavailable("anonymous");
@@ -56,7 +56,7 @@ export function projectPointAnimationPositions(program, endpoint) {
       throw new TypeError("Animation point lineage does not match its semantic dataset.");
     }
     let scoped = layers.get(scope); if (scoped === undefined) layers.set(scope, scoped = new Map());
-    if (!scoped.has(owner)) scoped.set(owner, layerPositions(scope, layer));
+    if (!scoped.has(owner)) scoped.set(owner, layerPositions(scope, layer, rowLimit));
     const prepared = scoped.get(owner);
     if (prepared.reason) return prepared;
     const result = prepared.get(unnamespaceItemKey(identity.key, namespaces));

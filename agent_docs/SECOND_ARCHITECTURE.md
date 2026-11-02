@@ -12,6 +12,17 @@ identity/meaning만 저장하여 공통 scene compiler가 graphicSpec을 재생�
 endpoint는 기존 frame 객체이며 serializer는 그 진단 view도 보존한다. 이 private 경계는
 일반 player/session 또는 offline hit의 완성을 뜻하지 않는다.
 
+비공개 `animation/columnCodec.js`는 실제 준비값의 shape별 dense column과 정확 scalar runs만
+소유한다. 원 concrete 값·own key 순서·undefined·hole을 무손실 복원하며 의미를 생성하지 않는다.
+`animation/resources.js`의 opaque scope는 native owner 검증과 offline 데이터 검산의 권한을
+구별한다. Planner와 sampler는 기존 기본 경로를 유지하며 이 명시 private scope에서만 준비
+traversal과 node 상계를 선택한다. Sample의 기존 canonical native proof에서 현재 owner만 읽어
+명시 rebase scope를 새로 만들며 별도 frame scope나 과거 plan/frame을 참조하지 않는다.
+공개 planner는 두 node 옵션을 모두 생략하면 기존v3를 사용하고 명시 요청만v4의 endpoint/timeline
+Node와 공통 vectors로 저장한다. 동일 codec 뒤 strict actual graphic 검산을 재사용하며 native 권한을
+offline에 복원하지 않는다. 정확 공개 quota·wire format은 [Animation 계약](contract/current/ANIMATION.md),
+원100k 검증 checkpoint는 [private codec 기록](impl/roadmap9/qualification/animation-codec-private.md)을 따른다.
+
 축에 의존하는 animation 범례 lane은 같은 scope의 canonical guide 참조만 저장한다.
 `animation/guideTracks.js`는 각 축의 현재 timeline 의미와 실제 node style을 읽고,
 `materialization/animation/legendAxisLaneState.js`가 공통 native clearance/lane owner로
@@ -987,11 +998,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Current gzip ceiling |
 | --- | --- |
 | `ggaction` | 786,300 bytes |
-| `ggaction/basic` | 424,700 bytes |
+| `ggaction/basic` | 424,800 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 67,900 bytes |
 | `ggaction/interaction` | 136,700 bytes |
-| `ggaction/animation` | 333,900 bytes |
+| `ggaction/animation` | 339,400 bytes |
 
 
 
@@ -5041,3 +5052,5 @@ Private hit assembly와 shared path raw 계산/frozen facade 분리까지 포함
 이 크기 정합은 원100k runtime이나 성능 SLO 성공을 뜻하지 않는다.
 
 Root의 inference worker·point·position sampling과 합친 session hit preparation은1252entries / Node22packed1793316 / Node20·24packed1797146 / unpacked8093926bytes다. 실제 합산값에 package1252/1797200/8094000을 적용한다. Node20 Full786220/interaction136692gzipbytes에 표의786300/136700 한도를 적용하고 animation333881은333900 안이다. 문서 검색1093282bytes는 최소cap1093300으로 정합했다. 이 artifact 크기 정합은 runtime guard 또는 성능 SLO 변경이 아니다.
+
+Root 합산 공개version4는1254entries/Node22packed1802294/Node20·24packed1805641/unpacked8129912bytes다. 실제 입력에 최소cap1254/1805700/8130000을 적용한다. Node20 animation339303gzipbytes에는 표의339400cap, Basic424738에는424800을 적용하며 Full786299는786300안이다. 검색1093920에는1094000cap이다. Package guard와 runtime 자원guard·원성능SLO를 구분한다. 실제 same-tar 원100k point/10k partition·3Node·브라우저 검증은 [합산증거](impl/roadmap9/qualification/animation-v4-merged-evidence/qualification.json)를 따른다.

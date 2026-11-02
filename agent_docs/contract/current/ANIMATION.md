@@ -6,7 +6,7 @@ clock·render callback을 가진 일시적 controller다.
 
 ## 계획과 sample
 
-`planTransition({from,to,options:{durationMs,easing?,tracks?,markers?,composite?}})`은 닫힌 Full/Basic 프로그램을
+`planTransition({from,to,options:{durationMs,easing?,tracks?,markers?,composite?,maxEndpointNodes?,maxOutputNodes?}})`은 닫힌 Full/Basic 프로그램을
 받아 authentic frozen plan을 반환한다. from/to는 authentic sampled frame도 허용한다.
 durationMs는0이상 finite, easing은 `linear|cubic-in-out`이며 기본값은 cubic-in-out이다.
 양 endpoint의 실제 materialized graphics와 typed identity·row grain을 사용한다.
@@ -33,7 +33,34 @@ linear/time/log/pow/sqrt/symlog의 기존 버전 kernel을 사용하며 log pixe
 추정하지 않는다. topology·지원되지 않는 style·coordinate·scale policy가 호환되지 않거나
 현재 typed family가 없는 항목은 명시한 reason과 공통 weighted concrete crossfade다.
 새 item은 enter, 사라진 item은 exit이며 role/childPath/typed key를 보존한다.
-계획 준비의 누적work10,000,000과 양 endpoint 총node10,000 한도를 적용한다.
+두 node 옵션을 모두 생략하면 version3의 준비 누적work10,000,000과 양 endpoint 총node10,000,
+출력node10,000 한도 및 기존 실패 순서를 그대로 적용한다.
+
+## 명시 node 용량과 version4
+
+`maxEndpointNodes`는 두 endpoint 실제 scene node의 합이며 safe integer1..200002다.
+`maxOutputNodes`는 각 endpoint 및 모든 sampled output의 실제 node 수이며1..100001다.
+각 생략값은10000이며 하나를 명시해도 다른 값은 자동 증가하지 않는다. Own undefined는
+거부한다. Background·guide·label·weighted concrete output도 실제 개수에 포함한다.
+Point의 maxItems는 animation 옵션에 자동 전달하지 않는다.
+
+한 옵션이라도 own으로 명시하면 version4와 transition kernel4를 선택한다. 닫힌 native
+프로그램과 retained child의 원 raw/items 및 실제 collection 소유자를 전수 검산한다.
+Point는 자기 maxItems의 기본50000/명시최대100000을 보존하며 다른 native family의 각
+owner10000과 primitive/graphic-only 한도는 그대로다. 서로 다른 native owner가 장식과 함께
+endpoint 총10000을 넘는 혼합 scene은 명시 총합/출력 한도 안에서 허용한다. Owner/type/
+namespace 위조나 caller shallow freeze는 이 권한을 만들지 못한다.
+
+명시 scope의 준비 traversal 및 partition track 준비는 원 charge 수학을 그대로 적용해
+140000000까지 검산한다. Column expanded values12000000, descriptor/cell visits각16000000,
+독립 intern work140000000과 metadata1000000을 할당 전에 검사한다. 전역10M, 다른 family의
+geometry/path/identity 작업, timeline/native sample/partition frame/batch10M 및 weighted64는
+늘리지 않는다. Node 옵션은 이 다른 경계를 우회하거나 일정한 재생 속도를 보장하지 않는다.
+
+Sample/rebase는 원 concrete/meaning/scale/identity의 현재 flat proof만 유지한다. 새 rebase와
+`player.interrupt`에도 두 옵션 중 필요한 값을 다시 명시해야 한다. 이전 plan의 숫자를 자동
+상속하지 않으며 생략 시 version3의 기존 한도에서 거부될 수 있다. Exact sampled endpoint는
+원 객체다. Offline은 동일 strict 검산 뒤 재생·재기준 가능하지만 native source 권한을 복원하지 않는다.
 
 ## 완료된 Graph 배치 전환
 
@@ -336,6 +363,26 @@ runtime Infinity는 저장에서만 문자열 `infinite`로 표현한다.
 
 schema1 envelope는 `{kind:'animation',schemaVersion:1,packageVersion,payload,digest}`다.
 payload의 plan은 planner 단일 export/restore owner가 검증하며 kernels manifest를 포함한다.
+Version3의 원 literal payload/회계는 그대로 import/export/restore한다. Version4는 정확히
+`{kind:"transition-plan",version:4,limits,kernels,durationMs,easing,from,to,vectors,timeline?}`다.
+Limits는 두 resolved own node 한도를 모두 요구하며 kernels.transition은4다. 다른 수학 kernel
+version은 그대로다. from/to와 optional timeline만 아래 lossless Node를 사용한다.
+
+Node는 한 own variant인 `{literal:value}`, `{object:[[key,node],...]}`, `{array:[node,...]}` 또는
+`{records:{length,shapes,shape,columns}}`다. Object key 순서와 unique key를 보존한다. Records는
+shape별 dense columns와 정확 shape selection을 가진다. Shape는 `{keys}`, array의 `{length,keys}`,
+`{literal:null|undefined}` 또는 `{hole:true}`이며 absent/own undefined/actual hole/null을 구별한다.
+Selection은 `{constant:shapeIndex}`, `{vector:index}` 또는 `{runs:[[count,shapeIndex],...]}`다.
+Columns는 `[shapeIndex,[[field,column],...]]`이며 각 shape의 원 key 순서·field 전체와 정확히
+일치한다. Scalar column은 `{constant:scalar}`, `{vector:index}`, `{runs:[[count,scalar],...]}`이며
+nested column은 `{node:Node}`다. 각 column은 해당 shape의 실제 row 수와 길이가 같아야 한다.
+Array shape의 keys는 원 length 안의 canonical index만 허용한다. Runs의 양의 safe
+integer count 합, ref 범위와 길이, shape index/빈도 및 field별 정확 column 수를 확장 할당 전에
+검산한다. Vectors는 dense scalar arrays다. Unknown/missing/duplicate field와 overflow를 거부한다.
+임의 편집/style/clip/IDs/lineage는 원 값 그대로이며 지원하지 않는 mix는 기존 literal로 보존한다.
+원 actual graphic을 복원한 뒤 기존 semantic-forward/identity/geometry validators로 검산하며
+semantic-to-graphic compiler나 pixel 역산을 실행하지 않는다.
+
 digest는 기존 tagged value의 canonical JSON SHA256이다. 실제 endpoint graphicSpec의
 image/font base64 bytes와 semantic position·Cartesian geometry·완료 graph layout/route·normalized partition 준비값을 보존한다. hash만 저장하지 않는다.
 Native tracks·correspondence는 동일 version owner에서 재구성하며 중복 authority로 저장하지 않는다.

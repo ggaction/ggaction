@@ -1,0 +1,5 @@
+{"stage":"native-products","kind":"points","n":100000,"memory":{"rss":180633600,"heapTotal":103497728,"heapUsed":74979736,"external":2717175,"arrayBuffers":186581}}
+{"stage":"diagnostic-endpoints","kind":"points","n":100000,"memory":{"rss":682328064,"heapTotal":426606592,"heapUsed":248649176,"external":2605822,"arrayBuffers":46876}}
+{"stage":"prepared","kind":"points","n":100000,"memory":{"rss":292159488,"heapTotal":1289764864,"heapUsed":1243399344,"external":2308544,"arrayBuffers":46876}}
+{"stage":"all-coordinates-verified","kind":"points","n":100000,"memory":{"rss":723042304,"heapTotal":1897381888,"heapUsed":1840681360,"external":2316736,"arrayBuffers":55068}}
+{"stage":"transport-measured","kind":"points","n":100000,"memory":{"rss":1281015808,"heapTotal":2091319296,"heapUsed":2035718456,"external":2316736,"arrayBuffers":55068}}

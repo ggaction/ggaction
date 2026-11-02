@@ -1,0 +1,7 @@
+import {build} from 'esbuild';
+import {readFile,writeFile,unlink} from 'node:fs/promises';
+const result=await build({entryPoints:['scripts/package-artifact.js'],bundle:true,platform:'node',format:'esm',packages:'external',write:false,plugins:[{name:'measure-budget-only',setup(b){b.onLoad({filter:/package-artifact\.js$/},async a=>({contents:(await readFile(a.path,'utf8')).replace(/export const PACKAGE_LIMITS = Object.freeze\(\{[\s\S]*?\}\);/,'export const PACKAGE_LIMITS = Object.freeze({entries:9999,packedBytes:99999999,unpackedBytes:99999999});'),loader:'js'}));}}]});
+const file='scripts/.private-package-budget.mjs';
+await writeFile(file,result.outputFiles[0].text);
+try{const {inspectPackageArtifact}=await import('../../'+file);const m=inspectPackageArtifact();console.log(JSON.stringify({kind:'Canonical pack staging, diagnostic quota bypass only',entryCount:m.entryCount,size:m.size,unpackedSize:m.unpackedSize},null,2));}
+finally{await unlink(file);}

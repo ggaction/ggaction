@@ -12,7 +12,15 @@ export function namespaceGraphicId(namespace, id) {
 function pointOwners(program, id) {
   const layer = findLayer(program, id);
   const dataset = layer?.mark?.type === "point" ? findDataset(program, layer.data) : undefined;
-  const owners = Array.isArray(dataset?.values) ? [{ layer, dataset, maxItems: program.markConfigs?.[id]?.maxItems }] : [];
+  const owners = [];
+  if (Array.isArray(dataset?.values)) {
+    const materialization = Object.hasOwn(program, "materializationConfigs") ? program.materializationConfigs : undefined;
+    const configs = materialization != null && Object.hasOwn(materialization, "marks") ? materialization.marks
+      : Object.hasOwn(program, "markConfigs") ? program.markConfigs : undefined;
+    const config = configs != null && Object.hasOwn(configs, id) ? configs[id] : undefined;
+    const maxItems = config != null && Object.hasOwn(config, "maxItems") ? config.maxItems : undefined;
+    owners.push({ layer, dataset, maxItems });
+  }
   for (const childId of program.compositionSpec?.children ?? []) {
     const prefix = namespaceGraphicId(`${program.compositionSpec.id}-${childId}`, "");
     const child = program.children[childId];
