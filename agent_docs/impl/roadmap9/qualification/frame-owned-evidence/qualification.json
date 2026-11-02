@@ -1354,6 +1354,37 @@
     "profile-small/sample.cpuprofile": {
       "sha256": "c5852d2320dc4b0e0208fd9a55ca68b9444db9c40e0e0fb2c9898440850373d8",
       "bytes": 4920
+    },
+    "source-pin-provenance.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "source-pin-machine.log": {
+      "sha256": "9d5f37929938983723667923bfd7c6f1802a50c4a0eddfbfd32ef30557b54d25",
+      "bytes": 45
+    },
+    "source-pin-llms.log": {
+      "sha256": "4b6bcf79b8d7c80c0d7976c40af2ecc0457b5792bd114ba0e84d609c15ec6eea",
+      "bytes": 73
+    },
+    "source-pin-docs.log": {
+      "sha256": "0f58b2ba596fe6ed8f9367bb83ff1f3a61b87e195379d9a884678ed21ba71e76",
+      "bytes": 4234
+    },
+    "source-pin-pack.json": {
+      "sha256": "e8dff68231700f14d6d0a7c78cc33fc3a2278f757f7d5fea03058fb952b6ebb6",
+      "bytes": 427
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
+  },
+  "sourceRevision": "b79f632130fbd2462d862e994c7ff1c670e4c7aa",
+  "sourcePin": {
+    "sourceCommit": "b79f632130fbd2462d862e994c7ff1c670e4c7aa",
+    "contractId": "sha256:63f0259acc25e1946fc055f2796ed5ba55fe9ca0ddddc9558f30928ee27b052d",
+    "docsTests": 18,
+    "archiveSHA256Unchanged": "d4f2db48cb4d1ed0adaf959e6ce355273324f6df6b806f2b2339424eeaff2251"
   }
 }
