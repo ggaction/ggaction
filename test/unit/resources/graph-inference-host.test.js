@@ -132,3 +132,22 @@ test('worker admission never evaluates optional inherited or accessor host field
   worker.complete();await promise;lateError({get error(){reads++;throw Error('late')}});assert.equal(reads,0);
   executor.dispose();
 });
+
+test('prepared stored reuse preserves full binding, constructor and restore checks at each native application',async()=>{
+ const p=base(),host=automatic(),executor=createGraphInferenceExecutor({createWorker:host.createWorker});
+ const prepared=await prepareInferredGraphData(p,{kind:'create',...args},{executor,requestToken:'t'});
+ const actual=p.createInferredGraphData({prepared,requestToken:'t'}),resource=graph(actual),before=serializeProgram(p);
+ // Reusing a stored proof does not authorize a source with equal IDs/revisions
+ // but different field values, nor an absent source or a Basic constructor.
+ const changed=p._clone({semanticSpec:{...p.semanticSpec,datasets:p.semanticSpec.datasets.map(data=>({...data,values:data.values.map(row=>({...row,x:row.x*10}))}))}}),snapshot=JSON.stringify(changed.semanticSpec);
+ assert.throws(()=>changed.editSemantic({property:'resource[graph:g]',value:resource}),/weight|binding/);
+ assert.equal(JSON.stringify(changed.semanticSpec),snapshot);
+ assert.throws(()=>chart().editSemantic({property:'resource[graph:g]',value:resource}));
+ assert.throws(()=>basicChart().editSemantic({property:'resource[graph:g]',value:resource}),/registered|supported/);
+ const malformed=structuredClone(resource);malformed.result.diagnostics.effectiveK=9;
+ assert.throws(()=>p.editSemantic({property:'resource[graph:g]',value:Object.freeze(malformed)}),/effective k/);
+ // Transport drops all preparation proofs; ordinary restoration validates anew.
+ assert.equal(serializeProgram(deserializeProgram(serializeProgram(actual))),serializeProgram(actual));
+ assert.deepEqual(p.createInferredGraphData({prepared,requestToken:'t'}).semanticSpec,actual.semanticSpec);
+ assert.equal(serializeProgram(p),before);executor.dispose();
+});

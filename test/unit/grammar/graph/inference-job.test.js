@@ -71,3 +71,24 @@ test('worker definition admission validates every inactive rule field before com
   assert.throws(()=>createInferenceJob({...payload(),definition:{...structural,options:{orderField:['x']}}}),/one field/);
   assert.throws(()=>createInferenceJob({...payload(),definition:{...structural,metric:'manhattan'}}),/metric features/);
 });
+
+test('completion reuse requires the exact validated job and owned completion, never a hash or caller freeze',()=>{
+ const job=createInferenceJob(payload()),raw=structuredClone(computeInferenceJob(job));
+ const owned=validateInferenceCompletion(job,Object.freeze(raw));
+ assert.notEqual(owned,raw);assert.equal(validateInferenceCompletion(job,owned),owned);
+ raw.result.model.edges[0].weight=99;
+ assert.notEqual(owned.result.model.edges[0].weight,99);
+ assert.throws(()=>validateInferenceCompletion(job,raw),/hash/);
+ const copied=structuredClone(owned);copied.result.model.adjacency[0].outgoing=[];
+ assert.throws(()=>validateInferenceCompletion(job,copied),/adjacency/);
+ const replacement={...owned,result:{...owned.result,diagnostics:{...owned.result.diagnostics,pairCount:0}}};
+ assert.throws(()=>validateInferenceCompletion(job,replacement),/hash/);
+ const another=createInferenceJob({...payload(),inputs:[{...payload().inputs[0],revision:1}]});
+ assert.throws(()=>validateInferenceCompletion(another,owned),/stale/);
+ // Equal transport inputs remain valid but cannot grant identity to a clone.
+ const sameJob=structuredClone(job),sameCompletion=structuredClone(owned);
+ const checked=validateInferenceCompletion(sameJob,sameCompletion);
+ assert.deepEqual(checked,owned);assert.notEqual(checked,sameCompletion);
+ let reads=0;const accessor={...owned};Object.defineProperty(accessor,'result',{enumerable:true,get(){reads++;return owned.result;}});
+ assert.throws(()=>validateInferenceCompletion(job,Object.freeze(accessor)),/accessor/);assert.equal(reads,0);
+});

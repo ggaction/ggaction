@@ -4966,3 +4966,10 @@ encoded input/result byte 한도를 소유한다. 기본10M과 일반 model/layo
 `materialization/graph/inferenceRequest.js`는 동기 action과 비동기 prepare의 동일 native 요청 해석을 소유한다. 완료된 model·diagnostics는 기존 stored/source binding 검증을 통과한 뒤 `resources/graphInference.js`의 private WeakMap handle로 묶인다. 기존 create/edit action은 exact receiver·kind·token만 허용하고 원래 resource closure를 한 번 적용한다. Renderer·global work·layout·graphic 한도는 그대로다. 동기 source revision closure는 자동 비동기화하지 않는다. Exact public 계약은 [GRAPHS](contract/current/GRAPHS.md#inferred-graph-worker-preparation)에 둔다.
 
 같은 d0083b94 archive의 Node20/22/24는 원노드10000/간선100000 worker 사례를 포함한 각5runtime·strict type·문서2개·6 entry bundle을 검증했다. 최소 실측 상한은 Full785,700 / graph67,600, package1246entries / 1,787,100packed / 8,054,300unpacked다. 나머지 entry 한도는 유지한다. 최초 한도 실패와 재검산 및 성능 미완료는 [worker 증거](impl/roadmap9/qualification/inference-worker-evidence/summary.json)에 분리한다.
+
+
+### 추론 준비의 exact 검증 증명 재사용
+
+`grammar/graph/inferenceJob.js`는 전체 completion 검증과 deep clone 이후에만 completion→정확한 normalized job을 비공개 WeakMap으로 연결한다. `materialization/graph/inferredState.js`는 준비된 resource의 기존 stored·binding 검증이 모두 끝난 후 동일 deep-owned resource의 stored 검사만 재사용한다. 이 증명은 plain freeze/일반 ownership flag/hash로 부여하지 않는다. Native resource envelope·constructor·revision·원행·source binding은 계속 검증하며 새 캐시 결과·저장 필드·공개 옵션을 만들지 않는다. 측정은 [재사용 기록](impl/roadmap9/qualification/inference-reuse.md)에 분리하고 전체 AT82 자격을 대체하지 않는다.
+
+이번 proof 재사용의 같은5926cc74 archive는3Node에서 검증됐으며 graph entry 실측67,610bytes의 최소 상한67,700, package1246entries/packed1,787,400/unpacked8,055,200을 적용했다. Full 및 다른 entry는 앞의 상한을 유지한다.

@@ -1,0 +1,93 @@
+{
+  "status": "source-verified-pin-pending",
+  "authorization": "../../AUTHORIZATION.json",
+  "base": "cb08d22a8adf528d105af574786e78573431d4b0",
+  "scope": "Exact immutable completion/job and validated prepared resource proofs; no API/schema/math/guard changes",
+  "owning": 57,
+  "criticalOwners": 3,
+  "boundaries": 38,
+  "packageContracts": 7,
+  "sourceDocs": 242,
+  "browser": {
+    "actualWorker": true,
+    "sizes": [
+      100,
+      1000,
+      10000
+    ],
+    "k": 10,
+    "allEdges": true,
+    "searchWork10000": 31318394,
+    "prepareMs10000": 16629.89999985695,
+    "commitMs10000": 482,
+    "functionalSingleRun": true,
+    "qualification": false
+  },
+  "profile": {
+    "kind": "temporary-loader-instrumented-single-run",
+    "counts": {
+      "prepareHash": [
+        3,
+        2
+      ],
+      "prepareIndex": [
+        3,
+        2
+      ],
+      "prepareBytes": [
+        7,
+        6
+      ],
+      "commitIndex": [
+        2,
+        0
+      ],
+      "commitBindings": [
+        1,
+        1
+      ]
+    },
+    "concurrentLoad": "Root and peer functional checks ran concurrently; no controlled comparison or P95 claim",
+    "scope": "inclusive function durations overlap; do not sum nested costs"
+  },
+  "archive": "5926cc74cffb5a5d9751e6f2f9e12fd4fed02d527824ef15544920973be17430",
+  "sourceHashes": {
+    "src/grammar/graph/inferenceJob.js": "92c9f0f6ad8335b3b90f495a4363994a152e5d6a16a837cfb243cc32222bb5f2",
+    "src/materialization/graph/inferredState.js": "1cdd7255ef743131bd55f64f643952af2eb63653d91a9c73e4ccb7ced54554c2",
+    "src/materialization/graph/inferredResource.js": "7f32b5d1a467b2df1f4869ddd980de3d0c737b5f2808d77e4aa2aae6c30e63e3"
+  },
+  "caps": {
+    "entries": 1246,
+    "packed": 1787400,
+    "unpacked": 8055200,
+    "graphGzip": 67700,
+    "FullGzip": 785700
+  },
+  "firstFailures": {
+    "focused.log.gz": "fixture had a different logicalId; corrected to same references/different values before binding assertion",
+    "package-first.log.gz": "unpacked8055120 exceeds8054300",
+    "package20.log.gz": "packed1787331 exceeds1787100",
+    "preflight-first.log.gz": "default Ruby2.6; rerun with configuredRuby3.2",
+    "installed24.json": "runtime/types/docs passed but graph67610 exceeds67600; same bytes reassessed against67700"
+  },
+  "pending": [
+    "Source pin/build checks",
+    "Final combined AT82 P95/retained heap/100cycle"
+  ],
+  "qualification": false,
+  "installed": {
+    "nodes": [
+      "24.22.1",
+      "22.23.1",
+      "20.20.2"
+    ],
+    "eachRuntime": 5,
+    "eachTypeFixture": 1,
+    "eachExecutableSnippets": 2,
+    "eachBundles": 6,
+    "exactArchive": true,
+    "eachFull10000Nodes100000Edges": true,
+    "initialNode24": "installed24.json",
+    "sameMeasurementReassessment": "installed24-reassessed.json"
+  }
+}

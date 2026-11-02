@@ -8,7 +8,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 785_700, // Dedicated inference worker: Node20 785,652 gzip bytes.
   "ggaction/basic": 424_400, // Dynamic guide dependency union: Node20/24 424,305 gzip bytes.
   "ggaction/svg": 26_000,
-  "ggaction/graph": 67_600, // All six graph helpers: Node20 67,555 gzip bytes.
+  "ggaction/graph": 67_700, // All six graph helpers: Node20 67,610 gzip bytes.
   "ggaction/animation": 333_700, // Dynamic guide dependencies: Node20 333,698 gzip bytes.
   "ggaction/interaction": 131_400
 });

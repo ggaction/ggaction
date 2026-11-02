@@ -12,6 +12,9 @@ import { validateInferenceBytes, INFERENCE_MAX_BYTES } from "./inferenceBudget.j
 import { resolvedInferenceResult } from "./inferenceResult.js";
 
 const jobs = new WeakSet();
+// Only a completed validation followed by ownership establishes this proof.
+// A matching hash or a caller's frozen/structured-cloned value is insufficient.
+const completions = new WeakMap();
 const transportDefault = Object.freeze({ policy: "bounded-inference@1", maxWork: 10_000_000, maxBytes: INFERENCE_MAX_BYTES });
 const active = signal => { if (signal !== undefined) AbortSignal.prototype.throwIfAborted.call(signal); };
 export const inferenceValueHash = value => contentDigest(canonicalJSON(encodeValue(value)));
@@ -83,6 +86,7 @@ export function computeInferenceJob(input, signal) {
 
 export function validateInferenceCompletion(input, completion) {
   const job = validateInferenceJob(input), policy = inferenceTransportPolicy(job.definition);
+  if (completions.get(completion) === job) return completion;
   ownRecord(completion, "Inference completion");
   rejectUnknownProperties(completion, ["schemaVersion", "complete", "inputHash", "resultHash", "result"], "inference completion");
   required(completion, ["schemaVersion", "complete", "inputHash", "resultHash", "result"], "Inference completion");
@@ -94,5 +98,7 @@ export function validateInferenceCompletion(input, completion) {
   indexGraphModel(completion.result.model, { maxNodes: job.definition.maxNodes, maxEdges: job.definition.maxEdges }, optional(job.definition, "execution"));
   ownRecord(completion.result.diagnostics, "Inference diagnostics");
   if (typeof completion.resultHash !== "string" || completion.resultHash !== inferenceValueHash(completion.result)) throw new TypeError("Inference completion result hash is stale.");
-  return cloneAndFreeze(completion);
+  const owned = cloneAndFreeze(completion);
+  completions.set(owned, job);
+  return owned;
 }
