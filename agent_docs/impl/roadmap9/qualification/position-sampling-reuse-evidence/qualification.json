@@ -1,0 +1,485 @@
+{
+  "status": "owned-position-scale-reuse-verified; full-native-performance-pending",
+  "base": "968485634",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Only exact privately registered position plans reuse closed-record validation. Locally created scalar scale and its new domain/range arrays become owned before mapping. External copied/frozen inputs retain complete validation and remain unowned. No API/schema/math/guard/SLO change.",
+  "sourceSHA256": "6a9f29ed0a103a6bf7321a7eecb936970f367d0b21fd5382fe60ab122bd0e7a8",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1251,
+    "packedBytes": 1791989,
+    "unpackedBytes": 8088155,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-7a58b485728c4e47ef37d30455bfce6cfdef6af630bd8c43ade98eb7ad16da6b.tgz",
+    "sha256": "7a58b485728c4e47ef37d30455bfce6cfdef6af630bd8c43ade98eb7ad16da6b"
+  },
+  "checks": {
+    "owning.log": 164,
+    "coverage.log": 8,
+    "boundaries.log": 20,
+    "package-contracts.log": 7,
+    "browser.log": 2,
+    "docs.log": 243
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "sha256": "7a58b485728c4e47ef37d30455bfce6cfdef6af630bd8c43ade98eb7ad16da6b",
+      "checks": [
+        {
+          "id": "animation-appearance/offline-four-renderers",
+          "status": "passed",
+          "durationMs": 482.22241699999995
+        },
+        {
+          "id": "animation-appearance/current-frame-interruption",
+          "status": "passed",
+          "durationMs": 64.51541700000007
+        },
+        {
+          "id": "animation-appearance/current-ink-selection",
+          "status": "passed",
+          "durationMs": 43.10004099999992
+        },
+        {
+          "id": "animation-cartesian-completion/native-four-renderers",
+          "status": "passed",
+          "durationMs": 263.7102500000001
+        },
+        {
+          "id": "animation-cartesian-completion/offline-network-free",
+          "status": "passed",
+          "durationMs": 888.2070419999998
+        },
+        {
+          "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+          "status": "passed",
+          "durationMs": 337.94349999999986
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1065,
+          "minifiedBytes": 2740587,
+          "gzipBytes": 786154
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 424647
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 113,
+          "minifiedBytes": 225913,
+          "gzipBytes": 67837
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113165,
+          "gzipBytes": 333816
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135989
+        }
+      ],
+      "types": "passed",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "node": "v22.23.1",
+      "sha256": "7a58b485728c4e47ef37d30455bfce6cfdef6af630bd8c43ade98eb7ad16da6b",
+      "checks": [
+        {
+          "id": "animation-appearance/offline-four-renderers",
+          "status": "passed",
+          "durationMs": 383.7366669999999
+        },
+        {
+          "id": "animation-appearance/current-frame-interruption",
+          "status": "passed",
+          "durationMs": 40.60279199999991
+        },
+        {
+          "id": "animation-appearance/current-ink-selection",
+          "status": "passed",
+          "durationMs": 25.851874999999836
+        },
+        {
+          "id": "animation-cartesian-completion/native-four-renderers",
+          "status": "passed",
+          "durationMs": 140.66541599999982
+        },
+        {
+          "id": "animation-cartesian-completion/offline-network-free",
+          "status": "passed",
+          "durationMs": 669.7752499999999
+        },
+        {
+          "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+          "status": "passed",
+          "durationMs": 201.9870830000002
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1065,
+          "minifiedBytes": 2740587,
+          "gzipBytes": 784772
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 423769
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24779
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 113,
+          "minifiedBytes": 225913,
+          "gzipBytes": 67689
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113165,
+          "gzipBytes": 332686
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135493
+        }
+      ],
+      "types": "passed",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "sha256": "7a58b485728c4e47ef37d30455bfce6cfdef6af630bd8c43ade98eb7ad16da6b",
+      "checks": [
+        {
+          "id": "animation-appearance/offline-four-renderers",
+          "status": "passed",
+          "durationMs": 320.857125
+        },
+        {
+          "id": "animation-appearance/current-frame-interruption",
+          "status": "passed",
+          "durationMs": 27.072333999999955
+        },
+        {
+          "id": "animation-appearance/current-ink-selection",
+          "status": "passed",
+          "durationMs": 22.32070800000008
+        },
+        {
+          "id": "animation-cartesian-completion/native-four-renderers",
+          "status": "passed",
+          "durationMs": 127.87675000000002
+        },
+        {
+          "id": "animation-cartesian-completion/offline-network-free",
+          "status": "passed",
+          "durationMs": 587.7197080000001
+        },
+        {
+          "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+          "status": "passed",
+          "durationMs": 180.52537499999994
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1065,
+          "minifiedBytes": 2740587,
+          "gzipBytes": 786154
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 424647
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 113,
+          "minifiedBytes": 225913,
+          "gzipBytes": 67837
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113165,
+          "gzipBytes": 333816
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135989
+        }
+      ],
+      "types": "passed",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    }
+  ],
+  "critical": {
+    "grammar/animation/positions.js": {
+      "lines": 100,
+      "branches": 96.2,
+      "functions": 100,
+      "actualRootRun": true
+    }
+  },
+  "built": {
+    "pages": 186,
+    "selectiveArtifacts": 1606,
+    "status": "passed"
+  },
+  "allocationAttribution": {
+    "kind": "position-same-plan-temporary-loader-allocation-attribution-not-performance",
+    "count": 1000,
+    "exactFrameEqual": true,
+    "frameSHA256": "6337f2305f451dd4d0fa8aa2e91f6bbdac35375de699c2af56911498138236d0",
+    "before": {
+      "calls": 9020,
+      "allocations": 24037,
+      "ownedAdds": 26042,
+      "descriptorWalks": 3002
+    },
+    "after": {
+      "calls": 9020,
+      "allocations": 14037,
+      "ownedAdds": 22042,
+      "descriptorWalks": 1002
+    },
+    "witness": {
+      "count": 1000,
+      "first": {
+        "x": 27.272727272727273,
+        "fill": "#4c78a8",
+        "y": 369.09090909090907,
+        "radius": 3
+      },
+      "last": {
+        "x": 78.18181818181819,
+        "fill": "#4c78a8",
+        "y": 30.909090909090878,
+        "radius": 3
+      }
+    },
+    "delta": {
+      "calls": 0,
+      "allocations": -10000,
+      "ownedAdds": -4000,
+      "descriptorWalks": -2000
+    }
+  },
+  "limits": {
+    "entries": 1251,
+    "packedBytes": 1795800,
+    "unpackedBytes": 8088200,
+    "FullGzip": 786200,
+    "animationGzip": 333900
+  },
+  "corrections": [
+    "First Node20 strict pack failed at1795790 over1795700; first six-bundle premeasure found animation333816 over333800. Only these measured artifact thresholds and unpacked8088155 to8088200 were reassessed; runtime guards and performance SLO unchanged."
+  ],
+  "reuse": {
+    "builtBrowser": "Public prose, snippets, CSS and UI unchanged; responsive/accessibility evidence reused; two actual Canvas/SVG animation browser regressions rerun"
+  },
+  "pending": [
+    "Original100k common frame and Canvas playback performance",
+    "Combined native P95/heap/lifecycle qualification",
+    "Sequential STEP057-070 and final required suites"
+  ],
+  "evidenceFiles": {
+    "coverage.log": {
+      "bytes": 2618,
+      "sha256": "9e1e7908a08f0ea3b8a0ae0f2682f3966af3ccbdb6c1170fc9967d07ffaeed9c"
+    },
+    "pack22.json": {
+      "bytes": 381,
+      "sha256": "4a2778370e1279504bc8a8d6f384894715036f7728b926daf0557e801faa07af"
+    },
+    "installed-24.json": {
+      "bytes": 2018,
+      "sha256": "04cb6a215522839d87341a8ddeaf1f376aa8243a51a235e989f4389887f04a8f"
+    },
+    "browser.log": {
+      "bytes": 1541,
+      "sha256": "419dd16f455be1c1bb489f289ed7182ecc43181d0433acde40f5d7d4d60f76cd"
+    },
+    "frozen.json": {
+      "bytes": 436,
+      "sha256": "17e5141228d78d5138c328a53e74c92802ce989bcc4dfd27aa184741642588bf"
+    },
+    "installed-24.log": {
+      "bytes": 1464,
+      "sha256": "8fb982053c0ca6266e0163a6d70676104ace9ee6656a8ee739e527b1655d26d3"
+    },
+    "pack20.log": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "pack22.log": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "installed-22.json": {
+      "bytes": 2024,
+      "sha256": "19d08195634b5f0085fd0a7bd9a53032ca5e8d8e6908ce7018e9da03a6023168"
+    },
+    "pack24.json": {
+      "bytes": 381,
+      "sha256": "97f9ae096c8495bd41a2b04d7b1c1dfc66d4fcf4fe482d3b7ef6297ef2cc5ce3"
+    },
+    "installed-22.log": {
+      "bytes": 1470,
+      "sha256": "7d966f6c30d2f6cd6c3a8fe6db5d1b89454c81877833b556ad99d1f4c7a4fb26"
+    },
+    "pack20-first.json": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docs.log": {
+      "bytes": 74104,
+      "sha256": "6ff53ec4d3b493d5014dc9b5d6bad766ee3c4d65c70575f784a9b6136bc47327"
+    },
+    "boundaries.log": {
+      "bytes": 4268,
+      "sha256": "ef60ddb2f7b2386e7fd01c874841641ef739fd94fd418b7137bf735e56547d15"
+    },
+    "installed-20.log": {
+      "bytes": 1470,
+      "sha256": "96f0a6975fd543e3ae40e2f8c9c75ace11e2f0ea83745b74892a49a95c69e229"
+    },
+    "pack24.log": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "same-plan-allocations.json": {
+      "bytes": 855,
+      "sha256": "0b6367e105b23989af4399e7ab404352de032c5b71c9114af0911aa25d122c95"
+    },
+    "installed-20.json": {
+      "bytes": 2024,
+      "sha256": "baa171bf333d877993fd261c14fba29cfb5282b23c6b588bac66b7979f9acdb3"
+    },
+    "package-contracts.log": {
+      "bytes": 1827,
+      "sha256": "a6ea1f60f4937a85602a55c440c7a8d476d45835707da9b4ff35b19655c8d6a1"
+    },
+    "same-plan.log": {
+      "bytes": 646,
+      "sha256": "0a5c0fb3a2874dbcafd55c3e6fcb5f68e658e97af515d22917a3e8858606681c"
+    },
+    "premeasure20.json": {
+      "bytes": 305,
+      "sha256": "e7b84b0dcd93c5f01203c9a715c74f289c035d89080811675955c792a8ae88c0"
+    },
+    "positions-before.js.txt": {
+      "bytes": 5838,
+      "sha256": "12f919cbed5026dd0ba4ad3f3fd918fb197cae5532ee865dbe22e7db58f8eb05"
+    },
+    "pack20.json": {
+      "bytes": 381,
+      "sha256": "7469ba6a3c54e60cb2566de2c50dc140c6b6281ee07593041068f112f4749971"
+    },
+    "prepack.log": {
+      "bytes": 501,
+      "sha256": "d6ddd46f37cb5935d88168a047f8c887cb04293989a16704f2110f374a1da00f"
+    },
+    "same-plan.mjs": {
+      "bytes": 3788,
+      "sha256": "7bf972c22a3ff41cbc92e48d59a15e9f4d833083b21f74b64ed9040c220ceced"
+    },
+    "owning.log": {
+      "bytes": 34296,
+      "sha256": "3e995b5f8d48682f88b1b10ce97b053e7b3d095bae7f44ecbe7b596076b93bfb"
+    },
+    "built.log": {
+      "bytes": 102,
+      "sha256": "16305e5926be746711cfe72bc6671fdf6880e924b51217fec344f785e933a341"
+    },
+    "pack20-first.log": {
+      "bytes": 966,
+      "sha256": "170e27d5e0634ba13ac80d6d0704ffe415247ddb64c3d50ec473ac248a456835"
+    },
+    "premeasure20.log": {
+      "bytes": 253,
+      "sha256": "ffa10949be0ce2d3e6c14e802da7cc85c4e97d6967a96e172f840a044a8faaaf"
+    },
+    "evidence.py": {
+      "bytes": 3371,
+      "sha256": "1ca34954cc095b0e0ebf8ee0d7336459c651ba7256f042a8075de5e55f72ca9f"
+    },
+    "generate.log": {
+      "bytes": 13431,
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5"
+    },
+    "build.log": {
+      "bytes": 420,
+      "sha256": "5fb5e476fe08b5a3dc74ffb5a68ab7b4244ebc72b45016147bd339cffe255811"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { isOwned } from "../../../src/core/immutable.js";
 import { preparePositionInterpolation as prepare, samplePositionInterpolation as sample } from "../../../src/grammar/animation/positions.js";
 
 const endpoint = (value, scale = {}) => ({ value, scale: { type: "linear", domain: [0, 40], range: [0, 400], ...scale } });
@@ -119,6 +120,9 @@ test("copied and caller-frozen position plans never acquire an ownership proof",
   const plan = prepare(endpoint(2), endpoint(30));
   const copied = structuredClone(plan);
   assert.equal(sample(copied, .5).position, 160);
+  assert.equal(isOwned(copied.from.scale), false);
+  assert.equal(isOwned(copied.to.scale.domain), false);
+  assert.equal(Object.isFrozen(copied.to.scale.domain), false);
   copied.to.scale.clamp = true;
   assert.throws(() => sample(copied, .5), /incompatible/);
   const shallow = Object.freeze({ ...plan, to: structuredClone(plan.to) });

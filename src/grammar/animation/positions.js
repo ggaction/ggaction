@@ -1,4 +1,4 @@
-import { cloneAndFreeze } from "../../core/immutable.js";
+import { cloneAndFreeze, freezeOwned } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateUnitInterval } from "../../core/validation.js";
 import { mapContinuousScaleValues } from "../scales/mapping.js";
@@ -63,12 +63,16 @@ export function preparePositionInterpolation(fromInput, toInput) {
 
 export function samplePositionInterpolation(plan, progress) {
   validateUnitInterval(progress, "Animation position progress");
-  ownRecord(plan, "Prepared animation position");
-  rejectUnknownProperties(plan, ["kind", "version", "from", "to"], "prepared animation position");
-  if (plan.kind !== "position" || plan.version !== ANIMATION_POSITION_VERSION) throw new TypeError("Animation position sampling requires a supported prepared position.");
-  // Only this module's exact deeply owned result can reuse endpoint validation.
+  // Only this module's exact deeply owned result can reuse closed-record and
+  // endpoint validation.
   // Structural copies and caller-frozen records retain the full data boundary.
-  const prepared = preparedPositions.has(plan) ? plan : preparePositionInterpolation(plan.from, plan.to);
+  let prepared = plan;
+  if (!preparedPositions.has(plan)) {
+    ownRecord(plan, "Prepared animation position");
+    rejectUnknownProperties(plan, ["kind", "version", "from", "to"], "prepared animation position");
+    if (plan.kind !== "position" || plan.version !== ANIMATION_POSITION_VERSION) throw new TypeError("Animation position sampling requires a supported prepared position.");
+    prepared = preparePositionInterpolation(plan.from, plan.to);
+  }
   if (prepared.kind !== "position") throw new TypeError("Prepared animation position endpoints are incompatible.");
   const { from, to } = prepared;
   if (progress === 0 || progress === 1) {
@@ -83,6 +87,9 @@ export function samplePositionInterpolation(plan, progress) {
   const scale = { ...from.scale, domain: from.scale.domain.map((v, i) => domainAt(v, to.scale.domain[i])),
     range: from.scale.range.map((v, i) => at(v, to.scale.range[i])) };
   if (scale.domain[0] === scale.domain[1]) return fade("collapsed-domain");
+  // This closed scale has only validated scalar fields and two new local arrays.
+  // Own it before mapping so validation and the result reuse those same arrays.
+  freezeOwned(scale.domain); freezeOwned(scale.range); freezeOwned(scale);
   let position;
   try { position = mapContinuousScaleValues([value], scale)[0]; }
   catch (error) {
