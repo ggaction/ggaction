@@ -1,5 +1,5 @@
 {
-  "status": "source-verified-pin-pending",
+  "status": "verified-checkpoint",
   "authorization": "../../AUTHORIZATION.json",
   "base": "57f779ea3d9f1db7acd984f6469c5445969e1eba",
   "scope": "Exact completed model validation proof and allocation-free JSON UTF-8 byte counts; no public API/schema/math/hash/core/guard changes",
@@ -53,7 +53,6 @@
     "installed24.json": "All runtime/types/docs passed; Full785925 and graph67837 exceed prior785700/67700. Same measurements reassessed against786000/67900."
   },
   "pending": [
-    "Source pin/build checks",
     "Final combined AT82 P95/retained heap/100cycle and large worker SLO"
   ],
   "qualification": false,
@@ -84,5 +83,26 @@
   "sourceAdditionalNodes": {
     "node20": 13,
     "node24": 13
+  },
+  "source": "3fc05f970537b096be7bf8568260c1be1d79154e",
+  "functionalQualification": true,
+  "docs": {
+    "sourcePin": "3fc05f970537b096be7bf8568260c1be1d79154e",
+    "sourceTests": 242,
+    "builtPages": 186,
+    "llmArtifacts": 1606,
+    "build": "passed",
+    "browserReuse": {
+      "source": "cb08d22a8adf528d105af574786e78573431d4b0",
+      "reason": "Public prose/snippets/layout/CSS/UI inputs unchanged; only source provenance pin changed",
+      "checks": [
+        "desktop search/axe",
+        "all pages at 320,390,768 widths"
+      ]
+    }
+  },
+  "repack": {
+    "byteIdentical": true,
+    "receipt": "repack.json"
   }
 }

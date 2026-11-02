@@ -7,7 +7,7 @@
 - [x] 완료 검증 뒤 exact model·동일 policy의 최초 stored index 재사용
 - [x] 동일 JSON UTF-8 byte 수를 버퍼 할당 없이 계산
 - [x] 모든 단일 UTF-16 code unit·혼합·quota 및 proof 회귀·핵심 커버리지
-- [ ] 같은 최종 archive3Node·Chromium·문서·소스 핀
+- [x] 같은 최종 archive3Node·Chromium·문서·소스 핀
 - [ ] 최종 합산 AT82 P95·retained heap·100cycle 및 large worker SLO
 
 승인 근거는 [AUTHORIZATION](../AUTHORIZATION.json)의 remainingApproval 및2026-11-02 root의 구체안 채택이다. 기존 체크포인트57f779ea3 위에서 작업하며 shared core·benchmark 도구·공유 animation4·공개API/schema·알고리즘·해시 바이트·work charge·capacity·전역guard를 바꾸지 않는다.
@@ -31,3 +31,9 @@ Root/peer 기능검사와 본인 coverage가 겹친 단발 후속 계측 시간4
 증거의 `profile*.mjs.txt`를 `.artifacts/inference-refinement/`에 `.txt` 없이 복사한 뒤 `node --loader ./.artifacts/inference-refinement/profile-loader.mjs .artifacts/inference-refinement/profile.mjs 10000 <prefix>`로 재현한다. Baseline57f와 후속소스 각각의 계측은 함수 시간이 중첩되므로 합산하지 않으며, 후속 CPU 경합을 원시 로그에서 제거하지 않는다.
 
 최초 package 검사는unpacked8,056,744가8,055,200을, Node20packed1,787,748이1,787,400을 초과했다. 같은실측에 최소 백 단위 상한8,056,800/1,787,800을 적용한다. Node24 동일 archive의5개 기능/type/문서 검사는 통과했고 Full785,925·graph67,837gzipbytes만 기존785,700·67,700을 초과했다. 원 실패를 보존하고 같은 측정을786,000·67,900으로 재검산하며 다른 bundle 한도를 바꾸지 않는다.
+
+## 최종 고정 증거
+
+소스 `3fc05f970537b096be7bf8568260c1be1d79154e` 재pack은 검증 archive `ccd213beb7065be21e3107c737a90a8217d5026fe1c2ee164c3d82c249d26a6e`와 바이트 단위로 동일하다. 같은 archive의 Node24/22/20 각각 runtime5·strict type1·실행 문서2·6bundle를 검증했다. 새 byte/model source 검사13개는 Node20/24에서도 통과했다. 실제 Chromium 원100/1000/10000 worker의 전체 간선 oracle가 통과했으며, 원10k의 prepare8.4885초·commit0.4511초는 기능 단발 관측이므로 SLO/P95 완료가 아니다.
+
+소스 핀 후 문서242개, 빌드186페이지 및 LLM1606개 link/identity 검사를 통과했다. 공개 prose·snippet·layout·CSS 변화가 없어 cb08의 desktop 검색/axe 및 전체320/390/768 검사 결과를 재사용하며 실제 worker browser는 이번 소스로 재실행했다. 전체62owning·3critical·38boundary·7package 검증과 최초 한도 실패는 summary/원시로그에 보존한다. 최종합산 성능·retained heap·100cycle은 미완료다.
