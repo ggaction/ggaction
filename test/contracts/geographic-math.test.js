@@ -22,6 +22,11 @@ test("geographic mathematics has an exact alias, verified source signatures and 
   assert.equal(lock.packages[""].dependencies[manifest.directDependency], manifest.directVersion);
   assert.deepEqual(manifest.projectionSources.map(entry => entry.type), PROJECTION_DESCRIPTORS.map(entry => entry.type));
   for (const dependency of manifest.packages) {
+    // Installed consumers resolve only the audited closure: pin every transitive package exactly.
+    if (dependency.installKey !== manifest.directDependency) {
+      assert.equal(pkg.dependencies[dependency.installKey], dependency.version);
+      assert.equal(lock.packages[""].dependencies[dependency.installKey], dependency.version);
+    }
     const stored = lock.packages[`node_modules/${dependency.installKey}`];
     assert.equal(stored.version, dependency.version);
     assert.equal(stored.integrity, dependency.integrity);
@@ -39,6 +44,7 @@ test("geographic mathematics has an exact alias, verified source signatures and 
     assert.deepEqual(sources, dependency.sources);
     assert.equal(hash(sources.map(entry => `${entry.file}:${entry.sha256}`).join("\n")), dependency.algorithmSignature);
   }
+  assert.deepEqual(Object.keys(pkg.dependencies).sort(), manifest.packages.map(dependency => dependency.installKey).sort());
   assert.ok(pkg.files.includes("THIRD_PARTY_NOTICES"));
   assert.ok(pkg.files.includes("licenses/"));
 });

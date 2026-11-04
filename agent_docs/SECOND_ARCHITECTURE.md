@@ -4009,6 +4009,7 @@ native descriptor/schema, `projectionMath.js`의 고정 mathematical adapter,
 resampling을 concrete point/compound path로 계산하고, `fit.js`는 그 동일 stream bounds로
 viewport fit을 계산한다. 구면 ring 방향 변환은 호출 내부에서만 일어나며 원본 geometry와
 feature identity는 바뀌지 않는다. Dependency alias·원본 license·수식 source signature는 배포 manifest/notices가 소유한다.
+Manifest의 closure 전체(alias와 두 하위 package)를 package의 정확한 직접 dependency로 고정해 설치 consumer도 감사된 version과 source 배치를 해석한다.
 Math instance는 호출별 private 객체이며 semantic state/codec에 callback을 저장하지 않는다.
 Full의 `actions/geo/projections.js`는 `grammar/geo/projectionDefinition.js`의 단일 정의를
 `materialization/geo/projectionResource.js`로 구체화한다. 명시 viewport fit은 exact geometry

@@ -74,7 +74,7 @@ test("public runtime entries use local native owners and explicit low-level prov
     }
   }
   assert.deepEqual([...observedProviders].sort(), [...expectedProviders].sort());
-  assert.deepEqual(Object.keys(pkg.dependencies), ["geographic-math"]);
+  assert.deepEqual(Object.keys(pkg.dependencies), ["d3-array", "geographic-math", "internmap"]);
   assert.deepEqual(Object.keys(pkg.optionalDependencies ?? {}), []);
   assert.deepEqual(Object.keys(pkg.peerDependencies).sort(), ["@modelcontextprotocol/sdk", "@napi-rs/canvas"]);
   assert.ok(Object.keys(pkg.peerDependencies).every(name => pkg.peerDependenciesMeta[name]?.optional === true));
