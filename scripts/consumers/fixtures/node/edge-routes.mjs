@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { Worker } from "node:worker_threads";
 import { inflateSync } from "node:zlib";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
@@ -11,6 +10,7 @@ import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 
 const source = () => chart().createCanvas({ width: 320, height: 240, margin: 0, background: "white" })
   .createData({ id: "nodes", values: [{ id: "a" }, { id: "b" }, { id: "c" }], keyField: "id" })
@@ -259,7 +259,7 @@ export const cases = [
     const original = plot(source().bundleGraphEdges({ id: "routes", method: "edge-path", coordinateSpace: "screen" }));
     const saved = serializeProgram(original);
     const code = `import {readFileSync} from 'node:fs'; import {deserializeProgram,serializeProgram} from 'ggaction/persistence'; globalThis.fetch=()=>{throw Error('offline')}; const p=deserializeProgram(readFileSync(0,'utf8')); process.stdout.write(serializeProgram(p.editCanvas({width:360})));`;
-    const updated = deserializeProgram(execFileSync(process.execPath, ["--input-type=module", "-e", code], { input: saved, encoding: "utf8", timeout: 30000 }));
+    const updated = deserializeProgram(execFileWithInput(process.execPath, ["--input-type=module", "-e", code], { input: saved, encoding: "utf8", timeout: 30000 }));
     assert.equal(route(updated).revision, 1); assert.equal(updated.graphicSpec.objects.canvas.properties.width, 360);
     assert.deepEqual(route(updated).result.routes.map(item => item.edgeKey), route(original).result.routes.map(item => item.edgeKey));
     const edited = updated.editEdgeRoute({ target: "routes", options: { exponent: 3 } });

@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { createCanvas } from "@napi-rs/canvas";
 import { chart, render, hconcat } from "ggaction";
 import { chart as basic } from "ggaction/basic";
@@ -10,6 +9,7 @@ import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 const rows=["A","B"].flatMap((series,index)=>[[1,3],[2,2],[1,1],[4,0]].map((column,x)=>({id:`${series}-${x}`,series,x,value:column[index]})));
 const create=()=>chart().createCanvas({width:380,height:280,margin:40}).createData({id:"d",values:rows,keyField:"id"})
   .createAreaPlot({id:"m",x:"x",y:{field:"value",scale:{nice:false}},groupBy:"series",layout:"wiggle",color:"series",area:{opacity:1},guides:false});
@@ -44,7 +44,7 @@ export const cases=[
  {id:"stream-baselines/fresh-process-nested",run(){
   const p=create(),saved=serializeProgram(p);
   const script=`import{readFileSync}from'node:fs';import{deserializeProgram,serializeProgram}from'ggaction/persistence';globalThis.fetch=()=>{throw Error('No network')};const p=deserializeProgram(readFileSync(0,'utf8'));process.stdout.write(serializeProgram(p.layoutSeries({mode:'center'})));`;
-  const q=deserializeProgram(execFileSync(process.execPath,["--input-type=module","-e",script],{input:saved,encoding:"utf8",timeout:30000}));
+  const q=deserializeProgram(execFileWithInput(process.execPath,["--input-type=module","-e",script],{input:saved,encoding:"utf8",timeout:30000}));
   assert.equal(q.semanticSpec.layers[0].layout.mode,"center");
   const facet=p.facet({field:"series"});assert.deepEqual(Object.values(facet.children).map(child=>getMarkItems(child,{target:"m"}).length),[1,1]);
   const nested=hconcat({programs:[{id:"left",program:p},{id:"right",program:q}]}).layoutSeries({target:{childPath:["right"],id:"m"},mode:"wiggle"});

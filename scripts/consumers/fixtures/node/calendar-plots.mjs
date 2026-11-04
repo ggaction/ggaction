@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { inflateSync } from "node:zlib";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { chart, render, prepareShadowRendering } from "ggaction";
@@ -11,6 +10,7 @@ import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 const rows = [{ id: "a", day: "2024-02-28", value: 0 }, { id: "b", day: "2024-02-29", value: 3 }, { id: "c", day: "2024-02-29", value: 4 }];
 function program(missing = "empty") {
   return chart().createCanvas({ width: 400, height: 220, margin: 20 }).createData({ id: "days", values: rows, keyField: "id" })
@@ -47,7 +47,7 @@ export const cases = [
       globalThis.fetch=()=>{throw new Error('No network');};
       const p=deserializeProgram(readFileSync(0,'utf8'));const q=p.reviseData({source:'days',id:'next',values:[{id:'b',day:'2024-02-29',value:9}]});
       process.stdout.write(serializeProgram(q));`;
-    const result = execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30_000 });
+    const result = execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30_000 });
     const q = deserializeProgram(result), resource = q.semanticSpec.resources.find(r => r.id === "layout");
     assert.equal(resource.revision, 1); assert.equal(resource.result.cells.at(-1).value, 9); assert.equal(resource.inputs[0].id, "next");
     assert.deepEqual(getMarkItems(q, { target: "calendar" }).map(item => item.key), keys);

@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { chart } from "ggaction";
 import { chart as basic } from "ggaction/basic";
 import { serializeProgram, deserializeProgram } from "ggaction/persistence";
 import { inspectProgram, comparePrograms } from "ggaction/inspection";
+import { execFileWithInput } from "./consumer-input.js";
 
 const resource = program => program.semanticSpec.resources.find(value => value.kind === "projection");
 const values = extent => ({ type: "LineString", coordinates: [[0, 0], extent] });
@@ -34,7 +34,7 @@ export const cases = [
     const script = `import {readFileSync} from 'node:fs'; import {deserializeProgram,serializeProgram} from 'ggaction/persistence';
       globalThis.fetch=()=>{throw new Error('Unexpected network');};
       const p=deserializeProgram(readFileSync(0,'utf8')); process.stdout.write(serializeProgram(p.editProjection({reflectX:true})));`;
-    const output = execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: before, encoding: "utf8", timeout: 30000 });
+    const output = execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: before, encoding: "utf8", timeout: 30000 });
     const next = deserializeProgram(output);
     assert.equal(resource(next).revision, 1);
     assert.deepEqual(resource(next).result.translatePx, [75, 0]);

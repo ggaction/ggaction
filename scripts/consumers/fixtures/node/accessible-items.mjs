@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { chart, hconcat } from "ggaction";
 import { chart as basic } from "ggaction/basic";
 import { exportAccessibleData } from "ggaction/accessibility";
 import { getMarkItems } from "ggaction/inspection";
 import { serializeProgram } from "ggaction/persistence";
+import { execFileWithInput } from "./consumer-input.js";
 const source = (factory = chart) => factory().createCanvas().createData({ id: "rows", keyField: "id", values: [
   { id: "a", group: "A", value: 2 }, { id: "b", group: "A", value: 4 }, { id: "c", group: "B", value: 6 }
 ] }).createBarPlot({ id: "bars", x: "group", y: { field: "value", aggregate: "mean" }, guides: false });
@@ -31,7 +31,7 @@ export const cases = [
     const p = source().selectMarks({ id: "chosen", target: "bars", field: "group", op: "eq", value: "B" }).filterMarks({ target: "bars", field: "group", op: "eq", value: "B" });
     const script = `import fs from 'node:fs';import{deserializeProgram}from'ggaction/persistence';import{exportAccessibleData}from'ggaction/accessibility';
       globalThis.fetch=()=>{throw new Error('Unexpected network');};const p=deserializeProgram(fs.readFileSync(0,'utf8'));process.stdout.write(JSON.stringify(exportAccessibleData(p,{format:'items'})));`;
-    const restored = JSON.parse(execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: serializeProgram(p), encoding: "utf8", timeout: 30000 }));
+    const restored = JSON.parse(execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: serializeProgram(p), encoding: "utf8", timeout: 30000 }));
     assert.deepEqual(restored, exportAccessibleData(p, { format: "items" }));
     assert.deepEqual(restored.views[0].items.map(item => [item.channels.x, item.visible, item.selectedBy]), [["B", true, ["chosen"]]]);
   } }

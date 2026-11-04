@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { inflateSync } from "node:zlib";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { chart, prepareDataUpdate, render } from "ggaction";
@@ -9,6 +8,7 @@ import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 
 const csv = text => ({ text, mimeType: "text/csv", encoding: "utf-8" });
 const current = program => {
@@ -84,7 +84,7 @@ export const cases = [
       assert.throws(() => deserializeProgram(saved).applyDataUpdate({ prepared, requestToken: "fresh" }), /stale/);
       process.stdout.write(serializeProgram(refreshed));
     `;
-    const output = execFileSync(process.execPath, ["--input-type=module", "-e", script], {
+    const output = execFileWithInput(process.execPath, ["--input-type=module", "-e", script], {
       input: saved, encoding: "utf8", timeout: 30_000
     });
     const restored = deserializeProgram(output), dataset = current(restored);

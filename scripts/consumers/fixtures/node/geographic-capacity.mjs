@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { inflateSync } from "node:zlib";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { chart, render } from "ggaction";
@@ -8,6 +7,7 @@ import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 
 const coordinates = n => Array.from({ length: n }, (_, i) => [-30 + 60 * i / (n - 1), (i % 2 ? 1 : -1) * 5]);
 const create = n => chart().createCanvas({ width: 400, height: 400, margin: 20, plotBorder: false })
@@ -43,7 +43,7 @@ export const cases = [
       assert.equal(serializeProgram(source), sourceBefore);
       if (n === 1000) {
         const encoded = serializeProgram(p), replay = `import {readFileSync} from 'node:fs';import {deserializeProgram,serializeProgram} from 'ggaction/persistence';import http from 'node:http';import https from 'node:https';import net from 'node:net';import tls from 'node:tls';import{syncBuiltinESMExports}from'node:module';let network=0;const deny=()=>{network++;throw Error('Network forbidden');};globalThis.fetch=deny;for(const m of[http,https]){m.get=deny;m.request=deny;}net.connect=deny;net.createConnection=deny;net.Socket.prototype.connect=deny;tls.connect=deny;syncBuiltinESMExports();process.stdout.write(serializeProgram(deserializeProgram(readFileSync(0,'utf8')).editProjection({scalePx:200})));if(network!==0)throw Error('Unexpected network access');`;
-        const restored = deserializeProgram(execFileSync(process.execPath, ["--input-type=module", "-e", replay], { input: encoded, encoding: "utf8", maxBuffer: 16 * 1024 * 1024 }));
+        const restored = deserializeProgram(execFileWithInput(process.execPath, ["--input-type=module", "-e", replay], { input: encoded, encoding: "utf8", maxBuffer: 16 * 1024 * 1024 }));
         expected(restored, n, 200); assert.deepEqual(restored.graphicSpec, q.graphicSpec);
       }
     }

@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { createCanvas } from "@napi-rs/canvas";
 import { chart, render, hconcat } from "ggaction";
 import { chart as basic } from "ggaction/basic";
@@ -10,6 +9,7 @@ import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 const rows = [{id:1,x:"A",r:"delta",v:5,group:"one"},{id:"1",x:"B",r:"delta",v:-2,group:"two"},{id:"total",x:"C",r:"total",group:"one"}];
 const create = () => chart().createCanvas({width:340,height:240,margin:20}).createData({id:"d",values:rows,keyField:"id"}).createWaterfallPlot({id:"steps",x:"x",role:"r",value:"v",width:{pixels:20},yScale:{domain:[-5,10]},guides:false});
 export const cases = [
@@ -37,7 +37,7 @@ export const cases = [
   { id:"waterfall/fresh-process-and-nested", run() {
     const p=create(), saved=serializeProgram(p);
     const script=`import {readFileSync} from 'node:fs';import {deserializeProgram,serializeProgram} from 'ggaction/persistence';globalThis.fetch=()=>{throw Error('No network')};const p=deserializeProgram(readFileSync(0,'utf8'));process.stdout.write(serializeProgram(p.editWaterfallPlot({connectors:false})));`;
-    const q=deserializeProgram(execFileSync(process.execPath,["--input-type=module","-e",script],{input:saved,encoding:"utf8",timeout:30000}));
+    const q=deserializeProgram(execFileWithInput(process.execPath,["--input-type=module","-e",script],{input:saved,encoding:"utf8",timeout:30000}));
     assert.equal(q.graphicSpec.objects.steps.items.length,3);
     const facet=p.facet({field:"group"}); assert.deepEqual(Object.values(facet.children).map(child=>getMarkItems(child,{target:"steps"}).length),[2,1]);
     const nested=hconcat({programs:[{id:"left",program:p},{id:"right",program:q}]}).editWaterfallPlot({target:{childPath:["left"],id:"steps"},labels:{}});

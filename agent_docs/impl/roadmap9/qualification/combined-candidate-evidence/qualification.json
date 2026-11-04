@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-04",
+  "kind": "combined partition+route+format6 candidate; same installed archive on three Node majors. Not browser, 100k/10k, P95 or lifetime.",
+  "sourceCommit": "5e84150e6",
+  "archive": {
+    "sha256": "eb0e76040575a856a552cab2404045d4ebb34ef674ab72441ba797d59cbcc98d",
+    "entryCount": 1276,
+    "packedBytes": 1850737,
+    "unpackedBytes": 8321399,
+    "packedWith": "Node v22.23.1 npm-cli 10.9.8"
+  },
+  "firstRun": {
+    "node20": "failed: stream-baselines/fresh-process-nested spawnSync ETIMEDOUT after 30019ms (1 case)",
+    "node22": "passed",
+    "node24": "passed",
+    "diagnosis": "Isolated reruns of the exact case on Node20 passed 3/3 at ~0.3s. format6-product-checkpoint.md already reproduced the same 30000ms stall with plain Node and no ggaction import (OS sample: ReadFileUtf8 -> uv_fs_read -> read on a stdin pipe) and fixed four fixtures with consumers/input.js. Twenty-four other fixtures (26 calls) still piped stdin.",
+    "fix": "All remaining piped-stdin execFileSync calls in scripts/consumers/fixtures/node use execFileWithInput: same child, code, input bytes, encoding, timeout and assertions; only the descriptor is file-backed. Archive unchanged."
+  },
+  "rerun": {
+    "node20": "passed",
+    "node22": "passed",
+    "node24": "passed",
+    "checkGroups": 69,
+    "mcpColdStartMs": {
+      "v20": 438,
+      "v22": 330,
+      "v24": 219
+    },
+    "browserGzipBytes": {
+      "v20": {
+        "full": 796926,
+        "basic": 427483,
+        "svg": 26242,
+        "interaction": 142457,
+        "graph": 75582,
+        "animation": 353885
+      },
+      "v22": {
+        "full": 795489,
+        "basic": 426481,
+        "svg": 26112,
+        "interaction": 141675,
+        "graph": 75323,
+        "animation": 352694
+      },
+      "v24": {
+        "full": 796926,
+        "basic": 427483,
+        "svg": 26242,
+        "interaction": 142457,
+        "graph": 75582,
+        "animation": 353885
+      }
+    }
+  },
+  "notRun": [
+    "npm run test:browser on this candidate",
+    "installed minified Chromium DPR1/2 owners from each branch",
+    "original 1k/10k/100k workloads on this archive",
+    "P95 and lifetime"
+  ]
+}

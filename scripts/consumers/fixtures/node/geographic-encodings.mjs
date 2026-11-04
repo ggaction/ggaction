@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { inflateSync } from "node:zlib";
 import { createCanvas } from "@napi-rs/canvas";
 import { chart, render } from "ggaction";
@@ -8,6 +7,7 @@ import { serializeProgram, deserializeProgram } from "ggaction/persistence";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 const values = (a = 1, b = 4) => ({ type: "FeatureCollection", features: [["west", a, 60], ["east", b, 140]].map(([id, value, x]) => ({ type: "Feature", id,
   properties: { value, region: id }, geometry: { type: "Point", coordinates: [x, 60] } })) });
 const source = () => chart().createCanvas({ width: 240, height: 120, margin: 0 })
@@ -39,7 +39,7 @@ export const cases = [
     const script = `import fs from'node:fs';import{deserializeProgram,serializeProgram}from'ggaction/persistence';
       globalThis.fetch=()=>{throw new Error('Unexpected network');};const p=deserializeProgram(fs.readFileSync(0,'utf8'));
       process.stdout.write(serializeProgram(p.editParameter({target:'on',value:false}).editGeometryData({values:${JSON.stringify(values(4, 1))}})));`;
-    const q = deserializeProgram(execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: serializeProgram(p), encoding: "utf8", timeout: 30000 }));
+    const q = deserializeProgram(execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: serializeProgram(p), encoding: "utf8", timeout: 30000 }));
     assert.deepEqual(properties(q).map(item => [item.fill, item.radius]), [["gray", 4], ["gray", 0]]);
     assert.deepEqual(getMarkItems(q).map(item => item.key), getMarkItems(p).map(item => item.key));
     assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec, q.graphicSpec);
@@ -73,7 +73,7 @@ export const cases = [
     const script = `import fs from'node:fs';import{deserializeProgram,serializeProgram}from'ggaction/persistence';
       globalThis.fetch=()=>{throw new Error('Unexpected network');};const p=deserializeProgram(fs.readFileSync(0,'utf8'));
       process.stdout.write(serializeProgram(p.editColorScale({id:'color',range:['green','purple']}).encodeSize({value:9*Math.PI})));`;
-    const q = deserializeProgram(execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: serializeProgram(p), encoding: "utf8", timeout: 30000 }));
+    const q = deserializeProgram(execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: serializeProgram(p), encoding: "utf8", timeout: 30000 }));
     assert.deepEqual(properties(q).map(item => [item.fill, item.radius]), [["green", 3], ["purple", 3]]);
     assert.deepEqual(getMarkItems(q).map(item => item.key), getMarkItems(p).map(item => item.key));
     const r = p.editGeometryData({ values: values(4, 1) }); assert.deepEqual(properties(r).map(item => item.radius), [4, 2]);

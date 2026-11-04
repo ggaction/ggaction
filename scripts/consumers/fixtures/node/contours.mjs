@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { inflateSync } from "node:zlib";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { chart, render, prepareShadowRendering } from "ggaction";
@@ -11,6 +10,7 @@ import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 const grid = { origin: [0, 0], dx: 1, dy: 1, width: 3, height: 3, values: [0, 0, 0, 0, 2, 0, 0, 0, 0] };
 function program(mode = "filled") {
   return chart().createCanvas({ width: 260, height: 200, margin: 20 })
@@ -61,7 +61,7 @@ export const cases = [
       globalThis.fetch=()=>{throw new Error('No network');};
       const p=deserializeProgram(readFileSync(0,'utf8'));const q=p.reviseData({source:'samples',id:'next',values:[{id:'center',x:1,y:1,weight:4}]});
       process.stdout.write(serializeProgram(q));`;
-    const result = execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30_000 });
+    const result = execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30_000 });
     const q = deserializeProgram(result), resource = q.semanticSpec.resources.find(r => r.id === "density");
     assert.equal(resource.revision, 1); assert.equal(resource.result.contours.grid.values[4], 4);
     assert.equal(resource.inputs[0].id, "next");

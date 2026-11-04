@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { createCanvas } from "@napi-rs/canvas";
 import { chart, render, hconcat } from "ggaction";
 import { chart as basic } from "ggaction/basic";
@@ -11,6 +10,7 @@ import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 const rows=[{id:1,name:"Alpha",v:4,g:"a",trend:[{x:0,y:1},{x:1,y:3}]},{id:"1",name:"Beta",v:8,g:"b",trend:[{x:0,y:3},{x:1,y:2}]}];
 const create=()=>chart().createCanvas({width:420,height:240,margin:20}).createData({id:"d",values:rows,keyField:"id"})
   .createTablePlot({id:"table",columns:["name",{field:"v",cell:"bar",footer:"sum",align:"right"},{field:"trend",cell:{type:"sparkline",x:"x",y:"y"}}]});
@@ -48,7 +48,7 @@ export const cases=[
   {id:"table/fresh-process-and-nested",run(){
     const p=create(),saved=serializeProgram(p);
     const script=`import{readFileSync}from'node:fs';import{deserializeProgram,serializeProgram}from'ggaction/persistence';globalThis.fetch=()=>{throw Error('No network')};const p=deserializeProgram(readFileSync(0,'utf8'));process.stdout.write(serializeProgram(p.editTablePlot({rowLimit:1})));`;
-    const q=deserializeProgram(execFileSync(process.execPath,["--input-type=module","-e",script],{input:saved,encoding:"utf8",timeout:30000}));
+    const q=deserializeProgram(execFileWithInput(process.execPath,["--input-type=module","-e",script],{input:saved,encoding:"utf8",timeout:30000}));
     assert.equal(q.graphicSpec.objects.table.items[0].properties.text,"1 of 2 rows shown");
     const facets=p.facet({field:"g"});
     assert.deepEqual(Object.values(facets.children).map(child=>items(child).filter(item=>item.channels.role==="body").length),[3,3]);

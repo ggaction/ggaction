@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { chart, render, hconcat } from "ggaction";
 import { chart as basic } from "ggaction/basic";
@@ -11,6 +10,7 @@ import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 const rows = [{id:"a",stage:"Visit",value:100,group:"a"},{id:"b",stage:"Try",value:60,group:"a"},{id:"c",stage:"Return",value:20,group:"b"}];
 const create = () => chart().createCanvas({width:300,height:240,margin:20}).createData({id:"d",values:rows,keyField:"id"}).createPyramidPlot({stage:"stage",value:"value"});
 export const cases = [
@@ -42,7 +42,7 @@ export const cases = [
   { id:"pyramid/fresh-process-and-nested", run() {
     const p=create(), saved=serializeProgram(p);
     const script=`import {readFileSync} from 'node:fs';import {deserializeProgram,serializeProgram} from 'ggaction/persistence';globalThis.fetch=()=>{throw Error('No network')};const p=deserializeProgram(readFileSync(0,'utf8'));process.stdout.write(serializeProgram(p.editPyramidPlot({orientation:'right',encoding:'area'})));`;
-    const q=deserializeProgram(execFileSync(process.execPath,["--input-type=module","-e",script],{input:saved,encoding:"utf8",timeout:30000}));
+    const q=deserializeProgram(execFileWithInput(process.execPath,["--input-type=module","-e",script],{input:saved,encoding:"utf8",timeout:30000}));
     assert.equal(q.semanticSpec.layers[0].pyramid.options.orientation,"right");
     const facet=p.facet({field:"group"}); assert.deepEqual(Object.values(facet.children).map(child=>getMarkItems(child,{target:"pyramid"}).length),[2,1]);
     const nested=hconcat({programs:[{id:"left",program:p},{id:"right",program:q}]}).editPyramidPlot({target:{childPath:["left"],id:"pyramid"},labels:false});

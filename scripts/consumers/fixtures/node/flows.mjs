@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { inflateSync } from "node:zlib";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { chart, render } from "ggaction";
@@ -11,6 +10,7 @@ import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 const edges = [{ id: "ab", from: "a", to: "b", value: 3 }, { id: "ac", from: "a", to: "c", value: 1 }];
 function program(method = "dag") {
   return chart().createCanvas({ width: 260, height: 200, margin: 20 })
@@ -57,7 +57,7 @@ export const cases = [
       globalThis.fetch=()=>{throw new Error('No network');};
       const p=deserializeProgram(readFileSync(0,'utf8'));const q=p.reviseData({source:'edges',id:'next',values:[{id:'ab',from:'a',to:'b',value:5},{id:'ac',from:'a',to:'c',value:2}]});
       process.stdout.write(serializeProgram(q));`;
-    const result = execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30_000 });
+    const result = execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30_000 });
     const q = deserializeProgram(result);
     assert.deepEqual(getMarkItems(q, { target: "flowLinks" }).map(item => item.fields.value), [5, 2]);
     assert.equal(q.semanticSpec.resources.find(r => r.kind === "layout").revision, 1);

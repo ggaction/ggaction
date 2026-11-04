@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { createCanvas } from "@napi-rs/canvas";
 import { chart, render, hconcat } from "ggaction";
 import { chart as basic } from "ggaction/basic";
@@ -10,6 +9,7 @@ import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 const rows=[{id:1,x:0,y:7,w:8,g:"A"},{id:"1",x:10,y:7,w:32,g:"A"},{id:"b0",x:0,y:3,w:28,g:"B"},{id:"b1",x:10,y:3,w:12,g:"B"}];
 const create=()=>chart().createCanvas({width:420,height:240,margin:40}).createData({id:"d",values:rows,keyField:"id"}).createTrailPlot({id:"trail",x:{field:"x",scale:{domain:[0,10]}},y:{field:"y",scale:{domain:[0,10]}},width:"w",groupBy:"g",guides:false});
 export const cases=[
@@ -33,7 +33,7 @@ export const cases=[
  {id:"trail/fresh-process-and-nested",run(){
   const p=create(),saved=serializeProgram(p);
   const script=`import{readFileSync}from'node:fs';import{deserializeProgram,serializeProgram}from'ggaction/persistence';globalThis.fetch=()=>{throw Error('No network')};const p=deserializeProgram(readFileSync(0,'utf8'));process.stdout.write(serializeProgram(p.editTrailPlot({width:18})));`;
-  const q=deserializeProgram(execFileSync(process.execPath,["--input-type=module","-e",script],{input:saved,encoding:"utf8",timeout:30000}));assert.equal(q.semanticSpec.layers[0].trail.width.datum,18);
+  const q=deserializeProgram(execFileWithInput(process.execPath,["--input-type=module","-e",script],{input:saved,encoding:"utf8",timeout:30000}));assert.equal(q.semanticSpec.layers[0].trail.width.datum,18);
   const facet=p.facet({field:"g"});assert.deepEqual(Object.values(facet.children).map(child=>getMarkItems(child,{target:"trail"}).length),[1,1]);
   const nested=hconcat({programs:[{id:"left",program:p},{id:"right",program:q}]}).editTrailPlot({target:{childPath:["left"],id:"trail"},body:{fill:"red"}});
   assert.equal(nested.children.left.graphicSpec.objects.trail.items[0].properties.fill,"red");assert.notEqual(nested.children.right.graphicSpec.objects.trail.items[0].properties.fill,"red");

@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { inflateSync } from "node:zlib";
 import { createCanvas } from "@napi-rs/canvas";
 import { chart, render } from "ggaction";
@@ -9,6 +8,7 @@ import { serializeProgram, deserializeProgram } from "ggaction/persistence";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 
 const feature = (x = 60, name = "Port") => ({ type: "Feature", id: "place", properties: { name }, geometry: { type: "Point", coordinates: [x, 50] } });
 const source = () => chart().createCanvas({ width: 200, height: 120, margin: 0 })
@@ -42,7 +42,7 @@ export const cases = [
     const script = `import fs from 'node:fs';import{deserializeProgram,serializeProgram}from'ggaction/persistence';
       globalThis.fetch=()=>{throw new Error('Unexpected network');};const p=deserializeProgram(fs.readFileSync(0,'utf8'));
       process.stdout.write(serializeProgram(p.editGeometryData({values:${JSON.stringify(feature(80, "Moved"))}}).editProjection({scalePx:2})));`;
-    const q = deserializeProgram(execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: serializeProgram(p), encoding: "utf8", timeout: 30000 }));
+    const q = deserializeProgram(execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: serializeProgram(p), encoding: "utf8", timeout: 30000 }));
     assert.deepEqual([properties(q).x, properties(q).y, properties(q).text], [160, 90, "Moved"]);
     assert.equal(getMarkItems(q, { target: "labels" })[0].key, getMarkItems(p, { target: "labels" })[0].key);
     assert.equal(q.graphicSpec.objects.labels.items[0].identity.lineage.resource.revision, 1);

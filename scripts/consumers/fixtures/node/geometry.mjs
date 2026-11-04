@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { chart, render } from "ggaction";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { renderToPNGBuffer } from "ggaction/png";
@@ -8,6 +7,7 @@ import { renderToSVG } from "ggaction/svg";
 import { chart as basic } from "ggaction/basic";
 import { serializeProgram, deserializeProgram } from "ggaction/persistence";
 import { inspectProgram, comparePrograms } from "ggaction/inspection";
+import { execFileWithInput } from "./consumer-input.js";
 
 const feature = id => ({ type: "Feature", id, properties: { code: id }, geometry: { type: "Point", coordinates: [12.6, 55.7] } });
 const values = ids => ({ type: "FeatureCollection", features: ids.map(feature) });
@@ -33,7 +33,7 @@ export const cases = [
     const script = `import { readFileSync } from 'node:fs'; import { deserializeProgram, serializeProgram } from 'ggaction/persistence';
       globalThis.fetch=()=>{throw new Error('Unexpected network');};
       const p=deserializeProgram(readFileSync(0,'utf8')); process.stdout.write(serializeProgram(p.editGeometryData({coordinateKind:'planar'})));`;
-    const output = execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30000 });
+    const output = execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30000 });
     const q = deserializeProgram(output);
     assert.equal(resource(q).options.coordinateKind, "planar"); assert.equal(resource(q).revision, 1);
     assert.deepEqual(resource(q).result.identity.rowKeys, resource(p).result.identity.rowKeys);
@@ -61,7 +61,7 @@ export const cases = [
       .createProjection({id:"map",type:"equirectangular",scalePx:180/Math.PI,translatePx:[100,100]})
       .createCoordinate({type:"geo"}).createGeoShapeMark({fill:"red",strokeWidth:0});
     const saved=serializeProgram(p), script=`import {readFileSync} from 'node:fs';import {deserializeProgram,serializeProgram} from 'ggaction/persistence';globalThis.fetch=()=>{throw Error('Network forbidden');};process.stdout.write(serializeProgram(deserializeProgram(readFileSync(0,'utf8'))));`;
-    const q=deserializeProgram(execFileSync(process.execPath,["--input-type=module","-e",script],{input:saved,encoding:"utf8",timeout:30000}));
+    const q=deserializeProgram(execFileWithInput(process.execPath,["--input-type=module","-e",script],{input:saved,encoding:"utf8",timeout:30000}));
     assert.deepEqual(resource(q).result.source.values,values);
     assert.equal(resource(q).options.polygonWinding,"left-hand");
     const canvas=createCanvas(200,200), context=canvas.getContext("2d");render(q,context);
