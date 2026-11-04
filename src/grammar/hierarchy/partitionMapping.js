@@ -24,9 +24,17 @@ function radius(v,{inner,outer,policy}){
  const ratio=inner/outer,squared=ratio*ratio;
  return outer*Math.sqrt(squared+(1-squared)*v);
 }
-export function partitionRadius(v,options){
+function admitRadius(v,options){
  unit(v,"Partition radial proportion");ownRecord(options,"Partition radius options");rejectUnknownProperties(options,["innerRadius","outerRadius","radiusPolicy"],"partition radius");
- return radius(v,radiusOptions(options));
+ return radiusOptions(options);
+}
+export function partitionRadius(v,options){
+ return radius(v,admitRadius(v,options));
+}
+// Internal calculation captures only the fully admitted numeric radial policy.
+export function preparePartitionRadius(v,options){
+ const radial=admitRadius(v,options);
+ return value=>{unit(value,"Partition radial proportion");return radius(value,radial);};
 }
 export function mapPartitionRectangle(cell,options){
  validatePartitionInterval(cell);ownRecord(options,"Partition rectangle options");rejectUnknownProperties(options,["x","y","width","height","orientation","reverseU","reverseV","gapX","gapY"],"partition rectangle");

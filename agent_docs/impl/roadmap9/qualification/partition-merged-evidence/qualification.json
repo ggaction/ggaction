@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-04",
+  "kind": "partition branch merged into integration; normal regression and artifact ceilings, not 10k or SLO",
+  "merge": {
+    "integrationParent": "4861b9ff2b28afecd47020e3ff31b281d67f9e0f",
+    "partitionParent": "066e1ba4def5f10eb644e3c9ffa5c8d2423b67d0",
+    "conflicts": ["scripts/browser-bundle-size.js", "scripts/package-artifact.js"],
+    "resolution": "Both branch ceilings discarded; combined source packed, installed and measured on Node20/22/24; only exceeded ceilings raised to the Node20/24 maximum."
+  },
+  "measured": {
+    "package": {
+      "entries": 1268,
+      "packedBytes": { "v20.20.2": 1831645, "v22.23.1": 1828104, "v24.22.1": 1831645 },
+      "unpackedBytes": 8232619
+    },
+    "browserGzipBytes": {
+      "v20.20.2": { "ggaction": 793572, "ggaction/basic": 426412, "ggaction/svg": 25672, "ggaction/graph": 74464, "ggaction/animation": 344348, "ggaction/interaction": 140166 },
+      "v22.23.1": { "ggaction": 792256, "ggaction/basic": 425384, "ggaction/svg": 25558, "ggaction/graph": 74218, "ggaction/animation": 343142, "ggaction/interaction": 139505 },
+      "v24.22.1": { "ggaction": 793572, "ggaction/basic": 426412, "ggaction/svg": 25672, "ggaction/graph": 74464, "ggaction/animation": 344348, "ggaction/interaction": 140166 }
+    },
+    "note": "Bundle receipts were measured before the README ceiling sentence changed; README is not bundled. Packed bytes were re-measured after that change (+2 bytes) and the ceiling uses the re-measurement."
+  },
+  "ceilings": {
+    "packedBytes": 1831645,
+    "unpackedBytes": 8232619,
+    "ggaction": 793572,
+    "ggaction/basic": 426412,
+    "ggaction/animation": 344348,
+    "unchanged": ["entries", "ggaction/svg", "ggaction/graph", "ggaction/interaction"]
+  },
+  "checks": {
+    "partitionOwning": { "tests": 117, "pass": 117, "coverage": { "partitionMapping.js": [100, 100, 100], "partitionBend.js": [98.78, 97.26, 100], "partitionAdapter.js": [100, 100, 100], "partitionCell.js": [100, 100, 100] } },
+    "boundaries": { "files": ["package-boundaries", "test-discovery", "documentation-truth", "package-artifact"], "tests": 33, "pass": 33, "firstAttempt": "1 failure: packed 1831645 > 1831643 (pre-README measurement); fixed by re-measuring" },
+    "generatorChecks": ["docs:machine", "docs:search", "docs:metadata", "docs:capabilities", "docs:actions", "docs:reference", "contracts:catalog", "contracts:cards"],
+    "normal": { "command": "npm test", "node": "v22.23.2", "tests": 10464, "pass": 10464, "fail": 0, "durationMs": 554123 }
+  },
+  "notRun": ["same-archive installed 3Node/browser for the combined candidate (deferred until route and format6 merges)", "original 10k partition", "33ms preview / 300ms layout P95"],
+  "logs": ["owning.log.gz", "boundaries.log.gz", "normal.log.gz", "bundle-measure-node20.json.gz", "bundle-measure-node22.json.gz", "bundle-measure-node24.json.gz"]
+}

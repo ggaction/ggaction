@@ -1,0 +1,43 @@
+{
+  "kind": "read-only source-loader comparison; no product change or P95 claim",
+  "source": "c8bac0e77",
+  "runtime": "v22.23.1",
+  "scope": "per-cell synchronous preparation only; no cross-cell or retained cache",
+  "cases": 907,
+  "errors": 79,
+  "allOutputsErrorsMathIterationWorkExact": true,
+  "genericWrapperAllCountersExact": 77,
+  "original1k": {
+    "inputSHA256": "dfe300b478fb1d3b701848ef166eb05b20a1f6cbbd6d298c303fe04394e02f98",
+    "verifiedCells": 1000,
+    "before": {
+      "name": "public-1k",
+      "generic": false,
+      "result": "b1e9c2ddebd685dc6d7e0d51a4bfdbffb8feca303d956ee7d02b7ec75e3280f4",
+      "math": 11003,
+      "inverseIterations": 1000,
+      "work": "302a880ea551b0bcb5673727878a94439a9ec79428646e40dcdc5385917243ca",
+      "workCount": 8096,
+      "ownData": 56056,
+      "owned": 38074
+    },
+    "after": {
+      "name": "public-1k",
+      "generic": false,
+      "result": "b1e9c2ddebd685dc6d7e0d51a4bfdbffb8feca303d956ee7d02b7ec75e3280f4",
+      "math": 11003,
+      "inverseIterations": 1000,
+      "work": "302a880ea551b0bcb5673727878a94439a9ec79428646e40dcdc5385917243ca",
+      "workCount": 8096,
+      "ownData": 27056,
+      "owned": 22074
+    }
+  },
+  "sourceHashes": {
+    "src/grammar/hierarchy/partitionMapping.js": "ac0c0658a1f3472940ca7cc32fa473e990c721c4ec8094d218d465040c23ae86",
+    "src/grammar/hierarchy/partitionBend.js": "9f0429c03b309eaeb8e1f25e19a2eb889b15e6ac991b23393f5c168430c7acce",
+    "src/grammar/hierarchy/partitionAdapter.js": "fe04f4e580a5bc445d3975ed8a8076bb0be5a7cc3d2576da70a6b1a9aab95a71",
+    "src/grammar/hierarchy/partitionCell.js": "c2d5de91a1f89ef88381a4dc7072da1c8eb1e3d300fce0257b417145682e1cad"
+  },
+  "patchSha256": "0486ecf3a4d9db42e6d31cb707661396012ed2f5315ddb9647362565ee85fa4f"
+}

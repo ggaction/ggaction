@@ -3,7 +3,7 @@ import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties } from "../../core/validation.js";
 import { interpolateNumber } from "../numeric.js";
 import { partitionRadius } from "./partitionMapping.js";
-import { bendPartitionPoint } from "./partitionBend.js";
+import { bendPartitionPoint, preparePartitionBendCalculation } from "./partitionBend.js";
 
 const RECTANGLE = ["x", "y", "width", "height", "orientation", "reverseU", "reverseV"];
 const POLAR = ["centerX", "centerY", "innerRadius", "outerRadius", "startAngle", "sweep", "direction", "reverseU", "reverseV", "radiusPolicy"];
@@ -47,15 +47,32 @@ export function samplePartitionBendPoint(adapter, point) {
     origin: adapter.origin.map((value, index) => interpolateNumber(value, adapter.center[index], b)) }, point);
 }
 
-export function mapPartitionBendPoint(frame, point) {
+function validateBendFrame(frame) {
   record(frame, ["kernel", "handedness", "angle", "origin"], "Partition bend frame");
   ownArray(frame.origin, "Partition frame origin");
   if (frame.origin.length !== 2 || !frame.origin.every(Number.isFinite) || !Number.isFinite(frame.angle) || ![1, -1].includes(frame.handedness)) throw new TypeError("Partition bend frame requires finite origin, angle and handedness.");
-  const canonical = bendPartitionPoint(point, frame.kernel), x = Math.cos(frame.angle), y = Math.sin(frame.angle);
+}
+
+export function mapPartitionBendPoint(frame, point) {
+  validateBendFrame(frame);
+  return cloneAndFreeze(screenCoordinates(frame, bendPartitionPoint(point, frame.kernel)));
+}
+
+// A single cell consumes this local calculation; only admitted scalar frame
+// fields are captured, and the generic wrapper above retains full admission.
+export function preparePartitionBendMapping(frame, point) {
+  validateBendFrame(frame);
+  const calculation = preparePartitionBendCalculation(point, frame.kernel);
+  const basis = { origin: [frame.origin[0], frame.origin[1]], angle: frame.angle, handedness: frame.handedness };
+  return { map: input => screenCoordinates(basis, calculation.point(input)), inset: calculation.inset };
+}
+
+function screenCoordinates(frame, canonical) {
+  const x = Math.cos(frame.angle), y = Math.sin(frame.angle);
   const result = { x: frame.origin[0] + x * canonical.x - frame.handedness * y * canonical.y,
     y: frame.origin[1] + y * canonical.x + frame.handedness * x * canonical.y };
   if (!Object.values(result).every(Number.isFinite)) throw new RangeError("Partition screen coordinates exceed finite values.");
-  return cloneAndFreeze(result);
+  return result;
 }
 
 // One conservative chord count for the entire frame. The bound evaluates R*theta²
