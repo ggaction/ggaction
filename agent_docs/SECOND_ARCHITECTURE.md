@@ -123,6 +123,15 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 현재 한도는 package/consumer/search 검사의 상수와 현재 실행 결과가 기준이다.
 아래 설명에 남은 과거 checkpoint 수치를 현재 제한으로 해석하지 않는다.
 
+## 소유권 표식
+
+`core/immutable.js`의 `freezeOwned`/`isOwned`가 정확한 객체 단위 소유를 소유한다. 동결 뒤 그 객체에만
+module-private field 표식을 붙이며, 이 module 밖에서는 표식을 추가·검사할 수 없다. 사본·clone·spread·
+caller 동결 객체·Proxy target은 소유되지 않고, 부모 표식이 자손을 보증하지 않는다. 동결이 실패하면 소유도
+생기지 않는다. 비확장 객체에 private field를 허용하지 않는 엔진에서는 같은 의미의 module-private WeakSet으로
+대체한다. 전역 WeakSet registry는 단명 등록이 섞이면 V8 ephemeron table을 반복 재해시해 원100k 경로를
+정체시켰으므로 표식 저장 위치만 바꿨다. 결정과 측정은 [소유권 표식 결정](impl/roadmap9/qualification/OWNED_MARK_DECISION.md)에 둔다.
+
 ## 내부 content hash 계산 경계
 
 `core/contentDigest.js`는 기존 동기 문자열 변환·byte 복사·canonical JSON을 소유한다.
@@ -1052,12 +1061,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 796,926 bytes |
-| `ggaction/basic` | 427,544 bytes |
-| `ggaction/svg` | 26,257 bytes |
-| `ggaction/graph` | 75,582 bytes |
-| `ggaction/interaction` | 142,496 bytes |
-| `ggaction/animation` | 353,959 bytes |
+| `ggaction` | 797,029 bytes |
+| `ggaction/basic` | 427,892 bytes |
+| `ggaction/svg` | 26,554 bytes |
+| `ggaction/graph` | 75,883 bytes |
+| `ggaction/interaction` | 142,775 bytes |
+| `ggaction/animation` | 354,181 bytes |
 
 
 

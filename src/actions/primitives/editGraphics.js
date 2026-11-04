@@ -41,26 +41,31 @@ function validateCollectionItem(item, ownerId, index) {
     validateGraphicProperty(type, property);
     validateConcreteGraphicValue(type, property, value);
   }
-  return freezeOwned({
+  // Unregistered until its final owner shape is known; callers freeze it once.
+  return {
     id: item.identity === undefined ? `${ownerId}:${index}` : graphicIdentityId(ownerId, validateGraphicIdentity(item.identity)),
     ...(item.identity === undefined ? {} : { identity: cloneAndFreeze(item.identity) }),
     type,
     properties: cloneAndFreeze(item.properties)
-  });
+  };
 }
 
-function replaceCollectionItems(value, id, program) {
+function validatedCollectionItems(value, id, program) {
   if (!Array.isArray(value)) throw new TypeError("collection.items must be an array.");
   validateGraphicItemLimit(value.length, resolveGraphicItemCapacity(program, { id, label: "collection.items length" }));
   const items = value.map((item, index) => validateCollectionItem(item, id, index));
   if (new Set(items.map(item => item.id)).size !== items.length) throw new Error("Duplicate concrete item identity.");
-  return freezeOwned(items);
+  return items;
+}
+
+function replaceCollectionItems(value, id, program) {
+  return freezeOwned(validatedCollectionItems(value, id, program).map(freezeOwned));
 }
 
 function replaceDrawableItems(value, id, type, program) {
-  const items = replaceCollectionItems(value, id, program);
+  const items = validatedCollectionItems(value, id, program);
   if (!items.every(item => item.type === type)) {
-    return freezeOwned({ type: "collection", items });
+    return freezeOwned({ type: "collection", items: freezeOwned(items.map(freezeOwned)) });
   }
   return freezeOwned({
     type,

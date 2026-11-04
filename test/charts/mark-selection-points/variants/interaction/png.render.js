@@ -11,10 +11,14 @@ import { renderToSVG } from "../../../../../src/renderers/svg.js";
 import { renderToPNGBuffer } from "../../../../../src/renderers/png.js";
 import { renderToPDFBuffer } from "../../../../../src/renderers/pdf.js";
 import { serializeGraphic, deserializeGraphic } from "../../../../../src/persistence.js";
+import { ensureVariantMetadata } from "../../../../support/artifact-metadata.js";
 
 import { createSelectionPreviewPrimitive } from "./primitive.program.js";
 import { previewVariant } from "./manifest.js";
 const output = new URL(`../../../../../.artifacts/test/png/charts/${previewVariant.capability}/${previewVariant.chart}/`, import.meta.url);
+// Each variant owns one canonical metadata file under its own directory.
+const variantMetadata = variant => ensureVariantMetadata({ scope: "charts", capability: variant.capability, chart: variant.chart,
+  variant: variant.variant, kind: "user-facing", title: variant.title, userFacingCallChain: variant.publicCalls.join("\n") });
 async function pixels(buffer) {
   const image = await loadImage(buffer), canvas = createCanvas(image.width, image.height);
   canvas.getContext("2d").drawImage(image, 0, 0); return canvas.getContext("2d").getImageData(0, 0, image.width, image.height).data;
@@ -36,19 +40,18 @@ test("selection preview and explicit primitive overlay retain exact Canvas, SVG,
   assert.deepEqual(actual.graphicSpec, primitive.graphicSpec);
   const a = createCanvas(1, 1), b = createCanvas(1, 1); render(actual, a.getContext("2d")); render(primitive, b.getContext("2d"));
   assert.deepEqual(await a.encode("png"), await b.encode("png")); assert.equal(renderToSVG(actual), renderToSVG(primitive));
-  await mkdir(output, { recursive: true });
-  await writeFile(new URL("variant.json", output), JSON.stringify(previewVariant, null, 2) + "\n");
+  const brush = new URL(`${previewVariant.variant}/`, output); await variantMetadata(previewVariant);
   const png = (await renderToPNGBuffer(actual)).buffer, reference = (await renderToPNGBuffer(primitive)).buffer;
   assert.deepEqual(await pixels(png), await pixels(reference));
   assert.deepEqual((await renderToPNGBuffer(deserializeGraphic(serializeGraphic(actual)))).buffer, png);
   const data = await pixels(png), i = (150 * 420 + 150) * 4;
   assert.ok(data[i + 2] > data[i] && data[i] < 255, "Literal interior overlay sample contains blue ink");
   for (const [name, value] of [["public", actual], ["primitive", primitive]]) {
-    await writeFile(new URL(`${name}.png`, output), (await renderToPNGBuffer(value)).buffer);
-    await writeFile(new URL(`${name}.pdf`, output), (await renderToPDFBuffer(value)).buffer);
-    execFileSync("pdftoppm", ["-r", "72", "-singlefile", "-png", fileURLToPath(new URL(`${name}.pdf`, output)), fileURLToPath(new URL(`${name}-pdf`, output))], { stdio: "pipe" });
+    await writeFile(new URL(`${name}.png`, brush), (await renderToPNGBuffer(value)).buffer);
+    await writeFile(new URL(`${name}.pdf`, brush), (await renderToPDFBuffer(value)).buffer);
+    execFileSync("pdftoppm", ["-r", "72", "-singlefile", "-png", fileURLToPath(new URL(`${name}.pdf`, brush)), fileURLToPath(new URL(`${name}-pdf`, brush))], { stdio: "pipe" });
   }
-  assert.deepEqual(await pixels(await readFile(new URL("public-pdf.png", output))), await pixels(await readFile(new URL("primitive-pdf.png", output))));
+  assert.deepEqual(await pixels(await readFile(new URL("public-pdf.png", brush))), await pixels(await readFile(new URL("primitive-pdf.png", brush))));
   session.destroy(); assert.equal(session.getState().program, p); assert.equal(session.getState().previewProgram, null);
 });
 
@@ -73,8 +76,7 @@ test("angular sector preview preserves exact primitive pixels across four render
   const data = await pixels(png), inside = (40 * 200 + 125) * 4, outside = (140 * 200 + 150) * 4;
   assert.ok(data[inside + 2] > data[inside] && data[inside] < 255, "Upper-right sector has blue interior ink");
   assert.deepEqual([...data.slice(outside, outside + 4)], [255, 255, 255, 255]);
-  const directory = new URL("angular/", output); await mkdir(directory, { recursive: true });
-  await writeFile(new URL("variant.json", directory), JSON.stringify(variant, null, 2) + "\n");
+  const directory = new URL(`${variant.variant}/`, output); await variantMetadata(variant);
   for (const [name, value] of [["public", actual], ["primitive", primitive]]) {
     await writeFile(new URL(`${name}.png`, directory), (await renderToPNGBuffer(value)).buffer);
     await writeFile(new URL(`${name}.pdf`, directory), (await renderToPDFBuffer(value)).buffer);

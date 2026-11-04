@@ -1,4 +1,18 @@
-const ownedValues = new WeakSet();
+// Exact-object ownership is a module-private field on the owned value itself.
+// A process-wide weak table rehashes in place under short-lived registrations
+// (see agent_docs/impl/roadmap9/qualification/OWNED_MARK_DECISION.md). Only this
+// module can add or test the mark; copies, clones, spreads and proxy targets of
+// an owned value are not owned, and a parent never vouches for its descendants.
+class OwnedTarget { constructor(value) { return value; } }
+class OwnedMark extends OwnedTarget {
+  #owned;
+  // Return the constructed value so minifiers cannot drop the marking call.
+  static add(value) { return new OwnedMark(value); }
+  static has(value) { return #owned in value; }
+}
+// Engines that refuse private fields on non-extensible objects keep the same
+// exact-object semantics through this fallback.
+const unmarkableOwnedValues = new WeakSet();
 
 export function isPlainObject(value) {
   if (value === null || typeof value !== "object") {
@@ -11,16 +25,22 @@ export function isPlainObject(value) {
 
 export function freezeOwned(value) {
   if (value !== null && typeof value === "object") {
-    if (ownedValues.has(value)) return value;
+    if (isOwned(value)) return value;
     Object.freeze(value);
-    ownedValues.add(value);
+    try {
+      if (OwnedMark.add(value) !== value) throw new TypeError("Ownership mark did not attach to its value.");
+    } catch (error) {
+      if (!(error instanceof TypeError)) throw error;
+      unmarkableOwnedValues.add(value);
+    }
   }
 
   return value;
 }
 
 export function isOwned(value) {
-  return value !== null && typeof value === "object" && ownedValues.has(value);
+  return value !== null && typeof value === "object" &&
+    (OwnedMark.has(value) || unmarkableOwnedValues.has(value));
 }
 
 export function cloneAndFreeze(value, ancestors = new WeakSet(), path = "state") {
