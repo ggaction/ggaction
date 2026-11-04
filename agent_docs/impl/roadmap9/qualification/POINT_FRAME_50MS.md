@@ -35,3 +35,16 @@ Node 반복 sample(35회 중 앞 5회 제외, 3회 반복): format6 중앙값 38
 | 100k | 20.5 / 19.3 (50) | 0.3 / 0.4 (20) |
 
 같은 source의 전체 coverage(일반 10544/10544) 97.42/95.68/99.36%, critical floor 785, browser 529/529, render 513/513, 같은 archive Node20/22/24 설치 소비자 통과. 사용자 GUI 앱이 켜진 상태의 측정이므로 최종 exclusive 창에서 다시 잰다. Canonical memory 100cycle은 별도다.
+
+## 같은 archive의 Geo·추론 정본 benchmark
+
+같은 archive `bc7633b5…`로 측정했다(Chromium P95, DPR1/DPR2 중 큰 값, ms).
+
+| workload | 기준 | 1k(추론 100) | 10k(추론 1k) | 100k(추론 10k) |
+| --- | --- | --- | --- | --- |
+| Geo camera preview | 16.7/33/50 | 14.0 | **131.8** | **1,345.9** |
+| Geo hit | 20/20/20 | 0.8 | 2.4 | **20.7** |
+| 추론 exact | –/1000/– | 32.6 | 333.1 | 3,492.7 |
+| 추론 large worker | –/–/10000 | – | – | 7,910.2 |
+
+추론은 기준이 있는 두 항목이 통과했다. 두 실행 모두 종료코드 1인데, 추론은 기준이 없는 크기의 `no-size-slo-specified`와 `synchronous-not-worker-qualified`를 harness가 통과가 아닌 상태로 집계하기 때문이며 판정 규칙은 바꾸지 않았다. Geo는 10k·100k camera preview와 100k hit가 미달이다.
