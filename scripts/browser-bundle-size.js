@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 427_544, // Unregistered scalar position checks: Node20/24 427,544 gzip bytes.
   "ggaction/svg": 26_257, // Circle column construction proof: Node20/24 26,257 gzip bytes.
   "ggaction/graph": 75_582, // Combined native route invocation: Node20/24 75,582 gzip bytes.
-  "ggaction/animation": 353_932, // Unregistered scalar position checks: Node20/24 353,932 gzip bytes.
+  "ggaction/animation": 353_959, // Exact partition track reuse: Node20/24 353,959 gzip bytes.
   "ggaction/interaction": 142_496 // Unregistered scalar position checks: Node20/24 142,496 gzip bytes.
 });
 

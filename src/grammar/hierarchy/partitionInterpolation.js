@@ -8,6 +8,9 @@ import { mapPartitionBendPoint } from "./partitionAdapter.js";
 export const PARTITION_INTERPOLATION_VERSION = 1;
 const BOUNDS = ["u0", "u1", "v0", "v1"];
 const KERNEL = ["width", "height", "innerRadius", "outerRadius", "radiusPolicy", "sweep"];
+// Only this module's exact deeply owned result reuses its endpoint admission.
+// Restored, copied or caller-frozen tracks retain the full boundary.
+const preparedPlans = new WeakSet();
 function record(value, keys, label) {
   ownRecord(value, label); rejectUnknownProperties(value, keys, label);
   if (keys.some(key => (!Object.hasOwn(value, key) || value[key] === undefined))) throw new TypeError(`${label} requires every resolved field.`);
@@ -50,16 +53,21 @@ export function preparePartitionInterpolation(inputFrom, inputTo) {
     : from.nodes.some((node, i) => node.visible !== to.nodes[i].visible) ? "visibility"
       : from.frame.handedness !== to.frame.handedness ? "handedness"
         : from.frame.kernel.radiusPolicy !== to.frame.kernel.radiusPolicy ? "radius-policy" : undefined;
-  return cloneAndFreeze({ kind: "partition", version: PARTITION_INTERPOLATION_VERSION, mode: reason === undefined ? "partition" : "crossfade",
+  const plan = cloneAndFreeze({ kind: "partition", version: PARTITION_INTERPOLATION_VERSION, mode: reason === undefined ? "partition" : "crossfade",
     from, to, ...(reason === undefined ? {} : { reason }) });
+  preparedPlans.add(plan);
+  return plan;
 }
 
 export function samplePartitionInterpolation(input, progress) {
-  ownRecord(input, "Partition interpolation track");
-  rejectUnknownProperties(input, ["kind", "version", "mode", "from", "to", "reason"], "partition interpolation track");
-  if (input.kind !== "partition" || input.version !== PARTITION_INTERPOLATION_VERSION) throw new TypeError("Unsupported partition interpolation kind or version.");
-  const plan = preparePartitionInterpolation(input.from, input.to);
-  if (input.mode !== plan.mode || input.reason !== plan.reason || Object.hasOwn(input, "reason") !== Object.hasOwn(plan, "reason")) throw new TypeError("Partition interpolation compatibility decision is inconsistent.");
+  let plan = input;
+  if (!preparedPlans.has(input)) {
+    ownRecord(input, "Partition interpolation track");
+    rejectUnknownProperties(input, ["kind", "version", "mode", "from", "to", "reason"], "partition interpolation track");
+    if (input.kind !== "partition" || input.version !== PARTITION_INTERPOLATION_VERSION) throw new TypeError("Unsupported partition interpolation kind or version.");
+    plan = preparePartitionInterpolation(input.from, input.to);
+    if (input.mode !== plan.mode || input.reason !== plan.reason || Object.hasOwn(input, "reason") !== Object.hasOwn(plan, "reason")) throw new TypeError("Partition interpolation compatibility decision is inconsistent.");
+  }
   validateUnitInterval(progress, "Partition interpolation progress");
   const { from, to } = plan;
   if (plan.mode === "crossfade") return cloneAndFreeze({ mode: plan.mode, reason: plan.reason, from, to, weights: [1 - progress, progress] });

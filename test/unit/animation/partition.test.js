@@ -147,3 +147,15 @@ test('descriptor checks and global work limits reject before callbacks or oversi
  assert.equal(sample(prepare(deep,deep),.5).state.nodes.length,10000);
  for(const frame of [{...a.frame,origin:[0]},{...a.frame,angle:NaN},{...a.frame,handedness:0}]){const{gap,...basis}=frame;assert.throws(()=>mapPartitionBendPoint(basis,{u:.5,v:.5,bend:0}));}
 });
+
+test('only the exact prepared track skips repeated admission', () => {
+ const a=endpoint(0,{nodes:[node(),node('child','root',{u0:.2,u1:.6,v0:.5})]}),b=endpoint(1,{nodes:[node(),node('child','root',{u0:.1,u1:.9,v0:.4})]});
+ const plan=prepare(a,b),copy=JSON.parse(JSON.stringify(plan));
+ for(const t of [0,.25,1]) assert.deepEqual(sample(plan,t),sample(copy,t));
+ // Copies, restored values and frozen forgeries keep the full boundary and diagnostics.
+ assert.throws(()=>sample({...copy,extra:true},.5),/partition interpolation track/i);
+ assert.throws(()=>sample(Object.freeze({...copy,mode:'crossfade',reason:'topology'}),.5),/inconsistent/);
+ assert.throws(()=>sample({...copy,from:{...copy.from,bend:2}},.5),/bend/i);
+ assert.throws(()=>sample({...copy,version:PARTITION_INTERPOLATION_VERSION+1},.5),/version/);
+ assert.throws(()=>sample(plan,1.5),/progress/i);
+});
