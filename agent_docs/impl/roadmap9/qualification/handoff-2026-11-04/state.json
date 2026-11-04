@@ -153,6 +153,6 @@
     "matched": []
   },
   "agents": "all three owners reported stopped and no owned execution processes",
-  "remoteException": "route handoff a48449ebf is local after two GitHub Internal Server Error push failures; included in portable Git bundle",
+  "remoteException": "route handoff a48449ebf is local after two GitHub Internal Server Error push failures; included in portable Git bundle; central integration handoff push also rejected with Internal Server Error; portable bundle preserves local handoff commits and MANIFEST.json records final refs.",
   "protectedOperations": "No PR creation, package publish, official docs deploy, service shutdown or automatic resume was performed."
 }

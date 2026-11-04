@@ -118,3 +118,5 @@ node scripts/native-capability-completion.js test/native-capabilities.json candi
 2026-11-04 task 관련 test/benchmark process command scan은0개였고 각 agent도 소유 worker/browser/server/session0을 보고했다. 자동 재개 예약을 만들지 않았다. Tailscale/갤러리와 다른 프로젝트 서비스는 변경하지 않았으며 최신 접속 상태를 새로 검증하지 않았다. 코드·기존 증거를 삭제하지 않고 모든 worktree를 남겼다.
 
 원격 예외: Route의 마지막 인계 문서 commit `a48449ebf`는 GitHub Internal Server Error로2회 push에 실패했다. 제품/시험 commit `69605f4e3`까지는 원격에 있다. 중앙 전달물의 route Git bundle로 인계 문서까지 복구 가능하며 재개 후 `git push origin codex/route-v2-native`로 다시 올린다. 다른 원격 상태는 state.json 및 최종 전달 manifest를 확인한다.
+
+루트 중앙 인계의 첫 push도 GitHub Internal Server Error로 거부됐다. 통합 제품/source pin `abbd84b76`까지는 원격에 있으며, 추가 중앙 인계 commit은 portable Git bundle에 포함한다. 최종 로컬/원격 HEAD는 전달물 MANIFEST.json에서 구분한다. 원격 오류를 성공으로 기록하거나 force-push하지 않는다.
