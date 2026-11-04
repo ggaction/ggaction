@@ -1,3 +1,4 @@
+import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 import { translateFillPaint } from "../grammar/paint.js";
 import { validateGraphicClip, translateGraphicClip } from "../grammar/schemas/graphicClip.js";
 import { isOwned, cloneAndFreeze, freezeOwned } from "../core/immutable.js";
@@ -20,9 +21,36 @@ function position(properties, dx, dy) {
   if (result.commands) result.commands = result.commands.map(command => position(command, dx, dy));
   return result;
 }
+function* concreteEntries(scene) {
+  if (scene.version === 2) { for (const node of scene.nodes) yield { node }; return; }
+  const logicalKeys = new Set();
+  for (let entryIndex = 0; entryIndex < scene.entries.length; entryIndex++) {
+    const entry = scene.entries[entryIndex];
+    let node, keys;
+    if (entry.kind === "single") { node = entry.node; keys = [node.key]; }
+    else if (entry.kind === "circle-run") {
+      validateConcreteGraphicProperties("circle-batch", entry.properties);
+      ownArray(entry.keys, "Circle run keys");
+      if (entry.keys.length !== entry.properties.x.length) throw new TypeError("Circle run keys must follow every coordinate row.");
+      node = { key: `animation/node/${entryIndex}`, type: "circle-batch", properties: entry.properties,
+        offset: entry.offset, clip: entry.clip, clips: entry.clips }; keys = entry.keys;
+    } else throw new TypeError("Unknown Canvas scene entry kind.");
+    for (const key of keys) {
+      if (typeof key !== "string" || logicalKeys.has(key)) throw new TypeError("Canvas scene nodes require unique keys.");
+      logicalKeys.add(key);
+    }
+    yield { node, graphicId: `animation/node/${entryIndex}`, batch: entry.kind === "circle-run" };
+  }
+}
+function positionBatch(properties, dx, dy) {
+  if (!dx && !dy) return properties;
+  return { x: properties.x.map(value => value + dx), y: properties.y.map(value => value + dy),
+    radius: properties.radius, appearance: position(properties.appearance, dx, dy) };
+}
 function compile(scene) {
-  if (scene?.version !== 2 || ![scene.width, scene.height].every(n => Number.isFinite(n) && n > 0) || !Array.isArray(scene.nodes)) {
-    throw new TypeError('renderTransitionScene requires a version 2 Canvas scene.');
+  if (![2, 3].includes(scene?.version) || ![scene.width, scene.height].every(n => Number.isFinite(n) && n > 0) ||
+      !Array.isArray(scene.version === 3 ? scene.entries : scene.nodes)) {
+    throw new TypeError('renderTransitionScene requires a version 2 or 3 Canvas scene.');
   }
   const objects = { canvas: { type: 'canvas', properties: { width: scene.width, height: scene.height }, children: [] } };
   // Only locally created groups and wrappers still requiring a snapshot.
@@ -39,14 +67,16 @@ function compile(scene) {
     return true;
   };
   const sameClip = (a, b) => a === b || JSON.stringify(a) === JSON.stringify(b);
-  for (const node of scene.nodes) {
+  for (const { node, graphicId, batch } of concreteEntries(scene)) {
     const clips = node.clips ?? [node.clip];
-    if (typeof node.key !== 'string' || keys.has(node.key) || !['circle','rect','line','path','text','image','weighted-blend'].includes(node.type) ||
+    if (typeof node.key !== 'string' || keys.has(graphicId ?? node.key) ||
+        !(batch ? node.type === 'circle-batch' : ['circle','rect','line','path','text','image','weighted-blend'].includes(node.type)) ||
         node.offset?.length !== 2 || !node.offset.every(Number.isFinite) || !validClip(node.clip) ||
         !Array.isArray(clips) || !clips.every(validFrame) || !node.properties || typeof node.properties !== 'object') {
       throw new TypeError('Canvas scene nodes require unique keys, concrete properties, offsets and clips.');
     }
-    keys.add(node.key);
+    keys.add(graphicId ?? node.key);
+    if (node.type === "circle-batch") validateConcreteGraphicProperties(node.type, node.properties);
     let common = 0;
     while (common < Math.min(clips.length, activeClips.length) &&
         sameClip(clips[common], activeClips[common])) common++;
@@ -67,8 +97,8 @@ function compile(scene) {
     }
     activeClips = clips;
     const group = groups.at(-1), origin = origins.at(-1);
-    const id = `node-${index++}`;
-    const object = { type: node.type, properties: position(node.properties,
+    const id = graphicId ?? `node-${index++}`;
+    const object = { type: node.type, properties: (node.type === "circle-batch" ? positionBatch : position)(node.properties,
       node.offset[0] - origin[0], node.offset[1] - origin[1]) };
     if(isOwned(object.properties))objects[id]=freezeOwned(object);
     else {objects[id]=object;pending.push([id,object]);}

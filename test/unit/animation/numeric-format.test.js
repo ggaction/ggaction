@@ -43,7 +43,7 @@ test('explicit format5 preserves point Basic timeline offline and current frame 
 });
 
 test('numeric format selection and closed header reject invalid values without invoking accessors',()=>{
- const from=points();for(const formatVersion of[undefined,null,3,4,6,'5',NaN,Infinity])assert.throws(()=>prepare(from,from,{formatVersion}),/formatVersion/);
+ const from=points();for(const formatVersion of[undefined,null,3,4,7,'5',NaN,Infinity])assert.throws(()=>prepare(from,from,{formatVersion}),/formatVersion/);
  let reads=0;assert.throws(()=>planTransition({from,to:from,options:{durationMs:100,get formatVersion(){reads++;return 5;}}}),/accessor/);assert.equal(reads,0);
  const wire=exportTransitionPlan(prepare(from));
  for(const mutate of[w=>delete w.kernels.columns,w=>w.kernels.columns='animation-columns@1',w=>w.kernels.transition=4,w=>w.version=4,w=>w.kernels.geo='native-geo-camera@2',w=>w.limits.maxOutputNodes=100002,w=>w.extra=true]){const changed=structuredClone(wire);mutate(changed);assert.throws(()=>restoreTransitionPlan(changed));}

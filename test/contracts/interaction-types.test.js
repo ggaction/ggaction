@@ -15,7 +15,7 @@ import { chart } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import { chart as basic } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 import { createInteractionSession, type InteractionCommand } from ${JSON.stringify(path.join(root, "types/interaction.js"))};
 import { createTransitionScene } from ${JSON.stringify(path.join(root, "types/scene.js"))};
-import { planTransition, sampleTransition, type TransitionFrame } from ${JSON.stringify(path.join(root, "types/animation.js"))};
+import { planTransition, sampleTransition, type AnyTransitionFrame } from ${JSON.stringify(path.join(root, "types/animation.js"))};
 chart().editLayout({target:'layout',node:{key:[1,'a'],x:1,y:2}});
 // @ts-expect-error a single-node patch cannot also replace layout options
 chart().editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
@@ -39,7 +39,14 @@ session.dispatch({type:'unbundleEdge',itemKey:'key'});
 session.dispatch({type:'unbundleEdge',target:'network',itemKey:'key',payload:{}});
 session.dispatch({type:'focus',move:'firstChild'});session.dispatch({type:'focus',target:'points',itemKey:null});session.dispatch({type:'activate'});
 const currentItem:string|null|undefined=session.getState().focus?.currentItemKey;
-const previewFrame:TransitionFrame|null=session.getState().previewFrame;
+const previewFrame:AnyTransitionFrame|null=session.getState().previewFrame;
+const acceptedScene=session.getState().scene;
+if(acceptedScene.version===3){const entries=acceptedScene.entries;
+// @ts-expect-error version3 has no scalar nodes
+acceptedScene.nodes;}else{const nodes=acceptedScene.nodes;
+// @ts-expect-error version2 has no batch entries
+acceptedScene.entries;}
+
 // @ts-expect-error the preview is an immutable session-owned view
 session.getState().previewFrame=null;
 // @ts-expect-error focus moves and explicit target keys are exclusive
@@ -59,7 +66,7 @@ session.mount(document.createElement('div'),{observeResize:'auto'});
 const undoCount:number=session.getState().history.undoCount;
 const asyncSession=createInteractionSession({program,async assetResolver(request){
   const signal:AbortSignal=request.signal;const revision:number=request.baseRevision;
-  const sample:TransitionFrame|undefined=request.frame;const frameVersion:number|undefined=request.frameVersion;
+  const sample:AnyTransitionFrame|undefined=request.frame;const frameVersion:number|undefined=request.frameVersion;
   const path:readonly string[]|undefined=request.resourceRevisionVector[0]?.childPath;
   return {dispose(){}};
 }});
@@ -244,7 +251,7 @@ session.dispatch({type:'leave'});
 session.dispatch({type:'frame',scene:createTransitionScene(program,{format:'canvas'}),generation:0,version:1});
 const sample=sampleTransition(planTransition({from:program,to:program,options:{durationMs:100,easing:'linear'}}),50);
 session.dispatch({type:'frame',frame:sample,generation:0,version:2});
-const accepted:TransitionFrame|null=session.getState().animationFrame;
+const accepted:AnyTransitionFrame|null=session.getState().animationFrame;
 const frameImages=session.getState().frameAssets?.images;
 // @ts-expect-error authentic frame and arbitrary scene are exclusive
 session.dispatch({type:'frame',frame:sample,scene:sample.scene,generation:0,version:3});

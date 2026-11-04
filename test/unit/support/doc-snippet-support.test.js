@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { mkdtemp, readFile, rm, readdir } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, readdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { copyDocumentationSupportFiles } from "../../../scripts/doc-snippets.js";
@@ -51,4 +51,29 @@ test("paired documentation HTML is explicit, same-section, bounded and hashed in
     assert.throws(() => documentationHtmlHost(invalid, script, options), /one bounded preceding HTML block/);
   }
   assert.notEqual(documentationHtmlHost([{ ...html, code: html.code + '\n' }, script], script, options).htmlSha256, result.htmlSha256);
+});
+
+test("Node documentation hosts execute their original worker example and validate semantic output", async () => {
+  const { documentationPrograms, documentationHtmlHost } = await import("../../../scripts/doc-snippets.js");
+  const { prepareTutorials, testTutorialConsumers } = await import("../../../scripts/tutorial-consumer.js");
+  const parent = new URL("../../../.artifacts/test/doc-host/", import.meta.url);
+  await mkdir(parent, { recursive: true });
+  const directory = await mkdtemp(new URL("node-", parent));
+  try {
+    const example = (await documentationPrograms()).find(value => value.id === "graph-inference-worker");
+    assert.equal(example.host, "node");
+    const prepared = await prepareTutorials(directory, { examples: [example] });
+    assert.deepEqual(prepared.inputs, {});
+    assert.equal(prepared.consumers.length, 1);
+    assert.equal(prepared.consumers[0].host, "node");
+    const evidenceFile = path.join(directory, "receipts.json");
+    await testTutorialConsumers(directory, { examples: [example], evidenceFile });
+    assert.equal(JSON.parse(await readFile(evidenceFile, "utf8"))[0].status, "passed");
+    const empty = { ...example, id: "empty-semantic-result", supportFiles: {}, code: "const program = { semanticSpec: { resources: [] }, graphicSpec: { objects: {} } };" };
+    await assert.rejects(testTutorialConsumers(directory, { examples: [empty], evidenceFile }), /Documentation consumers failed/);
+    assert.equal(JSON.parse(await readFile(evidenceFile, "utf8"))[0].status, "failed");
+    for (const invalid of [{ ...example, environment: "browser-module" }, { ...example, rendering: "renders-canvas" }, { ...example, resultKind: undefined }]) {
+      assert.throws(() => documentationHtmlHost([], {}, invalid), /semantic authoring Node/);
+    }
+  } finally { await rm(directory, { recursive: true, force: true }); }
 });

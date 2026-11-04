@@ -1,0 +1,68 @@
+{
+  "node": "v22.23.1",
+  "rows": 1000,
+  "metrics": {
+    "logicalValues": 12001,
+    "descriptorVisits": 2000,
+    "cellVisits": 3000,
+    "storageCells": 1000,
+    "physicalValues": 39,
+    "encodedValues": 129,
+    "bytes": 11290
+  },
+  "exactValues": true,
+  "sharedOwnedSnapshot": true,
+  "callerMutationIsolated": true,
+  "shallowOwnershipNotTrusted": true,
+  "snapshotFreezeCounts": {
+    "legacy": 4001,
+    "candidate": 1001
+  },
+  "oversized": {
+    "error": [
+      "RangeError",
+      "Animation columns expandedValues must not exceed 12000000."
+    ],
+    "count": 1
+  },
+  "errorsEqual": [
+    [
+      "RangeError",
+      "Animation columns vector length differs from its rows."
+    ],
+    [
+      "TypeError",
+      "Animation envelope cannot contain cycles."
+    ],
+    [
+      "TypeError",
+      "Animation envelope requires serializable values."
+    ],
+    [
+      "TypeError",
+      "Animation envelope requires serializable values."
+    ],
+    [
+      "RangeError",
+      "Animation columns has an invalid length or reference."
+    ],
+    [
+      "TypeError",
+      "Animation columns has missing shape columns."
+    ],
+    [
+      "TypeError",
+      "Animation columns has missing columns."
+    ]
+  ],
+  "failedFreezeCounts": [
+    0,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0
+  ],
+  "getterReads": 0
+}

@@ -877,7 +877,8 @@
     "supportFiles": {
       "inference-worker.mjs": "examples/graph-inference/worker.mjs"
     },
-    "resultKind": "semantic"
+    "resultKind": "semantic",
+    "host": "node"
   },
   {
     "id": "interaction-hit-preparation",
@@ -907,6 +908,26 @@
     "environment": "node-esm",
     "result": "pathProgram",
     "prerequisites": "Run this complete ES module with public package imports. Concrete path capacity and session preparation are explicit.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "animation-batched-frames",
+    "file": "api/animation.md",
+    "contains": "const plan = planTransition({ from, to, options: { durationMs: 1000, formatVersion: 6 } });",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; both keyed endpoints, format6 sampling, SVG output and offline version narrowing are included.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "extension-circle-batch",
+    "file": "extension/primitives.md",
+    "contains": ".createGraphics({ id: \"circles\", type: \"circle-batch\", parent: \"canvas\" })",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete ES module with ggaction installed; it authors one canvas and fully materialized circle columns.",
     "rendering": "authoring-only"
   }
 ]

@@ -9914,6 +9914,7 @@ export type GraphicType =
   | "canvas"
   | "collection"
   | "circle"
+  | "circle-batch"
   | "rect"
   | "line"
   | "text"

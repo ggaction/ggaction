@@ -6,6 +6,7 @@ import { createInteractionSession } from "../../../src/interaction.js";
 import { planTransition, sampleTransition } from "../../../src/animation.js";
 import { animationFrameProvenance } from "../../../src/animation/frameProvenance.js";
 import { animationGraphFrame } from "../../support/animation-graph-frame.js";
+import { animationSceneRows } from "../../../src/core/sceneRows.js";
 
 const options = { durationMs: 100, easing: "linear" };
 const layout = p => p.semanticSpec.resources.find(r => r.kind === "layout");
@@ -26,11 +27,13 @@ function setup(from, frame, configuration = {}) {
   s.mount(host); const publish = () => s.dispatch({ type: "frame", frame, version: s.getState().frameVersion + 1, generation: s.getState().generation });
   return { s, host, publish };
 }
-const nodes = frame => frame.scene.nodes.filter(n => n.type === "circle").map(n => [n.properties.x, n.properties.y]);
+const nodes = frame => [...animationSceneRows(frame.scene)].map(row => row.node).filter(n => n.type === "circle").map(n => [n.properties.x, n.properties.y]);
 const tick = () => new Promise(resolve => setImmediate(resolve));
 
-test("animated node drag starts at current meanings, keeps routed endpoints attached and commits one native history entry", () => {
-  const { from, to, frame } = animationGraphFrame(false, true), { s, host, publish } = setup(from, frame), events = [];
+for (const formatVersion of [undefined, 6]) test(`format ${formatVersion ?? "default"} node drag keeps current routed endpoints and commits one native history entry`, () => {
+  const { from, to } = animationGraphFrame(false, true);
+  const frame = sampleTransition(planTransition({ from, to, options: { ...options, ...(formatVersion === undefined ? {} : { formatVersion }) } }), 50);
+  const { s, host, publish } = setup(from, frame), events = [];
   s.subscribe(e => { if (e.phase) events.push(e.phase); }); publish();
   host.fire("pointerdown", 50, 80); host.fire("pointermove", 80, 120); host.flush();
   const preview = s.getState(); assert.equal(preview.program, from); assert.equal(preview.previewProgram, null); assert.equal(preview.animationFrame, frame);
@@ -46,8 +49,8 @@ test("animated node drag starts at current meanings, keeps routed endpoints atta
   s.dispatch({ type: "undo" }); assert.equal(s.getState().program, from);
   s.dispatch({ type: "redo" }); assert.equal(s.getState().program, next);
   // A host can start release or reverse playback from the last exact preview.
-  assert.equal(sampleTransition(planTransition({ from: preview.previewFrame, to: next, options }), 0), preview.previewFrame);
-  assert.equal(sampleTransition(planTransition({ from: preview.previewFrame, to, options }), 0), preview.previewFrame);
+  assert.equal(sampleTransition(planTransition({ from: preview.previewFrame, to: next, options: { ...options, ...(formatVersion === undefined ? {} : { formatVersion }) } }), 0), preview.previewFrame);
+  assert.equal(sampleTransition(planTransition({ from: preview.previewFrame, to, options: { ...options, ...(formatVersion === undefined ? {} : { formatVersion }) } }), 0), preview.previewFrame);
   s.destroy(); assert.equal(host.captures.size, 0);
 });
 

@@ -7,6 +7,8 @@ import { copyCompositionRecipeExamples } from "./composition-recipes.js";
 
 export async function testNodeConsumer(directory) {
   await copyCompositionRecipeExamples(directory);
+  await writeFile(path.join(directory, "consumer-input.js"),
+    await readFile(new URL("./input.js", import.meta.url)));
   await writeFile(path.join(directory, "nested-responsive-public.js"),
     (await readFile(new URL("../../examples/nested-responsive/program.js", import.meta.url), "utf8"))
       .replace('"../../src/index.js"', '"ggaction"'));

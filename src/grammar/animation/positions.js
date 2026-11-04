@@ -158,3 +158,31 @@ export function samplePositionInterpolation(plan, progress) {
   if (retain) rememberScale(from.scale, to.scale, progress, scale, mapper);
   return freezeOwned({ kind: "position", value, scale, position });
 }
+
+const preparedBatches = new WeakMap();
+// A closed set of exact scalar kernels shares one scale calculation. Numeric
+// results still use the same scalar mapper and interpolation operation order.
+export function preparePositionBatch(plans) {
+  ownArray(plans, 'Prepared position batch');
+  if (!plans.length || plans.length > 10000) throw new RangeError('Position batches require 1..10000 rows.');
+  const first = plans[0];
+  for (const plan of plans) if (!preparedPositions.has(plan) || plan.from.scale !== first.from.scale || plan.to.scale !== first.to.scale) throw new TypeError('Position batches require exact prepared shared scales.');
+  const token = Object.freeze({}); preparedBatches.set(token, Object.freeze(plans.slice())); return token;
+}
+export function samplePositionBatch(token, progress) {
+  const plans = preparedBatches.get(token);
+  if (plans === undefined) throw new TypeError('Position batch sampling requires its private prepared token.');
+  const first = samplePositionInterpolation(plans[0], progress);
+  if (first.kind !== 'position') return first;
+  const mapper = prepareContinuousScaleScalar(first.scale), values = new Array(plans.length), positions = new Array(plans.length);
+  values[0] = first.value; positions[0] = first.position;
+  for (let index = 1; index < plans.length; index++) {
+    const plan = plans[index], value = progress === 0 ? plan.from.value : progress === 1 ? plan.to.value : interpolateNumber(plan.from.value, plan.to.value, progress);
+    let position;
+    try { position = mapPreparedContinuousScaleValue(mapper, value); }
+    catch (error) { if (!(error instanceof RangeError)) throw error; return fade('nonfinite-position'); }
+    if (!Number.isFinite(position)) return fade('nonfinite-position');
+    values[index] = value; positions[index] = position;
+  }
+  return freezeOwned({ kind: 'position-batch', values: freezeOwned(values), positions: freezeOwned(positions), scale: first.scale });
+}

@@ -1,0 +1,4053 @@
+{
+  "harnessSHA256": {
+    "scripts/consumers/input.js": "c0d8a511c53dc5bf38c8b30bf5c66922178438b6c61ff7c4a04ad6a9a3a9d667",
+    "scripts/consumers/node.js": "4643fb66447eb21a5b156161a893f334495c1e10836aacbe0800241f55ce9b0d",
+    "scripts/consumers/fixtures/node/conditional-encoding.mjs": "ec8e6f51d3f7230f1abc9a971e14ff9facaf48c6e1b4c614858a2626db8eb11d",
+    "scripts/consumers/fixtures/node/keyboard-focus.mjs": "3717b3f31decc68ee157de53a1108106d1cb9bc5b950f1c4b1d7eb061c837f53",
+    "scripts/consumers/fixtures/node/geographic-routes.mjs": "43a32257d5a492493be572cb6b0a6f9236f43c075e9ef197af83d94d2612c79e",
+    "scripts/consumers/fixtures/node/static-delivery.mjs": "93120a520af9e161519a6dabeae42b582597356fd0817b86236fd1134692fa54"
+  },
+  "status": "coherent-functionality-checkpoint; original100k-same-process-offline-and-original-SLO-unresolved",
+  "base": "edb67604f5252982d457588388faec8876778292",
+  "review": "d103dc9c0",
+  "adoption": "8f6dcacdc",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1267,
+    "packedBytes": 1829635,
+    "unpackedBytes": 8236966,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/archives/ggaction-349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d.tgz",
+    "sha1": "bc0fd6bdabffd0e163d7acea7af8fd975bda463b",
+    "sha256": "349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d"
+  },
+  "archiveSources": {
+    "src/actions/primitives/createGraphics.js": {
+      "sourceSHA256": "bc76a2c95dd2d6e3768de7227c89cb275e2b0f4ba35b1b605bcd587ab8e24167",
+      "packageSHA256": "bc76a2c95dd2d6e3768de7227c89cb275e2b0f4ba35b1b605bcd587ab8e24167",
+      "canonicalCompaction": false
+    },
+    "src/actions/primitives/editGraphics.js": {
+      "sourceSHA256": "ba227c6bf1aeb3ebb663febfde01cca966c7a7a6ff6f747d46226fc04cf33c3f",
+      "packageSHA256": "ba227c6bf1aeb3ebb663febfde01cca966c7a7a6ff6f747d46226fc04cf33c3f",
+      "canonicalCompaction": false
+    },
+    "src/animation/columnCodec.js": {
+      "sourceSHA256": "c273a20af2a609eea326b36c7b5d4c97776468485f7a501206c6d8ea0306856f",
+      "packageSHA256": "c273a20af2a609eea326b36c7b5d4c97776468485f7a501206c6d8ea0306856f",
+      "canonicalCompaction": false
+    },
+    "src/animation/createPlayer.js": {
+      "sourceSHA256": "66791f878279756dcec9f6cbf864f1fc4eaf84c8419945f852d5cd58f38cf1b9",
+      "packageSHA256": "66791f878279756dcec9f6cbf864f1fc4eaf84c8419945f852d5cd58f38cf1b9",
+      "canonicalCompaction": false
+    },
+    "src/animation/endpoints.js": {
+      "sourceSHA256": "c9c49f6a42523a566825b649ece532a129ab192f87b9cc75632c687095983d0d",
+      "packageSHA256": "c9c49f6a42523a566825b649ece532a129ab192f87b9cc75632c687095983d0d",
+      "canonicalCompaction": false
+    },
+    "src/animation/frameEndpoint.js": {
+      "sourceSHA256": "9ab8c90eb93f4c93d42835955f983fe422fb882fef3290719801be6450ae0075",
+      "packageSHA256": "9ab8c90eb93f4c93d42835955f983fe422fb882fef3290719801be6450ae0075",
+      "canonicalCompaction": false
+    },
+    "src/animation/frameProvenance.js": {
+      "sourceSHA256": "7f8ce27420a78168b43ff2e869e2d5cba06e6886e14126e195a0484e031940bd",
+      "packageSHA256": "7f8ce27420a78168b43ff2e869e2d5cba06e6886e14126e195a0484e031940bd",
+      "canonicalCompaction": false
+    },
+    "src/animation/frames.js": {
+      "sourceSHA256": "7c8deeaf1a64d98a3141fa4413672967300aefcca8e41fc69fbb569808293d1f",
+      "packageSHA256": "7c8deeaf1a64d98a3141fa4413672967300aefcca8e41fc69fbb569808293d1f",
+      "canonicalCompaction": false
+    },
+    "src/animation/graphPresentation.js": {
+      "sourceSHA256": "ac47a7ae56ceab4118fde7de1e4afe4e5f718ec794da5779cb8b3852afa68d5e",
+      "packageSHA256": "ac47a7ae56ceab4118fde7de1e4afe4e5f718ec794da5779cb8b3852afa68d5e",
+      "canonicalCompaction": false
+    },
+    "src/animation/planner.js": {
+      "sourceSHA256": "d09220633a89d6921aae2013e1fa60df79614905f327c40496b7ffdf7638d083",
+      "packageSHA256": "d09220633a89d6921aae2013e1fa60df79614905f327c40496b7ffdf7638d083",
+      "canonicalCompaction": false
+    },
+    "src/animation/sample.js": {
+      "sourceSHA256": "aa38048a07440a77d39d999852cb2fbff0a3f403284e4dbd9813863f1082e2d0",
+      "packageSHA256": "aa38048a07440a77d39d999852cb2fbff0a3f403284e4dbd9813863f1082e2d0",
+      "canonicalCompaction": false
+    },
+    "src/grammar/animation/positions.js": {
+      "sourceSHA256": "a42ac803f8e6a04fff1c3736d9383053288da0b5e53de5ae2d39bac5d7f1701c",
+      "packageSHA256": "a42ac803f8e6a04fff1c3736d9383053288da0b5e53de5ae2d39bac5d7f1701c",
+      "canonicalCompaction": false
+    },
+    "src/grammar/hitIndex.js": {
+      "sourceSHA256": "77d1334336e97f97eb7341ca1efd9ba2be308f82b8d0d190137f85834ca61a3e",
+      "packageSHA256": "77d1334336e97f97eb7341ca1efd9ba2be308f82b8d0d190137f85834ca61a3e",
+      "canonicalCompaction": false
+    },
+    "src/grammar/schemas/concreteGraphic.js": {
+      "sourceSHA256": "01565af5da9b62fa5faebcbe535e9b69cec28eff5c2c4a16c3f1fbd9a219e245",
+      "packageSHA256": "01565af5da9b62fa5faebcbe535e9b69cec28eff5c2c4a16c3f1fbd9a219e245",
+      "canonicalCompaction": false
+    },
+    "src/grammar/schemas/graphic.js": {
+      "sourceSHA256": "b1ece565af38b74f19b42ecc91c47726c3590d4b68fef596ce11fd7f4790808f",
+      "packageSHA256": "b1ece565af38b74f19b42ecc91c47726c3590d4b68fef596ce11fd7f4790808f",
+      "canonicalCompaction": false
+    },
+    "src/grammar/schemas/graphicBounds.js": {
+      "sourceSHA256": "45bbb77e494dc2037909ff564052c06dd960aab220ec05ab0211f0d55271b677",
+      "packageSHA256": "45bbb77e494dc2037909ff564052c06dd960aab220ec05ab0211f0d55271b677",
+      "canonicalCompaction": false
+    },
+    "src/grammar/schemas/graphicSources.js": {
+      "sourceSHA256": "fd1d554b00b074975815458ecb3935859a336d4c6001045728c7e49a1ceef4ca",
+      "packageSHA256": "fd1d554b00b074975815458ecb3935859a336d4c6001045728c7e49a1ceef4ca",
+      "canonicalCompaction": false
+    },
+    "src/interaction/hitProgram.js": {
+      "sourceSHA256": "5944091b41e88265bc5df04d0b3060557e4c363d275c3b4efdc5915fbb0b01e7",
+      "packageSHA256": "5944091b41e88265bc5df04d0b3060557e4c363d275c3b4efdc5915fbb0b01e7",
+      "canonicalCompaction": false
+    },
+    "src/interaction/movementFrame.js": {
+      "sourceSHA256": "d74a2efe980b858d7500e13f6638b07a8974ef78c47e9d29f007e4678dbca257",
+      "packageSHA256": "d74a2efe980b858d7500e13f6638b07a8974ef78c47e9d29f007e4678dbca257",
+      "canonicalCompaction": false
+    },
+    "src/interaction/nodeMovement.js": {
+      "sourceSHA256": "1cbd86e30a5c07d07416ede1b48d17496d43a0f08315e0bb078acedd5fc196fa",
+      "packageSHA256": "1cbd86e30a5c07d07416ede1b48d17496d43a0f08315e0bb078acedd5fc196fa",
+      "canonicalCompaction": false
+    },
+    "src/interaction/regionSelection.js": {
+      "sourceSHA256": "8bdb96a5d63a29009bc7a514234081316b1f5a194ccfc51e448cb521746b67aa",
+      "packageSHA256": "8bdb96a5d63a29009bc7a514234081316b1f5a194ccfc51e448cb521746b67aa",
+      "canonicalCompaction": false
+    },
+    "src/interaction/sceneFrame.js": {
+      "sourceSHA256": "7356270447bad2aa0233ec7cf1a999c782701bb341d2e9fbef4189937f8553d3",
+      "packageSHA256": "7356270447bad2aa0233ec7cf1a999c782701bb341d2e9fbef4189937f8553d3",
+      "canonicalCompaction": false
+    },
+    "src/persistence/validation.js": {
+      "sourceSHA256": "b95e08dceccf248121620004efa58867091d5cfffdf78279ba574312e1dd0843",
+      "packageSHA256": "b95e08dceccf248121620004efa58867091d5cfffdf78279ba574312e1dd0843",
+      "canonicalCompaction": false
+    },
+    "src/renderers/canvas/index.js": {
+      "sourceSHA256": "b8de9d9fb1413d8b2fe9f9f25a76e446b412a0e378a89eb1b080481830727ec0",
+      "packageSHA256": "b8de9d9fb1413d8b2fe9f9f25a76e446b412a0e378a89eb1b080481830727ec0",
+      "canonicalCompaction": false
+    },
+    "src/renderers/canvas/native.js": {
+      "sourceSHA256": "ded5d213294382612a6698070fc2848b051d6936d2b9b64e2d5435c5b1545dbc",
+      "packageSHA256": "ded5d213294382612a6698070fc2848b051d6936d2b9b64e2d5435c5b1545dbc",
+      "canonicalCompaction": false
+    },
+    "src/renderers/canvasScene.js": {
+      "sourceSHA256": "565381087e301b199dc756078c069022d0a292ad87e280fabf51134ad5ec0989",
+      "packageSHA256": "565381087e301b199dc756078c069022d0a292ad87e280fabf51134ad5ec0989",
+      "canonicalCompaction": false
+    },
+    "src/renderers/fontRendering.js": {
+      "sourceSHA256": "e7cf23f1a31028fba2d49732f5901169c5eb8ed848a1acdf426aa0ff3f66ee29",
+      "packageSHA256": "e7cf23f1a31028fba2d49732f5901169c5eb8ed848a1acdf426aa0ff3f66ee29",
+      "canonicalCompaction": false
+    },
+    "src/renderers/imageRendering.js": {
+      "sourceSHA256": "1a0e52a2a7a922601aa569ae119f36e811ce12c0e7d35a2e7ae55eec7f0514f2",
+      "packageSHA256": "1a0e52a2a7a922601aa569ae119f36e811ce12c0e7d35a2e7ae55eec7f0514f2",
+      "canonicalCompaction": false
+    },
+    "src/renderers/paintFrames.js": {
+      "sourceSHA256": "dfa17bc734795c9de39d0c3214569a4e98408747fd2f3337cd257df88328c758",
+      "packageSHA256": "dfa17bc734795c9de39d0c3214569a4e98408747fd2f3337cd257df88328c758",
+      "canonicalCompaction": false
+    },
+    "src/renderers/shadowRendering.js": {
+      "sourceSHA256": "90abc82c15f4d99a125cdb9fb3f1873c0019d813328918c502633fa23fd800f7",
+      "packageSHA256": "90abc82c15f4d99a125cdb9fb3f1873c0019d813328918c502633fa23fd800f7",
+      "canonicalCompaction": false
+    },
+    "src/renderers/svgSerialization.js": {
+      "sourceSHA256": "ecb30add0665b56e76d1281a76d50bbb063df018e1ca8226e7a44a0b3446c5b9",
+      "packageSHA256": "606aeeede1498a4baa091d50a3694a2e636935c17b35f1e25972d4b0b30dcf9c",
+      "canonicalCompaction": true
+    },
+    "src/renderers/transitionScene.js": {
+      "sourceSHA256": "455d4322675ff9dc1f1fa165c81be27176d3aa719517af5e16d4488f867a399a",
+      "packageSHA256": "455d4322675ff9dc1f1fa165c81be27176d3aa719517af5e16d4488f867a399a",
+      "canonicalCompaction": false
+    },
+    "src/sceneSnapshot.js": {
+      "sourceSHA256": "0c02e4f7cc8315a364da25585235e6f5f4ba36832d5106ea1ba89695c49792bb",
+      "packageSHA256": "0c02e4f7cc8315a364da25585235e6f5f4ba36832d5106ea1ba89695c49792bb",
+      "canonicalCompaction": false
+    },
+    "types/animation.d.ts": {
+      "sourceSHA256": "7755def102261bab822954c9081651d8465418798a6b701f8e15e50068316025",
+      "packageSHA256": "7755def102261bab822954c9081651d8465418798a6b701f8e15e50068316025",
+      "canonicalCompaction": false
+    },
+    "types/basic.d.ts": {
+      "sourceSHA256": "8c1b50529112d6a3289a52a7edaca1c732a22c923b823b48a71473ddb339ed35",
+      "packageSHA256": "8c1b50529112d6a3289a52a7edaca1c732a22c923b823b48a71473ddb339ed35",
+      "canonicalCompaction": false
+    },
+    "types/index.d.ts": {
+      "sourceSHA256": "6f48684df50f6ef12ff260056b544a5a7b755abecc2be3ff6f670c3504e17335",
+      "packageSHA256": "6f48684df50f6ef12ff260056b544a5a7b755abecc2be3ff6f670c3504e17335",
+      "canonicalCompaction": false
+    },
+    "types/interaction.d.ts": {
+      "sourceSHA256": "9ec834d2a1789faca47b895dede07290047660053d9372747e6919f000815ba3",
+      "packageSHA256": "9ec834d2a1789faca47b895dede07290047660053d9372747e6919f000815ba3",
+      "canonicalCompaction": false
+    },
+    "types/program.d.ts": {
+      "sourceSHA256": "4274be91fd7be7eee3cb2631168ed77d801e86dadb51bd746900b3936435a1c7",
+      "packageSHA256": "4274be91fd7be7eee3cb2631168ed77d801e86dadb51bd746900b3936435a1c7",
+      "canonicalCompaction": false
+    },
+    "types/scene.d.ts": {
+      "sourceSHA256": "227039842bb13fab84710764c771ddb59f63bf905a9928047a619b0d8924faaf",
+      "packageSHA256": "227039842bb13fab84710764c771ddb59f63bf905a9928047a619b0d8924faaf",
+      "canonicalCompaction": false
+    },
+    "src/animation/batchCodec.js": {
+      "sourceSHA256": "264af0d32a48c2c5319757f18203a9de45469ba7ba7f62ab33763ac0afb1d261",
+      "packageSHA256": "264af0d32a48c2c5319757f18203a9de45469ba7ba7f62ab33763ac0afb1d261",
+      "canonicalCompaction": false
+    },
+    "src/animation/batchSample.js": {
+      "sourceSHA256": "5c1dabc32e41ead7005f8ad9901889ecf8da70c4b0f44f48d95e66069350898a",
+      "packageSHA256": "5c1dabc32e41ead7005f8ad9901889ecf8da70c4b0f44f48d95e66069350898a",
+      "canonicalCompaction": false
+    },
+    "src/animation/batchScene.js": {
+      "sourceSHA256": "1d12c24088fff556f7b3bff416b3f72db8a2f5a8f23076788f08ab0ffe61e73a",
+      "packageSHA256": "1d12c24088fff556f7b3bff416b3f72db8a2f5a8f23076788f08ab0ffe61e73a",
+      "canonicalCompaction": false
+    },
+    "src/core/sceneRows.js": {
+      "sourceSHA256": "a376bf525005856192d3a358d0885e3e32952f5a60589f87f3d095c1b14cccb1",
+      "packageSHA256": "a376bf525005856192d3a358d0885e3e32952f5a60589f87f3d095c1b14cccb1",
+      "canonicalCompaction": false
+    },
+    "src/grammar/schemas/batchScene.js": {
+      "sourceSHA256": "fcbd864d55662c87d3e50c4eabbd0df87fde12a1056dfa0dd6a8e1c890f243cd",
+      "packageSHA256": "fcbd864d55662c87d3e50c4eabbd0df87fde12a1056dfa0dd6a8e1c890f243cd",
+      "canonicalCompaction": false
+    },
+    "src/grammar/schemas/circleBatch.js": {
+      "sourceSHA256": "a805e9ecaac78074c20d91ffd0f6d0f3ddb99e2f776308d31cc57a5008bba343",
+      "packageSHA256": "a805e9ecaac78074c20d91ffd0f6d0f3ddb99e2f776308d31cc57a5008bba343",
+      "canonicalCompaction": false
+    }
+  },
+  "sourceSHA256": {
+    "src/actions/primitives/createGraphics.js": "bc76a2c95dd2d6e3768de7227c89cb275e2b0f4ba35b1b605bcd587ab8e24167",
+    "src/actions/primitives/editGraphics.js": "ba227c6bf1aeb3ebb663febfde01cca966c7a7a6ff6f747d46226fc04cf33c3f",
+    "src/animation/columnCodec.js": "c273a20af2a609eea326b36c7b5d4c97776468485f7a501206c6d8ea0306856f",
+    "src/animation/createPlayer.js": "66791f878279756dcec9f6cbf864f1fc4eaf84c8419945f852d5cd58f38cf1b9",
+    "src/animation/endpoints.js": "c9c49f6a42523a566825b649ece532a129ab192f87b9cc75632c687095983d0d",
+    "src/animation/frameEndpoint.js": "9ab8c90eb93f4c93d42835955f983fe422fb882fef3290719801be6450ae0075",
+    "src/animation/frameProvenance.js": "7f8ce27420a78168b43ff2e869e2d5cba06e6886e14126e195a0484e031940bd",
+    "src/animation/frames.js": "7c8deeaf1a64d98a3141fa4413672967300aefcca8e41fc69fbb569808293d1f",
+    "src/animation/graphPresentation.js": "ac47a7ae56ceab4118fde7de1e4afe4e5f718ec794da5779cb8b3852afa68d5e",
+    "src/animation/planner.js": "d09220633a89d6921aae2013e1fa60df79614905f327c40496b7ffdf7638d083",
+    "src/animation/sample.js": "aa38048a07440a77d39d999852cb2fbff0a3f403284e4dbd9813863f1082e2d0",
+    "src/grammar/animation/positions.js": "a42ac803f8e6a04fff1c3736d9383053288da0b5e53de5ae2d39bac5d7f1701c",
+    "src/grammar/hitIndex.js": "77d1334336e97f97eb7341ca1efd9ba2be308f82b8d0d190137f85834ca61a3e",
+    "src/grammar/schemas/concreteGraphic.js": "01565af5da9b62fa5faebcbe535e9b69cec28eff5c2c4a16c3f1fbd9a219e245",
+    "src/grammar/schemas/graphic.js": "b1ece565af38b74f19b42ecc91c47726c3590d4b68fef596ce11fd7f4790808f",
+    "src/grammar/schemas/graphicBounds.js": "45bbb77e494dc2037909ff564052c06dd960aab220ec05ab0211f0d55271b677",
+    "src/grammar/schemas/graphicSources.js": "fd1d554b00b074975815458ecb3935859a336d4c6001045728c7e49a1ceef4ca",
+    "src/interaction/hitProgram.js": "5944091b41e88265bc5df04d0b3060557e4c363d275c3b4efdc5915fbb0b01e7",
+    "src/interaction/movementFrame.js": "d74a2efe980b858d7500e13f6638b07a8974ef78c47e9d29f007e4678dbca257",
+    "src/interaction/nodeMovement.js": "1cbd86e30a5c07d07416ede1b48d17496d43a0f08315e0bb078acedd5fc196fa",
+    "src/interaction/regionSelection.js": "8bdb96a5d63a29009bc7a514234081316b1f5a194ccfc51e448cb521746b67aa",
+    "src/interaction/sceneFrame.js": "7356270447bad2aa0233ec7cf1a999c782701bb341d2e9fbef4189937f8553d3",
+    "src/persistence/validation.js": "b95e08dceccf248121620004efa58867091d5cfffdf78279ba574312e1dd0843",
+    "src/renderers/canvas/index.js": "b8de9d9fb1413d8b2fe9f9f25a76e446b412a0e378a89eb1b080481830727ec0",
+    "src/renderers/canvas/native.js": "ded5d213294382612a6698070fc2848b051d6936d2b9b64e2d5435c5b1545dbc",
+    "src/renderers/canvasScene.js": "565381087e301b199dc756078c069022d0a292ad87e280fabf51134ad5ec0989",
+    "src/renderers/fontRendering.js": "e7cf23f1a31028fba2d49732f5901169c5eb8ed848a1acdf426aa0ff3f66ee29",
+    "src/renderers/imageRendering.js": "1a0e52a2a7a922601aa569ae119f36e811ce12c0e7d35a2e7ae55eec7f0514f2",
+    "src/renderers/paintFrames.js": "dfa17bc734795c9de39d0c3214569a4e98408747fd2f3337cd257df88328c758",
+    "src/renderers/shadowRendering.js": "90abc82c15f4d99a125cdb9fb3f1873c0019d813328918c502633fa23fd800f7",
+    "src/renderers/svgSerialization.js": "ecb30add0665b56e76d1281a76d50bbb063df018e1ca8226e7a44a0b3446c5b9",
+    "src/renderers/transitionScene.js": "455d4322675ff9dc1f1fa165c81be27176d3aa719517af5e16d4488f867a399a",
+    "src/sceneSnapshot.js": "0c02e4f7cc8315a364da25585235e6f5f4ba36832d5106ea1ba89695c49792bb",
+    "types/animation.d.ts": "7755def102261bab822954c9081651d8465418798a6b701f8e15e50068316025",
+    "types/basic.d.ts": "8c1b50529112d6a3289a52a7edaca1c732a22c923b823b48a71473ddb339ed35",
+    "types/index.d.ts": "6f48684df50f6ef12ff260056b544a5a7b755abecc2be3ff6f670c3504e17335",
+    "types/interaction.d.ts": "9ec834d2a1789faca47b895dede07290047660053d9372747e6919f000815ba3",
+    "types/program.d.ts": "4274be91fd7be7eee3cb2631168ed77d801e86dadb51bd746900b3936435a1c7",
+    "types/scene.d.ts": "227039842bb13fab84710764c771ddb59f63bf905a9928047a619b0d8924faaf",
+    "src/animation/batchCodec.js": "264af0d32a48c2c5319757f18203a9de45469ba7ba7f62ab33763ac0afb1d261",
+    "src/animation/batchSample.js": "5c1dabc32e41ead7005f8ad9901889ecf8da70c4b0f44f48d95e66069350898a",
+    "src/animation/batchScene.js": "1d12c24088fff556f7b3bff416b3f72db8a2f5a8f23076788f08ab0ffe61e73a",
+    "src/core/sceneRows.js": "a376bf525005856192d3a358d0885e3e32952f5a60589f87f3d095c1b14cccb1",
+    "src/grammar/schemas/batchScene.js": "fcbd864d55662c87d3e50c4eabbd0df87fde12a1056dfa0dd6a8e1c890f243cd",
+    "src/grammar/schemas/circleBatch.js": "a805e9ecaac78074c20d91ffd0f6d0f3ddb99e2f776308d31cc57a5008bba343"
+  },
+  "checks": {
+    "owning-coverage-final": 1203,
+    "docs-complete": 249,
+    "boundaries-final": 24,
+    "coverage-policy-verified": 7,
+    "shared-owner-coverage-complete": 223,
+    "boundary-repair": 24,
+    "stdin-file-test": 3,
+    "input-contract": 9,
+    "full-normal-coverage": 10446
+  },
+  "critical": {
+    "animation/columnCodec.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 98.87,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "animation/createPlayer.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 96.55,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "animation/endpoints.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 93.26,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "animation/frameEndpoint.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 96.7,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "animation/frameProvenance.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 98.06,
+        "branches": 93.62,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "animation/frames.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "animation/graphPresentation.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 97.4,
+        "branches": 96.36,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "animation/planner.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 96.11,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "animation/sample.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 96.83,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "grammar/animation/positions.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 98.05,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "grammar/hitIndex.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 97.92,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "grammar/schemas/concreteGraphic.js": {
+      "floor": {
+        "lines": 85,
+        "branches": 85,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 94.32,
+        "branches": 96.27,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "grammar/schemas/graphicBounds.js": {
+      "floor": {
+        "lines": 85,
+        "branches": 75,
+        "functions": 90
+      },
+      "actual": {
+        "lines": 98.91,
+        "branches": 93.8,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "grammar/schemas/graphicSources.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "interaction/hitProgram.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 94.61,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "interaction/movementFrame.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 93.75,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "interaction/nodeMovement.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 97.96,
+        "branches": 92.75,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "interaction/regionSelection.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 97.6,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "interaction/sceneFrame.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "persistence/validation.js": {
+      "floor": {
+        "lines": 90,
+        "branches": 80,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 99.74,
+        "branches": 98.67,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "renderers/canvas/index.js": {
+      "floor": {
+        "lines": 85,
+        "branches": 70,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 93.48,
+        "branches": 88.89,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "renderers/canvas/native.js": {
+      "floor": {
+        "lines": 75,
+        "branches": 60,
+        "functions": 80
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 99.19,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "renderers/canvasScene.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 99.2,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "renderers/fontRendering.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 92.71,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "renderers/imageRendering.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 96.92,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "renderers/paintFrames.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "renderers/shadowRendering.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 97.22,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "renderers/svgSerialization.js": {
+      "floor": {
+        "lines": 50,
+        "branches": 60,
+        "functions": 80
+      },
+      "actual": {
+        "lines": 92.9,
+        "branches": 88.93,
+        "functions": 98.18
+      },
+      "passed": true
+    },
+    "renderers/transitionScene.js": {
+      "floor": {
+        "lines": 50,
+        "branches": 60,
+        "functions": 80
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 95.92,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "sceneSnapshot.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 96.3,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "animation/batchCodec.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 97.3,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "animation/batchSample.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 91.03,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "animation/batchScene.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 97.87,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "core/sceneRows.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "grammar/schemas/batchScene.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 97.3,
+        "functions": 100
+      },
+      "passed": true
+    },
+    "grammar/schemas/circleBatch.js": {
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "passed": true
+    }
+  },
+  "consumers": [
+    {
+      "node": "v20.20.2",
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1267,
+        "packedBytes": 1829635,
+        "unpackedBytes": 8236966,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/archives/ggaction-349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d.tgz",
+        "sha1": "bc0fd6bdabffd0e163d7acea7af8fd975bda463b",
+        "sha256": "349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d"
+      },
+      "status": "passed",
+      "records": [
+        {
+          "id": "types",
+          "status": "passed",
+          "ms": 2463.704415999993
+        },
+        {
+          "id": "mcp",
+          "status": "passed",
+          "ms": 759.3036659999634
+        },
+        {
+          "id": "docs",
+          "status": "passed",
+          "ms": 99578.158917
+        },
+        {
+          "id": "peers",
+          "status": "passed",
+          "ms": 2821.7368749999996
+        },
+        {
+          "id": "node",
+          "status": "passed",
+          "ms": 241825.93675000002
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1072,
+          "minifiedBytes": 2751703,
+          "gzipBytes": 789782,
+          "limit": 789800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 628,
+          "minifiedBytes": 1454911,
+          "gzipBytes": 426844,
+          "limit": 426900,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 46,
+          "minifiedBytes": 78700,
+          "gzipBytes": 26242,
+          "limit": 26300,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 117,
+          "minifiedBytes": 230823,
+          "gzipBytes": 69522,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 520,
+          "minifiedBytes": 1171829,
+          "gzipBytes": 353156,
+          "limit": 353200,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 218,
+          "minifiedBytes": 437849,
+          "gzipBytes": 139886,
+          "limit": 139900,
+          "status": "passed"
+        }
+      },
+      "resolvedPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "rechecks": [
+        {
+          "ids": "peers,bundles",
+          "archiveSHA256": "349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d"
+        },
+        {
+          "ids": "peers,node",
+          "archiveSHA256": "349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d"
+        }
+      ]
+    },
+    {
+      "node": "v22.23.1",
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1267,
+        "packedBytes": 1829635,
+        "unpackedBytes": 8236966,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/archives/ggaction-349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d.tgz",
+        "sha1": "bc0fd6bdabffd0e163d7acea7af8fd975bda463b",
+        "sha256": "349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d"
+      },
+      "status": "passed",
+      "records": [
+        {
+          "id": "peers",
+          "status": "passed",
+          "ms": 2689.292792
+        },
+        {
+          "id": "node",
+          "status": "passed",
+          "ms": 216696.218166
+        },
+        {
+          "id": "types",
+          "status": "passed",
+          "ms": 2945.617084000027
+        },
+        {
+          "id": "mcp",
+          "status": "passed",
+          "ms": 765.3070420000004
+        },
+        {
+          "id": "docs",
+          "status": "passed",
+          "ms": 100346.844208
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1072,
+          "minifiedBytes": 2751703,
+          "gzipBytes": 788251,
+          "limit": 789800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 628,
+          "minifiedBytes": 1454911,
+          "gzipBytes": 425811,
+          "limit": 426900,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 46,
+          "minifiedBytes": 78700,
+          "gzipBytes": 26112,
+          "limit": 26300,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 117,
+          "minifiedBytes": 230823,
+          "gzipBytes": 69356,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 520,
+          "minifiedBytes": 1171829,
+          "gzipBytes": 351940,
+          "limit": 353000,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 218,
+          "minifiedBytes": 437849,
+          "gzipBytes": 139258,
+          "limit": 139900,
+          "status": "passed"
+        }
+      },
+      "resolvedPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      }
+    },
+    {
+      "node": "v24.22.1",
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1267,
+        "packedBytes": 1829635,
+        "unpackedBytes": 8236966,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/archives/ggaction-349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d.tgz",
+        "sha1": "bc0fd6bdabffd0e163d7acea7af8fd975bda463b",
+        "sha256": "349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d"
+      },
+      "status": "passed",
+      "records": [
+        {
+          "id": "types",
+          "status": "passed",
+          "ms": 2442.9802079999936
+        },
+        {
+          "id": "mcp",
+          "status": "passed",
+          "ms": 804.4716659999976
+        },
+        {
+          "id": "docs",
+          "status": "passed",
+          "ms": 99267.02233400004
+        },
+        {
+          "id": "peers",
+          "status": "passed",
+          "ms": 2429.910542
+        },
+        {
+          "id": "node",
+          "status": "passed",
+          "ms": 159011.939167
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1072,
+          "minifiedBytes": 2751703,
+          "gzipBytes": 789782,
+          "limit": 789800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 628,
+          "minifiedBytes": 1454911,
+          "gzipBytes": 426844,
+          "limit": 426900,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 46,
+          "minifiedBytes": 78700,
+          "gzipBytes": 26242,
+          "limit": 26300,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 117,
+          "minifiedBytes": 230823,
+          "gzipBytes": 69522,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 520,
+          "minifiedBytes": 1171829,
+          "gzipBytes": 353156,
+          "limit": 353200,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 218,
+          "minifiedBytes": 437849,
+          "gzipBytes": 139886,
+          "limit": 139900,
+          "status": "passed"
+        }
+      },
+      "resolvedPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "rechecks": [
+        {
+          "ids": "peers,node",
+          "archiveSHA256": "349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d"
+        }
+      ]
+    }
+  ],
+  "precursor": {
+    "archive": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1265,
+      "packedBytes": 1829324,
+      "unpackedBytes": 8236227,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/archives/ggaction-0050d9403cc4fc9ba8a689cf8194a818857c078b6ad2ffad09873248fff11844.tgz",
+      "sha1": "db0b3d26c6c03d7f55c1efa8ff43b52626ee8202",
+      "sha256": "0050d9403cc4fc9ba8a689cf8194a818857c078b6ad2ffad09873248fff11844"
+    },
+    "consumers": [
+      {
+        "node": "v20.20.2",
+        "artifact": {
+          "name": "ggaction",
+          "version": "0.0.26",
+          "filename": "ggaction-0.0.26.tgz",
+          "entryCount": 1265,
+          "packedBytes": 1829324,
+          "unpackedBytes": 8236227,
+          "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/archives/ggaction-0050d9403cc4fc9ba8a689cf8194a818857c078b6ad2ffad09873248fff11844.tgz",
+          "sha1": "db0b3d26c6c03d7f55c1efa8ff43b52626ee8202",
+          "sha256": "0050d9403cc4fc9ba8a689cf8194a818857c078b6ad2ffad09873248fff11844"
+        },
+        "status": "failed",
+        "records": [
+          {
+            "id": "peers",
+            "status": "passed",
+            "ms": 2379.630333
+          },
+          {
+            "id": "node",
+            "status": "failed",
+            "error": "Error: Command failed: /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node consumer.mjs\n[\n  {\n    \"id\": \"hit-preparation/all-100000-native-points\",\n    \"status\": \"failed\",\n    \"durationMs\": 292261.46900000004,\n    \"error\": \"AssertionError [ERR_ASSERTION]: Child must send exactly one case receipt, including on exit 0.\\n\\n0 !== 1\\n\\n    at isolatedCase (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-E79t7g/consumer.mjs:93:12)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\\n    at async file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-E79t7g/consumer.mjs:135:53\",\n    \"pid\": 35818,\n    \"isolation\": \"case\",\n    \"parentPid\": 35604,\n    \"exitCode\": null,\n    \"signal\": \"SIGTERM\"\n  }\n]\n\n    at genericNodeError (node:internal/errors:984:15)\n    at wrappedFn (node:internal/errors:538:14)\n    at checkExecSyncError (node:child_process:891:11)\n    at execFileSync (node:child_process:927:15)\n    at run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/scripts/consumers/runtime.js:19:3)\n    at testNodeConsumer (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/scripts/consumers/node.js:53:5)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/canonical-consumer.mjs:20:37",
+            "stdout": "",
+            "stderr": "[\n  {\n    \"id\": \"hit-preparation/all-100000-native-points\",\n    \"status\": \"failed\",\n    \"durationMs\": 292261.46900000004,\n    \"error\": \"AssertionError [ERR_ASSERTION]: Child must send exactly one case receipt, including on exit 0.\\n\\n0 !== 1\\n\\n    at isolatedCase (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-E79t7g/consumer.mjs:93:12)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\\n    at async file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-E79t7g/consumer.mjs:135:53\",\n    \"pid\": 35818,\n    \"isolation\": \"case\",\n    \"parentPid\": 35604,\n    \"exitCode\": null,\n    \"signal\": \"SIGTERM\"\n  }\n]\n"
+          },
+          {
+            "id": "types",
+            "status": "passed",
+            "ms": 2542.575125000032
+          },
+          {
+            "id": "mcp",
+            "status": "passed",
+            "ms": 792.341167000006
+          },
+          {
+            "id": "docs",
+            "status": "passed",
+            "ms": 98984.095416
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1072,
+            "minifiedBytes": 2751703,
+            "gzipBytes": 789782,
+            "limit": 789800,
+            "status": "passed"
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 628,
+            "minifiedBytes": 1454911,
+            "gzipBytes": 426844,
+            "limit": 426900,
+            "status": "passed"
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 46,
+            "minifiedBytes": 78700,
+            "gzipBytes": 26242,
+            "limit": 26300,
+            "status": "passed"
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 117,
+            "minifiedBytes": 230823,
+            "gzipBytes": 69522,
+            "limit": 69600,
+            "status": "passed"
+          },
+          "ggaction/animation": {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 518,
+            "minifiedBytes": 1171412,
+            "gzipBytes": 352986,
+            "limit": 353000,
+            "status": "passed"
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 217,
+            "minifiedBytes": 437849,
+            "gzipBytes": 139830,
+            "limit": 139900,
+            "status": "passed"
+          }
+        },
+        "resolvedPeers": {
+          "@modelcontextprotocol/sdk": "1.32.1",
+          "@napi-rs/canvas": "1.0.9"
+        }
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": {
+          "name": "ggaction",
+          "version": "0.0.26",
+          "filename": "ggaction-0.0.26.tgz",
+          "entryCount": 1265,
+          "packedBytes": 1829324,
+          "unpackedBytes": 8236227,
+          "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/archives/ggaction-0050d9403cc4fc9ba8a689cf8194a818857c078b6ad2ffad09873248fff11844.tgz",
+          "sha1": "db0b3d26c6c03d7f55c1efa8ff43b52626ee8202",
+          "sha256": "0050d9403cc4fc9ba8a689cf8194a818857c078b6ad2ffad09873248fff11844"
+        },
+        "status": "passed",
+        "records": [
+          {
+            "id": "peers",
+            "status": "passed",
+            "ms": 2380.427208
+          },
+          {
+            "id": "node",
+            "status": "passed",
+            "ms": 229266.307416
+          },
+          {
+            "id": "types",
+            "status": "passed",
+            "ms": 2963.221500000014
+          },
+          {
+            "id": "mcp",
+            "status": "passed",
+            "ms": 771.9889160000021
+          },
+          {
+            "id": "docs",
+            "status": "passed",
+            "ms": 100910.824167
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1072,
+            "minifiedBytes": 2751703,
+            "gzipBytes": 788251,
+            "limit": 789800,
+            "status": "passed"
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 628,
+            "minifiedBytes": 1454911,
+            "gzipBytes": 425811,
+            "limit": 426900,
+            "status": "passed"
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 46,
+            "minifiedBytes": 78700,
+            "gzipBytes": 26112,
+            "limit": 26300,
+            "status": "passed"
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 117,
+            "minifiedBytes": 230823,
+            "gzipBytes": 69356,
+            "limit": 69600,
+            "status": "passed"
+          },
+          "ggaction/animation": {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 518,
+            "minifiedBytes": 1171412,
+            "gzipBytes": 351890,
+            "limit": 353000,
+            "status": "passed"
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 217,
+            "minifiedBytes": 437849,
+            "gzipBytes": 139245,
+            "limit": 139900,
+            "status": "passed"
+          }
+        },
+        "rechecks": [
+          {
+            "ids": "docs",
+            "archiveSHA256": "0050d9403cc4fc9ba8a689cf8194a818857c078b6ad2ffad09873248fff11844"
+          }
+        ],
+        "resolvedPeers": {
+          "@modelcontextprotocol/sdk": "1.32.1",
+          "@napi-rs/canvas": "1.0.9"
+        }
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": {
+          "name": "ggaction",
+          "version": "0.0.26",
+          "filename": "ggaction-0.0.26.tgz",
+          "entryCount": 1265,
+          "packedBytes": 1829324,
+          "unpackedBytes": 8236227,
+          "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/archives/ggaction-0050d9403cc4fc9ba8a689cf8194a818857c078b6ad2ffad09873248fff11844.tgz",
+          "sha1": "db0b3d26c6c03d7f55c1efa8ff43b52626ee8202",
+          "sha256": "0050d9403cc4fc9ba8a689cf8194a818857c078b6ad2ffad09873248fff11844"
+        },
+        "status": "failed",
+        "records": [
+          {
+            "id": "peers",
+            "status": "passed",
+            "ms": 2337.215292
+          },
+          {
+            "id": "node",
+            "status": "failed",
+            "error": "Error: Command failed: /Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node consumer.mjs\n[\n  {\n    \"id\": \"static-delivery/native-endpoints-animation-replay\",\n    \"status\": \"failed\",\n    \"durationMs\": 60388.072958000004,\n    \"error\": \"Error: spawnSync /Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node ETIMEDOUT\\n    at Object.spawnSync (node:internal/child_process:1191:20)\\n    at spawnSync (node:child_process:929:24)\\n    at execFileSync (node:child_process:972:15)\\n    at offlineRestore (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-z8saRc/static-delivery.mjs:210:21)\\n    at Object.run (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-z8saRc/static-delivery.mjs:237:18)\\n    at async execute (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-z8saRc/consumer.mjs:39:5)\\n    at async file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-z8saRc/consumer.mjs:136:21\",\n    \"pid\": 38795\n  }\n]\n\n    at genericNodeError (node:internal/errors:986:15)\n    at wrappedFn (node:internal/errors:540:14)\n    at checkExecSyncError (node:child_process:943:11)\n    at execFileSync (node:child_process:979:15)\n    at run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/scripts/consumers/runtime.js:19:3)\n    at testNodeConsumer (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/scripts/consumers/node.js:53:5)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/canonical-consumer.mjs:20:37",
+            "stdout": "",
+            "stderr": "[\n  {\n    \"id\": \"static-delivery/native-endpoints-animation-replay\",\n    \"status\": \"failed\",\n    \"durationMs\": 60388.072958000004,\n    \"error\": \"Error: spawnSync /Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node ETIMEDOUT\\n    at Object.spawnSync (node:internal/child_process:1191:20)\\n    at spawnSync (node:child_process:929:24)\\n    at execFileSync (node:child_process:972:15)\\n    at offlineRestore (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-z8saRc/static-delivery.mjs:210:21)\\n    at Object.run (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-z8saRc/static-delivery.mjs:237:18)\\n    at async execute (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-z8saRc/consumer.mjs:39:5)\\n    at async file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-z8saRc/consumer.mjs:136:21\",\n    \"pid\": 38795\n  }\n]\n"
+          },
+          {
+            "id": "types",
+            "status": "passed",
+            "ms": 2930.6178749999963
+          },
+          {
+            "id": "mcp",
+            "status": "passed",
+            "ms": 811.7021250000107
+          },
+          {
+            "id": "docs",
+            "status": "passed",
+            "ms": 98859.53925000003
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1072,
+            "minifiedBytes": 2751703,
+            "gzipBytes": 789782,
+            "limit": 789800,
+            "status": "passed"
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 628,
+            "minifiedBytes": 1454911,
+            "gzipBytes": 426844,
+            "limit": 426900,
+            "status": "passed"
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 46,
+            "minifiedBytes": 78700,
+            "gzipBytes": 26242,
+            "limit": 26300,
+            "status": "passed"
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 117,
+            "minifiedBytes": 230823,
+            "gzipBytes": 69522,
+            "limit": 69600,
+            "status": "passed"
+          },
+          "ggaction/animation": {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 518,
+            "minifiedBytes": 1171412,
+            "gzipBytes": 352986,
+            "limit": 353000,
+            "status": "passed"
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 217,
+            "minifiedBytes": 437849,
+            "gzipBytes": 139830,
+            "limit": 139900,
+            "status": "passed"
+          }
+        },
+        "resolvedPeers": {
+          "@modelcontextprotocol/sdk": "1.32.1",
+          "@napi-rs/canvas": "1.0.9"
+        }
+      }
+    ],
+    "independentRetries": [
+      {
+        "node": "v20.20.2",
+        "archiveSHA256": "0050d9403cc4fc9ba8a689cf8194a818857c078b6ad2ffad09873248fff11844",
+        "case": "hit-preparation/all-100000-native-points",
+        "fixtureUnchanged": true,
+        "configuredTimeoutUnchanged": true,
+        "instrumented": false,
+        "status": "passed",
+        "doesNotResolveIntermittentFailure": true,
+        "fixtureSHA256": "e881ab012e786d2f6e6dd12ee785961773734d1433868276fb6a1cb4d1ceec25",
+        "ms": 62529.874792
+      },
+      {
+        "node": "v24.22.1",
+        "archiveSHA256": "0050d9403cc4fc9ba8a689cf8194a818857c078b6ad2ffad09873248fff11844",
+        "case": "static-delivery/native-endpoints-animation-replay",
+        "fixtureUnchanged": true,
+        "configuredTimeoutUnchanged": true,
+        "instrumented": false,
+        "status": "passed",
+        "doesNotResolveIntermittentFailure": true,
+        "fixtureSHA256": "e91a9ff5f4972224f55e2094c43d84402153cc3f23bb2a6309294edf7df9f749",
+        "ms": 1188.727666
+      }
+    ],
+    "fullNormal": {
+      "tests": 10442,
+      "failures": 5,
+      "fixedByBoundaryOwnershipAndDocumentationRepair": true
+    }
+  },
+  "browser": {
+    "archiveSHA256": "349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d",
+    "sourceRuntimeInputs": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "sceneVersion": 3,
+    "formatVersion": 6,
+    "paints": 6,
+    "status": "passed"
+  },
+  "packs": [
+    {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1267,
+      "packedBytes": 1833498,
+      "unpackedBytes": 8236966,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+      "sha1": "942bcc21b8ce42aba17b1430edcedb6ac476bd44",
+      "sha256": "daef350722748c0df9ec561cefca165ae6ef0ce004c32f55235d6276bbd69dbd"
+    },
+    {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1267,
+      "packedBytes": 1829635,
+      "unpackedBytes": 8236966,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+      "sha1": "bc0fd6bdabffd0e163d7acea7af8fd975bda463b",
+      "sha256": "349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d"
+    },
+    {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1267,
+      "packedBytes": 1833498,
+      "unpackedBytes": 8236966,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+      "sha1": "942bcc21b8ce42aba17b1430edcedb6ac476bd44",
+      "sha256": "daef350722748c0df9ec561cefca165ae6ef0ce004c32f55235d6276bbd69dbd"
+    }
+  ],
+  "stdinTransport": {
+    "originalTimeoutsPreserved": true,
+    "runtimeArchiveUnchanged": true,
+    "preRepair": [
+      {
+        "node": "v20.20.2",
+        "artifact": {
+          "name": "ggaction",
+          "version": "0.0.26",
+          "filename": "ggaction-0.0.26.tgz",
+          "entryCount": 1267,
+          "packedBytes": 1829635,
+          "unpackedBytes": 8236966,
+          "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/archives/ggaction-349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d.tgz",
+          "sha1": "bc0fd6bdabffd0e163d7acea7af8fd975bda463b",
+          "sha256": "349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d"
+        },
+        "status": "failed",
+        "records": [
+          {
+            "id": "peers",
+            "status": "passed",
+            "ms": 2474.149958
+          },
+          {
+            "id": "node",
+            "status": "failed",
+            "error": "Error: Command failed: /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node consumer.mjs\n[\n  {\n    \"id\": \"conditional-encoding/position-text-lifecycle\",\n    \"status\": \"failed\",\n    \"durationMs\": 30026.525958,\n    \"error\": \"Error: spawnSync /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node ETIMEDOUT\\n    at Object.spawnSync (node:internal/child_process:1123:20)\\n    at spawnSync (node:child_process:877:24)\\n    at execFileSync (node:child_process:920:15)\\n    at Object.run (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/conditional-encoding.mjs:142:20)\\n    at file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:136:113\\n    at execute (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:39:11)\\n    at file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:136:27\",\n    \"pid\": 51128\n  },\n  {\n    \"id\": \"keyboard-focus/nested-native-selection-and-offline-restore\",\n    \"status\": \"failed\",\n    \"durationMs\": 30014.643333,\n    \"error\": \"Error: spawnSync /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node ETIMEDOUT\\n    at Object.spawnSync (node:internal/child_process:1123:20)\\n    at spawnSync (node:child_process:877:24)\\n    at execFileSync (node:child_process:920:15)\\n    at Object.run (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/keyboard-focus.mjs:24:29)\\n    at file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:136:113\\n    at execute (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:39:11)\\n    at file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:136:27\",\n    \"pid\": 51128\n  },\n  {\n    \"id\": \"geographic-routes/offline-restored-edit\",\n    \"status\": \"failed\",\n    \"durationMs\": 30017.383042,\n    \"error\": \"Error: spawnSync /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node ETIMEDOUT\\n    at Object.spawnSync (node:internal/child_process:1123:20)\\n    at spawnSync (node:child_process:877:24)\\n    at execFileSync (node:child_process:920:15)\\n    at Object.run (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/geographic-routes.mjs:44:34)\\n    at file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:136:113\\n    at execute (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:39:11)\\n    at file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:136:27\",\n    \"pid\": 51128\n  }\n]\n\n    at genericNodeError (node:internal/errors:984:15)\n    at wrappedFn (node:internal/errors:538:14)\n    at checkExecSyncError (node:child_process:891:11)\n    at execFileSync (node:child_process:927:15)\n    at run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/scripts/consumers/runtime.js:19:3)\n    at testNodeConsumer (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/scripts/consumers/node.js:53:5)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/canonical-consumer.mjs:20:37",
+            "stdout": "",
+            "stderr": "[\n  {\n    \"id\": \"conditional-encoding/position-text-lifecycle\",\n    \"status\": \"failed\",\n    \"durationMs\": 30026.525958,\n    \"error\": \"Error: spawnSync /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node ETIMEDOUT\\n    at Object.spawnSync (node:internal/child_process:1123:20)\\n    at spawnSync (node:child_process:877:24)\\n    at execFileSync (node:child_process:920:15)\\n    at Object.run (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/conditional-encoding.mjs:142:20)\\n    at file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:136:113\\n    at execute (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:39:11)\\n    at file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:136:27\",\n    \"pid\": 51128\n  },\n  {\n    \"id\": \"keyboard-focus/nested-native-selection-and-offline-restore\",\n    \"status\": \"failed\",\n    \"durationMs\": 30014.643333,\n    \"error\": \"Error: spawnSync /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node ETIMEDOUT\\n    at Object.spawnSync (node:internal/child_process:1123:20)\\n    at spawnSync (node:child_process:877:24)\\n    at execFileSync (node:child_process:920:15)\\n    at Object.run (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/keyboard-focus.mjs:24:29)\\n    at file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:136:113\\n    at execute (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:39:11)\\n    at file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:136:27\",\n    \"pid\": 51128\n  },\n  {\n    \"id\": \"geographic-routes/offline-restored-edit\",\n    \"status\": \"failed\",\n    \"durationMs\": 30017.383042,\n    \"error\": \"Error: spawnSync /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node ETIMEDOUT\\n    at Object.spawnSync (node:internal/child_process:1123:20)\\n    at spawnSync (node:child_process:877:24)\\n    at execFileSync (node:child_process:920:15)\\n    at Object.run (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/geographic-routes.mjs:44:34)\\n    at file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:136:113\\n    at execute (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:39:11)\\n    at file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-IE0Y8A/consumer.mjs:136:27\",\n    \"pid\": 51128\n  }\n]\n"
+          },
+          {
+            "id": "types",
+            "status": "passed",
+            "ms": 2463.704415999993
+          },
+          {
+            "id": "mcp",
+            "status": "passed",
+            "ms": 759.3036659999634
+          },
+          {
+            "id": "docs",
+            "status": "passed",
+            "ms": 99578.158917
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1072,
+            "minifiedBytes": 2751703,
+            "gzipBytes": 789782,
+            "limit": 789800,
+            "status": "passed"
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 628,
+            "minifiedBytes": 1454911,
+            "gzipBytes": 426844,
+            "limit": 426900,
+            "status": "passed"
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 46,
+            "minifiedBytes": 78700,
+            "gzipBytes": 26242,
+            "limit": 26300,
+            "status": "passed"
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 117,
+            "minifiedBytes": 230823,
+            "gzipBytes": 69522,
+            "limit": 69600,
+            "status": "passed"
+          },
+          "ggaction/animation": {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 520,
+            "minifiedBytes": 1171829,
+            "gzipBytes": 353156,
+            "limit": 353000,
+            "status": "failed"
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 218,
+            "minifiedBytes": 437849,
+            "gzipBytes": 139886,
+            "limit": 139900,
+            "status": "passed"
+          }
+        },
+        "resolvedPeers": {
+          "@modelcontextprotocol/sdk": "1.32.1",
+          "@napi-rs/canvas": "1.0.9"
+        }
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": {
+          "name": "ggaction",
+          "version": "0.0.26",
+          "filename": "ggaction-0.0.26.tgz",
+          "entryCount": 1267,
+          "packedBytes": 1829635,
+          "unpackedBytes": 8236966,
+          "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/archives/ggaction-349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d.tgz",
+          "sha1": "bc0fd6bdabffd0e163d7acea7af8fd975bda463b",
+          "sha256": "349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d"
+        },
+        "status": "failed",
+        "records": [
+          {
+            "id": "peers",
+            "status": "passed",
+            "ms": 2219.646083
+          },
+          {
+            "id": "node",
+            "status": "failed",
+            "error": "Error: Command failed: /Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node consumer.mjs\n[\n  {\n    \"id\": \"static-delivery/native-endpoints-animation-replay\",\n    \"status\": \"failed\",\n    \"durationMs\": 60581.962958000004,\n    \"error\": \"Error: spawnSync /Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node ETIMEDOUT\\n    at Object.spawnSync (node:internal/child_process:1191:20)\\n    at spawnSync (node:child_process:929:24)\\n    at execFileSync (node:child_process:972:15)\\n    at offlineRestore (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-jgf9YO/static-delivery.mjs:210:21)\\n    at Object.run (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-jgf9YO/static-delivery.mjs:237:18)\\n    at async execute (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-jgf9YO/consumer.mjs:39:5)\\n    at async file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-jgf9YO/consumer.mjs:136:21\",\n    \"pid\": 51991\n  }\n]\n\n    at genericNodeError (node:internal/errors:986:15)\n    at wrappedFn (node:internal/errors:540:14)\n    at checkExecSyncError (node:child_process:943:11)\n    at execFileSync (node:child_process:979:15)\n    at run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/scripts/consumers/runtime.js:19:3)\n    at testNodeConsumer (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/scripts/consumers/node.js:53:5)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/canonical-consumer.mjs:20:37",
+            "stdout": "",
+            "stderr": "[\n  {\n    \"id\": \"static-delivery/native-endpoints-animation-replay\",\n    \"status\": \"failed\",\n    \"durationMs\": 60581.962958000004,\n    \"error\": \"Error: spawnSync /Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node ETIMEDOUT\\n    at Object.spawnSync (node:internal/child_process:1191:20)\\n    at spawnSync (node:child_process:929:24)\\n    at execFileSync (node:child_process:972:15)\\n    at offlineRestore (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-jgf9YO/static-delivery.mjs:210:21)\\n    at Object.run (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-jgf9YO/static-delivery.mjs:237:18)\\n    at async execute (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-jgf9YO/consumer.mjs:39:5)\\n    at async file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-jgf9YO/consumer.mjs:136:21\",\n    \"pid\": 51991\n  }\n]\n"
+          },
+          {
+            "id": "types",
+            "status": "passed",
+            "ms": 2442.9802079999936
+          },
+          {
+            "id": "mcp",
+            "status": "passed",
+            "ms": 804.4716659999976
+          },
+          {
+            "id": "docs",
+            "status": "passed",
+            "ms": 99267.02233400004
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1072,
+            "minifiedBytes": 2751703,
+            "gzipBytes": 789782,
+            "limit": 789800,
+            "status": "passed"
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 628,
+            "minifiedBytes": 1454911,
+            "gzipBytes": 426844,
+            "limit": 426900,
+            "status": "passed"
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 46,
+            "minifiedBytes": 78700,
+            "gzipBytes": 26242,
+            "limit": 26300,
+            "status": "passed"
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 117,
+            "minifiedBytes": 230823,
+            "gzipBytes": 69522,
+            "limit": 69600,
+            "status": "passed"
+          },
+          "ggaction/animation": {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 520,
+            "minifiedBytes": 1171829,
+            "gzipBytes": 353156,
+            "limit": 353200,
+            "status": "passed"
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 218,
+            "minifiedBytes": 437849,
+            "gzipBytes": 139886,
+            "limit": 139900,
+            "status": "passed"
+          }
+        },
+        "resolvedPeers": {
+          "@modelcontextprotocol/sdk": "1.32.1",
+          "@napi-rs/canvas": "1.0.9"
+        }
+      }
+    ],
+    "independentRetries": {
+      "node": "v20.20.2",
+      "archiveSHA256": "349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d",
+      "fixtureUnchanged": true,
+      "configuredTimeoutUnchanged": true,
+      "doesNotResolveIntermittentFailure": true,
+      "records": [
+        {
+          "id": "conditional-encoding/position-text-lifecycle",
+          "fixtureSHA256": "4b61d256b4503599ba1ab24880521fb2db3613ddfae2abc5f54024b05563b801",
+          "status": "passed",
+          "ms": 377.742041
+        },
+        {
+          "id": "keyboard-focus/nested-native-selection-and-offline-restore",
+          "fixtureSHA256": "710b03b7cfdb6d6cd12f8a18995ab865493ca5e5748c965fae76a69238979f8b",
+          "status": "failed",
+          "error": "Error: Command failed: /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node retry.mjs\n    at genericNodeError (node:internal/errors:984:15)\n    at wrappedFn (node:internal/errors:538:14)\n    at checkExecSyncError (node:child_process:891:11)\n    at execFileSync (node:child_process:927:15)\n    at run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/scripts/consumers/runtime.js:19:3)\n    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/format6/retry-fresh-repaired.mjs:12:84"
+        },
+        {
+          "id": "geographic-routes/offline-restored-edit",
+          "fixtureSHA256": "66b2210ae37c99b5fc8232dbdb500e4ade4df9220d3a76d97e8f3c069d426976",
+          "status": "passed",
+          "ms": 330.94708399999996
+        }
+      ]
+    },
+    "pureNodeInputBytes": 42988,
+    "pureNodePipeTimeoutMs": 30000,
+    "fileBackedInputBytesEqual": true
+  },
+  "comparison": {
+    "rows": 1000,
+    "variants": [
+      "linear",
+      "time",
+      "log",
+      "pow",
+      "sqrt",
+      "symlog",
+      "fallback",
+      "timeline",
+      "mixed"
+    ],
+    "allWholeFramesNativeOfflineRebaseTimeline": true,
+    "legacyBytes": {
+      "baseline": "edb67604f5252982d457588388faec8876778292",
+      "node": "v22.23.1",
+      "fullFramesAndWireExact": true,
+      "report": [
+        {
+          "version": 3,
+          "wireBytes": 1826058,
+          "wireSHA256": "7978105b19e889b6e2fcc260bc37b3a3fbccf9ea0c9985698b413e66bd48cce2",
+          "rebaseBytes": 2384266,
+          "rebaseSHA256": "1c7f73f00e8da6bc5a97b5b54c03176d30e02bcc78f4398671bd3ded385efe82",
+          "errors": [
+            [
+              "TypeError",
+              "Animation preparation requires an immutable ChartProgram."
+            ],
+            [
+              "RangeError",
+              "Animation guide endpoint size must not exceed 1."
+            ],
+            [
+              "TypeError",
+              "Animation easing must be linear or cubic-in-out."
+            ]
+          ]
+        },
+        {
+          "version": 4,
+          "wireBytes": 381097,
+          "wireSHA256": "b15f1d41f7dd458ee03978012dbd6975083150f06f7909bdde6c016a4639746f",
+          "rebaseBytes": 457057,
+          "rebaseSHA256": "5d677c73fbd5d0a2cb1bf0ad4f00a3b801c86328225363de1188a084fbbdc33f",
+          "errors": [
+            [
+              "TypeError",
+              "Scoped animation requires exact native programs or authentic frames."
+            ],
+            [
+              "RangeError",
+              "Animation guide endpoint size must not exceed 1."
+            ],
+            [
+              "TypeError",
+              "Animation easing must be linear or cubic-in-out."
+            ]
+          ]
+        },
+        {
+          "version": 5,
+          "wireBytes": 680867,
+          "wireSHA256": "4268ca948aff8f8aadbb32fd396016c48e74d13ba6c8a7ce5c6c88be88d90830",
+          "rebaseBytes": 1129006,
+          "rebaseSHA256": "346b06dc2008d92d6ef041c8f45aaad3c46ad3e810f459abb21e2898dd854d11",
+          "errors": [
+            [
+              "TypeError",
+              "Scoped animation requires exact native programs or authentic frames."
+            ],
+            [
+              "RangeError",
+              "Animation guide endpoint size must not exceed 1."
+            ],
+            [
+              "TypeError",
+              "Animation easing must be linear or cubic-in-out."
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "lifetime": {
+    "node": "v22.23.1",
+    "rows": 1000,
+    "sampleCycles": 100,
+    "rebaseCycles": 10,
+    "gcPasses": 5,
+    "oldObjectsAlive": [],
+    "oldPlanAlive": false,
+    "rebaseObjectsAlive": [],
+    "currentFullyOwned": true,
+    "notOriginalHundredThousandRowHeapQualification": true
+  },
+  "original100k": {
+    "status": "FAILED-SAME-PROCESS-OFFLINE",
+    "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+    "nativeCoordinatesVerified": 100000,
+    "singleGCFirstSampleMs": 167.439,
+    "notP95": true,
+    "failures": [
+      "first-physical-limit.log",
+      "first-offline-rehash.log",
+      "owned-constant-offline-rehash.log",
+      "registry-functional.log"
+    ],
+    "registryObservation": {
+      "lastRecordedOwnedAttempt": 11011072,
+      "nativePreparedAttempt": 8703664,
+      "interval": 1024,
+      "exactBlockingAddNotIdentified": true,
+      "weakRefSampleInvalidForRetention": true
+    }
+  },
+  "limitations": [
+    "Precursor Node20 and24 canonical matrices each retain one failed case; later passing checks do not erase intermittent failures",
+    "Original100k same-process offline/rebase remains unfinished; no capacity completion claim",
+    "Original50ms full-frame P95 and100cycle qualification remains unfinished",
+    "Single native167.439ms sample exceeds50ms; instrumented times are attribution only",
+    "Legacy ordinary bytes unchanged; graph edited-geometry restore bug deliberately fixed in3–5 too",
+    "Small lifetime evidence is not original100k heap qualification"
+  ],
+  "evidenceFiles": {
+    "animation-coverage.log": {
+      "sha256": "e084815ac31133dcb530d4fa1497e57eb1f1223278706e285c64f61de4cacef0",
+      "bytes": 354991
+    },
+    "batch-coverage.log": {
+      "sha256": "751cba436ec68d10e9e9a7256a1ddbe9247bcc456346fbad3c0db48bfc88d45a",
+      "bytes": 132748
+    },
+    "boundaries-discovery.log": {
+      "sha256": "50bff38e0467037a89fd29f34154ca6d57b72f8ad9f62c42eb22870243dcf618",
+      "bytes": 4565
+    },
+    "boundaries-final.log": {
+      "sha256": "a43362e5e9751d7cb4a8b6e52e0abe5f60851c45672d7a58dcb572091df3a677",
+      "bytes": 4821
+    },
+    "boundary-repair.log": {
+      "sha256": "3c144233a0526239bc93e06745d666c78c5306f5b1fe10dc592874464ce51b14",
+      "bytes": 5069
+    },
+    "browser-installed.json": {
+      "sha256": "30f7c96d0304db426fdd3954bfbf840e18b02b7a8f49d8e4809bd71af5f6a719",
+      "bytes": 227
+    },
+    "browser-installed.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "browser-installed.mjs": {
+      "sha256": "334041208e1871d7c775549f91407f414adb70e65635fdb1ec4a5e8b22c7ab50",
+      "bytes": 878
+    },
+    "browser-source.log": {
+      "sha256": "4c78c88e6027257a782a71fb54b27a2ff9056b305db04c9efb2b9ead91a603cd",
+      "bytes": 507
+    },
+    "canonical-consumer.mjs": {
+      "sha256": "904f88b80c599326c0456d2ba5f45551aca0cefa8e66b886e70b19c82403d698",
+      "bytes": 3081
+    },
+    "canonical20-hit-intermittent.json": {
+      "sha256": "d402f69b0076e145c021f1f1b1466ac04185be006945ac53dd49667db06bd466",
+      "bytes": 616
+    },
+    "canonical20-hit-second.sample.txt": {
+      "sha256": "bc8bbd111aa83735248e93db981770a5517071524654cc6c92940b5d0629d8a8",
+      "bytes": 84657
+    },
+    "canonical20-hit.sample.txt": {
+      "sha256": "98358215b0511531eebb89464e52bf5099324f7d947567e6d71505497afefa9f",
+      "bytes": 84666
+    },
+    "constant-collapse-coverage.log": {
+      "sha256": "d0d5c64527822fe52b0cd9f6b063415af50adf38588ae8bc6ef5e8ee62dea337",
+      "bytes": 132181
+    },
+    "constant-oracle.mjs": {
+      "sha256": "f6982b881e55104b7684fe09a3587ecee34b6b0c2b6a520726a7b0680bde56d8",
+      "bytes": 1359
+    },
+    "constant-snapshot-durable.log": {
+      "sha256": "d637c9cf4543be6b8282c7cb6336ca9a5b7f4c30655daae8ff73deb34bdca5c0",
+      "bytes": 9074
+    },
+    "constant-snapshot-one-k.log": {
+      "sha256": "fb1b1b1c23d07ad82b6593afcf303d71e73d12400162b17374f5ade6d760ebf3",
+      "bytes": 1069
+    },
+    "constant-snapshot-oracle.log": {
+      "sha256": "83e0cfe3877844abc8e92f0c56c19931b590ef28406b8da7ef2507a19028250a",
+      "bytes": 1393
+    },
+    "constants-oracle.json": {
+      "sha256": "cb8f3d4c79e9d3f642b60b1a0b3e8f936feb5d7ec6476790f74e149a9a1e8059",
+      "bytes": 905
+    },
+    "constants-oracle.log": {
+      "sha256": "5904509878581d60fb8e16fd0d873761e53d7c97d0cd0de19edfc1e8391d2034",
+      "bytes": 615
+    },
+    "constants-prototype-loader.mjs": {
+      "sha256": "9e1146f6753d473af6099a093999e70fc0b3b6a1f09c370054bb03108c95e7dc",
+      "bytes": 537
+    },
+    "constants-prototype.log": {
+      "sha256": "6deb1ea2cb3c6edf79dbe9b546e931998e56efa3811258282ef68eea8dea7735",
+      "bytes": 51
+    },
+    "consumer-format6-source.log": {
+      "sha256": "c4cdc3db540becec864dc34d960a780617e034ec751c14c994e21a092d59bd14",
+      "bytes": 65
+    },
+    "consumer-types-diagnostic.log": {
+      "sha256": "c7c4697c37ad42d50da43b8100a8fb3a3da53730879db42f0e78e9cc3c8e7627",
+      "bytes": 1758
+    },
+    "consumer-types-fixed.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "consumer20-first.json": {
+      "sha256": "d4ffc01e78e4417a7e0e50a0020bf42aa7cfba1bd9a2d588491902f5bffdbc65",
+      "bytes": 8337
+    },
+    "consumer20-first.log": {
+      "sha256": "761d8e56429dff980555cf415818435a769fb43ba97230f259678edf9d39fa54",
+      "bytes": 193
+    },
+    "consumer20.json": {
+      "sha256": "a7b59dd926a47adef16d75b222b3deab40ef0655028a18c6c3525369fb3dfc62",
+      "bytes": 2728
+    },
+    "consumer20.log": {
+      "sha256": "c45c6dba17ec213ed999c1a6f58a6083335bc13195835bda50278f87728500cd",
+      "bytes": 193
+    },
+    "consumer22-docs-recheck.log": {
+      "sha256": "1afd810a1de6cafd14cbe509da1e5c6a6ef1097f6cadfd4cc8a3ff90be942c37",
+      "bytes": 12
+    },
+    "consumer22-first.json": {
+      "sha256": "0c925d1a994d8ab26ae9a4bfe64553fd08a8deee6b5d7995edf4ee2526f738fe",
+      "bytes": 2768
+    },
+    "consumer22-first.log": {
+      "sha256": "cd86339719f2a512bd6036fd3f806311b972a37169b96eb995aaecbcd0be3e76",
+      "bytes": 193
+    },
+    "consumer22.json": {
+      "sha256": "8d9c0c52dba4a34de7ea29ec3737f5d4dd987d56574c6eae9b5886a740063a20",
+      "bytes": 2434
+    },
+    "consumer22.log": {
+      "sha256": "a4d27dc34f360ef13b22aed5f27bbc92319cae9bd53065c9a5037cc30848c758",
+      "bytes": 193
+    },
+    "consumer24.json": {
+      "sha256": "078375d90f3449846222a1f9b020b332d01afe583184e617eb0bd118d5064be6",
+      "bytes": 2589
+    },
+    "consumer24.log": {
+      "sha256": "c45c6dba17ec213ed999c1a6f58a6083335bc13195835bda50278f87728500cd",
+      "bytes": 193
+    },
+    "coverage-policy-verified.log": {
+      "sha256": "c5bdbac13cd08540ec65e5ae228cb48ff20677d9d38ae7d3a1fafd030afb6193",
+      "bytes": 1398
+    },
+    "coverage-policy.log": {
+      "sha256": "a756fa499ac3da7cfbd5241ebea31b31a387bb9d0d87fccea9430e87c83acd8e",
+      "bytes": 56
+    },
+    "docs-complete.log": {
+      "sha256": "a36ca5b58c15920191af9e5a3b6f8848a58b5831ff43ebfa6f9adadda37a3f8b",
+      "bytes": 75540
+    },
+    "docs-final.log": {
+      "sha256": "258c17806a0df174ac6435161b73c906ec1f353a40066211e9d2c8605e01ad3b",
+      "bytes": 6494242
+    },
+    "docs-verified.log": {
+      "sha256": "3490908b52b3a325a6c6b0b4b167896b3c44a54a16ff6f8c0a44234ae7537ffe",
+      "bytes": 76188
+    },
+    "docs.log": {
+      "sha256": "375bdfcbfcb47f5bb655c04bf8f70814cc894359d08c6698e4d158a2e79e71a3",
+      "bytes": 77798
+    },
+    "durable.log": {
+      "sha256": "6cf0225c1c72948b97040def28cb0e4d958a6cc3658ba9f1e702e082c229363e",
+      "bytes": 1390
+    },
+    "final-full-normal-installed-node-cases.json": {
+      "sha256": "d073ba75ac2c264cf0e5807179f349cab836acf09f102e0ab008f7859b359ffb",
+      "bytes": 54978
+    },
+    "final-pack20.json": {
+      "sha256": "9c97dab520730f17b1496adcdc106338bbf0cc3d3a15d87bd59143735995042a",
+      "bytes": 423
+    },
+    "final-pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "final-pack22.json": {
+      "sha256": "38610b0e7392102a6a6737c7ebc38323ec7e8c64130095641c7c94fccaa25542",
+      "bytes": 423
+    },
+    "final-pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "final-pack24.json": {
+      "sha256": "9c97dab520730f17b1496adcdc106338bbf0cc3d3a15d87bd59143735995042a",
+      "bytes": 423
+    },
+    "final-pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "first-offline-rehash-partial.json": {
+      "sha256": "30dada521af74b160be4da11cf0879425e53bd2ce6a48577a7b26730194cbdfd",
+      "bytes": 1648
+    },
+    "first-offline-rehash.log": {
+      "sha256": "f7f30be590db35e215757db538c9e6bdf7f5667276c4392e40371483581989c6",
+      "bytes": 90
+    },
+    "first-physical-limit.log": {
+      "sha256": "4d53bba3bcc948ecd2e9b86a2b5dee7df3c794c210758890c121e1714fe34794",
+      "bytes": 1687
+    },
+    "focused-coverage.log": {
+      "sha256": "0b8fd68f60ff1d64f0c420925abca1dc0ac12dfa6730564d946af3f58df6b11b",
+      "bytes": 146478
+    },
+    "frozen.json": {
+      "sha256": "6675881c06fbf1932ec674b543ad942c130bc07d45ca2eb56cfba080766845a6",
+      "bytes": 490
+    },
+    "full-normal-consumer-first.sample.txt": {
+      "sha256": "3eb05a168d5083cd1794fb5d95a5c15bd8db9d88bb78b5510929bb81f54a753c",
+      "bytes": 127024
+    },
+    "full-normal-coverage.log": {
+      "sha256": "81e9f0785d1bde1de90414799d6ee876ccdc8521ae2a409f09f911736a44f77f",
+      "bytes": 2443584
+    },
+    "full-normal-installed-node-cases.json": {
+      "sha256": "53af7efb32a7c6cc44e85e87a227bb0f55f6e549c9bbd24f3e22f69e59be6dc8",
+      "bytes": 54929
+    },
+    "full-normal-metrics.json": {
+      "sha256": "003e219c5742831271fc1048c12dd3bb4ea57db8847fc32f4741db1f4389506e",
+      "bytes": 127400
+    },
+    "full-normal-receipt.json": {
+      "sha256": "a356d6dbb87c3d0d81f85e0e41a90727d770811d8fa8f47bab09a1ea9f913817",
+      "bytes": 96485
+    },
+    "full-normal-runner.log": {
+      "sha256": "d587346311d9b92a0f175d43e66a7092e779bcd53baaf7772b6b66d365867062",
+      "bytes": 87
+    },
+    "input-contract.log": {
+      "sha256": "0a1ccffd51ec62456094acfc4448ab3bc5aff34b4f7039d7c41ec0e7abadcf65",
+      "bytes": 2190
+    },
+    "isolated-fresh-consumers.mjs": {
+      "sha256": "7fde75d1df2a5106269a8968f61aac5f31f468593a729887872b141c5a9a9fe3",
+      "bytes": 1140
+    },
+    "isolated-fresh20.log": {
+      "sha256": "e3b503fd4334fe16acee937150f6128e11571214755a96b177720d58e10f4a39",
+      "bytes": 124
+    },
+    "keyboard-stdin.json": {
+      "sha256": "afeee29bbf9c4677a789c30d8c9b51836b205c3409354c8e6e8e6834f5545ca2",
+      "bytes": 42988
+    },
+    "legacy-1.json": {
+      "sha256": "07ce14326f0b5e3dda28dfc7816dd78761e07c2ea7ff3b6ea5065ad3c0f1aa73",
+      "bytes": 16935717
+    },
+    "legacy-2.json": {
+      "sha256": "07ce14326f0b5e3dda28dfc7816dd78761e07c2ea7ff3b6ea5065ad3c0f1aa73",
+      "bytes": 16935717
+    },
+    "legacy-compare-fixed-identity.log": {
+      "sha256": "c321ac589dfce665e4d97c8f010681f558b52aea76d9e5ae9192b9d3e189f965",
+      "bytes": 1323
+    },
+    "legacy-compare-retry.log": {
+      "sha256": "0cd8c80ae5e03843afb4caa3d9a86d2b67b16dd8816135d18b203cee36d88fa4",
+      "bytes": 405
+    },
+    "legacy-compare-retry2.log": {
+      "sha256": "0cd8c80ae5e03843afb4caa3d9a86d2b67b16dd8816135d18b203cee36d88fa4",
+      "bytes": 405
+    },
+    "legacy-compare.json": {
+      "sha256": "0ceeb337ad27b65be6c8cc29797421fb76b7bb9e0f0cefa235578f34232a9f83",
+      "bytes": 2011
+    },
+    "legacy-compare.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "legacy-compare.mjs": {
+      "sha256": "2a3d2b828f645e9e4049a6ad220698d374a97f8af4b80f2fba1bcf7d3dba4020",
+      "bytes": 2756
+    },
+    "lifetime-final.log": {
+      "sha256": "3272838db8c0cc3d944a5562adbb4aef80990e7aff9af56fa6a368e84df8ee38",
+      "bytes": 227
+    },
+    "lifetime-function-boundary.log": {
+      "sha256": "3272838db8c0cc3d944a5562adbb4aef80990e7aff9af56fa6a368e84df8ee38",
+      "bytes": 227
+    },
+    "lifetime.json": {
+      "sha256": "b49438c87746ef5e8c5c7032ee3a741d1785fc79ab6a1e21d968d27a75908be2",
+      "bytes": 268
+    },
+    "lifetime.log": {
+      "sha256": "6ee8998039d1266d3271d12b05d211434fbcde6e661bf1e386fb2c80a95d547d",
+      "bytes": 747
+    },
+    "lifetime.mjs": {
+      "sha256": "f3ac56bc9d34c728bd7d4070e84613872d908abcbf2ef93730245356a6105496",
+      "bytes": 3025
+    },
+    "llm.log": {
+      "sha256": "4b6bcf79b8d7c80c0d7976c40af2ecc0457b5792bd114ba0e84d609c15ec6eea",
+      "bytes": 73
+    },
+    "machine.log": {
+      "sha256": "9d5f37929938983723667923bfd7c6f1802a50c4a0eddfbfd32ef30557b54d25",
+      "bytes": 45
+    },
+    "node-cases20-first.json": {
+      "sha256": "e84d5bfa8cac2580f5144e0d1ffcaf65947e76515734765d9c2216fae19d698c",
+      "bytes": 56459
+    },
+    "node-cases20.json": {
+      "sha256": "58b661540cf19bd9221944ed58be274b671661cb53bb7abe476811c69355d9f9",
+      "bytes": 54968
+    },
+    "node-cases22.json": {
+      "sha256": "557326ba8396a0bf64989b41efd6ccc7f16b2b50af30a1e8308609f1819a13e1",
+      "bytes": 54944
+    },
+    "node-cases24.json": {
+      "sha256": "deefd883e5c11ca3e060d0aef68996640d45679b38d8a4adffe11e4add950078",
+      "bytes": 54981
+    },
+    "node-doc-host.log": {
+      "sha256": "e1675ae7fcff6971e98d5e6a319b93eab6070a470bb4b6dbd1caa591688f6533",
+      "bytes": 1111
+    },
+    "node20-keyboard-input-control.log": {
+      "sha256": "138011329dacea106dbeedc44934f935241b03282d6da08cd60990003352b673",
+      "bytes": 31
+    },
+    "node20-pure-stdin-sample.txt": {
+      "sha256": "dee561d8083f51873780de3467b782a051c87f7c8bf3d67ebd3381d1a2609aca",
+      "bytes": 77882
+    },
+    "node20-stdin-control.log": {
+      "sha256": "1009205b4cd98f0bae302618309775c676c472d0ded713a1bfd3535b254c2840",
+      "bytes": 278
+    },
+    "node20-stdin-file-control.log": {
+      "sha256": "119dab2aebd211f09b92e85732dc03939c9ce25db291878a152fcf6d22b7dc43",
+      "bytes": 71
+    },
+    "offline-second.sample.txt": {
+      "sha256": "e20272458c138e3bc182adf517fdd19c4d985793424b7a532c86c8da04676f25",
+      "bytes": 87494
+    },
+    "offline.sample.txt": {
+      "sha256": "6207f8345c17bf6360d254206f3dbdf30217ed540e15042b4c0417dfe4022d51",
+      "bytes": 87704
+    },
+    "one-k-constants.log": {
+      "sha256": "4fca8b2ea83d1c35ae2f7cf1bf5bba8acc91a8767baab575767ab85d86b7bbaa",
+      "bytes": 648
+    },
+    "one-k-final.log": {
+      "sha256": "4fca8b2ea83d1c35ae2f7cf1bf5bba8acc91a8767baab575767ab85d86b7bbaa",
+      "bytes": 648
+    },
+    "one-k.log": {
+      "sha256": "84ded415c91f9de49cd79810a58fd32931ef1867cb17b0f105fb91a37a71be03",
+      "bytes": 649
+    },
+    "one-k.mjs": {
+      "sha256": "80e2dab9984803ed15ff98fdc91b9abd7dca14474dd02964be778c28a1609b5c",
+      "bytes": 4629
+    },
+    "owned-constant-offline-rehash-partial.json": {
+      "sha256": "b7a56cc0e59189b93535c72325556709bccdf3ff46c8868207dd4e4b7104f5ae",
+      "bytes": 1647
+    },
+    "owned-constant-offline-rehash.log": {
+      "sha256": "4968745f1d3e4c01e62f9cffa7bddc0824bb692e3b521d7d23ed9206ce33ff1e",
+      "bytes": 90
+    },
+    "owned-constant-offline-second.sample.txt": {
+      "sha256": "47e13207071e8420676bd9d634efb8022ae68abd922ff8b48bf13c2599c32354",
+      "bytes": 88339
+    },
+    "owned-constant-offline.sample.txt": {
+      "sha256": "a42473e3aef321fdeb19d3fe6b76e8b63b12fbcbbbb9148904bda4ef5d134131",
+      "bytes": 87955
+    },
+    "owned-constant-product.log": {
+      "sha256": "5f6d5ff8325c6521f820648f6e3d4098b883a98654b5f02173f7bad7f5c02178",
+      "bytes": 8063
+    },
+    "owned-constant-smoke.log": {
+      "sha256": "e070d76a21a4d41a54f6e966d6719121721e8bf01a6593be8fa9facd3f053f8b",
+      "bytes": 51
+    },
+    "owning-coverage-final.log": {
+      "sha256": "5be7887124304c3108f283f863f7647cbe67f316d0c1c314994dea626bec947f",
+      "bytes": 296359
+    },
+    "owning-coverage.log": {
+      "sha256": "5232cba62e3b7a676c658c9d0e5e0963639d2fc67f2d21afbbff9977bc0ef74e",
+      "bytes": 481797
+    },
+    "pack-before-cap-update.log": {
+      "sha256": "d363df0a109c4918aa7b343750dfd4b4c44c0986405f73ce66570f1d7a57f2ea",
+      "bytes": 932
+    },
+    "pack-measurement.json": {
+      "sha256": "28ebbbe49c4051ed72906786495456340c7c4a883749511837cb7c1993a2102d",
+      "bytes": 154
+    },
+    "pack20-before-limits.log": {
+      "sha256": "e92a548566d008e862adab46d56b901ec8065b73280c1b645f9f28d8505fd275",
+      "bytes": 932
+    },
+    "pack20-measurement.json": {
+      "sha256": "eb2337ce1cc6f61bff37170c350897d30638e9eb728893073207df4d5a09a504",
+      "bytes": 103
+    },
+    "pack20-node-npm-measurement.json": {
+      "sha256": "c78c3008dacf328a3b5d2ed0c148bf6752d3790ed2b739c915464d44f3137a86",
+      "bytes": 196
+    },
+    "pack20-node-npm.log": {
+      "sha256": "aabe52097de357368795dab8366b89994b1369f3867b17e0f8a59f814bcfbaaa",
+      "bytes": 932
+    },
+    "pack22-before-limits.log": {
+      "sha256": "d363df0a109c4918aa7b343750dfd4b4c44c0986405f73ce66570f1d7a57f2ea",
+      "bytes": 932
+    },
+    "pack22-measurement.json": {
+      "sha256": "58776edf37d16ae0c85ce7518c8510090799e9163f2c951cd9ab64e768af7c15",
+      "bytes": 103
+    },
+    "pack22-node-npm-measurement.json": {
+      "sha256": "8cf4a482d7a527ff866b99d21f035d6971213c3e8cee9b9d232b77f8acb6f086",
+      "bytes": 196
+    },
+    "pack22-node-npm.log": {
+      "sha256": "f844fe2d43d3186ad46e56eae9a82c380db9c5c52fbae03a97c47becaf357e04",
+      "bytes": 631
+    },
+    "pack24-before-limits.log": {
+      "sha256": "ee79f67a905105b751fb241983c0666cf5a5992c118922e2c0fbd386d80957ca",
+      "bytes": 932
+    },
+    "pack24-measurement.json": {
+      "sha256": "1e17dc525544a0bcc3227d69b1f8a8f095d44dd2051a4f208c8a62f32d0305ab",
+      "bytes": 103
+    },
+    "pack24-node-npm-measurement.json": {
+      "sha256": "875c681b49b52309104def5c7599b0b77b253e5262eb5b78799ec0e7bea8b653",
+      "bytes": 196
+    },
+    "pack24-node-npm.log": {
+      "sha256": "1a75457b0c10c5b2272b3e20d6f03bd99c917e48d07c43d9bd51d2800c7f9421",
+      "bytes": 932
+    },
+    "package-measure-loader.mjs": {
+      "sha256": "62bf04474bb8bfad0b60c9527b02d95ca076ff2186c514545fc2cb9cc865e677",
+      "bytes": 294
+    },
+    "package-measure.mjs": {
+      "sha256": "26083818d282f7b5f59acb3bc5fb6ad00fff6bc6191a60b8d743b14a3e608493",
+      "bytes": 258
+    },
+    "pipe-fixture-conditional-encoding.mjs": {
+      "sha256": "4b61d256b4503599ba1ab24880521fb2db3613ddfae2abc5f54024b05563b801",
+      "bytes": 12707
+    },
+    "pipe-fixture-geographic-routes.mjs": {
+      "sha256": "66b2210ae37c99b5fc8232dbdb500e4ade4df9220d3a76d97e8f3c069d426976",
+      "bytes": 5572
+    },
+    "pipe-fixture-keyboard-focus.mjs": {
+      "sha256": "710b03b7cfdb6d6cd12f8a18995ab865493ca5e5748c965fae76a69238979f8b",
+      "bytes": 3844
+    },
+    "pipe-fixture-static-delivery.mjs": {
+      "sha256": "e91a9ff5f4972224f55e2094c43d84402153cc3f23bb2a6309294edf7df9f749",
+      "bytes": 24889
+    },
+    "pre-boundary-browser-installed.json": {
+      "sha256": "7226ec48b0105d73a79e8bbafdee4cea863e3fc92ab0ff8e434ef4b9bc198e49",
+      "bytes": 227
+    },
+    "pre-boundary-browser-installed.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pre-boundary-consumer-format6-source.log": {
+      "sha256": "c4cdc3db540becec864dc34d960a780617e034ec751c14c994e21a092d59bd14",
+      "bytes": 65
+    },
+    "pre-boundary-consumer-types-diagnostic.log": {
+      "sha256": "c7c4697c37ad42d50da43b8100a8fb3a3da53730879db42f0e78e9cc3c8e7627",
+      "bytes": 1758
+    },
+    "pre-boundary-consumer-types-fixed.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pre-boundary-consumer20-first.json": {
+      "sha256": "d4ffc01e78e4417a7e0e50a0020bf42aa7cfba1bd9a2d588491902f5bffdbc65",
+      "bytes": 8337
+    },
+    "pre-boundary-consumer20-first.log": {
+      "sha256": "761d8e56429dff980555cf415818435a769fb43ba97230f259678edf9d39fa54",
+      "bytes": 193
+    },
+    "pre-boundary-consumer20.json": {
+      "sha256": "141843d2885849aed5ed7a8bc58c59f8815a627a80c0dfba788132d1386cd85b",
+      "bytes": 4694
+    },
+    "pre-boundary-consumer20.log": {
+      "sha256": "11e680649c5cd53afdc3da0f9cbbffb7ee27fe24b9b3f4fd3b228b08be718a0d",
+      "bytes": 193
+    },
+    "pre-boundary-consumer22-docs-recheck.log": {
+      "sha256": "1afd810a1de6cafd14cbe509da1e5c6a6ef1097f6cadfd4cc8a3ff90be942c37",
+      "bytes": 12
+    },
+    "pre-boundary-consumer22-first.json": {
+      "sha256": "0c925d1a994d8ab26ae9a4bfe64553fd08a8deee6b5d7995edf4ee2526f738fe",
+      "bytes": 2768
+    },
+    "pre-boundary-consumer22-first.log": {
+      "sha256": "cd86339719f2a512bd6036fd3f806311b972a37169b96eb995aaecbcd0be3e76",
+      "bytes": 193
+    },
+    "pre-boundary-consumer22.json": {
+      "sha256": "07118237b9641e0629d30b6d6fa389d8674fee8ca65b5c42a767ade4ac26a04f",
+      "bytes": 2578
+    },
+    "pre-boundary-consumer22.log": {
+      "sha256": "cd86339719f2a512bd6036fd3f806311b972a37169b96eb995aaecbcd0be3e76",
+      "bytes": 193
+    },
+    "pre-boundary-consumer24.json": {
+      "sha256": "bb6a97879ea0fc525f51672fe77f642dcbd588cbf1f048526461ef8bf587e9bf",
+      "bytes": 5183
+    },
+    "pre-boundary-consumer24.log": {
+      "sha256": "11e680649c5cd53afdc3da0f9cbbffb7ee27fe24b9b3f4fd3b228b08be718a0d",
+      "bytes": 193
+    },
+    "pre-boundary-final-pack20.json": {
+      "sha256": "9968ed4610e74a664cec56841280d3cfad19a02c553f1da7a419d859522c362d",
+      "bytes": 423
+    },
+    "pre-boundary-final-pack22.json": {
+      "sha256": "562fd2bb79ca9f6294926a5488096d2bc86fe4c4a7ead8c65888360606e6c0bd",
+      "bytes": 423
+    },
+    "pre-boundary-final-pack24.json": {
+      "sha256": "9968ed4610e74a664cec56841280d3cfad19a02c553f1da7a419d859522c362d",
+      "bytes": 423
+    },
+    "pre-boundary-frozen.json": {
+      "sha256": "16bd1145fd36724c43f388434bfd349c279bd80bec22f6e95d56b3d29348354b",
+      "bytes": 490
+    },
+    "pre-boundary-full-normal-coverage.log": {
+      "sha256": "db2f5c199aba4187dcd2c7182a9322be9a607a374d8fed1a64a3c224d7e24d70",
+      "bytes": 2448144
+    },
+    "pre-boundary-lifetime-final.log": {
+      "sha256": "3272838db8c0cc3d944a5562adbb4aef80990e7aff9af56fa6a368e84df8ee38",
+      "bytes": 227
+    },
+    "pre-boundary-node-cases20-first.json": {
+      "sha256": "e84d5bfa8cac2580f5144e0d1ffcaf65947e76515734765d9c2216fae19d698c",
+      "bytes": 56459
+    },
+    "pre-boundary-node-cases20.json": {
+      "sha256": "0194d5e0eb0190b0d351d8ed66ed70cdaefd806f0c648a99bc026ce4bd8b2fea",
+      "bytes": 55436
+    },
+    "pre-boundary-node-cases22.json": {
+      "sha256": "647b8a601c4e30d8b34b4ff249b67104b6b29ba8868c68eaa71fb0badbe2b16e",
+      "bytes": 54962
+    },
+    "pre-boundary-node-cases24.json": {
+      "sha256": "a36807d7bdc83752a923e3cf5a11815a5b4d9546259be256a8d990e54b9bfee8",
+      "bytes": 55783
+    },
+    "pre-boundary-one-k-final.log": {
+      "sha256": "4fca8b2ea83d1c35ae2f7cf1bf5bba8acc91a8767baab575767ab85d86b7bbaa",
+      "bytes": 648
+    },
+    "pre-boundary-owning-coverage-final.log": {
+      "sha256": "f433fe2ec75b77b6099fcc75bcc1bd2a5d5dd9f13b0542f5a973e837092f18a0",
+      "bytes": 479007
+    },
+    "pre-boundary-retry20.json": {
+      "sha256": "89ce19bf7aa50e93cb26189ce180395d401740ce1a5149c842ea8ebfb8a08264",
+      "bytes": 433
+    },
+    "pre-boundary-retry24.json": {
+      "sha256": "0e9be96489d3b2c624fa1ff618881e13fe69939e7e2294acbffcc3f712c1d60d",
+      "bytes": 441
+    },
+    "preparation-native.sample.txt": {
+      "sha256": "4e20991446fc8e600f59d13d1630430434572f3a0b49f6767a79e0bf963eed44",
+      "bytes": 107731
+    },
+    "product-100000-phased-partial.json": {
+      "sha256": "c8ff0df0fb0545370749cac401dda3918df252dc655effe13e750838595d938e",
+      "bytes": 1720
+    },
+    "product-100000-phased.log": {
+      "sha256": "4968745f1d3e4c01e62f9cffa7bddc0824bb692e3b521d7d23ed9206ce33ff1e",
+      "bytes": 90
+    },
+    "product-100000-phased.mjs": {
+      "sha256": "54bf2eb72b484e79a95358df8c00a56d01764f9db3b72addd34445ec3a55e858",
+      "bytes": 6119
+    },
+    "provenance.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "record.mjs": {
+      "sha256": "3faf4244e2a4d1ad6d5d3ccadbc34e229199dc944c2eb21a69918962cb8ffb46",
+      "bytes": 8061
+    },
+    "registry-attribution.json": {
+      "sha256": "c17c4d27d2d973bca5b0f2f158fa7d18516b673944ce5b7bd84ae8611c43400e",
+      "bytes": 5340
+    },
+    "registry-functional.log": {
+      "sha256": "24c1ae472128759da9e6f3d8a3481699c7a1885ecf53ddf7e7f46a4362d1d06b",
+      "bytes": 537
+    },
+    "registry-observer-loader.mjs": {
+      "sha256": "6acfe973cd156e57f4d02eeecb7400f69add7d4b2c0254576aee120c687a46f6",
+      "bytes": 2625
+    },
+    "registry-offline-rehash-partial.json": {
+      "sha256": "c8ff0df0fb0545370749cac401dda3918df252dc655effe13e750838595d938e",
+      "bytes": 1720
+    },
+    "registry-offline.sample.txt": {
+      "sha256": "a500c81b99bdd61245afef95f3ba7e6a87844f2d8f5406f56fcebcc6e829516a",
+      "bytes": 88958
+    },
+    "repair-pack20-measurement.json": {
+      "sha256": "1d25439c4c7c41c2dee02521494bec91d2a2c8eb0e86879af81d0c7e49fcab3a",
+      "bytes": 146
+    },
+    "repair-pack20-measurement.stderr": {
+      "sha256": "d3a05ebd767c7729ec6b81b8b40a8d6c338b4cf8a10121e070a4fb51fc7ae8a2",
+      "bytes": 590
+    },
+    "repair-pack22-measurement.json": {
+      "sha256": "f0f22f432930f116532139f459d544e0bd937e220d8f4d48edd2cd3f50ebbbfd",
+      "bytes": 146
+    },
+    "repair-pack22-measurement.stderr": {
+      "sha256": "593ead4b8283fc7dca8b4c113af1b7cc8089d4cf73ce4d72cc9c805d8cefe9ee",
+      "bytes": 590
+    },
+    "repair-pack24-measurement.json": {
+      "sha256": "a5c8b5259c1256f82beabb81c2b326c0f8d5ef3247ec0f5db4dc136b5a7b0178",
+      "bytes": 146
+    },
+    "repair-pack24-measurement.stderr": {
+      "sha256": "b577da60f4ebe72946661c7c9ae687aee90c59f44e9010ab82d1ee4819860147",
+      "bytes": 590
+    },
+    "repair-relative-archive-path-failure.log": {
+      "sha256": "27741487fa344bfd17f4f117b425cf50e742a9dd6669b68e3f9891810c74dd30",
+      "bytes": 4703
+    },
+    "repair-verification-plan.json": {
+      "sha256": "1c2770139e4a057bce7b64a694a50dea7d69b24dd43cd6c7ddbbea2d82f911f7",
+      "bytes": 808
+    },
+    "repaired-bundles20.log": {
+      "sha256": "0a81c7e4780fb6a87cf428a37cd74a7e4423af9f02b0f1fc49c71b83effd2204",
+      "bytes": 145
+    },
+    "repaired-file-input-consumer20.log": {
+      "sha256": "fc580cf5fd44e9c3df3e4815de4a1b30ec06227a5f041f3e47c185ce680123fe",
+      "bytes": 25
+    },
+    "repaired-file-input-consumer24.log": {
+      "sha256": "fc580cf5fd44e9c3df3e4815de4a1b30ec06227a5f041f3e47c185ce680123fe",
+      "bytes": 25
+    },
+    "repaired-first-consumer20.json": {
+      "sha256": "130a3726221524f3227919e85a46346e8aabf18c232888d4ba5d14a42bdf105c",
+      "bytes": 8873
+    },
+    "repaired-first-consumer20.log": {
+      "sha256": "c45c6dba17ec213ed999c1a6f58a6083335bc13195835bda50278f87728500cd",
+      "bytes": 193
+    },
+    "repaired-first-consumer24.json": {
+      "sha256": "e737299ba7f2acd5bb6b656a21f7bb862faf15218be829eac5904f47dd67196b",
+      "bytes": 5183
+    },
+    "repaired-first-consumer24.log": {
+      "sha256": "c45c6dba17ec213ed999c1a6f58a6083335bc13195835bda50278f87728500cd",
+      "bytes": 193
+    },
+    "repaired-first-node-cases20.json": {
+      "sha256": "bfea9cb7c1eb0fb108607d58d9535d1cc27b3664df54838cafd8fc1af05ce7d8",
+      "bytes": 57290
+    },
+    "repaired-first-node-cases24.json": {
+      "sha256": "07acf3d7054448c5a3fbecf32eb81d0ef96ced89d7b414158c72dab8dcb63b2d",
+      "bytes": 55792
+    },
+    "repaired-fresh20-keyboard-sample.txt": {
+      "sha256": "9a76504831b7b0a84ba02b4e752fdf6bd2e3b5fbfdfcadbdb0d6dd0f39ba6b6f",
+      "bytes": 84294
+    },
+    "repaired-fresh20-retries.json": {
+      "sha256": "13992cafe1292d29ef83ae4bf3e8bfb4d7ff146fba10eb55a7c81d05ce115941",
+      "bytes": 1475
+    },
+    "repaired-fresh20-retries.log": {
+      "sha256": "248992778d27e570936c839b6002c63e1f901a0b40acb9e6daeb1bebc0f223ff",
+      "bytes": 1929
+    },
+    "retry-fresh-repaired.mjs": {
+      "sha256": "08835ba63d6ccb909aeef5af73355f06a3353a8f894aefeebc138a2160daa3d4",
+      "bytes": 2100
+    },
+    "retry-original-case.mjs": {
+      "sha256": "8d3c58922c6b664d9ca4eee97ce1fc972a054e02e7e759ef52bea5b2ebc08e18",
+      "bytes": 2163
+    },
+    "retry20.json": {
+      "sha256": "89ce19bf7aa50e93cb26189ce180395d401740ce1a5149c842ea8ebfb8a08264",
+      "bytes": 433
+    },
+    "retry20.log": {
+      "sha256": "8bc68450261c680d35639508939f1ea61a94b14a975202a54f95a173a5d636ab",
+      "bytes": 69
+    },
+    "retry24.json": {
+      "sha256": "0e9be96489d3b2c624fa1ff618881e13fe69939e7e2294acbffcc3f712c1d60d",
+      "bytes": 441
+    },
+    "retry24.log": {
+      "sha256": "8517c382f987a5f3c92fc712d8cf804d65487ab69a965cf56078ca1650056943",
+      "bytes": 78
+    },
+    "search.log": {
+      "sha256": "ddb36862e649694d1db775fa41ba8eb27103e6e175aad83c16feabe52368f5de",
+      "bytes": 45
+    },
+    "shared-owner-coverage-complete.log": {
+      "sha256": "c99803be4d6b974c9e99509cb9f503c5f8755ec3dd56092ecbc2527d40eb4c78",
+      "bytes": 212075
+    },
+    "shared-owner-coverage.log": {
+      "sha256": "47f4166ba47aa691fce9f33720a707ab574fc314209f5ec0a397973ec144a453",
+      "bytes": 211488
+    },
+    "signatures.log": {
+      "sha256": "f6b025bcba2d927ef532523205ec255c5229af8bd46e6832b24aacf8410a1369",
+      "bytes": 61
+    },
+    "smoke.mjs": {
+      "sha256": "f310ce6de86d8c98828af0b35161e737722a719a3579aed11d1893ae1d466684",
+      "bytes": 1820
+    },
+    "snippets.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "stdin-file-test.log": {
+      "sha256": "41ed09ac3cf3ea46b7edb9e0d8a3e4a46ecf00384da1aef5c82333a99867f92c",
+      "bytes": 753
+    },
+    "stdin-transport-diagnostic.mjs": {
+      "sha256": "4b42b5552a84f415ffd39e8fe49519b0a9473ee1ce030b6d2ea05790662db680",
+      "bytes": 1078
+    },
+    "storage-constants-restricted.log": {
+      "sha256": "d5b13ee89abae868f7a70f477f272c1630be37efb44286e0665c1da0cbf18610",
+      "bytes": 1383
+    },
+    "storage-constants.log": {
+      "sha256": "461669f77825f9ec6befd2348e6b109eb980c23d56256c20f70f3b158e866b1f",
+      "bytes": 1386
+    },
+    "storage.log": {
+      "sha256": "0e2f9c399c8612d24f2054b6a0f45ebe23543929c315dda7856dceffc0eb5f8c",
+      "bytes": 1102
+    },
+    "tutorials20.json": {
+      "sha256": "e173823ea37fa16105420f79b2a19561f23da49c00369f71b67d249d8729b418",
+      "bytes": 48696
+    },
+    "tutorials22-first.json": {
+      "sha256": "3083173ecd2c7826937b87a859d0af607145676c276482feaeb7b8ec41faa5c4",
+      "bytes": 49275
+    },
+    "tutorials24.json": {
+      "sha256": "59961cd76846df81f8b769fc4f38fd3b5475fe688cd8ca58e77c4c035aea8023",
+      "bytes": 48691
+    },
+    "types-final.log": {
+      "sha256": "ad2593c70a1c7007129af0d0d1c345177efeb4bdd37c54483017d626a3d0b47f",
+      "bytes": 601
+    },
+    "types-hit-fixed.log": {
+      "sha256": "8bfa1e5dbc6f45cbdc022d9111916a2d089784484317f9cb705de7463c07762a",
+      "bytes": 7720
+    },
+    "types.log": {
+      "sha256": "df6ee2f641425a93e4dd7aa05c29232b2b238bf5330596d524b61b0e052ea677",
+      "bytes": 341
+    },
+    "registry-events.jsonl": {
+      "sha256": "86bffa3185229b4c6571d1be8af1766b40b64c257a8de376d7f8642bcbaefa3c",
+      "bytes": 18696960
+    },
+    "common/coverage-closed-kinds.log": {
+      "sha256": "7293b51b220c45724b5e17b911ac5765820adc9d24749d5386eaa0db05ef463e",
+      "bytes": 13515
+    },
+    "common/legacy-error-order.log": {
+      "sha256": "65322b3278887ea44c81af4c6ccce8141d8a91b1462f462eef506e6c99804ad6",
+      "bytes": 9628
+    },
+    "common/public-session.log": {
+      "sha256": "ef33d64ef1f2b7818b2a2ac41953f0ba57e786492076275a3374db70df49db1e",
+      "bytes": 599
+    },
+    "common/graph-batch-coverage.log": {
+      "sha256": "eb33a68e9d592f27e5fb80af69ad0ddf0fa535661be2eb6bc6992dae3f48e4e4",
+      "bytes": 200664
+    },
+    "common/public-graph-session.log": {
+      "sha256": "bfed1f6b9c0c2429f719d6136e35d3f8b98a829bb8bf3334b48f45e35ab81ed3",
+      "bytes": 5608
+    },
+    "common/browser-first.log": {
+      "sha256": "1484a07531f5a0214a454f6051084a5b09b52871f2450b238a9a30ed026e93af",
+      "bytes": 479
+    },
+    "source-pin-final.log": {
+      "sha256": "e2a27ed54531aea01dc0edf6390b66894c8ac820efedb114e24ffd3c034e254b",
+      "bytes": 6481
+    },
+    "source-pin-pack.json": {
+      "sha256": "d7f37eb22557004688350b0161d0e24ddaa7c9626f42b1b5b8ed99d9aa7628c3",
+      "bytes": 128918
+    }
+  },
+  "sourceRevision": "c6d44f50b2a6fec611429f4d07b31f801f7ff901",
+  "provenance": {
+    "schemaVersion": 1,
+    "status": "development",
+    "packageVersion": "0.0.26",
+    "contractId": "sha256:b882a91b634bdd0caf7461d7c8b9fb590b6d0abcaad378eaf5e93015125b9e48",
+    "sourceCommit": "c6d44f50b2a6fec611429f4d07b31f801f7ff901",
+    "sourceRef": "c6d44f50b2a6fec611429f4d07b31f801f7ff901",
+    "exampleSourceRef": "64045b214475110de9621328bbe7d060c9149f04",
+    "baseline": {
+      "tag": "v0.0.13",
+      "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
+      "actionCount": 234
+    },
+    "actionCount": 379,
+    "actionAvailability": {
+      "createCanvas": {
+        "availableBy": "v0.0.13"
+      },
+      "editCanvas": {
+        "availableBy": "v0.0.13"
+      },
+      "fitCanvas": {
+        "availableBy": "v0.0.13"
+      },
+      "applyTextMetrics": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "removeTextMetrics": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "applyTheme": {
+        "availableBy": "v0.0.13"
+      },
+      "removeTheme": {
+        "availableBy": "v0.0.13"
+      },
+      "createData": {
+        "availableBy": "v0.0.13"
+      },
+      "applyDataUpdate": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "reviseData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "removeResource": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "removeData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "removeScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "removeCoordinate": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "bindMarkData": {
+        "availableBy": "v0.0.13"
+      },
+      "filterData": {
+        "availableBy": "v0.0.13"
+      },
+      "filterMarks": {
+        "availableBy": "v0.0.13"
+      },
+      "removeMarkFilter": {
+        "availableBy": "v0.0.13"
+      },
+      "setMarkVisibility": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "removeMarkVisibility": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "selectMarks": {
+        "availableBy": "v0.0.13"
+      },
+      "editMarkSelection": {
+        "availableBy": "v0.0.13"
+      },
+      "removeMarkHighlight": {
+        "availableBy": "v0.0.13"
+      },
+      "removeMarkSelection": {
+        "availableBy": "v0.0.13"
+      },
+      "highlightMarks": {
+        "availableBy": "v0.0.13"
+      },
+      "createDensityData": {
+        "availableBy": "v0.0.13"
+      },
+      "createSummaryData": {
+        "availableBy": "v0.0.13"
+      },
+      "createBinData": {
+        "availableBy": "v0.0.13"
+      },
+      "createFlattenData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createLookupData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createPivotData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createFoldData": {
+        "availableBy": "v0.0.13"
+      },
+      "createImageResource": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "replaceImageResource": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createFontResource": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "replaceFontResource": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createImageMark": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editImageMark": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createHierarchyData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editHierarchyData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "layoutHierarchy": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editLayout": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createTreePlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createGraphPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editGraphPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "bundleGraphEdges": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editEdgeRoute": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editTreePlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createPartitionPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editPartitionPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createTreemapPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editTreemapPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createParameter": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createCalendarLayout": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createTablePlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editTablePlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createTrailPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editTrailPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createWaterfallPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editWaterfallPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createOHLCPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editOHLCPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createPyramidPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editPyramidPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createCalendarPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editCalendarPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createGeometryData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createProjection": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editProjection": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "navigateProjection": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editGeometryData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createGeoLODData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editGeoLODData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createGeoRouteData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editGeoRouteData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createGeoJoinData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editGeoJoinData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createContourData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createDensityContourData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editContourData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createGeoShapeMark": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editGeoShapeMark": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createGeoPointMark": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editGeoPointMark": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createGeoLineMark": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editGeoLineMark": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createGraticule": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editGraticule": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createGeoAnnotation": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editGeoAnnotation": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createContourMark": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editContourMark": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createFlowData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editFlowData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "layoutFlow": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createFlowNodes": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editFlowNodes": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createFlowLinks": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editFlowLinks": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createGraphData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createInferredGraphData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editInferredGraphData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editGraphData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "layoutGraph": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editParameter": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "removeParameter": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createComputedData": {
+        "availableBy": "v0.0.13"
+      },
+      "createNormalizedData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createCompleteData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createImputedData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createStackData": {
+        "availableBy": "v0.0.13"
+      },
+      "createRegressionData": {
+        "availableBy": "v0.0.13"
+      },
+      "createRegressionStatisticsData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editRegressionStatisticsData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createIntervalData": {
+        "availableBy": "v0.0.13"
+      },
+      "createECDFData": {
+        "availableBy": "v0.0.13"
+      },
+      "createTimeUnitData": {
+        "availableBy": "v0.0.13"
+      },
+      "createWindowData": {
+        "availableBy": "v0.0.13"
+      },
+      "createBin2DData": {
+        "availableBy": "v0.0.13"
+      },
+      "createSortedData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editDerivedData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editComputedData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editFilteredData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editFlattenData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editLookupData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editPivotData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editFoldData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editSummaryData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editBinData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editTimeUnitData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editWindowData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editDensityData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editStackData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editRegressionData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editSortedData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editIntervalData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editECDFData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editNormalizedData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editCompleteData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editImputedData": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editBin2DData": {
+        "availableBy": "v0.0.13"
+      },
+      "createPointMark": {
+        "availableBy": "v0.0.13"
+      },
+      "editPointMark": {
+        "availableBy": "v0.0.13"
+      },
+      "createTickMark": {
+        "availableBy": "v0.0.13"
+      },
+      "editTickMark": {
+        "availableBy": "v0.0.13"
+      },
+      "jitterPoints": {
+        "availableBy": "v0.0.13"
+      },
+      "removeJitter": {
+        "availableBy": "v0.0.13"
+      },
+      "packPoints": {
+        "availableBy": "v0.0.13"
+      },
+      "removePointPacking": {
+        "availableBy": "v0.0.13"
+      },
+      "createLineMark": {
+        "availableBy": "v0.0.13"
+      },
+      "editLineMark": {
+        "availableBy": "v0.0.13"
+      },
+      "createBarMark": {
+        "availableBy": "v0.0.13"
+      },
+      "editBarMark": {
+        "availableBy": "v0.0.13"
+      },
+      "createAreaMark": {
+        "availableBy": "v0.0.13"
+      },
+      "createArcMark": {
+        "availableBy": "v0.0.13"
+      },
+      "editArcMark": {
+        "availableBy": "v0.0.13"
+      },
+      "createRectMark": {
+        "availableBy": "v0.0.13"
+      },
+      "editRectMark": {
+        "availableBy": "v0.0.13"
+      },
+      "createRuleMark": {
+        "availableBy": "v0.0.13"
+      },
+      "editRuleMark": {
+        "availableBy": "v0.0.13"
+      },
+      "createTextMark": {
+        "availableBy": "v0.0.13"
+      },
+      "createTextPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createMarkLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "editMarkLabelSelection": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editMarkLabelPlacement": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "removeMarkLabels": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createAnnotation": {
+        "availableBy": "v0.0.13"
+      },
+      "editAnnotation": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createStatisticalReference": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createOverlay": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createLayerPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createAdjacentPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editCompositionScales": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editOverlay": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createReferenceLine": {
+        "availableBy": "v0.0.13"
+      },
+      "createReferenceBand": {
+        "availableBy": "v0.0.13"
+      },
+      "editTextMark": {
+        "availableBy": "v0.0.13"
+      },
+      "layoutLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "removeLabelLayout": {
+        "availableBy": "v0.0.13"
+      },
+      "editAreaMark": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeX": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeY": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeTheta": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeR": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeX2": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeColor": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeStrokeDash": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeSize": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeShape": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeAngle": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeOpacity": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeRadius": {
+        "availableBy": "v0.0.13"
+      },
+      "encodePointRadius": {
+        "availableBy": "v0.0.13"
+      },
+      "removePointRadius": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeXOffset": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeYOffset": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeY2": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeYRange": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeXRange": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeGroup": {
+        "availableBy": "v0.0.13"
+      },
+      "layoutSeries": {
+        "availableBy": "v0.0.13"
+      },
+      "encodePathOrder": {
+        "availableBy": "v0.0.13"
+      },
+      "orderCategories": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeParallelCoordinates": {
+        "availableBy": "v0.0.13"
+      },
+      "removePathOrder": {
+        "availableBy": "v0.0.13"
+      },
+      "removeCategoryOrder": {
+        "availableBy": "v0.0.13"
+      },
+      "removeEncoding": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeText": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeDx": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "encodeDy": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "encodeHistogram": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeDensity": {
+        "availableBy": "v0.0.13"
+      },
+      "editDensity": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeHorizon": {
+        "availableBy": "v0.0.13"
+      },
+      "editHorizon": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeBarWidth": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeStroke": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeStrokeWidth": {
+        "availableBy": "v0.0.13"
+      },
+      "encodeChannels": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createRegression": {
+        "availableBy": "v0.0.13"
+      },
+      "editRegression": {
+        "availableBy": "v0.0.13"
+      },
+      "createErrorBar": {
+        "availableBy": "v0.0.13"
+      },
+      "editErrorBar": {
+        "availableBy": "v0.0.13"
+      },
+      "createErrorBand": {
+        "availableBy": "v0.0.13"
+      },
+      "editErrorBand": {
+        "availableBy": "v0.0.13"
+      },
+      "editErrorBandBoundary": {
+        "availableBy": "v0.0.13"
+      },
+      "createBoxPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "editBoxPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createGradientPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "editGradientPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createViolinPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "editViolinPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createScatterPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createIntervalPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createRegressionPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createDotPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createLollipopPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createDumbbellPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "editEndpointPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createECDFPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "editECDFPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createLinePlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createPolarScatterPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createPolarLinePlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createRadarPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "editRadarPlot": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createRugPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createStripPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createBeeswarmPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createRaincloudPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "editRaincloudPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createAreaPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createBarPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createHistogram": {
+        "availableBy": "v0.0.13"
+      },
+      "createPiePlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createRosePlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createRadialBarPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createDensityPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createHorizonPlot": {
+        "availableBy": "v0.0.13"
+      },
+      "createHeatmap": {
+        "availableBy": "v0.0.13"
+      },
+      "createParallelCoordinates": {
+        "availableBy": "v0.0.13"
+      },
+      "removeMark": {
+        "availableBy": "v0.0.13"
+      },
+      "createParallelAxes": {
+        "availableBy": "v0.0.13"
+      },
+      "createParallelAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "editParallelAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "removeParallelAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "removeParallelAxes": {
+        "availableBy": "v0.0.13"
+      },
+      "createAxes": {
+        "availableBy": "v0.0.13"
+      },
+      "editAxes": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createXAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "createYAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "createThetaAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "createRadialAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "createThetaAxisLine": {
+        "availableBy": "v0.0.13"
+      },
+      "createRadialAxisLine": {
+        "availableBy": "v0.0.13"
+      },
+      "createThetaAxisTicks": {
+        "availableBy": "v0.0.13"
+      },
+      "createRadialAxisTicks": {
+        "availableBy": "v0.0.13"
+      },
+      "createThetaAxisLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "createRadialAxisLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "createThetaAxisTitle": {
+        "availableBy": "v0.0.13"
+      },
+      "createRadialAxisTitle": {
+        "availableBy": "v0.0.13"
+      },
+      "editThetaAxisLine": {
+        "availableBy": "v0.0.13"
+      },
+      "editRadialAxisLine": {
+        "availableBy": "v0.0.13"
+      },
+      "editThetaAxisTicks": {
+        "availableBy": "v0.0.13"
+      },
+      "editRadialAxisTicks": {
+        "availableBy": "v0.0.13"
+      },
+      "editThetaAxisLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "editRadialAxisLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "editThetaAxisTitle": {
+        "availableBy": "v0.0.13"
+      },
+      "editRadialAxisTitle": {
+        "availableBy": "v0.0.13"
+      },
+      "createXAxisLine": {
+        "availableBy": "v0.0.13"
+      },
+      "createYAxisLine": {
+        "availableBy": "v0.0.13"
+      },
+      "editXAxisLine": {
+        "availableBy": "v0.0.13"
+      },
+      "editYAxisLine": {
+        "availableBy": "v0.0.13"
+      },
+      "createXAxisTicks": {
+        "availableBy": "v0.0.13"
+      },
+      "createYAxisTicks": {
+        "availableBy": "v0.0.13"
+      },
+      "editXAxisTicks": {
+        "availableBy": "v0.0.13"
+      },
+      "editYAxisTicks": {
+        "availableBy": "v0.0.13"
+      },
+      "createXAxisLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "createYAxisLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "editXAxisLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "editYAxisLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "createXAxisTicksAndLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "createYAxisTicksAndLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "editXAxisTicksAndLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "editYAxisTicksAndLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "createXAxisTitle": {
+        "availableBy": "v0.0.13"
+      },
+      "createYAxisTitle": {
+        "availableBy": "v0.0.13"
+      },
+      "editXAxisTitle": {
+        "availableBy": "v0.0.13"
+      },
+      "editYAxisTitle": {
+        "availableBy": "v0.0.13"
+      },
+      "editXAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "editYAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "editThetaAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "editRadialAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "removeXAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "removeYAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "removeThetaAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "removeRadialAxis": {
+        "availableBy": "v0.0.13"
+      },
+      "createGrid": {
+        "availableBy": "v0.0.13"
+      },
+      "createHorizontalGrid": {
+        "availableBy": "v0.0.13"
+      },
+      "createVerticalGrid": {
+        "availableBy": "v0.0.13"
+      },
+      "createThetaGrid": {
+        "availableBy": "v0.0.13"
+      },
+      "createRadialGrid": {
+        "availableBy": "v0.0.13"
+      },
+      "editHorizontalGrid": {
+        "availableBy": "v0.0.13"
+      },
+      "editVerticalGrid": {
+        "availableBy": "v0.0.13"
+      },
+      "editThetaGrid": {
+        "availableBy": "v0.0.13"
+      },
+      "editRadialGrid": {
+        "availableBy": "v0.0.13"
+      },
+      "editGrid": {
+        "availableBy": "v0.0.13"
+      },
+      "removeGrid": {
+        "availableBy": "v0.0.13"
+      },
+      "createLegend": {
+        "availableBy": "v0.0.13"
+      },
+      "editLegend": {
+        "availableBy": "v0.0.13"
+      },
+      "editLegendBlock": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editLegendLayout": {
+        "availableBy": "v0.0.13"
+      },
+      "editLegendLabels": {
+        "availableBy": "v0.0.13"
+      },
+      "editLegendTitle": {
+        "availableBy": "v0.0.13"
+      },
+      "editLegendSymbols": {
+        "availableBy": "v0.0.13"
+      },
+      "editLegendBorder": {
+        "availableBy": "v0.0.13"
+      },
+      "removeLegend": {
+        "availableBy": "v0.0.13"
+      },
+      "createGuides": {
+        "availableBy": "v0.0.13"
+      },
+      "createTitle": {
+        "availableBy": "v0.0.13"
+      },
+      "editTitle": {
+        "availableBy": "v0.0.13"
+      },
+      "removeTitle": {
+        "availableBy": "v0.0.13"
+      },
+      "createCoordinate": {
+        "availableBy": "v0.0.13"
+      },
+      "editCoordinate": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createScale": {
+        "availableBy": "v0.0.13"
+      },
+      "editScale": {
+        "availableBy": "v0.0.13"
+      },
+      "editXScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editYScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editXOffsetScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editYOffsetScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editParallelScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editThetaScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editRScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editColorScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editStrokeScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editSizeScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editOpacityScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editShapeScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editStrokeWidthScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "editStrokeDashScale": {
+        "introducedAfter": "v0.0.13",
+        "status": "development"
+      },
+      "createDerivedData": {
+        "availableBy": "v0.0.13"
+      },
+      "createRegressionBand": {
+        "availableBy": "v0.0.13"
+      },
+      "editRegressionBand": {
+        "availableBy": "v0.0.13"
+      },
+      "createRegressionLine": {
+        "availableBy": "v0.0.13"
+      },
+      "editRegressionLine": {
+        "availableBy": "v0.0.13"
+      },
+      "editCompositionLayout": {
+        "availableBy": "v0.0.13"
+      },
+      "replaceCompositionChild": {
+        "availableBy": "v0.0.13"
+      },
+      "insertCompositionChild": {
+        "availableBy": "v0.0.13"
+      },
+      "removeCompositionChild": {
+        "availableBy": "v0.0.13"
+      },
+      "reorderCompositionChildren": {
+        "availableBy": "v0.0.13"
+      },
+      "facet": {
+        "availableBy": "v0.0.13"
+      },
+      "facetGrid": {
+        "availableBy": "v0.0.13"
+      },
+      "repeatCharts": {
+        "availableBy": "v0.0.13"
+      },
+      "editFacetSource": {
+        "availableBy": "v0.0.13"
+      },
+      "editFacetScales": {
+        "availableBy": "v0.0.13"
+      },
+      "editFacetGuides": {
+        "availableBy": "v0.0.13"
+      },
+      "editFacetHeaders": {
+        "availableBy": "v0.0.13"
+      },
+      "editSemantic": {
+        "availableBy": "v0.0.13"
+      },
+      "createGraphics": {
+        "availableBy": "v0.0.13"
+      },
+      "editGraphics": {
+        "availableBy": "v0.0.13"
+      }
+    }
+  },
+  "sourcePinChecks": {
+    "tests": 28,
+    "strictPack": "349dbf2925ab89ff2a72cafd7d86f127455b0af324cca43e04dc541b6533ba9d",
+    "runtimeArchiveUnchanged": true
+  }
+}

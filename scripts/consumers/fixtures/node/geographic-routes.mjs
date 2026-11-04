@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+import { execFileWithInput } from "./consumer-input.js";
 import { inflateSync } from "node:zlib";
 import { createCanvas } from "@napi-rs/canvas";
 import { chart, render } from "ggaction";
@@ -41,7 +41,7 @@ export const cases = [
       const fail=()=>{throw Error('Unexpected network')};globalThis.fetch=fail;http.request=http.get=https.request=https.get=net.connect=net.createConnection=tls.connect=fail;
       const {deserializeProgram,serializeProgram}=await import('ggaction/persistence');const p=deserializeProgram(readFileSync(0,'utf8'));
       process.stdout.write(serializeProgram(p.editEdgeRoute({target:'routes',options:{exponent:3}})));`;
-    const q = deserializeProgram(execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30000 }));
+    const q = deserializeProgram(execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30000 }));
     assert.equal(resource(q, "mapped").revision, 1); assert.deepEqual(getMarkItems(q).map(i => i.key), getMarkItems(p).map(i => i.key));
   } },
   { id: "geographic-routes/four-renderer-native-line-parity", async run() {

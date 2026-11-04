@@ -1,3 +1,4 @@
+import { visitGraphicSources } from "../../grammar/schemas/graphicSources.js";
 import { walkGraphicSources } from "../../grammar/schemas/graphicSources.js";
 import { prepareWeightedBlends, drawWeightedBlend } from "./weightedBlend.js";
 import { preflightCanvasBlendModes } from "./isolated.js";
@@ -214,10 +215,9 @@ export function drawResolvedGraphicSpec(target, context, options = {}) {
       }
     },
     item({ id, object, owner }) {
-      drawConcreteGraphic(context, id, {
-        ...object,
-        type: object.type ?? owner.type
-      }, isolated, options);
+      drawConcreteGraphic(context, id, object.type === undefined ? {
+        ...object, type: owner.type
+      } : object, isolated, options);
     },
     exit({ id, object }) {
       if (
@@ -313,6 +313,10 @@ export function render(program, context, options) {
 }
 
 function drawConcreteGraphic(context, id, graphic, isolated, options) {
+  if (graphic.type === "circle-batch") {
+    visitGraphicSources(id, graphic, graphic.type, (rowId, row) => drawConcreteGraphic(context, rowId, row, isolated, options));
+    return;
+  }
   if (graphic.type === "weighted-blend") {
     drawWeightedBlend(context, id, graphic, options.weighted,
       (targetContext, sourceId, source) => drawConcreteGraphic(targetContext, sourceId, source, isolated, options));

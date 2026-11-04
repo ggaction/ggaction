@@ -56,6 +56,12 @@ export function documentationCodeBlocks(markdown) {
 // Paired HTML is executable input, not an implicit Canvas selector fallback.
 export function documentationHtmlHost(blocks, block, options) {
   if (options.host === undefined) return {};
+  if (options.host === "node") {
+    if (options.environment !== "node-esm" || options.rendering !== "authoring-only" || options.resultKind !== "semantic") {
+      throw new Error("A Node documentation host requires a semantic authoring Node module.");
+    }
+    return {};
+  }
   if (options.host !== "paired-html" || options.environment !== "browser-module" ||
       options.rendering !== "renders-canvas" || options.mode !== "complete") {
     throw new Error("A paired HTML host requires a complete rendering browser module.");

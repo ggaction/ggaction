@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { execFileSync } from "node:child_process";
+import { execFileWithInput } from "./consumer-input.js";
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { inflateSync } from "node:zlib";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
@@ -207,7 +207,7 @@ function offlineRestore(method, saved, directory) {
     net.Socket.prototype.connect=blocked;syncBuiltinESMExports();
     for(const probe of [()=>fetch('https://invalid.example'),()=>http.get('http://invalid.example'),()=>net.connect(80,'invalid.example')]){try{probe();throw new Error('Guard failed');}catch(error){if(!error.message.startsWith('Network disabled'))throw error;}}
     globalThis.__offlineCalls=0;const module=await import('./static-delivery.mjs');const result=await module[${JSON.stringify(method)}](readFileSync(0,'utf8'),${JSON.stringify(directory)});if(globalThis.__offlineCalls!==0)throw new Error('Unexpected network use');process.stdout.write(JSON.stringify(result));`;
-  return JSON.parse(execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 60_000, maxBuffer: 16 * 1024 * 1024 }));
+  return JSON.parse(execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 60_000, maxBuffer: 16 * 1024 * 1024 }));
 }
 
 export const cases = [{ id: "static-delivery/interacted-native-offline-four-formats", async run() {

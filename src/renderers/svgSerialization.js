@@ -1,3 +1,4 @@
+import { visitGraphicSources } from "../grammar/schemas/graphicSources.js";
 import { resolvePrimitiveOccupiedBounds } from "../grammar/schemas/graphicBounds.js";
 import { graphicClipBounds, intersectClipBounds } from "../grammar/schemas/graphicClip.js";
 import { MAX_BLEND_ITEM_PIXELS, MAX_BLEND_SCENE_PIXELS, MAX_BLEND_PIXEL_WORK } from "../grammar/weightedBlend.js";
@@ -511,6 +512,11 @@ function serializeText(state, graphicId, properties) {
 }
 
 function serializeConcreteGraphic(state, id, graphic) {
+  if (graphic.type === "circle-batch") {
+    const output = [];
+    visitGraphicSources(id, graphic, graphic.type, (rowId, row) => output.push(serializeConcreteGraphic(state, rowId, row)));
+    return output.join("");
+  }
   if (graphic.type === "weighted-blend") return serializeWeightedBlend(state, id, graphic.properties);
   if (Object.hasOwn(graphic.properties ?? {}, "shadow")) {
     const glyph = state.shadows?.get(id);
@@ -675,10 +681,9 @@ function serializeBody(graphicSpec, rootId, rootCanvas, width, height, state) {
       }
     },
     item({ id, object, owner }) {
-      output.push(serializeConcreteGraphic(state, id, {
-        ...object,
-        type: object.type ?? owner.type
-      }));
+      output.push(serializeConcreteGraphic(state, id, object.type === undefined ? {
+        ...object, type: owner.type
+      } : object));
     },
     exit({ id, object }) {
       if (
@@ -749,9 +754,11 @@ export function renderToSVG(program, options = {}) {
   walkGraphicTreeEvents(graphicSpec, {
     enter({object}) {
       if (object.clip !== undefined) validateGraphicClip(object.clip, object.type);
-      if (isBlendMode(readBlendMode(object.properties)) && readBlendMode(object.properties) !== "normal") state.hasBlend = true;
+      const properties = object.type === "circle-batch" ? object.properties?.appearance : object.properties;
+      if (isBlendMode(readBlendMode(properties)) && readBlendMode(properties) !== "normal") state.hasBlend = true;
     },
-    item({object}) { if (isBlendMode(readBlendMode(object.properties)) && readBlendMode(object.properties) !== "normal") state.hasBlend = true; }
+    item({object}) { const properties = object.type === "circle-batch" ? object.properties?.appearance : object.properties;
+      if (isBlendMode(readBlendMode(properties)) && readBlendMode(properties) !== "normal") state.hasBlend = true; }
   });
   const body = serializeBody(
     graphicSpec,
@@ -785,8 +792,9 @@ export function renderToSVG(program, options = {}) {
 export function renderTransitionGraphics(graphicSpec, identities, options = {}) {
   concreteFonts(graphicSpec);
   const prepared = readPreparedShadows(graphicSpec, options.shadows), shadows = new Map([...prepared].filter(([key]) => typeof key === "object"));
-  const scene = collectTransitionGraphics(graphicSpec, identities, { onNode(id, node) {
-    if (prepared.has(id)) shadows.set(node.key, prepared.get(id));
+  const scene = collectTransitionGraphics(graphicSpec, identities, { onNode(id, node, _rowIndex, preparationKey) {
+    const key = preparationKey ?? id;
+    if (prepared.has(key)) shadows.set(node.key, prepared.get(key));
   } });
   let namespace;
   const state = { definitions: [], gradientCount: 1, clipCount: 1,

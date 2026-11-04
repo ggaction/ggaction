@@ -1,3 +1,4 @@
+import { animationSceneLength } from "../core/sceneRows.js";
 import { validateWorkLimit } from "../core/validation.js";
 import { animationFrameTimes } from "../grammar/animation/frameTimes.js";
 import { requireTransitionPlan } from "./planner.js";
@@ -10,7 +11,7 @@ export function collectAnimationFrameViews(times, sample) {
   const accountWork = amount => validateWorkLimit(work += amount, "Animation sampled frame export work");
   return Object.freeze(times.map(timeMs => {
     const frame = sample(timeMs, accountWork);
-    accountWork(Math.max(1, frame.scene.nodes.length));
+    accountWork(Math.max(1, animationSceneLength(frame.scene)));
     return frame;
   }));
 }

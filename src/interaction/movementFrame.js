@@ -1,3 +1,4 @@
+import { animationSceneRows } from "../core/sceneRows.js";
 import { freezeOwned } from "../core/immutable.js";
 import { validateWorkLimit } from "../core/validation.js";
 import { resolveHitCoordinates } from "../grammar/hitCoordinates.js";
@@ -9,8 +10,8 @@ export function prepareMovementFrame(base, scene, rootTransform, target, start, 
   let work = 0;
   const spend = count => validateWorkLimit(work += count, "Movement frame work");
   const original = new Map(), current = new Map();
-  for (const [nodes, output] of [[base.scene.nodes, original], [scene.nodes, current]]) {
-    for (const node of nodes) { spend(1); if (nodeKeys.has(node.key)) output.set(node.key, node); }
+  for (const [nodes, output] of [[animationSceneRows(base.scene, { decisions: false }), original], [animationSceneRows(scene, { decisions: false }), current]]) {
+    for (const { node } of nodes) { spend(1); if (nodeKeys.has(node.key)) output.set(node.key, node); }
   }
   for (const key of nodeKeys) {
     const before = JSON.stringify(original.get(key)), after = JSON.stringify(current.get(key));

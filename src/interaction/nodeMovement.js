@@ -1,3 +1,4 @@
+import { animationSceneRows } from "../core/sceneRows.js";
 import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { validateWorkLimit } from "../core/validation.js";
 import { findLayer, requireLayer } from "../selectors/layers.js";
@@ -58,7 +59,7 @@ export function prepareNodeMovement(program, binding, base, scene, rootTransform
     })) throw new Error("Animated node movement requires the current native edge topology.");
     const bodyIndex = animated.graphs.items.findIndex(item => item?.group === index && item.kind === "node" && item.key === node.key && item.role === "body");
     if (bodyIndex < 0) throw new Error("Animated node movement requires the actual current node body.");
-    const point = group.nodes.find(value => value.key === node.key), body = scene.nodes[bodyIndex];
+    const point = group.nodes.find(value => value.key === node.key), body = Array.from(animationSceneRows(scene, { decisions: false }), row => row.node)[bodyIndex];
     // Validate the entire represented group before pointer capture, including
     // fallback/independently edited geometry, without executing a native action.
     createGraphPresentationFrame(animated.sample, { group: index, node: { key: node.key, x: point.x, y: point.y } });

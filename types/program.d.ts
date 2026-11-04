@@ -138,6 +138,7 @@ export type GraphicType =
   | "canvas"
   | "collection"
   | "circle"
+  | "circle-batch"
   | "rect"
   | "line"
   | "text"
@@ -2821,7 +2822,7 @@ export type GraphicClip = GraphicClipRect | GraphicClipPath;
 /** One fully materialized primitive in a flat linear-light weighted blend. */
 export interface GraphicBlendSource {
   readonly weight: number;
-  readonly type: Exclude<GraphicType, "canvas" | "collection" | "weighted-blend">;
+  readonly type: Exclude<GraphicType, "canvas" | "collection" | "weighted-blend" | "circle-batch">;
   readonly properties: Readonly<Record<string, unknown>>;
   readonly offset: readonly [number, number];
   /** Source viewport and further clips use the group's local coordinate frame. */
@@ -2833,6 +2834,29 @@ export interface GraphicWeightedBlendProperties {
   readonly sources: readonly [GraphicBlendSource, GraphicBlendSource, ...GraphicBlendSource[]];
   readonly opacity?: number;
   readonly blend?: BlendMode;
+}
+
+/** Shared concrete circle paint; geometry is stored in the three columns. */
+export interface GraphicCircleAppearance {
+  readonly fill?: string | LinearGradientPaint | Required<RadialGradientPaint> |
+    (Required<Omit<PatternPaint, "coordinateSpace">> & { readonly origin: LinearGradientPoint });
+  readonly outline?: Readonly<MarkOutline>;
+  readonly stroke?: string;
+  readonly strokeWidth?: number;
+  readonly lineCap?: "butt" | "round" | "square";
+  readonly lineJoin?: "miter" | "round" | "bevel";
+  readonly miterLimit?: number;
+  readonly opacity?: number;
+  readonly blend?: BlendMode;
+  readonly shadow?: Readonly<Required<MarkShadow>>;
+}
+export interface GraphicCircleBatchProperties {
+  /** Dense equal-length finite arrays, each with 1..10000 entries. */
+  readonly x: readonly number[];
+  readonly y: readonly number[];
+  /** Non-negative radii; each row is painted as an individual circle. */
+  readonly radius: readonly number[];
+  readonly appearance: GraphicCircleAppearance;
 }
 
 export interface GraphicObject {

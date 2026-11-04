@@ -53,7 +53,8 @@ for (const example of await documentationPrograms()) {
       }
       assert.ok(program?.graphicSpec?.objects?.canvas, `${name} must own a Canvas`);
       assert.ok(Object.values(program.graphicSpec.objects).some(object =>
-        (object.items?.length ?? 0) > 0 || ["line", "path", "circle", "rect", "text", "weighted-blend"].includes(object.type)
+        (object.items?.length ?? 0) > 0 || ["line", "path", "circle", "rect", "text", "weighted-blend"].includes(object.type) ||
+        (object.type === "circle-batch" && object.properties.x.length > 0)
       ), `${name} must materialize visible content`);
     }
     assertDocumentationRendering(example, result.__documentationEnvironment.canvas);
@@ -88,7 +89,7 @@ test("marks tutorial and recipe snippets with explicit execution contracts", asy
   try {
     const programs = await documentationPrograms();
     const { inputs, consumers } = await prepareTutorials(temporary);
-    assert.equal(Object.keys(inputs).length, programs.length);
+    assert.equal(Object.keys(inputs).length, programs.filter(program => program.host !== "node").length);
     assert.equal(new Set(consumers.map(item => item.name)).size, programs.length);
     for (const [index, consumer] of consumers.entries()) {
       const source = await readFile(path.join(temporary, "tutorials", consumer.name, "main.js"), "utf8");

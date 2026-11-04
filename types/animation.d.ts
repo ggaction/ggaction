@@ -1,6 +1,6 @@
 import type { ChartProgram } from './program.js';
 import type { BasicChartProgram } from './basic.js';
-import type { CanvasTransitionScene } from './scene.js';
+import type { CanvasTransitionScene, BatchedTransitionScene } from './scene.js';
 
 declare const transitionPlan: unique symbol;
 declare const transitionFrame: unique symbol;
@@ -25,7 +25,7 @@ export interface AnimationMarker { readonly id: string; readonly timeMs: number;
 export interface TransitionOptions {
   readonly durationMs: number;
   /** Explicit lossless numeric transport and native geographic capacity. */
-  readonly formatVersion?: 5;
+  readonly formatVersion?: 5 | 6;
   readonly easing?: AnimationEasing;
   readonly tracks?: readonly AnimationTrack[];
   readonly markers?: readonly AnimationMarker[];
@@ -43,6 +43,8 @@ export interface TransitionPlan {
   readonly durationMs: number;
   readonly easing: AnimationEasing;
 }
+export interface BatchedTransitionPlan extends Omit<TransitionPlan, 'version'> { readonly version: 6; }
+export type AnyTransitionPlan = TransitionPlan | BatchedTransitionPlan;
 /** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, guide-geometry, partition, or completed-graph.
  * Guide geometry includes explicit native titles, band boundaries, field-keyed Parallel axes,
  * single-edge gradient and continuous-size legends with exact raw samples, categorical native symbols with
@@ -75,7 +77,11 @@ export interface TransitionFrame extends Readonly<Pick<ChartProgram, 'graphicSpe
   readonly progress: number;
   readonly decisions: readonly TransitionDecision[];
 }
+export interface BatchedTransitionFrame extends Omit<TransitionFrame, 'scene' | 'decisions'> { readonly scene: BatchedTransitionScene; }
+export type AnyTransitionFrame = TransitionFrame | BatchedTransitionFrame;
 export interface ExportedAnimationFrame extends TransitionFrame { readonly timeMs: number; }
+export interface ExportedBatchedAnimationFrame extends BatchedTransitionFrame { readonly timeMs: number; }
+export type AnyExportedAnimationFrame = ExportedAnimationFrame | ExportedBatchedAnimationFrame;
 export interface PlaybackOptions {
   readonly rate?: number;
   /** Additional repetitions; Infinity repeats until cancelled. */
@@ -88,29 +94,35 @@ export interface AnimationPlayback {
   readonly reducedMotion: boolean;
 }
 export interface RestoredAnimation {
-  readonly plan: TransitionPlan;
+  readonly plan: AnyTransitionPlan;
   readonly playback: AnimationPlayback;
 }
 export type AnimationFrameOptions =
   | { readonly timesMs: readonly number[]; readonly fps?: never }
   | { readonly fps: number; readonly timesMs?: never };
-type TransitionRequest<Options extends TransitionOptions = TransitionOptions> = {
-  readonly from: AnimationProgram | TransitionFrame;
-  readonly to: AnimationProgram | TransitionFrame;
-  readonly options: Options;
-};
-export declare function planTransition(input: TransitionRequest<TransitionOptions & {
+export type LegacyTransitionOptions = Omit<TransitionOptions, 'formatVersion'> & { readonly formatVersion?: 5 };
+export type BatchedTransitionOptions = Omit<TransitionOptions, 'formatVersion'> & { readonly formatVersion: 6 };
+type LegacyEndpoint = AnimationProgram | TransitionFrame;
+type AnyEndpoint = LegacyEndpoint | BatchedTransitionFrame;
+type TransitionRequest<Options, Endpoint = LegacyEndpoint> = { readonly from: Endpoint; readonly to: Endpoint; readonly options: Options };
+export declare function planTransition(input: TransitionRequest<BatchedTransitionOptions, AnyEndpoint>): BatchedTransitionPlan;
+export declare function planTransition(input: TransitionRequest<LegacyTransitionOptions & {
   readonly formatVersion?: never; readonly maxEndpointNodes?: never; readonly maxOutputNodes?: never;
 }>): TransitionPlan & { readonly version: 3 };
-export declare function planTransition(input: TransitionRequest<TransitionOptions & { readonly formatVersion?: never } & (
+export declare function planTransition(input: TransitionRequest<LegacyTransitionOptions & { readonly formatVersion?: never } & (
   { readonly maxEndpointNodes: number } | { readonly maxOutputNodes: number }
 )>): TransitionPlan & { readonly version: 4 };
-export declare function planTransition(input: TransitionRequest<TransitionOptions & { readonly formatVersion: 5 }>): TransitionPlan & { readonly version: 5 };
-export declare function planTransition(input: TransitionRequest): TransitionPlan;
+export declare function planTransition(input: TransitionRequest<LegacyTransitionOptions & { readonly formatVersion: 5 }>): TransitionPlan & { readonly version: 5 };
+export declare function planTransition(input: TransitionRequest<LegacyTransitionOptions>): TransitionPlan;
+export declare function planTransition(input: TransitionRequest<TransitionOptions> | TransitionRequest<BatchedTransitionOptions, AnyEndpoint>): AnyTransitionPlan;
+export declare function sampleTransition(plan: BatchedTransitionPlan, timeMs: number): BatchedTransitionFrame;
 export declare function sampleTransition(plan: TransitionPlan, timeMs: number): TransitionFrame;
-export declare function serializeAnimation(plan: TransitionPlan, playback?: PlaybackOptions): string;
+export declare function sampleTransition(plan: AnyTransitionPlan, timeMs: number): AnyTransitionFrame;
+export declare function serializeAnimation(plan: AnyTransitionPlan, playback?: PlaybackOptions): string;
 export declare function deserializeAnimation(text: string): RestoredAnimation;
+export declare function exportAnimationFrames(plan: BatchedTransitionPlan, options: AnimationFrameOptions): readonly ExportedBatchedAnimationFrame[];
 export declare function exportAnimationFrames(plan: TransitionPlan, options: AnimationFrameOptions): readonly ExportedAnimationFrame[];
+export declare function exportAnimationFrames(plan: AnyTransitionPlan, options: AnimationFrameOptions): readonly AnyExportedAnimationFrame[];
 
 export interface AnimationClock<Handle = number> {
   now(): number;
@@ -130,28 +142,31 @@ export interface AnimationSettlement {
   readonly timeMs: number;
   readonly iteration: number;
 }
-export interface AnimationMarkerEvent extends AnimationMarker {
+export interface AnimationMarkerEvent<Frame = TransitionFrame> extends AnimationMarker {
   readonly iteration: number;
-  readonly frame: TransitionFrame;
+  readonly frame: Frame;
 }
-export interface AnimationPlayer {
-  play(): AnimationPlayer;
-  pause(): AnimationPlayer;
-  seek(timeMs: number, options?: { readonly emit?: boolean }): AnimationPlayer;
-  reverse(): AnimationPlayer;
-  setRate(rate: number): AnimationPlayer;
-  setRepeat(repeat: number): AnimationPlayer;
-  cancel(): AnimationPlayer;
-  interrupt(input: PlaybackOptions & { readonly to: AnimationProgram | TransitionFrame; readonly options: TransitionOptions }): AnimationPlayer;
+export interface AnimationPlayer<Frame = TransitionFrame, Options = LegacyTransitionOptions, Endpoint = LegacyEndpoint> {
+  play(): AnimationPlayer<Frame, Options, Endpoint>;
+  pause(): AnimationPlayer<Frame, Options, Endpoint>;
+  seek(timeMs: number, options?: { readonly emit?: boolean }): AnimationPlayer<Frame, Options, Endpoint>;
+  reverse(): AnimationPlayer<Frame, Options, Endpoint>;
+  setRate(rate: number): AnimationPlayer<Frame, Options, Endpoint>;
+  setRepeat(repeat: number): AnimationPlayer<Frame, Options, Endpoint>;
+  cancel(): AnimationPlayer<Frame, Options, Endpoint>;
+  interrupt(input: PlaybackOptions & { readonly to: Endpoint; readonly options: Options }): AnimationPlayer<Frame, Options, Endpoint>;
   dispose(): void;
   getState(): AnimationPlayerState;
-  getFrame(): TransitionFrame | undefined;
+  getFrame(): Frame | undefined;
   readonly finished: Promise<AnimationSettlement>;
 }
-export declare function createAnimationPlayer<Handle>(input: PlaybackOptions & {
-  readonly plan: TransitionPlan;
+type AnimationPlayerInput<Plan, Frame, Handle> = PlaybackOptions & {
+  readonly plan: Plan;
   readonly clock: AnimationClock<Handle>;
-  readonly render: (frame: TransitionFrame) => void;
-  readonly commit?: (frame: TransitionFrame) => void;
-  readonly onMarker?: (event: AnimationMarkerEvent) => void;
-}): AnimationPlayer;
+  readonly render: (frame: Frame) => void;
+  readonly commit?: (frame: Frame) => void;
+  readonly onMarker?: (event: AnimationMarkerEvent<Frame>) => void;
+};
+export declare function createAnimationPlayer<Handle>(input: AnimationPlayerInput<BatchedTransitionPlan, BatchedTransitionFrame, Handle>): AnimationPlayer<BatchedTransitionFrame, BatchedTransitionOptions, AnyEndpoint>;
+export declare function createAnimationPlayer<Handle>(input: AnimationPlayerInput<TransitionPlan, TransitionFrame, Handle>): AnimationPlayer;
+export declare function createAnimationPlayer<Handle>(input: AnimationPlayerInput<AnyTransitionPlan, AnyTransitionFrame, Handle>): AnimationPlayer<AnyTransitionFrame, TransitionOptions, AnyEndpoint>;

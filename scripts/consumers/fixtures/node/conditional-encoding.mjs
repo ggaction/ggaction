@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+import { execFileWithInput } from "./consumer-input.js";
 import { inflateSync } from "node:zlib";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { chart, render } from "ggaction";
@@ -52,7 +52,7 @@ export const cases = [
           .editParameter({ target: "minimum", value: 2 });
         process.stdout.write(serializeProgram(changed));
       `;
-      const output = execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30000 });
+      const output = execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30000 });
       const changed = deserializeProgram(output);
       assert.deepEqual(appearance(changed), factory === chart ? [1] : ["#e63946", "#e63946"]);
       assert.equal(changed.semanticSpec.layers[0].conditionals[channel].parameterInputs[0].revision, 1);
@@ -139,7 +139,7 @@ export const cases = [
     const labels = program => program.graphicSpec.objects.text.items.map(item => [item.properties.text, item.properties.x, item.properties.y]);
     assert.deepEqual(points(original), [[85, 140, 6], [85, 180, 0]]);
     assert.deepEqual(labels(original), [["A", 85, 140], ["Selected", 223, 56]]);
-    const output = execFileSync(process.execPath, ["--input-type=module", "-e", `
+    const output = execFileWithInput(process.execPath, ["--input-type=module", "-e", `
       import { readFileSync } from "node:fs";
       import { deserializeProgram, serializeProgram } from "ggaction/persistence";
       process.stdout.write(serializeProgram(deserializeProgram(readFileSync(0, "utf8")).editParameter({ target: "alternate", value: false })));

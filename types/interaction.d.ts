@@ -1,8 +1,8 @@
 import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, ProjectionParameters, GeoCameraOperation, GraphPosition, EditAnnotationOptions, EditGeoAnnotationOptions, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
-import type { CanvasTransitionScene } from './scene.js';
-import type { TransitionFrame } from './animation.js';
+import type { AnyCanvasTransitionScene } from './scene.js';
+import type { AnyTransitionFrame } from './animation.js';
 import type { PreparedImageRendering, PreparedFontRendering, PreparedShadowRendering } from './program.js';
 export interface InteractionAssets {
   readonly images?: PreparedImageRendering;
@@ -25,7 +25,7 @@ export interface InteractionUpdateRequest extends InteractionPreparation {
 }
 export interface InteractionAssetRequest extends InteractionUpdateRequest {
   /** Prepare this exact renderer-ready frame instead of program when present. */
-  readonly frame?: TransitionFrame;
+  readonly frame?: AnyTransitionFrame;
 }
 export interface InteractionSettlement {
   readonly status: 'settled' | 'cancelled' | 'error';
@@ -243,10 +243,10 @@ export interface InteractionState {
   /** Separate transient editing result. Null outside an active preview. */
   readonly previewProgram: InteractionProgram | null;
   /** Authentic graph drag or temporary edge presentation; separate from the accepted animation baseline. */
-  readonly previewFrame: TransitionFrame | null;
+  readonly previewFrame: AnyTransitionFrame | null;
   /** Exact accepted sampled frame; null for committed programs and plain scenes. */
-  readonly animationFrame: TransitionFrame | null;
-  readonly scene: CanvasTransitionScene;
+  readonly animationFrame: AnyTransitionFrame | null;
+  readonly scene: AnyCanvasTransitionScene;
   readonly frameVersion: number;
   readonly generation: number;
   /** Session-local committed program revision; inspection and frames do not increment it. */
@@ -423,13 +423,13 @@ export type InteractionCommand = InteractionEditCommand | InteractionHistoryComm
   readonly generation: number;
 } & ({
   /** Scene containing only current program node keys and unchanged topology. */
-  readonly scene: CanvasTransitionScene;
+  readonly scene: AnyCanvasTransitionScene;
   readonly frame?: never;
 } | {
   /** Authentic sample with the exact current native program in its displayed or direct endpoint owners.
    * Painted geographic source parts and attached Text labels may focus/activate only within the same current native owner,
    * child scope, resource identity and logical feature membership. Endpoint revisions remain distinct. */
-  readonly frame: TransitionFrame;
+  readonly frame: AnyTransitionFrame;
   readonly scene?: never;
 }));
 export interface InteractionDispatchResult { readonly status: 'applied' | 'queued' | 'stale' | 'unchanged'; }

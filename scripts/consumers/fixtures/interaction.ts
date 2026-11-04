@@ -220,16 +220,16 @@ keyboard.getState().focus!.itemKey='changed';
 // @ts-expect-error activation does not accept arbitrary payloads
 keyboard.dispatch({type:'activate',payload:{}});
 
-import {planTransition,sampleTransition,type TransitionFrame} from 'ggaction/animation';
+import {planTransition,sampleTransition,type AnyTransitionFrame} from 'ggaction/animation';
 const animationProgram=chart().createCanvas();
 const animationFrame=sampleTransition(planTransition({from:animationProgram,to:animationProgram,options:{durationMs:100}}),50);
 const animationSession=createInteractionSession({program:animationProgram,assetResolver(request){
-  const frame:TransitionFrame|undefined=request.frame;
+  const frame:AnyTransitionFrame|undefined=request.frame;
   const version:number|undefined=request.frameVersion;return{dispose(){}};
 }});
 animationSession.dispatch({type:'frame',frame:animationFrame,version:1,generation:0});
-const acceptedFrame:TransitionFrame|null=animationSession.getState().animationFrame;
-const graphPreviewFrame:TransitionFrame|null=animationSession.getState().previewFrame;
+const acceptedFrame:AnyTransitionFrame|null=animationSession.getState().animationFrame;
+const graphPreviewFrame:AnyTransitionFrame|null=animationSession.getState().previewFrame;
 const frameAssets=animationSession.getState().frameAssets;
 // @ts-expect-error scene and authentic sample are mutually exclusive
 animationSession.dispatch({type:'frame',frame:animationFrame,scene:animationFrame.scene,version:2,generation:0});
@@ -250,3 +250,18 @@ createInteractionSession({program:chart(),hitPreparation:{maxQueryWork:3000000}}
 createInteractionSession({program:chart(),hitPreparation:{pathGeometry:{maxParts:400000,maxWork:2000000,maxIndexWork:16000000}}});
 // @ts-expect-error path preparation cannot change the query budget
 createInteractionSession({program:chart(),hitPreparation:{pathGeometry:{maxQueryWork:3000000}}});
+
+// Canvas frame state exposes both complete concrete representations.
+import type { BatchedTransitionScene } from "ggaction/scene";
+declare const batchScene: BatchedTransitionScene;
+session.dispatch({ type: "frame", scene: batchScene, version: 2, generation: 0 });
+const currentScene = session.getState().scene;
+if (currentScene.version === 3) {
+  const count: number = currentScene.entries.length;
+  // @ts-expect-error a batch scene has entries rather than scalar nodes
+  currentScene.nodes;
+} else {
+  const count: number = currentScene.nodes.length;
+  // @ts-expect-error the legacy scene has no batch entries
+  currentScene.entries;
+}

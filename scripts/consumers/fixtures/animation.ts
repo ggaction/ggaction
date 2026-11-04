@@ -41,7 +41,9 @@ const graphFrom=chart().createCanvas({width:300,height:200})
  .createGraphPlot({id:'plot',layout:'layout'}).bundleGraphEdges({id:'routes',method:'edge-path'}).editGraphPlot({routes:'routes'});
 const graphTo=graphFrom.editLayout({options:{positions:[{key:'a',x:0,y:20},{key:'b',x:100,y:20}]}});
 const graphPlan=planTransition({from:graphFrom,to:graphTo,options:{durationMs:100,easing:'linear'}});
-const graphFrames=exportAnimationFrames(deserializeAnimation(serializeAnimation(graphPlan)).plan,{timesMs:[0,50,100]});
+const restoredGraphPlan=deserializeAnimation(serializeAnimation(graphPlan)).plan;
+if(restoredGraphPlan.version===6) throw new Error("Expected the legacy graph representation");
+const graphFrames=exportAnimationFrames(restoredGraphPlan,{timesMs:[0,50,100]});
 render(graphFrames[1],context);renderToSVG(graphFrames[1]);renderToPNGBuffer(graphFrames[1]);renderToPDFBuffer(graphFrames[1]);
 planTransition({from:graphFrames[1],to:graphTo,options:{durationMs:100}});
 
@@ -51,7 +53,9 @@ const partitionFrom=chart().createCanvas({plot:{width:300,height:100}})
  .layoutHierarchy({id:'partitionLayout',method:'partition'}).createPartitionPlot({id:'partition',labels:false});
 const partitionTo=partitionFrom.createCoordinate({id:'polar',type:'polar'}).editPartitionPlot({coordinate:'polar',direction:'counterclockwise'});
 const partitionPlan=planTransition({from:partitionFrom,to:partitionTo,options:{durationMs:100}});
-const partitionFrames=exportAnimationFrames(deserializeAnimation(serializeAnimation(partitionPlan)).plan,{timesMs:[0,50,100]});
+const restoredPartitionPlan=deserializeAnimation(serializeAnimation(partitionPlan)).plan;
+if(restoredPartitionPlan.version===6) throw new Error("Expected the legacy partition representation");
+const partitionFrames=exportAnimationFrames(restoredPartitionPlan,{timesMs:[0,50,100]});
 render(partitionFrames[1],context);renderToSVG(partitionFrames[1]);renderToPNGBuffer(partitionFrames[1]);renderToPDFBuffer(partitionFrames[1]);
 planTransition({from:partitionFrames[1],to:partitionFrom,options:{durationMs:100}});
 
@@ -136,3 +140,24 @@ const numericVersion: 5 = numericPlan.version;
 const numericWithLimits: 5 = planTransition({from, to, options:{durationMs:100, formatVersion:5, maxOutputNodes:10000}}).version;
 // @ts-expect-error Only the explicit numeric format is selectable.
 planTransition({from, to, options:{durationMs:100, formatVersion:4}});
+
+const batchedPlan = planTransition({from, to, options:{durationMs:100, formatVersion:6}});
+const batchedVersion: 6 = batchedPlan.version;
+const batchedFrame = sampleTransition(batchedPlan, 50);
+const batchedSceneVersion: 3 = batchedFrame.scene.version;
+render(batchedFrame, context);renderToSVG(batchedFrame);renderToPNGBuffer(batchedFrame);renderToPDFBuffer(batchedFrame);
+const batchFrames = exportAnimationFrames(batchedPlan, {timesMs:[0,50,100]});
+planTransition({from:batchFrames[0],to,options:{durationMs:100,formatVersion:6}});
+// @ts-expect-error batch endpoints cannot implicitly downgrade their representation
+planTransition({from:batchedFrame,to,options:{durationMs:100}});
+// @ts-expect-error batch decisions are embedded in entries
+batchedFrame.decisions;
+if(restored.plan.version === 6){
+  const restoredBatch=sampleTransition(restored.plan,50);restoredBatch.scene.entries;
+}else{
+  const restoredLegacy=sampleTransition(restored.plan,50);restoredLegacy.decisions;
+}
+const batchPlayer=createAnimationPlayer({plan:batchedPlan,clock:{now:()=>0,requestFrame:()=>1,cancelFrame(){}},render:frame=>{const sceneVersion:3=frame.scene.version;void sceneVersion;}});
+batchPlayer.interrupt({to,options:{durationMs:100,formatVersion:6}});
+// @ts-expect-error a batch player preserves its callback representation
+batchPlayer.interrupt({to,options:{durationMs:100,formatVersion:5}});

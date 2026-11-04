@@ -1,3 +1,4 @@
+import { visitGraphicSources } from "../../grammar/schemas/graphicSources.js";
 import { patternFillGeometry, validatePatternWork } from "../../grammar/patterns.js";
 import { resolveLinearGradientCoordinates } from "../../grammar/paint.js";
 import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
@@ -152,7 +153,12 @@ export function preflightCanvasGraphicSpec(target, scale = 1) {
   const offsets = [];
   let paintWork = 0;
   const preflight = (id, object, density, type, offset) => {
-    if (type === "weighted-blend") {
+    if (type === "circle-batch") {
+      visitGraphicSources(id, object, type, (rowId, row, rowType) => {
+        paintWork += preflightGraphic(rowId, row, density, rowType, offset);
+        validatePatternWork(paintWork);
+      });
+    } else if (type === "weighted-blend") {
       validateConcreteGraphicProperties(type, object.properties);
       for (const source of object.properties.sources) {
         const moved = [source.offset[0] + (offset?.[0] ?? 0), source.offset[1] + (offset?.[1] ?? 0)];

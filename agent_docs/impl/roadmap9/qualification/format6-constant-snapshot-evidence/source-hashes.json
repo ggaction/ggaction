@@ -1,0 +1,10 @@
+{
+  "src/animation/columnCodec.js": {
+    "before": "90e0cc72584f93ade002d62b2b68d1041290b3d02bde74b4eba341cfb9169082",
+    "after": "c273a20af2a609eea326b36c7b5d4c97776468485f7a501206c6d8ea0306856f"
+  },
+  "src/animation/planner.js": {
+    "before": "802da60191be81ec1ed872348b15fce20591998b88ac882d51a6bb318adfc078",
+    "after": "cb49d6b15abb26416145eaa0dd83fd58328ad68014a3349caefd64bdeb013edd"
+  }
+}

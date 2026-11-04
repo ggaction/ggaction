@@ -1987,5 +1987,14 @@
         "statements": 1
       }
     ]
+  },
+  {
+    "file": "animation-batched.mjs",
+    "cases": [
+      {
+        "id": "animation-batched/complete-four-renderer-offline-and-rebase",
+        "statements": 1
+      }
+    ]
   }
 ]

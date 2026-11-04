@@ -17,6 +17,8 @@ import { validateAnimationFallbackReason, sameConcreteValue } from "./concrete.j
 
 // Each live plan remembers only its last immutable identity vector. Sharing
 // these records never retains an earlier sampled frame or its concrete scene.
+import { projectBatchSceneRows } from "./batchScene.js";
+
 const sampledIdentities=new WeakMap();
 function frameIdentities(plan,identities){
   const previous=sampledIdentities.get(plan);
@@ -77,6 +79,11 @@ export function captureFrameMeaning(frame, plan, timeMs, geographic = [], axisla
 
 export function prepareFrameEndpoint(frame, proof) {
   if (proof.endpoint === undefined) throw new TypeError("Sampled endpoint requires prepared identity metadata.");
+  if(frame.scene.version===3){
+    const rows=projectBatchSceneRows(frame.scene,proof.positions);
+    const endpoint=projectSampledAnimationEndpoint({graphicSpec:frame.graphicSpec,scene:rows.scene},proof.endpoint.identities,proof.endpoint.backgrounds);
+    return {...prepareFrameEndpoint({scene:rows.scene},{...proof,endpoint,positions:rows.positions}),frame};
+  }
   const positions = proof.positions.map((position, index) => position ?? unavailablePointAnimationPosition(proof.endpoint.identities[index] === undefined ? "anonymous" : "sampled-concrete"));
   return { endpoint: proof.endpoint, axislabels:proof.axislabels, geotexts: proof.geotexts, guides: proof.guides, positions: cloneAndFreeze(positions), geos: proof.geos, graphs: proof.graphs, polars: proof.polars?.map((state,index)=>state??unavailablePolarAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), partitions: proof.partitions, cartesian: proof.cartesian?.map((state,index)=>state??unavailableCartesianAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), frame };
 }

@@ -1,6 +1,6 @@
 export type { GraphicBlendSource, GraphicWeightedBlendProperties } from "./program.js";
 export type { FillPaint, MarkOutline, MarkShadow, BlendMode, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
-import type { CanvasTransitionScene } from "./scene.js";
+import type { AnyCanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 export type { ConditionalEncodingOptions } from "./program.js";
@@ -157,13 +157,13 @@ export function render(
 ): void;
 
 export function prepareImageRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: ImageRenderingHost): Promise<PreparedImageRendering>;
-export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
+export function prepareImageRendering(scene: AnyCanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
 export type { FontIdentity, FontMimeType, ConcreteFont, PreparedFontRendering, FontRenderingHost } from "./program.js";
 import type { PreparedFontRendering, FontRenderingHost } from "./program.js";
 export function prepareFontRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: FontRenderingHost): Promise<PreparedFontRendering>;
-export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
+export function prepareFontRendering(scene: AnyCanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
 
 export type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
 import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
 export function prepareShadowRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
-export function prepareShadowRendering(scene: CanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
+export function prepareShadowRendering(scene: AnyCanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;

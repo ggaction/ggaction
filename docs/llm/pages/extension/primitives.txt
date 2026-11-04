@@ -472,3 +472,41 @@ The declaration travels with the concrete path through scenes, weighted sources,
 rendering and graphic persistence. Renderers still consume only concrete graphics.
 A Geo-owned path must match its mark's explicit capacity; use the Geo domain edit
 to change that policy. Path capacity does not raise hit stroke or query budgets.
+
+## Store fully materialized circles in columns
+
+Extension authors can use `circle-batch` for an ordered set of circles sharing
+one concrete appearance. Its properties are exactly `x`, `y`, `radius`, and
+`appearance`. The three coordinate arrays must be dense ordinary arrays with the
+same length from 1 through 10000. Coordinates are finite and radii non-negative.
+`appearance` accepts the existing concrete circle paint, outline, stroke, opacity,
+blend and shadow properties; it cannot contain coordinates or `length`.
+
+> **Executable complete.** Run the complete ES module with ggaction installed; it authors one canvas and fully materialized circle columns.
+
+```javascript
+import { ChartProgram } from "ggaction/extension";
+
+const program = new ChartProgram()
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .editGraphics({ target: "canvas", property: "width", value: 100 })
+  .editGraphics({ target: "canvas", property: "height", value: 80 })
+  .createGraphics({ id: "circles", type: "circle-batch", parent: "canvas" })
+  .editGraphics({ target: "circles", property: "x", value: [25, 40, 70] })
+  .editGraphics({ target: "circles", property: "y", value: [30, 35, 45] })
+  .editGraphics({ target: "circles", property: "radius", value: [12, 16, 9] })
+  .editGraphics({ target: "circles", property: "appearance",
+    value: { fill: "#247ca8", opacity: 0.5 } });
+```
+
+Each row is painted individually in array order. Overlapping transparent circles,
+patterns, outlines, blend modes and prepared shadows retain ordinary circle
+behavior across Canvas, SVG, PNG and PDF. A batch cannot own items or children,
+and does not accept the `length` option. Rendering and persistence require all
+four properties and equal column lengths. A heterogeneous collection can contain
+a complete batch item; weighted blend sources retain their existing type list.
+
+Graphic and editable snapshots preserve the columns. Older package versions
+that do not recognize this type reject it; no automatic conversion is performed.
+Authoring a batch does not grant it a domain mark's selection identity. Ordinary
+chart authors continue to use domain mark actions.

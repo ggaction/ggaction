@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:69e55093360720160194bf73cb8da70b10d18e8b440776860c782bcc1680526f",
+    "contractId": "sha256:9d5431efe2acccb46686a96dc804b7f283c823bc78853718ed8b56197b407b54",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1289,6 +1289,7 @@
         "animate-and-export-chart-frames",
         "prepare-save-and-sample",
         "animate-solid-color-and-opacity",
+        "sample-materialized-batches",
         "preserve-geographic-capacity-in-saved-animations",
         "set-keyframes-and-markers",
         "move-a-completed-graph-layout",
@@ -1303,8 +1304,8 @@
         "play-with-an-explicit-clock",
         "offline-replay-and-limits"
       ],
-      "bytes": 40670,
-      "sha256": "31daab1f71561058fb1fe950c910a7880b9b5b11d83d21916d1db315e53ed955"
+      "bytes": 44578,
+      "sha256": "2a9401782238e20e14e325b1b55c3b4298f8a20f5c4d8a17f4d4978b3760dca2"
     },
     {
       "order": 77,
@@ -1346,8 +1347,8 @@
         "native-control-alternatives",
         "inspect-overlapping-graph-edges"
       ],
-      "bytes": 117108,
-      "sha256": "b5f53b563b12154848dcac929b1f0d87d4a28ed070eb65189fb4bcf59b75fbb8"
+      "bytes": 117603,
+      "sha256": "104e373f46831f7d3ffc8d0d8c8de0536667dce7f83b28b8f93c2ef3be08a598"
     },
     {
       "order": 78,
@@ -2655,8 +2656,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 92469,
-      "sha256": "def837ab7eb916a4d045627061c53e9903c2ca0d7d9e01c79f20b4de75fc9750"
+      "bytes": 96267,
+      "sha256": "cf580a42559c923fa2e4d52646160b068d9c4890400a4bfcbd6567a5c5f8e5bc"
     },
     {
       "order": 132,
@@ -3597,8 +3598,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 517959,
-      "sha256": "040a796a82260e48f1096f9bcead95ce1e452afb007cc0fb7484fc32880331e1"
+      "bytes": 517978,
+      "sha256": "ea3e1da2434ef444a65b903f2a22dfc47a172baa7126bd09b3692f81aeb93d71"
     },
     {
       "order": 133,
@@ -3632,10 +3633,11 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity",
         "blend-concrete-sources-for-one-item",
-        "explicit-path-command-capacity"
+        "explicit-path-command-capacity",
+        "store-fully-materialized-circles-in-columns"
       ],
-      "bytes": 23991,
-      "sha256": "00a37c2ae0031fa731e91b37a06c6e38ce730eeeab136f5a77c243d1229136ea"
+      "bytes": 26133,
+      "sha256": "01f8e10ec268eb25c3cefdead637c2a0868e133a0dc4db475100840de6101525"
     },
     {
       "order": 135,
@@ -3976,7 +3978,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "35487572e2438b3f36ee54413edaaa5878c433dca17ebec718b5f52cdb7b72f4"
+      "sha256": "d4e52b4d09a5053a714e323d9a9b67831023c866f6023a1c4b40730dca1593ef"
     },
     {
       "order": 156,

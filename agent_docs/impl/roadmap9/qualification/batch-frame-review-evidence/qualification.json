@@ -1,0 +1,75 @@
+{
+  "status": "ready-for-review; no-runtime-adoption",
+  "sourceRevision": "aa18606de9146c8cf508cf789948125011ea6ab0",
+  "sourceSHA256": {
+    "src/animation/sample.js": "34f72d55de9f6e8da2aa020df68ece29dfabb73fbf0bf5bbac7bb5984c51df08",
+    "src/animation/frameProvenance.js": "5cb5f29a1bc3544606d7766788ec7e24792004dd4f08ad3a4a29e6360296490d",
+    "src/animation/frameEndpoint.js": "618634cbbdc930d986fae7a9a129d54f106e338ca9094e57f71decad51f94b3d",
+    "src/animation/concrete.js": "eef4f7f479facac127c2c9a7ef51977371c433a1570efae74d88ceee1d74cded",
+    "src/renderers/canvasScene.js": "2256ac01ddaafd61ae7d69b7abedbb5c4039711bd697330d60f7e27cbb5b2cf2",
+    "src/renderers/svgSerialization.js": "935905903acfc8138639b9c917b66e8e42f58ce4757a759c17179d6d908ad2e9",
+    "src/renderers/canvas/native.js": "0608f456773b3f8ff254ebc23d8d135caf759721dd4420b6b85e6544dbfe51dd",
+    "src/interaction/hitConcrete.js": "c5a6e017de14260c83adcd3a8bb7ea2ffd2bb6a38f9e7e73ed55bfdec42623dc",
+    "src/actions/data/revise.js": "adf61ad5dd234ae37a4081c0d721c76995e52e290f64d303686d817aa822db0c",
+    "src/core/immutable.js": "1ec67bd4b674532050ef8351474840d7b947418469b79d976395b63c7bf62fc2",
+    "types/animation.d.ts": "264f37f74af70f162fce1486d18a4b95cae19d1f0337c360b9936c2955a90e98",
+    "types/scene.d.ts": "0ec51fabe97052f15ba288923017fcaa643d6fb68dd2404482f91fba5916e608"
+  },
+  "oracle": {
+    "kind": "read-only circle column representation roundtrip; not renderer/native authority/performance qualification",
+    "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+    "node": "v22.23.1",
+    "frames": 62,
+    "nodes": 62110,
+    "runs": 82,
+    "fullSceneStructuralAndJSONOrderEqual": true,
+    "callerCopyAndFrozenColumns": true,
+    "binarySignedZeroAndFiniteExtremes": true,
+    "transparentAppearancePreservedOnlyAsData": true,
+    "noncontiguousOrderBoundaryPreserved": true,
+    "limitations": [
+      "No new runtime schema/API",
+      "No batch rendering or hit authority exercised",
+      "Decisions and position/native meaning not compacted here",
+      "V8 binary is oracle transport only; no persistence choice",
+      "JSON numeric arrays lose negative zero; tagged numeric encoding still required",
+      "No50ms/P95/100cycle claim"
+    ]
+  },
+  "scope": "Concrete adjacent circle column schema and compatibility review only; source/types/scripts/test unchanged",
+  "rootClarification": "Explicit new format is eligible for original full-frame SLO if all materialization and authority complete inside timer and every direct consumer qualifies; existing legacy misses remain explicit",
+  "limitations": [
+    "No new runtime schema/API",
+    "No batch rendering or hit authority exercised",
+    "Decisions and position/native meaning not compacted here",
+    "V8 binary is oracle transport only; no persistence choice",
+    "JSON numeric arrays lose negative zero; tagged numeric encoding still required",
+    "No50ms/P95/100cycle claim"
+  ],
+  "evidenceFiles": {
+    "input.mjs": {
+      "sha256": "d6ed825625f27066ad1d05c19ecd8f05ea4ba70d1395aa24a4338b976d327d43",
+      "bytes": 2730
+    },
+    "oracle.mjs": {
+      "sha256": "8931abd03f81d5604c03c8b2cf333c34ec61b4fa67cd464e18a26aa3dc3271e6",
+      "bytes": 4307
+    },
+    "oracle.json": {
+      "sha256": "6bd9a0c9542cd04bb2a13b09713d382e097653ea247257351afe8d32dc1fa011",
+      "bytes": 864
+    },
+    "oracle.log": {
+      "sha256": "2bcb3f78ba542930c83d495ae35aa5c54796ed00c2c9bb4bd5dadb3969b7a462",
+      "bytes": 782
+    },
+    "node-order-first-failure.log": {
+      "sha256": "75ec4014fa0526a0d30707e03303195fec1e166f08cebad43e550518939b37fe",
+      "bytes": 40716
+    },
+    "record.mjs": {
+      "sha256": "1efbb9b8df80a6e9fe7bbd02fc8c4a7bae974a54c34d8ad704612d6b72529bec",
+      "bytes": 2500
+    }
+  }
+}

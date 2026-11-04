@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "concrete-scene-rows": { prefix: "core/sceneRows.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Logical concrete row order and native frame associations must share one lightweight projection without semantic or renderer dependencies." },
+  "concrete-batch-scene": { prefix: "grammar/schemas/batchScene.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Batched frame structure must preserve closed entry forms, logical quotas and exact dense column lengths across consumers." },
   "graph-inference-host": { prefix: "resources/graphInference", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Inference preparation and dedicated workers must bind exact native inputs and settle cancellation, cleanup and atomic publication exactly once." },
   "parallel-guide-geometry": { prefix: "grammar/parallelGuides.js", floor: { lines: 100, branches: 100, functions: 100 }, rationale: "Native field axes and prepared transitions must share exact placement, component geometry and explicit alignment." },
   "native-position-offset": { prefix: "grammar/positionOffset.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Native and animated offsets must share signed band placement, finite results and missing-value behavior." },
@@ -59,6 +61,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "pyramid-selection": { prefix: "materialization/selection/policies/pyramid.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "One stage must remain one logical item across labels, highlights and revisions." },
   "weighted-blend-values": { prefix: "grammar/weightedBlend", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Flat weighted colors require linear-light premultiplication, exact endpoints and bounded pixel work." },
   "linear-light-values": { prefix: "grammar/linearColor", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Shared sRGB transfer functions preserve numeric and pixel interpolation semantics." },
+  "circle-batch-schema": { prefix: "grammar/schemas/circleBatch.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Concrete columns must preserve dense finite rows, exact appearance and logical item bounds across every consumer." },
   "weighted-blend-schema": { prefix: "grammar/schemas/weightedBlend", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Embedded concrete sources must reject nested, malformed and executable values before host work." },
   "concrete-source-traversal": { prefix: "grammar/schemas/graphicSources", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Embedded sources must preserve exact image, font and shadow input identity." },
   "weighted-blend-raster": { prefix: "renderers/canvas/weightedBlend", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Per-item weighted output requires bounded allocation and complete preparation before destination mutation." },

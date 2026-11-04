@@ -1,6 +1,6 @@
 import { ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties } from "../../core/validation.js";
-import { preparePositionInterpolation } from "./positions.js";
+import { normalizePositionEndpoint } from "./positions.js";
 import { mapContinuousScaleValues } from "../scales/mapping.js";
 
 const reasons = new Set(["anonymous", "semantic-unavailable", "primitive-role", "unsupported-family",
@@ -32,6 +32,11 @@ export function validatePointAnimationPosition(position, identity, node) {
       identity.lineage.rowKeys.length !== 1 || node.type !== "circle") {
     throw new TypeError("Semantic point positions require a circle with exact one-row body identity.");
   }
-  for (const channel of ["x", "y"]) preparePositionInterpolation(position[channel], position[channel]);
+  // Keep both endpoint validations and their order without creating a prepared
+  // interpolation plan that this validation-only caller would immediately drop.
+  for (const channel of ["x", "y"]) {
+    normalizePositionEndpoint(position[channel]);
+    normalizePositionEndpoint(position[channel]);
+  }
   if (!pointPositionMatchesNode(position, node)) throw new TypeError("Prepared animation point meaning differs from its concrete endpoint.");
 }

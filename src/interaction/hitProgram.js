@@ -1,3 +1,4 @@
+import { animationSceneLength, animationSceneRows } from "../core/sceneRows.js";
 import { axisLabelSourceResolver } from "./hitAxisLabels.js";
 import { graphicScopes } from "../selectors/graphicScopes.js";
 import { requireClosedProgramState } from "../core/programState.js";
@@ -148,7 +149,9 @@ export function prepareProgramHitFrame(program, version = 0, budget, options) {
   }
   const entries = [], guides = new Map(), profiles = new Map();
   for (let i = 0; i < snapshot.scene.nodes.length; i++) {
-    const source = snapshot.sources[i], identity = identities.get(source.graphicId);
+    const source = snapshot.sources[i];
+    if (source.rowIndex !== undefined) continue; // Authored batches carry no native semantic authority.
+    const identity = identities.get(source.graphicId);
     const context = owners.get(source.graphicId);
     if (context === undefined) continue;
     let itemMetadata;
@@ -178,7 +181,7 @@ export function prepareProgramHitFrame(program, version = 0, budget, options) {
     const context = owners.get(collection.graphicId);
     if (context) collections.set(JSON.stringify([context.childPath, context.localId]), collection);
   }
-  registerHitFrameSource(frame, { profiles, placements, collections, nodeCount: count, work: budget.work - initialWork, nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
+  registerHitFrameSource(frame, { profiles, placements, collections, nodeCount: count, work: budget.work - initialWork, nodes: new Map(Array.from(animationSceneRows(frame.scene, { decisions: false }), ({ node }) => [node.key, node])) });
   return frame;
 }
 
@@ -210,19 +213,19 @@ export function rebindProgramHitFrame(base, scene, version, rootTransform = [1, 
   transformHitPoint(rootTransform, { x: 0, y: 0 });
   const owned = ownHitScene(scene, policy), metadata = new Map(base.entries.map(entry => [entry.nodeKey, entry.metadata]));
   const entries = [], budget = { work: 0, limit: policy.maxWork };
-  owned.nodes.forEach((node, zIndex) => {
+  for (const { node, index: zIndex } of animationSceneRows(owned, { decisions: false })) {
     const original = source.nodes.get(node.key);
     if (original === undefined || original.type !== node.type || original.topology !== node.topology) {
       throw new TypeError("Interaction frame node identity or topology is not owned by its current program.");
     }
-    if (!metadata.has(node.key)) return;
+    if (!metadata.has(node.key)) continue;
     const shape = prepareConcreteHitShape(node, source.profiles.get(node.key), rootTransform, policy.pathGeometry);
     spend(budget, hitShapePreparationWork(shape));
     entries.push(freezeOwned({ nodeKey: node.key, zIndex, metadata: metadata.get(node.key), shape }));
-  });
+  }
   const frame = freezeOwned({ scene: owned, entries: freezeOwned(entries), version });
   registerHitFrameSource(frame, { ...source, sample: owned === source.sample?.scene ? source.sample : undefined,
-    nodes: new Map(owned.nodes.map(node => [node.key, node])) });
+    nodes: new Map(Array.from(animationSceneRows(owned, { decisions: false }), ({ node }) => [node.key, node])) });
   return frame;
 }
 
@@ -249,7 +252,7 @@ export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1
   if (!Number.isSafeInteger(version) || version < 0) throw new TypeError("Hit frame version must be a non-negative safe integer.");
   if (proof.native === undefined) throw new TypeError("Animation hit requires native endpoint metadata.");
   transformHitPoint(rootTransform, { x: 0, y: 0 });
-  if (sample.scene.nodes.length > policy.maxSceneNodes) throw new RangeError("Hit program exceeds its item budget.");
+  if (animationSceneLength(sample.scene) > policy.maxSceneNodes) throw new RangeError("Hit program exceeds its item budget.");
   const budget = { work: 0, limit: policy.maxWork }, entries = [], profiles = new Map(), counted = new Set(), geographicSources = new Map();
   spend(budget, proof.native.owners.length);
   const authorized = new Set(proof.native.owners), geoSource = geoSourceResolver(budget);
@@ -294,20 +297,20 @@ export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1
     if (!Number.isSafeInteger(origin.index) || origin.index < 0 || node === undefined) throw new TypeError("Animation hit requires an exact native endpoint node.");
     return { metadata: base.entries.get(node.key), metrics: base.source.profiles.get(node.key) };
   };
-  if (proof.native.nodes.length !== sample.scene.nodes.length) throw new TypeError("Animation hit sources must follow the exact sampled nodes.");
-  sample.scene.nodes.forEach((node, zIndex) => {
+  if (proof.native.nodes.length !== animationSceneLength(sample.scene)) throw new TypeError("Animation hit sources must follow the exact sampled nodes.");
+  for (const { node, index: zIndex } of animationSceneRows(sample.scene, { decisions: false })) {
     const source = proof.native.nodes[zIndex], original = resolve(source.origin, proof.endpoint?.identities[zIndex], proof.guides?.[zIndex]?.identity);
     if (Object.hasOwn(source.origin, "kind") && original.metadata === undefined) throw new TypeError("Animation geographic hit requires its exact sampled identity.");
-    if (original.metadata === undefined) return;
+    if (original.metadata === undefined) continue;
     const values = source.metrics.map(origin => resolve(origin).metrics);
     const metrics = node.type === "weighted-blend" ? values : values[0];
     const shape = prepareConcreteHitShape(node, metrics, rootTransform, policy.pathGeometry);
     spend(budget, hitShapePreparationWork(shape)); profiles.set(node.key, metrics);
     entries.push(freezeOwned({ nodeKey: node.key, zIndex, metadata: original.metadata, shape }));
     if (original.geographicSource !== undefined) geographicSources.set(original.metadata.itemKey, original.geographicSource);
-  });
+  }
   const frame = freezeOwned({ scene: sample.scene, entries: freezeOwned(entries), version });
   registerHitFrameSource(frame, { profiles, geographicSources, sample, nativeOwners: authorized, placements: baseFor(proof.native.placement).source.placements,
-    nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
+    nodes: new Map(Array.from(animationSceneRows(frame.scene, { decisions: false }), ({ node }) => [node.key, node])) });
   return frame;
 }
