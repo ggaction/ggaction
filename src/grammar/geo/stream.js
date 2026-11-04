@@ -35,7 +35,7 @@ function lineCoordinates(points, settings, kernel, budget, count) {
       const segment = stack.pop(), middle = [(segment.a[0] + segment.b[0]) / 2, (segment.a[1] + segment.b[1]) / 2];
       budget.charge();
       const span = Math.max(Math.abs(segment.a[0] - segment.b[0]), Math.abs(segment.a[1] - segment.b[1]));
-      const linear = kernel.forward(middle).point, curved = kernel.forward(sphericalMidpoint(segment.a, segment.b)).point;
+      const linear = kernel.forwardPoint(middle).point, curved = kernel.forwardPoint(sphericalMidpoint(segment.a, segment.b)).point;
       const error = linear && curved ? Math.hypot(linear[0] - curved[0], linear[1] - curved[1]) : 0;
       if (span > 5 || error > kernel.options.precisionPx / 2) {
         if (segment.depth >= 20) throw new RangeError("Geographic source-segment refinement exceeds its depth limit.");
@@ -104,7 +104,7 @@ export function projectGeometry(geometry, projectionInput, input = {}) {
       ...prepared, coordinates: orientGeometryRingsMath(prepared.coordinates, true, polygonWinding)
     };
     if (g.type === "Point") {
-      const projected = kernel.forward(g.coordinates.slice(0, 2));
+      const projected = kernel.forwardPoint(g.coordinates.slice(0, 2));
       if (projected.reason === "non-finite-projection") throw new RangeError("Geographic point projection overflows.");
       if (projected.point) appendPart({ kind: "point", point: acceptPoint(...projected.point) }, leaf.sourcePath, projected.component, 0);
       continue;

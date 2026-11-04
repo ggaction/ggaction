@@ -1,24 +1,38 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties } from "../../core/validation.js";
-import { normalizeProjectionOptions, projectionDescriptor, projectionTuple, longitudeDegrees } from "./projectionOptions.js";
+import { normalizeProjectionOptions, projectionDescriptor, projectionTuple, finiteProjectionNumber, longitudeDegrees } from "./projectionOptions.js";
 import { buildProjectionMath, rawProjectionMath } from "./projectionMath.js";
 
 const RADIANS = Math.PI / 180;
 function finitePoint(point) { return point?.length === 2 && point.every(Number.isFinite); }
 function result(point, reason = null, component = null) { return cloneAndFreeze({ point, reason, component }); }
 function sourcePoint(value, spherical) {
-  const point = projectionTuple(value, [2], "Projection point");
+  return sphericalPoint(projectionTuple(value, [2], "Projection point"), spherical);
+}
+// The stream passes only [x, y] literals it built itself: own data by
+// construction. Length, finiteness and latitude keep their ordinary checks.
+function streamPoint(value, spherical) {
+  if (value.length !== 2) throw new TypeError("Projection point has an invalid length.");
+  return sphericalPoint([finiteProjectionNumber(value[0], "Projection point"), finiteProjectionNumber(value[1], "Projection point")], spherical);
+}
+function sphericalPoint(point, spherical) {
   if (spherical) {
     if (Math.abs(point[1]) > 90) throw new RangeError("Projection latitude must be in [-90, 90].");
     point[0] = longitudeDegrees(point[0]);
   }
   return point;
 }
-function streamedPoint(projection, input) {
+// One sink per projection part lets the math library reuse its cached stream
+// pipeline. A lone point() call carries no stream state between points.
+function pointStreamer(projection) {
   let point = null;
-  projection.stream({ point(x, y) { point = [x, y]; } }).point(...input);
-  return finitePoint(point) ? point : null;
+  const sink = { point(x, y) { point = [x, y]; } };
+  return input => {
+    point = null;
+    projection.stream(sink).point(input[0], input[1]);
+    return finitePoint(point) ? point : null;
+  };
 }
 function inExtent(point, extent) { return point.every((value, index) => value >= extent[0][index] && value < extent[1][index]); }
 
@@ -27,8 +41,10 @@ function intermediate(point, reason = null, component = null) { return { point, 
 export function createProjectionCalculation(input) {
   const options = normalizeProjectionOptions(input), descriptor = projectionDescriptor(options.type);
   const { parts, rotate } = buildProjectionMath(options);
-  function forward(value) {
-    const point = sourcePoint(value, descriptor.spherical);
+  const streamers = new Map(parts.map(part => [part, pointStreamer(part.projection)]));
+  function forward(value) { return project(sourcePoint(value, descriptor.spherical)); }
+  function forwardPoint(value) { return project(streamPoint(value, descriptor.spherical)); }
+  function project(point) {
     if (options.type === "orthographic") {
       const rotated = rotate(point);
       if (Math.cos(rotated[0] * RADIANS) * Math.cos(rotated[1] * RADIANS) < -1e-14) return intermediate(null, "outside-visible-domain");
@@ -36,7 +52,7 @@ export function createProjectionCalculation(input) {
     let nonFinite = false;
     for (const part of parts) {
       if (!finitePoint(part.projection(point))) { nonFinite = true; continue; }
-      const projected = streamedPoint(part.projection, point);
+      const projected = streamers.get(part)(point);
       if (projected) return intermediate(projected, null, part.id);
     }
     return intermediate(null, nonFinite ? "non-finite-projection" : "outside-visible-domain");
@@ -55,12 +71,13 @@ export function createProjectionCalculation(input) {
     if (!projected.point || projected.component !== part.id || Math.hypot(projected.point[0] - point[0], projected.point[1] - point[1]) > Math.min(0.25, Math.max(1, options.scalePx) * 1e-8)) return intermediate(null, "outside-visible-domain");
     return intermediate(candidate, null, part.id);
   }
-  return Object.freeze({ options, descriptor, forward, inverse });
+  return Object.freeze({ options, descriptor, forward, forwardPoint, inverse });
 }
 
 export function createProjectionKernel(input) {
   const kernel = createProjectionCalculation(input);
-  return Object.freeze({ ...kernel,
+  // The public kernel never exposes the stream-only point projection.
+  return Object.freeze({ options: kernel.options, descriptor: kernel.descriptor,
     forward(value) { return cloneAndFreeze(kernel.forward(value)); },
     inverse(value, settings) { return cloneAndFreeze(kernel.inverse(value, settings)); }
   });

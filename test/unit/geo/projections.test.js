@@ -214,3 +214,19 @@ test("synchronous projection assembly preserves the owned facade and isolates ra
     }
   }
 });
+
+test("stream point projection keeps value checks and stays out of the public kernel", () => {
+  const options = { type: "equirectangular", scalePx: 100, translatePx: [200, 200], rotateDeg: [10, -5, 3] };
+  const calculation = createProjectionCalculation(options), kernel = createProjectionKernel(options);
+  assert.deepEqual(Object.keys(kernel).sort(), ["descriptor", "forward", "inverse", "options"]);
+  for (const point of [[0, 0], [12.5, -33], [179.9, 89.9], [-540, 10]]) {
+    assert.deepEqual(calculation.forwardPoint([...point]), calculation.forward([...point]));
+  }
+  const outcome = run => { try { run(); return null; } catch (error) { return [error.constructor.name, error.message]; } };
+  for (const point of [[1], [1, 2, 3], [Number.NaN, 0], [0, Infinity], [0, 91]]) {
+    assert.deepEqual(outcome(() => calculation.forwardPoint(point)), outcome(() => calculation.forward(point)));
+  }
+  // The public forward still rejects non-data arrays.
+  const accessor = [0, 0]; Object.defineProperty(accessor, 1, { get: () => 0, enumerable: true });
+  assert.throws(() => kernel.forward(accessor), /accessors are not supported/);
+});
