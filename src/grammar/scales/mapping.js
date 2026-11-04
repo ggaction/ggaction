@@ -1,8 +1,8 @@
 import { ownRecord, ownArray } from "../../core/ownData.js";
 import { rejectUnknownProperties } from "../../core/validation.js";
 import { mapMeasuredRadiusValues } from "./radial.js";
-import { mapLinearValues, prepareLinearScalar } from "./continuous.js";
-import { mapTransformedValues, prepareTransformedScalar } from "./transformed.js";
+import { mapLinearScalar, mapLinearValues, prepareLinearScalar } from "./continuous.js";
+import { mapTransformedScalar, mapTransformedValues, prepareTransformedScalar } from "./transformed.js";
 import { SCALE_ROLES, validateScaleTypeForRole } from "./types.js";
 
 const TRANSFORMED_TYPES = new Set(["log", "pow", "sqrt", "symlog"]);
@@ -25,6 +25,27 @@ export function mapContinuousScaleValues(values, scale) {
     });
   }
   return mapLinearValues(values, scale.domain, scale.range, {
+    clamp: scale.clamp ?? false,
+    ...(Object.hasOwn(scale, "unknown") ? { unknown: scale.unknown } : {})
+  });
+}
+
+// One value for per-item checks: mapContinuousScaleValues' branches, validation
+// and arithmetic without owned intermediate arrays or records.
+export function mapContinuousScaleValue(value, scale) {
+  if (scale?.radialMapping !== undefined) return mapMeasuredRadiusValues([value], scale)[0];
+  if (isTransformedScaleType(scale?.type)) {
+    validateScaleTypeForRole(scale.type, SCALE_ROLES.quantitativePosition);
+    return mapTransformedScalar(value, scale.domain, scale.range, {
+      type: scale.type,
+      clamp: scale.clamp ?? false,
+      ...(Object.hasOwn(scale, "unknown") ? { unknown: scale.unknown } : {}),
+      ...(scale.type === "log" ? { base: scale.base } : {}),
+      ...(scale.type === "pow" ? { exponent: scale.exponent } : {}),
+      ...(scale.type === "symlog" ? { constant: scale.constant } : {})
+    });
+  }
+  return mapLinearScalar(value, scale.domain, scale.range, {
     clamp: scale.clamp ?? false,
     ...(Object.hasOwn(scale, "unknown") ? { unknown: scale.unknown } : {})
   });

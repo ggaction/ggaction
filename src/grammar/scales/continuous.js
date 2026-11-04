@@ -12,6 +12,7 @@ import {
 import { resolvePolarScaleRange } from "../polar.js";
 import { niceTimeDomain } from "./temporal.js";
 import {
+  readFinitePair,
   validatePair,
   validatePositionChannel,
   validateScaleDomain,
@@ -225,6 +226,24 @@ export function mapLinearValues(values, domain, range, options = {}) {
 
 // This private constructor retains only validated primitive endpoints and spans.
 // Ordinary vector callers keep their own validation and unknown-value ordering.
+// One value with mapLinearValues' validation order, errors and arithmetic,
+// without owned intermediate arrays.
+export function mapLinearScalar(value, domain, range, options = {}) {
+  const { clamp = false } = options;
+  const hasUnknown = Object.hasOwn(options, "unknown");
+  const [domainStart, domainEnd] = readFinitePair(domain, "Resolved domain");
+  const [rangeStart, rangeEnd] = readFinitePair(range, "Resolved range");
+  if (typeof clamp !== "boolean") {
+    throw new TypeError("Linear scale clamp must be a boolean.");
+  }
+  if (!Number.isFinite(value)) {
+    if (hasUnknown) return options.unknown;
+    throw new TypeError("Linear scale values must be finite numbers.");
+  }
+  if (domainStart === domainEnd) return interpolateNumber(rangeStart, rangeEnd, 0.5);
+  return mapLinearValue(value, domainStart, domainEnd, rangeStart, rangeEnd, domainEnd - domainStart, rangeEnd - rangeStart, clamp);
+}
+
 export function prepareLinearScalar(domain, range, clamp = false) {
   const [domainStart, domainEnd] = validatePair(domain, "Resolved domain");
   const [rangeStart, rangeEnd] = validatePair(range, "Resolved range");

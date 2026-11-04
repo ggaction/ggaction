@@ -1,7 +1,7 @@
 import { ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties } from "../../core/validation.js";
 import { normalizePositionEndpoint } from "./positions.js";
-import { mapContinuousScaleValues } from "../scales/mapping.js";
+import { mapContinuousScaleValue } from "../scales/mapping.js";
 
 const reasons = new Set(["anonymous", "semantic-unavailable", "primitive-role", "unsupported-family",
   "overlay-position", "coordinate-family", "offset-position", "computed-point-position", "incomplete-position",
@@ -14,7 +14,7 @@ export function unavailablePointAnimationPosition(reason) {
 export const isPointAnimationFallbackReason = reason => reasons.has(reason);
 
 export function pointPositionMatchesNode(position, node) {
-  return ["x", "y"].every(channel => mapContinuousScaleValues([position[channel].value], position[channel].scale)[0] === node.properties[channel]);
+  return ["x", "y"].every(channel => mapContinuousScaleValue(position[channel].value, position[channel].scale) === node.properties[channel]);
 }
 
 // A prepared endpoint's meaning must still produce its concrete native circle.

@@ -21,7 +21,7 @@ export function validateIncreasingScaleArray(value, label) {
   return value;
 }
 
-export function validatePair(value, label) {
+function checkFinitePair(value, label) {
   if (
     !Array.isArray(value) ||
     value.length !== 2 ||
@@ -29,6 +29,16 @@ export function validatePair(value, label) {
   ) {
     throw new TypeError(`${label} must be "auto" or two finite numbers.`);
   }
+}
+
+// Validation only; callers that retain the pair use validatePair's owned copy.
+export function readFinitePair(value, label) {
+  checkFinitePair(value, label);
+  return [value[0], value[1]];
+}
+
+export function validatePair(value, label) {
+  checkFinitePair(value, label);
   return cloneAndFreeze(value);
 }
 

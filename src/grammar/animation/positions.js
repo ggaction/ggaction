@@ -2,8 +2,8 @@ import { cloneAndFreeze, freezeOwned } from "../../core/immutable.js";
 import { createCircleBatchColumn } from "../schemas/circleBatch.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateUnitInterval } from "../../core/validation.js";
-import { mapContinuousScaleValues, prepareContinuousScaleScalar, mapPreparedContinuousScaleValue } from "../scales/mapping.js";
-import { normalizeTransformParameters } from "../scales/transformed.js";
+import { mapContinuousScaleValue, prepareContinuousScaleScalar, mapPreparedContinuousScaleValue } from "../scales/mapping.js";
+import { transformParameterValues } from "../scales/transformed.js";
 import { interpolateNumber, interpolatePositiveScale } from "./values.js";
 
 export const ANIMATION_POSITION_VERSION = "semantic-continuous-position@1";
@@ -72,13 +72,13 @@ export function normalizePositionEndpoint(input) {
   rejectUnknownProperties(scale, ["type", "domain", "range", "clamp", ...(parameter === undefined ? [] : [parameter])], "animation position scale");
   if (Object.values(scale).some(value => value === undefined)) throw new TypeError("Animation position scale values cannot be undefined.");
   if (Object.hasOwn(scale, "clamp") && typeof scale.clamp !== "boolean") throw new TypeError("Animation position clamp must be boolean.");
-  const parameters = normalizeTransformParameters(scale.type === "time" ? "linear" : scale.type,
+  const parameters = transformParameterValues(scale.type === "time" ? "linear" : scale.type,
     parameter !== undefined && Object.hasOwn(scale, parameter) ? { [parameter]: scale[parameter] } : {});
   // sqrt's exponent is an internal mapping parameter, not an authored option.
   const normalized = { type: scale.type, domain: pair(scale.domain, "Animation position domain"),
     range: pair(scale.range, "Animation position range"), clamp: scale.clamp ?? false,
     ...(parameter === undefined ? {} : { [parameter]: parameters[parameter] }) };
-  const position = mapContinuousScaleValues([input.value], normalized)[0];
+  const position = mapContinuousScaleValue(input.value, normalized);
   if (!Number.isFinite(position)) throw new RangeError("Animation position endpoint must map to a finite position.");
   return { value: input.value, scale: normalized };
 }
@@ -130,7 +130,7 @@ export function samplePositionInterpolation(plan, progress) {
   if (progress === 0 || progress === 1) {
     const exact = progress === 0 ? from : to;
     return freezeOwned({ kind: "position", ...exact,
-      position: mapContinuousScaleValues([exact.value], exact.scale)[0] });
+      position: mapContinuousScaleValue(exact.value, exact.scale) });
   }
   const value = interpolateNumber(from.value, to.value, progress);
   const at = (a, b) => interpolateNumber(a, b, progress);

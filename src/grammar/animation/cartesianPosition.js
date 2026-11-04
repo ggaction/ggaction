@@ -2,7 +2,7 @@ import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateUnitInterval } from "../../core/validation.js";
 import { resolveDiscretePositionScale, resolveOrdinalPositionScale, resolveOrdinalOffsetScale, mapOrdinalPositionValues, mapOrdinalOffsetValues } from "../scales/ordinal.js";
-import { mapContinuousScaleValues } from "../scales/mapping.js";
+import { mapContinuousScaleValue } from "../scales/mapping.js";
 import { normalizePositionEndpoint, preparePositionInterpolation, samplePositionInterpolation } from "./positions.js";
 import { interpolateNumber } from "./values.js";
 import { applyOffsetPositionValues } from "../positionOffset.js";
@@ -70,7 +70,7 @@ function resolveBase(normalized) {
     return { ...normalized, resolvedScale: scale, position: (normalized.scale.type === "ordinal-offset" ? mapOrdinalOffsetValues : mapOrdinalPositionValues)([normalized.value], scale)[0] };
   }
   return { kind: "position", ...normalized, resolvedScale: normalized.scale,
-    position: mapContinuousScaleValues([normalized.value], normalized.scale)[0] };
+    position: mapContinuousScaleValue(normalized.value, normalized.scale) };
 }
 
 export function prepareCartesianPosition(fromInput, toInput) {
