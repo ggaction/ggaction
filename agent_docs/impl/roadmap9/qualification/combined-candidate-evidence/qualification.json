@@ -59,5 +59,31 @@
     "installed minified Chromium DPR1/2 owners from each branch",
     "original 1k/10k/100k workloads on this archive",
     "P95 and lifetime"
-  ]
+  ],
+  "sourceRuns": {
+    "commit": "a489f9e15",
+    "normal": {
+      "tests": 10523,
+      "pass": 10520,
+      "fail": 3,
+      "failures": [
+        "documentation provenance/LLM artifacts stale after consumer fixture edits"
+      ],
+      "fix": "docs:generate",
+      "log": "normal-a489f9e15.log.gz"
+    },
+    "render": {
+      "tests": 513,
+      "pass": 512,
+      "fail": 1,
+      "failure": "mark-outlines/native/backends.render.js served /src/index.js without the repository import map; bare geographic-math failed. Pre-existing since the geo dependency entered src/index.js after the test was written.",
+      "fix": "startStaticServer(root,{dependencies:\"repository\"}) as in the other 26 repository-served render tests",
+      "afterFix": "1/1 pass",
+      "log": "render-a489f9e15.log.gz"
+    },
+    "documentationAfterRegeneration": {
+      "tests": 49,
+      "pass": 49
+    }
+  }
 }
