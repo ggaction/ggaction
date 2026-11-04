@@ -1,0 +1,19 @@
+{
+  "kind": "Original 10000 node class functional verification; no timed P95 or explicit GC",
+  "pid": 88112,
+  "node": "v22.23.1",
+  "start": "2026-11-04T15:50:47.960Z",
+  "archiveSHA256": "787e6d786f1df9be0ce2103f47c562fbd99ac7aac63e59d96e694c487d3156e5",
+  "archiveEntries": 1276,
+  "inputSHA256": "e204dd2c1ab81f7c75b8d32aa006841fcda7e1e140ffd6a983dc1d5b448e1a1e",
+  "nodes": 10000,
+  "cases": [],
+  "layoutVerified": 10000,
+  "status": "failed",
+  "error": {
+    "name": "RangeError",
+    "message": "Animation guide endpoint size must not exceed 10000.",
+    "stack": "RangeError: Animation guide endpoint size must not exceed 10000.\n    at validateGeneratedItemLimit (file:///private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/consumer-partition/node_modules/ggaction/src/core/validation.js:36:25)\n    at projectGuideAnimationState (file:///private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/consumer-partition/node_modules/ggaction/src/materialization/animation/guides.js:116:3)\n    at prepare (file:///private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/consumer-partition/node_modules/ggaction/src/animation/planner.js:197:360)\n    at planTransitionInternal (file:///private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/consumer-partition/node_modules/ggaction/src/animation/planner.js:199:14)\n    at planTransition (file:///private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/consumer-partition/node_modules/ggaction/src/animation/planner.js:173:157)\n    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/agent_docs/impl/roadmap9/qualification/partition-cell-product-evidence/large-installed.mjs:49:54"
+  },
+  "end": "2026-11-04T15:50:49.362Z"
+}

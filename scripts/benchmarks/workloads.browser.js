@@ -177,7 +177,7 @@ export function prepareNativeWorkload(kind, count, input = nativeWorkloadInput(k
           expected.forEach(([ex,ey],j) => { close(commands[j].x,ex); close(commands[j].y,ey); });
         });
         return { count: nodes.length, rootWidth: 460, leafWidth: 460 / (count - 1) };
-      })();
+      }, count >= 10000 ? { ...sampleOptions, maxEndpointNodes: 2 * (count + 1), maxOutputNodes: count + 1 } : sampleOptions)();
     } });
   } else {
     check(input.features[0].geometry.coordinates.length === count, 'all source vertices');
