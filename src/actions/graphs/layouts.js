@@ -55,6 +55,11 @@ export function editGraphLayout(program, args, previous) {
 }
 
 export function* editGraphLayoutStages(program, args, previous, scope) {
+  const plan = yield* planGraphLayoutStages(program, args, previous, scope);
+  return applyGraphLayoutPlan(program, plan, scope);
+}
+
+export function* planGraphLayoutStages(program, args, previous, scope) {
   if (Object.hasOwn(args, "order")) throw new TypeError("Graph layouts do not accept hierarchy order.");
   const graph = resolveInputReference(program, previous.inputs[0]);
   let intent, retainedCoordinates;
@@ -73,6 +78,11 @@ export function* editGraphLayoutStages(program, args, previous, scope) {
     graph, retainedCoordinates, intent });
   const routes = yield* prepareEdgeRouteRevisionStages(program, program.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate), scope);
   previewGraphLayouts(program, routes.resources, [resource]);
+  return { resource, routes };
+}
+
+export function applyGraphLayoutPlan(program, { resource, routes }, scope) {
+  scope?.ledger.check();
   const next = withPreparedResourceResults(program, { property: `resource[layout:${resource.id}]`, value: resource }, routes.entries, args => program.editSemantic(args), [], scope);
   return materializeLayouts(next, new Set([resource.id]), routes.ids);
 }

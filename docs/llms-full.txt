@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:b35efe92a47cf145a52f0eeff125a0b87f58f426561fd1e8524fdcc903d14354. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:69e55093360720160194bf73cb8da70b10d18e8b440776860c782bcc1680526f. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -21367,6 +21367,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | Action | Authoring role | API layer | Domain |
 | --- | --- | --- | --- |
 | [`applyDataUpdate`](./reference/actions/charts-data/#applydataupdate) | H3 | user-facing | core |
+| [`applyGraphEdgeRoutesUpdate`](./reference/actions/charts-data/#applygraphedgeroutesupdate) | H3 | user-facing | core |
 | [`applyTextMetrics`](./reference/actions/charts-data/#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](./reference/actions/charts-data/#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](./reference/actions/charts-data/#bindmarkdata) | H2 | user-facing | core |
@@ -26674,6 +26675,35 @@ editEdgeRoute({ target?, graph?, layout?, method?, options?, coordinateSpace? })
 ```
 
 Apply a nonempty patch to a stored route and refresh each consuming GraphPlot once. Same-method options preserve omitted values; a changed method starts from its defaults. Exact preparation handles also support `{prepared,requestToken}`. See [Edge routes](./api/edge-routes/) for validation, async lifetime, source revision and Canvas invalidation.
+
+## `applyGraphEdgeRoutesUpdate`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;
+```
+
+Named option contracts: [`ApplyGraphEdgeRoutesUpdateOptions`](./reference/types/#type-applygraphedgeroutesupdateoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedGraphEdgeRoutesUpdate` |
+| `requestToken` | Required | `string` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+applyGraphEdgeRoutesUpdate({ prepared, requestToken })
+```
+
+Apply an authentic prepared native layout revision on its exact original Full unit receiver. Prepare with `kind:"update", edit:{action:"editLayout",args}` through `ggaction/graph`; the original action, affected route consumers and theme completion execute synchronously with the shared budget. See [Edge routes](./api/edge-routes/#applygraphedgeroutesupdate).
 
 ## `createGeometryData`
 
@@ -37102,7 +37132,7 @@ export type { ConditionalEncodingOptions } from "./program.js";
 export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
 export type { GraphPosition, GraphPin, GraphLayoutLimits, GraphFixedOptions, GraphCircularOptions, GraphForceOptions, LayoutGraphOptions, GraphLayoutResource } from "./program.js";
 export type { GraphNodePaint, GraphEdgePaint, GraphLabelPaint, GraphLabelsOptions, GraphPlotOptions, EditGraphPlotOptions } from "./program.js";
-export type { EdgeRouteMethod, EdgeRouteLimits, EdgeRouteCommonOptions, HierarchicalEdgeRouteOptions, ForceDirectedEdgeRouteOptions, EdgePathRouteOptions, EdgeRouteDefinition, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, ApplyGraphEdgeRoutesOptions, EdgeRoutePoint, EdgeRouteVector, EdgeRouteResult, EdgeRouteResource, EdgeRouteResourceV2, EdgeRouteExecution } from "./program.js";
+export type { EdgeRouteMethod, EdgeRouteLimits, EdgeRouteCommonOptions, HierarchicalEdgeRouteOptions, ForceDirectedEdgeRouteOptions, EdgePathRouteOptions, EdgeRouteDefinition, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, ApplyGraphEdgeRoutesOptions, PreparedGraphEdgeRoutesUpdate, ApplyGraphEdgeRoutesUpdateOptions, EdgeRoutePoint, EdgeRouteVector, EdgeRouteResult, EdgeRouteResource, EdgeRouteResourceV2, EdgeRouteExecution } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
@@ -38721,8 +38751,8 @@ export declare function createInteractionSession(options: {
 [Complete declaration and relative dependencies](./types/graph.d.ts)
 
 ```typescript
-import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, EdgeRouteResult, InputRef } from "./program.js";
-export type { PreparedGraphEdgeRoutes } from "./program.js";
+import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, EdgeRouteResult, InputRef } from "./program.js";
+export type { PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate } from "./program.js";
 
 declare const graphRouteJob: unique symbol;
 /** Immutable structured-clone job supplied to the worker by prepareGraphEdgeRoutes. */
@@ -38756,8 +38786,17 @@ export interface GraphRouteExecutor {
   evict(inputHash?: string): void;
   dispose(): void;
 }
-export type GraphEdgeRoutesRequest = ({ readonly kind: "create" } & BundleGraphEdgesOptions)
+export type GraphEdgeRoutesAuthoringRequest = ({ readonly kind: "create" } & BundleGraphEdgesOptions)
   | ({ readonly kind: "edit" } & EditEdgeRouteOptions);
+export interface GraphEdgeRoutesUpdateRequest {
+  readonly kind: "update";
+  readonly edit: { readonly action: "editLayout"; readonly args: EditLayoutOptions }
+    | { readonly action: "editGraphData"; readonly args: EditGraphDataOptions }
+    | { readonly action: "editFlowData"; readonly args: EditFlowDataOptions }
+    | { readonly action: "editHierarchyData"; readonly args: EditHierarchyDataOptions }
+    | { readonly action: "editInferredGraphData"; readonly args: EditInferredGraphDataOptions | ApplyInferredGraphOptions };
+}
+export type GraphEdgeRoutesRequest = GraphEdgeRoutesAuthoringRequest | GraphEdgeRoutesUpdateRequest;
 export type GraphEdgeRoutesHost = { readonly requestToken: string; readonly signal?: AbortSignal } & (
   { readonly executor?: GraphRouteExecutor; readonly deadlineMs?: never }
   | { readonly executor: GraphRouteExecutor; readonly deadlineMs: number }
@@ -38765,7 +38804,8 @@ export type GraphEdgeRoutesHost = { readonly requestToken: string; readonly sign
 export function createGraphRouteExecutor(options?: { readonly createWorker?: () => GraphRouteWorker }): GraphRouteExecutor;
 export function computeGraphEdgeRoutes(job: GraphRouteJob, signal?: AbortSignal): GraphRouteCompletion;
 export function computeGraphEdgeRoutesAsync(job: GraphRouteJobV2, signal?: AbortSignal): Promise<GraphRouteCompletionV2>;
-export function prepareGraphEdgeRoutes(program: ChartProgram, request: GraphEdgeRoutesRequest, host: GraphEdgeRoutesHost): Promise<PreparedGraphEdgeRoutes>;
+export function prepareGraphEdgeRoutes(program: ChartProgram, request: GraphEdgeRoutesAuthoringRequest, host: GraphEdgeRoutesHost): Promise<PreparedGraphEdgeRoutes>;
+export function prepareGraphEdgeRoutes(program: ChartProgram, request: GraphEdgeRoutesUpdateRequest, host: { readonly requestToken: string; readonly signal?: AbortSignal; readonly executor: GraphRouteExecutor; readonly deadlineMs: number }): Promise<PreparedGraphEdgeRoutesUpdate>;
 
 import type { CreateInferredGraphDataOptions, EditInferredGraphDataOptions, PreparedInferredGraphData, GraphModel, GraphInferenceDiagnostics } from "./program.js";
 export type { PreparedInferredGraphData } from "./program.js";
@@ -39064,6 +39104,7 @@ interface ChartProgramActions {
   editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
   bundleGraphEdges(options: TargetedOptions<BundleGraphEdgesOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
   editEdgeRoute(options: TargetedOptions<EditEdgeRouteOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
+  applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
   createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
   editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
@@ -39592,9 +39633,21 @@ Related types: [`PreparedFontResource`](./reference/types/#type-preparedfontreso
 
 ```typescript
 export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }
+declare const preparedGraphEdgeRoutesUpdate: unique symbol;
+/** An authentic native resource update, bound to its exact completed Full receiver. */
 ```
 
 Related types: [`PreparedGraphEdgeRoutes`](./reference/types/#type-preparedgraphedgeroutes).
+
+### `ApplyGraphEdgeRoutesUpdateOptions` {#type-applygraphedgeroutesupdateoptions}
+
+ Expand ApplyGraphEdgeRoutesUpdateOptions
+
+```typescript
+export interface ApplyGraphEdgeRoutesUpdateOptions { readonly prepared: PreparedGraphEdgeRoutesUpdate; readonly requestToken: string; }
+```
+
+Related types: [`PreparedGraphEdgeRoutesUpdate`](./reference/types/#type-preparedgraphedgeroutesupdate).
 
 ### `ApplyImageResourceOptions` {#type-applyimageresourceoptions}
 
@@ -50140,6 +50193,18 @@ export interface PreparedGraphEdgeRoutes {
 }
 ```
 
+### `PreparedGraphEdgeRoutesUpdate` {#type-preparedgraphedgeroutesupdate}
+
+ Expand PreparedGraphEdgeRoutesUpdate
+
+```typescript
+export interface PreparedGraphEdgeRoutesUpdate {
+  readonly [preparedGraphEdgeRoutesUpdate]: true; readonly kind: "edge-route-preparation";
+  readonly request: { readonly kind: "update"; readonly action: "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData"; readonly args: Readonly<Record<string, unknown>> };
+  readonly inputHashes: readonly string[];
+}
+```
+
 ### `PreparedImageResource` {#type-preparedimageresource}
 
  Expand PreparedImageResource
@@ -56819,11 +56884,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:b35efe92a47cf145a52f0eeff125a0b87f58f426561fd1e8524fdcc903d14354` |
+| Contract fingerprint | `sha256:69e55093360720160194bf73cb8da70b10d18e8b440776860c782bcc1680526f` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 379 |
+| Declared actions here | 380 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -58371,10 +58436,64 @@ Version 1 retains its original synchronous fallback, cache, limits and protocol.
 Create or edit a version 2 route through `prepareGraphEdgeRoutes`, then use the
 ordinary authentic prepared application. A same-method edit retains the stored
 execution policy; a method change requires an explicit replacement policy. Raw
-synchronous route creation or recomputation rejects version 2 intent. Automatic
-source/layout/viewport revision of version 2 routes is not supported by this path.
+synchronous route creation or recomputation rejects version 2 intent. Native layout and graph/hierarchy resource revisions use the explicit prepared update below. Source dataset, viewport,
+fit and other native update actions remain outside the current public update union.
 Stored version 2 vectors still restore offline and render through every existing
 backend. Consumer materialization remains an explicit wrapped action after prepare.
+
+## `applyGraphEdgeRoutesUpdate`
+
+```ts
+applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;
+```
+
+Prepare one of `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData` or
+`editInferredGraphData` on the exact completed Full unit program that owns at least
+one affected version 2 route. Each uses its original native arguments, validators,
+primitives, dependent resources, route consumers and theme completion. Candidate
+graph chains are included before their layouts and routes. Other update actions
+are not yet part of this public union. Scoped, composition
+and facet receivers remain pending. If native completion requires additional
+viewport route computation beyond the prepared layout plan, preparation rejects
+that path; it does not silently run a synchronous fallback.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "l"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+const preparedUpdate = await prepareGraphEdgeRoutes(program, {
+  kind: "update",
+  edit: { action: "editLayout", args: { target: "l", node: { key: 1, x: 25, y: 10 } } }
+}, { requestToken: "layout-2", executor, deadlineMs: 30_000 });
+program = program.applyGraphEdgeRoutesUpdate({
+  prepared: preparedUpdate, requestToken: "layout-2"
+});
+```
+
+Preparation snapshots arguments before its first await. An authentic
+`editInferredGraphData({prepared, requestToken})` retains its original frozen inference
+handle identity; the inference owner checks the exact receiver, token, edit kind
+and original signal again during application. A copied handle is rejected.
+Preparation checks the complete
+request against every affected version 2 policy. It includes native preparation,
+worker results, consumer validation and wrapped preflight completion. Applying
+starts from that accounting snapshot and checks the additional native apply costs.
+Previously completed route samples held while later routes compute count toward
+the same peak. Packet size limits remain specific to each job and completion.
+
+The handle is bound to the exact original receiver, constructor, native action,
+request token and signal. Copies, restored traces, replaced actions and stale bases
+cannot authorize application. The receiver stays unchanged on failure. Canceling
+the original signal also revokes an already prepared handle. Reuse on the same
+immutable receiver starts a separate application from the same preparation costs.
+
+Preparation opens no action invocation scope while awaiting work. Application
+runs the original synchronous native action once, records it as the first child,
+then completes normal materialization and theme reconciliation. Stored trace
+inspection reads only that exact native child; later completion siblings grant
+no authoring or execution authority. Full request latency, including synchronous
+snapshot, cloning, posting and final materialization, has no verified 100ms bound.
+The initial descriptor scan and deep clone also have no separate depth, total heap
+or fully metered work bound in the current request ledger.
 
 <!-- Source: /tutorials/edge-routes/ -->
 

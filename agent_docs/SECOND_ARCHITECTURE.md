@@ -1038,10 +1038,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 793,572 bytes |
-| `ggaction/basic` | 426,412 bytes |
+| `ggaction` | 796,131 bytes |
+| `ggaction/basic` | 426,879 bytes |
 | `ggaction/svg` | 26,000 bytes |
-| `ggaction/graph` | 74,500 bytes |
+| `ggaction/graph` | 75,582 bytes |
 | `ggaction/interaction` | 140,172 bytes |
 | `ggaction/animation` | 344,348 bytes |
 
@@ -5269,3 +5269,32 @@ owner를 그대로 이어간다. Graph의 native prepare/write pair가 원 proje
 확보는 이 제약을 따라야 한다. 현재 범위는 [resource 단계 기록](impl/roadmap9/chart/route-layout-stages.md)에 있다.
 
 Geo sampler는 한 동기 호출에서 full presentation/group admission을 완료한 exact immutable 결과를 지역 계산 closure로 즉시 소비한다. 일반 resolver와 restored-state admission은 기존 전수 검사 경로를 유지하며, 실제 native stream/refinement/output 과금과 aggregate guard·concrete validation·최종 owned 출력은 그대로다. 새 public schema/권한 registry/retained cache는 없다. 구체 채택·동등성 및 artifact 증거는 [sample admission 기록](impl/roadmap9/qualification/GEO_SAMPLE_ADMISSION_PROPOSAL.md)에 둔다.
+
+### Prepared native route invocation
+
+Full의 exact constructor planner binding은 native update resolve/prepare/apply owner도 연결한다.
+현재 공개 연결은 `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData`,
+`editInferredGraphData`이며 나머지 승인된 B union은 후속 의무다.
+Host는 deep-owned native args와 원 generator plan을 준비하고 original prepared WeakMap만
+사용한다. `core/action.js`의 private once-only scope binding은 원 동기 wrapper의 enter부터
+native child, completion theme, result validator, exit까지 범위를 유지한다. Prepare await 동안
+scope는 없고 최종 apply에서 exact plan을 한 번 소비한다. finally가 중첩 문맥을 복원하며
+cleanup 실패는 이미 발생한 invoke 오류를 대체하지 않는다. 공개 action/core async나 일반 replay
+registry는 추가하지 않는다.
+
+테마의 live native metadata는 exact Full class reader와 authentic current invocation에서만
+확보한다. 저장 trace의 closed native first-child 해석은 authored-source inspection 데이터일 뿐
+prepare/resource write 권한이 아니다. 후속 completion siblings는 일반 flatten하지 않는다.
+실제 preflight invocation 비용과 이후 실제 apply 비용을 각각 합산하며, 후보 program은 버린다.
+최초 own-data descriptor scan과 clone의 동기 비용/전체 heap 상계는 별도 잔여이고 현재 ledger
+work가 그 비용을 모두 측정한다는 뜻이 아니다. 정확한 범위·한계와 source evidence는
+[Current](contract/current/EDGE_ROUTES.md#applygraphedgeroutesupdate)와
+[구현 기록](impl/roadmap9/chart/route-b-native-connection.md)이 소유한다.
+
+
+Native resource 후속 연결은 같은 private Full owner에 strict snapshot을 함께 once-bind한다.
+유일한 opaque 예외인 prepared inference는 원 graphInference WeakMap의 exact-base 검산을
+사용하며 기존 wrapped reader의 actionSource/오류 순서는 보존한다. 새 proof를 등록하거나
+외부 handle clone에 권한을 주지 않는다. Resource construction/plan/apply는 원 graph/flow/
+hierarchy owner를 공유하고 원 dependency DAG의 영향 route 전체에 aggregate policy를 적용한다.
+구체 경계와 검증 상태는 [resource 연결 기록](impl/roadmap9/chart/route-native-resource-connection.md)이 소유한다.

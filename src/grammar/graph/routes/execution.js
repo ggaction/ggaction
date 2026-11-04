@@ -32,13 +32,14 @@ export function normalizeRouteNodeLimits(input = {}) {
 
 // One transient ledger covers a native request. It grants no job or resource
 // authority; exact native validation and the existing registries do that.
-export function createRouteLedger(input, signal, initial) {
+export function createRouteLedger(input, signal, initial, policies = []) {
   const execution = normalizeRouteExecution(input);
   let work = 0, candidatePairs = 0, peakSamples = 0, bufferBytes = 0, peakBufferBytes = 0;
   function check() { if (signal !== undefined) AbortSignal.prototype.throwIfAborted.call(signal); }
   function bounded(value, key, label) {
     check();
     if (!Number.isSafeInteger(value) || value < 0 || value > execution[key]) throw new RangeError(`${label} exceeds route execution ${key}.`);
+    for (const policy of policies) if (value > policy.execution[key]) throw new RangeError(`${label} exceeds route ${policy.id} execution ${key}.`);
   }
   check();
   const ledger = Object.freeze({ execution, check,
@@ -59,4 +60,11 @@ export function createRouteLedger(input, signal, initial) {
     ledger.reserve(initial.peakBufferBytes); ledger.release(initial.peakBufferBytes);
   }
   return ledger;
+}
+
+// One request's actual counters must fit every affected resource's policy.
+// Packet bytes remain the individual job/result owner's responsibility.
+export function createRouteRequestLedger(resources, signal, initial) {
+  const policies = resources.map(resource => ({ id: resource.id, execution: normalizeRouteExecution(resource.options.options.execution) }));
+  return createRouteLedger({ policy: "bounded-route@1", ...ROUTE_EXECUTION_MAXIMA }, signal, initial, policies);
 }

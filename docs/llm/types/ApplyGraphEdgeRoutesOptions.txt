@@ -1,1 +1,3 @@
 export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }
+declare const preparedGraphEdgeRoutesUpdate: unique symbol;
+/** An authentic native resource update, bound to its exact completed Full receiver. */

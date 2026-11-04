@@ -136,7 +136,9 @@ test("keeps source imports inside their architectural boundaries", () => {
             path.relative(root, dependency) === path.join("actions", "data", "sourcePlan.js")) ||
           (path.relative(root, file) === path.join("actions", "images", "index.js") && path.relative(root, dependency) === path.join("resources", "imageResource.js")) ||
           (path.relative(root, file) === path.join("actions", "fonts", "index.js") && path.relative(root, dependency) === path.join("resources", "fontResource.js")) ||
-          (path.relative(root, file) === path.join("actions", "graphs", "edgeRoutes.js") && path.relative(root, dependency) === path.join("resources", "graphRoutes.js")) ||
+          ([path.join("actions", "graphs", "edgeRoutes.js"), path.join("actions", "graphs", "resources.js"), path.join("actions", "graphs", "inference.js"),
+            path.join("actions", "flow", "resources.js"), path.join("actions", "hierarchy", "resources.js"), path.join("actions", "layouts", "index.js")].includes(path.relative(root, file)) &&
+            path.relative(root, dependency) === path.join("resources", "graphRoutes.js")) ||
           (path.relative(root, file) === path.join("actions", "graphs", "inference.js") && path.relative(root, dependency) === path.join("resources", "graphInference.js")) ||
           (path.relative(root, file) === path.join("actions", "textMetrics", "index.js") && path.relative(root, dependency) === path.join("resources", "textMetrics.js")) ||
           (path.relative(root, file) === path.join("resources", "textMetricsFull.js") && path.relative(root, dependency) === path.join("actions", "textMetrics", "index.js")) ||

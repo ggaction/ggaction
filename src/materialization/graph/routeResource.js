@@ -39,12 +39,15 @@ export function completedEdgeRouteResource({ id, revision = 0, graph, hierarchy 
 export function* createEdgeRouteResourceStages(resolved, scope) {
   if (scope === undefined) return createEdgeRouteResource(resolved);
   const { program, graph, layout, intent, hierarchy, hierarchyLayout } = resolved;
+  const jobScope = scope.routeJobScope?.() ?? scope;
   const bounded = Object.hasOwn(intent.options, "execution");
   const job = bounded
-    ? yield* edgeRouteJobStages(program, graph, layout, intent, hierarchy, hierarchyLayout, scope)
-    : edgeRouteJob(program, graph, layout, intent, hierarchy, hierarchyLayout, scope);
-  const completion = bounded ? yield Object.freeze({ kind: "edge-route-computation", job })
-    : computeRouteJobWithLedger(job, scope.signal, scope.ledger);
+    ? yield* edgeRouteJobStages(program, graph, layout, intent, hierarchy, hierarchyLayout, jobScope)
+    : edgeRouteJob(program, graph, layout, intent, hierarchy, hierarchyLayout, jobScope);
+  const completion = bounded ? yield Object.freeze({ kind: "edge-route-computation", job, scope: jobScope })
+    : computeRouteJobWithLedger(job, jobScope.signal, jobScope.ledger);
   scope.ledger.check();
-  return completedEdgeRouteResource(resolved, job, completion, { ...scope, includeComputation: false });
+  const resource = completedEdgeRouteResource(resolved, job, completion, { ...jobScope, includeComputation: false });
+  scope.retainResult?.(resource);
+  return resource;
 }

@@ -1,9 +1,11 @@
 import { planEdgeRouteApplication, applyEdgeRouteApplication } from "./routePlan.js";
-import { closedAction } from "../../core/action.js";
+import { closedAction, bindActionInvocationScope } from "../../core/action.js";
 import { createEdgeRouteResource } from "../../materialization/graph/routeResource.js";
 import { normalizeEdgeRouteRequest } from "../../materialization/graph/routeRequest.js";
 import { registerScreenRouteRevision } from "./screenRoutes.js";
-import { readPreparedGraphEdgeRoutes, registerGraphRoutePlanner } from "../../resources/graphRoutes.js";
+import { readPreparedGraphEdgeRoutes, registerGraphRoutePlanner, enterGraphRouteUpdateInvocation, applyPreparedGraphRouteUpdate, readGraphRouteUpdateTheme } from "../../resources/graphRoutes.js";
+import { snapshotNativeRouteEdit, resolveNativeRouteUpdate, prepareNativeRouteUpdate } from "./nativeUpdate.js";
+import { registerNativeRouteThemeReader } from "../theme/nativeRouteUpdate.js";
 import { findStoredResource } from "../../selectors/resources.js";
 
 
@@ -27,8 +29,13 @@ function facade(editing) {
 }
 export const bundleGraphEdges = /* @__PURE__ */ facade(false);
 export const editEdgeRoute = /* @__PURE__ */ facade(true);
+export const applyGraphEdgeRoutesUpdate = /* @__PURE__ */ bindActionInvocationScope(closedAction(
+  { op: "applyGraphEdgeRoutesUpdate", description: "Apply a prepared native edit and its edge routes." },
+  ["prepared", "requestToken"], function (args) { return applyPreparedGraphRouteUpdate(this, args); }
+), enterGraphRouteUpdateInvocation);
 export function registerEdgeRouteActions(ProgramClass) {
-  registerGraphRoutePlanner(ProgramClass, planEdgeRouteApplication);
-  Object.assign(ProgramClass.prototype, { bundleGraphEdges, editEdgeRoute });
+  registerGraphRoutePlanner(ProgramClass, planEdgeRouteApplication, { snapshot: snapshotNativeRouteEdit, resolve: resolveNativeRouteUpdate, prepare: prepareNativeRouteUpdate, apply: applyGraphEdgeRoutesUpdate });
+  Object.assign(ProgramClass.prototype, { bundleGraphEdges, editEdgeRoute, applyGraphEdgeRoutesUpdate });
+  registerNativeRouteThemeReader(ProgramClass, readGraphRouteUpdateTheme);
   registerScreenRouteRevision(ProgramClass);
 }

@@ -1,7 +1,7 @@
-import { createRouteLedger, ROUTE_EXECUTION_MAXIMA } from "../grammar/graph/routes/execution.js";
-import { createRouteDeadline, drainRouteStages } from "./routeStages.js";
+import { createRouteLedger, createRouteRequestLedger, ROUTE_EXECUTION_MAXIMA } from "../grammar/graph/routes/execution.js";
+import { createRouteDeadline, drainRouteStages, drainNativeRouteStages } from "./routeStages.js";
 import { ChartProgram } from "../core/ChartProgram.js";
-import { actionSource } from "../core/action.js";
+import { actionSource, getWrappedActionMetadata, summarizeArgs } from "../core/action.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { ownRecord } from "../core/ownData.js";
 import { rejectUnknownProperties, validateWorkLimit } from "../core/validation.js";
@@ -16,13 +16,18 @@ import { computePreparedRoute, isGraphRouteExecutor } from "./graphRouteExecutor
 
 const prepared = new WeakMap();
 const planners = new WeakMap();
+let invocation;
 
 // Full assembly binds only this native planning function, once per exact class.
 // This lookup is capability wiring; job/result/prepared authority stays below.
-export function registerGraphRoutePlanner(ProgramClass, planner) {
+export function registerGraphRoutePlanner(ProgramClass, planner, update) {
   if (typeof ProgramClass !== "function" || ProgramClass.prototype === undefined || typeof planner !== "function") throw new TypeError("Native route planning requires a program constructor and planner.");
   if (planners.has(ProgramClass)) throw new Error("Native route planning is already registered for this constructor.");
-  planners.set(ProgramClass, planner);
+  if (update !== undefined) {
+    ownRecord(update, "Native route update owner");
+    if (Object.keys(update).length !== 4 || typeof update.snapshot !== "function" || typeof update.resolve !== "function" || typeof update.prepare !== "function" || typeof update.apply !== "function") throw new TypeError("Native route update owner requires snapshot, resolve, prepare and apply.");
+  }
+  planners.set(ProgramClass, { route: planner, update: update === undefined ? undefined : Object.freeze({ ...update }) });
 }
 const active = signal => { if (signal !== undefined) AbortSignal.prototype.throwIfAborted.call(signal); };
 
@@ -31,6 +36,7 @@ export async function prepareGraphEdgeRoutes(program, request, host) {
   if (!(program instanceof ChartProgram) || getBuiltinResourceKindHandler(program.constructor, "edge-route")?.validateStored !== edgeRouteResourceHandler.validateStored || !planners.has(program.constructor)) throw new TypeError("Route preparation requires a Full route-authoring program.");
   request = Object.assign(Object.create(null), ownRecord(request, "Route preparation request"));
   let { kind, ...args } = request;
+  if (kind === "update") return prepareNativeUpdate(program, args, host, started);
   if (!["create", "edit"].includes(kind)) throw new TypeError("Route preparation kind must be create or edit.");
   host = Object.assign(Object.create(null), ownRecord(host, "Route preparation host"));
   const deadline = Object.hasOwn(host, "deadlineMs") && permitsRouteDeadline(program, args, kind === "edit");
@@ -61,7 +67,7 @@ export async function prepareGraphEdgeRoutes(program, request, host) {
       const completion = await computePreparedRoute(executor, job, { signal: lifetime.signal, deadlineMs }, scope);
       lifetime.check();
       resource = completedEdgeRouteResource(resolved, job, completion, { ...scope, includeComputation: false });
-      plan = planners.get(program.constructor)(program, resource, previous, scope);
+      plan = planners.get(program.constructor).route(program, resource, previous, scope);
       lifetime.check(); accounting = ledger.diagnostics();
     } finally { lifetime.close(); }
   } else {
@@ -73,6 +79,107 @@ export async function prepareGraphEdgeRoutes(program, request, host) {
   const handle = cloneAndFreeze({ kind: "edge-route-preparation", request: { kind, id: resource.id }, inputHash: job.inputHash });
   prepared.set(handle, { base: program, constructor: program.constructor, kind, resource, requestToken, signal, plan, accounting });
   return handle;
+}
+
+async function prepareNativeUpdate(program, args, host, started) {
+  if (program.actionStack.length !== 0) throw new TypeError("Native route preparation requires a completed receiver.");
+  rejectUnknownProperties(args, ["edit"], "native route update");
+  const owner = planners.get(program.constructor).update;
+  if (owner === undefined) throw new TypeError("Native route updates require a registered Full owner.");
+  const edit = owner.snapshot(program, args.edit);
+  args = undefined;
+  if (program.applyGraphEdgeRoutesUpdate !== owner.apply) throw new TypeError("Native route apply action was replaced.");
+  const resolved = owner.resolve(program, edit);
+  host = Object.assign(Object.create(null), ownRecord(host, "Route preparation host"));
+  rejectUnknownProperties(host, ["requestToken", "signal", "executor", "deadlineMs"], "route preparation host");
+  const { requestToken, signal, executor, deadlineMs } = host;
+  host = undefined;
+  if (typeof requestToken !== "string" || !requestToken) throw new TypeError("Route preparation requires a nonempty requestToken.");
+  validateWorkLimit(requestToken.length, "Route request token length");
+  if (!isGraphRouteExecutor(executor)) throw new TypeError("Bounded routes require an explicit worker executor.");
+  const lifetime = createRouteDeadline(signal, deadlineMs, started);
+  let handle;
+  try {
+    const ledger = createRouteRequestLedger(resolved.bounded, lifetime.signal);
+    let heldSamples = 0;
+    const scope = { ledger, signal: lifetime.signal,
+      routeJobScope() {
+        const retained = heldSamples;
+        return { ledger: { ...ledger, samples: count => ledger.samples(retained + count) }, signal: lifetime.signal };
+      },
+      retainResult(resource) {
+        let count = 0;
+        for (const route of resource.result.routes) count += route.controlPoints.length + route.commands.length;
+        ledger.samples(heldSamples + count); heldSamples += count;
+      } };
+    lifetime.check(); validateResourceGraph(program, program.constructor, scope);
+    const plan = await drainNativeRouteStages(owner.prepare(program, resolved, scope), lifetime,
+      (job, jobScope) => computePreparedRoute(executor, job, { signal: lifetime.signal, deadlineMs }, jobScope));
+    lifetime.check();
+    handle = cloneAndFreeze({ kind: "edge-route-preparation", request: { kind: "update", action: edit.action, args: summarizeArgs(edit.args) },
+      inputHashes: plan.routeEntries.filter(entry => entry.resource.kind === "edge-route").map(entry => entry.resource.result.inputHash) });
+    const record = { base: program, constructor: program.constructor, kind: "update", requestToken, signal,
+      edit, native: resolved.native, apply: owner.apply, bounded: resolved.bounded, plan, accounting: ledger.diagnostics(),
+      preparationScope: { ledger, signal: lifetime.signal } };
+    // The original registry owns this unpublished handle. Preflight runs the
+    // exact final wrapped path, then discards its candidate program.
+    prepared.set(handle, record);
+    owner.apply.call(program, { prepared: handle, requestToken });
+    lifetime.check();
+    record.accounting = ledger.diagnostics(); delete record.preparationScope;
+    return handle;
+  } catch (error) {
+    if (handle !== undefined) prepared.delete(handle);
+    throw error;
+  } finally { lifetime.close(); }
+}
+
+export function enterGraphRouteUpdateInvocation(program, args) {
+  rejectUnknownProperties(args, ["prepared", "requestToken"], "prepared route update");
+  const record = prepared.get(args.prepared);
+  if (record === undefined || record.kind !== "update") throw new TypeError("Expected an authentic prepared edge route update.");
+  if (record.base !== program || record.constructor !== program.constructor || record.requestToken !== args.requestToken ||
+      program[record.edit.action] !== record.native || program.applyGraphEdgeRoutesUpdate !== record.apply) throw annotateError(new Error("Prepared edge route update belongs to a different receiver, token or action."), { code: "stale-result" });
+  active(record.signal);
+  const scope = record.preparationScope ?? { ledger: createRouteRequestLedger(record.bounded, record.signal, record.accounting), signal: record.signal };
+  scope.ledger.check();
+  const previous = invocation;
+  const current = { record, args, scope, consumed: false, entered: undefined };
+  invocation = current;
+  return outcome => {
+    try {
+      if (outcome !== undefined) {
+        if (!current.consumed) throw new TypeError("Prepared native route plan was not consumed.");
+        validateResourceGraph(outcome.result, program.constructor, scope);
+        scope.ledger.check();
+      }
+    } finally { invocation = previous; }
+  };
+}
+
+export function applyPreparedGraphRouteUpdate(program, args) {
+  const current = invocation;
+  if (current === undefined || current.args !== args || actionSource(program) !== current.record.base) throw new TypeError("Native route apply requires its exact prepared invocation.");
+  current.entered = program;
+  return current.record.native.call(program, current.record.edit.args);
+}
+
+export function readNativeGraphRouteUpdatePlan(program, args, native) {
+  const current = invocation;
+  if (current === undefined) return undefined;
+  if (current.record.native !== native || current.record.edit.args !== args || current.entered !== actionSource(program) ||
+      program.constructor !== current.record.constructor || current.consumed) throw new TypeError("Native route plan belongs to a different invocation.");
+  current.scope.ledger.check(); current.consumed = true;
+  return { plan: current.record.plan, scope: current.scope, base: current.record.base };
+}
+
+export function readGraphRouteUpdateTheme(program, { source, metadata }) {
+  const current = invocation;
+  if (metadata.op !== "applyGraphEdgeRoutesUpdate" || current === undefined) return undefined;
+  if (source !== current.record.base || program.constructor !== current.record.constructor || !current.consumed ||
+      prepared.get(current.args.prepared) !== current.record) throw new TypeError("Native route completion requires its exact prepared invocation.");
+  current.scope.ledger.check();
+  return getWrappedActionMetadata(current.record.native);
 }
 
 export function readPreparedGraphEdgeRoutes(program, handle, requestToken, kind) {

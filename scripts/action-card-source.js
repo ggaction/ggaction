@@ -213,6 +213,7 @@ function actionResources(action, optionNames, intentSource) {
     prerequisites: action.name !== "createProjection" ? ["existing named projection"] : ["explicit native projection type"],
     owns: ["projection resource"], idOptions: [action.name === "createProjection" ? "id" : "target"]
   };
+  if (action.name === "applyGraphEdgeRoutesUpdate") return { prerequisites: ["authentic prepared native route update", "exact original Full unit receiver"], owns: ["native layout revision and affected consumers"], idOptions: [] };
   if (["bundleGraphEdges", "editEdgeRoute"].includes(action.name)) return {
     prerequisites: ["existing graph and compatible node layout"], owns: ["edge-route resource"],
     idOptions: [action.name === "bundleGraphEdges" ? "id" : "target", "graph", "layout"]

@@ -8,6 +8,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add Full `applyGraphEdgeRoutesUpdate` to apply a prepared `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData` or `editInferredGraphData` update to every affected version 2 route through the original native action, with exact receiver, token and signal binding.
+
 - Add explicit native Geo projected-output capacity and bounded concrete path `maxCommands`, preserving default limits and all source vertices through native edits, scenes, rendering and persistence.
 
 - Add native selection-region resize and categorical axis reorder bindings, with readonly `getSelectionHandles()` CSS positions and shared pointer/keyboard command history.

@@ -183,3 +183,8 @@ Evidence: `test/unit/resources/resource-plot-effects.test.js`, `test/unit/resour
 - Preparation은 요청한 inferred resource 한 개만 계산한다. Source revision의 기존 동기 resource closure와 dependency writer를 암묵적인 async transaction으로 바꾸지 않는다. Startup/copy/main validation/commit 비용과 최종 worker SLO·retained heap은 별도 측정한다.
 - 준비 과정에서 검증과 deep ownership이 모두 완료된 동일 completion/job 쌍 및 동일 prepared resource의 저장 검증만 비공개 proof로 재사용한다. 완료 검증 뒤 exact model과 정규화된 limits/execution이 같으면 최초 stored model index도 재사용하며, policy가 다르면 기존 model 검사를 수행한다. 외부 값·구조복제·다른 job·참조교체는 proof를 획득하지 않으며 원래 byte/hash/model 검증을 수행한다. Apply의 생성자·receiver·token·revision·resource envelope·원행·source binding/metric 검증과 abort 선행 검사는 매번 유지된다. Proof는 전송·저장·공개 상태에 포함하지 않는다.
 - Evidence: `test/unit/grammar/graph/inference-budget.test.js`, `test/unit/grammar/graph/inference-job.test.js`, `test/unit/resources/graph-inference-host.test.js`, `test/contracts/inferred-graph-types.test.js`.
+
+
+## Bounded route updates
+
+Explicit v2 route를 소비하는 graph 자원의 native edit는 [prepared native update](EDGE_ROUTES.md#applygraphedgeroutesupdate)를 사용한다. 원 action의 입력/오류/closure 계약은 유지하며, 전체 source dataset/fit/composition 갱신 지원을 뜻하지 않는다.

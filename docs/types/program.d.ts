@@ -1938,6 +1938,14 @@ export interface PreparedGraphEdgeRoutes {
   readonly request: { readonly kind: "create" | "edit"; readonly id: string }; readonly inputHash: string;
 }
 export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }
+declare const preparedGraphEdgeRoutesUpdate: unique symbol;
+/** An authentic native resource update, bound to its exact completed Full receiver. */
+export interface PreparedGraphEdgeRoutesUpdate {
+  readonly [preparedGraphEdgeRoutesUpdate]: true; readonly kind: "edge-route-preparation";
+  readonly request: { readonly kind: "update"; readonly action: "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData"; readonly args: Readonly<Record<string, unknown>> };
+  readonly inputHashes: readonly string[];
+}
+export interface ApplyGraphEdgeRoutesUpdateOptions { readonly prepared: PreparedGraphEdgeRoutesUpdate; readonly requestToken: string; }
 export interface EdgeRoutePoint { readonly x: number; readonly y: number; }
 export interface EdgeRouteVector {
   readonly edgeKey: string; readonly sourceKey: string; readonly targetKey: string;
@@ -6914,6 +6922,7 @@ export class ChartProgram {
   editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
   bundleGraphEdges(options: TargetedOptions<BundleGraphEdgesOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
   editEdgeRoute(options: TargetedOptions<EditEdgeRouteOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
+  applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
   createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
   editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;

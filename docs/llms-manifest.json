@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:b35efe92a47cf145a52f0eeff125a0b87f58f426561fd1e8524fdcc903d14354",
+    "contractId": "sha256:69e55093360720160194bf73cb8da70b10d18e8b440776860c782bcc1680526f",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -2135,8 +2135,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 40190,
-      "sha256": "dd7cf8b9bdeae56c83dc3dbaf20860dabd4cc186656fd6ee3347c8dafafa35dd"
+      "bytes": 40312,
+      "sha256": "ac866e619b4747abe59a6e8af1e20c5b0f2d2150221e9e90e1866e061da1af25"
     },
     {
       "order": 124,
@@ -2274,6 +2274,7 @@
         "createcalendarlayout",
         "bundlegraphedges",
         "editedgeroute",
+        "applygraphedgeroutesupdate",
         "creategeometrydata",
         "editgeometrydata",
         "creategeojoindata",
@@ -2291,8 +2292,8 @@
         "removemarkvisibility",
         "related"
       ],
-      "bytes": 273022,
-      "sha256": "d4ad0982e6b6fa760818f6d34628532fccd881d3b73bfe50dcd81126304ad318"
+      "bytes": 274297,
+      "sha256": "f0eb39db224d49a407ef28c0dd2b330a43126e653cbc046f4710544f7774c155"
     },
     {
       "order": 125,
@@ -2654,8 +2655,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 91292,
-      "sha256": "8afe704714b97674a75b6df520ab42ae4ec94cb6f793a06325a363d8ef58e3e7"
+      "bytes": 92469,
+      "sha256": "def837ab7eb916a4d045627061c53e9903c2ca0d7d9e01c79f20b4de75fc9750"
     },
     {
       "order": 132,
@@ -2676,6 +2677,7 @@
         "type-applydataupdateoptions",
         "type-applyfontresourceoptions",
         "type-applygraphedgeroutesoptions",
+        "type-applygraphedgeroutesupdateoptions",
         "type-applyimageresourceoptions",
         "type-applyinferredgraphoptions",
         "type-applytextmetricsoptions",
@@ -3381,6 +3383,7 @@
         "type-prepareddataupdate",
         "type-preparedfontresource",
         "type-preparedgraphedgeroutes",
+        "type-preparedgraphedgeroutesupdate",
         "type-preparedimageresource",
         "type-preparedinferredgraphdata",
         "type-preparedtextmetrics",
@@ -3594,8 +3597,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 516805,
-      "sha256": "85d55698c68a59c00c650f3588b91ab860490724aaa002ed19c097b1d2733f0d"
+      "bytes": 517959,
+      "sha256": "040a796a82260e48f1096f9bcead95ce1e452afb007cc0fb7484fc32880331e1"
     },
     {
       "order": 133,
@@ -3973,7 +3976,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "9bad51c122aaaae8d42faab808f5afb1262bfec7ffecb220c3ffe34b7055bc72"
+      "sha256": "35487572e2438b3f36ee54413edaaa5878c433dca17ebec718b5f52cdb7b72f4"
     },
     {
       "order": 156,
@@ -4103,10 +4106,11 @@
         "editedgeroute",
         "bind-revise-and-inspect",
         "prepare-in-a-worker",
-        "explicit-bounded-execution"
+        "explicit-bounded-execution",
+        "applygraphedgeroutesupdate"
       ],
-      "bytes": 11078,
-      "sha256": "bbc9a2933f95bda129f18ded9284dca9df7862d7473b06f1b23e1ad375dc88c6"
+      "bytes": 14439,
+      "sha256": "839e13a28641ff63f06135e76223be3e3093a07ba4317ac1346ba02234e4cc7f"
     },
     {
       "order": 164,

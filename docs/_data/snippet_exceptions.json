@@ -2931,5 +2931,12 @@
     "mode": "contextual-fragment",
     "owner": "docs/api/edge-routes.md",
     "reason": "This complete worker module runs in a separate Worker global and produces a completion packet rather than a ChartProgram. Its exact code is checked with the accompanying installed host fragment in browser qualification."
+  },
+  {
+    "id": "docs/api/edge-routes.md#-applygraphedgeroutesupdate-:1",
+    "sha256": "612509051012efb8b1075fbe39e3ce9ab9c6879fe6370906d8e78034965f8904",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/edge-routes.md",
+    "reason": "The fragment needs a completed Full program with version 2 routes, the caller-owned layout l and a served route executor worker. Its exact code is executed from this heading in the installed native-route browser qualification."
   }
 ]

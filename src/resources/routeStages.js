@@ -29,6 +29,23 @@ export async function drainRouteStages(iterator, signal, check = () => active(si
   } finally { iterator.return(); }
 }
 
+export async function drainNativeRouteStages(iterator, lifetime, compute) {
+  let completion;
+  try {
+    while (true) {
+      lifetime.check();
+      const next = iterator.next(completion); completion = undefined;
+      lifetime.check();
+      if (next.done) return next.value;
+      if (next.value === undefined) await nextRouteTurn(lifetime.signal);
+      else {
+        if (next.value.kind !== "edge-route-computation") throw new TypeError("Unknown native route continuation.");
+        completion = await compute(next.value.job, next.value.scope);
+      }
+    }
+  } finally { iterator.return(); }
+}
+
 export function createRouteDeadline(signal, milliseconds, started = performance.now()) {
   active(signal);
   if (!Number.isSafeInteger(milliseconds) || milliseconds < 1 || milliseconds > 30_000) throw new RangeError("Route deadlineMs must be a positive safe integer at most 30000.");

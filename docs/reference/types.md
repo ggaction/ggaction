@@ -65,6 +65,7 @@ interface ChartProgramActions {
   editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
   bundleGraphEdges(options: TargetedOptions<BundleGraphEdgesOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
   editEdgeRoute(options: TargetedOptions<EditEdgeRouteOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
+  applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
   createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
   editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
@@ -621,11 +622,26 @@ Related types: [`PreparedFontResource`](#type-preparedfontresource).
 
 ```typescript
 export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }
+declare const preparedGraphEdgeRoutesUpdate: unique symbol;
+/** An authentic native resource update, bound to its exact completed Full receiver. */
 ```
 
 </details>
 
 Related types: [`PreparedGraphEdgeRoutes`](#type-preparedgraphedgeroutes).
+
+### `ApplyGraphEdgeRoutesUpdateOptions` {#type-applygraphedgeroutesupdateoptions}
+
+<details markdown="1">
+<summary>Expand ApplyGraphEdgeRoutesUpdateOptions</summary>
+
+```typescript
+export interface ApplyGraphEdgeRoutesUpdateOptions { readonly prepared: PreparedGraphEdgeRoutesUpdate; readonly requestToken: string; }
+```
+
+</details>
+
+Related types: [`PreparedGraphEdgeRoutesUpdate`](#type-preparedgraphedgeroutesupdate).
 
 ### `ApplyImageResourceOptions` {#type-applyimageresourceoptions}
 
@@ -13281,6 +13297,21 @@ export interface PreparedFontResource<Kind extends "create" | "replace" = "creat
 export interface PreparedGraphEdgeRoutes {
   readonly [preparedGraphEdgeRoutes]: true; readonly kind: "edge-route-preparation";
   readonly request: { readonly kind: "create" | "edit"; readonly id: string }; readonly inputHash: string;
+}
+```
+
+</details>
+
+### `PreparedGraphEdgeRoutesUpdate` {#type-preparedgraphedgeroutesupdate}
+
+<details markdown="1">
+<summary>Expand PreparedGraphEdgeRoutesUpdate</summary>
+
+```typescript
+export interface PreparedGraphEdgeRoutesUpdate {
+  readonly [preparedGraphEdgeRoutesUpdate]: true; readonly kind: "edge-route-preparation";
+  readonly request: { readonly kind: "update"; readonly action: "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData"; readonly args: Readonly<Record<string, unknown>> };
+  readonly inputHashes: readonly string[];
 }
 ```
 
