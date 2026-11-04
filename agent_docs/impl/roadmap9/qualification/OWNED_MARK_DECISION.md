@@ -6,7 +6,7 @@
 - [x] 결정 기록과 구현(`src/core/immutable.js`).
 - [x] 의미 반례 시험 `test/unit/core/owned-mark.test.js`.
 - [x] 전체 coverage(일반 10543/10543 포함) 97.42/95.69/99.36%, critical floor 785, browser 529/529, render 513/513, 같은 archive `acc0dfc5…` Node20/22/24 설치 소비자 통과. Gallery 전체 페이지 캡처 한계(세로 364,606px)로 실패하던 기존 harness도 수리했다.
-- [ ] 원100k point·data, 10k partition 재측정.
+- [x] 원100k point·data, 10k partition 재측정(아래).
 
 ## 결정
 
@@ -63,3 +63,21 @@ ggaction 없이 V8만으로도 재현된다(`point-rehash-diagnosis-evidence/ws-
 | --- | --- | --- | --- |
 | editable load | 1,952 ms | 1,929 ms | 855 ms |
 | source revise | 22,804 ms | 19,177 ms | 3,198 ms |
+
+## 재측정 — archive `acc0dfc5…`(source `45fcd9077`)
+
+원100k point 같은 프로세스(원 phased harness, 원 입력·limits): prepare 53.5→**15.2s**, 최초 offline 95.9→**16.0s**, rebase 48.2→**12.8s**, rebase-offline 68.8→**19.6s**, 최종 `all-native-offline-rebase-exact`.
+
+정본 `scripts/benchmark-native.js`(Chromium, 5 warmup + 30 측정, DPR1/DPR2 중 큰 값 P95, ms). 사용자 GUI 앱이 켜진 상태라 최종 exclusive 측정이 아니다.
+
+| workload | 기준(1k/10k/100k 또는 100/1k/10k) | 측정 | 판정 |
+| --- | --- | --- | --- |
+| points hit | 8/12/20 | 0.1/0.1/0.4 | 통과 |
+| points full frame | 16.7/33/50 | 3.4/27.7/318.8 | 100k 미달 |
+| partition layout | 10/50/300 | 2.4/19.5/197.7 | 통과 |
+| partition preview | 33/33/33 | 2.8/21.3/239.9 | 10k 미달 |
+| data load | 100/500/3000 | 6.6/59.2/987.9 | 통과 |
+| data revise | 100/500/3000 | 26.3/278.8/2804.9 | 통과 |
+| data blocking slice | 50/50/50 | 26.3/278.8/2804.9 | 10k·100k 미달 |
+
+남은 미달의 성격: points 100k는 정본 workload가 v4(명시 용량) 경로를 쓴다. format6 batch 경로의 단일 sample은 93–96ms였다. Partition 10k preview는 frame 출력 표현 자체가 비용이다. Data blocking slice는 동기 load/revise 전체가 하나의 slice로 측정된다.
