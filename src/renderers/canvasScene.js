@@ -21,8 +21,29 @@ function position(properties, dx, dy) {
   if (result.commands) result.commands = result.commands.map(command => position(command, dx, dy));
   return result;
 }
+// An owned array is a frozen exact value, so one full structure check stays valid
+// for every later frame that reuses it. Caller arrays are checked every time.
+const checkedOwnedRunKeys = new WeakSet();
+// The exact key tuple of a fully checked owned scene, one slot per anchor run.
+// A later scene skips only the cross-entry uniqueness pass when every entry is
+// owned and its whole tuple matches exactly; any miss runs every check again.
+const uniqueKeyTuples = new WeakMap();
+function ownedKeyTuple(entries) {
+  if (!isOwned(entries)) return undefined;
+  const tuple = [];
+  for (const entry of entries) {
+    if (!isOwned(entry)) return undefined;
+    if (entry.kind === "single" && isOwned(entry.node)) tuple.push(entry.node.key);
+    else if (entry.kind === "circle-run" && checkedOwnedRunKeys.has(entry.keys)) tuple.push(entry.keys);
+    else return undefined;
+  }
+  return tuple.some(part => typeof part === "object") ? tuple : undefined;
+}
 function* concreteEntries(scene) {
   if (scene.version === 2) { for (const node of scene.nodes) yield { node }; return; }
+  const tuple = ownedKeyTuple(scene.entries), anchor = tuple?.find(part => typeof part === "object");
+  const known = tuple !== undefined && uniqueKeyTuples.get(anchor), unique = known !== undefined && known !== false &&
+    known.length === tuple.length && known.every((part, index) => part === tuple[index]);
   const logicalKeys = new Set();
   for (let entryIndex = 0; entryIndex < scene.entries.length; entryIndex++) {
     const entry = scene.entries[entryIndex];
@@ -30,17 +51,21 @@ function* concreteEntries(scene) {
     if (entry.kind === "single") { node = entry.node; keys = [node.key]; }
     else if (entry.kind === "circle-run") {
       validateConcreteGraphicProperties("circle-batch", entry.properties);
-      ownArray(entry.keys, "Circle run keys");
+      if (!checkedOwnedRunKeys.has(entry.keys)) {
+        ownArray(entry.keys, "Circle run keys");
+        if (isOwned(entry.keys)) checkedOwnedRunKeys.add(entry.keys);
+      }
       if (entry.keys.length !== entry.properties.x.length) throw new TypeError("Circle run keys must follow every coordinate row.");
       node = { key: `animation/node/${entryIndex}`, type: "circle-batch", properties: entry.properties,
         offset: entry.offset, clip: entry.clip, clips: entry.clips }; keys = entry.keys;
     } else throw new TypeError("Unknown Canvas scene entry kind.");
-    for (const key of keys) {
+    if (!unique) for (const key of keys) {
       if (typeof key !== "string" || logicalKeys.has(key)) throw new TypeError("Canvas scene nodes require unique keys.");
       logicalKeys.add(key);
     }
     yield { node, graphicId: `animation/node/${entryIndex}`, batch: entry.kind === "circle-run" };
   }
+  if (tuple !== undefined && !unique) uniqueKeyTuples.set(anchor, tuple);
 }
 function positionBatch(properties, dx, dy) {
   if (!dx && !dy) return properties;

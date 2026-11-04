@@ -50,6 +50,21 @@ function checkPoints(programOrFrame, rows, denominator = 1) {
   nodes.forEach((node, i) => { close(node.properties.x, 20 + 360 * rows[i].x / denominator); close(node.properties.y, 380 - 360 * rows[i].y); check(node.properties.radius > 0, 'point radius'); });
   return { count: nodes.length, first: nodes[0].properties, last: nodes.at(-1).properties };
 }
+// Completed format6 frames store point rows as circle-run columns; check the same
+// coordinates, radius and semantic interpolation decision for every row.
+function checkBatchedPoints(frame, rows, denominator = 1, interpolated = true) {
+  let count = 0;
+  for (const entry of frame.scene.entries) {
+    if (entry.kind === 'single') { check(entry.node.type === 'rect', 'only the background is a single node'); continue; }
+    check(entry.kind === 'circle-run' && (interpolated ? entry.decisions?.kernel === 'cartesian-point' : entry.decisions === null), interpolated ? 'every point must use semantic position interpolation' : 'exact batch endpoints carry no decisions');
+    for (let row = 0; row < entry.keys.length; row++) {
+      close(entry.properties.x[row], 20 + 360 * rows[count].x / denominator); close(entry.properties.y[row], 380 - 360 * rows[count].y);
+      check(entry.properties.radius[row] > 0, 'point radius'); count++;
+    }
+  }
+  check(count === rows.length, 'all point rows must be drawn');
+  return { count, batched: true };
+}
 function hitStage(program, queries, owner, rowKeys, preparation) {
   return () => {
     const session = createInteractionSession({ program, bindings: [], ...(preparation === undefined ? {} : { hitPreparation: preparation }) });
@@ -69,11 +84,14 @@ function hitStage(program, queries, owner, rowKeys, preparation) {
     };
   };
 }
-function samplingStage(from, to, metric, validate, options = sampleOptions) {
+function samplingStage(from, to, metric, validate, options = sampleOptions, endpoints) {
   return () => {
     const plan = planTransition({ from, to, options });
-    check(sampleTransition(plan, 0).graphicSpec === from.graphicSpec, 'exact start graphic identity');
-    check(sampleTransition(plan, 100).graphicSpec === to.graphicSpec, 'exact end graphic identity');
+    if (endpoints) endpoints(sampleTransition(plan, 0), sampleTransition(plan, 100));
+    else {
+      check(sampleTransition(plan, 0).graphicSpec === from.graphicSpec, 'exact start graphic identity');
+      check(sampleTransition(plan, 100).graphicSpec === to.graphicSpec, 'exact end graphic identity');
+    }
     return { run() { const result = time(() => sampleTransition(plan, 50)); return { metrics: { [metric]: result.elapsed }, frame: result.value }; },
       validate(result) { return validate(result.frame); } };
   };
@@ -102,10 +120,15 @@ export function prepareNativeWorkload(kind, count, input = nativeWorkloadInput(k
     if (kind === 'points') {
       const indices = [0, Math.floor(count / 2), count - 1], rows = program.semanticSpec.datasets.find(data => data.id === 'rows').rowKeys;
       stages.push({ name: 'css-hit', prepare: hitStage(program, indices.map(i => [20 + 360 * input[i].x, 380 - 360 * input[i].y]), 'points', indices.map(i => rows[i]), count === 100000 ? { maxSceneNodes: count + 1, maxWork: 128000000 } : undefined) });
+      // The 100k class uses the documented explicit format6 batch path.
+      const batched = count >= 100000;
       stages.push({ name: 'full-frame', prepare: () => samplingStage(program, program.editScale({ id: 'x', domain: [0, 2], nice: false }), 'fullFrameSampleMs', frame => {
+        if (batched) return checkBatchedPoints(frame, input, 1.5);
         check(frame.decisions.filter(value => value.kernel === 'cartesian-point').length === count, 'every point must use semantic position interpolation');
         return checkPoints(frame, input, 1.5);
-      }, count >= 10000 ? { ...sampleOptions, maxEndpointNodes: 2 * (count + 1), maxOutputNodes: count + 1 } : sampleOptions)() });
+      }, count >= 10000 ? { ...sampleOptions, maxEndpointNodes: 2 * (count + 1), maxOutputNodes: count + 1, ...(batched ? { formatVersion: 6 } : {}) } : sampleOptions,
+      // Batch endpoints are completed frames rather than the original graphic objects.
+      batched ? (start, end) => { checkBatchedPoints(start, input, 1, false); checkBatchedPoints(end, input, 2, false); } : undefined)() });
     } else {
       const saved = serializeProgram(program), revised = input.map(row => ({ ...row, x: row.x / 2 }));
       stages.push({ name: 'editable-load', prepare: () => ({ run() { const r = time(() => deserializeProgram(saved)); return { metrics: { loadMs: r.elapsed, blockingSliceMs: r.elapsed }, program: r.value }; }, validate: r => checkPoints(r.program, input) }) });

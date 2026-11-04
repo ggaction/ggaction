@@ -9,8 +9,8 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 427_892, // Exact ownership marks: Node20/24 427,892 gzip bytes.
   "ggaction/svg": 26_554, // Exact ownership marks: Node20/24 26,554 gzip bytes.
   "ggaction/graph": 75_883, // Exact ownership marks: Node20/24 75,883 gzip bytes.
-  "ggaction/animation": 354_181, // Exact ownership marks: Node20/24 354,181 gzip bytes.
-  "ggaction/interaction": 142_775 // Exact ownership marks: Node20/24 142,775 gzip bytes.
+  "ggaction/animation": 354_377, // Owned scene key reuse: Node20/24 354,377 gzip bytes.
+  "ggaction/interaction": 142_982 // Owned scene key reuse: Node20/24 142,982 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {

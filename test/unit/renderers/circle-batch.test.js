@@ -142,3 +142,26 @@ test('scene3 compiler rejects ambiguous row identity and retains translated path
   assert.throws(() => canvasSceneProgram({ version: 2, width: 100, height: 80, nodes: [batchNode] }), /Canvas scene nodes/);
   assert.throws(() => canvasSceneProgram({ ...scene, entries: [{ kind: 'single', node: batchNode, decision: null }] }), /Canvas scene nodes/);
 });
+
+test('owned run checks are reused only for exact owned keys and whole key tuples', async () => {
+  const { cloneAndFreeze } = await import('../../../src/core/immutable.js');
+  const run = (keys, x) => ({ kind: 'circle-run', keys, topology: 'circle', offset: [0, 0], clip: [0, 0, 100, 80], clips: [[0, 0, 100, 80]],
+    properties: { x, y: x.map(() => 5), radius: x.map(() => 1), appearance: { fill: 'red' } }, decisions: null });
+  const scene = entries => cloneAndFreeze({ version: 3, width: 100, height: 80, entries });
+  const a = cloneAndFreeze(['a', 'b']), b = cloneAndFreeze(['c']), clash = cloneAndFreeze(['b']);
+  // Repeated owned scenes with the same arrays keep compiling the same output.
+  const first = canvasSceneProgram(scene([run(a, [1, 2]), run(b, [3])])).graphicSpec;
+  for (let i = 0; i < 3; i++) assert.deepEqual(canvasSceneProgram(scene([run(a, [1, 2]), run(b, [3])])).graphicSpec, first);
+  // A different tuple with the same anchor still checks cross-run uniqueness.
+  assert.throws(() => canvasSceneProgram(scene([run(a, [1, 2]), run(clash, [3])])), /unique keys/);
+  assert.throws(() => canvasSceneProgram(scene([run(a, [1, 2]), run(b, [3]), run(clash, [4])])), /unique keys/);
+  // Caller arrays and caller scenes keep every check on every call.
+  const caller = ['a', 'b'];
+  canvasSceneProgram({ version: 3, width: 100, height: 80, entries: [run(caller, [1, 2])] });
+  Object.defineProperty(caller, 1, { get: () => 'b', enumerable: true, configurable: true });
+  assert.throws(() => canvasSceneProgram({ version: 3, width: 100, height: 80, entries: [run(caller, [1, 2])] }));
+  assert.throws(() => canvasSceneProgram({ version: 3, width: 100, height: 80, entries: [run(['a', 'a'], [1, 2])] }), /unique keys/);
+  assert.throws(() => canvasSceneProgram({ version: 3, width: 100, height: 80, entries: [run(a, [1, 2]), run(['a'], [3])] }), /unique keys/);
+  // Key count still has to follow coordinate rows for a reused owned array.
+  assert.throws(() => canvasSceneProgram(scene([run(a, [1])])), /follow every coordinate row/);
+});
