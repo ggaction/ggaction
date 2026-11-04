@@ -1,7 +1,7 @@
 import { clippedBoundaryDistance, clippedBoundaryPoint } from "./hitClipDistance.js";
 import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
-import { calculateFlattenedPathCommands, pathFillContains, pathStrokeDistance, calculateArcCubicCommands, resolvePathCommandBounds } from "./pathGeometry.js";
+import { calculateFlattenedPathCommands, preparePathQueries, calculateArcCubicCommands, resolvePathCommandBounds } from "./pathGeometry.js";
 import { validatePathCommands, validatePathFillRule, MAX_PATH_COMMANDS } from "./pathCommands.js";
 import { resolveHitCoordinates, transformHitPoint } from "./hitCoordinates.js";
 import { prepareHitStroke, calculateHitStroke, hitStrokePreparationWork, MAX_HIT_STROKE_WORK } from "./hitStroke.js";
@@ -143,14 +143,25 @@ function unionBounds(primitives) {
   }
   return bounds;
 }
+// A prepared part's commands are private and immutable, so one complete
+// flattening serves every later query. Failed flattening is never stored.
+const partQueries = new WeakMap();
+function queries(part) {
+  let prepared = partQueries.get(part);
+  if (prepared === undefined) {
+    prepared = preparePathQueries(part.commands, part.maxCommands === undefined ? {} : { maxCommands: part.maxCommands });
+    partQueries.set(part, prepared);
+  }
+  return prepared;
+}
 function contains(part, point) {
   if (part.circle) {
     const local = coordinate(point, part.transform).localPoint;
     return local !== null && part.circle.radius > 0 && Math.hypot(local.x - part.circle.x, local.y - part.circle.y) <= part.circle.radius;
   }
-  return pathFillContains(part.commands, point, { fillRule: part.fillRule, ...(part.maxCommands === undefined ? {} : { maxCommands: part.maxCommands }) });
+  return queries(part).fillContains(point, part.fillRule);
 }
-function boundaryDistance(part, point) { return contains(part, point) ? 0 : pathStrokeDistance(part.commands, point, part.maxCommands === undefined ? undefined : { maxCommands: part.maxCommands }); }
+function boundaryDistance(part, point) { return contains(part, point) ? 0 : queries(part).strokeDistance(point); }
 
 /** Prepare explicit geometry and paint footprints; text boxes are supplied by the metrics owner. */
 export function prepareHitShape(input, pathGeometry) {

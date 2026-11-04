@@ -5,7 +5,8 @@
 - [x] 10k 한 frame 귀속(Node source).
 - [x] 검증 의미를 바꾸지 않는 네 가지 비용 제거.
 - [x] 전체 검증과 정본 Geo benchmark(archive `864ae6c7…`).
-- [ ] 10k 33ms, 100k 50ms. 100k hit 20ms.
+- [x] 100k hit 20ms(아래 hit query 절).
+- [ ] Camera preview 10k 33ms, 100k 50ms.
 
 ## 수리
 
@@ -33,3 +34,13 @@ Node source 10k 한 frame 약 160 → 64ms, 100k 약 700ms. 정본 benchmark(Chr
 ## 다음
 
 10k frame(약 64ms)은 admission 약 29ms, 투영 약 31ms(선분 세분 16ms), 물질화 약 11ms로 나뉜다. 100k는 frame마다 path 명령 객체 10만 개를 만들고 검증하는 표현 자체가 비용이다. Points의 format6처럼 명령을 열(batch)로 다루는 표현을 검토해야 한다.
+
+## Hit query의 평탄화 재사용
+
+Geo 100k hit P95는 21.1ms로 기준 20ms를 근소하게 넘었다. Hit index가 후보 segment를 줄여도 `queryIndexedShape`의 채우기 포함 판정과 경계 거리가 query마다 `pathFillContains`/`pathStrokeDistance`를 통해 part의 명령 10만 개를 다시 평탄화·검증했다.
+
+준비된 part의 명령은 private·불변이므로 `grammar/hitShapes.js`는 첫 query에서 `preparePathQueries`(`grammar/pathGeometry.js`)로 한 번 평탄화한 결과를 part별로 재사용한다. 매 query의 점 검사와 fill rule 검사는 그대로이고, 평탄화가 실패하면 기록하지 않아 같은 오류를 계속 낸다. 공개 `pathFillContains`/`pathStrokeDistance`는 기존대로 매번 평탄화한다.
+
+반례: `test/unit/grammar/hit-focus.test.js`의 `repeated queries on one prepared path match freshly prepared shapes`(nonzero/evenodd, slop 0/5, 3회 반복, 비유한 점 거부). Hit·path owner 387/387, hitShapes 100/96.89/100, pathGeometry 98.53/97.67/100.
+
+정본 benchmark(archive `242a7cc3…`): Geo hit 1k/10k/100k 0.2/0.4/1.9ms(이전 0.7/2.5/21.1), camera 5.6/58.3/574.3ms(변화 없음). Points 전 크기 통과 유지. 같은 source의 전체 coverage(일반 10549/10549) 97.42/95.69/99.36%, critical floor 785, browser 529/529, render 513/513, 같은 archive Node20/22/24 통과.

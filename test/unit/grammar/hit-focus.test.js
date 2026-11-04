@@ -57,3 +57,15 @@ test('weighted focus uses the first admitted source and shares cumulative work a
  assert.equal(hitShape(overlap,{x:40,y:10},{slop:0}).hit,true);
  assert.equal(hitShape(overlap,{x:100,y:10},{slop:0}).hit,false);
 });
+
+test('repeated queries on one prepared path match freshly prepared shapes', () => {
+  const geometry = { type: 'path', commands: [{op:'M',x:0,y:0},{op:'L',x:60,y:0},{op:'L',x:60,y:40},{op:'L',x:0,y:40},{op:'Z'},{op:'M',x:20,y:10},{op:'L',x:40,y:10},{op:'L',x:40,y:30},{op:'L',x:20,y:30},{op:'Z'}] };
+  const points = [{x:5,y:5},{x:30,y:20},{x:61,y:20},{x:200,y:200},{x:20,y:10},{x:-3,y:-4}];
+  for (const fillRule of ['nonzero', 'evenodd']) {
+    const path = { ...geometry, fillRule }, reused = shape(path);
+    for (let round = 0; round < 3; round++) for (const point of points) for (const slop of [0, 5]) {
+      assert.deepEqual(hitShape(reused, point, { slop }), hitShape(shape(path), point, { slop }));
+    }
+  }
+  assert.throws(() => hitShape(shape({ ...geometry, fillRule: 'nonzero' }), { x: Number.NaN, y: 0 }, { slop: 0 }));
+});

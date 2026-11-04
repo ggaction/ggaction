@@ -248,8 +248,22 @@ function requirePoint(query) {
 
 export function pathFillContains(commands, query, { fillRule = "nonzero", ...options } = {}) {
   requirePoint(query); validatePathFillRule(fillRule);
+  return fillContains(requireFlattened(commands, options), query, fillRule);
+}
+
+// Internal hit queries reuse one complete flattening of their private immutable
+// commands; every query still checks its point and fill rule.
+export function preparePathQueries(commands, options) {
+  const geometry = requireFlattened(commands, options);
+  return Object.freeze({
+    fillContains(query, fillRule = "nonzero") { requirePoint(query); validatePathFillRule(fillRule); return fillContains(geometry, query, fillRule); },
+    strokeDistance(query) { requirePoint(query); return strokeDistance(geometry, query); }
+  });
+}
+
+function fillContains(geometry, query, fillRule) {
   let winding = 0, crossings = 0;
-  for (const { points } of requireFlattened(commands, options).subpaths) {
+  for (const { points } of geometry.subpaths) {
     const origin = points[0], distinct = points.find(p => p.x !== origin.x || p.y !== origin.y);
     if (!distinct || !points.some(p => {
       const scale = Math.max(Number.MIN_VALUE, Math.abs(origin.x), Math.abs(origin.y), Math.abs(distinct.x), Math.abs(distinct.y), Math.abs(p.x), Math.abs(p.y));
@@ -270,8 +284,12 @@ export function pathFillContains(commands, query, { fillRule = "nonzero", ...opt
 
 export function pathStrokeDistance(commands, query, options) {
   requirePoint(query);
+  return strokeDistance(requireFlattened(commands, options), query);
+}
+
+function strokeDistance(geometry, query) {
   let distance = Infinity;
-  for (const { points, hasSegments } of requireFlattened(commands, options).subpaths) {
+  for (const { points, hasSegments } of geometry.subpaths) {
     if (!hasSegments) continue;
     for (let i = 1; i < points.length; i++) distance = Math.min(distance, segmentDistance(query, points[i - 1], points[i]));
   }
