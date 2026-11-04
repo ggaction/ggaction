@@ -1,12 +1,15 @@
-import {cloneAndFreeze} from "../../core/immutable.js";
+import {cloneAndFreeze,freezeOwned} from "../../core/immutable.js";
 import {ownArray,ownRecord} from "../../core/ownData.js";
 import {rejectUnknownProperties,validateNonNegativeFinite} from "../../core/validation.js";
 import {finiteMidpoint,interpolateNumber} from "../numeric.js";
-import {partitionRadius,preparePartitionRadius,validatePartitionInterval} from "./partitionMapping.js";
+import {partitionRadius,preparePartitionRadius,validatePartitionInterval,validatePartitionIntervalRange} from "./partitionMapping.js";
 
 // Canonical mathematical coordinates, before one screen/rotation adapter.
 function validateBendPoint(point){
  ownRecord(point,"Partition bend point");rejectUnknownProperties(point,["u","v","bend"],"partition bend point");
+ validateBendRange(point);
+}
+function validateBendRange(point){
  for(const key of["u","v","bend"])if(!Number.isFinite(point[key])||point[key]<0||point[key]>1)throw new RangeError(`Partition bend ${key} must lie from zero through one.`);
 }
 function admitBendOptions(options){
@@ -43,17 +46,28 @@ export function preparePartitionBendCalculation(point,options){
  const radial=preparePartitionRadius(point.v,{innerRadius:options.innerRadius,outerRadius:options.outerRadius,radiusPolicy:options.radiusPolicy});
  const bend=point.bend,tangentKernel={width:options.width,sweep:options.sweep};
  const calculate=input=>{validateBendPoint(input);return bendCoordinates(input,width,height,sweep,radial(input.v));};
- return {point:calculate,inset(cell,gap){
+ // Owners pass only {u,v,bend} literals they built themselves to `literal`:
+ // structure is own data by construction and every range is still checked.
+ const literal=input=>{validateBendRange(input);return bendCoordinates(input,width,height,sweep,radial(input.v));};
+ return {point:calculate,literal,inset(cell,gap){
   validateCellGap(cell,gap);
-  return insetCoordinates(cell,tangentKernel,bend,gap,v=>calculate({u:.5,v,bend}).y);
+  return insetCoordinates(cell,tangentKernel,bend,gap,v=>literal({u:.5,v,bend}).y);
+ },insetLiteral(cell,gap){
+  // An owner's {u0,u1,v0,v1} literal and a gap pair it admitted with admitPartitionBendGap.
+  validatePartitionIntervalRange(cell);
+  return insetCoordinates(cell,tangentKernel,bend,gap,v=>literal({u:.5,v,bend}).y);
  }};
+}
+export function admitPartitionBendGap(gap){
+ ownArray(gap,"Partition bend gaps");
+ if(gap.length!==2)throw new TypeError("Partition bend gaps require two distances.");
+ gap.forEach(value=>validateNonNegativeFinite(value,"Partition bend gap"));
+ return freezeOwned([gap[0],gap[1]]);
 }
 
 // Insets use current CSS distances after bending, never endpoint pixel geometry.
 function validateCellGap(cell,gap){
- validatePartitionInterval(cell);ownArray(gap,"Partition bend gaps");
- if(gap.length!==2)throw new TypeError("Partition bend gaps require two distances.");
- gap.forEach(value=>validateNonNegativeFinite(value,"Partition bend gap"));
+ validatePartitionInterval(cell);admitPartitionBendGap(gap);
 }
 export function insetPartitionBendCell(cell,kernel,bend,gap){
  validateCellGap(cell,gap);

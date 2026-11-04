@@ -1,6 +1,6 @@
 import { validateAnimationResourceWork } from "./resources.js";
 import { prepareAnimationAppearance } from "./appearance.js";
-import { cloneAndFreeze, isOwned } from "../core/immutable.js";
+import { cloneAndFreeze, freezeOwned, isOwned } from "../core/immutable.js";
 import { validateWorkLimit } from "../core/validation.js";
 import { preparePartitionAnimationState, samplePartitionAnimationState } from "../grammar/animation/partitionState.js";
 import { interpolateNumber } from "../grammar/animation/values.js";
@@ -9,7 +9,15 @@ import { sameConcreteValue, clipInterpolationCompatible } from "./concrete.js";
 
 export const emptyAnimationPartitions = length => Object.freeze({ groups: Object.freeze([]), items: Object.freeze(Array(length).fill(null)) });
 const geometryKeys = new Set(["x", "y", "width", "height", "commands", "fillBounds"]);
-export const partitionAnimationPaint = properties => Object.fromEntries(Object.entries(properties).filter(([key]) => !geometryKeys.has(key)));
+const ownedPaint = new WeakMap();
+const paintOf = properties => Object.fromEntries(Object.entries(properties).filter(([key]) => !geometryKeys.has(key)));
+// An owned endpoint's paint never changes, so its filtered copy is reused.
+export const partitionAnimationPaint = properties => {
+  if (!isOwned(properties)) return paintOf(properties);
+  let paint = ownedPaint.get(properties);
+  if (paint === undefined) ownedPaint.set(properties, paint = freezeOwned(paintOf(properties)));
+  return paint;
+};
 function roles(state) {
   const values = state.groups.map(() => new Set());
   for (const item of state.items) if (item !== null) values[item.group].add(JSON.stringify([item.key, item.role]));

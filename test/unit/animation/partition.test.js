@@ -159,3 +159,7 @@ test('only the exact prepared track skips repeated admission', () => {
  assert.throws(()=>sample({...copy,version:PARTITION_INTERPOLATION_VERSION+1},.5),/version/);
  assert.throws(()=>sample(plan,1.5),/progress/i);
 });
+test('interpolation nodes keep their range and order checks after in-place admission',()=>{
+ for(const patch of [{u1:2},{u0:-1e-9},{v0:Number.NaN},{u0:.8,u1:.2},{v0:.9,v1:.1}])assert.throws(()=>prepare(endpoint(0,{nodes:[node('root',null,patch)]}),endpoint(1)),/zero through one|ordered|finite/);
+ assert.throws(()=>prepare(endpoint(0,{nodes:[node('root',null,{extra:1})]}),endpoint(1)));
+});

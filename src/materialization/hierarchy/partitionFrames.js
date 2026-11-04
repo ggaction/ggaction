@@ -7,7 +7,7 @@ import { resolveCoordinatePolarFrame } from "../coordinateBounds.js";
 import { createPartitionBendAdapter, partitionBendSegments } from "../../grammar/hierarchy/partitionAdapter.js";
 import { interpolateNumber } from "../../grammar/numeric.js";
 import { preparePartitionInterpolation, samplePartitionInterpolation } from "../../grammar/hierarchy/partitionInterpolation.js";
-import { partitionBendCellGeometry } from "../../grammar/hierarchy/partitionCell.js";
+import { preparePartitionBendCells } from "../../grammar/hierarchy/partitionCell.js";
 import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
 import { pathFillContains, pathStrokeDistance } from "../../grammar/pathGeometry.js";
 import { resolvePartitionPlot } from "./partitionPlot.js";
@@ -86,9 +86,6 @@ function frameState(endpoint, adapter, bend) {
         u0: visible ? cell.u0 : 0, u1: visible ? cell.u1 : 0, v0, v1 };
     }) };
 }
-function bentCell(node, state, segments) {
-  return partitionBendCellGeometry(Object.fromEntries(["u0", "u1", "v0", "v1"].map(key => [key, node[key]])), state.frame, state.bend, segments);
-}
 
 export function samplePartitionFrame(plan, progress, options = {}) {
   ownRecord(options, "Partition frame sample options"); rejectUnknownProperties(options, ["reducedMotion"], "partition frame sample");
@@ -105,7 +102,8 @@ export function samplePartitionFrame(plan, progress, options = {}) {
   const segments = partitionBendSegments({ compatible: true, kernel: current.frame.kernel }, current.bend);
   const nodes = current.nodes.filter(node => node.visible);
   validateWorkLimit(nodes.length * (3 * 64 + 2 * (segments + 1) + 1), "Partition frame path work");
-  const cells = new Map(nodes.map(node => [node.key, bentCell(node, current, segments)]));
+  let cell;
+  const cells = new Map(nodes.map(node => [node.key, (cell ??= preparePartitionBendCells(current.frame, current.bend, segments)).node(node)]));
   const graphics = rectangle.graphics.flatMap(graphic => {
     const cell = cells.get(graphic.identity.key), properties = paint(graphic);
     if (!cell) return [];

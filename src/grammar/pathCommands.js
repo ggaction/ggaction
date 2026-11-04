@@ -65,7 +65,10 @@ export function buildLinearPathCommands(points, { close = false } = {}) {
     ...points.slice(1).map(point => ({ op: "L", x: point.x, y: point.y }))
   ];
   if (close) commands.push({ op: "Z" });
-  return freezeOwned(commands.map(command => freezeOwned(command)));
+  const result = freezeOwned(commands.map(command => freezeOwned(command)));
+  // One initial M, finite L rows and an optional final Z: valid by construction.
+  validatedCommands.add(result);
+  return result;
 }
 
 export function validatePathCommands(commands, maximum) {

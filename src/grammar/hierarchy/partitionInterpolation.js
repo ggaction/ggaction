@@ -1,8 +1,8 @@
-import { cloneAndFreeze } from "../../core/immutable.js";
+import { cloneAndFreeze, freezeOwned } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit, validateUnitInterval, validateNonNegativeFinite } from "../../core/validation.js";
 import { interpolateNumber, interpolateRotation } from "../animation/values.js";
-import { validatePartitionInterval } from "./partitionMapping.js";
+import { validatePartitionIntervalRange } from "./partitionMapping.js";
 import { mapPartitionBendPoint } from "./partitionAdapter.js";
 
 export const PARTITION_INTERPOLATION_VERSION = 1;
@@ -39,7 +39,7 @@ function state(input, budget = { work: 0 }) {
     if (node.parentKey !== null && !active.has(node.parentKey)) throw new TypeError("Partition nodes require an acyclic parent preorder.");
     while (stack.length && stack.at(-1) !== node.parentKey) active.delete(stack.pop());
     seen.add(node.key); active.add(node.key); stack.push(node.key);
-    validatePartitionInterval(Object.fromEntries(BOUNDS.map(key => [key, node[key]])));
+    validatePartitionIntervalRange(node);
     if (typeof node.visible !== "boolean") throw new TypeError("Partition visibility must be boolean.");
   }
   if (input.focusKey !== null && !seen.has(input.focusKey)) throw new TypeError("Partition focus must identify an existing node or be null.");
@@ -74,10 +74,24 @@ export function samplePartitionInterpolation(input, progress) {
   if (progress === 0 || progress === 1) return cloneAndFreeze({ mode: "partition", state: progress === 0 ? from : to });
   const mix = (a, b) => interpolateNumber(a, b, progress);
   const result = { focusKey: from.focusKey, bend: mix(from.bend, to.bend),
-    nodes: from.nodes.map((node, i) => ({ ...node, ...Object.fromEntries(BOUNDS.map(key => [key, mix(node[key], to.nodes[i][key])])) })),
+    nodes: from.nodes.map((node, i) => { const other = to.nodes[i];
+      return { ...node, u0: mix(node.u0, other.u0), u1: mix(node.u1, other.u1), v0: mix(node.v0, other.v0), v1: mix(node.v1, other.v1) }; }),
     frame: { origin: from.frame.origin.map((value, i) => mix(value, to.frame.origin[i])),
       angle: interpolateRotation(from.frame.angle, to.frame.angle, progress), handedness: from.frame.handedness,
       kernel: Object.fromEntries(KERNEL.map(key => [key, key === "radiusPolicy" ? from.frame.kernel[key] : mix(from.frame.kernel[key], to.frame.kernel[key])])),
       gap: from.frame.gap.map((value, i) => mix(value, to.frame.gap[i])) } };
-  return cloneAndFreeze({ mode: "partition", state: state(result) });
+  return freezeOwned({ mode: "partition", state: interpolatedState(result) });
+}
+
+// The sample is built here from an admitted plan, so its records, keys, parent
+// preorder and visibility follow `from` by construction and its work is bounded
+// by the plan's. Every interpolated number is checked again before deep freezing.
+function interpolatedState(result) {
+  validateUnitInterval(result.bend, "Partition interpolation bend");
+  const { gap, ...basis } = result.frame;
+  mapPartitionBendPoint(basis, { u: .5, v: .5, bend: result.bend });
+  gap.forEach(value => validateNonNegativeFinite(value, "Partition interpolation gap"));
+  for (const node of result.nodes) freezeOwned(validatePartitionIntervalRange(node));
+  for (const value of [result.nodes, result.frame.origin, result.frame.kernel, gap, result.frame]) freezeOwned(value);
+  return freezeOwned(result);
 }

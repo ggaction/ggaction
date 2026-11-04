@@ -112,3 +112,12 @@ test("legacy validation rechecks mutable caller-owned commands", () => {
   commands.push({ op: "M", x: 6, y: 7 });
   assert.throws(() => validateLegacyPathCommands(commands), /one subpath/);
 });
+
+test("constructed linear paths are validated once while copies and capacity limits stay checked", () => {
+  const commands = buildLinearPathCommands([{ x: 0, y: 0 }, { x: 1, y: 1 }], { close: true });
+  assert.equal(validatePathCommands(commands), commands);
+  assert.throws(() => validatePathCommands(commands, 2), /path.commands length/);
+  const copy = [...commands, { op: "L", x: Number.NaN, y: 0 }];
+  assert.throws(() => validatePathCommands(copy), /finite|requires M/);
+  assert.throws(() => buildLinearPathCommands([{ x: 0, y: 0 }, { x: Infinity, y: 1 }]), /finite/);
+});

@@ -64,7 +64,8 @@ export function preparePartitionBendMapping(frame, point) {
   validateBendFrame(frame);
   const calculation = preparePartitionBendCalculation(point, frame.kernel);
   const basis = { origin: [frame.origin[0], frame.origin[1]], angle: frame.angle, handedness: frame.handedness };
-  return { map: input => screenCoordinates(basis, calculation.point(input)), inset: calculation.inset };
+  return { map: input => screenCoordinates(basis, calculation.point(input)),
+    mapLiteral: input => screenCoordinates(basis, calculation.literal(input)), inset: calculation.inset, insetLiteral: calculation.insetLiteral };
 }
 
 function screenCoordinates(frame, canonical) {

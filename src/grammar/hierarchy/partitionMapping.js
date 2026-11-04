@@ -9,6 +9,10 @@ function unit(value,label){finite(value,label);if(value<0||value>1)throw new Ran
 function enumValue(value,values,label){if(!values.includes(value))throw new Error(`Unsupported ${label}.`);return value;}
 export function validatePartitionInterval(cell){
  ownRecord(cell,"Partition cell");rejectUnknownProperties(cell,["u0","u1","v0","v1"],"partition cell");
+ return validatePartitionIntervalRange(cell);
+}
+// Range and order only, for a record whose exact own fields were already admitted.
+export function validatePartitionIntervalRange(cell){
  for(const name of["u0","u1","v0","v1"])unit(cell[name],`Partition ${name}`);
  if(cell.u0>cell.u1||cell.v0>cell.v1)throw new RangeError("Partition cell boundaries must be ordered.");
  return cell;

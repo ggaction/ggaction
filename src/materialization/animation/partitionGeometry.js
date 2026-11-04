@@ -3,12 +3,11 @@ import { ownRecord, ownArray } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
 import { validateInputReference } from "../../core/resourceReference.js";
 import { validatePartitionAnimationMeaning } from "../../grammar/animation/partitionState.js";
-import { partitionBendCellGeometry } from "../../grammar/hierarchy/partitionCell.js";
+import { preparePartitionBendCells } from "../../grammar/hierarchy/partitionCell.js";
 import { partitionBendSegments } from "../../grammar/hierarchy/partitionAdapter.js";
 import { partitionRadius } from "../../grammar/hierarchy/partitionMapping.js";
 import { buildAnnularSectorCommands } from "../../grammar/polarPaths.js";
 
-const bounds = node => Object.fromEntries(["u0", "u1", "v0", "v1"].map(key => [key, node[key]]));
 export function partitionAnimationGroupWork(group) {
   let work = group.meaning.state.nodes.length * 64;
   for (const node of group.meaning.state.nodes) work += node.key.length + (node.parentKey?.length ?? 0);
@@ -17,7 +16,9 @@ export function partitionAnimationGroupWork(group) {
 export function resolvePartitionAnimationGeometry(group) {
   const state = group.meaning.state, segments = partitionBendSegments({ compatible: true, kernel: state.frame.kernel }, state.bend);
   validateWorkLimit(state.nodes.length * (3 * 64 + 2 * (segments + 1) + 1), "Partition animation geometry work");
-  return new Map(state.nodes.map(node => [node.key, node.visible ? partitionBendCellGeometry(bounds(node), state.frame, state.bend, segments) : null]));
+  // Hidden cells never admit the frame; the first visible cell prepares it once.
+  let cell;
+  return new Map(state.nodes.map(node => [node.key, node.visible ? (cell ??= preparePartitionBendCells(state.frame, state.bend, segments)).node(node) : null]));
 }
 export function partitionAnimationItemGeometry(group, item, geometry) {
   const cell = geometry.get(item.key);

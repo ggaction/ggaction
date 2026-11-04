@@ -41,3 +41,29 @@ test('group geometry retains aggregate work rejection and does not admit hidden 
  assert.deepEqual([...resolvePartitionAnimationGeometry(group([hidden]))],[['hidden',null]]);
  assert.throws(()=>resolvePartitionAnimationGeometry(group([{...hidden,...cell,visible:true}])) ,/finite origin, angle and handedness/);
 });
+test('one prepared frame builds the same validated cells while each cell interval and literal range stays checked',async()=>{
+ const {preparePartitionBendCells}=await import('../../../src/grammar/hierarchy/partitionCell.js');
+ const {preparePartitionBendMapping}=await import('../../../src/grammar/hierarchy/partitionAdapter.js');
+ const {validatePathCommands}=await import('../../../src/grammar/pathCommands.js');
+ const {isOwned}=await import('../../../src/core/immutable.js');
+ const {freezeOwned}=await import('../../../src/core/immutable.js');
+ const cells=preparePartitionBendCells({...frame,gap:[4,6]},.5,8);
+ for(const value of [cell,{u0:.1,u1:.4,v0:.2,v1:.9}]){
+  const out=cells.cell(value);
+  assert.deepEqual(cells.node(freezeOwned({key:'k',parentKey:null,...value,visible:true})),out);
+  assert.deepEqual(cells.node({key:'k',...value}),out);assert.deepEqual(out,geometry(value,{...frame,gap:[4,6]},.5,8));
+  assert.ok(isOwned(out)&&isOwned(out.commands)&&isOwned(out.anchor)&&isOwned(out.interval));
+  assert.equal(validatePathCommands(out.commands),out.commands);
+ }
+ assert.equal(cells.cell({...cell,u1:0}),null);
+ for(const value of [null,{...cell,extra:1},{...cell,u1:2},{...cell,u0:.8,u1:.2}])assert.throws(()=>cells.cell(value));
+ for(const value of [{...cell,u1:2},{...cell,u0:.8,u1:.2},{...cell,v0:Number.NaN}])assert.throws(()=>cells.node(freezeOwned({key:'k',...value})),/zero through one|ordered|finite/);
+ let reads=0;const loose={key:'k',...cell};Object.defineProperty(loose,'u0',{enumerable:true,get(){reads++;return 2;}});
+ assert.throws(()=>cells.node(loose),/zero through one/);assert.equal(reads,1);
+ const badGap=preparePartitionBendCells({...frame,gap:[-1,0]},.5,8);
+ assert.throws(()=>badGap.node(freezeOwned({...cell,u1:2})),/u1 must lie/);assert.throws(()=>badGap.node(freezeOwned({...cell})),/gap/);
+ const {gap,...basis}=frame,mapping=preparePartitionBendMapping(basis,{u:.5,v:.5,bend:.5});
+ assert.deepEqual(mapping.mapLiteral({u:.3,v:.6,bend:.5}),mapping.map({u:.3,v:.6,bend:.5}));
+ for(const key of ['u','v','bend'])for(const bad of [NaN,-1e-9,1+1e-9])assert.throws(()=>mapping.mapLiteral({u:.5,v:.5,bend:.5,[key]:bad}),/must lie from zero through one/);
+ assert.throws(()=>mapping.map({u:.5,v:.5,bend:.5,extra:1}));
+});

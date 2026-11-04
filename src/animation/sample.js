@@ -22,6 +22,15 @@ import { requireTransitionPlan, transitionResources, transitionEndpointPositions
 import { sampleTransitionTimeline } from "./timelineSample.js";
 import { registerAnimationFrame, registerAnimationFrameView, animationFrameProvenance, animationPlanProvenance } from "./frameProvenance.js";
 import { blendAnimationNodes,fadeAnimationNode,interpolateNodeFrame } from "./concrete.js";
+
+// With deeply owned endpoints, every value in the sampled node is owned, a
+// primitive, or a numeric vector built here, so it is frozen without copying.
+function ownedEndpointNode(from,to,node,progress){
+  const frame=interpolateNodeFrame(from,to,progress);
+  if(!isOwned(from)||!isOwned(to)||!Object.values(node.properties).every(value=>value===null||typeof value!=="object"||isOwned(value)))return cloneAndFreeze({...node,...frame});
+  return freezeOwned({...node,properties:freezeOwned(node.properties),offset:freezeOwned(frame.offset),clip:freezeOwned(frame.clip),
+    clips:freezeOwned(frame.clips.map(clip=>isOwned(clip)?clip:freezeOwned(clip)))});
+}
 import { captureFrameMeaning } from "./frameEndpoint.js";
 import { canvasSceneProgram } from "../renderers/canvasScene.js";
 
@@ -141,7 +150,7 @@ export function sampleTransitionWithBudget(input,timeMs,accountWork) {
       if(geometry.properties){
         const properties={...partitionAnimationPaint(to.properties),...appearance(),...geometry.properties};validateConcreteGraphicProperties(geometry.type,properties);
         decisions.push({...metadata,kind:"semantic-kernel",kernel:"partition"});positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(sampled.group,item);
-        return cloneAndFreeze({...to,type:geometry.type,properties,...interpolateNodeFrame(from,to,progress)});
+        return ownedEndpointNode(from,to,{...to,type:geometry.type,properties},progress);
       }
       reason=geometry.reason;
     }
