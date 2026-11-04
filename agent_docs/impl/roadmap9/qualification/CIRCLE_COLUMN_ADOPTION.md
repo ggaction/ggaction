@@ -27,11 +27,11 @@
 
 ## 기대 효과와 한계
 
-검토 기록의 직전 후보 원100k 단일 sample은 93.92ms(profiled 74.68ms)로 기준 132.58ms보다 줄었지만 **50ms 목표에는 못 미친다**. 최종 null-prototype source의 원100k는 아직 측정하지 않았다. 이 채택은 공통 sampler 비용 일부를 줄이는 단계이며, 50ms·P95·100cycle 또는 같은 프로세스 rebase-offline Rehash 해결을 뜻하지 않는다. 다음 후보인 compiler keyspace cache는 별도 검토 대상으로 남긴다.
+검토 기록의 직전 후보 원100k 단일 sample은 93.92ms(profiled 74.68ms)로 기준 132.58ms보다 줄었지만 **50ms 목표에는 못 미친다**. 최종 null-prototype source의 측정은 아래에 있다. 이 채택은 공통 sampler 비용 일부를 줄이는 단계이며, 50ms·P95·100cycle 또는 같은 프로세스 rebase-offline Rehash 해결을 뜻하지 않는다. 다음 후보인 compiler keyspace cache는 별도 검토 대상으로 남긴다.
 
 ## 원100k 측정 — 2026-11-04
 
-같은 장비·같은 harness(`circle-column-product-evidence/run.mjs.gz`)·같은 입력(100,000점, 입력 해시 원 receipt와 동일)으로 기준과 후보를 교차 2회 실행했다. 타이머 안에서 완전히 물질화된 frame을 만들고, 타이머 밖에서 100,000좌표를 모두 검산했다. 다른 무거운 작업은 없었다. 단일 실행 값이며 P95가 아니다.
+같은 장비·같은 harness(`circle-column-product-evidence/run.mjs.gz`)·같은 입력(100,000점, 입력 SHA256 `b68cab72c1abb609…`가 원 format6 sampler receipt와 일치)으로 기준과 후보를 교차 2회 실행했다. 타이머 안에서 완전히 물질화된 frame을 만들고, 타이머 밖에서 100,000좌표를 모두 검산했다. 다른 무거운 작업은 없었다. 단일 실행 값이며 P95가 아니다.
 
 | source | 1차 무계측 sample | 2차 profiled sample |
 | --- | --- | --- |
