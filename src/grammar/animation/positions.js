@@ -1,4 +1,5 @@
 import { cloneAndFreeze, freezeOwned } from "../../core/immutable.js";
+import { createCircleBatchColumn } from "../schemas/circleBatch.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateUnitInterval } from "../../core/validation.js";
 import { mapContinuousScaleValues, prepareContinuousScaleScalar, mapPreparedContinuousScaleValue } from "../scales/mapping.js";
@@ -174,15 +175,18 @@ export function samplePositionBatch(token, progress) {
   if (plans === undefined) throw new TypeError('Position batch sampling requires its private prepared token.');
   const first = samplePositionInterpolation(plans[0], progress);
   if (first.kind !== 'position') return first;
-  const mapper = prepareContinuousScaleScalar(first.scale), values = new Array(plans.length), positions = new Array(plans.length);
-  values[0] = first.value; positions[0] = first.position;
-  for (let index = 1; index < plans.length; index++) {
-    const plan = plans[index], value = progress === 0 ? plan.from.value : progress === 1 ? plan.to.value : interpolateNumber(plan.from.value, plan.to.value, progress);
-    let position;
-    try { position = mapPreparedContinuousScaleValue(mapper, value); }
-    catch (error) { if (!(error instanceof RangeError)) throw error; return fade('nonfinite-position'); }
-    if (!Number.isFinite(position)) return fade('nonfinite-position');
-    values[index] = value; positions[index] = position;
-  }
-  return freezeOwned({ kind: 'position-batch', values: freezeOwned(values), positions: freezeOwned(positions), scale: first.scale });
+  const mapper = prepareContinuousScaleScalar(first.scale), values = new Array(plans.length), failure = {};
+  let positions;
+  try {
+    positions = createCircleBatchColumn(plans.length, index => {
+      if (index === 0) { values[0] = first.value; return first.position; }
+      const plan = plans[index], value = progress === 0 ? plan.from.value : progress === 1 ? plan.to.value : interpolateNumber(plan.from.value, plan.to.value, progress);
+      let position;
+      try { position = mapPreparedContinuousScaleValue(mapper, value); }
+      catch (error) { if (!(error instanceof RangeError)) throw error; throw failure; }
+      if (!Number.isFinite(position)) throw failure;
+      values[index] = value; return position;
+    });
+  } catch (error) { if (error !== failure) throw error; return fade('nonfinite-position'); }
+  return freezeOwned({ kind: 'position-batch', values: freezeOwned(values), positions, scale: first.scale });
 }

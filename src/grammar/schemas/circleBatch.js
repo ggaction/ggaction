@@ -1,13 +1,32 @@
+import { freezeOwned } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 
 export const MAX_CIRCLE_BATCH_ROWS = 10_000;
 const keys = new WeakMap();
+const constructedColumns = new WeakSet();
+
+// Only this creator allocates, writes and freezes a recorded column. The
+// null-prototype array-like keeps inherited setters and iterators out of the
+// own data rows; the callback receives an index, never the array.
+export function createCircleBatchColumn(length, valueAt) {
+  if (!Number.isInteger(length) || length < 1 || length > MAX_CIRCLE_BATCH_ROWS) {
+    throw new RangeError(`Circle column construction requires 1..${MAX_CIRCLE_BATCH_ROWS} rows.`);
+  }
+  const column = Array.from({ __proto__: null, length }, (_, index) => {
+    const value = valueAt(index);
+    if (typeof value !== "number") throw new TypeError("Circle column construction requires numeric results.");
+    return value;
+  });
+  freezeOwned(column);
+  constructedColumns.add(column);
+  return column;
+}
 
 export function validateCircleBatchColumn(value, name) {
   if (!Array.isArray(value) || value.length < 1 || value.length > MAX_CIRCLE_BATCH_ROWS) {
     throw new RangeError(`circle-batch.${name} requires 1..${MAX_CIRCLE_BATCH_ROWS} rows.`);
   }
-  ownArray(value, `circle-batch.${name}`);
+  if (!constructedColumns.has(value)) ownArray(value, `circle-batch.${name}`);
   for (const number of value) {
     if (!Number.isFinite(number)) throw new TypeError(`circle-batch.${name} requires finite numbers.`);
     if (name === "radius" && number < 0) throw new RangeError("circle-batch.radius must not be negative.");

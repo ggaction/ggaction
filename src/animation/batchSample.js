@@ -1,4 +1,5 @@
 import { cloneAndFreeze, freezeOwned } from '../core/immutable.js';
+import { createCircleBatchColumn } from '../grammar/schemas/circleBatch.js';
 import { preparePositionBatch, samplePositionBatch } from '../grammar/animation/positions.js';
 import { interpolateNumber } from '../grammar/animation/values.js';
 import { validateConcreteGraphicProperties } from '../grammar/schemas/concreteGraphic.js';
@@ -87,14 +88,13 @@ export function samplePreparedBatch(plan, timeMs, progress) {
     }
     const at = timeline.progress(group.track.ownerKey), x = samplePositionBatch(group.x, at), y = samplePositionBatch(group.y, at);
     if (x.kind !== 'position-batch' || y.kind !== 'position-batch') return undefined;
-    const radius = new Array(group.keys.length);
-    for (let row = 0; row < radius.length; row++) {
+    const radius = createCircleBatchColumn(group.keys.length, row => {
       const track = group.tracks[row], target = plan.to.scene.nodes[track.targetIndex], source = plan.from.scene.nodes[track.sourceIndex], identity = plan.to.identities[track.targetIndex];
       // Current sampled rows retain their exact correspondence and native origin.
       if (track.targetIndex !== logical + row || target.key !== group.keys[row] || identity?.key !== group.decisions.itemKeys[row] || identity.role !== group.decisions.role ||
           preparation.native !== undefined && preparation.native.nodes[logical + row] === undefined) throw new TypeError('Batched sampled row differs from its exact native correspondence.');
-      radius[row] = interpolateNumber(source.properties.radius, target.properties.radius, at);
-    }
+      return interpolateNumber(source.properties.radius, target.properties.radius, at);
+    });
     logical += radius.length;
     const properties = freezeOwned({ x: x.positions, y: y.positions, radius: freezeOwned(radius), appearance: freezeOwned({ ...group.appearance, ...sampleAnimationAppearance(group.track.appearance, at) }) });
     validateConcreteGraphicProperties('circle-batch', properties);
