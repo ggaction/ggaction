@@ -7,8 +7,10 @@
 - [x] 미푸시 인계 commit 정상 push: integration `4861b9ff2`, route `a48449ebf`(재시도 후 성공). force-push 없음.
 - [x] Partition 병합 `220ebde1e`: owning117·경계33·전체10464 통과. [증거](partition-merged-evidence/qualification.json)
 - [x] Route 병합 `e2e4f6cc3`: owning434×3Node·경계/문서60·전체10481 통과. Route 단독에도 있던 6건 결함을 수리했다. [증거](route-merged-evidence/qualification.json)
-- [ ] Format6 병합 → 같은 검증 → commit/push.
-- [ ] 합산 candidate의 같은 archive 3Node·browser·원1k 재검증.
+- [x] Format6 병합 `5e84150e6`: animation owning847·경계/문서141·전체10523 통과. [증거](format6-merged-evidence/qualification.json)
+- [x] 합산 candidate 같은 archive 3Node·browser·render. Node20 pipe stdin 정체 harness 수리, mark-outline render 의존성 수리, **d3-array 3.2.5 외부 배포로 깨진 installed browser를 감사 closure 고정으로 수리**. [후보](combined-candidate-evidence/qualification.json), [고정](geometry-closure-pin-evidence/qualification.json)
+- [x] Circle column 구조 증거 채택·구현. 원100k 단일 sample 132→93–96ms, 50ms 미달. [기록](CIRCLE_COLUMN_ADOPTION.md)
+- [ ] Point 100k rebase-offline Rehash: 재현·귀속 완료, 등록 감소안 진행 중. [진단](POINT_REHASH_DIAGNOSIS.md)
 - [ ] 아래 병목 단계와 최종 qualification.
 
 순차 완료 번호는 여전히 **STEP-056**이다. 이 문서는 실행 순서를 정할 뿐 어떤 STEP의 완료도 기록하지 않는다.

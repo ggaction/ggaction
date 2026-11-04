@@ -1,0 +1,24 @@
+{
+  "time": "2026-11-04T14:22:40Z",
+  "pid": 66437,
+  "source": "6e1864a8c (combined candidate with circle column proof)",
+  "status": "diagnostic-termination",
+  "signal": "SIGTERM",
+  "process": "49:09 534688  99.0",
+  "completedStage": "rebase-plan-and-source-frame-released",
+  "phasesMs": {
+    "prepare": 69560,
+    "sample": 91,
+    "offline": 163691,
+    "rebase": 61105
+  },
+  "rebaseOfflineStarted": "2026-11-04T13:38:59Z",
+  "stalledForMinutes": 43,
+  "reason": "Same-process rebase offline restore stayed in WeakSet.add -> Runtime_WeakCollectionSet -> EphemeronHashTable::Rehash in two separated OS samples, reproducing the 2026-11-02 PID 60117 stall on the combined source.",
+  "originalTimeoutChanged": false,
+  "phaseSplitting": false,
+  "samples": [
+    "stall-sample-1.txt",
+    "stall-sample-2.txt"
+  ]
+}
