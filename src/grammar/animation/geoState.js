@@ -1,5 +1,5 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
-import { canonicalJSON } from "../../core/contentDigest.js";
+import { sameCanonicalJSON } from "../../core/contentDigest.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { validateInputReference } from "../../core/resourceReference.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit, validateNonNegativeFinite, validateUnitInterval } from "../../core/validation.js";
@@ -19,7 +19,7 @@ export const ANIMATION_GEO_CAPACITY_VERSION = "native-geo-camera@2";
 const fallbackReasons = new Set(["geo-identity", "geo-binding", "geo-feature-topology", "geo-feature-geometry", "edited-geo-graphics", "projection-type", "projection-parameters"]);
 export const isGeoAnimationFallbackReason = reason => fallbackReasons.has(reason);
 const plans = new WeakSet();
-const equal = (a, b) => canonicalJSON(a) === canonicalJSON(b);
+const equal = sameCanonicalJSON;
 const fade = reason => Object.freeze({ kind: "crossfade", reason });
 function closed(value, keys, label) {
   ownRecord(value, label); rejectUnknownProperties(value, keys, label);

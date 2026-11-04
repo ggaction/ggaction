@@ -44,3 +44,13 @@ Geo 100k hit P95는 21.1ms로 기준 20ms를 근소하게 넘었다. Hit index�
 반례: `test/unit/grammar/hit-focus.test.js`의 `repeated queries on one prepared path match freshly prepared shapes`(nonzero/evenodd, slop 0/5, 3회 반복, 비유한 점 거부). Hit·path owner 387/387, hitShapes 100/96.89/100, pathGeometry 98.53/97.67/100.
 
 정본 benchmark(archive `242a7cc3…`): Geo hit 1k/10k/100k 0.2/0.4/1.9ms(이전 0.7/2.5/21.1), camera 5.6/58.3/574.3ms(변화 없음). Points 전 크기 통과 유지. 같은 source의 전체 coverage(일반 10549/10549) 97.42/95.69/99.36%, critical floor 785, browser 529/529, render 513/513, 같은 archive Node20/22/24 통과.
+
+## Canonical 동등성 비교
+
+10k frame profile에서 `canonicalJSON` 문자열 생성이 큰 몫이었다. Admission은 sample마다 정규화한 geometry와 입력 geometry를 각각 `canonicalJSON` 문자열로 만들어 비교한다(1만 좌표 두 벌). `core/contentDigest.js`의 `sameCanonicalJSON(a, b)`는 두 문자열을 만들지 않고 `canonicalJSON(a) === canonicalJSON(b)`와 정확히 같은 답을 낸다. 숫자 표기(-0, NaN·Infinity의 `null`), 빈 값(undefined·함수·symbol·배열 빈 칸)끼리의 일치, 원소 하나가 빈 값인 배열과 빈 배열의 일치까지 그대로다. Geo admission(`geoState`, `geoPresentation`, `geoTracks`)의 동등성 비교만 이것으로 바꿨다. 비교되는 값과 오류는 그대로다.
+
+반례: `test/unit/core/same-canonical-json.test.js`(경계 사례 21쌍 양방향과 무작위 2만 쌍을 문자열 비교와 대조). 별도로 무작위 30만 쌍(동치 10만여 쌍)도 대조했다. Geo·animation 1114/1114.
+
+정본 benchmark(archive `40ac9fe0…`, [report](geo-equality-evidence/report-geo.json.gz)): camera 1k/10k/100k DPR1 5.5/58.6/553.6ms, DPR2 5.2/50.7/550.2ms. Hit 0.2/0.5/2.5ms, 0.2/0.4/1.6ms. 개선은 작고(Node 63.7 → 60.4ms) 10k·100k camera는 여전히 미달이다.
+
+남은 10k 비용은 sample마다 변하지 않는 1만 좌표 geometry 전체를 presentation snapshot(복사), group snapshot, 정규화 비교, 투영 입력 snapshot으로 다시 순회하는 admission과, 투영 결과 1만 명령의 검증·복사다. 앞서 "정규형 증명 + 동일 예산 재부과"는 frame 경로에서 소유된 입력이 도달하지 않아 효과가 없었다. Presentation snapshot이 사본을 만들어 소유 정체성을 끊기 때문이다. 다음 후보는 authentic sampled group(정확한 plan의 sample만 module-private로 기록)과, alias 없는 소유 subtree 예산의 정확한 재부과다. 재부과는 남은 한도가 모든 부과를 수용할 때만 쓰고, 아니면 기존 전체 순회로 같은 오류를 낸다. 이 둘을 함께 설계해야 한다. 100k는 명령 열(batch) 표현이 필요하다.

@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 428_157, // Owned own-data check marks: Node20/24 428,157 gzip bytes.
   "ggaction/svg": 26_731, // Owned own-data check marks: Node20/24 26,731 gzip bytes.
   "ggaction/graph": 76_121, // Prepared partition cells: Node20/24 76,121 gzip bytes.
-  "ggaction/animation": 355_108, // Prepared partition cells: Node20/24 355,108 gzip bytes.
+  "ggaction/animation": 355_286, // Structural canonical equality: Node20/24 355,286 gzip bytes.
   "ggaction/interaction": 143_198 // Prepared partition cells: Node20/24 143,198 gzip bytes.
 });
 

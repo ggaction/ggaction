@@ -1,6 +1,6 @@
 import { prepareAnimationAppearance, sampleAnimationAppearance } from "./appearance.js";
 import { cloneAndFreeze } from "../core/immutable.js";
-import { canonicalJSON } from "../core/contentDigest.js";
+import { sameCanonicalJSON } from "../core/contentDigest.js";
 import { validateUnitInterval, validateGeneratedItemLimit, validateWorkLimit } from "../core/validation.js";
 import { prepareGeoInterpolation, sampleGeoInterpolation } from "../grammar/animation/geoState.js";
 import { interpolateNumber } from "../grammar/animation/values.js";
@@ -9,7 +9,7 @@ import { clipInterpolationCompatible, interpolateNodeFrame } from "./concrete.js
 
 const prepared = new WeakSet();
 const capacityTracks = new WeakSet();
-const same = (a,b) => canonicalJSON(a) === canonicalJSON(b);
+const same = sameCanonicalJSON;
 export const emptyAnimationGeos = length => cloneAndFreeze({groups:[],items:Array(length).fill(null)});
 function subset(presentation, keys) {
   const indices=presentation.geometry.features.flatMap((feature,index)=>keys.has(feature.key)?[index]:[]);

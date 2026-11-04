@@ -36,6 +36,32 @@ export function canonicalJSON(value) {
   return `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${canonicalJSON(value[key])}`).join(",")}}`;
 }
 
+// Exactly canonicalJSON(a) === canonicalJSON(b), without building either text.
+// Members that render as nothing (undefined, functions, symbols, array holes)
+// match each other only; a one-member array of them renders like an empty one.
+export function sameCanonicalJSON(a, b) {
+  const aObject = a !== null && typeof a === "object", bObject = b !== null && typeof b === "object";
+  if (!aObject || !bObject) {
+    if (aObject || bObject) return false;
+    if (typeof a === "string" && typeof b === "string" || Number.isFinite(a) && Number.isFinite(b)) return a === b;
+    return JSON.stringify(a) === JSON.stringify(b);
+  }
+  const array = Array.isArray(a);
+  if (array !== Array.isArray(b)) return false;
+  if (array) {
+    if (a.length !== b.length) {
+      const [short, long] = a.length < b.length ? [a, b] : [b, a];
+      return short.length === 0 && long.length === 1 && (long[0] === null || typeof long[0] !== "object") && JSON.stringify(long[0]) === undefined;
+    }
+    for (let index = 0; index < a.length; index++) if (!sameCanonicalJSON(a[index], b[index])) return false;
+    return true;
+  }
+  const keys = Object.keys(a).sort(), other = Object.keys(b).sort();
+  if (keys.length !== other.length || keys.some((key, index) => key !== other[index])) return false;
+  for (const key of keys) if (!sameCanonicalJSON(a[key], b[key])) return false;
+  return true;
+}
+
 // Bounded callers share the canonical browser-safe byte representation.
 export function contentBytesBase64(bytes) {
   let binary = "";

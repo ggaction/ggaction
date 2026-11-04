@@ -1,5 +1,5 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
-import { canonicalJSON } from "../../core/contentDigest.js";
+import { sameCanonicalJSON } from "../../core/contentDigest.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
 import { createGeometryBudget, snapshotGeometryJSON } from "../../grammar/geo/input.js";
@@ -18,7 +18,7 @@ import { geoAppearanceValues, geoFeatureAppearance } from "../geo/appearance.js"
 import { geoMarkSource } from "../geo/source.js";
 import { projectGeoAnimationGroup } from "./geo.js";
 
-const same = (a, b) => canonicalJSON(a) === canonicalJSON(b);
+const same = sameCanonicalJSON;
 const token = identity => JSON.stringify([identity.key, identity.role]);
 const nativeOrigins = new WeakMap();
 export function geoAnimationItemKey(geometry, featureKey) {
