@@ -30,14 +30,14 @@ const actionCards = JSON.parse(readFileSync(
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const ACTIONS = new Set(REALISTIC_CARTESIAN_FACADE_COVERAGE_EXPECTED_ACTIONS);
 const EXPECTED_TARGETS = Object.freeze({
-  createScatterPlot: Object.freeze({ requirements: 621, diversity: 14 }),
+  createScatterPlot: Object.freeze({ requirements: 622, diversity: 14 }),
   createBarPlot: Object.freeze({ requirements: 587, diversity: 11 }),
   createLinePlot: Object.freeze({ requirements: 506, diversity: 9 }),
   createParallelCoordinates: Object.freeze({ requirements: 148, diversity: 5 })
 });
 const EXPECTED_REQUIREMENT_DIGESTS = Object.freeze({
   // Locked after public declarations match the runtime-supported facade branches.
-  createScatterPlot: "d3b09d47484be83aa91f5eb9317939e7552fec75bcee476439048bf5044100c4",
+  createScatterPlot: "437af848d0695ad635f6e421b7aec8fd283bc7c1dc2462993a60cfdba6037cfc",
   createBarPlot: "e35bb9e9e98bf96a7731909633af3b143e560d6d20cba9c3898a8742b1ffd99f",
   createLinePlot: "a975f70ffa8c8db02403911dcb6958b7bb34165eff3377f501723aa93d05b6a4",
   createParallelCoordinates: "2abf137b2fc05b6e61dbf787a2cbf3f5f17278f96e549eb5241b229a8ff16e53"
@@ -723,9 +723,9 @@ test("locks the exact assigned option, literal, aggregate, and diversity target 
     actionRequirementCount += requirementIds.length;
     diversityCount += diversityIds.length;
   }
-  assert.equal(actionRequirementCount, 1862);
+  assert.equal(actionRequirementCount, 1863);
   assert.equal(target.familyLiterals.length, 15);
-  assert.equal(actionRequirementCount + target.familyLiterals.length, 1877);
+  assert.equal(actionRequirementCount + target.familyLiterals.length, 1878);
   assert.equal(diversityCount, 39);
 });
 

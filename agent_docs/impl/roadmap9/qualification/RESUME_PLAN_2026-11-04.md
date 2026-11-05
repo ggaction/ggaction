@@ -16,6 +16,12 @@
 - [x] Geo hit 전 크기, camera 1k·10k 통과(10k 21.3/20.8ms). 100k 228/232ms 미달. [기록](GEO_CAMERA_PREVIEW.md)
 - [x] Canonical memory 100 cycle DPR1·2 통과(비exclusive 창). [기록](CANONICAL_MEMORY.md)
 - [x] Route B union 직접 14개와 focused 파생 편집기 21개 모두 unit receiver 연결(순서 있는 원 job/completion replay). Composition의 scoped 결정적 replay도 연결. 남은 것: facet, composition의 reviseData·applyDataUpdate·canvas 계열, 간접 union, 100ms 계량, 10k density 용량. [기록](../chart/route-native-revise-data.md) [기록](../chart/route-native-revise-data.md)
+- [x] `test:realistic` 816/816: 병합 때 따라가지 못한 realistic 가드를 정리했다.
+  - 단일 Y 규칙에 맞게 주석 시나리오 수정
+  - 새 옵션 `point.maxItems`·`editPointMark.maxItems`·`encodeColor.layout="wiggle"`의 실제 사용 예시와 잠금 갱신
+  - advanced 용량 부족분에 simple 여유 한 칸을 재배정
+  - 고정 지문과 route update 시나리오 갱신
+  - TidyTuesday 데이터는 `npm run datasets:sync`로 받아야 한다.
 - [ ] 미달: partition 10k preview, Geo 100k camera, data load/revise blocking 50ms(10k·100k), Route B union, exclusive 창 P95, 최종 qualification.
 
 순차 완료 번호는 여전히 **STEP-056**이다. 이 문서는 실행 순서를 정할 뿐 어떤 STEP의 완료도 기록하지 않는다.

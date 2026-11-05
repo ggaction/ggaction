@@ -1572,7 +1572,7 @@ test("preserves compact generator diagnostics in a failed audit report", async t
     dataset: "tt-penguins",
     datasetIndex: 0,
     tier: "simple",
-    quota: 6,
+    quota: 5,
     produced: 1,
     schedulingIterations: 3,
     eligibleRecipeCount: 1
@@ -1699,7 +1699,7 @@ test("accepts deterministic readable PNG and compressed PDF artifact regressions
       profile: Object.freeze({ id: "decimal-object" })
     }),
     semanticFingerprint:
-      "83a502002ca7de810ef136a34c76f7d5d997a1bba473103640d15eed00983ddf"
+      "3ed05ce1dbaac5555a4cdd1ed0d23341483f8d350dcd28fb24cba49944b28171"
   });
   const outerSpace = Object.freeze({
     id: "realistic-ranked-dots-1c891ae5f0d9",

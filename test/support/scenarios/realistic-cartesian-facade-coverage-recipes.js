@@ -1165,6 +1165,7 @@ function scatterOptions(factors, view) {
       ...strokeDetails(index),
       shape: index % 2 === 0 ? "circle" : "square",
       ...(index === 35 ? { fill: "#2563eb", radius: 4 } : {}),
+      ...(index === 1 ? { maxItems: 100000 } : {}),
       opacity: 0.6 + index / 100,
       ...(index < 28 || index >=36 ? { strokeWidth: 0.8 }
         : index === 28 ? { stroke: false } : { stroke: "#ffffff", strokeWidth: 0.8 })

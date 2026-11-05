@@ -33,7 +33,8 @@ export function assertAnnotationInteraction(rows, recipe) {
   assert.equal(next.semanticSpec.datasets[0].values.at(-1).sourceRowIndex, last.sourceRowIndex);
   session.dispatch({ type: "annotate", target: "note", payload: { layout: false, outline: false } });
   next = session.getState().program; assert.equal(next.materializationConfigs.labelLayouts?.note, undefined);
-  const labels = next.createBarPlot({ id: "bars", x: {field:"category",scale:{id:"bar-x"}}, y: { field: "value", aggregate: "mean", scale:{id:"bar-y"} }, guides: false })
+  // One Y scale per Cartesian frame: the bars share the observations y scale.
+  const labels = next.createBarPlot({ id: "bars", x: {field:"category",scale:{id:"bar-x"}}, y: { field: "value", aggregate: "mean", scale:{id:"y"} }, guides: false })
     .createAnnotation({ id: "totals", source: "bars", text: first.category })
     .editAnnotation({ target: "totals", text: last.category, inheritColor: "fill", placement: { anchor: "outsideEnd", gap: 4, leader: {} } });
   assert.equal(getMarkItems(labels, { target: "totals" }).length, new Set(rows.map(row => row.category)).size);

@@ -866,7 +866,7 @@ function buildPointLabels(factors) {
       miterLimit: 4
     })
     .editPointMark({target:"observations",clip:true,shape:{polygon:[{x:0,y:-1},{x:1,y:1},{x:-1,y:1}],normalization:"area"}})
-    .editPointMark({target:"observations",clip:false,shape:factors.shape});
+    .editPointMark({target:"observations",clip:false,shape:factors.shape,maxItems:100000});
   if (factors.strokeRemoval) {
     program = program.editPointMark({ target: "observations", stroke: false });
   }

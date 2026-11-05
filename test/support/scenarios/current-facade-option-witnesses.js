@@ -36,6 +36,11 @@ export function currentFacadeOptionWitnesses(args,{action,index,program}={}) {
     if(key==='point'&&clippedPoints.has(action))result[key].clip=index%2===0;
   }
   if(result.shape?.scale&&(index===0||index===1))result.shape.scale.unknown=polygon(index?'radius':'area');
+  // Explicit point capacity: the 100k ceiling admits every authentic row.
+  if(['createPolarScatterPlot','createStripPlot','createBeeswarmPlot'].includes(action)&&index===2&&result.point&&typeof result.point==='object')result.point.maxItems=100000;
+  // Raincloud raw and interval-summary points each declare the same explicit capacity.
+  if(action==='createRaincloudPlot'&&result.points&&typeof result.points==='object')result.points.point={...result.points.point,maxItems:100000};
+  if(action==='createRaincloudPlot'&&result.summary?.point&&typeof result.summary.point==='object')result.summary.point.maxItems=100000;
   if(['createPolarScatterPlot','createStripPlot','createBeeswarmPlot'].includes(action)&&index===0) {
     result.size={value:25};if(result.point)delete result.point.radius;
   }
