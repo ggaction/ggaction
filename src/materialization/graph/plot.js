@@ -4,7 +4,7 @@ import { materializeMarkEffectProperties } from "../markEffects.js";
 import { applyGraphView } from "./view.js";
 import { bindTextFontProperties } from "../textFont.js";
 import { contentDigest } from "../../core/contentDigest.js";
-import { validateGeneratedItemLimit } from "../../core/validation.js";
+import { MAX_GENERATED_ITEMS, validateGeneratedItemLimit } from "../../core/validation.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
 import { resolveGraphLayerResources } from "../../selectors/graphs.js";
@@ -32,7 +32,7 @@ export function resolveGraphPlot(program, layer, config, { animationGeometry = f
   validateGraphRecomputeView(program, layer, graph, config.view);
   const labels = layer.graphLabels, frame = resolveGraphicBounds(program), positions = layout.result.nodes;
   if (labels !== false && Object.hasOwn(labels, "field") && !graph.options.definition.attributes.includes(labels.field)) throw new TypeError("Graph labels require a retained node attribute.");
-  validateGeneratedItemLimit(model.nodes.length * (labels === false ? 1 : 2) + model.edges.length * 2, "Graph plot graphic count");
+  validateGeneratedItemLimit(model.nodes.length * (labels === false ? 1 : 2) + model.edges.length * 2, "Graph plot graphic count", config.maxItems ?? MAX_GENERATED_ITEMS);
   let x0 = 0, x1 = 0, y0 = 0, y1 = 0;
   if (positions.length) {
     x0 = x1 = positions[0].x; y0 = y1 = positions[0].y;
@@ -61,7 +61,7 @@ export function resolveGraphPlot(program, layer, config, { animationGeometry = f
       routeResource.inputs[1].id !== layout.id || routeResource.inputs[1].revision !== layout.revision)) throw new TypeError("Graph routes require the same exact graph and node layout.");
   const edgeLineage = routeResource === undefined ? lineage : { kind: "resource", resource: layer.graphBinding.routes };
   const resolvedEdgeStyle = { ...edgeStyle, arrows: edgeStyle.arrows === "auto" ? model.directed : edgeStyle.arrows };
-  const routes = routeResource === undefined ? graphEdgeGeometry(model, located, radii, resolvedEdgeStyle)
+  const routes = routeResource === undefined ? graphEdgeGeometry(model, located, radii, resolvedEdgeStyle, config.maxItems ?? MAX_GENERATED_ITEMS)
     : storedGraphRouteGeometry(model, routeResource, origin, radii, resolvedEdgeStyle);
   for (const { edge, commands, arrowCommands } of routes) {
     const key = graphItemKey(layer, graph, "edge", edge.key), topology = contentDigest(JSON.stringify([edge.sourceKey, edge.targetKey]));

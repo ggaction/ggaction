@@ -4901,6 +4901,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `nodes` | Optional / branch-dependent | `(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] \| undefined; }) \| undefined` |
 | `edges` | Optional / branch-dependent | `GraphEdgePaint \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| GraphLabelsOptions \| undefined` |
+| `maxItems` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
@@ -4937,6 +4938,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `nodes` | Optional / branch-dependent | `(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] \| undefined; }) \| undefined` |
 | `edges` | Optional / branch-dependent | `GraphEdgePaint \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| GraphLabelsOptions \| undefined` |
+| `maxItems` | Optional / branch-dependent | `number \| undefined` |
 
 </details>
 

@@ -1,5 +1,5 @@
 import { requireFiniteResult } from "../../grammar/numeric.js";
-import { validateGeneratedItemLimit } from "../../core/validation.js";
+import { MAX_GENERATED_ITEMS, validateGeneratedItemLimit } from "../../core/validation.js";
 
 const finite = value => requireFiniteResult(value, "Graph plot geometry");
 function direction(x, y) {
@@ -20,8 +20,8 @@ export function graphArrowCommands(tip, control, size) {
 
 // The caller supplies already validated graph/layout state and final node radii.
 // This owner only realizes edge geometry; it never changes topology or solves a layout.
-export function graphEdgeGeometry(model, positions, radii, style) {
-  validateGeneratedItemLimit(model.edges.length * 2, "Graph edge graphic count");
+export function graphEdgeGeometry(model, positions, radii, style, maxItems = MAX_GENERATED_ITEMS) {
+  validateGeneratedItemLimit(model.edges.length * 2, "Graph edge graphic count", maxItems);
   const groups = new Map();
   for (const edge of model.edges) {
     const key = JSON.stringify([edge.sourceKey, edge.targetKey].sort());

@@ -5,7 +5,7 @@ import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { encodeRowKey } from "../../core/itemIdentity.js";
 import { validateFillPaint } from "../paint.js";
-import { rejectUnknownProperties, validateNonEmptyString, validateNonNegativeFinite, validatePositiveFinite, validateFontWeight, validateUnitInterval, validateGeneratedItemLimit } from "../../core/validation.js";
+import { rejectUnknownProperties, validateNonEmptyString, validateNonNegativeFinite, validatePositiveFinite, validateFontWeight, validateUnitInterval, validateGeneratedItemLimit, validateGraphPlotItemCapacity } from "../../core/validation.js";
 
 const NODE_FIELDS = ["radius", "fill", "stroke", "strokeWidth", "opacity", ...MARK_EFFECT_PROPERTIES];
 const EDGE_FIELDS = ["stroke", "strokeWidth", "opacity", "parallelGap", "loopRadius", "arrowSize", "arrows", "shadow"];
@@ -55,13 +55,14 @@ function overrides(input, fields, graph, labels) {
 }
 
 export function normalizeGraphPlot(input, graph, previous, previousLabels = false) {
-  const patch = record(input, ["origin", "clip", "nodes", "edges", "labels"], "Graph plot options");
+  const patch = record(input, ["origin", "clip", "nodes", "edges", "labels", "maxItems"], "Graph plot options");
   const config = Object.assign(Object.create(null), { origin: "auto", clip: false, nodes: NODES, edges: EDGES }, previous);
   if (Object.hasOwn(patch, "origin")) config.origin = patch.origin === "auto" ? "auto" : pair(patch.origin, "Graph plot origin");
   if (Object.hasOwn(patch, "clip")) {
     if (typeof patch.clip !== "boolean") throw new TypeError("Graph plot clip must be boolean.");
     config.clip = patch.clip;
   }
+  if (Object.hasOwn(patch, "maxItems")) config.maxItems = validateGraphPlotItemCapacity(patch.maxItems);
   if (Object.hasOwn(patch, "nodes")) {
     const value = record(patch.nodes, [...NODE_FIELDS, "overrides"], "Graph nodes");
     const { overrides: requested, ...style } = value; Object.assign(style, paint(style, NODE_FIELDS, "Graph node style"));
@@ -103,7 +104,8 @@ export function validateGraphPlotDefinition(config, labels) {
       if (text && typeof content !== "string") throw new TypeError("Stored graph label text must be a string.");
     }
   };
-  exact(config, ["origin", "clip", "nodes", "edges"], ["labels", "view"], "Stored graph plot");
+  exact(config, ["origin", "clip", "nodes", "edges"], ["labels", "view", "maxItems"], "Stored graph plot");
+  if (Object.hasOwn(config, "maxItems")) validateGraphPlotItemCapacity(config.maxItems);
   if (config.view !== undefined) {
     exact(config.view, ["selectors"], ["recompute"], "Stored graph view");
     if (config.view.recompute !== undefined) {

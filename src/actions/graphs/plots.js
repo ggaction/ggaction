@@ -26,7 +26,7 @@ export const materializeGraphPlot = /* @__PURE__ */ closedAction(
   });
 
 function facade(editing) {
-  const op = editing ? "editGraphPlot" : "createGraphPlot", styleOptions = ["origin", "clip", "nodes", "edges", "labels"];
+  const op = editing ? "editGraphPlot" : "createGraphPlot", styleOptions = ["origin", "clip", "nodes", "edges", "labels", "maxItems"];
   return closedAction({ op, description: `${editing ? "Edit" : "Create"} a resource-backed graph plot.` },
     [editing ? "target" : "id", "layout", "routes", ...styleOptions], function (args = {}) {
       if (Object.values(args).some(value => value === null || value === undefined)) throw new TypeError("Graph plot arguments cannot contain null or undefined.");

@@ -4413,6 +4413,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `nodes` | Optional / branch-dependent | `(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] \| undefined; }) \| undefined` |
 | `edges` | Optional / branch-dependent | `GraphEdgePaint \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| GraphLabelsOptions \| undefined` |
+| `maxItems` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -4445,6 +4446,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `nodes` | Optional / branch-dependent | `(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] \| undefined; }) \| undefined` |
 | `edges` | Optional / branch-dependent | `GraphEdgePaint \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| GraphLabelsOptions \| undefined` |
+| `maxItems` | Optional / branch-dependent | `number \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 

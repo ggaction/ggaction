@@ -9,9 +9,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:b832bd54ba9980c7c976c10415a6f9606440c82e078ff530abce0d8ed4502995` |
+| Contract fingerprint | `sha256:9dbf5fd60eef4274f6d5e481f9614177436a8fc18904c7f696af10c8a89f259c` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
-| Runtime source commit | `8742e905ebef0d3d12e535a3b06913c757526899` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 380 |
 | Declared actions in that release | 234 |

@@ -24,6 +24,8 @@ Nodes accept `radius`, `fill`, `stroke`, `strokeWidth`, `opacity`, and `override
 
 Edges accept `stroke`, `strokeWidth`, `opacity`, `parallelGap`, `loopRadius`, `arrowSize`, and `arrows`. Defaults are #94a3b8, 1.5, 1, 16, 20, 8 and `"auto"`. Auto arrows follow graph direction; true forces arrows and false hides them. Dimensions are nonnegative finite pixel values. Opacity is in [0,1]. Parallel edges retain separate curved routes in source order; self-loops remain visible. A directed edge and its arrow share one logical identity.
 
+A plot admits up to 10,000 concrete graphics by default, counting each node body, each label and two per edge. Set `maxItems` to an integer from 1 to 100,000 to state a larger or smaller capacity explicitly; editing and saved charts keep it, and graph animation keeps the default limit.
+
 ## editGraphPlot
 
 ```typescript

@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:b832bd54ba9980c7c976c10415a6f9606440c82e078ff530abce0d8ed4502995",
-    "sourceCommit": "8742e905ebef0d3d12e535a3b06913c757526899",
+    "contractId": "sha256:9dbf5fd60eef4274f6d5e481f9614177436a8fc18904c7f696af10c8a89f259c",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "b4153ea5baf9bcd2958728bcc88df10b61b4f30d390e397816c0de35dee1104f"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -2308,8 +2308,8 @@
         "removemarkvisibility",
         "related"
       ],
-      "bytes": 274297,
-      "sha256": "f0eb39db224d49a407ef28c0dd2b330a43126e653cbc046f4710544f7774c155"
+      "bytes": 274435,
+      "sha256": "80f1c3923491bc2438665171791c85cc451434be1e7d3c7c4949ec5654d64055"
     },
     {
       "order": 126,
@@ -3614,8 +3614,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 518565,
-      "sha256": "3fdf3abcfcc56db5d09e249abedd6735b54011aef9298117e1eb3b549333ee50"
+      "bytes": 518683,
+      "sha256": "c4a4a7d7a9fb6099927b14e7780b66659e17caf8735c173bdad217be79c4bc98"
     },
     {
       "order": 134,
@@ -3652,8 +3652,8 @@
         "explicit-path-command-capacity",
         "store-fully-materialized-circles-in-columns"
       ],
-      "bytes": 26205,
-      "sha256": "cb45961ab713970b6d43f626e48e713ad1d9238491e4bd518c4a928747776fa0"
+      "bytes": 26133,
+      "sha256": "01f8e10ec268eb25c3cefdead637c2a0868e133a0dc4db475100840de6101525"
     },
     {
       "order": 136,
@@ -3993,8 +3993,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "5f9195cc9a18bbe3c9452348f2b655e021996886d8fdbdc621a764b6e1f9da87"
+      "bytes": 3000,
+      "sha256": "555aca361eda16d204343ffaa37fd7be4ff184afce53b8ee6ba3d5a2e2691b5b"
     },
     {
       "order": 157,
@@ -4097,8 +4097,8 @@
         "prepare-inference-in-a-worker",
         "outlines-and-shadows"
       ],
-      "bytes": 17042,
-      "sha256": "979cd362b3a23718e3c43c1265e85b9a927cbaadb067c53073648b43d6da5839"
+      "bytes": 17330,
+      "sha256": "8e24bbaa6d9faea61c9cf9a2e394bdfd2b52af0c148a47f0c96180304ec6bca4"
     },
     {
       "order": 163,

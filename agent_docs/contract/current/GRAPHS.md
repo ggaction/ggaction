@@ -72,13 +72,14 @@
 
 ## `createGraphPlot`
 
-- Signature: `createGraphPlot({ id?, layout?, routes?, origin?, clip?, nodes?, edges?, labels? })`.
+- Signature: `createGraphPlot({ id?, layout?, routes?, origin?, clip?, nodes?, edges?, labels?, maxItems? })`.
 - Full chart-authoring action이다. 첫 생략 ID는 graphPlot이며 추가 plot은 명시 ID를 요구한다. layout은 explicit/current eligible/unique 순서로 graph input 한 개를 가진 layout만 고르고 missing/ambiguity는 오류다.
 - origin:auto는 저장된 node bounds를 plot 중앙으로 이동한다. 명시 [x,y]는 plot-relative translation이다. 좌표를 scale하거나 solver를 실행하지 않는다. clip 기본 false다.
 - nodes 기본 radius6/fill#2563eb/stroke#ffffff/strokeWidth1/opacity1. overrides는 원 typed RowKey와 같은 style subset의 배열이다. fill은 shared FillPaint를 허용한다. radius/폭은 nonnegative finite, opacity는 unit interval이다.
 - edges 기본 stroke#94a3b8/strokeWidth1.5/opacity1/parallelGap16/loopRadius20/arrowSize8/arrows:auto다. auto는 graph.directed를 따르고 true/false는 표시를 명시한다. 모든 길이는 nonnegative finite다. Endpoint pair의 원 순서로 병렬 cubic 경로를 나누고 self-loop/coincident endpoint도 별도 경로로 보존한다. Arrow는 같은 edge logical item의 별도 graphic role이다.
 - labels 기본 false, {}는 원 key 표시다. field는 명시 보존된 node attribute여야 하며 scalar를 String으로 표시한다. null/undefined는 빈 문자열, object/array는 오류다. 기본 fill#0f172a/fontSize12/fontFamily sans-serif/fontWeight normal/offset[0,14]. overrides는 typed key/text/label paint를 허용한다.
 - 초기 override key는 기존 node이며 유일해야 한다. 배열은 교체 의미다. 이후 사라진 key는 orphan-style 진단과 dormant intent로 유지하며 동일 key가 돌아올 때만 재사용한다.
+- Concrete graphic 수(node body, label, edge body와 arrow 몫 2)는 기본 10,000 이하다. maxItems는 1..100,000의 명시 정수이며 생략하면 기본 한도가 그대로이고 저장하지 않는다. 명시 값은 graphPlot config에 저장되어 plot 물질화, edge geometry, concrete collection 길이, codec 재검증 모두가 같은 한도를 쓴다. Animation·presentation 경로는 기본 한도를 유지한다.
 - routes는 같은 graph/layout의 edge-route ID 또는 false이며 생략은 생성 native/편집 보존이다. Exact binding·lineage·revision 및 제거는 [EDGE_ROUTES](EDGE_ROUTES.md)가 소유한다.
 - layer는 mark.type:graph, exact graphBinding.layout, graphLabels 의미를 저장한다. materializationConfigs.marks[id].graphPlot이 paint·placement를 소유한다. Wrapped editSemantic 세 단계와 materializeGraphPlot이 concrete collection에 edge body/arrow, node body, node label 순으로 기록한다.
 - Logical selection은 node와 edge 각각 한 항목이며 role별 exact 원본 row membership을 가진다. fields.kind/key/origin과 node degree/incoming/outgoing, edge sourceKey/targetKey/weight/directed/ruleId를 노출한다. Node attributes는 attribute:<name>를 사용해 metadata와 충돌하지 않는다.
@@ -95,12 +96,12 @@
 
 ### Value coverage — `createGraphPlot`
 
-- ✅ Covered: directed/parallel/self-loop primitive pairs, immutable typed membership, labels, source revisions, codec, scene, accessibility and scoped composition.
-- Evidence: `test/charts/graph-plots/`, `test/unit/resources/graph-plots.test.js`.
+- ✅ Covered: directed/parallel/self-loop primitive pairs, immutable typed membership, labels, source revisions, codec, scene, accessibility, scoped composition and explicit `maxItems` capacity.
+- Evidence: `test/charts/graph-plots/`, `test/unit/resources/graph-plots.test.js`, `test/unit/grammar/graph/plot-capacity.test.js`.
 
 ## `editGraphPlot`
 
-- Signature: `editGraphPlot({ target?, layout?, routes?, origin?, clip?, nodes?, edges?, labels? })`.
+- Signature: `editGraphPlot({ target?, layout?, routes?, origin?, clip?, nodes?, edges?, labels?, maxItems? })`.
 - 기존 graph plot에 nonempty partial patch를 적용한다. target은 explicit/current eligible/unique 순서이며 scoped target도 허용한다. 생략은 보존, override 배열은 교체, labels:false는 의미와 paint를 함께 제거한다. labels:{}는 key label을 다시 켠다.
 - 새 binding은 graph layout이어야 한다. 기본값·검증·consumer는 createGraphPlot과 같다. 동일 값의 명시 편집도 재물질화하며 layout numeric intent는 바꾸지 않는다. Unknown/null/undefined, 잘못된 key/paint/label은 상태 변경 전에 거절한다.
 

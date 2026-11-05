@@ -85,7 +85,9 @@ async function iteration(input, ratio) {
     metrics.applyMs = performance.now() - now;
     metrics.bundlingMs = metrics.prepareComputeValidateMs + metrics.applyMs;
     now = performance.now();
-    const plotted = routed.createGraphPlot({ id: 'network', layout: 'layout', routes: 'routes', nodes: { radius: 2 }, edges: { arrows: false, stroke: '#2563eb' } });
+    const plotted = routed.createGraphPlot({ id: 'network', layout: 'layout', routes: 'routes', nodes: { radius: 2 }, edges: { arrows: false, stroke: '#2563eb' },
+      // The plot admits node bodies and labels plus edge bodies and arrows; above 10k it states that capacity explicitly.
+      ...(2 * (input.nodes + input.requestedEdges) > 10_000 ? { maxItems: 2 * (input.nodes + input.requestedEdges) } : {}) });
     metrics.materializeMs = performance.now() - now;
     const canvas = document.querySelector('canvas'); now = performance.now();
     render(plotted, canvas.getContext('2d'), { pixelRatio: ratio }); metrics.canvasRenderMs = performance.now() - now;

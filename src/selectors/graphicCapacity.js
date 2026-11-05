@@ -32,8 +32,27 @@ function pointOwners(program, id) {
   return owners;
 }
 
+function graphPlotCapacities(program, id) {
+  const layer = findLayer(program, id), capacities = [];
+  if (layer?.mark?.type === "graph") {
+    const materialization = Object.hasOwn(program, "materializationConfigs") ? program.materializationConfigs : undefined;
+    const configs = materialization != null && Object.hasOwn(materialization, "marks") ? materialization.marks
+      : Object.hasOwn(program, "markConfigs") ? program.markConfigs : undefined;
+    const config = configs != null && Object.hasOwn(configs, id) ? configs[id]?.graphPlot : undefined;
+    if (config != null && Object.hasOwn(config, "maxItems")) capacities.push(config.maxItems);
+  }
+  for (const childId of program.compositionSpec?.children ?? []) {
+    const prefix = namespaceGraphicId(`${program.compositionSpec.id}-${childId}`, "");
+    const child = program.children[childId];
+    if (!id.startsWith(prefix) || child === undefined) continue;
+    const localId = id.slice(prefix.length);
+    if (child.graphicSpec.objects[localId] !== undefined) capacities.push(...graphPlotCapacities(child, localId));
+  }
+  return capacities;
+}
+
 export function resolveGraphicItemCapacity(program, { id, label, type }) {
-  const owners = pointOwners(program, id);
+  const owners = pointOwners(program, id), graphCapacities = owners.length ? [] : graphPlotCapacities(program, id);
   if (owners.length > 1) throw annotateError(new Error("Point graphic ownership is ambiguous."), {
     code: "ambiguous-resource", resourceId: id, candidates: owners.map(owner => owner.layer.id)
   });
@@ -41,6 +60,7 @@ export function resolveGraphicItemCapacity(program, { id, label, type }) {
     pointOwned: owners.length === 1,
     rawCount: owners[0]?.dataset.values.length,
     ...(owners[0]?.maxItems === undefined ? {} : { maxItems: owners[0].maxItems }),
+    ...(graphCapacities.length === 1 ? { graphMaxItems: graphCapacities[0] } : {}),
     graphicType: type ?? program.graphicSpec.objects[id]?.type,
     label
   };

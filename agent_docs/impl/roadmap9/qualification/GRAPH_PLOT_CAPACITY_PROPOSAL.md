@@ -3,7 +3,8 @@
 ## 진행 상태
 
 - [x] 사용자 확인: "1,2,3 승인"(2026-11-05). [승인 기록](PUBLIC_APPROVAL_20261105_PERF.json)
-- [ ] 구현·시험·route benchmark 10k 검증.
+- [x] 구현·시험·설치본 검증(archive `47a959f0…`). [증거](graph-plot-capacity-evidence/)
+- [ ] route benchmark 10k 측정.
 
 ## 문제
 
@@ -15,3 +16,12 @@
 - 저장 위치는 graph plot config 한 곳이다.
 - 위 graphic 수는 이 값으로 검사한다. 다른 한도(edge route work, 저장 용량, 재물질화 work)는 그대로다.
 - 생략한 기존 program·저장 bytes·오류는 바뀌지 않는다. 같은 방식의 point `maxItems` 정책을 따른다.
+
+## 구현 결과 (2026-11-05)
+
+- `maxItems`는 graph plot config에만 저장한다. 생략하면 저장하지 않으며 기존 bytes·오류가 그대로다.
+- 같은 한도를 네 곳이 함께 쓴다: plot graphic 수 검사, edge geometry 검사, concrete collection 길이(`resolveGraphicItemCapacity`가 graph owner의 저장 값을 읽음), 저장본 재검증. 변조된 저장본의 범위 밖 값·작은 값은 거부된다.
+- Animation·presentation 경로는 기본 한도를 유지한다. 1만 개를 넘는 graph의 animation은 명시적으로 거부된다.
+- Route benchmark는 graphic 수가 1만을 넘는 경우에만 정확한 `2 × (node + edge)`를 명시한다.
+- 시험: `test/unit/grammar/graph/plot-capacity.test.js`(기본 한도, 범위 오류, 편집, 저장 왕복·변조 거부, stored route, composition).
+- 설치본 검증: coverage 97.45/95.6/99.33%(critical floor 786), browser 531/531, render 513/513, Node20/22/24 consumer 통과. 크기 상한은 Node20/24 최댓값으로 갱신했다.

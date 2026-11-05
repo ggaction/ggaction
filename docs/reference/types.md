@@ -9809,6 +9809,8 @@ export interface GraphPlotOptions {
   id?: string; layout?: string; routes?: string | false; origin?: "auto" | readonly [number, number]; clip?: boolean;
   nodes?: GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey })[] };
   edges?: GraphEdgePaint; labels?: false | GraphLabelsOptions;
+  /** Explicit concrete graphic capacity from 1 to 100,000; omitted keeps the default 10,000. */
+  maxItems?: number;
 }
 ```
 
