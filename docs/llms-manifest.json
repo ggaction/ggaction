@@ -5,7 +5,7 @@
   "provenance": {
     "status": "development",
     "contractId": "sha256:b832bd54ba9980c7c976c10415a6f9606440c82e078ff530abce0d8ed4502995",
-    "sourceCommit": "8551f7212f9cabc87959ab2260634528d00d9650",
+    "sourceCommit": "8742e905ebef0d3d12e535a3b06913c757526899",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -66,7 +66,7 @@
         "related"
       ],
       "bytes": 12058,
-      "sha256": "2ff038017fe84ce59718edd4f5f15fbdc6752a96f05c7d6dc91945fe0ca3ffeb"
+      "sha256": "b4153ea5baf9bcd2958728bcc88df10b61b4f30d390e397816c0de35dee1104f"
     },
     {
       "order": 4,
@@ -3653,7 +3653,7 @@
         "store-fully-materialized-circles-in-columns"
       ],
       "bytes": 26205,
-      "sha256": "98546e70c216ecdabb19e3ec428d90283b1e8afc9787424043411cca8f38ee12"
+      "sha256": "cb45961ab713970b6d43f626e48e713ad1d9238491e4bd518c4a928747776fa0"
     },
     {
       "order": 136,
@@ -3994,7 +3994,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3033,
-      "sha256": "03f85dd222aa0bbfd58ebda35464ec464a1bc711191ecdc24e0ae2de2fc09fef"
+      "sha256": "5f9195cc9a18bbe3c9452348f2b655e021996886d8fdbdc621a764b6e1f9da87"
     },
     {
       "order": 157,

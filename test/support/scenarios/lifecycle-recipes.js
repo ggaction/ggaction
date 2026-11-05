@@ -1,6 +1,8 @@
 import { directProgramOperations } from "../program-traces.js";
 import { chart, hconcat, vconcat, prepareDataUpdate, prepareImageResource, prepareFontResource, prepareTextMetrics } from "../../../src/index.js";
 import { readFileSync } from "node:fs";
+import { prepareGraphEdgeRoutes, createGraphRouteExecutor, computeGraphEdgeRoutesAsync } from "../../../src/graph.js";
+import { ROUTE_EXECUTION_MAXIMA } from "../../../src/grammar/graph/routes/execution.js";
 
 import { loadZooDataset } from "../datasets/zoo.js";
 import {
@@ -48,9 +50,30 @@ const fontCreated = imageResourceBase.createFontResource({ prepared: await prepa
   { kind: "create", id: "unusedLifecycleFont", ...fontSource }, fontHost), requestToken: fontHost.requestToken });
 const fontMeasured = fontCreated.applyTextMetrics({ prepared: await prepareTextMetrics(fontCreated, { id: "lifecycle-exact-font", fonts: ["unusedLifecycleFont"] },
   { requestToken: fontHost.requestToken, decode: fontHost.decode, measure: fontHost.measure }), requestToken: fontHost.requestToken });
-const preparedResourceBase = fontMeasured.replaceFontResource({ prepared: await prepareFontResource(fontMeasured,
+const fontResourceBase = fontMeasured.replaceFontResource({ prepared: await prepareFontResource(fontMeasured,
   { kind: "replace", target: "unusedLifecycleFont", ...fontSource }, fontHost), requestToken: fontHost.requestToken })
   .removeResource({ kind: "font", id: "unusedLifecycleFont", cascade: true });
+
+// Exercise one prepared native route update on its exact receiver, then remove
+// the temporary graph so the recipes below start from the same resources.
+const routeExecutor = createGraphRouteExecutor({ createWorker() {
+  const listeners = new Map();
+  return { addEventListener: (type, listener) => listeners.set(type, listener), removeEventListener: type => listeners.delete(type), terminate: () => listeners.clear(),
+    postMessage({ job }) { computeGraphEdgeRoutesAsync(structuredClone(job)).then(data => listeners.get("message")?.({ data }), error => listeners.get("error")?.({ error })); } };
+} });
+const routeHost = { requestToken: "lifecycle-route", executor: routeExecutor, deadlineMs: 30000 };
+const routeBase = fontResourceBase.createData({ id: "unusedRouteNodes", values: [{ id: 0 }, { id: 1 }] })
+  .createData({ id: "unusedRouteEdges", values: [{ id: "e", source: 0, target: 1 }] })
+  .createGraphData({ id: "unusedRouteGraph", nodes: "unusedRouteNodes", edges: "unusedRouteEdges", nodeKey: "id", edgeKey: "id", source: "source", target: "target" })
+  .layoutGraph({ id: "unusedRouteLayout", graph: "unusedRouteGraph", method: "fixed", options: { positions: [{ key: 0, x: 0, y: 0 }, { key: 1, x: 10, y: 10 }] } });
+const routeCreated = routeBase.bundleGraphEdges({ prepared: await prepareGraphEdgeRoutes(routeBase, { kind: "create", id: "unusedRoute", graph: "unusedRouteGraph",
+  layout: "unusedRouteLayout", method: "edge-path", options: { execution: { policy: "bounded-route@1", ...ROUTE_EXECUTION_MAXIMA } } }, routeHost), requestToken: routeHost.requestToken });
+const routeUpdated = routeCreated.applyGraphEdgeRoutesUpdate({ prepared: await prepareGraphEdgeRoutes(routeCreated, { kind: "update", edit: { action: "editLayout",
+  args: { target: "unusedRouteLayout", node: { key: 1, x: 20, y: 5 } } } }, routeHost), requestToken: routeHost.requestToken });
+routeExecutor.dispose();
+const preparedResourceBase = routeUpdated.removeResource({ kind: "edge-route", id: "unusedRoute", cascade: false })
+  .removeResource({ kind: "layout", id: "unusedRouteLayout", cascade: false }).removeResource({ kind: "graph", id: "unusedRouteGraph", cascade: false })
+  .removeData({ id: "unusedRouteEdges" }).removeData({ id: "unusedRouteNodes" });
 
 const CARTESIAN_CANVAS = Object.freeze({
   width: 920,
