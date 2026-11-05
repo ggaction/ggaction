@@ -83,7 +83,8 @@ import { validateGraphicType, isGraphicContainerType } from "../grammar/schemas/
 import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 import { walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
 import { invalidSnapshot } from "./codec.js";
-import { DATA_IDENTITY_FIELDS, validateSourceIdentity } from "../core/itemIdentity.js";
+import { DATA_IDENTITY_FIELDS, validateSourceIdentityStages } from "../core/itemIdentity.js";
+import { drainStages, STAGE_ROWS } from "../core/stages.js";
 import { validateDatasetLineage } from "../grammar/rowLineage.js";
 import { validateResourceGraph } from "../materialization/resourceState.js";
 import { validateDataSourceState } from "../materialization/dataSourceState.js";
@@ -129,7 +130,11 @@ function requireArray(value, path) {
   }
 }
 
-export function validateGraphic(graphic, path = "payload.graphicSpec", { legacy = false } = {}) {
+export function validateGraphic(graphic, path = "payload.graphicSpec", options = {}) {
+  return drainStages(validateGraphicStages(graphic, path, options));
+}
+
+export function* validateGraphicStages(graphic, path = "payload.graphicSpec", { legacy = false } = {}) {
   const validateProperties = (type, properties) => {
     validateConcreteGraphicProperties(type, properties);
     if (legacy && Object.hasOwn(properties, "maxCommands")) throw invalidSnapshot("Path maxCommands requires editable snapshot version 4.", path);
@@ -160,7 +165,9 @@ export function validateGraphic(graphic, path = "payload.graphicSpec", { legacy 
     if (object.items !== undefined) {
       if (object.type === "canvas" || object.type === "circle-batch" || object.type === "path-batch" || object.properties !== undefined) throw invalidSnapshot(`Invalid item owner "${id}".`, path);
       requireArray(object.items, `${path}.objects.${id}.items`);
+      let rows = 0;
       for (const item of object.items) {
+        if (++rows % STAGE_ROWS === 0) yield;
         exactKeys(item, [...(object.type === "collection" ? ["id", "type", "properties"] : ["id", "properties"]), ...(item.identity === undefined ? [] : ["identity"])], path);
         if (item.identity !== undefined) validateGraphicIdentity(item.identity);
         if (typeof item.id !== "string" || !item.id.length || ids.has(item.id)) throw invalidSnapshot(`Duplicate or invalid graphic item ID "${item.id}".`, path);
@@ -218,7 +225,11 @@ function validateSemanticProperties(program, value, property) {
   validateStoredSemanticValue(program, parsed, value);
 }
 
-export function validateProgramState(program, path, { allowMissingLookupSchemas = false, legacy = false } = {}) {
+export function validateProgramState(program, path, options = {}) {
+  return drainStages(validateProgramStateStages(program, path, options));
+}
+
+export function* validateProgramStateStages(program, path, { allowMissingLookupSchemas = false, legacy = false } = {}) {
   const semantic = program.semanticSpec;
   exactKeys(semantic, ["datasets", "layers", "scales", "coordinates", "guides", "title", ...(legacy ? [] : ["resources"])], `${path}.semanticSpec`);
   if (!legacy) validateDatasetLineage(semantic.datasets);
@@ -273,7 +284,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     resources.set(referenceKind, entries);
     for (const resource of entries.values()) {
       if (kind === "dataset" && !legacy && resource.source === undefined && Array.isArray(resource.values)) {
-        validateSourceIdentity(resource);
+        yield* validateSourceIdentityStages(resource);
       }
       if (kind === "layer") { validateTickColorChannels(resource); validateImageBinding(program, resource); if (resource.annotationAnchor !== undefined) validateScreenAnnotationLayer(resource);
         if (resource.mark?.type === "table") {
@@ -735,12 +746,14 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     for (const resource of resources.get(kind).values()) visit(resource);
   }
-  validateGraphic(program.graphicSpec, `${path}.graphicSpec`, { legacy });
+  yield* validateGraphicStages(program.graphicSpec, `${path}.graphicSpec`, { legacy });
   assertProgramSingleY(program, { materialized: true });
   validateConcreteFontBindings(program);
   for (const [id, graphic] of Object.entries(program.graphicSpec.objects)) {
     validateGeoGraphicCapacity(resolveGraphicGeoBinding(program, id), graphic);
+    let rows = 0;
     if (!legacy) for (const item of graphic.items ?? []) {
+      if (++rows % STAGE_ROWS === 0) yield;
       if (item.identity !== undefined) resolveGraphicLineage(program, item.identity);
     }
     if (graphic.items !== undefined) validateGraphicItemLimit(graphic.items.length, resolveGraphicItemCapacity(program, {

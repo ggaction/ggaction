@@ -1,6 +1,7 @@
 import { annotateError } from "./diagnostics.js";
 import { cloneAndFreeze, isPlainObject } from "./immutable.js";
 import { validateDataRows, validateWorkLimit } from "./validation.js";
+import { drainStages, STAGE_ROWS } from "./stages.js";
 
 const TYPES = ["boolean", "number", "bigint", "string", "date"];
 const MAX_COMPONENTS = 64;
@@ -13,6 +14,9 @@ function invalid(path, message, code = "invalid-value") {
 }
 
 function dense(array, path, length) {
+  return drainStages(denseStages(array, path, length));
+}
+function* denseStages(array, path, length) {
   if (!Array.isArray(array) || (length !== undefined && array.length !== length) ||
       Reflect.ownKeys(array).length !== array.length + 1) {
     throw invalid(path, `${path} requires a dense array of the expected length.`);
@@ -21,6 +25,7 @@ function dense(array, path, length) {
     if (!Object.hasOwn(Object.getOwnPropertyDescriptor(array, String(i)) ?? {}, "value")) {
       throw invalid(path, `${path} cannot contain holes or accessors.`);
     }
+    if ((i + 1) % STAGE_ROWS === 0) yield;
   }
   return array;
 }
@@ -94,6 +99,28 @@ function fieldValue(row, field) {
 function unique(keys) {
   if (new Set(keys).size !== keys.length) throw invalid("keys", "Duplicate row identity.", "ambiguous-identity");
   return keys;
+}
+function* uniqueStages(keys) {
+  const seen = new Set();
+  for (let i = 0; i < keys.length; i++) {
+    seen.add(keys[i]);
+    if ((i + 1) % STAGE_ROWS === 0) yield;
+  }
+  if (seen.size !== keys.length) throw invalid("keys", "Duplicate row identity.", "ambiguous-identity");
+  return keys;
+}
+// The field and fields key tokens of keyedRows, with the same sparse rows.
+function* keyedFieldRowStages(values, spec) {
+  validateWorkLimit(values.length * (spec.mode === "fields" ? spec.fields.length : 1), "Row key work");
+  const keys = new Array(values.length);
+  for (let i = 0; i < values.length; i++) {
+    if (i in values) {
+      const row = values[i];
+      keys[i] = encodeRowKey(spec.mode === "field" ? fieldValue(row, spec.field) : spec.fields.map(field => fieldValue(row, field)));
+    }
+    if ((i + 1) % STAGE_ROWS === 0) yield;
+  }
+  return yield* uniqueStages(keys);
 }
 
 function keyedRows(values, spec, keys) {
@@ -194,6 +221,10 @@ function validateDecodedTypedRowKeyToken(key, decoded) {
 }
 
 export function validateSourceIdentity(dataset) {
+  return drainStages(validateSourceIdentityStages(dataset));
+}
+
+export function* validateSourceIdentityStages(dataset) {
   const { logicalId, revision, allocationId, keySpec: spec, rowKeys, nextGeneratedKey, values } = dataset;
   namespace(logicalId, "logicalId");
   namespace(allocationId, "allocationId");
@@ -207,9 +238,11 @@ export function validateSourceIdentity(dataset) {
       Object.entries(normalized).some(([key, value]) => JSON.stringify(spec[key]) !== JSON.stringify(value))) {
     throw invalid("keySpec", "Invalid key specification.");
   }
-  dense(rowKeys, "rowKeys", values.length);
-  unique(rowKeys);
+  yield* denseStages(rowKeys, "rowKeys", values.length);
+  yield* uniqueStages(rowKeys);
+  let rows = 0;
   for (const key of rowKeys) {
+    if (++rows % STAGE_ROWS === 0) yield;
     let decoded;
     try { decoded = JSON.parse(key); } catch { throw invalid("rowKeys", "Invalid row key token."); }
     if (spec.mode === "generated") {
@@ -226,7 +259,7 @@ export function validateSourceIdentity(dataset) {
   }
   if (spec.mode !== "generated" && nextGeneratedKey !== 0) throw invalid("nextGeneratedKey", "Keyed sources have no generated counter.");
   if (["field", "fields"].includes(spec.mode)) {
-    const expected = keyedRows(values, spec);
+    const expected = yield* keyedFieldRowStages(values, spec);
     if (expected.some((key, index) => key !== rowKeys[index])) throw invalid("rowKeys", "Stored keys disagree with source fields.");
   }
   return dataset;

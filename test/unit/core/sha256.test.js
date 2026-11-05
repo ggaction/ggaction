@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import test from "node:test";
-import { createSha256State, updateSha256, finishSha256, clearSha256 } from "../../../src/core/sha256.js";
+import { createSha256State, updateSha256, finishSha256, clearSha256, digestSha256Bytes } from "../../../src/core/sha256.js";
 import { canonicalJSON, contentBytesDigest, contentDigest, copyContentBytes } from "../../../src/core/contentDigest.js";
 import { encodeValue } from "../../../src/core/valueEncoding.js";
 
@@ -120,4 +120,17 @@ test("string coercion, signed zero, tagged values and legacy getter order remain
   assert.equal(contentDigest(encoded), oracle(new TextEncoder().encode(encoded)));
   assert.throws(() => contentBytesDigest(new Uint16Array(1)), /Content digest requires bytes/);
   assert.throws(() => copyContentBytes(Uint8Array.of(1, 2), 1), /declared limit/);
+});
+
+test("one-shot digests match independent crypto at every padding boundary and reject non-bytes", () => {
+  for (let length = 0; length <= 200; length++) {
+    const bytes = new Uint8Array(length).map((_, index) => index * 31 + length);
+    assert.equal(digestSha256Bytes(bytes), oracle(bytes), `length ${length}`);
+    const view = new Uint8Array(bytes.buffer.slice(0), 0, length);
+    assert.equal(digestSha256Bytes(view.subarray(Math.min(3, length))), oracle(bytes.subarray(Math.min(3, length))));
+  }
+  for (const value of [[1, 2], "ab", new Uint16Array(2), undefined]) assert.throws(() => digestSha256Bytes(value), /requires bytes/);
+  // Reusing the scratch block after a full and a padded digest stays exact.
+  assert.equal(digestSha256Bytes(new Uint8Array(64)), oracle(new Uint8Array(64)));
+  assert.equal(digestSha256Bytes(new Uint8Array(0)), oracle(new Uint8Array(0)));
 });

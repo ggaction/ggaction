@@ -8,6 +8,7 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `loadProgramInSlices` to `ggaction/persistence`: the same editable snapshot restore as `deserializeProgram`, run in bounded host turns with optional cancellation.
 - Add the concrete `path-batch` primitive and format6 `path-run` frame entries: partition body cells with shared paint now sample as coordinate columns whose rows equal the per-node cell paths on every renderer.
 - Add explicit graph plot `maxItems` capacity (1 to 100,000) to `createGraphPlot` and `editGraphPlot`, keeping the default 10,000-graphic limit when omitted.
 - Add `ggaction/live`: attach a chart to a canvas with `addCanvas`, and every later call redraws immediately; add tooltips, hover, click/brush/lasso selection, zoom and pan, legend toggles, node dragging, data animation, timelines, parameter controls, linked charts, undo/redo, theme, resize, downloads, and save/load with one call each.

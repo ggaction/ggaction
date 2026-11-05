@@ -2,17 +2,19 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { nativeWorkloadInput, prepareNativeWorkload, workloadSizes, workloadThresholds, isNativeLimit, benchmarkWorkload } from '../../scripts/benchmarks/workloads.browser.js';
 
-for (const kind of ['points', 'partition', 'geo', 'data']) test(`native benchmark ${kind} performs complete public work with independent numeric witnesses`, () => {
+for (const kind of ['points', 'partition', 'geo', 'data']) test(`native benchmark ${kind} performs complete public work with independent numeric witnesses`, async () => {
   const input = nativeWorkloadInput(kind, 5), original = JSON.stringify(input), fixture = prepareNativeWorkload(kind, 5, input);
   assert.equal(fixture.stages.length, 2);
   for (const stage of fixture.stages) {
     const prepared = stage.prepare();
     try {
       for (let i = 0; i < 3; i++) {
-        const result = prepared.run(), witness = prepared.validate(result);
+        const result = await prepared.run(), witness = prepared.validate(result);
         assert.ok(Object.values(result.metrics).every(value => Number.isFinite(value) && value >= 0));
         assert.ok(witness.count === 5 || witness.vertices === 5 || witness.queries === 3);
-        if (kind === 'data') assert.equal(result.metrics.blockingSliceMs, result.metrics.loadMs ?? result.metrics.reviseMs);
+        // The sliced load reports its longest host-turn interval; revise is still one synchronous call.
+        if (kind === 'data' && stage.name === 'editable-load') assert.ok(result.metrics.blockingSliceMs <= result.metrics.loadMs);
+        if (kind === 'data' && stage.name === 'source-revise') assert.equal(result.metrics.blockingSliceMs, result.metrics.reviseMs);
       }
     } finally { prepared.dispose?.(); }
   }

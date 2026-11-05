@@ -217,6 +217,24 @@ chart. Subsequent edits use the restored settings and leave the saved snapshot
 unchanged. Partial authoring states can be saved; restoring one does not supply
 missing Canvas dimensions or other prerequisites.
 
+`loadProgramInSlices(text, { sliceMs?, signal? }): Promise<ChartProgram>`
+restores the same editable snapshot in short synchronous slices so a large
+chart does not block the page. It returns the same program, and rejects with
+the same error, as `deserializeProgram`. Each slice runs for about `sliceMs`
+milliseconds (an integer from 1 to 1000, default 40) and then yields to the
+host before continuing. Aborting `signal` rejects with its reason and returns
+no program.
+
+```javascript
+import { chart } from "ggaction";
+import { serializeProgram, loadProgramInSlices } from "ggaction/persistence";
+
+const saved = serializeProgram(chart().createCanvas()
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 5 }] })
+  .createScatterPlot({ x: "x", y: "y" }));
+const program = await loadProgramInSlices(saved, { sliceMs: 20 });
+```
+
 `serializeGraphic(program): string` accepts an object with `graphicSpec`.
 `deserializeGraphic(text): Readonly<Pick<ChartProgram, "graphicSpec">>` returns
 only the immutable graphics wrapper accepted by Canvas, SVG, PNG, and PDF

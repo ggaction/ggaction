@@ -2,7 +2,7 @@ import { chart } from 'ggaction';
 import { createTransitionScene } from 'ggaction/scene';
 import { planTransition, sampleTransition } from 'ggaction/animation';
 import { createInteractionSession } from 'ggaction/interaction';
-import { serializeProgram, deserializeProgram } from 'ggaction/persistence';
+import { serializeProgram, loadProgramInSlices } from 'ggaction/persistence';
 import { expectedGridNeighbors } from '../../test/oracles/inference-grid.js';
 import { inferenceWorkerStage } from './inference.js';
 
@@ -100,6 +100,18 @@ function hitStage(program, queries, owner, rowKeys, preparation) {
     };
   };
 }
+// The longest interval between two host message turns observed while an
+// asynchronous call runs, including any collector pause inside a slice.
+async function slicedTime(call) {
+  const channel = new MessageChannel();
+  let longest = 0, last, running = true;
+  channel.port1.onmessage = () => { const now = performance.now(); longest = Math.max(longest, now - last); last = now; if (running) channel.port2.postMessage(0); };
+  const started = performance.now(); last = started; channel.port2.postMessage(0);
+  try {
+    const value = await call(), ended = performance.now();
+    return { value, elapsed: ended - started, longest: Math.max(longest, ended - last) };
+  } finally { running = false; channel.port1.close(); }
+}
 function samplingStage(from, to, metric, validate, options = sampleOptions, endpoints) {
   return () => {
     const plan = planTransition({ from, to, options });
@@ -147,9 +159,10 @@ export function prepareNativeWorkload(kind, count, input = nativeWorkloadInput(k
       batched ? (start, end) => { checkBatchedPoints(start, input, 1, false); checkBatchedPoints(end, input, 2, false); } : undefined)() });
     } else {
       const saved = serializeProgram(program), revised = input.map(row => ({ ...row, x: row.x / 2 }));
-      stages.push({ name: 'editable-load', prepare: () => ({ run() { const r = time(() => deserializeProgram(saved)); return { metrics: { loadMs: r.elapsed, blockingSliceMs: r.elapsed }, program: r.value }; }, validate: r => checkPoints(r.program, input) }) });
+      stages.push({ name: 'editable-load', prepare: () => ({ async run() { const r = await slicedTime(() => loadProgramInSlices(saved, { sliceMs: 20 })); return { metrics: { loadMs: r.elapsed, blockingSliceMs: r.longest }, program: r.value }; }, validate: r => checkPoints(r.program, input) }) });
       stages.push({ name: 'source-revise', prepare: () => ({ run() { const r = time(() => program.reviseData({ source: 'rows', id: 'revision', values: revised })); return { metrics: { reviseMs: r.elapsed, blockingSliceMs: r.elapsed }, program: r.value }; }, validate(r) { checkPoints(program, input); return checkPoints(r.program, revised); } }) });
-      witness = { ...witness, snapshotCharacters: saved.length, load: 'deserializeProgram', revise: 'reviseData with full dependent point rematerialization', blocking: 'entire synchronous public call, no yielded slice' };
+      witness = { ...witness, snapshotCharacters: saved.length, load: 'loadProgramInSlices with sliceMs 20', revise: 'reviseData with full dependent point rematerialization',
+        blocking: 'load: longest interval between two host message turns while the sliced call runs; revise: entire synchronous public call' };
     }
   } else if (kind === 'inference') {
     check(input.length === count, 'inference input cardinality');

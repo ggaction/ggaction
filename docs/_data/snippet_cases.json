@@ -252,6 +252,16 @@
     "rendering": "authoring-only"
   },
   {
+    "id": "sliced-program-load",
+    "file": "data-updates.md",
+    "contains": "const program = await loadProgramInSlices(saved, { sliceMs: 20 });",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete ES module with ggaction installed; it saves one chart and restores it in bounded slices.",
+    "rendering": "authoring-only"
+  },
+  {
     "id": "parameter-filter-revision",
     "file": "api/data/filtering.md",
     "contains": "const revised = program.editParameter({ target: \"minimum\", value: 1 });",

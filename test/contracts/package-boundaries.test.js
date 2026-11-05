@@ -51,7 +51,7 @@ const PUBLIC_ENTRIES = Object.freeze({
   "./persistence": Object.freeze({
     runtime: "./src/persistence.js",
     types: "./types/persistence.d.ts",
-    values: Object.freeze(["deserializeGraphic", "deserializeProgram", "serializeGraphic", "serializeProgram"])
+    values: Object.freeze(["deserializeGraphic", "deserializeProgram", "loadProgramInSlices", "serializeGraphic", "serializeProgram"])
   }),
   "./accessibility": Object.freeze({
     runtime: "./src/accessibility.js",

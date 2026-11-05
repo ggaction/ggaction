@@ -29,6 +29,22 @@ export async function drainRouteStages(iterator, signal, check = () => active(si
   } finally { iterator.return(); }
 }
 
+// Run pure stages until `sliceMs` has elapsed, then give the host one turn.
+// A single stage step is a bounded row batch, so each synchronous slice ends
+// within one batch of the requested duration.
+export async function drainTimeSlicedStages(iterator, sliceMs, signal) {
+  try {
+    while (true) {
+      active(signal);
+      const started = performance.now();
+      let next = iterator.next();
+      while (!next.done && performance.now() - started < sliceMs) next = iterator.next();
+      if (next.done) { active(signal); return next.value; }
+      await nextRouteTurn(signal);
+    }
+  } finally { iterator.return(); }
+}
+
 export async function drainNativeRouteStages(iterator, lifetime, compute) {
   let completion;
   try {

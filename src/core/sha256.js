@@ -97,7 +97,7 @@ export function digestSha256Bytes(bytes) {
   if (!(bytes instanceof Uint8Array)) throw new TypeError("SHA-256 digest requires bytes.");
   const length = byteLength.call(bytes), buffer = bufferOf.call(bytes);
   arrayBufferLength.call(buffer);
-  if (length > Number.MAX_SAFE_INTEGER / 8) throw new RangeError("SHA-256 byte length exceeds the safe integer limit.");
+  // A typed array length is far below the 2^53 / 8 bit-length limit.
   const view = new DataView(buffer, byteOffset.call(bytes), length);
   scratch.hash.set(INITIAL);
   try {

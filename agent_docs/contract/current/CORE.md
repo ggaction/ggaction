@@ -2692,3 +2692,13 @@ Browser-safe `ggaction/persistence`의 네 함수는 action replay 없이 canoni
 
 - ✅ Covered: image restrict/cascade, hierarchy/layout dependency restrictions, complete mark/config/clip/selection cleanup, unrelated resource retention and immutable failure.
 - Evidence: `test/unit/resources/image-resource-lifecycle.test.js`, `test/unit/resources/hierarchy-resources.test.js`, `test/unit/resources/hierarchy-consumers.test.js`, `test/unit/core/builtin-resource-kinds.test.js`.
+
+## Sliced editable load
+
+`ggaction/persistence`의 `loadProgramInSlices(text, { sliceMs?, signal? })`는 `deserializeProgram(text)`와 같은 program 또는 같은 오류를 비동기로 돌려준다.
+
+- 같은 단계: envelope 읽기, tagged decode, 소유 표시, 상태 복원·검증은 동기 load와 같은 stage iterator(`core/stages.js`)다. 동기 API는 그 iterator를 한 번에 끝까지 돌린다. 행 묶음(1,024) 사이에서만 양보하며 검사 항목·순서·한도는 그대로다.
+- JSON: 분할 경로만 `parseJSONStages`를 쓴다. 64K 문자 이하의 값·모든 문자열·원시 token은 host `JSON.parse`가 읽고, 더 큰 배열·객체의 구분자만 JSON 공백·문장부호 규칙으로 읽는다. 수락/거부와 값·키 순서·`__proto__` own member는 `JSON.parse(text)`와 같다.
+- 시간: sliceMs(1..1000 정수, 기본 40)가 지나면 host turn 하나를 양보한다. 한 단계는 행 묶음 하나라서 동기 구간은 sliceMs에 그 한 묶음 시간만큼만 더 길어질 수 있다. host GC 정지는 측정에 포함된다.
+- 취소: 시작 전·각 slice 전후에 signal을 검사하고 그 reason으로 거부한다. 반환된 program은 없다.
+- Evidence: `test/unit/persistence/sliced-load.test.js`(전 action corpus·legacy fixture 동일 결과, 오류 동일, host turn·취소·옵션, JSON 분할 동치).

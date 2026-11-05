@@ -35,7 +35,19 @@ const TEXT_ALIGNS = new Set(["left", "right", "center", "start", "end"]);
 const TEXT_BASELINES = new Set([
   "top", "hanging", "middle", "alphabetic", "ideographic", "bottom"
 ]);
-const validatedProperties = new WeakMap();
+// The validated types of an owned properties record live in a private field on
+// the record itself, so no process-wide weak table grows with the graphic count
+// (a large weak table lengthens every collector pause). Records that cannot
+// carry the field are simply validated again.
+class StampTarget { constructor(value) { return value; } }
+class ValidatedTypes extends StampTarget {
+  #types = new Set();
+  static of(value) { return value !== null && typeof value === "object" && #types in value ? value.#types : undefined; }
+  static add(value, type) {
+    if (!(#types in value)) { try { new ValidatedTypes(value); } catch { return; } }
+    value.#types.add(type);
+  }
+}
 
 function validateCircleAppearance(value) {
   ownRecord(value, "circle-batch.appearance");
@@ -161,7 +173,7 @@ export function validateConcreteGraphicValue(type, property, value, properties) 
 
 export function validateConcreteGraphicProperties(type, properties) {
   if (type === "path" && isPlainObject(properties)) pathCommandCapacity(properties);
-  const validatedTypes = validatedProperties.get(properties);
+  const validatedTypes = ValidatedTypes.of(properties);
   if (validatedTypes?.has(type)) return properties;
   if (!isPlainObject(properties)) {
     throw new TypeError(`${type}.properties must be a plain object.`);
@@ -184,9 +196,6 @@ export function validateConcreteGraphicProperties(type, properties) {
         properties.font.weight !== textMetricFontWeight(properties.fontWeight))) {
     throw new TypeError("Concrete text font must match its exact family, style and weight.");
   }
-  if (isOwned(properties)) {
-    if (validatedTypes) validatedTypes.add(type);
-    else validatedProperties.set(properties, new Set([type]));
-  }
+  if (isOwned(properties)) ValidatedTypes.add(properties, type);
   return properties;
 }
