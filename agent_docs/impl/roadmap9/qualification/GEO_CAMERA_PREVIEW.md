@@ -89,3 +89,12 @@ Geo 100k hit P95는 21.1ms로 기준 20ms를 근소하게 넘었다. Hit index�
 | 100k | 228.0 / 232.4 (50) | 1.9 / 2.8 |
 
 100k frame(Node 약 260ms)의 대부분은 선분 세분과 보간 등 투영 수학 자체다. 그 밖에는 frame마다 part topology의 SHA-256(약 11ms)과 bounds 계산이 남는다. Precision resampling은 scale에 의존하므로 이전 frame의 투영을 재사용할 수 없다. 50ms는 투영 계산의 열(batch) 표현 없이는 닿지 않는다.
+
+## 저장 자원 검증 재사용 (2026-11-05)
+
+Projection 편집(`editProjection`, native camera)은 자원 graph 전체를 다시 검증하며, 바뀌지 않은 geometry 자원(100k 좌표)을 매번 encode·정규화·canonical 비교했다. 자원 종류별 검증은 그 자원 객체와 program constructor만의 순수 함수다. 그래서 통과한 정확한 객체에 private field로 constructor를 기록하고 같은 객체·같은 constructor면 다시 증명하지 않는다. 저장 member(ownership·inputs·options·result·provenance)가 모두 소유 표시된 자원만 해당하며, 사본·변조본·소유 표시 안 된 record는 매번 검증한다(`test/unit/geo/resource-validation-reuse.test.js`).
+
+- Node 100k `editProjection`: 약 1,100ms → 440ms.
+- Camera preview sample에는 영향이 없다. 100k sample의 거의 전부는 투영 계산이다(Node profile: 선분 세분·점 투영 약 91ms, d3 stream antimeridian 처리 약 52ms, 입력 geometry 사본 약 21ms). 50ms에 닿으려면 투영 경로 자체의 열(batch) 계산이 필요하며 별도 설계·승인 대상으로 남긴다.
+
+검증(archive `429a9f21…`): 전체 시험 10,604개, coverage 97.45/95.6/99.32%(critical floor 789), browser 531/531, render 513/513, Node20/22/24 consumer 통과. [증거](geo-resource-reuse-evidence/)
