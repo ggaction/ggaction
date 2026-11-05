@@ -33,7 +33,11 @@ export function* resolvePointItemsStages(program, layer, dataset, grain, resolve
   ) {
     throw new Error(`Point mark "${layer.id}" is incomplete for selection.`);
   }
-  const definitions = yield* mapStages(dataset.values, (row, index) => ({
+  // Concrete output reads only identities. Selection fields are built when a
+  // selection result or a bring-to-front highlight order can read them.
+  const selectable = !selectionResolvers?.identityOnly || Object.values(program.materializationConfigs.highlights ?? {})
+    .some(config => config.target === layer.id && config.bringToFront === true);
+  const definitions = yield* mapStages(dataset.values, (row, index) => !selectable ? { rowKey: dataset.rowKeys[index], members: [row] } : ({
     rowKey: dataset.rowKeys[index],
     fields: ownFields(row),
     channels: channelMapFromRow(row, layer),

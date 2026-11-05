@@ -22,7 +22,10 @@
   - advanced 용량 부족분에 simple 여유 한 칸을 재배정
   - 고정 지문과 route update 시나리오 갱신
   - TidyTuesday 데이터는 `npm run datasets:sync`로 받아야 한다.
-- [ ] 미달: partition 10k preview, Geo 100k camera, data load/revise blocking 50ms(10k·100k), Route B union, exclusive 창 P95, 최종 qualification.
+- [x] Partition 10k preview: format6 path-run으로 13.4ms(승인 1). [기록](PATH_RUN_PROPOSAL.md)
+- [x] Graph plot 명시 용량과 route 10k 측정(승인 3). [기록](GRAPH_PLOT_CAPACITY_PROPOSAL.md)
+- [x] Data 분할 실행(승인 2): `loadProgramInSlices`·`reviseDataInSlices`. 1k·10k load/revise 최장 구간 통과. [기록](DATA_SLICED_PROPOSAL.md)
+- [ ] 미달: data 100k 최장 구간(GC 꼬리: load 55–58ms, revise 78–112ms), Geo 100k camera(설계 승인 필요), Route B 나머지(facet·composition·간접 union 327개·100ms 계량), exclusive 창 P95, native capability 결과(그룹 79·소비자 30), 독립 검토, 076 같은 commit 9검사, 077 배포(별도 승인).
 
 순차 완료 번호는 여전히 **STEP-056**이다. 이 문서는 실행 순서를 정할 뿐 어떤 STEP의 완료도 기록하지 않는다.
 

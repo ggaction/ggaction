@@ -40,6 +40,17 @@ export function freezeOwned(value) {
   return value;
 }
 
+// A fresh record whose every member is a primitive or an owned value is
+// already a complete immutable value. Owning it lets cloneAndFreeze reuse it;
+// any unowned object member leaves the record for an ordinary copy.
+export function ownWhenMembersOwned(value) {
+  if (!Array.isArray(value) && !isPlainObject(value)) return value;
+  for (const member of Object.values(value)) {
+    if (member !== null && typeof member === "object" ? !isOwned(member) : typeof member === "function") return value;
+  }
+  return freezeOwned(value);
+}
+
 export function isOwned(value) {
   return value !== null && typeof value === "object" &&
     (OwnedMark.has(value) || unmarkableOwnedValues.has(value));

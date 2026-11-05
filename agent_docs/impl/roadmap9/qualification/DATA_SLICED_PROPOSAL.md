@@ -152,3 +152,11 @@ Chromium(같은 소스의 probe archive, sliceMs 10, [report](data-sliced-eviden
 100k revise 표본 30개 중 18개가 15–19ms(이전 32–40ms)이고 12개가 58–121ms다. load는 대부분 19–24ms이고 51–73ms 꼬리가 있다. 튀는 회차는 전체 시간도 같이 늘고 Node 코드 단계는 최장 12ms이므로 Chromium major GC 정지로 귀속한다. revise는 같은 개정을 preview·actual 두 번 계산하고(route replay 계약), 행마다 dataset 복제·schema 검사·point item·identity·선택 정의를 만든다. 남은 방법은 행당 할당 수를 줄이는 것(예: 소유 표시된 원시값만 가진 item 속성의 재복제 생략)이며, 다음 단계로 둔다.
 
 검증(archive `1c283df4…`): 전체 시험 10,602개, coverage 97.45/95.61/99.32%(critical floor 789), browser 531/531, render 513/513, Node20/22/24 consumer 통과. [증거](data-sliced-evidence/tail/)
+
+### 행당 할당 축소 (2026-11-05)
+
+- `ownWhenMembersOwned`: 새로 만든 record의 모든 member가 원시값이거나 소유 표시된 값이면 그 record를 소유 표시한다. 하나라도 소유 표시 안 된 객체 member가 있으면 그대로 두어 이후 `cloneAndFreeze`가 복사한다. mark output의 item 속성·identity·lineage와 identity 전용 경로의 행 key·역할·graphic ID 배열에 쓴다. editGraphics item 검증이 같은 값을 다시 복제하지 않는다.
+- point identity만 필요한 mark output(선택 결과·앞으로 가져오기 강조가 없음)에서는 선택 정의의 필드·채널·속성 객체를 만들지 않는다. 그 값은 identity 결과에 쓰이지 않고, 앞으로 가져오기 강조가 있으면 그대로 만든다.
+- Chromium(probe, [report](data-sliced-evidence/report-data-alloc.json.gz)): 100k revise 전체 2.51 → 2.19초, 최장 구간 P95 DPR1 105 → 112ms, DPR2 113 → 78ms. 30회 중 50ms 초과가 DPR1 9회, DPR2 5회로 GC 꼬리가 남는다(P95 통과에는 1회 이하가 필요). 1k·10k는 계속 통과한다.
+
+검증(archive `5255a5f4…`): 전체 시험 10,602개, coverage 97.45/95.59/99.32%(critical floor 789), browser 531/531, render 513/513, Node20/22/24 consumer 통과. [증거](data-sliced-evidence/alloc/)

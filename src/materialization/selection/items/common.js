@@ -2,7 +2,7 @@ import { isScreenAnnotation, validateScreenAnnotationLayer, screenAnnotationKey 
 import { selectProgramItemKeys } from "../expression.js";
 import { memberRowReferences } from "../rows.js";
 import { normalizeTemporalValue } from "../../../grammar/scales/fields.js";
-import { cloneAndFreeze, isPlainObject } from "../../../core/immutable.js";
+import { cloneAndFreeze, isPlainObject, ownWhenMembersOwned } from "../../../core/immutable.js";
 import {
   MARK_GRAPHIC_PROPERTIES
 } from "../../../grammar/markSelection.js";
@@ -189,9 +189,9 @@ export function* finalizeItemsStages(program, layer, grain, definitions, graphic
     if (positions !== undefined) return Object.freeze({
       key: definition.key,
       topology: definition.topology,
-      graphicRoles: Object.freeze(definition.graphicRoles ?? ["body"]),
-      rowKeys: Object.freeze([...new Set(definition.memberKeys)].sort((a, b) => positions.get(a) - positions.get(b))),
-      graphicIds: Object.freeze(items.map((child, offset) => child.id ?? graphicId(layer, indices[offset])))
+      graphicRoles: ownWhenMembersOwned(definition.graphicRoles ?? ["body"]),
+      rowKeys: ownWhenMembersOwned([...new Set(definition.memberKeys)].sort((a, b) => positions.get(a) - positions.get(b))),
+      graphicIds: ownWhenMembersOwned(items.map((child, offset) => child.id ?? graphicId(layer, indices[offset])))
     });
     const properties = definition.properties === undefined ? (
       items.length === 1

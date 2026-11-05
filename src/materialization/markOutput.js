@@ -8,6 +8,7 @@ import { materializeMarkClip } from "./markClip.js";
 import { resolveMarkIdentities, resolveMarkIdentitiesStages, resolveMarkSourceItems } from "./selection/policies/index.js";
 import { findLayer } from "../selectors/layers.js";
 import { invokeActionStages } from "../core/action.js";
+import { ownWhenMembersOwned } from "../core/immutable.js";
 import { drainStages, mapStages, STAGE_ROWS } from "../core/stages.js";
 
 // Explicitly called by the owning mark materializer after geometry is complete.
@@ -45,18 +46,18 @@ export function* materializeMarkOutputStages(program, id) {
   for (const item of yield* resolveMarkIdentitiesStages(clipped, id)) {
     if (++rows % STAGE_ROWS === 0) yield;
     for (const [index, graphicId] of item.graphicIds.entries()) {
-      identities.set(graphicId, {
+      identities.set(graphicId, ownWhenMembersOwned({
         key: item.key, topology: item.topology, role: item.graphicRoles[index],
-        lineage: item.lineage ?? (isScreenAnnotation(layer) ? { kind: "screen" } : { data: dataset.id, logicalDataId: dataset.logicalId, revision: dataset.revision,
+        lineage: item.lineage ?? ownWhenMembersOwned(isScreenAnnotation(layer) ? { kind: "screen" } : { data: dataset.id, logicalDataId: dataset.logicalId, revision: dataset.revision,
           rowKeys: item.rowKeys })
-      });
+      }));
     }
   }
   if (identities.size !== graphic.items.length) throw new Error(`Mark "${id}" has ambiguous concrete item identity.`);
   const config = clipped.markConfigs[id];
   return yield* invokeActionStages(clipped, clipped.editGraphics, { target: id, property: "items", value: yield* mapStages(graphic.items, child => {
     const type = child.type ?? graphic.type;
-    const properties = resolveMarkEffectProperties(layer, config, { ...child.properties, ...conditionalProperties[child.id] });
+    const properties = ownWhenMembersOwned(resolveMarkEffectProperties(layer, config, { ...child.properties, ...conditionalProperties[child.id] }));
     return { type, properties, identity: identities.get(child.id) };
   }) });
 }
