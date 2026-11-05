@@ -1,6 +1,6 @@
 export interface GraphicBlendSource {
   readonly weight: number;
-  readonly type: Exclude<GraphicType, "canvas" | "collection" | "weighted-blend" | "circle-batch">;
+  readonly type: Exclude<GraphicType, "canvas" | "collection" | "weighted-blend" | "circle-batch" | "path-batch">;
   readonly properties: Readonly<Record<string, unknown>>;
   readonly offset: readonly [number, number];
   /** Source viewport and further clips use the group's local coordinate frame. */

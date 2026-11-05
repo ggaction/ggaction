@@ -929,5 +929,15 @@
     "result": "program",
     "prerequisites": "Run the complete ES module with ggaction installed; it authors one canvas and fully materialized circle columns.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "extension-path-batch",
+    "file": "extension/primitives.md",
+    "contains": ".createGraphics({ id: \"cells\", type: \"path-batch\", parent: \"canvas\" })",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete ES module with ggaction installed; it authors one canvas and two closed path rows.",
+    "rendering": "authoring-only"
   }
 ]

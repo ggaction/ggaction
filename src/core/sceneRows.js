@@ -8,6 +8,19 @@ export function circleRunNode(entry, row) {
     properties: { ...entry.properties.appearance, x: entry.properties.x[row], y: entry.properties.y[row], radius: entry.properties.radius[row] },
     offset: entry.offset, clip: entry.clip, clips: entry.clips };
 }
+// One path-batch row is one subpath: M, then L for each later point, then Z when closed.
+export function pathBatchRowCommands(properties, index) {
+  const { x, y, starts, closed } = properties, start = starts[index], end = index + 1 < starts.length ? starts[index + 1] : x.length, commands = [];
+  for (let point = start; point < end; point++) commands.push({ op: point === start ? 'M' : 'L', x: x[point], y: y[point] });
+  if (closed) commands.push({ op: 'Z' });
+  return commands;
+}
+export function pathRunNode(entry, row) {
+  return { key: entry.keys[row], type: 'path', topology: entry.topology,
+    properties: { ...entry.properties.appearance, commands: pathBatchRowCommands(entry.properties, row) },
+    offset: entry.offset, clip: entry.clip, clips: entry.clips };
+}
+// Circle and path runs share one decision table shape.
 export function circleRunDecision(entry, row) {
   const table = entry.decisions;
   return table === null ? null : { sourceIndex: table.sourceIndices[row], targetIndex: table.targetIndices[row],
@@ -19,7 +32,7 @@ export function* animationSceneRows(scene, options = {}) {
   for (let entryIndex = 0; entryIndex < scene.entries.length; entryIndex++) {
     const entry = scene.entries[entryIndex];
     if (entry.kind === 'single') yield { node: entry.node, decision: options.decisions === false ? undefined : entry.decision, index: index++, entryIndex, rowIndex: undefined };
-    else for (let rowIndex = 0; rowIndex < entry.keys.length; rowIndex++) yield { node: circleRunNode(entry, rowIndex), decision: options.decisions === false ? undefined : circleRunDecision(entry, rowIndex), index: index++, entryIndex, rowIndex };
+    else for (let rowIndex = 0; rowIndex < entry.keys.length; rowIndex++) yield { node: (entry.kind === 'path-run' ? pathRunNode : circleRunNode)(entry, rowIndex), decision: options.decisions === false ? undefined : circleRunDecision(entry, rowIndex), index: index++, entryIndex, rowIndex };
   }
 }
 

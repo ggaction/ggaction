@@ -76,9 +76,12 @@ Choose `formatVersion: 6` explicitly to return `BatchedTransitionFrame` values.
 The frame contains a complete `graphicSpec`, `progress`, and a version 3 `scene`.
 Its ordered `entries` contain ordinary single nodes or adjacent `circle-run` columns.
 Each run contains at most 10,000 circles with equal appearance, placement and
-resolved scales. Coordinates, radii, paint, clips and current identities are ready
+resolved scales. Partition body cells with equal paint and placement use adjacent
+`path-run` columns: each row is one closed cell outline with the same points as
+the per-node path. Coordinates, radii, paint, clips and current identities are ready
 when sampling returns; all four renderers consume the frame directly. Other
-geometry and incompatible paint remain concrete single-entry fallbacks.
+geometry, labels, hidden cells and incompatible paint remain concrete single-entry
+fallbacks.
 
 The default continues to return legacy version 2 scenes with `nodes` and a
 separate `decisions` vector. A batched frame embeds decisions in each entry:

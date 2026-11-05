@@ -3,7 +3,8 @@
 ## 진행 상태
 
 - [x] 사용자 확인: "1,2,3 승인"(2026-11-05). [승인 기록](PUBLIC_APPROVAL_20261105_PERF.json)
-- [ ] 구현·시험·네 renderer·hit·codec 검증.
+- [x] 구현: `path-batch` primitive, scene v3 `path-run`, partition sampler 묶음, 네 renderer·hit·codec·rebase.
+- [x] 전체 시험·설치본 검증·partition 10k benchmark(archive `7c95c11e…`). [증거](path-run-evidence/)
 
 ## 왜 필요한가
 
@@ -35,3 +36,23 @@ Partition 10k gesture preview는 frame당 66–70ms(기준 33ms)다. 남은 비�
 ## Geo 100k와의 관계
 
 Geo 100k camera(228ms, 기준 50ms)는 한 경로에 명령이 10만 개 있는 경우다. 비용의 대부분이 투영 수학 자체라 path-run만으로는 닿지 않는다. 이 제안 범위에 넣지 않는다.
+
+## 구현 기록 (2026-11-05)
+
+1. **Primitive**: `src/grammar/schemas/pathBatch.js`가 `{x, y, starts, closed, appearance}`를 검증한다. 제안의 `starts`는 행 수와 같은 길이이며 마지막 행은 점 끝까지다. 점은 1..1,000,000, 행은 1..10,000, 행마다 최소 두 점과 기본 path 명령 상한 30,000을 지킨다. appearance는 기존 concrete path paint 검증을 그대로 쓰고 commands·maxCommands·length를 거부한다.
+2. **행 전개 단일화**: `batchGraphic.js`의 `isBatchGraphicType`·`batchGraphicRow`를 graphic source 방문, paint frame, transition scene, Canvas·native preflight·SVG, bounds가 함께 쓴다. 행 명령(`pathBatchRowCommands`)은 core 계층 제약 때문에 `core/sceneRows.js`에 두고 grammar가 가져다 쓴다.
+3. **Sampler**: `prepareBatchSampling`이 같은 pair·owner·role·topology·paint·appearance track·placement인 `semantic-partition` body track을 `path-run`으로 묶는다. Frame마다 pair당 한 번 `samplePartitionPairGroup`으로 sample하고, `partitionAnimationOutlineColumns`가 per-node 경로와 같은 `outline` 함수로 좌표를 column에 쓴다. 숨겨진 셀이 하나라도 있으면 그 frame은 기존 per-node 경로를 쓴다. Frame partition 의미(groups·items)는 per-node 경로와 같다.
+4. **소비자**: canvas scene은 `path-run`을 한 `path-batch` object로 compile한다. Hit는 행 key를 그대로 쓴다. Rebase·offline은 행 전개(`pathRunNode`)와 `{kind:"path-run"}` 위치(행마다 `sampled-concrete`)를 쓴다. Codec은 x·y·starts·decision index를 numeric column으로 옮기고, 논리 work는 행별 M/L/Z 명령을 펼친 legacy node 비용과 같게 센다.
+5. **시험**: `test/unit/renderers/path-batch.test.js`(검증 거부, 저장, DPR1/2 Canvas·SVG·PNG·PDF와 개별 path 동등성, 그림자, bounds, scene 배치), `test/unit/animation/batched-partition.test.js`(행·결정·frame 의미·native·pixel이 per-node frame과 같음, 저장·rebase, fallback, hit 동등성).
+
+## 측정 (archive `7c95c11e…`)
+
+`node scripts/benchmark-native.js --workload=partition`, Chromium, 5 warmup + 30 측정. 10k는 `formatVersion: 6`로 재고, 검산은 모든 행의 네 꼭짓점을 이전과 같은 기준으로 비교한다. [report](path-run-evidence/report-partition.json.gz)
+
+| 크기 | layout DPR1 / DPR2 | gesture preview DPR1 / DPR2 (목표 33ms) |
+| --- | --- | --- |
+| 100 | 1.6 / 1.6 ms | 1.1 / 1.1 ms |
+| 1k | 12.0 / 12.2 ms | 6.1 / 7.1 ms |
+| 10k | 119.8 / 118.8 ms | **13.4 / 13.4 ms** (이전 67.3 / 66.2 ms) |
+
+Node 중앙값 10k는 64.7 → 16.4ms다. 전체 시험 10,590개(문서 예제 판정 목록에 path-batch 추가 후 통과), coverage 97.45/95.6/99.33%(critical floor 786), browser 531/531, render 513/513, Node20/22/24 consumer 통과. 크기 상한은 Node20/24 최댓값으로 갱신했다.

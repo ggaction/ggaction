@@ -1,4 +1,5 @@
 import { circleBatchRow } from "./circleBatch.js";
+import { pathBatchRow } from "./pathBatch.js";
 import { shadowBlurSupport } from "../shadow.js";
 import {
   requireFiniteBounds,
@@ -293,6 +294,9 @@ export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
   if (type === "circle-batch" && ![properties.x, properties.y, properties.radius].every(Array.isArray)) return undefined;
   if (type === "circle-batch") return unionBounds(properties.x.map((_, index) =>
     resolvePrimitiveGraphicBounds("circle", circleBatchRow(properties, index), profile)));
+  if (type === "path-batch" && ![properties.x, properties.y, properties.starts].every(Array.isArray)) return undefined;
+  if (type === "path-batch") return unionBounds(properties.starts.map((_, index) =>
+    resolvePrimitiveGraphicBounds("path", pathBatchRow(properties, index), profile)));
   if (type === "weighted-blend") return weightedBounds(properties, profile, false);
   const strokeExtent = properties.outline === undefined
     ? (hasActiveStroke(properties) ? properties.strokeWidth / 2 : 0)
@@ -365,6 +369,9 @@ export function resolvePrimitiveOccupiedBounds(type, properties = {}, profile) {
   if (type === "circle-batch" && ![properties.x, properties.y, properties.radius].every(Array.isArray)) return undefined;
   if (type === "circle-batch") return unionBounds(properties.x.map((_, index) =>
     resolvePrimitiveOccupiedBounds("circle", circleBatchRow(properties, index), profile)));
+  if (type === "path-batch" && ![properties.x, properties.y, properties.starts].every(Array.isArray)) return undefined;
+  if (type === "path-batch") return unionBounds(properties.starts.map((_, index) =>
+    resolvePrimitiveOccupiedBounds("path", pathBatchRow(properties, index), profile)));
   if (type === "weighted-blend") return weightedBounds(properties, profile, true);
   const bounds = resolvePrimitiveGraphicBounds(type, properties, profile), shadow = properties.shadow;
   if (bounds === undefined || shadow === undefined) return bounds;

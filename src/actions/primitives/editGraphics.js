@@ -36,7 +36,7 @@ function validateCollectionItem(item, ownerId, index) {
   if (!isPlainObject(item.properties)) {
     throw new TypeError(`Collection item "${ownerId}:${index}" requires plain properties.`);
   }
-  if (type === "path" || type === "circle-batch") validateConcreteGraphicProperties(type, item.properties);
+  if (type === "path" || type === "circle-batch" || type === "path-batch") validateConcreteGraphicProperties(type, item.properties);
   else for (const [property, value] of Object.entries(item.properties)) {
     validateGraphicProperty(type, property);
     validateConcreteGraphicValue(type, property, value);

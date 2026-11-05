@@ -387,6 +387,8 @@ export type {
   GraphicType,
   GraphicCircleAppearance,
   GraphicCircleBatchProperties,
+  GraphicPathAppearance,
+  GraphicPathBatchProperties,
   GraphicBlendSource,
   GraphicWeightedBlendProperties,
   GroupEncodingOptions,
@@ -1144,7 +1146,7 @@ export function getProjectionView(program: ProgramInput, options?: { readonly ta
 
 ```typescript
 import type { TransitionDecision } from './animation.js';
-import type { ChartProgram, GraphicObject, GraphicClipPath, GraphicCircleBatchProperties, CanvasRenderOptions, PreparedShadowRendering } from './program.js';
+import type { ChartProgram, GraphicObject, GraphicClipPath, GraphicCircleBatchProperties, GraphicPathBatchProperties, CanvasRenderOptions, PreparedShadowRendering } from './program.js';
 export interface TransitionNode {
   readonly key: string;
   readonly type: string;
@@ -1188,6 +1190,12 @@ export type SampleEntry =
       readonly clips: readonly (readonly [number, number, number, number] | GraphicClipPath)[];
       readonly properties: GraphicCircleBatchProperties;
       readonly decisions: null | { readonly kind: 'semantic-kernel'; readonly kernel: 'cartesian-point'; readonly ownerKey: string; readonly role: string;
+        readonly sourceIndices: readonly number[]; readonly targetIndices: readonly number[]; readonly itemKeys: readonly string[] } }
+  | { readonly kind: 'path-run'; readonly keys: readonly string[]; readonly topology: string;
+      readonly offset: readonly [number, number]; readonly clip: readonly [number, number, number, number];
+      readonly clips: readonly (readonly [number, number, number, number] | GraphicClipPath)[];
+      readonly properties: GraphicPathBatchProperties;
+      readonly decisions: null | { readonly kind: 'semantic-kernel'; readonly kernel: 'partition'; readonly ownerKey: string; readonly role: string;
         readonly sourceIndices: readonly number[]; readonly targetIndices: readonly number[]; readonly itemKeys: readonly string[] } };
 export interface BatchedTransitionScene { readonly version: 3; readonly width: number; readonly height: number; readonly entries: readonly SampleEntry[]; }
 export type AnyCanvasTransitionScene = CanvasTransitionScene | BatchedTransitionScene;

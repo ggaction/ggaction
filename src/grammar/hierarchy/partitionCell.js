@@ -20,24 +20,33 @@ export function preparePartitionBendCells(frame, bend, segmentCount) {
   mapping.map({ u: .5, v: .5, bend });
   // Cell ranges precede the gap; the gap is admitted once, after the first cell.
   let gap;
-  const build = cell => {
+  // Emit one cell outline point by point; a hidden inset cell emits nothing.
+  const outline = (cell, emit) => {
     validatePartitionIntervalRange(cell);
     gap ??= admitPartitionBendGap(inputGap);
     const interval = mapping.insetLiteral(cell, gap);
-    if (!interval.visible) return null;
-    const count = Math.max(1, Math.ceil((interval.u1 - interval.u0) * segments)), ring = [];
-    const at = (i, v) => { const point = mapping.mapLiteral({ u: interpolateNumber(interval.u0, interval.u1, i / count), v, bend }); ring.push([point.x, point.y]); };
+    if (!interval.visible) return undefined;
+    const count = Math.max(1, Math.ceil((interval.u1 - interval.u0) * segments));
+    const at = (i, v) => { const point = mapping.mapLiteral({ u: interpolateNumber(interval.u0, interval.u1, i / count), v, bend }); emit(point.x, point.y); };
     for (let i = 0; i <= count; i++) at(i, interval.v0);
     for (let i = count; i >= 0; i--) at(i, interval.v1);
+    return interval;
+  };
+  const build = cell => {
+    const ring = [], interval = outline(cell, (x, y) => ring.push([x, y]));
+    if (interval === undefined) return null;
     const anchor = mapping.mapLiteral({ u: (interval.u0 + interval.u1) / 2, v: interval.anchorV, bend });
     return freezeOwned({ commands: buildRingPathCommands([ring], true), anchor: freezeOwned(anchor), interval: freezeOwned(interval) });
   };
   // `cell` admits a caller interval record. `node` reads the four bounds of an
   // owned node, whose frozen data fields need no accessor or extra-key check.
+  const bounds = node => isOwned(node) ? { u0: node.u0, u1: node.u1, v0: node.v0, v1: node.v1 }
+    : (validatePartitionInterval(node = { u0: node.u0, u1: node.u1, v0: node.v0, v1: node.v1 }), node);
   return {
     cell: cell => { validatePartitionInterval(cell); return build(cell); },
-    node: node => isOwned(node) ? build({ u0: node.u0, u1: node.u1, v0: node.v0, v1: node.v1 })
-      : (validatePartitionInterval(node = { u0: node.u0, u1: node.u1, v0: node.v0, v1: node.v1 }), build(node))
+    node: node => build(bounds(node)),
+    // The same closed outline as `node(...).commands`, written as coordinates.
+    outline: (node, emit) => outline(bounds(node), emit) !== undefined
   };
 }
 export function partitionBendCellGeometry(cell, frame, bend, segmentCount) {

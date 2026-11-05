@@ -121,8 +121,8 @@ const createGraphics = /* @__PURE__ */ closedAction(
     if (length !== undefined) {
       validateGraphicItemLimit(length, resolveGraphicItemCapacity(this, { id, label: "createGraphics length", type: validatedType }));
     }
-    if (validatedType === "circle-batch" && length !== undefined) {
-      throw new TypeError("circle-batch uses coordinate columns and cannot own items.");
+    if ((validatedType === "circle-batch" || validatedType === "path-batch") && length !== undefined) {
+      throw new TypeError(`${validatedType} uses coordinate columns and cannot own items.`);
     }
     if (validatedType === "collection" && length !== undefined) {
       throw new Error("Heterogeneous collections use editGraphics items instead of length.");

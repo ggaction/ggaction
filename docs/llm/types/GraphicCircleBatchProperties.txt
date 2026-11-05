@@ -6,3 +6,4 @@ export interface GraphicCircleBatchProperties {
   readonly radius: readonly number[];
   readonly appearance: GraphicCircleAppearance;
 }
+/** Shared concrete path paint; each row's outline is stored in the coordinate columns. */

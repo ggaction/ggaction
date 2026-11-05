@@ -1,4 +1,5 @@
 import { visitGraphicSources } from "../../grammar/schemas/graphicSources.js";
+import { isBatchGraphicType } from "../../grammar/schemas/batchGraphic.js";
 import { patternFillGeometry, validatePatternWork } from "../../grammar/patterns.js";
 import { resolveLinearGradientCoordinates } from "../../grammar/paint.js";
 import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
@@ -153,7 +154,7 @@ export function preflightCanvasGraphicSpec(target, scale = 1) {
   const offsets = [];
   let paintWork = 0;
   const preflight = (id, object, density, type, offset) => {
-    if (type === "circle-batch") {
+    if (isBatchGraphicType(type)) {
       visitGraphicSources(id, object, type, (rowId, row, rowType) => {
         paintWork += preflightGraphic(rowId, row, density, rowType, offset);
         validatePatternWork(paintWork);

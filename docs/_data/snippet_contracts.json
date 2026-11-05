@@ -2616,7 +2616,7 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Run the complete ES module with public imports. The explicit preparation allowance belongs only to this immutable program session.",
-    "sha256": "efda252866800ef03136106fa146fedf2ea8ca75da6299507b9e732c6377d697",
+    "sha256": "8b0ab73dd2301b2a9335305bc150e1c849371ee364b12e21bc9a701902d14011",
     "executable": true
   },
   {
@@ -5735,6 +5735,21 @@
     ],
     "prerequisites": "Run the complete ES module with ggaction installed; it authors one canvas and fully materialized circle columns.",
     "sha256": "f4f7ed9d8cd1bfe7c66fcf0956c1b7fafc9599983fa2eec549ea162f66f7dd6f",
+    "executable": true
+  },
+  {
+    "file": "extension/primitives.md",
+    "block": 15,
+    "heading": "Store fully materialized paths in columns",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"canvas\"",
+      "target: \"cells\""
+    ],
+    "prerequisites": "Run the complete ES module with ggaction installed; it authors one canvas and two closed path rows.",
+    "sha256": "806d2afe61015460e95e1f71890964d1948ed499f84a7997c46251b5acb36690",
     "executable": true
   }
 ]

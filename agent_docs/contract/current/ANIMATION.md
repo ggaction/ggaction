@@ -101,7 +101,15 @@ point run은 동일 owner/role/kernel과 sourceIndices/targetIndices/itemKeys의
 각 run은1..10000행이며 연속 draw order·appearance·placement·scale 경계에서 나눈다.
 
 모든 좌표/appearance/placement/현재 의미/native identity는 sample 반환 전에 완성·검산된다.
-Renderer는 graphicSpec의 공통 circle-batch primitive를 직접 소비하고 의미 평가를 하지 않는다.
+Renderer는 graphicSpec의 공통 circle-batch·path-batch primitive를 직접 소비하고 의미 평가를 하지 않는다.
+
+Partition body cell은 `path-run` entry로 묶는다. 같은 prepared pair·owner·role·topology·paint·
+appearance track·placement가 이어지는 `semantic-partition` body track만 대상이며 1..10,000행이다.
+properties는 path-batch이고 행은 per-node 경로와 같은 tessellation의 닫힌 외곽선이다. decisions는
+`kernel:"partition"` dense table이고 position은 좌표 channel 없는 `{kind:"path-run"}`이다. Frame
+partition 의미는 pair마다 한 번 sample한 group과 행 순서의 item이다. 숨겨진 셀·label·다른 family가
+있으면 그 frame은 기존 per-node 경로를 그대로 쓴다. Codec·rebase·offline은 circle-run 규칙을 따르며
+논리 work는 행별 M/L/Z 명령을 펼친 legacy node 비용이다. Evidence: `test/unit/animation/batched-partition.test.js`.
 기존 family/복잡 paint fallback은 single entry로 유지한다. Private positions는 entries에 대응하는
 single value 또는 point-run x/y values와 exact scale이다. Native proof는 logical row 순서와
 (graphicId,rowIndex)를 사용하고 offline/clone/caller batch에는 native 권한을 부여하지 않는다.

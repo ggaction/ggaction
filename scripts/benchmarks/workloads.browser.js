@@ -52,6 +52,22 @@ function checkPoints(programOrFrame, rows, denominator = 1) {
 }
 // Completed format6 frames store point rows as circle-run columns; check the same
 // coordinates, radius and semantic interpolation decision for every row.
+// Completed format6 partition frames store body cells as path-run columns; check
+// every row's four corners and its partition interpolation decision.
+function checkBatchedPartition(frame, count, checkCell) {
+  let cells = 0;
+  for (const entry of frame.scene.entries) {
+    if (entry.kind === 'single') { check(entry.node.properties.fill !== '#3b82f6', 'every partition cell is in a path run'); continue; }
+    check(entry.kind === 'path-run' && entry.decisions?.kernel === 'partition' && entry.properties.closed, 'closed semantic partition run');
+    const { x, y, starts } = entry.properties;
+    for (let row = 0; row < entry.keys.length; row++) {
+      check((starts[row + 1] ?? x.length) - starts[row] === 4, 'four-corner partition cell');
+      checkCell(cells++, j => [x[starts[row] + j], y[starts[row] + j]]);
+    }
+  }
+  check(cells === count, 'complete typed partition frame');
+  return { count: cells, batched: true, rootWidth: 460, leafWidth: 460 / (count - 1) };
+}
 function checkBatchedPoints(frame, rows, denominator = 1, interpolated = true) {
   let count = 0;
   for (const entry of frame.scene.entries) {
@@ -190,17 +206,25 @@ export function prepareNativeWorkload(kind, count, input = nativeWorkloadInput(k
     stages.push({ name: 'normalized-layout', prepare: () => ({ run() { const r = time(layout); return { metrics: { kernelMs: r.elapsed }, program: r.value }; }, validate: r => validateLayout(r.program) }) });
     stages.push({ name: 'gesture-preview', prepare: () => {
       const from = laidOut.createPartitionPlot({ id: 'partition', labels: false, cells: { strokeWidth: 0 } }), to = from.editCanvas({ width: 600 });
+      // The 10k class uses the documented explicit format6 path-run columns.
+      const batched = count >= 10000;
+      const checkCell = (i, point) => {
+        const x = i === 0 ? 20 : 20 + 460 * (i - 1) / (count - 1), y = i === 0 ? 20 : 200, width = i === 0 ? 460 : 460 / (count - 1);
+        [[x,y],[x+width,y],[x+width,y+180],[x,y+180]].forEach(([ex,ey],j) => { const [ax, ay] = point(j); close(ax,ex); close(ay,ey); });
+      };
       return samplingStage(from, to, 'gesturePreviewMs', frame => {
+        if (batched) return checkBatchedPartition(frame, count, checkCell);
         const nodes = frame.scene.nodes.filter(node => node.properties.fill === '#3b82f6');
         check(nodes.length === count && frame.decisions.filter(d => d.kernel === 'partition').length === count, 'complete typed partition frame');
         nodes.forEach((node, i) => {
-          const x = i === 0 ? 20 : 20 + 460 * (i - 1) / (count - 1), y = i === 0 ? 20 : 200, width = i === 0 ? 460 : 460 / (count - 1);
-          const expected = [[x,y],[x+width,y],[x+width,y+180],[x,y+180]], commands = node.properties.commands;
+          const commands = node.properties.commands;
           check(commands.length === 5 && commands[4].op === 'Z', 'closed native partition cell');
-          expected.forEach(([ex,ey],j) => { close(commands[j].x,ex); close(commands[j].y,ey); });
+          checkCell(i, j => [commands[j].x, commands[j].y]);
         });
         return { count: nodes.length, rootWidth: 460, leafWidth: 460 / (count - 1) };
-      }, count >= 10000 ? { ...sampleOptions, maxEndpointNodes: 2 * (count + 1), maxOutputNodes: count + 1 } : sampleOptions)();
+      }, count >= 10000 ? { ...sampleOptions, maxEndpointNodes: 2 * (count + 1), maxOutputNodes: count + 1, ...(batched ? { formatVersion: 6 } : {}) } : sampleOptions,
+      // Batch endpoints are completed frames rather than the original graphic objects.
+      batched ? (start, end) => { for (const frame of [start, end]) check(frame.scene.version === 3 && frame.scene.entries.filter(entry => entry.kind === 'single' && entry.node.properties.fill === '#3b82f6').length === count, 'complete partition endpoint'); } : undefined)();
     } });
   } else {
     check(input.features[0].geometry.coordinates.length === count, 'all source vertices');

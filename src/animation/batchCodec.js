@@ -2,7 +2,15 @@ import { ownArray, ownRecord } from '../core/ownData.js';
 import { rejectUnknownProperties, validateGeneratedItemLimit } from '../core/validation.js';
 import { packAnimationNumericVector, inspectAnimationNumericVector } from './numericColumns.js';
 import { animationResourceLimits, validateAnimationColumnCount, validateAnimationResourceWork, validatePreparedEndpointResources } from './resources.js';
-const numericKeys = ['x', 'y', 'radius'];
+const numericKeys = ['x', 'y', 'radius'], pathKeys = ['x', 'y', 'starts'], pathFields = ['x', 'y', 'starts', 'closed', 'appearance'];
+const MAX_PATH_POINTS = 1_000_000;
+// Path columns carry their own point and row lengths inside the shared bounds.
+function transformPathColumns(properties, rows, transform, label) {
+  closed(properties, pathFields, label);
+  const points = properties.x?.length;
+  if (!Number.isSafeInteger(points) || points < 1 || points > MAX_PATH_POINTS) throw new RangeError(`Path batches require 1..${MAX_PATH_POINTS} points.`);
+  return { ...properties, ...Object.fromEntries(pathKeys.map(key => [key, transform(properties[key], key === 'starts' ? rows : points)])) };
+}
 const closed = (value, fields, label) => {
   ownRecord(value, label); rejectUnknownProperties(value, fields, label);
   if (fields.some(key => !Object.hasOwn(value, key))) throw new TypeError(`${label} requires every declared field.`);
@@ -15,8 +23,19 @@ function transformEndpoint(endpoint, transform) {
     if (endpoint.positions.length !== endpoint.scene.entries.length) throw new TypeError('Batched positions must follow every entry.');
     const positions = endpoint.positions.slice();
     const entries = endpoint.scene.entries.map((entry, index) => {
-      ownRecord(entry, 'Batched transport entry'); if (entry.kind !== 'circle-run') return entry;
+      ownRecord(entry, 'Batched transport entry'); if (entry.kind !== 'circle-run' && entry.kind !== 'path-run') return entry;
       ownArray(entry.keys, 'Batched transport keys'); const length = entry.keys.length;
+      if (entry.kind === 'path-run') {
+        if (length < 1 || length > 10000) throw new RangeError('Path runs require 1..10000 rows.');
+        closed(positions[index], ['kind'], 'Batched transport position');
+        if (positions[index].kind !== 'path-run') throw new TypeError('Path runs require path positions.');
+        let decisions = entry.decisions;
+        if (decisions !== null) {
+          closed(decisions, ['kind', 'kernel', 'ownerKey', 'role', 'sourceIndices', 'targetIndices', 'itemKeys'], 'Batched transport decisions');
+          decisions = { ...decisions, sourceIndices: transform(decisions.sourceIndices, length), targetIndices: transform(decisions.targetIndices, length) };
+        }
+        return { ...entry, properties: transformPathColumns(entry.properties, length, transform, 'Batched transport properties'), decisions };
+      }
       if (length < 1 || length > 10000) throw new RangeError('Circle runs require 1..10000 rows.');
       closed(entry.properties, ['x', 'y', 'radius', 'appearance'], 'Batched transport properties');
       const position = positions[index]; closed(position, ['kind', 'x', 'y'], 'Batched transport position');
@@ -36,6 +55,11 @@ function transformEndpoint(endpoint, transform) {
   if (endpoint.graphicSpec !== undefined) {
     ownRecord(endpoint.graphicSpec.objects, 'Batched transport objects');
     const objects = Object.fromEntries(Object.entries(endpoint.graphicSpec.objects).map(([id, object]) => {
+      if (object.type === 'path-batch') {
+        const rows = object.properties?.starts?.length;
+        if (!Number.isSafeInteger(rows) || rows < 1 || rows > 10000) throw new RangeError('Path batches require 1..10000 rows.');
+        return [id, { ...object, properties: transformPathColumns(object.properties, rows, transform, 'Batched transport properties') }];
+      }
       if (object.type !== 'circle-batch') return [id, object];
       closed(object.properties, ['x', 'y', 'radius', 'appearance'], 'Batched transport properties');
       const length = object.properties.x.length;
@@ -69,6 +93,20 @@ function measurePlan(raw, weighted, numeric = new Set()) {
         nodes+=keyWork(String(count))+work(entry.node);positions+=keyWork(String(count))+work(position.value);
         if(entry.decision!==null)decisions+=keyWork(String(decisionCount++))+work(entry.decision);count++;continue;
       }
+      if(entry.kind==='path-run'){
+        // Each row is the legacy path node with its expanded M/L/Z commands.
+        const nodeStatic=1+field('type','path')+field('topology',entry.topology)+field('offset',entry.offset)+field('clip',entry.clip)+field('clips',entry.clips)+
+          keyWork('properties')+work(entry.properties.appearance)+keyWork('commands')+1;
+        const point=1+field('op','M')+field('x',0)+field('y',0),close=1+field('op','Z'),{x,starts,closed:closes}=entry.properties;
+        const table=entry.decisions,decisionStatic=table===null?0:1+field('sourceIndex',0)+field('targetIndex',0)+field('role',table.role)+field('ownerKey',table.ownerKey)+field('kind',table.kind)+field('kernel',table.kernel);
+        for(let row=0;row<entry.keys.length;row++){
+          const length=(row+1<entry.keys.length?starts.at(row+1):x.length)-starts.at(row)+(closes?1:0);let commands=0;
+          for(let index=0;index<length;index++)commands+=keyWork(String(index))+(closes&&index===length-1?close:point);
+          const digits=keyWork(String(count++));nodes+=digits+nodeStatic+commands+field('key',entry.keys[row]);positions+=digits+1;
+          if(table!==null)decisions+=keyWork(String(decisionCount++))+decisionStatic+field('itemKey',table.itemKeys[row]);
+        }
+        continue;
+      }
       if(entry.kind!=='circle-run')throw new TypeError('Unknown batched transport entry.');
       const nodeStatic=1+field('type','circle')+field('topology',entry.topology)+field('offset',entry.offset)+field('clip',entry.clip)+field('clips',entry.clips)+
         keyWork('properties')+work(entry.properties.appearance)+3+keyWork('x')+keyWork('y')+keyWork('radius');
@@ -99,7 +137,7 @@ export function restoreBatchNumericColumns(raw, resources, columnCells = 0) {
   };
   const inspected = { ...raw, from: transformEndpoint(raw.from, transform), to: transformEndpoint(raw.to, transform) };
   for (const endpoint of [inspected.from, inspected.to]) if (endpoint.scene?.version === 3) {
-    let rows = 0; for (const entry of endpoint.scene.entries) rows += entry.kind === 'circle-run' ? entry.keys.length : 1;
+    let rows = 0; for (const entry of endpoint.scene.entries) rows += entry.kind === 'single' ? 1 : entry.keys.length;
     validateGeneratedItemLimit(rows, 'Animation scoped endpoint nodes', limits.maxOutputNodes); totalRows += rows;
     ownArray(endpoint.identities,'Batched transport identities');ownArray(endpoint.backgrounds,'Batched transport backgrounds');
     if(endpoint.identities.length!==rows)throw new TypeError('Batched identities must follow logical rows.');

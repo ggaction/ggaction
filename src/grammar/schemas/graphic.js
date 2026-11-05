@@ -1,6 +1,7 @@
 const PRIMITIVE_DRAWABLE_TYPES = new Set([
   "circle",
   "circle-batch",
+  "path-batch",
   "rect",
   "line",
   "text",
@@ -49,6 +50,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
   ]),
   image: new Set(["image", "x", "y", "width", "height", "opacity", "shadow", "length"]),
   "circle-batch": new Set(["x", "y", "radius", "appearance"]),
+  "path-batch": new Set(["x", "y", "starts", "closed", "appearance"]),
   circle: new Set([
     "x",
     "y",

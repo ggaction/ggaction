@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:9dbf5fd60eef4274f6d5e481f9614177436a8fc18904c7f696af10c8a89f259c",
+    "contractId": "sha256:9907bafd2d6da7911d78d0078c90b06a61b3a6bc08f83aef469b83a51b209367",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1304,8 +1304,8 @@
         "play-with-an-explicit-clock",
         "offline-replay-and-limits"
       ],
-      "bytes": 44578,
-      "sha256": "2a9401782238e20e14e325b1b55c3b4298f8a20f5c4d8a17f4d4978b3760dca2"
+      "bytes": 44764,
+      "sha256": "3310fc4bf81c9f9b636af1ab43c03b6848acf38afd8f68d973154d654879c554"
     },
     {
       "order": 77,
@@ -1362,8 +1362,8 @@
         "native-control-alternatives",
         "inspect-overlapping-graph-edges"
       ],
-      "bytes": 117603,
-      "sha256": "104e373f46831f7d3ffc8d0d8c8de0536667dce7f83b28b8f93c2ef3be08a598"
+      "bytes": 117599,
+      "sha256": "38d9484d655312ac9590f6fe9f833979a65c444963d29b1f43f2c17c236ef564"
     },
     {
       "order": 79,
@@ -2672,8 +2672,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 104431,
-      "sha256": "9000d099d4f0e807f5202e871a46e162918e3714bdee1a1bb1400040fb3cb351"
+      "bytes": 105151,
+      "sha256": "dabd73cdb5355108c93f3570cfdb384d97b92ef933b0a3d5c0c7a64f205179a6"
     },
     {
       "order": 133,
@@ -3614,8 +3614,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 518683,
-      "sha256": "c4a4a7d7a9fb6099927b14e7780b66659e17caf8735c173bdad217be79c4bc98"
+      "bytes": 518700,
+      "sha256": "4b0dccdaec4145c23309c6989cca30b838f305a364fe828d5575168c9a13315c"
     },
     {
       "order": 134,
@@ -3650,10 +3650,11 @@
         "stored-selection-resources-and-concrete-identity",
         "blend-concrete-sources-for-one-item",
         "explicit-path-command-capacity",
-        "store-fully-materialized-circles-in-columns"
+        "store-fully-materialized-circles-in-columns",
+        "store-fully-materialized-paths-in-columns"
       ],
-      "bytes": 26133,
-      "sha256": "01f8e10ec268eb25c3cefdead637c2a0868e133a0dc4db475100840de6101525"
+      "bytes": 27999,
+      "sha256": "bc47faa2a2b3d6709010411bea2877b69bd7cf3cf8b5c9cdfdc631ff06c595b8"
     },
     {
       "order": 136,
@@ -3994,7 +3995,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "555aca361eda16d204343ffaa37fd7be4ff184afce53b8ee6ba3d5a2e2691b5b"
+      "sha256": "2be10a2852b60aacd7034fe0a0eb83f19209e712b855c3a12fd4f1de665768be"
     },
     {
       "order": 157,

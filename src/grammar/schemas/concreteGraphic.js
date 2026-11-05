@@ -1,4 +1,5 @@
 import { validateCircleBatchColumn, validateCircleBatchProperties } from "./circleBatch.js";
+import { validatePathBatchProperties, validatePathBatchValue } from "./pathBatch.js";
 import { pathCommandCapacity, validatePathCapacity } from "../pathTopology.js";
 import { validateWeightedBlendSources } from "./weightedBlend.js";
 import { normalizeMarkShadow } from "../markShadow.js";
@@ -44,7 +45,21 @@ function validateCircleAppearance(value) {
   validateConcreteGraphicProperties("circle", value);
 }
 
+// Path rows share one complete path appearance; geometry lives in the columns.
+function validatePathAppearance(value) {
+  ownRecord(value, "path-batch.appearance");
+  if (["commands", "maxCommands", "length"].some(key => Object.hasOwn(value, key))) {
+    throw new TypeError("path-batch.appearance cannot contain commands, capacity or length.");
+  }
+  validateConcreteGraphicProperties("path", value);
+}
+
 export function validateConcreteGraphicValue(type, property, value, properties) {
+  if (type === "path-batch") {
+    if (property === "appearance") validatePathAppearance(value);
+    else validatePathBatchValue(property, value);
+    return value;
+  }
   if (type === "circle-batch") {
     if (property === "appearance") validateCircleAppearance(value);
     else validateCircleBatchColumn(value, property);
@@ -159,7 +174,8 @@ export function validateConcreteGraphicProperties(type, properties) {
     throw new TypeError("image.properties requires image, x, y, width, and height.");
   }
   if (type === "circle-batch") validateCircleBatchProperties(properties, validateCircleAppearance);
-  if (type !== "circle-batch") for (const [property, value] of Object.entries(properties)) {
+  if (type === "path-batch") validatePathBatchProperties(properties, validatePathAppearance);
+  if (type !== "circle-batch" && type !== "path-batch") for (const [property, value] of Object.entries(properties)) {
     validateGraphicProperty(type, property);
     validateConcreteGraphicValue(type, property, value, properties);
   }

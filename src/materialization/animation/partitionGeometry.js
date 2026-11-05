@@ -20,6 +20,30 @@ export function resolvePartitionAnimationGeometry(group) {
   let cell;
   return new Map(state.nodes.map(node => [node.key, node.visible ? (cell ??= preparePartitionBendCells(state.frame, state.bend, segments)).node(node) : null]));
 }
+const rowNodes = new WeakMap();
+// Write the body outlines of the requested node keys into shared coordinate
+// columns, in row order, with the same tessellation as the per-node geometry.
+// A hidden cell returns false; its caller then keeps the per-node fallback.
+export function partitionAnimationOutlineColumns(group, keys, columns) {
+  const state = group.meaning.state, segments = partitionBendSegments({ compatible: true, kernel: state.frame.kernel }, state.bend);
+  validateWorkLimit(state.nodes.length * (3 * 64 + 2 * (segments + 1) + 1), "Partition animation geometry work");
+  let indices = rowNodes.get(keys);
+  if (indices === undefined || indices.some((index, row) => state.nodes[index]?.key !== keys[row])) {
+    const positions = new Map(state.nodes.map((node, index) => [node.key, index]));
+    indices = keys.map(key => positions.get(key));
+    if (indices.some(index => index === undefined)) return false;
+    rowNodes.set(keys, indices);
+  }
+  const emit = (x, y) => { columns.x.push(x); columns.y.push(y); };
+  let cells;
+  for (const index of indices) {
+    const node = state.nodes[index];
+    if (!node.visible) return false;
+    columns.starts.push(columns.x.length);
+    if (!(cells ??= preparePartitionBendCells(state.frame, state.bend, segments)).outline(node, emit)) return false;
+  }
+  return true;
+}
 export function partitionAnimationItemGeometry(group, item, geometry) {
   const cell = geometry.get(item.key);
   if (cell === null || cell === undefined) return undefined;

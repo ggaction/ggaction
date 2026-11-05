@@ -57,7 +57,7 @@ export async function prepareTutorials(directory, { examples } = {}) {
       canvas: program?.graphicSpec?.objects?.canvas !== undefined,
       materialized: Object.values(program?.graphicSpec?.objects ?? {}).some(object =>
         (object.items?.length ?? 0) > 0 || ["line", "path", "circle", "rect", "text", "weighted-blend"].includes(object.type) ||
-        (object.type === "circle-batch" && object.properties.x.length > 0))
+        (["circle-batch", "path-batch"].includes(object.type) && object.properties.x.length > 0))
     }));`;
     const source = example.host === "node"
       ? `${prefix}\n${example.code}\nimport assertDocumentationNodeResult from 'node:assert/strict';\nfor (const documentationProgram of [${results.join(",")}]) {\n  assertDocumentationNodeResult.ok(documentationProgram?.semanticSpec?.resources.length > 0, 'The documented Node result must own semantic resources.');\n  assertDocumentationNodeResult.equal(Object.keys(documentationProgram.graphicSpec.objects).length, 0, 'The documented Node result must create no graphics.');\n}\n`

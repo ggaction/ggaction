@@ -139,6 +139,7 @@ export type GraphicType =
   | "collection"
   | "circle"
   | "circle-batch"
+  | "path-batch"
   | "rect"
   | "line"
   | "text"
@@ -2824,7 +2825,7 @@ export type GraphicClip = GraphicClipRect | GraphicClipPath;
 /** One fully materialized primitive in a flat linear-light weighted blend. */
 export interface GraphicBlendSource {
   readonly weight: number;
-  readonly type: Exclude<GraphicType, "canvas" | "collection" | "weighted-blend" | "circle-batch">;
+  readonly type: Exclude<GraphicType, "canvas" | "collection" | "weighted-blend" | "circle-batch" | "path-batch">;
   readonly properties: Readonly<Record<string, unknown>>;
   readonly offset: readonly [number, number];
   /** Source viewport and further clips use the group's local coordinate frame. */
@@ -2859,6 +2860,21 @@ export interface GraphicCircleBatchProperties {
   /** Non-negative radii; each row is painted as an individual circle. */
   readonly radius: readonly number[];
   readonly appearance: GraphicCircleAppearance;
+}
+/** Shared concrete path paint; each row's outline is stored in the coordinate columns. */
+export interface GraphicPathAppearance extends GraphicCircleAppearance {
+  readonly strokeDash?: readonly number[];
+  readonly fillRule?: PathFillRule;
+}
+export interface GraphicPathBatchProperties {
+  /** Dense equal-length finite point coordinates, 1..1000000 points. */
+  readonly x: readonly number[];
+  readonly y: readonly number[];
+  /** First point of each row, starting at 0 and increasing; 1..10000 rows of at least two points. */
+  readonly starts: readonly number[];
+  /** Each row is drawn as one M/L subpath, closed with Z when true. */
+  readonly closed: boolean;
+  readonly appearance: GraphicPathAppearance;
 }
 
 export interface GraphicObject {

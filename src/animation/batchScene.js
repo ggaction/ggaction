@@ -48,7 +48,8 @@ export function projectBatchSceneRows(scene, positions) {
     nodes.push(row.node);
     if (row.decision !== null) decisions.push(row.decision);
     const position = positions[row.entryIndex];
-    values.push(position.kind === 'single' ? position.value : {
+    // Path rows are complete sampled concrete rows without position channels.
+    values.push(position.kind === 'single' ? position.value : position.kind === 'path-run' ? { reason: 'sampled-concrete' } : {
       x: { value: position.x.values[row.rowIndex], scale: position.x.scale },
       y: { value: position.y.values[row.rowIndex], scale: position.y.scale } });
   }
@@ -59,6 +60,10 @@ export function batchPositionsForScene(scene, rows) {
   let index = 0;
   return cloneAndFreeze(scene.entries.map(entry => {
     if (entry.kind === 'single') return { kind: 'single', value: rows[index++] };
+    if (entry.kind === 'path-run') {
+      for (let row = 0; row < entry.keys.length; row++) if (rows[index++]?.reason === undefined) throw new TypeError('Path run rows carry no sampled positions.');
+      return { kind: 'path-run' };
+    }
     const first = rows[index], x = [], y = [];
     for (let row = 0; row < entry.keys.length; row++) { const value = rows[index++];
       if (value == null || value.reason || !equalBatchValue(value.x.scale, first.x.scale) || !equalBatchValue(value.y.scale, first.y.scale)) throw new TypeError('Circle run positions require exact shared scales.');

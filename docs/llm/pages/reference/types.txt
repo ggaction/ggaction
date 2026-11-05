@@ -8328,6 +8328,7 @@ export type GraphicType =
   | "collection"
   | "circle"
   | "circle-batch"
+  | "path-batch"
   | "rect"
   | "line"
   | "text"

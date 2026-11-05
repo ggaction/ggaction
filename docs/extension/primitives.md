@@ -574,5 +574,43 @@ a complete batch item; weighted blend sources retain their existing type list.
 
 Graphic and editable snapshots preserve the columns. Older package versions
 that do not recognize this type reject it; no automatic conversion is performed.
+
+## Store fully materialized paths in columns
+
+`path-batch` stores an ordered set of paths sharing one concrete appearance.
+Its properties are exactly `x`, `y`, `starts`, `closed`, and `appearance`. `x`
+and `y` are dense finite point coordinates of equal length. `starts` gives the
+first point of each of 1 through 10000 rows, beginning at 0 and increasing; a row
+runs to the next start, or to the end. Each row has at least two points and is
+drawn as one `M`/`L` subpath, closed with `Z` when `closed` is true.
+`appearance` accepts the existing concrete path paint, fill rule, stroke, dash,
+opacity, blend and shadow properties; it cannot contain `commands`,
+`maxCommands` or `length`.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run the complete ES module with ggaction installed; it authors one canvas and two closed path rows.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { ChartProgram } from "ggaction/extension";
+
+const program = new ChartProgram()
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .editGraphics({ target: "canvas", property: "width", value: 100 })
+  .editGraphics({ target: "canvas", property: "height", value: 80 })
+  .createGraphics({ id: "cells", type: "path-batch", parent: "canvas" })
+  .editGraphics({ target: "cells", property: "x", value: [10, 45, 45, 10, 55, 90, 72] })
+  .editGraphics({ target: "cells", property: "y", value: [10, 10, 60, 60, 20, 20, 70] })
+  .editGraphics({ target: "cells", property: "starts", value: [0, 4] })
+  .editGraphics({ target: "cells", property: "closed", value: true })
+  .editGraphics({ target: "cells", property: "appearance",
+    value: { fill: "#247ca8", stroke: "#ffffff", strokeWidth: 1 } });
+```
+
+Each row is painted as an individual path in order, with the same Canvas, SVG,
+PNG and PDF output as separate `path` graphics. The batch cannot own items or
+children. Partition animation uses this type for `path-run` frame entries.
 Authoring a batch does not grant it a domain mark's selection identity. Ordinary
 chart authors continue to use domain mark actions.

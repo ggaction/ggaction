@@ -32,7 +32,7 @@
 
 | 사례 | DPR1 bundling / materialize P95 | DPR2 bundling / materialize P95 |
 | --- | --- | --- |
-| 10k hierarchical | 측정·통과 | 6,868 / 371 ms |
-| 10k edge-path | 측정·통과 | 5,312 / 344 ms |
+| 10k hierarchical | 6,954 / 384 ms | 6,868 / 371 ms |
+| 10k edge-path | 5,273 / 339 ms | 5,312 / 344 ms |
 
 남은 실패는 density(100·1k·10k)와 force-directed(1k·10k)의 명시 오류다. `Route work`, `Route candidate pairs`, `Route active samples`가 1천만 작업 한도를 넘는다. 이 한도는 route 알고리즘의 기존 작업 예산이며 이번 변경과 무관하다. 한도를 바꾸지 않는다. 이 사례들은 bounded worker 경로나 알고리즘 비용 축소가 있어야 측정할 수 있다.

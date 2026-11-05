@@ -41,6 +41,21 @@ export function validateBatchSceneStructure(scene, positions, maximum = 10000) {
           if (position[key].values.length !== entry.keys.length || !position[key].values.every(Number.isFinite)) throw new TypeError('Point run values must follow every finite row.'); }
       }
       count += entry.keys.length;
+    } else if (entry.kind === 'path-run') {
+      closed(entry, ['kind', 'keys', 'topology', 'offset', 'clip', 'clips', 'properties', 'decisions'], 'Path run');
+      ownArray(entry.keys, 'Path run keys');
+      if (!entry.keys.length || entry.keys.length > 10000 || entry.keys.some(key => typeof key !== 'string')) throw new TypeError('Path runs require 1..10000 string keys.');
+      if (entry.decisions !== null) {
+        closed(entry.decisions, ['kind', 'kernel', 'ownerKey', 'role', 'sourceIndices', 'targetIndices', 'itemKeys'], 'Path run decisions');
+        if (entry.decisions.kind !== 'semantic-kernel' || entry.decisions.kernel !== 'partition' || typeof entry.decisions.ownerKey !== 'string' || typeof entry.decisions.role !== 'string') throw new TypeError('Path runs require partition decisions.');
+        for (const key of ['sourceIndices', 'targetIndices', 'itemKeys']) {
+          ownArray(entry.decisions[key], `Path run ${key}`);
+          if (entry.decisions[key].length !== entry.keys.length) throw new TypeError('Path run decisions must follow every row.');
+        }
+      }
+      // Path rows carry no sampled position channels.
+      if (position !== undefined) { closed(position, ['kind'], 'Path run position'); if (position.kind !== 'path-run') throw new TypeError('Path runs require path positions.'); }
+      count += entry.keys.length;
     } else throw new TypeError('Unknown batched scene entry.');
     validateGeneratedItemLimit(count, 'Animation sampled nodes', maximum);
   }

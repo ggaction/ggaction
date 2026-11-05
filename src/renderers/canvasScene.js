@@ -5,6 +5,7 @@ import { isOwned, cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { contentDigest } from "../core/contentDigest.js";
 import { translateWeightedBlendSources } from "../grammar/schemas/weightedBlend.js";
+import { batchGraphicRowCount, isBatchGraphicType } from "../grammar/schemas/batchGraphic.js";
 
 const compiled = new WeakMap();
 // Translate only concrete position properties. Path/text child coordinates keep
@@ -34,7 +35,7 @@ function ownedKeyTuple(entries) {
   for (const entry of entries) {
     if (!isOwned(entry)) return undefined;
     if (entry.kind === "single" && isOwned(entry.node)) tuple.push(entry.node.key);
-    else if (entry.kind === "circle-run" && checkedOwnedRunKeys.has(entry.keys)) tuple.push(entry.keys);
+    else if ((entry.kind === "circle-run" || entry.kind === "path-run") && checkedOwnedRunKeys.has(entry.keys)) tuple.push(entry.keys);
     else return undefined;
   }
   return tuple.some(part => typeof part === "object") ? tuple : undefined;
@@ -49,28 +50,29 @@ function* concreteEntries(scene) {
     const entry = scene.entries[entryIndex];
     let node, keys;
     if (entry.kind === "single") { node = entry.node; keys = [node.key]; }
-    else if (entry.kind === "circle-run") {
-      validateConcreteGraphicProperties("circle-batch", entry.properties);
+    else if (entry.kind === "circle-run" || entry.kind === "path-run") {
+      const type = entry.kind === "circle-run" ? "circle-batch" : "path-batch", label = entry.kind === "circle-run" ? "Circle" : "Path";
+      validateConcreteGraphicProperties(type, entry.properties);
       if (!checkedOwnedRunKeys.has(entry.keys)) {
-        ownArray(entry.keys, "Circle run keys");
+        ownArray(entry.keys, `${label} run keys`);
         if (isOwned(entry.keys)) checkedOwnedRunKeys.add(entry.keys);
       }
-      if (entry.keys.length !== entry.properties.x.length) throw new TypeError("Circle run keys must follow every coordinate row.");
-      node = { key: `animation/node/${entryIndex}`, type: "circle-batch", properties: entry.properties,
+      if (entry.keys.length !== batchGraphicRowCount(type, entry.properties)) throw new TypeError(`${label} run keys must follow every coordinate row.`);
+      node = { key: `animation/node/${entryIndex}`, type, properties: entry.properties,
         offset: entry.offset, clip: entry.clip, clips: entry.clips }; keys = entry.keys;
     } else throw new TypeError("Unknown Canvas scene entry kind.");
     if (!unique) for (const key of keys) {
       if (typeof key !== "string" || logicalKeys.has(key)) throw new TypeError("Canvas scene nodes require unique keys.");
       logicalKeys.add(key);
     }
-    yield { node, graphicId: `animation/node/${entryIndex}`, batch: entry.kind === "circle-run" };
+    yield { node, graphicId: `animation/node/${entryIndex}`, batch: entry.kind !== "single" };
   }
   if (tuple !== undefined && !unique) uniqueKeyTuples.set(anchor, tuple);
 }
 function positionBatch(properties, dx, dy) {
   if (!dx && !dy) return properties;
-  return { x: properties.x.map(value => value + dx), y: properties.y.map(value => value + dy),
-    radius: properties.radius, appearance: position(properties.appearance, dx, dy) };
+  return { ...properties, x: properties.x.map(value => value + dx), y: properties.y.map(value => value + dy),
+    appearance: position(properties.appearance, dx, dy) };
 }
 function compile(scene) {
   if (![2, 3].includes(scene?.version) || ![scene.width, scene.height].every(n => Number.isFinite(n) && n > 0) ||
@@ -95,13 +97,13 @@ function compile(scene) {
   for (const { node, graphicId, batch } of concreteEntries(scene)) {
     const clips = node.clips ?? [node.clip];
     if (typeof node.key !== 'string' || keys.has(graphicId ?? node.key) ||
-        !(batch ? node.type === 'circle-batch' : ['circle','rect','line','path','text','image','weighted-blend'].includes(node.type)) ||
+        !(batch ? isBatchGraphicType(node.type) : ['circle','rect','line','path','text','image','weighted-blend'].includes(node.type)) ||
         node.offset?.length !== 2 || !node.offset.every(Number.isFinite) || !validClip(node.clip) ||
         !Array.isArray(clips) || !clips.every(validFrame) || !node.properties || typeof node.properties !== 'object') {
       throw new TypeError('Canvas scene nodes require unique keys, concrete properties, offsets and clips.');
     }
     keys.add(graphicId ?? node.key);
-    if (node.type === "circle-batch") validateConcreteGraphicProperties(node.type, node.properties);
+    if (batch) validateConcreteGraphicProperties(node.type, node.properties);
     let common = 0;
     while (common < Math.min(clips.length, activeClips.length) &&
         sameClip(clips[common], activeClips[common])) common++;
@@ -123,7 +125,7 @@ function compile(scene) {
     activeClips = clips;
     const group = groups.at(-1), origin = origins.at(-1);
     const id = graphicId ?? `node-${index++}`;
-    const object = { type: node.type, properties: (node.type === "circle-batch" ? positionBatch : position)(node.properties,
+    const object = { type: node.type, properties: (batch ? positionBatch : position)(node.properties,
       node.offset[0] - origin[0], node.offset[1] - origin[1]) };
     if(isOwned(object.properties))objects[id]=freezeOwned(object);
     else {objects[id]=object;pending.push([id,object]);}

@@ -1,4 +1,5 @@
 import { visitGraphicSources } from "../../grammar/schemas/graphicSources.js";
+import { isBatchGraphicType } from "../../grammar/schemas/batchGraphic.js";
 import { walkGraphicSources } from "../../grammar/schemas/graphicSources.js";
 import { prepareWeightedBlends, drawWeightedBlend } from "./weightedBlend.js";
 import { preflightCanvasBlendModes } from "./isolated.js";
@@ -313,7 +314,7 @@ export function render(program, context, options) {
 }
 
 function drawConcreteGraphic(context, id, graphic, isolated, options) {
-  if (graphic.type === "circle-batch") {
+  if (isBatchGraphicType(graphic.type)) {
     visitGraphicSources(id, graphic, graphic.type, (rowId, row) => drawConcreteGraphic(context, rowId, row, isolated, options));
     return;
   }

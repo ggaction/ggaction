@@ -7,7 +7,7 @@
 - [x] 정확한 prepared track의 재준비 제거.
 - [x] 1k gesture preview 33ms (6.1 / 6.0ms).
 - [x] 셀 준비·보간 재검증·경로 복사 제거로 10k 366 → 66ms.
-- [ ] 10k gesture preview 33ms (batch 표현 필요).
+- [x] 10k gesture preview 33ms: format6 `path-run`으로 13.4 / 13.4ms. [기록](PATH_RUN_PROPOSAL.md#측정-archive-7c95c11e)
 
 ## 정본 P95 (archive `787e6d78…`, source `72bd39e39`)
 

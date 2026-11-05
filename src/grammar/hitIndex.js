@@ -94,10 +94,11 @@ function sceneKeys(scene, work, maxSceneNodes) {
     ownRecord(row, "Hit scene node");
     if (!isOwned(row)) throw new TypeError("Hit scene nodes require immutable own keys.");
     if (batch && !Object.hasOwn(row, "kind")) throw new TypeError("Hit scene entry requires its own kind.");
-    if (batch && row.kind === "circle-run") {
-      if (!Object.hasOwn(row, "keys") || !isOwned(row.keys)) throw new TypeError("Hit circle run requires immutable own keys.");
-      ownArray(row.keys, "Hit circle run keys");
-      if (!row.keys.length || row.keys.length > 10000) throw new RangeError("Hit circle run exceeds its row budget.");
+    if (batch && (row.kind === "circle-run" || row.kind === "path-run")) {
+      const label = row.kind === "circle-run" ? "circle" : "path";
+      if (!Object.hasOwn(row, "keys") || !isOwned(row.keys)) throw new TypeError(`Hit ${label} run requires immutable own keys.`);
+      ownArray(row.keys, `Hit ${label} run keys`);
+      if (!row.keys.length || row.keys.length > 10000) throw new RangeError(`Hit ${label} run exceeds its row budget.`);
       for (const key of row.keys) add(key);
     } else {
       const node = batch ? row.kind === "single" && row.node : row;

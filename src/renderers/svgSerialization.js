@@ -1,4 +1,5 @@
 import { visitGraphicSources } from "../grammar/schemas/graphicSources.js";
+import { isBatchGraphicType } from "../grammar/schemas/batchGraphic.js";
 import { resolvePrimitiveOccupiedBounds } from "../grammar/schemas/graphicBounds.js";
 import { graphicClipBounds, intersectClipBounds } from "../grammar/schemas/graphicClip.js";
 import { MAX_BLEND_ITEM_PIXELS, MAX_BLEND_SCENE_PIXELS, MAX_BLEND_PIXEL_WORK } from "../grammar/weightedBlend.js";
@@ -512,7 +513,7 @@ function serializeText(state, graphicId, properties) {
 }
 
 function serializeConcreteGraphic(state, id, graphic) {
-  if (graphic.type === "circle-batch") {
+  if (isBatchGraphicType(graphic.type)) {
     const output = [];
     visitGraphicSources(id, graphic, graphic.type, (rowId, row) => output.push(serializeConcreteGraphic(state, rowId, row)));
     return output.join("");
@@ -754,10 +755,10 @@ export function renderToSVG(program, options = {}) {
   walkGraphicTreeEvents(graphicSpec, {
     enter({object}) {
       if (object.clip !== undefined) validateGraphicClip(object.clip, object.type);
-      const properties = object.type === "circle-batch" ? object.properties?.appearance : object.properties;
+      const properties = isBatchGraphicType(object.type) ? object.properties?.appearance : object.properties;
       if (isBlendMode(readBlendMode(properties)) && readBlendMode(properties) !== "normal") state.hasBlend = true;
     },
-    item({object}) { const properties = object.type === "circle-batch" ? object.properties?.appearance : object.properties;
+    item({object}) { const properties = isBatchGraphicType(object.type) ? object.properties?.appearance : object.properties;
       if (isBlendMode(readBlendMode(properties)) && readBlendMode(properties) !== "normal") state.hasBlend = true; }
   });
   const body = serializeBody(

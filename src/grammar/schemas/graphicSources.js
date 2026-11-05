@@ -1,14 +1,15 @@
-import { circleBatchRow, circleBatchRowKey } from "./circleBatch.js";
+import { batchGraphicRow, batchGraphicRowCount, batchGraphicRowKey, batchGraphicRowType, isBatchGraphicType } from "./batchGraphic.js";
 import { walkGraphicTreeEvents } from "./graphicTree.js";
 import { validateConcreteGraphicProperties } from "./concreteGraphic.js";
 
 // Embedded sources have no independent named registry identity. The exact source
 // object is their preparation key, disjoint from every user-authored string ID.
 export function visitGraphicSources(id, object, type, visit) {
-  if (type === "circle-batch") {
+  if (isBatchGraphicType(type)) {
     validateConcreteGraphicProperties(type, object.properties);
-    for (let index = 0; index < object.properties.x.length; index++) {
-      visit(circleBatchRowKey(object, index), { type: "circle", properties: circleBatchRow(object.properties, index) }, "circle");
+    const rowType = batchGraphicRowType(type);
+    for (let index = 0; index < batchGraphicRowCount(type, object.properties); index++) {
+      visit(batchGraphicRowKey(object, index), { type: rowType, properties: batchGraphicRow(type, object.properties, index) }, rowType);
     }
     return;
   }

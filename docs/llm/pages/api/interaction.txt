@@ -52,7 +52,7 @@ const session = createInteractionSession({ program, bindings: [],
 });
 const scene = session.getState().scene;
 console.log(scene.version === 2 ? scene.nodes.length : scene.entries.reduce(
-  (count, entry) => count + (entry.kind === "circle-run" ? entry.keys.length : 1), 0
+  (count, entry) => count + (entry.kind === "single" ? 1 : entry.keys.length), 0
 ));
 session.destroy();
 ```

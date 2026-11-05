@@ -1,4 +1,4 @@
-import { circleBatchRow, circleBatchRowKey } from "../grammar/schemas/circleBatch.js";
+import { batchGraphicRow, batchGraphicRowCount, batchGraphicRowKey, batchGraphicRowType, isBatchGraphicType } from "../grammar/schemas/batchGraphic.js";
 import { validateGraphicClip, graphicClipBounds, translateGraphicClip } from '../grammar/schemas/graphicClip.js';
 import { validateConcreteGraphicProperties } from '../grammar/schemas/concreteGraphic.js';
 import { requireSingleOrderedGraphicByType, walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
@@ -15,10 +15,10 @@ export function collectTransitionGraphics(graphicSpec, identities, { onNode, onC
   const nodes = [], stack = [{ x: 0, y: 0, clip: [0, 0, width, height], clips: [] }];
   const used = new Map();
   const add = (id, graphic, suffix = "", rowIndex, preparationKey) => {
-    if (graphic.type === "circle-batch") {
+    if (isBatchGraphicType(graphic.type)) {
       validateConcreteGraphicProperties(graphic.type, graphic.properties);
-      for (let index = 0; index < graphic.properties.x.length; index++) {
-        add(id, { type: "circle", properties: circleBatchRow(graphic.properties, index) }, `${suffix}/row/${index}`, index, circleBatchRowKey(graphic, index));
+      for (let index = 0; index < batchGraphicRowCount(graphic.type, graphic.properties); index++) {
+        add(id, { type: batchGraphicRowType(graphic.type), properties: batchGraphicRow(graphic.type, graphic.properties, index) }, `${suffix}/row/${index}`, index, batchGraphicRowKey(graphic, index));
       }
       return;
     }

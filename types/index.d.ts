@@ -361,6 +361,8 @@ export type {
   GraphicType,
   GraphicCircleAppearance,
   GraphicCircleBatchProperties,
+  GraphicPathAppearance,
+  GraphicPathBatchProperties,
   GraphicBlendSource,
   GraphicWeightedBlendProperties,
   GroupEncodingOptions,
