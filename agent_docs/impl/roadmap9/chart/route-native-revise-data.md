@@ -9,7 +9,8 @@
 - [x] `fitCanvas`의 public B 연결(probe broad catch가 route continuation·quota·deadline을 흡수하지 않음).
 - [x] `navigateProjection`(resize), `applyDataUpdate`(원 data registry handle), `filterMarks`/`removeMarkFilter`(recompute graph 필터)의 public B 연결. 직접 14개 모두 unit receiver 연결.
 - [x] Focused 파생 편집기 21개의 public B 연결(각 wrapper 유지).
-- [ ] Facet/scoped/composition receiver, 간접 guide/encoding/mark/theme/composition, 100ms 계량.
+- [x] Composition receiver의 scoped 결정적 replay(파생 data·편집기·parameter·graph 필터).
+- [ ] Facet receiver, composition의 `reviseData`·`applyDataUpdate`·canvas 계열, 간접 guide/encoding/mark/theme/composition, 100ms 계량.
 
 [union](route-native-revise-evidence/union.json): 직접 미연결 0개. 모두 `partial-unit-native-connection`이다.
 
@@ -56,6 +57,14 @@ Composition receiver는 명시적으로 거부한다. 계약상 update union은 
 
 영향 범위는 target과 같은 이름의 dataset, 그리고 `materializationConfigs.data`의 파생 owner가 가리키는 current dataset에서 시작한다. Target이 없으면 현재 data에서 시작한다. 정책이 더 엄격한 무관 route를 넣어 정당한 갱신을 거부하지 않도록 넓은 seed는 쓰지 않는다.
 
+## Composition
+
+Composition receiver에서는 원 scoped dispatcher가 대상 자식마다 원 native action을 실행한다. 경로 계산은 같은 동기 경로에서 일어나므로 같은 replay로 받는다.
+
+- **영향 범위**: 명시 scoped target(단일 또는 목록)의 각 unit 자식에서, 그 자식 receiver와 지역 target으로 계산한다.
+- **허용 범위**: 결정적인 파생 data·편집기 21개·parameter·graph 필터만 허용한다. 미리보기 pass마다 새 행 namespace를 만드는 `reviseData`·`applyDataUpdate`는 자식별 identity를 결박할 수 없어 unit 전용이다. Canvas·plot 기반 action과 facet cell(원 dispatcher가 `editFacetSource`를 요구)도 unit 전용이다.
+- **적용 action**: `applyGraphEdgeRoutesUpdate`의 scope를 `any`로 넓혀 composition에서 호출할 수 있다. 권한은 그대로 exact handle·receiver·token·native에 결박된다.
+
 ## 검증
 
 `test/unit/resources/graph-route-native-revise.test.js`:
@@ -67,6 +76,7 @@ Composition receiver는 명시적으로 거부한다. 계약상 update union은 
 - **Fit**: 동기 `fitCanvas`가 overflow가 아니라 요구 오류를 낸다. B 결과는 v1 fit과 route 명령, margin, fitting 결과가 같다. 모든 job이 순서대로 한 번씩 계산되고 반복 적용 결과가 같다.
 - **Data update·projection·filter**: 각 action이 v1과 route 명령이 같고 worker 계산은 한 번이다. Data update는 다른 token, 복제 handle, 직접 호출의 다른 receiver를 거부한다. Projection은 resize 외 연산을, filter는 보이기만 하는 필터와 target 없는 요청을 거부한다.
 - **Focused 편집기**: `editFilteredData`가 자기 wrapper를 거쳐 v1과 route 명령이 같고 worker 계산은 한 번이다. 원 action이 거부하는 편집은 같은 오류로 거부한다. Route가 소비하지 않는 파생 dataset과 없는 owner는 거부한다.
+- **Composition**: 단일 자식과 두 자식 목록의 `editParameter`가 v1 scoped 결과와 자식별 route 명령이 같다. 반복 적용 결과가 같고 base는 바뀌지 않는다. Unscoped target, `reviseData`, `editCanvas`, 없는 자식은 거부한다.
 - **Replay 단위**: 정확한 반복 pass, 누락·중복·추가, 미완료 pass, 기록 모드의 요청 정체성, scope 복원을 확인한다.
 
 원 native preflight의 오류는 그대로 보고하고 handle을 남기지 않는다. 준비 중 취소는 거부한다.
@@ -101,6 +111,13 @@ Focused 파생 편집기 checkpoint([증거](route-native-revise-evidence/aliase
 - Coverage 97.43/95.68/99.36%, critical floor 786개
 - Browser 529/529, render 513/513
 - 같은 archive `a9c63eec…`의 Node20/22/24 consumer 설치
+
+Composition scoped checkpoint([증거](route-native-revise-evidence/scoped/))의 결과는 다음과 같다.
+
+- 전체 `npm test`: 10533/10535. 실패 2건은 상한 갱신 전 package 크기 시험이다.
+- Coverage 97.44/95.68/99.37%, critical floor 786개.
+- Browser 529/529, render 513/513.
+- 같은 archive `6e88eb65…`를 Node20/22/24 consumer로 검사해 모두 통과했다.
 
 ## 한계
 

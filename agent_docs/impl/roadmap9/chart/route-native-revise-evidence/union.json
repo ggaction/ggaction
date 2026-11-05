@@ -91,10 +91,11 @@
       "status": "partial-unit-native-connection",
       "implemented": [
         "same ordered original job/completion replay as reviseData; affected routes follow derived dataset sources and parameter inputs",
-        "results match the synchronous v1 revision; derived and parameter identities are deterministic from original rows"
+        "results match the synchronous v1 revision; derived and parameter identities are deterministic from original rows",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "parameter data sources that require a prepared data update",
         "full native union qualification"
       ]
@@ -104,10 +105,11 @@
       "status": "partial-unit-native-connection",
       "implemented": [
         "same ordered original job/completion replay as reviseData; affected routes follow derived dataset sources and parameter inputs",
-        "results match the synchronous v1 revision; derived and parameter identities are deterministic from original rows"
+        "results match the synchronous v1 revision; derived and parameter identities are deterministic from original rows",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "parameter data sources that require a prepared data update",
         "full native union qualification"
       ]
@@ -128,10 +130,11 @@
       "action": "filterMarks",
       "status": "partial-unit-native-connection",
       "implemented": [
-        "recomputing graph filters replay the inferred graph, layout and route revision; visual filters have no bounded update"
+        "recomputing graph filters replay the inferred graph, layout and route revision; visual filters have no bounded update",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -139,10 +142,11 @@
       "action": "removeMarkFilter",
       "status": "partial-unit-native-connection",
       "implemented": [
-        "removing a recomputing graph filter replays its route revision"
+        "removing a recomputing graph filter replays its route revision",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -191,10 +195,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -205,10 +210,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -219,10 +225,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -233,10 +240,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -247,10 +255,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -261,10 +270,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -275,10 +285,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -289,10 +300,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -303,10 +315,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -317,10 +330,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -331,10 +345,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -345,10 +360,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -359,10 +375,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -373,10 +390,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -387,10 +405,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -401,10 +420,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -415,10 +435,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -429,10 +450,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -443,10 +465,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -457,10 +480,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     },
@@ -471,10 +495,11 @@
       "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
       "implemented": [
         "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
-        "affected routes start at the target dataset and its derived owner current dataset"
+        "affected routes start at the target dataset and its derived owner current dataset",
+        "composition receivers: explicit scoped targets replayed per unit child through the original scoped dispatcher"
       ],
       "remaining": [
-        "facet/scoped/composition receiver dispatch",
+        "facet receiver dispatch",
         "full native union qualification"
       ]
     }

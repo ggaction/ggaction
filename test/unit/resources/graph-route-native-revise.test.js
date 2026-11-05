@@ -298,3 +298,35 @@ test("focused derived-data editors replay through their own wrappers", async () 
     await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editBin2DData", args: { target: "absent", includeEmpty: true } } }, host(worker)));
   } finally { worker.dispose(); }
 });
+
+test("compositions replay deterministic scoped revisions on each targeted unit child", async () => {
+  const { hconcat } = await import("../../../src/index.js");
+  const posts = [], worker = executor(job => posts.push(job.inputHash));
+  const commands = (program, id) => route(program.children[id]).result.routes.map(value => value.commands);
+  try {
+    const plain = () => derivedBase().bundleGraphEdges({ id: "route", method: "edge-path" }).createGraphPlot({ id: "plot", routes: "route" });
+    const pair = (left, right) => hconcat({ id: "pair", programs: [{ id: "left", program: left }, { id: "right", program: right }] });
+    const ordinary = pair(plain(), plain());
+    const program = pair(await bounded(derivedBase(), worker), await bounded(derivedBase(), worker)), before = serializeProgram(program);
+    for (const args of [{ target: { childPath: ["left"], id: "cutoff" }, value: 0 },
+      { target: [{ childPath: ["left"], id: "cutoff" }, { childPath: ["right"], id: "cutoff" }], value: 9 }]) {
+      assert.throws(() => program.editParameter(args), /Bounded routes require prepareGraphEdgeRoutes/);
+      posts.length = 0;
+      const prepared = await prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editParameter", args } }, host(worker));
+      const expected = ordinary.editParameter(args), result = program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "revise" });
+      assert.deepEqual(prepared.inputHashes, posts);
+      for (const id of ["left", "right"]) assert.deepEqual(commands(result, id), commands(expected, id));
+      assert.equal(serializeProgram(program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "revise" })), serializeProgram(result));
+    }
+    const filtered = await prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editFilteredData", args: { target: { childPath: ["right"], id: "strong" }, range: { min: 0, max: 6 } } } }, host(worker))
+      .catch(error => error);
+    if (filtered instanceof Error) assert.throws(() => ordinary.editFilteredData({ target: { childPath: ["right"], id: "strong" }, range: { min: 0, max: 6 } }), { message: filtered.message });
+    else assert.deepEqual(commands(program.applyGraphEdgeRoutesUpdate({ prepared: filtered, requestToken: "revise" }), "right"),
+      commands(ordinary.editFilteredData({ target: { childPath: ["right"], id: "strong" }, range: { min: 0, max: 6 } }), "right"));
+    assert.equal(serializeProgram(program), before);
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editParameter", args: { target: "cutoff", value: 1 } } }, host(worker)), /requires a scoped target/);
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "reviseData", args: revision() } }, host(worker)), /requires a completed unit receiver/);
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editCanvas", args: { width: 300 } } }, host(worker)), /requires a completed unit receiver/);
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editParameter", args: { target: { childPath: ["absent"], id: "cutoff" }, value: 1 } } }, host(worker)), /Unknown target child/);
+  } finally { worker.dispose(); }
+});

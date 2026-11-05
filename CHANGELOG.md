@@ -12,6 +12,7 @@ All notable changes to `ggaction` are recorded in this file.
 
 - Add Full `applyGraphEdgeRoutesUpdate` to apply a prepared `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData` or `editInferredGraphData` update to every affected version 2 route through the original native action, with exact receiver, token and signal binding.
 - Prepare `reviseData`, `editDerivedData`, `editParameter`, `editCanvas`, `fitCanvas`, `navigateProjection`, `applyDataUpdate`, `filterMarks`, `removeMarkFilter` and the focused derived-data editors as native route updates on a completed unit chart: each affected version 2 route is computed once on the worker, and the final application checks every route job of both its preview and actual passes against the prepared completions in order.
+- Allow `applyGraphEdgeRoutesUpdate` on composition charts for scoped derived-data, parameter and graph-filter revisions of their unit children.
 - Report the prepared-route requirement from `fitCanvas` on charts with version 2 routes instead of a misleading overflow from an absorbed probe failure.
 
 - Add explicit native Geo projected-output capacity and bounded concrete path `maxCommands`, preserving default limits and all source vertices through native edits, scenes, rendering and persistence.

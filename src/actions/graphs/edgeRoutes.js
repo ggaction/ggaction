@@ -34,7 +34,7 @@ function facade(editing) {
 export const bundleGraphEdges = /* @__PURE__ */ facade(false);
 export const editEdgeRoute = /* @__PURE__ */ facade(true);
 export const applyGraphEdgeRoutesUpdate = /* @__PURE__ */ bindActionInvocationScope(closedAction(
-  { op: "applyGraphEdgeRoutesUpdate", description: "Apply a prepared native edit and its edge routes." },
+  { op: "applyGraphEdgeRoutesUpdate", description: "Apply a prepared native edit and its edge routes.", scope: "any" },
   ["prepared", "requestToken"], function (args) { return applyPreparedGraphRouteUpdate(this, args); }
 ), enterGraphRouteUpdateInvocation);
 // A fit probe may absorb an ordinary geometry failure, never a route

@@ -23,6 +23,8 @@ import { navigateProjection } from "../geo/camera.js";
 import { applyDataUpdate } from "../data/sourceEdit.js";
 import { filterMarks, removeMarkFilter } from "../data/filter.js";
 import { requireLayer } from "../../selectors/layers.js";
+import { normalizeActionTargets } from "../../grammar/actionTargets.js";
+import { compositionTargetProgram } from "../composition/targets.js";
 import { preparedDataUpdateTarget } from "../../resources/dataUpdate.js";
 import { requireStoredResource } from "../../selectors/resources.js";
 import { findDataset, requireDataset } from "../../selectors/datasets.js";
@@ -42,6 +44,9 @@ function derivedSeeds(program, target) {
   }
   return ids;
 }
+// Deterministic replayed actions that a composition may scope to unit children.
+const SCOPED_NATIVES = new Map([["editDerivedData", editDerivedData], ...Object.entries(DERIVED_ALIASES),
+  ["editParameter", editParameter], ["filterMarks", filterMarks], ["removeMarkFilter", removeMarkFilter]]);
 const REPLAYED = new Set([reviseData, editDerivedData, ...Object.values(DERIVED_ALIASES), editParameter, editCanvas, fitCanvas, navigateProjection, applyDataUpdate, filterMarks, removeMarkFilter]);
 
 // Full owns this exact snapshot boundary. Only the existing inference registry
@@ -71,8 +76,8 @@ export function snapshotNativeRouteEdit(program, edit) {
   return cloneAndFreeze(edit);
 }
 
-// Full binds this closed native owner; graph preparation imports no assembly.
-export function resolveNativeRouteUpdate(program, edit) {
+function resolveUnitScope(program, edit) {
+  if (program.compositionSpec !== undefined) throw new TypeError(`Native route ${edit.action} requires a completed unit receiver or a scoped unit child.`);
   let native, previous, identity, seeds = [];
   switch (edit.action) {
     case "editLayout": native = editLayout; previous = resolveLayoutRouteUpdate(program, edit.args); break;
@@ -94,7 +99,6 @@ export function resolveNativeRouteUpdate(program, edit) {
     case "reviseData": {
       validateKeys(edit.args, ["source", "id", "values", "schema", "keys", "rowMap"], edit.action);
       native = reviseData;
-      if (program.compositionSpec !== undefined) throw new TypeError("Native route reviseData requires a completed unit receiver.");
       const original = requireDataset(program, edit.args.source);
       previous = { kind: "data", id: original.id };
       // One row namespace for every preflight run and the final application.
@@ -104,29 +108,24 @@ export function resolveNativeRouteUpdate(program, edit) {
     case "editDerivedData": {
       validateKeys(edit.args, ["target", "definition", "dependents"], edit.action);
       native = editDerivedData;
-      if (program.compositionSpec !== undefined) throw new TypeError("Native route editDerivedData requires a completed unit receiver.");
       seeds = derivedSeeds(program, edit.args.target);
       break;
     }
     case "editParameter": {
       validateKeys(edit.args, ["target", "value"], edit.action);
       native = editParameter;
-      if (program.compositionSpec !== undefined) throw new TypeError("Native route editParameter requires a completed unit receiver.");
       previous = { kind: "parameter", id: requireStoredResource(program, { kind: "parameter", id: edit.args.target }).id };
       break;
     }
     case "editCanvas": case "fitCanvas":
       native = edit.action === "editCanvas" ? editCanvas : fitCanvas;
-      if (program.compositionSpec !== undefined) throw new TypeError(`Native route ${edit.action} requires a completed unit receiver.`);
       break;
     case "navigateProjection":
       validateKeys(edit.args, ["target", "operation"], edit.action);
       native = navigateProjection;
-      if (program.compositionSpec !== undefined) throw new TypeError("Native route navigateProjection requires a completed unit receiver.");
       break;
     case "filterMarks": case "removeMarkFilter": {
       native = edit.action === "filterMarks" ? filterMarks : removeMarkFilter;
-      if (program.compositionSpec !== undefined) throw new TypeError(`Native route ${edit.action} requires a completed unit receiver.`);
       if (typeof edit.args.target !== "string") throw new TypeError(`Native route ${edit.action} requires an explicit target.`);
       // Only a recomputing graph filter revises the routes behind its plot.
       previous = requireLayer(program, edit.args.target).graphBinding?.layout;
@@ -134,14 +133,12 @@ export function resolveNativeRouteUpdate(program, edit) {
     }
     case "applyDataUpdate":
       native = applyDataUpdate;
-      if (program.compositionSpec !== undefined) throw new TypeError("Native route applyDataUpdate requires a completed unit receiver.");
       previous = preparedDataUpdateTarget(program, edit.args.prepared, edit.args.requestToken);
       break;
     default:
       // Focused derived-data aliases keep their own wrappers and option checks.
       if (Object.hasOwn(DERIVED_ALIASES, edit.action)) {
         native = DERIVED_ALIASES[edit.action];
-        if (program.compositionSpec !== undefined) throw new TypeError(`Native route ${edit.action} requires a completed unit receiver.`);
         seeds = derivedSeeds(program, edit.args.target);
         break;
       }
@@ -162,11 +159,33 @@ export function resolveNativeRouteUpdate(program, edit) {
         movesViewport && resource.kind === "edge-route" && resource.options.coordinateSpace === "screen")) affected.add(key(resource));
     if (resource.kind === "edge-route" && affected.has(key(resource))) routes.push(resource);
   }
+  return { native, previous, identity, routes };
+}
+
+// Full binds this closed native owner; graph preparation imports no assembly.
+// A composition receiver admits only deterministic replayed actions with an
+// explicit scoped target; each targeted unit child names its own routes, and
+// the original scoped dispatcher runs the native action on that child.
+export function resolveNativeRouteUpdate(program, edit) {
+  let resolved;
+  if (program.compositionSpec === undefined) resolved = resolveUnitScope(program, edit);
+  else {
+    const native = SCOPED_NATIVES.get(edit.action);
+    if (native === undefined) throw new TypeError(`Native route ${edit.action} requires a completed unit receiver.`);
+    if (program[edit.action] !== native) throw new TypeError("Native route action was replaced.");
+    if (edit.args.target === undefined || typeof edit.args.target === "string") throw new TypeError(`Native route ${edit.action} on a composition requires a scoped target.`);
+    const routes = normalizeActionTargets(edit.args.target).flatMap(target => resolveUnitScope(compositionTargetProgram(program, target.childPath),
+      { action: edit.action, args: { ...edit.args, target: target.id } }).routes);
+    resolved = { native, previous: undefined, identity: undefined, routes };
+  }
+  const { native, previous, identity, routes } = resolved;
   const bounded = routes.filter(resource => Object.hasOwn(resource.options.options, "execution"));
   if (!bounded.length) throw new TypeError(`This resource has no bounded edge route update; use ${edit.action} directly.`);
   // A replayed action reaches its routes inside one synchronous native call.
   return { native, edit, previous, routes, bounded, ...(REPLAYED.has(native) ? { replayed: true, identity } : {}) };
 }
+
+
 
 export function* prepareNativeRouteUpdate(program, resolved, scope) {
   const { edit, previous } = resolved;

@@ -5,7 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 800_128, // Native route union with focused editors: Node20/24 800,128 gzip bytes.
+  ggaction: 800_498, // Native route scoped composition replay: Node20/24 800,498 gzip bytes.
   "ggaction/basic": 428_368, // Native route union with focused editors: Node20/24 428,368 gzip bytes.
   "ggaction/svg": 26_731, // Owned own-data check marks: Node20/24 26,731 gzip bytes.
   "ggaction/graph": 76_752, // Native canvas route replay: Node20/24 76,752 gzip bytes.
