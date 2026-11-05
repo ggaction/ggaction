@@ -61,3 +61,9 @@ Node CPU profile(10k)에서 귀속한 비용과 수리는 다음과 같다. 모�
 ## 10k 남은 병목
 
 수리 뒤 profile은 sample node 조립, canvas scene compile, 경로 생성, frame 의미 기록이 고르게 나눠 갖는 긴 꼬리다. 하나를 제거해 2배를 얻을 지점이 없다. 10k를 33ms 안에 넣으려면 points의 format6 circle-run처럼 partition 셀을 행 열(path-run) 표현으로 내보내는 구조 변경이 필요하다는 앞의 판단을 유지한다.
+
+## 3차 — ring 경로 빌더 (archive `c659ae47…`)
+
+셀 경로를 Geo와 같은 `buildRingPathCommands`로 만든다. 점 리터럴 배열과 `buildLinearPathCommands`의 점 재검사·중간 배열이 없어진다. 명령 결과·검증 캐시 의미는 같다. Node 중앙값 66 → 64.7ms. 브라우저 P95 10k는 67.3 / 66.2ms(이전 65.8 / 70.2ms)로 측정 잡음 범위 안이다. 1k는 6.3 / 6.2ms이다. [report](partition-ring-evidence/report.json.gz). Coverage 97.43/95.68/99.36%, critical floor 785, browser 529/529, render 513/513, 같은 archive Node20/22/24 통과.
+
+10k 프레임의 남은 비용은 셀 생성(약 27ms), node 조립·속성 검증·canvas compile·frame 의미 기록이 고르게 나눠 갖는다. 미세 수리로는 2배를 얻을 지점이 없다는 판단을 유지한다. Format6의 `circle-run`은 cartesian-point 결정·위치·codec에 특화되어 있다. 따라서 partition 셀의 batch 표현은 결정 표, partition 의미, codec, 네 renderer와 hit를 함께 확장하는 별도 설계 단계다.
