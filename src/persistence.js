@@ -10,6 +10,7 @@ import { packageVersion } from "./version.js";
 import { decodeValueStages, encodeValue, encodeSharedValue, invalidSnapshot } from "./persistence/codec.js";
 import { exactKeys, requireObject, STATE_KEYS, validateGraphic, validateProgramState, validateProgramStateStages, validateTrace } from "./persistence/validation.js";
 import { drainStages, STAGE_ROWS } from "./core/stages.js";
+import { normalizeSliceOptions } from "./core/sliceOptions.js";
 import { parseJSONStages } from "./core/jsonSlices.js";
 import { drainTimeSlicedStages } from "./resources/routeStages.js";
 import {
@@ -262,15 +263,6 @@ function* deserializeProgramStages(text, parse) {
   return program;
 }
 
-function normalizeSliceOptions(options = {}, label) {
-  if (!isPlainObject(options)) throw new TypeError(`${label} options must be a plain object.`);
-  const unknown = Object.keys(options).find(key => key !== "sliceMs" && key !== "signal");
-  if (unknown !== undefined) throw new TypeError(`Unknown ${label} option "${unknown}".`);
-  const sliceMs = options.sliceMs ?? 40, signal = options.signal;
-  if (!Number.isSafeInteger(sliceMs) || sliceMs < 1 || sliceMs > 1000) throw new RangeError(`${label} sliceMs must be an integer from 1 to 1000.`);
-  if (signal !== undefined && !(signal instanceof AbortSignal)) throw new TypeError(`${label} signal must be an AbortSignal.`);
-  return { sliceMs, signal };
-}
 
 // The same editable snapshot load as deserializeProgram, run in host turns no
 // longer than one row batch past `sliceMs`. Cancellation rejects before a

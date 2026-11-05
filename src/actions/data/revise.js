@@ -1,14 +1,15 @@
-import { closedAction } from "../../core/action.js";
+import { invokeActionStages, stagedClosedAction } from "../../core/action.js";
+import { drainStages } from "../../core/stages.js";
 import { validateUserId } from "../../core/identifiers.js";
 
 import { requireDataset } from "../../selectors/datasets.js";
 import { requireLayer } from "../../selectors/layers.js";
-import { applyRevisionPlan, buildSourceRevisionPlan } from "./edit.js";
+import { applyRevisionPlanStages, buildSourceRevisionPlan } from "./edit.js";
 import { resolveStoredSelection } from "../../materialization/selection/state.js";
-import { withGuideLayoutTransaction } from "../../materialization/guides/layout.js";
+import { withGuideLayoutTransactionStages } from "../../materialization/guides/layout.js";
 import { assertFieldsAvailable } from "../../grammar/datasetSchema.js";
-import { reviseSourceIdentity } from "../../core/itemIdentity.js";
-import { newDatasetNamespace, withPreparedDatasetIdentity } from "../primitives/datasetIdentity.js";
+import { reviseSourceIdentityStages } from "../../core/itemIdentity.js";
+import { newDatasetNamespace, withPreparedDatasetIdentityStages } from "../primitives/datasetIdentity.js";
 import { detachDataSourceBindings } from "../primitives/resourceState.js";
 import { createDataSourceResource } from "../../materialization/dataSourceState.js";
 import { createPreparedSource } from "./sourceCreate.js";
@@ -44,7 +45,11 @@ export function registerFacetDataRevision(handler) {
   reviseFacet = handler;
 }
 
-export function reviseUnitData(program, { source, id, values, schema, identity, sourceUpdate }) {
+export function reviseUnitData(program, input) {
+  return drainStages(reviseUnitDataStages(program, input));
+}
+
+export function* reviseUnitDataStages(program, { source, id, values, schema, identity, sourceUpdate }) {
   const plan = sourceUpdate?.revisionPlan ?? buildSourceRevisionPlan(program, source, id);
   const original = requireDataset(program, source);
   const inheritedSchema = schema ?? (original.schema?.origin === "declared"
@@ -52,9 +57,9 @@ export function reviseUnitData(program, { source, id, values, schema, identity, 
         name, storageType, nullable, optional
       })) }
     : undefined);
-  let created = sourceUpdate === undefined ? withPreparedDatasetIdentity(
+  let created = sourceUpdate === undefined ? yield* withPreparedDatasetIdentityStages(
     { id, values, ...(inheritedSchema === undefined ? {} : { schema: inheritedSchema }) }, identity,
-    args => program.createData(args)) : createPreparedSource(program, {
+    args => invokeActionStages(program, program.createData, args)) : createPreparedSource(program, {
       id, prepared: sourceUpdate.prepared, identity, sourceId: sourceUpdate.resource.id
     });
   if (sourceUpdate === undefined) created = detachDataSourceBindings(created, original);
@@ -71,8 +76,8 @@ export function reviseUnitData(program, { source, id, values, schema, identity, 
       operation: "reviseData"
     });
   }
-  const next = withGuideLayoutTransaction(created, candidate =>
-    applyRevisionPlan(candidate, undefined, plan, { retain: new Set([source]) }));
+  const next = yield* withGuideLayoutTransactionStages(created, candidate =>
+    applyRevisionPlanStages(candidate, undefined, plan, { retain: new Set([source]) }));
   for (const [selection, config] of Object.entries(next.materializationConfigs.selections ?? {})) {
     if (plan.replacements.has(requireLayer(program, config.target).data)) {
       resolveStoredSelection(next, selection);
@@ -81,9 +86,9 @@ export function reviseUnitData(program, { source, id, values, schema, identity, 
   return { program: next, plan };
 }
 
-export const reviseData = /* @__PURE__ */ closedAction(
+export const reviseData = /* @__PURE__ */ stagedClosedAction(
   { op: "reviseData", description: "Revise source data and its dependent chart.", scope: "any" }, ["source", "id", "values", "schema", "keys", "rowMap"],
-  function (args = {}) {
+  function* (args = {}) {
     const source = validateUserId(args.source, "Source dataset id");
     const id = validateUserId(args.id, "Revision dataset id");
     if (this.compositionSpec !== undefined && this.compositionSpec.type !== "facet") {
@@ -95,12 +100,13 @@ export const reviseData = /* @__PURE__ */ closedAction(
     }
     const sourceUpdate = preparedSourceUpdate(args);
     const identity = sourceUpdate?.identity ?? nativeIdentityReaders.get(this.constructor)?.(this, args, reviseData) ??
-      reviseSourceIdentity(original, args.values, args, newDatasetNamespace());
+      (yield* reviseSourceIdentityStages(original, args.values, args, newDatasetNamespace()));
     const apply = this.compositionSpec === undefined
-      ? program => reviseUnitData(program, { source, id, values: args.values, schema: args.schema, identity, sourceUpdate }).program
-      : program => reviseFacet(program, { source, id, values: args.values, schema: args.schema, identity, sourceUpdate });
+      ? function* (program) { return (yield* reviseUnitDataStages(program, { source, id, values: args.values, schema: args.schema, identity, sourceUpdate })).program; }
+      // Facet revision runs as one step.
+      : function* (program) { return reviseFacet(program, { source, id, values: args.values, schema: args.schema, identity, sourceUpdate }); };
     // The entire dependent materialization must succeed before returning a revision.
-    apply(this);
-    return apply(this);
+    yield* apply(this);
+    return yield* apply(this);
   }
 );

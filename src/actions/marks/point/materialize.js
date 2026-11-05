@@ -3,10 +3,10 @@ import { hasPositionBinding, positionBindings } from "../../../core/encodingBind
 import { materializeFillItems } from "../../../materialization/fillPaint.js";
 import { isPatternPaint } from "../../../grammar/paint.js";
 import { resolveConditionalValues } from "../../../materialization/conditionalValues.js";
-import { materializeMarkOutput } from "../../../materialization/markOutput.js";
+import { materializeMarkOutputStages } from "../../../materialization/markOutput.js";
 import { validateGraphicItemLimit, validateWorkLimit } from "../../../core/validation.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
-import { action } from "../../../core/action.js";
+import { invokeActionStages, stagedAction } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { getPointGraphicType } from "../../../grammar/schemas/mark.js";
 import {
@@ -327,12 +327,12 @@ function applyPointPacking(program, {
   };
 }
 
-export const rematerializePointMark = /* @__PURE__ */ action(
+export const rematerializePointMark = /* @__PURE__ */ stagedAction(
   {
     op: "rematerializePointMark",
     description: "Recompute concrete point geometry and appearance."
   },
-  function (args = {}) {
+  function* (args = {}) {
     validateMarkOptions(args, REMATERIALIZE_OPTIONS, "rematerializePointMark");
     const id = validateUserId(args.id, "Point mark id");
     if (findLayer(this, id)?.derivedBindings?.overlay) return this.rematerializeOverlay({ id });
@@ -375,13 +375,18 @@ export const rematerializePointMark = /* @__PURE__ */ action(
       return resolved;
     }
 
+    yield;
     const positions = resolvePointPositions(resolved, layer, dataset);
+    yield;
     const mappedFill = resolveRowEncodingValues(resolved, layer, dataset, "color");
+    yield;
     const mappedStroke = resolveConditionalValues(resolved, layer, "stroke") ?? resolveRowEncodingValues(resolved, layer, dataset, "stroke");
     const mappedStrokeWidths = resolveConditionalValues(resolved, layer, "strokeWidth") ?? resolveRowEncodingValues(resolved, layer, dataset, "strokeWidth");
+    yield;
     const pointRadii = resolveConditionalValues(resolved, layer, "pointRadius");
     const area = pointRadii?.map(radius => Math.PI * radius ** 2) ?? resolveConditionalValues(resolved, layer, "size") ?? resolveRowEncodingValues(resolved, layer, dataset, "size");
     const encodedShape = resolveConditionalValues(resolved, layer, "shape") ?? resolveRowEncodingValues(resolved, layer, dataset, "shape");
+    yield;
     const encodedOpacity = resolveRowEncodingValues(
       resolved,
       layer,
@@ -389,6 +394,7 @@ export const rematerializePointMark = /* @__PURE__ */ action(
       "opacity"
     );
     const angles = resolveConditionalValues(resolved, layer, "angle") ?? resolveDirectionValues(dataset.values, layer.encoding?.angle);
+    yield;
     const config = resolved.markConfigs[id] ?? {};
     const strokeDetails = requestedStrokeDetails(config, "Point mark");
     const strokeWidths = dataset.values.map((_, index) =>
@@ -441,7 +447,9 @@ export const rematerializePointMark = /* @__PURE__ */ action(
       graphic,
       existingChildren
     });
+    yield;
     const { x, y } = offsetCategoryPositions(jittered.program, layer, jittered);
+    yield;
 
     if (requiresMixedCollection) {
       const items = dataset.values.map((_, index) => {
@@ -490,7 +498,7 @@ export const rematerializePointMark = /* @__PURE__ */ action(
           ...strokeDetails
         });
       });
-      return materializeFollowingOverlays(materializeMarkOutput(jittered.program.editGraphics({
+      return materializeFollowingOverlays(yield* materializeMarkOutputStages(yield* invokeActionStages(jittered.program, jittered.program.editGraphics, {
         target: id,
         property: "items",
         value: materializeFillItems(jittered.program, layer, items)
@@ -499,15 +507,15 @@ export const rematerializePointMark = /* @__PURE__ */ action(
 
     let next = graphic.items.length === dataset.values.length
       ? jittered.program
-      : jittered.program.editGraphics({
+      : yield* invokeActionStages(jittered.program, jittered.program.editGraphics, {
           target: id,
           property: "length",
           value: dataset.values.length
         });
-    if (x !== undefined) next = next.editGraphics({ target: id, property: "x", value: x });
-    if (y !== undefined) next = next.editGraphics({ target: id, property: "y", value: y });
+    if (x !== undefined) next = yield* invokeActionStages(next, next.editGraphics, { target: id, property: "x", value: x });
+    if (y !== undefined) next = yield* invokeActionStages(next, next.editGraphics, { target: id, property: "y", value: y });
     if (fill !== undefined) {
-      next = next.editGraphics({ target: id, property: "fill", value: fill });
+      next = yield* invokeActionStages(next, next.editGraphics, { target: id, property: "fill", value: fill });
     }
     if (graphic.type === "circle") {
       const radii = area === undefined
@@ -523,7 +531,7 @@ export const rematerializePointMark = /* @__PURE__ */ action(
         )
         : area.map(value => Math.sqrt(value / Math.PI));
       if (radii !== undefined) {
-        next = next.editGraphics({ target: id, property: "radius", value: radii });
+        next = yield* invokeActionStages(next, next.editGraphics, { target: id, property: "radius", value: radii });
       }
     } else if (
       area !== undefined ||
@@ -543,14 +551,14 @@ export const rematerializePointMark = /* @__PURE__ */ action(
       const centersX = x ?? existingChildren.map(child => child.properties.x);
       const centersY = y ?? existingChildren.map(child => child.properties.y);
       if (centersX.every(Number.isFinite)) {
-        next = next.editGraphics({
+        next = yield* invokeActionStages(next, next.editGraphics, {
           target: id,
           property: "x",
           value: centersX.map((value, index) => value - (Array.isArray(sides) ? sides[index] : sides) / 2)
         });
       }
       if (centersY.every(Number.isFinite)) {
-        next = next.editGraphics({
+        next = yield* invokeActionStages(next, next.editGraphics, {
           target: id,
           property: "y",
           value: centersY.map((value, index) => value - (Array.isArray(sides) ? sides[index] : sides) / 2)
@@ -564,9 +572,9 @@ export const rematerializePointMark = /* @__PURE__ */ action(
       });
     }
     if (config.opacity !== undefined) {
-      next = next.editGraphics({ target: id, property: "opacity", value: config.opacity });
+      next = yield* invokeActionStages(next, next.editGraphics, { target: id, property: "opacity", value: config.opacity });
     } else if (encodedOpacity !== undefined) {
-      next = next.editGraphics({ target: id, property: "opacity", value: encodedOpacity });
+      next = yield* invokeActionStages(next, next.editGraphics, { target: id, property: "opacity", value: encodedOpacity });
     }
     if (mappedStroke !== undefined) {
       next = editGraphicProperties(next, id, {
@@ -579,16 +587,16 @@ export const rematerializePointMark = /* @__PURE__ */ action(
         strokeWidth: 0
       });
     } else if (config.stroke !== undefined) {
-      next = next.editGraphics({ target: id, property: "stroke", value: config.stroke });
-      next = next.editGraphics({
+      next = yield* invokeActionStages(next, next.editGraphics, { target: id, property: "stroke", value: config.stroke });
+      next = yield* invokeActionStages(next, next.editGraphics, {
         target: id,
         property: "strokeWidth",
         value: config.strokeWidth ?? 1
       });
     }
     for (const [property, value] of Object.entries(strokeDetails)) {
-      next = next.editGraphics({ target: id, property, value });
+      next = yield* invokeActionStages(next, next.editGraphics, { target: id, property, value });
     }
-    return materializeFollowingOverlays(materializeMarkOutput(next, id), id);
+    return materializeFollowingOverlays(yield* materializeMarkOutputStages(next, id), id);
   }
 );

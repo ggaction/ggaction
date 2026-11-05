@@ -1,4 +1,4 @@
-import { chart } from 'ggaction';
+import { chart, reviseDataInSlices } from 'ggaction';
 import { createTransitionScene } from 'ggaction/scene';
 import { planTransition, sampleTransition } from 'ggaction/animation';
 import { createInteractionSession } from 'ggaction/interaction';
@@ -159,10 +159,10 @@ export function prepareNativeWorkload(kind, count, input = nativeWorkloadInput(k
       batched ? (start, end) => { checkBatchedPoints(start, input, 1, false); checkBatchedPoints(end, input, 2, false); } : undefined)() });
     } else {
       const saved = serializeProgram(program), revised = input.map(row => ({ ...row, x: row.x / 2 }));
-      stages.push({ name: 'editable-load', prepare: () => ({ async run() { const r = await slicedTime(() => loadProgramInSlices(saved, { sliceMs: 20 })); return { metrics: { loadMs: r.elapsed, blockingSliceMs: r.longest }, program: r.value }; }, validate: r => checkPoints(r.program, input) }) });
-      stages.push({ name: 'source-revise', prepare: () => ({ run() { const r = time(() => program.reviseData({ source: 'rows', id: 'revision', values: revised })); return { metrics: { reviseMs: r.elapsed, blockingSliceMs: r.elapsed }, program: r.value }; }, validate(r) { checkPoints(program, input); return checkPoints(r.program, revised); } }) });
-      witness = { ...witness, snapshotCharacters: saved.length, load: 'loadProgramInSlices with sliceMs 20', revise: 'reviseData with full dependent point rematerialization',
-        blocking: 'load: longest interval between two host message turns while the sliced call runs; revise: entire synchronous public call' };
+      stages.push({ name: 'editable-load', prepare: () => ({ async run() { const r = await slicedTime(() => loadProgramInSlices(saved, { sliceMs: 10 })); return { metrics: { loadMs: r.elapsed, blockingSliceMs: r.longest }, program: r.value }; }, validate: r => checkPoints(r.program, input) }) });
+      stages.push({ name: 'source-revise', prepare: () => ({ async run() { const r = await slicedTime(() => reviseDataInSlices(program, { source: 'rows', id: 'revision', values: revised }, { sliceMs: 10 })); return { metrics: { reviseMs: r.elapsed, blockingSliceMs: r.longest }, program: r.value }; }, validate(r) { checkPoints(program, input); return checkPoints(r.program, revised); } }) });
+      witness = { ...witness, snapshotCharacters: saved.length, load: 'loadProgramInSlices with sliceMs 10', revise: 'reviseDataInSlices with sliceMs 10 and full dependent point rematerialization',
+        blocking: 'longest interval between two host message turns while the sliced call runs' };
     }
   } else if (kind === 'inference') {
     check(input.length === count, 'inference input cardinality');

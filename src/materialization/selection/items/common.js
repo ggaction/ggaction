@@ -13,6 +13,7 @@ import { selectionPredicate } from "../predicate.js";
 import { requireDataset } from "../../../selectors/datasets.js";
 import { canonicalJSON, contentDigest } from "../../../core/contentDigest.js";
 import { encodeValue } from "../../../core/valueEncoding.js";
+import { drainStages, mapStages } from "../../../core/stages.js";
 
 const rowKeySets = new WeakMap();
 function itemNamespace(program, dataset, keys) {
@@ -28,6 +29,10 @@ function itemNamespace(program, dataset, keys) {
 }
 
 export function identifyItems(program, layer, grain, definitions) {
+  return drainStages(identifyItemsStages(program, layer, grain, definitions));
+}
+
+export function* identifyItemsStages(program, layer, grain, definitions) {
   if (isScreenAnnotation(layer)) {
     validateScreenAnnotationLayer(layer);
     if (grain !== "text" || definitions.length > 1 || definitions.some(item => item.members.length)) throw new TypeError("Screen annotation has one rowless Text item.");
@@ -35,8 +40,8 @@ export function identifyItems(program, layer, grain, definitions) {
   }
   const dataset = requireDataset(program, layer.data);
   const keysByRow = new Map();
-  dataset.values.forEach((row, index) => keysByRow.set(row, [...(keysByRow.get(row) ?? []), dataset.rowKeys[index]]));
-  return definitions.map(definition => {
+  yield* mapStages(dataset.values, (row, index) => { keysByRow.set(row, [...(keysByRow.get(row) ?? []), dataset.rowKeys[index]]); });
+  return yield* mapStages(definitions, definition => {
     const memberKeys = definition.memberKeys ?? (definition.rowKey ? [definition.rowKey]
       : [...new Set(definition.members.flatMap(row => keysByRow.get(row) ?? []))]);
     const identity = definition.semanticIdentity ?? (definition.rowKey === undefined
@@ -143,8 +148,12 @@ function collectionBounds(program, items) {
   return { x: left, y: top, width: right - left, height: bottom - top };
 }
 
-export function finalizeItems(program, layer, grain, definitions, graphicType, { reorder = true, selectionResolvers, resourceBacked = false } = {}) {
-  if (selectionResolvers?.sourceOnly) return resourceBacked ? definitions : identifyItems(program, layer, grain, definitions);
+export function finalizeItems(program, layer, grain, definitions, graphicType, options) {
+  return drainStages(finalizeItemsStages(program, layer, grain, definitions, graphicType, options));
+}
+
+export function* finalizeItemsStages(program, layer, grain, definitions, graphicType, { reorder = true, selectionResolvers, resourceBacked = false } = {}) {
+  if (selectionResolvers?.sourceOnly) return resourceBacked ? definitions : yield* identifyItemsStages(program, layer, grain, definitions);
   const graphic = requireResolvedGraphic(program, layer, graphicType);
   const referenced = definitions.flatMap((definition, index) =>
     definition.graphicIndices ?? [index]
@@ -158,7 +167,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
       `Mark "${layer.id}" item count does not match its materialized graphics.`
     );
   }
-  if (!resourceBacked) definitions = identifyItems(program, layer, grain, definitions);
+  if (!resourceBacked) definitions = yield* identifyItemsStages(program, layer, grain, definitions);
   if (reorder) {
     definitions = reorderHighlightedItems(program, layer, definitions, {}, selectionResolvers);
     if (definitions.some(definition => definition.graphicIndices !== undefined)) {
@@ -174,7 +183,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
   const positions = selectionResolvers?.identityOnly && !resourceBacked
     ? new Map((isScreenAnnotation(layer) ? [] : requireDataset(program, layer.data).rowKeys).map((key, index) => [key, index]))
     : undefined;
-  return Object.freeze(definitions.map((definition, index) => {
+  return Object.freeze(yield* mapStages(definitions, (definition, index) => {
     const indices = definition.graphicIndices ?? [index];
     const items = indices.map(childIndex => graphic.items[childIndex]);
     if (positions !== undefined) return Object.freeze({

@@ -2702,3 +2702,14 @@ Browser-safe `ggaction/persistence`의 네 함수는 action replay 없이 canoni
 - 시간: sliceMs(1..1000 정수, 기본 40)가 지나면 host turn 하나를 양보한다. 한 단계는 행 묶음 하나라서 동기 구간은 sliceMs에 그 한 묶음 시간만큼만 더 길어질 수 있다. host GC 정지는 측정에 포함된다.
 - 취소: 시작 전·각 slice 전후에 signal을 검사하고 그 reason으로 거부한다. 반환된 program은 없다.
 - Evidence: `test/unit/persistence/sliced-load.test.js`(전 action corpus·legacy fixture 동일 결과, 오류 동일, host turn·취소·옵션, JSON 분할 동치).
+
+## Sliced data revision
+
+`ggaction`의 `reviseDataInSlices(program, options, { sliceMs?, signal? })`는 `program.reviseData(options)`와 같은 revision 또는 같은 오류를 비동기로 돌려준다.
+
+- Action 실행기: 동기 wrapper와 분할 호출(`invokeActionStages`)이 같은 invocation generator를 공유한다. 인자 검사·trace enter/exit·completion hook·결과 검증이 같다. private `stagedAction`/`stagedClosedAction` 구현만 행 묶음 사이에서 양보하고, 다른 action은 한 단계로 돈다. 묶인 invocation scope(`applyGraphEdgeRoutesUpdate`)는 양보 없이 끝까지 돈다.
+- 분할 범위: unit chart의 `reviseData` preview·actual 두 pass, `createData`·`editSemantic` 값 기록과 source identity, 재물질화 plan의 각 step, `rematerializeScale`, point 재물질화, mark output, `editGraphics` item 반복. facet revision과 다른 mark family는 한 단계다.
+- 동적 문맥: `withLogicalDataReplacementsStages`는 대체 문맥을 양보 전에 닫고 재개 때 다시 연다. dataset identity 준비는 정확한 인자 객체에 묶여 양보를 넘어도 다른 호출에 닿지 않는다.
+- 결과 동일성: 같은 namespace 순서에서 동기 revision과 저장 bytes가 같다. 원 program은 바뀌지 않는다.
+- 같은 결과의 반복 계산 제거: 소유 표시된 행 배열의 숫자 열 읽기(`readQuantitativeField`)는 그 배열의 private field에 기억한다. 모든 행이 소유 표시된 경우만 기억한다.
+- Evidence: `test/unit/actions/data/sliced-revise.test.js`.

@@ -99,6 +99,28 @@ current source ID and another fresh ID. Old source snapshots are not deleted
 automatically. Standalone derived-data definitions keep their existing logical
 editor targets.
 
+`reviseDataInSlices(program, options, { sliceMs?, signal? })` from `ggaction`
+returns the same revision, or rejects with the same error, as
+`program.reviseData(options)`. Large revisions run in short synchronous slices
+of about `sliceMs` milliseconds (an integer from 1 to 1000, default 40) and
+yield to the host between them. Aborting `signal` rejects with its reason and
+leaves `program` unchanged. Unit charts revise their rows, derived data and
+point marks in row batches; facet revision runs as one step.
+
+```javascript
+import { chart, reviseDataInSlices } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ id: "sales", values: [{ quarter: "Q1", revenue: 12 }] })
+  .createBarPlot({ x: "quarter", y: "revenue", guides: false });
+const revised = await reviseDataInSlices(program, {
+  source: "sales",
+  id: "salesUpdated",
+  values: [{ quarter: "Q1", revenue: 15 }, { quarter: "Q2", revenue: 20 }]
+}, { sliceMs: 10 });
+```
+
 Retained-source facets, facet grids, and repeats rederive their cells using the
 existing recipe, including its selected values and fields. They do not add new
 facet categories automatically. For concat, revise an explicit child and pass it

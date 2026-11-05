@@ -5,12 +5,18 @@ import { hasPositionBinding } from "../core/encodingBindings.js";
 import { resolveConditionalValues } from "./conditionalValues.js";
 import { requireDataset } from "../selectors/datasets.js";
 import { materializeMarkClip } from "./markClip.js";
-import { resolveMarkIdentities, resolveMarkSourceItems } from "./selection/policies/index.js";
+import { resolveMarkIdentities, resolveMarkIdentitiesStages, resolveMarkSourceItems } from "./selection/policies/index.js";
 import { findLayer } from "../selectors/layers.js";
+import { invokeActionStages } from "../core/action.js";
+import { drainStages, mapStages, STAGE_ROWS } from "../core/stages.js";
 
 // Explicitly called by the owning mark materializer after geometry is complete.
 // The primitive transition owns the trace and the immutable concrete replacement.
 export function materializeMarkOutput(program, id) {
+  return drainStages(materializeMarkOutputStages(program, id));
+}
+
+export function* materializeMarkOutputStages(program, id) {
   const clipped = materializeMarkClip(program, id);
   const graphic = clipped.graphicSpec.objects[id];
   if (!graphic?.items?.length) return clipped;
@@ -35,7 +41,9 @@ export function materializeMarkOutput(program, id) {
   }
   const dataset = layer.data === undefined ? undefined : requireDataset(clipped, layer.data);
   const identities = new Map();
-  for (const item of resolveMarkIdentities(clipped, id)) {
+  let rows = 0;
+  for (const item of yield* resolveMarkIdentitiesStages(clipped, id)) {
+    if (++rows % STAGE_ROWS === 0) yield;
     for (const [index, graphicId] of item.graphicIds.entries()) {
       identities.set(graphicId, {
         key: item.key, topology: item.topology, role: item.graphicRoles[index],
@@ -46,7 +54,7 @@ export function materializeMarkOutput(program, id) {
   }
   if (identities.size !== graphic.items.length) throw new Error(`Mark "${id}" has ambiguous concrete item identity.`);
   const config = clipped.markConfigs[id];
-  return clipped.editGraphics({ target: id, property: "items", value: graphic.items.map(child => {
+  return yield* invokeActionStages(clipped, clipped.editGraphics, { target: id, property: "items", value: yield* mapStages(graphic.items, child => {
     const type = child.type ?? graphic.type;
     const properties = resolveMarkEffectProperties(layer, config, { ...child.properties, ...conditionalProperties[child.id] });
     return { type, properties, identity: identities.get(child.id) };

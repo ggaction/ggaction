@@ -556,6 +556,10 @@ export function prepareDataUpdate(program: ChartProgram, request: CreateDataUpda
 export function prepareDataUpdate(program: ChartProgram, request: ReviseDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"revise">>;
 export function prepareDataUpdate(program: ChartProgram, request: ParameterDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"parameter">>;
 export function prepareDataUpdate(program: ChartProgram, request: DataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate>;
+/** The same revision as program.reviseData(options), run in bounded host turns (sliceMs 1..1000, default 40). */
+export function reviseDataInSlices<Row extends object>(program: ChartProgram,
+  options: import("./program.js").TargetedOptions<import("./program.js").ReviseDataOptions<Row>>,
+  slices?: { readonly sliceMs?: number; readonly signal?: AbortSignal }): Promise<ChartProgram>;
 export function hconcat(options: CompositionOptions): ChartProgram;
 export function vconcat(options: CompositionOptions): ChartProgram;
 export function render(

@@ -252,6 +252,16 @@
     "rendering": "authoring-only"
   },
   {
+    "id": "sliced-data-revision",
+    "file": "data-updates.md",
+    "contains": "const revised = await reviseDataInSlices(program, {",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "revised",
+    "prerequisites": "Run the complete ES module with ggaction installed; it revises one chart in bounded slices.",
+    "rendering": "authoring-only"
+  },
+  {
     "id": "sliced-program-load",
     "file": "data-updates.md",
     "contains": "const program = await loadProgramInSlices(saved, { sliceMs: 20 });",

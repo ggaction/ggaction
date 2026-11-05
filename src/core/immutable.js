@@ -1,3 +1,5 @@
+import { STAGE_ROWS } from "./stages.js";
+
 // Exact-object ownership is a module-private field on the owned value itself.
 // A process-wide weak table rehashes in place under short-lived registrations
 // (see agent_docs/impl/roadmap9/qualification/OWNED_MARK_DECISION.md). Only this
@@ -44,6 +46,23 @@ export function isOwned(value) {
 }
 
 export function cloneAndFreeze(value, ancestors = new WeakSet(), path = "state") {
+  const state = cloneFrames(value, ancestors, path);
+  while (state.pending.length) state.step();
+  return state.result;
+}
+
+// The same copy as cloneAndFreeze, yielding between batches of visited values.
+export function* cloneAndFreezeStages(value, ancestors = new WeakSet(), path = "state") {
+  const state = cloneFrames(value, ancestors, path);
+  for (let steps = 1; state.pending.length; steps++) {
+    state.step();
+    if (steps % STAGE_ROWS === 0) yield;
+  }
+  return state.result;
+}
+
+// One explicit-stack copy shared by the synchronous and staged forms.
+function cloneFrames(value, ancestors, path) {
   const pending = [];
   function copy(input, location) {
     if (typeof input === "function") throw new TypeError(`Cannot store a function at ${location} in a ChartProgram.`);
@@ -62,24 +81,24 @@ export function cloneAndFreeze(value, ancestors = new WeakSet(), path = "state")
     return clone;
   }
   const result = copy(value, path);
-  while (pending.length) {
+  const step = () => {
     const frame = pending.at(-1);
     if (frame.cursor === frame.length) {
       freezeOwned(frame.clone);
       ancestors.delete(frame.input);
       pending.pop();
-      continue;
+      return;
     }
     const index = frame.cursor++;
-    if (frame.array && !(index in frame.input)) continue;
+    if (frame.array && !(index in frame.input)) return;
     const [key, item] = frame.array ? [index, frame.input[index]] : frame.entries[index];
     const child = copy(item, frame.array ? `${frame.location}[${key}]` : `${frame.location}.${key}`);
     if (!frame.array && key in Object.prototype) Object.defineProperty(frame.clone, key, {
       value: child, enumerable: true, writable: true, configurable: true
     });
     else frame.clone[key] = child;
-  }
-  return result;
+  };
+  return { result, pending, step };
 }
 
 export function removeOwnedPath(source, path) {

@@ -2,9 +2,10 @@ import { hasPositionBinding } from "../../../core/encodingBindings.js";
 import {
   channelMapFromRow,
   concreteProperties,
-  finalizeItems,
+  finalizeItemsStages,
   ownFields
 } from "./common.js";
+import { drainStages, mapStages } from "../../../core/stages.js";
 import { identifyItems } from "./common.js";
 
 export function resolvePointSourceItems(program, layer, dataset) {
@@ -13,7 +14,11 @@ export function resolvePointSourceItems(program, layer, dataset) {
   })));
 }
 
-export function resolvePointItems(program, layer, dataset, grain, resolveItems, selectionResolvers) {
+export function resolvePointItems(...args) {
+  return drainStages(resolvePointItemsStages(...args));
+}
+
+export function* resolvePointItemsStages(program, layer, dataset, grain, resolveItems, selectionResolvers) {
   const graphic = program.graphicSpec.objects[layer.id];
   const completePosition = (
     hasPositionBinding(layer, "x") &&
@@ -28,14 +33,14 @@ export function resolvePointItems(program, layer, dataset, grain, resolveItems, 
   ) {
     throw new Error(`Point mark "${layer.id}" is incomplete for selection.`);
   }
-  const definitions = dataset.values.map((row, index) => ({
+  const definitions = yield* mapStages(dataset.values, (row, index) => ({
     rowKey: dataset.rowKeys[index],
     fields: ownFields(row),
     channels: channelMapFromRow(row, layer),
     properties: concreteProperties(graphic.items[index]?.properties),
     members: [row]
   }));
-  return finalizeItems(
+  return yield* finalizeItemsStages(
     program,
     layer,
     "point",

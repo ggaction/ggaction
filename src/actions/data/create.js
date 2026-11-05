@@ -1,8 +1,8 @@
-import { closedAction } from "../../core/action.js";
+import { stagedClosedAction } from "../../core/action.js";
 import { resolveOptionalUserId } from "../../core/identifiers.js";
 import { validateDataRows } from "../../core/validation.js";
 import { hasDataset, hasDatasetOwner } from "../../selectors/index.js";
-import { sourceIdentityFor, writeSourceValues } from "../primitives/datasetIdentity.js";
+import { sourceIdentityForStages, writeSourceValuesStages } from "../primitives/datasetIdentity.js";
 import { preparedSourceUpdate, writeSourceReceipt } from "./sourceContext.js";
 import {
   inferDatasetSchema,
@@ -12,9 +12,9 @@ import {
 
 const OPTIONS = Object.freeze(["id", "values", "schema", "keyField", "keyFields", "keys"]);
 
-export const createData = /* @__PURE__ */ closedAction(
+export const createData = /* @__PURE__ */ stagedClosedAction(
   { op: "createData", description: "Create an immutable named dataset." }, OPTIONS,
-  function (args = {}) {
+  function* (args = {}) {
     const id = resolveOptionalUserId(args.id, {
       defaultId: "data",
       label: "Dataset id",
@@ -30,10 +30,10 @@ export const createData = /* @__PURE__ */ closedAction(
     if (hasDataset(this, id) || hasDatasetOwner(this, id)) {
       throw new Error(`Dataset "${id}" already exists.`);
     }
-    const identity = sourceIdentityFor(args, args.values, args);
+    const identity = yield* sourceIdentityForStages(args, args.values, args);
     let prepared = args.schema === undefined && update === undefined ? this
       : this.editSemantic({ property: `dataset[${id}].schema`, value: schema });
     if (update !== undefined) prepared = writeSourceReceipt(prepared, id, update.receipt);
-    return writeSourceValues(prepared, id, args.values, identity);
+    return yield* writeSourceValuesStages(prepared, id, args.values, identity);
   }
 );

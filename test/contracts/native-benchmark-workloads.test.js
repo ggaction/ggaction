@@ -12,9 +12,8 @@ for (const kind of ['points', 'partition', 'geo', 'data']) test(`native benchmar
         const result = await prepared.run(), witness = prepared.validate(result);
         assert.ok(Object.values(result.metrics).every(value => Number.isFinite(value) && value >= 0));
         assert.ok(witness.count === 5 || witness.vertices === 5 || witness.queries === 3);
-        // The sliced load reports its longest host-turn interval; revise is still one synchronous call.
-        if (kind === 'data' && stage.name === 'editable-load') assert.ok(result.metrics.blockingSliceMs <= result.metrics.loadMs);
-        if (kind === 'data' && stage.name === 'source-revise') assert.equal(result.metrics.blockingSliceMs, result.metrics.reviseMs);
+        // Sliced load and revise report their longest host-turn interval.
+        if (kind === 'data') assert.ok(result.metrics.blockingSliceMs <= (result.metrics.loadMs ?? result.metrics.reviseMs));
       }
     } finally { prepared.dispose?.(); }
   }

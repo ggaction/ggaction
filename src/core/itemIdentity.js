@@ -1,5 +1,5 @@
 import { annotateError } from "./diagnostics.js";
-import { cloneAndFreeze, isPlainObject } from "./immutable.js";
+import { cloneAndFreeze, cloneAndFreezeStages, isPlainObject } from "./immutable.js";
 import { validateDataRows, validateWorkLimit } from "./validation.js";
 import { drainStages, STAGE_ROWS } from "./stages.js";
 
@@ -109,6 +109,12 @@ function* uniqueStages(keys) {
   if (seen.size !== keys.length) throw invalid("keys", "Duplicate row identity.", "ambiguous-identity");
   return keys;
 }
+// keyedRows with yields between rows: explicit keys or field tokens.
+function* keyedRowStages(values, spec, keys) {
+  if (spec.mode === "explicit") return yield* uniqueStages((yield* denseStages(keys, "keys", values.length)).map(key => encodeRowKey(key)));
+  return yield* keyedFieldRowStages(values, spec);
+}
+
 // The field and fields key tokens of keyedRows, with the same sparse rows.
 function* keyedFieldRowStages(values, spec) {
   validateWorkLimit(values.length * (spec.mode === "fields" ? spec.fields.length : 1), "Row key work");
@@ -165,18 +171,26 @@ export function allocateRowKeys(previous, nextGeneratedKey, rowMap, allocationId
 }
 
 // UUID allocation belongs to the calling action; these calculations are pure.
-export function createSourceIdentity(values, options, { logicalId, allocationId }) {
+export function createSourceIdentity(values, options, namespaces) {
+  return drainStages(createSourceIdentityStages(values, options, namespaces));
+}
+
+export function* createSourceIdentityStages(values, options, { logicalId, allocationId }) {
   validateDataRows(values);
   namespace(logicalId, "logicalId");
   namespace(allocationId, "allocationId");
   const spec = keySpec(options);
   const rows = spec.mode === "generated"
     ? allocateRowKeys([], 0, Array(values.length).fill(null), allocationId)
-    : { rowKeys: keyedRows(values, spec, options.keys), nextGeneratedKey: 0 };
-  return cloneAndFreeze({ logicalId, revision: 0, allocationId, keySpec: spec, ...rows });
+    : { rowKeys: yield* keyedRowStages(values, spec, options.keys), nextGeneratedKey: 0 };
+  return yield* cloneAndFreezeStages({ logicalId, revision: 0, allocationId, keySpec: spec, ...rows });
 }
 
 export function reviseSourceIdentity(source, values, options, allocationId) {
+  return drainStages(reviseSourceIdentityStages(source, values, options, allocationId));
+}
+
+export function* reviseSourceIdentityStages(source, values, options, allocationId) {
   validateDataRows(values);
   namespace(allocationId, "allocationId");
   counter(source.revision, "revision");
@@ -192,8 +206,8 @@ export function reviseSourceIdentity(source, values, options, allocationId) {
   const rows = spec.mode === "generated"
     ? allocateRowKeys(source.rowKeys, source.nextGeneratedKey,
       options.rowMap === undefined ? Array(values.length).fill(null) : dense(options.rowMap, "rowMap", values.length), allocationId)
-    : { rowKeys: keyedRows(values, spec, options.keys), nextGeneratedKey: 0 };
-  return cloneAndFreeze({ logicalId: source.logicalId, revision: source.revision + 1, allocationId, keySpec: spec, ...rows });
+    : { rowKeys: yield* keyedRowStages(values, spec, options.keys), nextGeneratedKey: 0 };
+  return yield* cloneAndFreezeStages({ logicalId: source.logicalId, revision: source.revision + 1, allocationId, keySpec: spec, ...rows });
 }
 
 // Canonical typed tokens are shared by source rows and keyed compound columns.

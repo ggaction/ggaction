@@ -16,7 +16,7 @@ import { createGeoJoinResource } from "../../materialization/geo/joinResource.js
 import { createProjectionResource } from "../../materialization/geo/projectionResource.js";
 import { createCalendarResource } from "../../materialization/calendar/resources.js";
 import { resolveHierarchyPlot } from "../../materialization/hierarchy/plot.js";
-import { applyMaterializationPlan, planLayersDataRematerialization } from "../../materialization/dependencies.js";
+import { applyMaterializationPlanStages, planLayersDataRematerialization } from "../../materialization/dependencies.js";
 import { orderConditionalMarkIds } from "../../materialization/conditionalState.js";
 import { requireMaterializedDataset, requireDataset } from "../../selectors/datasets.js";
 import { dataInputReference, resolveInputReference } from "../../selectors/resources.js";
@@ -116,7 +116,7 @@ export function* planSourceResourceRevisionStages(program, dataReplacements, sco
   return { entries, views, marks };
 }
 
-export function reviseSourceResourceInputs(program, replacements, nativeMarks) {
+export function* reviseSourceResourceInputsStages(program, replacements, nativeMarks) {
   const plan = planSourceResourceRevision(program, replacements);
   let next = applyPartitionViews(program, plan.views);
   if (plan.entries.length > 0) {
@@ -129,7 +129,7 @@ export function reviseSourceResourceInputs(program, replacements, nativeMarks) {
       { property: `resource[${first.resource.kind}:${first.resource.id}]`, value: first.resource }, dependent,
       args => entered.editSemantic(args), dataReplacements);
   }
-  next = applyMaterializationPlan(next, planLayersDataRematerialization(next,
+  next = yield* applyMaterializationPlanStages(next, planLayersDataRematerialization(next,
     orderConditionalMarkIds(next, [...nativeMarks, ...plan.marks])));
   for (const id of plan.marks) {
     const layer = requireLayer(next, id);

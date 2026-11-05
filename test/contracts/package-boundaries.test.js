@@ -26,7 +26,7 @@ const PUBLIC_ENTRIES = Object.freeze({
   ".": Object.freeze({
     runtime: "./src/index.js",
     types: "./types/index.d.ts",
-    values: Object.freeze(["chart", "hconcat", "prepareDataUpdate", "prepareFontRendering", "prepareFontResource", "prepareImageRendering", "prepareImageResource", "prepareShadowRendering", "prepareTextMetrics", "render", "vconcat"])
+    values: Object.freeze(["chart", "hconcat", "prepareDataUpdate", "prepareFontRendering", "prepareFontResource", "prepareImageRendering", "prepareImageResource", "prepareShadowRendering", "prepareTextMetrics", "render", "reviseDataInSlices", "vconcat"])
   }),
   "./basic": Object.freeze({
     runtime: "./src/basic.js",

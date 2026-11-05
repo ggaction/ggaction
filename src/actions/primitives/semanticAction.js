@@ -1,16 +1,17 @@
 import { assertProgramSingleY } from "../../materialization/frameState.js";
 import { statisticalReferenceContributions } from "../../materialization/statisticalPopulation.js";
 import { hasSemanticScaleReferences } from "../../selectors/scales.js";
-import { closedAction } from "../../core/action.js";
+import { stagedClosedAction } from "../../core/action.js";
+import { drainStages } from "../../core/stages.js";
 import {
-  cloneAndFreeze,
+  cloneAndFreeze, cloneAndFreezeStages,
   freezeOwned,
   isPlainObject,
   removeOwnedPath
 } from "../../core/immutable.js";
 import { parseSemanticPath } from "../../grammar/schemas/semanticPath.js";
 import { deriveTransformSchema, inferDatasetSchema, validateRowsAgainstSchema,datasetSchemaContext } from "../../grammar/datasetSchema.js";
-import { preparedDatasetIdentity, sourceIdentityFor } from "./datasetIdentity.js";
+import { preparedDatasetIdentity, sourceIdentityFor, sourceIdentityForStages } from "./datasetIdentity.js";
 import { derivedIdentityBase, deriveRowLineage } from "../../grammar/rowLineage.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { replaceStoredResource, removeStoredResource } from "./resourceState.js";
@@ -26,16 +27,20 @@ const CONTEXT_KEYS = Object.freeze({
 });
 
 function setNestedProperty(source, path, value) {
+  return drainStages(setNestedPropertyStages(source, path, value));
+}
+
+function* setNestedPropertyStages(source, path, value) {
   const [key, ...rest] = path;
 
   if (rest.length === 0) {
-    return freezeOwned({ ...source, [key]: cloneAndFreeze(value) });
+    return freezeOwned({ ...source, [key]: yield* cloneAndFreezeStages(value) });
   }
 
   const child = isPlainObject(source[key]) ? source[key] : {};
   return freezeOwned({
     ...source,
-    [key]: setNestedProperty(child, rest, value)
+    [key]: yield* setNestedPropertyStages(child, rest, value)
   });
 }
 
@@ -50,7 +55,7 @@ function derivedRows(program, dataset, values) {
   });
 }
 
-function updateEntity(program, parsed, value, args) {
+function* updateEntityStages(program, parsed, value, args) {
   const spec = program.semanticSpec;
   const collection = spec[parsed.collection];
   const index = collection.findIndex(item => item.id === parsed.id);
@@ -64,9 +69,9 @@ function updateEntity(program, parsed, value, args) {
   }
 
   const current = index === -1 ? { id: parsed.id } : collection[index];
-  let updated = setNestedProperty(current, parsed.path, value);
+  let updated = yield* setNestedPropertyStages(current, parsed.path, value);
   if (parsed.kind === "dataset" && parsed.path[0] === "values" && current.source === undefined) {
-    updated = freezeOwned({ ...updated, ...sourceIdentityFor(args, value) });
+    updated = freezeOwned({ ...updated, ...(yield* sourceIdentityForStages(args, value)) });
   }
   if (parsed.kind === "dataset" && current.source !== undefined) {
     const source = findDataset(program, current.source);
@@ -317,13 +322,13 @@ export function synchronizeFacetColorSizeMeaning(program, meaning) {
 }
 
 export function createSemanticPrimitiveAction(validateSemanticValue, planNamedRemoval) {
-  return closedAction(
+  return stagedClosedAction(
     {
       op: "editSemantic",
       description: "Create, replace, or remove one semantic property.",
       scope: "any"
     }, ["property", "value", "remove"],
-    function (args = {}) {
+    function* (args = {}) {
 
       const { property, value, remove = false } = args;
       if (typeof remove !== "boolean") {
@@ -414,7 +419,7 @@ export function createSemanticPrimitiveAction(validateSemanticValue, planNamedRe
         ? updateGuides(this.semanticSpec, parsed, value)
         : parsed.kind === "title"
           ? updateTitle(this.semanticSpec, parsed, value)
-          : updateEntity(this, parsed, value, args);
+          : yield* updateEntityStages(this, parsed, value, args);
       if (this.actionStack.length === 1) {
         assertProgramSingleY({ ...this, semanticSpec, guideConfigs: this.guideConfigs }, { geometry: false, allowIncomplete: true });
       }

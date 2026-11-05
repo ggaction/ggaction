@@ -5,7 +5,9 @@
 - [x] 사용자 확인: "1,2,3 승인"(2026-11-05). [승인 기록](PUBLIC_APPROVAL_20261105_PERF.json)
 - [x] load 분할: `loadProgramInSlices` 구현·시험·설치본 검증(archive `7b3cec37…`). [증거](data-sliced-evidence/)
 - [ ] 100k load 최장 구간 P95 50ms(현재 52 / 64ms, GC 꼬리).
-- [ ] revise 분할: `reviseDataInSlices`.
+- [x] revise 분할: `reviseDataInSlices` 구현·시험.
+- [x] revise 설치본 검증·Chromium benchmark(archive `ba10ee33…` 측정, `a8867ce6…` 검증). [증거](data-sliced-evidence/)
+- [ ] 100k 최장 구간 P95 50ms(load 75 / 60ms, revise 107 / 121ms).
 
 ## 왜 필요한가
 
@@ -107,3 +109,27 @@ const next = await reviseDataInSlices(program, { source, id, values }, { sliceMs
 - 위 반복과 `reviseData` 사이의 호출 사슬: `reviseUnitData` → `withGuideLayoutTransaction`(stage 있음) → `applyRevisionPlan` → `withLogicalDataReplacements`(양보 때 문맥 닫기) → `applyRevisionPlanWithIdentity` → data resource handler(`reviseSource`) → `reviseSourceResourceInputs` → `applyMaterializationPlan`(dependencies·planner) → `materializePointMark` action.
 - action 실행기: 동기 wrapper와 분할 호출이 같은 generator(`run`)를 공유하고, private `stagedClosedAction`만 행 묶음 사이에서 양보한다. 묶인 invocation scope(`applyGraphEdgeRoutesUpdate`)는 양보 없이 끝까지 돈다. 초안은 같은 경로의 시험과 함께 커밋한다.
 - SHA hex 변환을 표 조회로 바꿔 100k digest 174 → 82ms(결과 동일, node:crypto 대조).
+
+### revise 분할 구현 (2026-11-05)
+
+- action 실행기가 동기·분할 공용 generator(`run`)를 갖고, private `stagedAction`/`stagedClosedAction`이 stage 구현을 등록한다.
+- 단계화한 함수: `reviseData`(두 pass), `reviseUnitData`, `createData`, `editSemantic`(값 기록), `withPreparedDatasetIdentity`, source identity 생성·개정·검사, `cloneAndFreeze`(공용 step), `applyRevisionPlan`, data resource handler(`reviseSourceStages`), 재물질화 plan 실행(step마다 경계), `rematerializeScale`, `rematerializePointMark`, `materializeMarkOutput`, point identity(`resolvePointItems`·`finalizeItems`·`identifyItems`), `editGraphics` item 검증·교체·편집.
+- `readQuantitativeField`의 숫자 열은 소유 표시된 행 배열에 기억한다. preview·actual 두 pass와 scale preview·point 위치가 같은 열을 다시 계산하지 않는다.
+- Node 100k(sliceMs 20): 최장 step 1st 350ms → 34ms, host turn 최장 간격 361ms → 42–47ms. 전체 2.3초.
+- 동기 결과와의 비교는 namespace 생성(UUID)을 같은 순서로 고정해 저장 bytes 전체를 비교한다. 파생 dataset allocation ID도 namespace digest이기 때문이다.
+
+### revise 정식 측정 (archive `ba10ee33…`)
+
+`node scripts/benchmark-native.js --workload=data`, Chromium, 5 warmup + 30 측정. load·revise 모두 `sliceMs: 10`. [report](data-sliced-evidence/report-data-revise.json.gz)
+
+| 크기 | revise 전체 P95 DPR1 / DPR2 (기준) | revise 최장 구간 P95 (기준 50ms) | load 최장 구간 P95 |
+| --- | --- | --- | --- |
+| 1k | 22.2 / 22.6 ms (100) | 17.1 / 12.0 ms | 8.0 / 8.4 ms |
+| 10k | 245 / 245 ms (500) | **19.3 / 15.7 ms** (이전 204ms 한 덩어리) | 15.4 / 13.8 ms |
+| 100k | 2,510 / 2,586 ms (3000) | 107 / 121 ms (이전 2,094ms) | 75 / 60 ms |
+
+100k 표본: load는 30개 중 대부분 19–23ms이고 75·133ms 등 GC 꼬리가 있다. revise는 대부분 32–40ms(남은 가장 긴 단계는 scale preview 약 25–30ms)이고 55–110ms 꼬리가 6개 있다. 남은 일은 scale preview 내부 단계화와 100k 할당(GC) 축소다.
+
+이 측정 뒤의 변경은 쓰이지 않는 동기 구현 함수 제거와 action 정의 정리뿐이며(`a8867ce6…`), 같은 archive로 전체 검증을 다시 돌렸다.
+
+검증(archive `a8867ce6…`): 전체 시험 10,602개, coverage 97.45/95.61/99.32%(critical floor 789), browser 531/531, render 513/513, Node20/22/24 consumer 통과. [증거](data-sliced-evidence/revise/)

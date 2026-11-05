@@ -8,6 +8,7 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `reviseDataInSlices` to `ggaction`: the same revision as `reviseData`, run in bounded host turns with optional cancellation; unit data, derived data and point marks revise in row batches.
 - Add `loadProgramInSlices` to `ggaction/persistence`: the same editable snapshot restore as `deserializeProgram`, run in bounded host turns with optional cancellation.
 - Add the concrete `path-batch` primitive and format6 `path-run` frame entries: partition body cells with shared paint now sample as coordinate columns whose rows equal the per-node cell paths on every renderer.
 - Add explicit graph plot `maxItems` capacity (1 to 100,000) to `createGraphPlot` and `editGraphPlot`, keeping the default 10,000-graphic limit when omitted.

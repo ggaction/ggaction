@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:79e46b4ad6057389c9bcbe0450304a603c6256a370eb10f6f186535b5196adb9. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:52d641567cf3aae276de9b89e1f3dde6e2ecdeee14241a70629c7bd586777e05. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -20369,6 +20369,28 @@ current source ID and another fresh ID. Old source snapshots are not deleted
 automatically. Standalone derived-data definitions keep their existing logical
 editor targets.
 
+`reviseDataInSlices(program, options, { sliceMs?, signal? })` from `ggaction`
+returns the same revision, or rejects with the same error, as
+`program.reviseData(options)`. Large revisions run in short synchronous slices
+of about `sliceMs` milliseconds (an integer from 1 to 1000, default 40) and
+yield to the host between them. Aborting `signal` rejects with its reason and
+leaves `program` unchanged. Unit charts revise their rows, derived data and
+point marks in row batches; facet revision runs as one step.
+
+```javascript
+import { chart, reviseDataInSlices } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ id: "sales", values: [{ quarter: "Q1", revenue: 12 }] })
+  .createBarPlot({ x: "quarter", y: "revenue", guides: false });
+const revised = await reviseDataInSlices(program, {
+  source: "sales",
+  id: "salesUpdated",
+  values: [{ quarter: "Q1", revenue: 15 }, { quarter: "Q2", revenue: 20 }]
+}, { sliceMs: 10 });
+```
+
 Retained-source facets, facet grids, and repeats rederive their cells using the
 existing recipe, including its selected values and fields. They do not add new
 facet categories automatically. For concat, revise an explicit child and pass it
@@ -37833,6 +37855,10 @@ export function prepareDataUpdate(program: ChartProgram, request: CreateDataUpda
 export function prepareDataUpdate(program: ChartProgram, request: ReviseDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"revise">>;
 export function prepareDataUpdate(program: ChartProgram, request: ParameterDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"parameter">>;
 export function prepareDataUpdate(program: ChartProgram, request: DataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate>;
+/** The same revision as program.reviseData(options), run in bounded host turns (sliceMs 1..1000, default 40). */
+export function reviseDataInSlices<Row extends object>(program: ChartProgram,
+  options: import("./program.js").TargetedOptions<import("./program.js").ReviseDataOptions<Row>>,
+  slices?: { readonly sliceMs?: number; readonly signal?: AbortSignal }): Promise<ChartProgram>;
 export function hconcat(options: CompositionOptions): ChartProgram;
 export function vconcat(options: CompositionOptions): ChartProgram;
 export function render(
@@ -57305,7 +57331,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:79e46b4ad6057389c9bcbe0450304a603c6256a370eb10f6f186535b5196adb9` |
+| Contract fingerprint | `sha256:52d641567cf3aae276de9b89e1f3dde6e2ecdeee14241a70629c7bd586777e05` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
