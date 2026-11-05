@@ -6,7 +6,8 @@
 - [x] 검증 의미를 바꾸지 않는 네 가지 비용 제거.
 - [x] 전체 검증과 정본 Geo benchmark(archive `864ae6c7…`).
 - [x] 100k hit 20ms(아래 hit query 절).
-- [ ] Camera preview 10k 33ms, 100k 50ms.
+- [x] Camera preview 10k 33ms (21.3 / 20.8ms, 아래 authentic sampled admission 절).
+- [ ] Camera preview 100k 50ms (228 / 232ms).
 
 ## 수리
 
@@ -54,3 +55,37 @@ Geo 100k hit P95는 21.1ms로 기준 20ms를 근소하게 넘었다. Hit index�
 정본 benchmark(archive `40ac9fe0…`, [report](geo-equality-evidence/report-geo.json.gz)): camera 1k/10k/100k DPR1 5.5/58.6/553.6ms, DPR2 5.2/50.7/550.2ms. Hit 0.2/0.5/2.5ms, 0.2/0.4/1.6ms. 개선은 작고(Node 63.7 → 60.4ms) 10k·100k camera는 여전히 미달이다.
 
 남은 10k 비용은 sample마다 변하지 않는 1만 좌표 geometry 전체를 presentation snapshot(복사), group snapshot, 정규화 비교, 투영 입력 snapshot으로 다시 순회하는 admission과, 투영 결과 1만 명령의 검증·복사다. 앞서 "정규형 증명 + 동일 예산 재부과"는 frame 경로에서 소유된 입력이 도달하지 않아 효과가 없었다. Presentation snapshot이 사본을 만들어 소유 정체성을 끊기 때문이다. 다음 후보는 authentic sampled group(정확한 plan의 sample만 module-private로 기록)과, alias 없는 소유 subtree 예산의 정확한 재부과다. 재부과는 남은 한도가 모든 부과를 수용할 때만 쓰고, 아니면 기존 전체 순회로 같은 오류를 낸다. 이 둘을 함께 설계해야 한다. 100k는 명령 열(batch) 표현이 필요하다.
+
+## Authentic sampled admission과 구성 경로 명령
+
+앞 절에서 남긴 두 비용을 함께 제거했다. 임시 실험에서 sampled presentation 재수용을 통째로 빼면 Node 10k가 60 → 39ms였다. 그래서 admission만으로는 33ms에 닿지 않고, 투영 결과 경로의 재검증·복사까지 함께 줄여야 했다.
+
+1. **정확한 재수용 총량** (`grammar/animation/geoState.js`, `materialization/animation/geoPresentation.js`). `normalizeAnimationGeoGroup`이 수용한 소유 group마다 snapshot 단계와 전체 단계의 예산 부과량을 module-private `WeakMap`에 기록한다. `sampleGeoInterpolation`이 만든 sample group은 정확한 plan의 `to` group을 가리키도록 따로 기록한다.
+
+   Sample group의 새 수용 결과는 원 group에서 정확히 계산된다. Parameters와 feature radius 외의 모든 값이 원 group의 값과 동일 객체이고 key 순서까지 같은지 실제로 확인한다. Parameters는 매번 새 snapshot으로 따로 잰다.
+
+   총량이 모든 한도(values 2,000,000, work 10,000,000, depth 128) 안에 들 때만 순회를 생략한다. 이 경우 새 순회는 어떤 부과에서도 실패할 수 없다. 넘거나 구조가 다르면 기존 전체 경로가 같은 위치에서 같은 오류를 낸다.
+
+   Presentation 수준에서는 geometry 외의 모든 필드(styles·plotOrigin·frame·기타)를 매번 전체 snapshot한다. Root의 `geometry` key와 이름 부과까지 더한다. Root의 descriptor 검사는 원 경로와 같은 순서·문구다.
+
+   변하지 않는 feature geometry의 `normalizeGeometry`·정규형 비교·mark geometry 검사는 같은 객체·같은 binding·같은 coordinateKind의 결정적 재실행이라 생략한다. Parameters 정규형, radius, key, binding, projection, winding 등 나머지 의미 검사는 모두 매번 실행한다. 복사본은 소유되었더라도 authentic이 아니므로 전체 경로다.
+2. **투영 경로 명령** (`grammar/pathCommands.js`의 `buildRingPathCommands`, `grammar/geo/stream.js`). 선과 다각형 ring은 처음 M, 유한 L, 닫을 때 Z로만 만들어지므로 구성상 유효하다. 빌더가 점의 유한성을 다시 확인하고 소유 freeze 결과를 검증 캐시에 등록한다. 매 사용의 command capacity 검사는 캐시보다 먼저라 그대로다. Stream의 명령 한도 계수는 이전과 같은 순서로 명령마다 증가한다. 결과 경로 배열이 소유되어 최종 `cloneAndFreeze`가 다시 복사하지 않는다.
+
+반례: `geo-sample-admission.test.js`의 `an authentic sampled group keeps its identity and exact admission while other fields stay fully checked`. 이 시험은 다음을 확인한다.
+
+- 기록된 부과량이 실제 snapshot과 같다.
+- 복사본은 authentic이 아니다.
+- 다섯 가지 필드 변형과 getter(읽기 0회)가 원 경로와 같은 오류를 낸다.
+- 필드만으로는 맞지만 group과 합치면 정확히 1값 초과하는 경우와 한도에 정확히 맞는 경우가 원 경로와 같은 결과를 낸다.
+
+`path-commands.test.js`의 ring 빌더 시험은 구성 결과, capacity 재검사, 잘못된 ring 거부를 확인한다. 기존 sample admission 오류 순서 시험 4개도 그대로 통과한다. Geo·animation·path 1147/1147이다.
+
+정본 benchmark(archive `49497b5e…`, [report](geo-sample-evidence/report-geo.json.gz)):
+
+| 크기 | camera DPR1 / DPR2 (기준) | hit DPR1 / DPR2 |
+| --- | --- | --- |
+| 1k | 2.6 / 2.4 (16.7) | 0.2 / 0.2 |
+| 10k | **21.3 / 20.8 (33) 통과** | 0.4 / 0.4 |
+| 100k | 228.0 / 232.4 (50) | 1.9 / 2.8 |
+
+100k frame(Node 약 260ms)의 대부분은 선분 세분과 보간 등 투영 수학 자체다. 그 밖에는 frame마다 part topology의 SHA-256(약 11ms)과 bounds 계산이 남는다. Precision resampling은 scale에 의존하므로 이전 frame의 투영을 재사용할 수 없다. 50ms는 투영 계산의 열(batch) 표현 없이는 닿지 않는다.

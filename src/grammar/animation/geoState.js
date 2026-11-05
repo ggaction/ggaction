@@ -2,8 +2,8 @@ import { cloneAndFreeze } from "../../core/immutable.js";
 import { sameCanonicalJSON } from "../../core/contentDigest.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { validateInputReference } from "../../core/resourceReference.js";
-import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit, validateNonNegativeFinite, validateUnitInterval } from "../../core/validation.js";
-import { createGeometryBudget, snapshotGeometryJSON } from "../geo/input.js";
+import { MAX_WORK_ITEMS, rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit, validateNonNegativeFinite, validateUnitInterval } from "../../core/validation.js";
+import { GEO_LIMITS, createGeometryBudget, snapshotGeometryJSON } from "../geo/input.js";
 import { normalizeGeometry } from "../geo/geometry.js";
 import { normalizePolygonWinding } from "../geo/options.js";
 import { normalizeProjectionOptions } from "../geo/projectionOptions.js";
@@ -26,10 +26,69 @@ function closed(value, keys, label) {
   if (keys.some(key => !Object.hasOwn(value, key) || value[key] === undefined)) throw new TypeError(`${label} requires every declared field.`);
 }
 
+// Admitted owned groups keep the exact admission charges their immutable content
+// produced. A group sampled from an authentic plan points at its admitted `to`.
+const admittedGroups = new WeakMap(), sampledGroups = new WeakMap();
+
 // Snapshot first: descriptor, cycle, nesting and cumulative work checks precede
 // all semantic reads, including geometry that is currently outside the clip.
 export function normalizeAnimationGeoGroup(input) {
-  const budget = createGeometryBudget(), group = snapshotGeometryJSON(input, budget);
+  const budget = createGeometryBudget(), group = snapshotGeometryJSON(input, budget), snapshot = budget.diagnostics();
+  admitGroupFields(group, budget, feature => {
+    const normalized = normalizeGeometry(feature.geometry, group.coordinateKind, budget);
+    if (!equal(normalized.geometry, feature.geometry)) throw new TypeError("Animation Geo requires normalized source geometry.");
+    validateGeoMarkGeometry(feature.geometry, group.binding);
+  });
+  admittedGroups.set(group, { snapshot, totals: budget.diagnostics(), parameters: [] });
+  return group;
+}
+
+// Charges a fresh full admission of `group` would make with the group at
+// `depth`, or undefined unless every value outside the parameters and feature
+// radii is the admitted source's own value. Parameters are measured afresh.
+export function sampledGeoGroupCharges(group, depth, phase) {
+  const source = sampledGroups.get(group) ?? (admittedGroups.has(group) ? group : undefined), admitted = admittedGroups.get(source);
+  if (admitted === undefined) return undefined;
+  const keys = Object.keys(group), sourceKeys = Object.keys(source);
+  if (keys.length !== sourceKeys.length || keys.some((key, index) => key !== sourceKeys[index] ||
+      key !== "parameters" && key !== "features" && group[key] !== source[key]) || group.features.length !== source.features.length) return undefined;
+  for (let index = 0; index < group.features.length; index++) {
+    const feature = group.features[index], original = source.features[index];
+    if (feature === original) continue;
+    const featureKeys = Object.keys(feature), originalKeys = Object.keys(original);
+    if (featureKeys.length !== originalKeys.length || featureKeys.some((key, at) => key !== originalKeys[at] ||
+        (key === "radiusPx" ? !Number.isFinite(feature.radiusPx) : feature[key] !== original[key]))) return undefined;
+  }
+  // The subtree below the group must fit under `depth`; parameters sit one deeper.
+  if (depth > 0 && !((admitted.fits ??= [])[depth] ??= fitsDepth(source, depth))) return undefined;
+  const sourceParameters = admitted.parameters[depth] ??= parameterCharges(source.parameters, depth);
+  const parameters = source === group ? sourceParameters : parameterCharges(group.parameters, depth);
+  if (sourceParameters === undefined || parameters === undefined) return undefined;
+  const base = admitted[phase];
+  return { ...base, values: base.values - sourceParameters.values + parameters.values, work: base.work - sourceParameters.work + parameters.work };
+}
+function parameterCharges(value, depth) {
+  try { const budget = createGeometryBudget({ maxDepth: GEO_LIMITS.maxDepth - depth - 1 }); snapshotGeometryJSON(value, budget); return budget.diagnostics(); }
+  catch { return undefined; }
+}
+function fitsDepth(value, depth) {
+  try { snapshotGeometryJSON(value, createGeometryBudget({ maxDepth: GEO_LIMITS.maxDepth - depth })); return true; }
+  catch { return false; }
+}
+const withinLimits = charges => charges !== undefined && charges.values <= GEO_LIMITS.maxValues && charges.work <= MAX_WORK_ITEMS;
+// Every admission charge only counts toward totals verified above.
+const verifiedBudget = Object.freeze({ count() {} });
+
+// Exactly the fresh admission's result: a sampled group whose verified totals
+// stay within every limit cannot fail a charge, and its unchanged feature
+// geometries are the admitted source's own normalized values.
+export function normalizeSampledAnimationGeoGroup(group) {
+  if (!withinLimits(sampledGeoGroupCharges(group, 0, "totals"))) return normalizeAnimationGeoGroup(group);
+  admitGroupFields(group, verifiedBudget, () => {});
+  return group;
+}
+
+function admitGroupFields(group, budget, admitGeometry) {
   closed(group, ["key", "binding", "coordinateKind", "projection", "parameters", "logicalId", "features"], "Animation Geo group");
   if (typeof group.key !== "string" || !group.key || typeof group.logicalId !== "string" || !group.logicalId) throw new TypeError("Animation Geo requires an explicit scoped owner and logical source.");
   const address = JSON.parse(group.key);
@@ -50,11 +109,8 @@ export function normalizeAnimationGeoGroup(input) {
     keys.add(feature.key); validateNonNegativeFinite(feature.radiusPx, "Animation Geo radius");
     normalizePolygonWinding({ coordinateKind: group.coordinateKind, ...(winding ? { polygonWinding: feature.polygonWinding } : {}) });
     if (group.coordinateKind === "geographic" && !winding) throw new TypeError("Animation geographic features require resolved polygon winding.");
-    const normalized = normalizeGeometry(feature.geometry, group.coordinateKind, budget);
-    if (!equal(normalized.geometry, feature.geometry)) throw new TypeError("Animation Geo requires normalized source geometry.");
-    validateGeoMarkGeometry(feature.geometry, group.binding);
+    admitGeometry(feature);
   }
-  return group;
 }
 
 // The native stream owns clipping, refinement, winding, holes and complements.
@@ -66,7 +122,7 @@ export function resolveAnimationGeoGeometry(input, capacityEnabled = false) {
 // Internal synchronous preparation always admits the complete input. Only this
 // closure can reach the calculation with that exact normalized immutable group.
 export function prepareAnimationGeoGeometry(input) {
-  const group = normalizeAnimationGeoGroup(input);
+  const group = normalizeSampledAnimationGeoGroup(input);
   return capacityEnabled => resolveNormalizedAnimationGeoGeometry(group, capacityEnabled);
 }
 
@@ -109,7 +165,9 @@ export function sampleGeoInterpolation(plan, progress) {
   if (progress === 0 || progress === 1) return Object.freeze({ group: progress === 0 ? plan.from : plan.to, failures: Object.freeze([]) });
   const previous = new Map(plan.from.features.map(feature => [feature.key, feature])), failed = new Set(plan.failures.map(failure => failure.key));
   const parameters = sampleGeoCameraInterpolation(plan.camera, progress).parameters;
-  return cloneAndFreeze({ group: { ...plan.to, parameters, features: plan.to.features.map(feature => failed.has(feature.key) ? feature : {
+  const sample = cloneAndFreeze({ group: { ...plan.to, parameters, features: plan.to.features.map(feature => failed.has(feature.key) ? feature : {
     ...feature, radiusPx: interpolateNumber(previous.get(feature.key).radiusPx, feature.radiusPx, progress)
   }) }, failures: plan.failures });
+  sampledGroups.set(sample.group, plan.to);
+  return sample;
 }

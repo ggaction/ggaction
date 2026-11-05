@@ -13,9 +13,9 @@
 - [x] Point 100k rebase-offline Rehash: 소유 표식을 private class field로 옮겨 원 phased 실행 완료. [진단](POINT_REHASH_DIAGNOSIS.md), [결정](OWNED_MARK_DECISION.md)
 - [x] Point 전 크기 hit·full frame 통과(100k는 format6). [기록](POINT_FRAME_50MS.md)
 - [x] Partition layout 전 크기, preview 100·1k 통과(1k 6ms). 10k 66/70ms 미달. [기록](PARTITION_PREVIEW_PERFORMANCE.md)
-- [x] Geo hit 전 크기 통과. Camera 1k 통과, 10k 51–59ms·100k 550ms 미달. [기록](GEO_CAMERA_PREVIEW.md)
+- [x] Geo hit 전 크기, camera 1k·10k 통과(10k 21.3/20.8ms). 100k 228/232ms 미달. [기록](GEO_CAMERA_PREVIEW.md)
 - [x] Canonical memory 100 cycle DPR1·2 통과(비exclusive 창). [기록](CANONICAL_MEMORY.md)
-- [ ] 미달: partition 10k preview, Geo 10k·100k camera, data load/revise blocking 50ms(10k·100k), Route B union, exclusive 창 P95, 최종 qualification.
+- [ ] 미달: partition 10k preview, Geo 100k camera, data load/revise blocking 50ms(10k·100k), Route B union, exclusive 창 P95, 최종 qualification.
 
 순차 완료 번호는 여전히 **STEP-056**이다. 이 문서는 실행 순서를 정할 뿐 어떤 STEP의 완료도 기록하지 않는다.
 
@@ -66,5 +66,5 @@
 남은 성능 미달은 모두 국소 비용 제거로는 닿지 않는 구조 문제로 귀속됐다.
 
 - **Partition 10k·Geo 100k**: frame마다 path 명령 객체 수만~10만 개를 만들고 검증·freeze한다. Points가 format6 circle-run으로 SLO를 맞춘 것처럼, 명령을 열(batch)로 표현하는 공개 scene/primitive 확장이 필요하다. 네 renderer, hit, frame 의미, 저장 형식을 함께 다뤄야 하는 설계 결정이다.
-- **Geo 10k**: 변하지 않는 1만 좌표 geometry를 sample마다 네 번 순회·복사한다. Authentic sampled group과 alias 없는 소유 subtree 예산의 정확한 재부과를 함께 설계해야 한다([기록](GEO_CAMERA_PREVIEW.md)).
+- **Geo 10k**: 해결(authentic sampled group의 정확한 재수용 총량과 구성 경로 명령, [기록](GEO_CAMERA_PREVIEW.md)).
 - **Data blocking 50ms**: 10k load(Node 약 71ms)의 30%가 snapshot `JSON.parse`이고, 나머지는 신뢰할 수 없는 snapshot의 전체 재검증이다. Revise 10k는 약 266ms다. 검증을 줄이지 않는 한 CPU 최적화로는 닿지 않는다. [CAPACITY_AUDIT](native-workloads-tool-evidence/CAPACITY_AUDIT.md) 6항대로, 동기 경계를 실제로 나눠 양보하는 명시 API가 필요하다. Route의 `drainRouteStages`(동기 iterator step 사이 양보)가 같은 모양의 기존 owner다.

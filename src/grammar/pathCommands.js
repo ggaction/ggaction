@@ -71,6 +71,24 @@ export function buildLinearPathCommands(points, { close = false } = {}) {
   return result;
 }
 
+// One subpath per ring of finite [x, y] points: an initial M, L rows and a Z
+// when closed. Valid by construction, so validation is recorded once here;
+// every caller-supplied command capacity is still checked on each use.
+export function buildRingPathCommands(rings, close) {
+  if (!Array.isArray(rings) || rings.length < 1) throw new TypeError("Path rings require at least one ring.");
+  const commands = [];
+  for (const ring of rings) {
+    if (!Array.isArray(ring) || ring.length < 2) throw new TypeError("Each path ring requires at least two points.");
+    ring.forEach(([x, y], index) => {
+      if (!Number.isFinite(x) || !Number.isFinite(y)) throw new TypeError("Path ring points must be finite.");
+      commands.push(freezeOwned({ op: index ? "L" : "M", x, y }));
+    });
+    if (close) commands.push(freezeOwned({ op: "Z" }));
+  }
+  validatedCommands.add(freezeOwned(commands));
+  return commands;
+}
+
 export function validatePathCommands(commands, maximum) {
   if (!Array.isArray(commands)) throw new TypeError("path.commands must contain at least one entry.");
   validatePathCommandCount(commands.length, "path.commands length", maximum);

@@ -3,6 +3,7 @@ import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
 import { MAX_PATH_COMMANDS, MAX_DECLARED_PATH_COMMANDS } from "../pathTopology.js";
+import { buildRingPathCommands } from "../pathCommands.js";
 import { createGeometryBudget, snapshotGeometryJSON } from "./input.js";
 import { normalizeGeometry } from "./geometry.js";
 import { normalizeProjectionOptions, projectionTuple, longitudeDegrees } from "./projectionOptions.js";
@@ -111,9 +112,8 @@ export function projectGeometry(geometry, projectionInput, input = {}) {
     }
     for (const component of math.parts) {
       let line, polygon, index = 0;
-      function command(value) {
+      function command() {
         validateGeneratedItemLimit(++commands, "Geographic path commands", maxPoints);
-        polygon.push(value);
       }
       const sink = {
         point(x, y) { line.push(acceptPoint(x, y)); },
@@ -121,14 +121,16 @@ export function projectGeometry(geometry, projectionInput, input = {}) {
         lineEnd() {
           if (line.length < (polygon ? 3 : 2)) return;
           if (polygon) {
-            line.forEach(([x, y], i) => command({ op: i ? "L" : "M", x, y })); command({ op: "Z" });
+            // Count each ring command and its closing Z in emission order.
+            for (let i = 0; i <= line.length; i++) command();
+            polygon.push(line);
           } else {
             validateGeneratedItemLimit(commands += line.length, "Geographic path commands", maxPoints);
-            appendPart({ kind: "line", commands: line.map(([x, y], i) => ({ op: i ? "L" : "M", x, y })) }, leaf.sourcePath, component.id, index++);
+            appendPart({ kind: "line", commands: buildRingPathCommands([line], false) }, leaf.sourcePath, component.id, index++);
           }
         },
         polygonStart() { polygon = []; },
-        polygonEnd() { if (polygon.length) appendPart({ kind: "polygon", commands: polygon, fillRule: "evenodd" }, leaf.sourcePath, component.id, index++); polygon = undefined; }
+        polygonEnd() { if (polygon.length) appendPart({ kind: "polygon", commands: buildRingPathCommands(polygon, true), fillRule: "evenodd" }, leaf.sourcePath, component.id, index++); polygon = undefined; }
       };
       streamGeometryMath(prepared, component.projection, sink);
     }

@@ -1,15 +1,15 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { sameCanonicalJSON } from "../../core/contentDigest.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
-import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
-import { createGeometryBudget, snapshotGeometryJSON } from "../../grammar/geo/input.js";
+import { MAX_WORK_ITEMS, rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
+import { GEO_LIMITS, createGeometryBudget, snapshotGeometryJSON } from "../../grammar/geo/input.js";
 import { normalizeGeoStyle } from "../../grammar/geo/mark.js";
 import { validateGeoGraphicCapacity } from "../../grammar/geo/capacity.js";
 import { geoPartsTopology } from "../../grammar/geo/markGeometry.js";
 import { validateAnimationPlacement } from "../../grammar/animation/placement.js";
 import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
 import { validateGraphicIdentity } from "../../grammar/schemas/graphicIdentity.js";
-import { normalizeAnimationGeoGroup, resolveAnimationGeoGeometry, prepareAnimationGeoGeometry } from "../../grammar/animation/geoState.js";
+import { normalizeAnimationGeoGroup, resolveAnimationGeoGeometry, prepareAnimationGeoGeometry, sampledGeoGroupCharges } from "../../grammar/animation/geoState.js";
 import { namespaceGraphicId } from "../../selectors/graphicCapacity.js";
 import { resolveCoordinateBounds } from "../coordinateBounds.js";
 import { materializeMarkEffectProperties } from "../markEffects.js";
@@ -58,6 +58,26 @@ function tuple(value, length, label) {
   if (value.length !== length || value.some(n => !Number.isFinite(n))) throw new TypeError(`${label} requires a finite tuple.`);
 }
 
+// A sampled frame keeps its authentic geometry group: every other field is
+// snapshotted, and the group's exact charges join those totals. Unless the
+// whole presentation fits every limit, the fresh snapshot runs and reports.
+function snapshotSampledPresentation(input) {
+  // The fresh snapshot's root checks, in order; anything else takes that path.
+  if (input === null || typeof input !== "object" || Array.isArray(input)) return undefined;
+  ownRecord(input, "Geometry JSON object");
+  if (!Object.hasOwn(input, "geometry")) return undefined;
+  const geometry = input.geometry, charges = sampledGeoGroupCharges(geometry, 1, "snapshot");
+  if (charges === undefined) return undefined;
+  const keys = Object.keys(input), budget = createGeometryBudget();
+  let rest;
+  try { rest = snapshotGeometryJSON(Object.fromEntries(keys.filter(key => key !== "geometry").map(key => [key, input[key]])), budget); }
+  catch { return undefined; }
+  const measured = budget.diagnostics();
+  // The fresh snapshot also counts the root's "geometry" key and its name.
+  if (measured.values + charges.values > GEO_LIMITS.maxValues || measured.work + charges.work + 1 + "geometry".length > MAX_WORK_ITEMS) return undefined;
+  return cloneAndFreeze(Object.fromEntries(keys.map(key => [key, key === "geometry" ? geometry : rest[key]])));
+}
+
 // Store source paint once, before bounds-dependent pattern materialization.
 // Native streaming and native paint owners produce current concrete parts.
 export function normalizeGeoAnimationPresentation(input) {
@@ -65,7 +85,7 @@ export function normalizeGeoAnimationPresentation(input) {
 }
 
 function admitGeoAnimationPresentation(input, prepareGeometry) {
-  const value = snapshotGeometryJSON(input, createGeometryBudget());
+  const value = (prepareGeometry ? snapshotSampledPresentation(input) : undefined) ?? snapshotGeometryJSON(input, createGeometryBudget());
   closed(value, ["geometry", "styles", "plotOrigin", "frame"], "Geo animation presentation");
   const geometry = prepareGeometry ? prepareAnimationGeoGeometry(value.geometry) : normalizeAnimationGeoGroup(value.geometry);
   ownArray(value.styles, "Geo feature styles");

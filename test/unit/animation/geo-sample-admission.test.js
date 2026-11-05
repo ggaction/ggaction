@@ -114,3 +114,40 @@ test("sampled groups retain exact diagnostics and aggregate callback ordering un
     assert.equal(called, false);
   }
 });
+
+test("an authentic sampled group keeps its identity and exact admission while other fields stay fully checked", async () => {
+  const { prepareGeoInterpolation, sampleGeoInterpolation, sampledGeoGroupCharges } = await import("../../../src/grammar/animation/geoState.js");
+  const { GEO_LIMITS, createGeometryBudget, snapshotGeometryJSON } = await import("../../../src/grammar/geo/input.js");
+  const source = make(), from = state(source).groups[0].presentation, to = state(source.editProjection({ scalePx: 140, rotateDeg: [40, 0, 0] })).groups[0].presentation;
+  const plan = prepareGeoInterpolation(from.geometry, to.geometry), group = sampleGeoInterpolation(plan, .5).group;
+  const input = { ...to, geometry: group }, actual = resolveSampledGeoPresentation(input);
+  assert.deepEqual(actual, generic(input)); deepOwned(actual.presentation); deepOwned(actual.resolved);
+  assert.equal(actual.presentation.geometry, group);
+  assert.deepEqual(prepareAnimationGeoGeometry(group)(false), resolveAnimationGeoGeometry(group));
+  // Exact charges: the fresh snapshot of the group measures the same totals.
+  const budget = createGeometryBudget(); snapshotGeometryJSON(group, budget);
+  const charges = sampledGeoGroupCharges(group, 0, "snapshot");
+  assert.equal(charges.values, budget.diagnostics().values); assert.equal(charges.work, budget.diagnostics().work);
+  // Copies, even owned ones, are never authentic and take the full boundary.
+  for (const copy of [structuredClone(group), cloneAndFreeze(structuredClone(group))]) {
+    assert.equal(sampledGeoGroupCharges(copy, 1, "snapshot"), undefined);
+    const other = resolveSampledGeoPresentation({ ...to, geometry: copy });
+    assert.deepEqual(other, generic({ ...to, geometry: copy })); assert.notEqual(other.presentation.geometry, copy.features ? group : undefined);
+  }
+  for (const mutate of [value => { value.styles = []; }, value => { value.plotOrigin = [Infinity, 0]; }, value => { value.frame = { ...value.frame, offset: [0] }; },
+    value => { value.styles = value.styles.map(style => ({ ...style, opacity: -1 })); }, value => { value.extra = 1; }]) {
+    const changed = { ...to, geometry: group }; mutate(changed);
+    assert.deepEqual(error(() => resolveSampledGeoPresentation(changed)), error(() => generic(changed)));
+  }
+  let reads = 0; const getter = { ...to, geometry: group };
+  Object.defineProperty(getter, "styles", { enumerable: true, get() { reads++; return []; } });
+  assert.deepEqual(error(() => resolveSampledGeoPresentation(getter)), error(() => generic(getter))); assert.equal(reads, 0);
+  // Fields that fit alone but overflow together with the group report like the fresh snapshot.
+  const { geometry: _geometry, ...others } = to, rest = createGeometryBudget(); snapshotGeometryJSON({ ...others, styles: [] }, rest);
+  const fill = GEO_LIMITS.maxValues - rest.diagnostics().values - sampledGeoGroupCharges(group, 1, "snapshot").values + 1;
+  const overflow = { ...to, geometry: group, styles: new Array(fill).fill(null) };
+  const expected = error(() => generic(overflow));
+  assert.equal(expected.name, "RangeError"); assert.deepEqual(error(() => resolveSampledGeoPresentation(overflow)), expected);
+  const fits = { ...to, geometry: group, styles: new Array(fill - 1).fill(null) };
+  assert.deepEqual(error(() => resolveSampledGeoPresentation(fits)), error(() => generic(fits)));
+});
