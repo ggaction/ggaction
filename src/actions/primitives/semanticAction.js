@@ -108,7 +108,9 @@ function* updateEntityStages(program, parsed, value, args) {
       ? deriveTransformSchema(source.schema, current.transform[0], value,
           datasetSchemaContext(source,current.transform[0],parsed.id,id=>collection.find(d=>d.id===id)))
       : inferDatasetSchema(value);
+    yield;
     validateRowsAgainstSchema(value, schema, `Dataset "${parsed.id}"`);
+    yield;
     updated = setNestedProperty(updated, ["schema"], schema);
   }
   if (parsed.kind === "dataset" && parsed.path[0] === "values" && updated.sourceReceipt !== undefined) {

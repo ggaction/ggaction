@@ -26,7 +26,9 @@ export const createData = /* @__PURE__ */ stagedClosedAction(
     const schema = update?.schema ?? (args.schema === undefined
       ? inferDatasetSchema(args.values)
       : normalizeSourceSchema(args.schema));
+    yield;
     validateRowsAgainstSchema(args.values, schema, "createData");
+    yield;
     if (hasDataset(this, id) || hasDatasetOwner(this, id)) {
       throw new Error(`Dataset "${id}" already exists.`);
     }

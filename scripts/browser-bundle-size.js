@@ -6,12 +6,12 @@ import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 803_232, // Sliced data revision: Node20/24 803,232 gzip bytes.
-  "ggaction/basic": 430_147, // Sliced data revision: Node20/24 430,147 gzip bytes.
+  "ggaction/basic": 430_182, // Sliced data revision stages: Node20/24 430,182 gzip bytes.
   "ggaction/svg": 27_461, // Partition path runs: Node20/24 27,461 gzip bytes.
   "ggaction/graph": 77_239, // Sliced data revision: Node20/24 77,239 gzip bytes.
   "ggaction/animation": 359_452, // Sliced data revision: Node20/24 359,452 gzip bytes.
   "ggaction/interaction": 144_184, // Sliced data revision: Node20/24 144,184 gzip bytes.
-  "ggaction/live": 1_022_214 // Sliced data revision: Node20/24 1,022,214 gzip bytes.
+  "ggaction/live": 1_022_247 // Sliced data revision stages: Node20/24 1,022,247 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {

@@ -55,14 +55,14 @@ import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 const DEFAULT_POINT_FILL = DEFAULT_COLORS.mark;
 
-function resolvePointPositions(program, layer, dataset) {
+// Each position channel is one stage.
+function* resolvePointPositionStages(program, layer, dataset) {
   const resolvers = { resolveMarkItems, resolveMarkSourceItems };
   const hasPolar = hasPositionBinding(layer, "theta") || hasPositionBinding(layer, "radius");
   if (!hasPolar) {
-    return {
-      x: resolveRowPositionValues(program, layer, dataset, "x", resolvers),
-      y: resolveRowPositionValues(program, layer, dataset, "y", resolvers)
-    };
+    const x = resolveRowPositionValues(program, layer, dataset, "x", resolvers);
+    yield;
+    return { x, y: resolveRowPositionValues(program, layer, dataset, "y", resolvers) };
   }
   const theta = resolveRowEncodingValues(program, layer, dataset, "theta", resolvers);
   const radius = resolveRowEncodingValues(program, layer, dataset, "radius", resolvers);
@@ -376,7 +376,7 @@ export const rematerializePointMark = /* @__PURE__ */ stagedAction(
     }
 
     yield;
-    const positions = resolvePointPositions(resolved, layer, dataset);
+    const positions = yield* resolvePointPositionStages(resolved, layer, dataset);
     yield;
     const mappedFill = resolveRowEncodingValues(resolved, layer, dataset, "color");
     yield;

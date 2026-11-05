@@ -1,6 +1,6 @@
 import { isPendingMeasuredRadiusConsumer } from "../../materialization/scales/policies/arc.js";
 import { findScale, findScaleConsumers } from "../../materialization/scales/consumers/index.js";
-import { resolveScalePreview, validatePendingMeasuredScale } from "./preview.js";
+import { resolveScalePreviewStages, validatePendingMeasuredScale } from "./preview.js";
 import { invokeActionStages, stagedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
@@ -42,7 +42,7 @@ export const rematerializeScale = /* @__PURE__ */ stagedAction(
       validatePendingMeasuredScale(this, semanticScale, consumers);
       return this._withoutResolvedScale(id);
     }
-    const { channel, valuesByConsumer, resolvedScale } = resolveScalePreview(this, id);
+    const { channel, valuesByConsumer, resolvedScale } = yield* resolveScalePreviewStages(this, id);
     let next = this._withResolvedScale(id, resolvedScale);
     // The preview reads every consumer row; its consumers apply as later stages.
     yield;

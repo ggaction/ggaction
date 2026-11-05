@@ -7,7 +7,7 @@
 - [ ] 100k load 최장 구간 P95 50ms(현재 52 / 64ms, GC 꼬리).
 - [x] revise 분할: `reviseDataInSlices` 구현·시험.
 - [x] revise 설치본 검증·Chromium benchmark(archive `ba10ee33…` 측정, `a8867ce6…` 검증). [증거](data-sliced-evidence/)
-- [ ] 100k 최장 구간 P95 50ms(load 75 / 60ms, revise 107 / 121ms).
+- [ ] 100k 최장 구간 P95 50ms(load 56 / 60ms, revise 105 / 113ms): 코드 단계는 끝, 남은 것은 GC 정지.
 
 ## 왜 필요한가
 
@@ -133,3 +133,22 @@ const next = await reviseDataInSlices(program, { source, id, values }, { sliceMs
 이 측정 뒤의 변경은 쓰이지 않는 동기 구현 함수 제거와 action 정의 정리뿐이며(`a8867ce6…`), 같은 archive로 전체 검증을 다시 돌렸다.
 
 검증(archive `a8867ce6…`): 전체 시험 10,602개, coverage 97.45/95.61/99.32%(critical floor 789), browser 531/531, render 513/513, Node20/22/24 consumer 통과. [증거](data-sliced-evidence/revise/)
+
+### 100k 꼬리 줄이기 (2026-11-05)
+
+- scale preview(`resolveScalePreviewStages`)를 consumer 값 읽기·scale 결정·provisional/최종 bounds 사이에서 나눴다.
+- `createData`의 schema 추론·행 schema 검사, `editSemantic` 값 기록의 schema 추론·검사, point 위치의 x·y 채널 사이에 양보 지점을 두었다.
+- 계측(임시, 커밋 안 함): 각 yield 위치에 표시를 남기고 15ms 넘는 step의 표시 순서를 출력해 위치를 찾았다.
+- Node 100k revise: 최장 step 25–27ms → 10–12ms, host turn 최장 간격(sliceMs 10) 20–24ms.
+
+Chromium(같은 소스의 probe archive, sliceMs 10, [report](data-sliced-evidence/report-data-tail.json.gz)):
+
+| 크기 | revise 최장 구간 P95 DPR1 / DPR2 | load 최장 구간 P95 DPR1 / DPR2 |
+| --- | --- | --- |
+| 1k | 11.6 / 17.4 ms | 8.4 / 8.0 ms |
+| 10k | 15.4 / 17.3 ms | 15.5 / 12.5 ms |
+| 100k | 105 / 113 ms | 56 / 60 ms |
+
+100k revise 표본 30개 중 18개가 15–19ms(이전 32–40ms)이고 12개가 58–121ms다. load는 대부분 19–24ms이고 51–73ms 꼬리가 있다. 튀는 회차는 전체 시간도 같이 늘고 Node 코드 단계는 최장 12ms이므로 Chromium major GC 정지로 귀속한다. revise는 같은 개정을 preview·actual 두 번 계산하고(route replay 계약), 행마다 dataset 복제·schema 검사·point item·identity·선택 정의를 만든다. 남은 방법은 행당 할당 수를 줄이는 것(예: 소유 표시된 원시값만 가진 item 속성의 재복제 생략)이며, 다음 단계로 둔다.
+
+검증(archive `1c283df4…`): 전체 시험 10,602개, coverage 97.45/95.61/99.32%(critical floor 789), browser 531/531, render 513/513, Node20/22/24 consumer 통과. [증거](data-sliced-evidence/tail/)
