@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "state": "approved",
+  "date": "2026-11-05",
+  "source": "Explicit user replies in the current task",
+  "featureReply": "AddCrosshair 빼고 다하자. 이것까지 포함해서 진행!",
+  "principleReply": "원칙 없애자. 그냥 앞쪽에서 addCanvas 해놓고 뒤쪽에서 addTooltip 하면 바로 적용되게.",
+  "designReply": "승인한다",
+  "approvedDesigns": [
+    { "id": "LIVE-1", "document": "LIVE_API_PROPOSAL.md" }
+  ],
+  "scope": "The ggaction/live entry point with a stateful chainable chart whose addCanvas binds a screen and whose later calls render immediately; the listed screen, interaction, data and change methods; playAnimation; and saving live interaction settings with the program. The immutable engine, existing entry points and their persisted forms are unchanged.",
+  "excluded": ["addCrosshair"],
+  "remainingObligations": [
+    "Implement and verify source, declarations, package export, bundle measurement, public docs and current contract as one change surface.",
+    "Approval does not imply completion; protected operations (PR, publish, deployment) remain separately gated."
+  ]
+}
