@@ -126,11 +126,28 @@
     },
     {
       "action": "editCanvas",
-      "status": "pending-public-native-connection"
+      "status": "partial-unit-native-connection",
+      "implemented": [
+        "ordered original screen-space job/completion replay across canvas resource revision and guide layout stages on the final receiver",
+        "no candidate program or screen plan handle reuse; viewport-neutral edits are rejected"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "fitCanvas",
-      "status": "pending-public-native-connection"
+      "status": "partial-unit-native-connection",
+      "implemented": [
+        "original probe order, quarter-pixel search, cache and iteration cap with each probe job replayed in order",
+        "probe broad catch rethrows route continuation, replay mismatch, ledger quota, deadline/abort and the prepared-route requirement"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "preparation cost grows with probe count",
+        "full native union qualification"
+      ]
     },
     {
       "action": "navigateProjection",

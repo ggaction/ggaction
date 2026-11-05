@@ -202,7 +202,7 @@ export function enterGraphRouteUpdateInvocation(program, args) {
   return outcome => {
     try {
       if (outcome !== undefined) {
-        if (replay !== undefined && record.plan.completions.length === 0) throw new TypeError(`This resource has no bounded edge route update; use ${record.edit.action} directly.`);
+        rejectEmptyReplay(current);
         if (replay === undefined ? !current.consumed : !replay.finished()) throw new TypeError("Prepared native route plan was not consumed.");
         validateResourceGraph(outcome.result, program.constructor, scope);
         scope.ledger.check();
@@ -237,9 +237,15 @@ export function readNativeGraphRouteUpdatePlan(program, args, native) {
   return { plan: current.record.plan, scope: current.scope, base: current.record.base };
 }
 
+// A replayed action that reached no bounded route job has nothing to prepare.
+function rejectEmptyReplay(current) {
+  if (current.replay !== undefined && current.record.plan.completions.length === 0) throw new TypeError(`This resource has no bounded edge route update; use ${current.record.edit.action} directly.`);
+}
+
 export function readGraphRouteUpdateTheme(program, { source, metadata }) {
   const current = invocation;
   if (metadata.op !== "applyGraphEdgeRoutesUpdate" || current === undefined) return undefined;
+  rejectEmptyReplay(current);
   if (source !== current.record.base || program.constructor !== current.record.constructor || !(current.replay?.finished() ?? current.consumed) ||
       prepared.get(current.args.prepared) !== current.record) throw new TypeError("Native route completion requires its exact prepared invocation.");
   current.scope.ledger.check();

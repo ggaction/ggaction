@@ -19,8 +19,17 @@ export function edgeRouteSourceRows(graph, hierarchy) {
   return [...graph.provenance.sourceRows, ...(hierarchy?.provenance.sourceRows ?? [])];
 }
 
+// Bounded routes outside a prepared invocation fail with this exact requirement;
+// broad fitting catches report it instead of treating it as a geometry failure.
+const requirements = new WeakSet();
+export const isPreparedRouteRequirement = error => error !== null && typeof error === "object" && requirements.has(error);
+
 export function createEdgeRouteResource({ id, revision = 0, program, graph, layout, intent, hierarchy, hierarchyLayout, completion }) {
-  if (Object.hasOwn(intent.options, "execution") && completion === undefined) throw new TypeError("Bounded routes require prepareGraphEdgeRoutes and authentic prepared application.");
+  if (Object.hasOwn(intent.options, "execution") && completion === undefined) {
+    const error = new TypeError("Bounded routes require prepareGraphEdgeRoutes and authentic prepared application.");
+    requirements.add(error);
+    throw error;
+  }
   const job = edgeRouteJob(program, graph, layout, intent, hierarchy, hierarchyLayout);
   return completedEdgeRouteResource({ id, revision, graph, hierarchy }, job, completion ?? computeRouteJob(job));
 }

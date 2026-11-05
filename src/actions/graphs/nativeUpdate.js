@@ -15,12 +15,14 @@ import { orderResourceDependencies } from "../../materialization/resourceState.j
 import { reviseData } from "../data/revise.js";
 import { editDerivedData } from "../data/edit.js";
 import { editParameter } from "../parameters/edit.js";
+import { editCanvas } from "../canvas/actions.js";
+import { fitCanvas } from "../canvas/fitting.js";
 import { requireStoredResource } from "../../selectors/resources.js";
 import { requireDataset } from "../../selectors/datasets.js";
 import { reviseSourceIdentity } from "../../core/itemIdentity.js";
 import { newDatasetNamespace } from "../primitives/datasetIdentity.js";
 
-const REPLAYED = new Set([reviseData, editDerivedData, editParameter]);
+const REPLAYED = new Set([reviseData, editDerivedData, editParameter, editCanvas, fitCanvas]);
 
 // Full owns this exact snapshot boundary. Only the existing inference registry
 // may recognize its immutable handle; arbitrary objects are always deep-copied.
@@ -87,17 +89,23 @@ export function resolveNativeRouteUpdate(program, edit) {
       previous = { kind: "parameter", id: requireStoredResource(program, { kind: "parameter", id: edit.args.target }).id };
       break;
     }
-    default: throw new TypeError("Native route updates require editLayout, editGraphData, editFlowData, editHierarchyData, editInferredGraphData, reviseData, editDerivedData or editParameter.");
+    case "editCanvas": case "fitCanvas":
+      native = edit.action === "editCanvas" ? editCanvas : fitCanvas;
+      if (program.compositionSpec !== undefined) throw new TypeError(`Native route ${edit.action} requires a completed unit receiver.`);
+      break;
+    default: throw new TypeError("Native route updates require editLayout, editGraphData, editFlowData, editHierarchyData, editInferredGraphData, reviseData, editDerivedData, editParameter, editCanvas or fitCanvas.");
   }
   if (program[edit.action] !== native) throw new TypeError("Native route action was replaced.");
-  const key = ref => JSON.stringify([ref.kind, ref.id]), affected = new Set([key(previous)]), routes = [];
+  const key = ref => JSON.stringify([ref.kind, ref.id]), affected = new Set(previous === undefined ? [] : [key(previous)]), routes = [];
   // Derived datasets carry their source and parameter inputs, in dependency order.
   for (const dataset of program.semanticSpec.datasets) {
     if (dataset.source !== undefined && affected.has(key({ kind: "data", id: dataset.source })) ||
         (dataset.transform ?? []).some(step => (step.parameterInputs ?? []).some(ref => affected.has(key(ref))))) affected.add(key({ kind: "data", id: dataset.id }));
   }
   for (const resource of orderResourceDependencies(program.semanticSpec.resources)) {
-    if (!affected.has(key(resource)) && resource.inputs.some(ref => affected.has(key(ref)))) affected.add(key(resource));
+    // A canvas edit or fit can move every screen-space route's viewport.
+    if (!affected.has(key(resource)) && (resource.inputs.some(ref => affected.has(key(ref))) ||
+        (native === editCanvas || native === fitCanvas) && resource.kind === "edge-route" && resource.options.coordinateSpace === "screen")) affected.add(key(resource));
     if (resource.kind === "edge-route" && affected.has(key(resource))) routes.push(resource);
   }
   const bounded = routes.filter(resource => Object.hasOwn(resource.options.options, "execution"));

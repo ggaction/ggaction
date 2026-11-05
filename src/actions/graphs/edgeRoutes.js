@@ -1,12 +1,14 @@
 import { planEdgeRouteApplication, applyEdgeRouteApplication } from "./routePlan.js";
 import { closedAction, bindActionInvocationScope } from "../../core/action.js";
-import { createEdgeRouteResource } from "../../materialization/graph/routeResource.js";
+import { createEdgeRouteResource, isPreparedRouteRequirement } from "../../materialization/graph/routeResource.js";
 import { normalizeEdgeRouteRequest } from "../../materialization/graph/routeRequest.js";
 import { registerScreenRouteRevision } from "./screenRoutes.js";
 import { readPreparedGraphEdgeRoutes, registerGraphRoutePlanner, enterGraphRouteUpdateInvocation, applyPreparedGraphRouteUpdate, readGraphRouteUpdateTheme, readNativeRouteRevisionIdentity } from "../../resources/graphRoutes.js";
 import { snapshotNativeRouteEdit, resolveNativeRouteUpdate, prepareNativeRouteUpdate } from "./nativeUpdate.js";
 import { registerNativeRouteThemeReader } from "../theme/nativeRouteUpdate.js";
 import { registerNativeRevisionIdentityReader } from "../data/revise.js";
+import { registerFitContinuationCheck } from "../canvas/fitting.js";
+import { activeRouteReplay } from "../../materialization/graph/routeReplay.js";
 import { findStoredResource } from "../../selectors/resources.js";
 
 
@@ -34,10 +36,20 @@ export const applyGraphEdgeRoutesUpdate = /* @__PURE__ */ bindActionInvocationSc
   { op: "applyGraphEdgeRoutesUpdate", description: "Apply a prepared native edit and its edge routes." },
   ["prepared", "requestToken"], function (args) { return applyPreparedGraphRouteUpdate(this, args); }
 ), enterGraphRouteUpdateInvocation);
+// A fit probe may absorb an ordinary geometry failure, never a route
+// continuation, its mismatch, quota, deadline or abort, nor the requirement.
+export function checkFitContinuation(error) {
+  const replay = activeRouteReplay();
+  if (replay === undefined) { if (isPreparedRouteRequirement(error)) throw error; return; }
+  if (replay.owns(error)) throw error;
+  replay.scope.ledger.check();
+  if (replay.scope.signal !== undefined) AbortSignal.prototype.throwIfAborted.call(replay.scope.signal);
+}
 export function registerEdgeRouteActions(ProgramClass) {
   registerGraphRoutePlanner(ProgramClass, planEdgeRouteApplication, { snapshot: snapshotNativeRouteEdit, resolve: resolveNativeRouteUpdate, prepare: prepareNativeRouteUpdate, apply: applyGraphEdgeRoutesUpdate });
   Object.assign(ProgramClass.prototype, { bundleGraphEdges, editEdgeRoute, applyGraphEdgeRoutesUpdate });
   registerNativeRouteThemeReader(ProgramClass, readGraphRouteUpdateTheme);
   registerNativeRevisionIdentityReader(ProgramClass, readNativeRouteRevisionIdentity);
+  registerFitContinuationCheck(ProgramClass, checkFitContinuation);
   registerScreenRouteRevision(ProgramClass);
 }

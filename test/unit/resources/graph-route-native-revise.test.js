@@ -135,3 +135,76 @@ test("derived-data and parameter revisions reach dependent routes through the sa
     await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editParameter", args: { target: "absent", value: 1 } } }, host(worker)));
   } finally { worker.dispose(); }
 });
+
+test("canvas edits replay every moved screen-space route in order and reject edits that move none", async () => {
+  const posts = [], worker = executor(job => posts.push(job.inputHash));
+  try {
+    const screen = async (program, id, graph, layout) => {
+      const prepared = await prepareGraphEdgeRoutes(program, { kind: "create", id, graph, layout, method: "edge-path", coordinateSpace: "screen", options: { execution } }, { requestToken: "create", executor: worker, deadlineMs: 30000 });
+      return program.bundleGraphEdges({ prepared, requestToken: "create" });
+    };
+    // Two distinct screen-space jobs over separate graphs.
+    const twoGraphs = () => base().createGraphData({ id: "graph2", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "source", target: "target" })
+      .layoutGraph({ id: "layout2", graph: "graph2", method: "fixed", options: { positions: [{ key: 0, x: 5, y: 0 }, { key: 1, x: 0, y: 20 }, { key: 2, x: 20, y: 20 }] } });
+    const ordinary = twoGraphs().bundleGraphEdges({ id: "route", graph: "graph", layout: "layout", method: "edge-path", coordinateSpace: "screen" })
+      .bundleGraphEdges({ id: "second", graph: "graph2", layout: "layout2", method: "edge-path", coordinateSpace: "screen" }).createGraphPlot({ id: "plot", layout: "layout", routes: "route" });
+    const program = (await screen(await screen(twoGraphs(), "route", "graph", "layout"), "second", "graph2", "layout2")).createGraphPlot({ id: "plot", layout: "layout", routes: "route" }), before = serializeProgram(program);
+    const edit = { width: 260, height: 160 };
+    assert.throws(() => program.editCanvas(edit), /Bounded routes require prepareGraphEdgeRoutes/);
+    posts.length = 0;
+    const prepared = await prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editCanvas", args: edit } }, host(worker));
+    assert.equal(posts.length, 2); assert.deepEqual(prepared.inputHashes, posts);
+    const expected = ordinary.editCanvas(edit), first = program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "revise" });
+    const results = value => value.semanticSpec.resources.filter(resource => resource.kind === "edge-route").map(resource => resource.result.routes.map(route => route.commands));
+    assert.deepEqual(results(first), results(expected)); assert.equal(first.graphicSpec.objects.canvas.properties.width, 260);
+    assert.equal(serializeProgram(program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "revise" })), serializeProgram(first));
+    assert.equal(serializeProgram(program), before);
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editCanvas", args: { background: "#eee" } } }, host(worker)),
+      /no bounded edge route update; use editCanvas directly/);
+    const world = await bounded(base(), worker);
+    await assert.rejects(prepareGraphEdgeRoutes(world, { kind: "update", edit: { action: "editCanvas", args: edit } }, host(worker)), /no bounded edge route update/);
+  } finally { worker.dispose(); }
+});
+
+test("canvas fitting replays every probe's screen-space job and never absorbs a route continuation", async () => {
+  const posts = [], worker = executor(job => posts.push(job.inputHash));
+  try {
+    const labelled = () => chart().createCanvas({ width: 200, height: 120, margin: 2 })
+      .createData({ id: "nodes", values: [{ id: 0, name: "a very long node label" }, { id: 1, name: "b" }, { id: 2, name: "c" }] })
+      .createData({ id: "edges", values: [{ id: "e", source: 0, target: 1 }, { id: "f", source: 1, target: 2 }] })
+      .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "source", target: "target", attributes: ["name"] })
+      .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: 0, x: 0, y: 0 }, { key: 1, x: 10, y: 10 }, { key: 2, x: 30, y: 5 }] } });
+    const expected = labelled().bundleGraphEdges({ id: "route", method: "edge-path", coordinateSpace: "screen" })
+      .createGraphPlot({ id: "plot", routes: "route", labels: { field: "name" } }).fitCanvas({});
+    const receiver = labelled(), created = await prepareGraphEdgeRoutes(receiver, { kind: "create", id: "route", method: "edge-path", coordinateSpace: "screen", options: { execution } }, { requestToken: "create", executor: worker, deadlineMs: 30000 });
+    const program = receiver.bundleGraphEdges({ prepared: created, requestToken: "create" }).createGraphPlot({ id: "plot", routes: "route", labels: { field: "name" } });
+    // Before this connection a probe absorbed the requirement and reported an overflow.
+    assert.throws(() => program.fitCanvas({}), /Bounded routes require prepareGraphEdgeRoutes/);
+    posts.length = 0;
+    const prepared = await prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "fitCanvas", args: {} } }, host(worker));
+    assert.ok(posts.length > 1); assert.deepEqual(prepared.inputHashes, posts);
+    const first = program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "revise" });
+    assert.deepEqual(route(first).result.routes.map(value => value.commands), route(expected).result.routes.map(value => value.commands));
+    assert.deepEqual(first.materializationConfigs.canvas.margin, expected.materializationConfigs.canvas.margin);
+    assert.deepEqual(first.materializationConfigs.fitting, expected.materializationConfigs.fitting);
+    assert.equal(serializeProgram(program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "revise" })), serializeProgram(first));
+  } finally { worker.dispose(); }
+});
+
+test("fit probes absorb only ordinary failures while a replay is active", async () => {
+  const { checkFitContinuation } = await import("../../../src/actions/graphs/edgeRoutes.js");
+  const ordinary = new Error("geometry");
+  assert.equal(checkFitContinuation(ordinary), undefined);
+  const quota = new RangeError("quota"), controller = new AbortController();
+  const replay = createRouteReplay([], { ledger: { check() {} }, signal: controller.signal });
+  let leave = enterRouteReplay(replay);
+  try {
+    assert.equal(checkFitContinuation(ordinary), undefined);
+    let stale; try { replay.take({ inputHash: "a" }); } catch (error) { stale = error; }
+    assert.throws(() => checkFitContinuation(stale), error => error === stale);
+    controller.abort(new Error("stopped"));
+    assert.throws(() => checkFitContinuation(ordinary), /stopped/);
+  } finally { leave(); }
+  leave = enterRouteReplay(createRouteReplay([], { ledger: { check() { throw quota; } } }));
+  try { assert.throws(() => checkFitContinuation(ordinary), error => error === quota); } finally { leave(); }
+});

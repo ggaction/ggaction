@@ -22,7 +22,8 @@ export function activeRouteReplay() { return active; }
 // absorbs one in its own catch cannot complete the invocation.
 export function createRouteReplay(completions, scope, record = false) {
   let position = 0, passes = 0, request, interrupted = false;
-  const fail = error => { interrupted = true; throw error; };
+  const thrown = new WeakSet();
+  const fail = error => { interrupted = true; thrown.add(error); throw error; };
   return Object.freeze({
     scope,
     take(job) {
@@ -37,6 +38,7 @@ export function createRouteReplay(completions, scope, record = false) {
       return expected.completion;
     },
     requested: error => error === request && error !== undefined,
+    owns: error => error !== null && typeof error === "object" && thrown.has(error),
     finished: () => !interrupted && passes > 0 && position === completions.length
   });
 }
