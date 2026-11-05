@@ -80,7 +80,41 @@ export function finishSha256(state) {
   view.setUint32(60, state.totalBytes * 8);
   compress(state, view, 0);
   state.status = "finished";
-  return [...state.hash].map(value => value.toString(16).padStart(8, "0")).join("");
+  return hex(state.hash);
+}
+
+function hex(hash) {
+  let text = "";
+  for (let i = 0; i < 8; i++) text += hash[i].toString(16).padStart(8, "0");
+  return text;
+}
+
+// One-shot digest of caller-owned complete bytes. The module scratch blocks are
+// reset before and zeroed after each call; no state escapes the call.
+const scratch = { hash: new Uint32Array(8), words: new Uint32Array(64) }, block = new Uint8Array(64), blockView = new DataView(block.buffer);
+const INITIAL = new Uint32Array([0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19]);
+export function digestSha256Bytes(bytes) {
+  if (!(bytes instanceof Uint8Array)) throw new TypeError("SHA-256 digest requires bytes.");
+  const length = byteLength.call(bytes), buffer = bufferOf.call(bytes);
+  arrayBufferLength.call(buffer);
+  if (length > Number.MAX_SAFE_INTEGER / 8) throw new RangeError("SHA-256 byte length exceeds the safe integer limit.");
+  const view = new DataView(buffer, byteOffset.call(bytes), length);
+  scratch.hash.set(INITIAL);
+  try {
+    let start = 0;
+    for (; length - start >= 64; start += 64) compress(scratch, view, start);
+    const rest = length - start;
+    for (let i = 0; i < rest; i++) block[i] = bytes[start + i];
+    block[rest] = 0x80;
+    block.fill(0, rest + 1);
+    if (rest >= 56) { compress(scratch, blockView, 0); block.fill(0); }
+    blockView.setUint32(56, Math.floor(length / 0x20000000));
+    blockView.setUint32(60, length * 8);
+    compress(scratch, blockView, 0);
+    return hex(scratch.hash);
+  } finally {
+    scratch.hash.fill(0); scratch.words.fill(0); block.fill(0);
+  }
 }
 
 export function clearSha256(state) {
@@ -98,11 +132,11 @@ function compress(state, view, offset) {
     const x = words[i - 15], y = words[i - 2];
     words[i] = words[i - 16] + (rotate(x, 7) ^ rotate(x, 18) ^ (x >>> 3)) + words[i - 7] + (rotate(y, 17) ^ rotate(y, 19) ^ (y >>> 10));
   }
-  let [a,b,c,d,e,f,g,h] = hash;
+  let a = hash[0], b = hash[1], c = hash[2], d = hash[3], e = hash[4], f = hash[5], g = hash[6], h = hash[7];
   for (let i = 0; i < 64; i++) {
     const first = (h + (rotate(e, 6) ^ rotate(e, 11) ^ rotate(e, 25)) + ((e & f) ^ (~e & g)) + ROUND[i] + words[i]) >>> 0;
     const second = ((rotate(a, 2) ^ rotate(a, 13) ^ rotate(a, 22)) + ((a & b) ^ (a & c) ^ (b & c))) >>> 0;
     h=g; g=f; f=e; e=(d+first)>>>0; d=c; c=b; b=a; a=(first+second)>>>0;
   }
-  [a,b,c,d,e,f,g,h].forEach((value, i) => { hash[i] += value; });
+  hash[0] += a; hash[1] += b; hash[2] += c; hash[3] += d; hash[4] += e; hash[5] += f; hash[6] += g; hash[7] += h;
 }

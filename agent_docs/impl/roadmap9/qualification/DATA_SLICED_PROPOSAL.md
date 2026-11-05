@@ -29,3 +29,20 @@ const next = await reviseDataInSlices(program, { source, id, values }, { sliceMs
 ## 위험
 
 `JSON.parse` 대체 parser와 stage 분할은 persistence·materialization 핵심 경로를 넓게 건드린다. 기존 동기 API는 그대로 두고, 두 경로가 같은 결과를 내는지 전수 동치 시험으로 묶는다. 규모가 커서 여러 checkpoint로 나눈다.
+
+## 1단계 — 동기 비용 축소 (2026-11-05)
+
+분할 전에 같은 결과를 내는 동기 비용부터 줄였다. 100k revise CPU profile에서 graphic identity ID(`graphicIdentityId`)의 행별 SHA-256이 revise 1회당 약 1초였다.
+
+- `compress`가 블록마다 하던 배열 구조분해·`forEach`를 지역 변수로 바꿨다.
+- 완성된 bytes 한 번에 대한 digest(`digestSha256Bytes`)는 module scratch block을 재사용하고, 호출 전에 초기화·호출 뒤 0으로 지운다. 상태가 호출 밖으로 나가지 않는다. 스트리밍 API(`createSha256State`…)는 그대로다.
+- `contentDigest`는 TextEncoder 하나를 재사용한다.
+- 검산: 길이 0..399의 임의 bytes·분할 스트림·비 ASCII 문자열·5MB 입력에서 `node:crypto`와 같은 hex. digest 관련 시험 438개 통과.
+
+| Node 중앙값 | 이전 | 이후 |
+| --- | --- | --- |
+| 10k revise | 265 ms | 209 ms |
+| 100k revise | 3,069 ms | 2,568 ms (전체 기준 3,000ms 안) |
+| 10k / 100k load | 74 / 927 ms | 75 / 914 ms |
+
+남은 기준은 모든 크기의 한 동기 구간 50ms다. 다음 단계는 load 분할이다.

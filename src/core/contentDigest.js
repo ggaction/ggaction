@@ -1,22 +1,13 @@
 // Synchronous browser-safe identities; scalar block state remains private.
-import { createSha256State, updateSha256, finishSha256, clearSha256 } from "./sha256.js";
+import { digestSha256Bytes } from "./sha256.js";
 
+const encoder = new TextEncoder();
 export function contentDigest(text) {
-  return digestBytes(new TextEncoder().encode(text));
+  return digestSha256Bytes(encoder.encode(text));
 }
 
 export function contentBytesDigest(input) {
-  return digestBytes(copyContentBytes(input));
-}
-
-function digestBytes(input) {
-  const state = createSha256State();
-  try {
-    updateSha256(state, input);
-    return finishSha256(state);
-  } finally {
-    clearSha256(state);
-  }
+  return digestSha256Bytes(copyContentBytes(input));
 }
 
 export function copyContentBytes(input, maxBytes = Infinity) {
