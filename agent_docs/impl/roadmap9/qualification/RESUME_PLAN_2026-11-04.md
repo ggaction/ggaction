@@ -15,6 +15,7 @@
 - [x] Partition layout 전 크기, preview 100·1k 통과(1k 6ms). 10k 66/70ms 미달. [기록](PARTITION_PREVIEW_PERFORMANCE.md)
 - [x] Geo hit 전 크기, camera 1k·10k 통과(10k 21.3/20.8ms). 100k 228/232ms 미달. [기록](GEO_CAMERA_PREVIEW.md)
 - [x] Canonical memory 100 cycle DPR1·2 통과(비exclusive 창). [기록](CANONICAL_MEMORY.md)
+- [x] Route B union `reviseData`: 순서 있는 원 job/completion replay로 연결(미연결 직접 8개). [기록](../chart/route-native-revise-data.md)
 - [ ] 미달: partition 10k preview, Geo 100k camera, data load/revise blocking 50ms(10k·100k), Route B union, exclusive 창 P95, 최종 qualification.
 
 순차 완료 번호는 여전히 **STEP-056**이다. 이 문서는 실행 순서를 정할 뿐 어떤 STEP의 완료도 기록하지 않는다.

@@ -3,9 +3,10 @@ import { closedAction, bindActionInvocationScope } from "../../core/action.js";
 import { createEdgeRouteResource } from "../../materialization/graph/routeResource.js";
 import { normalizeEdgeRouteRequest } from "../../materialization/graph/routeRequest.js";
 import { registerScreenRouteRevision } from "./screenRoutes.js";
-import { readPreparedGraphEdgeRoutes, registerGraphRoutePlanner, enterGraphRouteUpdateInvocation, applyPreparedGraphRouteUpdate, readGraphRouteUpdateTheme } from "../../resources/graphRoutes.js";
+import { readPreparedGraphEdgeRoutes, registerGraphRoutePlanner, enterGraphRouteUpdateInvocation, applyPreparedGraphRouteUpdate, readGraphRouteUpdateTheme, readNativeRouteRevisionIdentity } from "../../resources/graphRoutes.js";
 import { snapshotNativeRouteEdit, resolveNativeRouteUpdate, prepareNativeRouteUpdate } from "./nativeUpdate.js";
 import { registerNativeRouteThemeReader } from "../theme/nativeRouteUpdate.js";
+import { registerNativeRevisionIdentityReader } from "../data/revise.js";
 import { findStoredResource } from "../../selectors/resources.js";
 
 
@@ -37,5 +38,6 @@ export function registerEdgeRouteActions(ProgramClass) {
   registerGraphRoutePlanner(ProgramClass, planEdgeRouteApplication, { snapshot: snapshotNativeRouteEdit, resolve: resolveNativeRouteUpdate, prepare: prepareNativeRouteUpdate, apply: applyGraphEdgeRoutesUpdate });
   Object.assign(ProgramClass.prototype, { bundleGraphEdges, editEdgeRoute, applyGraphEdgeRoutesUpdate });
   registerNativeRouteThemeReader(ProgramClass, readGraphRouteUpdateTheme);
+  registerNativeRevisionIdentityReader(ProgramClass, readNativeRouteRevisionIdentity);
   registerScreenRouteRevision(ProgramClass);
 }

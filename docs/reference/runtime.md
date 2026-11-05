@@ -1684,7 +1684,7 @@ export declare function createInteractionSession(options: {
 [Complete declaration and relative dependencies](../types/graph.d.ts)
 
 ```typescript
-import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, EdgeRouteResult, InputRef } from "./program.js";
+import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, ReviseDataOptions, EdgeRouteResult, InputRef } from "./program.js";
 export type { PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate } from "./program.js";
 
 declare const graphRouteJob: unique symbol;
@@ -1727,7 +1727,8 @@ export interface GraphEdgeRoutesUpdateRequest {
     | { readonly action: "editGraphData"; readonly args: EditGraphDataOptions }
     | { readonly action: "editFlowData"; readonly args: EditFlowDataOptions }
     | { readonly action: "editHierarchyData"; readonly args: EditHierarchyDataOptions }
-    | { readonly action: "editInferredGraphData"; readonly args: EditInferredGraphDataOptions | ApplyInferredGraphOptions };
+    | { readonly action: "editInferredGraphData"; readonly args: EditInferredGraphDataOptions | ApplyInferredGraphOptions }
+    | { readonly action: "reviseData"; readonly args: ReviseDataOptions<Record<string, unknown>> };
 }
 export type GraphEdgeRoutesRequest = GraphEdgeRoutesAuthoringRequest | GraphEdgeRoutesUpdateRequest;
 export type GraphEdgeRoutesHost = { readonly requestToken: string; readonly signal?: AbortSignal } & (

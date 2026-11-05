@@ -2,7 +2,7 @@ import { canonicalJSON } from "../../core/contentDigest.js";
 import { encodeValue } from "../../core/valueEncoding.js";
 
 const readers = new WeakMap();
-const NATIVE_THEME_ACTIONS = new Set(["editLayout", "editGraphData", "editFlowData", "editHierarchyData", "editInferredGraphData", "editCanvas", "applyTheme", "removeTheme"]);
+const NATIVE_THEME_ACTIONS = new Set(["editLayout", "editGraphData", "editFlowData", "editHierarchyData", "editInferredGraphData", "reviseData", "editCanvas", "applyTheme", "removeTheme"]);
 const exact = (value, keys) => value !== null && typeof value === "object" &&
   Object.keys(value).length === keys.length && keys.every(key => Object.hasOwn(value, key));
 

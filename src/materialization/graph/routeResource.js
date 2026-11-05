@@ -3,6 +3,7 @@ import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { createRouteJobStages, createRouteJob, computeRouteJob, computeRouteJobWithLedger, validateRouteJob } from "../../grammar/graph/routes/job.js";
 import { validateRouteResult } from "../../grammar/graph/routes/result.js";
 import { resolveRouteInput } from "./routeInput.js";
+import { activeRouteReplay } from "./routeReplay.js";
 
 export function edgeRouteJob(program, graph, layout, intent, hierarchy, hierarchyLayout, scope) {
   return createRouteJob(resolveRouteInput(program, graph, layout, intent, hierarchy, hierarchyLayout),
@@ -36,16 +37,20 @@ export function completedEdgeRouteResource({ id, revision = 0, graph, hierarchy 
 
 // A native revision retains its exact resource intent and references across the
 // worker suspension. The ordinary synchronous path never yields or accepts v2.
+// Within an exact prepared native invocation, a synchronous step receives its
+// bounded completions from that invocation's ordered replay instead.
 export function* createEdgeRouteResourceStages(resolved, scope) {
-  if (scope === undefined) return createEdgeRouteResource(resolved);
+  const bounded = Object.hasOwn(resolved.intent.options, "execution");
+  const replay = scope === undefined && bounded ? activeRouteReplay() : undefined;
+  if (scope === undefined && replay === undefined) return createEdgeRouteResource(resolved);
+  scope ??= replay.scope;
   const { program, graph, layout, intent, hierarchy, hierarchyLayout } = resolved;
   const jobScope = scope.routeJobScope?.() ?? scope;
-  const bounded = Object.hasOwn(intent.options, "execution");
   const job = bounded
     ? yield* edgeRouteJobStages(program, graph, layout, intent, hierarchy, hierarchyLayout, jobScope)
     : edgeRouteJob(program, graph, layout, intent, hierarchy, hierarchyLayout, jobScope);
-  const completion = bounded ? yield Object.freeze({ kind: "edge-route-computation", job, scope: jobScope })
-    : computeRouteJobWithLedger(job, jobScope.signal, jobScope.ledger);
+  const completion = !bounded ? computeRouteJobWithLedger(job, jobScope.signal, jobScope.ledger)
+    : replay !== undefined ? replay.take(job) : yield Object.freeze({ kind: "edge-route-computation", job, scope: jobScope });
   scope.ledger.check();
   const resource = completedEdgeRouteResource(resolved, job, completion, { ...jobScope, includeComputation: false });
   scope.retainResult?.(resource);

@@ -13,6 +13,7 @@ import { getBuiltinResourceKindHandler } from "../materialization/resourceKinds.
 import { validateResourceGraph } from "../materialization/resourceState.js";
 import { computeRouteJob } from "../grammar/graph/routes/job.js";
 import { computePreparedRoute, isGraphRouteExecutor } from "./graphRouteExecutor.js";
+import { createRouteReplay, enterRouteReplay } from "../materialization/graph/routeReplay.js";
 
 const prepared = new WeakMap();
 const planners = new WeakMap();
@@ -113,8 +114,12 @@ async function prepareNativeUpdate(program, args, host, started) {
         ledger.samples(heldSamples + count); heldSamples += count;
       } };
     lifetime.check(); validateResourceGraph(program, program.constructor, scope);
-    const plan = await drainNativeRouteStages(owner.prepare(program, resolved, scope), lifetime,
-      (job, jobScope) => computePreparedRoute(executor, job, { signal: lifetime.signal, deadlineMs }, jobScope));
+    const compute = (job, jobScope) => computePreparedRoute(executor, job, { signal: lifetime.signal, deadlineMs }, jobScope);
+    if (resolved.replayed) {
+      handle = await prepareReplayedUpdate(program, edit, resolved, owner, { ledger, lifetime, requestToken, signal, compute });
+      return handle;
+    }
+    const plan = await drainNativeRouteStages(owner.prepare(program, resolved, scope), lifetime, compute);
     lifetime.check();
     handle = cloneAndFreeze({ kind: "edge-route-preparation", request: { kind: "update", action: edit.action, args: summarizeArgs(edit.args) },
       inputHashes: plan.routeEntries.filter(entry => entry.resource.kind === "edge-route").map(entry => entry.resource.result.inputHash) });
@@ -134,6 +139,53 @@ async function prepareNativeUpdate(program, args, host, started) {
   } finally { lifetime.close(); }
 }
 
+// A replayed action reaches its bounded routes inside one synchronous native
+// call. Preparation runs the exact wrapped preflight; when it reaches a job
+// that no completion covers yet, that job is computed on the worker and the
+// whole preflight runs again from the receiver. Each run is real work and is
+// charged; worker samples retained by an abandoned run are released.
+async function prepareReplayedUpdate(program, edit, resolved, owner, { ledger, lifetime, requestToken, signal, compute }) {
+  const completions = [];
+  const handle = cloneAndFreeze({ kind: "edge-route-preparation", request: { kind: "update", action: edit.action, args: summarizeArgs(edit.args) } });
+  const record = { base: program, constructor: program.constructor, kind: "update", requestToken, signal, edit, native: resolved.native,
+    apply: owner.apply, bounded: resolved.bounded, replayed: true, identity: resolved.identity, plan: { completions } };
+  prepared.set(handle, record);
+  try {
+    while (true) {
+      lifetime.check();
+      let heldSamples = 0;
+      const scope = { ledger, signal: lifetime.signal,
+        routeJobScope() {
+          const retained = heldSamples;
+          return { ledger: { ...ledger, samples: count => ledger.samples(retained + count) }, signal: lifetime.signal };
+        },
+        retainResult(resource) {
+          let count = 0;
+          for (const route of resource.result.routes) count += route.controlPoints.length + route.commands.length;
+          ledger.samples(heldSamples + count); heldSamples += count;
+        } };
+      record.preparationScope = scope; record.recording = createRouteReplay(completions, scope, true);
+      try { owner.apply.call(program, { prepared: handle, requestToken }); }
+      catch (error) {
+        if (!record.recording.requested(error)) throw error;
+        const job = error.job;
+        completions.push(Object.freeze({ inputHash: job.inputHash, completion: await compute(job, scope.routeJobScope()) }));
+        continue;
+      }
+      break;
+    }
+    lifetime.check();
+    Object.freeze(completions);
+    record.accounting = ledger.diagnostics(); delete record.preparationScope; delete record.recording;
+    const published = cloneAndFreeze({ ...handle, inputHashes: completions.map(entry => entry.inputHash) });
+    prepared.delete(handle); prepared.set(published, record);
+    return published;
+  } catch (error) {
+    prepared.delete(handle);
+    throw error;
+  }
+}
+
 export function enterGraphRouteUpdateInvocation(program, args) {
   rejectUnknownProperties(args, ["prepared", "requestToken"], "prepared route update");
   const record = prepared.get(args.prepared);
@@ -143,18 +195,30 @@ export function enterGraphRouteUpdateInvocation(program, args) {
   active(record.signal);
   const scope = record.preparationScope ?? { ledger: createRouteRequestLedger(record.bounded, record.signal, record.accounting), signal: record.signal };
   scope.ledger.check();
-  const previous = invocation;
-  const current = { record, args, scope, consumed: false, entered: undefined };
+  const replay = record.replayed ? record.recording ?? createRouteReplay(record.plan.completions, scope) : undefined;
+  const previous = invocation, leaveReplay = replay === undefined ? undefined : enterRouteReplay(replay);
+  const current = { record, args, scope, replay, consumed: false, entered: undefined };
   invocation = current;
   return outcome => {
     try {
       if (outcome !== undefined) {
-        if (!current.consumed) throw new TypeError("Prepared native route plan was not consumed.");
+        if (replay !== undefined && record.plan.completions.length === 0) throw new TypeError(`This resource has no bounded edge route update; use ${record.edit.action} directly.`);
+        if (replay === undefined ? !current.consumed : !replay.finished()) throw new TypeError("Prepared native route plan was not consumed.");
         validateResourceGraph(outcome.result, program.constructor, scope);
         scope.ledger.check();
       }
-    } finally { invocation = previous; }
+    } finally { leaveReplay?.(); invocation = previous; }
   };
+}
+
+// The prepared row identity of a replayed revision, readable only inside its
+// exact invocation by the native action itself.
+export function readNativeRouteRevisionIdentity(program, args, native) {
+  const current = invocation;
+  if (current === undefined || !current.record.replayed) return undefined;
+  if (current.record.native !== native || current.record.edit.args !== args || current.entered !== actionSource(program) ||
+      program.constructor !== current.record.constructor) throw new TypeError("Native route identity belongs to a different invocation.");
+  return current.record.identity;
 }
 
 export function applyPreparedGraphRouteUpdate(program, args) {
@@ -176,7 +240,7 @@ export function readNativeGraphRouteUpdatePlan(program, args, native) {
 export function readGraphRouteUpdateTheme(program, { source, metadata }) {
   const current = invocation;
   if (metadata.op !== "applyGraphEdgeRoutesUpdate" || current === undefined) return undefined;
-  if (source !== current.record.base || program.constructor !== current.record.constructor || !current.consumed ||
+  if (source !== current.record.base || program.constructor !== current.record.constructor || !(current.replay?.finished() ?? current.consumed) ||
       prepared.get(current.args.prepared) !== current.record) throw new TypeError("Native route completion requires its exact prepared invocation.");
   current.scope.ledger.check();
   return getWrappedActionMetadata(current.record.native);

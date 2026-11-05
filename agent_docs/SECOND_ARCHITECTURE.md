@@ -1061,10 +1061,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 797,524 bytes |
+| `ggaction` | 798,974 bytes |
 | `ggaction/basic` | 428,157 bytes |
 | `ggaction/svg` | 26,731 bytes |
-| `ggaction/graph` | 76,121 bytes |
+| `ggaction/graph` | 76,710 bytes |
 | `ggaction/interaction` | 143,198 bytes |
 | `ggaction/animation` | 356,096 bytes |
 

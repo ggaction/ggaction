@@ -5,10 +5,10 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 797_524, // Authentic sampled Geo admission: Node20/24 797,524 gzip bytes.
+  ggaction: 798_974, // Native reviseData route replay: Node20/24 798,974 gzip bytes.
   "ggaction/basic": 428_157, // Owned own-data check marks: Node20/24 428,157 gzip bytes.
   "ggaction/svg": 26_731, // Owned own-data check marks: Node20/24 26,731 gzip bytes.
-  "ggaction/graph": 76_121, // Prepared partition cells: Node20/24 76,121 gzip bytes.
+  "ggaction/graph": 76_710, // Native reviseData route replay: Node20/24 76,710 gzip bytes.
   "ggaction/animation": 356_096, // Partition ring commands: Node20/24 356,096 gzip bytes.
   "ggaction/interaction": 143_198 // Prepared partition cells: Node20/24 143,198 gzip bytes.
 });

@@ -15,6 +15,12 @@ import { createPreparedSource } from "./sourceCreate.js";
 import { preparedSourceUpdate, writeSourceResource } from "./sourceContext.js";
 
 let reviseFacet;
+// Full binds its prepared native route invocation; Basic binds nothing.
+const nativeIdentityReaders = new WeakMap();
+export function registerNativeRevisionIdentityReader(ProgramClass, reader) {
+  if (typeof ProgramClass !== "function" || typeof reader !== "function" || nativeIdentityReaders.has(ProgramClass)) throw new TypeError("Native revision identity requires one exact constructor binding.");
+  nativeIdentityReaders.set(ProgramClass, reader);
+}
 
 function layerInputFields(layer) {
   const fields = [];
@@ -88,7 +94,8 @@ export const reviseData = /* @__PURE__ */ closedAction(
       throw new Error(`Source "${source}" must be a materialized original dataset.`);
     }
     const sourceUpdate = preparedSourceUpdate(args);
-    const identity = sourceUpdate?.identity ?? reviseSourceIdentity(original, args.values, args, newDatasetNamespace());
+    const identity = sourceUpdate?.identity ?? nativeIdentityReaders.get(this.constructor)?.(this, args, reviseData) ??
+      reviseSourceIdentity(original, args.values, args, newDatasetNamespace());
     const apply = this.compositionSpec === undefined
       ? program => reviseUnitData(program, { source, id, values: args.values, schema: args.schema, identity, sourceUpdate }).program
       : program => reviseFacet(program, { source, id, values: args.values, schema: args.schema, identity, sourceUpdate });

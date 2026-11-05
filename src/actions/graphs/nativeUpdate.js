@@ -12,6 +12,10 @@ import { resolveGraphResource } from "../../selectors/graphs.js";
 import { resolveHierarchyResource } from "../../selectors/hierarchy.js";
 import { normalizeInferenceRequest } from "../../materialization/graph/inferenceRequest.js";
 import { orderResourceDependencies } from "../../materialization/resourceState.js";
+import { reviseData } from "../data/revise.js";
+import { requireDataset } from "../../selectors/datasets.js";
+import { reviseSourceIdentity } from "../../core/itemIdentity.js";
+import { newDatasetNamespace } from "../primitives/datasetIdentity.js";
 
 // Full owns this exact snapshot boundary. Only the existing inference registry
 // may recognize its immutable handle; arbitrary objects are always deep-copied.
@@ -36,7 +40,7 @@ export function snapshotNativeRouteEdit(program, edit) {
 
 // Full binds this closed native owner; graph preparation imports no assembly.
 export function resolveNativeRouteUpdate(program, edit) {
-  let native, previous;
+  let native, previous, identity;
   switch (edit.action) {
     case "editLayout": native = editLayout; previous = resolveLayoutRouteUpdate(program, edit.args); break;
     case "editGraphData":
@@ -54,7 +58,17 @@ export function resolveNativeRouteUpdate(program, edit) {
       const target = Object.hasOwn(edit.args, "prepared") ? nativeInferenceResource(program, edit.args).id : normalizeInferenceRequest(program, edit.args, true).id;
       previous = resolveGraphResource(program, target, "inferred"); break;
     }
-    default: throw new TypeError("Native route updates require editLayout, editGraphData, editFlowData, editHierarchyData or editInferredGraphData.");
+    case "reviseData": {
+      validateKeys(edit.args, ["source", "id", "values", "schema", "keys", "rowMap"], edit.action);
+      native = reviseData;
+      if (program.compositionSpec !== undefined) throw new TypeError("Native route reviseData requires a completed unit receiver.");
+      const original = requireDataset(program, edit.args.source);
+      previous = { kind: "data", id: original.id };
+      // One row namespace for every preflight run and the final application.
+      if (Array.isArray(original.values) && original.source === undefined) identity = reviseSourceIdentity(original, edit.args.values, edit.args, newDatasetNamespace());
+      break;
+    }
+    default: throw new TypeError("Native route updates require editLayout, editGraphData, editFlowData, editHierarchyData, editInferredGraphData or reviseData.");
   }
   if (program[edit.action] !== native) throw new TypeError("Native route action was replaced.");
   const key = ref => JSON.stringify([ref.kind, ref.id]), affected = new Set([key(previous)]), routes = [];
@@ -64,7 +78,8 @@ export function resolveNativeRouteUpdate(program, edit) {
   }
   const bounded = routes.filter(resource => Object.hasOwn(resource.options.options, "execution"));
   if (!bounded.length) throw new TypeError(`This resource has no bounded edge route update; use ${edit.action} directly.`);
-  return { native, edit, previous, routes, bounded };
+  // A replayed action reaches its routes inside one synchronous native call.
+  return { native, edit, previous, routes, bounded, ...(native === reviseData ? { replayed: true, identity } : {}) };
 }
 
 export function* prepareNativeRouteUpdate(program, resolved, scope) {

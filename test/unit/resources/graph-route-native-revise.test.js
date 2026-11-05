@@ -1,0 +1,102 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { chart } from "../../../src/index.js";
+import { serializeProgram } from "../../../src/persistence.js";
+import { prepareGraphEdgeRoutes, createGraphRouteExecutor, computeGraphEdgeRoutesAsync } from "../../../src/graph.js";
+import { ROUTE_EXECUTION_MAXIMA } from "../../../src/grammar/graph/routes/execution.js";
+import { createRouteReplay, enterRouteReplay, activeRouteReplay } from "../../../src/materialization/graph/routeReplay.js";
+import { getErrorDetails } from "../../../src/core/diagnostics.js";
+
+const stale = error => getErrorDetails(error)?.code === "stale-result";
+
+const execution = { policy: "bounded-route@1", ...ROUTE_EXECUTION_MAXIMA };
+const route = program => program.semanticSpec.resources.find(resource => resource.kind === "edge-route");
+const paths = program => JSON.stringify(Object.values(program.graphicSpec.objects).filter(object => object.type === "path").map(object => object.properties.commands));
+function base() {
+  return chart().createCanvas({ width: 200, height: 120, margin: 10 })
+    .createData({ id: "nodes", values: [{ id: 0 }, { id: 1 }, { id: 2 }] })
+    .createData({ id: "edges", values: [{ id: "e", source: 0, target: 1 }, { id: "f", source: 1, target: 2 }] })
+    .createData({ id: "notes", values: [{ text: "a" }] })
+    .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "source", target: "target" })
+    .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: 0, x: 0, y: 0 }, { key: 1, x: 10, y: 10 }, { key: 2, x: 30, y: 5 }] } });
+}
+function executor(onPost = () => {}) {
+  return createGraphRouteExecutor({ createWorker() {
+    const listeners = new Map();
+    return { addEventListener: (type, fn) => listeners.set(type, fn), removeEventListener: type => listeners.delete(type), terminate: () => listeners.clear(),
+      postMessage({ job }) { onPost(job); computeGraphEdgeRoutesAsync(structuredClone(job)).then(data => listeners.get("message")?.({ data }), error => listeners.get("error")?.({ error })); } };
+  } });
+}
+const host = worker => ({ requestToken: "revise", executor: worker, deadlineMs: 30000 });
+async function bounded(program, worker) {
+  const prepared = await prepareGraphEdgeRoutes(program, { kind: "create", id: "route", method: "edge-path", options: { execution } }, { requestToken: "create", executor: worker, deadlineMs: 30000 });
+  return program.bundleGraphEdges({ prepared, requestToken: "create" }).createGraphPlot({ id: "plot", routes: "route" });
+}
+const revision = () => ({ source: "edges", id: "edges2", values: [{ id: "e", source: 0, target: 2 }, { id: "f", source: 2, target: 1 }] });
+
+test("prepared source revisions match the synchronous v1 revision through the original native action", async () => {
+  const posts = [], worker = executor(job => posts.push(job.inputHash));
+  try {
+    const ordinary = base().bundleGraphEdges({ id: "route", method: "edge-path" }).createGraphPlot({ id: "plot", routes: "route" }).reviseData(revision());
+    const program = await bounded(base(), worker), before = serializeProgram(program);
+    assert.throws(() => program.reviseData(revision()), /Bounded routes require prepareGraphEdgeRoutes/);
+    posts.length = 0;
+    const prepared = await prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "reviseData", args: revision() } }, host(worker));
+    // Every job is computed once even though the preflight runs again after it.
+    assert.equal(posts.length, 1); assert.deepEqual(prepared.inputHashes, posts);
+    assert.deepEqual(prepared.request, { kind: "update", action: "reviseData", args: { source: "edges", id: "edges2", valuesCount: 2 } });
+    const first = program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "revise" }), second = program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "revise" });
+    assert.equal(serializeProgram(program), before);
+    assert.equal(paths(first), paths(ordinary)); assert.equal(serializeProgram(first), serializeProgram(second));
+    assert.deepEqual(route(first).result.routes.map(value => value.commands), route(ordinary).result.routes.map(value => value.commands));
+    assert.deepEqual(first.semanticSpec.datasets.find(dataset => dataset.id === "edges2").values, ordinary.semanticSpec.datasets.find(dataset => dataset.id === "edges2").values);
+    assert.equal(route(first).revision, route(program).revision + 1); assert.equal(route(first).result.inputHash, prepared.inputHashes[0]);
+    assert.equal(first.trace.children.at(-1).op, "applyGraphEdgeRoutesUpdate"); assert.equal(first.trace.children.at(-1).children[0].op, "reviseData");
+    assert.equal(posts.length, 1);
+  } finally { worker.dispose(); }
+});
+
+test("prepared source revisions reject other receivers, tokens, unaffected sources and compositions", async () => {
+  const worker = executor();
+  try {
+    const program = await bounded(base(), worker);
+    const prepared = await prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "reviseData", args: revision() } }, host(worker));
+    assert.throws(() => program.editCanvas({ width: 220 }).applyGraphEdgeRoutesUpdate({ prepared, requestToken: "revise" }), stale);
+    assert.throws(() => program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "other" }), stale);
+    assert.throws(() => program.applyGraphEdgeRoutesUpdate({ prepared: structuredClone(prepared), requestToken: "revise" }), /authentic prepared edge route update/);
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "reviseData", args: { source: "notes", id: "notes2", values: [{ text: "b" }] } } }, host(worker)),
+      /no bounded edge route update; use reviseData directly/);
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "reviseData", args: { ...revision(), extra: 1 } } }, host(worker)), /reviseData/);
+    // A failing original preflight reports the native error itself.
+    const native = (() => { try { program.editCanvas({ width: 200 }).reviseData({ ...revision(), id: "nodes" }); } catch (error) { return error; } })();
+    assert.ok(native instanceof Error);
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "reviseData", args: { ...revision(), id: "nodes" } } }, host(worker)),
+      error => error.name === native.name && error.message === native.message);
+    const controller = new AbortController(), aborted = prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "reviseData", args: revision() } }, { ...host(worker), signal: controller.signal });
+    controller.abort(new Error("stop"));
+    await assert.rejects(aborted, /stop/);
+    // The prepared identity is readable only inside its exact invocation.
+    const direct = program.editCanvas({ width: 200 });
+    assert.throws(() => direct.reviseData(revision()), /Bounded routes require prepareGraphEdgeRoutes/);
+  } finally { worker.dispose(); }
+});
+
+test("route replay covers exact ordered passes and cannot be completed after an absorbed interruption", () => {
+  const job = inputHash => ({ inputHash }), completions = [{ inputHash: "a", completion: 1 }, { inputHash: "b", completion: 2 }];
+  const exact = createRouteReplay(completions, {});
+  assert.equal(exact.take(job("a")), 1); assert.equal(exact.take(job("b")), 2); assert.equal(exact.finished(), true);
+  assert.equal(exact.take(job("a")), 1); assert.equal(exact.finished(), false); assert.equal(exact.take(job("b")), 2); assert.equal(exact.finished(), true);
+  for (const sequence of [["b"], ["a", "a"], ["a", "b", "c"]]) {
+    const replay = createRouteReplay(completions, {});
+    assert.throws(() => sequence.forEach(hash => replay.take(job(hash))), stale);
+    assert.equal(replay.finished(), false);
+  }
+  const short = createRouteReplay(completions, {}); short.take(job("a")); assert.equal(short.finished(), false);
+  const recording = createRouteReplay([completions[0]], {}, true);
+  recording.take(job("a"));
+  let request;
+  try { recording.take(job("b")); } catch (error) { request = error; }
+  assert.equal(recording.requested(request), true); assert.equal(recording.requested(new Error("other")), false); assert.equal(request.job.inputHash, "b");
+  assert.equal(recording.finished(), false);
+  const leave = enterRouteReplay(exact); assert.equal(activeRouteReplay(), exact); leave(); assert.equal(activeRouteReplay(), undefined);
+});
