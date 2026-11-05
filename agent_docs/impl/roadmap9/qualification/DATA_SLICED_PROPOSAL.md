@@ -89,3 +89,21 @@ const next = await reviseDataInSlices(program, { source, id, values }, { sliceMs
 100k 표본 30개 중 대부분은 22–30ms이고 DPR1 두 개(52·74ms), DPR2 세 개(55·64·97ms)가 GC로 길다. 행 수에 비례하는 weak table은 더 남지 않았고, 남은 압력은 JSON 조각·해독 객체의 일반 할당이다. revise 분할과 함께 줄인다.
 
 검증: 전체 시험 10,596개, coverage 97.45/95.58/99.33%(critical floor 788), browser 531/531, render 513/513, Node20/22/24 consumer 통과. 크기 상한은 Node20/24 최댓값으로 갱신했다.
+
+## 3단계 — revise 분할 설계 메모
+
+- `reviseData`는 같은 적용을 두 번 한다(`apply(this); return apply(this);`). route replay가 preview·actual 두 pass를 순서대로 검사하므로 둘 다 유지하고 둘 다 나눈다.
+- 경로: `reviseUnitData` → `createData`(action) → `detachDataSourceBindings` → `withGuideLayoutTransaction` → `applyRevisionPlan`(edit.js) → `applyMaterializationPlan`(planner/dependencies) → mark materializer(point: `resolvePointItems`) → `materializeMarkOutput` → `editGraphics`(action, `validatedCollectionItems`) → 선택 상태 확인.
+- 100k 비용(Node, SHA 개선 후 약 2.5s): `materializeMarkOutput`·`editGraphics` item 검증, `withPreparedDatasetIdentity`, `resolvePointItems`.
+- 중첩 action 호출이 양보하려면 action 실행기에 stage 구현을 받는 경로가 필요하다. 동기 wrapper는 같은 stage를 끝까지 돌리고, 분할 경로는 `yield*`로 같은 enter/exit·trace·결과 검증을 거친다.
+- 동적 문맥: `materialization/revisionIdentity.js`의 `activeReplacements`는 호출 동안만 켜지는 모듈 전역이다. 양보할 때마다 닫고 재개할 때 다시 열어야 다른 host 작업이 그 문맥을 보지 않는다. `routeReplay.active`, `graphRoutes.invocation`도 같은 규칙을 따른다(최상위 사용자 revise에서는 꺼져 있다).
+
+### 변환 대상 (100k, revise 1 pass 약 890ms의 행 반복)
+
+- `editGraphics` item 검증(`validatedCollectionItems`) 327ms: identity ID digest, `cloneAndFreeze`, identity 검사.
+- point identity(`resolvePointItems` → `finalizeItems` → `identifyItems`) 180ms, point 속성 행(point.js:30) 65ms.
+- `materializeMarkOutput` item 구성 37ms, `editItems` 40ms, point 위치 mapping 25ms, scale preview 필드 읽기 38ms.
+- `createData` 203ms: source identity 검사 75ms(이미 stage), `editSemantic` 값 기록의 identity 재검사 73ms와 `cloneAndFreeze`.
+- 위 반복과 `reviseData` 사이의 호출 사슬: `reviseUnitData` → `withGuideLayoutTransaction`(stage 있음) → `applyRevisionPlan` → `withLogicalDataReplacements`(양보 때 문맥 닫기) → `applyRevisionPlanWithIdentity` → data resource handler(`reviseSource`) → `reviseSourceResourceInputs` → `applyMaterializationPlan`(dependencies·planner) → `materializePointMark` action.
+- action 실행기: 동기 wrapper와 분할 호출이 같은 generator(`run`)를 공유하고, private `stagedClosedAction`만 행 묶음 사이에서 양보한다. 묶인 invocation scope(`applyGraphEdgeRoutesUpdate`)는 양보 없이 끝까지 돈다. 초안은 같은 경로의 시험과 함께 커밋한다.
+- SHA hex 변환을 표 조회로 바꿔 100k digest 174 → 82ms(결과 동일, node:crypto 대조).

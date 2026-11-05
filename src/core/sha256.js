@@ -83,9 +83,13 @@ export function finishSha256(state) {
   return hex(state.hash);
 }
 
+const HEX = Array.from({ length: 256 }, (_, value) => value.toString(16).padStart(2, "0"));
 function hex(hash) {
   let text = "";
-  for (let i = 0; i < 8; i++) text += hash[i].toString(16).padStart(8, "0");
+  for (let i = 0; i < 8; i++) {
+    const value = hash[i];
+    text += HEX[value >>> 24] + HEX[(value >>> 16) & 255] + HEX[(value >>> 8) & 255] + HEX[value & 255];
+  }
   return text;
 }
 
