@@ -88,11 +88,29 @@
     },
     {
       "action": "editDerivedData",
-      "status": "pending-public-native-connection"
+      "status": "partial-unit-native-connection",
+      "implemented": [
+        "same ordered original job/completion replay as reviseData; affected routes follow derived dataset sources and parameter inputs",
+        "results match the synchronous v1 revision; derived and parameter identities are deterministic from original rows"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "parameter data sources that require a prepared data update",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editParameter",
-      "status": "pending-public-native-connection"
+      "status": "partial-unit-native-connection",
+      "implemented": [
+        "same ordered original job/completion replay as reviseData; affected routes follow derived dataset sources and parameter inputs",
+        "results match the synchronous v1 revision; derived and parameter identities are deterministic from original rows"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "parameter data sources that require a prepared data update",
+        "full native union qualification"
+      ]
     },
     {
       "action": "applyDataUpdate",

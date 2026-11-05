@@ -1943,7 +1943,7 @@ declare const preparedGraphEdgeRoutesUpdate: unique symbol;
 /** An authentic native resource update, bound to its exact completed Full receiver. */
 export interface PreparedGraphEdgeRoutesUpdate {
   readonly [preparedGraphEdgeRoutesUpdate]: true; readonly kind: "edge-route-preparation";
-  readonly request: { readonly kind: "update"; readonly action: "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData" | "reviseData"; readonly args: Readonly<Record<string, unknown>> };
+  readonly request: { readonly kind: "update"; readonly action: "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData" | "reviseData" | "editDerivedData" | "editParameter"; readonly args: Readonly<Record<string, unknown>> };
   readonly inputHashes: readonly string[];
 }
 export interface ApplyGraphEdgeRoutesUpdateOptions { readonly prepared: PreparedGraphEdgeRoutesUpdate; readonly requestToken: string; }

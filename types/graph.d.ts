@@ -1,4 +1,4 @@
-import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, ReviseDataOptions, EdgeRouteResult, InputRef } from "./program.js";
+import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, ReviseDataOptions, EditDerivedDataOptions, EditParameterOptions, EdgeRouteResult, InputRef } from "./program.js";
 export type { PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate } from "./program.js";
 
 declare const graphRouteJob: unique symbol;
@@ -42,7 +42,9 @@ export interface GraphEdgeRoutesUpdateRequest {
     | { readonly action: "editFlowData"; readonly args: EditFlowDataOptions }
     | { readonly action: "editHierarchyData"; readonly args: EditHierarchyDataOptions }
     | { readonly action: "editInferredGraphData"; readonly args: EditInferredGraphDataOptions | ApplyInferredGraphOptions }
-    | { readonly action: "reviseData"; readonly args: ReviseDataOptions<Record<string, unknown>> };
+    | { readonly action: "reviseData"; readonly args: ReviseDataOptions<Record<string, unknown>> }
+    | { readonly action: "editDerivedData"; readonly args: EditDerivedDataOptions }
+    | { readonly action: "editParameter"; readonly args: EditParameterOptions };
 }
 export type GraphEdgeRoutesRequest = GraphEdgeRoutesAuthoringRequest | GraphEdgeRoutesUpdateRequest;
 export type GraphEdgeRoutesHost = { readonly requestToken: string; readonly signal?: AbortSignal } & (

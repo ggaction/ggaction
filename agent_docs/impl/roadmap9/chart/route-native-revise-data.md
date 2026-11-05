@@ -1,12 +1,13 @@
-# B native `reviseData` — 순서 있는 원 job/completion replay
+# B native `reviseData`·`editDerivedData`·`editParameter` — 순서 있는 원 job/completion replay
 
 ## 진행 상태
 
 - [x] 동기 native 호출 깊은 곳의 bounded route를 위한 원 job/completion replay.
 - [x] `reviseData`의 public B 연결(completed unit receiver).
-- [ ] Facet/scoped/composition receiver, `editDerivedData`·`editParameter`·`applyDataUpdate`, Canvas/fit/filter/projection.
+- [x] `editDerivedData`·`editParameter`의 public B 연결(같은 replay, completed unit receiver).
+- [ ] Facet/scoped/composition receiver, `applyDataUpdate`, Canvas/fit/filter/projection.
 
-[union](route-native-revise-evidence/union.json): 직접 미연결 8개(`editDerivedData`, `editParameter`, `applyDataUpdate`, `filterMarks`, `removeMarkFilter`, `editCanvas`, `fitCanvas`, `navigateProjection`).
+[union](route-native-revise-evidence/union.json): 직접 미연결 6개(`applyDataUpdate`, `filterMarks`, `removeMarkFilter`, `editCanvas`, `fitCanvas`, `navigateProjection`).
 
 ## 왜 replay인가
 
@@ -21,17 +22,29 @@
 
 Composition receiver는 명시적으로 거부한다. 계약상 update union은 completed unit receiver다.
 
+## 파생 data와 parameter
+
+`editDerivedData`와 `editParameter`도 미리보기·실제 두 pass를 같은 동기 호출 안에서 실행하고, route는 같은 깊은 revision 경로에서 계산된다. 같은 replay로 연결한다. 이 둘의 dataset identity는 원 행에서 결정적이므로 준비 identity를 따로 결박하지 않는다. 영향 route는 개정 대상(dataset 또는 parameter)에서 시작한다. 그 뒤 파생 dataset의 `source`와 변환의 `parameterInputs`를 dependency 순서로 따라간다. 그 dataset을 입력으로 쓰는 자원과 그 하위 자원을 거쳐 route에 닿는다. Parameter가 data source 입력인 경우는 원 action이 prepared data update를 요구하므로 여기서도 그 오류를 그대로 낸다.
+
 ## 검증
 
 `test/unit/resources/graph-route-native-revise.test.js`:
 
 - **v1 동치**: 같은 차트를 v1 동기 route로 만들어 `reviseData`한 결과와 비교한다. 그래픽 경로, route 명령, 개정 dataset 행이 같다. 같은 handle을 두 번 적용하면 결과가 같고 base는 바뀌지 않는다. Worker 계산은 한 번이고 handle inputHash와 같다. Trace의 첫 child는 `reviseData`이다.
 - **거부**: 다른 receiver·token, 복제 handle, 영향 route가 없는 source, 알 수 없는 인자를 거부한다. 동기 `reviseData`는 여전히 bounded route를 거부한다.
+- **파생·parameter**: `editParameter`와 `editDerivedData`가 각각 v1 동기 개정과 route 명령·모든 dataset 값이 같다. Worker 계산은 한 번이고 반복 적용 결과가 같으며 base는 바뀌지 않는다. Route가 소비하지 않는 파생 dataset과 없는 parameter는 거부한다.
 - **Replay 단위**: 정확한 반복 pass, 누락·중복·추가, 미완료 pass, 기록 모드의 요청 정체성, scope 복원을 확인한다.
 
 원 native preflight의 오류는 그대로 보고하고 handle을 남기지 않는다. 준비 중 취소는 거부한다.
 
 전체 `npm test`의 route·data·theme 관련 시험과 route 계약 44개가 통과했다. 같은 source의 coverage는 97.43/95.68/99.36%, critical floor는 786개이고 `graphRoutes.js` branch는 91.03%다. Browser 529/529, render 513/513도 통과했다. 같은 archive `9df2288d…`를 Node20/22/24 consumer로 설치해 검사했고 모두 통과했다. 정본 route benchmark([report](route-native-revise-evidence/report-routes.json.gz))에서 1k·자원 사례는 통과했다. 10k edge 사례는 기존 `Graph plot graphic count must not exceed 10000` 용량 한도로 실패하며, 인계의 열린 의무인 density 1k/10k capacity이고 이번 변경과 무관한 create 경로다.
+
+파생·parameter 연결 checkpoint([증거](route-native-revise-evidence/derived/))의 결과는 다음과 같다.
+
+- 전체 `npm test`: 10527/10529. 실패 2건은 상한 갱신 전 package 크기 시험이었고, 갱신 뒤 같은 archive가 통과했다.
+- Coverage 97.43/95.68/99.36%, critical floor 786개.
+- Browser 529/529, render 513/513.
+- 같은 archive `dac260ac…`를 Node20/22/24 consumer로 검사해 모두 통과했다.
 
 ## 한계
 

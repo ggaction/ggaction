@@ -100,3 +100,38 @@ test("route replay covers exact ordered passes and cannot be completed after an 
   assert.equal(recording.finished(), false);
   const leave = enterRouteReplay(exact); assert.equal(activeRouteReplay(), exact); leave(); assert.equal(activeRouteReplay(), undefined);
 });
+
+const expression = root => ({ version: 2, registry: "standard@1", root });
+function derivedBase() {
+  return chart().createCanvas({ width: 200, height: 120, margin: 10 }).createParameter({ id: "cutoff", value: 4 })
+    .createData({ id: "nodes", values: [{ id: 0 }, { id: 1 }, { id: 2 }] })
+    .createData({ id: "edges", values: [{ id: "e", source: 0, target: 1, w: 1 }, { id: "f", source: 1, target: 2, w: 5 }, { id: "g", source: 0, target: 2, w: 9 }] })
+    .filterData({ id: "strong", source: "edges", where: expression({ type: "binary", op: "gte", left: { type: "field", name: "w" }, right: { type: "parameter", id: "cutoff" } }) })
+    .filterData({ id: "light", source: "edges", field: "w", range: { min: 0, max: 10 } })
+    .createGraphData({ id: "graph", nodes: "nodes", edges: "strong", nodeKey: "id", edgeKey: "id", source: "source", target: "target" })
+    .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: 0, x: 0, y: 0 }, { key: 1, x: 10, y: 10 }, { key: 2, x: 30, y: 5 }] } });
+}
+
+test("derived-data and parameter revisions reach dependent routes through the same ordered replay", async () => {
+  const posts = [], worker = executor(job => posts.push(job.inputHash));
+  try {
+    const ordinary = derivedBase().bundleGraphEdges({ id: "route", method: "edge-path" }).createGraphPlot({ id: "plot", routes: "route" });
+    const program = await bounded(derivedBase(), worker), before = serializeProgram(program);
+    for (const [action, args] of [["editParameter", { target: "cutoff", value: 0 }], ["editDerivedData", { target: "strong", definition: { type: "filter", field: "w", range: { min: 0, max: 6 } } }]]) {
+      assert.throws(() => program[action](args), /Bounded routes require prepareGraphEdgeRoutes/);
+      posts.length = 0;
+      const prepared = await prepareGraphEdgeRoutes(program, { kind: "update", edit: { action, args } }, host(worker));
+      assert.equal(posts.length, 1); assert.deepEqual(prepared.inputHashes, posts);
+      const expected = ordinary[action](args), first = program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "revise" });
+      assert.deepEqual(route(first).result.routes.map(value => value.commands), route(expected).result.routes.map(value => value.commands));
+      assert.deepEqual(first.semanticSpec.datasets.map(dataset => dataset.values), expected.semanticSpec.datasets.map(dataset => dataset.values));
+      assert.equal(serializeProgram(program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "revise" })), serializeProgram(first));
+      assert.equal(first.trace.children.at(-1).children[0].op, action);
+    }
+    assert.equal(serializeProgram(program), before);
+    // A derived dataset that no route consumes has no bounded update.
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editDerivedData", args: { target: "light", definition: { type: "filter", field: "w", range: { min: 1, max: 2 } } } } }, host(worker)),
+      /no bounded edge route update; use editDerivedData directly/);
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editParameter", args: { target: "absent", value: 1 } } }, host(worker)));
+  } finally { worker.dispose(); }
+});

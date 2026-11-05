@@ -13,9 +13,14 @@ import { resolveHierarchyResource } from "../../selectors/hierarchy.js";
 import { normalizeInferenceRequest } from "../../materialization/graph/inferenceRequest.js";
 import { orderResourceDependencies } from "../../materialization/resourceState.js";
 import { reviseData } from "../data/revise.js";
+import { editDerivedData } from "../data/edit.js";
+import { editParameter } from "../parameters/edit.js";
+import { requireStoredResource } from "../../selectors/resources.js";
 import { requireDataset } from "../../selectors/datasets.js";
 import { reviseSourceIdentity } from "../../core/itemIdentity.js";
 import { newDatasetNamespace } from "../primitives/datasetIdentity.js";
+
+const REPLAYED = new Set([reviseData, editDerivedData, editParameter]);
 
 // Full owns this exact snapshot boundary. Only the existing inference registry
 // may recognize its immutable handle; arbitrary objects are always deep-copied.
@@ -68,10 +73,29 @@ export function resolveNativeRouteUpdate(program, edit) {
       if (Array.isArray(original.values) && original.source === undefined) identity = reviseSourceIdentity(original, edit.args.values, edit.args, newDatasetNamespace());
       break;
     }
-    default: throw new TypeError("Native route updates require editLayout, editGraphData, editFlowData, editHierarchyData, editInferredGraphData or reviseData.");
+    case "editDerivedData": {
+      validateKeys(edit.args, ["target", "definition", "dependents"], edit.action);
+      native = editDerivedData;
+      if (program.compositionSpec !== undefined) throw new TypeError("Native route editDerivedData requires a completed unit receiver.");
+      previous = { kind: "data", id: requireDataset(program, edit.args.target).id };
+      break;
+    }
+    case "editParameter": {
+      validateKeys(edit.args, ["target", "value"], edit.action);
+      native = editParameter;
+      if (program.compositionSpec !== undefined) throw new TypeError("Native route editParameter requires a completed unit receiver.");
+      previous = { kind: "parameter", id: requireStoredResource(program, { kind: "parameter", id: edit.args.target }).id };
+      break;
+    }
+    default: throw new TypeError("Native route updates require editLayout, editGraphData, editFlowData, editHierarchyData, editInferredGraphData, reviseData, editDerivedData or editParameter.");
   }
   if (program[edit.action] !== native) throw new TypeError("Native route action was replaced.");
   const key = ref => JSON.stringify([ref.kind, ref.id]), affected = new Set([key(previous)]), routes = [];
+  // Derived datasets carry their source and parameter inputs, in dependency order.
+  for (const dataset of program.semanticSpec.datasets) {
+    if (dataset.source !== undefined && affected.has(key({ kind: "data", id: dataset.source })) ||
+        (dataset.transform ?? []).some(step => (step.parameterInputs ?? []).some(ref => affected.has(key(ref))))) affected.add(key({ kind: "data", id: dataset.id }));
+  }
   for (const resource of orderResourceDependencies(program.semanticSpec.resources)) {
     if (!affected.has(key(resource)) && resource.inputs.some(ref => affected.has(key(ref)))) affected.add(key(resource));
     if (resource.kind === "edge-route" && affected.has(key(resource))) routes.push(resource);
@@ -79,7 +103,7 @@ export function resolveNativeRouteUpdate(program, edit) {
   const bounded = routes.filter(resource => Object.hasOwn(resource.options.options, "execution"));
   if (!bounded.length) throw new TypeError(`This resource has no bounded edge route update; use ${edit.action} directly.`);
   // A replayed action reaches its routes inside one synchronous native call.
-  return { native, edit, previous, routes, bounded, ...(native === reviseData ? { replayed: true, identity } : {}) };
+  return { native, edit, previous, routes, bounded, ...(REPLAYED.has(native) ? { replayed: true, identity } : {}) };
 }
 
 export function* prepareNativeRouteUpdate(program, resolved, scope) {
