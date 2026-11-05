@@ -17,12 +17,17 @@ import { editDerivedData } from "../data/edit.js";
 import { editParameter } from "../parameters/edit.js";
 import { editCanvas } from "../canvas/actions.js";
 import { fitCanvas } from "../canvas/fitting.js";
+import { navigateProjection } from "../geo/camera.js";
+import { applyDataUpdate } from "../data/sourceEdit.js";
+import { filterMarks, removeMarkFilter } from "../data/filter.js";
+import { requireLayer } from "../../selectors/layers.js";
+import { preparedDataUpdateTarget } from "../../resources/dataUpdate.js";
 import { requireStoredResource } from "../../selectors/resources.js";
 import { requireDataset } from "../../selectors/datasets.js";
 import { reviseSourceIdentity } from "../../core/itemIdentity.js";
 import { newDatasetNamespace } from "../primitives/datasetIdentity.js";
 
-const REPLAYED = new Set([reviseData, editDerivedData, editParameter, editCanvas, fitCanvas]);
+const REPLAYED = new Set([reviseData, editDerivedData, editParameter, editCanvas, fitCanvas, navigateProjection, applyDataUpdate, filterMarks, removeMarkFilter]);
 
 // Full owns this exact snapshot boundary. Only the existing inference registry
 // may recognize its immutable handle; arbitrary objects are always deep-copied.
@@ -30,6 +35,12 @@ export function snapshotNativeRouteEdit(program, edit) {
   ownRecord(edit, "Native route edit");
   rejectUnknownProperties(edit, ["action", "args"], "native route edit");
   ownRecord(edit.args, "Native route action arguments");
+  if (edit.action === "applyDataUpdate") {
+    // The original data update registry owns this immutable handle identity.
+    validateKeys(edit.args, ["prepared", "requestToken"], edit.action);
+    preparedDataUpdateTarget(program, edit.args.prepared, edit.args.requestToken);
+    return Object.freeze({ action: edit.action, args: Object.freeze({ prepared: edit.args.prepared, requestToken: edit.args.requestToken }) });
+  }
   if (edit.action === "editInferredGraphData" && Object.hasOwn(edit.args, "prepared")) {
     nativeInferenceResource(program, edit.args);
     return Object.freeze({ action: edit.action, args: Object.freeze({ prepared: edit.args.prepared, requestToken: edit.args.requestToken }) });
@@ -93,7 +104,25 @@ export function resolveNativeRouteUpdate(program, edit) {
       native = edit.action === "editCanvas" ? editCanvas : fitCanvas;
       if (program.compositionSpec !== undefined) throw new TypeError(`Native route ${edit.action} requires a completed unit receiver.`);
       break;
-    default: throw new TypeError("Native route updates require editLayout, editGraphData, editFlowData, editHierarchyData, editInferredGraphData, reviseData, editDerivedData, editParameter, editCanvas or fitCanvas.");
+    case "navigateProjection":
+      validateKeys(edit.args, ["target", "operation"], edit.action);
+      native = navigateProjection;
+      if (program.compositionSpec !== undefined) throw new TypeError("Native route navigateProjection requires a completed unit receiver.");
+      break;
+    case "filterMarks": case "removeMarkFilter": {
+      native = edit.action === "filterMarks" ? filterMarks : removeMarkFilter;
+      if (program.compositionSpec !== undefined) throw new TypeError(`Native route ${edit.action} requires a completed unit receiver.`);
+      if (typeof edit.args.target !== "string") throw new TypeError(`Native route ${edit.action} requires an explicit target.`);
+      // Only a recomputing graph filter revises the routes behind its plot.
+      previous = requireLayer(program, edit.args.target).graphBinding?.layout;
+      break;
+    }
+    case "applyDataUpdate":
+      native = applyDataUpdate;
+      if (program.compositionSpec !== undefined) throw new TypeError("Native route applyDataUpdate requires a completed unit receiver.");
+      previous = preparedDataUpdateTarget(program, edit.args.prepared, edit.args.requestToken);
+      break;
+    default: throw new TypeError("Native route updates require editLayout, editGraphData, editFlowData, editHierarchyData, editInferredGraphData, reviseData, editDerivedData, editParameter, editCanvas, fitCanvas, navigateProjection, applyDataUpdate, filterMarks or removeMarkFilter.");
   }
   if (program[edit.action] !== native) throw new TypeError("Native route action was replaced.");
   const key = ref => JSON.stringify([ref.kind, ref.id]), affected = new Set(previous === undefined ? [] : [key(previous)]), routes = [];
@@ -102,10 +131,11 @@ export function resolveNativeRouteUpdate(program, edit) {
     if (dataset.source !== undefined && affected.has(key({ kind: "data", id: dataset.source })) ||
         (dataset.transform ?? []).some(step => (step.parameterInputs ?? []).some(ref => affected.has(key(ref))))) affected.add(key({ kind: "data", id: dataset.id }));
   }
+  // Canvas edits, fits and camera resizes can move every screen-space route's viewport.
+  const movesViewport = native === editCanvas || native === fitCanvas || native === navigateProjection && edit.args.operation?.type === "resize";
   for (const resource of orderResourceDependencies(program.semanticSpec.resources)) {
-    // A canvas edit or fit can move every screen-space route's viewport.
     if (!affected.has(key(resource)) && (resource.inputs.some(ref => affected.has(key(ref))) ||
-        (native === editCanvas || native === fitCanvas) && resource.kind === "edge-route" && resource.options.coordinateSpace === "screen")) affected.add(key(resource));
+        movesViewport && resource.kind === "edge-route" && resource.options.coordinateSpace === "screen")) affected.add(key(resource));
     if (resource.kind === "edge-route" && affected.has(key(resource))) routes.push(resource);
   }
   const bounded = routes.filter(resource => Object.hasOwn(resource.options.options, "execution"));

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:8738e05dda919eefbf183312bdc675e07777d46b85cc86f36332752ff8fc2989. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:f7d65d6809bda12eb73e7e68cae6007a368fb4e189798c8cd60109cf92c0da71. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -38840,7 +38840,7 @@ export declare function createInteractionSession(options: {
 [Complete declaration and relative dependencies](./types/graph.d.ts)
 
 ```typescript
-import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, ReviseDataOptions, EditDerivedDataOptions, EditParameterOptions, CanvasOptions, FitCanvasOptions, EdgeRouteResult, InputRef } from "./program.js";
+import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, ReviseDataOptions, EditDerivedDataOptions, EditParameterOptions, CanvasOptions, FitCanvasOptions, NavigateProjectionOptions, ApplyDataUpdateOptions, FilterMarksOptions, RemoveMarkFilterOptions, EdgeRouteResult, InputRef } from "./program.js";
 export type { PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate } from "./program.js";
 
 declare const graphRouteJob: unique symbol;
@@ -38888,7 +38888,11 @@ export interface GraphEdgeRoutesUpdateRequest {
     | { readonly action: "editDerivedData"; readonly args: EditDerivedDataOptions }
     | { readonly action: "editParameter"; readonly args: EditParameterOptions }
     | { readonly action: "editCanvas"; readonly args: CanvasOptions }
-    | { readonly action: "fitCanvas"; readonly args: FitCanvasOptions };
+    | { readonly action: "fitCanvas"; readonly args: FitCanvasOptions }
+    | { readonly action: "navigateProjection"; readonly args: NavigateProjectionOptions }
+    | { readonly action: "applyDataUpdate"; readonly args: ApplyDataUpdateOptions }
+    | { readonly action: "filterMarks"; readonly args: FilterMarksOptions & { readonly target: string } }
+    | { readonly action: "removeMarkFilter"; readonly args: RemoveMarkFilterOptions & { readonly target: string } };
 }
 export type GraphEdgeRoutesRequest = GraphEdgeRoutesAuthoringRequest | GraphEdgeRoutesUpdateRequest;
 export type GraphEdgeRoutesHost = { readonly requestToken: string; readonly signal?: AbortSignal } & (
@@ -50310,7 +50314,7 @@ export interface PreparedGraphEdgeRoutes {
 ```typescript
 export interface PreparedGraphEdgeRoutesUpdate {
   readonly [preparedGraphEdgeRoutesUpdate]: true; readonly kind: "edge-route-preparation";
-  readonly request: { readonly kind: "update"; readonly action: "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData" | "reviseData" | "editDerivedData" | "editParameter" | "editCanvas" | "fitCanvas"; readonly args: Readonly<Record<string, unknown>> };
+  readonly request: { readonly kind: "update"; readonly action: "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData" | "reviseData" | "editDerivedData" | "editParameter" | "editCanvas" | "fitCanvas" | "navigateProjection" | "applyDataUpdate" | "filterMarks" | "removeMarkFilter"; readonly args: Readonly<Record<string, unknown>> };
   readonly inputHashes: readonly string[];
 }
 ```
@@ -57032,7 +57036,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:8738e05dda919eefbf183312bdc675e07777d46b85cc86f36332752ff8fc2989` |
+| Contract fingerprint | `sha256:f7d65d6809bda12eb73e7e68cae6007a368fb4e189798c8cd60109cf92c0da71` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

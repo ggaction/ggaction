@@ -3,7 +3,8 @@ import { closedAction, bindActionInvocationScope } from "../../core/action.js";
 import { createEdgeRouteResource, isPreparedRouteRequirement } from "../../materialization/graph/routeResource.js";
 import { normalizeEdgeRouteRequest } from "../../materialization/graph/routeRequest.js";
 import { registerScreenRouteRevision } from "./screenRoutes.js";
-import { readPreparedGraphEdgeRoutes, registerGraphRoutePlanner, enterGraphRouteUpdateInvocation, applyPreparedGraphRouteUpdate, readGraphRouteUpdateTheme, readNativeRouteRevisionIdentity } from "../../resources/graphRoutes.js";
+import { readPreparedGraphEdgeRoutes, registerGraphRoutePlanner, enterGraphRouteUpdateInvocation, applyPreparedGraphRouteUpdate, readGraphRouteUpdateTheme, readNativeRouteRevisionIdentity, nativeRouteInvocationBase } from "../../resources/graphRoutes.js";
+import { registerPreparedDataUpdateBase } from "../../resources/dataUpdate.js";
 import { snapshotNativeRouteEdit, resolveNativeRouteUpdate, prepareNativeRouteUpdate } from "./nativeUpdate.js";
 import { registerNativeRouteThemeReader } from "../theme/nativeRouteUpdate.js";
 import { registerNativeRevisionIdentityReader } from "../data/revise.js";
@@ -51,5 +52,6 @@ export function registerEdgeRouteActions(ProgramClass) {
   registerNativeRouteThemeReader(ProgramClass, readGraphRouteUpdateTheme);
   registerNativeRevisionIdentityReader(ProgramClass, readNativeRouteRevisionIdentity);
   registerFitContinuationCheck(ProgramClass, checkFitContinuation);
+  registerPreparedDataUpdateBase(ProgramClass, nativeRouteInvocationBase);
   registerScreenRouteRevision(ProgramClass);
 }

@@ -140,6 +140,9 @@ test("keeps source imports inside their architectural boundaries", () => {
             path.join("actions", "flow", "resources.js"), path.join("actions", "hierarchy", "resources.js"), path.join("actions", "layouts", "index.js")].includes(path.relative(root, file)) &&
             path.relative(root, dependency) === path.join("resources", "graphRoutes.js")) ||
           (path.relative(root, file) === path.join("actions", "graphs", "inference.js") && path.relative(root, dependency) === path.join("resources", "graphInference.js")) ||
+          // Native route updates name and bind the original prepared data update owner.
+          ([path.join("actions", "graphs", "edgeRoutes.js"), path.join("actions", "graphs", "nativeUpdate.js")].includes(path.relative(root, file)) &&
+            path.relative(root, dependency) === path.join("resources", "dataUpdate.js")) ||
           (path.relative(root, file) === path.join("actions", "textMetrics", "index.js") && path.relative(root, dependency) === path.join("resources", "textMetrics.js")) ||
           (path.relative(root, file) === path.join("resources", "textMetricsFull.js") && path.relative(root, dependency) === path.join("actions", "textMetrics", "index.js")) ||
           (owner === "renderers" && path.relative(root, dependency) === path.join("core", "immutable.js")) ||

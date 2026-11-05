@@ -1,4 +1,4 @@
-import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, ReviseDataOptions, EditDerivedDataOptions, EditParameterOptions, CanvasOptions, FitCanvasOptions, EdgeRouteResult, InputRef } from "./program.js";
+import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, ReviseDataOptions, EditDerivedDataOptions, EditParameterOptions, CanvasOptions, FitCanvasOptions, NavigateProjectionOptions, ApplyDataUpdateOptions, FilterMarksOptions, RemoveMarkFilterOptions, EdgeRouteResult, InputRef } from "./program.js";
 export type { PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate } from "./program.js";
 
 declare const graphRouteJob: unique symbol;
@@ -46,7 +46,11 @@ export interface GraphEdgeRoutesUpdateRequest {
     | { readonly action: "editDerivedData"; readonly args: EditDerivedDataOptions }
     | { readonly action: "editParameter"; readonly args: EditParameterOptions }
     | { readonly action: "editCanvas"; readonly args: CanvasOptions }
-    | { readonly action: "fitCanvas"; readonly args: FitCanvasOptions };
+    | { readonly action: "fitCanvas"; readonly args: FitCanvasOptions }
+    | { readonly action: "navigateProjection"; readonly args: NavigateProjectionOptions }
+    | { readonly action: "applyDataUpdate"; readonly args: ApplyDataUpdateOptions }
+    | { readonly action: "filterMarks"; readonly args: FilterMarksOptions & { readonly target: string } }
+    | { readonly action: "removeMarkFilter"; readonly args: RemoveMarkFilterOptions & { readonly target: string } };
 }
 export type GraphEdgeRoutesRequest = GraphEdgeRoutesAuthoringRequest | GraphEdgeRoutesUpdateRequest;
 export type GraphEdgeRoutesHost = { readonly requestToken: string; readonly signal?: AbortSignal } & (

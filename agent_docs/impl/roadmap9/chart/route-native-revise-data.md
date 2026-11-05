@@ -7,9 +7,10 @@
 - [x] `editDerivedData`·`editParameter`의 public B 연결(같은 replay, completed unit receiver).
 - [x] `editCanvas`의 public B 연결(screen-space route, 추가 viewport 단계 포함).
 - [x] `fitCanvas`의 public B 연결(probe broad catch가 route continuation·quota·deadline을 흡수하지 않음).
-- [ ] Facet/scoped/composition receiver, `applyDataUpdate`, filter/projection.
+- [x] `navigateProjection`(resize), `applyDataUpdate`(원 data registry handle), `filterMarks`/`removeMarkFilter`(recompute graph 필터)의 public B 연결. 직접 14개 모두 unit receiver 연결.
+- [ ] Facet/scoped/composition receiver, focused 파생 alias 21개, 간접 guide/encoding/mark/theme/composition, 100ms 계량.
 
-[union](route-native-revise-evidence/union.json): 직접 미연결 4개(`applyDataUpdate`, `filterMarks`, `removeMarkFilter`, `navigateProjection`).
+[union](route-native-revise-evidence/union.json): 직접 미연결 0개. 모두 `partial-unit-native-connection`이다.
 
 ## 왜 replay인가
 
@@ -42,6 +43,12 @@ Composition receiver는 명시적으로 거부한다. 계약상 update union은 
 
 원 side 순서, quarter-pixel binary search, probe cache, 반복 상한은 바뀌지 않는다. 준비는 probe마다 생기는 원 job을 하나씩 worker로 계산하고 다시 실행한다. 비용은 probe 수에 따라 늘어난다(시험 fixture 17 job, Node 약 1.4초).
 
+## Data update·projection·filter
+
+- **`applyDataUpdate`**: 원 data update registry의 frozen handle을 snapshot에서 복사하지 않는다. 준비는 `preparedDataUpdateTarget`으로 exact receiver·token을 검사해 개정 source나 parameter를 얻는다. 최종 nested 원 `applyDataUpdate`는 wrapper의 entered program에서 `actionSource`를 받으므로, Full만 등록한 resolver가 exact invocation·exact handle·그 entered program일 때만 invocation receiver를 비교 대상으로 준다. 직접 호출은 자기 receiver를 비교하므로 다른 receiver는 여전히 stale이다. 내부 `reviseData`/`editParameter`는 prepared source update의 identity를 써서 결정적이다.
+- **`navigateProjection`**: canvas를 바꾸는 `resize` 연산만 screen-space route의 viewport를 움직인다. 다른 camera 연산은 route job이 없어 직접 action을 쓰도록 거부한다.
+- **`filterMarks`/`removeMarkFilter`**: 명시 target의 graph layout에서 시작한다. `recompute:true` 필터만 inferred graph, layout, route를 개정하고, 보이기만 하는 필터는 route job이 없어 거부한다.
+
 ## 검증
 
 `test/unit/resources/graph-route-native-revise.test.js`:
@@ -51,6 +58,7 @@ Composition receiver는 명시적으로 거부한다. 계약상 update union은 
 - **파생·parameter**: `editParameter`와 `editDerivedData`가 각각 v1 동기 개정과 route 명령·모든 dataset 값이 같다. Worker 계산은 한 번이고 반복 적용 결과가 같으며 base는 바뀌지 않는다. Route가 소비하지 않는 파생 dataset과 없는 parameter는 거부한다.
 - **Canvas**: 서로 다른 두 screen-space route가 순서대로 두 job을 만들고 v1 `editCanvas`와 route 명령이 같다. 반복 적용 결과가 같고 base는 바뀌지 않는다. 배경만 바꾸는 편집과 world-space route만 있는 프로그램은 거부한다.
 - **Fit**: 동기 `fitCanvas`가 overflow가 아니라 요구 오류를 낸다. B 결과는 v1 fit과 route 명령, margin, fitting 결과가 같다. 모든 job이 순서대로 한 번씩 계산되고 반복 적용 결과가 같다.
+- **Data update·projection·filter**: 각 action이 v1과 route 명령이 같고 worker 계산은 한 번이다. Data update는 다른 token, 복제 handle, 직접 호출의 다른 receiver를 거부한다. Projection은 resize 외 연산을, filter는 보이기만 하는 필터와 target 없는 요청을 거부한다.
 - **Replay 단위**: 정확한 반복 pass, 누락·중복·추가, 미완료 pass, 기록 모드의 요청 정체성, scope 복원을 확인한다.
 
 원 native preflight의 오류는 그대로 보고하고 handle을 남기지 않는다. 준비 중 취소는 거부한다.
@@ -70,6 +78,14 @@ Canvas·fit 연결 checkpoint([증거](route-native-revise-evidence/canvas/))의
 - Coverage 97.43/95.67/99.36%, critical floor 786개.
 - Browser 529/529, render 513/513.
 - 같은 archive `2cdf2cac…`를 Node20/22/24 consumer로 검사해 모두 통과했다.
+
+직접 14개 연결 checkpoint([증거](route-native-revise-evidence/union14/))의 결과는 다음과 같다.
+
+- 전체 `npm test`: 10530/10533. 실패는 상한 갱신 전 package 크기 시험 2건과 source 경계 1건이었다. 경계 건은 route owner의 data update registry import로, 기존 route owner 예외 형식대로 명시했다.
+- Coverage 97.43/95.68/99.36%, critical floor 786개.
+- Browser 529/529, render 513/513.
+- 같은 archive `1fb96505…`를 Node20/22/24 consumer로 검사해 모두 통과했다.
+- Route benchmark는 통과 10건, 미측정 10건이다. 실패 4건은 모두 기존 10k edge `Graph plot graphic count` 용량 한도다.
 
 ## 한계
 

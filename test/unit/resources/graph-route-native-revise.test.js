@@ -208,3 +208,67 @@ test("fit probes absorb only ordinary failures while a replay is active", async 
   leave = enterRouteReplay(createRouteReplay([], { ledger: { check() { throw quota; } } }));
   try { assert.throws(() => checkFitContinuation(ordinary), error => error === quota); } finally { leave(); }
 });
+
+test("prepared data updates, camera resizes and recomputing graph filters replay their dependent routes", async () => {
+  const { prepareDataUpdate } = await import("../../../src/index.js");
+  const posts = [], worker = executor(job => posts.push(job.inputHash));
+  const commands = value => route(value).result.routes.map(item => item.commands);
+  try {
+    // A prepared source refresh keeps its original data registry handle.
+    const csv = text => ({ text, mimeType: "text/csv", encoding: "utf-8" });
+    const sourced = async () => {
+      const start = chart().createCanvas({ width: 200, height: 120, margin: 10 }).createData({ id: "nodes", values: [{ id: 0 }, { id: 1 }, { id: 2 }] });
+      const initial = await prepareDataUpdate(start, { kind: "create", id: "edges", source: { kind: "named", name: "edges", format: "csv", parse: { source: { type: "number" }, target: { type: "number" } } } },
+        { requestToken: "initial", resolveNamed: async () => csv("id,source,target\ne,0,1\nf,1,2") });
+      return start.applyDataUpdate({ prepared: initial, requestToken: "initial" })
+        .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "source", target: "target" })
+        .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: 0, x: 0, y: 0 }, { key: 1, x: 10, y: 10 }, { key: 2, x: 30, y: 5 }] } });
+    };
+    const refresh = program => prepareDataUpdate(program, { kind: "revise", target: "edges", id: "edges2" }, { requestToken: "refresh", resolveNamed: async () => csv("id,source,target\ne,0,2\nf,2,1") });
+    const plain = (await sourced()).bundleGraphEdges({ id: "route", method: "edge-path" }).createGraphPlot({ id: "plot", routes: "route" });
+    const expectedData = plain.applyDataUpdate({ prepared: await refresh(plain), requestToken: "refresh" });
+    const program = await bounded(await sourced(), worker), data = await refresh(program);
+    assert.throws(() => program.applyDataUpdate({ prepared: data, requestToken: "refresh" }), /Bounded routes require prepareGraphEdgeRoutes/);
+    posts.length = 0;
+    const update = await prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "applyDataUpdate", args: { prepared: data, requestToken: "refresh" } } }, host(worker));
+    assert.equal(posts.length, 1);
+    assert.deepEqual(commands(program.applyGraphEdgeRoutesUpdate({ prepared: update, requestToken: "revise" })), commands(expectedData));
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "applyDataUpdate", args: { prepared: data, requestToken: "other" } } }, host(worker)), stale);
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "applyDataUpdate", args: { prepared: structuredClone(data), requestToken: "refresh" } } }, host(worker)), /authentic prepared data update/);
+    const creation = await prepareDataUpdate(program, { kind: "create", id: "extra", source: { kind: "inline", values: [{ id: 1 }] } }, { requestToken: "create-extra" });
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "applyDataUpdate", args: { prepared: creation, requestToken: "create-extra" } } }, host(worker)),
+      /use applyDataUpdate directly/);
+    // The registry still compares a direct call's own receiver.
+    assert.throws(() => program.editCanvas({ width: 200 }).applyDataUpdate({ prepared: data, requestToken: "refresh" }), stale);
+
+    // Recomputing graph filters revise the inferred graph, its layout and routes.
+    const inferred = () => chart().createCanvas({ width: 200, height: 120 }).createData({ id: "rows", values: [{ id: "a", x: 1 }, { id: "b", x: 2 }, { id: "c", x: 3 }] })
+      .createInferredGraphData({ id: "graph", data: "rows", nodeKey: "id", ruleId: "sequence", rule: "sequence", options: { orderField: "x" } })
+      .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: "a", x: 0, y: 0 }, { key: "b", x: 10, y: 10 }, { key: "c", x: 30, y: 5 }] } });
+    const filter = { target: "plot", field: "key", op: "neq", value: "b", recompute: true };
+    const filtered = inferred().bundleGraphEdges({ id: "route", method: "edge-path" }).createGraphPlot({ id: "plot", routes: "route" }).filterMarks(filter);
+    const graphProgram = await bounded(inferred(), worker);
+    posts.length = 0;
+    const filterUpdate = await prepareGraphEdgeRoutes(graphProgram, { kind: "update", edit: { action: "filterMarks", args: filter } }, host(worker));
+    const applied = graphProgram.applyGraphEdgeRoutesUpdate({ prepared: filterUpdate, requestToken: "revise" });
+    assert.equal(posts.length, 1); assert.deepEqual(commands(applied), commands(filtered));
+    const removal = await prepareGraphEdgeRoutes(applied, { kind: "update", edit: { action: "removeMarkFilter", args: { target: "plot" } } }, host(worker));
+    assert.deepEqual(commands(applied.applyGraphEdgeRoutesUpdate({ prepared: removal, requestToken: "revise" })), commands(filtered.removeMarkFilter({ target: "plot" })));
+    await assert.rejects(prepareGraphEdgeRoutes(graphProgram, { kind: "update", edit: { action: "filterMarks", args: { ...filter, recompute: false } } }, host(worker)), /use filterMarks directly/);
+    await assert.rejects(prepareGraphEdgeRoutes(graphProgram, { kind: "update", edit: { action: "filterMarks", args: { field: "key", op: "neq", value: "b" } } }, host(worker)), /explicit target/);
+
+    // A camera resize moves screen-space routes; other camera operations do not.
+    const point = (id, coordinates) => ({ type: "Feature", id, properties: {}, geometry: { type: "Point", coordinates } });
+    const mapped = () => base().createGeometryData({ id: "world", format: "geojson", coordinateKind: "geographic", featureKey: "id", values: { type: "FeatureCollection", features: [point("a", [0, 0]), point("b", [10, 5])] } })
+      .createProjection({ id: "projection", type: "equirectangular", scalePx: 100, translatePx: [100, 60] });
+    const resize = { target: "projection", operation: { type: "resize", canvas: { width: 260, height: 160 }, scaling: "fit" } };
+    const resized = mapped().bundleGraphEdges({ id: "route", method: "edge-path", coordinateSpace: "screen" }).navigateProjection(resize);
+    const receiver = mapped(), created = await prepareGraphEdgeRoutes(receiver, { kind: "create", id: "route", method: "edge-path", coordinateSpace: "screen", options: { execution } }, { requestToken: "create", executor: worker, deadlineMs: 30000 });
+    const camera = receiver.bundleGraphEdges({ prepared: created, requestToken: "create" });
+    posts.length = 0;
+    const navigation = await prepareGraphEdgeRoutes(camera, { kind: "update", edit: { action: "navigateProjection", args: resize } }, host(worker));
+    assert.equal(posts.length, 1); assert.deepEqual(commands(camera.applyGraphEdgeRoutesUpdate({ prepared: navigation, requestToken: "revise" })), commands(resized));
+    await assert.rejects(prepareGraphEdgeRoutes(camera, { kind: "update", edit: { action: "navigateProjection", args: { target: "projection", operation: { type: "fit", fit: { features: "all" } } } } }, host(worker)),
+      /use navigateProjection directly/);
+  } finally { worker.dispose(); }
+});

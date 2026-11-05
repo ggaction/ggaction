@@ -211,6 +211,14 @@ export function enterGraphRouteUpdateInvocation(program, args) {
   };
 }
 
+// The receiver a nested original action acts for: only the exact entered
+// program of this invocation, with the exact prepared handle of its edit.
+export function nativeRouteInvocationBase(source, prepared) {
+  const current = invocation;
+  if (current === undefined || current.entered === undefined || current.entered !== source || current.record.edit.args.prepared !== prepared) return undefined;
+  return current.record.base;
+}
+
 // The prepared row identity of a replayed revision, readable only inside its
 // exact invocation by the native action itself.
 export function readNativeRouteRevisionIdentity(program, args, native) {

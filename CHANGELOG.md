@@ -11,7 +11,7 @@ All notable changes to `ggaction` are recorded in this file.
 - Pin the audited geometry dependency closure exactly (`d3-array` 3.2.4 and `internmap` 2.0.3 alongside the existing projection alias), so installed applications and browser import maps resolve the verified sources and distributed notices instead of a newer transitive release.
 
 - Add Full `applyGraphEdgeRoutesUpdate` to apply a prepared `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData` or `editInferredGraphData` update to every affected version 2 route through the original native action, with exact receiver, token and signal binding.
-- Prepare `reviseData`, `editDerivedData`, `editParameter`, `editCanvas` and `fitCanvas` as native route updates on a completed unit chart: each affected version 2 route is computed once on the worker, and the final application checks every route job of both its preview and actual passes against the prepared completions in order.
+- Prepare `reviseData`, `editDerivedData`, `editParameter`, `editCanvas`, `fitCanvas`, `navigateProjection`, `applyDataUpdate`, `filterMarks` and `removeMarkFilter` as native route updates on a completed unit chart: each affected version 2 route is computed once on the worker, and the final application checks every route job of both its preview and actual passes against the prepared completions in order.
 - Report the prepared-route requirement from `fitCanvas` on charts with version 2 routes instead of a misleading overflow from an absorbed probe failure.
 
 - Add explicit native Geo projected-output capacity and bounded concrete path `maxCommands`, preserving default limits and all source vertices through native edits, scenes, rendering and persistence.

@@ -114,15 +114,37 @@
     },
     {
       "action": "applyDataUpdate",
-      "status": "pending-public-native-connection"
+      "status": "partial-unit-native-connection",
+      "implemented": [
+        "original data registry handle identity retained; nested original action reads it only for the exact invocation receiver",
+        "revise and parameter targets follow the same ordered replay"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "filterMarks",
-      "status": "pending-public-native-connection"
+      "status": "partial-unit-native-connection",
+      "implemented": [
+        "recomputing graph filters replay the inferred graph, layout and route revision; visual filters have no bounded update"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "removeMarkFilter",
-      "status": "pending-public-native-connection"
+      "status": "partial-unit-native-connection",
+      "implemented": [
+        "removing a recomputing graph filter replays its route revision"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editCanvas",
@@ -151,7 +173,14 @@
     },
     {
       "action": "navigateProjection",
-      "status": "pending-public-native-connection"
+      "status": "partial-unit-native-connection",
+      "implemented": [
+        "camera resize replays every moved screen-space job in order; other camera operations have no bounded update"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     }
   ],
   "focusedDerivedAliases": [
