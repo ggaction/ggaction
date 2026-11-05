@@ -11155,7 +11155,7 @@ export interface PreparedGraphEdgeRoutes {
 ```typescript
 export interface PreparedGraphEdgeRoutesUpdate {
   readonly [preparedGraphEdgeRoutesUpdate]: true; readonly kind: "edge-route-preparation";
-  readonly request: { readonly kind: "update"; readonly action: "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData" | "reviseData" | "editDerivedData" | "editParameter" | "editCanvas" | "fitCanvas" | "navigateProjection" | "applyDataUpdate" | "filterMarks" | "removeMarkFilter"; readonly args: Readonly<Record<string, unknown>> };
+  readonly request: { readonly kind: "update"; readonly action: "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData" | "reviseData" | "editDerivedData" | "editParameter" | "editCanvas" | "fitCanvas" | "navigateProjection" | "applyDataUpdate" | "filterMarks" | "removeMarkFilter" | "editComputedData" | "editFilteredData" | "editFlattenData" | "editLookupData" | "editFoldData" | "editSummaryData" | "editBinData" | "editTimeUnitData" | "editWindowData" | "editDensityData" | "editStackData" | "editRegressionData" | "editSortedData" | "editIntervalData" | "editECDFData" | "editNormalizedData" | "editCompleteData" | "editPivotData" | "editImputedData" | "editBin2DData" | "editRegressionStatisticsData"; readonly args: Readonly<Record<string, unknown>> };
   readonly inputHashes: readonly string[];
 }
 ```

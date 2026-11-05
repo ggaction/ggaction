@@ -13,7 +13,9 @@ import { resolveHierarchyResource } from "../../selectors/hierarchy.js";
 import { normalizeInferenceRequest } from "../../materialization/graph/inferenceRequest.js";
 import { orderResourceDependencies } from "../../materialization/resourceState.js";
 import { reviseData } from "../data/revise.js";
-import { editDerivedData } from "../data/edit.js";
+import { editDerivedData, EDIT_DERIVED_DATA_ACTIONS } from "../data/edit.js";
+import { editBin2DData } from "../data/bin2d.js";
+import { editRegressionStatisticsData } from "../data/regressionStatistics.js";
 import { editParameter } from "../parameters/edit.js";
 import { editCanvas } from "../canvas/actions.js";
 import { fitCanvas } from "../canvas/fitting.js";
@@ -23,11 +25,24 @@ import { filterMarks, removeMarkFilter } from "../data/filter.js";
 import { requireLayer } from "../../selectors/layers.js";
 import { preparedDataUpdateTarget } from "../../resources/dataUpdate.js";
 import { requireStoredResource } from "../../selectors/resources.js";
-import { requireDataset } from "../../selectors/datasets.js";
+import { findDataset, requireDataset } from "../../selectors/datasets.js";
 import { reviseSourceIdentity } from "../../core/itemIdentity.js";
 import { newDatasetNamespace } from "../primitives/datasetIdentity.js";
 
-const REPLAYED = new Set([reviseData, editDerivedData, editParameter, editCanvas, fitCanvas, navigateProjection, applyDataUpdate, filterMarks, removeMarkFilter]);
+// Every focused derived-data editor, keyed by its public action name.
+const DERIVED_ALIASES = Object.freeze({ ...Object.fromEntries(Object.entries(EDIT_DERIVED_DATA_ACTIONS).filter(([name]) => name !== "editDerivedData")),
+  editBin2DData, editRegressionStatisticsData });
+// A derived owner's dataset and its current materialized revision.
+function derivedSeeds(program, target) {
+  if (target === undefined) return typeof program.context.currentData === "string" ? [program.context.currentData] : [];
+  const ids = findDataset(program, target) === undefined ? [] : [target];
+  for (const family of Object.values(program.materializationConfigs.data ?? {})) {
+    const current = family !== null && typeof family === "object" && Object.hasOwn(family, target) ? family[target]?.current : undefined;
+    if (typeof current === "string") ids.push(current);
+  }
+  return ids;
+}
+const REPLAYED = new Set([reviseData, editDerivedData, ...Object.values(DERIVED_ALIASES), editParameter, editCanvas, fitCanvas, navigateProjection, applyDataUpdate, filterMarks, removeMarkFilter]);
 
 // Full owns this exact snapshot boundary. Only the existing inference registry
 // may recognize its immutable handle; arbitrary objects are always deep-copied.
@@ -58,7 +73,7 @@ export function snapshotNativeRouteEdit(program, edit) {
 
 // Full binds this closed native owner; graph preparation imports no assembly.
 export function resolveNativeRouteUpdate(program, edit) {
-  let native, previous, identity;
+  let native, previous, identity, seeds = [];
   switch (edit.action) {
     case "editLayout": native = editLayout; previous = resolveLayoutRouteUpdate(program, edit.args); break;
     case "editGraphData":
@@ -90,7 +105,7 @@ export function resolveNativeRouteUpdate(program, edit) {
       validateKeys(edit.args, ["target", "definition", "dependents"], edit.action);
       native = editDerivedData;
       if (program.compositionSpec !== undefined) throw new TypeError("Native route editDerivedData requires a completed unit receiver.");
-      previous = { kind: "data", id: requireDataset(program, edit.args.target).id };
+      seeds = derivedSeeds(program, edit.args.target);
       break;
     }
     case "editParameter": {
@@ -122,10 +137,19 @@ export function resolveNativeRouteUpdate(program, edit) {
       if (program.compositionSpec !== undefined) throw new TypeError("Native route applyDataUpdate requires a completed unit receiver.");
       previous = preparedDataUpdateTarget(program, edit.args.prepared, edit.args.requestToken);
       break;
-    default: throw new TypeError("Native route updates require editLayout, editGraphData, editFlowData, editHierarchyData, editInferredGraphData, reviseData, editDerivedData, editParameter, editCanvas, fitCanvas, navigateProjection, applyDataUpdate, filterMarks or removeMarkFilter.");
+    default:
+      // Focused derived-data aliases keep their own wrappers and option checks.
+      if (Object.hasOwn(DERIVED_ALIASES, edit.action)) {
+        native = DERIVED_ALIASES[edit.action];
+        if (program.compositionSpec !== undefined) throw new TypeError(`Native route ${edit.action} requires a completed unit receiver.`);
+        seeds = derivedSeeds(program, edit.args.target);
+        break;
+      }
+      throw new TypeError("Native route updates require editLayout, editGraphData, editFlowData, editHierarchyData, editInferredGraphData, reviseData, editDerivedData, editParameter, editCanvas, fitCanvas, navigateProjection, applyDataUpdate, filterMarks or removeMarkFilter.");
   }
   if (program[edit.action] !== native) throw new TypeError("Native route action was replaced.");
-  const key = ref => JSON.stringify([ref.kind, ref.id]), affected = new Set(previous === undefined ? [] : [key(previous)]), routes = [];
+  const key = ref => JSON.stringify([ref.kind, ref.id]), routes = [];
+  const affected = new Set([...(previous === undefined ? [] : [key(previous)]), ...seeds.map(id => key({ kind: "data", id }))]);
   // Derived datasets carry their source and parameter inputs, in dependency order.
   for (const dataset of program.semanticSpec.datasets) {
     if (dataset.source !== undefined && affected.has(key({ kind: "data", id: dataset.source })) ||

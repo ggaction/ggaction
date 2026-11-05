@@ -186,129 +186,297 @@
   "focusedDerivedAliases": [
     {
       "action": "editComputedData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editFilteredData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editFlattenData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editLookupData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editFoldData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editSummaryData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editBinData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editTimeUnitData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editWindowData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editDensityData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editStackData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editRegressionData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editSortedData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editIntervalData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editECDFData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editNormalizedData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editCompleteData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editPivotData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editImputedData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/edit.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editBin2DData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/bin2d.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     },
     {
       "action": "editRegressionStatisticsData",
-      "status": "pending-public-native-connection",
+      "status": "partial-unit-native-connection",
       "owner": "src/actions/data/regressionStatistics.js",
-      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay."
+      "requirement": "Preserve original alias wrapper and exact source identity; no generic replay.",
+      "implemented": [
+        "original focused wrapper and option checks run inside the exact invocation; same ordered job/completion replay",
+        "affected routes start at the target dataset and its derived owner current dataset"
+      ],
+      "remaining": [
+        "facet/scoped/composition receiver dispatch",
+        "full native union qualification"
+      ]
     }
   ],
   "audited": [
@@ -2395,6 +2563,6 @@
     "Snapshot acquisition and deep clone remain synchronous with incompletely metered initial work/depth/heap.",
     "No whole-request 100ms proof.",
     "No large density/FDEB capacity completion claim.",
-    "Public native update currently admits five native resource edits on completed Full unit receivers."
+    "Public native update admits the fourteen direct actions and twenty-one focused derived editors on completed Full unit receivers."
   ]
 }

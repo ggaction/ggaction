@@ -272,3 +272,29 @@ test("prepared data updates, camera resizes and recomputing graph filters replay
       /use navigateProjection directly/);
   } finally { worker.dispose(); }
 });
+
+test("focused derived-data editors replay through their own wrappers", async () => {
+  const posts = [], worker = executor(job => posts.push(job.inputHash));
+  try {
+    const ordinary = derivedBase().bundleGraphEdges({ id: "route", method: "edge-path" }).createGraphPlot({ id: "plot", routes: "route" });
+    const program = await bounded(derivedBase(), worker);
+    const where = expression({ type: "binary", op: "lte", left: { type: "field", name: "w" }, right: { type: "literal", value: 5 } });
+    for (const [action, args] of [["editFilteredData", { target: "strong", where }], ["editFilteredData", { target: "strong", field: "w", range: { min: 2, max: 9 }, where: undefined }]]) {
+      const clean = Object.fromEntries(Object.entries(args).filter(([, value]) => value !== undefined));
+      let expected;
+      try { expected = ordinary[action](clean); } catch (error) {
+        await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action, args: clean } }, host(worker)), { message: error.message });
+        continue;
+      }
+      posts.length = 0;
+      const prepared = await prepareGraphEdgeRoutes(program, { kind: "update", edit: { action, args: clean } }, host(worker));
+      const result = program.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "revise" });
+      assert.equal(posts.length, 1);
+      assert.deepEqual(route(result).result.routes.map(value => value.commands), route(expected).result.routes.map(value => value.commands));
+      assert.equal(result.trace.children.at(-1).children[0].op, action);
+    }
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editFilteredData", args: { target: "light", range: { min: 1, max: 2 } } } }, host(worker)),
+      /use editFilteredData directly/);
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "editBin2DData", args: { target: "absent", includeEmpty: true } } }, host(worker)));
+  } finally { worker.dispose(); }
+});

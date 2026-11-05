@@ -8,7 +8,8 @@
 - [x] `editCanvas`의 public B 연결(screen-space route, 추가 viewport 단계 포함).
 - [x] `fitCanvas`의 public B 연결(probe broad catch가 route continuation·quota·deadline을 흡수하지 않음).
 - [x] `navigateProjection`(resize), `applyDataUpdate`(원 data registry handle), `filterMarks`/`removeMarkFilter`(recompute graph 필터)의 public B 연결. 직접 14개 모두 unit receiver 연결.
-- [ ] Facet/scoped/composition receiver, focused 파생 alias 21개, 간접 guide/encoding/mark/theme/composition, 100ms 계량.
+- [x] Focused 파생 편집기 21개의 public B 연결(각 wrapper 유지).
+- [ ] Facet/scoped/composition receiver, 간접 guide/encoding/mark/theme/composition, 100ms 계량.
 
 [union](route-native-revise-evidence/union.json): 직접 미연결 0개. 모두 `partial-unit-native-connection`이다.
 
@@ -49,6 +50,12 @@ Composition receiver는 명시적으로 거부한다. 계약상 update union은 
 - **`navigateProjection`**: canvas를 바꾸는 `resize` 연산만 screen-space route의 viewport를 움직인다. 다른 camera 연산은 route job이 없어 직접 action을 쓰도록 거부한다.
 - **`filterMarks`/`removeMarkFilter`**: 명시 target의 graph layout에서 시작한다. `recompute:true` 필터만 inferred graph, layout, route를 개정하고, 보이기만 하는 필터는 route job이 없어 거부한다.
 
+## Focused 파생 편집기
+
+`editComputedData`부터 `editImputedData`까지 19개는 자기 option을 검사한 뒤 `editDerivedData`를 호출한다. `editBin2DData`와 `editRegressionStatisticsData`는 각자의 개정 경로를 탄다. 어느 쪽이든 route는 같은 동기 revision 경로에서 계산되므로 native는 각 wrapper 자체이고, 일반 replay가 아니라 같은 순서 있는 job/completion replay로 연결한다.
+
+영향 범위는 target과 같은 이름의 dataset, 그리고 `materializationConfigs.data`의 파생 owner가 가리키는 current dataset에서 시작한다. Target이 없으면 현재 data에서 시작한다. 정책이 더 엄격한 무관 route를 넣어 정당한 갱신을 거부하지 않도록 넓은 seed는 쓰지 않는다.
+
 ## 검증
 
 `test/unit/resources/graph-route-native-revise.test.js`:
@@ -59,6 +66,7 @@ Composition receiver는 명시적으로 거부한다. 계약상 update union은 
 - **Canvas**: 서로 다른 두 screen-space route가 순서대로 두 job을 만들고 v1 `editCanvas`와 route 명령이 같다. 반복 적용 결과가 같고 base는 바뀌지 않는다. 배경만 바꾸는 편집과 world-space route만 있는 프로그램은 거부한다.
 - **Fit**: 동기 `fitCanvas`가 overflow가 아니라 요구 오류를 낸다. B 결과는 v1 fit과 route 명령, margin, fitting 결과가 같다. 모든 job이 순서대로 한 번씩 계산되고 반복 적용 결과가 같다.
 - **Data update·projection·filter**: 각 action이 v1과 route 명령이 같고 worker 계산은 한 번이다. Data update는 다른 token, 복제 handle, 직접 호출의 다른 receiver를 거부한다. Projection은 resize 외 연산을, filter는 보이기만 하는 필터와 target 없는 요청을 거부한다.
+- **Focused 편집기**: `editFilteredData`가 자기 wrapper를 거쳐 v1과 route 명령이 같고 worker 계산은 한 번이다. 원 action이 거부하는 편집은 같은 오류로 거부한다. Route가 소비하지 않는 파생 dataset과 없는 owner는 거부한다.
 - **Replay 단위**: 정확한 반복 pass, 누락·중복·추가, 미완료 pass, 기록 모드의 요청 정체성, scope 복원을 확인한다.
 
 원 native preflight의 오류는 그대로 보고하고 handle을 남기지 않는다. 준비 중 취소는 거부한다.
@@ -86,6 +94,13 @@ Canvas·fit 연결 checkpoint([증거](route-native-revise-evidence/canvas/))의
 - Browser 529/529, render 513/513.
 - 같은 archive `1fb96505…`를 Node20/22/24 consumer로 검사해 모두 통과했다.
 - Route benchmark는 통과 10건, 미측정 10건이다. 실패 4건은 모두 기존 10k edge `Graph plot graphic count` 용량 한도다.
+
+Focused 파생 편집기 checkpoint([증거](route-native-revise-evidence/aliases/))는 다음 검사를 모두 통과했다.
+
+- 전체 `npm test` 10564/10564
+- Coverage 97.43/95.68/99.36%, critical floor 786개
+- Browser 529/529, render 513/513
+- 같은 archive `a9c63eec…`의 Node20/22/24 consumer 설치
 
 ## 한계
 

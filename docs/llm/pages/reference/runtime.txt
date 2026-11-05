@@ -1677,7 +1677,7 @@ export declare function createInteractionSession(options: {
 [Complete declaration and relative dependencies](../../../types/graph.d.ts)
 
 ```typescript
-import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, ReviseDataOptions, EditDerivedDataOptions, EditParameterOptions, CanvasOptions, FitCanvasOptions, NavigateProjectionOptions, ApplyDataUpdateOptions, FilterMarksOptions, RemoveMarkFilterOptions, EdgeRouteResult, InputRef } from "./program.js";
+import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, ReviseDataOptions, EditDerivedDataOptions, EditParameterOptions, CanvasOptions, FitCanvasOptions, NavigateProjectionOptions, ApplyDataUpdateOptions, FilterMarksOptions, RemoveMarkFilterOptions, EditComputedDataOptions, EditFilteredDataOptions, EditFlattenDataOptions, EditLookupDataOptions, EditFoldDataOptions, EditSummaryDataOptions, EditBinDataOptions, EditTimeUnitDataOptions, EditWindowDataOptions, EditDensityDataOptions, EditStackDataOptions, EditRegressionDataOptions, EditSortedDataOptions, EditIntervalDataOptions, EditECDFDataOptions, EditNormalizedDataOptions, EditCompleteDataOptions, EditPivotDataOptions, EditImputedDataOptions, EditBin2DDataOptions, EditRegressionStatisticsDataOptions, EdgeRouteResult, InputRef } from "./program.js";
 export type { PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate } from "./program.js";
 
 declare const graphRouteJob: unique symbol;
@@ -1729,7 +1729,28 @@ export interface GraphEdgeRoutesUpdateRequest {
     | { readonly action: "navigateProjection"; readonly args: NavigateProjectionOptions }
     | { readonly action: "applyDataUpdate"; readonly args: ApplyDataUpdateOptions }
     | { readonly action: "filterMarks"; readonly args: FilterMarksOptions & { readonly target: string } }
-    | { readonly action: "removeMarkFilter"; readonly args: RemoveMarkFilterOptions & { readonly target: string } };
+    | { readonly action: "removeMarkFilter"; readonly args: RemoveMarkFilterOptions & { readonly target: string } }
+    | { readonly action: "editComputedData"; readonly args: EditComputedDataOptions }
+    | { readonly action: "editFilteredData"; readonly args: EditFilteredDataOptions }
+    | { readonly action: "editFlattenData"; readonly args: EditFlattenDataOptions }
+    | { readonly action: "editLookupData"; readonly args: EditLookupDataOptions }
+    | { readonly action: "editFoldData"; readonly args: EditFoldDataOptions }
+    | { readonly action: "editSummaryData"; readonly args: EditSummaryDataOptions }
+    | { readonly action: "editBinData"; readonly args: EditBinDataOptions }
+    | { readonly action: "editTimeUnitData"; readonly args: EditTimeUnitDataOptions }
+    | { readonly action: "editWindowData"; readonly args: EditWindowDataOptions }
+    | { readonly action: "editDensityData"; readonly args: EditDensityDataOptions }
+    | { readonly action: "editStackData"; readonly args: EditStackDataOptions }
+    | { readonly action: "editRegressionData"; readonly args: EditRegressionDataOptions }
+    | { readonly action: "editSortedData"; readonly args: EditSortedDataOptions }
+    | { readonly action: "editIntervalData"; readonly args: EditIntervalDataOptions }
+    | { readonly action: "editECDFData"; readonly args: EditECDFDataOptions }
+    | { readonly action: "editNormalizedData"; readonly args: EditNormalizedDataOptions }
+    | { readonly action: "editCompleteData"; readonly args: EditCompleteDataOptions }
+    | { readonly action: "editPivotData"; readonly args: EditPivotDataOptions }
+    | { readonly action: "editImputedData"; readonly args: EditImputedDataOptions }
+    | { readonly action: "editBin2DData"; readonly args: EditBin2DDataOptions }
+    | { readonly action: "editRegressionStatisticsData"; readonly args: EditRegressionStatisticsDataOptions };
 }
 export type GraphEdgeRoutesRequest = GraphEdgeRoutesAuthoringRequest | GraphEdgeRoutesUpdateRequest;
 export type GraphEdgeRoutesHost = { readonly requestToken: string; readonly signal?: AbortSignal } & (
