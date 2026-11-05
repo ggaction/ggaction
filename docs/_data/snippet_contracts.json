@@ -3585,6 +3585,33 @@
     "executable": false
   },
   {
+    "file": "api/live.md",
+    "block": 1,
+    "heading": "Build an interactive chart",
+    "mode": "fragment",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "2bd55af7af0aa520d6538996f8af62949422f54794e2fe1402cfb5c80ee8a84f",
+    "executable": false
+  },
+  {
+    "file": "api/live.md",
+    "block": 2,
+    "heading": "Data and change",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "scatter",
+      "rows"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `scatter`, `rows`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "7968785ae851eb84a93d4b7d6de314779251f1d8f46183ac2e72c69306d44a86",
+    "executable": false
+  },
+  {
     "file": "api/marks.md",
     "block": 1,
     "heading": "Clip one layer to its plot",

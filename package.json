@@ -101,6 +101,10 @@
     "./animation": {
       "types": "./types/animation.d.ts",
       "default": "./src/animation.js"
+    },
+    "./live": {
+      "types": "./types/live.d.ts",
+      "default": "./src/live.js"
     }
   },
   "scripts": {

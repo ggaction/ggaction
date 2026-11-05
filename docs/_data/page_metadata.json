@@ -512,6 +512,13 @@
     "description": "Prepare a transition between two immutable charts, sample it at an explicit time, and pass the returned frame directly to Canvas, SVG, PNG, or PDF.",
     "image": "/assets/images/cars-scatterplot.png"
   },
+  "/api/live/": {
+    "title": "Live Charts",
+    "source": "docs/api/live.md",
+    "editSource": "docs/api/live.md",
+    "description": "ggaction/live is the shortest path to an interactive chart in a browser.",
+    "image": "/assets/images/cars-scatterplot.png"
+  },
   "/api/interaction/": {
     "title": "Inspect Chart Items",
     "source": "docs/api/interaction.md",

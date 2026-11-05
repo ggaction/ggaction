@@ -158,6 +158,7 @@ requirements after resolving each part.
 - Guides: ./api/guides/
 - Titles: ./api/titles/
 - Animate and Export Chart Frames: ./api/animation/
+- Live Charts: ./api/live/
 - Inspect Chart Items: ./api/interaction/
 - Inspect Overlapping Chart Items: ./recipes/inspect-chart/
 - Program Composition: ./api/composition/

@@ -8,6 +8,7 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `ggaction/live`: attach a chart to a canvas with `addCanvas`, and every later call redraws immediately; add tooltips, hover, click/brush/lasso selection, zoom and pan, legend toggles, node dragging, data animation, timelines, parameter controls, linked charts, undo/redo, theme, resize, downloads, and save/load with one call each.
 - Pin the audited geometry dependency closure exactly (`d3-array` 3.2.4 and `internmap` 2.0.3 alongside the existing projection alias), so installed applications and browser import maps resolve the verified sources and distributed notices instead of a newer transitive release.
 
 - Add Full `applyGraphEdgeRoutesUpdate` to apply a prepared `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData` or `editInferredGraphData` update to every affected version 2 route through the original native action, with exact receiver, token and signal binding.

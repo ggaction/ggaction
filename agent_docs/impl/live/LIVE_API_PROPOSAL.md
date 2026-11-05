@@ -4,7 +4,16 @@
 
 - [x] 사용자 기능 결정(2026-11-05): "addCanvas 해놓고 addTooltip 하면 바로 적용", 목록 중 `addCrosshair`만 제외하고 전부 진행.
 - [x] 아래 구체 공개 계약 확인: 사용자 "승인한다"(2026-11-05). [승인 기록](PUBLIC_APPROVAL_20261105.json)
-- [ ] 구현·시험·선언·문서·패키지 검증.
+- [x] 구현·시험·선언·문서·패키지 검증([증거](live-evidence/)).
+  - 전체 `npm test` 10574/10574
+  - Node 시험 9개: 체인 authoring과 즉시 그리기, 미완성 상태, 툴팁·hover, 브러시·클릭(Shift 분리)·undo, 축 zoom·pan, 데이터 애니메이션·링크·`playAnimation`, 범례·테마·크기·다운로드·timeline, graph 노드 드래그 거부·허용과 지도 navigation, container·`animateTo`·PNG
+  - Chromium 실제 입력 DPR1·2: 그리기, 툴팁, 드래그 브러시, wheel zoom, 데이터 애니메이션
+  - Browser 531/531, render 513/513, coverage 97.44/95.61/99.33%·critical floor 786
+  - 같은 archive `3f66ee01…`의 Node20/22/24 설치와 `ggaction/live` 번들(gzip 1,017,404 bytes)
+
+## 구현 중 달라진 점
+
+- **PDF 다운로드 제외**: 기존 PDF 렌더러는 Node.js 전용 네이티브 backend(`@napi-rs/canvas`)를 쓴다. 그래서 브라우저 번들에 넣을 수 없고, 공개 진입점은 명시 import 대상만 허용하므로 숨긴 동적 import도 쓸 수 없다. `download`는 `"png"`·`"svg"`만 지원하고, `"pdf"`는 `ggaction/pdf`의 `renderToPDFBuffer(chart.program)`을 안내하는 오류를 낸다.
 
 ## 목표
 

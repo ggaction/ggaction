@@ -2938,5 +2938,19 @@
     "mode": "contextual-fragment",
     "owner": "docs/api/edge-routes.md",
     "reason": "The fragment needs a completed Full program with version 2 routes, the caller-owned layout l and a served route executor worker. Its exact code is executed from this heading in the installed native-route browser qualification."
+  },
+  {
+    "id": "docs/api/live.md#build-an-interactive-chart:1",
+    "sha256": "2bd55af7af0aa520d6538996f8af62949422f54794e2fe1402cfb5c80ee8a84f",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/live.md",
+    "reason": "Browser-only live chart fragment. It needs a DOM canvas element and pointer events, which Node cannot provide; the same chain, tooltip, hover and brush behavior is executed against a recorded document surface in test/unit/live/live-chart.test.js."
+  },
+  {
+    "id": "docs/api/live.md#data-and-change:1",
+    "sha256": "7968785ae851eb84a93d4b7d6de314779251f1d8f46183ac2e72c69306d44a86",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/live.md",
+    "reason": "Contextual continuation of the live scatter example. It needs that attached live chart, a second live chart named other, and browser animation frames; setData, animateTo, linkTo and save are executed in test/unit/live/live-chart.test.js."
   }
 ]

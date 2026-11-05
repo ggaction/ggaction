@@ -24,6 +24,7 @@ documentation interaction tests run in Playwright Chromium. Library renderer com
 | `ggaction/inspection` | Browser or Node.js 20+ | Inspect schemas, applicability, changes, and concrete results |
 | `ggaction/diagnostics` | Browser or Node.js 20+ | Read structured error details |
 | `ggaction/animation` | Browser or Node.js 20+ | Prepare, play, save, restore, and export immutable transition frames |
+| `ggaction/live` | Browser | Attach a chart to a canvas once; every later call redraws and interactions apply immediately |
 | `ggaction/scene` | Browser or Node.js 20+ | Read transition scenes and draw native Canvas scenes |
 | `ggaction/graph` | Browser or Node.js 20+ | Prepare graph routes with explicit worker ownership; version 2 uses required budgets and deadlines |
 | `ggaction/interaction` | Browser or Node.js 20+ | Inspect current marks and guides; DOM-free until mounted |

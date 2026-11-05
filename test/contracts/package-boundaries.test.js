@@ -21,6 +21,7 @@ const PUBLIC_ENTRIES = Object.freeze({
   "./animation": Object.freeze({ runtime: "./src/animation.js", types: "./types/animation.d.ts", values: Object.freeze(["createAnimationPlayer", "deserializeAnimation", "exportAnimationFrames", "planTransition", "sampleTransition", "serializeAnimation"]) }),
   "./graph": Object.freeze({ runtime: "./src/graph.js", types: "./types/graph.d.ts", values: Object.freeze(["computeGraphEdgeRoutes", "computeGraphEdgeRoutesAsync", "computeGraphInference", "createGraphInferenceExecutor", "createGraphRouteExecutor", "prepareGraphEdgeRoutes", "prepareInferredGraphData"]) }),
   "./interaction": Object.freeze({ runtime: "./src/interaction.js", types: "./types/interaction.d.ts", values: Object.freeze(["createInteractionSession"]) }),
+  "./live": Object.freeze({ runtime: "./src/live.js", types: "./types/live.d.ts", values: Object.freeze(["LiveChart", "chart", "playAnimation"]) }),
   "./scene": Object.freeze({ runtime: "./src/scene.js", types: "./types/scene.d.ts", values: Object.freeze(["createTransitionScene", "renderTransitionScene"]) }),
   ".": Object.freeze({
     runtime: "./src/index.js",

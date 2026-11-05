@@ -1298,6 +1298,16 @@
         "path": "unit/layout/legend-policy.test.js"
       }
     ],
+    "live": [
+      {
+        "type": "prefix",
+        "path": "unit/live/"
+      },
+      {
+        "type": "file",
+        "path": "browser/live-chart.browser.js"
+      }
+    ],
     "loess": [
       {
         "type": "file",

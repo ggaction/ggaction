@@ -10,10 +10,12 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/svg": 26_731, // Owned own-data check marks: Node20/24 26,731 gzip bytes.
   "ggaction/graph": 76_752, // Native canvas route replay: Node20/24 76,752 gzip bytes.
   "ggaction/animation": 356_096, // Partition ring commands: Node20/24 356,096 gzip bytes.
-  "ggaction/interaction": 143_198 // Prepared partition cells: Node20/24 143,198 gzip bytes.
+  "ggaction/interaction": 143_198, // Prepared partition cells: Node20/24 143,198 gzip bytes.
+  "ggaction/live": 1_017_404 // Live charts: Node20/24 1,017,404 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {
+  if (specifier === "ggaction/live") return `import { chart } from "ggaction/live"; globalThis.liveChart = chart;`;
   if (specifier === "ggaction/animation") return `import * as animation from "ggaction/animation"; globalThis.chartAnimation = animation;`;
   if (specifier === "ggaction/graph") return `import * as graph from "ggaction/graph"; globalThis.chartGraph = graph;`;
   if (specifier === "ggaction/interaction") return `import { createInteractionSession } from "ggaction/interaction"; globalThis.createChartInspection = createInteractionSession;`;

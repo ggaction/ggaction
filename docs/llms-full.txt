@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:fe8505a4f625bb93efc813344a9e5dd50e0cabd923aee3a5a58a8ca834b19444. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:b832bd54ba9980c7c976c10415a6f9606440c82e078ff530abce0d8ed4502995. Status: development. Runtime source: 8551f7212f9cabc87959ab2260634528d00d9650. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/8551f7212f9cabc87959ab2260634528d00d9650/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/8551f7212f9cabc87959ab2260634528d00d9650/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11823,6 +11823,103 @@ stored representation for subsequent serialization.
 The same time and stored algorithm versions reproduce the same canonical scene.
 This does not assert identical font rasterization across operating systems.
 
+<!-- Source: /api/live/ -->
+
+# Live Charts
+
+`ggaction/live` is the shortest path to an interactive chart in a browser. Attach a
+canvas once with `addCanvas`; after that every call redraws immediately, and
+interactions such as tooltips, brushing and zoom start working as soon as you add them.
+
+The live chart wraps the same immutable programs as `ggaction`. Every authoring action
+keeps its name and options and returns the same live chart, so a chain reads like any
+other ggaction chart. `chart.program` returns the current immutable program whenever you
+need the lower-level APIs.
+
+## Build an interactive chart
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction/live";
+
+const rows = [
+  { name: "A", x: 1, y: 2, group: "north" },
+  { name: "B", x: 3, y: 4, group: "south" },
+  { name: "C", x: 5, y: 1, group: "north" }
+];
+
+const scatter = chart()
+  .addCanvas(document.querySelector("#chart"))
+  .createCanvas({ width: 420, height: 300, margin: 40 })
+  .createData({ id: "rows", keyField: "name", values: rows })
+  .createPointMark({ id: "points" })
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" })
+  .addTooltip({ fields: ["name", "x", "y"] })
+  .addHover()
+  .addBrush();
+
+scatter.on("select", event => console.log(event.selected.points));
+```
+
+While a chart is still being built (a mark before its encodings), drawing waits until the
+chart is complete; `pendingError` explains why. A call that fails throws and leaves the
+chart, its screen and its interactions unchanged.
+
+## Screen
+
+| Method | What it does |
+| --- | --- |
+| `addCanvas(element, { pixelRatio? })` | Attaches a `<canvas>`, an `<svg>`, or a container (a canvas is created inside it) and draws at once. |
+| `autoResize({ height? })` | Follows the container width (and height) with `editCanvas`. |
+| `setTheme(theme)` | Applies a theme and redraws. |
+| `download(format?, filename?)` | Saves `"png"` or `"svg"` and resolves with the file `Blob`. For PDF, call `renderToPDFBuffer(chart.program)` from `ggaction/pdf` in Node.js. |
+| `dispose()` | Removes every listener, observer, tooltip and control. |
+
+## Interactions
+
+| Method | What it does |
+| --- | --- |
+| `addTooltip({ fields?, format?, target? })` | Shows item fields on hover as text. `format(fields)` returns a string. |
+| `addHover({ target?, color? })` | Rings the item under the pointer. |
+| `addClickSelect({ target?, mode? })` | Click to select (`"replace"` or `"toggle"`). |
+| `addBrush({ target?, axis?, mode? })` | Drag a rectangle to select (`axis`: `"x"`, `"y"`, `"xy"`). |
+| `addLasso({ target?, mode? })` | Draw a free-form region to select. |
+| `addZoom(options?)` / `addPan(options?)` | Wheel zoom and drag pan. Axis charts edit their continuous scales; maps use native navigation. |
+| `addLegendToggle({ effect?, channel?, target? })` | Click a legend entry to hide (`"visibility"`) or select (`"selection"`) its items. |
+| `addDragNodes({ target? })` | Drag graph nodes (the graph plot needs an explicit `origin`). |
+| `on(event, handler)` | `"select"`, `"hover"`, `"change"` or `"error"`; returns an unsubscribe function. |
+
+When the chart has one mark, `target` may be omitted. Selections are created and
+highlighted for you. Drag tools share the pointer: the first one uses a plain drag and later
+ones use Shift, Alt, then Ctrl. With click selection present, every drag tool uses a modifier.
+
+## Data and change
+
+| Method | What it does |
+| --- | --- |
+| `setData(rows, { source?, animate? })` | Replaces the drawn data, animating by default. |
+| `animateTo(next, { duration?, easing? })` | Animates to another chart, program, or `program => program.editScale(...)`. |
+| `playOver(field, { duration?, loop? })` | Plays the data one value of `field` at a time; returns `{ pause, play, stop, finished }`. |
+| `addSlider(parameter, options)` / `addDropdown(parameter, options)` | Binds a control to a parameter. |
+| `linkTo(other, { by })` | Selecting items selects the items with the same `by` value in the other chart. |
+| `undo()` / `redo()` / `reset()` | Steps through changes; `reset` returns to the last authored state. |
+| `edit(program => …)` | Applies any immutable-program update. |
+| `save()` / `LiveChart.load(text, element?)` | Saves and restores the chart with its interactions. |
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `scatter`, `rows`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+await scatter.setData(rows.map(row => ({ ...row, y: row.y + 1 })));
+await scatter.animateTo(program => program.editScale({ id: "x", domain: [0, 10], nice: false }));
+scatter.linkTo(other, { by: "name" });
+const saved = scatter.save();
+```
+
+`playAnimation(from, to, canvas, { duration? })` plays one transition between two charts or
+programs without keeping a live chart.
+
 <!-- Source: /api/interaction/ -->
 
 # Inspect chart items
@@ -19920,6 +20017,7 @@ documentation interaction tests run in Playwright Chromium. Library renderer com
 | `ggaction/inspection` | Browser or Node.js 20+ | Inspect schemas, applicability, changes, and concrete results |
 | `ggaction/diagnostics` | Browser or Node.js 20+ | Read structured error details |
 | `ggaction/animation` | Browser or Node.js 20+ | Prepare, play, save, restore, and export immutable transition frames |
+| `ggaction/live` | Browser | Attach a chart to a canvas once; every later call redraws and interactions apply immediately |
 | `ggaction/scene` | Browser or Node.js 20+ | Read transition scenes and draw native Canvas scenes |
 | `ggaction/graph` | Browser or Node.js 20+ | Prepare graph routes with explicit worker ownership; version 2 uses required budgets and deadlines |
 | `ggaction/interaction` | Browser or Node.js 20+ | Inspect current marks and guides; DOM-free until mounted |
@@ -39140,6 +39238,80 @@ export declare function createAnimationPlayer<Handle>(input: AnimationPlayerInpu
 export declare function createAnimationPlayer<Handle>(input: AnimationPlayerInput<AnyTransitionPlan, AnyTransitionFrame, Handle>): AnimationPlayer<AnyTransitionFrame, TransitionOptions, AnyEndpoint>;
 ```
 
+#### `ggaction/live`
+
+[Complete declaration and relative dependencies](./types/live.d.ts)
+
+```typescript
+import type { ChartProgram, ThemeDefinition } from './program.js';
+import type { AnimationEasing } from './animation.js';
+
+/** Every authoring action of a program, returning the same live chart. */
+type LiveProgramActions = {
+  [K in keyof ChartProgram as ChartProgram[K] extends (...args: never[]) => ChartProgram ? K : never]:
+    ChartProgram[K] extends (...args: infer A) => ChartProgram ? (...args: A) => LiveChart : never
+};
+
+export type LiveScreen = HTMLCanvasElement | SVGSVGElement | HTMLElement;
+export type LiveSelectionMode = 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
+export interface LiveAnimationOptions { readonly duration?: number; readonly easing?: AnimationEasing; }
+export interface LiveTimeline { readonly finished: Promise<void>; pause(): void; play(): void; stop(): Promise<void>; }
+export type LiveFields = Readonly<Record<string, unknown>>;
+export interface LiveHoverEvent { readonly item: { readonly key: string; readonly fields: LiveFields } | null; readonly hit: unknown; }
+export interface LiveSelectEvent { readonly program: ChartProgram; readonly selected: Readonly<Record<string, readonly LiveFields[]>>; }
+export interface LiveChangeEvent { readonly program: ChartProgram; readonly previous: ChartProgram; }
+export interface LiveEvents { select: LiveSelectEvent; hover: LiveHoverEvent; change: LiveChangeEvent; error: unknown; }
+
+/**
+ * A stateful chart over the immutable engine. After `addCanvas`, every call
+ * redraws immediately. A failing call throws and leaves the chart unchanged.
+ */
+export declare class LiveChart {
+  private constructor();
+  /** The current immutable program. */
+  readonly program: ChartProgram;
+  /** Why the current authoring state cannot be drawn or made interactive yet, if so. */
+  readonly pendingError: unknown;
+
+  addCanvas(element: LiveScreen, options?: { readonly pixelRatio?: number }): this;
+  autoResize(options?: { readonly height?: number }): this;
+  setTheme(theme: ThemeDefinition): this;
+  /** PDF needs the Node.js renderer: use renderToPDFBuffer(chart.program) from 'ggaction/pdf'. */
+  download(format?: 'png' | 'svg', filename?: string): Promise<Blob>;
+  dispose(): void;
+
+  addTooltip(options?: { readonly fields?: readonly string[]; readonly format?: (fields: LiveFields) => string; readonly target?: string }): this;
+  addHover(options?: { readonly target?: string; readonly color?: string }): this;
+  addClickSelect(options?: { readonly target?: string; readonly mode?: 'replace' | 'toggle'; readonly color?: string }): this;
+  addBrush(options?: { readonly target?: string; readonly axis?: 'x' | 'y' | 'xy' | 'theta'; readonly mode?: LiveSelectionMode; readonly color?: string }): this;
+  addLasso(options?: { readonly target?: string; readonly mode?: LiveSelectionMode; readonly color?: string }): this;
+  addZoom(options?: { readonly target?: string; readonly factor?: number; readonly scaleExtent?: readonly [number, number] }): this;
+  addPan(options?: { readonly target?: string; readonly scaleExtent?: readonly [number, number] }): this;
+  addLegendToggle(options?: { readonly effect?: 'visibility' | 'selection'; readonly target?: string; readonly channel?: string }): this;
+  addDragNodes(options?: { readonly target?: string }): this;
+  on<E extends keyof LiveEvents>(event: E, handler: (event: LiveEvents[E]) => void): () => boolean;
+
+  setData(rows: readonly LiveFields[], options?: LiveAnimationOptions & { readonly source?: string; readonly animate?: boolean }): Promise<this>;
+  animateTo(next: LiveChart | ChartProgram | ((program: ChartProgram) => LiveChart | ChartProgram), options?: LiveAnimationOptions): Promise<this>;
+  playOver(field: string, options?: { readonly duration?: number; readonly loop?: boolean; readonly source?: string }): LiveTimeline;
+  addSlider(parameter: string, options?: { readonly container?: Element; readonly min?: number; readonly max?: number; readonly step?: number; readonly label?: string }): this;
+  addDropdown(parameter: string, options: { readonly container?: Element; readonly options: readonly (string | number | boolean)[]; readonly label?: string }): this;
+  linkTo(other: LiveChart, options: { readonly by: string }): this;
+  undo(): this;
+  redo(): this;
+  reset(): this;
+  /** Apply any immutable-program update; it becomes the baseline for reset. */
+  edit(update: (program: ChartProgram) => ChartProgram): this;
+  save(): string;
+  static load(text: string, element?: LiveScreen): LiveChart;
+}
+export interface LiveChart extends LiveProgramActions {}
+
+export declare function chart(): LiveChart;
+export declare function playAnimation(from: LiveChart | ChartProgram, to: LiveChart | ChartProgram, element: HTMLCanvasElement,
+  options?: LiveAnimationOptions & { readonly pixelRatio?: number }): Promise<void>;
+```
+
 ## Rendering functions
 
 Use [Program composition](./api/composition/) for sizing, nesting, layout
@@ -53873,12 +54045,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/8551f7212f9cabc87959ab2260634528d00d9650/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/8551f7212f9cabc87959ab2260634528d00d9650/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -57057,9 +57229,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:fe8505a4f625bb93efc813344a9e5dd50e0cabd923aee3a5a58a8ca834b19444` |
+| Contract fingerprint | `sha256:b832bd54ba9980c7c976c10415a6f9606440c82e078ff530abce0d8ed4502995` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
-| Runtime source commit | `current` |
+| Runtime source commit | `8551f7212f9cabc87959ab2260634528d00d9650` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 380 |
 | Declared actions in that release | 234 |

@@ -117,6 +117,7 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 | `ggaction/animation` | `src/animation.js` | `types/animation.d.ts` |
 | `ggaction/graph` | `src/graph.js` | `types/graph.d.ts` |
 | `ggaction/interaction` | `src/interaction.js` | `types/interaction.d.ts` |
+| `ggaction/live` | `src/live.js` | `types/live.d.ts` |
 
 `ggaction-mcp`는 별도의 Node stdio executable이며 chart code를 실행하지 않는다.
 검증 수치·과거 bundle 예산은 [기준 commit의 보존 기록](architecture/history/202b7afd-second-architecture.md)에서 확인한다.
@@ -919,6 +920,11 @@ Renderer·DOM·Node export dependency를 이 entry에 넣지 않는다. 정확�
 공개 계약은 [ANIMATION](contract/current/ANIMATION.md)이 소유한다.
 
 
+### `ggaction/live`
+
+사용자용 상태 있는 층이다. `chart()`가 돌려주는 live chart는 현재 불변 program과 붙은 화면을 들고, `addCanvas` 이후 모든 action 호출을 즉시 다시 그린다. 같은 이름의 engine action은 새 불변 program으로 바꿔 끼울 뿐이며, 엔진의 불변성·trace·저장 형식·검증은 그대로다. 상호작용은 기존 `ggaction/interaction` session binding과 DOM 툴팁·hover 표식으로, 변화는 `ggaction/animation`의 planner·player로 위임한다. 축 차트의 wheel zoom·drag pan만 live 층이 연속 position scale의 `editScale`로 구현한다. 필드 값은 text로만 쓴다. Full/Basic entry는 이 층을 import하지 않는다. 공개 계약은 [LIVE](contract/current/LIVE.md)가 소유한다.
+
+
 ### `ggaction/scene`
 
 Browser-safe read-only transition scenes consume materialized item identity metadata and concrete drawing values solely from graphicSpec. Domain mark materializers explicitly persist this metadata through primitives; the exact public scene contract is documented in [Rendering](../docs/api/rendering.md#transition-scenes).
@@ -1067,6 +1073,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/graph` | 76,752 bytes |
 | `ggaction/interaction` | 143,198 bytes |
 | `ggaction/animation` | 356,096 bytes |
+| `ggaction/live` | 1,017,404 bytes |
 
 
 
