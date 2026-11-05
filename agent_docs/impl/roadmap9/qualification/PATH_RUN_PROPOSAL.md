@@ -2,7 +2,7 @@
 
 ## 진행 상태
 
-- [ ] 사용자 확인(공개 scene/primitive 확장).
+- [x] 사용자 확인: "1,2,3 승인"(2026-11-05). [승인 기록](PUBLIC_APPROVAL_20261105_PERF.json)
 - [ ] 구현·시험·네 renderer·hit·codec 검증.
 
 ## 왜 필요한가
