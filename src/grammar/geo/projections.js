@@ -42,8 +42,33 @@ export function createProjectionCalculation(input) {
   const options = normalizeProjectionOptions(input), descriptor = projectionDescriptor(options.type);
   const { parts, rotate } = buildProjectionMath(options);
   const streamers = new Map(parts.map(part => [part, pointStreamer(part.projection)]));
+  // Without a clip angle or clip extent, the lone-point stream applies exactly
+  // the radians, rotation, projection and transform of projection(point) and
+  // never drops the point, so the direct call returns the same coordinates.
+  const unclipped = projection => typeof projection.clipAngle === "function" && typeof projection.clipExtent === "function" &&
+    projection.clipAngle() === null && projection.clipExtent() === null;
+  const direct = new Map(parts.map(part => [part, unclipped(part.projection)]));
   function forward(value) { return project(sourcePoint(value, descriptor.spherical)); }
   function forwardPoint(value) { return project(streamPoint(value, descriptor.spherical)); }
+  // forwardPoint(value).point for a stream-built [x, y], without the
+  // intermediate record. A lone stream point goes through the same rotation,
+  // projection and transform as part.projection(point), so a non-finite
+  // direct projection is exactly a null stream point; only the reason, which
+  // this caller never reads, needs that separate call.
+  function forwardXY(x, y) {
+    const point = streamPoint([x, y], descriptor.spherical);
+    if (options.type === "orthographic") {
+      const rotated = rotate(point);
+      if (Math.cos(rotated[0] * RADIANS) * Math.cos(rotated[1] * RADIANS) < -1e-14) return null;
+    }
+    for (const part of parts) {
+      let projected;
+      if (direct.get(part)) { projected = part.projection(point); if (!finitePoint(projected)) projected = null; }
+      else projected = streamers.get(part)(point);
+      if (projected) return projected;
+    }
+    return null;
+  }
   function project(point) {
     if (options.type === "orthographic") {
       const rotated = rotate(point);
@@ -71,7 +96,7 @@ export function createProjectionCalculation(input) {
     if (!projected.point || projected.component !== part.id || Math.hypot(projected.point[0] - point[0], projected.point[1] - point[1]) > Math.min(0.25, Math.max(1, options.scalePx) * 1e-8)) return intermediate(null, "outside-visible-domain");
     return intermediate(candidate, null, part.id);
   }
-  return Object.freeze({ options, descriptor, forward, forwardPoint, inverse });
+  return Object.freeze({ options, descriptor, forward, forwardPoint, forwardXY, inverse });
 }
 
 export function createProjectionKernel(input) {

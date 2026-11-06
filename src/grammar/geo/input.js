@@ -1,6 +1,6 @@
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { cloneAndFreeze, isOwned } from "../../core/immutable.js";
-import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
+import { MAX_WORK_ITEMS, rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
 
 export const GEO_LIMITS = Object.freeze({ maxFeatures: 100_000, maxPositions: 1_000_000, maxArcs: 100_000, maxValues: 2_000_000, maxDepth: 128 });
 
@@ -26,9 +26,32 @@ export function createGeometryBudget(input = {}) {
   });
 }
 
+// A completed admission of an exact owned tree is a fixed sequence of checks
+// and charges. Its totals are kept on the tree; a later admission of the same
+// tree replays them at once when every total stays inside the current limits,
+// which is exactly when the complete traversal could not fail.
+class AdmissionTarget { constructor(value) { return value; } }
+class AdmittedTree extends AdmissionTarget {
+  #totals;
+  static get(value) { return #totals in value ? value.#totals : undefined; }
+  static set(value, totals) { try { new AdmittedTree(value).#totals = totals; } catch { /* Not markable: always traverse. */ } }
+}
+function replayAdmission(input, budget) {
+  const totals = AdmittedTree.get(input);
+  if (totals === undefined) return false;
+  const { values, work } = budget.diagnostics(), limits = budget.limits;
+  if (totals.depth > limits.maxDepth || totals.longestArray > limits.maxValues || values + totals.values > limits.maxValues ||
+      work + totals.work > MAX_WORK_ITEMS) return false;
+  budget.count("values", totals.values); budget.charge(totals.work);
+  return true;
+}
+
 // Bounds are checked before descent and all descriptors before reads. A repeated
 // alias is copied like JSON, while an ancestor cycle is rejected.
 export function snapshotGeometryJSON(input, budget) {
+  if (isOwned(input) && replayAdmission(input, budget)) return input;
+  const before = budget.diagnostics();
+  let depthReached = 0, longestArray = 0;
   // Call-local membership only; strong sets avoid weak-table churn.
   const ancestors = new Set(), stack = [];
   let reusable = isOwned(input);
@@ -36,6 +59,7 @@ export function snapshotGeometryJSON(input, budget) {
   function enter(value, depth) {
     budget.count("values"); budget.charge();
     if (depth > budget.limits.maxDepth) throw new RangeError("Geometry JSON nesting exceeds maxDepth.");
+    if (depth > depthReached) depthReached = depth;
     if (value === null || typeof value === "boolean" || typeof value === "number" && Number.isFinite(value)) return;
     if (typeof value === "string") { budget.charge(value.length); return; }
     if (typeof value !== "object") throw new TypeError("Geometry source requires finite JSON values.");
@@ -43,6 +67,7 @@ export function snapshotGeometryJSON(input, budget) {
     const array = Array.isArray(value);
     if (array) {
       validateGeneratedItemLimit(value.length, "Geometry JSON array", budget.limits.maxValues);
+      if (value.length > longestArray) longestArray = value.length;
       ownArray(value, "Geometry JSON array");
     } else ownRecord(value, "Geometry JSON object");
     const keys = Object.keys(value);
@@ -62,7 +87,10 @@ export function snapshotGeometryJSON(input, budget) {
     const key = frame.keys[frame.index++]; budget.charge(key.length);
     enter(frame.input[key], frame.depth + 1);
   }
-  return reusable ? input : cloneAndFreeze(copyAdmittedJSON(input));
+  if (!reusable) return cloneAndFreeze(copyAdmittedJSON(input));
+  const after = budget.diagnostics();
+  AdmittedTree.set(input, Object.freeze({ values: after.values - before.values, work: after.work - before.work, depth: depthReached, longestArray }));
+  return input;
 }
 
 // The input was fully admitted above, so this JSON copy repeats no checks or

@@ -7,7 +7,7 @@ import { buildRingPathCommands } from "../pathCommands.js";
 import { createGeometryBudget, snapshotGeometryJSON } from "./input.js";
 import { normalizeGeometry } from "./geometry.js";
 import { normalizeProjectionOptions, projectionTuple, longitudeDegrees } from "./projectionOptions.js";
-import { buildProjectionMath, streamGeometryMath, sphericalMidpoint, orientGeometryRingsMath } from "./projectionMath.js";
+import { buildProjectionMath, streamGeometryMath, sphericalMidpointInto, orientGeometryRingsMath } from "./projectionMath.js";
 import { createProjectionCalculation } from "./projections.js";
 
 function antipodal(a, b) {
@@ -15,6 +15,8 @@ function antipodal(a, b) {
   return Math.sin(p) * Math.sin(q) + Math.cos(p) * Math.cos(q) * Math.cos((a[0] - b[0]) * rad) < -1 + 1e-12;
 }
 
+// Midpoint pairs are read before the next one is written.
+const scratchMidpoint = [0, 0];
 function lineCoordinates(points, settings, kernel, budget, count) {
   if (!points.length || settings.coordinateKind === "planar") return points;
   const result = [[...points[0]]];
@@ -31,17 +33,26 @@ function lineCoordinates(points, settings, kernel, budget, count) {
     const start = [longitudeDegrees(a[0]), a[1]];
     let delta = longitudeDegrees(b[0] - a[0]);
     if (delta === -180 && b[0] - a[0] > 0) delta = 180;
-    const stack = [{ a: start, b: [start[0] + delta, b[1]], depth: 0 }];
-    while (stack.length) {
-      const segment = stack.pop(), middle = [(segment.a[0] + segment.b[0]) / 2, (segment.a[1] + segment.b[1]) / 2];
+    // Depth-first halves, last-in first-out as before; most source segments
+    // are accepted whole, so the explicit stack is built only for a split.
+    let segmentA = start, segmentB = [start[0] + delta, b[1]], depth = 0, stack;
+    while (true) {
+      const middleX = (segmentA[0] + segmentB[0]) / 2, middleY = (segmentA[1] + segmentB[1]) / 2;
       budget.charge();
-      const span = Math.max(Math.abs(segment.a[0] - segment.b[0]), Math.abs(segment.a[1] - segment.b[1]));
-      const linear = kernel.forwardPoint(middle).point, curved = kernel.forwardPoint(sphericalMidpoint(segment.a, segment.b)).point;
+      const span = Math.max(Math.abs(segmentA[0] - segmentB[0]), Math.abs(segmentA[1] - segmentB[1]));
+      const linear = kernel.forwardXY(middleX, middleY), midpoint = sphericalMidpointInto(segmentA[0], segmentA[1], segmentB[0], segmentB[1], scratchMidpoint);
+      const curved = kernel.forwardXY(midpoint[0], midpoint[1]);
       const error = linear && curved ? Math.hypot(linear[0] - curved[0], linear[1] - curved[1]) : 0;
       if (span > 5 || error > kernel.options.precisionPx / 2) {
-        if (segment.depth >= 20) throw new RangeError("Geographic source-segment refinement exceeds its depth limit.");
-        stack.push({ a: middle, b: segment.b, depth: segment.depth + 1 }, { a: segment.a, b: middle, depth: segment.depth + 1 });
-      } else { count(); result.push(segment.b); }
+        if (depth >= 20) throw new RangeError("Geographic source-segment refinement exceeds its depth limit.");
+        const middle = [middleX, middleY];
+        (stack ??= []).push({ a: middle, b: segmentB, depth: depth + 1 });
+        segmentB = middle; depth += 1;
+        continue;
+      }
+      count(); result.push(segmentB);
+      if (!stack?.length) break;
+      ({ a: segmentA, b: segmentB, depth } = stack.pop());
     }
   }
   return result;
@@ -88,9 +99,13 @@ export function projectGeometry(geometry, projectionInput, input = {}) {
     if (!Number.isFinite(x) || !Number.isFinite(y)) throw new RangeError("Geographic stream produced non-finite coordinates.");
     return [x, y];
   }
+  function extend(x, y) {
+    if (bounds === null) bounds = [x, y, x, y];
+    else { bounds[0] = Math.min(bounds[0], x); bounds[1] = Math.min(bounds[1], y); bounds[2] = Math.max(bounds[2], x); bounds[3] = Math.max(bounds[3], y); }
+  }
   function appendPart(part, sourcePath, component, index) {
-    const points = part.kind === "point" ? [part.point] : part.commands.filter(c => c.op !== "Z").map(c => [c.x, c.y]);
-    for (const [x, y] of points) bounds = bounds === null ? [x, y, x, y] : [Math.min(bounds[0], x), Math.min(bounds[1], y), Math.max(bounds[2], x), Math.max(bounds[3], y)];
+    if (part.kind === "point") extend(part.point[0], part.point[1]);
+    else for (const command of part.commands) if (command.op !== "Z") extend(command.x, command.y);
     parts.push({ key: [...sourcePath, component, index], sourcePath, component, ...part });
   }
   for (const leaf of leaves(normalized)) {

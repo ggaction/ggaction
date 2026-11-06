@@ -6,7 +6,7 @@ import {
   geoAzimuthalEquidistant, geoAzimuthalEquidistantRaw,
   geoConicEqualArea, geoConicEqualAreaRaw, geoConicConformal, geoConicConformalRaw,
   geoConicEquidistant, geoConicEquidistantRaw, geoTransverseMercator,
-  geoIdentity, geoAlbers, geoRotation, geoStream, geoInterpolate, geoCircle, geoCentroid, geoPath
+  geoIdentity, geoAlbers, geoRotation, geoStream, geoCircle, geoCentroid, geoPath
 } from "geographic-math";
 
 const FACTORIES = {
@@ -72,8 +72,25 @@ export function streamGeometryMath(geometry, projection, sink) {
   geoStream(geometry, projection.stream(sink));
 }
 
+// geoInterpolate(a, b)(0.5) with the same operations in the same order,
+// without allocating the interpolator closure.
+const DEGREES = 180 / Math.PI;
+const haversin = x => (x = Math.sin(x / 2)) * x;
+const asin = x => x > 1 ? Math.PI / 2 : x < -1 ? -Math.PI / 2 : Math.asin(x);
 export function sphericalMidpoint(a, b) {
-  return geoInterpolate(a, b)(0.5);
+  return sphericalMidpointInto(a[0], a[1], b[0], b[1], [0, 0]);
+}
+// The same midpoint written into a caller-owned pair.
+export function sphericalMidpointInto(ax, ay, bx, by, out) {
+  const x0 = ax * RADIANS, y0 = ay * RADIANS, x1 = bx * RADIANS, y1 = by * RADIANS,
+    cy0 = Math.cos(y0), sy0 = Math.sin(y0), cy1 = Math.cos(y1), sy1 = Math.sin(y1),
+    kx0 = cy0 * Math.cos(x0), ky0 = cy0 * Math.sin(x0), kx1 = cy1 * Math.cos(x1), ky1 = cy1 * Math.sin(x1),
+    d = 2 * asin(Math.sqrt(haversin(y1 - y0) + cy0 * cy1 * haversin(x1 - x0))), k = Math.sin(d);
+  if (!d) { out[0] = x0 * DEGREES; out[1] = y0 * DEGREES; return out; }
+  const t = 0.5 * d, B = Math.sin(t) / k, A = Math.sin(d - t) / k,
+    x = A * kx0 + B * kx1, y = A * ky0 + B * ky1, z = A * sy0 + B * sy1;
+  out[0] = Math.atan2(y, x) * DEGREES; out[1] = Math.atan2(z, Math.sqrt(x * x + y * y)) * DEGREES;
+  return out;
 }
 
 export function circleGeometryMath(center, radius, precision) {
