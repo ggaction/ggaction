@@ -49,7 +49,7 @@ This release adds 82 actions (380 declared in total, up from 298) and four packa
 
 - Editable snapshots are now written as schema 4. Schemas 1–3 still load, but ggaction 0.0.26 and earlier cannot load schema 4. Render-only snapshots are unchanged.
 - `ggaction` now has runtime dependencies, pinned exactly: `d3-array` 3.2.4, `internmap` 2.0.3 and `d3-geo` 3.1.1 (installed as `geographic-math`). Licenses are in `THIRD_PARTY_NOTICES`.
-- Browser gzip budgets grew: `ggaction` 495,000 → 804,801 bytes, `ggaction/basic` 255,000 → 430,484, `ggaction/svg` 25,000 → 27,461. New entries: `ggaction/graph` 78,097, `ggaction/interaction` 144,184, `ggaction/animation` 360,122, `ggaction/live` 1,023,988.
+- Browser gzip budgets grew: `ggaction` 495,000 → 804,801 bytes, `ggaction/basic` 255,000 → 430,484, `ggaction/svg` 25,000 → 27,461. New entries: `ggaction/graph` 78,097, `ggaction/interaction` 144,184, `ggaction/animation` 360,125, `ggaction/live` 1,023,988.
 - Charts with version 2 edge routes reject direct edits that recompute those routes; prepare them with `prepareGraphEdgeRoutes({ kind: "update" })` and apply them with `applyGraphEdgeRoutesUpdate`.
 
 ### Fixes
