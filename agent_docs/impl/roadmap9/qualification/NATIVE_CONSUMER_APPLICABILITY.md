@@ -3,7 +3,7 @@
 ## 진행 상태
 
 - [x] 사용자 확인: "결정 2: A"(2026-11-06). [승인 기록](PUBLIC_APPROVAL_20261106.json) 계약 근거가 있는 칸만 해당 없음으로 닫는다. 있는 기능은 빼지 않는다.
-- [ ] 계약 문장 추가와 `test/native-capabilities.json` 반영.
+- [x] 계약 문장 추가(PARTITION·HIERARCHY; GRAPHS·FLOWS는 기존 문장)와 `test/native-capabilities.json` 반영. 필수 칸 574 → 553, 해당 없음 3 → 24. 축소 guard 시험은 승인 목록을 명시적으로 고정한다. 전체 시험 10,607개 통과.
 
 ## 원칙
 

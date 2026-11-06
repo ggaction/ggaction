@@ -22,11 +22,39 @@ const imageApplicability = Object.fromEntries(Object.entries({
 }).map(([column, reason]) => [column, { reason, contract: "agent_docs/contract/current/MARKS.md",
   excerpt: "Image-owned field encodings, scale bindings and axis/legend bindings are not applicable." }]));
 
+// Approved 2026-11-06 (PUBLIC_APPROVAL_20261106.json, NATIVE_CONSUMER_APPLICABILITY.md):
+// layout-owned families provide no own field encoding, scale or axis/legend binding.
+const bindings = (contract, excerpt, [encodings, scales, guides], excerpts = {}) => Object.fromEntries(Object.entries({ encodings, scales, guides })
+  .map(([column, reason]) => [column, { reason, contract: `agent_docs/contract/current/${contract}`, excerpt: excerpts[column] ?? excerpt }]));
+const layoutFamily = name => [
+  `${name} geometry comes from its stored layout; general field encodings reject the layer, and node paint overrides and highlighting remain supported.`,
+  `${name} plots have no own scale binding; scales on separately composed marks remain supported.`,
+  `${name} plots have no own axis or legend binding; separately composed guides remain supported.`];
+const partition = bindings("PARTITION.md", "Partition-owned field encodings, scale bindings and axis/legend bindings are not applicable.", layoutFamily("Partition"));
+const flowExcerpt = "위치와 두께는 layout 소유이므로 일반 x/y/size/offset encoding은 적용하지 않는다.";
+const flow = bindings("FLOWS.md", flowExcerpt, [
+  "Flow position and thickness belong to the stored layout; general x/y/size/offset encodings do not apply, and typed paint overrides and highlighting remain supported.",
+  "The stored flow thickness scale is layout data, not a public scale binding; scales on separately composed marks remain supported.",
+  "Flow plots create no axis or legend; separately composed marks and guides remain supported."], { guides: "axis/legend를 자동 생성하지 않는다. 별도 일반 mark/guide와 composition할 수 있다." });
+const approvedApplicability = {
+  image: imageApplicability,
+  "partition-cartesian": partition,
+  "partition-polar": partition,
+  tree: bindings("HIERARCHY.md", "Tree and treemap field encodings, scale bindings and axis/legend bindings are not applicable.", layoutFamily("Tree")),
+  treemap: bindings("HIERARCHY.md", "Tree and treemap field encodings, scale bindings and axis/legend bindings are not applicable.", layoutFamily("Treemap")),
+  "graph-nodes": bindings("GRAPHS.md", "Position encoding/axes/scale legend는 stored layout에 적용되지 않는다.", [
+    "Graph node positions come from the stored graph layout; position encodings do not apply, and node paint overrides and highlighting remain supported.",
+    "Graph plots have no own scale binding over the stored layout; scales on separately composed marks remain supported.",
+    "Axes and scale legends do not apply to the stored graph layout; separately composed guides remain supported."]),
+  "sankey-dag": flow,
+  "sankey-cyclic": flow
+};
+
 function assertCanonicalConsumers(input) {
   assert.deepEqual(input.consumers.map(row => row.id), rowIds);
   assert.deepEqual(input.consumerColumns, columns);
   for (const row of input.consumers) {
-    const exemptions = row.id === "image" ? imageApplicability : {};
+    const exemptions = approvedApplicability[row.id] ?? {};
     assert.deepEqual(row.requiredConsumers, columns.filter(column => !Object.hasOwn(exemptions, column)));
     assert.deepEqual(row.notApplicable, exemptions);
   }
@@ -43,12 +71,13 @@ test("native active requirements, acceptance groups and consumer obligations can
   assert.deepEqual([...scope.groups.keys()].sort(), groupIds);
   assertCanonicalConsumers(manifest);
   assert.equal(scope.cells.size, 577);
-  assert.equal([...scope.cells.values()].filter(cell => cell.required).length, 574);
-  assert.deepEqual([...scope.cells].filter(([, cell]) => !cell.required).map(([id]) => id), ["image/encodings", "image/scales", "image/guides"]);
+  assert.equal([...scope.cells.values()].filter(cell => cell.required).length, 553);
+  assert.deepEqual([...scope.cells].filter(([, cell]) => !cell.required).map(([id]) => id),
+    Object.keys(approvedApplicability).flatMap(row => ["encodings", "scales", "guides"].map(column => `${row}/${column}`)));
   assert.deepEqual([...scope.checks.keys()], ["normal", "realistic", "coverage", "browser", "render", "package", "platform", "package-artifact", "documentation"]);
 });
 
-test("only the three image-owned binding cells may differ from required applicability", () => {
+test("only the approved layout-owned binding cells may differ from required applicability", () => {
   for (const row of [...manifest.consumers, manifest.interaction]) {
     for (const column of row.requiredConsumers) {
       const copy = clone(manifest), target = row.id === "interaction" ? copy.interaction : copy.consumers.find(item => item.id === row.id);

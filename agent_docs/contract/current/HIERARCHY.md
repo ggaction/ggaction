@@ -10,6 +10,8 @@ Plot style is materialization configuration. Label content is semantic; labels d
 
 Selection operates on final nodes and selects body plus label; links are excluded. Exact resource lineage and actual member rows are preserved. Concat scopes refs and keys to each child. Facets support complete subtree partitions and reject orphaned partitions. Repeat positional field substitutions do not apply to these resource-backed marks. Canvas edits place stored geometry again without rerunning the layout. Source and parameter revisions recompute affected hierarchy/layout/plot closures once and keep unrelated branches shared.
 
+Tree and treemap field encodings, scale bindings and axis/legend bindings are not applicable. Node positions come from the stored hierarchy layout, so general encode actions and legend actions reject a tree or treemap layer as an unknown mark target. Body, link and label paint use plot styles and typed node overrides; emphasis uses the shared selection/highlight actions. Axes and legends remain available as separate composed marks and guides.
+
 ## `createHierarchyData`
 
 - Signature: `createHierarchyData({ id, data?, key?, parent?, children?, groupFields?, value, valueMode?, forest?, missingCategory?, maxNodes? })`.
