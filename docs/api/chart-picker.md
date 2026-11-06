@@ -87,6 +87,25 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 
 <!-- chart-picker:end -->
 
+## Specialized chart families
+
+These families own their own layout or resource and are edited with their paired
+`edit*` action. They are available from `ggaction`, not `ggaction/basic`.
+
+| Task / input | Start with | Guide |
+| --- | --- | --- |
+| Civil-day aggregates in week/weekday cells | `createCalendarLayout` → `createCalendarPlot` | [Calendar](./calendar.md) |
+| Scalar grid or 2D point density as levels or bands | `createContourData` / `createDensityContourData` → `createContourMark` | [Contours](./contours.md) |
+| Open/high/low/close per row | `createOHLCPlot` | [OHLC](./ohlc.md) |
+| Ordered stages as trapezoids | `createPyramidPlot` | [Pyramid](./pyramid.md) |
+| Formatted rows with in-cell bars and sparklines | `createTablePlot` | [Table](./table.md) |
+| Ribbon whose pixel width varies per sample | `createTrailPlot` | [Trail](./trail.md) |
+| Signed contributions, subtotals and totals | `createWaterfallPlot` | [Waterfall](./waterfall.md) |
+| Explicit node and edge tables with conserved quantities | `createFlowData` → `layoutFlow` → `createFlowLinks` + `createFlowNodes` | [Flows and Sankey](./flows.md) |
+| Parent/child rows, nested children or grouped paths | `createHierarchyData` → `layoutHierarchy` → `createTreePlot` / `createTreemapPlot` / `createPartitionPlot` | [Hierarchy](./hierarchy.md), [Partition](./partition.md) |
+| Nodes and edges, observed or inferred | `createGraphData` → `layoutGraph` → `createGraphPlot` | [Graphs](./graphs.md), [Edge routes](./edge-routes.md) |
+| GeoJSON or TopoJSON features | `createGeometryData` → `createProjection` → `createGeoShapeMark` | [Geometry and maps](./geometry.md) |
+
 ## Compose or refine
 
 `hconcat` and `vconcat` are exported functions for arranging independent complete

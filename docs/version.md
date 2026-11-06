@@ -27,13 +27,29 @@ The comparison baseline below is the older release used by the migration notes.
 - Use this site's action entries for the contract shown above. Each entry identifies
   the release that provides the action or explicitly marks it as development-only.
 - Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md)
-  and [migration notes](#migration-from-v0013) when upgrading.
+  and the migration notes from [v0.0.26](#migration-from-v0026) and
+  [v0.0.13](#migration-from-v0013) when upgrading.
 
 The machine-readable [provenance manifest](./doc-provenance.json) records the same
 contract fingerprint, runtime source revision, baseline, and action availability.
 The full LLM bundle and its section manifest carry that identity too. The fingerprint
 covers runtime code, declarations, and public package configuration; documentation
 edits alone do not change the chart API fingerprint.
+
+## Migration from v0.0.26 {#migration-from-v0026}
+
+Editable snapshots are now written as schema 4. Schemas 1–3 still load, but
+ggaction 0.0.26 and earlier cannot load a schema 4 snapshot; render-only snapshots
+are unchanged. `ggaction` now has three exactly pinned runtime dependencies
+(`d3-array`, `internmap`, and `d3-geo` installed as `geographic-math`).
+Browser bundles are larger: the gzip budget of `ggaction` grew from about 495 KB
+to about 805 KB and `ggaction/basic` from about 255 KB to about 430 KB; import the
+narrowest entry that provides the actions you need. Most new actions, including
+graphs, hierarchies, flows, maps, contours, calendars, images, fonts and the
+specialized plots, are available from `ggaction` and not from `ggaction/basic`.
+Charts with version 2 edge routes change their dependent data, layouts and Canvas
+through [`applyGraphEdgeRoutesUpdate`](./api/edge-routes.md#applygraphedgeroutesupdate).
+See [Performance](./performance.md#known-limits) for the measured limits of this release.
 
 ## Migration from v0.0.13 {#migration-from-v0013}
 

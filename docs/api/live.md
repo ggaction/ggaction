@@ -56,10 +56,10 @@ chart, its screen and its interactions unchanged.
 | Method | What it does |
 | --- | --- |
 | `addCanvas(element, { pixelRatio? })` | Attaches a `<canvas>`, an `<svg>`, or a container (a canvas is created inside it) and draws at once. |
-| `autoResize({ height? })` | Follows the container width (and height) with `editCanvas`. |
+| `autoResize({ height? })` | Follows the container width (and height) with `editCanvas`. Call `addCanvas` first. |
 | `setTheme(theme)` | Applies a theme and redraws. |
 | `download(format?, filename?)` | Saves `"png"` or `"svg"` and resolves with the file `Blob`. For PDF, call `renderToPDFBuffer(chart.program)` from `ggaction/pdf` in Node.js. |
-| `dispose()` | Removes every listener, observer, tooltip and control. |
+| `dispose()` | Removes every listener, observer, tooltip and control; later calls throw. |
 
 ## Interactions
 
@@ -67,30 +67,31 @@ chart, its screen and its interactions unchanged.
 | --- | --- |
 | `addTooltip({ fields?, format?, target? })` | Shows item fields on hover as text. `format(fields)` returns a string. |
 | `addHover({ target?, color? })` | Rings the item under the pointer. |
-| `addClickSelect({ target?, mode? })` | Click to select (`"replace"` or `"toggle"`). |
-| `addBrush({ target?, axis?, mode? })` | Drag a rectangle to select (`axis`: `"x"`, `"y"`, `"xy"`). |
-| `addLasso({ target?, mode? })` | Draw a free-form region to select. |
-| `addZoom(options?)` / `addPan(options?)` | Wheel zoom and drag pan. Axis charts edit their continuous scales; maps use native navigation. |
-| `addLegendToggle({ effect?, channel?, target? })` | Click a legend entry to hide (`"visibility"`) or select (`"selection"`) its items. |
+| `addClickSelect({ target?, mode?, color? })` | Click to select (`"replace"` or `"toggle"`). Selected items use `color` (default `#dc2626`); the others are dimmed. |
+| `addBrush({ target?, axis?, mode?, color? })` | Drag a rectangle to select (`axis`: `"x"`, `"y"`, `"xy"`, or `"theta"` on polar charts). |
+| `addLasso({ target?, mode?, color? })` | Draw a free-form region to select. |
+| `addZoom({ target?, factor?, scaleExtent? })` / `addPan({ target?, scaleExtent? })` | Wheel zoom (`factor` 1.1 per step) and drag pan within `scaleExtent` (default `[0.25, 16]`). Axis charts edit their continuous scales; maps use native navigation. |
+| `addLegendToggle({ effect?, channel?, target? })` | Click a legend entry to hide (`"visibility"`, the default) or select (`"selection"`) its items. Scale domains keep all data. |
 | `addDragNodes({ target? })` | Drag graph nodes (the graph plot needs an explicit `origin`). |
 | `on(event, handler)` | `"select"`, `"hover"`, `"change"` or `"error"`; returns an unsubscribe function. |
 
 When the chart has one mark, `target` may be omitted. Selections are created and
-highlighted for you. Drag tools share the pointer: the first one uses a plain drag and later
-ones use Shift, Alt, then Ctrl. With click selection present, every drag tool uses a modifier.
+highlighted for you and are stored as `live-<mark id>`. Drag tools share the pointer: the first
+one uses a plain drag and later ones use Shift, Alt, then Ctrl, so at most four drag tools can
+share a chart. With click selection present, every drag tool uses a modifier.
 
 ## Data and change
 
 | Method | What it does |
 | --- | --- |
-| `setData(rows, { source?, animate? })` | Replaces the drawn data, animating by default. |
-| `animateTo(next, { duration?, easing? })` | Animates to another chart, program, or `program => program.editScale(...)`. |
-| `playOver(field, { duration?, loop? })` | Plays the data one value of `field` at a time; returns `{ pause, play, stop, finished }`. |
-| `addSlider(parameter, options)` / `addDropdown(parameter, options)` | Binds a control to a parameter. |
+| `setData(rows, { source?, animate?, duration?, easing? })` | Replaces the drawn data through `reviseData`. With a screen attached it animates by default (500 ms, `"cubic-in-out"`); without one it commits at once. |
+| `animateTo(next, { duration?, easing? })` | Animates (500 ms, `"cubic-in-out"`) to another chart, program, or `program => program.editScale(...)`. Without a screen it commits at once. |
+| `playOver(field, { duration?, loop?, source? })` | Plays the data one value of `field` at a time (600 ms per step, no loop); returns `{ pause, play, stop, finished }`. |
+| `addSlider(parameter, options)` / `addDropdown(parameter, options)` | Binds a control to a parameter. Call `addCanvas` first; controls go in `options.container` or else the canvas's parent. |
 | `linkTo(other, { by })` | Selecting items selects the items with the same `by` value in the other chart. |
-| `undo()` / `redo()` / `reset()` | Steps through changes; `reset` returns to the last authored state. |
+| `undo()` / `redo()` / `reset()` | Steps through changes; `reset` returns to the state after the last authoring call, `edit` or `setData`. |
 | `edit(program => …)` | Applies any immutable-program update. |
-| `save()` / `LiveChart.load(text, element?)` | Saves and restores the chart with its interactions. |
+| `save()` / `LiveChart.load(text, element?)` | Saves and restores the program and its tooltip, hover, selection, zoom, legend and drag features. Function options (`format`), controls, links and event handlers must be added again after `load`. |
 
 <!-- snippet-context:start -->
 
@@ -105,5 +106,9 @@ scatter.linkTo(other, { by: "name" });
 const saved = scatter.save();
 ```
 
-`playAnimation(from, to, canvas, { duration? })` plays one transition between two charts or
-programs without keeping a live chart.
+`playAnimation(from, to, canvas, { duration?, easing?, pixelRatio? })` plays one transition
+(500 ms, `"cubic-in-out"`) between two charts or programs on a `<canvas>` without keeping a
+live chart.
+
+Related: [Interaction sessions](interaction.md) · [Animation](animation.md) ·
+[Data updates](../data-updates.md)

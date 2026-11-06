@@ -177,4 +177,5 @@ omit this field. Inspection does not run another layout pass.
 
 [Data updates and snapshots](../../data-updates/) ·
 [ChartProgram and immutability](../../concepts/chart-program/) ·
+[Interaction sessions](../../api/interaction/) for hit candidates under a pointer ·
 [Errors and recovery](../../errors-and-recovery/)

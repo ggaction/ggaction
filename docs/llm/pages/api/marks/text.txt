@@ -74,6 +74,11 @@ For attached labels, `select`, `selection`, or `all:true` replaces item membersh
 
 `layout:false` removes collision layout; `placement:"auto"` restores ordinary source placement.
 
+`text` replaces the constant content; `format` alone reformats existing constant content, while
+field-driven content needs new `text`. For example,
+`program.editAnnotation({ target: "note", x: 80, text: "Moved", fontWeight: 600 })` moves and
+rewrites one annotation.
+
 For host controls, the [`annotate` interaction command](../../../../api/interaction/#edit-existing-annotations) calls the same editor.
 
 ## `createMarkLabels(options?)`

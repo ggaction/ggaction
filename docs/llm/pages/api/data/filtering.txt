@@ -244,6 +244,21 @@ filter.
 const restored = japanOnly.removeMarkFilter({ target: "points" });
 ```
 
+## Hide legend categories {#set-mark-visibility}
+
+`setMarkVisibility({ target?, channel, values, visible, scaleDomain })` hides or restores
+categorical legend values on one Full mark, after any user filter. It requires an existing
+categorical legend block for that target and channel, and `scaleDomain` has no default:
+`"all-data"` keeps the domain of the user-filtered input, while `"visible-data"` fits only the
+shown items. `removeMarkVisibility({ target? })` restores every category. Editing or removing
+either the filter or the visibility preserves the other, and data revisions keep hidden
+categories while showing new ones. To toggle categories by clicking a legend, see
+[Interaction sessions](../../../../api/interaction/#hide-and-restore-categories-from-a-legend).
+
+ For example,
+`program.setMarkVisibility({ target: "points", channel: "color", values: ["A"], visible: false, scaleDomain: "all-data" })`
+hides category `A` while keeping the full color domain.
+
 ## Related
 
 [Data overview](../../../../api/data/) · [Chart API](../../../../api/) · [Action reference](../../../../reference/actions/)

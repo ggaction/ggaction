@@ -28,7 +28,11 @@ or color values on otherwise valid rows.
 X accepts a field string or `{ field, fieldType?, scale?, temporalUnit? }`.
 Use `fieldType: "temporal"` for dates. `yScale` takes the ordinary quantitative
 position scale options; the low and high share that one price scale. Default
-scale IDs are `<id>-x` and `<id>-y`. Explicit IDs can share an existing scale.
+scale IDs are `<id>-x` and `<id>-y`. The price scale defaults to `zero: false` and
+`nice: false`. Overlays in one Cartesian frame must share one Y scale: pass the
+existing X and Y scale IDs, for example `x: { field, scale: { id: "x" } }` and
+`yScale: { id: "y" }`. Otherwise the action fails before changing the chart. Put
+independent price measures in separate panels.
 
 Options are `{ id?, data?, coordinate?, x, low, high, open, close, yScale?,
 invalid?, doji?, width?, body?, stem?, labels?, color?, clip?, guides? }`.
@@ -42,9 +46,9 @@ there is no current or unique eligible resource.
 | `width` | One of `{band}`, `{pixels}`, `{interval:{unit,insetStart?,insetEnd?}}`; uses the existing Bar width policy |
 | `doji` | `"line"` (default) draws a horizontal body for equal open and close; `"none"` omits that body |
 | `labels` | `false` (default), or `{content?,format?,fill?,fontFamily?,fontSize?,fontWeight?,offset?,outline?,shadow?}` |
-| `color` | Field string or `{field,fieldType?,scale?,palette?}`; overrides body fill with an ordinary color scale |
+| `color` | Field string or `{field,fieldType?,scale?,palette?}`; overrides body fill with an ordinary color scale. `color: false` restores up/down fills and removes the color legend |
 | `clip` | `true` by default; clips to the plot viewport |
-| `guides` | Ordinary axes/grid/legend options, or `false` |
+| `guides` | Ordinary axes/grid/legend options, or `false`; creation adds applicable guides unless `guides: false` |
 
 Rising and falling fills default to green `#16a34a` and red `#dc2626`.
 Both the body and stem use stroke `#334155`, width 1 and opacity 1. Fill accepts
@@ -57,8 +61,14 @@ UTC interval starts and a scale domain covering every interval endpoint.
 
 Labels show `close` by default; `open`, `low` and `high` are also available.
 They use the ordinary Text formatter and font preparation, above the high-low
-stem with an offset of 6 logical pixels. Adjust the clip or label options when
-your chosen price domain leaves insufficient space above the observations.
+stem with an offset of 6 logical pixels. Label defaults are fill `#0f172a`,
+`sans-serif`, size 12 and normal weight; after `labels: false`, `labels: {}`
+restores close labels. Adjust the clip or label options when your chosen price
+domain leaves insufficient space above the observations.
+
+A plot may generate at most 10,000 graphics: each row draws a stem and a body,
+plus a label when labels are enabled. That allows up to 5,000 rows, or 3,333 with
+labels. Larger inputs fail before changing the chart.
 
 ## `editOHLCPlot`
 

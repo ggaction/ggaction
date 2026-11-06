@@ -46,7 +46,7 @@ nullable state from observed values. An empty source has an unknown schema;
 `[{}]` has a known schema with no fields. Pass `schema` when an empty dataset
 must retain field meaning or when every row should be checked against a closed
 set of declared fields. Derived transforms validate their input fields and
-publish their output schema. `getDatasetSchema(program, id)` from
+publish their output schema. `getDatasetSchema(program, { data: id, childPath? })` from
 `ggaction/inspection` returns the immutable normalized result, including
 lineage and whether it was declared, inferred, or derived.
 
@@ -311,8 +311,8 @@ const ordered = chart()
   .createSortedData({
     id: "orderedSales",
     sortBy: [
-      { field: "region", fieldType: "nominal" },
-      { field: "revenue", fieldType: "quantitative", order: "descending" }
+      { field: "region" },
+      { field: "revenue", order: "descending" }
     ]
   });
 ```

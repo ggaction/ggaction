@@ -189,7 +189,11 @@ collect telemetry.
 - Cartesian, Polar, and Parallel-coordinate charts
 - Statistical layers and intervals
 - Faceting and program composition
+- Trees, treemaps, icicle/sunburst partitions, node-link graphs with edge bundling, and Sankey flows
+- Geographic maps with 15 projections, contours, calendars, and Pyramid, OHLC, Waterfall, Trail and Table plots
+- Image and font resources
 - Mark selection and coordinated highlighting
+- Interaction sessions, animated transitions, and live charts that redraw on every call
 - Browser Canvas, SVG, Node PNG, and vector PDF output
 - TypeScript declarations and traceable extension actions
 
@@ -215,12 +219,12 @@ The package is ESM-only and requires Node.js 20 or later.
 | `ggaction/live` | Attach a chart to a canvas once, then every call redraws and tooltips, brushing, zoom, animation and linked selections apply immediately |
 | `ggaction/scene` | Read-only structured transition scenes and native Canvas scene drawing |
 | `ggaction/graph` | Prepare inferred graphs in a dedicated worker, or graph edge routes with an explicit worker/cache lifetime |
-| `ggaction/interaction` | Inspect marks and guides through browser events or headless CSS-point queries |
+| `ggaction/interaction` | Hit-test, select, brush, link, navigate and edit charts through browser events or headless commands, with undo/redo |
 | `ggaction-mcp` | Run the local read-only MCP authoring server over stdio in Node.js |
 
-All module entries include TypeScript declarations. The default, basic,
-extension, diagnostics, accessibility, and SVG entries are browser-safe; the PNG and PDF adapters are
-Node-only.
+All module entries include TypeScript declarations. Every entry except `ggaction/png`,
+`ggaction/pdf` and the `ggaction-mcp` executable is browser-safe; `ggaction/live` needs a
+browser DOM to draw.
 
 
 ## Documentation
@@ -232,6 +236,8 @@ Node-only.
 - [Context7 library](https://context7.com/ggaction/ggaction) — use the library ID `/ggaction/ggaction`
 - [Concepts](https://ggaction.github.io/ggaction/concepts/chart-program/)
 - [Supported Features](https://ggaction.github.io/ggaction/supported-features/)
+- [Live Charts](https://ggaction.github.io/ggaction/api/live/), [Interaction Sessions](https://ggaction.github.io/ggaction/api/interaction/) and [Animation](https://ggaction.github.io/ggaction/api/animation/)
+- [Performance and Known Limits](https://ggaction.github.io/ggaction/performance/)
 
 ## Contributing
 

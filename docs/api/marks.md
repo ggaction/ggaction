@@ -93,6 +93,7 @@ See the [mark action reference](../reference/actions/marks.md) for exact signatu
 | Tick | `createTickMark` | `editTickMark` | Centered line collection |
 | Text | `createTextMark` | `editTextMark`, `layoutLabels`, `removeLabelLayout`, `removeMarkLabels` | Text collection |
 | Rect | `createRectMark` | `editRectMark` | Rect collection |
+| Image | `createImageMark` | `editImageMark` | One image item |
 
 Point, Bar, Rect, Tick, Rule, and row-backed Text marks accept
 `missing: "error" | "skip"` in their create and edit actions. The explicit
@@ -126,11 +127,24 @@ Concrete graphics appear when the required encodings make the mark renderable.
 Later Canvas, scale, grouping, or appearance edits explicitly rematerialize
 those graphics.
 
+## Image marks
+
+`createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip?, shadow? })`
+places one stored [image resource](rendering.md#embedded-images) as one selectable item
+(Full only). `image` may be omitted when exactly one image resource exists. `viewport`
+defaults to `"auto"` (the current plot); an explicit `{x, y, width, height}` uses plot-local
+logical pixels. `fit` is `"contain"` (default), `"cover"` or `"fill"`; `align` is `[x, y]` in
+`[0, 1]`, default `[0.5, 0.5]`; `opacity` defaults to 1 and `alt` to `""`. The viewport always
+clips; `clip` adds a rectangle or path clip, and `false` removes it. Image marks take no data,
+field encodings or scales, and highlighting supports opacity only. `editImageMark` preserves
+omitted options; `viewport: "auto"` restores plot-following placement. `removeMark` keeps the
+shared image resource. See the [image example](../tutorials/image-assets.md).
+
 ## Shared inference
 
 - `data` defaults to the current dataset.
 - The first omitted mark ID uses the semantic role: `"point"`, `"line"`,
-  `"area"`, `"arc"`, `"bar"`, `"rect"`, `"rule"`, `"tick"`, or `"text"`.
+  `"area"`, `"arc"`, `"bar"`, `"rect"`, `"rule"`, `"tick"`, `"text"`, or `"image"`.
 - A second mark of the same type requires an explicit ID.
 - A newly layered mark can inherit compatible data, coordinate, x, and y
   encodings from the current layer, or one unique source on the current dataset.

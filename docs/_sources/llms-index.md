@@ -31,6 +31,10 @@ HTML routes are canonical; the generated full-text bundle is available at
 - Vertical and horizontal statistical and explicit error bands: ./api/error-bands/
 - Vertical/horizontal Tukey and min–max box plots: ./api/box-plots/
 - Vertical/horizontal categorical gradient plots: ./api/gradient-plots/
+- Live charts, interaction sessions and animation: ./api/live/ | ./api/interaction/ | ./api/animation/
+- Hierarchies, graphs, edge routes, flows and maps: ./api/hierarchy/ | ./api/partition/ | ./api/graphs/ | ./api/edge-routes/ | ./api/flows/ | ./api/geometry/
+- Specialized plots: ./api/pyramid/ | ./api/ohlc/ | ./api/waterfall/ | ./api/trail/ | ./api/table/ | ./api/calendar/ | ./api/contours/
+- Performance and known limits: ./performance/
 
 Only methods declared on the public ChartProgram TypeScript type are supported
 direct-call actions. Additional wrapped names may appear in action traces but
@@ -75,7 +79,8 @@ are internal operations.
 - Exact program and renderer signatures: ./reference/runtime/
 - Exact ChartProgram action type: ./reference/types/
 - Browser Canvas, browser-safe SVG, Node PNG, and vector PDF share one
-  backend-neutral graphicSpec contract.
+  backend-neutral graphicSpec contract; `ggaction/animation` frames and
+  `ggaction/live` redraw consume the same graphics.
 - The package is ESM-only. Node entry points require Node.js 20 or later.
 
 

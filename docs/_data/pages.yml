@@ -245,7 +245,7 @@
 - title: Live Charts
   url: /api/live/
   parent: /api/rendering/
-- title: Inspect Chart Items
+- title: Interaction Sessions
   url: /api/interaction/
   parent: /api/rendering/
 - title: Inspect Overlapping Chart Items

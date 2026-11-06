@@ -7,9 +7,9 @@ overview no longer provides enough control.
  [Basic charts Create scatter, line, bar, histogram, and heatmap charts from their minimum field decisions.](../../../api/basic-charts/)
  [Canvas Create and resize the drawing surface, background, and plot margins.](../../../api/canvas/)
  [Data and transforms Create immutable source data, derived datasets, filters, bins, windows, and statistical transforms.](../../../api/data/)
- [Marks Create point, line, area, bar, and rule layers.](../../../api/marks/)
+ [Marks Create point, line, area, bar, rule, text, rect, tick, arc, and image layers.](../../../api/marks/)
  [Encodings Map fields and constants to position, grouping, and appearance.](../../../api/encodings/)
- [Coordinates Use Cartesian, Polar, or Parallel coordinate systems.](../../../api/coordinates/)
+ [Coordinates Use Cartesian, Polar, Parallel, or Geo coordinate systems.](../../../api/coordinates/)
  [Scales Control domains, ranges, mapping types, palettes, and missing values.](../../../api/scales/)
  [Parallel coordinates Compare each source row across an ordered set of dimension-local scales.](../../../api/parallel-coordinates/)
  [Guides and titles Create axes, grids, legends, and chart titles from existing encodings.](../../../api/guides/)
@@ -18,8 +18,10 @@ overview no longer provides enough control.
 
 ## All complete chart families
 
-The [complete chart picker](../../../api/chart-picker/) covers every complete-chart facade, including
-Pie, Area, Density, Horizon, endpoint charts, ECDF, Rug, Strip, Beeswarm, and Raincloud.
+The [complete chart picker](../../../api/chart-picker/) covers the general-purpose chart facades, including
+Pie, Area, Density, Horizon, endpoint charts, ECDF, Rug, Strip, Beeswarm, and Raincloud. Specialized
+families with their own layout or resource are listed below and under
+[Specialized chart families](../../../api/chart-picker/#specialized-chart-families).
 
 ## Statistical and distribution facades
 
@@ -29,6 +31,31 @@ Pie, Area, Density, Horizon, endpoint charts, ECDF, Rug, Strip, Beeswarm, and Ra
  [Box plots Summarize quartiles, whiskers, medians, and outliers by category.](../../../api/box-plots/)
  [Gradient plots Compare category distributions as compact density fills.](../../../api/gradient-plots/)
  [Violin plots Compare symmetric or split density shapes by category.](../../../api/violin-plots/)
+
+## Hierarchies, networks and maps
+
+ [Hierarchy Build typed hierarchies and draw trees and treemaps from stored layouts.](../../../api/hierarchy/)
+ [Partition Draw icicle and sunburst charts with focus and navigation.](../../../api/partition/)
+ [Graphs Store observed or inferred graphs, lay them out, and draw node-link plots.](../../../api/graphs/)
+ [Edge routes Bundle graph edges with hierarchical, force-directed, density, or edge-path routing.](../../../api/edge-routes/)
+ [Flows and Sankey Draw conserved flows, including cyclic feedback.](../../../api/flows/)
+ [Geometry and maps Project GeoJSON/TopoJSON features and draw shapes, points, lines, and graticules.](../../../api/geometry/)
+ [Contours Draw contour lines and filled bands from grids or 2D density.](../../../api/contours/)
+ [Calendar Lay out civil-day values in week and weekday cells.](../../../api/calendar/)
+
+## Specialized plots
+
+ [Pyramid Show ordered stages as trapezoids with explicit percent bases.](../../../api/pyramid/)
+ [OHLC Show open, high, low, and close per row.](../../../api/ohlc/)
+ [Waterfall Show signed contributions, subtotals, and totals.](../../../api/waterfall/)
+ [Trail Draw ribbons whose pixel width varies per sample.](../../../api/trail/)
+ [Table Draw formatted rows with in-cell bars and sparklines.](../../../api/table/)
+
+## Interaction, animation and live charts
+
+ [Live charts Attach a chart to a canvas; tooltips, brushing, zoom, and animated updates take one call each.](../../../api/live/)
+ [Interaction sessions Hit test, select, brush, link, navigate, and edit charts with undo and redo.](../../../api/interaction/)
+ [Animation Plan, play, save, and export transitions between immutable programs.](../../../api/animation/)
 
 ## Exact action lookup
 

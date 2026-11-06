@@ -920,7 +920,7 @@ export function renderToSVG(
 ```typescript
 export type ErrorCode = "invalid-option" | "invalid-value" | "missing-resource" |
   "ambiguous-resource" | "incompatible-resource" | "resource-in-use" |
-  "resource-limit" | "unsupported-format" | "action-failed" | "duplicate-id" | "ambiguous-identity" | "cyclic-dependency" | "stale-result";
+  "resource-limit" | "unsupported-format" | "action-failed" | "duplicate-id" | "ambiguous-identity" | "cyclic-dependency" | "stale-result" | "prepared-data-required";
 
 export interface ErrorDetails {
   readonly code: ErrorCode;

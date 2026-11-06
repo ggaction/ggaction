@@ -46,7 +46,10 @@ original synchronous policy applies. Coincident endpoints retain
 a point route and a diagnostic, with no invented junctions. Empty graphs produce
 empty complete routes. Limits can lower the default maxima: 100,000 nodes,
 1,000,000 edges, 10,000,000 candidate pairs, and 10,000,000 active samples. A shared
-work budget and 30,000 commands per route also apply. Invalid values, overflow or
+work budget of 10,000,000 units and 30,000 commands per route also apply. In practice
+density bundling exceeds that budget at a few dozen edges and force-directed bundling
+at a few hundred, while hierarchical and edge-path routing handle 10,000 edges; larger
+density or force-directed inputs need [explicit bounded execution](#explicit-bounded-execution). Invalid values, overflow or
 exhausted budgets fail without storing partial results. Force bundling reuses each
 symmetric pair calculation while preserving ordered forces and coordinates. Work
 diagnostics and their result hash can change after this optimization; the fixed
@@ -80,7 +83,10 @@ Use `createGraphPlot({routes:'routesId'})` to bind routes from the same exact gr
 and layout. `editGraphPlot({routes:false})` restores native curves. Omitting routes
 preserves an existing plot's binding. Native `parallelGap` and `loopRadius` apply
 when the binding is removed. Node radius trims the visible path and arrows follow
-its final tangent; stored center anchors stay unchanged.
+its final tangent; stored center anchors stay unchanged. A plot of more than 10,000
+graphics (node bodies, labels and two per edge) needs an explicit
+[`maxItems`](graphs.md#creategraphplot) of up to 100,000. To draw world-space routes on
+a map, convert them with [`createGeoRouteData`](geometry.md#creategeoroutedata).
 
 For the original synchronous policy, graph, source, layout and hierarchy edits preflight every dependent route and
 plot, then update their revisions and graphics once. Failures preserve the old
@@ -99,17 +105,22 @@ bundle-junction node.
 **Advanced host API.** Import `prepareGraphEdgeRoutes`, `createGraphRouteExecutor`
 and the worker-side `computeGraphEdgeRoutes` from `ggaction/graph`.
 
-`prepareGraphEdgeRoutes(program, request, host)` accepts a create or edit request
-(`kind:"create"` or `"edit"`) plus the action options. Host requires a nonempty
-`requestToken` and optionally a native `signal` and executor. Apply its opaque
+`prepareGraphEdgeRoutes(program, request, host)` accepts a create, edit or update
+request (`kind:"create"`, `"edit"` or `"update"`). Host requires a nonempty
+`requestToken` and accepts a native `signal`. Version 1 create and edit requests may
+omit the executor and reject `deadlineMs`; version 2 requests and every update require a
+`createWorker` executor and `deadlineMs` (1–30,000). Apply its opaque
 handle with only `{prepared, requestToken}` on the exact original program.
 Changed receivers, wrong operations/tokens, copied handles and aborted requests
 fail. Host options are captured before waiting.
 
-`createGraphRouteExecutor({createWorker?})` returns `compute(job,{signal?})`,
-`evict(inputHash?)` and `dispose()`. With no factory, it runs the same synchronous
-numeric owner. A factory returns a browser Worker or matching message-event host.
-The worker receives `{job}` and posts `computeGraphEdgeRoutes(job)`. Jobs and
+`createGraphRouteExecutor({createWorker?})` returns `compute(job,{signal?})` (version 2:
+`compute(job,{signal?,deadlineMs})`), `evict(inputHash?)` and `dispose()`. With no
+factory, it runs the same synchronous numeric owner. A factory returns a browser Worker
+or matching message-event host. The worker receives `{job}` and posts
+`computeGraphEdgeRoutes(job)` for version 1 jobs or `await computeGraphEdgeRoutesAsync(job)`
+for version 2 jobs. A worker that serves both must branch on `job.schemaVersion`:
+`self.onmessage = async ({ data: { job } }) => self.postMessage(job.schemaVersion === 2 ? await computeGraphEdgeRoutesAsync(job) : computeGraphEdgeRoutes(job));` Jobs and
 completions use structured-clone data only; callbacks and workers never enter a
 program or renderer.
 
@@ -211,8 +222,10 @@ Version 1 retains its original synchronous fallback, cache, limits and protocol.
 Create or edit a version 2 route through `prepareGraphEdgeRoutes`, then use the
 ordinary authentic prepared application. A same-method edit retains the stored
 execution policy; a method change requires an explicit replacement policy. Raw
-synchronous route creation or recomputation rejects version 2 intent. Native layout and graph/hierarchy resource revisions use the explicit prepared update below. Source dataset, viewport,
-fit and other native update actions remain outside the current public update union.
+synchronous route creation or recomputation rejects version 2 intent. Native layout, graph,
+flow and hierarchy revisions, source data, parameter, Canvas, fit and filter edits, and any
+other public action that reaches a version 2 route use the explicit prepared update below. An
+action that reaches no version 2 route is rejected with a message to call it directly.
 Stored version 2 vectors still restore offline and render through every existing
 backend. Consumer materialization remains an explicit wrapped action after prepare.
 
@@ -222,6 +235,8 @@ backend. Consumer materialization remains an explicit wrapped action after prepa
 ```ts
 applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;
 ```
+
+**Chart authoring, Full only.** Composition receivers accept scoped deterministic replays.
 
 Prepare `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData` or
 `editInferredGraphData` on the exact completed Full unit program that owns at least
@@ -241,7 +256,12 @@ theme edits, is rejected with a message to call it directly. Composition receive
 accept the deterministic data, parameter and filter edits with a scoped target and
 other actions that reach routes through their own dispatch; `reviseData`,
 `applyDataUpdate` and Canvas edits stay on unit receivers. Graph plots cannot be
-faceted. Preparation never runs a synchronous fallback.
+faceted. Filter updates require an explicit `target`; only `recompute: true` filters reach
+routes, so other filters are rejected with a message to call them directly. Preparation
+never runs a synchronous fallback.
+
+The fragment below assumes `program` contains a version 2 route on fixed or force layout
+`l` with node key `1`, and a fresh executor that has not been disposed.
 
 <!-- snippet-context:start -->
 
@@ -250,13 +270,20 @@ faceted. Preparation never runs a synchronous fallback.
 <!-- snippet-context:end -->
 
 ```js
-const preparedUpdate = await prepareGraphEdgeRoutes(program, {
-  kind: "update",
-  edit: { action: "editLayout", args: { target: "l", node: { key: 1, x: 25, y: 10 } } }
-}, { requestToken: "layout-2", executor, deadlineMs: 30_000 });
-program = program.applyGraphEdgeRoutesUpdate({
-  prepared: preparedUpdate, requestToken: "layout-2"
+const executor = createGraphRouteExecutor({
+  createWorker: () => new Worker(new URL("./route-worker.js", import.meta.url), { type: "module" })
 });
+try {
+  const preparedUpdate = await prepareGraphEdgeRoutes(program, {
+    kind: "update",
+    edit: { action: "editLayout", args: { target: "l", node: { key: 1, x: 25, y: 10 } } }
+  }, { requestToken: "layout-2", executor, deadlineMs: 30_000 });
+  program = program.applyGraphEdgeRoutesUpdate({
+    prepared: preparedUpdate, requestToken: "layout-2"
+  });
+} finally {
+  executor.dispose();
+}
 ```
 
 Preparation snapshots arguments before its first await. An authentic
@@ -288,3 +315,19 @@ first await and the check of a received completion, which must finish before its
 snapshot, still take one turn each that grows with the route count.
 The initial descriptor scan and deep clone also have no separate depth, total heap
 or fully metered work bound in the current request ledger.
+
+## Known performance limits
+
+Measured in Chromium (P95 of 30 runs, explicit maximum execution policy), density bundling
+takes about 4.5 seconds at 100 edges and exceeds the 30-second maximum deadline at 1,000
+edges. Force-directed bundling takes about 2.5 seconds at 1,000 edges and exceeds the
+deadline at 10,000. Hierarchical and edge-path routing stay within 0.5, 5 and 30 seconds at
+100, 1,000 and 10,000 edges.
+
+Version 2 preparation yields to the host after about 10 ms of work, so a cancellation is
+observed after at most about 10 ms plus the longest indivisible step. That step is the check
+of a completion received from the worker, together with the snapshot taken before the first
+await, and it grows with the route count: under 100 ms up to 1,000 routes for hierarchical,
+edge-path and force-directed bundling, about 125 ms for density bundling at 100 routes, and
+several hundred milliseconds at 10,000 routes. Version 1 preparation validates synchronously.
+See [Performance](../performance.md#known-limits) for the other measured limits.

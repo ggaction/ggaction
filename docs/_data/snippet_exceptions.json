@@ -687,7 +687,7 @@
   },
   {
     "id": "docs/api/data/revisions-and-removal.md#-editsorteddata-target-sortby-dependents-edit-sorted-data-:1",
-    "sha256": "59069dd77d02bcc20c4980ae59a0aa340b3ee78e3c2875730f1e07fcce274562",
+    "sha256": "dbbaaafa7caf4134b4a2708eceb9b602c3377937b54ce34ffdf641ee7de54f1e",
     "mode": "contextual-fragment",
     "owner": "docs/api/data/revisions-and-removal.md",
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`editSortedData({ target, sortBy, dependents? })` {#edit-sorted-data}\" on docs/api/data/revisions-and-removal.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
@@ -722,7 +722,7 @@
   },
   {
     "id": "docs/api/data/source-and-derived.md#-createsorteddata-id-source-sortby-create-sorted-data-:1",
-    "sha256": "0271b038007cebf5bfeaa3afb21712a94b8c0f82e6a22a9a158043949e06bd0b",
+    "sha256": "5e715f042cb82308f2093ecf95d07c588e3dfa675dff6ab6d178bbc1becdc01f",
     "mode": "contextual-fragment",
     "owner": "docs/api/data/source-and-derived.md",
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`createSortedData({ id, source?, sortBy })` {#create-sorted-data}\" on docs/api/data/source-and-derived.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
@@ -2934,7 +2934,7 @@
   },
   {
     "id": "docs/api/edge-routes.md#-applygraphedgeroutesupdate-:1",
-    "sha256": "612509051012efb8b1075fbe39e3ce9ab9c6879fe6370906d8e78034965f8904",
+    "sha256": "83606946cf46a38db488fe24d77edb15f749c2db8f9a71de11dc019ee70052ae",
     "mode": "contextual-fragment",
     "owner": "docs/api/edge-routes.md",
     "reason": "The fragment needs a completed Full program with version 2 routes, the caller-owned layout l and a served route executor worker. Its exact code is executed from this heading in the installed native-route browser qualification."

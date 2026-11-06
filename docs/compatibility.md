@@ -14,7 +14,7 @@ documentation interaction tests run in Playwright Chromium. Library renderer com
 | Import | Environment | Notes |
 | --- | --- | --- |
 | `ggaction` | Modern browser bundler or Node.js 20+ | Complete chart authoring and Browser Canvas rendering |
-| `ggaction/basic` | Modern browser bundler | Smaller creation-focused chart surface |
+| `ggaction/basic` | Modern browser bundler or Node.js 20+ | Smaller creation-focused chart surface |
 | `ggaction/svg` | Browser or Node.js 20+ | DOM-free SVG string serialization |
 | `ggaction/png` | Node.js 20+ | Native PNG file output; do not place in a browser bundle |
 | `ggaction/pdf` | Node.js 20+ | Native single-page PDF file output; do not place in a browser bundle |
@@ -26,8 +26,8 @@ documentation interaction tests run in Playwright Chromium. Library renderer com
 | `ggaction/animation` | Browser or Node.js 20+ | Prepare, play, save, restore, and export immutable transition frames |
 | `ggaction/live` | Browser | Attach a chart to a canvas once; every later call redraws and interactions apply immediately |
 | `ggaction/scene` | Browser or Node.js 20+ | Read transition scenes and draw native Canvas scenes |
-| `ggaction/graph` | Browser or Node.js 20+ | Prepare graph routes with explicit worker ownership; version 2 uses required budgets and deadlines |
-| `ggaction/interaction` | Browser or Node.js 20+ | Inspect current marks and guides; DOM-free until mounted |
+| `ggaction/graph` | Browser or Node.js 20+ | Prepare inferred graphs and graph edge routes with explicit worker ownership; version 2 routes use required budgets and deadlines |
+| `ggaction/interaction` | Browser or Node.js 20+ | Hit-test, select, link, navigate and edit charts; DOM-free until mounted |
 
 CommonJS `require("ggaction")` is not a supported entry. Use ESM source files
 or configure the consuming project for ESM.

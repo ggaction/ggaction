@@ -3,7 +3,7 @@
   "name": "applyGraphEdgeRoutesUpdate",
   "layer": "user-facing",
   "domain": "core",
-  "summary": "Apply an authentic prepared native layout revision on its exact original Full unit receiver.",
+  "summary": "Apply an authentic prepared native update on its exact original Full receiver.",
   "signature": "applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;",
   "intents": [
     "apply graph edge routes update",

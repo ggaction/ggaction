@@ -148,12 +148,12 @@ export class LiveChart {
 
   // Data and change ----------------------------------------------------------
 
-  setData(rows, { source, animate = true, duration = 500 } = {}) {
+  setData(rows, { source, animate = true, duration = 500, easing = "cubic-in-out" } = {}) {
     this.#alive();
     const from = sourceDataset(this.#program, source);
     const id = `${from.replace(/_live\d+$/, "")}_live${++this.#revision}`;
     const next = this.#program.reviseData({ source: from, id, values: rows });
-    const done = animate && this.#canvas !== undefined ? this.animateTo(next, { duration }) : Promise.resolve(this.#replace(next));
+    const done = animate && this.#canvas !== undefined ? this.animateTo(next, { duration, easing }) : Promise.resolve(this.#replace(next));
     return done.then(() => { this.#baseline = this.#program; return this; });
   }
 

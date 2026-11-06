@@ -59,7 +59,7 @@
 
 ### Formal values — `applyGraphEdgeRoutesUpdate`
 
-- Implemented: `applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram` and `GraphEdgeRoutesUpdateRequest` with the closed five-action native resource union above.
+- Implemented: `applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram` and `GraphEdgeRoutesUpdateRequest` with the resolved native actions above and `DiscoveredNativeRouteAction` for any other public action.
 - Planned: 승인된 나머지 native update union 연결.
 - Proposed (NOT IMPLEMENTED): generic extension replay, persisted preparation authority.
 
@@ -106,5 +106,5 @@ stroke와 native GraphPlot 범례 지원 범위를 유지한다. Analytical chil
 - 단일 요청 work/pairs는 실제 원 charge를 합산한다. 초기 저장 검증, native job 준비, worker job+solver, host completion, resource assembly, geo/graph closure preflight와 최종 primitive binding 검산을 포함한다. 복사된 완료를 재검증할 때 이미 계산한 worker work를 중복 charge하지 않으며 검증 자체 비용은 추가한다. maxSamples는 원 counting의 peak, maxBufferBytes는 live typed buffer/hash scratch 예약량이며 전체 heap 측정이 아니다. 할당 전 예약하고 finally 반환한다.
 - Full exact constructor에 한 번 연결된 private native planner가 기존 geo/graph consumer preflight와 wrapped materialization operation plan을 준비한다. graph package는 Full assembly/registrar/renderer를 import하지 않는다. Planner lookup은 proof가 아니며 original prepared WeakMap에 exact base/constructor/kind/token/signal/resource/plan과 누적 accounting snapshot을 보관한다.
 - Final facade는 original signal과 exact base/constructor/kind/token을 검사하고 준비 누적값에서 ledger를 이어받아 기존 preparedResourceContext·editSemantic·wrapped materialization children을 실행한다. Candidate program을 그대로 반환하지 않는다. 동일 immutable base에서 handle을 재사용하는 독립 적용은 같은 준비 누적값에서 시작하며 이전 적용 비용을 섞지 않는다. 최종 theme/action-completion 경계는 기존 wrapper가 소유한다.
-- V2 raw synchronous create/edit/recompute는 prepare를 요구하는 오류다. Same-method prepared edit는 execution을 보존하고 method 변경은 명시 execution을 요구한다. 현재 v2 경로는 unit create/edit와 위의 다섯 native resource update이며 나머지 source/viewport/fit native update union은 후속 의무다. 이 미구현 한계를 자동 동기 fallback으로 숨기지 않는다. Offline restore와 기존 concrete renderer 소비는 지원한다.
+- V2 raw synchronous create/edit/recompute는 prepare를 요구하는 오류다. Same-method prepared edit는 execution을 보존하고 method 변경은 명시 execution을 요구한다. 현재 v2 경로는 unit create/edit와 위의 native update union(자체 해석 action과 실행으로 영향 route를 정하는 그 밖의 공개 action)이다. 동기 fallback은 없다. Offline restore와 기존 concrete renderer 소비는 지원한다.
 - 증거: `test/unit/resources/graph-route-bounded.test.js`, `test/unit/grammar/graph/routes/execution.test.js`, `test/contracts/graph-route-types.test.js` 및 package/browser 계약.

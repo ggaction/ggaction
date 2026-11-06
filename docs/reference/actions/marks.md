@@ -2327,7 +2327,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createGeoShapeMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoShapeMark({id?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, capacity?, ...style})
 ```
 
 Create projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](../../api/geometry.md#creategeoshapemark).
@@ -2376,7 +2376,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editGeoShapeMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoShapeMark({target?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](../../api/geometry.md#editgeoshapemark).
@@ -2427,7 +2427,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createGeoPointMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoPointMark({id?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, radiusDeg?, capacity?, ...style})
 ```
 
 Create projected geographic GeoPointMark geometry with native style. See [Geometry and projections](../../api/geometry.md#creategeopointmark).
@@ -2477,7 +2477,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editGeoPointMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoPointMark({target?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, radiusDeg?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoPointMark geometry with native style. See [Geometry and projections](../../api/geometry.md#editgeopointmark).
@@ -2526,7 +2526,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createGeoLineMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoLineMark({id?, coordinate?, geometry?, interpolation?, routeHint?, capacity?, ...style})
 ```
 
 Create projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../../api/geometry.md#creategeolinemark).
@@ -2574,7 +2574,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../../api/geometry.md#editgeolinemark).
@@ -2732,7 +2732,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createGraticule({id?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+createGraticule({id?, coordinate?, stepDeg?, extentDeg?, precisionDeg?, capacity?, ...style})
 ```
 
 Create projected geographic Graticule geometry with native style. See [Geometry and projections](../../api/geometry.md#creategraticule).
@@ -2780,7 +2780,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?, capacity?, ...style})
 ```
 
 Edit projected geographic Graticule geometry with native style. See [Geometry and projections](../../api/geometry.md#editgraticule).

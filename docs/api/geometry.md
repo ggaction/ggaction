@@ -89,7 +89,9 @@ does not fetch files or claim a hash of original file bytes.
 editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
 ```
 
-Provide a nonempty patch of `values`, `coordinateKind`, `topoObject` or `limits`.
+Provide a nonempty patch of `values`, `coordinateKind`, `topoObject`, `limits` or
+`polygonWinding`. An omitted `polygonWinding` keeps the stored convention. Switching to
+`planar` drops an omitted winding, while an explicit planar winding is rejected.
 `target` may be omitted for the current or unique eligible geometry source.
 Contour resources are ineligible. The original format and feature-key policy
 stay fixed; create a separate resource to change them.
@@ -143,10 +145,12 @@ measurement, and its null geometry remains identifiable. Numeric1, string`"1"`
 and tuple`[1]` are distinct keys. Missing keys never match each other. Duplicate
 nonmissing keys on either input fail; aggregate duplicates explicitly beforehand.
 
-Use a string field or a nonempty property path such as`["properties","code"]`.
+Use a string field or a nonempty property path such as `["properties","code"]`.
 Geometry properties stay intact. Joined mark fields read the matching table row;
 unmatched items have no table fields. Diagnostics expose match coverage, duplicate
-counts and unmatched source indices. An empty geometry has coverage0.
+counts and unmatched source indices. An empty geometry has coverage 0. Each key path has
+at most 128 fields. A join accepts up to 100,000 features and 10,000,000 units of work,
+including encoded key bytes.
 
 ## `editGeoJoinData`
 
@@ -197,11 +201,11 @@ const program = chart()
   ] });
 ```
 
-The initial zoom defaults to0. County detail begins at4.2 and remains active until zoom falls below3.8.
-This gap prevents repeated switching around4. Each finer threshold pair must increase and enter must
+The initial zoom defaults to 0. County detail begins at 4.2 and remains active until zoom falls below 3.8.
+This gap prevents repeated switching around 4. Each finer threshold pair must increase and enter must
 exceed exit. Missing parents, generated source keys, mixed coordinate systems and nested LOD fail.
 
-Optional level `tolerance` defaults to0. A positive value simplifies retained shared topology once for
+Optional level `tolerance` defaults to 0. A positive value simplifies retained shared topology once for
 all neighbors, in planar units or geographic degrees. Unsafe topology changes keep the original arcs
 and record why. Geographic seam arcs stay exact. Original geometry and source hashes remain available.
 
@@ -209,7 +213,9 @@ Geo marks and fitted projections can use `geometry:"regions"`. Original selectio
 when their region is shown by a parent or children. [Item inspection](../inspection.md) exposes
 `representationKeys` alongside each current key; hits always identify the visible representation.
 Fields and original table rows come from the current level. The action creates no marks, annotations
-or interaction bindings, and changing a projection does not automatically change LOD zoom.
+or interaction bindings, and changing a projection does not automatically change LOD zoom. A detail
+resource accepts at most 128 levels, 100,000 regions in total and 10,000,000 units of mapping work;
+simplification also uses the geometry limits.
 
 ## `editGeoLODData`
 
@@ -248,7 +254,14 @@ The parameter names state their units: `centerDeg`, `rotateDeg`, `parallelsDeg`,
 `scalePx`, `translatePx`, `precisionPx`, `clipAngleDeg` and `clipExtentPx`.
 Spherical scale defaults to 150, translation to `[0, 0]`, center/rotation to zero,
 precision to 0.5 pixels and reflection to false. Scale and precision must be
-positive. Conic parallels default to `[30, 60]`.
+positive. Conic parallels default to `[30, 60]`. `rotateDeg` turns the globe before
+projecting; `centerDeg` then shifts the projected centre without rotating the sphere.
+
+`clipExtentPx` defaults to `null`. `clipAngleDeg` defaults to 90° for orthographic, 60°
+for gnomonic, 142° for stereographic and 179.999° for both azimuthal types. These five
+require a positive angle (orthographic at most 90°, gnomonic below 90°, the others below
+180°). Other spherical types accept `null` or an angle up to 180°. Mercator and
+transverse Mercator use a finite automatic world extent.
 
 `identity` preserves planar units with scale 1 and supports translation,
 reflection and rectangular clipping. It does not accept spherical parameters.
@@ -299,7 +312,9 @@ editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
 `target` may be omitted for the current or unique projection. Supply a nonempty
 parameter patch. Shape and rotation edits retain an existing fit. A new fit can
 choose another geometry and viewport. Changing `type` starts with the new type's
-parameter defaults; its explicit options must be applicable to that type.
+parameter defaults; its explicit options must be applicable to that type. An existing fit
+is kept and recomputed for the new type unless the same edit supplies `scalePx` or
+`translatePx`.
 
 An explicit scale or translation edit detaches the previous fit and uses the
 current resolved value of the other transform. Editing a fitted geometry source
@@ -328,7 +343,7 @@ Geo marks through the native projection edit.
 | `pan` | `deltaPx:[x,y]` |
 | `zoom` | `anchorPx:[x,y]`, positive `factor`, positive ordered `scaleExtent:[min,max]` |
 | `pinch` | `fromPx:[[x,y],[x,y]]`, `toPx:[[x,y],[x,y]]`, `scaleExtent` |
-| `rotate` | absolute `rotateDeg:[longitude,latitude,roll?]` for a non-composite spherical projection |
+| `rotate` | absolute spherical rotation `rotateDeg:[λ, φ, γ?]` in degrees for a non-composite spherical projection; `[-100, -40]` brings 100° E, 40° N to the projection centre |
 | `fit` | `fit:{geometry?,width,height,padding?,pointScale?}` using the existing live geometry fit |
 | `reset` | `initial` projection parameters, for example from a saved inspection snapshot |
 | `resize` | `canvas:{width?,height?,plot?}`, `scaling:"preserve"|"fit"` |
@@ -362,7 +377,10 @@ console.log(getProjectionView(reset).parameters.scalePx); // 1
 Reset restores view parameters, not an old revision or live fit policy. Fit retains a geometry
 dependency; other camera operations detach an earlier fit. The command stores no hidden baseline,
 DOM listeners or renderer camera. Projection navigation does not choose a geographic detail level.
-Use explicit `editGeoLODData` when changing detail.
+Use explicit `editGeoLODData` when changing detail. For pointer, wheel, pinch and keyboard
+navigation, see [Navigate a map](interaction.md#navigate-a-map-with-drag-wheel-pinch-and-keyboard)
+and [host controls](interaction.md#adjust-a-geographic-view-from-host-controls). For animated camera
+moves, see [Move geographic cameras](animation.md#move-geographic-cameras).
 
 ## Draw through a Geo coordinate
 
@@ -406,8 +424,12 @@ exceed either budget fail before changing the chart. The policy stays with the
 mark binding through source, projection and Canvas edits. Geometry is neither
 simplified nor split to fit a budget. Graphic-item, generator, work and clip limits
 still apply independently, and some refined or clipped inputs may exceed the
-explicit maximum. Large-path typed camera animation and hit stroke/query budgets
-are independent; raising this native output policy does not raise those limits.
+explicit maximum. Animation and hit testing do not inherit this policy automatically.
+Plan transitions with `formatVersion: 5` to carry it through camera animation
+([Animation](animation.md#preserve-geographic-capacity-in-saved-animations)), and give the
+interaction session an explicit `hitPreparation.pathGeometry` to hit-test larger paths
+([Interaction](interaction.md)). Camera frames reproject every vertex; see
+[Geographic camera cost](../performance.md#geographic-camera-cost) for large sources.
 
 ### Explicit capacity example
 
@@ -449,6 +471,8 @@ Draw mixed points, lines, polygons or collections. `geometry` and `coordinate`
 resolve an explicit ID, the current eligible resource, or one unique eligible
 candidate. Default ID is `geo-shape`; another creation needs another ID. Planar
 sources require identity; geographic sources require a spherical projection.
+`interpolation` (`source-segment` by default, or `great-circle`) and `routeHint` apply to
+shape and point edges as for [line marks](#creategeolinemark).
 
 Each feature is one logical item, even when a seam or collection splits it into
 several primitives. Holes stay unfilled. Null, empty and hidden-backside features
@@ -787,3 +811,10 @@ or a composition child, or be omitted for the current or unique eligible route
 geometry. Every accepted edit increments revision once and preserves its logical
 feature identity. Surviving typed edge keys remain stable. Incompatible samples
 or consumers reject the entire edit, preserving the earlier program and trace.
+
+## Related
+
+[Geographic marks tutorial](../tutorials/geographic-marks.md) ·
+[Interaction sessions](interaction.md) · [Animation](animation.md) ·
+[Attached labels](marks/labels.md) · [Coordinates](coordinates.md) ·
+[Performance](../performance.md#geographic-camera-cost)

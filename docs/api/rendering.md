@@ -38,8 +38,9 @@ datasets, semantic encodings, context, or trace to infer missing output.
 For time-based chart transitions and offline frame export, use [animation](animation.md).
 Sampled frames are accepted directly by these four rendering targets.
 
-For pointer inspection of the rendered Canvas or SVG, use an explicit
-[interaction session](interaction.md).
+For pointer inspection and editing of the rendered Canvas or SVG, use an explicit
+[interaction session](interaction.md). For a stateful browser chart with
+tooltips, brushing and animated updates, use [live charts](live.md).
 
 ## First render
 
@@ -283,8 +284,8 @@ rasterize the complete chart or accept `pixelRatio`. Nested Canvas translations 
 text as well as shapes, so concat children with different plot margins retain
 their distinct title and axis-label origins in PDF output.
 
-The current renderers support concrete canvas, collection, circle, rect, line,
-text, and `M/L/C/Z` command-path graphics. Path and line strokes may use concrete
+The current renderers support concrete canvas, collection, circle, circle-batch,
+rect, line, text, image, `M/L/C/Z` command-path, path-batch and weighted-blend graphics. Path and line strokes may use concrete
 dash arrays. They validate values with the same concrete property contract used
 by `editGraphics`. The paint string `"none"` draws no fill or stroke in every backend,
 including text fill and Canvas backgrounds. It never reuses an earlier drawing color.
@@ -386,8 +387,9 @@ repeats contain `repeatField` and `channel`. To select a mark within a compositi
 pass the explicit child program to this function. A composition-level target is
 rejected instead of choosing among repeated IDs.
 
-Point, bar, histogram, line, area, arc, rule, tick, rect, and their supported
-composite owners use final materialized data. This includes aggregate cells, bin
+Point, bar, histogram, line, area, arc, rule, tick, rect, calendar, contour,
+OHLC, pyramid, table, trail and waterfall owners, and their supported composite
+owners, use final materialized data. This includes aggregate cells, bin
 endpoints, ordered path points, stack endpoints, error intervals, and final mark
 filters. Attached text labels repeat owner data and do not create additional views.
 Standalone text marks and custom unsupported owners raise an error identifying
@@ -497,8 +499,8 @@ const program = chart().createCanvas({ width: 600, height: 400 })
 const scene = createTransitionScene(program);
 ```
 
-The optional `@ggaction/transition` package owns browser playback, timing,
-interruption and reduced-motion behavior. Creating a scene does not append an
+Use [`ggaction/animation`](animation.md) for playback, timing, interruption and
+reduced-motion behavior (`createAnimationPlayer`). Creating a scene does not append an
 action or modify a program. Scene extraction shares an ordered concrete traversal; version 1 additionally serializes SVG.
 Point/member correspondence survives filters, reordered rows and facet placement;
 identical records receive occurrence keys. Selection resolvers supply membership
@@ -527,7 +529,9 @@ its single `clip` rectangle is used. Retain the supplied frames when animating
 an unchanged clipping hierarchy.
 
 `renderTransitionScene(scene, context, { pixelRatio = 1 } = {})` paints version-2
-scenes with the ordinary Canvas renderer. It uses the same primitive validation,
+scenes with the ordinary Canvas renderer. It also paints version-3 batched scenes
+from [`formatVersion: 6` sampling](animation.md#sample-materialized-batches), whose
+`circle-run` and `path-run` entries are drawn row by row with the same paint order. It uses the same primitive validation,
 paint order, nested clipping and isolated blending as `render`. It sizes and clears
 the target Canvas, keeping logical dimensions independent of output density.
 Invalid scene versions, duplicate keys and invalid geometry are rejected.
@@ -651,6 +655,15 @@ prepared receiver and current request token. Keep the token in application state
 and change it when a request is superseded. `createImageMark` and `editImageMark`
 place one named image; [the image example](../tutorials/image-assets.md) shows
 contain, cover, fill, alignment and clipping from one retained source.
+
+The request is `{kind:"create", id}` or `{kind:"replace", target}` plus `uri`, a lowercase
+SHA-256 `expectedHash`, `mimeType` (`image/png`, `image/jpeg`, `image/webp` or
+`image/svg+xml`), and optional `maxBytes` (default and maximum 16 MiB), `license` and
+`attribution`. The host supplies `{requestToken, load, decode, signal?}`: `load` returns
+`{bytes, mimeType}`, and `decode` returns `{width, height, originClean: true}` for at most
+64 MiPixels. `removeResource({ kind: "image", id })` rejects while an image mark uses the
+resource; `cascade: true` first removes those marks, then the resource. Image marks are
+described in [Marks](marks.md#image-marks).
 
 For browser Canvas, prepare embedded bytes with an application-owned decoder:
 

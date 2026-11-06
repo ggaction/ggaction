@@ -75,6 +75,9 @@ Scale options follow [color encodings](series/color.md). The default scale ID
 is `<mark>-color`. Mapping takes precedence over the fixed stage fill.
 Add a legend explicitly with `createLegend({ target: "pyramid" })`.
 
+A pyramid accepts at most 10,000 stages and 10,000 generated graphics (bodies
+plus labels). Larger inputs fail before changing the chart.
+
 ## `editPyramidPlot`
 
 **Chart authoring.**

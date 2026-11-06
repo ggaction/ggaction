@@ -1574,7 +1574,7 @@
       "target: \"orderedSales\""
     ],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `ordered`. Resource selectors used here: `target: \"orderedSales\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "59069dd77d02bcc20c4980ae59a0aa340b3ee78e3c2875730f1e07fcce274562",
+    "sha256": "dbbaaafa7caf4134b4a2708eceb9b602c3377937b54ce34ffdf641ee7de54f1e",
     "executable": false
   },
   {
@@ -1658,7 +1658,7 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "0271b038007cebf5bfeaa3afb21712a94b8c0f82e6a22a9a158043949e06bd0b",
+    "sha256": "5e715f042cb82308f2093ecf95d07c588e3dfa675dff6ab6d178bbc1becdc01f",
     "executable": false
   },
   {
@@ -1931,7 +1931,7 @@
       "target: \"l\""
     ],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: \"l\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "612509051012efb8b1075fbe39e3ce9ab9c6879fe6370906d8e78034965f8904",
+    "sha256": "83606946cf46a38db488fe24d77edb15f749c2db8f9a71de11dc019ee70052ae",
     "executable": false
   },
   {
@@ -2628,7 +2628,7 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Run this complete ES module with public package imports. Concrete path capacity and session preparation are explicit.",
-    "sha256": "445ffb5e073d29c8467dd5f7e3bc7bab22ad2013cdea4babfda5efd02e13ce5d",
+    "sha256": "d0d809f19aec6ff960ff1a9ffa5d2a2b922360fd27a6f3bb108a06e35d717fcd",
     "executable": true
   },
   {

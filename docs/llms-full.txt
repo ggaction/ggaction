@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:633288726b44e6defb2542198d4c000da7e93d17cee1a56be38800258e04d2f0. Status: development. Runtime source: 4fecd89c880b5ea69af0253fa3faba19a8fdeaf0. Release baseline: v0.0.13.
+Contract: sha256:8f88fab9513962a4c598101e06e43e43543ba09607cbb064c5ce4e6b5ba75172. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -26,7 +26,7 @@ chart authoring itself as an immutable, traceable sequence of graphical actions.
 Build, inspect, select, and revise charts one meaningful action at a time.
 
 Start with a complete example, then use the API pages when you need to customize
-one part. The main, basic, extension, SVG, PNG, and PDF entry points include TypeScript declarations.
+one part. Every package entry includes TypeScript declarations.
 
  Experimental 0.0.26 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
 
@@ -169,7 +169,8 @@ and [action traces](./concepts/actions-and-trace/).
 
 This walkthrough uses the creation-focused `ggaction/basic` entry. Import from
 `ggaction` instead when the program needs editing, selection, composition,
-Polar or Parallel coordinates, or statistical layers.
+Polar or Parallel coordinates, statistical layers, graphs, hierarchies, maps,
+or specialized plots.
 
 ## 3. Run it
 
@@ -188,13 +189,17 @@ created in `index.html`.
 | `ggaction/basic` | Modern ESM browsers and Node.js 20+ | Smaller creation path for scatter, line, bar, histogram, and heatmap charts |
 | `ggaction/extension` | Modern ESM browsers and Node.js 20+ | Wrapped action registration and public primitive authoring |
 | `ggaction/inspection` | Modern ESM browsers and Node.js 20+ | Dataset schemas, action preflight, immutable diffs, and concrete-result inspection |
-| `ggaction/persistence` | Modern ESM browsers and Node.js 20+ | Editable and render-only snapshot serialization |
+| `ggaction/persistence` | Modern ESM browsers and Node.js 20+ | Editable and render-only snapshot serialization, including time-sliced loading |
 | `ggaction/accessibility` | Modern ESM browsers and Node.js 20+ | Final visual-data export for host accessibility surfaces |
 | `ggaction/diagnostics` | Modern ESM browsers and Node.js 20+ | Structured action error details |
 | `ggaction/png` | Node.js 20+ only | PNG file output through the native Canvas adapter |
 | `ggaction/pdf` | Node.js 20+ only | Single-page vector PDF file output |
 | `ggaction/svg` | Modern ESM browsers and Node.js 20+ | Complete SVG document string output |
 | `ggaction/scene` | Browser or Node.js 20+ | Read transition scenes and draw native Canvas scenes |
+| `ggaction/animation` | Modern ESM browsers and Node.js 20+ | Transition planning, sampling, playback and frame export |
+| `ggaction/interaction` | Modern ESM browsers and Node.js 20+ | Hit testing, selection, navigation and editing sessions; DOM-free until mounted |
+| `ggaction/live` | Browsers | Stateful chart with tooltips, brushing, zoom and animated updates |
+| `ggaction/graph` | Modern ESM browsers and Node.js 20+ | Worker-side graph inference and edge-route preparation |
 
 All entries include TypeScript declarations. The package does not publish
 CommonJS entry points. Import `ggaction/png` and `ggaction/pdf` only from Node
@@ -266,9 +271,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/4fecd89c880b5ea69af0253fa3faba19a8fdeaf0/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/4fecd89c880b5ea69af0253fa3faba19a8fdeaf0/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -596,12 +601,15 @@ exact PNG and PDF output options.
 
 ## Terminal limitations and open decisions
 
-These canonical capability IDs are terminal limitations in the current static
-chart contract:
+These canonical capability IDs are terminal for the static-chart task resolver:
 
-- `unsupported.geo` — geographic projections and map marks
-- `unsupported.animation` — animated transitions
-- `unsupported.interaction` — interactive runtime behavior
+- `unsupported.geo` — geographic maps; the resolver does not plan them. Build them in
+ Full with `createGeometryData`, `createProjection`, `createCoordinate({ type: "geo" })`
+ and the Geo marks; see [Geometry and projections](./api/geometry/).
+- `unsupported.animation` — animated transitions; the resolver does not plan them. Use
+ [`ggaction/animation`](./api/animation/) or [`ggaction/live`](./api/live/).
+- `unsupported.interaction` — interactive runtime behavior; the resolver does not plan it.
+ Use [`ggaction/live`](./api/live/) or [`ggaction/interaction`](./api/interaction/).
 - `unsupported.3d` — three-dimensional charts
 - `unsupported.jpg` — JPEG output
 - `unsupported.areaStrokeDash` — field-driven dash encoding on an area mark
@@ -4333,6 +4341,17 @@ Use `render` from `ggaction` or `renderToSVG` from `ggaction/svg` in the browser
 Importing `ggaction/png` or `ggaction/pdf` into a browser bundle is unsupported
 because they depend on Node output adapters.
 
+## Images, fonts, or routes are missing or rejected
+
+Canvas rendering of image marks, embedded fonts and mark shadows requires
+`prepareImageRendering`, `prepareFontRendering` or `prepareShadowRendering` for the
+current program; a preparation made for an earlier revision is rejected. A chart
+with version 2 edge routes rejects direct edits that recompute those routes,
+including `fitCanvas`; prepare the edit with `prepareGraphEdgeRoutes({ kind: "update" })`
+and apply it with [`applyGraphEdgeRoutesUpdate`](./api/edge-routes/#applygraphedgeroutesupdate).
+A `resource-limit` error that names a graphic count needs fewer items or an explicit
+`maxItems`; see [Generated-work limits](./performance/#generated-work-limits).
+
 ## Inspect the program
 
 Use these public states to locate the last successful authoring step:
@@ -4404,9 +4423,9 @@ overview no longer provides enough control.
  [Basic charts Create scatter, line, bar, histogram, and heatmap charts from their minimum field decisions.](./api/basic-charts/)
  [Canvas Create and resize the drawing surface, background, and plot margins.](./api/canvas/)
  [Data and transforms Create immutable source data, derived datasets, filters, bins, windows, and statistical transforms.](./api/data/)
- [Marks Create point, line, area, bar, and rule layers.](./api/marks/)
+ [Marks Create point, line, area, bar, rule, text, rect, tick, arc, and image layers.](./api/marks/)
  [Encodings Map fields and constants to position, grouping, and appearance.](./api/encodings/)
- [Coordinates Use Cartesian, Polar, or Parallel coordinate systems.](./api/coordinates/)
+ [Coordinates Use Cartesian, Polar, Parallel, or Geo coordinate systems.](./api/coordinates/)
  [Scales Control domains, ranges, mapping types, palettes, and missing values.](./api/scales/)
  [Parallel coordinates Compare each source row across an ordered set of dimension-local scales.](./api/parallel-coordinates/)
  [Guides and titles Create axes, grids, legends, and chart titles from existing encodings.](./api/guides/)
@@ -4415,8 +4434,10 @@ overview no longer provides enough control.
 
 ## All complete chart families
 
-The [complete chart picker](./api/chart-picker/) covers every complete-chart facade, including
-Pie, Area, Density, Horizon, endpoint charts, ECDF, Rug, Strip, Beeswarm, and Raincloud.
+The [complete chart picker](./api/chart-picker/) covers the general-purpose chart facades, including
+Pie, Area, Density, Horizon, endpoint charts, ECDF, Rug, Strip, Beeswarm, and Raincloud. Specialized
+families with their own layout or resource are listed below and under
+[Specialized chart families](./api/chart-picker/#specialized-chart-families).
 
 ## Statistical and distribution facades
 
@@ -4426,6 +4447,31 @@ Pie, Area, Density, Horizon, endpoint charts, ECDF, Rug, Strip, Beeswarm, and Ra
  [Box plots Summarize quartiles, whiskers, medians, and outliers by category.](./api/box-plots/)
  [Gradient plots Compare category distributions as compact density fills.](./api/gradient-plots/)
  [Violin plots Compare symmetric or split density shapes by category.](./api/violin-plots/)
+
+## Hierarchies, networks and maps
+
+ [Hierarchy Build typed hierarchies and draw trees and treemaps from stored layouts.](./api/hierarchy/)
+ [Partition Draw icicle and sunburst charts with focus and navigation.](./api/partition/)
+ [Graphs Store observed or inferred graphs, lay them out, and draw node-link plots.](./api/graphs/)
+ [Edge routes Bundle graph edges with hierarchical, force-directed, density, or edge-path routing.](./api/edge-routes/)
+ [Flows and Sankey Draw conserved flows, including cyclic feedback.](./api/flows/)
+ [Geometry and maps Project GeoJSON/TopoJSON features and draw shapes, points, lines, and graticules.](./api/geometry/)
+ [Contours Draw contour lines and filled bands from grids or 2D density.](./api/contours/)
+ [Calendar Lay out civil-day values in week and weekday cells.](./api/calendar/)
+
+## Specialized plots
+
+ [Pyramid Show ordered stages as trapezoids with explicit percent bases.](./api/pyramid/)
+ [OHLC Show open, high, low, and close per row.](./api/ohlc/)
+ [Waterfall Show signed contributions, subtotals, and totals.](./api/waterfall/)
+ [Trail Draw ribbons whose pixel width varies per sample.](./api/trail/)
+ [Table Draw formatted rows with in-cell bars and sparklines.](./api/table/)
+
+## Interaction, animation and live charts
+
+ [Live charts Attach a chart to a canvas; tooltips, brushing, zoom, and animated updates take one call each.](./api/live/)
+ [Interaction sessions Hit test, select, brush, link, navigate, and edit charts with undo and redo.](./api/interaction/)
+ [Animation Plan, play, save, and export transitions between immutable programs.](./api/animation/)
 
 ## Exact action lookup
 
@@ -5240,7 +5286,11 @@ operation; marks and renderers never mutate source values.
 | Family | Actions | Use |
 | --- | --- | --- |
 | [Source and derived data](./api/data/source-and-derived/) | `createData`, `createDerivedData` | Store source rows or explicit transform provenance |
-| [Prepared sources](./api/data/source-and-derived/#prepared-data-updates) | `prepareDataUpdate`, `applyDataUpdate` | Prepare CSV/JSON or named data, then apply an immutable update |
+| [Prepared sources](./api/data/source-and-derived/#prepared-data-updates) | `prepareDataUpdate`, `applyDataUpdate` | Prepare CSV/JSON, named, URL or parameter data, then apply an immutable update |
+| [Source revisions](./data-updates/#revise-a-source-and-its-dependent-chart) | `reviseData`, `reviseDataInSlices` | Replace compatible rows, synchronously or in host-yielding slices |
+| [Parameters](./api/data/expressions-and-normalization/#parameters) | `createParameter`, `editParameter`, `removeParameter` | Store scalar inputs that transforms and expressions read |
+| [Pivot](./api/data/summaries-and-shaping/#createpivotdata) | `createPivotData` | Group category values into columns |
+| [Sorted rows](./api/data/source-and-derived/#create-sorted-data) | `createSortedData` | Materialize an explicit multi-key row order |
 | [Safe resource removal](./api/data/revisions-and-removal/#removedata-id) | `removeData` | Delete one named dataset only after all live consumers are gone |
 | [Reusable summaries](./api/data/summaries-and-shaping/#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
 | [Reusable bins](./api/data/summaries-and-shaping/#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
@@ -5253,7 +5303,7 @@ operation; marks and renderers never mutate source values.
 | [Missing values](./api/data/missing-data/#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap) | `createImputedData` | Fill selected values with an explicit method and ordering policy |
 | [Empirical distributions](./tutorials/ecdf/#reuse-the-derived-rows) | `createECDFData` | Reduce observations to ordered support, mass, and probability rows |
 | [Stack data](./api/data/summaries-and-shaping/#createstackdata-id-source-category-group-value-mode-as) | `createStackData` | Materialize reusable stack endpoints, values, and shares |
-| [Filtering](./api/data/filtering/) | `filterData`, `filterMarks`, `removeMarkFilter` | Derive rows or revise and remove one visual-layer filter |
+| [Filtering](./api/data/filtering/) | `filterData`, `filterMarks`, `removeMarkFilter`, `setMarkVisibility` | Derive rows, revise and remove one visual-layer filter, or hide legend categories |
 | [Statistical transforms](./api/data/statistical-transforms/) | `createRegressionData`, `createIntervalData`, `createDensityData` | Materialize fitted, interval, or density rows |
 | [Time-unit transforms](./api/data/time-units/) | `createTimeUnitData` | Add calendar buckets with UTC or an explicit IANA zone and calendar policies |
 | [Window transforms](./api/data/window/) | `createWindowData` | Compute ordered values within partitions while preserving source row order |
@@ -5277,6 +5327,7 @@ creating state, and a failed action leaves the earlier program unchanged.
 ## Related
 
 [Marks](./api/marks/) · [ChartProgram and immutability](./concepts/chart-program/) ·
+[Data updates and snapshots](./data-updates/) ·
 [Complete action reference](./reference/actions/)
 
 <!-- Source: /api/data/source-and-derived/ -->
@@ -5329,7 +5380,7 @@ nullable state from observed values. An empty source has an unknown schema;
 `[{}]` has a known schema with no fields. Pass `schema` when an empty dataset
 must retain field meaning or when every row should be checked against a closed
 set of declared fields. Derived transforms validate their input fields and
-publish their output schema. `getDatasetSchema(program, id)` from
+publish their output schema. `getDatasetSchema(program, { data: id, childPath? })` from
 `ggaction/inspection` returns the immutable normalized result, including
 lineage and whether it was declared, inferred, or derived.
 
@@ -5594,8 +5645,8 @@ const ordered = chart()
   .createSortedData({
     id: "orderedSales",
     sortBy: [
-      { field: "region", fieldType: "nominal" },
-      { field: "revenue", fieldType: "quantitative", order: "descending" }
+      { field: "region" },
+      { field: "revenue", order: "descending" }
     ]
   });
 ```
@@ -5950,6 +6001,21 @@ filter.
 ```javascript
 const restored = japanOnly.removeMarkFilter({ target: "points" });
 ```
+
+## Hide legend categories {#set-mark-visibility}
+
+`setMarkVisibility({ target?, channel, values, visible, scaleDomain })` hides or restores
+categorical legend values on one Full mark, after any user filter. It requires an existing
+categorical legend block for that target and channel, and `scaleDomain` has no default:
+`"all-data"` keeps the domain of the user-filtered input, while `"visible-data"` fits only the
+shown items. `removeMarkVisibility({ target? })` restores every category. Editing or removing
+either the filter or the visibility preserves the other, and data revisions keep hidden
+categories while showing new ones. To toggle categories by clicking a legend, see
+[Interaction sessions](./api/interaction/#hide-and-restore-categories-from-a-legend).
+
+ For example,
+`program.setMarkVisibility({ target: "points", channel: "color", values: ["A"], visible: false, scaleDomain: "all-data" })`
+hides category `A` while keeping the full color domain.
 
 ## Related
 
@@ -6609,6 +6675,7 @@ See the [mark action reference](./reference/actions/marks/) for exact signatures
 | Tick | `createTickMark` | `editTickMark` | Centered line collection |
 | Text | `createTextMark` | `editTextMark`, `layoutLabels`, `removeLabelLayout`, `removeMarkLabels` | Text collection |
 | Rect | `createRectMark` | `editRectMark` | Rect collection |
+| Image | `createImageMark` | `editImageMark` | One image item |
 
 Point, Bar, Rect, Tick, Rule, and row-backed Text marks accept
 `missing: "error" | "skip"` in their create and edit actions. The explicit
@@ -6638,11 +6705,24 @@ Concrete graphics appear when the required encodings make the mark renderable.
 Later Canvas, scale, grouping, or appearance edits explicitly rematerialize
 those graphics.
 
+## Image marks
+
+`createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip?, shadow? })`
+places one stored [image resource](./api/rendering/#embedded-images) as one selectable item
+(Full only). `image` may be omitted when exactly one image resource exists. `viewport`
+defaults to `"auto"` (the current plot); an explicit `{x, y, width, height}` uses plot-local
+logical pixels. `fit` is `"contain"` (default), `"cover"` or `"fill"`; `align` is `[x, y]` in
+`[0, 1]`, default `[0.5, 0.5]`; `opacity` defaults to 1 and `alt` to `""`. The viewport always
+clips; `clip` adds a rectangle or path clip, and `false` removes it. Image marks take no data,
+field encodings or scales, and highlighting supports opacity only. `editImageMark` preserves
+omitted options; `viewport: "auto"` restores plot-following placement. `removeMark` keeps the
+shared image resource. See the [image example](./tutorials/image-assets/).
+
 ## Shared inference
 
 - `data` defaults to the current dataset.
 - The first omitted mark ID uses the semantic role: `"point"`, `"line"`,
- `"area"`, `"arc"`, `"bar"`, `"rect"`, `"rule"`, `"tick"`, or `"text"`.
+ `"area"`, `"arc"`, `"bar"`, `"rect"`, `"rule"`, `"tick"`, `"text"`, or `"image"`.
 - A second mark of the same type requires an explicit ID.
 - A newly layered mark can inherit compatible data, coordinate, x, and y
  encodings from the current layer, or one unique source on the current dataset.
@@ -7674,6 +7754,11 @@ Field-driven positions and source-owned label positions cannot be replaced here.
 For attached labels, `select`, `selection`, or `all:true` replaces item membership through the native label selector. Choose one mode; an empty selector shows no labels. Named selections stay linked to the same source and follow its revisions.
 
 `layout:false` removes collision layout; `placement:"auto"` restores ordinary source placement.
+
+`text` replaces the constant content; `format` alone reformats existing constant content, while
+field-driven content needs new `text`. For example,
+`program.editAnnotation({ target: "note", x: 80, text: "Moved", fontWeight: 600 })` moves and
+rewrites one annotation.
 
 For host controls, the [`annotate` interaction command](./api/interaction/#edit-existing-annotations) calls the same editor.
 
@@ -10311,8 +10396,9 @@ datasets, semantic encodings, context, or trace to infer missing output.
 For time-based chart transitions and offline frame export, use [animation](./api/animation/).
 Sampled frames are accepted directly by these four rendering targets.
 
-For pointer inspection of the rendered Canvas or SVG, use an explicit
-[interaction session](./api/interaction/).
+For pointer inspection and editing of the rendered Canvas or SVG, use an explicit
+[interaction session](./api/interaction/). For a stateful browser chart with
+tooltips, brushing and animated updates, use [live charts](./api/live/).
 
 ## First render
 
@@ -10523,8 +10609,8 @@ rasterize the complete chart or accept `pixelRatio`. Nested Canvas translations 
 text as well as shapes, so concat children with different plot margins retain
 their distinct title and axis-label origins in PDF output.
 
-The current renderers support concrete canvas, collection, circle, rect, line,
-text, and `M/L/C/Z` command-path graphics. Path and line strokes may use concrete
+The current renderers support concrete canvas, collection, circle, circle-batch,
+rect, line, text, image, `M/L/C/Z` command-path, path-batch and weighted-blend graphics. Path and line strokes may use concrete
 dash arrays. They validate values with the same concrete property contract used
 by `editGraphics`. The paint string `"none"` draws no fill or stroke in every backend,
 including text fill and Canvas backgrounds. It never reuses an earlier drawing color.
@@ -10622,8 +10708,9 @@ repeats contain `repeatField` and `channel`. To select a mark within a compositi
 pass the explicit child program to this function. A composition-level target is
 rejected instead of choosing among repeated IDs.
 
-Point, bar, histogram, line, area, arc, rule, tick, rect, and their supported
-composite owners use final materialized data. This includes aggregate cells, bin
+Point, bar, histogram, line, area, arc, rule, tick, rect, calendar, contour,
+OHLC, pyramid, table, trail and waterfall owners, and their supported composite
+owners, use final materialized data. This includes aggregate cells, bin
 endpoints, ordered path points, stack endpoints, error intervals, and final mark
 filters. Attached text labels repeat owner data and do not create additional views.
 Standalone text marks and custom unsupported owners raise an error identifying
@@ -10725,8 +10812,8 @@ const program = chart().createCanvas({ width: 600, height: 400 })
 const scene = createTransitionScene(program);
 ```
 
-The optional `@ggaction/transition` package owns browser playback, timing,
-interruption and reduced-motion behavior. Creating a scene does not append an
+Use [`ggaction/animation`](./api/animation/) for playback, timing, interruption and
+reduced-motion behavior (`createAnimationPlayer`). Creating a scene does not append an
 action or modify a program. Scene extraction shares an ordered concrete traversal; version 1 additionally serializes SVG.
 Point/member correspondence survives filters, reordered rows and facet placement;
 identical records receive occurrence keys. Selection resolvers supply membership
@@ -10754,7 +10841,9 @@ its single `clip` rectangle is used. Retain the supplied frames when animating
 an unchanged clipping hierarchy.
 
 `renderTransitionScene(scene, context, { pixelRatio = 1 } = {})` paints version-2
-scenes with the ordinary Canvas renderer. It uses the same primitive validation,
+scenes with the ordinary Canvas renderer. It also paints version-3 batched scenes
+from [`formatVersion: 6` sampling](./api/animation/#sample-materialized-batches), whose
+`circle-run` and `path-run` entries are drawn row by row with the same paint order. It uses the same primitive validation,
 paint order, nested clipping and isolated blending as `render`. It sizes and clears
 the target Canvas, keeping logical dimensions independent of output density.
 Invalid scene versions, duplicate keys and invalid geometry are rejected.
@@ -10869,6 +10958,15 @@ prepared receiver and current request token. Keep the token in application state
 and change it when a request is superseded. `createImageMark` and `editImageMark`
 place one named image; [the image example](./tutorials/image-assets/) shows
 contain, cover, fill, alignment and clipping from one retained source.
+
+The request is `{kind:"create", id}` or `{kind:"replace", target}` plus `uri`, a lowercase
+SHA-256 `expectedHash`, `mimeType` (`image/png`, `image/jpeg`, `image/webp` or
+`image/svg+xml`), and optional `maxBytes` (default and maximum 16 MiB), `license` and
+`attribution`. The host supplies `{requestToken, load, decode, signal?}`: `load` returns
+`{bytes, mimeType}`, and `decode` returns `{width, height, originClean: true}` for at most
+64 MiPixels. `removeResource({ kind: "image", id })` rejects while an image mark uses the
+resource; `cascade: true` first removes those marks, then the resource. Image marks are
+described in [Marks](./api/marks/#image-marks).
 
 For browser Canvas, prepare embedded bytes with an application-owned decoder:
 
@@ -11329,6 +11427,8 @@ produce an explicit crossfade reason for the affected item. Compatible nodes kee
 moving independently. These rules also apply after offline serialization. Native
 current-frame hit testing uses the displayed geometry; restored offline frames can
 render and rebase, but cannot bind to a live session without native endpoint metadata.
+To hit-test a sampled frame, dispatch it to an
+[interaction session](./api/interaction/#replace-a-program-or-sampled-frame).
 
 ## Move Cartesian shapes and series
 
@@ -11615,7 +11715,9 @@ Native Geo shape, point, line, and graticule items use their original geometry a
 resolved camera parameters. Sampling applies quaternion rotation, logarithmic positive
 scale, and translation through the same projection stream as native Geo marks.
 Horizon clips and seams may change the number of current parts. A source feature can
-be visible midway even when both endpoint scenes hide it.
+be visible midway even when both endpoint scenes hide it. Every frame reprojects every
+source vertex; see [Geographic camera cost](./performance/#geographic-camera-cost)
+for sizes that exceed an interactive frame budget.
 
 These current parts report a `geographic` decision with `kernel: 'native-geo'`,
 `ownerKey`, `itemKey`, and `role`. They have no fabricated endpoint indices. Exact
@@ -11668,6 +11770,7 @@ source data. General Text anchor interpolation remains outside this camera kerne
 | `deserializeAnimation(text)` | Immutable `{plan, playback}`. It validates the complete stored values before returning an authentic plan. |
 | `exportAnimationFrames(plan, {timesMs})` | Frames with `timeMs`, using a nonempty strictly increasing array within the duration. |
 | `exportAnimationFrames(plan, {fps})` | Frames at `index / fps * 1000` milliseconds through the duration; fps must be positive and finite. |
+| `createAnimationPlayer({plan, clock, render, commit?, onMarker?, rate?, repeat?, reducedMotion?})` | A transient controller driven by an explicit clock; see [Play with an explicit clock](./api/animation/#play-with-an-explicit-clock). |
 
 When an authentic sample is reused in the same representation, sampling that endpoint returns
 the original frame, including its original progress and decisions. Exported
@@ -11783,9 +11886,11 @@ player.dispose();
 ```
 
 The player supports `play`, `pause`, `seek(timeMs)`, `reverse`, `setRate(rate)`,
-`setRepeat(repeat)`, `cancel`, `dispose`, `getState`, and `getFrame`.
-`interrupt({to, options:{durationMs, easing?}, rate?, repeat?, reducedMotion?})`
-accepts a program or authentic sample and continues from the current frame.
+`setRepeat(repeat)`, `cancel`, `dispose`, `getState`, and `getFrame`. `dispose()` is
+idempotent; other methods throw after disposal.
+`interrupt({to, options, rate?, repeat?, reducedMotion?})` takes the same `options`
+as `planTransition`, accepts a program or authentic sample, and continues from the
+current frame.
 A negative rate puts the captured frame at the new plan's ending time and plays
 back toward the target. Invalid interruption targets leave
 the active run intact. Repeated interruption of compatible geometry does not accumulate
@@ -11875,10 +11980,10 @@ chart, its screen and its interactions unchanged.
 | Method | What it does |
 | --- | --- |
 | `addCanvas(element, { pixelRatio? })` | Attaches a `<canvas>`, an `<svg>`, or a container (a canvas is created inside it) and draws at once. |
-| `autoResize({ height? })` | Follows the container width (and height) with `editCanvas`. |
+| `autoResize({ height? })` | Follows the container width (and height) with `editCanvas`. Call `addCanvas` first. |
 | `setTheme(theme)` | Applies a theme and redraws. |
 | `download(format?, filename?)` | Saves `"png"` or `"svg"` and resolves with the file `Blob`. For PDF, call `renderToPDFBuffer(chart.program)` from `ggaction/pdf` in Node.js. |
-| `dispose()` | Removes every listener, observer, tooltip and control. |
+| `dispose()` | Removes every listener, observer, tooltip and control; later calls throw. |
 
 ## Interactions
 
@@ -11886,30 +11991,31 @@ chart, its screen and its interactions unchanged.
 | --- | --- |
 | `addTooltip({ fields?, format?, target? })` | Shows item fields on hover as text. `format(fields)` returns a string. |
 | `addHover({ target?, color? })` | Rings the item under the pointer. |
-| `addClickSelect({ target?, mode? })` | Click to select (`"replace"` or `"toggle"`). |
-| `addBrush({ target?, axis?, mode? })` | Drag a rectangle to select (`axis`: `"x"`, `"y"`, `"xy"`). |
-| `addLasso({ target?, mode? })` | Draw a free-form region to select. |
-| `addZoom(options?)` / `addPan(options?)` | Wheel zoom and drag pan. Axis charts edit their continuous scales; maps use native navigation. |
-| `addLegendToggle({ effect?, channel?, target? })` | Click a legend entry to hide (`"visibility"`) or select (`"selection"`) its items. |
+| `addClickSelect({ target?, mode?, color? })` | Click to select (`"replace"` or `"toggle"`). Selected items use `color` (default `#dc2626`); the others are dimmed. |
+| `addBrush({ target?, axis?, mode?, color? })` | Drag a rectangle to select (`axis`: `"x"`, `"y"`, `"xy"`, or `"theta"` on polar charts). |
+| `addLasso({ target?, mode?, color? })` | Draw a free-form region to select. |
+| `addZoom({ target?, factor?, scaleExtent? })` / `addPan({ target?, scaleExtent? })` | Wheel zoom (`factor` 1.1 per step) and drag pan within `scaleExtent` (default `[0.25, 16]`). Axis charts edit their continuous scales; maps use native navigation. |
+| `addLegendToggle({ effect?, channel?, target? })` | Click a legend entry to hide (`"visibility"`, the default) or select (`"selection"`) its items. Scale domains keep all data. |
 | `addDragNodes({ target? })` | Drag graph nodes (the graph plot needs an explicit `origin`). |
 | `on(event, handler)` | `"select"`, `"hover"`, `"change"` or `"error"`; returns an unsubscribe function. |
 
 When the chart has one mark, `target` may be omitted. Selections are created and
-highlighted for you. Drag tools share the pointer: the first one uses a plain drag and later
-ones use Shift, Alt, then Ctrl. With click selection present, every drag tool uses a modifier.
+highlighted for you and are stored as `live-<mark id>`. Drag tools share the pointer: the first
+one uses a plain drag and later ones use Shift, Alt, then Ctrl, so at most four drag tools can
+share a chart. With click selection present, every drag tool uses a modifier.
 
 ## Data and change
 
 | Method | What it does |
 | --- | --- |
-| `setData(rows, { source?, animate? })` | Replaces the drawn data, animating by default. |
-| `animateTo(next, { duration?, easing? })` | Animates to another chart, program, or `program => program.editScale(...)`. |
-| `playOver(field, { duration?, loop? })` | Plays the data one value of `field` at a time; returns `{ pause, play, stop, finished }`. |
-| `addSlider(parameter, options)` / `addDropdown(parameter, options)` | Binds a control to a parameter. |
+| `setData(rows, { source?, animate?, duration?, easing? })` | Replaces the drawn data through `reviseData`. With a screen attached it animates by default (500 ms, `"cubic-in-out"`); without one it commits at once. |
+| `animateTo(next, { duration?, easing? })` | Animates (500 ms, `"cubic-in-out"`) to another chart, program, or `program => program.editScale(...)`. Without a screen it commits at once. |
+| `playOver(field, { duration?, loop?, source? })` | Plays the data one value of `field` at a time (600 ms per step, no loop); returns `{ pause, play, stop, finished }`. |
+| `addSlider(parameter, options)` / `addDropdown(parameter, options)` | Binds a control to a parameter. Call `addCanvas` first; controls go in `options.container` or else the canvas's parent. |
 | `linkTo(other, { by })` | Selecting items selects the items with the same `by` value in the other chart. |
-| `undo()` / `redo()` / `reset()` | Steps through changes; `reset` returns to the last authored state. |
+| `undo()` / `redo()` / `reset()` | Steps through changes; `reset` returns to the state after the last authoring call, `edit` or `setData`. |
 | `edit(program => …)` | Applies any immutable-program update. |
-| `save()` / `LiveChart.load(text, element?)` | Saves and restores the chart with its interactions. |
+| `save()` / `LiveChart.load(text, element?)` | Saves and restores the program and its tooltip, hover, selection, zoom, legend and drag features. Function options (`format`), controls, links and event handlers must be added again after `load`. |
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `scatter`, `rows`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -11920,16 +12026,23 @@ scatter.linkTo(other, { by: "name" });
 const saved = scatter.save();
 ```
 
-`playAnimation(from, to, canvas, { duration? })` plays one transition between two charts or
-programs without keeping a live chart.
+`playAnimation(from, to, canvas, { duration?, easing?, pixelRatio? })` plays one transition
+(500 ms, `"cubic-in-out"`) between two charts or programs on a `<canvas>` without keeping a
+live chart.
+
+Related: [Interaction sessions](./api/interaction/) · [Animation](./api/animation/) ·
+[Data updates](./data-updates/)
 
 <!-- Source: /api/interaction/ -->
 
-# Inspect chart items
+# Interaction sessions
 
-Use `createInteractionSession` from `ggaction/interaction` to inspect the logical
-items under a pointer. It supports Full and Basic programs, browser Canvas and
-SVG surfaces, and headless CSS-point queries. The program remains immutable.
+Use `createInteractionSession` from `ggaction/interaction` to inspect and edit a
+chart through pointer, keyboard and headless commands: hit testing, selections,
+brushing, linked views, navigation, dragging and undo/redo. It supports Full and
+Basic programs, browser Canvas and SVG surfaces, and headless CSS-point queries.
+The program remains immutable. For a ready-made stateful browser chart with
+tooltips, brushing and animated updates, see [Live charts](./api/live/).
 See the [complete browser recipe](./recipes/inspect-chart/) for setup.
 This is an advanced controller function, not a chainable authoring action.
 
@@ -12019,7 +12132,7 @@ const pathSession = createInteractionSession({ program: pathProgram, bindings: [
   hitPreparation: { maxWork: 128000000,
     pathGeometry: { maxParts: 400000, maxWork: 2000000, maxIndexWork: 16000000 } }
 });
-pathSession.dispatch({ type: "inspect", point: { x: 200, y: 200 }, slop: 3 });
+pathSession.dispatch({ type: "inspect", point: { x: 200, y: 191 }, slop: 3 });
 console.log(pathSession.getState().hit.candidates.length);
 pathSession.destroy();
 ```
@@ -12330,12 +12443,15 @@ hit targets in that frame.
 ## State and cleanup
 
 `getState()` returns an immutable snapshot with `program`, `scene`, `frameVersion`,
-`generation`, `revision`, `hit`, `mounted`, and `destroyed`. A hit contains `target`,
+`generation`, `revision`, `hit`, `mounted`, and `destroyed`, plus `previewProgram`,
+`previewFrame`, `animationFrame`, `focus`, `linkedSelections`, `history`, `assets`,
+`previewAssets`, `frameAssets` and `preparation` for the editing features below. A hit contains `target`,
 `candidates`, `diagnostics`, `statistics`, and `frameVersion`. Singular transforms
 and empty viewports produce no hit plus diagnostics.
 
-Subscribers receive `{ type, state }`; event types are `inspect`, `contextMenu`, `leave`, `frame`,
-`program`, `mount`, `unmount`, and `destroy`. Dispatch and program updates return
+Subscribers receive `{ type, state }`. Lifecycle events are `inspect`, `contextMenu`, `leave`,
+`frame`, `mount`, `unmount`, `destroy` and `focus`; `program`, `resize`, `assets`, `update` and
+`unbundleEdge` report changes, and transaction events from editing bindings carry a `phase`. Dispatch and program updates return
 `{ status: "applied" | "queued" | "stale" | "unchanged" }`. Reentrant operations run FIFO after
 the current event, with a 256-command bound. Subscriber errors propagate and
 clear queued work; the already published state remains available.
@@ -12745,8 +12861,10 @@ visibilitySession.subscribe(event => {
 visibilitySession.mount(canvas);
 ```
 
-The native `setMarkVisibility` action and `setVisibility` session command accept `channel`, unique typed `values`,
-boolean `visible` and the same explicit `scaleDomain`. Use the command payload `{clear:true}` or the native
+The native `setMarkVisibility({ target?, channel, values, visible, scaleDomain })` action and `setVisibility` session
+command accept `channel`, unique typed `values`, boolean `visible` and the same explicit `scaleDomain`, which has no
+default. Both require an existing categorical legend block for that target and channel; see
+[Hide legend categories](./api/data/filtering/#set-mark-visibility). Use the command payload `{clear:true}` or the native
 `removeMarkVisibility` action to remove visibility alone. User filters and hidden-selection policy remain separate.
 Changing a linked filter preserves visibility. Numeric `1` and string `"1"` are distinct categories; unknown values
 reject. Continuous or interval legends and Basic authoring are unsupported. Empty views retain valid domains.
@@ -12828,8 +12946,9 @@ Elements use capture automatically. Brush/lasso and navigation are separate bind
 
 ## Brush or lasso an existing selection
 
-Use a Full program with an existing authored selection. A session accepts one click, brush, or lasso
-binding alongside inspection and linked selections. The following browser fragment assumes `program`
+Use a Full program with an existing authored selection. A session can combine several click, brush and
+lasso bindings with inspection and linked selections; see [Combine editing gestures](./api/interaction/#combine-editing-gestures)
+for priorities and modifiers. The following browser fragment assumes `program`
 has a `points` mark and `picked` selection, and `canvas` is an HTML Canvas element:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `canvas`. Resource selectors used here: `target: "points"`; `selection: "picked"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -13144,7 +13263,7 @@ active. Escape, lost capture, pointer cancel, blur, external program/frame updat
 release both pointers and discard the draft. A late pointer-up has no effect. Wheel and keyboard each use
 one native command; Ctrl/Meta/Alt keyboard shortcuts remain with the host. The host owns focus and touch
 CSS. Remove the binding by creating a new session; incompatible targets fail, and a removed target remains
-inactive until an explicit matching owner returns. Editing bindings share one capture owner alongside inspection/context-menu bindings. Animated camera playback is a separate integration.
+inactive until an explicit matching owner returns. Editing bindings share one capture owner alongside inspection/context-menu bindings. To animate a camera change, plan a transition between the committed programs with [`ggaction/animation`](./api/animation/) and dispatch its frames as in [Replace a program or sampled frame](./api/interaction/#replace-a-program-or-sampled-frame).
 
 ## Move graph nodes with pointer or keyboard
 
@@ -13152,6 +13271,9 @@ Bind `moveNode` to the explicit GraphPlot. Its fixed or force layout and plot or
 coordinate system. Dragging keeps the initial pointer offset, previews from one baseline, and commits
 once when released. Escape restores the baseline. A force drag pins the moved node and uses the existing
 solver for the others. Native buttons can send the same command using an explicit layout and typed key.
+The commit is a synchronous `editLayout`, so node movement is unavailable while a version 2
+[edge route](./api/edge-routes/#explicit-bounded-execution) depends on the layout; use version 1 routes for
+draggable routed graphs.
 
 This browser module expects `<canvas id="chart" aria-label="Movable graph nodes"></canvas>`.
 
@@ -13344,7 +13466,8 @@ view is disposed, then call `disposeRoutes()`.
 
 Use `modifiers` to choose an explicit binding and `priority` to override its default rank. Each optional
 `alt`, `ctrl`, `meta` and `shift` flag is a boolean requirement; omitted flags impose no condition.
-Default ranks are annotation 50, brush/lasso 40, node movement 30, navigation 20 and click/legend 10. Priority
+Default ranks are selection resize and category reorder 60, annotation 50, brush/lasso 40, node movement 30,
+navigation 20 and click/legend 10. Priority
 must be an integer between -1,000,000 and 1,000,000. Equal ranks with overlapping conditions are rejected
 before mounting, including bindings with different targets. Reordering the binding array does not resolve a tie.
 
@@ -13385,8 +13508,8 @@ const disposeGestures = () => { unsubscribe(); gestureSession.destroy(); };
 
 The annotation wins when its label is hit, including while Shift is pressed. Elsewhere Shift selects the
 brush and a plain click toggles a point. `priority` and `modifiers` are available on all editing bindings,
-including legends and navigation; they do not apply to inspection, context menus or linked bindings.
-There are at most256 editing bindings and259 total records. A click clear-on-miss remains an applicable
+including legends and navigation; they do not apply to inspection, context menus, keyboard or linked
+bindings. There are at most 256 editing bindings and 259 total records. A click clear-on-miss remains an applicable
 command; use `onMiss:"ignore"` when a miss should fall through. Wheel and keyboard arbitrate navigation
 bindings, while native Ctrl/Meta/Alt shortcuts remain with the host. SVG hosts keep the root during a drag
 and remount when replacing it. Call `disposeGestures()` when removing this view.
@@ -13610,7 +13733,8 @@ own keyboard behavior. Filtering updates the native descriptions and selected st
 reads them. The item-focus example above explains owner fallback and geographic representations.
 Use a similarly explicit list of native controls for camera, legend visibility and other commands;
 those controls must dispatch through the same session reducer and cleanup their own listeners.
-Public animation and reduced-motion playback integration remain separate from this static host recipe.
+For animated transitions with reduced-motion handling, use `createAnimationPlayer` from
+[`ggaction/animation`](./api/animation/); this recipe stays static.
 
 ## Native control alternatives
 
@@ -17434,12 +17558,13 @@ A layer cannot be silently moved from one coordinate to another, and Cartesian
 x/y cannot be mixed with Polar theta/radius. Polar point, open-line, closed
 radar, donut, rose, and radial-bar charts support theta/radius axes and grids.
 Parallel coordinates support dimension axes but do not create a Cartesian or
-Polar grid.
+Polar grid. Geo coordinates bind a projection (Full only); Cartesian, Polar and
+Parallel encodings and guides cannot attach to a Geo coordinate.
 
 ## Related
 
 [Position encodings](./api/position-encodings/) · [Axes](./api/axes/) ·
-[Grids](./api/grids/)
+[Grids](./api/grids/) · [Geometry and projections](./api/geometry/)
 
 <!-- Source: /api/axes/ -->
 
@@ -18088,7 +18213,7 @@ compositions and saved programs preserve it, and fitting uses the shifted concre
 
 Continuous color legends support point, aggregate-bar, and rect marks. Continuous
 stroke legends support every stroke-capable mark at its documented item/series grain. Field
-Opacity legends support Point and Line; discretized color legends support Point, aggregate Bar, and Rect. Interactive legends are unsupported.
+Opacity legends support Point and Line; discretized color legends support Point, aggregate Bar, and Rect. Static rendering adds no legend behavior; to select or hide categories by clicking a legend, use a `legend` binding in [`ggaction/interaction`](./api/interaction/#hide-and-restore-categories-from-a-legend) or `addLegendToggle` in [live charts](./api/live/).
 Combined point-series and size legends support every edge. Continuous size
 blocks sample the domain; discrete size blocks show every interval.
 Side positions stack the blocks; horizontal positions place them in rows. A left block must
@@ -19901,14 +20026,16 @@ ggaction produces static chart graphics. Accessibility therefore has two
 parts: author a chart whose meaning is not carried by color alone, then give
 the rendered output an accessible name, description, and non-visual
 alternative in the host application. Rendering does not add keyboard
-interaction, focus targets, live tooltips, or a data table automatically.
+interaction, focus targets, live tooltips, or a data table automatically;
+[`ggaction/interaction`](./api/interaction/#keyboard-item-focus) adds keyboard item
+focus and activation when you opt in.
 
 ## Output contract
 
 | Output | What ggaction provides | What the host must provide |
 | --- | --- | --- |
 | SVG | Escaped `<title>` and `<desc>` elements through renderer options | Meaningful text, safe placement, and a table or prose alternative when needed |
-| Canvas | Concrete pixels and deterministic geometry | `role`, accessible name, fallback content, and any keyboard interaction outside ggaction |
+| Canvas | Concrete pixels and deterministic geometry | `role`, accessible name, fallback content, and keyboard interaction (optionally through `ggaction/interaction`) |
 | PNG | A static image file | Alt text and surrounding explanation where the image is embedded |
 | PDF | Vector chart content and document metadata | Reading-order review and an accessible alternative; ggaction does not claim tagged-PDF semantics |
 
@@ -19962,9 +20089,11 @@ const context = document.querySelector("#orders-chart").getContext("2d");
 render(program, context);
 ```
 
-If an application adds its own pointer or keyboard controls, it owns focus
-order, state announcements, and equivalent keyboard operation. The current
-ggaction contract is static and does not supply those behaviors.
+Rendering itself is static. For keyboard item focus, activation and accessible
+tooltips, use a `keyboard` binding from
+[`ggaction/interaction`](./api/interaction/#keyboard-item-focus). The host still
+supplies roles, accessible names, option text, focus order and state announcements,
+and owns any pointer or keyboard controls it adds itself.
 
 ## Data alternatives at the chart’s final grain
 
@@ -20010,7 +20139,7 @@ documentation interaction tests run in Playwright Chromium. Library renderer com
 | Import | Environment | Notes |
 | --- | --- | --- |
 | `ggaction` | Modern browser bundler or Node.js 20+ | Complete chart authoring and Browser Canvas rendering |
-| `ggaction/basic` | Modern browser bundler | Smaller creation-focused chart surface |
+| `ggaction/basic` | Modern browser bundler or Node.js 20+ | Smaller creation-focused chart surface |
 | `ggaction/svg` | Browser or Node.js 20+ | DOM-free SVG string serialization |
 | `ggaction/png` | Node.js 20+ | Native PNG file output; do not place in a browser bundle |
 | `ggaction/pdf` | Node.js 20+ | Native single-page PDF file output; do not place in a browser bundle |
@@ -20022,8 +20151,8 @@ documentation interaction tests run in Playwright Chromium. Library renderer com
 | `ggaction/animation` | Browser or Node.js 20+ | Prepare, play, save, restore, and export immutable transition frames |
 | `ggaction/live` | Browser | Attach a chart to a canvas once; every later call redraws and interactions apply immediately |
 | `ggaction/scene` | Browser or Node.js 20+ | Read transition scenes and draw native Canvas scenes |
-| `ggaction/graph` | Browser or Node.js 20+ | Prepare graph routes with explicit worker ownership; version 2 uses required budgets and deadlines |
-| `ggaction/interaction` | Browser or Node.js 20+ | Inspect current marks and guides; DOM-free until mounted |
+| `ggaction/graph` | Browser or Node.js 20+ | Prepare inferred graphs and graph edge routes with explicit worker ownership; version 2 routes use required budgets and deadlines |
+| `ggaction/interaction` | Browser or Node.js 20+ | Hit-test, select, link, navigate and edit charts; DOM-free until mounted |
 
 CommonJS `require("ggaction")` is not a supported entry. Use ESM source files
 or configure the consuming project for ESM.
@@ -20235,13 +20364,60 @@ same measurement unless the product question is end-to-end latency.
 ## Generated-work limits
 
 Many expansion operations cap generated items at 10,000 per operation. This
-applies to grid values, symbols, and aggregate layout cells. Paths have a separate
-30,000-command bound, counting interpolation expansion and area closure;
-it is not a universal source-row limit. Work-intensive calculations such as
+applies to grid values, symbols, aggregate layout cells and each concrete mark
+collection. Point layers default to 50,000 items and accept `maxItems` up to
+100,000; graph plots accept `maxItems` up to 100,000. Because the limits apply
+to final graphic items, aggregate before drawing bars, rects or text for very
+large tables. Paths have a separate 30,000-command bound, counting interpolation
+expansion and area closure; it is not a universal source-row limit. Geo shape,
+point, line and graticule marks can raise their own projected-point and
+path-command budgets up to 200,000 with `capacity`; see
+[Projected output limits](./api/geometry/#projected-output-limits). Work-intensive calculations such as
 label collision planning also have a 10,000,000-work-item budget. The shared
 validator reports `resource-limit` with the named quantity, `limit`, and
 `actual` through `getErrorDetails` from `ggaction/diagnostics`. Reduce the
 expansion (for example, fewer bins or labels) while preserving chart meaning.
+
+## Keep large updates responsive
+
+`reviseDataInSlices` (from `ggaction`) and `loadProgramInSlices` (from
+`ggaction/persistence`) return the same result as `reviseData` and
+`deserializeProgram` but yield to the host between slices. They do not reduce
+total work: a 100,000-row revision still takes about two seconds. A slice ends
+at the first 1,024-row batch boundary after `sliceMs`, so a pause can exceed
+`sliceMs` by one batch plus any garbage-collection pause. For interactive pages,
+prefer `sliceMs` of 10–20 over the default 40. Prepare graph edge routes and
+inferred graphs in a worker through [`ggaction/graph`](./api/edge-routes/#prepare-in-a-worker).
+
+## Geographic camera cost
+
+Camera frames reproject every source vertex; no vertex is dropped or simplified.
+In the release benchmark (Chromium, one line with the given number of vertices,
+P95 per sampled camera frame) 1,000 vertices take about 2 ms, 10,000 about
+13 ms and 100,000 about 145 ms, roughly three times a 50 ms interactive budget.
+Hit queries on the same 100,000-vertex path stay near 3 ms. Native pan and zoom
+previews also re-run the projection edit, so very large sources respond slowly
+to drags. For smooth navigation, simplify with `createGeoLODData` level
+`tolerance`, or show a coarser level while zoomed out.
+
+## Known limits
+
+This release records these measured limits (Chromium, P95 of 30 runs, device
+pixel ratio 1 / 2):
+
+- **100,000 data rows.** The longest host pause of `loadProgramInSlices` is about
+ 55 / 58 ms and of `reviseDataInSlices` about 112 / 78 ms against a 50 ms target,
+ because of browser garbage collection. 1,000 and 10,000 rows stay under about
+ 25 ms.
+- **100,000-vertex geographic camera preview.** About 145 / 148 ms per frame
+ against a 50 ms target; see [Geographic camera cost](./performance/#geographic-camera-cost).
+- **Edge bundling.** Density bundling takes about 4.5 seconds at 100 edges and
+ exceeds the 30-second deadline at 1,000; force-directed bundling takes about
+ 2.5 seconds at 1,000 edges with an explicit work budget and exceeds the deadline
+ at 10,000. Cancellation can take longer than 100 ms for density bundling at 100
+ edges (about 125 ms), force-directed bundling at 1,000 edges (up to about
+ 105 ms) and any method at 10,000 edges (several hundred milliseconds). See
+ [Edge routes](./api/edge-routes/#known-performance-limits).
 
 ## Allocation limits
 
@@ -20285,6 +20461,9 @@ dependent chart, or rebuild a program from application-owned rows.
 | --- | --- | --- |
 | CSV/JSON, named, or URL data | `prepareDataUpdate` then `applyDataUpdate` | Explicit host loader and current request token |
 | New rows with compatible fields | `reviseData({ source, id, values })` | Existing source ID and fresh revision ID; dependent transforms remain valid |
+| Large compatible row refresh | `reviseDataInSlices(program, options, { sliceMs?, signal? })` | Same as `reviseData`; await the promise |
+| Scalar input change | `editParameter({ target, value })`, or a prepared parameter request for URL sources | Existing parameter |
+| Attached live chart | `setData(rows)` from [`ggaction/live`](./api/live/) | Runs `reviseData` and animates the change |
 | Field names, types, or chart topology change | Rebuild from application-owned rows | Update affected encodings and transform definitions together |
 | Transform parameters change | The owning `edit*Data` action | Existing logical transform ID and valid options |
 | One mark should use independent data | `createData` then the mark's data editor | Explicit target and a compatible replacement schema |
@@ -20371,14 +20550,18 @@ editor targets.
 
 `reviseDataInSlices(program, options, { sliceMs?, signal? })` from `ggaction`
 returns the same revision, or rejects with the same error, as
-`program.reviseData(options)`. Large revisions run in short synchronous slices
-of about `sliceMs` milliseconds (an integer from 1 to 1000, default 40) and
-yield to the host between them. Aborting `signal` rejects with its reason and
-leaves `program` unchanged. Unit charts revise their rows, derived data and
-point marks in row batches; facet revision runs as one step. Plain data
-options, rows included, are copied in the first slice before the call
-returns, so later changes to them do not affect the pending revision. The
-copy counts toward that first slice.
+`program.reviseData(options)`. Large revisions run in synchronous slices and
+yield to the host between them; `sliceMs` is an integer from 1 to 1000 (default
+40). Aborting `signal` rejects with its reason and leaves `program` unchanged.
+Unit charts revise their rows, derived data, scales and point marks in batches
+of 1,024 rows. Other mark families and facet revisions each run as one step, so
+their pause grows with the row count. A slice ends at the first batch boundary
+after `sliceMs`, so a pause can exceed `sliceMs` by one batch plus host garbage
+collection. Plain data options, rows included, are copied and frozen before the
+call returns, so later changes to them do not affect the pending revision. The
+copy counts toward the first slice, which can therefore exceed `sliceMs` for
+very large inputs. See [Performance](./performance/#keep-large-updates-responsive)
+for measured limits.
 
 ```javascript
 import { chart, reviseDataInSlices } from "ggaction";
@@ -20467,8 +20650,14 @@ new schema or intended chart structure requires a different authoring flow.
 - Validate rows before committing the new snapshot. A failed action leaves the
  previous program untouched.
 - Debounce high-frequency feeds according to the product's acceptable
- staleness; ggaction is a static snapshot authoring library, not a streaming
- scene graph.
+ staleness. Each update produces a new immutable snapshot; even
+ [`ggaction/live`](./api/live/) and interaction sessions commit whole
+ revisions rather than streaming individual rows. For an attached browser
+ chart, `setData(rows)` revises and animates the change; use
+ [`planTransition`](./api/animation/) to animate between two revisions yourself.
+- Only `reviseDataInSlices` and `loadProgramInSlices` yield during work.
+ `applyDataUpdate`, parameter and derived-data edits, and `ggaction/live`
+ `setData`/`load` run synchronously.
 - Rebuild once for a batch. Do not call `createData` once per row or grow a
  trace as an event log.
 - Keep the current logical size in host state so data refresh and responsive
@@ -20520,9 +20709,11 @@ missing Canvas dimensions or other prerequisites.
 `loadProgramInSlices(text, { sliceMs?, signal? }): Promise<ChartProgram>`
 restores the same editable snapshot in short synchronous slices so a large
 chart does not block the page. It returns the same program, and rejects with
-the same error, as `deserializeProgram`. Each slice runs for about `sliceMs`
-milliseconds (an integer from 1 to 1000, default 40) and then yields to the
-host before continuing. Aborting `signal` rejects with its reason and returns
+the same error, as `deserializeProgram`. Validation and restoration run in
+batches of 1,024 rows; a slice ends at the first batch boundary after `sliceMs`
+(an integer from 1 to 1000, default 40) and then yields to the host before
+continuing. Host garbage-collection pauses are included, so at 100,000 rows
+expect occasional pauses above 50 ms (see [Performance](./performance/#known-limits)). Aborting `signal` rejects with its reason and returns
 no program. The snapshot text is a string and cannot change during the load.
 
 ```javascript
@@ -20623,7 +20814,8 @@ not as an object-identity graph.
 
 [Source and derived data](./api/data/source-and-derived/) ·
 [ChartProgram and immutability](./concepts/chart-program/) ·
-[Responsive charts](./responsive-charts/) · [Errors and recovery](./errors-and-recovery/)
+[Responsive charts](./responsive-charts/) · [Errors and recovery](./errors-and-recovery/) ·
+[Live charts](./api/live/) · [Animation](./api/animation/)
 
 Full row contributions add storage proportional to the actual lineage. Shared
 arrays avoid duplicating complete source tables across facets. The regression
@@ -20811,6 +21003,7 @@ omit this field. Inspection does not run another layout pass.
 
 [Data updates and snapshots](./data-updates/) ·
 [ChartProgram and immutability](./concepts/chart-program/) ·
+[Interaction sessions](./api/interaction/) for hit candidates under a pointer ·
 [Errors and recovery](./errors-and-recovery/)
 
 <!-- Source: /errors-and-recovery/ -->
@@ -20841,7 +21034,9 @@ identity are preserved, including extension errors that are already frozen.
 The stable `code` values are `invalid-option`, `invalid-value`,
 `missing-resource`, `ambiguous-resource`, `incompatible-resource`,
 `resource-in-use`, `resource-limit`, `unsupported-format`, `action-failed`,
-`duplicate-id`, `ambiguous-identity`, `cyclic-dependency`, and `stale-result`.
+`duplicate-id`, `ambiguous-identity`, `cyclic-dependency`, `stale-result`, and
+`prepared-data-required` (a parameter used by a URL source changed; use
+`prepareDataUpdate` with a `parameter` request).
 Shared input validation and named-resource selectors assign specific codes.
 Wrapped actions attach `action-failed` to other errors without guessing their
 category from English message text. Not every individual domain failure has a
@@ -20902,9 +21097,12 @@ logs; do not log sensitive row contents by default.
 - **Scale has no consumer:** attach the named scale to a compatible encoding.
 - **Raster allocation rejected:** reduce logical size or `pixelRatio` before
  retrying Canvas or PNG output.
-- **Unsupported static capability:** redesign explicitly. Tooltips, animation,
- event handling, geographic projection, 3D charts, and JPEG rendering are not
- silently emulated.
+- **Unsupported static capability:** static renderers do not add tooltips,
+ animation or event handling; use [`ggaction/live`](./api/live/),
+ [`ggaction/animation`](./api/animation/) or
+ [`ggaction/interaction`](./api/interaction/) explicitly. Geographic maps use
+ [Geometry and projections](./api/geometry/). 3D charts and JPEG rendering are
+ not supported.
 
 ## Diagnosis order
 
@@ -21047,8 +21245,12 @@ global theme or rewrite every axis and legend.
 For exact layout, prepare font resources on the intended immutable program,
 then call `prepareTextMetrics(program, {id, fonts}, host)` and apply its handle
 with `applyTextMetrics({prepared, requestToken})`. A new label that needs a
-missing width fails atomically. Remove the profile, edit the label, and prepare
-again; replacing a bound font prepares its new measurements before committing.
+missing width fails atomically. Remove the profile with `removeTextMetrics()`,
+edit the label, and prepare again. Replace font bytes with `replaceFontResource`;
+replacing a bound font prepares its new measurements before committing.
+`removeResource({ kind: "font", id })` rejects while a metric profile uses the
+font; `cascade: true` removes the profile and restores estimated text first. See
+[Change labels or fonts](./tutorials/font-assets/#change-labels-or-fonts).
 
 Browser Canvas also requires `prepareFontRendering(program, {register})` and
 `render(program, context, {fonts})`. Release the handle with `fonts.dispose()`
@@ -21108,7 +21310,9 @@ and action-reference pages.
 ```
 
 Browser projects also need the DOM library supplied by their toolchain because
-`render` accepts `CanvasRenderingContext2D`. Node-only SVG, PNG, and PDF
+`render` accepts `CanvasRenderingContext2D`; `ggaction/live` and mounted
+`ggaction/interaction` sessions also use DOM types. Worker modules for
+`ggaction/graph` need the `WebWorker` library. Node-only SVG, PNG, and PDF
 consumers do not need to construct a browser Canvas context.
 
 ## Type chart options before authoring
@@ -21167,6 +21371,10 @@ await renderToPDF(program, { output: "chart.pdf", metadata });
 
 Keep Node-only `ggaction/png` and `ggaction/pdf` imports out of browser source.
 Type-only imports do not authorize a runtime entry in the wrong environment.
+
+`ggaction/live` exports `LiveChart` and its event types, `ggaction/graph` exports
+route and inference worker and executor types, and `ggaction/animation` exports
+transition plan, player and frame types. Import each from its own entry.
 
 ## Extensions
 
@@ -21415,6 +21623,10 @@ input context, editable owners, package membership, and lower-level actions.
 | Part-to-whole and radial values | Pie, Rose, Radial Bar | Pie angle, Rose area, and radial length express different measures |
 | Dense samples | Pre-gridded or rectangular binned Heatmap; Horizon | Choose aggregation or folded-band meaning explicitly |
 | Repeated and combined views | Facet, Facet Grid, field repetition, horizontal/vertical concatenation | Choose independent versus shared domains and guide policies |
+| Hierarchies and networks | Tree, Treemap, Partition (icicle/sunburst), Graph (fixed, circular, force layouts; four edge-bundling methods), Sankey flows (DAG and cyclic) | Choose the stored hierarchy or graph resource, then its layout |
+| Maps | Geographic shape, point, line, graticule and annotation marks over 15 projections, with table joins and detail levels | Choose the geometry source, projection and joined fields |
+| Fields and calendars | Contour lines and filled bands, 2D density contours, Calendar | Choose grid or density meaning and the civil-day policy |
+| Specialized plots | Pyramid, OHLC, Waterfall, Trail, Table (cells, in-cell bars, sparklines), Image marks | Choose stage, price, contribution, width or cell meaning |
 
 All complete families render through Browser Canvas, browser-safe SVG, Node PNG,
 and single-page vector PDF. Support is conditional on each facade's required roles
@@ -21424,8 +21636,12 @@ complete support limit of its underlying mark.
 
 ## Native chart scope
 
-[Pyramid](./api/pyramid/) represents ordered stages with explicit values; stage
-labels do not replace row identity. [Marginal](./recipes/marginal/),
+[Calendar](./api/calendar/), [Contours](./api/contours/), [OHLC](./api/ohlc/),
+[Pyramid](./api/pyramid/), [Table](./api/table/), [Trail](./api/trail/) and
+[Waterfall](./api/waterfall/) are native families with dedicated create/edit actions,
+listed under [Specialized chart families](./api/chart-picker/#specialized-chart-families).
+Pyramid represents ordered stages with explicit values; stage labels do not replace
+row identity. [Marginal](./recipes/marginal/),
 [Bullet](./recipes/bullet/), and [Combo](./recipes/combo/) are recipes built
 from public actions, not separate chart constructors. Use independent panels
 for different Y measures and one shared Y mapping for overlays in a frame.
@@ -21445,15 +21661,18 @@ mathematics serve those native operations.
 | --- | --- |
 | Program model | Immutable unit or composition `ChartProgram`, hierarchical trace, nested Cartesian/Polar/Parallel composition, stable child replacement, and Cartesian/Polar/Parallel facet, grid, and eligible field-role repetition |
 | Canvas | Create/edit width, height, background, margin |
-| Data | Immutable source rows, filtering, computation, normalization, completion, imputation, folding, summaries, stacks, 1D/2D bins, windows, calendar buckets, regression, intervals, KDE, ECDF, and explicit derived revision replay |
-| Coordinates | Named Cartesian, Polar, and Parallel resources; x/y use Cartesian, theta/radius use Polar, and ordered dimensions use Parallel |
+| Data | Immutable source rows, filtering, computation, normalization, completion, imputation, folding, summaries, stacks, 1D/2D bins, windows, calendar buckets, regression, intervals, KDE, ECDF, pivots, lookups, flatten, sorting, scalar parameters, host-loaded CSV/JSON/URL sources, hierarchy, graph, flow, contour and geometry resources, time-sliced revision and snapshot loading, and explicit derived revision replay |
+| Coordinates | Named Cartesian, Polar, Parallel and Geo (projection-bound) resources; x/y use Cartesian, theta/radius use Polar, ordered dimensions use Parallel, and Geo marks use a projection |
 | Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position with semantic explicit/count/category/summary ordering, ordinal/sequential/log/sqrt/symlog/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge categorical, interval, and continuous legends, and channel-identified block editing |
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |
-| Rendering | Browser Canvas, browser-safe SVG string, Node PNG, and single-page vector PDF |
-| Graphics | Concrete canvas, circle, line, rect, text, `M/L/C/Z` command paths, shared 8-value line/area curves, and heterogeneous drawable collections |
-| Selection | Strict point/bar/rect/series/arc/rule/tick comparison, set, range and grouped rank; reusable selection state; mark-specific highlight/dimming/front order |
+| Rendering | Browser Canvas, browser-safe SVG string, Node PNG, and single-page vector PDF; immutable animation frames (`ggaction/animation`) and live redraw (`ggaction/live`) |
+| Graphics | Concrete canvas, circle, circle-batch, line, rect, text, image, `M/L/C/Z` command paths, path-batch, weighted-blend, shared 9-value line/area curves, embedded fonts, and heterogeneous drawable collections |
+| Animation | `ggaction/animation`: plan, sample, play, save/restore and export transitions between immutable programs; frames render on Canvas, SVG, PNG and PDF |
+| Interaction | `ggaction/interaction`: hit testing, click/brush/lasso/legend selection, linked selections and filters, map navigation, node and annotation dragging, keyboard focus, undo/redo |
+| Live charts | `ggaction/live`: stateful browser wrapper with tooltips, hover, brushing, zoom/pan, animated data updates and save/load |
+| Selection | Strict point/bar/rect/series/arc/rule/tick comparison, set, range and grouped rank, plus calendar day, contour level/band, OHLC row, waterfall and pyramid stage, trail series, table cell, graph, hierarchy, partition, flow and Geo item grain; reusable selection state; mark-specific highlight/dimming/front order |
 
 Basic chart facades infer only a current or unique dataset and stable unused
 role IDs. Ambiguous data or an occupied default role requires an explicit ID.
@@ -21471,7 +21690,9 @@ ECDFs, filters, regression, density, Horizon folding, intervals, time units,
 windows, and rectangular 2D bins. The
 [canonical transform table](./api/data/source-and-derived/#create-derived-data)
 owns the exact tag set and normalized forms. Arbitrary multi-transform
-pipelines and interactive legends are not implemented.
+pipelines are not implemented. Categorical legends can select or hide categories
+through an [interaction session](./api/interaction/#hide-and-restore-categories-from-a-legend),
+`setMarkVisibility`, or [live charts](./api/live/).
 Pre-gridded heatmaps do not synthesize missing cells. Binned heatmaps support
 fixed rectangular bins only; weighted, adaptive, hexagonal, and overflow bins
 are not implemented. Cell text must be added as a separate text layer.
@@ -21510,7 +21731,8 @@ values, adaptive bandwidth, and Polar violin placement are not implemented.
 ### Selection, appearance, and text
 
 Mark selection supports point, final-bar item, stacked-bar group, line/area
-series, rect cell, arc sector, rule, and tick grain. Selector values explicitly distinguish data fields,
+series, rect cell, arc sector, rule, tick, calendar day, contour level/band, OHLC
+row, waterfall stage, pyramid stage, trail series, table cell and image item grain. Selector values explicitly distinguish data fields,
 pre-scale semantic channels, and concrete graphic properties.
 Highlight appearance supports point fill/shape/size/outline/offset, bar fill and
 outline, area/arc fill/outline/offset, and line/rule stroke/width/dash/offset.
@@ -26923,7 +27145,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 applyGraphEdgeRoutesUpdate({ prepared, requestToken })
 ```
 
-Apply an authentic prepared native layout revision on its exact original Full unit receiver. Prepare with `kind:"update", edit:{action:"editLayout",args}` through `ggaction/graph`; the original action, affected route consumers and theme completion execute synchronously with the shared budget. See [Edge routes](./api/edge-routes/#applygraphedgeroutesupdate).
+Apply an authentic prepared native update on its exact original Full receiver. Prepare any affected native edit (layout, graph, flow, hierarchy, data, parameter, Canvas, fit, filter, or another public action that reaches a version 2 route) with `kind:"update"` through `ggaction/graph`; the original action, affected route consumers and theme completion execute synchronously with the shared budget. See [Edge routes](./api/edge-routes/#applygraphedgeroutesupdate).
 
 ## `createGeometryData`
 
@@ -26956,7 +27178,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, limits? })
+createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, polygonWinding?, limits? })
 ```
 
 Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values. See [Geometry sources](./api/geometry/#creategeometrydata).
@@ -26989,7 +27211,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
+editGeometryData({ target?, values?, coordinateKind?, topoObject?, polygonWinding?, limits? })
 ```
 
 Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](./api/geometry/#editgeometrydata).
@@ -29509,7 +29731,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createGeoShapeMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoShapeMark({id?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, capacity?, ...style})
 ```
 
 Create projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](./api/geometry/#creategeoshapemark).
@@ -29554,7 +29776,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editGeoShapeMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoShapeMark({target?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](./api/geometry/#editgeoshapemark).
@@ -29601,7 +29823,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createGeoPointMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoPointMark({id?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, radiusDeg?, capacity?, ...style})
 ```
 
 Create projected geographic GeoPointMark geometry with native style. See [Geometry and projections](./api/geometry/#creategeopointmark).
@@ -29647,7 +29869,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editGeoPointMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoPointMark({target?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, radiusDeg?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoPointMark geometry with native style. See [Geometry and projections](./api/geometry/#editgeopointmark).
@@ -29692,7 +29914,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createGeoLineMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoLineMark({id?, coordinate?, geometry?, interpolation?, routeHint?, capacity?, ...style})
 ```
 
 Create projected geographic GeoLineMark geometry with native style. See [Geometry and projections](./api/geometry/#creategeolinemark).
@@ -29736,7 +29958,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoLineMark geometry with native style. See [Geometry and projections](./api/geometry/#editgeolinemark).
@@ -29882,7 +30104,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createGraticule({id?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+createGraticule({id?, coordinate?, stepDeg?, extentDeg?, precisionDeg?, capacity?, ...style})
 ```
 
 Create projected geographic Graticule geometry with native style. See [Geometry and projections](./api/geometry/#creategraticule).
@@ -29926,7 +30148,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?, capacity?, ...style})
 ```
 
 Edit projected geographic Graticule geometry with native style. See [Geometry and projections](./api/geometry/#editgraticule).
@@ -38222,7 +38444,7 @@ export function renderToSVG(
 ```typescript
 export type ErrorCode = "invalid-option" | "invalid-value" | "missing-resource" |
   "ambiguous-resource" | "incompatible-resource" | "resource-in-use" |
-  "resource-limit" | "unsupported-format" | "action-failed" | "duplicate-id" | "ambiguous-identity" | "cyclic-dependency" | "stale-result";
+  "resource-limit" | "unsupported-format" | "action-failed" | "duplicate-id" | "ambiguous-identity" | "cyclic-dependency" | "stale-result" | "prepared-data-required";
 
 export interface ErrorDetails {
   readonly code: ErrorCode;
@@ -54140,12 +54362,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/4fecd89c880b5ea69af0253fa3faba19a8fdeaf0/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/4fecd89c880b5ea69af0253fa3faba19a8fdeaf0/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -55087,6 +55309,9 @@ contains its old row index or `null` for a new row. The array must match the new
 row count and cannot repeat old indices. Keyed sources reject `rowMap`.
 Independent branches allocate distinct identities for new rows. Earlier
 programs remain unchanged, and invalid mappings reject the whole revision.
+For large sources, `reviseDataInSlices` from `ggaction` performs the same
+revision in bounded host turns; see
+[Data updates](./data-updates/#revise-a-source-and-its-dependent-chart).
 
 For a live source created with `prepareDataUpdate`, use a prepared `revise`
 request to reload its URL or name while retaining that binding. A direct
@@ -55148,6 +55373,11 @@ top-level decision:
 | normalize | `editNormalizedData` |
 | complete | `editCompleteData` |
 | impute | `editImputedData` |
+| pivot | `editPivotData` |
+| lookup | `editLookupData` |
+| flatten | `editFlattenData` |
+| two-dimensional bin | `editBin2DData` |
+| regression statistics | `editRegressionStatisticsData` |
 
 Each focused action requires `target`. It accepts the stable logical owner ID or
 the owner's current physical revision ID. An older physical revision is stale
@@ -55190,7 +55420,7 @@ must advance with the new row order.
 ```javascript
 const descending = ordered.editSortedData({
   target: "orderedSales",
-  sortBy: [{ field: "revenue", fieldType: "quantitative", order: "descending" }]
+  sortBy: [{ field: "revenue", order: "descending" }]
 });
 ```
 
@@ -57317,6 +57547,25 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 | Explicit node and edge tables with a stored graph layout | [`createGraphPlot`](./reference/actions/charts-data/#creategraphplot) | default | [`editGraphPlot`](./reference/actions/charts-data/#editgraphplot) · [`removeMark`](./reference/actions/marks/#removemark) |
 | Typed hierarchy and a partition layout projected as rectangles or sectors | [`createPartitionPlot`](./reference/actions/charts-data/#createpartitionplot) | default | [`editPartitionPlot`](./reference/actions/charts-data/#editpartitionplot) · [`removeMark`](./reference/actions/marks/#removemark) |
 
+## Specialized chart families
+
+These families own their own layout or resource and are edited with their paired
+`edit*` action. They are available from `ggaction`, not `ggaction/basic`.
+
+| Task / input | Start with | Guide |
+| --- | --- | --- |
+| Civil-day aggregates in week/weekday cells | `createCalendarLayout` → `createCalendarPlot` | [Calendar](./api/calendar/) |
+| Scalar grid or 2D point density as levels or bands | `createContourData` / `createDensityContourData` → `createContourMark` | [Contours](./api/contours/) |
+| Open/high/low/close per row | `createOHLCPlot` | [OHLC](./api/ohlc/) |
+| Ordered stages as trapezoids | `createPyramidPlot` | [Pyramid](./api/pyramid/) |
+| Formatted rows with in-cell bars and sparklines | `createTablePlot` | [Table](./api/table/) |
+| Ribbon whose pixel width varies per sample | `createTrailPlot` | [Trail](./api/trail/) |
+| Signed contributions, subtotals and totals | `createWaterfallPlot` | [Waterfall](./api/waterfall/) |
+| Explicit node and edge tables with conserved quantities | `createFlowData` → `layoutFlow` → `createFlowLinks` + `createFlowNodes` | [Flows and Sankey](./api/flows/) |
+| Parent/child rows, nested children or grouped paths | `createHierarchyData` → `layoutHierarchy` → `createTreePlot` / `createTreemapPlot` / `createPartitionPlot` | [Hierarchy](./api/hierarchy/), [Partition](./api/partition/) |
+| Nodes and edges, observed or inferred | `createGraphData` → `layoutGraph` → `createGraphPlot` | [Graphs](./api/graphs/), [Edge routes](./api/edge-routes/) |
+| GeoJSON or TopoJSON features | `createGeometryData` → `createProjection` → `createGeoShapeMark` | [Geometry and maps](./api/geometry/) |
+
 ## Compose or refine
 
 `hconcat` and `vconcat` are exported functions for arranging independent complete
@@ -57358,9 +57607,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:633288726b44e6defb2542198d4c000da7e93d17cee1a56be38800258e04d2f0` |
+| Contract fingerprint | `sha256:8f88fab9513962a4c598101e06e43e43543ba09607cbb064c5ce4e6b5ba75172` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
-| Runtime source commit | `4fecd89c880b5ea69af0253fa3faba19a8fdeaf0` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 380 |
 | Declared actions in that release | 234 |
@@ -57371,13 +57620,29 @@ The comparison baseline below is the older release used by the migration notes.
 - Use this site's action entries for the contract shown above. Each entry identifies
  the release that provides the action or explicitly marks it as development-only.
 - Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md)
- and [migration notes](./version/#migration-from-v0013) when upgrading.
+ and the migration notes from [v0.0.26](./version/#migration-from-v0026) and
+ [v0.0.13](./version/#migration-from-v0013) when upgrading.
 
 The machine-readable [provenance manifest](./doc-provenance.json) records the same
 contract fingerprint, runtime source revision, baseline, and action availability.
 The full LLM bundle and its section manifest carry that identity too. The fingerprint
 covers runtime code, declarations, and public package configuration; documentation
 edits alone do not change the chart API fingerprint.
+
+## Migration from v0.0.26 {#migration-from-v0026}
+
+Editable snapshots are now written as schema 4. Schemas 1–3 still load, but
+ggaction 0.0.26 and earlier cannot load a schema 4 snapshot; render-only snapshots
+are unchanged. `ggaction` now has three exactly pinned runtime dependencies
+(`d3-array`, `internmap`, and `d3-geo` installed as `geographic-math`).
+Browser bundles are larger: the gzip budget of `ggaction` grew from about 495 KB
+to about 805 KB and `ggaction/basic` from about 255 KB to about 430 KB; import the
+narrowest entry that provides the actions you need. Most new actions, including
+graphs, hierarchies, flows, maps, contours, calendars, images, fonts and the
+specialized plots, are available from `ggaction` and not from `ggaction/basic`.
+Charts with version 2 edge routes change their dependent data, layouts and Canvas
+through [`applyGraphEdgeRoutesUpdate`](./api/edge-routes/#applygraphedgeroutesupdate).
+See [Performance](./performance/#known-limits) for the measured limits of this release.
 
 ## Migration from v0.0.13 {#migration-from-v0013}
 
@@ -58076,7 +58341,7 @@ Create hierarchy data, compute an explicit layout, then draw a tree or treemap. 
 ## createHierarchyData
 
 ```typescript
-createHierarchyData(options: CreateHierarchyDataOptions): ChartProgram
+createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram
 ```
 
 Chart authoring. Create a typed hierarchy from flat parent rows, nested children, or grouped paths.
@@ -58086,7 +58351,7 @@ Exactly one source form is required: `key + parent`, `key + children`, or `group
 ## editHierarchyData
 
 ```typescript
-editHierarchyData(options: EditHierarchyDataOptions): ChartProgram
+editHierarchyData(options: TargetedOptions<EditHierarchyDataOptions>): ChartProgram
 ```
 
 Chart authoring. Revise hierarchy input options and refresh every dependent layout and plot atomically.
@@ -58096,22 +58361,22 @@ Omitted options retain stored intent; the source form cannot change. A nonempty 
 ## layoutHierarchy
 
 ```typescript
-layoutHierarchy(options: LayoutHierarchyOptions): ChartProgram
+layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram
 ```
 
 Chart authoring. Compute an explicit tree, treemap, or normalized partition layout from a named hierarchy.
 
-`method` is `tree`, `treemap`, or `partition`. Tree requires finite nonnegative `nodeSize:[breadth,depth]`, `siblingGap`, `depthGap` and `orientation:"vertical"|"horizontal"|"radial"`. Radial additionally requires nonnegative `radius`, finite `startAngle` and `sweep` in `(0,360]` degrees. Treemap requires positive finite `size:[width,height]`, nonnegative `padding`, and `method:"slice-dice"|"squarify"`. Partition accepts only optional `maxNodes`. Input order is default; key/value ordering requires an explicit ascending/descending direction, and field ordering additionally requires a field, with optional nulls first/last and year/timestamp temporal unit. Ambiguous grouped sort fields fail. Layout results retain exact hierarchy revisions and numerical geometry.
+`method` is `tree`, `treemap`, or `partition`. Tree requires finite nonnegative `nodeSize:[breadth,depth]`, `siblingGap`, `depthGap` and `orientation:"vertical"|"horizontal"|"radial"`. Radial additionally requires nonnegative `radius`, finite `startAngle` and `sweep` in `(0,360]` degrees. Treemap requires positive finite `size:[width,height]`, nonnegative `padding`, and `method:"slice-dice"|"squarify"`. Every method accepts optional `options.maxNodes`; partition accepts only that. Set top-level `order` to `"input"` (default), `{by:"value"|"key", direction}`, or `{by:"field", field, direction, nulls?, temporalUnit?}`; nulls are first or last and the temporal unit is year or timestamp. Ambiguous grouped sort fields fail. Layout results retain exact hierarchy revisions and numerical geometry.
 
 ## editLayout
 
 ```typescript
-editLayout(options: EditLayoutOptions): ChartProgram
+editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram
 ```
 
-Chart authoring. Patch a stored hierarchy or graph layout and refresh its existing consumers.
+Chart authoring. Patch a stored hierarchy, graph, flow or calendar layout and refresh its existing consumers.
 
-The existing layout method remains fixed. `options` is a partial patch of that method. Graph layouts require nonempty options and reject hierarchy-only `order`; see [graph layouts](./api/data/source-and-derived/#layoutgraph). Omitted targets select the current layout, then a unique layout, and reject ambiguity across both families. Changing a radial tree to vertical/horizontal removes its radial-only options. The proposed geometry and every plot are checked before state-changing child actions. Layout numeric intent has one owner and is independent of Canvas placement.
+The existing layout method remains fixed. `options` is a partial patch of that method. Graph layouts require nonempty `options` or a single `node:{key,x,y}` move (fixed and force layouts only; it cannot be combined with `options` or `order`). Graph and flow layouts reject hierarchy-only `order`; see [graph layouts](./api/data/source-and-derived/#layoutgraph). Omitted targets select the current layout, then a unique layout, and reject ambiguity across both families. Changing a radial tree to vertical/horizontal removes its radial-only options. The proposed geometry and every plot are checked before state-changing child actions. Layout numeric intent has one owner and is independent of Canvas placement.
 
 ## removeResource
 
@@ -58126,7 +58391,7 @@ Chart authoring. Remove a named stored resource after checking exact dependencie
 ## createTreePlot
 
 ```typescript
-createTreePlot(options: TreePlotOptions): ChartProgram
+createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram
 ```
 
 Chart authoring. Draw hierarchy nodes and parent links from a stored tree layout.
@@ -58136,7 +58401,7 @@ The omitted first ID is `treePlot`; another tree plot needs an explicit ID. The 
 ## editTreePlot
 
 ```typescript
-editTreePlot(options: EditTreePlotOptions): ChartProgram
+editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram
 ```
 
 Chart authoring. Edit tree nodes, links, labels, placement, or the bound tree layout.
@@ -58146,7 +58411,7 @@ A nonempty patch is required. Omitted values preserve style, meaning and placeme
 ## createTreemapPlot
 
 ```typescript
-createTreemapPlot(options: TreemapPlotOptions): ChartProgram
+createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram
 ```
 
 Chart authoring. Draw nested rectangles from a stored treemap layout.
@@ -58156,7 +58421,7 @@ The omitted first ID is `treemapPlot`; another owner needs an explicit ID. The l
 ## editTreemapPlot
 
 ```typescript
-editTreemapPlot(options: EditTreemapPlotOptions): ChartProgram
+editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram
 ```
 
 Chart authoring. Edit treemap cells, labels, placement, or the bound treemap layout.
@@ -58168,6 +58433,14 @@ A nonempty patch is required. Omission preserves prior values; a new layout must
 Labels are disabled by default. `labels:{}` displays each node total in 12px sans-serif; tree labels use offset `[0,14]`, treemap labels `[0,0]`. `labels:false` removes them. Set `content:"value"`, `fill`, `fontSize`, `fontFamily`, `fontWeight`, `offset` and optional `overrides`. Override text with `{key:"A",text:"Branch A"}` or `{path:["Europe","Denmark"],text:"Denmark"}` for grouped data. Body overrides use the same targets and their own paint fields. Arrays replace the prior override array.
 
 Authoring rejects unknown or duplicate targets. When a source revision removes a previously styled node, its override becomes dormant and inspection reports `orphan-style`; the style returns only for the same typed key. String `"1"` and number `1` are different keys. Selection includes the node body and label, while links remain structural.
+
+## Encodings and guides
+
+Positions come from the stored layout, so `encodeColor`, `encodeX` and other encoding or legend actions reject tree and treemap layers as unknown mark targets. Use `nodes`, `links` and `labels` styles and typed overrides for paint, shared highlights for emphasis, and separately composed marks for axes or legends.
+
+## Bounded edge route updates
+
+When a version 2 [edge route](./api/edge-routes/#explicit-bounded-execution) depends on a hierarchy or its layout, call `editHierarchyData` or `editLayout` through `prepareGraphEdgeRoutes({kind:"update", edit:{action, args}})` and [`applyGraphEdgeRoutesUpdate`](./api/edge-routes/#applygraphedgeroutesupdate); a direct call fails with "Bounded routes require prepareGraphEdgeRoutes and authentic prepared application."
 
 ## Revising and restoring
 
@@ -58407,6 +58680,8 @@ Chart authoring. Apply a nonempty patch to layout binding, placement, node/edge 
 
 Set `routes` to an [edge route resource](./api/edge-routes/) from the same graph and layout. Omission preserves an edited plot’s binding; `routes:false` restores native curves. Bundled paths retain original edge identities and row membership. [Explicit bounded execution](./api/edge-routes/#explicit-bounded-execution) prepares version 2 routes with required worker budgets and deadlines. Native `parallelGap` and `loopRadius` apply after routes are detached.
 
+When a version 2 route depends on the graph or its layout, call `editGraphData`, `editInferredGraphData` or `editLayout` through `prepareGraphEdgeRoutes({kind:"update", edit:{action, args}})` and [`applyGraphEdgeRoutesUpdate`](./api/edge-routes/#applygraphedgeroutesupdate); a direct call fails with "Bounded routes require prepareGraphEdgeRoutes and authentic prepared application." To draw world-space routes on a map, convert them with [`createGeoRouteData`](./api/geometry/#creategeoroutedata).
+
 ## Labels and identity
 
 Labels are disabled by default. `labels:{}` displays original node keys; `labels:false` removes them. Defaults are fill #0f172a, 12px sans-serif normal, and offset `[0,14]`. Set `field` to one retained node attribute. Scalar values become strings, null/undefined become empty strings, and object/array values fail. Label overrides accept a typed key, optional text, and optional fill/font style; offset is shared by the plot.
@@ -58527,7 +58802,7 @@ recomputation.
 
 ## Prepare inference in a worker
 
-`ggaction/graph` exports three advanced resource helpers:
+`ggaction/graph` exports three inference helpers (route helpers are described in [Edge routes](./api/edge-routes/#prepare-in-a-worker)):
 `createGraphInferenceExecutor({ createWorker })`, `computeGraphInference(job, signal?)`,
 and `prepareInferredGraphData(program, request, { executor, requestToken, signal? })`.
 The request is `{ kind: 'create', ...createOptions }` or `{ kind: 'edit', ...editOptions }`.
@@ -58756,7 +59031,10 @@ original synchronous policy applies. Coincident endpoints retain
 a point route and a diagnostic, with no invented junctions. Empty graphs produce
 empty complete routes. Limits can lower the default maxima: 100,000 nodes,
 1,000,000 edges, 10,000,000 candidate pairs, and 10,000,000 active samples. A shared
-work budget and 30,000 commands per route also apply. Invalid values, overflow or
+work budget of 10,000,000 units and 30,000 commands per route also apply. In practice
+density bundling exceeds that budget at a few dozen edges and force-directed bundling
+at a few hundred, while hierarchical and edge-path routing handle 10,000 edges; larger
+density or force-directed inputs need [explicit bounded execution](./api/edge-routes/#explicit-bounded-execution). Invalid values, overflow or
 exhausted budgets fail without storing partial results. Force bundling reuses each
 symmetric pair calculation while preserving ordered forces and coordinates. Work
 diagnostics and their result hash can change after this optimization; the fixed
@@ -58790,7 +59068,10 @@ Use `createGraphPlot({routes:'routesId'})` to bind routes from the same exact gr
 and layout. `editGraphPlot({routes:false})` restores native curves. Omitting routes
 preserves an existing plot's binding. Native `parallelGap` and `loopRadius` apply
 when the binding is removed. Node radius trims the visible path and arrows follow
-its final tangent; stored center anchors stay unchanged.
+its final tangent; stored center anchors stay unchanged. A plot of more than 10,000
+graphics (node bodies, labels and two per edge) needs an explicit
+[`maxItems`](./api/graphs/#creategraphplot) of up to 100,000. To draw world-space routes on
+a map, convert them with [`createGeoRouteData`](./api/geometry/#creategeoroutedata).
 
 For the original synchronous policy, graph, source, layout and hierarchy edits preflight every dependent route and
 plot, then update their revisions and graphics once. Failures preserve the old
@@ -58809,17 +59090,22 @@ bundle-junction node.
 **Advanced host API.** Import `prepareGraphEdgeRoutes`, `createGraphRouteExecutor`
 and the worker-side `computeGraphEdgeRoutes` from `ggaction/graph`.
 
-`prepareGraphEdgeRoutes(program, request, host)` accepts a create or edit request
-(`kind:"create"` or `"edit"`) plus the action options. Host requires a nonempty
-`requestToken` and optionally a native `signal` and executor. Apply its opaque
+`prepareGraphEdgeRoutes(program, request, host)` accepts a create, edit or update
+request (`kind:"create"`, `"edit"` or `"update"`). Host requires a nonempty
+`requestToken` and accepts a native `signal`. Version 1 create and edit requests may
+omit the executor and reject `deadlineMs`; version 2 requests and every update require a
+`createWorker` executor and `deadlineMs` (1–30,000). Apply its opaque
 handle with only `{prepared, requestToken}` on the exact original program.
 Changed receivers, wrong operations/tokens, copied handles and aborted requests
 fail. Host options are captured before waiting.
 
-`createGraphRouteExecutor({createWorker?})` returns `compute(job,{signal?})`,
-`evict(inputHash?)` and `dispose()`. With no factory, it runs the same synchronous
-numeric owner. A factory returns a browser Worker or matching message-event host.
-The worker receives `{job}` and posts `computeGraphEdgeRoutes(job)`. Jobs and
+`createGraphRouteExecutor({createWorker?})` returns `compute(job,{signal?})` (version 2:
+`compute(job,{signal?,deadlineMs})`), `evict(inputHash?)` and `dispose()`. With no
+factory, it runs the same synchronous numeric owner. A factory returns a browser Worker
+or matching message-event host. The worker receives `{job}` and posts
+`computeGraphEdgeRoutes(job)` for version 1 jobs or `await computeGraphEdgeRoutesAsync(job)`
+for version 2 jobs. A worker that serves both must branch on `job.schemaVersion`:
+`self.onmessage = async ({ data: { job } }) => self.postMessage(job.schemaVersion === 2 ? await computeGraphEdgeRoutesAsync(job) : computeGraphEdgeRoutes(job));` Jobs and
 completions use structured-clone data only; callbacks and workers never enter a
 program or renderer.
 
@@ -58912,8 +59198,10 @@ Version 1 retains its original synchronous fallback, cache, limits and protocol.
 Create or edit a version 2 route through `prepareGraphEdgeRoutes`, then use the
 ordinary authentic prepared application. A same-method edit retains the stored
 execution policy; a method change requires an explicit replacement policy. Raw
-synchronous route creation or recomputation rejects version 2 intent. Native layout and graph/hierarchy resource revisions use the explicit prepared update below. Source dataset, viewport,
-fit and other native update actions remain outside the current public update union.
+synchronous route creation or recomputation rejects version 2 intent. Native layout, graph,
+flow and hierarchy revisions, source data, parameter, Canvas, fit and filter edits, and any
+other public action that reaches a version 2 route use the explicit prepared update below. An
+action that reaches no version 2 route is rejected with a message to call it directly.
 Stored version 2 vectors still restore offline and render through every existing
 backend. Consumer materialization remains an explicit wrapped action after prepare.
 
@@ -58922,6 +59210,8 @@ backend. Consumer materialization remains an explicit wrapped action after prepa
 ```ts
 applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;
 ```
+
+**Chart authoring, Full only.** Composition receivers accept scoped deterministic replays.
 
 Prepare `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData` or
 `editInferredGraphData` on the exact completed Full unit program that owns at least
@@ -58941,18 +59231,30 @@ theme edits, is rejected with a message to call it directly. Composition receive
 accept the deterministic data, parameter and filter edits with a scoped target and
 other actions that reach routes through their own dispatch; `reviseData`,
 `applyDataUpdate` and Canvas edits stay on unit receivers. Graph plots cannot be
-faceted. Preparation never runs a synchronous fallback.
+faceted. Filter updates require an explicit `target`; only `recompute: true` filters reach
+routes, so other filters are rejected with a message to call them directly. Preparation
+never runs a synchronous fallback.
+
+The fragment below assumes `program` contains a version 2 route on fixed or force layout
+`l` with node key `1`, and a fresh executor that has not been disposed.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "l"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 ```js
-const preparedUpdate = await prepareGraphEdgeRoutes(program, {
-  kind: "update",
-  edit: { action: "editLayout", args: { target: "l", node: { key: 1, x: 25, y: 10 } } }
-}, { requestToken: "layout-2", executor, deadlineMs: 30_000 });
-program = program.applyGraphEdgeRoutesUpdate({
-  prepared: preparedUpdate, requestToken: "layout-2"
+const executor = createGraphRouteExecutor({
+  createWorker: () => new Worker(new URL("./route-worker.js", import.meta.url), { type: "module" })
 });
+try {
+  const preparedUpdate = await prepareGraphEdgeRoutes(program, {
+    kind: "update",
+    edit: { action: "editLayout", args: { target: "l", node: { key: 1, x: 25, y: 10 } } }
+  }, { requestToken: "layout-2", executor, deadlineMs: 30_000 });
+  program = program.applyGraphEdgeRoutesUpdate({
+    prepared: preparedUpdate, requestToken: "layout-2"
+  });
+} finally {
+  executor.dispose();
+}
 ```
 
 Preparation snapshots arguments before its first await. An authentic
@@ -58984,6 +59286,22 @@ first await and the check of a received completion, which must finish before its
 snapshot, still take one turn each that grows with the route count.
 The initial descriptor scan and deep clone also have no separate depth, total heap
 or fully metered work bound in the current request ledger.
+
+## Known performance limits
+
+Measured in Chromium (P95 of 30 runs, explicit maximum execution policy), density bundling
+takes about 4.5 seconds at 100 edges and exceeds the 30-second maximum deadline at 1,000
+edges. Force-directed bundling takes about 2.5 seconds at 1,000 edges and exceeds the
+deadline at 10,000. Hierarchical and edge-path routing stay within 0.5, 5 and 30 seconds at
+100, 1,000 and 10,000 edges.
+
+Version 2 preparation yields to the host after about 10 ms of work, so a cancellation is
+observed after at most about 10 ms plus the longest indivisible step. That step is the check
+of a completion received from the worker, together with the snapshot taken before the first
+await, and it grows with the route count: under 100 ms up to 1,000 routes for hierarchical,
+edge-path and force-directed bundling, about 125 ms for density bundling at 100 routes, and
+several hundred milliseconds at 10,000 routes. Version 1 preparation validates synchronously.
+See [Performance](./performance/#known-limits) for the other measured limits.
 
 <!-- Source: /tutorials/edge-routes/ -->
 
@@ -59085,6 +59403,10 @@ A source revision which deletes explicit focus recovers the nearest surviving an
 Cartesian orientation is horizontal (value along x, depth along y) or vertical (value along y, depth along x). `reverseU` and `reverseV` reverse value/depth directions. Polar mapping uses degrees clockwise from 12 o'clock by default, `startAngle:0`, `sweep:360`, `direction:"clockwise"`, `innerRadius:0`, `outerRadius:"auto"`, `radiusPolicy:"equal-depth"`. Counterclockwise and equal-depth-area bands are explicit alternatives. Mapping follows the bound coordinate's effective frame and polarFrame; radii must fit the resolved available radius. Mapping fields remain stored when switching coordinate family. Coordinate/Canvas edits rematerialize that intent.
 
 `padding` defaults to `[0,0]`; a scalar applies to both sibling and depth gaps. Values are nonnegative screen pixels. Cartesian gaps inset each side by half a gap; polar angular gaps use the local band mid-radius and radial gaps use pixels. Oversized gaps yield no ink, never negative geometry. `clip:false` is default. Cells and labels use the hierarchy style owner, including solid, linear gradient, pattern and radial gradient fills. Labels default to false; enabling `{}` uses total values. `minWidth:0` and `minArcLength:0` are nonnegative pixel thresholds. Cell overrides and label text use exact typed node targets.
+
+Positions come from the stored layout, so `encodeColor`, `encodeX` and other encoding or legend actions reject partition layers as unknown mark targets. Use `cells` and `labels` styles and typed overrides for paint, shared highlights for emphasis, and separately composed marks for axes or legends.
+
+For animated focus changes on large partitions, sample with [`formatVersion: 6`](./api/animation/#sample-materialized-batches): body cells with equal paint and placement become `path-run` scene rows, which all four renderers draw identically to per-cell paths.
 
 ## createPartitionPlot
 
@@ -59367,7 +59689,7 @@ General graph layouts use the separate `layoutGraph` action.
 | Option | Default | Meaning |
 | --- | --- | --- |
 | `width`, `height` | `600`, `400` | Positive finite layout dimensions |
-| `nodeWidth` | `16` | Positive node extent along the flow direction |
+| `nodeWidth` | `16` | Positive node extent along the flow direction, at most the layout width (or height when vertical) |
 | `nodePadding` | `8` | Nonnegative gap between nodes in a column |
 | `align` | `"justify"` | `"left"`, `"right"`, `"center"`, or `"justify"` |
 | `order` | `"input"` | Input order, `"barycentric"`, or an explicit complete typed-key array |
@@ -59469,6 +59791,9 @@ result. Invalid edits preserve the earlier program.
 Flow marks support item inspection, source-row lineage, selection/highlighting,
 Canvas and coordinate rematerialization, snapshots, and composition with other
 charts through `hconcat` and `vconcat`, including exact child-target edits.
+When a version 2 [edge route](./api/edge-routes/#explicit-bounded-execution) depends on a flow
+resource, call `editFlowData` through `prepareGraphEdgeRoutes({kind:"update", edit:{action, args}})`
+and [`applyGraphEdgeRoutesUpdate`](./api/edge-routes/#applygraphedgeroutesupdate); a direct call fails.
 Automatic `facet` and `repeatCharts` partitioning is incompatible with flow marks:
 the node and edge tables require coordinated partition rules, so these actions
 reject the input without changing it. Node items expose `key`, `value`, `incoming`, `outgoing` and `imbalance`;
@@ -59732,7 +60057,9 @@ does not fetch files or claim a hash of original file bytes.
 editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
 ```
 
-Provide a nonempty patch of `values`, `coordinateKind`, `topoObject` or `limits`.
+Provide a nonempty patch of `values`, `coordinateKind`, `topoObject`, `limits` or
+`polygonWinding`. An omitted `polygonWinding` keeps the stored convention. Switching to
+`planar` drops an omitted winding, while an explicit planar winding is rejected.
 `target` may be omitted for the current or unique eligible geometry source.
 Contour resources are ineligible. The original format and feature-key policy
 stay fixed; create a separate resource to change them.
@@ -59782,10 +60109,12 @@ measurement, and its null geometry remains identifiable. Numeric1, string`"1"`
 and tuple`[1]` are distinct keys. Missing keys never match each other. Duplicate
 nonmissing keys on either input fail; aggregate duplicates explicitly beforehand.
 
-Use a string field or a nonempty property path such as`["properties","code"]`.
+Use a string field or a nonempty property path such as `["properties","code"]`.
 Geometry properties stay intact. Joined mark fields read the matching table row;
 unmatched items have no table fields. Diagnostics expose match coverage, duplicate
-counts and unmatched source indices. An empty geometry has coverage0.
+counts and unmatched source indices. An empty geometry has coverage 0. Each key path has
+at most 128 fields. A join accepts up to 100,000 features and 10,000,000 units of work,
+including encoded key bytes.
 
 ## `editGeoJoinData`
 
@@ -59832,11 +60161,11 @@ const program = chart()
   ] });
 ```
 
-The initial zoom defaults to0. County detail begins at4.2 and remains active until zoom falls below3.8.
-This gap prevents repeated switching around4. Each finer threshold pair must increase and enter must
+The initial zoom defaults to 0. County detail begins at 4.2 and remains active until zoom falls below 3.8.
+This gap prevents repeated switching around 4. Each finer threshold pair must increase and enter must
 exceed exit. Missing parents, generated source keys, mixed coordinate systems and nested LOD fail.
 
-Optional level `tolerance` defaults to0. A positive value simplifies retained shared topology once for
+Optional level `tolerance` defaults to 0. A positive value simplifies retained shared topology once for
 all neighbors, in planar units or geographic degrees. Unsafe topology changes keep the original arcs
 and record why. Geographic seam arcs stay exact. Original geometry and source hashes remain available.
 
@@ -59844,7 +60173,9 @@ Geo marks and fitted projections can use `geometry:"regions"`. Original selectio
 when their region is shown by a parent or children. [Item inspection](./inspection/) exposes
 `representationKeys` alongside each current key; hits always identify the visible representation.
 Fields and original table rows come from the current level. The action creates no marks, annotations
-or interaction bindings, and changing a projection does not automatically change LOD zoom.
+or interaction bindings, and changing a projection does not automatically change LOD zoom. A detail
+resource accepts at most 128 levels, 100,000 regions in total and 10,000,000 units of mapping work;
+simplification also uses the geometry limits.
 
 ## `editGeoLODData`
 
@@ -59883,7 +60214,14 @@ The parameter names state their units: `centerDeg`, `rotateDeg`, `parallelsDeg`,
 `scalePx`, `translatePx`, `precisionPx`, `clipAngleDeg` and `clipExtentPx`.
 Spherical scale defaults to 150, translation to `[0, 0]`, center/rotation to zero,
 precision to 0.5 pixels and reflection to false. Scale and precision must be
-positive. Conic parallels default to `[30, 60]`.
+positive. Conic parallels default to `[30, 60]`. `rotateDeg` turns the globe before
+projecting; `centerDeg` then shifts the projected centre without rotating the sphere.
+
+`clipExtentPx` defaults to `null`. `clipAngleDeg` defaults to 90° for orthographic, 60°
+for gnomonic, 142° for stereographic and 179.999° for both azimuthal types. These five
+require a positive angle (orthographic at most 90°, gnomonic below 90°, the others below
+180°). Other spherical types accept `null` or an angle up to 180°. Mercator and
+transverse Mercator use a finite automatic world extent.
 
 `identity` preserves planar units with scale 1 and supports translation,
 reflection and rectangular clipping. It does not accept spherical parameters.
@@ -59930,7 +60268,9 @@ editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
 `target` may be omitted for the current or unique projection. Supply a nonempty
 parameter patch. Shape and rotation edits retain an existing fit. A new fit can
 choose another geometry and viewport. Changing `type` starts with the new type's
-parameter defaults; its explicit options must be applicable to that type.
+parameter defaults; its explicit options must be applicable to that type. An existing fit
+is kept and recomputed for the new type unless the same edit supplies `scalePx` or
+`translatePx`.
 
 An explicit scale or translation edit detaches the previous fit and uses the
 current resolved value of the other transform. Editing a fitted geometry source
@@ -59959,7 +60299,7 @@ Geo marks through the native projection edit.
 | `pan` | `deltaPx:[x,y]` |
 | `zoom` | `anchorPx:[x,y]`, positive `factor`, positive ordered `scaleExtent:[min,max]` |
 | `pinch` | `fromPx:[[x,y],[x,y]]`, `toPx:[[x,y],[x,y]]`, `scaleExtent` |
-| `rotate` | absolute `rotateDeg:[longitude,latitude,roll?]` for a non-composite spherical projection |
+| `rotate` | absolute spherical rotation `rotateDeg:[λ, φ, γ?]` in degrees for a non-composite spherical projection; `[-100, -40]` brings 100° E, 40° N to the projection centre |
 | `fit` | `fit:{geometry?,width,height,padding?,pointScale?}` using the existing live geometry fit |
 | `reset` | `initial` projection parameters, for example from a saved inspection snapshot |
 | `resize` | `canvas:{width?,height?,plot?}`, `scaling:"preserve"|"fit"` |
@@ -59989,7 +60329,10 @@ console.log(getProjectionView(reset).parameters.scalePx); // 1
 Reset restores view parameters, not an old revision or live fit policy. Fit retains a geometry
 dependency; other camera operations detach an earlier fit. The command stores no hidden baseline,
 DOM listeners or renderer camera. Projection navigation does not choose a geographic detail level.
-Use explicit `editGeoLODData` when changing detail.
+Use explicit `editGeoLODData` when changing detail. For pointer, wheel, pinch and keyboard
+navigation, see [Navigate a map](./api/interaction/#navigate-a-map-with-drag-wheel-pinch-and-keyboard)
+and [host controls](./api/interaction/#adjust-a-geographic-view-from-host-controls). For animated camera
+moves, see [Move geographic cameras](./api/animation/#move-geographic-cameras).
 
 ## Draw through a Geo coordinate
 
@@ -60029,8 +60372,12 @@ exceed either budget fail before changing the chart. The policy stays with the
 mark binding through source, projection and Canvas edits. Geometry is neither
 simplified nor split to fit a budget. Graphic-item, generator, work and clip limits
 still apply independently, and some refined or clipped inputs may exceed the
-explicit maximum. Large-path typed camera animation and hit stroke/query budgets
-are independent; raising this native output policy does not raise those limits.
+explicit maximum. Animation and hit testing do not inherit this policy automatically.
+Plan transitions with `formatVersion: 5` to carry it through camera animation
+([Animation](./api/animation/#preserve-geographic-capacity-in-saved-animations)), and give the
+interaction session an explicit `hitPreparation.pathGeometry` to hit-test larger paths
+([Interaction](./api/interaction/)). Camera frames reproject every vertex; see
+[Geographic camera cost](./performance/#geographic-camera-cost) for large sources.
 
 ### Explicit capacity example
 
@@ -60068,6 +60415,8 @@ Draw mixed points, lines, polygons or collections. `geometry` and `coordinate`
 resolve an explicit ID, the current eligible resource, or one unique eligible
 candidate. Default ID is `geo-shape`; another creation needs another ID. Planar
 sources require identity; geographic sources require a spherical projection.
+`interpolation` (`source-segment` by default, or `great-circle`) and `routeHint` apply to
+shape and point edges as for [line marks](./api/geometry/#creategeolinemark).
 
 Each feature is one logical item, even when a seam or collection splits it into
 several primitives. Holes stay unfilled. Null, empty and hidden-backside features
@@ -60390,6 +60739,13 @@ geometry. Every accepted edit increments revision once and preserves its logical
 feature identity. Surviving typed edge keys remain stable. Incompatible samples
 or consumers reject the entire edit, preserving the earlier program and trace.
 
+## Related
+
+[Geographic marks tutorial](./tutorials/geographic-marks/) ·
+[Interaction sessions](./api/interaction/) · [Animation](./api/animation/) ·
+[Attached labels](./api/marks/labels/) · [Coordinates](./api/coordinates/) ·
+[Performance](./performance/#geographic-camera-cost)
+
 <!-- Source: /api/contours/ -->
 
 # Contours and two-dimensional density
@@ -60432,7 +60788,7 @@ Creating geometry does not draw anything.
 createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
 ```
 
-Pass `{ id, data?, x, y, weight?, grid, estimator, normalization, thresholds }`.
+Pass `{ id, data?, x, y, weight?, grid, estimator, normalization, bandwidth?, kernel?, thresholds }`.
 The grid contains the same frame fields, without `values`. `data` selects an
 existing materialized dataset; omission uses the current or unique eligible
 source. The `x` and `y` columns must contain finite numbers. Optional `weight`
@@ -61222,6 +61578,9 @@ Scale options follow [color encodings](./api/series/color/). The default scale I
 is `<mark>-color`. Mapping takes precedence over the fixed stage fill.
 Add a legend explicitly with `createLegend({ target: "pyramid" })`.
 
+A pyramid accepts at most 10,000 stages and 10,000 generated graphics (bodies
+plus labels). Larger inputs fail before changing the chart.
+
 ## `editPyramidPlot`
 
 **Chart authoring.**
@@ -61314,7 +61673,11 @@ or color values on otherwise valid rows.
 X accepts a field string or `{ field, fieldType?, scale?, temporalUnit? }`.
 Use `fieldType: "temporal"` for dates. `yScale` takes the ordinary quantitative
 position scale options; the low and high share that one price scale. Default
-scale IDs are `<id>-x` and `<id>-y`. Explicit IDs can share an existing scale.
+scale IDs are `<id>-x` and `<id>-y`. The price scale defaults to `zero: false` and
+`nice: false`. Overlays in one Cartesian frame must share one Y scale: pass the
+existing X and Y scale IDs, for example `x: { field, scale: { id: "x" } }` and
+`yScale: { id: "y" }`. Otherwise the action fails before changing the chart. Put
+independent price measures in separate panels.
 
 Options are `{ id?, data?, coordinate?, x, low, high, open, close, yScale?,
 invalid?, doji?, width?, body?, stem?, labels?, color?, clip?, guides? }`.
@@ -61328,9 +61691,9 @@ there is no current or unique eligible resource.
 | `width` | One of `{band}`, `{pixels}`, `{interval:{unit,insetStart?,insetEnd?}}`; uses the existing Bar width policy |
 | `doji` | `"line"` (default) draws a horizontal body for equal open and close; `"none"` omits that body |
 | `labels` | `false` (default), or `{content?,format?,fill?,fontFamily?,fontSize?,fontWeight?,offset?,outline?,shadow?}` |
-| `color` | Field string or `{field,fieldType?,scale?,palette?}`; overrides body fill with an ordinary color scale |
+| `color` | Field string or `{field,fieldType?,scale?,palette?}`; overrides body fill with an ordinary color scale. `color: false` restores up/down fills and removes the color legend |
 | `clip` | `true` by default; clips to the plot viewport |
-| `guides` | Ordinary axes/grid/legend options, or `false` |
+| `guides` | Ordinary axes/grid/legend options, or `false`; creation adds applicable guides unless `guides: false` |
 
 Rising and falling fills default to green `#16a34a` and red `#dc2626`.
 Both the body and stem use stroke `#334155`, width 1 and opacity 1. Fill accepts
@@ -61343,8 +61706,14 @@ UTC interval starts and a scale domain covering every interval endpoint.
 
 Labels show `close` by default; `open`, `low` and `high` are also available.
 They use the ordinary Text formatter and font preparation, above the high-low
-stem with an offset of 6 logical pixels. Adjust the clip or label options when
-your chosen price domain leaves insufficient space above the observations.
+stem with an offset of 6 logical pixels. Label defaults are fill `#0f172a`,
+`sans-serif`, size 12 and normal weight; after `labels: false`, `labels: {}`
+restores close labels. Adjust the clip or label options when your chosen price
+domain leaves insufficient space above the observations.
+
+A plot may generate at most 10,000 graphics: each row draws a stem and a body,
+plus a label when labels are enabled. That allows up to 5,000 rows, or 3,333 with
+labels. Larger inputs fail before changing the chart.
 
 ## `editOHLCPlot`
 
@@ -61474,6 +61843,13 @@ Labels show `value` by default, or `end` or `category`. They use the ordinary
 Text formatter and font preparation, 6 logical pixels above the screen top of
 the bar. Defaults are sans-serif, size 12, normal weight and fill `#0f172a`.
 Allow space above the data domain or change clipping when labels need room.
+
+Overlays in one Cartesian frame must share one Y scale: pass the existing X and Y
+scale IDs, for example `x: { field, scale: { id: "x" } }` and `yScale: { id: "y" }`.
+Otherwise the action fails before changing the chart.
+
+A plot may generate at most 10,000 graphics: a bar per row, a connector between
+rows, and an optional label. Larger inputs fail before changing the chart.
 
 ## `editWaterfallPlot`
 

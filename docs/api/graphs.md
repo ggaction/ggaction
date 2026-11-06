@@ -47,6 +47,8 @@ Chart authoring. Apply a nonempty patch to layout binding, placement, node/edge 
 
 Set `routes` to an [edge route resource](edge-routes.md) from the same graph and layout. Omission preserves an edited plot’s binding; `routes:false` restores native curves. Bundled paths retain original edge identities and row membership. [Explicit bounded execution](edge-routes.md#explicit-bounded-execution) prepares version 2 routes with required worker budgets and deadlines. Native `parallelGap` and `loopRadius` apply after routes are detached.
 
+When a version 2 route depends on the graph or its layout, call `editGraphData`, `editInferredGraphData` or `editLayout` through `prepareGraphEdgeRoutes({kind:"update", edit:{action, args}})` and [`applyGraphEdgeRoutesUpdate`](edge-routes.md#applygraphedgeroutesupdate); a direct call fails with "Bounded routes require prepareGraphEdgeRoutes and authentic prepared application." To draw world-space routes on a map, convert them with [`createGeoRouteData`](geometry.md#creategeoroutedata).
+
 ## Labels and identity
 
 Labels are disabled by default. `labels:{}` displays original node keys; `labels:false` removes them. Defaults are fill #0f172a, 12px sans-serif normal, and offset `[0,14]`. Set `field` to one retained node attribute. Scalar values become strings, null/undefined become empty strings, and object/array values fail. Label overrides accept a typed key, optional text, and optional fill/font style; offset is shared by the plot.
@@ -171,7 +173,7 @@ recomputation.
 
 ## Prepare inference in a worker
 
-`ggaction/graph` exports three advanced resource helpers:
+`ggaction/graph` exports three inference helpers (route helpers are described in [Edge routes](edge-routes.md#prepare-in-a-worker)):
 `createGraphInferenceExecutor({ createWorker })`, `computeGraphInference(job, signal?)`,
 and `prepareInferredGraphData(program, request, { executor, requestToken, signal? })`.
 The request is `{ kind: 'create', ...createOptions }` or `{ kind: 'edit', ...editOptions }`.

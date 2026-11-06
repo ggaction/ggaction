@@ -261,6 +261,8 @@ produce an explicit crossfade reason for the affected item. Compatible nodes kee
 moving independently. These rules also apply after offline serialization. Native
 current-frame hit testing uses the displayed geometry; restored offline frames can
 render and rebase, but cannot bind to a live session without native endpoint metadata.
+To hit-test a sampled frame, dispatch it to an
+[interaction session](interaction.md#replace-a-program-or-sampled-frame).
 
 ## Move Cartesian shapes and series
 
@@ -567,7 +569,9 @@ Native Geo shape, point, line, and graticule items use their original geometry a
 resolved camera parameters. Sampling applies quaternion rotation, logarithmic positive
 scale, and translation through the same projection stream as native Geo marks.
 Horizon clips and seams may change the number of current parts. A source feature can
-be visible midway even when both endpoint scenes hide it.
+be visible midway even when both endpoint scenes hide it. Every frame reprojects every
+source vertex; see [Geographic camera cost](../performance.md#geographic-camera-cost)
+for sizes that exceed an interactive frame budget.
 
 These current parts report a `geographic` decision with `kernel: 'native-geo'`,
 `ownerKey`, `itemKey`, and `role`. They have no fabricated endpoint indices. Exact
@@ -620,6 +624,7 @@ source data. General Text anchor interpolation remains outside this camera kerne
 | `deserializeAnimation(text)` | Immutable `{plan, playback}`. It validates the complete stored values before returning an authentic plan. |
 | `exportAnimationFrames(plan, {timesMs})` | Frames with `timeMs`, using a nonempty strictly increasing array within the duration. |
 | `exportAnimationFrames(plan, {fps})` | Frames at `index / fps * 1000` milliseconds through the duration; fps must be positive and finite. |
+| `createAnimationPlayer({plan, clock, render, commit?, onMarker?, rate?, repeat?, reducedMotion?})` | A transient controller driven by an explicit clock; see [Play with an explicit clock](#play-with-an-explicit-clock). |
 
 When an authentic sample is reused in the same representation, sampling that endpoint returns
 the original frame, including its original progress and decisions. Exported
@@ -747,9 +752,11 @@ player.dispose();
 ```
 
 The player supports `play`, `pause`, `seek(timeMs)`, `reverse`, `setRate(rate)`,
-`setRepeat(repeat)`, `cancel`, `dispose`, `getState`, and `getFrame`.
-`interrupt({to, options:{durationMs, easing?}, rate?, repeat?, reducedMotion?})`
-accepts a program or authentic sample and continues from the current frame.
+`setRepeat(repeat)`, `cancel`, `dispose`, `getState`, and `getFrame`. `dispose()` is
+idempotent; other methods throw after disposal.
+`interrupt({to, options, rate?, repeat?, reducedMotion?})` takes the same `options`
+as `planTransition`, accepts a program or authentic sample, and continues from the
+current frame.
 A negative rate puts the captured frame at the new plan's ending time and plays
 back toward the target. Invalid interruption targets leave
 the active run intact. Repeated interruption of compatible geometry does not accumulate

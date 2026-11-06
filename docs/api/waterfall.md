@@ -68,6 +68,13 @@ Text formatter and font preparation, 6 logical pixels above the screen top of
 the bar. Defaults are sans-serif, size 12, normal weight and fill `#0f172a`.
 Allow space above the data domain or change clipping when labels need room.
 
+Overlays in one Cartesian frame must share one Y scale: pass the existing X and Y
+scale IDs, for example `x: { field, scale: { id: "x" } }` and `yScale: { id: "y" }`.
+Otherwise the action fails before changing the chart.
+
+A plot may generate at most 10,000 graphics: a bar per row, a connector between
+rows, and an optional label. Larger inputs fail before changing the chart.
+
 ## `editWaterfallPlot`
 
 **Chart authoring.**

@@ -1769,7 +1769,7 @@
   caption: One hierarchy retains node identity while explicit layout options determine geometry.
   summary: Create a hierarchy resource, compute an explicit vertical layout, and draw its nodes.
   actions: createHierarchyData · layoutHierarchy · createTreePlot
-  tasks: hierarchy layout
+  tasks: hierarchy layout part-to-whole
   url: /tutorials/hierarchy/
   tutorial_order: 180
 - id: tree-horizontal
@@ -1785,7 +1785,7 @@
   caption: One hierarchy retains node identity while explicit layout options determine geometry.
   summary: Create a hierarchy resource, compute an explicit horizontal layout, and draw its nodes.
   actions: createHierarchyData · layoutHierarchy · createTreePlot
-  tasks: hierarchy layout
+  tasks: hierarchy layout part-to-whole
   url: /tutorials/hierarchy/
 - id: tree-radial
   example: /examples/tree-radial/
@@ -1800,7 +1800,7 @@
   caption: One hierarchy retains node identity while explicit layout options determine geometry.
   summary: Create a hierarchy resource, compute an explicit radial layout, and draw its nodes.
   actions: createHierarchyData · layoutHierarchy · createTreePlot
-  tasks: hierarchy layout
+  tasks: hierarchy layout part-to-whole
   url: /tutorials/hierarchy/
 - id: treemap-layouts
   example: /examples/treemap-layouts/
@@ -1815,7 +1815,7 @@
   caption: One hierarchy retains node identity while explicit layout options determine geometry.
   summary: Create a hierarchy resource, compute an explicit slice-dice layout, and draw its nodes.
   actions: createHierarchyData · layoutHierarchy · createTreemapPlot
-  tasks: hierarchy layout
+  tasks: hierarchy layout part-to-whole
   url: /tutorials/hierarchy/
 - id: treemap-squarify
   example: /examples/treemap-squarify/
@@ -1830,7 +1830,7 @@
   caption: One hierarchy retains node identity while explicit layout options determine geometry.
   summary: Create a hierarchy resource, compute an explicit squarify layout, and draw its nodes.
   actions: createHierarchyData · layoutHierarchy · createTreemapPlot
-  tasks: hierarchy layout
+  tasks: hierarchy layout part-to-whole
   url: /tutorials/hierarchy/
 - id: graph-plots
   example: /examples/graph-plots/
@@ -1845,7 +1845,7 @@
   caption: Explicit graph topology and stored coordinates retain each node and edge identity.
   summary: Draw a stored graph layout with independently identifiable nodes and connections.
   actions: createGraphData · layoutGraph · createGraphPlot
-  tasks: graph network layout
+  tasks: graph network layout relationship
   url: /tutorials/graphs/
   tutorial_order: 220
 - id: graph-parallel
@@ -1861,7 +1861,7 @@
   caption: Explicit graph topology and stored coordinates retain each node and edge identity.
   summary: Draw a stored graph layout with independently identifiable nodes and connections.
   actions: createGraphData · layoutGraph · createGraphPlot
-  tasks: graph network layout
+  tasks: graph network layout relationship
   url: /tutorials/graphs/
 - id: graph-self-loop
   example: /examples/graph-self-loop/
@@ -1876,7 +1876,7 @@
   caption: Explicit graph topology and stored coordinates retain each node and edge identity.
   summary: Draw a stored graph layout with independently identifiable nodes and connections.
   actions: createGraphData · layoutGraph · createGraphPlot
-  tasks: graph network layout
+  tasks: graph network layout relationship
   url: /tutorials/graphs/
 - id: partition-layouts
   tutorial_order: 250
@@ -1892,7 +1892,7 @@
   caption: Normalized hierarchy intervals become rectangular value and depth bands.
   summary: Normalized hierarchy intervals become rectangular value and depth bands.
   actions: createHierarchyData · layoutHierarchy · createPartitionPlot
-  tasks: hierarchy partition focus
+  tasks: hierarchy partition focus part-to-whole
   url: /tutorials/partition/
 - id: partition-sunburst
   example: /examples/partition-sunburst/
@@ -1907,7 +1907,7 @@
   caption: The same hierarchy intervals become angular value and radial depth bands.
   summary: The same hierarchy intervals become angular value and radial depth bands.
   actions: createHierarchyData · layoutHierarchy · createPartitionPlot
-  tasks: hierarchy partition focus
+  tasks: hierarchy partition focus part-to-whole
   url: /tutorials/partition/
 - id: mark-shadows
   example: /examples/mark-shadows/
@@ -1953,7 +1953,7 @@
   caption: Two sources contribute six and four units to a shared total.
   summary: Validate a directed flow graph, store its layout, then draw links and nodes.
   actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
-  tasks: flow conservation
+  tasks: flow conservation part-to-whole relationship
   url: /tutorials/flows/
 - id: flow-vertical
   example: /examples/flow-vertical/
@@ -1968,7 +1968,7 @@
   caption: The same conserved quantities flow from top to bottom.
   summary: Validate a directed flow graph, store its layout, then draw links and nodes.
   actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
-  tasks: flow conservation
+  tasks: flow conservation part-to-whole relationship
   url: /tutorials/flows/
 - id: flow-cyclic
   example: /examples/flow-cyclic/
@@ -1983,7 +1983,7 @@
   caption: Both directions remain visible in separate feedback lanes.
   summary: Validate a directed flow graph, store its layout, then draw links and nodes.
   actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
-  tasks: flow conservation
+  tasks: flow conservation part-to-whole relationship
   url: /tutorials/flows/
 - id: flow-cyclic-vertical
   example: /examples/flow-cyclic-vertical/
@@ -1998,7 +1998,7 @@
   caption: Feedback lanes and node attachments transpose together.
   summary: Validate a directed flow graph, store its layout, then draw links and nodes.
   actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
-  tasks: flow conservation
+  tasks: flow conservation part-to-whole relationship
   url: /tutorials/flows/
 - id: contours
   tutorial_order: 210
@@ -2014,7 +2014,7 @@
   caption: The line encloses grid values of at least one.
   summary: Draw explicit level boundaries and filled bands with preserved holes.
   actions: createContourData · createDensityContourData · createContourMark
-  tasks: contour density
+  tasks: contour density distribution multivariate
   url: /tutorials/contours/
 - id: contour-bands
   example: /examples/contour-bands/
@@ -2029,7 +2029,7 @@
   caption: Two bands share one interpolated boundary.
   summary: Draw explicit level boundaries and filled bands with preserved holes.
   actions: createContourData · createDensityContourData · createContourMark
-  tasks: contour density
+  tasks: contour density distribution multivariate
   url: /tutorials/contours/
 - id: contour-holes
   example: /examples/contour-holes/
@@ -2044,7 +2044,7 @@
   caption: Cells touching a missing sample are excluded.
   summary: Draw explicit level boundaries and filled bands with preserved holes.
   actions: createContourData · createDensityContourData · createContourMark
-  tasks: contour density
+  tasks: contour density distribution multivariate
   url: /tutorials/contours/
 - id: contour-histogram
   example: /examples/contour-histogram/
@@ -2059,7 +2059,7 @@
   caption: An explicit histogram grid preserves total weight.
   summary: Draw explicit level boundaries and filled bands with preserved holes.
   actions: createContourData · createDensityContourData · createContourMark
-  tasks: contour density
+  tasks: contour density distribution multivariate
   url: /tutorials/contours/
 - id: contour-density
   example: /examples/contour-density/
@@ -2074,7 +2074,7 @@
   caption: A triangular product kernel uses explicit bandwidth.
   summary: Draw explicit level boundaries and filled bands with preserved holes.
   actions: createContourData · createDensityContourData · createContourMark
-  tasks: contour density
+  tasks: contour density distribution multivariate
   url: /tutorials/contours/
 
 - id: inspect-chart
@@ -2125,7 +2125,7 @@
   caption: 2024 contains 366 days. Pale cells have no recorded observation.
   summary: Place civil-day aggregates in stable week and weekday cells.
   actions: createCalendarLayout · createCalendarPlot · editCalendarPlot
-  tasks: calendar dates
+  tasks: calendar dates trend
   url: /tutorials/calendar/
 - id: calendar-monday
   example: /examples/calendar-monday/
@@ -2140,7 +2140,7 @@
   caption: The dates and values stay the same; the shared calendar grid changes.
   summary: Place civil-day aggregates in stable week and weekday cells.
   actions: createCalendarLayout · createCalendarPlot · editCalendarPlot
-  tasks: calendar dates
+  tasks: calendar dates trend
   url: /tutorials/calendar/
 - id: calendar-omitted
   example: /examples/calendar-omitted/
@@ -2155,7 +2155,7 @@
   caption: Only observed days keep their cells; calendar positions remain fixed.
   summary: Place civil-day aggregates in stable week and weekday cells.
   actions: createCalendarLayout · createCalendarPlot · editCalendarPlot
-  tasks: calendar dates
+  tasks: calendar dates trend
   url: /tutorials/calendar/
 
 - id: nested-responsive
@@ -2187,7 +2187,7 @@
   caption: Bundling changes connection geometry while preserving every original node and edge identity.
   summary: Follow existing graph edges with a bounded detour and explicit stored route.
   actions: bundleGraphEdges · createGraphPlot · editEdgeRoute
-  tasks: graph edge routes bundling
+  tasks: graph edge routes bundling relationship
   url: /tutorials/edge-routes/
   tutorial_order: 225
 - id: geographic-marks
@@ -2204,7 +2204,7 @@
   caption: Planar feature geometry preserves a courtyard and three independent stops.
   summary: Draw geographic shapes, points, lines and graticules with stable feature identity.
   actions: createGeometryData · createProjection · createGeoShapeMark · createGeoPointMark · createGeoLineMark · createGraticule
-  tasks: geometry projection map
+  tasks: geometry projection map coordinate
   url: /tutorials/geographic-marks/
 - id: geographic-grid
   example: /examples/geographic-grid/
@@ -2219,7 +2219,7 @@
   caption: Explicit angular lines share a single spherical projection.
   summary: Draw geographic shapes, points, lines and graticules with stable feature identity.
   actions: createGeometryData · createProjection · createGeoShapeMark · createGeoPointMark · createGeoLineMark · createGraticule
-  tasks: geometry projection map
+  tasks: geometry projection map coordinate
   url: /tutorials/geographic-marks/
 
 - id: pyramid
@@ -2236,7 +2236,7 @@
   caption: Keep the process order while matching adjacent stage widths.
   summary: Keep the process order while matching adjacent stage widths.
   actions: createPyramidPlot · editPyramidPlot
-  tasks: ordered stages
+  tasks: ordered stages comparison part-to-whole
   url: /tutorials/pyramid/
 
 - id: pyramid-area
@@ -2252,7 +2252,7 @@
   caption: Make stage areas proportional to values with an explicit taper.
   summary: Make stage areas proportional to values with an explicit taper.
   actions: createPyramidPlot · editPyramidPlot
-  tasks: ordered stages
+  tasks: ordered stages comparison part-to-whole
   url: /tutorials/pyramid/
 
 - id: pyramid-up
@@ -2268,7 +2268,7 @@
   caption: Keep input order while changing the direction of progress.
   summary: Keep input order while changing the direction of progress.
   actions: createPyramidPlot · editPyramidPlot
-  tasks: ordered stages
+  tasks: ordered stages comparison part-to-whole
   url: /tutorials/pyramid/
 
 - id: pyramid-right
@@ -2284,7 +2284,7 @@
   caption: Use a horizontal process direction without sorting rows.
   summary: Use a horizontal process direction without sorting rows.
   actions: createPyramidPlot · editPyramidPlot
-  tasks: ordered stages
+  tasks: ordered stages comparison part-to-whole
   url: /tutorials/pyramid/
 
 - id: pyramid-left
@@ -2300,7 +2300,7 @@
   caption: Reverse the progression direction while retaining row order.
   summary: Reverse the progression direction while retaining row order.
   actions: createPyramidPlot · editPyramidPlot
-  tasks: ordered stages
+  tasks: ordered stages comparison part-to-whole
   url: /tutorials/pyramid/
 
 - id: pyramid-point
@@ -2316,7 +2316,7 @@
   caption: Request a pointed last stage in width mode.
   summary: Request a pointed last stage in width mode.
   actions: createPyramidPlot · editPyramidPlot
-  tasks: ordered stages
+  tasks: ordered stages comparison part-to-whole
   url: /tutorials/pyramid/
 
 - id: ohlc
@@ -2332,7 +2332,7 @@
   caption: Keep four prices in one source-owned observation.
   summary: Keep four prices in one source-owned observation.
   actions: createOHLCPlot · editOHLCPlot
-  tasks: price ranges
+  tasks: price ranges trend uncertainty
   url: /tutorials/ohlc/
   tutorial_order: 290
 
@@ -2349,7 +2349,7 @@
   caption: Label closing prices without changing body heights.
   summary: Label closing prices without changing body heights.
   actions: createOHLCPlot · editOHLCPlot
-  tasks: price ranges
+  tasks: price ranges trend uncertainty
   url: /tutorials/ohlc/
 
 - id: ohlc-no-doji
@@ -2365,7 +2365,7 @@
   caption: Keep the high-low stem while hiding the flat body.
   summary: Keep the high-low stem while hiding the flat body.
   actions: createOHLCPlot · editOHLCPlot
-  tasks: price ranges
+  tasks: price ranges trend uncertainty
   url: /tutorials/ohlc/
 
 - id: waterfall
@@ -2381,7 +2381,7 @@
   caption: Show explicit signed contributions, subtotals and totals.
   summary: Show explicit signed contributions, subtotals and totals.
   actions: createWaterfallPlot · editWaterfallPlot
-  tasks: contributions and running balances
+  tasks: contributions and running balances comparison part-to-whole
   url: /tutorials/waterfall/
   tutorial_order: 300
 
@@ -2398,7 +2398,7 @@
   caption: Show each stage value above the bar.
   summary: Show each stage value above the bar.
   actions: createWaterfallPlot · editWaterfallPlot
-  tasks: contributions and running balances
+  tasks: contributions and running balances comparison part-to-whole
   url: /tutorials/waterfall/
 
 - id: waterfall-no-connectors
@@ -2414,7 +2414,7 @@
   caption: Omit incoming balance connectors explicitly.
   summary: Omit incoming balance connectors explicitly.
   actions: createWaterfallPlot · editWaterfallPlot
-  tasks: contributions and running balances
+  tasks: contributions and running balances comparison part-to-whole
   url: /tutorials/waterfall/
 - id: geographic-annotations
   example: /examples/geographic-annotations/
@@ -2429,7 +2429,7 @@
   caption: Feature annotations retain the original source anchor as the map changes.
   summary: Attach semantic text to geographic positions and original feature keys.
   actions: createGeoAnnotation · editGeoAnnotation · createProjection
-  tasks: geometry annotation label map
+  tasks: geometry annotation label map coordinate
   url: /tutorials/geographic-marks/
 
 - id: geographic-fields
@@ -2445,7 +2445,7 @@
   caption: Feature categories share native color scales and point areas are proportional to visitor counts.
   summary: Map geographic feature properties or joined measurements to color and point area.
   actions: createGeoPointMark · encodeColor · encodeSize
-  tasks: geometry choropleth map proportional symbol
+  tasks: geometry choropleth map proportional symbol coordinate
   url: /tutorials/geographic-marks/
 
 - id: trail
@@ -2461,7 +2461,7 @@
   caption: Draw two independent ribbons with a screen width at each source sample.
   summary: Draw two independent ribbons with a screen width at each source sample.
   actions: createTrailPlot · editTrailPlot
-  tasks: sample width along ordered series
+  tasks: sample width along ordered series trend multivariate
   url: /tutorials/trail/
   tutorial_order: 310
 
@@ -2478,7 +2478,7 @@
   caption: Preserve both centerlines while setting a constant screen width.
   summary: Preserve both centerlines while setting a constant screen width.
   actions: createTrailPlot · editTrailPlot
-  tasks: sample width along ordered series
+  tasks: sample width along ordered series trend multivariate
   url: /tutorials/trail/
 
 - id: streamgraph
@@ -2510,7 +2510,7 @@
   caption: Keep exact values beside bars and shared-scale sparklines.
   summary: Keep exact values beside bars and shared-scale sparklines.
   actions: createTablePlot · editTablePlot
-  tasks: formatted rows and inline charts
+  tasks: formatted rows and inline charts comparison multivariate
   url: /tutorials/table/
   tutorial_order: 320
 

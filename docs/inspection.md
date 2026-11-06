@@ -182,4 +182,5 @@ omit this field. Inspection does not run another layout pass.
 
 [Data updates and snapshots](./data-updates.md) ·
 [ChartProgram and immutability](./concepts/chart-program.md) ·
+[Interaction sessions](./api/interaction.md) for hit candidates under a pointer ·
 [Errors and recovery](./errors-and-recovery.md)

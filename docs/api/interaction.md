@@ -1,16 +1,19 @@
 ---
 layout: default
-title: Inspect chart items
-description: Inspect overlapping marks and guides in Canvas or SVG while preserving an immutable chart program.
+title: Interaction sessions
+description: Inspect and edit charts through pointer, keyboard and headless commands while preserving an immutable chart program.
 ---
 
-# Inspect chart items
+# Interaction sessions
 
 {% include chart-example.html id="inspect-chart" lead=true %}
 
-Use `createInteractionSession` from `ggaction/interaction` to inspect the logical
-items under a pointer. It supports Full and Basic programs, browser Canvas and
-SVG surfaces, and headless CSS-point queries. The program remains immutable.
+Use `createInteractionSession` from `ggaction/interaction` to inspect and edit a
+chart through pointer, keyboard and headless commands: hit testing, selections,
+brushing, linked views, navigation, dragging and undo/redo. It supports Full and
+Basic programs, browser Canvas and SVG surfaces, and headless CSS-point queries.
+The program remains immutable. For a ready-made stateful browser chart with
+tooltips, brushing and animated updates, see [Live charts](live.md).
 See the [complete browser recipe](../recipes/inspect-chart.md) for setup.
 This is an advanced controller function, not a chainable authoring action.
 
@@ -112,7 +115,7 @@ const pathSession = createInteractionSession({ program: pathProgram, bindings: [
   hitPreparation: { maxWork: 128000000,
     pathGeometry: { maxParts: 400000, maxWork: 2000000, maxIndexWork: 16000000 } }
 });
-pathSession.dispatch({ type: "inspect", point: { x: 200, y: 200 }, slop: 3 });
+pathSession.dispatch({ type: "inspect", point: { x: 200, y: 191 }, slop: 3 });
 console.log(pathSession.getState().hit.candidates.length);
 pathSession.destroy();
 ```
@@ -448,12 +451,15 @@ hit targets in that frame.
 ## State and cleanup
 
 `getState()` returns an immutable snapshot with `program`, `scene`, `frameVersion`,
-`generation`, `revision`, `hit`, `mounted`, and `destroyed`. A hit contains `target`,
+`generation`, `revision`, `hit`, `mounted`, and `destroyed`, plus `previewProgram`,
+`previewFrame`, `animationFrame`, `focus`, `linkedSelections`, `history`, `assets`,
+`previewAssets`, `frameAssets` and `preparation` for the editing features below. A hit contains `target`,
 `candidates`, `diagnostics`, `statistics`, and `frameVersion`. Singular transforms
 and empty viewports produce no hit plus diagnostics.
 
-Subscribers receive `{ type, state }`; event types are `inspect`, `contextMenu`, `leave`, `frame`,
-`program`, `mount`, `unmount`, and `destroy`. Dispatch and program updates return
+Subscribers receive `{ type, state }`. Lifecycle events are `inspect`, `contextMenu`, `leave`,
+`frame`, `mount`, `unmount`, `destroy` and `focus`; `program`, `resize`, `assets`, `update` and
+`unbundleEdge` report changes, and transaction events from editing bindings carry a `phase`. Dispatch and program updates return
 `{ status: "applied" | "queued" | "stale" | "unchanged" }`. Reentrant operations run FIFO after
 the current event, with a 256-command bound. Subscriber errors propagate and
 clear queued work; the already published state remains available.
@@ -901,8 +907,10 @@ visibilitySession.subscribe(event => {
 visibilitySession.mount(canvas);
 ```
 
-The native `setMarkVisibility` action and `setVisibility` session command accept `channel`, unique typed `values`,
-boolean `visible` and the same explicit `scaleDomain`. Use the command payload `{clear:true}` or the native
+The native `setMarkVisibility({ target?, channel, values, visible, scaleDomain })` action and `setVisibility` session
+command accept `channel`, unique typed `values`, boolean `visible` and the same explicit `scaleDomain`, which has no
+default. Both require an existing categorical legend block for that target and channel; see
+[Hide legend categories](data/filtering.md#set-mark-visibility). Use the command payload `{clear:true}` or the native
 `removeMarkVisibility` action to remove visibility alone. User filters and hidden-selection policy remain separate.
 Changing a linked filter preserves visibility. Numeric `1` and string `"1"` are distinct categories; unknown values
 reject. Continuous or interval legends and Basic authoring are unsupported. Empty views retain valid domains.
@@ -991,8 +999,9 @@ Elements use capture automatically. Brush/lasso and navigation are separate bind
 
 ## Brush or lasso an existing selection
 
-Use a Full program with an existing authored selection. A session accepts one click, brush, or lasso
-binding alongside inspection and linked selections. The following browser fragment assumes `program`
+Use a Full program with an existing authored selection. A session can combine several click, brush and
+lasso bindings with inspection and linked selections; see [Combine editing gestures](#combine-editing-gestures)
+for priorities and modifiers. The following browser fragment assumes `program`
 has a `points` mark and `picked` selection, and `canvas` is an HTML Canvas element:
 
 <!-- snippet-context:start -->
@@ -1331,7 +1340,7 @@ active. Escape, lost capture, pointer cancel, blur, external program/frame updat
 release both pointers and discard the draft. A late pointer-up has no effect. Wheel and keyboard each use
 one native command; Ctrl/Meta/Alt keyboard shortcuts remain with the host. The host owns focus and touch
 CSS. Remove the binding by creating a new session; incompatible targets fail, and a removed target remains
-inactive until an explicit matching owner returns. Editing bindings share one capture owner alongside inspection/context-menu bindings. Animated camera playback is a separate integration.
+inactive until an explicit matching owner returns. Editing bindings share one capture owner alongside inspection/context-menu bindings. To animate a camera change, plan a transition between the committed programs with [`ggaction/animation`](animation.md) and dispatch its frames as in [Replace a program or sampled frame](#replace-a-program-or-sampled-frame).
 
 
 ## Move graph nodes with pointer or keyboard
@@ -1340,6 +1349,9 @@ Bind `moveNode` to the explicit GraphPlot. Its fixed or force layout and plot or
 coordinate system. Dragging keeps the initial pointer offset, previews from one baseline, and commits
 once when released. Escape restores the baseline. A force drag pins the moved node and uses the existing
 solver for the others. Native buttons can send the same command using an explicit layout and typed key.
+The commit is a synchronous `editLayout`, so node movement is unavailable while a version 2
+[edge route](edge-routes.md#explicit-bounded-execution) depends on the layout; use version 1 routes for
+draggable routed graphs.
 
 This browser module expects `<canvas id="chart" aria-label="Movable graph nodes"></canvas>`.
 
@@ -1547,7 +1559,8 @@ view is disposed, then call `disposeRoutes()`.
 
 Use `modifiers` to choose an explicit binding and `priority` to override its default rank. Each optional
 `alt`, `ctrl`, `meta` and `shift` flag is a boolean requirement; omitted flags impose no condition.
-Default ranks are annotation 50, brush/lasso 40, node movement 30, navigation 20 and click/legend 10. Priority
+Default ranks are selection resize and category reorder 60, annotation 50, brush/lasso 40, node movement 30,
+navigation 20 and click/legend 10. Priority
 must be an integer between -1,000,000 and 1,000,000. Equal ranks with overlapping conditions are rejected
 before mounting, including bindings with different targets. Reordering the binding array does not resolve a tie.
 
@@ -1592,8 +1605,8 @@ const disposeGestures = () => { unsubscribe(); gestureSession.destroy(); };
 
 The annotation wins when its label is hit, including while Shift is pressed. Elsewhere Shift selects the
 brush and a plain click toggles a point. `priority` and `modifiers` are available on all editing bindings,
-including legends and navigation; they do not apply to inspection, context menus or linked bindings.
-There are at most256 editing bindings and259 total records. A click clear-on-miss remains an applicable
+including legends and navigation; they do not apply to inspection, context menus, keyboard or linked
+bindings. There are at most 256 editing bindings and 259 total records. A click clear-on-miss remains an applicable
 command; use `onMiss:"ignore"` when a miss should fall through. Wheel and keyboard arbitrate navigation
 bindings, while native Ctrl/Meta/Alt shortcuts remain with the host. SVG hosts keep the root during a drag
 and remount when replacing it. Call `disposeGestures()` when removing this view.
@@ -1825,7 +1838,8 @@ own keyboard behavior. Filtering updates the native descriptions and selected st
 reads them. The item-focus example above explains owner fallback and geographic representations.
 Use a similarly explicit list of native controls for camera, legend visibility and other commands;
 those controls must dispatch through the same session reducer and cleanup their own listeners.
-Public animation and reduced-motion playback integration remain separate from this static host recipe.
+For animated transitions with reduced-motion handling, use `createAnimationPlayer` from
+[`ggaction/animation`](animation.md); this recipe stays static.
 
 ## Native control alternatives
 

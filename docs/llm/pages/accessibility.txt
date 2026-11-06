@@ -4,14 +4,16 @@ ggaction produces static chart graphics. Accessibility therefore has two
 parts: author a chart whose meaning is not carried by color alone, then give
 the rendered output an accessible name, description, and non-visual
 alternative in the host application. Rendering does not add keyboard
-interaction, focus targets, live tooltips, or a data table automatically.
+interaction, focus targets, live tooltips, or a data table automatically;
+[`ggaction/interaction`](../../api/interaction/#keyboard-item-focus) adds keyboard item
+focus and activation when you opt in.
 
 ## Output contract
 
 | Output | What ggaction provides | What the host must provide |
 | --- | --- | --- |
 | SVG | Escaped `<title>` and `<desc>` elements through renderer options | Meaningful text, safe placement, and a table or prose alternative when needed |
-| Canvas | Concrete pixels and deterministic geometry | `role`, accessible name, fallback content, and any keyboard interaction outside ggaction |
+| Canvas | Concrete pixels and deterministic geometry | `role`, accessible name, fallback content, and keyboard interaction (optionally through `ggaction/interaction`) |
 | PNG | A static image file | Alt text and surrounding explanation where the image is embedded |
 | PDF | Vector chart content and document metadata | Reading-order review and an accessible alternative; ggaction does not claim tagged-PDF semantics |
 
@@ -65,9 +67,11 @@ const context = document.querySelector("#orders-chart").getContext("2d");
 render(program, context);
 ```
 
-If an application adds its own pointer or keyboard controls, it owns focus
-order, state announcements, and equivalent keyboard operation. The current
-ggaction contract is static and does not supply those behaviors.
+Rendering itself is static. For keyboard item focus, activation and accessible
+tooltips, use a `keyboard` binding from
+[`ggaction/interaction`](../../api/interaction/#keyboard-item-focus). The host still
+supplies roles, accessible names, option text, focus order and state announcements,
+and owns any pointer or keyboard controls it adds itself.
 
 ## Data alternatives at the chart’s final grain
 

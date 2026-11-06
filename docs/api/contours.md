@@ -45,7 +45,7 @@ Creating geometry does not draw anything.
 createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
 ```
 
-Pass `{ id, data?, x, y, weight?, grid, estimator, normalization, thresholds }`.
+Pass `{ id, data?, x, y, weight?, grid, estimator, normalization, bandwidth?, kernel?, thresholds }`.
 The grid contains the same frame fields, without `values`. `data` selects an
 existing materialized dataset; omission uses the current or unique eligible
 source. The `x` and `y` columns must contain finite numbers. Optional `weight`

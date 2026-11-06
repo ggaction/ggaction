@@ -11,7 +11,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/graph": 78_097, // Review fixes: Node20/24 78,097 gzip bytes.
   "ggaction/animation": 360_122, // Geo projection fast paths: Node20/24 360,122 gzip bytes.
   "ggaction/interaction": 144_184, // Sliced data revision: Node20/24 144,184 gzip bytes.
-  "ggaction/live": 1_023_979 // Review fixes: Node20/24 1,023,979 gzip bytes.
+  "ggaction/live": 1_023_988 // Live setData easing: Node20/24 1,023,988 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {

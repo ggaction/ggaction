@@ -22,6 +22,10 @@ input context, editable owners, package membership, and lower-level actions.
 | Part-to-whole and radial values | Pie, Rose, Radial Bar | Pie angle, Rose area, and radial length express different measures |
 | Dense samples | Pre-gridded or rectangular binned Heatmap; Horizon | Choose aggregation or folded-band meaning explicitly |
 | Repeated and combined views | Facet, Facet Grid, field repetition, horizontal/vertical concatenation | Choose independent versus shared domains and guide policies |
+| Hierarchies and networks | Tree, Treemap, Partition (icicle/sunburst), Graph (fixed, circular, force layouts; four edge-bundling methods), Sankey flows (DAG and cyclic) | Choose the stored hierarchy or graph resource, then its layout |
+| Maps | Geographic shape, point, line, graticule and annotation marks over 15 projections, with table joins and detail levels | Choose the geometry source, projection and joined fields |
+| Fields and calendars | Contour lines and filled bands, 2D density contours, Calendar | Choose grid or density meaning and the civil-day policy |
+| Specialized plots | Pyramid, OHLC, Waterfall, Trail, Table (cells, in-cell bars, sparklines), Image marks | Choose stage, price, contribution, width or cell meaning |
 
 All complete families render through Browser Canvas, browser-safe SVG, Node PNG,
 and single-page vector PDF. Support is conditional on each facade's required roles
@@ -31,8 +35,12 @@ complete support limit of its underlying mark.
 
 ## Native chart scope
 
-[Pyramid](./api/pyramid.md) represents ordered stages with explicit values; stage
-labels do not replace row identity. [Marginal](./recipes/marginal.md),
+[Calendar](./api/calendar.md), [Contours](./api/contours.md), [OHLC](./api/ohlc.md),
+[Pyramid](./api/pyramid.md), [Table](./api/table.md), [Trail](./api/trail.md) and
+[Waterfall](./api/waterfall.md) are native families with dedicated create/edit actions,
+listed under [Specialized chart families](./api/chart-picker.md#specialized-chart-families).
+Pyramid represents ordered stages with explicit values; stage labels do not replace
+row identity. [Marginal](./recipes/marginal.md),
 [Bullet](./recipes/bullet.md), and [Combo](./recipes/combo.md) are recipes built
 from public actions, not separate chart constructors. Use independent panels
 for different Y measures and one shared Y mapping for overlays in a frame.
@@ -52,15 +60,18 @@ mathematics serve those native operations.
 | --- | --- |
 | Program model | Immutable unit or composition `ChartProgram`, hierarchical trace, nested Cartesian/Polar/Parallel composition, stable child replacement, and Cartesian/Polar/Parallel facet, grid, and eligible field-role repetition |
 | Canvas | Create/edit width, height, background, margin |
-| Data | Immutable source rows, filtering, computation, normalization, completion, imputation, folding, summaries, stacks, 1D/2D bins, windows, calendar buckets, regression, intervals, KDE, ECDF, and explicit derived revision replay |
-| Coordinates | Named Cartesian, Polar, and Parallel resources; x/y use Cartesian, theta/radius use Polar, and ordered dimensions use Parallel |
+| Data | Immutable source rows, filtering, computation, normalization, completion, imputation, folding, summaries, stacks, 1D/2D bins, windows, calendar buckets, regression, intervals, KDE, ECDF, pivots, lookups, flatten, sorting, scalar parameters, host-loaded CSV/JSON/URL sources, hierarchy, graph, flow, contour and geometry resources, time-sliced revision and snapshot loading, and explicit derived revision replay |
+| Coordinates | Named Cartesian, Polar, Parallel and Geo (projection-bound) resources; x/y use Cartesian, theta/radius use Polar, ordered dimensions use Parallel, and Geo marks use a projection |
 | Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position with semantic explicit/count/category/summary ordering, ordinal/sequential/log/sqrt/symlog/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge categorical, interval, and continuous legends, and channel-identified block editing |
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |
-| Rendering | Browser Canvas, browser-safe SVG string, Node PNG, and single-page vector PDF |
-| Graphics | Concrete canvas, circle, line, rect, text, `M/L/C/Z` command paths, shared 8-value line/area curves, and heterogeneous drawable collections |
-| Selection | Strict point/bar/rect/series/arc/rule/tick comparison, set, range and grouped rank; reusable selection state; mark-specific highlight/dimming/front order |
+| Rendering | Browser Canvas, browser-safe SVG string, Node PNG, and single-page vector PDF; immutable animation frames (`ggaction/animation`) and live redraw (`ggaction/live`) |
+| Graphics | Concrete canvas, circle, circle-batch, line, rect, text, image, `M/L/C/Z` command paths, path-batch, weighted-blend, shared 9-value line/area curves, embedded fonts, and heterogeneous drawable collections |
+| Animation | `ggaction/animation`: plan, sample, play, save/restore and export transitions between immutable programs; frames render on Canvas, SVG, PNG and PDF |
+| Interaction | `ggaction/interaction`: hit testing, click/brush/lasso/legend selection, linked selections and filters, map navigation, node and annotation dragging, keyboard focus, undo/redo |
+| Live charts | `ggaction/live`: stateful browser wrapper with tooltips, hover, brushing, zoom/pan, animated data updates and save/load |
+| Selection | Strict point/bar/rect/series/arc/rule/tick comparison, set, range and grouped rank, plus calendar day, contour level/band, OHLC row, waterfall and pyramid stage, trail series, table cell, graph, hierarchy, partition, flow and Geo item grain; reusable selection state; mark-specific highlight/dimming/front order |
 
 Basic chart facades infer only a current or unique dataset and stable unused
 role IDs. Ambiguous data or an occupied default role requires an explicit ID.
@@ -78,7 +89,9 @@ ECDFs, filters, regression, density, Horizon folding, intervals, time units,
 windows, and rectangular 2D bins. The
 [canonical transform table](./api/data/source-and-derived.md#create-derived-data)
 owns the exact tag set and normalized forms. Arbitrary multi-transform
-pipelines and interactive legends are not implemented.
+pipelines are not implemented. Categorical legends can select or hide categories
+through an [interaction session](./api/interaction.md#hide-and-restore-categories-from-a-legend),
+`setMarkVisibility`, or [live charts](./api/live.md).
 Pre-gridded heatmaps do not synthesize missing cells. Binned heatmaps support
 fixed rectangular bins only; weighted, adaptive, hexagonal, and overflow bins
 are not implemented. Cell text must be added as a separate text layer.
@@ -117,7 +130,8 @@ values, adaptive bandwidth, and Polar violin placement are not implemented.
 ### Selection, appearance, and text
 
 Mark selection supports point, final-bar item, stacked-bar group, line/area
-series, rect cell, arc sector, rule, and tick grain. Selector values explicitly distinguish data fields,
+series, rect cell, arc sector, rule, tick, calendar day, contour level/band, OHLC
+row, waterfall stage, pyramid stage, trail series, table cell and image item grain. Selector values explicitly distinguish data fields,
 pre-scale semantic channels, and concrete graphic properties.
 Highlight appearance supports point fill/shape/size/outline/offset, bar fill and
 outline, area/arc fill/outline/offset, and line/rule stroke/width/dash/offset.

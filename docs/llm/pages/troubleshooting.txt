@@ -218,6 +218,17 @@ Use `render` from `ggaction` or `renderToSVG` from `ggaction/svg` in the browser
 Importing `ggaction/png` or `ggaction/pdf` into a browser bundle is unsupported
 because they depend on Node output adapters.
 
+## Images, fonts, or routes are missing or rejected
+
+Canvas rendering of image marks, embedded fonts and mark shadows requires
+`prepareImageRendering`, `prepareFontRendering` or `prepareShadowRendering` for the
+current program; a preparation made for an earlier revision is rejected. A chart
+with version 2 edge routes rejects direct edits that recompute those routes,
+including `fitCanvas`; prepare the edit with `prepareGraphEdgeRoutes({ kind: "update" })`
+and apply it with [`applyGraphEdgeRoutesUpdate`](../../api/edge-routes/#applygraphedgeroutesupdate).
+A `resource-limit` error that names a graphic count needs fewer items or an explicit
+`maxItems`; see [Generated-work limits](../../performance/#generated-work-limits).
+
 ## Inspect the program
 
 Use these public states to locate the last successful authoring step:

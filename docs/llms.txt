@@ -31,6 +31,10 @@ HTML routes are canonical; the generated full-text bundle is available at
 - Vertical and horizontal statistical and explicit error bands: ./api/error-bands/
 - Vertical/horizontal Tukey and min–max box plots: ./api/box-plots/
 - Vertical/horizontal categorical gradient plots: ./api/gradient-plots/
+- Live charts, interaction sessions and animation: ./api/live/ | ./api/interaction/ | ./api/animation/
+- Hierarchies, graphs, edge routes, flows and maps: ./api/hierarchy/ | ./api/partition/ | ./api/graphs/ | ./api/edge-routes/ | ./api/flows/ | ./api/geometry/
+- Specialized plots: ./api/pyramid/ | ./api/ohlc/ | ./api/waterfall/ | ./api/trail/ | ./api/table/ | ./api/calendar/ | ./api/contours/
+- Performance and known limits: ./performance/
 
 Only methods declared on the public ChartProgram TypeScript type are supported
 direct-call actions. Additional wrapped names may appear in action traces but
@@ -75,7 +79,8 @@ are internal operations.
 - Exact program and renderer signatures: ./reference/runtime/
 - Exact ChartProgram action type: ./reference/types/
 - Browser Canvas, browser-safe SVG, Node PNG, and vector PDF share one
-  backend-neutral graphicSpec contract.
+  backend-neutral graphicSpec contract; `ggaction/animation` frames and
+  `ggaction/live` redraw consume the same graphics.
 - The package is ESM-only. Node entry points require Node.js 20 or later.
 
 
@@ -157,9 +162,6 @@ requirements after resolving each part.
 - Violin Plots: ./api/violin-plots/
 - Guides: ./api/guides/
 - Titles: ./api/titles/
-- Animate and Export Chart Frames: ./api/animation/
-- Live Charts: ./api/live/
-- Inspect Chart Items: ./api/interaction/
 - Inspect Overlapping Chart Items: ./recipes/inspect-chart/
 - Program Composition: ./api/composition/
 - Quantitative Positions: ./api/position/quantitative/
@@ -187,7 +189,6 @@ requirements after resolving each part.
 - Accessibility: ./accessibility/
 - Runtime and Browser Compatibility: ./compatibility/
 - Responsive Charts: ./responsive-charts/
-- Performance and Large Charts: ./performance/
 - Data Updates and Live Refresh: ./data-updates/
 - Program Inspection: ./inspection/
 - Errors and Recovery: ./errors-and-recovery/
@@ -223,31 +224,18 @@ requirements after resolving each part.
 - Complete Axes and Labels: ./api/axes/complete/
 - Image Assets Tutorial: ./tutorials/image-assets/
 - Prepared Fonts Tutorial: ./tutorials/font-assets/
-- Hierarchy Resources and Plots: ./api/hierarchy/
 - Hierarchy Tutorial: ./tutorials/hierarchy/
-- Graph Plots: ./api/graphs/
 - Graph Tutorial: ./tutorials/graphs/
-- Edge Routes: ./api/edge-routes/
 - Edge Route Tutorial: ./tutorials/edge-routes/
-- Partition Plots: ./api/partition/
 - Partition Tutorial: ./tutorials/partition/
-- Flow Data and Sankey Layouts: ./api/flows/
 - Draw Conserved Flows: ./tutorials/flows/
-- Geometry and Projections: ./api/geometry/
-- Contours and Two-Dimensional Density: ./api/contours/
 - Draw Levels, Bands and Density: ./tutorials/contours/
 - Fit Labels Inside a Fixed Canvas: ./tutorials/responsive-guides/
-- Calendar Plots: ./api/calendar/
 - Place Observations on a Calendar: ./tutorials/calendar/
 - Arrange Nested Panels with Shared Guides: ./tutorials/nested-responsive/
 - Draw Geometry on a Map: ./tutorials/geographic-marks/
-- Pyramid Plots: ./api/pyramid/
 - Compare Ordered Stages: ./tutorials/pyramid/
-- OHLC Plots: ./api/ohlc/
 - Show open, high, low and close: ./tutorials/ohlc/
-- Waterfall Plots: ./api/waterfall/
 - Show Contributions and Totals: ./tutorials/waterfall/
-- Trail Plots: ./api/trail/
 - Show Width Along a Series: ./tutorials/trail/
-- Table Plots: ./api/table/
 - Combine Values and Small Charts in a Table: ./tutorials/table/

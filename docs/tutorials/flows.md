@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Draw Conserved Flows
+description: Build a Sankey diagram from explicit node and edge tables, including cyclic feedback.
 ---
 
 # Draw conserved flows

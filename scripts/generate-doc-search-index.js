@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 1104128; // Native route update union docs: 1,104,127 measured bytes.
+export const SEARCH_INDEX_MAX_BYTES = 1112890; // Pre-release documentation audit: 1,112,889 measured bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");
@@ -42,12 +42,16 @@ const SEARCH_ALIASES = new Map([
     "histogram", "binned distribution", "one dimensional bins",
     "regression data", "path mark", "trend line", "uncertainty ribbon",
     "axis guides", "Canvas", "SVG", "PNG", "PDF", "JPG", "JPEG",
-    "3d chart", "geographic chart", "animation", "interaction",
+    "3d chart",
     "renderer.canvas", "renderer.svg", "renderer.png", "renderer.pdf",
     "unsupported.geo", "unsupported.animation", "unsupported.interaction",
     "unsupported.3d", "unsupported.jpg", "renderer.format"
   ]],
-  ["/supported-features/", ["tooltip", "tooltips", "interactive chart", "unsupported feature"]],
+  ["/supported-features/", ["unsupported feature"]],
+  ["/api/geometry/", ["geographic chart", "map chart", "choropleth", "geo projection"]],
+  ["/api/live/", ["tooltip", "tooltips", "interactive chart"]],
+  ["/api/interaction/", ["interaction", "hover interaction", "brush interaction"]],
+  ["/api/animation/", ["animation", "animated transition"]],
   ["/tutorials/polar-arcs/", ["pie chart", "donut chart", "doughnut chart", "weighted donut"]],
   ["/tutorials/polar-lines/", ["radar chart", "spider chart", "polar line chart"]],
   ["/recipes/horizon/", ["HorizonOverflowPolicy", "horizon overflow", "horizon bands"]],

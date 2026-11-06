@@ -596,7 +596,7 @@ Apply a nonempty patch to a stored route and refresh each consuming GraphPlot on
 applyGraphEdgeRoutesUpdate({ prepared, requestToken })
 ```
 
-Apply an authentic prepared native layout revision on its exact original Full unit receiver. Prepare with `kind:"update", edit:{action:"editLayout",args}` through `ggaction/graph`; the original action, affected route consumers and theme completion execute synchronously with the shared budget. See [Edge routes](../api/edge-routes.md#applygraphedgeroutesupdate).
+Apply an authentic prepared native update on its exact original Full receiver. Prepare any affected native edit (layout, graph, flow, hierarchy, data, parameter, Canvas, fit, filter, or another public action that reaches a version 2 route) with `kind:"update"` through `ggaction/graph`; the original action, affected route consumers and theme completion execute synchronously with the shared budget. See [Edge routes](../api/edge-routes.md#applygraphedgeroutesupdate).
 
 ### `createGraphData`
 
@@ -3682,7 +3682,7 @@ Edit a calendar plot while preserving day identities and source lineage. See [Ca
 ### `createGeometryData`
 
 ```javascript
-createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, limits? })
+createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, polygonWinding?, limits? })
 ```
 
 Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values. See [Geometry sources](../api/geometry.md#creategeometrydata).
@@ -3690,7 +3690,7 @@ Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature 
 ### `editGeometryData`
 
 ```javascript
-editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
+editGeometryData({ target?, values?, coordinateKind?, topoObject?, polygonWinding?, limits? })
 ```
 
 Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](../api/geometry.md#editgeometrydata).
@@ -3777,7 +3777,7 @@ Navigate a projection with explicit pan, anchored zoom, pinch, rotation, fit, re
 ### `createGeoShapeMark`
 
 ```javascript
-createGeoShapeMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoShapeMark({id?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, capacity?, ...style})
 ```
 
 Create projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](../api/geometry.md#creategeoshapemark).
@@ -3785,7 +3785,7 @@ Create projected geographic GeoShapeMark geometry with native style. See [Geomet
 ### `editGeoShapeMark`
 
 ```javascript
-editGeoShapeMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoShapeMark({target?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](../api/geometry.md#editgeoshapemark).
@@ -3793,7 +3793,7 @@ Edit projected geographic GeoShapeMark geometry with native style. See [Geometry
 ### `createGeoPointMark`
 
 ```javascript
-createGeoPointMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoPointMark({id?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, radiusDeg?, capacity?, ...style})
 ```
 
 Create projected geographic GeoPointMark geometry with native style. See [Geometry and projections](../api/geometry.md#creategeopointmark).
@@ -3801,7 +3801,7 @@ Create projected geographic GeoPointMark geometry with native style. See [Geomet
 ### `editGeoPointMark`
 
 ```javascript
-editGeoPointMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoPointMark({target?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, radiusDeg?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoPointMark geometry with native style. See [Geometry and projections](../api/geometry.md#editgeopointmark).
@@ -3809,7 +3809,7 @@ Edit projected geographic GeoPointMark geometry with native style. See [Geometry
 ### `createGeoLineMark`
 
 ```javascript
-createGeoLineMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoLineMark({id?, coordinate?, geometry?, interpolation?, routeHint?, capacity?, ...style})
 ```
 
 Create projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../api/geometry.md#creategeolinemark).
@@ -3817,7 +3817,7 @@ Create projected geographic GeoLineMark geometry with native style. See [Geometr
 ### `editGeoLineMark`
 
 ```javascript
-editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../api/geometry.md#editgeolinemark).
@@ -3841,7 +3841,7 @@ Edit the annotation while preserving omitted intent, original feature identity a
 ### `createGraticule`
 
 ```javascript
-createGraticule({id?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+createGraticule({id?, coordinate?, stepDeg?, extentDeg?, precisionDeg?, capacity?, ...style})
 ```
 
 Create projected geographic Graticule geometry with native style. See [Geometry and projections](../api/geometry.md#creategraticule).
@@ -3849,7 +3849,7 @@ Create projected geographic Graticule geometry with native style. See [Geometry 
 ### `editGraticule`
 
 ```javascript
-editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?, capacity?, ...style})
 ```
 
 Edit projected geographic Graticule geometry with native style. See [Geometry and projections](../api/geometry.md#editgraticule).

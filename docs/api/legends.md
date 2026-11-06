@@ -133,7 +133,7 @@ compositions and saved programs preserve it, and fitting uses the shifted concre
 
 Continuous color legends support point, aggregate-bar, and rect marks. Continuous
 stroke legends support every stroke-capable mark at its documented item/series grain. Field
-Opacity legends support Point and Line; discretized color legends support Point, aggregate Bar, and Rect. Interactive legends are unsupported.
+Opacity legends support Point and Line; discretized color legends support Point, aggregate Bar, and Rect. Static rendering adds no legend behavior; to select or hide categories by clicking a legend, use a `legend` binding in [`ggaction/interaction`](interaction.md#hide-and-restore-categories-from-a-legend) or `addLegendToggle` in [live charts](live.md).
 Combined point-series and size legends support every edge. Continuous size
 blocks sample the domain; discrete size blocks show every interval.
 Side positions stack the blocks; horizontal positions place them in rows. A left block must

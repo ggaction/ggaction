@@ -449,8 +449,9 @@ to match the exact scoped Geo owner. Creation, capacity/source/projection/Canvas
 writes. Standalone concrete paths follow the [primitive capacity contract](PRIMITIVES.md#editgraphics).
 
 This capacity applies to native materialization, concrete scenes, graphic/editable persistence and the
-four renderers. Typed camera animation capacity transport and large-path hit preparation remain separate
-limitations; increasing this option does not increase animation, stroke or query budgets. Evidence:
+four renderers. Animation and hit testing do not inherit it automatically: `formatVersion: 5` transition
+plans carry it through typed camera animation, and an explicit `hitPreparation.pathGeometry` on the
+interaction session raises path hit budgets. Evidence:
 `test/unit/geo/capacity.test.js`, `test/contracts/geo-mark-types.test.js`.
 
 ## `createGeoShapeMark`
