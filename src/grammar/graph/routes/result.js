@@ -15,6 +15,7 @@ export function exactRouteRecord(value, keys, label) {
   if (Object.keys(value).length !== keys.length || keys.some(key => !Object.hasOwn(value, key))) throw new TypeError(`${label} requires its exact stored fields.`);
 }
 const samePoint = (a, b) => Object.is(a.x, b.x) && Object.is(a.y, b.y);
+const BOUND_KEYS = ["left", "right", "top", "bottom"];
 
 // Routes checked, and their sampled points, between two host turns.
 const GEOMETRY_STAGE_ROUTES = 256, GEOMETRY_STAGE_SAMPLES = 32_768;
@@ -64,7 +65,10 @@ function* validateRouteGeometryStages(job, envelope, scope) {
     }
     exactRouteRecord(route.bounds, ["left", "right", "top", "bottom"], "Route bounds");
     const bounds = resolvePathCommandBounds(route.commands);
-    if (routeValueHash(bounds) !== routeValueHash(route.bounds)) throw new TypeError("Stored route bounds are stale.");
+    // Computed bounds are four numbers, and the stored record has exactly these
+    // own data fields. Equal number encodings are exactly Object.is, and a
+    // non-number stored value is stale without reading anything inside it.
+    if (!BOUND_KEYS.every(key => typeof route.bounds[key] === "number" && Object.is(route.bounds[key], bounds[key]))) throw new TypeError("Stored route bounds are stale.");
   }
   validateRouteProvenance(job, result, context);
   validateRouteDiagnostics(job, result, context);

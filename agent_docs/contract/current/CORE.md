@@ -2710,6 +2710,6 @@ Browser-safe `ggaction/persistence`의 네 함수는 action replay 없이 canoni
 - Action 실행기: 동기 wrapper와 분할 호출(`invokeActionStages`)이 같은 invocation generator를 공유한다. 인자 검사·trace enter/exit·completion hook·결과 검증이 같다. private `stagedAction`/`stagedClosedAction` 구현만 행 묶음 사이에서 양보하고, 다른 action은 한 단계로 돈다. 묶인 invocation scope(`applyGraphEdgeRoutesUpdate`)는 양보 없이 끝까지 돈다.
 - 분할 범위: unit chart의 `reviseData` preview·actual 두 pass, `createData`·`editSemantic` 값 기록과 source identity, 재물질화 plan의 각 step, `rematerializeScale`, point 재물질화, mark output, `editGraphics` item 반복. facet revision과 다른 mark family는 한 단계다.
 - 동적 문맥: `withLogicalDataReplacementsStages`는 대체 문맥을 양보 전에 닫고 재개 때 다시 연다. dataset identity 준비는 정확한 인자 객체에 묶여 양보를 넘어도 다른 호출에 닿지 않는다.
-- 결과 동일성: 같은 namespace 순서에서 동기 revision과 저장 bytes가 같다. 원 program은 바뀌지 않는다. 인자(행 배열 등)는 여러 slice에 걸쳐 읽으므로 호출자는 반환 promise가 끝날 때까지 바꾸지 않아야 한다. 그 사이 변경의 결과는 보장하지 않는다.
+- 결과 동일성: 같은 namespace 순서에서 동기 revision과 저장 bytes가 같다. 원 program은 바뀌지 않는다. plain data 인자(행 배열 포함)는 첫 slice에서 host turn 전에 복사·동결하므로 반환 뒤 호출자 변경은 진행 중 개정에 닿지 않는다. 복사 비용은 첫 slice에 포함된다. Accessor 등 plain data가 아닌 인자는 그대로 action에 넘겨 원 검사가 거부한다.
 - 같은 결과의 반복 계산 제거: 소유 표시된 행 배열의 숫자 열 읽기(`readQuantitativeField`)는 그 배열의 private field에 기억한다. 모든 행이 소유 표시된 경우만 기억한다.
 - Evidence: `test/unit/actions/data/sliced-revise.test.js`.

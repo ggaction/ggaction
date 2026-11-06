@@ -7,7 +7,7 @@
 - [x] 전체 검증과 정본 Geo benchmark(archive `864ae6c7…`).
 - [x] 100k hit 20ms(아래 hit query 절).
 - [x] Camera preview 10k 33ms (21.3 / 20.8ms, 아래 authentic sampled admission 절).
-- [ ] Camera preview 100k 50ms (228 / 232ms).
+- [ ] Camera preview 100k 50ms (최신 145.2 / 148.0ms, [GEO_100K_PROPOSAL](GEO_100K_PROPOSAL.md); 이전 228 / 232ms).
 
 ## 수리
 

@@ -1,0 +1,4 @@
+current: working tree after 9148c638a; baseline: git archive ccfac9c8f
+0 same {"method":"edge-path","graph":{"work":388408,"candidatePairs":0,"peakSamples":6677,"peakBufferBytes":65952},"route":{"work":619393,"candidatePairs":0,"peakSampl 
+1 same {"method":"force-directed","graph":{"work":159712,"candidatePairs":0,"peakSamples":8400,"peakBufferBytes":93784},"route":{"work":1205932,"candidatePairs":7140," 
+2 same {"method":"density","graph":{"work":94112,"candidatePairs":0,"peakSamples":140186,"peakBufferBytes":336820},"route":{"work":27899997,"candidatePairs":0,"peakSam 

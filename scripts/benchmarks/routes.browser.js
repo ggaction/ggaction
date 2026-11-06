@@ -114,26 +114,25 @@ async function iteration(input, ratio) {
   } catch (error) { return { status: 'error', elapsedMs: performance.now() - started, metrics, name: error.name, message: error.message }; }
   finally { e.dispose(); document.querySelector('#svg').replaceChildren(); }
 }
-// Abort at ten evenly spaced points of a typical preparation and time the
-// rejection from abort(). A host abort can only run between main-thread turns,
-// so its worst latency is the longest blocking interval plus that rejection;
-// the bound must stay within 100 ms.
-async function abortTrials(input, typicalMs, blockingMs) {
+// Abort from a timer at ten evenly spaced points of a typical preparation. The
+// timer cannot run while the main thread is blocked, so the time from its due
+// moment to the rejection is the acknowledgement a host abort would see. The
+// bound also covers the longest blocking interval of every measured sample.
+async function abortTrials(input, typicalMs, blockingMaxMs) {
   const trials = [];
   for (let index = 1; index <= 10; index++) {
     const controller = new AbortController(), e = executor({});
     const work = prepareGraphEdgeRoutes(input.program, input.request, host(input, e, controller.signal));
-    let aborted;
     const settled = work.then(() => 'completed', error => { if (error.name !== 'AbortError') throw error; return 'aborted'; });
-    await new Promise(resolve => timeout(resolve, typicalMs * index / 11));
-    aborted = performance.now(); controller.abort();
-    const status = await settled, acknowledgementMs = status === 'aborted' ? performance.now() - aborted : null;
+    const delay = typicalMs * index / 11, due = performance.now() + delay;
+    timeout(() => controller.abort(), delay);
+    const status = await settled, acknowledgementMs = status === 'aborted' ? performance.now() - due : null;
     e.dispose(); trials.push({ at: index / 11, status, acknowledgementMs });
   }
   const acknowledged = trials.filter(trial => trial.status === 'aborted').map(trial => trial.acknowledgementMs);
   const maximumMs = acknowledged.length ? Math.max(...acknowledged) : null;
-  const boundMs = maximumMs === null ? null : blockingMs + maximumMs;
-  return { trials, maximumMs, blockingMs, boundMs, thresholdMs: 100, successSLO: boundMs === null ? 'not-measured' : boundMs <= 100 ? 'passed-this-fixture' : 'failed-this-fixture' };
+  const boundMs = maximumMs === null ? null : Math.max(maximumMs, blockingMaxMs);
+  return { trials, maximumMs, blockingMaxMs, boundMs, thresholdMs: 100, successSLO: boundMs === null ? 'not-measured' : boundMs <= 100 ? 'passed-this-fixture' : 'failed-this-fixture' };
 }
 async function benchmarkCase(edgeCount, method, ratio, measured = 30, warmups = 5, execution = false) {
   const start = performance.now(), input = fixture(edgeCount, method, execution); input.requestedEdges = edgeCount;
@@ -148,7 +147,7 @@ async function benchmarkCase(edgeCount, method, ratio, measured = 30, warmups = 
   for (let i = 0; i < measured; i++) { const result = await iteration(input, ratio); if (result.status !== 'complete') throw new Error(JSON.stringify(result)); samples.push(result.metrics); if ((i+1)%5===0) console.log('ROUTE_PROGRESS '+JSON.stringify({ratio,phase:'measure',iteration:i+1})); }
   const p95 = Object.fromEntries(Object.keys(samples[0]).map(key => [key, percentile(samples.map(value => value[key]))]));
   const thresholdMs = edgeCount === 100 ? 500 : edgeCount === 1000 ? 5000 : 30000;
-  const abort = await abortTrials(input, percentile(samples.map(value => value.prepareComputeValidateMs)), p95.prepareBlockingMs);
+  const abort = await abortTrials(input, percentile(samples.map(value => value.prepareComputeValidateMs)), Math.max(...samples.map(value => value.prepareBlockingMs)));
   return { edgeCount, nodes: input.nodes, method, ratio, ...policy, status: 'measured', sourcePreparationMs, warmups, measured, samples, p95, thresholdMs,
     successSLO: p95.bundlingMs <= thresholdMs && abort.successSLO !== 'failed-this-fixture' ? 'passed-this-fixture' : 'failed-this-fixture', abort, diagnostics: first.diagnostics, counters: { ...counters } };
 }

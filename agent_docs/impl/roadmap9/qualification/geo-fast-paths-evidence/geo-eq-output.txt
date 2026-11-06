@@ -1,0 +1,2 @@
+baseline: git archive 23313e355 (src); current: 9148c638af2cb250f0bc15ced258806e2e062c9c working tree
+ok midpoints 200000, geometries 6000 errors 30 types 28

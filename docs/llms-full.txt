@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:6cedc627a70ecd5aee247ac9804333803258e88c82f75aa8177b8e63e25b4fb0. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:633288726b44e6defb2542198d4c000da7e93d17cee1a56be38800258e04d2f0. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -20375,9 +20375,10 @@ returns the same revision, or rejects with the same error, as
 of about `sliceMs` milliseconds (an integer from 1 to 1000, default 40) and
 yield to the host between them. Aborting `signal` rejects with its reason and
 leaves `program` unchanged. Unit charts revise their rows, derived data and
-point marks in row batches; facet revision runs as one step. The rows and
-options are read across those slices, so keep them unchanged until the
-returned promise settles.
+point marks in row batches; facet revision runs as one step. Plain data
+options, rows included, are copied in the first slice before the call
+returns, so later changes to them do not affect the pending revision. The
+copy counts toward that first slice.
 
 ```javascript
 import { chart, reviseDataInSlices } from "ggaction";
@@ -57357,7 +57358,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:6cedc627a70ecd5aee247ac9804333803258e88c82f75aa8177b8e63e25b4fb0` |
+| Contract fingerprint | `sha256:633288726b44e6defb2542198d4c000da7e93d17cee1a56be38800258e04d2f0` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

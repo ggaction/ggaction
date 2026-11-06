@@ -14,7 +14,10 @@ const commands = program => route(program).result.routes.map(value => value.comm
 const Full = chart().constructor;
 // A registered extension action that reaches screen-space routes only through
 // a nested original action.
-registerExtension({ name: "route-test-widen", actions: { widenCanvas: action({ op: "widenCanvas", description: "Widen the Canvas." }, function (args) { return this.editCanvas({ width: args.width }); }) } });
+registerExtension({ name: "route-test-widen", actions: {
+  widenCanvas: action({ op: "widenCanvas", description: "Widen the Canvas." }, function (args) { return this.editCanvas({ width: args.width }); }),
+  widenCanvasTwice: action({ op: "widenCanvasTwice", description: "Widen the Canvas in two steps." }, function (args) { return this.editCanvas({ width: args.width - 20 }).editCanvas({ width: args.width }); })
+} });
 
 function base() {
   return chart().createCanvas({ width: 200, height: 120, margin: 10 })
@@ -72,6 +75,10 @@ test("a replayed action is checked against the execution policy of every route i
     const program = await bounded(worker, execution({ maxWork: low }));
     const tight = await prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "widenCanvas", args: { width: 260 } } }, host(worker));
     assert.throws(() => program.applyGraphEdgeRoutesUpdate({ prepared: tight, requestToken: "update" }), /Route work exceeds route route execution maxWork/);
+    // An action that reaches the route twice is checked against its policy
+    // during preparation, from the first job it reaches.
+    await assert.rejects(prepareGraphEdgeRoutes(program, { kind: "update", edit: { action: "widenCanvasTwice", args: { width: 260 } } }, host(worker)),
+      /Route work exceeds route route execution maxWork/);
     const roomy = await bounded(worker, execution({ maxWork: low * 100 }));
     const prepared = await prepareGraphEdgeRoutes(roomy, { kind: "update", edit: { action: "widenCanvas", args: { width: 260 } } }, host(worker));
     assert.equal(roomy.applyGraphEdgeRoutesUpdate({ prepared, requestToken: "update" }).graphicSpec.objects.canvas.properties.width, 260);

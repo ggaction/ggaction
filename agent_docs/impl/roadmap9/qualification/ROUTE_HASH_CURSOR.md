@@ -38,7 +38,7 @@ Hash는 job·완료·저장 검산마다 결과 전체를 태그 붙은 JSON byt
 | force-directed 1천 | 10.7초 | 4.2초 | 5초 |
 | density 100 | 15.0초 | 5.6초 | 0.5초 |
 
-Density는 hash를 빼도 계산(100개에 8,700만 work, 20회 반복의 kernel 누적)이 기준보다 크다. 수학·반복 일정을 바꾸지 않는 한 알려진 한계다. Density 1천은 30초 deadline을, 1만은 표본 한도(16,777,216)를 넘는다.
+Density는 hash를 빼도 계산(100개에 8,700만 work, 20회 반복의 kernel 누적)이 기준보다 크다. 수학·반복 일정을 바꾸지 않는 한 알려진 한계다. Density 1천은 30초 deadline을 넘는다. 1만은 Node in-process probe에서 표본 한도(16,777,216)를, Chromium worker에서는 30초 deadline을 먼저 넘었다.
 
 ## Benchmark 변경
 
@@ -55,7 +55,7 @@ Benchmark worker가 v2 job에 동기 `computeGraphEdgeRoutes`를 써서 명시 �
 | 100 | density | 명시 오류(work) | **5,766 / 5,728ms 미달** | 500ms |
 | 100 | edge-path | 45 / 45ms | — | 500ms |
 | 1k | hierarchical | 501 / 535ms | — | 5s |
-| 1k | force-directed | 명시 오류(work) | **3,132 / 3,144ms 통과** | 5s |
+| 1k | force-directed | 명시 오류(work) | **3,132 / 3,144ms**(bundling 시간만 통과, 명시 예산 정책. 이 revision의 취소 동기 구간은 327–337ms로 미달 — [ROUTE_PREPARE_BLOCKING](ROUTE_PREPARE_BLOCKING.md)) | 5s |
 | 1k | density | 명시 오류(work) | 30초 deadline 초과 | 5s |
 | 1k | edge-path | 340 / 363ms | — | 5s |
 | 10k | hierarchical | 4,529 / 4,636ms | — | 30s |

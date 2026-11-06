@@ -16,15 +16,22 @@ function nextRouteTurn(signal) {
   });
 }
 
+// Steps run back to back until this much time has passed, then the host gets
+// a turn. A timer turn costs at least 4 ms in browsers, so a turn per step
+// would mostly measure the clamp.
+const ROUTE_TURN_MS = 10;
+
 // Host-only scheduling. Pure iterators never import timers or retain a callback.
+// Abort and deadline are still checked around every step.
 export async function drainRouteStages(iterator, signal, check = () => active(signal)) {
   try {
+    let turn = performance.now();
     while (true) {
       check();
       const next = iterator.next();
       check();
       if (next.done) { active(signal); return next.value; }
-      await nextRouteTurn(signal);
+      if (performance.now() - turn >= ROUTE_TURN_MS) { await nextRouteTurn(signal); turn = performance.now(); }
     }
   } finally { iterator.return(); }
 }
@@ -46,17 +53,19 @@ export async function drainTimeSlicedStages(iterator, sliceMs, signal) {
 }
 
 export async function drainNativeRouteStages(iterator, lifetime, compute) {
-  let completion;
+  let completion, turn = performance.now();
   try {
     while (true) {
       lifetime.check();
       const next = iterator.next(completion); completion = undefined;
       lifetime.check();
       if (next.done) return next.value;
-      if (next.value === undefined) await nextRouteTurn(lifetime.signal);
-      else {
+      if (next.value === undefined) {
+        if (performance.now() - turn >= ROUTE_TURN_MS) { await nextRouteTurn(lifetime.signal); turn = performance.now(); }
+      } else {
         if (next.value.kind !== "edge-route-computation") throw new TypeError("Unknown native route continuation.");
         completion = await compute(next.value.job, next.value.scope);
+        turn = performance.now();
       }
     }
   } finally { iterator.return(); }

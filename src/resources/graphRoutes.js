@@ -147,7 +147,7 @@ async function prepareNativeUpdate(program, args, host, started) {
 // whole preflight runs again from the receiver. Each run is real work and is
 // charged; worker samples retained by an abandoned run are released.
 async function prepareReplayedUpdate(program, edit, resolved, owner, { ledger, lifetime, requestToken, signal, compute }) {
-  const completions = [];
+  const completions = [], reached = new Map();
   const handle = cloneAndFreeze({ kind: "edge-route-preparation", request: { kind: "update", action: edit.action, args: summarizeArgs(edit.args) } });
   const record = { base: program, constructor: program.constructor, kind: "update", requestToken, signal, edit, native: resolved.native,
     apply: owner.apply, bounded: resolved.bounded, replayed: true, identity: resolved.identity, plan: { completions } };
@@ -170,22 +170,24 @@ async function prepareReplayedUpdate(program, edit, resolved, owner, { ledger, l
       try { owner.apply.call(program, { prepared: handle, requestToken }); }
       catch (error) {
         if (!record.recording.requested(error)) throw error;
-        const job = error.job;
-        completions.push(Object.freeze({ inputHash: job.inputHash, route: error.route, execution: job.intent.options.execution, completion: await compute(job, scope.routeJobScope()) }));
+        const job = error.job, execution = job.intent.options.execution;
+        // A discovering action applies each reached route's policy from the
+        // moment it is reached: the costs so far are charged against it now,
+        // and every later run and job is checked against it as it goes.
+        if (resolved.discover && !reached.has(JSON.stringify([error.route, execution]))) {
+          reached.set(JSON.stringify([error.route, execution]), Object.freeze({ id: error.route, options: Object.freeze({ options: Object.freeze({ execution }) }) }));
+          ledger = createRouteRequestLedger([...reached.values()], lifetime.signal, ledger.diagnostics());
+          scope.ledger = ledger;
+        }
+        completions.push(Object.freeze({ inputHash: job.inputHash, route: error.route, execution, completion: await compute(job, scope.routeJobScope()) }));
         continue;
       }
       break;
     }
     lifetime.check();
     Object.freeze(completions);
-    if (resolved.discover) {
-      // Every route the action reached contributes its own execution policy.
-      // Charging the whole preparation against them applies the same checks
-      // the final application repeats from this accounting.
-      const reached = new Map(completions.map(({ route, execution }) => [JSON.stringify([route, execution]), { route, execution }]));
-      record.bounded = [...reached.values()].map(({ route, execution }) => Object.freeze({ id: route, options: Object.freeze({ options: Object.freeze({ execution }) }) }));
-      createRouteRequestLedger(record.bounded, lifetime.signal, ledger.diagnostics());
-    }
+    // The final application continues from this accounting under the same policies.
+    if (resolved.discover) record.bounded = [...reached.values()];
     record.accounting = ledger.diagnostics(); delete record.preparationScope; delete record.recording;
     const published = cloneAndFreeze({ ...handle, inputHashes: completions.map(entry => entry.inputHash) });
     prepared.delete(handle); prepared.set(published, record);

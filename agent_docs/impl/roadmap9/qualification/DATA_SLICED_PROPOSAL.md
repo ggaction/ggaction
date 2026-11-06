@@ -4,10 +4,11 @@
 
 - [x] 사용자 확인: "1,2,3 승인"(2026-11-05). [승인 기록](PUBLIC_APPROVAL_20261105_PERF.json)
 - [x] load 분할: `loadProgramInSlices` 구현·시험·설치본 검증(archive `7b3cec37…`). [증거](data-sliced-evidence/)
-- [ ] 100k load 최장 구간 P95 50ms(현재 52 / 64ms, GC 꼬리).
+- [ ] 100k load 최장 구간 P95 50ms(최신 보관 report `report-data-alloc`: 55.2 / 58.1ms, GC 꼬리).
 - [x] revise 분할: `reviseDataInSlices` 구현·시험.
 - [x] revise 설치본 검증·Chromium benchmark(archive `ba10ee33…` 측정, `a8867ce6…` 검증). [증거](data-sliced-evidence/)
-- [ ] 100k 최장 구간 P95 50ms(최근 probe: load 69 / 47ms, revise 99 / 106ms): 코드 단계는 끝, 남은 것은 GC 정지. 알려진 한계로 기록(아래 "현재 상태").
+- [ ] 100k 최장 구간 P95 50ms(최신 보관 report `report-data-alloc`: load 55.2 / 58.1ms, revise 112.3 / 77.6ms). 원인은 GC 정지로 추정(Chromium trace 없음). 알려진 한계로 기록(아래 "현재 상태").
+- [x] 개정 인자 snapshot: plain data 인자를 첫 slice에서 host turn 전에 복사·동결(독립 검토 지적 반영).
 
 ## 왜 필요한가
 
@@ -149,7 +150,7 @@ Chromium(같은 소스의 probe archive, sliceMs 10, [report](data-sliced-eviden
 | 10k | 15.4 / 17.3 ms | 15.5 / 12.5 ms |
 | 100k | 105 / 113 ms | 56 / 60 ms |
 
-100k revise 표본 30개 중 18개가 15–19ms(이전 32–40ms)이고 12개가 58–121ms다. load는 대부분 19–24ms이고 51–73ms 꼬리가 있다. 튀는 회차는 전체 시간도 같이 늘고 Node 코드 단계는 최장 12ms이므로 Chromium major GC 정지로 귀속한다. revise는 같은 개정을 preview·actual 두 번 계산하고(route replay 계약), 행마다 dataset 복제·schema 검사·point item·identity·선택 정의를 만든다. 남은 방법은 행당 할당 수를 줄이는 것(예: 소유 표시된 원시값만 가진 item 속성의 재복제 생략)이며, 다음 단계로 둔다.
+100k revise 표본 30개 중 다수가 15–19ms(이전 32–40ms)이고 DPR1 13개·DPR2 7개가 50ms를 넘는다(`report-data-tail`). load는 대부분 19–24ms이고 51–73ms 꼬리가 있다. 튀는 회차는 전체 시간도 같이 늘고 Node 코드 단계는 최장 12ms이므로 Chromium major GC 정지로 귀속한다. revise는 같은 개정을 preview·actual 두 번 계산하고(route replay 계약), 행마다 dataset 복제·schema 검사·point item·identity·선택 정의를 만든다. 남은 방법은 행당 할당 수를 줄이는 것(예: 소유 표시된 원시값만 가진 item 속성의 재복제 생략)이며, 다음 단계로 둔다.
 
 검증(archive `1c283df4…`): 전체 시험 10,602개, coverage 97.45/95.61/99.32%(critical floor 789), browser 531/531, render 513/513, Node20/22/24 consumer 통과. [증거](data-sliced-evidence/tail/)
 
@@ -157,12 +158,12 @@ Chromium(같은 소스의 probe archive, sliceMs 10, [report](data-sliced-eviden
 
 - `ownWhenMembersOwned`: 새로 만든 record의 모든 member가 원시값이거나 소유 표시된 값이면 그 record를 소유 표시한다. 하나라도 소유 표시 안 된 객체 member가 있으면 그대로 두어 이후 `cloneAndFreeze`가 복사한다. mark output의 item 속성·identity·lineage와 identity 전용 경로의 행 key·역할·graphic ID 배열에 쓴다. editGraphics item 검증이 같은 값을 다시 복제하지 않는다.
 - point identity만 필요한 mark output(선택 결과·앞으로 가져오기 강조가 없음)에서는 선택 정의의 필드·채널·속성 객체를 만들지 않는다. 그 값은 identity 결과에 쓰이지 않고, 앞으로 가져오기 강조가 있으면 그대로 만든다.
-- Chromium(probe, [report](data-sliced-evidence/report-data-alloc.json.gz)): 100k revise 전체 2.51 → 2.19초, 최장 구간 P95 DPR1 105 → 112ms, DPR2 113 → 78ms. 30회 중 50ms 초과가 DPR1 9회, DPR2 5회로 GC 꼬리가 남는다(P95 통과에는 1회 이하가 필요). 1k·10k는 계속 통과한다.
+- Chromium(probe, [report](data-sliced-evidence/report-data-alloc.json.gz)): 100k revise 전체 2.51 → 2.19초, 최장 구간 P95 DPR1 105 → 112ms, DPR2 113 → 78ms. 30회 중 50ms 초과가 DPR1 9회, DPR2 3회로 GC 꼬리가 남는다(P95 통과에는 1회 이하가 필요). 1k·10k는 계속 통과한다.
 
 검증(archive `5255a5f4…`): 전체 시험 10,602개, coverage 97.45/95.59/99.32%(critical floor 789), browser 531/531, render 513/513, Node20/22/24 consumer 통과. [증거](data-sliced-evidence/alloc/)
 
 ### 현재 상태와 시도한 것 (2026-11-06)
 
-- 최근 probe(Chromium, 30회): 1k·10k load·revise는 DPR1·DPR2 모두 통과. 100k load는 DPR2 47ms 통과, DPR1 69ms(30회 중 2회 GC 꼬리). 100k revise는 99 / 106ms다. revise 표본 대부분은 15–19ms이고 30회 중 8–9회가 36–120ms로 튄다.
-- 시도 후 되돌림: 개정 행 배열을 분할 시작 시 한 번 복제·동결하는 snapshot. 복제 자체도 여러 slice에 걸쳐 실행되므로 "host turn 사이 호출자 변경과 무관"을 보장하지 못했다(복제 도중 길이를 줄이면 행 검사 오류). 보장할 수 없는 성질이라 코드에서 뺐다. 대신 공개 문서(`docs/data-updates.md`)와 CORE 계약에 "인자는 여러 slice에 걸쳐 읽으므로 promise가 끝날 때까지 바꾸지 않는다. 그 사이 변경의 결과는 보장하지 않는다"를 적었다. load의 snapshot은 문자열이라 변하지 않는다.
+- 보관 report가 판정 근거다. 최신 `report-data-alloc`: 100k load 55.2 / 58.1ms, revise 112.3 / 77.6ms(50ms 초과 DPR1 9회·DPR2 3회). 이후 보관하지 않은 probe(load 69 / 47ms, revise 99 / 106ms)는 통과 근거로 쓰지 않는다.
+- 개정 인자 snapshot(독립 검토 반영): 처음에는 분할 단계로 복제하다가 복제 도중 호출자 변경이 섞여 되돌렸고, 문서에 "promise가 끝날 때까지 바꾸지 않는다"를 적었다. 검토에서 이는 시점 차이(TOCTOU)를 닫지 않고 문서로 넘긴 것이라는 지적을 받았다. 이제 plain data 인자 전체를 첫 slice 안에서 host turn 전에 한 번에 복사·동결한다(`src/slicedRevision.js`). 반환 전에 복사가 끝나므로 이후 변경은 개정에 닿지 않는다. 복사 비용은 첫 slice에 들어간다. 시험은 모든 host turn마다 행·길이·id를 바꿔도 동기 개정과 같은 결과임을 확인한다. Accessor 등 plain data가 아닌 인자는 action에 그대로 넘겨 원 검사가 거부한다.
 - 남은 꼬리는 Node 코드 단계(최장 약 12ms)가 아니라 Chromium major GC 정지다. revise는 route replay 계약에 따라 preview·actual 두 번 계산하므로 그 할당을 없앨 수 없다. 기준(50ms)·표본 수·seed는 바꾸지 않고, 100k revise와 100k load DPR1은 STEP-076에서 알려진 한계(AT-56)로 보고한다.

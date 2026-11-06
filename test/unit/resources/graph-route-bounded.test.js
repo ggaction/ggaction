@@ -100,7 +100,7 @@ test("one real worker executes the explicit async entry and releases its host li
 
 test("bounded completions are snapshotted before suspension and reject altered headers and geometry", async () => {
   const p = source();
-  for (const mode of ["mutation", "schema", "hash", "geometry", "getter", "error"]) {
+  for (const mode of ["mutation", "schema", "hash", "geometry", "getter", "nested-getter", "error"]) {
     const run = controlled();
     try {
       const pending = prepareGraphEdgeRoutes(p, request(), host(run.executor)), rejected = mode === "mutation" ? undefined : assert.rejects(pending);
@@ -111,6 +111,7 @@ test("bounded completions are snapshotted before suspension and reject altered h
       if (mode === "geometry") completion.result.routes[0].commands[0].x++;
       let reads = 0;
       if (mode === "getter") Object.defineProperty(completion.result.routes[0], "bounds", { get() { reads++; throw Error("getter ran"); }, enumerable: true });
+      if (mode === "nested-getter") completion.result.routes[0].bounds.left = { get value() { reads++; throw Error("getter ran"); } };
       if (mode === "error") worker.fail("failure"); else worker.complete(completion);
       if (mode === "mutation") { completion.result.routes[0].commands[0].x = 999; const prepared = await pending; assert.notEqual(get(p.bundleGraphEdges({ prepared, requestToken: "t" }), "edge-route", "r").result.routes[0].commands[0].x, 999); }
       else await rejected;
@@ -336,5 +337,24 @@ test("the synchronous edge-route binding check drains the same staged checks", a
       const moved = cloneAndFreeze({ ...resource, provenance: { ...resource.provenance, sourceRows: resource.provenance.sourceRows.slice(1) } });
       assert.throws(() => handler.validateBindings(program, moved), /viewport or source provenance is stale/);
     }
+  } finally { run.executor.dispose(); }
+});
+
+test("a received completion changed while its staged check is suspended keeps the snapshot it was checked on", async () => {
+  const { validateRouteResultStages } = await import("../../../src/grammar/graph/routes/result.js");
+  const run = controlled();
+  try {
+    const pending = prepareGraphEdgeRoutes(source(), request(), host(run.executor));
+    const worker = await posted(run.workers), job = worker.job, completion = await computeGraphEdgeRoutesAsync(structuredClone(job));
+    const original = completion.result.routes[0].commands[0].x, received = structuredClone(completion);
+    const stages = validateRouteResultStages(job, received, { includeComputation: false });
+    let step = stages.next(), turns = 0;
+    for (; !step.done; step = stages.next()) {
+      turns++;
+      received.result.routes[0].commands[0].x = 999; received.resultHash = "0".repeat(64); received.result.routes.length = 0;
+    }
+    assert.ok(turns > 0);
+    assert.equal(step.value.result.routes[0].commands[0].x, original); assert.equal(step.value.resultHash, completion.resultHash);
+    worker.complete(completion); await pending;
   } finally { run.executor.dispose(); }
 });

@@ -67,3 +67,19 @@ test("sliced revise yields host turns, honors cancellation and validates options
   for (const options of [{ sliceMs: 0 }, { sliceMs: 2.5 }, { signal: 1 }, { other: 1 }]) await assert.rejects(reviseDataInSlices(program, args, options));
   await assert.rejects(reviseDataInSlices({}, args), /chart program/);
 });
+
+test("sliced revise copies plain rows before returning, so later caller changes cannot reach it", async () => {
+  const program = points(20000), values = rows(20000).reverse(), args = { source: "rows", id: "revision", values };
+  const expected = await outcome(() => program.reviseData({ ...args, values: rows(20000).reverse() }));
+  const pending = outcome(() => reviseDataInSlices(program, args, { sliceMs: 1 }));
+  // Change the rows at every host turn until the revision settles.
+  let settled = false;
+  pending.then(() => { settled = true; });
+  for (let turn = 0; !settled; turn++) {
+    values[turn % values.length] = { id: -1, x: 999, y: 999, group: "changed" };
+    if (turn === 3) values.length = 10;
+    args.id = "other";
+    await new Promise(resolve => setTimeout(resolve, 0));
+  }
+  assert.deepEqual(await pending, expected);
+});

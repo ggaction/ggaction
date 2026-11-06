@@ -30,7 +30,7 @@ Precision resampling은 scale에 따라 달라지므로 이전 frame 결과를 �
 
 ## 구현 (선택지 A, 2026-11-06)
 
-모든 변경은 기존 경로와 결과가 비트 단위로 같다. 기준 source(`23313e355`) 사본과 14개 투영 종류 × 두 설정, 선·다각형·multi line 6,000건(오류 30건 포함), source-segment·great-circle 보간에서 출력·진단·오류가 모두 같았다. `test/unit/geo/projection-fast-paths.test.js`가 같은 동치를 고정한다.
+모든 변경은 기존 경로와 결과가 비트 단위로 같다. 기준 source(`23313e355`) 사본과 14개 투영 종류 × 두 설정, 선·다각형·multi line 6,000건(오류 30건 포함), source-segment·great-circle 보간에서 출력·진단·오류가 모두 같았다. 저장소의 `test/unit/geo/projection-fast-paths.test.js`는 그중 중점 계산(독립 `geoInterpolate` 대조)과 빠른 경로 간 일치만 고정한다. 기준 commit 대비 전체 출력 동치는 [script](geo-fast-paths-evidence/geo-eq.mjs)와 [출력](geo-fast-paths-evidence/geo-eq-output.txt)으로 보관한다(2026-11-06 재실행: 중점 200,000개, 기하 6,000건 일치, 오류 30건 동일).
 
 1. **구면 중점**: `geoInterpolate(a, b)(0.5)`의 연산을 같은 순서로 옮긴 `sphericalMidpointInto`. 클로저와 결과 배열을 만들지 않는다(d3와 2만 쌍 비트 동일).
 2. **점 투영**: `forwardXY(x, y)`는 `forwardPoint(value).point`와 같은 검사·호출을 하되 중간 기록을 만들지 않는다. clip 각도·clip 범위가 없는 투영에서는 홀로 들어온 stream 점이 `projection(point)`와 같은 radians·회전·투영·변환을 거치고 버려지지 않으므로 직접 호출을 쓴다. 그 밖(orthographic, albers-usa 부분 투영, getter가 없는 투영)은 기존 stream을 쓴다.
