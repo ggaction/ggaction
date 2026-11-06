@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.27] - 2026-11-06
+
 This release adds 82 actions (380 declared in total, up from 298) and four package entries. Unless noted, new actions are available from `ggaction` and not from `ggaction/basic`.
 
 ### New package entries
