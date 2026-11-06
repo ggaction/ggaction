@@ -1942,11 +1942,16 @@ export interface PreparedGraphEdgeRoutes {
   readonly request: { readonly kind: "create" | "edit"; readonly id: string }; readonly inputHash: string;
 }
 export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }
+/** A native route update action with its own affected-route resolution. */
+export type ResolvedNativeRouteAction = "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData" | "reviseData" | "editDerivedData" | "editParameter" | "editCanvas" | "fitCanvas" | "navigateProjection" | "applyDataUpdate" | "filterMarks" | "removeMarkFilter" | "editComputedData" | "editFilteredData" | "editFlattenData" | "editLookupData" | "editFoldData" | "editSummaryData" | "editBinData" | "editTimeUnitData" | "editWindowData" | "editDensityData" | "editStackData" | "editRegressionData" | "editSortedData" | "editIntervalData" | "editECDFData" | "editNormalizedData" | "editCompleteData" | "editPivotData" | "editImputedData" | "editBin2DData" | "editRegressionStatisticsData";
+/** Any other public action: it is replayed, and its routes are the bounded routes its jobs reach. */
+export type DiscoveredNativeRouteAction = Exclude<{ [K in keyof ChartProgram]: ChartProgram[K] extends (options: never) => ChartProgram ? K : never }[keyof ChartProgram] & string,
+  ResolvedNativeRouteAction | "bundleGraphEdges" | "editEdgeRoute" | "applyGraphEdgeRoutesUpdate">;
 declare const preparedGraphEdgeRoutesUpdate: unique symbol;
 /** An authentic native resource update, bound to its exact completed Full receiver. */
 export interface PreparedGraphEdgeRoutesUpdate {
   readonly [preparedGraphEdgeRoutesUpdate]: true; readonly kind: "edge-route-preparation";
-  readonly request: { readonly kind: "update"; readonly action: "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData" | "reviseData" | "editDerivedData" | "editParameter" | "editCanvas" | "fitCanvas" | "navigateProjection" | "applyDataUpdate" | "filterMarks" | "removeMarkFilter" | "editComputedData" | "editFilteredData" | "editFlattenData" | "editLookupData" | "editFoldData" | "editSummaryData" | "editBinData" | "editTimeUnitData" | "editWindowData" | "editDensityData" | "editStackData" | "editRegressionData" | "editSortedData" | "editIntervalData" | "editECDFData" | "editNormalizedData" | "editCompleteData" | "editPivotData" | "editImputedData" | "editBin2DData" | "editRegressionStatisticsData"; readonly args: Readonly<Record<string, unknown>> };
+  readonly request: { readonly kind: "update"; readonly action: ResolvedNativeRouteAction | DiscoveredNativeRouteAction; readonly args: Readonly<Record<string, unknown>> };
   readonly inputHashes: readonly string[];
 }
 export interface ApplyGraphEdgeRoutesUpdateOptions { readonly prepared: PreparedGraphEdgeRoutesUpdate; readonly requestToken: string; }

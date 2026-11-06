@@ -30,6 +30,7 @@ import { requireStoredResource } from "../../selectors/resources.js";
 import { findDataset, requireDataset } from "../../selectors/datasets.js";
 import { reviseSourceIdentity } from "../../core/itemIdentity.js";
 import { newDatasetNamespace } from "../primitives/datasetIdentity.js";
+import { getWrappedActionMetadata } from "../../core/action.js";
 
 // Every focused derived-data editor, keyed by its public action name.
 const DERIVED_ALIASES = Object.freeze({ ...Object.fromEntries(Object.entries(EDIT_DERIVED_DATA_ACTIONS).filter(([name]) => name !== "editDerivedData")),
@@ -48,6 +49,20 @@ function derivedSeeds(program, target) {
 const SCOPED_NATIVES = new Map([["editDerivedData", editDerivedData], ...Object.entries(DERIVED_ALIASES),
   ["editParameter", editParameter], ["filterMarks", filterMarks], ["removeMarkFilter", removeMarkFilter]]);
 const REPLAYED = new Set([reviseData, editDerivedData, ...Object.values(DERIVED_ALIASES), editParameter, editCanvas, fitCanvas, navigateProjection, applyDataUpdate, filterMarks, removeMarkFilter]);
+// Actions with their own resolution above, and the route actions themselves.
+const RESOLVED = new Set(["editLayout", "editGraphData", "editFlowData", "editHierarchyData", "editInferredGraphData", "reviseData", "editDerivedData",
+  "editParameter", "editCanvas", "fitCanvas", "navigateProjection", "filterMarks", "removeMarkFilter", "applyDataUpdate", ...Object.keys(DERIVED_ALIASES)]);
+const ROUTE_ACTIONS = new Set(["bundleGraphEdges", "editEdgeRoute", "applyGraphEdgeRoutesUpdate"]);
+
+// Any other public action reaches bounded routes, if at all, inside its own
+// synchronous call. It is replayed, and its routes are the ones its jobs reach.
+// The prepared application checks the receiver still has this exact action.
+function discoveredNative(program, edit) {
+  if (RESOLVED.has(edit.action) || ROUTE_ACTIONS.has(edit.action) || Object.hasOwn(program, edit.action)) return undefined;
+  const native = program[edit.action];
+  if (typeof native !== "function" || getWrappedActionMetadata(native) === undefined) return undefined;
+  return { native, edit, previous: undefined, routes: [], bounded: [], replayed: true, discover: true, identity: undefined };
+}
 
 // Full owns this exact snapshot boundary. Only the existing inference registry
 // may recognize its immutable handle; arbitrary objects are always deep-copied.
@@ -167,6 +182,8 @@ function resolveUnitScope(program, edit) {
 // explicit scoped target; each targeted unit child names its own routes, and
 // the original scoped dispatcher runs the native action on that child.
 export function resolveNativeRouteUpdate(program, edit) {
+  const discovered = discoveredNative(program, edit);
+  if (discovered !== undefined) return discovered;
   let resolved;
   if (program.compositionSpec === undefined) resolved = resolveUnitScope(program, edit);
   else {

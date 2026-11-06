@@ -1,0 +1,1682 @@
+{
+  "schemaVersion": 1,
+  "scope": "Implementation matrix; membership never grants runtime permission or completion.",
+  "source": "agent_docs/impl/roadmap9/chart/route-native-revise-evidence/union.json",
+  "rule": "Actions with their own affected-route resolution keep it; every other public wrapped action except bundleGraphEdges, editEdgeRoute and applyGraphEdgeRoutesUpdate is replayed and its affected routes are the bounded route jobs it reaches. An action that reaches none is rejected with a message to call it directly.",
+  "evidence": [
+    "test/unit/resources/graph-route-native-discovered.test.js",
+    "test/unit/resources/graph-route-native-revise.test.js"
+  ],
+  "audited": [
+    {
+      "action": "editCanvas",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "fitCanvas",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "applyTextMetrics",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeTextMetrics",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "applyTheme",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeTheme",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "applyDataUpdate",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "reviseData",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "removeData",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeCoordinate",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "bindMarkData",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "filterData",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editGraphData",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editInferredGraphData",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editParameter",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "removeParameter",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editBin2DData",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editDerivedData",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editFilteredData",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editTimeUnitData",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editWindowData",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editDensityData",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editRegressionData",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editRegressionStatisticsData",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editCoordinate",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editXScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editYScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editXOffsetScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editYOffsetScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editParallelScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editThetaScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editRScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editColorScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editStrokeScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editSizeScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editOpacityScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editShapeScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editStrokeWidthScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editStrokeDashScale",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "replaceImageResource",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeResource",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editHierarchyData",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editLayout",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "replaceFontResource",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editFlowData",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editContourData",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editGeometryData",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editGeoJoinData",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editGeoRouteData",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editGeoLODData",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editProjection",
+      "domain": "core",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "navigateProjection",
+      "domain": "core",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editComputedData",
+      "domain": "statistics",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editLookupData",
+      "domain": "statistics",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editFlattenData",
+      "domain": "statistics",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editFoldData",
+      "domain": "statistics",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editPivotData",
+      "domain": "statistics",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editSummaryData",
+      "domain": "statistics",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editBinData",
+      "domain": "statistics",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editStackData",
+      "domain": "statistics",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editIntervalData",
+      "domain": "statistics",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editECDFData",
+      "domain": "statistics",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editNormalizedData",
+      "domain": "statistics",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editSortedData",
+      "domain": "statistics",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editCompleteData",
+      "domain": "statistics",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "editImputedData",
+      "domain": "statistics",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "createRegression",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editRegression",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createErrorBar",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editErrorBar",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createErrorBand",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editErrorBand",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editErrorBandBoundary",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createBoxPlot",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editBoxPlot",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createGradientPlot",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editGradientPlot",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createViolinPlot",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editViolinPlot",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRegressionBand",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editRegressionBand",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRegressionLine",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editRegressionLine",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createDensityPlot",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createHorizonPlot",
+      "domain": "statistics",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createPointMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createTickMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createStatisticalReference",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createReferenceLine",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createReferenceBand",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createMarkLabels",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editMarkLabelSelection",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editMarkLabelPlacement",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeMarkLabels",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createAnnotation",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editAnnotation",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createTextMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editTextMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "layoutLabels",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeLabelLayout",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editPointMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editTickMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "jitterPoints",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeJitter",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "packPoints",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removePointPacking",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createLineMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editLineMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createBarMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editBarMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createAreaMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRuleMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editRuleMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editAreaMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createArcMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editArcMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRectMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editRectMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createOverlay",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editOverlay",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createImageMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editImageMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createFlowNodes",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editFlowNodes",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createFlowLinks",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editFlowLinks",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createContourMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editContourMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createCalendarPlot",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editCalendarPlot",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createGeoShapeMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editGeoShapeMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createGeoPointMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editGeoPointMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createGeoLineMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editGeoLineMark",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createGeoAnnotation",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editGeoAnnotation",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createGraticule",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editGraticule",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createPyramidPlot",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editPyramidPlot",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createOHLCPlot",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editOHLCPlot",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createWaterfallPlot",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editWaterfallPlot",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createTrailPlot",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editTrailPlot",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createTablePlot",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editTablePlot",
+      "domain": "marks",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeX",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeY",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeChannels",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeX2",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeColor",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeStrokeDash",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeStroke",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeStrokeWidth",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeSize",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeShape",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeAngle",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeOpacity",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeRadius",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeTheta",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeR",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodePointRadius",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removePointRadius",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeXOffset",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeYOffset",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeY2",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeYRange",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeXRange",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeGroup",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodePathOrder",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeParallelCoordinates",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removePathOrder",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "orderCategories",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeCategoryOrder",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeEncoding",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeText",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeDx",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeDy",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeHistogram",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeDensity",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editDensity",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeHorizon",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editHorizon",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "encodeBarWidth",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "layoutSeries",
+      "domain": "encodings",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createParallelAxes",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createParallelAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editParallelAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeParallelAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeParallelAxes",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createAxes",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createXAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createYAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createXAxisLine",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createYAxisLine",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editXAxisLine",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editYAxisLine",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createXAxisTicks",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createYAxisTicks",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editXAxisTicks",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editYAxisTicks",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createXAxisLabels",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createYAxisLabels",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editXAxisLabels",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editYAxisLabels",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createXAxisTicksAndLabels",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createYAxisTicksAndLabels",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editXAxisTicksAndLabels",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editYAxisTicksAndLabels",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createXAxisTitle",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createYAxisTitle",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editXAxisTitle",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editYAxisTitle",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editAxes",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editXAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editYAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeXAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeYAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createThetaAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRadialAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editThetaAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editRadialAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeThetaAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeRadialAxis",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createThetaAxisLine",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editThetaAxisLine",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRadialAxisLine",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editRadialAxisLine",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createThetaAxisTicks",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editThetaAxisTicks",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRadialAxisTicks",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editRadialAxisTicks",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createThetaAxisLabels",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editThetaAxisLabels",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRadialAxisLabels",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editRadialAxisLabels",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createThetaAxisTitle",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editThetaAxisTitle",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRadialAxisTitle",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editRadialAxisTitle",
+      "domain": "axes",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createGrid",
+      "domain": "grid",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createHorizontalGrid",
+      "domain": "grid",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createVerticalGrid",
+      "domain": "grid",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editHorizontalGrid",
+      "domain": "grid",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editVerticalGrid",
+      "domain": "grid",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editGrid",
+      "domain": "grid",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeGrid",
+      "domain": "grid",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createThetaGrid",
+      "domain": "grid",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRadialGrid",
+      "domain": "grid",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editThetaGrid",
+      "domain": "grid",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editRadialGrid",
+      "domain": "grid",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createLegend",
+      "domain": "legend_and_title",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editLegend",
+      "domain": "legend_and_title",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editLegendBlock",
+      "domain": "legend_and_title",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editLegendLayout",
+      "domain": "legend_and_title",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editLegendLabels",
+      "domain": "legend_and_title",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editLegendTitle",
+      "domain": "legend_and_title",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editLegendSymbols",
+      "domain": "legend_and_title",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editLegendBorder",
+      "domain": "legend_and_title",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createGuides",
+      "domain": "legend_and_title",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeLegend",
+      "domain": "legend_and_title",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createTitle",
+      "domain": "legend_and_title",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editTitle",
+      "domain": "legend_and_title",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeTitle",
+      "domain": "legend_and_title",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "filterMarks",
+      "domain": "mark-selection",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "removeMarkFilter",
+      "domain": "mark-selection",
+      "status": "resolved-native-connection"
+    },
+    {
+      "action": "setMarkVisibility",
+      "domain": "mark-selection",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeMarkVisibility",
+      "domain": "mark-selection",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "selectMarks",
+      "domain": "mark-selection",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editMarkSelection",
+      "domain": "mark-selection",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeMarkHighlight",
+      "domain": "mark-selection",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeMarkSelection",
+      "domain": "mark-selection",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "highlightMarks",
+      "domain": "mark-selection",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editCompositionLayout",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "replaceCompositionChild",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "insertCompositionChild",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "removeCompositionChild",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "reorderCompositionChildren",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "facet",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "facetGrid",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "repeatCharts",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editFacetSource",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editFacetHeaders",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editFacetScales",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editFacetGuides",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createLayerPlot",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createAdjacentPlot",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editCompositionScales",
+      "domain": "composition",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createScatterPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createTextPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createDotPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createLollipopPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createDumbbellPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editEndpointPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createECDFPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editECDFPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createIntervalPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRegressionPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createLinePlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createPolarScatterPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createPolarLinePlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRadarPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editRadarPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRugPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createStripPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createBeeswarmPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRaincloudPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editRaincloudPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createBarPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createHistogram",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createHeatmap",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createParallelCoordinates",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createPiePlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRosePlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createRadialBarPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createAreaPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createTreePlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editTreePlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createTreemapPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editTreemapPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createGraphPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editGraphPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "createPartitionPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    },
+    {
+      "action": "editPartitionPlot",
+      "domain": "charts",
+      "status": "discovered-replay-connection"
+    }
+  ],
+  "limitations": [
+    "No whole-request 100ms proof.",
+    "Snapshot acquisition and deep clone remain synchronous with incompletely metered initial work/depth/heap.",
+    "Density at every size and force-directed 10k exceed their bundling thresholds under the explicit maxima; see ROUTE_HASH_CURSOR.md.",
+    "Graph plots cannot be faceted, so facet receivers hold no bounded route."
+  ],
+  "counts": {
+    "resolved-native-connection": 35,
+    "discovered-replay-connection": 297
+  }
+}

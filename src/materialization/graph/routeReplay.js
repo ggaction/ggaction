@@ -26,11 +26,11 @@ export function createRouteReplay(completions, scope, record = false) {
   const fail = error => { interrupted = true; thrown.add(error); throw error; };
   return Object.freeze({
     scope,
-    take(job) {
+    take(job, route) {
       if (position === completions.length && position > 0 && completions[0].inputHash === job.inputHash) position = 0;
       const expected = completions[position];
       if (expected === undefined) {
-        if (record) fail(request = new RouteJobRequest(job));
+        if (record) fail(request = new RouteJobRequest(job, route));
         fail(annotateError(new Error("Prepared route completions do not cover this native step."), { code: "stale-result" }));
       }
       if (expected.inputHash !== job.inputHash) fail(annotateError(new Error("Prepared route completion differs from this native step."), { code: "stale-result" }));
@@ -44,8 +44,8 @@ export function createRouteReplay(completions, scope, record = false) {
 }
 
 class RouteJobRequest extends Error {
-  constructor(job) {
+  constructor(job, route) {
     super("A prepared native step requires another route computation.");
-    this.job = job;
+    this.job = job; this.route = route;
   }
 }

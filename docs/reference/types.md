@@ -622,8 +622,7 @@ Related types: [`PreparedFontResource`](#type-preparedfontresource).
 
 ```typescript
 export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }
-declare const preparedGraphEdgeRoutesUpdate: unique symbol;
-/** An authentic native resource update, bound to its exact completed Full receiver. */
+/** A native route update action with its own affected-route resolution. */
 ```
 
 </details>
@@ -5767,6 +5766,22 @@ export type DerivedDataDependents = "reject" | "recompute";
 ```
 
 </details>
+
+### `DiscoveredNativeRouteAction` {#type-discoverednativerouteaction}
+
+<details markdown="1">
+<summary>Expand DiscoveredNativeRouteAction</summary>
+
+```typescript
+export type DiscoveredNativeRouteAction = Exclude<{ [K in keyof ChartProgram]: ChartProgram[K] extends (options: never) => ChartProgram ? K : never }[keyof ChartProgram] & string,
+  ResolvedNativeRouteAction | "bundleGraphEdges" | "editEdgeRoute" | "applyGraphEdgeRoutesUpdate">;
+declare const preparedGraphEdgeRoutesUpdate: unique symbol;
+/** An authentic native resource update, bound to its exact completed Full receiver. */
+```
+
+</details>
+
+Related types: [`ResolvedNativeRouteAction`](#type-resolvednativerouteaction).
 
 ### `DiscretizedColorScaleOptions` {#type-discretizedcolorscaleoptions}
 
@@ -13314,12 +13329,14 @@ export interface PreparedGraphEdgeRoutes {
 ```typescript
 export interface PreparedGraphEdgeRoutesUpdate {
   readonly [preparedGraphEdgeRoutesUpdate]: true; readonly kind: "edge-route-preparation";
-  readonly request: { readonly kind: "update"; readonly action: "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData" | "reviseData" | "editDerivedData" | "editParameter" | "editCanvas" | "fitCanvas" | "navigateProjection" | "applyDataUpdate" | "filterMarks" | "removeMarkFilter" | "editComputedData" | "editFilteredData" | "editFlattenData" | "editLookupData" | "editFoldData" | "editSummaryData" | "editBinData" | "editTimeUnitData" | "editWindowData" | "editDensityData" | "editStackData" | "editRegressionData" | "editSortedData" | "editIntervalData" | "editECDFData" | "editNormalizedData" | "editCompleteData" | "editPivotData" | "editImputedData" | "editBin2DData" | "editRegressionStatisticsData"; readonly args: Readonly<Record<string, unknown>> };
+  readonly request: { readonly kind: "update"; readonly action: ResolvedNativeRouteAction | DiscoveredNativeRouteAction; readonly args: Readonly<Record<string, unknown>> };
   readonly inputHashes: readonly string[];
 }
 ```
 
 </details>
+
+Related types: [`ResolvedNativeRouteAction`](#type-resolvednativerouteaction) · [`DiscoveredNativeRouteAction`](#type-discoverednativerouteaction).
 
 ### `PreparedImageResource` {#type-preparedimageresource}
 
@@ -14655,6 +14672,18 @@ Related types: [`RequestedTransform`](#type-requestedtransform) · [`DatasetTran
 
 ```typescript
 type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
+```
+
+</details>
+
+### `ResolvedNativeRouteAction` {#type-resolvednativerouteaction}
+
+<details markdown="1">
+<summary>Expand ResolvedNativeRouteAction</summary>
+
+```typescript
+export type ResolvedNativeRouteAction = "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData" | "reviseData" | "editDerivedData" | "editParameter" | "editCanvas" | "fitCanvas" | "navigateProjection" | "applyDataUpdate" | "filterMarks" | "removeMarkFilter" | "editComputedData" | "editFilteredData" | "editFlattenData" | "editLookupData" | "editFoldData" | "editSummaryData" | "editBinData" | "editTimeUnitData" | "editWindowData" | "editDensityData" | "editStackData" | "editRegressionData" | "editSortedData" | "editIntervalData" | "editECDFData" | "editNormalizedData" | "editCompleteData" | "editPivotData" | "editImputedData" | "editBin2DData" | "editRegressionStatisticsData";
+/** Any other public action: it is replayed, and its routes are the bounded routes its jobs reach. */
 ```
 
 </details>

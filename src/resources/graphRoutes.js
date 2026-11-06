@@ -101,7 +101,8 @@ async function prepareNativeUpdate(program, args, host, started) {
   const lifetime = createRouteDeadline(signal, deadlineMs, started);
   let handle;
   try {
-    const ledger = createRouteRequestLedger(resolved.bounded, lifetime.signal);
+    // A discovering action learns its affected routes only from the jobs it reaches.
+    const ledger = createRouteRequestLedger(resolved.discover ? [] : resolved.bounded, lifetime.signal);
     let heldSamples = 0;
     const scope = { ledger, signal: lifetime.signal,
       routeJobScope() {
@@ -169,13 +170,21 @@ async function prepareReplayedUpdate(program, edit, resolved, owner, { ledger, l
       catch (error) {
         if (!record.recording.requested(error)) throw error;
         const job = error.job;
-        completions.push(Object.freeze({ inputHash: job.inputHash, completion: await compute(job, scope.routeJobScope()) }));
+        completions.push(Object.freeze({ inputHash: job.inputHash, route: error.route, execution: job.intent.options.execution, completion: await compute(job, scope.routeJobScope()) }));
         continue;
       }
       break;
     }
     lifetime.check();
     Object.freeze(completions);
+    if (resolved.discover) {
+      // Every route the action reached contributes its own execution policy.
+      // Charging the whole preparation against them applies the same checks
+      // the final application repeats from this accounting.
+      const reached = new Map(completions.map(({ route, execution }) => [JSON.stringify([route, execution]), { route, execution }]));
+      record.bounded = [...reached.values()].map(({ route, execution }) => Object.freeze({ id: route, options: Object.freeze({ options: Object.freeze({ execution }) }) }));
+      createRouteRequestLedger(record.bounded, lifetime.signal, ledger.diagnostics());
+    }
     record.accounting = ledger.diagnostics(); delete record.preparationScope; delete record.recording;
     const published = cloneAndFreeze({ ...handle, inputHashes: completions.map(entry => entry.inputHash) });
     prepared.delete(handle); prepared.set(published, record);

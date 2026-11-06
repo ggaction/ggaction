@@ -59,7 +59,7 @@ export function* createEdgeRouteResourceStages(resolved, scope) {
     ? yield* edgeRouteJobStages(program, graph, layout, intent, hierarchy, hierarchyLayout, jobScope)
     : edgeRouteJob(program, graph, layout, intent, hierarchy, hierarchyLayout, jobScope);
   const completion = !bounded ? computeRouteJobWithLedger(job, jobScope.signal, jobScope.ledger)
-    : replay !== undefined ? replay.take(job) : yield Object.freeze({ kind: "edge-route-computation", job, scope: jobScope });
+    : replay !== undefined ? replay.take(job, resolved.id) : yield Object.freeze({ kind: "edge-route-computation", job, scope: jobScope });
   scope.ledger.check();
   const resource = completedEdgeRouteResource(resolved, job, completion, { ...jobScope, includeComputation: false });
   scope.retainResult?.(resource);

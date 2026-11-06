@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:9d03f54f7744cdcdad75583775bbe0908e426fbd6427b240e6d0f49c57153aff. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:c51c915c04e15e2f8ce8ef76fc3bca076560de989e91244631f7906b5a1e52c1. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -39005,7 +39005,7 @@ export declare function createInteractionSession(options: {
 [Complete declaration and relative dependencies](./types/graph.d.ts)
 
 ```typescript
-import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, ReviseDataOptions, EditDerivedDataOptions, EditParameterOptions, CanvasOptions, FitCanvasOptions, NavigateProjectionOptions, ApplyDataUpdateOptions, FilterMarksOptions, RemoveMarkFilterOptions, EditComputedDataOptions, EditFilteredDataOptions, EditFlattenDataOptions, EditLookupDataOptions, EditFoldDataOptions, EditSummaryDataOptions, EditBinDataOptions, EditTimeUnitDataOptions, EditWindowDataOptions, EditDensityDataOptions, EditStackDataOptions, EditRegressionDataOptions, EditSortedDataOptions, EditIntervalDataOptions, EditECDFDataOptions, EditNormalizedDataOptions, EditCompleteDataOptions, EditPivotDataOptions, EditImputedDataOptions, EditBin2DDataOptions, EditRegressionStatisticsDataOptions, EdgeRouteResult, InputRef } from "./program.js";
+import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, ReviseDataOptions, EditDerivedDataOptions, EditParameterOptions, CanvasOptions, FitCanvasOptions, NavigateProjectionOptions, ApplyDataUpdateOptions, FilterMarksOptions, RemoveMarkFilterOptions, EditComputedDataOptions, EditFilteredDataOptions, EditFlattenDataOptions, EditLookupDataOptions, EditFoldDataOptions, EditSummaryDataOptions, EditBinDataOptions, EditTimeUnitDataOptions, EditWindowDataOptions, EditDensityDataOptions, EditStackDataOptions, EditRegressionDataOptions, EditSortedDataOptions, EditIntervalDataOptions, EditECDFDataOptions, EditNormalizedDataOptions, EditCompleteDataOptions, EditPivotDataOptions, EditImputedDataOptions, EditBin2DDataOptions, EditRegressionStatisticsDataOptions, DiscoveredNativeRouteAction, EdgeRouteResult, InputRef } from "./program.js";
 export type { PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate } from "./program.js";
 
 declare const graphRouteJob: unique symbol;
@@ -39078,7 +39078,8 @@ export interface GraphEdgeRoutesUpdateRequest {
     | { readonly action: "editPivotData"; readonly args: EditPivotDataOptions }
     | { readonly action: "editImputedData"; readonly args: EditImputedDataOptions }
     | { readonly action: "editBin2DData"; readonly args: EditBin2DDataOptions }
-    | { readonly action: "editRegressionStatisticsData"; readonly args: EditRegressionStatisticsDataOptions };
+    | { readonly action: "editRegressionStatisticsData"; readonly args: EditRegressionStatisticsDataOptions }
+    | { [A in DiscoveredNativeRouteAction]: { readonly action: A; readonly args: Parameters<ChartProgram[A]> extends [] ? Readonly<Record<string, never>> : Exclude<Parameters<ChartProgram[A]>[0], undefined> } }[DiscoveredNativeRouteAction];
 }
 export type GraphEdgeRoutesRequest = GraphEdgeRoutesAuthoringRequest | GraphEdgeRoutesUpdateRequest;
 export type GraphEdgeRoutesHost = { readonly requestToken: string; readonly signal?: AbortSignal } & (
@@ -40006,8 +40007,7 @@ Related types: [`PreparedFontResource`](./reference/types/#type-preparedfontreso
 
 ```typescript
 export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }
-declare const preparedGraphEdgeRoutesUpdate: unique symbol;
-/** An authentic native resource update, bound to its exact completed Full receiver. */
+/** A native route update action with its own affected-route resolution. */
 ```
 
 Related types: [`PreparedGraphEdgeRoutes`](./reference/types/#type-preparedgraphedgeroutes).
@@ -44339,6 +44339,19 @@ export type DensityWidthResolution = "shared" | "independent";
 ```typescript
 export type DerivedDataDependents = "reject" | "recompute";
 ```
+
+### `DiscoveredNativeRouteAction` {#type-discoverednativerouteaction}
+
+ Expand DiscoveredNativeRouteAction
+
+```typescript
+export type DiscoveredNativeRouteAction = Exclude<{ [K in keyof ChartProgram]: ChartProgram[K] extends (options: never) => ChartProgram ? K : never }[keyof ChartProgram] & string,
+  ResolvedNativeRouteAction | "bundleGraphEdges" | "editEdgeRoute" | "applyGraphEdgeRoutesUpdate">;
+declare const preparedGraphEdgeRoutesUpdate: unique symbol;
+/** An authentic native resource update, bound to its exact completed Full receiver. */
+```
+
+Related types: [`ResolvedNativeRouteAction`](./reference/types/#type-resolvednativerouteaction).
 
 ### `DiscretizedColorScaleOptions` {#type-discretizedcolorscaleoptions}
 
@@ -50577,10 +50590,12 @@ export interface PreparedGraphEdgeRoutes {
 ```typescript
 export interface PreparedGraphEdgeRoutesUpdate {
   readonly [preparedGraphEdgeRoutesUpdate]: true; readonly kind: "edge-route-preparation";
-  readonly request: { readonly kind: "update"; readonly action: "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData" | "reviseData" | "editDerivedData" | "editParameter" | "editCanvas" | "fitCanvas" | "navigateProjection" | "applyDataUpdate" | "filterMarks" | "removeMarkFilter" | "editComputedData" | "editFilteredData" | "editFlattenData" | "editLookupData" | "editFoldData" | "editSummaryData" | "editBinData" | "editTimeUnitData" | "editWindowData" | "editDensityData" | "editStackData" | "editRegressionData" | "editSortedData" | "editIntervalData" | "editECDFData" | "editNormalizedData" | "editCompleteData" | "editPivotData" | "editImputedData" | "editBin2DData" | "editRegressionStatisticsData"; readonly args: Readonly<Record<string, unknown>> };
+  readonly request: { readonly kind: "update"; readonly action: ResolvedNativeRouteAction | DiscoveredNativeRouteAction; readonly args: Readonly<Record<string, unknown>> };
   readonly inputHashes: readonly string[];
 }
 ```
+
+Related types: [`ResolvedNativeRouteAction`](./reference/types/#type-resolvednativerouteaction) · [`DiscoveredNativeRouteAction`](./reference/types/#type-discoverednativerouteaction).
 
 ### `PreparedImageResource` {#type-preparedimageresource}
 
@@ -51675,6 +51690,15 @@ Related types: [`RequestedTransform`](./reference/types/#type-requestedtransform
 
 ```typescript
 type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
+```
+
+### `ResolvedNativeRouteAction` {#type-resolvednativerouteaction}
+
+ Expand ResolvedNativeRouteAction
+
+```typescript
+export type ResolvedNativeRouteAction = "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData" | "reviseData" | "editDerivedData" | "editParameter" | "editCanvas" | "fitCanvas" | "navigateProjection" | "applyDataUpdate" | "filterMarks" | "removeMarkFilter" | "editComputedData" | "editFilteredData" | "editFlattenData" | "editLookupData" | "editFoldData" | "editSummaryData" | "editBinData" | "editTimeUnitData" | "editWindowData" | "editDensityData" | "editStackData" | "editRegressionData" | "editSortedData" | "editIntervalData" | "editECDFData" | "editNormalizedData" | "editCompleteData" | "editPivotData" | "editImputedData" | "editBin2DData" | "editRegressionStatisticsData";
+/** Any other public action: it is replayed, and its routes are the bounded routes its jobs reach. */
 ```
 
 ### `ResponsiveCanvasOptions` {#type-responsivecanvasoptions}
@@ -57333,7 +57357,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:9d03f54f7744cdcdad75583775bbe0908e426fbd6427b240e6d0f49c57153aff` |
+| Contract fingerprint | `sha256:c51c915c04e15e2f8ce8ef76fc3bca076560de989e91244631f7906b5a1e52c1` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
@@ -58898,15 +58922,25 @@ backend. Consumer materialization remains an explicit wrapped action after prepa
 applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;
 ```
 
-Prepare one of `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData` or
+Prepare `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData` or
 `editInferredGraphData` on the exact completed Full unit program that owns at least
 one affected version 2 route. Each uses its original native arguments, validators,
 primitives, dependent resources, route consumers and theme completion. Candidate
-graph chains are included before their layouts and routes. Other update actions
-are not yet part of this public union. Scoped, composition
-and facet receivers remain pending. If native completion requires additional
-viewport route computation beyond the prepared layout plan, preparation rejects
-that path; it does not silently run a synchronous fallback.
+graph chains are included before their layouts and routes.
+
+Data, parameter, Canvas and filter edits (`reviseData`, `editDerivedData` and its
+focused editors, `editParameter`, `editCanvas`, `fitCanvas`, `navigateProjection`,
+`applyDataUpdate`, `filterMarks`, `removeMarkFilter`) compute their routes deep
+inside one synchronous native call. Preparation runs that call, computes each
+route job it reaches on the worker, and records the ordered completions that the
+final application must reach again in the same order. Any other public action is
+prepared the same way; its affected routes are the version 2 routes it actually
+reaches. An action that reaches none, such as most guide, encoding, mark and
+theme edits, is rejected with a message to call it directly. Composition receivers
+accept the deterministic data, parameter and filter edits with a scoped target and
+other actions that reach routes through their own dispatch; `reviseData`,
+`applyDataUpdate` and Canvas edits stay on unit receivers. Graph plots cannot be
+faceted. Preparation never runs a synchronous fallback.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "l"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 

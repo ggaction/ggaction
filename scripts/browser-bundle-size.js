@@ -5,13 +5,13 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 804_354, // Batched value cursor: Node20/24 804,354 gzip bytes.
+  ggaction: 804_499, // Discovered native route replay: Node20/24 804,499 gzip bytes.
   "ggaction/basic": 430_457, // Reused resource validation: Node20/24 430,457 gzip bytes.
   "ggaction/svg": 27_461, // Partition path runs: Node20/24 27,461 gzip bytes.
-  "ggaction/graph": 77_715, // Batched value cursor: Node20/24 77,715 gzip bytes.
+  "ggaction/graph": 77_831, // Discovered native route replay: Node20/24 77,831 gzip bytes.
   "ggaction/animation": 360_122, // Geo projection fast paths: Node20/24 360,122 gzip bytes.
   "ggaction/interaction": 144_184, // Sliced data revision: Node20/24 144,184 gzip bytes.
-  "ggaction/live": 1_023_429 // Batched value cursor: Node20/24 1,023,429 gzip bytes.
+  "ggaction/live": 1_023_598 // Discovered native route replay: Node20/24 1,023,598 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {

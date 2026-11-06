@@ -223,15 +223,25 @@ backend. Consumer materialization remains an explicit wrapped action after prepa
 applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;
 ```
 
-Prepare one of `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData` or
+Prepare `editLayout`, `editGraphData`, `editFlowData`, `editHierarchyData` or
 `editInferredGraphData` on the exact completed Full unit program that owns at least
 one affected version 2 route. Each uses its original native arguments, validators,
 primitives, dependent resources, route consumers and theme completion. Candidate
-graph chains are included before their layouts and routes. Other update actions
-are not yet part of this public union. Scoped, composition
-and facet receivers remain pending. If native completion requires additional
-viewport route computation beyond the prepared layout plan, preparation rejects
-that path; it does not silently run a synchronous fallback.
+graph chains are included before their layouts and routes.
+
+Data, parameter, Canvas and filter edits (`reviseData`, `editDerivedData` and its
+focused editors, `editParameter`, `editCanvas`, `fitCanvas`, `navigateProjection`,
+`applyDataUpdate`, `filterMarks`, `removeMarkFilter`) compute their routes deep
+inside one synchronous native call. Preparation runs that call, computes each
+route job it reaches on the worker, and records the ordered completions that the
+final application must reach again in the same order. Any other public action is
+prepared the same way; its affected routes are the version 2 routes it actually
+reaches. An action that reaches none, such as most guide, encoding, mark and
+theme edits, is rejected with a message to call it directly. Composition receivers
+accept the deterministic data, parameter and filter edits with a scoped target and
+other actions that reach routes through their own dispatch; `reviseData`,
+`applyDataUpdate` and Canvas edits stay on unit receivers. Graph plots cannot be
+faceted. Preparation never runs a synchronous fallback.
 
 <!-- snippet-context:start -->
 

@@ -1,4 +1,4 @@
-import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, ReviseDataOptions, EditDerivedDataOptions, EditParameterOptions, CanvasOptions, FitCanvasOptions, NavigateProjectionOptions, ApplyDataUpdateOptions, FilterMarksOptions, RemoveMarkFilterOptions, EditComputedDataOptions, EditFilteredDataOptions, EditFlattenDataOptions, EditLookupDataOptions, EditFoldDataOptions, EditSummaryDataOptions, EditBinDataOptions, EditTimeUnitDataOptions, EditWindowDataOptions, EditDensityDataOptions, EditStackDataOptions, EditRegressionDataOptions, EditSortedDataOptions, EditIntervalDataOptions, EditECDFDataOptions, EditNormalizedDataOptions, EditCompleteDataOptions, EditPivotDataOptions, EditImputedDataOptions, EditBin2DDataOptions, EditRegressionStatisticsDataOptions, EdgeRouteResult, InputRef } from "./program.js";
+import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate, EditLayoutOptions, EditGraphDataOptions, EditFlowDataOptions, EditHierarchyDataOptions, ApplyInferredGraphOptions, ReviseDataOptions, EditDerivedDataOptions, EditParameterOptions, CanvasOptions, FitCanvasOptions, NavigateProjectionOptions, ApplyDataUpdateOptions, FilterMarksOptions, RemoveMarkFilterOptions, EditComputedDataOptions, EditFilteredDataOptions, EditFlattenDataOptions, EditLookupDataOptions, EditFoldDataOptions, EditSummaryDataOptions, EditBinDataOptions, EditTimeUnitDataOptions, EditWindowDataOptions, EditDensityDataOptions, EditStackDataOptions, EditRegressionDataOptions, EditSortedDataOptions, EditIntervalDataOptions, EditECDFDataOptions, EditNormalizedDataOptions, EditCompleteDataOptions, EditPivotDataOptions, EditImputedDataOptions, EditBin2DDataOptions, EditRegressionStatisticsDataOptions, DiscoveredNativeRouteAction, EdgeRouteResult, InputRef } from "./program.js";
 export type { PreparedGraphEdgeRoutes, PreparedGraphEdgeRoutesUpdate } from "./program.js";
 
 declare const graphRouteJob: unique symbol;
@@ -71,7 +71,8 @@ export interface GraphEdgeRoutesUpdateRequest {
     | { readonly action: "editPivotData"; readonly args: EditPivotDataOptions }
     | { readonly action: "editImputedData"; readonly args: EditImputedDataOptions }
     | { readonly action: "editBin2DData"; readonly args: EditBin2DDataOptions }
-    | { readonly action: "editRegressionStatisticsData"; readonly args: EditRegressionStatisticsDataOptions };
+    | { readonly action: "editRegressionStatisticsData"; readonly args: EditRegressionStatisticsDataOptions }
+    | { [A in DiscoveredNativeRouteAction]: { readonly action: A; readonly args: Parameters<ChartProgram[A]> extends [] ? Readonly<Record<string, never>> : Exclude<Parameters<ChartProgram[A]>[0], undefined> } }[DiscoveredNativeRouteAction];
 }
 export type GraphEdgeRoutesRequest = GraphEdgeRoutesAuthoringRequest | GraphEdgeRoutesUpdateRequest;
 export type GraphEdgeRoutesHost = { readonly requestToken: string; readonly signal?: AbortSignal } & (

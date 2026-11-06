@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:9d03f54f7744cdcdad75583775bbe0908e426fbd6427b240e6d0f49c57153aff",
+    "contractId": "sha256:c51c915c04e15e2f8ce8ef76fc3bca076560de989e91244631f7906b5a1e52c1",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -2672,8 +2672,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 105971,
-      "sha256": "da890845597ececed21276d5fa18364ebd356ee65f3eb4ec3fd46ccd18df8b49"
+      "bytes": 106240,
+      "sha256": "7f08c746368f5212889b799ece21d0863657c154e6e81e28b8e0f87bb356eb6d"
     },
     {
       "order": 133,
@@ -2964,6 +2964,7 @@
         "type-densityplotlegendoptions",
         "type-densitywidthresolution",
         "type-deriveddatadependents",
+        "type-discoverednativerouteaction",
         "type-discretizedcolorscaleoptions",
         "type-displaylabelmap",
         "type-displaylabeloptions",
@@ -3482,6 +3483,7 @@
         "type-replacecompositionchildoptions",
         "type-requesteddatasettransform",
         "type-requestedtransform",
+        "type-resolvednativerouteaction",
         "type-responsivecanvasoptions",
         "type-responsivelabeloptions",
         "type-revisedataoptions",
@@ -3614,8 +3616,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 518700,
-      "sha256": "4b0dccdaec4145c23309c6989cca30b838f305a364fe828d5575168c9a13315c"
+      "bytes": 519787,
+      "sha256": "da51dd3ad951b43aade0521e88bd91a9ac7e87f4ff4cdf6a594eb40d86b3979a"
     },
     {
       "order": 134,
@@ -3995,7 +3997,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "707a22558205bcef2bbdb431a6c73169699e7fddcd23e1aa0b71ce5c157995bd"
+      "sha256": "1a543ff13abc4492f247168f7e1f252b5111cbd102da41935f0c348d62b67b62"
     },
     {
       "order": 157,
@@ -4128,8 +4130,8 @@
         "explicit-bounded-execution",
         "applygraphedgeroutesupdate"
       ],
-      "bytes": 14439,
-      "sha256": "839e13a28641ff63f06135e76223be3e3093a07ba4317ac1346ba02234e4cc7f"
+      "bytes": 15155,
+      "sha256": "8e254955d33bbb81118bbf50292cbeaba1137ad6feb4fd615cadc530c4e24fbe"
     },
     {
       "order": 165,

@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 1103649; // Path batch primitives: 1,103,648 measured bytes.
+export const SEARCH_INDEX_MAX_BYTES = 1104128; // Native route update union docs: 1,104,127 measured bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");
