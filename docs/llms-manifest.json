@@ -5,7 +5,7 @@
   "provenance": {
     "status": "development",
     "contractId": "sha256:8f88fab9513962a4c598101e06e43e43543ba09607cbb064c5ce4e6b5ba75172",
-    "sourceCommit": null,
+    "sourceCommit": "7b8f3638391fb58c299bee603e7ab1a7a4e37aae",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 11986,
-      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
+      "bytes": 12058,
+      "sha256": "bb81f3653b98d675c35d95be1b84f53f1fab22d6b3510aedcad488f9c992aff3"
     },
     {
       "order": 4,
@@ -3664,8 +3664,8 @@
         "store-fully-materialized-circles-in-columns",
         "store-fully-materialized-paths-in-columns"
       ],
-      "bytes": 27999,
-      "sha256": "bc47faa2a2b3d6709010411bea2877b69bd7cf3cf8b5c9cdfdc631ff06c595b8"
+      "bytes": 28071,
+      "sha256": "dd6b431a57f1d51a3865de465d1179272c02c5c1d95c021ea9d16db7458abf90"
     },
     {
       "order": 136,
@@ -4007,8 +4007,8 @@
         "migration-from-v0026",
         "migration-from-v0013"
       ],
-      "bytes": 4084,
-      "sha256": "5e6bb9fdc4ac9f4771aa215ca7515ec9b6d50d294af4179267cf0ee5cc74ece1"
+      "bytes": 4117,
+      "sha256": "30e4162736b6479c0ff9c33c0398531f29707990165cc0800d35460c56200fc4"
     },
     {
       "order": 157,
