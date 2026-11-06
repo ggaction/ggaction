@@ -89,7 +89,7 @@ members using the same edge rules as Histogram.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
@@ -123,7 +123,7 @@ Full and Basic support creation. [Named table lookup](../../../../api/data/summa
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 createFlattenData(options: TargetedOptions<FlattenDataOptions>): ChartProgram;
@@ -190,7 +190,7 @@ every source cell. [Source and Derived Data](../../../../api/data/source-and-der
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
@@ -262,7 +262,7 @@ and missing-value diagnostics while preserving existing v1 behavior. [Source and
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 createNormalizedData(options: TargetedOptions<NormalizedDataOptions>): ChartProgram;
@@ -302,7 +302,7 @@ percent-change values independently within each group.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 createSortedData(options: TargetedOptions<SortedDataOptions>): ChartProgram;
@@ -335,7 +335,7 @@ null placement, and quantitative, categorical, or temporal comparison.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 createCompleteData(options: TargetedOptions<CompleteDataOptions>): ChartProgram;
@@ -376,7 +376,7 @@ exclusive with `values` and `sequence`.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 createImputedData(options: TargetedOptions<ImputedDataOptions>): ChartProgram;
@@ -451,7 +451,7 @@ by Bar and Area layouts. [Source and Derived Data](../../../../api/data/source-a
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 editComputedData(options: TargetedOptions<EditComputedDataOptions>): ChartProgram;
@@ -476,7 +476,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](../.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 editLookupData(options: TargetedOptions<EditLookupDataOptions>): ChartProgram;
@@ -501,7 +501,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](../.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 editFlattenData(options: TargetedOptions<EditFlattenDataOptions>): ChartProgram;
@@ -526,7 +526,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](../.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 editFoldData(options: TargetedOptions<EditFoldDataOptions>): ChartProgram;
@@ -551,7 +551,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](../.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 editPivotData(options: TargetedOptions<EditPivotDataOptions>): ChartProgram;
@@ -580,7 +580,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](../.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 editSummaryData(options: TargetedOptions<EditSummaryDataOptions>): ChartProgram;
@@ -609,7 +609,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](../.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 editBinData(options: TargetedOptions<EditBinDataOptions>): ChartProgram;
@@ -644,7 +644,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](../.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 editStackData(options: TargetedOptions<EditStackDataOptions>): ChartProgram;
@@ -672,7 +672,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](../.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 editIntervalData(options: TargetedOptions<EditIntervalDataOptions>): ChartProgram;
@@ -703,7 +703,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](../.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 editECDFData(options: TargetedOptions<EditECDFDataOptions>): ChartProgram;
@@ -731,7 +731,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](../.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 editNormalizedData(options: TargetedOptions<EditNormalizedDataOptions>): ChartProgram;
@@ -762,7 +762,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](../.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 editSortedData(options: TargetedOptions<EditSortedDataOptions>): ChartProgram;
@@ -786,7 +786,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](../../../..
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;
@@ -816,7 +816,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](../.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+**Availability:** Available by v0.0.27. See [release compatibility](../../../../version/).
 
 ```typescript
 editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
