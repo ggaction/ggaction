@@ -1,0 +1,1003 @@
+{
+  "targets": [
+    {
+      "target": "AT-21",
+      "owners": [
+        {
+          "test": "test/unit/actions/composition/nested-responsive-layout.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/nested-responsive.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "AT-23",
+      "owners": [
+        {
+          "test": "test/unit/grammar/graph-normalize.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/graph-model.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/graph-layout.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/graph-force.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/data/observed-graph.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-layouts.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-hit.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/flow-layouts.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/flow-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/flow-layouts.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-animation.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md",
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "AT-34",
+      "owners": [
+        {
+          "test": "test/unit/hit-frame.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/current-hit.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-animation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-animation.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "AT-35",
+      "owners": [
+        {
+          "test": "test/unit/interaction-session.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-pointer-capture.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-keyboard.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-region-gesture.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-session.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-keyboard.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-region.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "AT-36",
+      "owners": [
+        {
+          "test": "test/unit/interaction-region-gesture.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-angular-selection.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-region.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "AT-38",
+      "owners": [
+        {
+          "test": "test/unit/interaction-links.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-linked-filter.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-direct-controls.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-reconciliation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-native-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-legend-selection.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-session.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "AT-39",
+      "owners": [
+        {
+          "test": "test/unit/interaction-region-gesture.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-preview-preparation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-direct-controls.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-node-move.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-annotation-drag.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-geo-controls.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-edge-presentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-region.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-history.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "AT-45",
+      "owners": [
+        {
+          "test": "test/unit/animation/offline.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/offline-assets.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/native-player.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/animation-offline.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/animation-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "AT-53",
+      "owners": [
+        {
+          "test": "test/unit/accessibility/data.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/accessibility/items.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-keyboard.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/accessible-data.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/accessible-controls.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/accessible-tooltip.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-keyboard.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/native-player.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "AT-57",
+      "owners": [
+        {
+          "test": "test/contracts/package-boundaries.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/package-artifact.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/package-consumer.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-hit.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-animation.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/graph-tracks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/graph-public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/animation-graph.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/svg",
+      "owners": [
+        {
+          "test": "test/charts/graph-plots/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/graph-output.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/canvas",
+      "owners": [
+        {
+          "test": "test/charts/graph-plots/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/graph-output.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/encodings",
+      "owners": [
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/edge-route-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/scales",
+      "owners": [
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/edge-route-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/guides",
+      "owners": [
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/edge-route-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/encodings",
+      "owners": [
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/edge-route-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/scales",
+      "owners": [
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/edge-route-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/guides",
+      "owners": [
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/edge-route-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/encodings",
+      "owners": [
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/edge-route-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/scales",
+      "owners": [
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/edge-route-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/guides",
+      "owners": [
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/edge-route-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/encodings",
+      "owners": [
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/edge-route-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/scales",
+      "owners": [
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/edge-route-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/guides",
+      "owners": [
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/edge-route-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/flow-layouts.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/flow-layouts.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/encodings",
+      "owners": [
+        {
+          "test": "test/unit/geo/graticule-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/graticule-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/scales",
+      "owners": [
+        {
+          "test": "test/unit/geo/graticule-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/graticule-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/guides",
+      "owners": [
+        {
+          "test": "test/unit/geo/graticule-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/graticule-composition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:interaction/pointer-keyboard-touch",
+      "owners": [
+        {
+          "test": "test/unit/interaction-session.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-pointer-capture.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-keyboard.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-region-gesture.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-session.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-keyboard.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-region.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:interaction/preview-commit-cancel",
+      "owners": [
+        {
+          "test": "test/unit/interaction-region-gesture.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-preview-preparation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-direct-controls.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-node-move.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-annotation-drag.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-geo-controls.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-edge-presentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-region.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:interaction/undo-redo",
+      "owners": [
+        {
+          "test": "test/unit/interaction-history.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-selection.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-viewport.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-keyboard.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:interaction/linked",
+      "owners": [
+        {
+          "test": "test/unit/interaction-links.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-linked-filter.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-direct-controls.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-reconciliation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-native-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-legend-selection.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-session.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:interaction/current-frame",
+      "owners": [
+        {
+          "test": "test/unit/interaction-animation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/current-hit.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/route-session.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/graph-drag.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/partition-session.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/interaction-animation.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    }
+  ]
+}

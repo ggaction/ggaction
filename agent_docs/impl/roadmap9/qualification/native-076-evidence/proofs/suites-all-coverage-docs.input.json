@@ -1,0 +1,489 @@
+{
+  "candidate": "a8af4e5665c17c6769af6118e48a30cd0efc13d3",
+  "targets": [
+    {
+      "target": "AT-90",
+      "tests": [
+        "test/docs/documentation-coverage.test.js",
+        "test/docs/executable-programs.test.js",
+        "test/docs/documentation.test.js",
+        "test/contracts/documentation-truth.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/docs",
+      "tests": [
+        "test/docs/documentation.test.js",
+        "test/charts/compound-path/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/docs",
+      "tests": [
+        "test/docs/documentation.test.js",
+        "test/charts/structured-paints/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/docs",
+      "tests": [
+        "test/charts/image-assets/public.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/docs",
+      "tests": [
+        "test/docs/documentation.test.js",
+        "test/charts/partition-layouts/public.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/docs",
+      "tests": [
+        "test/docs/documentation.test.js",
+        "test/charts/partition-layouts/public.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/docs",
+      "tests": [
+        "test/docs/documentation.test.js",
+        "test/charts/tree-layouts/public.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/docs",
+      "tests": [
+        "test/docs/documentation.test.js",
+        "test/charts/treemap-layouts/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/docs",
+      "tests": [
+        "test/docs/documentation.test.js",
+        "test/docs/executable-programs.test.js",
+        "test/charts/graph-plots/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/docs",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/docs",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/docs",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/docs",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/docs",
+      "tests": [
+        "test/docs/documentation.test.js",
+        "test/charts/flow-layouts/public.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/docs",
+      "tests": [
+        "test/docs/documentation.test.js",
+        "test/charts/flow-layouts/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/docs",
+      "tests": [
+        "test/docs/executable-programs.test.js",
+        "test/charts/contours/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/docs",
+      "tests": [
+        "test/docs/executable-programs.test.js",
+        "test/charts/contours/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/docs",
+      "tests": [
+        "test/docs/executable-programs.test.js",
+        "test/charts/calendar/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:table/docs",
+      "tests": [
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/docs",
+      "tests": [
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/docs",
+      "tests": [
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/docs",
+      "tests": [
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/docs",
+      "tests": [
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/docs",
+      "tests": [
+        "test/charts/geographic-marks/public.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/docs",
+      "tests": [
+        "test/charts/geographic-marks/public.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/docs",
+      "tests": [
+        "test/charts/geographic-marks/public.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/docs",
+      "tests": [
+        "test/charts/geographic-marks/public.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/docs",
+      "tests": [
+        "test/docs/documentation.test.js",
+        "test/charts/radial-sectors/public.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/docs",
+      "tests": [
+        "test/docs/documentation.test.js",
+        "test/charts/polar-line-radar/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/docs",
+      "tests": [
+        "test/docs/documentation.test.js",
+        "test/charts/streamgraph/public.test.js",
+        "test/charts/centered-area-stream/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/docs",
+      "tests": [
+        "test/docs/documentation.test.js",
+        "test/charts/cars-acceleration-violins/public.test.js",
+        "test/docs/executable-programs.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "path": "test/charts/calendar/public.test.js",
+      "sha256": "fa5ed6ba1e330f64ef263f6d1bc787319c2108dfa9087856382142c38b13ffe1"
+    },
+    {
+      "path": "test/charts/cars-acceleration-violins/public.test.js",
+      "sha256": "352a144e5ba41e572587a6d10dc5648439c78fc6dbeae2f0795112bab183705c"
+    },
+    {
+      "path": "test/charts/centered-area-stream/public.test.js",
+      "sha256": "9897b7d00b497bbde4316323c9b7b1e6e33a09881287f8aff88a4f912944bcb0"
+    },
+    {
+      "path": "test/charts/compound-path/public.test.js",
+      "sha256": "1a863008e46f5360d4575bca6ae321ad6a742963e55fab7c45a5ce550b166392"
+    },
+    {
+      "path": "test/charts/contours/public.test.js",
+      "sha256": "4537e25dff3c4c49252309f8915703def15fb2e4ac6ba72af780b32c67048dee"
+    },
+    {
+      "path": "test/charts/edge-routes/methods.test.js",
+      "sha256": "7ce0fe7fe982c62ceadb2bb5e5a585f10eb6b1c6755cde4858892959d8583a03"
+    },
+    {
+      "path": "test/charts/flow-layouts/public.test.js",
+      "sha256": "a56cf91824fa8c55a5e626032b030d7b318a474b0e096c9b4f6ee6f6ab632d94"
+    },
+    {
+      "path": "test/charts/geographic-marks/public.test.js",
+      "sha256": "bd94b9491eef1cbfc59ec7122f83ba6efa7ad55294b1dd62b389a700512394c2"
+    },
+    {
+      "path": "test/charts/graph-plots/public.test.js",
+      "sha256": "b2cc70a9011ea42236e5fec0f4d66ac8d3e3dac54a24f4b73b2936d1ad7c366d"
+    },
+    {
+      "path": "test/charts/image-assets/public.test.js",
+      "sha256": "720c69b202a9c973f92e2fb3b213976cf5c11a449fca6d5cea3a20d31db7b15d"
+    },
+    {
+      "path": "test/charts/partition-layouts/public.test.js",
+      "sha256": "bd1e5531042eae29c908d8ccc412f20c1454f5c79ab33f28e6d84522c0e38aa8"
+    },
+    {
+      "path": "test/charts/polar-line-radar/public.test.js",
+      "sha256": "200a649057dd9f74373496e1f97563a42be358126b2a39cae0f0bf508121fb2a"
+    },
+    {
+      "path": "test/charts/radial-sectors/public.test.js",
+      "sha256": "ab11c2574e9d27ffc0c4a85b3f90bd13a6836496867548b5f9dfd36b8ce68397"
+    },
+    {
+      "path": "test/charts/streamgraph/public.test.js",
+      "sha256": "68bada8b5a389187f4e1f2ded0b5ba331bfd858e11d7afff7cc236aecab2ddba"
+    },
+    {
+      "path": "test/charts/structured-paints/public.test.js",
+      "sha256": "92cc0a506a18e168c797a4c4f73237c894990dec4d7f64029c52b7e58f4e2295"
+    },
+    {
+      "path": "test/charts/tree-layouts/public.test.js",
+      "sha256": "3edb0e5661e7244cc6099211410746a63d81ddbc1341b78c8656e587859ccd61"
+    },
+    {
+      "path": "test/charts/treemap-layouts/public.test.js",
+      "sha256": "66e05e99ee7ae2b01b84679a4f7ba4d6d24dc483bca772d1a2d2bbc89f975472"
+    },
+    {
+      "path": "test/contracts/documentation-truth.test.js",
+      "sha256": "40860ab3d771b3c42f0468ed98c6e286c3435b51fa201fc7c691987b07d10891"
+    },
+    {
+      "path": "test/docs/documentation-coverage.test.js",
+      "sha256": "d21004737a06e1423edf4ea1e3aa6774cb40f5fc341b4786bd7486130e6816a0"
+    },
+    {
+      "path": "test/docs/documentation.test.js",
+      "sha256": "08a2fc5821dc673344acec900b9daf09ead0cfc486e086716626cb709ec14bd1"
+    },
+    {
+      "path": "test/docs/executable-programs.test.js",
+      "sha256": "6c45c11e71d9690d209bc42e9284d40f142f51b409f93a03f5445291dfb69350"
+    },
+    {
+      "path": "test/unit/resources/edge-route-composition.test.js",
+      "sha256": "08200cd550c0c58231ac8db0fc94fd9c6a81f68054a11c0d827b7ab1c40a5230"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "agent_docs/contract/current/CALENDAR.md",
+      "sha256": "f33fc4ec437ba6cf9e3091651962f35e37523666fc093ff103e750dd8110f502"
+    },
+    {
+      "path": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "sha256": "2374fdd4852a0c60bb3e4cdd9011e740fc0e356cfc5ec668113918e66d6ad49b"
+    },
+    {
+      "path": "agent_docs/contract/current/CONTOURS.md",
+      "sha256": "c35a35bafb8d866596c6d471678a64c8a732d697680da38f75d168015db90623"
+    },
+    {
+      "path": "agent_docs/contract/current/CORE.md",
+      "sha256": "36aee69d7cd4e3a093e490bcdb8063ff680fd3b1a39e30e0530c3515ba1110ec"
+    },
+    {
+      "path": "agent_docs/contract/current/EDGE_ROUTES.md",
+      "sha256": "1a33fde8219c4969a9a9e3f544a59cd9b4adde6e48633d4230cf6f96eba6e672"
+    },
+    {
+      "path": "agent_docs/contract/current/FLOWS.md",
+      "sha256": "ed3f2db56119ddac2b6081e8f865ec13bd0a19fe5d2dc70f92e02d01d7811f00"
+    },
+    {
+      "path": "agent_docs/contract/current/GEOMETRY.md",
+      "sha256": "15a53a97c81ed32d7bc27ab946d052308ef59c7b94fce7521352a9f933fc0a34"
+    },
+    {
+      "path": "agent_docs/contract/current/GRAPHS.md",
+      "sha256": "63ba6d01a56951bebf46d0168052a1fbe89c59fd9c21e836907310354cc6df2a"
+    },
+    {
+      "path": "agent_docs/contract/current/HIERARCHY.md",
+      "sha256": "869125cc63a1af442151e008d7f9d659cedae91ae875ec777846d068f7e94832"
+    },
+    {
+      "path": "agent_docs/contract/current/MARKS.md",
+      "sha256": "2ca7309999644681857179652ffc5e47a3cdd1a7ee4f8ea2867de8bf53334e71"
+    },
+    {
+      "path": "agent_docs/contract/current/OHLC.md",
+      "sha256": "883decdde31c97472d359ca4fe83e7b841a3f001789808e0e19653201b5e633a"
+    },
+    {
+      "path": "agent_docs/contract/current/PARTITION.md",
+      "sha256": "85663724b6039846e89c80adfe72921a29c3e62cb78058e38bee1c30ccfe330b"
+    },
+    {
+      "path": "agent_docs/contract/current/PRIMITIVES.md",
+      "sha256": "7dc1432bb099d4c61fb90b26080da663ed78f9936baed6aab2b9770854cf9046"
+    },
+    {
+      "path": "agent_docs/contract/current/PYRAMID.md",
+      "sha256": "b5dd6cf2c816d5f0a4fb3deb1f75a99aea8e2c204702f7e9938ea026b71c2581"
+    },
+    {
+      "path": "agent_docs/contract/current/TABLE.md",
+      "sha256": "f7d21d5a82796c4adc16481f199659dc78301c19822e40e7bb0634ea1a0fadc7"
+    },
+    {
+      "path": "agent_docs/contract/current/TRAIL.md",
+      "sha256": "f64f669feaea9e0cff1af4356d2e738c8ad449abe05eefa1b0324686bd8bc234"
+    },
+    {
+      "path": "agent_docs/contract/current/VIOLIN_PLOTS.md",
+      "sha256": "931149ecdb868cbc384d84c1ab8d7890b3cfe8b87ecb9d5a8a824d265d7fe5e2"
+    },
+    {
+      "path": "agent_docs/contract/current/WATERFALL.md",
+      "sha256": "6a54239bb669386cd14a9f6c05dd3b0f993524633f74c2583a0efd277d9a2d98"
+    }
+  ]
+}

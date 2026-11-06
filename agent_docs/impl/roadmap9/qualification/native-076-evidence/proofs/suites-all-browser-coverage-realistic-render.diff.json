@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "comparison": "Each declared owner test of each listed target is discovered by a canonical suite receipt that exited 0 at the candidate commit; each declared contract is hashed.",
+  "expectedSha256": "be41318b2ef1b870e59a3212f68cdb3c19fff4647a06573486090ea7aeef6198",
+  "actualSha256": "be41318b2ef1b870e59a3212f68cdb3c19fff4647a06573486090ea7aeef6198"
+}

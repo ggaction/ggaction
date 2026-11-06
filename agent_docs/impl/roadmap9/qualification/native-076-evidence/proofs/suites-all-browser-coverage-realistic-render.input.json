@@ -1,0 +1,51 @@
+{
+  "candidate": "a8af4e5665c17c6769af6118e48a30cd0efc13d3",
+  "targets": [
+    {
+      "target": "AT-84",
+      "tests": [
+        "test/contracts/composition-recipes.test.js",
+        "test/unit/composition-recipes.test.js",
+        "test/contracts/realistic-composition-recipes.test.js",
+        "test/charts/marginal/renderer.render.js",
+        "test/browser/composition-recipes.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/NATIVE_POLICY.md",
+        "agent_docs/contract/current/AXES.md"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "path": "test/browser/composition-recipes.browser.js",
+      "sha256": "043c94a6265221211680ebbc3837ca919a8e8b624275dc4e36eb86561c93ca54"
+    },
+    {
+      "path": "test/charts/marginal/renderer.render.js",
+      "sha256": "079c862697f75901e4f6e1fba9cb8a30a87b0d15a0f99c2b925470162bc14109"
+    },
+    {
+      "path": "test/contracts/composition-recipes.test.js",
+      "sha256": "20cb81c18cef1b488ec7c1859b8d92c77baf40f35e4d6d352365f8b882386d03"
+    },
+    {
+      "path": "test/contracts/realistic-composition-recipes.test.js",
+      "sha256": "54ee465a3e6449b99852b7ff46d318d830980a241c1bb828b1754773dbb39813"
+    },
+    {
+      "path": "test/unit/composition-recipes.test.js",
+      "sha256": "4250334b1c9c2ab2509f2792684a0b09b5564104bf98113095802a4bc21ce893"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "agent_docs/contract/current/AXES.md",
+      "sha256": "3d647bd7539b113490fd2d28d474858c4ebbcf303125166a5287919d657f6893"
+    },
+    {
+      "path": "agent_docs/contract/current/NATIVE_POLICY.md",
+      "sha256": "2a82943fb0a14fa1dbd3713ecb27421fe9599530aa295d196a48a749b4d9b317"
+    }
+  ]
+}

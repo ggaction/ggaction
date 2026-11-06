@@ -1,0 +1,10 @@
+{
+  "receipts": [
+    {
+      "label": "suite-browser",
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/qualification/native-076-evidence/checks/suite-browser.json",
+      "receiptSha256": "145722cbdfd4101c6e66d2a28ab50542e912654d9a788c37cb01609127c02197"
+    }
+  ]
+}

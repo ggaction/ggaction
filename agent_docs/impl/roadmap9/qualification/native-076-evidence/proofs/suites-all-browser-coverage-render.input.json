@@ -1,0 +1,138 @@
+{
+  "candidate": "a8af4e5665c17c6769af6118e48a30cd0efc13d3",
+  "targets": [
+    {
+      "target": "AT-65",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js",
+        "test/unit/interaction-hierarchy-focus.test.js",
+        "test/unit/animation/partition-transition.test.js",
+        "test/unit/animation/partition-session.test.js",
+        "test/browser/animation-partition.browser.js",
+        "test/charts/cross-feature-integration/variants/animation/partition.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/scene-animation",
+      "tests": [
+        "test/unit/animation/partition-transition.test.js",
+        "test/browser/animation-partition.browser.js",
+        "test/charts/cross-feature-integration/variants/animation/partition.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/scene-animation",
+      "tests": [
+        "test/unit/animation/partition-transition.test.js",
+        "test/browser/animation-partition.browser.js",
+        "test/charts/cross-feature-integration/variants/animation/partition.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/scene-animation",
+      "tests": [
+        "test/unit/animation/geo-public.test.js",
+        "test/unit/animation/geo-lifecycle.test.js",
+        "test/unit/animation/geo-text-public.test.js",
+        "test/unit/animation/geo-text-expressions.test.js",
+        "test/unit/animation/geo-text-state.test.js",
+        "test/unit/animation/geo-public-selection.test.js",
+        "test/charts/cross-feature-integration/variants/animation/geotext-expressions.render.js",
+        "test/browser/animation-geotext-expressions.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "path": "test/browser/animation-geotext-expressions.browser.js",
+      "sha256": "a93198684a54f901761bf78ef2a81bc747083454974d120a582620c9286c9a16"
+    },
+    {
+      "path": "test/browser/animation-partition.browser.js",
+      "sha256": "536afd6969c2613f9ccc9b8cf2b0cf65c7761a823e27dd645de5e116b92036ce"
+    },
+    {
+      "path": "test/charts/cross-feature-integration/variants/animation/geotext-expressions.render.js",
+      "sha256": "d93bf35b5d9a36d27bf2c59751f90362067759837bc192bd9b891f34d616e381"
+    },
+    {
+      "path": "test/charts/cross-feature-integration/variants/animation/partition.render.js",
+      "sha256": "eaa3b66e22142fe45829962c051840c6e682f7084931c1f7547de70e51ef6ef6"
+    },
+    {
+      "path": "test/unit/animation/geo-lifecycle.test.js",
+      "sha256": "c3fb2c6c2e7c7b4ec7ff276d9452da21e4961ec84fe9a94e3eb21ce3e392ba76"
+    },
+    {
+      "path": "test/unit/animation/geo-public-selection.test.js",
+      "sha256": "b5f85c83101de1e41727c9402d10661dbdde7806c06a672ccf5f99bca5bff1de"
+    },
+    {
+      "path": "test/unit/animation/geo-public.test.js",
+      "sha256": "c6608e79c3c7257927715bd92bfe3e580dc34c6395b2e596099c605295a49a90"
+    },
+    {
+      "path": "test/unit/animation/geo-text-expressions.test.js",
+      "sha256": "00330f51cd4365d3eb2219e6ead5772b31514443d61b93fde18f3bb737648768"
+    },
+    {
+      "path": "test/unit/animation/geo-text-public.test.js",
+      "sha256": "e7918a3df95f41e3e2f34f5c48a4d2c78887146244af07a480451136b81da98b"
+    },
+    {
+      "path": "test/unit/animation/geo-text-state.test.js",
+      "sha256": "bcba456395afd2fc9b9657d646d7b44a0ba1279e624488d486e423b3970ace7d"
+    },
+    {
+      "path": "test/unit/animation/partition-session.test.js",
+      "sha256": "46f0f926b88417db725cb85b927b2197bb890313aa574b9386548703d018d364"
+    },
+    {
+      "path": "test/unit/animation/partition-transition.test.js",
+      "sha256": "516f3039fc60841ba1d2a1d28da7278df1ec75832152a665baf0195b560c1e9b"
+    },
+    {
+      "path": "test/unit/interaction-hierarchy-focus.test.js",
+      "sha256": "561155c08a70781b7691a8e2e65c8c86097aacda6e48ad33ffae7b36b39ab16c"
+    },
+    {
+      "path": "test/unit/resources/partition-plots.test.js",
+      "sha256": "63e76a07a28641b4314bdd3cdc205117d60467e4d5217f287f7ab8a855a2f10c"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "agent_docs/contract/current/ANIMATION.md",
+      "sha256": "23ef391cda18e3828959a2b0d53674cf12ad646ef280446af96c63b4f9b28857"
+    },
+    {
+      "path": "agent_docs/contract/current/GEOMETRY.md",
+      "sha256": "15a53a97c81ed32d7bc27ab946d052308ef59c7b94fce7521352a9f933fc0a34"
+    },
+    {
+      "path": "agent_docs/contract/current/INTERACTION.md",
+      "sha256": "0cf59ba6fe578cb4dcae952d15580e451baa4130270dbf19d74d8394d73ead75"
+    },
+    {
+      "path": "agent_docs/contract/current/PARTITION.md",
+      "sha256": "85663724b6039846e89c80adfe72921a29c3e62cb78058e38bee1c30ccfe330b"
+    }
+  ]
+}

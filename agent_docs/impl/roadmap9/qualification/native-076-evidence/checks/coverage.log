@@ -1,0 +1,5 @@
+
+> ggaction@0.0.26 test:coverage
+> node scripts/run-tests.js coverage
+
+Coverage: 97.45% lines, 95.61% branches, 99.32% functions; 789 critical floors passed.

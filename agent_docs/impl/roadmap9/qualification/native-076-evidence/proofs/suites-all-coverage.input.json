@@ -1,0 +1,5428 @@
+{
+  "candidate": "a8af4e5665c17c6769af6118e48a30cd0efc13d3",
+  "targets": [
+    {
+      "target": "AT-02",
+      "tests": [
+        "test/contracts/oracle-independence.test.js",
+        "test/unit/oracles/native-fixtures.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-04",
+      "tests": [
+        "test/unit/resources/data-update-preparation.test.js",
+        "test/unit/resources/prepared-data-public.test.js",
+        "test/unit/resources/image-preparation.test.js",
+        "test/unit/resources/font-preparation.test.js",
+        "test/unit/geo/geometry-data.test.js",
+        "test/unit/animation/offline-assets.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "AT-06",
+      "tests": [
+        "test/unit/actions/data/row-identity.test.js",
+        "test/unit/core/item-identity.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-07",
+      "tests": [
+        "test/unit/actions/data/row-identity.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-08",
+      "tests": [
+        "test/unit/actions/data/row-lineage.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-09",
+      "tests": [
+        "test/unit/persistence/legacy-selection.test.js",
+        "test/contracts/graphic-hierarchy-migration.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "AT-10",
+      "tests": [
+        "test/unit/persistence/program.test.js",
+        "test/unit/persistence/codec.test.js",
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-15",
+      "tests": [
+        "test/unit/resources/font-public-preparation.test.js",
+        "test/unit/resources/font-layout-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-16",
+      "tests": [
+        "test/unit/actions/data/computed-v2.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-17",
+      "tests": [
+        "test/unit/actions/data/pivot-data.test.js",
+        "test/unit/actions/data/robust-loess.test.js",
+        "test/unit/actions/data/calendar-completion.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/STATISTICS.md"
+      ]
+    },
+    {
+      "target": "AT-18",
+      "tests": [
+        "test/unit/actions/conditional-encoding.test.js",
+        "test/unit/materialization/conditional-dependencies.test.js",
+        "test/unit/resources/prepared-conditionals.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/ENCODINGS.md"
+      ]
+    },
+    {
+      "target": "AT-19",
+      "tests": [
+        "test/unit/actions/theme-provenance.test.js",
+        "test/unit/actions/theme-typography.test.js",
+        "test/unit/actions/theme-paint-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-20",
+      "tests": [
+        "test/unit/grammar/frame-policy.test.js",
+        "test/unit/frame-state.test.js",
+        "test/unit/single-y-admission.test.js",
+        "test/unit/single-y-aggregate-admission.test.js",
+        "test/unit/actions/canvas/responsive-lifecycle.test.js",
+        "test/contracts/composition-family-matrix.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "AT-22",
+      "tests": [
+        "test/unit/resources/hierarchy-validation.test.js",
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "AT-24",
+      "tests": [
+        "test/unit/contour-layouts.test.js",
+        "test/unit/contour-density.test.js",
+        "test/charts/contours/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "AT-25",
+      "tests": [
+        "test/unit/calendar-layout.test.js",
+        "test/unit/resources/calendar-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "AT-26",
+      "tests": [
+        "test/contracts/installed-native-families.test.js",
+        "test/contracts/composition-family-matrix.test.js",
+        "test/unit/resources/resource-composition.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "AT-27",
+      "tests": [
+        "test/unit/grammar/pyramid-layout.test.js",
+        "test/unit/pyramid-plot.test.js",
+        "test/unit/grammar/financial-roles.test.js",
+        "test/unit/ohlc-plot.test.js",
+        "test/unit/waterfall-plot.test.js",
+        "test/unit/grammar/table-cells.test.js",
+        "test/unit/grammar/table-data.test.js",
+        "test/unit/materialization/table-content.test.js",
+        "test/unit/table-plot.test.js",
+        "test/unit/composition-recipes.test.js",
+        "test/contracts/composition-recipes.test.js",
+        "test/contracts/native-api-policy.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md",
+        "agent_docs/contract/current/OHLC.md",
+        "agent_docs/contract/current/WATERFALL.md",
+        "agent_docs/contract/current/TABLE.md",
+        "agent_docs/contract/current/NATIVE_POLICY.md"
+      ]
+    },
+    {
+      "target": "AT-28",
+      "tests": [
+        "test/unit/grammar/trail.test.js",
+        "test/unit/grammar/trail-curve.test.js",
+        "test/unit/grammar/trail-series.test.js",
+        "test/unit/trail-plot.test.js",
+        "test/unit/grammar/polar.test.js",
+        "test/unit/grammar/polar-line-series.test.js",
+        "test/unit/actions/encodings/polar-position-encodings.test.js",
+        "test/unit/actions/charts/polar-facades.test.js",
+        "test/unit/actions/charts/radar-facade.test.js",
+        "test/unit/actions/charts/radar-summary.test.js",
+        "test/unit/grammar/measured-radius.test.js",
+        "test/unit/actions/charts/radial-plots.test.js",
+        "test/unit/grammar/stream-baseline.test.js",
+        "test/unit/wiggle-area.test.js",
+        "test/unit/actions/data/density-data.test.js",
+        "test/charts/cars-density-area/reference-values.test.js",
+        "test/unit/grammar/transforms/numeric-invariants.test.js",
+        "test/unit/grammar/categorical-density.test.js",
+        "test/unit/actions/charts/violin-plot-facade.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md",
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/ENCODINGS.md",
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/VIOLIN_PLOTS.md"
+      ]
+    },
+    {
+      "target": "AT-29",
+      "tests": [
+        "test/unit/geo/projections.test.js",
+        "test/unit/geo/projection-resources.test.js",
+        "test/contracts/geographic-math.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "AT-30",
+      "tests": [
+        "test/unit/geo/geometry-resources.test.js",
+        "test/unit/geo/join-resources.test.js",
+        "test/charts/geographic-marks/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "AT-31",
+      "tests": [
+        "test/unit/geo/lod-resources.test.js",
+        "test/unit/geo/join-resources.test.js",
+        "test/unit/geo/annotations.test.js",
+        "test/unit/interaction-geo-representation.test.js",
+        "test/unit/interaction-annotation.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "AT-32",
+      "tests": [
+        "test/unit/geo/camera.test.js",
+        "test/unit/geo/camera-actions.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "AT-33",
+      "tests": [
+        "test/unit/grammar/hit-coordinates.test.js",
+        "test/unit/grammar/hit-shapes.test.js",
+        "test/unit/grammar/hit-stroke.test.js",
+        "test/unit/grammar/hit-index.test.js",
+        "test/unit/hit-program.test.js",
+        "test/unit/hit-guides.test.js",
+        "test/unit/hit-frame.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "AT-37",
+      "tests": [
+        "test/unit/interaction-direct-controls.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "AT-40",
+      "tests": [
+        "test/unit/interaction-session.test.js",
+        "test/unit/interaction-history.test.js",
+        "test/unit/interaction-update.test.js",
+        "test/unit/interaction-region-gesture.test.js",
+        "test/unit/interaction-reconciliation.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "AT-41",
+      "tests": [
+        "test/unit/interaction-update.test.js",
+        "test/unit/interaction-preparation.test.js",
+        "test/unit/interaction-preview-preparation.test.js",
+        "test/unit/interaction-resize.test.js",
+        "test/unit/interaction-pointer-capture.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "AT-42",
+      "tests": [
+        "test/unit/animation/values.test.js",
+        "test/unit/animation/matching.test.js",
+        "test/unit/animation/timing.test.js",
+        "test/unit/animation/planner.test.js",
+        "test/unit/animation/cartesian-values.test.js",
+        "test/unit/animation/polar-kernel.test.js",
+        "test/unit/animation/partition-transition.test.js",
+        "test/unit/animation/graph-tracks.test.js",
+        "test/unit/animation/geo-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "AT-43",
+      "tests": [
+        "test/unit/animation/player.test.js",
+        "test/unit/animation/rebase.test.js",
+        "test/unit/animation/timeline-public.test.js",
+        "test/unit/interaction-animation.test.js",
+        "test/unit/animation/route-session.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "AT-44",
+      "tests": [
+        "test/unit/animation/cartesian-fallbacks.test.js",
+        "test/unit/animation/cartesian-values.test.js",
+        "test/unit/animation/polar-lifecycle.test.js",
+        "test/unit/animation/partition-transition.test.js",
+        "test/unit/animation/graph-tracks.test.js",
+        "test/unit/animation/geo-lifecycle.test.js",
+        "test/unit/animation/resource-layout-fallbacks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "AT-54",
+      "tests": [
+        "test/contracts/installed-native-families.test.js",
+        "test/unit/animation/offline-assets.test.js",
+        "test/unit/animation/geo-text-assets.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "AT-55",
+      "tests": [
+        "test/contracts/installed-native-families.test.js",
+        "test/unit/geo/interaction.test.js",
+        "test/unit/animation/offline-assets.test.js",
+        "test/unit/animation/geo-lifecycle.test.js",
+        "test/unit/animation/offline.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "AT-58",
+      "tests": [
+        "test/contracts/documentation-truth.test.js",
+        "test/contracts/compact-action-cards.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-59",
+      "tests": [
+        "test/contracts/native-capability-completion.test.js",
+        "test/contracts/verification-evidence.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-62",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js",
+        "test/unit/grammar/hierarchy-partition-view.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "AT-63",
+      "tests": [
+        "test/unit/grammar/hierarchy-partition.test.js",
+        "test/unit/grammar/hierarchy-partition-mapping.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "AT-64",
+      "tests": [
+        "test/unit/resources/partition-frames.test.js",
+        "test/charts/partition-layouts/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "AT-70",
+      "tests": [
+        "test/unit/grammar/graph/neighbors.test.js",
+        "test/unit/grammar/graph/edge-identity.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "AT-71",
+      "tests": [
+        "test/unit/grammar/graph/metrics.test.js",
+        "test/unit/grammar/graph/neighbors.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "AT-72",
+      "tests": [
+        "test/unit/grammar/graph/spanning.test.js",
+        "test/unit/grammar/graph/structural.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "AT-73",
+      "tests": [
+        "test/unit/grammar/graph/search.test.js",
+        "test/unit/grammar/graph/approximate.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "AT-74",
+      "tests": [
+        "test/unit/resources/graph-recompute.test.js",
+        "test/unit/resources/graph-filter.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "AT-75",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "AT-76",
+      "tests": [
+        "test/unit/grammar/graph/routes/hierarchical.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "AT-77",
+      "tests": [
+        "test/unit/grammar/graph/routes/force-directed.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "AT-78",
+      "tests": [
+        "test/unit/grammar/graph/routes/density.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "AT-79",
+      "tests": [
+        "test/unit/grammar/graph/routes/edge-path.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "AT-80",
+      "tests": [
+        "test/unit/resources/graph-route-lifecycle.test.js",
+        "test/unit/interaction-edge-presentation.test.js",
+        "test/unit/animation/graph-presentation.test.js",
+        "test/unit/animation/route-session.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "AT-81",
+      "tests": [
+        "test/unit/animation/routes.test.js",
+        "test/unit/animation/graph-public.test.js",
+        "test/unit/animation/route-session.test.js",
+        "test/unit/animation/geo-source-hit.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "AT-83",
+      "tests": [
+        "test/contracts/native-api-policy.test.js",
+        "test/unit/pyramid-plot.test.js",
+        "test/charts/pyramid/primitive.test.js",
+        "test/charts/pyramid/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/NATIVE_POLICY.md",
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "AT-85",
+      "tests": [
+        "test/unit/grammar/frame-policy.test.js",
+        "test/unit/frame-state.test.js",
+        "test/unit/single-y-admission.test.js",
+        "test/unit/single-y-aggregate-admission.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/AXES.md",
+        "agent_docs/contract/current/ENCODINGS.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "AT-86",
+      "tests": [
+        "test/unit/grammar/frame-policy.test.js",
+        "test/unit/frame-state.test.js",
+        "test/unit/single-y-admission.test.js",
+        "test/unit/actions/composition/polar-facets.test.js",
+        "test/unit/interaction-native-composition.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/AXES.md",
+        "agent_docs/contract/current/ENCODINGS.md",
+        "agent_docs/contract/current/COMPOSITION.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "AT-87",
+      "tests": [
+        "test/contracts/native-api-policy.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/NATIVE_POLICY.md"
+      ]
+    },
+    {
+      "target": "AT-88",
+      "tests": [
+        "test/contracts/native-capability-completion.test.js",
+        "test/contracts/native-api-policy.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/NATIVE_POLICY.md"
+      ]
+    },
+    {
+      "target": "AT-89",
+      "tests": [
+        "test/contracts/installed-native-families.test.js",
+        "test/unit/persistence/program.test.js",
+        "test/unit/persistence/image-resources.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-91",
+      "tests": [
+        "test/contracts/native-capability-completion.test.js",
+        "test/contracts/verification-evidence.test.js",
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-92",
+      "tests": [
+        "test/contracts/native-api-policy.test.js",
+        "test/contracts/native-capability-completion.test.js",
+        "test/contracts/package-boundaries.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/NATIVE_POLICY.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/create",
+      "tests": [
+        "test/charts/compound-path/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/edit",
+      "tests": [
+        "test/charts/compound-path/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/source-revise",
+      "tests": [
+        "test/charts/compound-path/public.test.js",
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/encodings",
+      "tests": [
+        "test/charts/compound-path/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/scales",
+      "tests": [
+        "test/charts/compound-path/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/guides",
+      "tests": [
+        "test/charts/compound-path/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/composition",
+      "tests": [
+        "test/charts/compound-path/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/selection-highlight",
+      "tests": [
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/hit",
+      "tests": [
+        "test/charts/compound-path/public.test.js",
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/scene-animation",
+      "tests": [
+        "test/charts/compound-path/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/persistence",
+      "tests": [
+        "test/charts/compound-path/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/types",
+      "tests": [
+        "test/contracts/compound-path-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/accessibility",
+      "tests": [
+        "test/charts/compound-path/public.test.js",
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/create",
+      "tests": [
+        "test/charts/structured-paints/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/edit",
+      "tests": [
+        "test/unit/actions/marks/structured-fill.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/source-revise",
+      "tests": [
+        "test/unit/actions/marks/structured-fill.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/encodings",
+      "tests": [
+        "test/unit/actions/marks/structured-fill.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/scales",
+      "tests": [
+        "test/unit/actions/marks/structured-fill.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/guides",
+      "tests": [
+        "test/unit/actions/marks/structured-fill.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/composition",
+      "tests": [
+        "test/unit/actions/marks/structured-fill.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/selection-highlight",
+      "tests": [
+        "test/unit/actions/marks/structured-fill.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/hit",
+      "tests": [
+        "test/unit/actions/marks/structured-fill.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/scene-animation",
+      "tests": [
+        "test/unit/animation/partition-transition.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/persistence",
+      "tests": [
+        "test/unit/actions/marks/structured-fill.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/types",
+      "tests": [
+        "test/contracts/structured-paint-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/accessibility",
+      "tests": [
+        "test/unit/actions/marks/structured-fill.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:image/create",
+      "tests": [
+        "test/unit/resources/image-resource-lifecycle.test.js",
+        "test/unit/persistence/image-resources.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/edit",
+      "tests": [
+        "test/unit/resources/image-resource-lifecycle.test.js",
+        "test/unit/persistence/image-resources.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/source-revise",
+      "tests": [
+        "test/unit/resources/image-resource-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/composition",
+      "tests": [
+        "test/unit/resources/image-resource-lifecycle.test.js",
+        "test/unit/persistence/image-resources.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/selection-highlight",
+      "tests": [
+        "test/unit/resources/image-resource-lifecycle.test.js",
+        "test/unit/persistence/image-resources.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/hit",
+      "tests": [
+        "test/unit/resources/image-resource-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:image/scene-animation",
+      "tests": [
+        "test/unit/resources/image-resource-lifecycle.test.js",
+        "test/unit/animation/offline-assets.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:image/svg",
+      "tests": [
+        "test/unit/renderers/image-rendering.test.js",
+        "test/charts/image-assets/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/canvas",
+      "tests": [
+        "test/unit/renderers/image-rendering.test.js",
+        "test/charts/image-assets/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/png",
+      "tests": [
+        "test/unit/renderers/image-rendering.test.js",
+        "test/charts/image-assets/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/pdf",
+      "tests": [
+        "test/unit/renderers/image-rendering.test.js",
+        "test/charts/image-assets/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/persistence",
+      "tests": [
+        "test/unit/resources/image-resource-lifecycle.test.js",
+        "test/unit/persistence/image-resources.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/types",
+      "tests": [
+        "test/contracts/image-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/accessibility",
+      "tests": [
+        "test/unit/resources/image-resource-lifecycle.test.js",
+        "test/unit/persistence/image-resources.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/create",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/edit",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/source-revise",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/composition",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/selection-highlight",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/hit",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/persistence",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/types",
+      "tests": [
+        "test/contracts/hierarchy-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/accessibility",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/create",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/edit",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/source-revise",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/composition",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/selection-highlight",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/hit",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/persistence",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/types",
+      "tests": [
+        "test/contracts/hierarchy-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/accessibility",
+      "tests": [
+        "test/unit/resources/partition-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/create",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/edit",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/source-revise",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/composition",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/selection-highlight",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/hit",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/scene-animation",
+      "tests": [
+        "test/unit/animation/resource-layout-fallbacks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/persistence",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/types",
+      "tests": [
+        "test/contracts/hierarchy-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/accessibility",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/create",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/edit",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/source-revise",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/composition",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/selection-highlight",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/hit",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/scene-animation",
+      "tests": [
+        "test/unit/animation/resource-layout-fallbacks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/persistence",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/types",
+      "tests": [
+        "test/contracts/hierarchy-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/accessibility",
+      "tests": [
+        "test/unit/resources/hierarchy-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/create",
+      "tests": [
+        "test/unit/resources/graph-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/edit",
+      "tests": [
+        "test/unit/resources/graph-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/source-revise",
+      "tests": [
+        "test/unit/resources/graph-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/composition",
+      "tests": [
+        "test/unit/resources/graph-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/selection-highlight",
+      "tests": [
+        "test/unit/resources/graph-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/persistence",
+      "tests": [
+        "test/unit/resources/graph-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/types",
+      "tests": [
+        "test/contracts/observed-graph-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/accessibility",
+      "tests": [
+        "test/unit/resources/graph-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/create",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/edit",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/source-revise",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/composition",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/selection-highlight",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/hit",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/scene-animation",
+      "tests": [
+        "test/unit/animation/routes.test.js",
+        "test/unit/animation/route-session.test.js",
+        "test/unit/interaction-edge-presentation.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/persistence",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/types",
+      "tests": [
+        "test/contracts/graph-route-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/accessibility",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/create",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/edit",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/source-revise",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/composition",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/selection-highlight",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/hit",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/scene-animation",
+      "tests": [
+        "test/unit/animation/routes.test.js",
+        "test/unit/animation/route-session.test.js",
+        "test/unit/interaction-edge-presentation.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/persistence",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/types",
+      "tests": [
+        "test/contracts/graph-route-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/accessibility",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/create",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/edit",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/source-revise",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/composition",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/selection-highlight",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/hit",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/scene-animation",
+      "tests": [
+        "test/unit/animation/routes.test.js",
+        "test/unit/animation/route-session.test.js",
+        "test/unit/interaction-edge-presentation.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/persistence",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/types",
+      "tests": [
+        "test/contracts/graph-route-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/accessibility",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/create",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/edit",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/source-revise",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/composition",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/selection-highlight",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/hit",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/scene-animation",
+      "tests": [
+        "test/unit/animation/routes.test.js",
+        "test/unit/animation/route-session.test.js",
+        "test/unit/interaction-edge-presentation.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/persistence",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/types",
+      "tests": [
+        "test/contracts/graph-route-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/accessibility",
+      "tests": [
+        "test/unit/resources/graph-routes.test.js",
+        "test/unit/resources/graph-route-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/create",
+      "tests": [
+        "test/unit/resources/flow-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/edit",
+      "tests": [
+        "test/unit/resources/flow-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/source-revise",
+      "tests": [
+        "test/unit/resources/flow-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/composition",
+      "tests": [
+        "test/unit/resources/flow-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/selection-highlight",
+      "tests": [
+        "test/unit/resources/flow-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/scene-animation",
+      "tests": [
+        "test/unit/animation/resource-layout-fallbacks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/persistence",
+      "tests": [
+        "test/unit/resources/flow-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/types",
+      "tests": [
+        "test/contracts/flow-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/accessibility",
+      "tests": [
+        "test/unit/resources/flow-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/create",
+      "tests": [
+        "test/unit/resources/flow-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/edit",
+      "tests": [
+        "test/unit/resources/flow-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/source-revise",
+      "tests": [
+        "test/unit/resources/flow-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/composition",
+      "tests": [
+        "test/unit/resources/flow-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/selection-highlight",
+      "tests": [
+        "test/unit/resources/flow-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/scene-animation",
+      "tests": [
+        "test/unit/animation/resource-layout-fallbacks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/persistence",
+      "tests": [
+        "test/unit/resources/flow-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/types",
+      "tests": [
+        "test/contracts/flow-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/accessibility",
+      "tests": [
+        "test/unit/resources/flow-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/create",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/edit",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/source-revise",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/encodings",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/scales",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/guides",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/composition",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/selection-highlight",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/hit",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/scene-animation",
+      "tests": [
+        "test/unit/animation/resource-mark-fallbacks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/persistence",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/types",
+      "tests": [
+        "test/contracts/contour-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/accessibility",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/create",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/edit",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/source-revise",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/encodings",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/scales",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/guides",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/composition",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/selection-highlight",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/hit",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/scene-animation",
+      "tests": [
+        "test/unit/animation/resource-mark-fallbacks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/persistence",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/types",
+      "tests": [
+        "test/contracts/contour-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/accessibility",
+      "tests": [
+        "test/unit/resources/contour-marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/create",
+      "tests": [
+        "test/unit/resources/calendar-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/edit",
+      "tests": [
+        "test/unit/resources/calendar-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/source-revise",
+      "tests": [
+        "test/unit/resources/calendar-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/encodings",
+      "tests": [
+        "test/unit/resources/calendar-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/scales",
+      "tests": [
+        "test/unit/resources/calendar-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/guides",
+      "tests": [
+        "test/unit/resources/calendar-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/composition",
+      "tests": [
+        "test/unit/resources/calendar-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/selection-highlight",
+      "tests": [
+        "test/unit/resources/calendar-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/hit",
+      "tests": [
+        "test/unit/resources/calendar-plots.test.js",
+        "test/unit/interaction-calendar-region.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/scene-animation",
+      "tests": [
+        "test/unit/animation/resource-mark-fallbacks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/persistence",
+      "tests": [
+        "test/unit/resources/calendar-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/types",
+      "tests": [
+        "test/contracts/calendar-plot-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/accessibility",
+      "tests": [
+        "test/unit/resources/calendar-plots.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:table/create",
+      "tests": [
+        "test/unit/table-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/edit",
+      "tests": [
+        "test/unit/table-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/source-revise",
+      "tests": [
+        "test/unit/table-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/encodings",
+      "tests": [
+        "test/unit/table-plot.test.js",
+        "test/unit/table-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/scales",
+      "tests": [
+        "test/unit/table-plot.test.js",
+        "test/unit/table-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/guides",
+      "tests": [
+        "test/unit/table-plot.test.js",
+        "test/unit/table-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/composition",
+      "tests": [
+        "test/unit/table-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/selection-highlight",
+      "tests": [
+        "test/unit/table-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/hit",
+      "tests": [
+        "test/unit/table-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/scene-animation",
+      "tests": [
+        "test/unit/animation/domain-facade-fallbacks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:table/persistence",
+      "tests": [
+        "test/unit/table-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/types",
+      "tests": [
+        "test/contracts/table-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/accessibility",
+      "tests": [
+        "test/unit/table-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/create",
+      "tests": [
+        "test/unit/pyramid-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/edit",
+      "tests": [
+        "test/unit/pyramid-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/source-revise",
+      "tests": [
+        "test/unit/pyramid-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/encodings",
+      "tests": [
+        "test/unit/pyramid-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/scales",
+      "tests": [
+        "test/unit/pyramid-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/guides",
+      "tests": [
+        "test/unit/pyramid-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/composition",
+      "tests": [
+        "test/unit/pyramid-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/selection-highlight",
+      "tests": [
+        "test/unit/pyramid-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/hit",
+      "tests": [
+        "test/unit/pyramid-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/scene-animation",
+      "tests": [
+        "test/unit/animation/domain-facade-fallbacks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/persistence",
+      "tests": [
+        "test/unit/pyramid-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/types",
+      "tests": [
+        "test/contracts/pyramid-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/accessibility",
+      "tests": [
+        "test/unit/pyramid-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/create",
+      "tests": [
+        "test/unit/ohlc-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/edit",
+      "tests": [
+        "test/unit/ohlc-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/source-revise",
+      "tests": [
+        "test/unit/ohlc-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/encodings",
+      "tests": [
+        "test/unit/ohlc-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/scales",
+      "tests": [
+        "test/unit/ohlc-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/guides",
+      "tests": [
+        "test/unit/ohlc-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/composition",
+      "tests": [
+        "test/unit/ohlc-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/selection-highlight",
+      "tests": [
+        "test/unit/ohlc-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/hit",
+      "tests": [
+        "test/unit/ohlc-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/scene-animation",
+      "tests": [
+        "test/unit/animation/domain-facade-fallbacks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/persistence",
+      "tests": [
+        "test/unit/ohlc-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/types",
+      "tests": [
+        "test/contracts/ohlc-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/accessibility",
+      "tests": [
+        "test/unit/ohlc-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/create",
+      "tests": [
+        "test/unit/waterfall-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/edit",
+      "tests": [
+        "test/unit/waterfall-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/source-revise",
+      "tests": [
+        "test/unit/waterfall-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/encodings",
+      "tests": [
+        "test/unit/waterfall-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/scales",
+      "tests": [
+        "test/unit/waterfall-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/guides",
+      "tests": [
+        "test/unit/waterfall-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/composition",
+      "tests": [
+        "test/unit/waterfall-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/selection-highlight",
+      "tests": [
+        "test/unit/waterfall-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/hit",
+      "tests": [
+        "test/unit/waterfall-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/scene-animation",
+      "tests": [
+        "test/unit/animation/domain-facade-fallbacks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/persistence",
+      "tests": [
+        "test/unit/waterfall-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/types",
+      "tests": [
+        "test/contracts/waterfall-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/accessibility",
+      "tests": [
+        "test/unit/waterfall-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/create",
+      "tests": [
+        "test/unit/trail-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/edit",
+      "tests": [
+        "test/unit/trail-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/source-revise",
+      "tests": [
+        "test/unit/trail-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/encodings",
+      "tests": [
+        "test/unit/trail-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/scales",
+      "tests": [
+        "test/unit/trail-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/guides",
+      "tests": [
+        "test/unit/trail-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/composition",
+      "tests": [
+        "test/unit/trail-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/selection-highlight",
+      "tests": [
+        "test/unit/trail-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/hit",
+      "tests": [
+        "test/unit/trail-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/scene-animation",
+      "tests": [
+        "test/unit/animation/domain-facade-fallbacks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/persistence",
+      "tests": [
+        "test/unit/trail-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/types",
+      "tests": [
+        "test/contracts/trail-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/accessibility",
+      "tests": [
+        "test/unit/trail-plot.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/create",
+      "tests": [
+        "test/unit/geo/marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/edit",
+      "tests": [
+        "test/unit/geo/marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/source-revise",
+      "tests": [
+        "test/unit/geo/marks.test.js",
+        "test/unit/geo/encoding-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/encodings",
+      "tests": [
+        "test/unit/geo/encodings.test.js",
+        "test/unit/geo/conditional-encodings.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/scales",
+      "tests": [
+        "test/unit/geo/encoding-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/guides",
+      "tests": [
+        "test/unit/geo/encodings.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/composition",
+      "tests": [
+        "test/unit/geo/marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/selection-highlight",
+      "tests": [
+        "test/unit/geo/marks.test.js",
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/hit",
+      "tests": [
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/scene-animation",
+      "tests": [
+        "test/unit/animation/geo-public.test.js",
+        "test/unit/animation/geo-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/persistence",
+      "tests": [
+        "test/unit/geo/marks.test.js",
+        "test/unit/geo/coordinates.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/types",
+      "tests": [
+        "test/contracts/geo-mark-types.test.js",
+        "test/contracts/animation-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/accessibility",
+      "tests": [
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/create",
+      "tests": [
+        "test/unit/geo/marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/edit",
+      "tests": [
+        "test/unit/geo/marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/source-revise",
+      "tests": [
+        "test/unit/geo/marks.test.js",
+        "test/unit/geo/encoding-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/encodings",
+      "tests": [
+        "test/unit/geo/encodings.test.js",
+        "test/unit/geo/conditional-encodings.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/scales",
+      "tests": [
+        "test/unit/geo/encoding-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/guides",
+      "tests": [
+        "test/unit/geo/encodings.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/composition",
+      "tests": [
+        "test/unit/geo/marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/selection-highlight",
+      "tests": [
+        "test/unit/geo/marks.test.js",
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/hit",
+      "tests": [
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/persistence",
+      "tests": [
+        "test/unit/geo/marks.test.js",
+        "test/unit/geo/coordinates.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/types",
+      "tests": [
+        "test/contracts/geo-mark-types.test.js",
+        "test/contracts/animation-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/accessibility",
+      "tests": [
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/create",
+      "tests": [
+        "test/unit/geo/marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/edit",
+      "tests": [
+        "test/unit/geo/marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/source-revise",
+      "tests": [
+        "test/unit/geo/marks.test.js",
+        "test/unit/geo/encoding-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/encodings",
+      "tests": [
+        "test/unit/geo/encodings.test.js",
+        "test/unit/geo/conditional-encodings.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/scales",
+      "tests": [
+        "test/unit/geo/encoding-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/guides",
+      "tests": [
+        "test/unit/geo/encodings.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/composition",
+      "tests": [
+        "test/unit/geo/marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/selection-highlight",
+      "tests": [
+        "test/unit/geo/marks.test.js",
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/hit",
+      "tests": [
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/scene-animation",
+      "tests": [
+        "test/unit/animation/geo-public.test.js",
+        "test/unit/animation/geo-lifecycle.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/persistence",
+      "tests": [
+        "test/unit/geo/marks.test.js",
+        "test/unit/geo/coordinates.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/types",
+      "tests": [
+        "test/contracts/geo-mark-types.test.js",
+        "test/contracts/animation-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/accessibility",
+      "tests": [
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/create",
+      "tests": [
+        "test/unit/geo/marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/edit",
+      "tests": [
+        "test/unit/geo/marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/source-revise",
+      "tests": [
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/composition",
+      "tests": [
+        "test/unit/geo/marks.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/selection-highlight",
+      "tests": [
+        "test/unit/geo/marks.test.js",
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/hit",
+      "tests": [
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/scene-animation",
+      "tests": [
+        "test/unit/animation/geo-public.test.js",
+        "test/unit/animation/geo-lifecycle.test.js",
+        "test/unit/animation/geo-text-public.test.js",
+        "test/unit/animation/geo-public-selection.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/persistence",
+      "tests": [
+        "test/unit/geo/marks.test.js",
+        "test/unit/geo/coordinates.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/types",
+      "tests": [
+        "test/contracts/geo-mark-types.test.js",
+        "test/contracts/animation-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/accessibility",
+      "tests": [
+        "test/unit/geo/mark-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/create",
+      "tests": [
+        "test/unit/actions/charts/radial-plots.test.js",
+        "test/charts/radial-sectors/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/edit",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/source-revise",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/encodings",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ENCODINGS.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/scales",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/guides",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js",
+        "test/unit/actions/charts/radial-plots.test.js",
+        "test/charts/radial-sectors/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/AXES.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/composition",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/selection-highlight",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/hit",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/scene-animation",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/canvas",
+      "tests": [
+        "test/charts/radial-sectors/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/persistence",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/types",
+      "tests": [
+        "test/contracts/radial-chart-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/accessibility",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/create",
+      "tests": [
+        "test/unit/actions/charts/radar-facade.test.js",
+        "test/unit/actions/charts/radar-summary.test.js",
+        "test/charts/polar-line-radar/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/edit",
+      "tests": [
+        "test/unit/actions/charts/radar-edit.test.js",
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/source-revise",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/encodings",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ENCODINGS.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/scales",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/guides",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js",
+        "test/unit/actions/charts/radar-facade.test.js",
+        "test/unit/actions/charts/radar-summary.test.js",
+        "test/charts/polar-line-radar/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/AXES.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/composition",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/selection-highlight",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/hit",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/scene-animation",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/canvas",
+      "tests": [
+        "test/charts/polar-line-radar/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/persistence",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/types",
+      "tests": [
+        "test/contracts/radar-facade-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/accessibility",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/create",
+      "tests": [
+        "test/unit/wiggle-area.test.js",
+        "test/charts/streamgraph/public.test.js",
+        "test/charts/centered-area-stream/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/edit",
+      "tests": [
+        "test/unit/wiggle-area.test.js",
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/source-revise",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/encodings",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ENCODINGS.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/scales",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/guides",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js",
+        "test/unit/wiggle-area.test.js",
+        "test/charts/streamgraph/public.test.js",
+        "test/charts/centered-area-stream/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/AXES.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/composition",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/selection-highlight",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/hit",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/scene-animation",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/persistence",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/types",
+      "tests": [
+        "test/contracts/area-endpoint-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/accessibility",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/create",
+      "tests": [
+        "test/unit/actions/charts/violin-plot-facade.test.js",
+        "test/unit/grammar/categorical-density.test.js",
+        "test/charts/cars-acceleration-violins/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/edit",
+      "tests": [
+        "test/unit/actions/charts/violin-plot-facade.test.js",
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/source-revise",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/encodings",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/ENCODINGS.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/scales",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/guides",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js",
+        "test/unit/actions/charts/violin-plot-facade.test.js",
+        "test/unit/grammar/categorical-density.test.js",
+        "test/charts/cars-acceleration-violins/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/AXES.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/composition",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/selection-highlight",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/hit",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/scene-animation",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js",
+        "test/unit/animation/cartesian-density.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/canvas",
+      "tests": [
+        "test/charts/cars-acceleration-violins/public.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/persistence",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/types",
+      "tests": [
+        "test/contracts/violin-plot-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/package",
+      "tests": [
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/VIOLIN_PLOTS.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/accessibility",
+      "tests": [
+        "test/unit/profile-facade-consumers.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:interaction/async-dispose",
+      "tests": [
+        "test/unit/interaction-update.test.js",
+        "test/unit/interaction-preparation.test.js",
+        "test/unit/interaction-preview-preparation.test.js",
+        "test/unit/interaction-resize.test.js",
+        "test/unit/interaction-pointer-capture.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:interaction/restore",
+      "tests": [
+        "test/unit/interaction-history.test.js",
+        "test/unit/interaction-reconciliation.test.js",
+        "test/unit/interaction-update.test.js",
+        "test/unit/interaction-linked-filter.test.js",
+        "test/contracts/installed-native-families.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "path": "test/charts/cars-acceleration-violins/public.test.js",
+      "sha256": "352a144e5ba41e572587a6d10dc5648439c78fc6dbeae2f0795112bab183705c"
+    },
+    {
+      "path": "test/charts/cars-density-area/reference-values.test.js",
+      "sha256": "896e1b1e9b6cef571f5265dd3fc6409d2fae4797b6d7c7625985099aabe13193"
+    },
+    {
+      "path": "test/charts/centered-area-stream/public.test.js",
+      "sha256": "9897b7d00b497bbde4316323c9b7b1e6e33a09881287f8aff88a4f912944bcb0"
+    },
+    {
+      "path": "test/charts/compound-path/public.test.js",
+      "sha256": "1a863008e46f5360d4575bca6ae321ad6a742963e55fab7c45a5ce550b166392"
+    },
+    {
+      "path": "test/charts/contours/public.test.js",
+      "sha256": "4537e25dff3c4c49252309f8915703def15fb2e4ac6ba72af780b32c67048dee"
+    },
+    {
+      "path": "test/charts/geographic-marks/public.test.js",
+      "sha256": "bd94b9491eef1cbfc59ec7122f83ba6efa7ad55294b1dd62b389a700512394c2"
+    },
+    {
+      "path": "test/charts/image-assets/public.test.js",
+      "sha256": "720c69b202a9c973f92e2fb3b213976cf5c11a449fca6d5cea3a20d31db7b15d"
+    },
+    {
+      "path": "test/charts/partition-layouts/public.test.js",
+      "sha256": "bd1e5531042eae29c908d8ccc412f20c1454f5c79ab33f28e6d84522c0e38aa8"
+    },
+    {
+      "path": "test/charts/polar-line-radar/public.test.js",
+      "sha256": "200a649057dd9f74373496e1f97563a42be358126b2a39cae0f0bf508121fb2a"
+    },
+    {
+      "path": "test/charts/pyramid/primitive.test.js",
+      "sha256": "b6c3e2020175b5376ca03ef560c4a289836691c252451b23394b2df5b74b41d1"
+    },
+    {
+      "path": "test/charts/pyramid/public.test.js",
+      "sha256": "dd7536c98dffaddeffe56f50084ee5a57d78705c13ee0e7dac065274275d203d"
+    },
+    {
+      "path": "test/charts/radial-sectors/public.test.js",
+      "sha256": "ab11c2574e9d27ffc0c4a85b3f90bd13a6836496867548b5f9dfd36b8ce68397"
+    },
+    {
+      "path": "test/charts/streamgraph/public.test.js",
+      "sha256": "68bada8b5a389187f4e1f2ded0b5ba331bfd858e11d7afff7cc236aecab2ddba"
+    },
+    {
+      "path": "test/charts/structured-paints/public.test.js",
+      "sha256": "92cc0a506a18e168c797a4c4f73237c894990dec4d7f64029c52b7e58f4e2295"
+    },
+    {
+      "path": "test/contracts/animation-types.test.js",
+      "sha256": "341c175d0dcae79ff3e9de8093c11d18ba228ae819c531c7f7b5f72d93631f81"
+    },
+    {
+      "path": "test/contracts/area-endpoint-types.test.js",
+      "sha256": "e13304c891d051d59bc0a909ba7f136b500d35a698b8a032e8e8fd198e7ebcf9"
+    },
+    {
+      "path": "test/contracts/calendar-plot-types.test.js",
+      "sha256": "c3d70a0ad966821a990ec353594fbeff748fe7e0831c4e722bc5c98135eeeabf"
+    },
+    {
+      "path": "test/contracts/compact-action-cards.test.js",
+      "sha256": "c7957613b2ab1b1b1986aab9e4a9e3163d1852eda9a5aab4c5410d7931e9cc78"
+    },
+    {
+      "path": "test/contracts/composition-family-matrix.test.js",
+      "sha256": "8aec25fa136a506c2a68a48bace254c1d5b57d0472f5b3a9129acee1b807e0b8"
+    },
+    {
+      "path": "test/contracts/composition-recipes.test.js",
+      "sha256": "20cb81c18cef1b488ec7c1859b8d92c77baf40f35e4d6d352365f8b882386d03"
+    },
+    {
+      "path": "test/contracts/compound-path-types.test.js",
+      "sha256": "3c5e17afa9e5fe54e41a21f19143e719ec1da934e91ee9ab4c6372765202e908"
+    },
+    {
+      "path": "test/contracts/contour-types.test.js",
+      "sha256": "13c2c7ee4a51882fcc1f0f5ce57f157f923e85014a187e72c7d94e0d0aa42993"
+    },
+    {
+      "path": "test/contracts/documentation-truth.test.js",
+      "sha256": "40860ab3d771b3c42f0468ed98c6e286c3435b51fa201fc7c691987b07d10891"
+    },
+    {
+      "path": "test/contracts/flow-types.test.js",
+      "sha256": "e25e9f87a67dcbf1c5757c993e87f5841d8fb8491cb5da8b09a95e1fee7ba815"
+    },
+    {
+      "path": "test/contracts/geo-mark-types.test.js",
+      "sha256": "86d97f9fbd173c859f7f1e8a6e7e568edce71447a9bd35f764b25e1bab8d08c0"
+    },
+    {
+      "path": "test/contracts/geographic-math.test.js",
+      "sha256": "75c8dd3660acb9d2da71a0f5b84b0fa513c6aa6b59cbb3241f5899a9bd71d5d4"
+    },
+    {
+      "path": "test/contracts/graph-route-types.test.js",
+      "sha256": "43f08778d538fc7931c7fb8ad813f117d34506851d3afada0150605038bff976"
+    },
+    {
+      "path": "test/contracts/graphic-hierarchy-migration.test.js",
+      "sha256": "90de455e05a2261ed524c4d4f5b94992aaffb5b2487a5e72fb2d6be2add500fd"
+    },
+    {
+      "path": "test/contracts/hierarchy-types.test.js",
+      "sha256": "59249573cadc58ab91f173f90606aff9a9b98e1c72ba3eba739cc611667ca3ab"
+    },
+    {
+      "path": "test/contracts/image-types.test.js",
+      "sha256": "b9fa511d9fac95d40b643224e532d5f384278d0b28f5e9de85ebb58acf8b73d7"
+    },
+    {
+      "path": "test/contracts/installed-native-families.test.js",
+      "sha256": "bb9dd91beb644f02abeb7547785e146e973196705f5291e5a84a43b4c2cd6e2a"
+    },
+    {
+      "path": "test/contracts/native-api-policy.test.js",
+      "sha256": "4223acc483a70aa751210b8aa9da404d0c5f8d7cc46899ccf6f34abbb1c0576b"
+    },
+    {
+      "path": "test/contracts/native-capability-completion.test.js",
+      "sha256": "91f4efc02d604e89e63282967c9054e8acbe89296165a09067f9e89eea0570e2"
+    },
+    {
+      "path": "test/contracts/observed-graph-types.test.js",
+      "sha256": "9687e45bf93cce0abf1eddde6f60a6a4c47b85ae61bae5ff4082906f033c5aa7"
+    },
+    {
+      "path": "test/contracts/ohlc-types.test.js",
+      "sha256": "fa8fe30843b42a47a2cf8c7b1fc5b66823ee56a18da9589779fa8e9bc21301e5"
+    },
+    {
+      "path": "test/contracts/oracle-independence.test.js",
+      "sha256": "01f86b891e92067dee76edcf159358281ed5761b84e6040936396be6047ac183"
+    },
+    {
+      "path": "test/contracts/package-boundaries.test.js",
+      "sha256": "1395d53935d0802821383af036c040355bc855834d4c8648437e29db8926c0dc"
+    },
+    {
+      "path": "test/contracts/pyramid-types.test.js",
+      "sha256": "bf597becdac8b54c68bc695da8c1522181c34fafbc39716c987ecd87134a5c36"
+    },
+    {
+      "path": "test/contracts/radar-facade-types.test.js",
+      "sha256": "27f692ed26f8d89f3f0eeb1500668154f6181db7d8cf68744e7245b7f0f2c9b3"
+    },
+    {
+      "path": "test/contracts/radial-chart-types.test.js",
+      "sha256": "0b269c8d13505c3288d608a1c9257a3417d2f0d29156883cf0b17f636bd07578"
+    },
+    {
+      "path": "test/contracts/structured-paint-types.test.js",
+      "sha256": "6d1bf770897264e2ee17a3c9d3851c609a624f6e9002751f6647a9e1880629ec"
+    },
+    {
+      "path": "test/contracts/table-types.test.js",
+      "sha256": "ab36078916912c71131d1ce5be1fa247d492d53e850466e0045463734ebd9970"
+    },
+    {
+      "path": "test/contracts/trail-types.test.js",
+      "sha256": "364259a8946b563bebe309f6dcb710f488763069caf03cf177a02ea22eaa684a"
+    },
+    {
+      "path": "test/contracts/verification-evidence.test.js",
+      "sha256": "ec3ca9113e6f703be62bc9b0604effe5ed26ec322a81bd981795afdac6d72443"
+    },
+    {
+      "path": "test/contracts/violin-plot-types.test.js",
+      "sha256": "3ff362be04bf687243ae2294aac56bd9a71c474e63c37b368c485d30dbfd705e"
+    },
+    {
+      "path": "test/contracts/waterfall-types.test.js",
+      "sha256": "84a904c88af0934eae40428c788dafd16844cccbb168208dcd463dcd2163b25a"
+    },
+    {
+      "path": "test/unit/actions/canvas/responsive-lifecycle.test.js",
+      "sha256": "d72251622b67d9a2bf42003161b0cbb41c0b5a43e2e21436add0e57bab234692"
+    },
+    {
+      "path": "test/unit/actions/charts/polar-facades.test.js",
+      "sha256": "6a3078c72b739d166d4a6b7613b8f3504939e81abb9b3c4aab3f9a8e91225eef"
+    },
+    {
+      "path": "test/unit/actions/charts/radar-edit.test.js",
+      "sha256": "ef167a26fee1737feb089f5671cf96097d771c202b196870da07d90ab7a9bf90"
+    },
+    {
+      "path": "test/unit/actions/charts/radar-facade.test.js",
+      "sha256": "fd49c6b3505046c1dd25bf28b8be5396699e6deab26ce5fd20f5778aad9fa026"
+    },
+    {
+      "path": "test/unit/actions/charts/radar-summary.test.js",
+      "sha256": "7aa779956d9fdbdee978b6fe1ee408439d2f8e80ee40c6b15375d4962ad66424"
+    },
+    {
+      "path": "test/unit/actions/charts/radial-plots.test.js",
+      "sha256": "e6fd0eda185e0c00c0611ef504e79578b20c1e777a5e8df8f542e7bd2d3dadbc"
+    },
+    {
+      "path": "test/unit/actions/charts/violin-plot-facade.test.js",
+      "sha256": "c45e2deaac117eb3a96e6dba5192606542d2d03b15e511e3c53e8ae1e0cdf7f4"
+    },
+    {
+      "path": "test/unit/actions/composition/polar-facets.test.js",
+      "sha256": "af874c3c0805ec22b664546fb366baa0d609c71468dd6a9690e39b4fc17e8e31"
+    },
+    {
+      "path": "test/unit/actions/conditional-encoding.test.js",
+      "sha256": "165a67f35d094f7210f5ecb48dd182982cc563a89931b47ba2b6f2f86dd9fc3a"
+    },
+    {
+      "path": "test/unit/actions/data/calendar-completion.test.js",
+      "sha256": "e46a04d6f985fbb32f8c032dfd10f8d9e18654a97e0f0458d7e9d514c7f18bec"
+    },
+    {
+      "path": "test/unit/actions/data/computed-v2.test.js",
+      "sha256": "6e3f5683bf500a9c3d95bc6cbebc593617b4fe0f10d37179d9c869f85fa87e5f"
+    },
+    {
+      "path": "test/unit/actions/data/density-data.test.js",
+      "sha256": "5ee9ce62a5168eff155b404a70bb0626c043d85696248275a74758818cbba3ca"
+    },
+    {
+      "path": "test/unit/actions/data/pivot-data.test.js",
+      "sha256": "1d5edd4cdae3bfe8e02136bb8daa6b540ced78173e99ae03344dc3c167a9203d"
+    },
+    {
+      "path": "test/unit/actions/data/robust-loess.test.js",
+      "sha256": "ada2a56f949edadfe2db568f72829b5dc3efa557bf073959175e127aa61d10b8"
+    },
+    {
+      "path": "test/unit/actions/data/row-identity.test.js",
+      "sha256": "5c5602ec7efb4835aeaaf5961e6caf6dcf6436cfa95fbf7ca4466f9e51381901"
+    },
+    {
+      "path": "test/unit/actions/data/row-lineage.test.js",
+      "sha256": "eeae271066a902014d036999c2828f65533d98a17ca5e74994a38653eacd86f1"
+    },
+    {
+      "path": "test/unit/actions/encodings/polar-position-encodings.test.js",
+      "sha256": "10a828c39b6cacec869af99cbad402812e467e99798f48d2af5115e7b4de6501"
+    },
+    {
+      "path": "test/unit/actions/marks/structured-fill.test.js",
+      "sha256": "ec91220326c276435be59fd78acbeb7d5acebba690a2c9a18b5ee68cbae02746"
+    },
+    {
+      "path": "test/unit/actions/theme-paint-consumers.test.js",
+      "sha256": "a2825bd281c73f9c71d4d3f2498a7fd3e9b90ba2d5d8e7d108c28470b59ecc8f"
+    },
+    {
+      "path": "test/unit/actions/theme-provenance.test.js",
+      "sha256": "130b173bd553a15495412c726336f97f6ae4fb49f797f822d35eea01091da93b"
+    },
+    {
+      "path": "test/unit/actions/theme-typography.test.js",
+      "sha256": "7fd22f30f635fbf7c7cc9a697fe53babc625441b54fe9afd26eb5fa07a619502"
+    },
+    {
+      "path": "test/unit/animation/cartesian-density.test.js",
+      "sha256": "2c31bae46f97b35c8724a5a299d717574c86fadf2807d5c37f9244a9aae3d76b"
+    },
+    {
+      "path": "test/unit/animation/cartesian-fallbacks.test.js",
+      "sha256": "73fa7737f2c1014f5c9cd1c436f58a9ccdd3d028a18ab205443e3c142c6a12df"
+    },
+    {
+      "path": "test/unit/animation/cartesian-values.test.js",
+      "sha256": "6eb2d89ed316332def13738a8280cdbbf9d8e560d16f5cdf8480ed73692041a2"
+    },
+    {
+      "path": "test/unit/animation/domain-facade-fallbacks.test.js",
+      "sha256": "acfcbc4e0a21a8fb87e15bdde36c5c591bcdc234a6a6eab940d2b65633b945b1"
+    },
+    {
+      "path": "test/unit/animation/geo-lifecycle.test.js",
+      "sha256": "c3fb2c6c2e7c7b4ec7ff276d9452da21e4961ec84fe9a94e3eb21ce3e392ba76"
+    },
+    {
+      "path": "test/unit/animation/geo-public-selection.test.js",
+      "sha256": "b5f85c83101de1e41727c9402d10661dbdde7806c06a672ccf5f99bca5bff1de"
+    },
+    {
+      "path": "test/unit/animation/geo-public.test.js",
+      "sha256": "c6608e79c3c7257927715bd92bfe3e580dc34c6395b2e596099c605295a49a90"
+    },
+    {
+      "path": "test/unit/animation/geo-source-hit.test.js",
+      "sha256": "24f946257e1ba3bf6296aa4e7b13d20cf1cd0a164690292a81dd5338ce14ff39"
+    },
+    {
+      "path": "test/unit/animation/geo-text-assets.test.js",
+      "sha256": "b8fa75749339056c922cf0b7d6e9350cd1620e875e173e0c429acd495ff65d80"
+    },
+    {
+      "path": "test/unit/animation/geo-text-public.test.js",
+      "sha256": "e7918a3df95f41e3e2f34f5c48a4d2c78887146244af07a480451136b81da98b"
+    },
+    {
+      "path": "test/unit/animation/graph-presentation.test.js",
+      "sha256": "2488bacc36f7f53ea40bb5f27e1e4ff59c5fdfb6026949c725fd14b5d6d79625"
+    },
+    {
+      "path": "test/unit/animation/graph-public.test.js",
+      "sha256": "2284ddeefddc6222fe3250def148f4ed0116dcfac7b2237f9e4511890c97dffd"
+    },
+    {
+      "path": "test/unit/animation/graph-tracks.test.js",
+      "sha256": "2ad673b4fbdd728a82974c73e5e6e930bc5f2708b9e44476066f5e1a4a9b5ce0"
+    },
+    {
+      "path": "test/unit/animation/matching.test.js",
+      "sha256": "52a5af1d22ff72779eaee44b768921655f629f06ce21a2128d4708fb2f46eac8"
+    },
+    {
+      "path": "test/unit/animation/offline-assets.test.js",
+      "sha256": "db763c17ee26bce2178ed5a32f752d8c5931d2d96c8d27cda551ab2750baf5bd"
+    },
+    {
+      "path": "test/unit/animation/offline.test.js",
+      "sha256": "d7bc33bf1a858f8e6c18730727cc637cb9508798edac47a66a54ee0d9f52cb8a"
+    },
+    {
+      "path": "test/unit/animation/partition-transition.test.js",
+      "sha256": "516f3039fc60841ba1d2a1d28da7278df1ec75832152a665baf0195b560c1e9b"
+    },
+    {
+      "path": "test/unit/animation/planner.test.js",
+      "sha256": "b3bb760a21b1c46d246626187adf21fd816fdf487f5e27b5232d012c501b4b62"
+    },
+    {
+      "path": "test/unit/animation/player.test.js",
+      "sha256": "771f53f6fd5f191f037097ede8bc07eacbf174f39195ca1bb3d0fbae3cd96eb6"
+    },
+    {
+      "path": "test/unit/animation/polar-kernel.test.js",
+      "sha256": "7aa19e2acffe7cdba01e74acb251af93da708416d91ed79d05ca014850c155aa"
+    },
+    {
+      "path": "test/unit/animation/polar-lifecycle.test.js",
+      "sha256": "198341cfcd240ef1f22f5e280b621f22dc157fd073e4a1e6e95f4969fae5eaa0"
+    },
+    {
+      "path": "test/unit/animation/rebase.test.js",
+      "sha256": "0e5608a0d92fcddba86a88904600d4f567eab8099272dd05be62de71173e3dee"
+    },
+    {
+      "path": "test/unit/animation/resource-layout-fallbacks.test.js",
+      "sha256": "2fef284a71fd3ab7290c46a702ca1c645a7c472aaacffbc83e4102b352f3f5aa"
+    },
+    {
+      "path": "test/unit/animation/resource-mark-fallbacks.test.js",
+      "sha256": "488ce44689106b966fdc06571b51b01606b53340357d106efa1c8e38c70bbdd2"
+    },
+    {
+      "path": "test/unit/animation/route-session.test.js",
+      "sha256": "28a2b935f1bc5218e0e1d2b0bc76dbc4f969379de486752466f0651733f6f973"
+    },
+    {
+      "path": "test/unit/animation/routes.test.js",
+      "sha256": "f9b0004a03738213db3d722ed03c8689c92ef38d7a94b332946b2aafa0455f77"
+    },
+    {
+      "path": "test/unit/animation/timeline-public.test.js",
+      "sha256": "9e904e629a0e7866f6c02a78867af74f41f1951666d0172eccb7d0462643b379"
+    },
+    {
+      "path": "test/unit/animation/timing.test.js",
+      "sha256": "922d7cd627e619eb5edff2cc20af9124944f4532445239c04046e3c03b2475e2"
+    },
+    {
+      "path": "test/unit/animation/values.test.js",
+      "sha256": "b3513ec0c034119eb80ca3c9d78d37af819151191ed124df2840232772f93758"
+    },
+    {
+      "path": "test/unit/calendar-layout.test.js",
+      "sha256": "4332560c7d52277522f5a35f5e26cb486bea96582244b86fc7e06de5324318a8"
+    },
+    {
+      "path": "test/unit/composition-recipes.test.js",
+      "sha256": "4250334b1c9c2ab2509f2792684a0b09b5564104bf98113095802a4bc21ce893"
+    },
+    {
+      "path": "test/unit/contour-density.test.js",
+      "sha256": "c574fe877c448c58cbc987b90b1d5f6a4deaf56d3a7b6105ae1690ffe69565f4"
+    },
+    {
+      "path": "test/unit/contour-layouts.test.js",
+      "sha256": "73c793e714ef8e4b3329defe2d8b1e340cf560fa9cef51577cf1a6ae5f7a53e0"
+    },
+    {
+      "path": "test/unit/core/item-identity.test.js",
+      "sha256": "4e64bf2dc7e6cac49568623fe21cd557e607767c2cf749962d0d76fe35a4c4b2"
+    },
+    {
+      "path": "test/unit/frame-state.test.js",
+      "sha256": "303ebfb5345fd27258245eefa4ac6647673eae19abe899be9c12ec5d026c530b"
+    },
+    {
+      "path": "test/unit/geo/annotations.test.js",
+      "sha256": "5e02bdb86f48c0794bd92868a81308f8cce062b1482713910ef0bd0342ac8875"
+    },
+    {
+      "path": "test/unit/geo/camera-actions.test.js",
+      "sha256": "18a7f3279d5df10a00179b47ccf704969cea4bd6e414bd2ea1320563ea38b2cc"
+    },
+    {
+      "path": "test/unit/geo/camera.test.js",
+      "sha256": "6cd2dfad87ebfa15049f3c3a191ebfda97577a8a546a3b77eee9e77d1f540d8a"
+    },
+    {
+      "path": "test/unit/geo/conditional-encodings.test.js",
+      "sha256": "564b393f5d6ef1cabcbbeedd6b5640b2624f8171997ee62ea279905a96f536aa"
+    },
+    {
+      "path": "test/unit/geo/coordinates.test.js",
+      "sha256": "aec325d92e1e50109dc3777d35a97b9c572e3e39c30e2991e166a0559cae8d31"
+    },
+    {
+      "path": "test/unit/geo/encoding-lifecycle.test.js",
+      "sha256": "e5bf5f309882f8ed682d288afb96f6055d13a7b7cb68c0217abf048cd9d511c2"
+    },
+    {
+      "path": "test/unit/geo/encodings.test.js",
+      "sha256": "86e8b75001d0fccf8e704f255673fe0a9ec6e451d98ccd548f60be72fcc64d81"
+    },
+    {
+      "path": "test/unit/geo/geometry-data.test.js",
+      "sha256": "18a4e5cc482b3fdf09a59f4996ca3c28f47a8fc73fe115c0cb77cef7c18852e7"
+    },
+    {
+      "path": "test/unit/geo/geometry-resources.test.js",
+      "sha256": "34d6fadcc782e9f1e9dce291311a8fe7588f4f635b186424257998cb587f466e"
+    },
+    {
+      "path": "test/unit/geo/interaction.test.js",
+      "sha256": "2619ec4c2b9f4fbd71060ccd65a587c902b83f55e9e99a4b758ddc076a13a212"
+    },
+    {
+      "path": "test/unit/geo/join-resources.test.js",
+      "sha256": "550708b09ee0f8a4f590779a884a58540657de4ed08a8d6a165809d77015464a"
+    },
+    {
+      "path": "test/unit/geo/lod-resources.test.js",
+      "sha256": "fdbfb39f9f8718acee3beb5d433cd1a3da809ee627f482e4e40e68128dc750ce"
+    },
+    {
+      "path": "test/unit/geo/mark-consumers.test.js",
+      "sha256": "7e4d15ef1f0108ce94fefad0bb21e1d7aec8ce923d6385df503c24d303747a12"
+    },
+    {
+      "path": "test/unit/geo/marks.test.js",
+      "sha256": "c98fe916b9af9fb523a3eae7ceeddb9149e75f0d4e2606e341cabc13e302af6a"
+    },
+    {
+      "path": "test/unit/geo/projection-resources.test.js",
+      "sha256": "19be072032b75999713525ad408756da1f063003a9d65d5eef462910fc75b36e"
+    },
+    {
+      "path": "test/unit/geo/projections.test.js",
+      "sha256": "a9965064a9cd1da89bcb896f4ff0a470b799f74ea33f5415dc664f8fb2765c20"
+    },
+    {
+      "path": "test/unit/grammar/categorical-density.test.js",
+      "sha256": "1bfdb883a10e9348a281260cf293c2182a16664c27cb66ccf75d555fdc8aee50"
+    },
+    {
+      "path": "test/unit/grammar/financial-roles.test.js",
+      "sha256": "b9d814089644b8160740881932748e812959e86f6b5e759c8fc305c1cc668817"
+    },
+    {
+      "path": "test/unit/grammar/frame-policy.test.js",
+      "sha256": "e12025d922746b6fcccefd85319a728b21c66f20c86a5bcc6b37a8a6ed79204b"
+    },
+    {
+      "path": "test/unit/grammar/graph/approximate.test.js",
+      "sha256": "3e05b78447373e9e02ed91aa34ae1a4a60e77882c52baf427f658d2f65ee1a99"
+    },
+    {
+      "path": "test/unit/grammar/graph/edge-identity.test.js",
+      "sha256": "9a52fce3bec1323de633594a7df452d0569abc651a7a8d9f51a9eb16112070c9"
+    },
+    {
+      "path": "test/unit/grammar/graph/metrics.test.js",
+      "sha256": "34348f74df336c7409680c88514a36999d33e617675e3800b8ca5c28fa60eadf"
+    },
+    {
+      "path": "test/unit/grammar/graph/neighbors.test.js",
+      "sha256": "d56e99798276766d574f62af12be9fdafc05e879221d3a3a445165ebfeb84571"
+    },
+    {
+      "path": "test/unit/grammar/graph/routes/density.test.js",
+      "sha256": "ae608755602f8f4dae0dab21c1b6f19623c89504d62350a576e0632724c45a7b"
+    },
+    {
+      "path": "test/unit/grammar/graph/routes/edge-path.test.js",
+      "sha256": "c7b3e79fadd43f6ae3c2379a1baa0ce63dcc584ae6576bcee20a635a78613328"
+    },
+    {
+      "path": "test/unit/grammar/graph/routes/force-directed.test.js",
+      "sha256": "f8b03e81e813dad5c71053335c4c9e98d18055ce2afb728752be02f76157b284"
+    },
+    {
+      "path": "test/unit/grammar/graph/routes/hierarchical.test.js",
+      "sha256": "f4aa77e0c7fbb45b58baca59ea3e3a0711c6548601b216f5b2bd758ad8fbcc1b"
+    },
+    {
+      "path": "test/unit/grammar/graph/search.test.js",
+      "sha256": "94ad4ebce49e000d9787ca45dcb8e10ecc06929f352ef9ba23d59920afec7046"
+    },
+    {
+      "path": "test/unit/grammar/graph/spanning.test.js",
+      "sha256": "f0971a632c5c82b42204eb87143ac770a22efbea5cbc58128e9c5838583b2f9b"
+    },
+    {
+      "path": "test/unit/grammar/graph/structural.test.js",
+      "sha256": "0b5ec78aae6919e9a88576862d8f9597304999dd33879f97f2f8cf003da1c7c9"
+    },
+    {
+      "path": "test/unit/grammar/hierarchy-partition-mapping.test.js",
+      "sha256": "af1cf7d60c6e437a9fb2bfb0f9453a0aa74bd4ba5ac0b40790eea075d62dd6ec"
+    },
+    {
+      "path": "test/unit/grammar/hierarchy-partition-view.test.js",
+      "sha256": "c721f279a45c5e6aa7d00cb95d6c0409f5492df63f3bee7e43439ccc26f59ea6"
+    },
+    {
+      "path": "test/unit/grammar/hierarchy-partition.test.js",
+      "sha256": "098f0a38f204250da735246375624e6cf1380fd0efc7c1cca0415236eee5f38b"
+    },
+    {
+      "path": "test/unit/grammar/hit-coordinates.test.js",
+      "sha256": "00f588ee8866020fc088444df402f516afda2b73abdf3bf7dee8abeb9c7cdd0b"
+    },
+    {
+      "path": "test/unit/grammar/hit-index.test.js",
+      "sha256": "503f5c507fb99a244ac253526bab3a0bd962c5197f0e8a1b99cb950b4b3f8a5f"
+    },
+    {
+      "path": "test/unit/grammar/hit-shapes.test.js",
+      "sha256": "b336b7da5fe129c6770dcab9af946b226780ea43f5f37ae94067b21a0475b319"
+    },
+    {
+      "path": "test/unit/grammar/hit-stroke.test.js",
+      "sha256": "48a28b754cf4a0588c45e56414c426c566219f4d32f60ea7244f76544bdd1188"
+    },
+    {
+      "path": "test/unit/grammar/measured-radius.test.js",
+      "sha256": "4ecfe8aad77f93df33013f99db051f93197121f9b3e7578c559d0228aed4a42f"
+    },
+    {
+      "path": "test/unit/grammar/polar-line-series.test.js",
+      "sha256": "183b3b45eb2f4a00604d557948d49b660acbba0b32de2364b93db1359f843862"
+    },
+    {
+      "path": "test/unit/grammar/polar.test.js",
+      "sha256": "ed3e047e815a7b45aecde20500fde31d0a452084d606e01e83c99b8b69859e55"
+    },
+    {
+      "path": "test/unit/grammar/pyramid-layout.test.js",
+      "sha256": "294cd78a8903e1514641b7a1b4e9e67656e5785ef28305d839086eccbd9bf734"
+    },
+    {
+      "path": "test/unit/grammar/stream-baseline.test.js",
+      "sha256": "42c8470ff7342ef066c8e1673be5c8cd5befc463892b88891cd4b27afa23d36a"
+    },
+    {
+      "path": "test/unit/grammar/table-cells.test.js",
+      "sha256": "b796614684fe8105332fd684214d8cbf5d789de412e1d1799b8ee954c5090295"
+    },
+    {
+      "path": "test/unit/grammar/table-data.test.js",
+      "sha256": "b1922162626ed1b19ec39cb725c3f4c54fb58c70952164965f0b0315c9010af5"
+    },
+    {
+      "path": "test/unit/grammar/trail-curve.test.js",
+      "sha256": "4ec545a36f398c24e5f86f026a57f7dcab6cdd827b95ed8ef1ec57356dcb2d7b"
+    },
+    {
+      "path": "test/unit/grammar/trail-series.test.js",
+      "sha256": "d8f0d209db3eeee4e9668f0b692400af7057ec20a882593fb4c6f51d61d48f0b"
+    },
+    {
+      "path": "test/unit/grammar/trail.test.js",
+      "sha256": "ef5157ff279c67ae3add20bd5b29ff44e3f4f7decee3272f73b0cec71b9bc16a"
+    },
+    {
+      "path": "test/unit/grammar/transforms/numeric-invariants.test.js",
+      "sha256": "e374dbe0df799f7377dee861c81674295765f28289f61f5f05e51660f11b46ad"
+    },
+    {
+      "path": "test/unit/hit-frame.test.js",
+      "sha256": "ab9f3fc87eb13b953e759588ca6c1cfe1a75981a869a2cd21e8c046027e4f4ac"
+    },
+    {
+      "path": "test/unit/hit-guides.test.js",
+      "sha256": "3246fa6f466543f0e9ac7e5d6417904a2d7c70c3a05172fe65b67b021eda7443"
+    },
+    {
+      "path": "test/unit/hit-program.test.js",
+      "sha256": "736cf356191585a7fb56af3d8fd4e8964804d6fb890bad4c37aa758cfd7ef126"
+    },
+    {
+      "path": "test/unit/interaction-animation.test.js",
+      "sha256": "0b473273fb2006961f75e2fc1883fc8cac4ee675708a29dd2f37be1d7271e772"
+    },
+    {
+      "path": "test/unit/interaction-annotation.test.js",
+      "sha256": "aeb5db2ff6d9b71c22f514022edd5b01194378c3dd836a1e1c5b8fb184b80981"
+    },
+    {
+      "path": "test/unit/interaction-calendar-region.test.js",
+      "sha256": "75d8141c5076f127d6548f74c376c702c293f55ceb9fc564a51acd035969411b"
+    },
+    {
+      "path": "test/unit/interaction-direct-controls.test.js",
+      "sha256": "4ac1cfc56464df08813c12b62f7adbd55d5e3eaa07c5d4cce2fa6dbf89f15def"
+    },
+    {
+      "path": "test/unit/interaction-edge-presentation.test.js",
+      "sha256": "b1437729d568da34ddfd50e3fd5032855eee065e3795ee8d88fe15c543296f07"
+    },
+    {
+      "path": "test/unit/interaction-geo-representation.test.js",
+      "sha256": "2cfea083e90c732a9bb6e7ef8a92aaf78cce71867cfb2c8f14136bdfdbc19cc8"
+    },
+    {
+      "path": "test/unit/interaction-history.test.js",
+      "sha256": "4e52cf02391899da46851adb398281cec2d029fa2d499e13dd26fbcf61e5db7f"
+    },
+    {
+      "path": "test/unit/interaction-linked-filter.test.js",
+      "sha256": "ecc27a6e76452abce9e3717e044d977db3cc6cdfbc41739220c9de653085a330"
+    },
+    {
+      "path": "test/unit/interaction-native-composition.test.js",
+      "sha256": "974bbe1c9ed2defca956fd77da1debcc93c5ed0e37a10123489f8aaa91fbb885"
+    },
+    {
+      "path": "test/unit/interaction-pointer-capture.test.js",
+      "sha256": "bca01ec03f83e512f55fb211e590353579ad50b6078242490bc3fad7cf15f8ee"
+    },
+    {
+      "path": "test/unit/interaction-preparation.test.js",
+      "sha256": "46b4c26b7d2ca60de5b9ef2deeaeace11f781cb7816035ce23bc5f9c904b954d"
+    },
+    {
+      "path": "test/unit/interaction-preview-preparation.test.js",
+      "sha256": "5641dd073d398b501e0d5183c49d454c2fb9717f7873311bd06f9f90c16d12b9"
+    },
+    {
+      "path": "test/unit/interaction-reconciliation.test.js",
+      "sha256": "0ae58562fbf7f869f28ac02e55418c065e0d3b175f44dd41d2cf5e5ecd347088"
+    },
+    {
+      "path": "test/unit/interaction-region-gesture.test.js",
+      "sha256": "f8ab4c7cd8e591d2163c8b671b73d6a42fc5fa6f6c2a5b55e64799eaed80c67a"
+    },
+    {
+      "path": "test/unit/interaction-resize.test.js",
+      "sha256": "9de960e87c59de30598bab2839d08b9a572263336e18c45c50c512262f779e8f"
+    },
+    {
+      "path": "test/unit/interaction-session.test.js",
+      "sha256": "fbc25b99a9c48dd72656150042b13ac746c7f52074b2e4b07750d791c01ba9cf"
+    },
+    {
+      "path": "test/unit/interaction-update.test.js",
+      "sha256": "33f77431c792916753bc447e453c93e07fa6e04890e96bc7033966e2900c3fda"
+    },
+    {
+      "path": "test/unit/materialization/conditional-dependencies.test.js",
+      "sha256": "add770f07ed0c0654bb87d2f5f4b937d1010da564c555f3611da3ae2fdeb7f2c"
+    },
+    {
+      "path": "test/unit/materialization/table-content.test.js",
+      "sha256": "0f5dc837d5d8ea799c3352dd8e0c262d9574df2895f941e33b70ed75b7408d81"
+    },
+    {
+      "path": "test/unit/ohlc-plot.test.js",
+      "sha256": "500191882fe8267b4d90a80b8f98743b4325c9e0123b1cb5e9577a77e923b019"
+    },
+    {
+      "path": "test/unit/oracles/native-fixtures.test.js",
+      "sha256": "66c98c9cdf0aa442271cb79bb5c6755efd2d93bafad8d5491f48871697a42552"
+    },
+    {
+      "path": "test/unit/persistence/codec.test.js",
+      "sha256": "1eb851249f793b38f6418445997f2b376b4d7e3d3a8aa531b7cd55e550804660"
+    },
+    {
+      "path": "test/unit/persistence/image-resources.test.js",
+      "sha256": "f3de329adadf49326e82745a3761f7301de69ed51acaa743e9656eb47a4d39c6"
+    },
+    {
+      "path": "test/unit/persistence/legacy-selection.test.js",
+      "sha256": "707c43ce9999f77d89d2ca639dfa159ebc58836b5b36d4b033e773c7abbbbbeb"
+    },
+    {
+      "path": "test/unit/persistence/program.test.js",
+      "sha256": "7f3c63cdcdc1c1b2c5c92dd71b35f9b87e1eacd3d4dc71f6689c9ea2e4e613d0"
+    },
+    {
+      "path": "test/unit/profile-facade-consumers.test.js",
+      "sha256": "d672147740bc51037a3f734fcd08eec2e64ead0befde765af1f4b3880b87429c"
+    },
+    {
+      "path": "test/unit/pyramid-plot.test.js",
+      "sha256": "e428d4e3f17099fcd9d8e73b07f735b2058c4dc843177f28d4882175b1fca0ee"
+    },
+    {
+      "path": "test/unit/renderers/image-rendering.test.js",
+      "sha256": "1526675d064f7ce4749da26401ab7c84bb1f09a9824a2a364f96bde08e93ab68"
+    },
+    {
+      "path": "test/unit/resources/calendar-plots.test.js",
+      "sha256": "152adeea41b6a6fdefa0843087004131301bbdf566fc058836f0b875c6ebab8c"
+    },
+    {
+      "path": "test/unit/resources/contour-marks.test.js",
+      "sha256": "50b43ac78f8603a59f668d9dc68f36637d73c666cfef78afa97512c10589f84e"
+    },
+    {
+      "path": "test/unit/resources/data-update-preparation.test.js",
+      "sha256": "ca0933a86a825a1069f0723a5dc4d0948ca923731465d2be13655148be6db25c"
+    },
+    {
+      "path": "test/unit/resources/flow-consumers.test.js",
+      "sha256": "8faa6caae370a5ef2d84df59940dc91d2bbccba9a4495231bb1c0b7275ff7df5"
+    },
+    {
+      "path": "test/unit/resources/flow-plots.test.js",
+      "sha256": "72eb6b22f0601e730d3b55a1bcab259552f9b64e4a4ce0c6edb9bf155ec30777"
+    },
+    {
+      "path": "test/unit/resources/font-layout-lifecycle.test.js",
+      "sha256": "157ef83e22abf154bda04b55361de1fbf18beaea7ed8f8118a7d3fedd61dfd63"
+    },
+    {
+      "path": "test/unit/resources/font-preparation.test.js",
+      "sha256": "416d431fa90ded3e88bb09d8ad7061255774db1b49e50305f8f8afe48e80c194"
+    },
+    {
+      "path": "test/unit/resources/font-public-preparation.test.js",
+      "sha256": "95be7be655e91c057da9fae924529583847be58db390db47b35c232b1c3aa401"
+    },
+    {
+      "path": "test/unit/resources/graph-filter.test.js",
+      "sha256": "54794ce83e23fc301772cc530aea536fa4bdb47d29d860d62cad9e66279a27c3"
+    },
+    {
+      "path": "test/unit/resources/graph-plots.test.js",
+      "sha256": "eef5c88f11e7fce7124eecf001fcfafa660bbad046fd2707449592fdfbb0b972"
+    },
+    {
+      "path": "test/unit/resources/graph-recompute.test.js",
+      "sha256": "02c551b747fd144a60af0318c908371238f1a40eb0a282f0b1dd29755baaa6a8"
+    },
+    {
+      "path": "test/unit/resources/graph-route-lifecycle.test.js",
+      "sha256": "cab22f75bd313793f8025ee122cde18828b606d2408d7136d0bb723b86ce0eee"
+    },
+    {
+      "path": "test/unit/resources/graph-routes.test.js",
+      "sha256": "88cd04f45cf4305ec6e2c7fbe3750f573dcccc2146bbf051cdef4e547d6fe21c"
+    },
+    {
+      "path": "test/unit/resources/hierarchy-consumers.test.js",
+      "sha256": "20055b08cc07beaec84fff889d569b6e84e7390e877465bdf5ed11190b92ff55"
+    },
+    {
+      "path": "test/unit/resources/hierarchy-validation.test.js",
+      "sha256": "b13c2ce2d741c4c3732c776a544ee716ab58d22b8163840be2138a0ae600ce34"
+    },
+    {
+      "path": "test/unit/resources/image-preparation.test.js",
+      "sha256": "0f91bed1021fafaa213f5b6c6089ec4ca68155800e58f18779fd3870f95c4dc6"
+    },
+    {
+      "path": "test/unit/resources/image-resource-lifecycle.test.js",
+      "sha256": "d0f6a184b9d86969f8899883205c5f36d2481894725e4e96a79a462f22bc47b2"
+    },
+    {
+      "path": "test/unit/resources/partition-frames.test.js",
+      "sha256": "f3aa7499125864f2657cff3c8f075cd7ca0991ecb5ec853d334ef8bd770f1570"
+    },
+    {
+      "path": "test/unit/resources/partition-plots.test.js",
+      "sha256": "63e76a07a28641b4314bdd3cdc205117d60467e4d5217f287f7ab8a855a2f10c"
+    },
+    {
+      "path": "test/unit/resources/prepared-conditionals.test.js",
+      "sha256": "8d7ea789607073aaf3d261fefc6cf213f77b25cca9f536eaee56b90080eb7f9e"
+    },
+    {
+      "path": "test/unit/resources/prepared-data-public.test.js",
+      "sha256": "05e291aa6f3d95437e39898a2766253993e3508a3da2ad93534b295360d043d7"
+    },
+    {
+      "path": "test/unit/resources/resource-composition.test.js",
+      "sha256": "8e3a4152b4734f652fa70060900c7bc7b6f6a770adf13eb29aa5a0159970fafa"
+    },
+    {
+      "path": "test/unit/single-y-admission.test.js",
+      "sha256": "5eb3cfd175ddf19bc5b2982c9ed090bd47f1aded6c4c241683f34120b33d72fe"
+    },
+    {
+      "path": "test/unit/single-y-aggregate-admission.test.js",
+      "sha256": "9e3bcf682f313814f881de30c23e682c6586d45ba92b4191f1a466cd606d95d0"
+    },
+    {
+      "path": "test/unit/table-consumers.test.js",
+      "sha256": "fcf747751e39c1b85dc66df0152dfbed1e3b2c0b67a2fac64f6cdf849d8eda9e"
+    },
+    {
+      "path": "test/unit/table-plot.test.js",
+      "sha256": "815b3c989d28b0887f30bee3add38aee1188f22e39192434e1ef03d983875398"
+    },
+    {
+      "path": "test/unit/trail-plot.test.js",
+      "sha256": "51057f3b8053d438250b361cde04212b020e2b3d6f53a900481434dc543efd71"
+    },
+    {
+      "path": "test/unit/waterfall-plot.test.js",
+      "sha256": "46263f68baba25425ab33f3d27cc1d7c17ed415d0c82a300e1097d818546eeae"
+    },
+    {
+      "path": "test/unit/wiggle-area.test.js",
+      "sha256": "a85cc7d2dc2180750c6831a53f09659970f297cf3ba727f8ca8a1f9654ec07f8"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "agent_docs/contract/current/ACCESSIBILITY.md",
+      "sha256": "18fda30aced0976a8ee903f99d0dc9ab26eadc9221ad8386bdaca0b85366c387"
+    },
+    {
+      "path": "agent_docs/contract/current/ANIMATION.md",
+      "sha256": "23ef391cda18e3828959a2b0d53674cf12ad646ef280446af96c63b4f9b28857"
+    },
+    {
+      "path": "agent_docs/contract/current/AXES.md",
+      "sha256": "3d647bd7539b113490fd2d28d474858c4ebbcf303125166a5287919d657f6893"
+    },
+    {
+      "path": "agent_docs/contract/current/CALENDAR.md",
+      "sha256": "f33fc4ec437ba6cf9e3091651962f35e37523666fc093ff103e750dd8110f502"
+    },
+    {
+      "path": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "sha256": "2374fdd4852a0c60bb3e4cdd9011e740fc0e356cfc5ec668113918e66d6ad49b"
+    },
+    {
+      "path": "agent_docs/contract/current/COMPOSITION.md",
+      "sha256": "bbfc8dca1d76861d88c8d16f646f2dcb8064517fd514dc66d54cf482230ed379"
+    },
+    {
+      "path": "agent_docs/contract/current/CONTOURS.md",
+      "sha256": "c35a35bafb8d866596c6d471678a64c8a732d697680da38f75d168015db90623"
+    },
+    {
+      "path": "agent_docs/contract/current/CORE.md",
+      "sha256": "36aee69d7cd4e3a093e490bcdb8063ff680fd3b1a39e30e0530c3515ba1110ec"
+    },
+    {
+      "path": "agent_docs/contract/current/EDGE_ROUTES.md",
+      "sha256": "1a33fde8219c4969a9a9e3f544a59cd9b4adde6e48633d4230cf6f96eba6e672"
+    },
+    {
+      "path": "agent_docs/contract/current/ENCODINGS.md",
+      "sha256": "4cf79ba5be5818754fc0df4c234d0d072d13d6f81e1f8552ea7a9f95544f8e05"
+    },
+    {
+      "path": "agent_docs/contract/current/FLOWS.md",
+      "sha256": "ed3f2db56119ddac2b6081e8f865ec13bd0a19fe5d2dc70f92e02d01d7811f00"
+    },
+    {
+      "path": "agent_docs/contract/current/GEOMETRY.md",
+      "sha256": "15a53a97c81ed32d7bc27ab946d052308ef59c7b94fce7521352a9f933fc0a34"
+    },
+    {
+      "path": "agent_docs/contract/current/GRAPHS.md",
+      "sha256": "63ba6d01a56951bebf46d0168052a1fbe89c59fd9c21e836907310354cc6df2a"
+    },
+    {
+      "path": "agent_docs/contract/current/HIERARCHY.md",
+      "sha256": "869125cc63a1af442151e008d7f9d659cedae91ae875ec777846d068f7e94832"
+    },
+    {
+      "path": "agent_docs/contract/current/INTERACTION.md",
+      "sha256": "0cf59ba6fe578cb4dcae952d15580e451baa4130270dbf19d74d8394d73ead75"
+    },
+    {
+      "path": "agent_docs/contract/current/MARKS.md",
+      "sha256": "2ca7309999644681857179652ffc5e47a3cdd1a7ee4f8ea2867de8bf53334e71"
+    },
+    {
+      "path": "agent_docs/contract/current/MARK_SELECTION.md",
+      "sha256": "7abe0ed3215552c2a20a735ebc961d0ca29f93e0b313a9c8087e9d1cdf99fbb0"
+    },
+    {
+      "path": "agent_docs/contract/current/NATIVE_POLICY.md",
+      "sha256": "2a82943fb0a14fa1dbd3713ecb27421fe9599530aa295d196a48a749b4d9b317"
+    },
+    {
+      "path": "agent_docs/contract/current/OHLC.md",
+      "sha256": "883decdde31c97472d359ca4fe83e7b841a3f001789808e0e19653201b5e633a"
+    },
+    {
+      "path": "agent_docs/contract/current/PARTITION.md",
+      "sha256": "85663724b6039846e89c80adfe72921a29c3e62cb78058e38bee1c30ccfe330b"
+    },
+    {
+      "path": "agent_docs/contract/current/PRIMITIVES.md",
+      "sha256": "7dc1432bb099d4c61fb90b26080da663ed78f9936baed6aab2b9770854cf9046"
+    },
+    {
+      "path": "agent_docs/contract/current/PYRAMID.md",
+      "sha256": "b5dd6cf2c816d5f0a4fb3deb1f75a99aea8e2c204702f7e9938ea026b71c2581"
+    },
+    {
+      "path": "agent_docs/contract/current/STATISTICS.md",
+      "sha256": "531d7b0f6bb613ef04a9cec3dd83f6339841327b8b6315b477e3f8fa1e452410"
+    },
+    {
+      "path": "agent_docs/contract/current/TABLE.md",
+      "sha256": "f7d21d5a82796c4adc16481f199659dc78301c19822e40e7bb0634ea1a0fadc7"
+    },
+    {
+      "path": "agent_docs/contract/current/TRAIL.md",
+      "sha256": "f64f669feaea9e0cff1af4356d2e738c8ad449abe05eefa1b0324686bd8bc234"
+    },
+    {
+      "path": "agent_docs/contract/current/VIOLIN_PLOTS.md",
+      "sha256": "931149ecdb868cbc384d84c1ab8d7890b3cfe8b87ecb9d5a8a824d265d7fe5e2"
+    },
+    {
+      "path": "agent_docs/contract/current/WATERFALL.md",
+      "sha256": "6a54239bb669386cd14a9f6c05dd3b0f993524633f74c2583a0efd277d9a2d98"
+    }
+  ]
+}

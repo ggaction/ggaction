@@ -1,0 +1,431 @@
+{
+  "targets": [
+    {
+      "target": "AT-11",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/compound-path/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "AT-12",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/primitive.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/compound-path/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "AT-13",
+      "owners": [
+        {
+          "test": "test/unit/grammar/patterns.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/structured-paints/variants/pattern-paints/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "AT-14",
+      "owners": [
+        {
+          "test": "test/unit/resources/image-preparation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/image-resource-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/renderers/image-rendering.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/persistence/image-resources.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/image-assets/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/image-assets/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/svg",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/canvas",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/png",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/pdf",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/svg",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/canvas",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/png",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/pdf",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/svg",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/canvas",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/png",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/pdf",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/svg",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/canvas",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/png",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/pdf",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/edge-routes/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/canvas",
+      "owners": [
+        {
+          "test": "test/charts/streamgraph/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/centered-area-stream/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/streamgraph/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/centered-area-stream/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    }
+  ]
+}

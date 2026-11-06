@@ -1,0 +1,332 @@
+{
+  "candidate": "a8af4e5665c17c6769af6118e48a30cd0efc13d3",
+  "targets": [
+    {
+      "target": "AT-11",
+      "tests": [
+        "test/charts/compound-path/public.test.js",
+        "test/charts/compound-path/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "AT-12",
+      "tests": [
+        "test/charts/compound-path/primitive.test.js",
+        "test/charts/compound-path/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "AT-13",
+      "tests": [
+        "test/unit/grammar/patterns.test.js",
+        "test/charts/structured-paints/variants/pattern-paints/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "AT-14",
+      "tests": [
+        "test/unit/resources/image-preparation.test.js",
+        "test/unit/resources/image-resource-lifecycle.test.js",
+        "test/unit/renderers/image-rendering.test.js",
+        "test/unit/persistence/image-resources.test.js",
+        "test/charts/image-assets/public.test.js",
+        "test/charts/image-assets/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/svg",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/canvas",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/png",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/pdf",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/svg",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/canvas",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/png",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/pdf",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/svg",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/canvas",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/png",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/pdf",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/svg",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/canvas",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/png",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/pdf",
+      "tests": [
+        "test/charts/edge-routes/methods.test.js",
+        "test/charts/edge-routes/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/canvas",
+      "tests": [
+        "test/charts/streamgraph/public.test.js",
+        "test/charts/centered-area-stream/public.test.js",
+        "test/charts/streamgraph/renderer.render.js",
+        "test/charts/centered-area-stream/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "path": "test/charts/centered-area-stream/public.test.js",
+      "sha256": "9897b7d00b497bbde4316323c9b7b1e6e33a09881287f8aff88a4f912944bcb0"
+    },
+    {
+      "path": "test/charts/centered-area-stream/renderer.render.js",
+      "sha256": "754f6d5bbd9c50b67f124a3441dc9c9b4b7a01b19c92fb0c4cb3ebad3d24b11d"
+    },
+    {
+      "path": "test/charts/compound-path/backends.render.js",
+      "sha256": "a8f4576005b083d2e6dafb25febe6e40d39908d61c822e1236483417b854445d"
+    },
+    {
+      "path": "test/charts/compound-path/primitive.test.js",
+      "sha256": "f3d6d2ca58806c9b84ad9556075e5a0a8762c2b7846d4e5e1ee7a78512ad7119"
+    },
+    {
+      "path": "test/charts/compound-path/public.test.js",
+      "sha256": "1a863008e46f5360d4575bca6ae321ad6a742963e55fab7c45a5ce550b166392"
+    },
+    {
+      "path": "test/charts/edge-routes/backends.render.js",
+      "sha256": "99c1eadb58cb329fd45806d020d5e70e4240957a879810be4561adbb7de43a26"
+    },
+    {
+      "path": "test/charts/edge-routes/methods.test.js",
+      "sha256": "7ce0fe7fe982c62ceadb2bb5e5a585f10eb6b1c6755cde4858892959d8583a03"
+    },
+    {
+      "path": "test/charts/image-assets/png.render.js",
+      "sha256": "0006969c8892de45dfd58114fa4b7b36d65fcd457005d9d62c4bdcd9f20ce7af"
+    },
+    {
+      "path": "test/charts/image-assets/public.test.js",
+      "sha256": "720c69b202a9c973f92e2fb3b213976cf5c11a449fca6d5cea3a20d31db7b15d"
+    },
+    {
+      "path": "test/charts/streamgraph/public.test.js",
+      "sha256": "68bada8b5a389187f4e1f2ded0b5ba331bfd858e11d7afff7cc236aecab2ddba"
+    },
+    {
+      "path": "test/charts/streamgraph/renderer.render.js",
+      "sha256": "842e97fec6b1e3fcf5e1f38f970e8e83fc05c30354893c2281697c3cee20cdf3"
+    },
+    {
+      "path": "test/charts/structured-paints/variants/pattern-paints/backends.render.js",
+      "sha256": "c9ceb87650a9deac197b99854389d1faaee679ae4f6565152743540976f77923"
+    },
+    {
+      "path": "test/unit/grammar/patterns.test.js",
+      "sha256": "d27f9f1e1e97cd6ac6ae8621cef6e4d246313dee3035bf3f0b9cd0f7d55c467b"
+    },
+    {
+      "path": "test/unit/persistence/image-resources.test.js",
+      "sha256": "f3de329adadf49326e82745a3761f7301de69ed51acaa743e9656eb47a4d39c6"
+    },
+    {
+      "path": "test/unit/renderers/image-rendering.test.js",
+      "sha256": "1526675d064f7ce4749da26401ab7c84bb1f09a9824a2a364f96bde08e93ab68"
+    },
+    {
+      "path": "test/unit/resources/image-preparation.test.js",
+      "sha256": "0f91bed1021fafaa213f5b6c6089ec4ca68155800e58f18779fd3870f95c4dc6"
+    },
+    {
+      "path": "test/unit/resources/image-resource-lifecycle.test.js",
+      "sha256": "d0f6a184b9d86969f8899883205c5f36d2481894725e4e96a79a462f22bc47b2"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "sha256": "2374fdd4852a0c60bb3e4cdd9011e740fc0e356cfc5ec668113918e66d6ad49b"
+    },
+    {
+      "path": "agent_docs/contract/current/CORE.md",
+      "sha256": "36aee69d7cd4e3a093e490bcdb8063ff680fd3b1a39e30e0530c3515ba1110ec"
+    },
+    {
+      "path": "agent_docs/contract/current/EDGE_ROUTES.md",
+      "sha256": "1a33fde8219c4969a9a9e3f544a59cd9b4adde6e48633d4230cf6f96eba6e672"
+    },
+    {
+      "path": "agent_docs/contract/current/MARKS.md",
+      "sha256": "2ca7309999644681857179652ffc5e47a3cdd1a7ee4f8ea2867de8bf53334e71"
+    },
+    {
+      "path": "agent_docs/contract/current/PRIMITIVES.md",
+      "sha256": "7dc1432bb099d4c61fb90b26080da663ed78f9936baed6aab2b9770854cf9046"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "receipts": [
+    {
+      "label": "suite-all",
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/qualification/native-076-evidence/checks/suite-all.json",
+      "receiptSha256": "9619790b42c73822a265e520fbbf2c9bdf4c3eca18eadf0184533c3598a0665c"
+    },
+    {
+      "label": "suite-browser",
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/qualification/native-076-evidence/checks/suite-browser.json",
+      "receiptSha256": "145722cbdfd4101c6e66d2a28ab50542e912654d9a788c37cb01609127c02197"
+    },
+    {
+      "label": "suite-coverage",
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/qualification/native-076-evidence/checks/suite-coverage.json",
+      "receiptSha256": "955ef866427cc8d67a765df112440e5756c4c726e2c56476ef60773fb559120b"
+    },
+    {
+      "label": "suite-render",
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/qualification/native-076-evidence/checks/suite-render.json",
+      "receiptSha256": "e37d2619fe462dc31ed7ca04e68683e0a2da529ed29ab0f658c8e7335a8c45f4"
+    }
+  ]
+}

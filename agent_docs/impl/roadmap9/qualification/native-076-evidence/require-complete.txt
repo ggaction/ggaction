@@ -1,0 +1,1 @@
+Native qualification incomplete: 2 pending targets, 2 failed targets; full qualification passed.

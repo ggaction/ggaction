@@ -1,0 +1,53 @@
+{
+  "candidate": "a8af4e5665c17c6769af6118e48a30cd0efc13d3",
+  "targets": [
+    {
+      "target": "consumer:geo-shape/canvas",
+      "tests": [
+        "test/browser/geographic-marks.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/canvas",
+      "tests": [
+        "test/browser/geographic-marks.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/canvas",
+      "tests": [
+        "test/browser/geographic-marks.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/canvas",
+      "tests": [
+        "test/browser/geographic-marks.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "path": "test/browser/geographic-marks.browser.js",
+      "sha256": "9d809c21e6d9cf84c3f301772bbdcfb9bf6f72fcc05c95e2696e413be70c48c3"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "agent_docs/contract/current/GEOMETRY.md",
+      "sha256": "15a53a97c81ed32d7bc27ab946d052308ef59c7b94fce7521352a9f933fc0a34"
+    }
+  ]
+}

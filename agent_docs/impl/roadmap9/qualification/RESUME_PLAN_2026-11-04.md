@@ -25,7 +25,11 @@
 - [x] Partition 10k preview: format6 path-run으로 13.4ms(승인 1). [기록](PATH_RUN_PROPOSAL.md)
 - [x] Graph plot 명시 용량과 route 10k 측정(승인 3). [기록](GRAPH_PLOT_CAPACITY_PROPOSAL.md)
 - [x] Data 분할 실행(승인 2): `loadProgramInSlices`·`reviseDataInSlices`. 1k·10k load/revise 최장 구간 통과. [기록](DATA_SLICED_PROPOSAL.md)
-- [ ] 미달: data 100k 최장 구간(GC 꼬리: load 55–58ms, revise 78–112ms), Geo 100k camera(설계 승인 필요), Route B 나머지(facet·composition·간접 union 327개·100ms 계량), exclusive 창 P95, native capability 결과(그룹 79·소비자 30), 독립 검토, 076 같은 commit 9검사, 077 배포(별도 승인).
+- [x] Route B 나머지 union: 그 밖의 공개 wrapped action을 실행으로 영향 route를 정하는 replay로 연결. [기록](../chart/route-native-discovered.md)
+- [x] Route 결과 hash 고속화, v2 준비 분할, 취소 측정. [기록](ROUTE_HASH_CURSOR.md) [기록](ROUTE_PREPARE_BLOCKING.md)
+- [x] STEP-075 독립 검토와 지적 반영. [기록](INDEPENDENT_REVIEW_075.md)
+- [x] STEP-076 후보 `a8af4e566`: 깨끗한 checkout 9검사 통과, native 결과 group 75/79·consumer 553/553(+해당 없음 24). [기록](CANDIDATE_076.md)
+- [ ] 미달(알려진 한계): AT-56(data 100k, Geo 100k), AT-82(density·force-directed 10k bundling, 일부 취소 100ms). 대기: AT-60 지속 owner 미배정, AT-61·STEP-077 배포(별도 승인). 독점 창 P95 미실시.
 
 순차 완료 번호는 여전히 **STEP-056**이다. 이 문서는 실행 순서를 정할 뿐 어떤 STEP의 완료도 기록하지 않는다.
 

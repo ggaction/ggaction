@@ -1,0 +1,56 @@
+{
+  "targets": [
+    {
+      "target": "consumer:geo-shape/canvas",
+      "owners": [
+        {
+          "test": "test/browser/geographic-marks.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/canvas",
+      "owners": [
+        {
+          "test": "test/browser/geographic-marks.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/canvas",
+      "owners": [
+        {
+          "test": "test/browser/geographic-marks.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/canvas",
+      "owners": [
+        {
+          "test": "test/browser/geographic-marks.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    }
+  ]
+}

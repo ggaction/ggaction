@@ -1,0 +1,10 @@
+{
+  "receipts": [
+    {
+      "label": "suite-realistic",
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/qualification/native-076-evidence/checks/suite-realistic.json",
+      "receiptSha256": "645d058997f7b745a3e4eea0f571da80d23049d18be7e6e59e3952be9f5da079"
+    }
+  ]
+}
