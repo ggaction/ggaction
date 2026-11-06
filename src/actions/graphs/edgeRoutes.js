@@ -1,4 +1,4 @@
-import { planEdgeRouteApplication, applyEdgeRouteApplication } from "./routePlan.js";
+import { planEdgeRouteApplication, planEdgeRouteApplicationStages, applyEdgeRouteApplication } from "./routePlan.js";
 import { closedAction, bindActionInvocationScope } from "../../core/action.js";
 import { createEdgeRouteResource, isPreparedRouteRequirement } from "../../materialization/graph/routeResource.js";
 import { normalizeEdgeRouteRequest } from "../../materialization/graph/routeRequest.js";
@@ -47,7 +47,7 @@ export function checkFitContinuation(error) {
   if (replay.scope.signal !== undefined) AbortSignal.prototype.throwIfAborted.call(replay.scope.signal);
 }
 export function registerEdgeRouteActions(ProgramClass) {
-  registerGraphRoutePlanner(ProgramClass, planEdgeRouteApplication, { snapshot: snapshotNativeRouteEdit, resolve: resolveNativeRouteUpdate, prepare: prepareNativeRouteUpdate, apply: applyGraphEdgeRoutesUpdate });
+  registerGraphRoutePlanner(ProgramClass, planEdgeRouteApplicationStages, { snapshot: snapshotNativeRouteEdit, resolve: resolveNativeRouteUpdate, prepare: prepareNativeRouteUpdate, apply: applyGraphEdgeRoutesUpdate });
   Object.assign(ProgramClass.prototype, { bundleGraphEdges, editEdgeRoute, applyGraphEdgeRoutesUpdate });
   registerNativeRouteThemeReader(ProgramClass, readGraphRouteUpdateTheme);
   registerNativeRevisionIdentityReader(ProgramClass, readNativeRouteRevisionIdentity);

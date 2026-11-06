@@ -7,7 +7,7 @@ import { ownRecord } from "../core/ownData.js";
 import { rejectUnknownProperties, validateWorkLimit } from "../core/validation.js";
 import { annotateError } from "../core/diagnostics.js";
 import { normalizeEdgeRouteRequest, permitsRouteDeadline } from "../materialization/graph/routeRequest.js";
-import { edgeRouteJobStages, edgeRouteJob, completedEdgeRouteResource } from "../materialization/graph/routeResource.js";
+import { edgeRouteJobStages, edgeRouteJob, completedEdgeRouteResource, completedEdgeRouteResourceStages } from "../materialization/graph/routeResource.js";
 import { edgeRouteResourceHandler } from "../materialization/graph/routeState.js";
 import { getBuiltinResourceKindHandler } from "../materialization/resourceKinds.js";
 import { validateResourceGraph } from "../materialization/resourceState.js";
@@ -67,8 +67,9 @@ export async function prepareGraphEdgeRoutes(program, request, host) {
       job = await drainRouteStages(edgeRouteJobStages(program, graph, layout, intent, hierarchy, hierarchyLayout, scope), lifetime.signal, lifetime.check);
       const completion = await computePreparedRoute(executor, job, { signal: lifetime.signal, deadlineMs }, scope);
       lifetime.check();
-      resource = completedEdgeRouteResource(resolved, job, completion, { ...scope, includeComputation: false });
-      plan = planners.get(program.constructor).route(program, resource, previous, scope);
+      // Assembly and the consumer plan yield between batches like the job and worker checks.
+      resource = await drainRouteStages(completedEdgeRouteResourceStages(resolved, job, completion, { ...scope, includeComputation: false }), lifetime.signal, lifetime.check);
+      plan = await drainRouteStages(planners.get(program.constructor).route(program, resource, previous, scope), lifetime.signal, lifetime.check);
       lifetime.check(); accounting = ledger.diagnostics();
     } finally { lifetime.close(); }
   } else {

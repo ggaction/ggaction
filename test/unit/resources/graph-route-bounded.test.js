@@ -291,3 +291,50 @@ test("v1 unknown deadline errors retain their original order before token, abort
     await assert.rejects(prepareGraphEdgeRoutes(p,input,{requestToken:"",signal,deadlineMs:1}), /Unknown.*deadlineMs/);
   }
 });
+
+test("a received completion is checked in one turn before its snapshot while an owned one yields between route batches", async () => {
+  const { validateRouteResultStages } = await import("../../../src/grammar/graph/routes/result.js");
+  const { cloneAndFreeze } = await import("../../../src/core/immutable.js");
+  const count = 600, nodes = Array.from({ length: count }, (_, id) => ({ id }));
+  const p = chart().createCanvas({ width: 200, height: 120 }).createData({ id: "n", values: nodes })
+    .createData({ id: "e", values: nodes.map(({ id }) => ({ id, s: id, t: (id + 1) % count })) })
+    .createGraphData({ id: "g", nodes: "n", edges: "e", nodeKey: "id", edgeKey: "id", source: "s", target: "t" })
+    .layoutGraph({ id: "l", method: "fixed", options: { positions: nodes.map(({ id }) => ({ key: id, x: id % 30, y: Math.floor(id / 30) })) } });
+  const run = controlled();
+  try {
+    const pending = prepareGraphEdgeRoutes(p, request(), host(run.executor));
+    const worker = await posted(run.workers), job = worker.job, completion = await computeGraphEdgeRoutesAsync(structuredClone(job));
+    const turns = envelope => {
+      const stages = validateRouteResultStages(job, envelope, { includeComputation: false });
+      let total = 0;
+      for (let step = stages.next(); !step.done; step = stages.next()) total++;
+      return total;
+    };
+    // Both run every check; only the owned copy may also pause inside the
+    // geometry check, since nothing it reads can change while suspended.
+    const received = turns(structuredClone(completion)), owned = turns(cloneAndFreeze(structuredClone(completion)));
+    assert.ok(owned > received, `${owned} > ${received}`);
+    worker.complete(completion);
+    const prepared = await pending;
+    assert.equal(get(p.bundleGraphEdges({ prepared, requestToken: "t" }), "edge-route", "r").result.routes.length, count);
+  } finally { run.executor.dispose(); }
+});
+
+test("the synchronous edge-route binding check drains the same staged checks", async () => {
+  const { getBuiltinResourceKindHandler } = await import("../../../src/materialization/resourceKinds.js");
+  const { cloneAndFreeze } = await import("../../../src/core/immutable.js");
+  const handler = getBuiltinResourceKindHandler(chart().constructor, "edge-route"), run = controlled(true);
+  try {
+    for (const bounded of [true, false]) {
+      const p = source(), input = request("edge-path");
+      if (!bounded) delete input.options.execution;
+      const prepared = await prepareGraphEdgeRoutes(p, input, bounded ? host(run.executor) : { requestToken: "t" });
+      const program = p.bundleGraphEdges({ prepared, requestToken: "t" }), resource = get(program, "edge-route", "r");
+      assert.doesNotThrow(() => handler.validateBindings(program, resource));
+      const stages = handler.validateBindingsStages(program, resource);
+      for (let step = stages.next(); !step.done; step = stages.next());
+      const moved = cloneAndFreeze({ ...resource, provenance: { ...resource.provenance, sourceRows: resource.provenance.sourceRows.slice(1) } });
+      assert.throws(() => handler.validateBindings(program, moved), /viewport or source provenance is stale/);
+    }
+  } finally { run.executor.dispose(); }
+});

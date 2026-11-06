@@ -123,7 +123,7 @@ try {
             assert.ok(Object.values(value.counters).every(value => value === 0), JSON.stringify(value));
             if (diagnostic) value.successSLO = "not-qualified-diagnostic";
             report.cases.push(value); await persist();
-            process.stdout.write(JSON.stringify({ ratio, count, method, explicit: Boolean(value.execution || value.executionPolicy), status: value.status, p95: value.p95 }) + "\n");
+            process.stdout.write(JSON.stringify({ ratio, count, method, explicit: Boolean(value.execution || value.executionPolicy), status: value.status, p95: value.p95, abort: value.abort?.boundMs }) + "\n");
           }
         }
         assert.deepEqual(errors, []); assert.deepEqual(requests, []); await page.close();

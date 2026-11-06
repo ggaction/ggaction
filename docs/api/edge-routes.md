@@ -282,5 +282,9 @@ then completes normal materialization and theme reconciliation. Stored trace
 inspection reads only that exact native child; later completion siblings grant
 no authoring or execution authority. Full request latency, including synchronous
 snapshot, cloning, posting and final materialization, has no verified 100ms bound.
+Version 2 create and edit preparation runs route assembly, stored graph checks and
+the consumer plan in steps between host turns. The initial snapshot before the
+first await and the check of a received completion, which must finish before its
+snapshot, still take one turn each that grows with the route count.
 The initial descriptor scan and deep clone also have no separate depth, total heap
 or fully metered work bound in the current request ledger.

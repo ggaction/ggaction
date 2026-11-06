@@ -1,4 +1,5 @@
 import { geoLabelSource } from "./geo/labels.js";
+import { drainStages } from "../core/stages.js";
 export { validateConditionalDependencies } from "./conditionalState.js";
 import { validateRowReference } from "../core/rowReference.js";
 import { cloneAndFreeze, freezeOwned, isOwned } from "../core/immutable.js";
@@ -114,12 +115,19 @@ export function resourceDependencies(resource) {
 }
 
 export function validateResourceGraph(program, ProgramClass = program.constructor, routeScope) {
+  return drainStages(validateResourceGraphStages(program, ProgramClass, routeScope));
+}
+
+// The same checks in order, yielding between resources and inside staged
+// binding checks so a large graph never runs as one host turn.
+export function* validateResourceGraphStages(program, ProgramClass = program.constructor, routeScope) {
   if (program.materializationConfigs?.textMetrics?.schemaVersion === 2) normalizeFontMetricProfile(program.materializationConfigs?.textMetrics);
   const resources = program.semanticSpec.resources;
   if (!Array.isArray(resources)) throw error("Semantic resources must be an array.");
   validateWorkLimit(resources.length, "Resource count");
   const byId = new Map();
   for (const resource of resources) {
+    yield;
     validateStoredResource(resource, ProgramClass);
     if (resource.kind === "data-source") resolveInputReference(program, resource.result.data);
     resource.provenance.sourceRows?.forEach(ref => resolveRowReference(program, ref));
@@ -160,7 +168,12 @@ export function validateResourceGraph(program, ProgramClass = program.constructo
   for (const layer of program.semanticSpec.layers ?? []) {
     if (geographicCoordinates.has(layer.coordinate) !== (layer.mark?.type === "geo" || geoLabelSource(program, layer) !== undefined)) throw error("Geo coordinates require geographic marks and exact coordinate bindings.");
   }
-  for (const resource of resources) getBuiltinResourceKindHandler(ProgramClass, resource.kind)?.validateBindings(program, resource, resource.kind === "edge-route" ? routeScope : undefined);
+  for (const resource of resources) {
+    yield;
+    const handler = getBuiltinResourceKindHandler(ProgramClass, resource.kind), scope = resource.kind === "edge-route" ? routeScope : undefined;
+    if (handler?.validateBindingsStages !== undefined) yield* handler.validateBindingsStages(program, resource, scope);
+    else handler?.validateBindings(program, resource, scope);
+  }
 }
 
 // Iterative postorder keeps a valid deep DAG within the work budget and avoids

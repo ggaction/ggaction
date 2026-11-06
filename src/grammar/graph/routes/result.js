@@ -1,6 +1,6 @@
 import { createRouteLedger } from "./execution.js";
 import { routeHashStages, finishRouteStages, ROUTE_COMPLETION_BYTES } from "./valueHash.js";
-import { cloneAndFreeze } from "../../../core/immutable.js";
+import { cloneAndFreeze, isOwned } from "../../../core/immutable.js";
 import { ownArray, ownRecord } from "../../../core/ownData.js";
 import { validateWorkLimit } from "../../../core/validation.js";
 import { resolvePathCommandBounds } from "../../pathGeometry.js";
@@ -16,9 +16,15 @@ export function exactRouteRecord(value, keys, label) {
 }
 const samePoint = (a, b) => Object.is(a.x, b.x) && Object.is(a.y, b.y);
 
+// Routes checked, and their sampled points, between two host turns.
+const GEOMETRY_STAGE_ROUTES = 256, GEOMETRY_STAGE_SAMPLES = 32_768;
+
 // Validate a completed value without rerunning any solver. Input and result
 // digests establish reproducible consistency, not cryptographic authenticity.
-function validateRouteGeometry(job, envelope, scope) {
+// Every check runs in order. The stages yield between route batches only when
+// the routes are already deeply owned, so nothing they read can change while
+// suspended; a received completion is checked in one turn before its snapshot.
+function* validateRouteGeometryStages(job, envelope, scope) {
   const bounded = job.schemaVersion === 2;
   const context = prepareRouteInput(bounded ? { ...job.input, limits: job.intent.options.limits } : job.input,
     scope?.signal, bounded ? scope ?? { execution: job.intent.options.execution } : scope === undefined ? undefined : { ledger: scope.ledger });
@@ -36,8 +42,11 @@ function validateRouteGeometry(job, envelope, scope) {
   if (Array.isArray(result.routes) && result.routes.length !== context.model.edges.length) throw new TypeError("Route result membership is stale.");
   ownArray(result.routes, "Route results");
   const positions = new Map(context.positions.map(node => [node.key, node]));
-  let samples = 0;
+  const stable = isOwned(result.routes);
+  if (stable) yield;
+  let samples = 0, batch = 0;
   for (const [index, route] of result.routes.entries()) {
+    if (stable && index > 0 && (index % GEOMETRY_STAGE_ROUTES === 0 || samples - batch >= GEOMETRY_STAGE_SAMPLES)) { batch = samples; yield; }
     exactRouteRecord(route, ["edgeKey", "sourceKey", "targetKey", "controlPoints", "commands", "bounds", "provenance"], "Stored edge route");
     const edge = context.model.edges[index];
     if (route.edgeKey !== edge.key || route.sourceKey !== edge.sourceKey || route.targetKey !== edge.targetKey) throw new TypeError("Route key, endpoints or order are stale.");
@@ -66,7 +75,7 @@ function validateRouteGeometry(job, envelope, scope) {
 export function validateRouteResult(jobInput, envelope, scope) {
   const job = validateRouteJob(jobInput);
   if (job.schemaVersion === 2) return finishRouteStages(validateRouteResultStages(job, envelope, scope));
-  const result = validateRouteGeometry(job, envelope, scope);
+  const result = finishRouteStages(validateRouteGeometryStages(job, envelope, scope));
   if (typeof envelope.resultHash !== "string" || envelope.resultHash !== routeValueHash(result)) throw new TypeError("Route result hash is stale.");
   return cloneAndFreeze(envelope);
 }
@@ -76,7 +85,7 @@ export function* validateRouteResultStages(jobInput, envelope, scope) {
   const job = validateRouteJob(jobInput);
   if (job.schemaVersion !== 2) throw new TypeError("Asynchronous route validation requires schemaVersion 2.");
   const execution = job.intent.options.execution, ledger = scope?.ledger ?? createRouteLedger(execution, scope?.signal);
-  validateRouteGeometry(job, envelope, { execution, ledger, signal: scope?.signal });
+  yield* validateRouteGeometryStages(job, envelope, { execution, ledger, signal: scope?.signal });
   if (typeof envelope.resultHash !== "string" || !/^[a-f0-9]{64}$/.test(envelope.resultHash)) throw new TypeError("Route result hash is stale.");
   const checked = cloneAndFreeze(envelope);
   jobInput = undefined; envelope = undefined;

@@ -1,7 +1,8 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { createRouteJobStages, createRouteJob, computeRouteJob, computeRouteJobWithLedger, validateRouteJob } from "../../grammar/graph/routes/job.js";
-import { validateRouteResult } from "../../grammar/graph/routes/result.js";
+import { validateRouteResult, validateRouteResultStages } from "../../grammar/graph/routes/result.js";
+import { drainStages } from "../../core/stages.js";
 import { resolveRouteInput } from "./routeInput.js";
 import { activeRouteReplay } from "./routeReplay.js";
 
@@ -34,9 +35,14 @@ export function createEdgeRouteResource({ id, revision = 0, program, graph, layo
   return completedEdgeRouteResource({ id, revision, graph, hierarchy }, job, completion ?? computeRouteJob(job));
 }
 
-export function completedEdgeRouteResource({ id, revision = 0, graph, hierarchy }, jobInput, completion, scope) {
+export function completedEdgeRouteResource(resolved, jobInput, completion, scope) {
+  return drainStages(completedEdgeRouteResourceStages(resolved, jobInput, completion, scope));
+}
+
+// A bounded completion is checked in stages that yield between batches.
+export function* completedEdgeRouteResourceStages({ id, revision = 0, graph, hierarchy }, jobInput, completion, scope) {
   const job = validateRouteJob(jobInput);
-  const checked = validateRouteResult(job, completion, scope);
+  const checked = job.schemaVersion === 2 ? yield* validateRouteResultStages(job, completion, scope) : validateRouteResult(job, completion, scope);
   const { options: _options, ...computed } = checked.result;
   return cloneAndFreeze({ kind: "edge-route", id, revision, algorithmVersion: job.schemaVersion === 2 ? "2" : "1", ownership: { mode: "authored" },
     inputs: job.inputs, options: job.intent,
@@ -61,7 +67,7 @@ export function* createEdgeRouteResourceStages(resolved, scope) {
   const completion = !bounded ? computeRouteJobWithLedger(job, jobScope.signal, jobScope.ledger)
     : replay !== undefined ? replay.take(job, resolved.id) : yield Object.freeze({ kind: "edge-route-computation", job, scope: jobScope });
   scope.ledger.check();
-  const resource = completedEdgeRouteResource(resolved, job, completion, { ...jobScope, includeComputation: false });
+  const resource = yield* completedEdgeRouteResourceStages(resolved, job, completion, { ...jobScope, includeComputation: false });
   scope.retainResult?.(resource);
   return resource;
 }

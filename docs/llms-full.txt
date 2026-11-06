@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:c51c915c04e15e2f8ce8ef76fc3bca076560de989e91244631f7906b5a1e52c1. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:6cedc627a70ecd5aee247ac9804333803258e88c82f75aa8177b8e63e25b4fb0. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -57357,7 +57357,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:c51c915c04e15e2f8ce8ef76fc3bca076560de989e91244631f7906b5a1e52c1` |
+| Contract fingerprint | `sha256:6cedc627a70ecd5aee247ac9804333803258e88c82f75aa8177b8e63e25b4fb0` |
 | Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
@@ -58977,6 +58977,10 @@ then completes normal materialization and theme reconciliation. Stored trace
 inspection reads only that exact native child; later completion siblings grant
 no authoring or execution authority. Full request latency, including synchronous
 snapshot, cloning, posting and final materialization, has no verified 100ms bound.
+Version 2 create and edit preparation runs route assembly, stored graph checks and
+the consumer plan in steps between host turns. The initial snapshot before the
+first await and the check of a received completion, which must finish before its
+snapshot, still take one turn each that grows with the route count.
 The initial descriptor scan and deep clone also have no separate depth, total heap
 or fully metered work bound in the current request ledger.
 

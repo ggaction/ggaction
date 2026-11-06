@@ -79,11 +79,22 @@ function fixture(edgeCount, method, execution) {
   return { program: p, request: { kind: 'create', id: 'routes', graph: 'graph', layout: 'layout', method, ...(options ? { options } : {}) }, nodes: count, execution };
 }
 const percentile = values => values.slice().sort((a, b) => a - b)[Math.ceil(values.length * 0.95) - 1];
+// The longest interval between two host message turns while preparation runs.
+// An abort is observed no later than the next turn, so this bounds its
+// acknowledgement on the main thread.
+function turnMeter() {
+  const channel = new MessageChannel();
+  let longest = 0, last = performance.now(), running = true;
+  channel.port1.onmessage = () => { const now = performance.now(); longest = Math.max(longest, now - last); last = now; if (running) channel.port2.postMessage(0); };
+  channel.port2.postMessage(0);
+  return () => { running = false; channel.port1.close(); return Math.max(longest, performance.now() - last); };
+}
+const host = (input, e, signal) => ({ requestToken: 'benchmark', executor: e, ...(signal ? { signal } : {}), ...(input.execution ? { deadlineMs: 30_000 } : {}) });
 async function iteration(input, ratio) {
-  const metrics = {}, e = executor(metrics), started = performance.now();
+  const metrics = {}, e = executor(metrics), started = performance.now(), stop = turnMeter();
   try {
     // The bounded v2 path requires a deadline; 30 s is the largest allowed and the 10k threshold.
-    const prepared = await prepareGraphEdgeRoutes(input.program, input.request, { requestToken: 'benchmark', executor: e, ...(input.execution ? { deadlineMs: 30_000 } : {}) });
+    const prepared = await prepareGraphEdgeRoutes(input.program, input.request, host(input, e)).finally(() => { metrics.prepareBlockingMs = stop(); });
     metrics.prepareComputeValidateMs = performance.now() - started;
     let now = performance.now();
     const routed = input.program.bundleGraphEdges({ prepared, requestToken: 'benchmark' });
@@ -103,6 +114,27 @@ async function iteration(input, ratio) {
   } catch (error) { return { status: 'error', elapsedMs: performance.now() - started, metrics, name: error.name, message: error.message }; }
   finally { e.dispose(); document.querySelector('#svg').replaceChildren(); }
 }
+// Abort at ten evenly spaced points of a typical preparation and time the
+// rejection from abort(). A host abort can only run between main-thread turns,
+// so its worst latency is the longest blocking interval plus that rejection;
+// the bound must stay within 100 ms.
+async function abortTrials(input, typicalMs, blockingMs) {
+  const trials = [];
+  for (let index = 1; index <= 10; index++) {
+    const controller = new AbortController(), e = executor({});
+    const work = prepareGraphEdgeRoutes(input.program, input.request, host(input, e, controller.signal));
+    let aborted;
+    const settled = work.then(() => 'completed', error => { if (error.name !== 'AbortError') throw error; return 'aborted'; });
+    await new Promise(resolve => timeout(resolve, typicalMs * index / 11));
+    aborted = performance.now(); controller.abort();
+    const status = await settled, acknowledgementMs = status === 'aborted' ? performance.now() - aborted : null;
+    e.dispose(); trials.push({ at: index / 11, status, acknowledgementMs });
+  }
+  const acknowledged = trials.filter(trial => trial.status === 'aborted').map(trial => trial.acknowledgementMs);
+  const maximumMs = acknowledged.length ? Math.max(...acknowledged) : null;
+  const boundMs = maximumMs === null ? null : blockingMs + maximumMs;
+  return { trials, maximumMs, blockingMs, boundMs, thresholdMs: 100, successSLO: boundMs === null ? 'not-measured' : boundMs <= 100 ? 'passed-this-fixture' : 'failed-this-fixture' };
+}
 async function benchmarkCase(edgeCount, method, ratio, measured = 30, warmups = 5, execution = false) {
   const start = performance.now(), input = fixture(edgeCount, method, execution); input.requestedEdges = edgeCount;
   const sourcePreparationMs = performance.now() - start, first = await iteration(input, ratio);
@@ -116,7 +148,9 @@ async function benchmarkCase(edgeCount, method, ratio, measured = 30, warmups = 
   for (let i = 0; i < measured; i++) { const result = await iteration(input, ratio); if (result.status !== 'complete') throw new Error(JSON.stringify(result)); samples.push(result.metrics); if ((i+1)%5===0) console.log('ROUTE_PROGRESS '+JSON.stringify({ratio,phase:'measure',iteration:i+1})); }
   const p95 = Object.fromEntries(Object.keys(samples[0]).map(key => [key, percentile(samples.map(value => value[key]))]));
   const thresholdMs = edgeCount === 100 ? 500 : edgeCount === 1000 ? 5000 : 30000;
-  return { edgeCount, nodes: input.nodes, method, ratio, ...policy, status: 'measured', sourcePreparationMs, warmups, measured, samples, p95, thresholdMs, successSLO: p95.bundlingMs <= thresholdMs ? 'passed-this-fixture' : 'failed-this-fixture', diagnostics: first.diagnostics, counters: { ...counters } };
+  const abort = await abortTrials(input, percentile(samples.map(value => value.prepareComputeValidateMs)), p95.prepareBlockingMs);
+  return { edgeCount, nodes: input.nodes, method, ratio, ...policy, status: 'measured', sourcePreparationMs, warmups, measured, samples, p95, thresholdMs,
+    successSLO: p95.bundlingMs <= thresholdMs && abort.successSLO !== 'failed-this-fixture' ? 'passed-this-fixture' : 'failed-this-fixture', abort, diagnostics: first.diagnostics, counters: { ...counters } };
 }
 // Combined lifecycle measurements are driven by trusted Playwright input. No
 // synthetic PointerEvent is used to manufacture native capture success.

@@ -8,7 +8,8 @@ import { createProjectionResource } from "../../materialization/geo/projectionRe
 import { createGeoLODResource } from "../../materialization/geo/lodResource.js";
 import { createGeoJoinResource } from "../../materialization/geo/joinResource.js";
 import { resolveInputReference } from "../../selectors/resources.js";
-import { orderResourceDependencies, validateResourceGraph } from "../../materialization/resourceState.js";
+import { orderResourceDependencies, validateResourceGraphStages } from "../../materialization/resourceState.js";
+import { drainStages } from "../../core/stages.js";
 import { withPreparedResourceResults } from "../primitives/preparedResourceContext.js";
 
 export function preflightGeoConsumers(program, ids) {
@@ -31,6 +32,10 @@ export function geographicConsumerIds(program, revised) {
 // One ordered closure for authored geometry and route-derived geometry. Callers
 // supply all already-computed roots before any dependent geometry is prepared.
 export function prepareGeoResourceRevisions(program, resources, routeScope) {
+  return drainStages(prepareGeoResourceRevisionsStages(program, resources, routeScope));
+}
+
+export function* prepareGeoResourceRevisionsStages(program, resources, routeScope) {
   const candidates = new Map(resources.map(resource => [key(resource), resource])), revised = new Map(), entries = [];
   for (const previous of program.semanticSpec.resources) {
     const next = candidates.get(key(previous));
@@ -63,7 +68,7 @@ export function prepareGeoResourceRevisions(program, resources, routeScope) {
   const layers = mapLayerResourceBindings(program.semanticSpec.layers, rebind);
   const preview = { ...program, semanticSpec: { ...program.semanticSpec, coordinates, layers,
     resources: resources.map(resource => candidates.get(key(resource))) } };
-  validateResourceGraph(preview, program.constructor, routeScope);
+  yield* validateResourceGraphStages(preview, program.constructor, routeScope);
   const markIds = geographicConsumerIds(preview, revised);
   preflightGeoConsumers(preview, markIds);
   return { entries, resources: preview.semanticSpec.resources, markIds, preview };
