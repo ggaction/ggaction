@@ -138,3 +138,37 @@ test("actual macrotask cancellation clears hash and traversal without publishing
   assert.equal(completed.hash, createHash("sha256").update(expected(value)).digest("hex"));
   for (const turn of [1, 2, completed.turns]) await assert.rejects(run(turn), error => error === reason);
 });
+
+test("batched tokens keep the exact bytes, counts and error paths of nested values", () => {
+  let seed = 23;
+  const random = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+  const texts = ["", "a", "x\"y\\", "é한🙂", "\ud800", "\u0001\n", "long".repeat(120)];
+  const scalars = [null, true, false, undefined, 0, -0, NaN, Infinity, 12345678901234567n, -2.2250738585072014e-308, 0.1];
+  const pick = values => values[Math.floor(random() * values.length)];
+  function value(depth) {
+    const kind = random();
+    if (depth > 3 || kind < 0.4) return random() < 0.3 ? pick(texts) : random() < 0.5 ? pick(scalars) : random() * 1e6 - 5e5;
+    if (kind < 0.75) { const array = Array.from({ length: Math.floor(random() * 14) }, () => value(depth + 1)); if (random() < 0.1) array.length += 2; return array; }
+    return Object.fromEntries(Array.from({ length: Math.floor(random() * 8) }, (_, index) => [random() < 0.2 ? String(index * 7) : `${pick(texts)}${index}`, value(depth + 1)]));
+  }
+  for (let index = 0; index < 120; index++) {
+    const snapshot = cloneAndFreeze(value(0)), bytes = expected(snapshot);
+    for (const budget of [{ maxBytes: 65536, maxSteps: 4096 }, { maxBytes: 5, maxSteps: 2 }]) {
+      const actual = drain(snapshot, budget, { ...limits, maxBytes: bytes.length, maxSteps: bytes.length });
+      assert.deepEqual(actual.bytes, bytes);
+      assert.equal(actual.stats.bytes, bytes.length);
+    }
+    if (bytes.length > 1) assert.throws(() => drain(snapshot, chunk, { ...limits, maxBytes: bytes.length - 1 }), /exceed/);
+    // One traversal turn per chunk exposes each pending batch: none exceeds the
+    // 352 bytes reserved for it by the route hash scratch.
+    const cursor = createEncodedValueCursor(snapshot, limits);
+    try { let part; do { part = advanceEncodedValueCursor(cursor, { maxBytes: 65536, maxSteps: 1 }); assert.ok(part.bytes.length <= 352); } while (!part.done); }
+    finally { clearEncodedValueCursor(cursor); }
+  }
+  const cycle = { a: [1, { b: null }] }; cycle.a[1].b = cycle;
+  freezeOwned(cycle.a[1]); freezeOwned(cycle.a); freezeOwned(cycle);
+  assert.throws(() => drain(cycle), { message: "Cannot serialize a cycle at payload.a[1].b." });
+  assert.throws(() => drain(freezeOwned({ a: freezeOwned([0, freezeOwned(new Date(0))]) })), { message: "Cannot serialize a class instance at payload.a[1]." });
+  assert.throws(() => drain(freezeOwned({ "k.1": freezeOwned([freezeOwned([Symbol.iterator])]) })), { message: "Cannot serialize symbol at payload.k.1[0][0]." });
+  assert.throws(() => drain(cloneAndFreeze({ a: [[{}]] }), chunk, { ...limits, maxDepth: 2 }), { message: "Encoded value depth exceeded at payload.a[0][0]." });
+});

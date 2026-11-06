@@ -109,10 +109,22 @@ try {
             value = { edgeCount: count, method, ratio, status: "failed", successSLO: "failed-this-fixture", error: error.stack,
               progress: progress.slice(start), counters: await page.evaluate(() => ({ ...nativeBenchmark.counters })) };
           }
-          assert.ok(Object.values(value.counters).every(value => value === 0), JSON.stringify(value));
-          if (diagnostic) value.successSLO = "not-qualified-diagnostic";
-          report.cases.push(value); await persist();
-          process.stdout.write(JSON.stringify({ ratio, count, method, status: value.status, p95: value.p95 }) + "\n");
+          const values = [value];
+          // A case the default limits reject is measured again under the explicit maxima.
+          if (value.status === "explicit-error") {
+            try {
+              values.push(await page.evaluate(async input => nativeBenchmark.benchmarkCase(input.count, input.method, input.ratio, input.measured, input.warmups, true), { count, method, ratio, ...report.profile }));
+            } catch (error) {
+              values.push({ edgeCount: count, method, ratio, executionPolicy: "explicit", status: "failed", successSLO: "failed-this-fixture", error: error.stack,
+                progress: progress.slice(start), counters: await page.evaluate(() => ({ ...nativeBenchmark.counters })) });
+            }
+          }
+          for (const value of values) {
+            assert.ok(Object.values(value.counters).every(value => value === 0), JSON.stringify(value));
+            if (diagnostic) value.successSLO = "not-qualified-diagnostic";
+            report.cases.push(value); await persist();
+            process.stdout.write(JSON.stringify({ ratio, count, method, explicit: Boolean(value.execution || value.executionPolicy), status: value.status, p95: value.p95 }) + "\n");
+          }
         }
         assert.deepEqual(errors, []); assert.deepEqual(requests, []); await page.close();
       }

@@ -17,7 +17,7 @@ export function countJSONStringBytes(text, encodedOffset, maxBytes, label) {
 
 // A valid surrogate pair is the only JSON unit occupying four UTF-8 bytes.
 // Return a scalar number so the counting path allocates no per-unit objects.
-function jsonStringUnitWidth(text, index) {
+export function jsonStringUnitWidth(text, index) {
   const unit = text.charCodeAt(index);
   if (unit === 34 || unit === 92 || unit === 8 || unit === 9 || unit === 10 || unit === 12 || unit === 13) return 2;
   if (unit < 32) return 6;
@@ -42,4 +42,15 @@ export function* writeJSONStringBytes(text, encodedOffset, maxBytes, label) {
     index = end - 1;
   }
   yield Uint8Array.of(34);
+}
+
+const unitEncoder = new TextEncoder();
+// Write the JSON unit at `index` (already measured as `width` bytes) into
+// `target`. Unescaped ASCII is copied directly; every other unit uses the same
+// native JSON escape spelling as writeJSONStringBytes. Returns the unit end.
+export function writeJSONStringUnit(text, index, width, target, offset) {
+  if (width === 1) { target[offset] = text.charCodeAt(index); return index + 1; }
+  const end = index + (width === 4 ? 2 : 1);
+  target.set(unitEncoder.encode(JSON.stringify(text.slice(index, end)).slice(1, -1)), offset);
+  return end;
 }

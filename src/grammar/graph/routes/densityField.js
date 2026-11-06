@@ -38,9 +38,10 @@ function densityField(sampleCount, bounds, { bandwidth, size, directed }, budget
         const value = weight * compactRouteKernel(Math.hypot(bounds.x + x * dx - sampleX, deltaY) / bandwidth);
         if (value === 0) continue;
         for (const [channel, fraction] of channels) {
-          const key = (channel * size + y) * size + x, next = (cells.get(key) ?? 0) + value * fraction;
+          // Stored densities are always finite numbers, so a missing value marks a new cell.
+          const key = (channel * size + y) * size + x, prior = cells.get(key), next = (prior ?? 0) + value * fraction;
           if (!Number.isFinite(next)) throw new RangeError("Route density must be finite.");
-          if (!cells.has(key)) budget.samples(sampleCount + cells.size + 1);
+          if (prior === undefined) budget.samples(sampleCount + cells.size + 1);
           cells.set(key, next);
         }
       }

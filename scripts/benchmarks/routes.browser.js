@@ -55,7 +55,10 @@ function executor(metrics, posted) {
     };
   } });
 }
-function fixture(edgeCount, method) {
+// The explicit route execution maxima from EDGE_ROUTES.md. A case that the
+// default work limits reject is measured again under this stated policy.
+const EXPLICIT_EXECUTION = Object.freeze({ policy: 'bounded-route@1', maxWork: 8_000_000_000, maxCandidatePairs: 50_000_000, maxSamples: 16_777_216, maxBufferBytes: 134_217_728, maxBytes: 134_217_728 });
+function fixture(edgeCount, method, execution) {
   const count = method === 'hierarchical' ? Math.min(edgeCount, 9999) : edgeCount;
   const nodes = Array.from({ length: count }, (_, id) => ({ id }));
   const edges = Array.from({ length: edgeCount }, (_, id) => ({ id, source: id % count, target: (id + Math.floor(count / 3)) % count }));
@@ -72,13 +75,15 @@ function fixture(edgeCount, method) {
   p = p.createData({ id: 'nodes', values: nodes, keyField: 'id' }).createData({ id: 'edges', values: edges, keyField: 'id' })
     .createGraphData({ id: 'graph', nodes: 'nodes', edges: 'edges', nodeKey: 'id', edgeKey: 'id', source: 'source', target: 'target' })
     .layoutGraph({ id: 'layout', method: 'fixed', options: { positions } });
-  return { program: p, request: { kind: 'create', id: 'routes', graph: 'graph', layout: 'layout', method, ...(options ? { options } : {}) }, nodes: count };
+  if (execution) options = { ...options, execution: EXPLICIT_EXECUTION };
+  return { program: p, request: { kind: 'create', id: 'routes', graph: 'graph', layout: 'layout', method, ...(options ? { options } : {}) }, nodes: count, execution };
 }
 const percentile = values => values.slice().sort((a, b) => a - b)[Math.ceil(values.length * 0.95) - 1];
 async function iteration(input, ratio) {
   const metrics = {}, e = executor(metrics), started = performance.now();
   try {
-    const prepared = await prepareGraphEdgeRoutes(input.program, input.request, { requestToken: 'benchmark', executor: e });
+    // The bounded v2 path requires a deadline; 30 s is the largest allowed and the 10k threshold.
+    const prepared = await prepareGraphEdgeRoutes(input.program, input.request, { requestToken: 'benchmark', executor: e, ...(input.execution ? { deadlineMs: 30_000 } : {}) });
     metrics.prepareComputeValidateMs = performance.now() - started;
     let now = performance.now();
     const routed = input.program.bundleGraphEdges({ prepared, requestToken: 'benchmark' });
@@ -98,18 +103,20 @@ async function iteration(input, ratio) {
   } catch (error) { return { status: 'error', elapsedMs: performance.now() - started, metrics, name: error.name, message: error.message }; }
   finally { e.dispose(); document.querySelector('#svg').replaceChildren(); }
 }
-async function benchmarkCase(edgeCount, method, ratio, measured = 30, warmups = 5) {
-  const start = performance.now(), input = fixture(edgeCount, method); input.requestedEdges = edgeCount;
+async function benchmarkCase(edgeCount, method, ratio, measured = 30, warmups = 5, execution = false) {
+  const start = performance.now(), input = fixture(edgeCount, method, execution); input.requestedEdges = edgeCount;
   const sourcePreparationMs = performance.now() - start, first = await iteration(input, ratio);
   console.log('ROUTE_PROGRESS '+JSON.stringify({ratio,phase:'first',status:first.status,metrics:first.metrics}));
-  if (first.status !== 'complete' && !/Route (?:work|candidate pairs|active samples) must not exceed/.test(first.message)) throw new Error(JSON.stringify(first));
-  if (first.status !== 'complete') return { edgeCount, nodes: input.nodes, method, ratio, status: 'explicit-error', sourcePreparationMs, first, warmups: 0, measured: 0, successSLO: 'not-measured', counters: { ...counters } };
+  const limit = execution ? /Route (?:work|candidate pairs|active samples|buffers) (?:must not exceed|exceeds route execution)|Route preparation deadline exceeded/ : /Route (?:work|candidate pairs|active samples) must not exceed/;
+  if (first.status !== 'complete' && !limit.test(first.message)) throw new Error(JSON.stringify(first));
+  const policy = execution ? { execution: EXPLICIT_EXECUTION, deadlineMs: 30_000 } : {};
+  if (first.status !== 'complete') return { edgeCount, nodes: input.nodes, method, ratio, ...policy, status: 'explicit-error', sourcePreparationMs, first, warmups: 0, measured: 0, successSLO: 'not-measured', counters: { ...counters } };
   for (let i = 0; i < warmups; i++) { const result = await iteration(input, ratio); if (result.status !== 'complete') throw new Error(JSON.stringify(result)); console.log('ROUTE_PROGRESS '+JSON.stringify({ratio,phase:'warmup',iteration:i+1})); }
   const samples = [];
   for (let i = 0; i < measured; i++) { const result = await iteration(input, ratio); if (result.status !== 'complete') throw new Error(JSON.stringify(result)); samples.push(result.metrics); if ((i+1)%5===0) console.log('ROUTE_PROGRESS '+JSON.stringify({ratio,phase:'measure',iteration:i+1})); }
   const p95 = Object.fromEntries(Object.keys(samples[0]).map(key => [key, percentile(samples.map(value => value[key]))]));
   const thresholdMs = edgeCount === 100 ? 500 : edgeCount === 1000 ? 5000 : 30000;
-  return { edgeCount, nodes: input.nodes, method, ratio, status: 'measured', sourcePreparationMs, warmups, measured, samples, p95, thresholdMs, successSLO: p95.bundlingMs <= thresholdMs ? 'passed-this-fixture' : 'failed-this-fixture', diagnostics: first.diagnostics, counters: { ...counters } };
+  return { edgeCount, nodes: input.nodes, method, ratio, ...policy, status: 'measured', sourcePreparationMs, warmups, measured, samples, p95, thresholdMs, successSLO: p95.bundlingMs <= thresholdMs ? 'passed-this-fixture' : 'failed-this-fixture', diagnostics: first.diagnostics, counters: { ...counters } };
 }
 // Combined lifecycle measurements are driven by trusted Playwright input. No
 // synthetic PointerEvent is used to manufacture native capture success.
