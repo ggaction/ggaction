@@ -100,7 +100,9 @@ returns the same revision, or rejects with the same error, as
 of about `sliceMs` milliseconds (an integer from 1 to 1000, default 40) and
 yield to the host between them. Aborting `signal` rejects with its reason and
 leaves `program` unchanged. Unit charts revise their rows, derived data and
-point marks in row batches; facet revision runs as one step.
+point marks in row batches; facet revision runs as one step. The rows and
+options are read across those slices, so keep them unchanged until the
+returned promise settles.
 
 ```javascript
 import { chart, reviseDataInSlices } from "ggaction";
@@ -245,7 +247,7 @@ chart does not block the page. It returns the same program, and rejects with
 the same error, as `deserializeProgram`. Each slice runs for about `sliceMs`
 milliseconds (an integer from 1 to 1000, default 40) and then yields to the
 host before continuing. Aborting `signal` rejects with its reason and returns
-no program.
+no program. The snapshot text is a string and cannot change during the load.
 
 ```javascript
 import { chart } from "ggaction";

@@ -7,7 +7,7 @@
 - [ ] 100k load 최장 구간 P95 50ms(현재 52 / 64ms, GC 꼬리).
 - [x] revise 분할: `reviseDataInSlices` 구현·시험.
 - [x] revise 설치본 검증·Chromium benchmark(archive `ba10ee33…` 측정, `a8867ce6…` 검증). [증거](data-sliced-evidence/)
-- [ ] 100k 최장 구간 P95 50ms(load 56 / 60ms, revise 105 / 113ms): 코드 단계는 끝, 남은 것은 GC 정지.
+- [ ] 100k 최장 구간 P95 50ms(최근 probe: load 69 / 47ms, revise 99 / 106ms): 코드 단계는 끝, 남은 것은 GC 정지. 알려진 한계로 기록(아래 "현재 상태").
 
 ## 왜 필요한가
 
@@ -160,3 +160,9 @@ Chromium(같은 소스의 probe archive, sliceMs 10, [report](data-sliced-eviden
 - Chromium(probe, [report](data-sliced-evidence/report-data-alloc.json.gz)): 100k revise 전체 2.51 → 2.19초, 최장 구간 P95 DPR1 105 → 112ms, DPR2 113 → 78ms. 30회 중 50ms 초과가 DPR1 9회, DPR2 5회로 GC 꼬리가 남는다(P95 통과에는 1회 이하가 필요). 1k·10k는 계속 통과한다.
 
 검증(archive `5255a5f4…`): 전체 시험 10,602개, coverage 97.45/95.59/99.32%(critical floor 789), browser 531/531, render 513/513, Node20/22/24 consumer 통과. [증거](data-sliced-evidence/alloc/)
+
+### 현재 상태와 시도한 것 (2026-11-06)
+
+- 최근 probe(Chromium, 30회): 1k·10k load·revise는 DPR1·DPR2 모두 통과. 100k load는 DPR2 47ms 통과, DPR1 69ms(30회 중 2회 GC 꼬리). 100k revise는 99 / 106ms다. revise 표본 대부분은 15–19ms이고 30회 중 8–9회가 36–120ms로 튄다.
+- 시도 후 되돌림: 개정 행 배열을 분할 시작 시 한 번 복제·동결하는 snapshot. 복제 자체도 여러 slice에 걸쳐 실행되므로 "host turn 사이 호출자 변경과 무관"을 보장하지 못했다(복제 도중 길이를 줄이면 행 검사 오류). 보장할 수 없는 성질이라 코드에서 뺐다. 대신 공개 문서(`docs/data-updates.md`)와 CORE 계약에 "인자는 여러 slice에 걸쳐 읽으므로 promise가 끝날 때까지 바꾸지 않는다. 그 사이 변경의 결과는 보장하지 않는다"를 적었다. load의 snapshot은 문자열이라 변하지 않는다.
+- 남은 꼬리는 Node 코드 단계(최장 약 12ms)가 아니라 Chromium major GC 정지다. revise는 route replay 계약에 따라 preview·actual 두 번 계산하므로 그 할당을 없앨 수 없다. 기준(50ms)·표본 수·seed는 바꾸지 않고, 100k revise와 100k load DPR1은 STEP-076에서 알려진 한계(AT-56)로 보고한다.
