@@ -4,7 +4,7 @@
 
 2026-11-02 사용자의 재개 요청으로 작업을 이어간다. 전용 추론 worker와 Full prepared create/edit을 루트에 통합했고([worker 검증](qualification/inference-worker-merged-evidence/qualification.json)), 정확한 동일 객체의 검증 증명 재사용 및 임시 문자열 바이트 배열 제거를 합쳤다([최신 합산 검증](qualification/inference-validation-merged-evidence/qualification.json)). 원10000노드·100000간선 전체 기능 검산과 동일 archive3Node 설치를 통과했다. 실제 브라우저 단발 prepare8.203초·commit0.447초는 기능 진단이며 최종 AT82의 반복 P95·메모리·수명 자격은 남는다. 순차 완료 번호는 STEP056으로 유지한다. 이전 [중단 기록](qualification/PAUSE_HANDOFF_2026-11-01.md)은 중단 시점의 보존 기록이다.
 
-상태: 2026-11-04 재개, 세 branch 통합 중. 정식 누적 closeout은 **Phase 0–3 / STEP-001–016**까지 기록했다. 이후 개별 구현·검증은 **STEP-056 Marginal·Bullet·Combo recipe**까지 진행했으며 여러 interaction 및 animation 기반을 병렬로 구현하고 있다. 개별 checkpoint와 전체 통합 완료는 구분한다. [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 활성 위치를 소유한다.
+상태: 2026-11-07 `ggaction@0.0.27`로 공개 배포했다. 알려진 한계(AT-56, AT-82)와 대기(AT-60)는 [배포 종료 기록](qualification/RELEASE_027_CLOSEOUT.md)에 남긴다. 아래는 2026-11-04 재개 시점 기록이다. 2026-11-04 재개, 세 branch 통합 중. 정식 누적 closeout은 **Phase 0–3 / STEP-001–016**까지 기록했다. 이후 개별 구현·검증은 **STEP-056 Marginal·Bullet·Combo recipe**까지 진행했으며 여러 interaction 및 animation 기반을 병렬로 구현하고 있다. 개별 checkpoint와 전체 통합 완료는 구분한다. [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 활성 위치를 소유한다.
 
 공통 sample의 빈 스타일 patch 재사용을 별도 검증했다([allocation·설치·렌더러 기록](qualification/frame-appearance-reuse-evidence/qualification.json)). 동일 원1k plan의 전체 frame을 유지하면서 매 frame의 clone/owned 등록1000개를 줄였다. 작은 비용 귀속을 원100k 또는 browser P95 성능 통과로 세지 않는다. 실시간 개선은 공통 sample과 Canvas 재생에 우선하고 네 renderer의 출력 정확성은 유지한다.
 

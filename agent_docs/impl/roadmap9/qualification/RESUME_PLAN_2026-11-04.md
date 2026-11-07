@@ -29,7 +29,8 @@
 - [x] Route 결과 hash 고속화, v2 준비 분할, 취소 측정. [기록](ROUTE_HASH_CURSOR.md) [기록](ROUTE_PREPARE_BLOCKING.md)
 - [x] STEP-075 독립 검토와 지적 반영. [기록](INDEPENDENT_REVIEW_075.md)
 - [x] STEP-076 후보 `a8af4e566`: 깨끗한 checkout 9검사 통과, native 결과 group 75/79·consumer 553/553(+해당 없음 24). [기록](CANDIDATE_076.md)
-- [ ] 미달(알려진 한계): AT-56(data 100k, Geo 100k), AT-82(density·force-directed 10k bundling, 일부 취소 100ms). 대기: AT-60 지속 owner 미배정, AT-61·STEP-077 배포(별도 승인). 독점 창 P95 미실시.
+- [x] STEP-077 배포: `v0.0.27`(`4ed72704f`) npm·GitHub Release·docs 공개, 같은 tarball hash와 registry 설치 소비자 확인(AT-61). [기록](RELEASE_027_CLOSEOUT.md)
+- [ ] 미달(알려진 한계로 배포): AT-56(data 100k, Geo 100k), AT-82(density·force-directed 10k bundling, 일부 취소 100ms). 대기: AT-60 지속 owner 미배정. 독점 창 P95 미실시.
 
 순차 완료 번호는 여전히 **STEP-056**이다. 이 문서는 실행 순서를 정할 뿐 어떤 STEP의 완료도 기록하지 않는다.
 

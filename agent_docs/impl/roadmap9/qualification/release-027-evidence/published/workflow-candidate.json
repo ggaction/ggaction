@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "name": "ggaction",
+  "version": "0.0.27",
+  "tag": "v0.0.27",
+  "commit": "4ed72704f7f700c1a36722b2f6ee9f2e3310b829",
+  "filename": "ggaction-0.0.27.tgz",
+  "sha1": "95790850b0c5a06ca1340dfa0cb3f67c04a2f71b",
+  "sha256": "9f1f7af35e55a46416570015e283e945069a5d43404b8d9a2849c8e8c4566a74",
+  "entryCount": 1288,
+  "packedBytes": 1894810,
+  "unpackedBytes": 8474183,
+  "releaseNotes": "ggaction-0.0.27-release-notes.md"
+}
