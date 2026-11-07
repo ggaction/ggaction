@@ -9,6 +9,7 @@ import { createBlendGlyphProgram } from "../../examples/bar-compositing/program.
 import { serializeProgram, deserializeProgram } from "../../src/persistence.js";
 import { createTransitionScene, renderTransitionScene } from "../../src/scene.js";
 import { blendOver } from "../oracles/compositing.js";
+import { rendererFontFamily } from "../../src/renderers/text.js";
 
 function expected(type, blend, opacity) {
   const canvas = createCanvas(200, 160), context = canvas.getContext("2d");
@@ -16,7 +17,9 @@ function expected(type, blend, opacity) {
   const source = createCanvas(200, 160), c = source.getContext("2d");
   c.fillStyle = "red"; c.strokeStyle = "white"; c.lineWidth = 8;
   if (type === "text") {
-    c.font = "36px Arial"; c.textAlign = "center"; c.textBaseline = "middle";
+    // The same family fallback list as the renderer, so hosts without Arial
+    // compare the same glyph source; the blend result is still independent.
+    c.font = `36px ${rendererFontFamily("Arial")}`; c.textAlign = "center"; c.textBaseline = "middle";
     c.strokeText("AB", 100, 80); c.fillText("AB", 100, 80);
   } else if (type === "line") {
     c.strokeStyle = "red"; c.beginPath(); c.moveTo(50, 80); c.lineTo(150, 80); c.stroke();

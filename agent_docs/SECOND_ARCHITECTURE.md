@@ -5329,3 +5329,8 @@ Native resource 후속 연결은 같은 private Full owner에 strict snapshot을
 외부 handle clone에 권한을 주지 않는다. Resource construction/plan/apply는 원 graph/flow/
 hierarchy owner를 공유하고 원 dependency DAG의 영향 route 전체에 aggregate policy를 적용한다.
 구체 경계와 검증 상태는 [resource 연결 기록](impl/roadmap9/chart/route-native-resource-connection.md)이 소유한다.
+
+0.0.27 release PR CI의 Windows 재포장은 1,894,872 packed bytes로, local Node20/24의
+1,894,810보다 컸다(압축 결과 차이, 압축 해제 내용은 같은 source). 이전 보정과 같은 규칙으로
+packed 한도만 다음 1,000-byte 단위인 1,895,000으로 둔다. Entries 1288, unpacked 8,474,183
+및 browser 한도는 실측값 그대로다.
