@@ -778,7 +778,9 @@
     "file": "test/charts/mark-outlines/variants/native/primitive.program.js",
     "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
     "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
-    "sharedProductionImports": [],
+    "sharedProductionImports": [
+      "src/renderers/text.js"
+    ],
     "independentOracleImports": []
   },
   {
