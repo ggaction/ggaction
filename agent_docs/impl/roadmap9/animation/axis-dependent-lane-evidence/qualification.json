@@ -1,0 +1,485 @@
+{
+  "sourceParent": "fdb95b21e376d7391deaa2ea452efa229b8e65a5",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Native fixed Cartesian axes with inferred legend lanes; refs-only dependencies, actual owner progress and patched node ink; no public signature change",
+  "versions": {
+    "transition": 3,
+    "guide": "native-guide-values@12",
+    "cartesian": 2,
+    "geoText": 2
+  },
+  "sharedDelta": {
+    "sample.js": "Pass existing timeline context as the third sampleGuideInterpolation argument",
+    "unchanged": {
+      "src/animation/planner.js": "3e6d02ce740c9ac1c34f56c74a46eca6173ce87f21fe1ddd3980f6c20b59661d",
+      "src/animation/frameEndpoint.js": "4e7d93702f5a77b74c719292bbdee09386abd68cc561112aeb1a75435e1ff2b9",
+      "src/animation/frameProvenance.js": "61b4830d0572580b28e2a549f0014e84c7d1331dea3d1c76d123a0b3b909291e"
+    }
+  },
+  "checks": {
+    "baselineAnimationCoverage": {
+      "tests": 648,
+      "status": "passed",
+      "finalSourceRerun": false
+    },
+    "finalChangedOwnerCoverage": {
+      "tests": 99,
+      "status": "passed",
+      "owners": {
+        "guideTracks": [
+          100,
+          96.86,
+          100
+        ],
+        "guideState": [
+          100,
+          98.31,
+          100
+        ],
+        "guides": [
+          100,
+          98.69,
+          100
+        ],
+        "legendAxisLaneState": [
+          98.43,
+          91.23,
+          100
+        ],
+        "legendLaneGuides": [
+          100,
+          100,
+          100
+        ]
+      }
+    },
+    "unchangedOwnerCoverage": {
+      "sample": [
+        100,
+        99.25,
+        100
+      ],
+      "graphicBounds": [
+        87.48,
+        82.07,
+        92.59
+      ],
+      "axisTitleGuides": [
+        100,
+        100,
+        100
+      ],
+      "axisTitleState": [
+        100,
+        93.41,
+        100
+      ],
+      "legendGuides": [
+        100,
+        100,
+        100
+      ],
+      "legendLaneState": [
+        98.89,
+        93.75,
+        100
+      ]
+    },
+    "coverageReuse": "Final effective native size-gap classification and canvas-overflow fade fixes were tested with 99 affected tests and the 13-test literal/overflow owner. The 648-test baseline supplies unchanged owner evidence; its guideState callback gap is closed by the final 99.",
+    "realistic": {
+      "datasets": 5,
+      "recipesEach": 15,
+      "pairs": 75,
+      "durationMs": 11547.75675,
+      "runner": "node scripts/run-tests.js realistic"
+    },
+    "renderer": {
+      "newFixtureTests": 1,
+      "backends": [
+        "Canvas",
+        "SVG",
+        "PNG",
+        "PDF"
+      ],
+      "nativeEndpointPixelEquality": true,
+      "pdfVector": true,
+      "browserVariants": 13,
+      "browserDpr": [
+        1,
+        2
+      ],
+      "reuse": "The final overflow fallback and effective size gap fix do not change the successful 13 visual variants; final packed consumers independently verify four backends."
+    },
+    "boundaryPackageTruthShardingArchitecture": {
+      "tests": 35,
+      "status": "passed"
+    },
+    "sourceDocs": {
+      "tests": 47,
+      "status": "passed"
+    },
+    "installed": {
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "runtimeEach": 7,
+      "strictTypes": true,
+      "actualDocExample": true,
+      "optionalPeers": true,
+      "bundlesEach": 6,
+      "archiveSha256": "38458f6787c03a16515a56b907852addb9d3e93b5c2cdd5050e39af191c7eb0e",
+      "originalReceiptsPreserved": true,
+      "bundleRecheck": "inferred-lane-bundle-recheck.json.gz",
+      "status": "passed"
+    }
+  },
+  "package": {
+    "entryCount": 1231,
+    "unpackedBytes": 7950157,
+    "canonicalPackedBytes": 1760422,
+    "node20PackedMeasurement": 1764328,
+    "ceilings": {
+      "entries": 1231,
+      "packedBytes": 1764400,
+      "unpackedBytes": 7950200
+    },
+    "browserCeilings": {
+      "full": 783700,
+      "basic": 424300,
+      "svg": 26000,
+      "graph": 46000,
+      "interaction": 131400,
+      "animation": 321500
+    },
+    "exactPackedInputs": 1231,
+    "packedInputDelta": []
+  },
+  "firstFailures": [
+    "Native size inherited explicit categorical offset was incorrectly classified from its raw stored flag; fixed by effectiveLegendOffsetConfig reuse.",
+    "An independently retimed long axis title made transient lane fit fail; canvas-overflow now yields whole-lane guide-layout fade, with exact repro retained.",
+    "Initial package entry ceiling and Full/animation bundle ceilings were exceeded; original receipts preserved and minimum measured ceilings verified without claiming the failures passed.",
+    "Initial installed manifest omitted the new case; canonical AST case inventory now includes its 21 statements.",
+    "Initial docs generation preceded final source freeze; generated freshness was rerun.",
+    "Test-only wrong target/removal API/explicit-offset fixture errors retained in first logs."
+  ],
+  "pending": [
+    "Dynamic emitted axis-label group paint bounds and zero-node/raw tick scope lookup require R11 union.",
+    "Dynamic inferred title dependency remains a coordinated follow-up.",
+    "Full STEP061/062/077 and whole release qualification are not claimed."
+  ],
+  "sourceHashes": {
+    "src/animation/guideTracks.js": "1d194f7c103e23220fe82a23452c8cf8929ae4b8de3fa7e5c4bf238786eb8bfc",
+    "src/animation/sample.js": "0da0a24b92403f0a0d5e7ac2835b2b2aada94cdaacac00af7c8ed43452c71475",
+    "src/grammar/animation/guideState.js": "acb8f3e0243b90f3f193baec082101f72ed1d16952e6c9bd53bdaeabd3490cfb",
+    "src/grammar/schemas/graphicBounds.js": "c7e1cca555d4201580c7dcbd383585e1986b68ae8dd68fb0893abfc47ea851f9",
+    "src/materialization/animation/axisTitleGuides.js": "37e8ec8daa5498009fb70386cf1361911cdd205abad08bc0954e522558b0803e",
+    "src/materialization/animation/axisTitleState.js": "b4d6665acd253a1888b27a9e139a41bbf6f65f220cc17b6e6cfadb936ead2c4c",
+    "src/materialization/animation/guides.js": "574db2d612cde8c7a2a46f5554009d4c4adf4a081b6e6b0c8fd7e4e1803eb0f5",
+    "src/materialization/animation/legendGuides.js": "e887008230658c1f4dc8d829170f93257a9ccf1410578a04f54b45652f2ee80c",
+    "src/materialization/animation/legendLaneGuides.js": "13379da39476c50f7509805fcb788027bfb908df13f32528cbddf7f764242acf",
+    "src/materialization/animation/legendLaneState.js": "a7e9e59460f8c37e2e8a9808be2432651db55d7cb5645843d49c426e4fca644e",
+    "types/animation.d.ts": "25e8cc3452704c1e77ef45cd3f7146784fb35c8b7d590695189c05ba5598afe6",
+    "src/materialization/animation/legendAxisLaneState.js": "29194cebaf0eeae74a5a4d2a9bde8fe32fafb547ce05b9fae51752eff107595f"
+  },
+  "artifacts": {
+    "inferred-lane-boundaries-coverage-first.log": {
+      "sha256": "f93b9837850f4f855e83726028bdc651eec024aa1f1eff7001d8cc96ecd428fd",
+      "bytes": 6269
+    },
+    "inferred-lane-boundaries-coverage-second.log": {
+      "sha256": "be3ff027fd52c938cdbed202d73bd9baef18add741663c52e8c94556442303ae",
+      "bytes": 6478
+    },
+    "inferred-lane-boundaries-final.log": {
+      "sha256": "b47b1078950d95d2209c0e035058bfccdeeda62e6c4e3153629a9265ffcf2f73",
+      "bytes": 7450
+    },
+    "inferred-lane-boundaries-first.log": {
+      "sha256": "95f369e5382961b11008acb5ef71513eb99f8c2c3ec5f8346568e9ea416cdd10",
+      "bytes": 3692
+    },
+    "inferred-lane-browser.log": {
+      "sha256": "0093aab854fe7c5c86fc3e7b8363e4b9851bd1c2dee36f1048a5ff5b7b503f7d",
+      "bytes": 357
+    },
+    "inferred-lane-bundle-recheck.json": {
+      "sha256": "5e8ab569ed9fd807b92a8131f04f6abd2002770f391633147cc1b95a27edd9c9",
+      "bytes": 3393
+    },
+    "inferred-lane-corrected-coverage.log": {
+      "sha256": "28fabe06e51e3d207f4522261879956fcde9082816fbe7839ed66d41043f7686",
+      "bytes": 25372
+    },
+    "inferred-lane-corrected-installed-node20.log": {
+      "sha256": "6b98f98e8c4a2bdad29b72c4ae82f77a5ba18230283b1e54211f861475c78955",
+      "bytes": 2695
+    },
+    "inferred-lane-corrected-installed-node22.log": {
+      "sha256": "ef772c4a9249946b3dc4d81d1b6163e7afc8e9414fe915c3459c5987961bd265",
+      "bytes": 2499
+    },
+    "inferred-lane-corrected-installed-node24.log": {
+      "sha256": "c1a0d930e9997e5675e2aa0323411bab183f5432db04710195b7573f0efae284",
+      "bytes": 2708
+    },
+    "inferred-lane-coverage-final.log": {
+      "sha256": "5eb4e24c496fdacdc44ebb6ab0bea26ee719f9d59591de7f0a955671fdc4405b",
+      "bytes": 155358
+    },
+    "inferred-lane-coverage-first.log": {
+      "sha256": "ecbeb89d640ab5415a760e6b2f44153da48a0b0424d58497c7ca84873c17cf99",
+      "bytes": 151774
+    },
+    "inferred-lane-doc-final-refresh.log": {
+      "sha256": "0f9659cd7121c6abaabcf3a7028b0d69d2df65122172141634381e8736d821cd",
+      "bytes": 573
+    },
+    "inferred-lane-doc-refresh.log": {
+      "sha256": "eeedec985cdf09fe4de67126b7967b81cd9a0cb8a1d4a67a7718ac24a270b221",
+      "bytes": 504
+    },
+    "inferred-lane-docs-contracts.log": {
+      "sha256": "e3e14eb30af510300ea1081c46952706af4117a735b66d3a2ce8a0e42631d72e",
+      "bytes": 6218728
+    },
+    "inferred-lane-docs-final-current.log": {
+      "sha256": "810830f2bea1b1ac333deffaf9d7e57f3f1c9a64efb0431318d27dd0b6fd17bc",
+      "bytes": 9774
+    },
+    "inferred-lane-docs-final.log": {
+      "sha256": "8154ee65c1599ce1d10c77731f6406b63102faccfb274e0a811fbeef35514b8b",
+      "bytes": 9764
+    },
+    "inferred-lane-exact-packed-inputs.json": {
+      "sha256": "b982ec226e3cd88e455e16506f1f05b7bc645c5755b5c40ed238325364f435b4",
+      "bytes": 133651
+    },
+    "inferred-lane-final-boundaries.log": {
+      "sha256": "20e864e49c9d3dfb7a7ab9e1513adfbdabd9cab539db472b2c30d166267cd86b",
+      "bytes": 8237
+    },
+    "inferred-lane-final-delta-coverage.log": {
+      "sha256": "4ac2fd05cd182dc25165995356de73ffad93ab50910d337c69d6f519b08d2957",
+      "bytes": 26464
+    },
+    "inferred-lane-final-delta-supplement.log": {
+      "sha256": "468f000846a03e57accf7dce6ebe32bc8d5c7eb7de5c595d23e77122bd5fa1da",
+      "bytes": 3650
+    },
+    "inferred-lane-generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "inferred-lane-guide-state-coverage.log": {
+      "sha256": "2aaa6e1a5e77843048d4a502000580dac3ec14820b62b9a7189a388a49252e05",
+      "bytes": 12086
+    },
+    "inferred-lane-installed-node20.log": {
+      "sha256": "df494e3ee871f138e05fbbfed335903cb775a285a62ce58ca4a9652d99fe6b10",
+      "bytes": 22222
+    },
+    "inferred-lane-installed-node22.log": {
+      "sha256": "9ad54c743c755754d8da70b756b58382d65cd3ca67dc362570e34f8c31e4ec1f",
+      "bytes": 22197
+    },
+    "inferred-lane-installed-node24.log": {
+      "sha256": "8d5a8b09c4c8d2b101577db680129f5e65ff4c662238194cefd12639fae8d2d2",
+      "bytes": 22222
+    },
+    "inferred-lane-nested-final.log": {
+      "sha256": "171f48d542ebc469a828cbfb38fbbd49e82fb060f895d7e27211be8eacfad991",
+      "bytes": 2492
+    },
+    "inferred-lane-overflow-coverage.log": {
+      "sha256": "c0016bf3daa47c6eca01919f46a75b7fd856535a0d48db1bd71afa93181b1a11",
+      "bytes": 3923
+    },
+    "inferred-lane-package-corrected-final.json": {
+      "sha256": "55b57a597d8e89fdae3c7b3fa1d04dd1979a0e08acca11932e19ce07c252dbc4",
+      "bytes": 412
+    },
+    "inferred-lane-package-corrected-node20.json": {
+      "sha256": "4a91220361ffe56db4a31e9eb1bc10d7090973c736fedd68910617ce746d5dd4",
+      "bytes": 161
+    },
+    "inferred-lane-package-final.json": {
+      "sha256": "a117d5da0dfb9ddd83c7559f7edab47ce0fcfab72bc51f4fef8d581c23f57729",
+      "bytes": 412
+    },
+    "inferred-lane-package-first.log": {
+      "sha256": "5aa76b2523d8d8416a059b1c94d6457b57ee8d3ce2d9554e4e9fdf4bc517fe4b",
+      "bytes": 888
+    },
+    "inferred-lane-package-measured.json": {
+      "sha256": "2ed461ea1762cafe3cb7cc525766917c2162f1cf4622657901704df5c0b5f470",
+      "bytes": 161
+    },
+    "inferred-lane-package-node20.json": {
+      "sha256": "d857151dbd26ba01bcbba0831c7176e6d837f792324e3e92dd54a59025c1c014",
+      "bytes": 161
+    },
+    "inferred-lane-package-node24.json": {
+      "sha256": "d857151dbd26ba01bcbba0831c7176e6d837f792324e3e92dd54a59025c1c014",
+      "bytes": 161
+    },
+    "inferred-lane-packing-detail.log": {
+      "sha256": "de6c015cf139bed7bfd115b87e754b39355d60d90446d8029be60c9745385fad",
+      "bytes": 2797
+    },
+    "inferred-lane-packing-first.log": {
+      "sha256": "c2557fb4a05cc0a3c7dcbfcd669718e551967afc41652d1c2860e02b0363f6b0",
+      "bytes": 2784
+    },
+    "inferred-lane-packing-second.log": {
+      "sha256": "c46667ca2e4a785d2dda1d89488191ae3ffc94ed4b7db7f2cb98a462479eab81",
+      "bytes": 837
+    },
+    "inferred-lane-public-fifth.log": {
+      "sha256": "3a7e1d03f5b0aa4518a6a876d157aa41483d7dcd35656d02b137d9877761f207",
+      "bytes": 4712
+    },
+    "inferred-lane-public-first.log": {
+      "sha256": "a1d0bd8727ac4d1868904fc0e5807a48be14534bb4afe76b436b4f0bc9870dbb",
+      "bytes": 4613
+    },
+    "inferred-lane-public-fourth.log": {
+      "sha256": "1ffb3b55efadcbeb4fffe1f75f8bd8adf9ca00c2ba3bdb984ffe3d411fb55130",
+      "bytes": 4294
+    },
+    "inferred-lane-public-second.log": {
+      "sha256": "839e81b15b71e623fd38dc9a1a196c76e31ab68c73696cbca6212fbf12490100",
+      "bytes": 9445
+    },
+    "inferred-lane-public-seventh.log": {
+      "sha256": "e548cf12f27b16cb4a4601c882a013ad2f830975e7977de2c4141bd63995b164",
+      "bytes": 6626
+    },
+    "inferred-lane-public-sixth.log": {
+      "sha256": "ba92be5e9fc0b47cc9129aecba781df90b0deb0388889c171c7a26533fb92192",
+      "bytes": 4782
+    },
+    "inferred-lane-public-third.log": {
+      "sha256": "733743723c2bb8d840f5a042769f8217ec6b74656fb6ad5f8d63f9ed10feb75c",
+      "bytes": 2359
+    },
+    "inferred-lane-realistic-second.log": {
+      "sha256": "0509e1ca90c8b43dfafa7872412b29ebab733891ccda75fb5a6f724e7770fd4d",
+      "bytes": 1315
+    },
+    "inferred-lane-realistic.log": {
+      "sha256": "4fd4ced14d1da3642c50e87b57494c140a2e6113bb4dd23f2832fc1d4939651b",
+      "bytes": 6338
+    },
+    "inferred-lane-render-final.log": {
+      "sha256": "23bd8912c55608948d1e43dbf065c5d2accf3290dac72f7797a6d004c52069b2",
+      "bytes": 352
+    },
+    "inferred-lane-render-first.log": {
+      "sha256": "2c5c25e50714927ae966b09846aef52b6c4c36846090b2dbed07f22073c6faec",
+      "bytes": 1988
+    },
+    "inferred-lane-render-second.log": {
+      "sha256": "346346a5407f9d5e793cb3c6b947fec1584a0b8a8862da253435fc38a22cdec3",
+      "bytes": 352
+    },
+    "inferred-lane-retime-first.log": {
+      "sha256": "9f7b08eff575152d27fc21e1cfd92010aca433f6aa8aa3317402bb7ecf790fcd",
+      "bytes": 356
+    },
+    "installed-node20.json": {
+      "sha256": "51a8e410a6cc1952e1ca62e00d227987729efd348423618b8d6958aeb804840e",
+      "bytes": 8250
+    },
+    "installed-node22.json": {
+      "sha256": "97fe2605124d495e0b1efc254528a4203fb59d69910b74e16c7a823f907dc114",
+      "bytes": 8225
+    },
+    "installed-node24.json": {
+      "sha256": "b4204e65ff15db9f491f02f003fab65f51a0d1f6f15a78ca9509c795835b6b68",
+      "bytes": 8249
+    },
+    "corrected-installed-node20.json": {
+      "sha256": "d503dbbe67e2976f4fb6d5d6fe59a099e01a4fc1de26ca615cf2dbf1ba4d00c0",
+      "bytes": 2785
+    },
+    "corrected-installed-node22.json": {
+      "sha256": "ea25e7f6ea6a37c57e8c7286388bc1eac33cb9d36c095ba7046601bba854a20e",
+      "bytes": 2682
+    },
+    "corrected-installed-node24.json": {
+      "sha256": "609d4e6742d4000c717b880a382853c1562afdec96f73d1f255f63dd55b4ce86",
+      "bytes": 2779
+    },
+    "inferred-lane-pin-build.log": {
+      "sha256": "13aed588f24f895b7066767e6ff80d8e81c483eff754fff1578d373e91685007",
+      "bytes": 420
+    },
+    "inferred-lane-pin-built.log": {
+      "sha256": "3792852b15419b5b6793670bb18fb4783fa933ad6a7c236cdc1a834bf06b2ed5",
+      "bytes": 102
+    },
+    "inferred-lane-pin-doc-browser.json": {
+      "sha256": "1a30f7304a0792a72caae29170919875f726b820afb6a310670aac4b80ae3549",
+      "bytes": 705
+    },
+    "inferred-lane-pin-doc-browser.log": {
+      "sha256": "2278bb83073b61ef6ee0aae49bdffcc3a25a6c7ecfdf0875ed884c92a63764d0",
+      "bytes": 349
+    },
+    "inferred-lane-pin-docs.log": {
+      "sha256": "9b41a12fcdea9928bba1810ce772631569ce89136649f1a5edf4384955165cab",
+      "bytes": 10405
+    },
+    "inferred-lane-pin-preflight.log": {
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e",
+      "bytes": 257
+    }
+  },
+  "sourceRevision": "98d5e6021f918e80b1a99197b9448c9a52944919",
+  "sourcePin": {
+    "source": "98d5e6021f918e80b1a99197b9448c9a52944919",
+    "docsTests": 50,
+    "builtPages": 186,
+    "selectiveArtifacts": 1603,
+    "browser": {
+      "affectedPage": "api/animation",
+      "results": [
+        {
+          "width": 1440,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "passed"
+        },
+        {
+          "width": 320,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        },
+        {
+          "width": 390,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        },
+        {
+          "width": 768,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        }
+      ],
+      "unchangedSiteEvidence": "unchanged site behavior; changed animation page checked at four widths"
+    },
+    "sourceInputDelta": [],
+    "node": "v22.23.1",
+    "ruby": "3.2.11",
+    "environmentNote": "Local Ruby meets preflight; CI pins3.2.6. No release/CI-equivalence claim."
+  }
+}

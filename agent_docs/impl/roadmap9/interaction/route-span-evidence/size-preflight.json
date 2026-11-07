@@ -1,0 +1,37 @@
+{
+  "kind": "diagnostic-preflight-not-SLO",
+  "runtime": "v22.23.1",
+  "geometry": "star hierarchy native tree anchors, offset floor(n/3) graph edges",
+  "results": [
+    {
+      "edges": 100,
+      "nodes": 100,
+      "hierarchyNodes": 101,
+      "status": "complete",
+      "elapsedMs": 170.418208,
+      "work": 113309,
+      "peakSamples": 2668,
+      "routes": 100
+    },
+    {
+      "edges": 1000,
+      "nodes": 1000,
+      "hierarchyNodes": 1001,
+      "status": "complete",
+      "elapsedMs": 1162.770458,
+      "work": 1011485,
+      "peakSamples": 14466,
+      "routes": 1000
+    },
+    {
+      "edges": 10000,
+      "nodes": 9999,
+      "hierarchyNodes": 10000,
+      "status": "complete",
+      "elapsedMs": 11551.080541,
+      "work": 9723588,
+      "peakSamples": 88841,
+      "routes": 10000
+    }
+  ]
+}

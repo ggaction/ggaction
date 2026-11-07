@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "status": "private-injected-clock-controller-verified",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "publicPlayerComplete": false,
+  "tests": {
+    "node20": 46,
+    "node22": 46,
+    "node24": 46,
+    "controller": 16,
+    "boundariesAndDiscovery": 40,
+    "sourcePinnedDocs": 20
+  },
+  "coverage": {
+    "scope": "controller and four pure animation owners",
+    "lines": 100,
+    "branches": 98.8,
+    "functions": 100,
+    "controllerBranches": 97.24
+  },
+  "packageMeasure": {
+    "entries": 1064,
+    "packedBytes": 1515412,
+    "unpackedBytes": 6910023
+  },
+  "inputSha256": {
+    "src/animation/player.js": "912a8193641ccea7e60630a88e2410eb2bc855b60e7019a99c16cc3abd0ef4ef",
+    "test/unit/animation/player.test.js": "f96713a4d258a5e8ea7c16699b404305cc96b24f79a4db443b18bcfcd7633ac9",
+    "scripts/coverage-policy.js": "5f2c0700aaee16f437577a2e3e0305eeb48d356b120abacd00eecb2c28851671",
+    "scripts/package-artifact.js": "0065b0aa31c4b11ab652d0b7f2074814dabe298080c2b98b17f73326925b65f8"
+  },
+  "logs": [
+    {
+      "file": "animation-player-final-coverage.log.gz",
+      "sha256": "cefb1eb6583cc0270c2a3bc5a5347895102f67c11bf58949ca46ed779c34e64c",
+      "status": "passed"
+    },
+    {
+      "file": "animation-player-final-node20.log.gz",
+      "sha256": "3ca884ed12d7e0a2d7aea9b7307654ac8e6e295974d75dc47aec1f7fbc4e03af",
+      "status": "passed"
+    },
+    {
+      "file": "animation-player-final-node24.log.gz",
+      "sha256": "ab75bb74eadc9f4b542f46c8b6d7f65b689a304724fa75a67f24a8e9d21e2d76",
+      "status": "passed"
+    },
+    {
+      "file": "animation-player-final-contracts.log.gz",
+      "sha256": "e607484f2e8474e8526a0723d5ea6018f98e30be4ee1c38df8ffb1d58f3ec6c3",
+      "status": "passed"
+    },
+    {
+      "file": "animation-player-first-coverage.log.gz",
+      "sha256": "c11862a294cfdfb278c24dfb352b3f299dd01f49033ea1ad52cc46eaa8b42732",
+      "status": "failed"
+    },
+    {
+      "file": "animation-player-second-coverage.log.gz",
+      "sha256": "038f954ff0ab6eff6af9fa71dbdaeeba8f516fe017d22f32a6da5b42bbe192e6",
+      "status": "passed"
+    },
+    {
+      "file": "animation-player-final-docs.log.gz",
+      "sha256": "a7f828c24cfcb8e81800c45838c5c8058665268065f45e8be8d2686f3ab15887",
+      "status": "passed"
+    }
+  ],
+  "remaining": [
+    "typed planner and sampler",
+    "public entry and declarations",
+    "actual browser RAF, current-frame hit and session integration",
+    "offline envelope and four output adapters"
+  ],
+  "sourceCommit": "5acddaae1c8bdaafbf2aa6fab425705d93a167af"
+}

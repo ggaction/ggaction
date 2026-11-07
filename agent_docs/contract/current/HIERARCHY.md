@@ -10,6 +10,8 @@ Plot style is materialization configuration. Label content is semantic; labels d
 
 Selection operates on final nodes and selects body plus label; links are excluded. Exact resource lineage and actual member rows are preserved. Concat scopes refs and keys to each child. Facets support complete subtree partitions and reject orphaned partitions. Repeat positional field substitutions do not apply to these resource-backed marks. Canvas edits place stored geometry again without rerunning the layout. Source and parameter revisions recompute affected hierarchy/layout/plot closures once and keep unrelated branches shared.
 
+Tree and treemap field encodings, scale bindings and axis/legend bindings are not applicable. Node positions come from the stored hierarchy layout, so general encode actions and legend actions reject a tree or treemap layer as an unknown mark target. Body, link and label paint use plot styles and typed node overrides; emphasis uses the shared selection/highlight actions. Axes and legends remain available as separate composed marks and guides.
+
 ## `createHierarchyData`
 
 - Signature: `createHierarchyData({ id, data?, key?, parent?, children?, groupFields?, value, valueMode?, forest?, missingCategory?, maxNodes? })`.
@@ -150,3 +152,8 @@ Body and label `fill` accepts the shared `FillPaint` contract: solid color, line
 The existing body and label style records accept optional `outline:MarkOutline|false` and `shadow:MarkShadow|false`, including keyed overrides. Reuse the closed values, defaults, glyph order, preparation, source-geometry hit boundary and backend behavior in [MARKS.md](MARKS.md#prepared-per-item-shadows). Create omission has no effect; edit omission preserves; false removes or suppresses inherited effect. Same-patch outline and stroke reject. Stored ordinary stroke remains available beneath an outline. Effects stay in the existing role appearance configuration; false is removed when constructing concrete graphics. Stored shadows require resolved offsets and blur radius. Per-item style changes retain layout resource identity, original source rows, selection keys and glyph roles. Tree links and graph edge/arrow components accept shadow; ordinary stroke owns their contour, with no outline option. Flow ribbons are filled bodies and support both effects.
 
 Evidence: `test/unit/resources/resource-plot-effects.test.js`, `test/unit/resources/font-resource-labels.test.js`.
+
+
+## Bounded route updates
+
+Explicit v2 route를 소비하는 hierarchy 자원의 native edit는 [prepared native update](EDGE_ROUTES.md#applygraphedgeroutesupdate)를 사용한다. 원 action의 입력/오류/closure 계약은 유지하며, 전체 source dataset/fit/composition 갱신 지원을 뜻하지 않는다.

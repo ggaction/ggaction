@@ -1,0 +1,157 @@
+{
+  "status": "all-required-native-consumer-owners-assigned; candidate-results-pending",
+  "base": "587840986",
+  "sourceRevision": "c9da6fbb8492372837a98f250313c60f5fc416d1",
+  "incomingSource": "8c0b2e979",
+  "upstreamPin": "365e0b6a0",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1229,
+    "packedBytes": 1756116,
+    "unpackedBytes": 7927698,
+    "file": "ggaction-0.0.26.tgz",
+    "sha256": "c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4"
+  },
+  "runtimeTypesAndPackageInputsUnchanged": true,
+  "scope": "Graticule raw axis/value/key from public getMarkItems, explicit analytical child source, isolated positive field/scale/guide edits, procedural step/projection revision and explicit analysis reviseData. Public support-file copier additionally permits exactly ggaction/inspection.",
+  "checks": {
+    "owning.log": 38,
+    "browser.log": 1,
+    "node20.log": 1,
+    "node24.log": 1,
+    "docs.log": 241,
+    "pin-docs.log": 47
+  },
+  "installedDoc": {
+    "node": "22.23.1",
+    "archive": "c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4",
+    "examples": 1,
+    "sourceFreeBrowser": true
+  },
+  "reusedBuiltDoc": "../native-graticule-evidence/summary.json; same public page content, no layout/CSS change;186pages/1603selective artifacts, fourviewport Axe/overflow/error0",
+  "manifest": {
+    "requirements": 30,
+    "groups": 79,
+    "targets": 577,
+    "required": 574,
+    "canonicalNotApplicable": 3,
+    "previousAssignedConsumers": 571,
+    "addedAssignedConsumers": 3,
+    "assignedConsumers": 574,
+    "pendingRequiredConsumers": 0,
+    "assignedGroups": 75,
+    "pendingGroups": 4,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577,
+    "otherRowsAndFieldsPreserved": true
+  },
+  "recordingCorrection": "First metadata helper assumed incoming four-test selection for the single selected root Graticule test. Actual Node20/24 each run one test covering all three columns; no failing runtime test or altered assertion. Counts above are parsed from actual raw TAP.",
+  "remaining": [
+    "R dynamic labels/P axis-dependent lane/title union",
+    "AT56/82 real latency/heap/size classes; AT60 independent review; AT61 same-artifact protected delivery",
+    "All actual same-candidate evidence and nine final commands; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "owning.log": {
+      "sha256": "9aef30920fc8cda72910f9cccb9d4b28505eae562e1dd1f0c6ecf0e1ca6151d2",
+      "bytes": 8692,
+      "tests": 38
+    },
+    "browser.log": {
+      "sha256": "1e2c3c9b811dedf13ccfbc77e5807ac73f710f71f9de57d95ad94960130d7ff8",
+      "bytes": 347,
+      "tests": 1
+    },
+    "node20.log": {
+      "sha256": "cc57950809407687fb4d2c9db9c8804ab1b2dd99afca1501b77d2e963f53b015",
+      "bytes": 375,
+      "tests": 1
+    },
+    "node24.log": {
+      "sha256": "7ebdd87e12cab481caf926d28440159ce1113ad3c607406b25119d690e34366e",
+      "bytes": 390,
+      "tests": 1
+    },
+    "docs.log": {
+      "sha256": "bab1a6980e81781d24150ce14e69666a7772ce4dd4dac29b85ad8bc3af68026b",
+      "bytes": 73434,
+      "tests": 241
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "search.log": {
+      "sha256": "6eadafbe91cb6766c787ba78a1958acfdbccf42241bd1e1ee05a61bc12773574",
+      "bytes": 121
+    },
+    "machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "installed-doc.json": {
+      "sha256": "415575a6fba21f2237ec6e75fb44e70d12f96cd62d7450a17b866d85ce933e6b",
+      "bytes": 182
+    },
+    "installed-doc.json.doc.json": {
+      "sha256": "b39a569ebfd98d8141969f9073aa5b6770623ef38a3d7d35512625e61b518bf7",
+      "bytes": 353
+    },
+    "installed-doc.log": {
+      "sha256": "8a6ca9990ca35e88ee81cd12aa9d120d37d657331ede4e5524ca9b83d64ea2e9",
+      "bytes": 157
+    },
+    "pending.json": {
+      "sha256": "9093b2405c85582c996922883d3fedde811053399a778e03decf6bae79980f18",
+      "bytes": 24704
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "c769d910fed3dfdc5c458adc688202738fca229af0656d66fb83333de0b36694",
+      "bytes": 1812
+    },
+    "source-pin-pack.json": {
+      "sha256": "cbed9aa89e005fcfb8b6ff3303b1b3484a8a248825d948777d69515c76a04434",
+      "bytes": 386
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pin-docs.log": {
+      "sha256": "cef9e98af0e3801d04d25e477ae595cdf49b29ece6326c9c6f58d0b665c158c7",
+      "bytes": 9758,
+      "tests": 47
+    }
+  },
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

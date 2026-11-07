@@ -1,0 +1,213 @@
+{
+  "status": "consumer-isolation-integrated; product-long-lived-stall-and-final-closeout-pending",
+  "base": "ea58615f9d0950b27267d9f407f9f002328efe6c",
+  "upstream": "31763c9150cdf4d0bc534f45a64ab502f4891b66",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Same installed archive/fixture bytes and order, explicit four-case process lifetime only; no product/API/schema/guard/heap/SLO change.",
+  "archive": {
+    "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-2ccfbd6c5bd5a40b34a9d8ba579296fea78ceef4101577f9ad7c743cdfa2c3dd.tgz",
+    "sha256": "2ccfbd6c5bd5a40b34a9d8ba579296fea78ceef4101577f9ad7c743cdfa2c3dd",
+    "integrity": "sha512-v+xqVrm0IPGfpMcHytlqMfNrX/wraVBRoCJ1TOJaiYnSshjZUqf1D84qHsUYsGHqpqE8aK6JhnqO4+95iTtNHg==",
+    "installedIntegrity": "sha512-v+xqVrm0IPGfpMcHytlqMfNrX/wraVBRoCJ1TOJaiYnSshjZUqf1D84qHsUYsGHqpqE8aK6JhnqO4+95iTtNHg=="
+  },
+  "checks": {
+    "owning-node22.log": 27,
+    "canary-node20.log": 10,
+    "canary-node24.log": 10,
+    "manifest-node22.log": 2,
+    "docs-boundaries.log": 9
+  },
+  "consumer": {
+    "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-2ccfbd6c5bd5a40b34a9d8ba579296fea78ceef4101577f9ad7c743cdfa2c3dd.tgz",
+    "sha256": "2ccfbd6c5bd5a40b34a9d8ba579296fea78ceef4101577f9ad7c743cdfa2c3dd",
+    "integrity": "sha512-v+xqVrm0IPGfpMcHytlqMfNrX/wraVBRoCJ1TOJaiYnSshjZUqf1D84qHsUYsGHqpqE8aK6JhnqO4+95iTtNHg==",
+    "node": "v22.23.1",
+    "execArgv": [],
+    "pid": 14035,
+    "startedAt": "2026-11-02T04:05:08.463Z",
+    "source": "ea58615f9d0950b27267d9f407f9f002328efe6c",
+    "qualification": "functional-installed-consumers-only",
+    "performanceClaim": false,
+    "directory": "/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-VBxqsA",
+    "installedIntegrity": "sha512-v+xqVrm0IPGfpMcHytlqMfNrX/wraVBRoCJ1TOJaiYnSshjZUqf1D84qHsUYsGHqpqE8aK6JhnqO4+95iTtNHg==",
+    "peers": {
+      "@modelcontextprotocol/sdk": "1.32.1",
+      "@napi-rs/canvas": "1.0.9"
+    },
+    "status": "passed",
+    "cases": 404,
+    "sharedPid": 14112,
+    "isolatedCases": [
+      {
+        "id": "hit-preparation/all-100000-native-points",
+        "status": "passed",
+        "durationMs": 62703.185,
+        "pid": 14633,
+        "isolation": "case",
+        "parentPid": 14112,
+        "exitCode": 0,
+        "signal": null
+      },
+      {
+        "id": "hit-preparation/closed-session-policy-atomic-replacement",
+        "status": "passed",
+        "durationMs": 408.365375,
+        "pid": 14721,
+        "isolation": "case",
+        "parentPid": 14112,
+        "exitCode": 0,
+        "signal": null
+      },
+      {
+        "id": "geographic-capacity/all-original-vertices-and-atomic-native-closure",
+        "status": "passed",
+        "durationMs": 25469.315792,
+        "pid": 14722,
+        "isolation": "case",
+        "parentPid": 14112,
+        "exitCode": 0,
+        "signal": null
+      },
+      {
+        "id": "geographic-capacity/source-free-four-backend-and-scene",
+        "status": "passed",
+        "durationMs": 559.2726250000001,
+        "pid": 14764,
+        "isolation": "case",
+        "parentPid": 14112,
+        "exitCode": 0,
+        "signal": null
+      }
+    ],
+    "cleaned": true,
+    "finishedAt": "2026-11-02T04:09:19.455Z",
+    "durationMs": 250992
+  },
+  "fixtures": {
+    "scripts/consumers/fixtures/node/accessible-items.mjs": "c3ab615eb70f26c87b12e057d1ea7afc5c489fa58da27670d1d040b85b2f81e7",
+    "scripts/consumers/fixtures/node/animation-appearance.mjs": "1709af9a6d7538ac1ad8e02550882b98583a0c819cc09206ba802185a76ab9a5",
+    "scripts/consumers/fixtures/node/animation-axis-reflow.mjs": "8d125b039d2051e1e5c6325b0962177c219feff9951e6a0117de46caa76b1e37",
+    "scripts/consumers/fixtures/node/animation-cartesian-completion.mjs": "f49e4c26dbeecdc09fd2e2e6f92e11c7bbafc93403838ca7a568cf721aa5312a",
+    "scripts/consumers/fixtures/node/animation-geo.mjs": "5d7cf89426aa596d0e2327ef068669f857807fa5509a0d8d2543bee2b5cc01b4",
+    "scripts/consumers/fixtures/node/animation-geotext-expressions.mjs": "21535a52f5c378c892265a79b866f656ef6df20a9e797fb3f437b7f710261e87",
+    "scripts/consumers/fixtures/node/animation-graph.mjs": "fa3b5c26369657e8b59b7a72451a48c2ef7a0c83154c1ae340a8f68340f5e1b7",
+    "scripts/consumers/fixtures/node/animation-partition.mjs": "0460fd47af1a9cb98681a70be545d06b6a8bed0ed6c85958fe8a38234f47846c",
+    "scripts/consumers/fixtures/node/animation-timeline.mjs": "dce509ee85021f8279954787142398d3dd327b739f135680e19baab36c78955e",
+    "scripts/consumers/fixtures/node/animation.mjs": "7bea9ac887a8a5ca4951a54c691e0e237608cc719553c3ae2239f97a62983e2d",
+    "scripts/consumers/fixtures/node/authoring.mjs": "2ed36c7f150f5ce414dc5f00d8921768a2c3e0d7394ab71fda4ed3d90237da72",
+    "scripts/consumers/fixtures/node/axis-title-relative.mjs": "24a0508c865acc2bb79dfc5adc7f5af4fa178ab74ccbf8e53c235692dcd4e26d",
+    "scripts/consumers/fixtures/node/axis-title-replay.mjs": "e041238fa160e44aee878f077bc745709dd089bcb5550eb2a49485aeaf2270a3",
+    "scripts/consumers/fixtures/node/calendar-completion.mjs": "0ceed46a298c63efd4676986d10975adec70366126121d6e238c19b502d0be8e",
+    "scripts/consumers/fixtures/node/calendar-plots.mjs": "dbff085e54e305781ac08de250814d7c5390083b291050757ccfe8e716ecf9cb",
+    "scripts/consumers/fixtures/node/composition-recipes.mjs": "bf77db8cee1ea5d4752bad4b245ea16bb8520e2457b73f91dd75f9723ff3a455",
+    "scripts/consumers/fixtures/node/composition.mjs": "61ed16320f546c5aafee8c068bd6a75800d29fc522d23fcab1413cac15f18689",
+    "scripts/consumers/fixtures/node/conditional-encoding.mjs": "4b61d256b4503599ba1ab24880521fb2db3613ddfae2abc5f54024b05563b801",
+    "scripts/consumers/fixtures/node/contours.mjs": "1188ab712b01dd201a40f0053598fb86f00d0e408616748843bf1dbda70513ac",
+    "scripts/consumers/fixtures/node/data-transforms.mjs": "45915033d3b59118685030adc21658528dc6c267153a765e45db4c7e06fe7caf",
+    "scripts/consumers/fixtures/node/edge-routes.mjs": "beb755007340116d3c093b7a2755a33ad9cfb61d4f273b3bdfc652dfafdcc6c9",
+    "scripts/consumers/fixtures/node/encodings.mjs": "bf9319ba0df7c8147ab22724d47922a5c66ed95bc337d7c45dc72dd36b20b73b",
+    "scripts/consumers/fixtures/node/extension.mjs": "734be5b7fb9e38a8f73f1e6d84e500871e8631486ea3ae90247c2cd093cc488b",
+    "scripts/consumers/fixtures/node/flows.mjs": "d5516688bd6178d0be01089f4677befa94c687b5dcc94dcf831080b7aaabc6a3",
+    "scripts/consumers/fixtures/node/fonts.mjs": "2a547df6a28b4496e29ff143c4389fed338a872e791e34569ca6a6d78aa222c8",
+    "scripts/consumers/fixtures/node/geographic-annotations.mjs": "c850ba9aeb7c4e290e03929dcc891c0328088c6699b04da53bf5603b75dda93d",
+    "scripts/consumers/fixtures/node/geographic-camera.mjs": "bddadf14cb6bdde260878902608bdab3b30260059499dda6d1c98cf52e42cad5",
+    "scripts/consumers/fixtures/node/geographic-capacity.mjs": "87db3d25cf609beb9b558dbf1ce86eb91f105ecde8685b51a0eb4423cfcd1bb0",
+    "scripts/consumers/fixtures/node/geographic-encodings.mjs": "3f2d2cff50ca3a2482a6a5e147395d870424ee4c2c4a719d36f316ad9007cd27",
+    "scripts/consumers/fixtures/node/geographic-join.mjs": "4e324ef9d5e64f0d2ab4c24d30809f423a3b85019092d77256ad8b22665167b4",
+    "scripts/consumers/fixtures/node/geographic-labels.mjs": "5f04ea4fff8e11b8378f5301da8966bdba79b1186faba3bcdf57f69836d9e3c7",
+    "scripts/consumers/fixtures/node/geographic-levels.mjs": "4cfe6999be8c97d07fd54ee3a104000075cbfcf5fbbbb22f35d04f7ff21c85d0",
+    "scripts/consumers/fixtures/node/geographic-marks.mjs": "2b44d52111d469ffde46ffd04d478da2c8456309214dc5872f93e3145064ee18",
+    "scripts/consumers/fixtures/node/geographic-routes.mjs": "66b2210ae37c99b5fc8232dbdb500e4ade4df9220d3a76d97e8f3c069d426976",
+    "scripts/consumers/fixtures/node/geometry.mjs": "dcb489939b98ec80a69b9e71ff3ecf091507e7a6698b26a890f7fb3e7f6e079f",
+    "scripts/consumers/fixtures/node/graph-inference-worker.mjs": "0ad86209d11db7e90793e9c7a34f0737c8a4be381dfdf22a65343d3a304e2cb5",
+    "scripts/consumers/fixtures/node/guides.mjs": "3e2a102a1d6279a31ae2af2461f0677e010a41d56e7fdbe94f02100af8e56baa",
+    "scripts/consumers/fixtures/node/hierarchy.mjs": "888c1b93ac7407245014324f7bb98ba42c51ae7e6a15003bf41392ced86cb965",
+    "scripts/consumers/fixtures/node/hit-preparation.mjs": "e881ab012e786d2f6e6dd12ee785961773734d1433868276fb6a1cb4d1ceec25",
+    "scripts/consumers/fixtures/node/images.mjs": "4a561039c58206c07bff1c285f4d7a2c8c82c59658cf91a2e93228a3318f1b2a",
+    "scripts/consumers/fixtures/node/inferred-graphs.mjs": "5fffdff53f35368471fdc14a2ed4d52c6b4f1d56b4eecc46605c2461a2220753",
+    "scripts/consumers/fixtures/node/interaction-animation.mjs": "746767854bc675cdde6d129c8dac312ebaae7828c8cc38788a2282fc7e33e0ae",
+    "scripts/consumers/fixtures/node/interaction-handles.mjs": "59ba6ecb552bd57cd43a25956cd1c342206b29b07ad0e7fab70067a2881237d3",
+    "scripts/consumers/fixtures/node/interaction.mjs": "692754c9bf93a680a9d65654080bdeed21a56fb32eaecf3ce599dcec7f66f57d",
+    "scripts/consumers/fixtures/node/keyboard-focus.mjs": "710b03b7cfdb6d6cd12f8a18995ab865493ca5e5748c965fae76a69238979f8b",
+    "scripts/consumers/fixtures/node/loess-degree.mjs": "cee53579a23c572ddb63d69f32be08023e2db765e940560187ef44458abf20be",
+    "scripts/consumers/fixtures/node/logical-selection.mjs": "7afdad9c80eb0cfde922cb77b7e452d9c832b02738567717c55d304ed0989684",
+    "scripts/consumers/fixtures/node/mark-blends.mjs": "7f4ddb3f9698300ed19b6c2b10431f7fa27a7178e65ecef3792e4f330abaeec7",
+    "scripts/consumers/fixtures/node/mark-outlines.mjs": "a3aa6217da79324761a9b0d2e6a79ad6148ce39f9c733d62d2fae14551483827",
+    "scripts/consumers/fixtures/node/mark-shadows.mjs": "fe8409df010501bd4d737c12c7170aac1d5b99c564e91d1bc2e6e422daba3145",
+    "scripts/consumers/fixtures/node/nested-responsive.mjs": "34350780175a28783b688113938e0382a410a6c0d4aeec0c1c73c416de5a6b9e",
+    "scripts/consumers/fixtures/node/observed-graphs.mjs": "492ea64b7411f0b96d5d7dca57450130a11e03b23d03bd4b9b06828f7974d4eb",
+    "scripts/consumers/fixtures/node/ohlc-plots.mjs": "b9b03cbb620543b00a0fbe9f35594af402ad0500a2c9628ee072bdee0bf04ddf",
+    "scripts/consumers/fixtures/node/package-entries.mjs": "39bcf05b43a36d378fc993f10900d9ac574a792864a4fc52fb742b5abbe8bf46",
+    "scripts/consumers/fixtures/node/parameters.mjs": "9152d4d1eb5674365a6f98932c967ecb7547574aaa3ad0ce0706029fbd4915fc",
+    "scripts/consumers/fixtures/node/pivot.mjs": "ef8cf93b92fe470a94d6f4c012140a061d4b952d91d8b2c412fe26246c412322",
+    "scripts/consumers/fixtures/node/prepared-data.mjs": "38b37ca256f503b433d770991fcd55ca54e1d2dd175a0d2a54e2dc984a1927e9",
+    "scripts/consumers/fixtures/node/projections.mjs": "571fd189b1b5f6698581e4f60192b9ce5982ae62687346cd7ae5295a4f5d0df2",
+    "scripts/consumers/fixtures/node/pyramid-plots.mjs": "630fada5c3018e4f44f6d7c5b14cb10dbfb10a9018f0689e9252a13fd4aa5e30",
+    "scripts/consumers/fixtures/node/resource-effects.mjs": "45e3a3292c8849ede2a8227ab846db1ec704948e7e1378f057ba1ab651737781",
+    "scripts/consumers/fixtures/node/responsive-guides.mjs": "baba12cbe4f96f6f92fc3bbd05c2d571e2d4a294933a8233697a92ce21c05275",
+    "scripts/consumers/fixtures/node/selection.mjs": "05937f2eb93afd006ee791baf1e2d2f8e9233b0c44045b23aff55e968ad30f48",
+    "scripts/consumers/fixtures/node/static-delivery.mjs": "e91a9ff5f4972224f55e2094c43d84402153cc3f23bb2a6309294edf7df9f749",
+    "scripts/consumers/fixtures/node/stream-baselines.mjs": "18c66b7ba18ca443739a944231c46c16184143739839b5f5abc3ef7be9421f2e",
+    "scripts/consumers/fixtures/node/structured-paints.mjs": "40a85cfe7a7cfeb60b6ced64619ce2a44780399381013c559809641b075c4031",
+    "scripts/consumers/fixtures/node/table-plots.mjs": "36f2e7b02834761b5a8728f3e4f48de658a4024389713e9d8606ed651ca58ec9",
+    "scripts/consumers/fixtures/node/theme-resource-plots.mjs": "0393234a22d233a011549fba29bf3b62713d775461c21dd82121eff80c16a28e",
+    "scripts/consumers/fixtures/node/trail-plots.mjs": "4e2e8a4ad89b05fa8e08074dd85b5a0a8117b864f335f958061b92e301df519a",
+    "scripts/consumers/fixtures/node/waterfall-plots.mjs": "064342dd081c6f5758f1c13afb00f7ecedcf34ddc4f2f08de1b66862c0acad05",
+    "scripts/consumers/fixtures/node/weighted-blends.mjs": "bea6eeb54b538fb208961e7b1883f7ff8ceabfd20d0682ee0010b62284afeabc"
+  },
+  "executionInputs": {
+    "scripts/consumers/node-cases.mjs": "048c62cbdab3d9a7750cf7cc02b29cef08c6409f9c4a1ad3dbc816b6347c22e1",
+    "scripts/consumers/node.js": "0add13dab83aee87aa266a768cb03ff7d426e4dc38d58c16f60bf9ed844708bf",
+    "scripts/consumers/fixtures/node/manifest.json": "ab9d1ea1d7f2f73f403a4bf7e2d4a01f166b7d902bf97b582f9e875e980df8c9",
+    "test/contracts/consumer-isolation.test.js": "bd6793ab24cdcb8c8e0c9a35853fc5a85953b2496f3bb7e9a25d5d67a97a4204"
+  },
+  "rootRepair": "Preserve throw null/undefined/string and import-null as failures in both execution modes; importFailed sentinel preserves falsy import rejection and later cases.",
+  "performanceClaim": false,
+  "pending": [
+    "Long-lived mixed workload WeakSet rehash attribution and actual retained100cycle",
+    "Common sample50ms/Canvas performance",
+    "Final nine commands and STEP057-077 closeout"
+  ],
+  "evidenceFiles": {
+    "manifest-node22.log": {
+      "sha256": "25007ca5d1af905ef0be45a6a38d2ec3f11e592d12502721178496d426734519",
+      "bytes": 549
+    },
+    "owning-node22.log": {
+      "sha256": "f363b4a9cdf4b9b2545e29dbaeee7dfc84812a0b3414e9807c177990f197436d",
+      "bytes": 5810
+    },
+    "pack.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "canary-node24.log": {
+      "sha256": "0d8fa05a40dec8a51b00ef4c7ac0334ee3f5150a1e05182728e202a3107b4eed",
+      "bytes": 1094
+    },
+    "full-node22.log": {
+      "sha256": "b880c6b79fa19352d96d7dee37c83a3bb4fdd1bcc91ab5fb1b1a1893bdd50d00",
+      "bytes": 2719
+    },
+    "canary-node20.log": {
+      "sha256": "a2d1ca43e385a88df41393be30247130d0c4589bfaecb38f3257252083373d30",
+      "bytes": 2258
+    },
+    "docs-boundaries.log": {
+      "sha256": "23fd86f44c7e92d6f45f68560650ad1a46e18712316c71ff318bf4e6fb6bb1b2",
+      "bytes": 1813
+    },
+    "full-run.json": {
+      "sha256": "beee68e20324264a337b63c2f5a59d373f16f1d19a680e1e01c5cded297a1d95",
+      "bytes": 2148
+    },
+    "full-node-cases.json": {
+      "sha256": "28c5422183b5b9efaa6bf1e647fcc8f1741abab67c8771076b5d8a756d6054d8",
+      "bytes": 54347
+    },
+    "record.py": {
+      "sha256": "aa04379a3214b7f9699669725e2d5d7052217f19f524ddab14b4eefb3bba5bd1",
+      "bytes": 2705
+    }
+  }
+}

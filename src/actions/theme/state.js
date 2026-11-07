@@ -5,8 +5,9 @@ import {
 } from "../../core/immutable.js";
 import {
   normalizeThemeDefinition,
-  resolveThemeTokens
-} from "./definition.js";
+  resolveEffectiveThemeFrame,
+  resolveEffectiveThemeTokens
+} from "../../theme/definition.js";
 
 export const LOCAL_THEME_OWNER = "local";
 
@@ -137,18 +138,6 @@ export function normalizeThemeState(state, { composition = false } = {}) {
   });
 }
 
-export function resolveEffectiveThemeFrame(state) {
-  const frames = state?.frames;
-  return Array.isArray(frames) ? frames.at(-1) : undefined;
-}
-
-export function resolveEffectiveThemeTokens(state) {
-  const frame = resolveEffectiveThemeFrame(state);
-  return frame === undefined
-    ? resolveThemeTokens("light")
-    : resolveThemeTokens({ base: frame.name, tokens: frame.tokens });
-}
-
 export function setThemeStateOverrides(state, overrides) {
   if (!Array.isArray(overrides)) {
     throw new TypeError("Theme overrides must be an array.");
@@ -172,12 +161,8 @@ export function axisThemeTypography(state, component) {
   };
 }
 
-// Native guide offsets retain their own anchors and collision policies.
-export function axisThemeOffset(state, component) {
-  if (resolveEffectiveThemeFrame(state) === undefined) return undefined;
-  return resolveEffectiveThemeTokens(state)[component === "labels" ? "axisLabelGap" : "axisTitleGap"];
-}
-
 export function legendThemeGap(state) {
   return resolveEffectiveThemeFrame(state) === undefined ? undefined : resolveEffectiveThemeTokens(state).legendItemGap;
 }
+
+export { resolveEffectiveThemeFrame, resolveEffectiveThemeTokens, axisThemeOffset } from "../../theme/definition.js";

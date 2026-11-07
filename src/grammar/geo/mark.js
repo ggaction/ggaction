@@ -1,3 +1,6 @@
+import { geoBindingCapacity } from "./capacity.js";
+import { validateGeoEncodings } from "./encoding.js";
+import { validateGeoAnnotationBinding } from "./annotation.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownRecord } from "../../core/ownData.js";
 import { validateInputReference } from "../../core/resourceReference.js";
@@ -8,7 +11,9 @@ import { MARK_EFFECT_PROPERTIES, normalizeMarkEffects } from "../markEffects.js"
 import { resolveStrokeDetails, STROKE_STYLE_PROPERTIES } from "../strokeStyle.js";
 import { projectionTuple } from "./projectionOptions.js";
 
-export const GEO_MODES = Object.freeze(["shape", "point", "line", "graticule"]);
+export const GEO_MODES = Object.freeze(["shape", "point", "line", "graticule", "annotation"]);
+export { isGeoLabelSource } from "./markKind.js";
+
 const REQUIRED_STYLE = ["fill", "stroke", "strokeWidth", "opacity", "radiusPx", "clip", ...STROKE_STYLE_PROPERTIES];
 export const GEO_STYLE_FIELDS = Object.freeze([...REQUIRED_STYLE, "blend", ...MARK_EFFECT_PROPERTIES]);
 
@@ -42,12 +47,12 @@ export function normalizeGraticule(input = {}) {
   return cloneAndFreeze({ stepDeg, extentDeg, precisionDeg });
 }
 
-export function validateGeoMarkBinding(layer, config) {
-  const binding = layer.geoBinding;
+export function validateGeoSourceBinding(binding) {
   ownRecord(binding, "Geographic mark binding");
-  if (!GEO_MODES.includes(binding.mode)) throw new TypeError("Unknown geographic mark mode.");
+  if (!GEO_MODES.includes(binding.mode) || binding.mode === "annotation") throw new TypeError("Unknown geographic mark mode.");
   const graticule = binding.mode === "graticule";
-  rejectUnknownProperties(binding, graticule ? ["mode", "graticule"] : ["mode", "geometry", "interpolation", "routeHint", "radiusDeg"], "geographic mark binding");
+  rejectUnknownProperties(binding, graticule ? ["mode", "graticule", "capacity"] : ["mode", "geometry", "interpolation", "routeHint", "radiusDeg", "capacity"], "geographic mark binding");
+  geoBindingCapacity(binding);
   if (graticule) {
     ownRecord(binding.graticule, "Stored graticule");
     if (["stepDeg", "extentDeg", "precisionDeg"].some(key => !Object.hasOwn(binding.graticule, key))) throw new TypeError("Stored graticule requires all resolved fields.");
@@ -63,8 +68,15 @@ export function validateGeoMarkBinding(layer, config) {
     }
     if (Object.hasOwn(binding, "radiusDeg") && (binding.mode !== "point" || !Number.isFinite(binding.radiusDeg) || binding.radiusDeg <= 0 || binding.radiusDeg >= 180)) throw new RangeError("Geographic point radiusDeg must be greater than zero and less than 180.");
   }
+  return binding;
+}
+
+export function validateGeoMarkBinding(layer, config) {
+  if (layer.geoBinding?.mode === "annotation") return validateGeoAnnotationBinding(layer, config);
+  const binding = validateGeoSourceBinding(layer.geoBinding);
   ownRecord(config, "Stored geographic mark style");
   if (REQUIRED_STYLE.some(key => !Object.hasOwn(config, key))) throw new TypeError("Geographic style requires all resolved fields.");
   normalizeGeoStyle(binding.mode, config, undefined, true);
-  if (layer.data !== undefined || layer.conditionals !== undefined || Object.keys(layer.encoding ?? {}).length) throw new TypeError("Geographic marks require their geometry resource and native style.");
+  validateGeoEncodings(layer);
+  if (layer.data !== undefined) throw new TypeError("Geographic marks require their geometry resource and native field mappings.");
 }

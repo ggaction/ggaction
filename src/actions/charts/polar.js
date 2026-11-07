@@ -21,6 +21,7 @@ const POSITION_OPTIONS = Object.freeze([
   "field", "fieldType", "temporalUnit", "scale"
 ]);
 const POINT_OPTIONS = Object.freeze([
+  "maxItems",
   "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
   ...STROKE_STYLE_PROPERTIES
 ]);

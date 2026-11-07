@@ -1,0 +1,28 @@
+{
+  "node": "v20.20.2",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/geo-label-source-archives/ggaction-daac12aed8152ba21a824805c0ab028e0e616f0a37920d0f8614c1cad4ec5c42.tgz",
+  "sha256": "daac12aed8152ba21a824805c0ab028e0e616f0a37920d0f8614c1cad4ec5c42",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2433.079375
+    },
+    {
+      "id": "geographic-label-source-public-lifecycle",
+      "status": "passed",
+      "durationMs": 987.2592500000001
+    },
+    {
+      "id": "interaction-strict-types",
+      "status": "passed",
+      "durationMs": 199.95966700000008
+    },
+    {
+      "id": "ggaction",
+      "status": "failed",
+      "durationMs": 2556.5030420000003,
+      "error": "AssertionError [ERR_ASSERTION]: {\"specifier\":\"ggaction\",\"chunks\":1,\"modules\":1025,\"minifiedBytes\":2704025,\"gzipBytes\":774677}\n    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-geo-label-source.mjs:31:115\n    at async check (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-geo-label-source.mjs:19:75)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-geo-label-source.mjs:30:132"
+    }
+  ]
+}

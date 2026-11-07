@@ -1,0 +1,74 @@
+{
+  "status": "native-domain-facade-scene-consumers-integrated; final-results-pending",
+  "base": "22df67494451063604ce8a64c5577e422a65705c",
+  "incomingSource": "2f4db9af97e379abf0e77e5ebc2889b0f1022a0e",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1229,
+    "packedBytes": 1755879,
+    "unpackedBytes": 7927055,
+    "file": "ggaction-0.0.26.tgz",
+    "sha256": "ebfa7ce25443b4fcf56205a5cf8cb241531e8fffe7b217a60fc5e1a5727150f0"
+  },
+  "runtimeTypesAndPackageInputsUnchanged": true,
+  "scope": "Table, Pyramid, OHLC, Waterfall and Trail native edits, exact fallback reasons and weights, original row/key continuity, authentic forward/reverse rebase and full offline frames. No new typed kernel claimed.",
+  "checks": {
+    "owning-final.log": 12,
+    "node20.log": 5,
+    "node24.log": 5,
+    "boundaries.log": 34,
+    "docs.log": 239
+  },
+  "manifest": {
+    "requirements": 30,
+    "groups": 79,
+    "targets": 577,
+    "required": 574,
+    "canonicalNotApplicable": 3,
+    "previousAssignedConsumers": 534,
+    "addedAssignedConsumers": 5,
+    "assignedConsumers": 539,
+    "pendingRequiredConsumers": 35,
+    "assignedGroups": 61,
+    "pendingGroups": 18,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577,
+    "otherRowsAndFieldsPreserved": true
+  },
+  "remaining": [
+    "R dynamic labels/P axis-dependent inferred clearance",
+    "35 required native consumer owners and 18 acceptance owners; final same-candidate actual evidence",
+    "Route/heap/SLO, nine final commands/review/protected delivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "owning-final.log": {
+      "sha256": "6d0b883a82280ab8b76b9c815ca863c6efe38f9352dc129c718f283d1e6dac94",
+      "bytes": 3403,
+      "tests": 12
+    },
+    "node20.log": {
+      "sha256": "f63057295ca0fda97e2e373739810c2f1d13755d2af026bead2fb36a51e23a22",
+      "bytes": 1505,
+      "tests": 5
+    },
+    "node24.log": {
+      "sha256": "3d4d097ce37ef54f712a6d57b51836fd4bbe5160102f0cad7f5d0642b9ff4360",
+      "bytes": 1576,
+      "tests": 5
+    },
+    "boundaries.log": {
+      "sha256": "ea71a8ac5ec571b17d9d33c0fe3170876111c6e106a1e272f3eeb1b2054762e0",
+      "bytes": 7670,
+      "tests": 34
+    },
+    "docs.log": {
+      "sha256": "f7a13fce2b2b72f65ab9100e9d19dc837a049a66b3f5c9f36c19be7607386a7d",
+      "bytes": 72819,
+      "tests": 239
+    }
+  }
+}

@@ -1,0 +1,7 @@
+# 기존 추론 capacity 전달 합산
+
+[Qualification](qualification.json)은 sourcec48f89e9d의변경10runtime파일이exact동일함과실제200관련/11관측graph회귀·48계약·241docs 통과를기록한다. Native maxNodes/maxEdges의전달누락만고치며API/schema/algorithmVersion/work10M/graphic10k는유지한다.
+
+Root canonical tar4d722cae는upstream설치검증archive와byte-identical이다. 따라서동일2runtime·strict타입·실행문서·6bundle의3Node실제영수증과critical10owner coverage를정확한동일입력근거로재사용한다. 재설치를했다고주장하지않는다. Root는Node20/24별도pack최대1780762를검증해최소cap1780800을적용했고최초실패를보존했다.
+
+1001×k10의모든10010edge는보존하지만원10k×k10의100kedge는여전히search/modelwork에걸린다. 전용worker및성능SLO·최종577consumer/79groups·9명령·독립검토·보호된전달은미완료다.

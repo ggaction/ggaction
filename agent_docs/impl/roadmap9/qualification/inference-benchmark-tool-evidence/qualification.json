@@ -1,0 +1,133 @@
+{
+  "status": "inference-tool-complete; diagnostic-only; large-inference-and-public-worker-open",
+  "base": "317de21f8",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "runtimeTypesPublicContractsChanged": false,
+  "archive": {
+    "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-6234764d952d5c42e1c93e6344a47eecbb44c088934ca7c322deb49220e3c297.tgz",
+    "sha256": "6234764d952d5c42e1c93e6344a47eecbb44c088934ca7c322deb49220e3c297"
+  },
+  "harnessInputs": {
+    "scripts/benchmark-native.js": "f3d51f45276dba2124abc20dcda8f191d82a3ed4aaf2012178ec21e3d7ac4481",
+    "scripts/benchmarks/routes.browser.js": "3f6b14d9b09a33e51d6f0afb59b709539c14d313bf7110e09c688fcf0ca46d55",
+    "scripts/benchmarks/routes.worker.js": "d52c9b779d4db10e66faff28751b12a13408b1d57c3bbfdfa4ff4f089857c729",
+    "scripts/benchmarks/workloads.browser.js": "96de184180385ec9baaac8c9a89828bd7ff180f1300dc2372e49d4c3e269b5fb",
+    "test/oracles/inference-grid.js": "9def3438a82a59590be540bf2b5f079cc77ad208c429db59d4276f724a06dc1f",
+    "app.js": {
+      "sha256": "6cec3e2eb82dcff42c91966179045ac9d82b232a641ea9f3acf8ff1d920629f5",
+      "bytes": 2803226
+    },
+    "worker.js": {
+      "sha256": "6ecd3cd9ced53af277a4a8dac6c2a57bc1b89b1e1ddd186418bf76fe00e6a547",
+      "bytes": 57398
+    },
+    "workloads.js": {
+      "sha256": "027e0b621a6821dfc20de7cb0bdc2929c228adfbe0ff823bc2b30b9234676c9c",
+      "bytes": 3109754
+    }
+  },
+  "profile": {
+    "seed": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "warmups": 0,
+    "measured": 1,
+    "cycles": 4
+  },
+  "environment": {
+    "cpu": "Apple M4",
+    "cores": 10,
+    "ramBytes": 17179869184,
+    "os": "Darwin 27.0.0 arm64",
+    "node": "v22.23.1",
+    "start": "2026-11-01T16:06:44.878Z",
+    "loadStart": [
+      3.150390625,
+      4.30517578125,
+      4.09912109375
+    ],
+    "browser": "153.0.8010.12",
+    "end": "2026-11-01T16:06:50.821Z",
+    "loadEnd": [
+      3.45849609375,
+      4.349609375,
+      4.11572265625
+    ]
+  },
+  "checks": {
+    "node22OwningDiscoveryBoundaries": 42,
+    "node20Owning": 11,
+    "node24Owning": 11,
+    "preservedOldCells": 24,
+    "preservedOldStages": 48,
+    "newCells": 6,
+    "newStages": 8,
+    "measured": 4,
+    "explicitLimit": 2,
+    "requiredWorkerUnavailable": 2,
+    "unexpectedFailure": 0,
+    "postBootstrapNetworkRequests": 0,
+    "internalDocs": 7
+  },
+  "diagnosticNotP95": true,
+  "performanceCPUExclusive": false,
+  "firstOutputHashScope": "complete graph resource with actual fixture logicalDataId; no identity normalization",
+  "remaining": [
+    "Original10k-node k10 inference requires100k directed edges but default edge guard is10k",
+    "Public inference async/worker execution is absent",
+    "Final combined archive warm5/sample30 CPU-exclusive qualification and all original AT56/AT82/077 obligations"
+  ],
+  "evidenceFiles": {
+    "final-owning.log": {
+      "saved": "owning.log.gz",
+      "sha256": "355bbb3f479e3dd307aa63b3aa31df400142bd6d89b77cf62311a9b4046dd325",
+      "bytes": 9214
+    },
+    "node20.log": {
+      "saved": "node20.log.gz",
+      "sha256": "66e2df1c8d6c83bf020683b324e4dca7b3ba00048239ca4b93791bf67c215ac5",
+      "bytes": 2729
+    },
+    "node24.log": {
+      "saved": "node24.log.gz",
+      "sha256": "f060c90287fed2f3e8b64df932bcc8755140c9b0b67dbfa76c1ffc038cd7bb57",
+      "bytes": 1310
+    },
+    "chromium/report.json": {
+      "saved": "diagnostic-final.json.gz",
+      "sha256": "2c263c644c59a5b8430c0301dfdb4c2ee45e8d988de7a80c6449d5f03b83729b",
+      "bytes": 18898
+    },
+    "chromium.log": {
+      "saved": "diagnostic-final.log.gz",
+      "sha256": "414d8e54695e3ae702dbcac672a935aca308c39e86b0ab55bbd53b44837d3c6d",
+      "bytes": 1204
+    },
+    "chromium-initial/report.json": {
+      "saved": "diagnostic-initial.json.gz",
+      "sha256": "3d3534e2633c9119fa645c0ad54c017353fdf4f620d33f2252bc7f917982dd21",
+      "bytes": 17268
+    },
+    "chromium-initial.log": {
+      "saved": "diagnostic-initial.log.gz",
+      "sha256": "f2b80d98e1e4a5416ea3d10cf564160f25b00a7fabd04bf89524bc0d4ff802f5",
+      "bytes": 1188
+    },
+    "chromium-resource-hash/report.json": {
+      "saved": "diagnostic-resource-hash.json.gz",
+      "sha256": "1d793e223b44a54df110a6eaef527a723eb3a20b4033c099fac834ec8628e37d",
+      "bytes": 17348
+    },
+    "docs.log": {
+      "saved": "docs.log.gz",
+      "sha256": "0ebab4c5cd025a1441430c59fa6b0a1461e2fb101fe187d6a90b3728e5228d1c",
+      "bytes": 1495
+    }
+  },
+  "unchangedRouteSources": {
+    "scripts/benchmarks/routes.browser.js": "3f6b14d9b09a33e51d6f0afb59b709539c14d313bf7110e09c688fcf0ca46d55",
+    "scripts/benchmarks/routes.worker.js": "d52c9b779d4db10e66faff28751b12a13408b1d57c3bbfdfa4ff4f089857c729"
+  }
+}

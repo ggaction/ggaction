@@ -34,7 +34,9 @@
   "wraps": [
     "editSemantic",
     "createScale",
-    "layoutSeries"
+    "layoutSeries",
+    "removeEncoding",
+    "editGeoPointMark"
   ],
   "editableVia": [
     "removeEncoding"

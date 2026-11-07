@@ -1,0 +1,14 @@
+{
+  "cycles": 100,
+  "rawVertices": 20,
+  "oldSceneWeakRefs": 100,
+  "alive": 0,
+  "kind": "small installed lifecycle retention; not original-scale 100cycle or P95",
+  "memory": {
+    "rss": 148439040,
+    "heapTotal": 64847872,
+    "heapUsed": 26313544,
+    "external": 1873531,
+    "arrayBuffers": 29419
+  }
+}

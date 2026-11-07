@@ -15,7 +15,7 @@ Each declared action has an exact signature and its own stable link. Option tabl
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createPointMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+createPointMark(options?: TargetedOptions<StrokeStyleDetails & { maxItems?: number | undefined; blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
 Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`BlendMode`](./../types.md#type-blendmode) · [`MarkShadow`](./../types.md#type-markshadow) · [`PointShape`](./../types.md#type-pointshape) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
@@ -30,6 +30,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `maxItems` | Optional / branch-dependent | `number \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
@@ -49,11 +50,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createPointMark({ blend?, shadow?, clip?, id?, data?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ blend?, shadow?, clip?, id?, data?, maxItems?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a point mark using fourteen named shapes or polygons with area/radius normalization.
-`stroke: false` disables the outline and its width at creation. [Marks](../../api/marks.md)
+`stroke: false` disables the outline and its width at creation. Point `maxItems` defaults to 50,000 and accepts explicit values through 100,000. [Marks](../../api/marks.md)
 
 
 ## `createTickMark`
@@ -106,7 +107,7 @@ Length defaults to `14`; stroke width defaults to `2`. [Marks](../../api/marks.m
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createStatisticalReference(options: TargetedOptions<CreateStatisticalReferenceOptions>): ChartProgram;
@@ -395,7 +396,7 @@ keeps its percentage of the complete source.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editMarkLabelSelection(options: TargetedOptions<EditMarkLabelSelectionOptions>): ChartProgram;
@@ -437,7 +438,7 @@ rebound with this action or removed.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editMarkLabelPlacement(options: TargetedOptions<EditMarkLabelPlacementOptions>): ChartProgram;
@@ -481,7 +482,7 @@ Pass `"auto"` to restore the legacy source anchor and remove the owned placement
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 removeMarkLabels(options: TargetedOptions<RemoveMarkLabelsOptions>): ChartProgram;
@@ -562,12 +563,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
 | `layout` | Optional / branch-dependent | `false \| Omit<LabelLayoutOptions, "target"> \| undefined` |
 | `anchor` | Optional / branch-dependent | `"plot-center" \| undefined` |
+| `space` | Optional / branch-dependent | `"data" \| "plot" \| "screen" \| undefined` |
 | `x` | Optional / branch-dependent | `unknown` |
 | `y` | Optional / branch-dependent | `unknown` |
-| `space` | Optional / branch-dependent | `"data" \| "plot" \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
+| `selection` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
@@ -575,15 +578,17 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createAnnotation({ clip?, id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
+createAnnotation({ clip?, id?, text, anchor?, format?, source?, select?, selection?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
 ```
 
 Create anchored text. Omit x/y/space for a
 final-item mark anchor; `source` selects the mark, otherwise current/unique mark
-inference applies. Provide both x and y for a data anchor; `source` selects one
+inference applies. A mark anchor can use inline `select` or a named `selection` belonging to the same source; both retain final-item grain, and empty membership stays empty. Coordinate anchors reject these options. Provide both x and y for a data anchor; `source` selects one
 complete Cartesian layer whose data, coordinate, scales, field types, and temporal
 units are reused. The annotation participates in automatic domains without becoming
 a source-owned label.
+
+With `space: "screen"`, x and y are finite logical pixels from the local Canvas top-left, increasing right/down. This branch needs no data, scale or coordinate. It rejects source/data/coordinate/membership and keeps its position across resize, margin, data and scale changes. Nested charts apply their existing child transform. `clip:true` clips to the local Canvas. Edit x/y with `editAnnotation`; field encodings and source placement do not apply.
 
 With `space: "plot"`, x and y are finite fractions in `[0,1]`, where x=0 is left
 and y=0 is bottom. Existing `data` is explicit or inferred, and `coordinate` is
@@ -598,9 +603,84 @@ can accompany polar and parallel-coordinate charts, including facets. Keep the
 note in its Cartesian plot frame by omitting the chart's polar/parallel coordinate.
 
 Omit `layout` or pass `false` to retain the exact anchor. A layout object accepts
-`layoutLabels` options except `target`. Later changes use `encodeText`, `encodeX/Y`,
+`layoutLabels` options except `target`. Later changes use `editAnnotation`, `encodeText`, `encodeX/Y`,
 `editTextMark`, `layoutLabels`, `removeLabelLayout`, `editScale`, and `removeMark`.
 [Text marks](../../api/marks/text.md#createannotationoptions)
+
+
+## `editAnnotation`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
+
+```typescript
+editAnnotation(options: TargetedOptions<EditAnnotationOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditAnnotationOptions`](./../types.md#type-editannotationoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
+| `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "end" \| "left" \| "right" \| "start" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `dx` | Optional / branch-dependent | `number \| undefined` |
+| `dy` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `text` | Optional / branch-dependent | `unknown` |
+| `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
+| `x` | Optional / branch-dependent | `unknown` |
+| `y` | Optional / branch-dependent | `unknown` |
+| `placement` | Optional / branch-dependent | `"auto" \| MarkLabelPlacement \| undefined` |
+| `layout` | Optional / branch-dependent | `false \| Omit<LabelLayoutOptions, "target"> \| undefined` |
+| `all` | Optional / branch-dependent | `true \| undefined` |
+| `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
+| `selection` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editAnnotation({ target?, text?, format?, x?, y?, placement?, layout?, select?, selection?, all?, blend?, shadow?, clip?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, lineHeight?, blockAlign?, inheritColor?, lineCap?, lineJoin?, miterLimit? })
+```
+
+Edit existing Text or attached labels in one atomic change. Available in Full. Choose `target` explicitly,
+otherwise the current Text or one unique Text is used. An empty edit, ambiguous target or invalid child option rejects
+without changing the program or its trace.
+
+`x` and `y` replace existing independent Cartesian constant datums using the same scales, field types and temporal
+units. Existing screen anchors instead use finite local Canvas logical pixels. Supply either or both. Source-owned labels and field-driven or conditional positions reject this patch.
+`text` supplies constant content; `format` alone reformats existing constant content. Style options follow
+`editTextMark`. An encoded dx/dy channel must be edited through its encoding action instead.
+
+For attached labels, exactly one of `select`, `selection`, or `all:true` replaces membership through `editMarkLabelSelection`. Independent annotations reject membership edits. Named selection and source revisions keep their native replay and removal rules.
+
+`placement` uses `editMarkLabelPlacement`; `"auto"` restores its ordinary source anchor. A `layout` object uses
+`layoutLabels`, and `false` removes collision layout. These edits retain source ownership, selection, replay and
+removal behavior. The action also accepts ordinary Text layers; no separate annotation registry is required.
+[Text marks](../../api/marks/text.md#editannotationoptions)
 
 
 ## `createTextMark`
@@ -835,7 +915,7 @@ binding clears it. Domains and tick values are already normalized timestamps.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+editPointMark(options: TargetedOptions<StrokeStyleDetails & { maxItems?: number | undefined; blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
 Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`BlendMode`](./../types.md#type-blendmode) · [`MarkShadow`](./../types.md#type-markshadow) · [`PointShape`](./../types.md#type-pointshape) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
@@ -850,6 +930,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `maxItems` | Optional / branch-dependent | `number \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
@@ -867,10 +948,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editPointMark({ blend?, shadow?, clip?, target?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
+editPointMark({ blend?, shadow?, clip?, target?, maxItems?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
-Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
+Change point shape, appearance, or `maxItems` capacity and rematerialize its concrete items.
+Explicit `maxItems: undefined` restores the 50,000 default after raw/item preflight.
 `stroke: false` disables the outline and its width. [Marks](../../api/marks.md)
 
 
@@ -1720,7 +1802,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createOverlay(options?: TargetedOptions<CreateOverlayOptions>): ChartProgram;
@@ -1761,7 +1843,7 @@ Add a line or point layer that follows a source mark's visible results. Bar over
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editOverlay(options: TargetedOptions<EditOverlayOptions>): ChartProgram;
@@ -1798,7 +1880,7 @@ Change an overlay's dependency or gap policy. `follow: false` freezes current re
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
@@ -1842,7 +1924,7 @@ four renderer tests.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
@@ -1883,7 +1965,7 @@ to the plot. Explicit geometry adds clipping to the always-clipped viewport.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createFlowNodes(options?: TargetedOptions<FlowNodesOptions>): ChartProgram;
@@ -1922,7 +2004,7 @@ Create flow node rectangles and optional labels from a stored layout. Full only.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editFlowNodes(options: TargetedOptions<EditFlowNodesOptions>): ChartProgram;
@@ -1960,7 +2042,7 @@ Edit flow node styling, labels or layout binding. Full only.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createFlowLinks(options?: TargetedOptions<FlowLinksOptions>): ChartProgram;
@@ -1998,7 +2080,7 @@ Create closed flow ribbons from a stored layout. Full only.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editFlowLinks(options: TargetedOptions<EditFlowLinksOptions>): ChartProgram;
@@ -2035,7 +2117,7 @@ Edit flow ribbon styling or layout binding. Full only.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
@@ -2081,7 +2163,7 @@ Draw stored contour level boundaries or filled bands with shared position and co
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
@@ -2126,7 +2208,7 @@ Edit contour geometry bindings, mappings and appearance while retaining item ide
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
@@ -2166,7 +2248,7 @@ Draw a stored calendar layout with explicit day, month and label roles. See [Cal
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
@@ -2205,7 +2287,7 @@ Edit a calendar plot while preserving day identities and source lineage. See [Ca
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createGeoShapeMark(options?: TargetedOptions<GeoShapeMarkOptions>): ChartProgram;
@@ -2232,6 +2314,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
@@ -2244,7 +2327,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createGeoShapeMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoShapeMark({id?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, capacity?, ...style})
 ```
 
 Create projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](../../api/geometry.md#creategeoshapemark).
@@ -2254,7 +2337,7 @@ Create projected geographic GeoShapeMark geometry with native style. See [Geomet
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editGeoShapeMark(options: TargetedOptions<EditGeoShapeMarkOptions>): ChartProgram;
@@ -2280,6 +2363,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
 | `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
@@ -2292,7 +2376,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editGeoShapeMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoShapeMark({target?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](../../api/geometry.md#editgeoshapemark).
@@ -2302,7 +2386,7 @@ Edit projected geographic GeoShapeMark geometry with native style. See [Geometry
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createGeoPointMark(options?: TargetedOptions<GeoPointMarkOptions>): ChartProgram;
@@ -2317,6 +2401,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
@@ -2342,7 +2427,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createGeoPointMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoPointMark({id?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, radiusDeg?, capacity?, ...style})
 ```
 
 Create projected geographic GeoPointMark geometry with native style. See [Geometry and projections](../../api/geometry.md#creategeopointmark).
@@ -2352,7 +2437,7 @@ Create projected geographic GeoPointMark geometry with native style. See [Geomet
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editGeoPointMark(options: TargetedOptions<EditGeoPointMarkOptions>): ChartProgram;
@@ -2378,6 +2463,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
 | `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
@@ -2391,7 +2477,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editGeoPointMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoPointMark({target?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, radiusDeg?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoPointMark geometry with native style. See [Geometry and projections](../../api/geometry.md#editgeopointmark).
@@ -2401,7 +2487,7 @@ Edit projected geographic GeoPointMark geometry with native style. See [Geometry
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createGeoLineMark(options?: TargetedOptions<GeoLineMarkOptions>): ChartProgram;
@@ -2427,6 +2513,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
@@ -2439,7 +2526,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createGeoLineMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoLineMark({id?, coordinate?, geometry?, interpolation?, routeHint?, capacity?, ...style})
 ```
 
 Create projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../../api/geometry.md#creategeolinemark).
@@ -2449,7 +2536,7 @@ Create projected geographic GeoLineMark geometry with native style. See [Geometr
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
@@ -2474,6 +2561,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
 | `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
@@ -2486,17 +2574,126 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../../api/geometry.md#editgeolinemark).
+
+
+## `createGeoAnnotation`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
+
+```typescript
+createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`GeoAnnotationOptions`](./../types.md#type-geoannotationoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `anchor` | Required | `GeoAnnotationAnchor` |
+| `text` | Required | `string` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "end" \| "left" \| "right" \| "start" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `dx` | Optional / branch-dependent | `number \| undefined` |
+| `dy` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+createGeoAnnotation({ id?, coordinate?, anchor, text, ...textStyle })
+```
+
+Attach native Text to a semantic geographic position or original feature centroid. See [Geometry and projections](../../api/geometry.md#creategeoannotation).
+
+
+## `editGeoAnnotation`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
+
+```typescript
+editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGeoAnnotationOptions`](./../types.md#type-editgeoannotationoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `anchor` | Optional / branch-dependent | `GeoAnnotationAnchor \| undefined` |
+| `text` | Optional / branch-dependent | `string \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "end" \| "left" \| "right" \| "start" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `dx` | Optional / branch-dependent | `number \| undefined` |
+| `dy` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+editGeoAnnotation({ target?, coordinate?, anchor?, text?, ...textStyle })
+```
+
+Edit the annotation while preserving omitted intent, original feature identity and native Text styles. See [Geometry and projections](../../api/geometry.md#editgeoannotation).
 
 
 ## `createGraticule`
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
@@ -2511,6 +2708,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fill` | Optional / branch-dependent | `"none" \| undefined` |
@@ -2534,7 +2732,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createGraticule({id?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+createGraticule({id?, coordinate?, stepDeg?, extentDeg?, precisionDeg?, capacity?, ...style})
 ```
 
 Create projected geographic Graticule geometry with native style. See [Geometry and projections](../../api/geometry.md#creategraticule).
@@ -2544,7 +2742,7 @@ Create projected geographic Graticule geometry with native style. See [Geometry 
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
@@ -2569,6 +2767,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `capacity` | Optional / branch-dependent | `GeoMarkCapacity \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fill` | Optional / branch-dependent | `"none" \| undefined` |
 | `stepDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
@@ -2581,7 +2780,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?, capacity?, ...style})
 ```
 
 Edit projected geographic Graticule geometry with native style. See [Geometry and projections](../../api/geometry.md#editgraticule).
@@ -2591,7 +2790,7 @@ Edit projected geographic Graticule geometry with native style. See [Geometry an
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
@@ -2638,7 +2837,7 @@ Draw ordered stages with explicit width or area meaning. See [Pyramid plots](../
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
@@ -2684,7 +2883,7 @@ Edit a Pyramid while preserving typed row identities and source order. See [Pyra
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
@@ -2734,7 +2933,7 @@ Draw explicit open, high, low and close roles as one row-owned item. See [OHLC p
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
@@ -2783,7 +2982,7 @@ Edit prices and styles while preserving typed row identities. See [OHLC plots](.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
@@ -2830,7 +3029,7 @@ Draw ordered contributions, explicit totals and subtotals. See [Waterfall plots]
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
@@ -2870,6 +3069,212 @@ editWaterfallPlot({ target?, data?, coordinate?, x?, role?, value?, reset?, ySca
 ```
 
 Edit contribution meaning and appearance with stable stage identities. See [Waterfall plots](../../api/waterfall.md).
+
+
+## `createTrailPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
+
+```typescript
+createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateTrailPlotOptions`](./../types.md#type-createtrailplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `width` | Required | `string \| number` |
+| `groupBy` | Optional / branch-dependent | `string \| false \| readonly string[] \| undefined` |
+| `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
+| `closed` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `fillRule` | Optional / branch-dependent | `"evenodd" \| "nonzero" \| undefined` |
+| `body` | Optional / branch-dependent | `TrailBodyPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `x` | Optional / branch-dependent | `TrailPosition \| undefined` |
+| `y` | Optional / branch-dependent | `TrailPosition \| undefined` |
+| `theta` | Optional / branch-dependent | `PolarThetaChannel \| undefined` |
+| `radius` | Optional / branch-dependent | `PolarRadiusChannel \| undefined` |
+| `order` | Optional / branch-dependent | `string \| false \| { readonly field: string; readonly order?: "ascending" \| "descending" \| undefined; } \| undefined` |
+| `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
+| `tension` | Optional / branch-dependent | `number \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| PolarPathGuideOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+createTrailPlot({ id?, data?, coordinate?, x?, y?, theta?, radius?, width, groupBy?, order?, missing?, curve?, tension?, lineJoin?, lineCap?, miterLimit?, fillRule?, closed?, body?, color?, clip?, blend?, guides? })
+```
+
+Draw a filled ribbon with an explicit screen width at each sample. Choose Cartesian x/y or Polar theta/radius. See [Trail plots](../../api/trail.md).
+
+
+## `editTrailPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
+
+```typescript
+editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditTrailPlotOptions`](./../types.md#type-edittrailplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `width` | Optional / branch-dependent | `string \| number \| undefined` |
+| `groupBy` | Optional / branch-dependent | `string \| false \| readonly string[] \| undefined` |
+| `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
+| `closed` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `fillRule` | Optional / branch-dependent | `"evenodd" \| "nonzero" \| undefined` |
+| `body` | Optional / branch-dependent | `TrailBodyPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `x` | Optional / branch-dependent | `TrailPosition \| undefined` |
+| `y` | Optional / branch-dependent | `TrailPosition \| undefined` |
+| `theta` | Optional / branch-dependent | `PolarThetaChannel \| undefined` |
+| `radius` | Optional / branch-dependent | `PolarRadiusChannel \| undefined` |
+| `order` | Optional / branch-dependent | `string \| false \| { readonly field: string; readonly order?: "ascending" \| "descending" \| undefined; } \| undefined` |
+| `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
+| `tension` | Optional / branch-dependent | `number \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| PolarPathGuideOptions \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+editTrailPlot({ target?, data?, coordinate?, x?, y?, theta?, radius?, width?, groupBy?, order?, missing?, curve?, tension?, lineJoin?, lineCap?, miterLimit?, fillRule?, closed?, body?, color?, clip?, blend?, guides? })
+```
+
+Patch native series meaning and appearance while preserving typed logical identity. See [Trail plots](../../api/trail.md).
+
+
+## `createTablePlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
+
+```typescript
+createTablePlot(options: TargetedOptions<CreateTablePlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateTablePlotOptions`](./../types.md#type-createtableplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `columns` | Required | `readonly TableColumn[]` |
+| `sortBy` | Optional / branch-dependent | `false \| readonly SortKey[] \| undefined` |
+| `rowLimit` | Optional / branch-dependent | `number \| false \| undefined` |
+| `rowHeight` | Optional / branch-dependent | `number \| undefined` |
+| `padding` | Optional / branch-dependent | `number \| undefined` |
+| `header` | Optional / branch-dependent | `boolean \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `TableCellPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `TableLabelPaint \| undefined` |
+| `headerStyle` | Optional / branch-dependent | `TableBandPaint \| undefined` |
+| `footerStyle` | Optional / branch-dependent | `TableBandPaint \| undefined` |
+| `bars` | Optional / branch-dependent | `TableCellPaint \| undefined` |
+| `sparklines` | Optional / branch-dependent | `TableSparklinePaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| PyramidColor \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+createTablePlot({ id?, data?, coordinate?, columns, sortBy?, rowLimit?, rowHeight?, padding?, header?, cells?, labels?, headerStyle?, footerStyle?, bars?, sparklines?, color?, clip? })
+```
+
+Draw keyed cells with text, bars, sparklines and explicit whole-source footer summaries. Full only. See [Table plots](../../api/table.md).
+
+
+## `editTablePlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
+
+```typescript
+editTablePlot(options: TargetedOptions<EditTablePlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditTablePlotOptions`](./../types.md#type-edittableplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `columns` | Optional / branch-dependent | `readonly TableColumn[] \| undefined` |
+| `sortBy` | Optional / branch-dependent | `false \| readonly SortKey[] \| undefined` |
+| `rowLimit` | Optional / branch-dependent | `number \| false \| undefined` |
+| `rowHeight` | Optional / branch-dependent | `number \| undefined` |
+| `padding` | Optional / branch-dependent | `number \| undefined` |
+| `header` | Optional / branch-dependent | `boolean \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `TableCellPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `TableLabelPaint \| undefined` |
+| `headerStyle` | Optional / branch-dependent | `TableBandPaint \| undefined` |
+| `footerStyle` | Optional / branch-dependent | `TableBandPaint \| undefined` |
+| `bars` | Optional / branch-dependent | `TableCellPaint \| undefined` |
+| `sparklines` | Optional / branch-dependent | `TableSparklinePaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| PyramidColor \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+editTablePlot({ target?, data?, coordinate?, columns?, sortBy?, rowLimit?, rowHeight?, padding?, header?, cells?, labels?, headerStyle?, footerStyle?, bars?, sparklines?, color?, clip? })
+```
+
+Patch table meaning and appearance while preserving typed row and column identities. See [Table plots](../../api/table.md).
 
 
 ## Related

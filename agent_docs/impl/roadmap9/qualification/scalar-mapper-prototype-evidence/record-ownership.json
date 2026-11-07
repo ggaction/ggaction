@@ -1,0 +1,9 @@
+{
+  "node": "v22.23.1",
+  "samples": 90,
+  "outputOwned": true,
+  "childrenOwned": true,
+  "callerInputsNeverStamped": true,
+  "mutatedCopiesRevalidated": true,
+  "recordVariant": true
+}

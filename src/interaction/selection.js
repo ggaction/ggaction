@@ -8,21 +8,16 @@ import { normalizeMarkSelector } from "../grammar/markSelection.js";
 import { SELECTION_SET_MODES } from "../grammar/selectionSet.js";
 import { normalizeParameterEditOptions } from "../grammar/parameter.js";
 import { requireStoredResource } from "../selectors/resources.js";
-import { interactionOptions as options } from "./input.js";
+import { findLayer } from "../selectors/layers.js";
+import { interactionOptions as options, interactionTransactionMetadata } from "./input.js";
 
-export const INTERACTION_EDIT_TYPES = Object.freeze(["select", "clearSelection", "setParameter", "filter", "reorder", "setVisibility", "focusHierarchy", "setViewport", "moveNode"]);
+export const INTERACTION_EDIT_TYPES = Object.freeze(["select", "clearSelection", "setParameter", "filter", "reorder", "setVisibility", "focusHierarchy", "setViewport", "moveNode", "annotate"]);
 
 export function interactionTransaction(command, generatedId) {
   const request = options(command, ["type", "target", "payload"],
     ["transactionId", "origin", "causeTransactionId"], "Editing command");
-  const transactionId = request.transactionId === undefined ? generatedId : request.transactionId;
-  for (const id of [transactionId, request.causeTransactionId].filter(id => id !== undefined)) {
-    if (typeof id !== "string" || !id.length || id.length > 1024) throw new TypeError("Transaction IDs require 1 to 1024 characters.");
-  }
-  const origin = request.origin === undefined ? "programmatic" : request.origin;
-  if (!["user", "programmatic", "replay", "linked"].includes(origin)) throw new TypeError("Unknown interaction command origin.");
   if (!INTERACTION_EDIT_TYPES.includes(request.type)) throw new TypeError("Unsupported editing command type.");
-  return cloneAndFreeze({ ...request, transactionId, origin });
+  return cloneAndFreeze({ ...request, ...interactionTransactionMetadata(request, generatedId) });
 }
 
 export function interactionOwner(program, requested, allowMissing = false) {
@@ -70,6 +65,14 @@ function invoke(program, method, args) {
 export function prepareInteractionEdit(program, command) {
   const { target, view } = interactionOwner(program, command.target);
   const affectedOwners = cloneAndFreeze([target]);
+  if (command.type === "annotate") {
+    // The wrapped native editor owns the closed payload and complete preflight.
+    // The host may not redirect its explicit command target through the payload.
+    if (Object.hasOwn(command.payload ?? {}, "target")) throw new TypeError("Annotation payload cannot contain target.");
+    const layer = findLayer(view, target.id);
+    const method = layer?.mark.type === "geo" && layer.geoBinding.mode === "annotation" ? "editGeoAnnotation" : "editAnnotation";
+    return { program: invoke(program, method, { ...command.payload, ...address(target, true) }), affectedOwners };
+  }
   if (command.type === "filter" || command.type === "reorder") {
     const filter = command.type === "filter";
     const payload = options(command.payload, [], filter ? ["clear", "select", "mode", "recompute"] : ["clear", "channel", "values", "by", "direction"], "Direct command payload");
@@ -100,8 +103,10 @@ export function prepareInteractionEdit(program, command) {
     return { program: invoke(program, "editLayout", { node: payload, ...address(target, true) }), affectedOwners };
   }
   if (command.type === "setViewport") {
-    const payload = options(command.payload, [], ["scalePx", "translatePx", "centerDeg", "rotateDeg"], "Projection viewport payload");
-    return { program: invoke(program, "editProjection", { ...payload, ...address(target, true) }), affectedOwners };
+    const payload = options(command.payload, [], ["scalePx", "translatePx", "centerDeg", "rotateDeg", "operation"], "Projection viewport payload");
+    const operation = Object.hasOwn(payload, "operation");
+    if (operation) options(payload, ["operation"], [], "Camera viewport payload");
+    return { program: invoke(program, operation ? "navigateProjection" : "editProjection", { ...payload, ...address(target, true) }), affectedOwners };
   }
   if (command.type === "setVisibility") {
     const payload = options(command.payload, [], ["clear", "channel", "values", "visible", "scaleDomain"], "Visibility command payload");

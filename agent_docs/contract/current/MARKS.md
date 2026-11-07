@@ -222,7 +222,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ## `createPointMark`
 
-- Signature: `createPointMark({ blend?, clip?, id?, data?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
+- Signature: `createPointMark({ blend?, clip?, id?, data?, maxItems?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`: Implemented optional 새 layer/graphic ID. 첫 unnamed point는 `"point"`; 동일 type이 이미 있으면 required다.
 - `data`: Implemented, existing dataset ID. 생략하면 current data를 사용한다.
 - `shape`
@@ -231,13 +231,20 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - `fill`, `opacity`, `stroke`, `strokeWidth`: Implemented creation-time appearance shorthand. 각각
   `editPointMark`와 같은 validation/config persistence를 사용하며 wrapped `editPointMark`로 적용한다.
   `stroke: false`는 outline과 width를 끈다. Field-driven color와 constant fill은 충돌한다.
-- Capacity: selected materialized raw dataset은 layer별 50,000개 inclusive다. missing skip 이전 raw
-  cardinality와 concrete collection 양쪽을 검사한다. 50,001은 `resource-limit`,
-  `optionPath: "Point mark item count"`, `limit: 50000`, `actual: 50001`로 원자적으로 거부한다.
-  Full/Basic initial/incomplete, createScatterPlot, source revision/rebind, property arrays,
-  mixed shapes, Canvas/scale replay, selection/highlight, accessibility, facet/nested composition,
-  editable persistence가 같은 소유권 정책을 사용한다. Graphic-only structural validation은 기존
-  의미·capacity 미검사 경계를 유지한다. Evidence: `test/unit/actions/marks/point-capacity.test.js`.
+- Capacity: `maxItems?: PositiveInteger`는1..100000 safe integer이며 기본50000을 유지한다.
+  명시값만 `materializationConfigs.marks[id].maxItems`에 저장한다. missing skip 이전 selected raw
+  dataset과 concrete collection 양쪽이 같은 inclusive limit을 따르며 source/array 값을 줄이지 않는다.
+  초과는 `resource-limit`, `optionPath: "Point mark item count"`, 해당 `limit`과 `actual`로 원자 거부한다.
+  `undefined`는 생성 시 생략과 같다. Full/Basic initial/incomplete, 공유 point facade의
+  `point.maxItems`(Dumbbell은 startPoint/endPoint), source revision/rebind, property arrays, mixed shape,
+  Canvas/scale replay, selection/highlight, accessibility, facet/nested composition, editable restore가
+  실제 point/data/graphic ID·type 및 retained child owner에서 같은 정책을 읽는다. 각 owner는 독립
+  한도를 가지므로 composition 합계100000 초과도 가능하다. nonpoint/unowned graphic은 일반10000이다.
+  Editable codec는 무효값·nonpoint capacity·유실된 capacity의 초과 raw/output을 거부한다.
+  Graphic-only structural validation의 의미·capacity 미검사 경계와 일반 generated10000/work10M,
+  path·animation·hit의 별도 한도는 바꾸지 않는다. 이 옵션은 latency/SLO 보장이 아니다.
+  Evidence: `test/unit/actions/marks/point-capacity.test.js`,
+  `test/unit/actions/marks/point-explicit-capacity.test.js`, `test/contracts/point-capacity-types.test.js`.
 - Effect: dataset cardinality와 같은 길이의 point graphic collection을 만들며 아직 위치 property가
   없으므로 encoding 전에는 보이지 않을 수 있다.
 - Default glyph size: compatible Cartesian x/y 또는 Polar theta/r position이 완성되면 materializer가
@@ -253,7 +260,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Formal values — `createPointMark`
 
-- Implemented: `createPointMark({ blend?: BlendMode; clip?: boolean; id?: UserId; data?: UserId; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createPointMark({ blend?: BlendMode; clip?: boolean; id?: UserId; data?: UserId; maxItems?: PositiveInteger; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
@@ -276,7 +283,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 ## `editPointMark`
 
 - Implemented: immutable constant shape and appearance edits for existing point marks.
-- Signature: `editPointMark({ blend?, clip?, target?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editPointMark({ blend?, clip?, target?, maxItems?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`은 existing point mark다. current compatible mark 또는 유일한 point mark로 infer하며
   ambiguity는 explicit target을 요구한다.
 - `shape`은 shared `PointShape` named 14종 또는 명시적 단순 polygon이다. Field-driven `encodeShape`가 있으면 constant shape
@@ -287,13 +294,16 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
   `strokeWidth`는 오류다. 이후 string stroke는 point default width `1`로 복원한다.
 - `strokeWidth`는 constant string stroke 또는 field-driven stroke encoding이 활성화되어 있어야 한다.
 - Scalar opacity conflicts with active field opacity; use `encodeOpacity({ value })` for explicit replacement.
-- 최소 한 appearance property가 필요하며 omitted properties는 기존 stored config를 보존한다.
+- 최소 한 appearance 또는 `maxItems` property가 필요하며 omitted properties는 기존 stored config를 보존한다.
+- `maxItems`는 생성과 같은1..100000이며 생략 시 보존한다. 명시 `undefined`는 저장값을 제거하고
+  기본50000으로 복귀한다. 새 limit에 대한 현재 raw/output 검산을 첫 state-changing child 이전에
+  마치므로 낮추기·제거 실패는 이전 program과 trace를 보존한다.
 - Effect: mark materialization config를 갱신하고 wrapped `rematerializePointMark`로 concrete items를
   circle, rect 또는 area/radius-normalized path recipe로 교체한다. Semantic mark/data/encoding은 바꾸지 않는다.
 
 ### Formal values — `editPointMark`
 
-- Implemented: `editPointMark({ blend?: BlendMode; clip?: boolean; target?: UserId; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editPointMark({ blend?: BlendMode; clip?: boolean; target?: UserId; maxItems?: PositiveInteger | undefined; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
@@ -1093,12 +1103,23 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
   ID for an additional label layer on the same source. Different sources have independent default label IDs.
 - `field`, `value`, and `content` are mutually exclusive with the same semantics, supported marks, formatting and validation
   as `encodeText`. Omitting all three means `content: "value"`; this requires a Bar or Arc with a supported semantic measure.
-  Point/Line/Rule/Rect require an explicit field or constant rather than guessing one position channel as the value.
+  Point/Line/Rule/Rect/Geo require an explicit field or constant rather than guessing one position channel as the value.
   `format` defaults to `"auto"`, including fractional shares; specify `".0%"` or another percent token for percentages.
 - Appearance defaults to centered/middle text at the source's existing final-item anchor. Other appearance defaults and
   source-fill contrast use `createTextMark`. Semantic placement is opt-in; when omitted, no sign-dependent offset is inferred.
   An outside semantic placement uses the ordinary text fill unless the author supplied an explicit fill, while inside and
   center Arc/Rect labels retain source-fill contrast. Explicit appearance overrides the facade defaults.
+- Full geographic Shape/Point/Line and Graticule are source-owned Text sources without a dataset. Each currently
+  visible eligible feature produces one label, including multipart features. The anchor is its source-space centroid
+  projected through the source coordinate; a clipped/non-drawable centroid produces no Text item. Generated graticules
+  expose their existing `axis` and numeric `value` fields. Explicit fields/constants use ordinary Text formatting.
+  Original feature keys and joined row references remain attached; LOD representation aliases are scoped to the label
+  layer while current hit identity stays on the visible feature. `placement: {anchor:"center"}` is supported;
+  other semantic boundary anchors have no geographic meaning. Native dx/dy and `layoutLabels` remain available.
+  Use `inheritColor` or constant fill as for other source labels; direct field color still requires independent Text.
+  Projection clip controls anchor visibility. The generic Text `clip` option retains its Cartesian-only contract.
+  Geometry, join, detail, projection, source, selection and parameter revisions refresh source then labels once.
+  No new geometric annotation anchor or dataset is stored. Fixed `createGeoAnnotation` keeps its separate single-anchor contract.
 - A Line source creates one label per final series item. Its anchor is the last concrete path coordinate and an explicit
   field reads the final ordered member row. This supports endpoint labels without changing Line path or selection grain.
 - `rotation` inherits the shared Text `RotationInput`: a legacy finite number means radians, while an exact
@@ -1259,10 +1280,10 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `createAnnotation`
 
-- Signature: `createAnnotation({ id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })`.
+- Signature: `createAnnotation({ id?, text, anchor?, format?, source?, select?, selection?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })`.
 - Exactly one anchor branch is selected. Mark anchor omits x/y/space and uses explicit/current/unique final-item source.
   Data anchor requires x and y and selects one explicit/current/unique complete Cartesian layer for data, coordinate,
-  both scales, field types and temporal units. Plot anchor requires `space:"plot"`, finite x/y in [0,1], optional
+  both scales, field types and temporal units. Screen anchor requires `space:"screen"` and finite x/y in local Canvas logical pixels, with x right and y down. It creates no dataset, scale or coordinate and rejects source/data/coordinate/membership. Plot anchor requires `space:"plot"`, finite x/y in [0,1], optional
   existing data/coordinate, and ordinary `<id>-x`/`<id>-y` linear [0,1] scales. x=0 is left; y=0 is bottom.
 - `anchor:"plot-center"`는 plot x/y=.5와 align:center/baseline:middle을 함께 소유한다.
   x/y/space/source/align/baseline 병용은 오류다. data/coordinate/style/dx/dy/layout은 기존 plot branch와 같다.
@@ -1272,22 +1293,26 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 - `rotation` uses the same `RotationInput` and radians normalization as Text and Mark Labels.
 - Data datum contributes to automatic domains and is independent after creation. Mark anchor retains source-owned
   final-item lifecycle. Plot named scales remain ordinary editable resources. No nearest-mark search, hidden dataset,
-  annotation registry, or editAnnotation action exists.
+  annotation registry exists.
 - The full lower chain is preflighted on a discarded immutable branch. Branch conflicts, ambiguous/incomplete source,
   missing axis, plot bounds, content/style/layout errors fail before child effects. Source-owned Text aliases are excluded
   from data-source inference.
-- Later edits use encodeText, encodeX/Y, editTextMark, layoutLabels/removeLabelLayout, editScale and removeMark.
+- Later edits use editAnnotation or the lower encodeText, encodeX/Y, editTextMark, layoutLabels/removeLabelLayout, editScale and removeMark actions.
 - Plot-anchored annotations can accompany Polar and Parallel facets. Their Cartesian plot frame does not change the primary chart family; notes replay within each populated cell.
 
 ### Formal values — `createAnnotation`
 
 - Implemented: `CreateAnnotationOptions = TextStyle & { id?: UserId; text: unknown; format?: TextFormat;
-  layout?: false | Omit<LabelLayoutOptions,"target"> } & (MarkAnchor | DataAnchor | PlotAnchor | PlotCenterAnchor)`.
-- MarkAnchor: `{ source?: UserId; x?: never; y?: never; space?: never; data?: never; coordinate?: never }`.
+  layout?: false | Omit<LabelLayoutOptions,"target"> } & (MarkAnchor | DataAnchor | PlotAnchor | PlotCenterAnchor | ScreenAnchor)`.
+- MarkAnchor: `{ source?: UserId; x?: never; y?: never; space?: never; data?: never; coordinate?: never } & MarkLabelSelectionOptions`.
+- Mark anchors accept either inline `select` or same-source named `selection`, using createMarkLabels final-item membership. Data/plot/plot-center anchors reject both. Empty membership stays empty; no nearest-row inference occurs.
 - DataAnchor: `{ x: unknown; y: unknown; space?: "data"; source?: UserId; data?: never; coordinate?: never }`.
 - PlotAnchor: `{ x: UnitInterval; y: UnitInterval; space: "plot"; source?: never; data?: UserId; coordinate?: UserId }`.
 - PlotCenterAnchor: `{ anchor:"plot-center"; data?:UserId; coordinate?:UserId; x?:never; y?:never; space?:never; source?:never; align?:never; baseline?:never }`. Other branches reject `anchor`.
-- Proposed (NOT IMPLEMENTED): nearest-mark search, a dedicated annotation registry, and an `editAnnotation` facade.
+- ScreenAnchor: `{ space:"screen"; x:FiniteNumber; y:FiniteNumber; source?:never; data?:never; coordinate?:never; select?:never; selection?:never }`.
+- Screen anchors store `layer.annotationAnchor={space:"screen",x,y}` with existing constant Text encoding and style. They attach to the local Canvas, preserve coordinates across resize/margin/data/scale edits, and use ordinary nested child transforms. `clip:true` uses the local Canvas extent. Collision layout may displace the concrete text while the stored anchor remains unchanged.
+- Screen items have one stable `[childNamespaces,owner,"item",["annotation","screen"]]` key, `{kind:"screen"}` graphic lineage, and no rows/resource references. Codec validates the exact screen Text owner; named selection/highlight and removal retain native lifecycle. Field/conditional encodings and source-owned placement/membership are unavailable.
+- Proposed (NOT IMPLEMENTED): nearest-mark search and a dedicated annotation registry.
 
 ### Value coverage — `createAnnotation`
 
@@ -1296,13 +1321,50 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
   option/type exclusivity, ambiguity, invalid child inputs, previous/caller immutability, lower/literal graphic and PNG parity.
 - Evidence: `test/unit/actions/marks/annotation.test.js`, `test/contracts/annotation.test.js`, installed package/browser probes.
 
+## `editAnnotation`
+
+- Signature: `editAnnotation({ target?, text?, format?, x?, y?, placement?, layout?, select?, selection?, all?, ...TextStyle })`. Full-only.
+- Targets an existing Text layer created by createAnnotation, createTextMark or createMarkLabels. Resolution is explicit,
+  then current eligible Text, then unique Text; ambiguous/missing/non-Text targets reject. The patch must be nonempty.
+- Independent Cartesian x/y edits require both existing position bindings to be constant datum encodings with scales.
+  Each requested axis preserves its current field type, temporal unit, scale and coordinate. A single axis may change.
+  Existing screen anchors instead accept finite x/y in local Canvas logical pixels. Source-owned, field-driven, conditional and other non-Cartesian positions reject; this facade does not create/rebind an anchor.
+  Plot fraction scales remain ordinary editable scales; subsequent datum edits use native encoding validation.
+- `text` invokes encodeText with a constant value. `format` alone reformats existing unconditional constant content;
+  field/content/conditional definitions require explicit replacement text or the lower encodeText action.
+- TextStyle has the native fill, stroke cap/join details, outline, shadow, blend, clip, opacity, font, alignment, rotation, multiline,
+  inheritColor and dx/dy options. Native applicability/conflict/validation rules are unchanged. dx/dy reject when an
+  offset encoding or conditional owns that channel; explicit lower encoding actions remain available.
+- `select`, `selection`, or `all:true` replaces source-owned label membership through editMarkLabelSelection. Exactly one is allowed; independent Text rejects them. Named selections must target the same source, empty inline membership produces no labels, and native reference/removal/revision semantics remain unchanged.
+- `placement` replaces source-owned semantic placement or accepts `"auto"`; `layout` sets a target-free label layout,
+  while false removes the active collision layout. Disabling collision layout precedes placement replacement so its
+  old leader cannot falsely conflict. Native placement and collision leaders cannot coexist.
+- The complete child chain is preflighted on a discarded immutable branch before applying visible wrapped children.
+  Failure preserves the original program, trace and caller input. Content, position, style, placement and layout keep
+  their existing single owners; source revisions, scale/Canvas replay, selection/highlight, codec and removal remain native.
+- No registry, hidden data, new renderer, creation shortcut or screen-anchor conversion is introduced. Basic rejects.
+
+### Formal values — `editAnnotation`
+
+- Implemented: `EditAnnotationOptions = Omit<TextMarkOptions,"id"|"data"|"source"|"text"|"missing"> &
+  { target?: UserId; text?: unknown; format?: TextFormat; x?: unknown; y?: unknown;
+  placement?: MarkLabelPlacement|"auto"; layout?: false|Omit<LabelLayoutOptions,"target"> } &
+  ((MarkLabelSelectionOptions & {all?:never}) | {all:true; select?:never; selection?:never})`.
+- Proposed (NOT IMPLEMENTED): no additional options in this editor.
+
+### Value coverage — `editAnnotation`
+
+- ✅ Covered: datum/type/scale preservation, categorical/time/plot anchors, source-owned placement, layout/leader removal,
+  native parity, explicit screen anchors and rowless lineage, immutable preflight failures, typed aggregate item membership, named-selection replay, scoped command commit and restore, Basic boundary.
+- Evidence: `test/unit/interaction-annotation.test.js`, `test/unit/annotation-screen.test.js`, `test/contracts/interaction-types.test.js`.
+
 ## `createTextMark`
 
 - Signature: `createTextMark({ blend?, clip?, id?, data?, source?, text?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})`.
 - The first omitted ID resolves to `"text"`. Passing `data` explicitly creates an independent text layer; otherwise
   the current compatible point, bar, rect, rule, or complete arc layer, then one unique compatible layer, supplies data,
   coordinate, compatible position encodings, and a persisted semantic `source` relation.
-- Explicit `source` selects an existing point/bar/rule/rect/arc with data, regardless of current mark or dataset.
+- Explicit `source` selects an existing point/bar/line/rule/rect/arc with data or a Full geographic feature/graticule mark, regardless of current mark or dataset.
   It is mutually exclusive with `data`. Invalid IDs, missing layers and unsupported source kinds reject before creation.
   An explicit source may be incomplete: content and appearance persist, no text items are created until its position is
   complete, and later source encoding actions materialize the labels. Automatic inference retains its existing eligibility.
@@ -1502,6 +1564,7 @@ Evidence: `test/unit/grammar/steffen-curve.test.js`, `test/unit/actions/marks/st
 
 - Signature: `createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip?, shadow? })`.
 - Full-only resource mark with one item and no dataset/field/scale/coordinate. ID defaults to the first `image` role; another mark of that type requires explicit ID. Omitted image requires exactly one stored image resource. Exact image revision and alternative text are semantic state; placement options belong to materialization config.
+- Image-owned field encodings, scale bindings and axis/legend bindings are not applicable. Guides on companion native plots, plot reflow, decorative composition, and image opacity/highlight remain supported.
 - Viewport defaults to `"auto"` (current plot); explicit `{x,y,width,height}` uses finite plot-local coordinates and positive dimensions. Fit is `contain|cover|fill`, default contain. Align is two numbers in [0,1], default [.5,.5]. Opacity defaults 1, alt defaults empty string. Explicit null is invalid. Viewport clipping always applies; additional `clip` is false or the shared explicit rectangle/path geometry in plot coordinates.
 - Produces a self-contained concrete image draw rectangle with original bytes/dimensions/hash; renderers never calculate fit or fetch. Stable key is tied to the mark role and retained on resource replacement. Canvas resizing recomputes auto viewports, preserves explicit viewport dimensions and moves both with plot margins.
 - Item selection/opacity highlight, clipped rectangular bounds, accessible alt, scenes, editable/graphic-only restore and explicit concat children are supported. Facet/repeat images decorate each native data plot without contributing a partition anchor or consuming the repeated field. Image-only facets still require a data-backed primary chart. Data encodings and non-opacity image highlight styles reject explicitly.

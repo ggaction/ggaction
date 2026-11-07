@@ -1,0 +1,12 @@
+{
+  "base": "0e41afeb5588b93ec778a121886b7c38a4609785",
+  "files": {
+    "test/contracts/realistic-cartesian-facade-coverage-recipes.test.js": "63797908f751277c8d590378412880ed58162eb4765e22a4b84eea7cd27f607f",
+    "test/contracts/realistic-facet-raster-bounds.test.js": "cc60168a6a792a167e1d3e4946740b9ef1e73570f6d97abd2918fc17061bc322",
+    "test/contracts/realistic-hierarchical-facade-matrix.test.js": "afd4f289a5bb3f0a1552ef8dd4dd327567961204f88fce02da036d2bff063398",
+    "test/support/scenarios/current-facade-option-witnesses.js": "00188dfe4949f4be0c9bea63bc9aeb1fb2bcc199c35546e37327135a8fa1902e",
+    "test/support/scenarios/realistic-cartesian-facade-coverage-recipes.js": "0fc87ae42c319dbb672f540fbd7e65593f5b2b9d95c1c5685ba07ca5994fa479",
+    "test/support/scenarios/realistic-hierarchical-facade-matrix.js": "2570838d2c6c20052e3a3590464a13bbe92db6c5709a8045d339c12a3916832e"
+  },
+  "runtimeDelta": []
+}

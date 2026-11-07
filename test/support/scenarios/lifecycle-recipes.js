@@ -1,6 +1,8 @@
 import { directProgramOperations } from "../program-traces.js";
 import { chart, hconcat, vconcat, prepareDataUpdate, prepareImageResource, prepareFontResource, prepareTextMetrics } from "../../../src/index.js";
 import { readFileSync } from "node:fs";
+import { prepareGraphEdgeRoutes, createGraphRouteExecutor, computeGraphEdgeRoutesAsync } from "../../../src/graph.js";
+import { ROUTE_EXECUTION_MAXIMA } from "../../../src/grammar/graph/routes/execution.js";
 
 import { loadZooDataset } from "../datasets/zoo.js";
 import {
@@ -48,9 +50,30 @@ const fontCreated = imageResourceBase.createFontResource({ prepared: await prepa
   { kind: "create", id: "unusedLifecycleFont", ...fontSource }, fontHost), requestToken: fontHost.requestToken });
 const fontMeasured = fontCreated.applyTextMetrics({ prepared: await prepareTextMetrics(fontCreated, { id: "lifecycle-exact-font", fonts: ["unusedLifecycleFont"] },
   { requestToken: fontHost.requestToken, decode: fontHost.decode, measure: fontHost.measure }), requestToken: fontHost.requestToken });
-const preparedResourceBase = fontMeasured.replaceFontResource({ prepared: await prepareFontResource(fontMeasured,
+const fontResourceBase = fontMeasured.replaceFontResource({ prepared: await prepareFontResource(fontMeasured,
   { kind: "replace", target: "unusedLifecycleFont", ...fontSource }, fontHost), requestToken: fontHost.requestToken })
   .removeResource({ kind: "font", id: "unusedLifecycleFont", cascade: true });
+
+// Exercise one prepared native route update on its exact receiver, then remove
+// the temporary graph so the recipes below start from the same resources.
+const routeExecutor = createGraphRouteExecutor({ createWorker() {
+  const listeners = new Map();
+  return { addEventListener: (type, listener) => listeners.set(type, listener), removeEventListener: type => listeners.delete(type), terminate: () => listeners.clear(),
+    postMessage({ job }) { computeGraphEdgeRoutesAsync(structuredClone(job)).then(data => listeners.get("message")?.({ data }), error => listeners.get("error")?.({ error })); } };
+} });
+const routeHost = { requestToken: "lifecycle-route", executor: routeExecutor, deadlineMs: 30000 };
+const routeBase = fontResourceBase.createData({ id: "unusedRouteNodes", values: [{ id: 0 }, { id: 1 }] })
+  .createData({ id: "unusedRouteEdges", values: [{ id: "e", source: 0, target: 1 }] })
+  .createGraphData({ id: "unusedRouteGraph", nodes: "unusedRouteNodes", edges: "unusedRouteEdges", nodeKey: "id", edgeKey: "id", source: "source", target: "target" })
+  .layoutGraph({ id: "unusedRouteLayout", graph: "unusedRouteGraph", method: "fixed", options: { positions: [{ key: 0, x: 0, y: 0 }, { key: 1, x: 10, y: 10 }] } });
+const routeCreated = routeBase.bundleGraphEdges({ prepared: await prepareGraphEdgeRoutes(routeBase, { kind: "create", id: "unusedRoute", graph: "unusedRouteGraph",
+  layout: "unusedRouteLayout", method: "edge-path", options: { execution: { policy: "bounded-route@1", ...ROUTE_EXECUTION_MAXIMA } } }, routeHost), requestToken: routeHost.requestToken });
+const routeUpdated = routeCreated.applyGraphEdgeRoutesUpdate({ prepared: await prepareGraphEdgeRoutes(routeCreated, { kind: "update", edit: { action: "editLayout",
+  args: { target: "unusedRouteLayout", node: { key: 1, x: 20, y: 5 } } } }, routeHost), requestToken: routeHost.requestToken });
+routeExecutor.dispose();
+const preparedResourceBase = routeUpdated.removeResource({ kind: "edge-route", id: "unusedRoute", cascade: false })
+  .removeResource({ kind: "layout", id: "unusedRouteLayout", cascade: false }).removeResource({ kind: "graph", id: "unusedRouteGraph", cascade: false })
+  .removeData({ id: "unusedRouteEdges" }).removeData({ id: "unusedRouteNodes" });
 
 const CARTESIAN_CANVAS = Object.freeze({
   width: 920,
@@ -1311,6 +1334,8 @@ function buildDirectDataResources(factors) {
     .layoutGraph({ id: "directGraphLayout", graph: "directGraph", method: "circular", options: { radius: 25 } })
     .bundleGraphEdges({ id: "directEdgeRoutes", layout: "directGraphLayout", method: "edge-path" })
     .editEdgeRoute({ target: "directEdgeRoutes", options: { exponent: 3 } })
+    .createGeoRouteData({ id: "directRouteGeometry", routes: "directEdgeRoutes", coordinateKind: "planar" })
+    .editGeoRouteData({ target: "directRouteGeometry", routes: "directEdgeRoutes", coordinateKind: "planar" })
     .createGraphPlot({ id: "directGraphPlot", layout: "directGraphLayout", labels: {} })
     .editGraphPlot({ target: "directGraphPlot", routes: false, nodes: { radius: 4 }, edges: { strokeWidth: 1 } })
     .editLayout({ target: "directGraphLayout", options: { startAngle: 30 } })
@@ -1342,8 +1367,11 @@ function buildDirectDataResources(factors) {
     .editGeoLODData({ target: "directGeoLOD", zoom: 1 })
     .createProjection({ id: "directProjection", type: "identity", fit: { geometry: "directGeometry", width: 200, height: 100, padding: 4 } })
     .editProjection({ target: "directProjection", reflectX: true })
+    .navigateProjection({ target: "directProjection", operation: { type: "pan", deltaPx: [1, 0] } })
     .editGeometryData({ target: "directGeometry", limits: { maxFeatures: 100000 } })
     .createCoordinate({ id: "directGeoPlane", type: "geo", projection: "directProjection" })
+    .createGeoAnnotation({ id: "directGeoAnnotation", coordinate: "directGeoPlane", anchor: { type: "feature", geometry: "directGeometry", key: rows[0].id }, text: rows[0].category })
+    .editGeoAnnotation({ target: "directGeoAnnotation", dx: 4, text: `${rows[0].category}: ${rows[0].positive}` })
     .createGeoShapeMark({ id: "directGeoShape", coordinate: "directGeoPlane", geometry: "directGeometry", opacity: .3 })
     .editGeoShapeMark({ target: "directGeoShape", fill: "#2563eb" })
     .createGeoPointMark({ id: "directGeoPoints", coordinate: "directGeoPlane", geometry: "directGeometry", radiusPx: 3 })
@@ -1351,6 +1379,10 @@ function buildDirectDataResources(factors) {
     .createGeometryData({ id: "directGeoLines", format: "geojson", coordinateKind: "planar", values: { type: "LineString", coordinates: rows.map(row => [row.x, row.positive]) } })
     .createGeoLineMark({ id: "directGeoLinesMark", coordinate: "directGeoPlane", geometry: "directGeoLines", strokeWidth: 1 })
     .editGeoLineMark({ target: "directGeoLinesMark", opacity: .6 })
+    .createGeometryData({ id: "directGeoWinding", format: "geojson", coordinateKind: "geographic", polygonWinding: factors.includeEmpty ? "right-hand" : "left-hand", featureKey: "id",
+      values: { type: "FeatureCollection", features: rows.map((row, index) => ({ type: "Feature", id: row.id,
+        properties: { category: row.category }, geometry: { type: "Point", coordinates: [index % 180, row.positive % 80] } })) } })
+    .editGeometryData({ target: "directGeoWinding", polygonWinding: factors.includeEmpty ? "left-hand" : "right-hand" })
     .createProjection({ id: "directGeoSphere", type: "equirectangular", translatePx: [200, 150] })
     .createCoordinate({ id: "directGeoGridFrame", type: "geo", projection: "directGeoSphere" })
     .createGraticule({ id: "directGeoGrid", coordinate: "directGeoGridFrame", extentDeg: [[-40, -20], [40, 20]], stepDeg: [20, 20] })
@@ -1416,6 +1448,8 @@ function buildDirectDataResources(factors) {
     .createPointMark({ id: "resourcePoints", data: "directSource" })
     .encodeX({ target: "resourcePoints", field: "x" })
     .encodeY({ target: "resourcePoints", field: "positive", scale: { id: "directContours-y" } })
+    .createAnnotation({ id: "resourceNote", space: "screen", x: 20, y: 20, text: rows[0].category })
+    .editAnnotation({ target: "resourceNote", dx: 4 })
     .createStatisticalReference({id:"resourceMean",source:"resourcePoints",axis:"y"});
   const panel = () => chart().createCanvas(cartesianCanvas(factors))
     .createData({ id: "directSource", values: rows });
@@ -1482,7 +1516,19 @@ function buildDirectDataResources(factors) {
     .createData({ id: "waterfallSource", values: sourceRows.map(row => ({ ...row, stageRole: "delta" })) })
     .createWaterfallPlot({ id: "directWaterfall", x: "category", value: "positive", role: "stageRole", guides: false })
     .editWaterfallPlot({ target: "directWaterfall", connectors: false });
-  return vconcat({ programs: [{ id: "resources", program: resourcePanels }, { id: "waterfall", program: waterfall }] });
+  // Sample widths retain the authentic source values; this is an API witness,
+  // separate from the owning real-table width interpretation tests.
+  const trail = chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "trailSource", values: sourceRows })
+    .createTrailPlot({ id: "directTrail", x: "x", y: "y", width: 8, groupBy: "color", guides: false })
+    .editTrailPlot({ target: "directTrail", width: 12, lineCap: "round" });
+  // Table is an independent keyed presentation. All original source rows remain
+  // available to its footer even when its explicit visible limit is smaller.
+  const table = chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "tableSource", values: sourceRows })
+    .createTablePlot({ id: "directTable", columns: ["category", { field: "positive", cell: "bar", footer: "sum" }], rowLimit: 3 })
+    .editTablePlot({ target: "directTable", sortBy: [{ field: "positive", order: "descending" }], cells: { stroke: "#475569" } });
+  return vconcat({ programs: [{ id: "resources", program: resourcePanels }, { id: "waterfall", program: waterfall }, { id: "trail", program: trail }, { id: "table", program: table }] });
 }
 
 function appendConditionalPoints(program) {
@@ -2306,7 +2352,7 @@ function lifecycleSignature(base, factors) {
     "action-facet-grid-lifecycle": ["facetGrid", "editFacetSource"],
     "action-repeat-charts-lifecycle": ["repeatCharts"],
     "action-direct-data-resources": [
-      "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource",
+      "createAnnotation", "editAnnotation", "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource",
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale",
       "removeData", "removeScale", "removeCoordinate",
       "createParameter", "editParameter", "removeParameter",
@@ -2564,7 +2610,9 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 ]);
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
-  "createProjection", "editProjection",
+  "createAnnotation", "editAnnotation",
+  "createProjection", "editProjection", "navigateProjection",
+  "createGeoAnnotation", "editGeoAnnotation",
   "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule",
   "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales",
   "reviseData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource", "applyTextMetrics", "removeTextMetrics",

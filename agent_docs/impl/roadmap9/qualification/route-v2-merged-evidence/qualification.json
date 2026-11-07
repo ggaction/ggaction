@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-native-route-v2-integration",
+  "base": "edb67604f",
+  "upstream": "b86503b56",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1267,
+    "packedBytes": 1822674,
+    "unpackedBytes": 8208038,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-36d8a392fcc79c387cabbc1e2bdb532bf50d287c4ac2e8128ff85314d756dab2.tgz",
+    "sha256": "36d8a392fcc79c387cabbc1e2bdb532bf50d287c4ac2e8128ff85314d756dab2"
+  },
+  "sourceHashes": {
+    "src/actions/geo/closure.js": "014045dac9cb636ed8defd5cd712cfe3bf0075a73d08bbe725066c8e249fa6c9",
+    "src/actions/graphs/edgeRoutes.js": "110e448982767a98fe2ad631f46c147947e928cef5103526d3f111234135ce64",
+    "src/actions/graphs/routePlan.js": "5365f40b27fdb82442b8c0c13c73aafb878029917492b988684f586eba72b8df",
+    "src/actions/primitives/preparedResourceContext.js": "40fce715f9f52ea52d5ff08d5f2c25b025e6a76a667280492e5d4c6a2a8cc686",
+    "src/actions/primitives/resourceState.js": "4c9fe00b9c594acf95a1b10aa74ffe308ab6611b483f53f67b9af97a2b0306d1",
+    "src/core/encodedValueCursor.js": "f8675ff2afe9bbb0f1e8d2d71ce41f97a8290e31674037dbdd870e1258df8f0c",
+    "src/core/jsonText.js": "87e5a44427dd30b5efa568bd50eecf01b0a7093eccba8d8d003a3536c1189bb4",
+    "src/core/sha256.js": "a94e9caced46162e33d653cd07b5a36d0626cf4e5e46424644c9273f5e4ca979",
+    "src/core/valueEncoding.js": "ea59303f02796696ed3bdab1ce21995c93a6b15b625f2db4a907a4e6af733b10",
+    "src/grammar/graph/routes/budget.js": "0dd2d73fb0f528bf443319b3fd9eb13516198702e3d52a694adfabfb803456dd",
+    "src/grammar/graph/routes/common.js": "a77b78900cf37467b4e7104493ef340ca35412df75ddd86728061f652b4af2be",
+    "src/grammar/graph/routes/density.js": "369af12e82e68ab11055e5bb8af45b80ce88a98db8393e07c2780bf26e88161d",
+    "src/grammar/graph/routes/densitySamples.js": "f64995259b65aa1e095940b30a3645979ae142ae81a7fe19021977992b170145",
+    "src/grammar/graph/routes/edgePath.js": "72a0004992860d904586f74cf81e8780db5e197900330b291cb103ef4ee94851",
+    "src/grammar/graph/routes/execution.js": "8ebd2e35f4f8cac82799fb4d375cd239b048bcef382d320305b75db72e01c448",
+    "src/grammar/graph/routes/forceDirected.js": "3354a06bedd23ae141eff03c2538c6de6a31face453abb0435941c56395ac0d6",
+    "src/grammar/graph/routes/forceNeighbors.js": "07a25b7ae0355673cbfdeb78afb41dc334082962d53311a172cbd703cf80f1fa",
+    "src/grammar/graph/routes/hierarchical.js": "a2c09bbccc7bf4a4239af5e1eb1ff4ade41caf993c579061454c791fc1a41397",
+    "src/grammar/graph/routes/job.js": "6c06c3fc93d9f60b6fc3a1c7afd09081e03796825d1626e09e36fe33da11b9a2",
+    "src/grammar/graph/routes/options.js": "ca1682357adb7a5e175d6e0614ce4575930a4d52c7c8b2dc76581f798f10a782",
+    "src/grammar/graph/routes/result.js": "25d92549431c68a05ccbaa107107e8c94abe97ed0dd62258724d5a2602e26c99",
+    "src/grammar/graph/routes/resultProvenance.js": "23bac788b90c1c16d331fea510ca9081baa4ede5520bbf74ed310e651e3384c7",
+    "src/grammar/graph/routes/valueHash.js": "552cc07d659c40b6ac3bf3610c462f9e7d88912cd05c39a2a5f018a694a9cd89",
+    "src/graph.js": "427c520333196679ce59a89528f66e26160e0b4dd2bdced00955f50faa8fa0ea",
+    "src/materialization/graph/routeInput.js": "0a82fc776f434ee995111519b60d845f5a0631ecc88d429d5956006f5e37ab49",
+    "src/materialization/graph/routeRequest.js": "d83b93fb8fb0e5809552e0721677778e13c59346c34392c1c6f9566c5cc83ea0",
+    "src/materialization/graph/routeResource.js": "7a75171fcc20d1f8520ee1cc25e8334f6abcb34b99339ed7a87d5b3f9926367f",
+    "src/materialization/graph/routeState.js": "c07c4b1c891391a0b68f4bfa54e0f4e5c21676c6696f9fe343139076358ef2f7",
+    "src/materialization/resourceState.js": "f71c4f8df7844c24748bbafe30d76473a7b9a213ea304b9b436d4ba1dd2ef8ad",
+    "src/resources/graphRouteCompute.js": "89ad40b39e61fd6b534db1eaf6ca2ffdfadc2f8ebb9ff2afc6872f9aff869739",
+    "src/resources/graphRouteExecutor.js": "71edd1c72a325ce3b17ede96976acbeb5588356f3e664e539ba0ba23b7581e58",
+    "src/resources/graphRouteWorker.js": "90a728b9f68f82d8dd5f74a06cc1d6e11f77dc524c0f621bd0812be89a28e477",
+    "src/resources/graphRoutes.js": "d5d3e5f368321c5bae835b277a7be832328943390273b755cc29ecd3ad93be38",
+    "src/resources/routeStages.js": "3064c0eb72b6b5ef386951ef1e37b2fc457f95a95da8cc79bfefb34e406989c5",
+    "types/graph.d.ts": "67bff886f574edb7619c99efa763343a1b7cc373b06002112359390471fccfee",
+    "types/index.d.ts": "9eac06001ed9123355a0ff71f50bd076367cf9df5a0ecda653b49bfa1fa29fa5",
+    "types/program.d.ts": "07ac642c9b7797880381e9511d5f29b9b84ac45d23a79cafbdb7782291f11d2b"
+  },
+  "evidenceFiles": {
+    "pack.json": {
+      "sha256": "1befedac5c2972660425fb8c4007db87a8b02eb796a3acbf2fec450ab37d6f2a",
+      "bytes": 378
+    },
+    "installed-24.json": {
+      "sha256": "b6b5e7f7b82c8720eb9ad000ece25faf34bb262ef9d8d67a3743160cccc30907",
+      "bytes": 5624
+    },
+    "browser.log": {
+      "sha256": "82133193782e4c675b6b9f6aabc8fa5637817e5714c87931835d458e25a59373",
+      "bytes": 1028
+    },
+    "installed-22.json": {
+      "sha256": "fe7ce6fd014c80107797f81c790ea85c7e84850057a94cbd5259e01f7db00bc9",
+      "bytes": 5624
+    },
+    "pack24.json": {
+      "sha256": "083e044c4b24f919f85fc08edf16aa29ae1f38011da778a8c14cc042fadf2a58",
+      "bytes": 380
+    },
+    "docs.log": {
+      "sha256": "928529d0b3be32d1a1ae13109800aa7fc779530db770d203a8211c2a3815f20b",
+      "bytes": 75805
+    },
+    "prepack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "boundaries.log": {
+      "sha256": "4732b60fb6758a554ffd2f3320b60385b6d0430a7b66d3e3bde384d69c8a718a",
+      "bytes": 6714
+    },
+    "installed-20.json": {
+      "sha256": "431d906f642316039c49f905028aa490b93bd05c541b7640db6ed23b216c479b",
+      "bytes": 5624
+    },
+    "prepack24.json": {
+      "sha256": "eb6c03ca2c06a4d8992ec280cbe092266d7657106297dd12f0833c36d4b0c847",
+      "bytes": 294
+    },
+    "prepack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "record.py": {
+      "sha256": "9b870f5ffdc6eff7073908347909df77de11553d902fa225dfb252e254674f8c",
+      "bytes": 4991
+    },
+    "prepack.json": {
+      "sha256": "37f16698e24e09e44abfef7affc2acaa293821368f174c35f65aeebccd32c0ee",
+      "bytes": 292
+    },
+    "pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "installed22.log": {
+      "sha256": "fe7ce6fd014c80107797f81c790ea85c7e84850057a94cbd5259e01f7db00bc9",
+      "bytes": 5624
+    },
+    "owning.log": {
+      "sha256": "97bd05641a75dfc49f8412cadf658ab962b8fca5dc1fcab2ca24994b57d28901",
+      "bytes": 46327
+    },
+    "installed20.log": {
+      "sha256": "431d906f642316039c49f905028aa490b93bd05c541b7640db6ed23b216c479b",
+      "bytes": 5624
+    },
+    "installed24.log": {
+      "sha256": "b6b5e7f7b82c8720eb9ad000ece25faf34bb262ef9d8d67a3743160cccc30907",
+      "bytes": 5624
+    },
+    "generate.log": {
+      "sha256": "1f236cb22b1848a0ee5a92ede2f35d11210046848b5131b5015c8252b47208d5",
+      "bytes": 456
+    },
+    "browser.json": {
+      "sha256": "bdf0b4922ff59e4a2d15c6df5648900949974a02f9b3c22259e4d9c158bfd1d2",
+      "bytes": 1453
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "fc2121a5bb41f0d4fe3f5569d884eb160b1a40bf6e0e70267b6b54ef409befbd",
+      "bytes": 1808
+    },
+    "source-pin-docs-first.log": {
+      "sha256": "703973ecd58ff2bb3a4b2a6eca71b79b03d7a9cd088e0f9e98452f975d9932a6",
+      "bytes": 3348
+    },
+    "source-pin-pack.json": {
+      "sha256": "11676b70ec09b0466b63b7e397851cd844aa095069a54507cfd7c8faa8090706",
+      "bytes": 385
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "checks": {
+    "owningTests": 181,
+    "docsInitial": {
+      "pass": 246,
+      "fail": 1,
+      "cause": "search measured size equals strict less-than cap"
+    },
+    "correctedFocusedDocsAndBoundaries": 31,
+    "installedSameArchiveNodeVersions": [
+      20,
+      22,
+      24
+    ],
+    "publicCasesPerNode": 8,
+    "types": true,
+    "browserBundles": 6,
+    "realBrowserMinifiedWorker": true,
+    "browserDocs": 2
+  },
+  "remaining": [
+    "full dependent native continuation B",
+    "original density 1k/10k capacity",
+    "whole pipeline 100ms and canonical P95",
+    "100cycle retained lifetime",
+    "final combined qualification"
+  ],
+  "sourceRevision": "181d3a88b953e1ee76332e2b7e0570c47ea54bb6",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

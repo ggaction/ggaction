@@ -4,6 +4,28 @@ import { getMarkGraphicTypes } from "./vocabulary.js";
 
 export const MAX_GENERATED_ITEMS = 10_000;
 export const MAX_WORK_ITEMS = 10_000_000;
+export const DEFAULT_POINT_ITEMS = 50_000;
+export const MAX_POINT_ITEMS = 100_000;
+
+export function validatePointItemCapacity(value = DEFAULT_POINT_ITEMS) {
+  if (!Number.isSafeInteger(value) || value < 1 || value > MAX_POINT_ITEMS) {
+    throw annotateError(new RangeError(`Point maxItems must be an integer from 1 to ${MAX_POINT_ITEMS}.`), {
+      code: "invalid-value", optionPath: "maxItems"
+    });
+  }
+  return value;
+}
+
+export const MAX_GRAPH_PLOT_ITEMS = 100_000;
+// Explicit graph plot graphic capacity; omission keeps the generated-item default.
+export function validateGraphPlotItemCapacity(value) {
+  if (!Number.isSafeInteger(value) || value < 1 || value > MAX_GRAPH_PLOT_ITEMS) {
+    throw annotateError(new RangeError(`Graph plot maxItems must be an integer from 1 to ${MAX_GRAPH_PLOT_ITEMS}.`), {
+      code: "invalid-value", optionPath: "maxItems"
+    });
+  }
+  return value;
+}
 
 export function validateDataRows(values, label = "Dataset") {
   if (!Array.isArray(values)) {
@@ -34,7 +56,8 @@ export function validateWorkLimit(value, label) {
 export function validateGraphicItemLimit(value, capacity) {
   const point = capacity.pointOwned && getMarkGraphicTypes("point").includes(capacity.graphicType);
   const label = point ? "Point mark item count" : capacity.label;
-  const maximum = point ? 50_000 : MAX_GENERATED_ITEMS;
+  const maximum = point ? validatePointItemCapacity(Object.hasOwn(capacity, "maxItems") ? capacity.maxItems : undefined)
+    : Object.hasOwn(capacity, "graphMaxItems") ? validateGraphPlotItemCapacity(capacity.graphMaxItems) : MAX_GENERATED_ITEMS;
   if (point) validateGeneratedItemLimit(capacity.rawCount, label, maximum);
   return validateGeneratedItemLimit(value, label, maximum);
 }

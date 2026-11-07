@@ -1,0 +1,40 @@
+{
+  "status": "verified-checkpoint",
+  "base": "90eb027cca2363514d1e78588b09c769cc811a59",
+  "authorization": "../../AUTHORIZATION.json",
+  "scope": "Existing inferred capacities only; no new API, schema, algorithmVersion, work guard or graphics admission",
+  "owning": {
+    "tests": 135,
+    "passed": 135,
+    "coverage": "coverage.json",
+    "command": "node --experimental-test-coverage --test-coverage-include='src/grammar/graph/{candidateSubset,input,neighbors,preprocess,search,spanning,structural}.js' --test-coverage-include='src/materialization/graph/{candidate,inferredResource,inferredState}.js' --test test/unit/grammar/graph/*.test.js test/unit/actions/data/*graph*.test.js test/unit/core/graph-prepared-revisions.test.js test/unit/resources/graph-recompute.test.js test/unit/resources/graph-filter.test.js"
+  },
+  "contracts": {
+    "passed": 45,
+    "log": "contracts-final.log.gz"
+  },
+  "archive": "4d722cae212b0a2cb7a304077bbb074e30c7ba4b6290ff7fad33bfd0ce554639",
+  "installed": "installed-assessment.json",
+  "firstFailures": [
+    "original-limits.log.gz",
+    "first-candidate-fixture-failure.log.gz",
+    "owning-coverage.log.gz",
+    "contracts.log.gz",
+    "installed20.json",
+    "docs-owning.log.gz"
+  ],
+  "pending": [
+    "original 10k nodes and 100k edges bounded work",
+    "public inference worker and async lifecycle",
+    "final AT82 qualification"
+  ],
+  "qualification": false,
+  "source": "c48f89e9d",
+  "docs": {
+    "passed": 57,
+    "sourcePin": "c48f89e9d",
+    "build": "passed",
+    "links": "built-links.log.gz",
+    "browser": "not rerun: prose-only change, no visual/UI/layout source changed"
+  }
+}

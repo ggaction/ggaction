@@ -123,7 +123,7 @@ export function resolveColorLayout(layer, requested, barGrain, field) {
         : undefined
   );
 
-  if (["point", "line", "rect", "text"].includes(layer.mark.type) && layout !== undefined) {
+  if (["point", "line", "rect", "text", "geo"].includes(layer.mark.type) && layout !== undefined) {
     throw new Error(`Color layout is not supported for ${layer.mark.type} marks.`);
   }
   if (barGrain === BAR_GRAINS.centered && layout !== "overlay") {
@@ -132,6 +132,7 @@ export function resolveColorLayout(layer, requested, barGrain, field) {
   if (layer.mark.type === "area" && layout === "group") {
     throw new Error('Area color layout does not support "group".');
   }
+  if (layer.mark.type === "bar" && layout === "wiggle") throw new Error("Wiggle is supported only for vertical area series.");
   if (layer.mark.type === "bar" && layout === "center") {
     throw new Error("Centered bars are not supported.");
   }

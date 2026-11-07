@@ -1,13 +1,17 @@
-import { clippedBoundaryDistance } from "./hitClipDistance.js";
+import { clippedBoundaryDistance, clippedBoundaryPoint } from "./hitClipDistance.js";
 import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
-import { flattenPathCommands, pathFillContains, pathStrokeDistance, arcToCubicCommands, resolvePathCommandBounds } from "./pathGeometry.js";
+import { calculateFlattenedPathCommands, preparePathQueries, calculateArcCubicCommands, resolvePathCommandBounds } from "./pathGeometry.js";
 import { validatePathCommands, validatePathFillRule, MAX_PATH_COMMANDS } from "./pathCommands.js";
 import { resolveHitCoordinates, transformHitPoint } from "./hitCoordinates.js";
-import { prepareHitStroke, MAX_HIT_STROKE_WORK } from "./hitStroke.js";
+import { prepareHitStroke, calculateHitStroke, hitStrokePreparationWork, MAX_HIT_STROKE_WORK } from "./hitStroke.js";
 
 export const MAX_HIT_SHAPE_PARTS = 30_000;
 export const MAX_HIT_CLIPS = 1024;
+import { normalizeHitPathGeometry, MAX_HIT_QUERY_WORK } from "./hitPolicy.js";
+import { buildPartIndex, indexedDistance } from "./hitPartIndex.js";
+import { validatePathCapacity } from "./pathTopology.js";
+const pointCosts = new WeakMap();
 const identity = [1, 0, 0, 1, 0, 0];
 const states = new WeakMap();
 
@@ -25,7 +29,7 @@ function rect(value) {
 function rectCommands({ x, y, width, height }) {
   return [{ op: "M", x, y }, { op: "L", x: x + width, y }, { op: "L", x: x + width, y: y + height }, { op: "L", x, y: y + height }, { op: "Z" }];
 }
-function geometry(value) {
+function geometry(value, pathPolicy) {
   ownRecord(value, "Hit geometry");
   if (!Object.hasOwn(value, "type")) throw new TypeError("Hit geometry requires a type.");
   if (value.type === "rect" || value.type === "image") {
@@ -52,39 +56,41 @@ function geometry(value) {
     return { circle: { x: value.x, y: value.y, radius: value.radius }, fillRule: "nonzero" };
   }
   if (value.type === "path") {
-    exact(value, ["type", "commands", "fillRule"], "Path hit geometry");
-    validatePathCommands(value.commands); validatePathFillRule(value.fillRule);
+    exact(value, ["type", "commands", "fillRule", ...(pathPolicy === undefined ? [] : ["maxCommands"])], "Path hit geometry");
+    validatePathCommands(value.commands, pathPolicy === undefined ? undefined : validatePathCapacity(value.maxCommands)); validatePathFillRule(value.fillRule);
     return { paths: [value.commands], fillRule: value.fillRule };
   }
   throw new TypeError("Unsupported hit geometry type.");
 }
 function work(count, budget) {
   budget.value += count;
-  if (budget.value > MAX_HIT_STROKE_WORK) throw new RangeError("Hit shape exceeds its geometry work budget.");
+  if (budget.value > (budget.limit ?? MAX_HIT_STROKE_WORK)) throw new RangeError("Hit shape exceeds its geometry work budget.");
 }
 function requireComplete(value) {
   if (value.diagnostics.length) throw new RangeError("Hit shape cannot consume incomplete path geometry.");
   return value;
 }
-function flattenedCommands(flat) {
+function flattenedCommands(flat, maxCommands = MAX_PATH_COMMANDS) {
   const commands = [];
   for (const subpath of flat.subpaths) {
     for (let i = 0; i < subpath.points.length; i++) commands.push({ op: i ? "L" : "M", ...subpath.points[i] });
     if (subpath.closed) commands.push({ op: "Z" });
   }
-  if (commands.length > MAX_PATH_COMMANDS) throw new RangeError("Hit path exceeds its prepared command budget.");
+  if (commands.length > maxCommands) throw new RangeError("Hit path exceeds its prepared command budget.");
   return commands;
 }
 function circleCommands(circle, tolerance) {
   if (circle.radius === 0) return [{ op: "M", x: circle.x, y: circle.y }];
-  return [...requireComplete(arcToCubicCommands({ centerX: circle.x, centerY: circle.y,
+  return [...requireComplete(calculateArcCubicCommands({ centerX: circle.x, centerY: circle.y,
     radiusX: circle.radius, startAngle: 0, endAngle: 2 * Math.PI, tolerance })).commands, { op: "Z" }];
 }
-function compilePath(commands, transform, fillRule, budget) {
-  const flat = requireComplete(flattenPathCommands(commands, { tolerance: 0.125, transform }));
+function compilePath(commands, transform, fillRule, budget, maxCommands) {
+  const flat = requireComplete(calculateFlattenedPathCommands(commands, { tolerance: 0.125, transform, ...(maxCommands === undefined ? {} : { maxCommands }) }));
   work(flat.subpaths.reduce((sum, item) => sum + item.points.length, 0), budget);
-  const points = flattenedCommands(flat);
-  return { commands: points, fillRule, bounds: resolvePathCommandBounds(points) };
+  const points = flattenedCommands(flat, maxCommands);
+  const part = { commands: points, fillRule, bounds: resolvePathCommandBounds(points), ...(maxCommands === undefined ? {} : { maxCommands }) };
+  pointCosts.set(part, flat.subpaths.reduce((sum, item) => sum + item.points.length, 0));
+  return part;
 }
 function closeFillCommands(commands) {
   const closed = [];
@@ -95,10 +101,28 @@ function closeFillCommands(commands) {
   if (closed.length && closed.at(-1).op !== "Z") closed.push({ op: "Z" });
   return closed;
 }
-function compileGeometry(normalized, transform, tolerance, budget, close = false) {
-  const paths = normalized.circle ? [circleCommands(normalized.circle, tolerance)] : normalized.paths;
-  return paths.map(commands => ({ ...compilePath(close ? closeFillCommands(commands) : commands, transform, normalized.fillRule, budget),
-    ...(normalized.circle ? { circle: normalized.circle, transform } : {}) }));
+function compileGeometry(normalized, transform, tolerance, budget, close = false, preparedPaths, maxCommands) {
+  const paths = preparedPaths ?? (normalized.circle ? [circleCommands(normalized.circle, tolerance)] : normalized.paths);
+  return paths.map(commands => {
+    const part = compilePath(close ? closeFillCommands(commands) : commands, transform, normalized.fillRule, budget, maxCommands);
+    if (normalized.circle) { part.circle = normalized.circle; part.transform = transform; }
+    return part;
+  });
+}
+// These parts and commands are created only by compileGeometry in this call.
+// Keep the private tree immutable without cloning it into program-owned state.
+function freezeGeometryParts(parts) {
+  for (const part of parts) {
+    part.commands.forEach(Object.freeze);
+    Object.freeze(part.commands); Object.freeze(part.bounds);
+    if (part.circle) {
+      Object.freeze(part.circle);
+      // Unlike the derived commands, this array may belong to the caller.
+      part.transform = cloneAndFreeze(part.transform);
+    }
+    Object.freeze(part);
+  }
+  return Object.freeze(parts);
 }
 function toleranceFor(transform) {
   transformHitPoint(transform, { x: 0, y: 0 });
@@ -119,21 +143,36 @@ function unionBounds(primitives) {
   }
   return bounds;
 }
+// A prepared part's commands are private and immutable, so one complete
+// flattening serves every later query. Failed flattening is never stored.
+const partQueries = new WeakMap();
+function queries(part) {
+  let prepared = partQueries.get(part);
+  if (prepared === undefined) {
+    prepared = preparePathQueries(part.commands, part.maxCommands === undefined ? {} : { maxCommands: part.maxCommands });
+    partQueries.set(part, prepared);
+  }
+  return prepared;
+}
 function contains(part, point) {
   if (part.circle) {
     const local = coordinate(point, part.transform).localPoint;
     return local !== null && part.circle.radius > 0 && Math.hypot(local.x - part.circle.x, local.y - part.circle.y) <= part.circle.radius;
   }
-  return pathFillContains(part.commands, point, { fillRule: part.fillRule });
+  return queries(part).fillContains(point, part.fillRule);
 }
-function boundaryDistance(part, point) { return contains(part, point) ? 0 : pathStrokeDistance(part.commands, point); }
+function boundaryDistance(part, point) { return contains(part, point) ? 0 : queries(part).strokeDistance(point); }
 
 /** Prepare explicit geometry and paint footprints; text boxes are supplied by the metrics owner. */
-export function prepareHitShape(input) {
+export function prepareHitShape(input, pathGeometry) {
+  pathGeometry = normalizeHitPathGeometry(pathGeometry);
   exact(input, ["geometry", "paint", "transform", "clips"], "Hit shape");
-  const shape = geometry(input.geometry), paint = exact(input.paint, ["fill", "stroke", "opacity"], "Hit paint");
+  if (pathGeometry !== undefined) ownRecord(input.geometry, "Hit geometry");
+  const policy = pathGeometry !== undefined && input.geometry?.type === "path" && Object.hasOwn(input.geometry,"maxCommands") ? pathGeometry : undefined;
+  const maxCommands = policy === undefined ? undefined : input.geometry.maxCommands;
+  const shape = geometry(input.geometry, policy), paint = exact(input.paint, ["fill", "stroke", "opacity"], "Hit paint");
   if (typeof paint.fill !== "boolean" || !Number.isFinite(paint.opacity) || paint.opacity < 0 || paint.opacity > 1) throw new TypeError("Hit paint requires boolean fill and opacity from 0 to 1.");
-  const tolerance = toleranceFor(input.transform), budget = { value: 0 };
+  const tolerance = toleranceFor(input.transform), budget = { value: 0, ...(policy === undefined ? {} : { limit: policy.maxWork }) };
   if (!Array.isArray(input.clips) || input.clips.length > MAX_HIT_CLIPS) throw new RangeError("Hit clips exceed their work budget.");
   ownArray(input.clips, "Hit clips");
   const clipInputs = input.clips.map(item => {
@@ -143,15 +182,18 @@ export function prepareHitShape(input) {
     return { normalized: clip, transform: item.transform, tolerance: clipTolerance };
   });
   const paths = shape.circle ? [circleCommands(shape.circle, tolerance)] : shape.paths;
-  const strokeParts = [];
+  const strokeParts = []; let strokeWork = 0;
   if (paint.stroke !== null) {
     // Validate even an empty text geometry or invisible shape's stroke options.
     prepareHitStroke({ subpaths: [] }, paint.stroke);
     for (const commands of paths) {
-      const flat = requireComplete(flattenPathCommands(commands, { tolerance }));
-      const parts = prepareHitStroke(flat, paint.stroke);
-      if (strokeParts.length + parts.length > MAX_HIT_SHAPE_PARTS) throw new RangeError("Hit stroke parts exceed their work budget.");
-      strokeParts.push(...parts);
+      const flat = requireComplete(calculateFlattenedPathCommands(commands, { tolerance, ...(maxCommands === undefined ? {} : { maxCommands }) }));
+      const calculated = policy === undefined ? undefined : calculateHitStroke(flat, paint.stroke, policy);
+      const parts = calculated?.parts ?? prepareHitStroke(flat, paint.stroke);
+      strokeWork += calculated?.work ?? hitStrokePreparationWork(parts);
+      if (policy !== undefined && strokeWork > policy.maxWork) throw new RangeError("Hit stroke exceeds its work budget.");
+      if (strokeParts.length + parts.length > (policy?.maxParts ?? MAX_HIT_SHAPE_PARTS)) throw new RangeError("Hit stroke parts exceed their work budget.");
+      if (policy === undefined) strokeParts.push(...parts); else for (const part of parts) strokeParts.push(part);
     }
   }
   const diagnostics = [coordinate({ x: 0, y: 0 }, input.transform),
@@ -159,10 +201,12 @@ export function prepareHitShape(input) {
     .filter(diagnostic => diagnostic.code === "hit-transform-singular");
   const emptyFill = shape.circle?.radius === 0 || (["rect", "image"].includes(input.geometry.type) &&
     (input.geometry.rect.width === 0 || input.geometry.rect.height === 0));
-  const fill = paint.fill && !emptyFill ? compileGeometry(shape, input.transform, tolerance, budget, true) : [];
+  const fill = paint.fill && !emptyFill ? compileGeometry(shape, input.transform, tolerance, budget, true, shape.circle ? paths : undefined, maxCommands) : [];
   const strokes = strokeParts.map(part => compileGeometry(part.type === "circle"
     ? { circle: part, fillRule: "nonzero" } : { paths: [part.commands], fillRule: "nonzero" }, input.transform, tolerance, budget)[0]);
-  const clips = clipInputs.map(clip => compileGeometry(clip.normalized, clip.transform, clip.tolerance, budget, true));
+  const geometryWork = budget.value;
+  const clipBudget = policy === undefined ? budget : { value: 0 };
+  const clips = clipInputs.map(clip => compileGeometry(clip.normalized, clip.transform, clip.tolerance, clipBudget, true));
   let bounds = unionBounds([...fill, ...strokes]);
   if (bounds !== null) {
     // Include the shared subdivision tolerance in the broad phase only.
@@ -170,8 +214,26 @@ export function prepareHitShape(input) {
     if (!Object.values(bounds).every(Number.isFinite)) throw new RangeError("Hit bounds overflow.");
   }
   const result = cloneAndFreeze({ type: input.geometry.type, bounds, diagnostics });
-  states.set(result, cloneAndFreeze({ fill, strokes, clips, opacity: paint.opacity, transform: input.transform,
-    work: 1 + 4 * budget.value + fill.length + strokes.length + clips.length }));
+  states.set(result, Object.freeze({ fill: freezeGeometryParts(fill), strokes: freezeGeometryParts(strokes),
+    clips: Object.freeze(clips.map(freezeGeometryParts)), opacity: paint.opacity, transform: cloneAndFreeze(input.transform),
+    ...(policy === undefined ? {} : { indexed: true, partIndex: buildPartIndex(strokes, policy.maxIndexWork), policy, counts: { parts: strokes.length, strokeWork, geometryWork }, maxCommands }),
+    work: 1 + 4 * (policy === undefined ? budget.value : geometryWork + clipBudget.value) + fill.length + strokes.length + clips.length }));
+  return result;
+}
+
+/** One item may contain several weighted concrete footprints. */
+export function prepareHitShapeUnion(shapes) {
+  ownArray(shapes, "Hit shape union");
+  if (shapes.length < 2 || shapes.length > 64) throw new RangeError("Hit shape union requires 2..64 prepared parts.");
+  let cost = 0;
+  for (const shape of shapes) {
+    const state = states.get(shape);
+    if (!state || state.parts) throw new TypeError("Hit shape union requires flat prepared shapes.");
+    cost += state.work;
+    if (cost > MAX_HIT_STROKE_WORK) throw new RangeError("Hit shape union exceeds its geometry budget.");
+  }
+  const result = cloneAndFreeze({ type: "weighted-blend", bounds: unionBounds(shapes), diagnostics: shapes.flatMap(shape => shape.diagnostics) });
+  states.set(result, { parts: [...shapes], work: cost, indexed: shapes.some(shape => states.get(shape).indexed) });
   return result;
 }
 
@@ -194,12 +256,20 @@ export function normalizeHitQuery(options = {}) {
 }
 
 function queryShape(prepared, point, options, nearest, spend) {
-  const budget = { value: 0 };
-  spend ??= count => work(count, budget);
   const state = states.get(prepared);
+  const budget = { value: 0, ...(state?.indexed ? { limit: MAX_HIT_QUERY_WORK } : {}) };
+  spend ??= count => work(count, budget);
   if (!state) throw new TypeError("Hit shape requires its prepared geometry.");
   transformHitPoint(identity, point);
   const query = normalizeHitQuery(options);
+  if (state.parts) {
+    if (state.indexed) spend(1);
+    const results = state.parts.map(part => { if (state.indexed && !states.get(part).indexed) spend(states.get(part).work); return queryShape(part, point, query, nearest, spend); });
+    const hits = results.filter(result => result.hit).sort((a, b) => a.distance - b.distance);
+    if (hits.length) return hits[0];
+    return freezeOwned({ hit: false, distance: Math.min(...results.map(result => result.distance)), localPoint: null, diagnostics: prepared.diagnostics });
+  }
+  if (state.indexed) return queryIndexedShape(prepared, state, point, query, nearest, spend);
   let distance = Infinity, hit = false;
   if (prepared.diagnostics.length === 0 && (state.opacity > 0 || query.hitInvisible) &&
       state.clips.every(parts => parts.some(part => contains(part, point)))) {
@@ -216,7 +286,106 @@ function queryShape(prepared, point, options, nearest, spend) {
     diagnostics: mapped?.diagnostics.length ? mapped.diagnostics : prepared.diagnostics });
 }
 
-export function hitShape(prepared, point, options = {}) { return queryShape(prepared, point, options, false); }
+export function hitShape(prepared, point, options = {}, spend) { return queryShape(prepared, point, options, false, states.get(prepared)?.indexed ? spend : undefined); }
 
 // Reuse painted footprints and clip admission, but include distance to fill edges.
 export function nearestHitShape(prepared, point, options, spend) { return queryShape(prepared, point, options, true, spend); }
+
+
+// Circle fill membership is analytic, so split a clip edge at its analytic
+// circle crossings as well as the existing flattened path crossings.
+function circleCuts(part, edge) {
+  const [a, b] = edge.map(point => coordinate(point, part.transform).localPoint);
+  if (a === null || b === null) return [];
+  const { x, y, radius } = part.circle;
+  const scale = Math.max(Math.abs(a.x), Math.abs(a.y), Math.abs(b.x), Math.abs(b.y), Math.abs(x), Math.abs(y), radius, 1);
+  const ax = a.x / scale - x / scale, ay = a.y / scale - y / scale;
+  const dx = b.x / scale - a.x / scale, dy = b.y / scale - a.y / scale, r = radius / scale;
+  const length = Math.hypot(dx, dy);
+  if (!(length > 0)) return [];
+  const ux = dx / length, uy = dy / length, along = -(ax * ux + ay * uy);
+  const away = Math.abs(ax * uy - ay * ux);
+  if (away > r) return [];
+  const delta = Math.sqrt(Math.max(0, (r - away) * (r + away)));
+  return [(along - delta) / length, (along + delta) / length].filter(t => t >= 0 && t <= 1);
+}
+
+/** Private CSS-space focus anchor, admitted by the exact current hit owner. */
+export function hitShapeAnchor(prepared, spend) {
+  const state = states.get(prepared);
+  if (!state) throw new TypeError("Hit shape requires its prepared geometry.");
+  const budget = { value: 0 }; spend ??= count => work(count, budget);
+  if (state.parts) {
+    // The union is flat and bounded by preparation. Keep source order stable;
+    // each part independently owns opacity, transform and clipping admission.
+    spend(1);
+    for (const part of state.parts) {
+      const point = hitShapeAnchor(part, spend);
+      if (point !== null) return point;
+    }
+    return null;
+  }
+  spend(state.indexed ? 1 : state.work);
+  if (prepared.diagnostics.length || state.opacity === 0) return null;
+  const inClips = point => state.clips.every(parts => parts.some(part => { if (state.indexed) spend(partWork(part)); return contains(part, point); }));
+  for (const part of [...state.fill, ...state.strokes]) {
+    if (state.indexed) spend(1);
+    const admit = point => { spend(state.indexed ? partWork(part) : state.work); return contains(part, point) && inClips(point); };
+    if (part.circle) {
+      const center = transformHitPoint(part.transform, { x: part.circle.x, y: part.circle.y });
+      if (admit(center)) return freezeOwned(center);
+    }
+    let point = clippedBoundaryPoint(part, state.clips, admit, spend);
+    if (point !== null) return freezeOwned(point);
+    // A clip can be wholly inside paint, or several clips can intersect away
+    // from the paint boundary. Their admitted boundaries then supply the point.
+    for (let index = 0; index < state.clips.length; index++) for (const clip of state.clips[index]) {
+      const others = state.clips.filter((_, i) => i !== index);
+      if (!part.circle) others.push([part]);
+      point = clippedBoundaryPoint(clip, others, admit, spend, part.circle ? edge => circleCuts(part, edge) : undefined);
+      if (point !== null) return freezeOwned(point);
+    }
+  }
+  return null;
+}
+
+const partWork = part => 4 * pointCosts.get(part) + 1;
+function queryIndexedShape(prepared, state, point, query, nearest, spend) {
+  spend(1);
+  let distance = Infinity, hit = false;
+  const containsCounted = part => { spend(partWork(part)); return contains(part, point); };
+  if (prepared.diagnostics.length === 0 && (state.opacity > 0 || query.hitInvisible) &&
+      state.clips.every(parts => parts.some(containsCounted))) {
+    hit = state.fill.some(containsCounted);
+    if (hit) distance = 0;
+    else {
+      const visit = part => {
+        spend(partWork(part));
+        return nearest && state.clips.length && !contains(part, point)
+          ? clippedBoundaryDistance(part, state.clips, point, spend) : boundaryDistance(part, point);
+      };
+      if (nearest) for (const part of state.fill) distance = Math.min(distance, visit(part));
+      distance = Math.min(distance, indexedDistance(state.partIndex, point, visit, spend));
+    }
+    hit ||= distance <= query.slop;
+  }
+  const mapped = hit ? coordinate(point, state.transform) : null;
+  return freezeOwned({ hit: hit && mapped.localPoint !== null, distance, localPoint: mapped?.localPoint ?? null,
+    diagnostics: mapped?.diagnostics.length ? mapped.diagnostics : prepared.diagnostics });
+}
+
+export function hitShapeUsesIndex(shape) { return states.get(shape)?.indexed === true; }
+export function hitShapePreparationWork(shape) {
+  const state = states.get(shape);
+  if (!state) throw new TypeError("Hit shape requires its prepared geometry.");
+  return state.parts ? state.parts.reduce((sum, part) => sum + hitShapePreparationWork(part), 0) : state.work + (state.partIndex?.work ?? 0);
+}
+export function validateHitShapePolicy(shape, input) {
+  const state = states.get(shape);
+  if (!state) throw new TypeError("Hit shape requires its prepared geometry.");
+  if (state.parts) { for (const part of state.parts) validateHitShapePolicy(part, input); return; }
+  if (!state.indexed) return;
+  const policy = normalizeHitPathGeometry(input);
+  if (policy === undefined) throw new RangeError("Indexed hit path requires its explicit preparation policy.");
+  if (state.counts.parts > policy.maxParts || state.counts.strokeWork > policy.maxWork || state.counts.geometryWork > policy.maxWork || state.partIndex.work > policy.maxIndexWork) throw new RangeError("Hit path exceeds its preparation policy budget.");
+}

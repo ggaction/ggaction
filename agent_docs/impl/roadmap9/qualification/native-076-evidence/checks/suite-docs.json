@@ -1,0 +1,67 @@
+{
+  "label": "suite-docs",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/candidate/test/docs/action-capabilities.test.js",
+    "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/candidate/test/docs/action-reference.test.js",
+    "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/candidate/test/docs/architecture-paths.test.js",
+    "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/candidate/test/docs/built-html-ids.test.js",
+    "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/candidate/test/docs/documentation-coverage.test.js",
+    "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/candidate/test/docs/documentation.test.js",
+    "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/candidate/test/docs/documented-behavior.test.js",
+    "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/candidate/test/docs/executable-programs.test.js",
+    "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/candidate/test/docs/generated-images.test.js",
+    "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/candidate/test/docs/getting-started.test.js",
+    "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/candidate/test/docs/interaction-regressions.test.js",
+    "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/candidate/test/docs/quarto-ojs-example.test.js",
+    "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/candidate/test/docs/readme-authoring-sequence.test.js",
+    "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/candidate/test/docs/readme-immutable-revisions.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 26497,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-11-06T19:23:53.469Z",
+  "finishedAt": "2026-11-06T19:24:19.967Z",
+  "source": {
+    "available": true,
+    "commit": "a8af4e5665c17c6769af6118e48a30cd0efc13d3",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "a8af4e5665c17c6769af6118e48a30cd0efc13d3",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "381080fa9b29976d8c628c1e00aff37b920509112fc8acf1e9c8de486e4ca87a",
+  "discovery": {
+    "suite": "docs",
+    "selectors": [],
+    "files": [
+      "test/docs/action-capabilities.test.js",
+      "test/docs/action-reference.test.js",
+      "test/docs/architecture-paths.test.js",
+      "test/docs/built-html-ids.test.js",
+      "test/docs/documentation-coverage.test.js",
+      "test/docs/documentation.test.js",
+      "test/docs/documented-behavior.test.js",
+      "test/docs/executable-programs.test.js",
+      "test/docs/generated-images.test.js",
+      "test/docs/getting-started.test.js",
+      "test/docs/interaction-regressions.test.js",
+      "test/docs/quarto-ojs-example.test.js",
+      "test/docs/readme-authoring-sequence.test.js",
+      "test/docs/readme-immutable-revisions.test.js"
+    ]
+  },
+  "bytes": 76569,
+  "retainedBytes": 76569,
+  "truncated": false
+}

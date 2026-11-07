@@ -832,6 +832,24 @@ function addColorAggregatesAndLayouts(program) {
       }
     });
   panels.push({ id: density, program: next });
+  // Vertical area series also accept the wiggle stream layout.
+  const wiggle = "appearance-wiggle-density";
+  next = conditionalEncoding(base.createAreaMark({ id: wiggle, data: "analysisRows", opacity: 0.45 })
+    .encodeDensity({
+      target: wiggle, source: "analysisRows", field: "x", groupBy: "group",
+      bandwidth: "auto", steps: 32, coordinate: `${wiggle}-coordinate`
+    }), "encodeColor", {
+      target: wiggle,
+      field: "group",
+      layout: "wiggle",
+      scale: {
+        id: `${wiggle}-color`,
+        type: "ordinal",
+        domain: groupDomain,
+        range: "auto"
+      }
+    });
+  panels.push({ id: wiggle, program: next });
   return panels;
 }
 

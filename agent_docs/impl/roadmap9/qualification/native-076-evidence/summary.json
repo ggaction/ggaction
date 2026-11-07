@@ -1,0 +1,165 @@
+{
+  "status": "failed",
+  "candidate": {
+    "commit": "a8af4e5665c17c6769af6118e48a30cd0efc13d3",
+    "artifact": {
+      "path": "agent_docs/impl/roadmap9/qualification/native-076-evidence/ggaction-0.0.26.tgz",
+      "sha256": "4580ea19746cee1905268908c7e8831c8dd6907de1b40d38bd1d872e0fd31369"
+    },
+    "manifest": {
+      "path": "test/native-capabilities.json",
+      "sha256": "6a35af1e31a4039cecb255a5e0695f1c03232d8b0ffb276317ed093402d8e1a6"
+    }
+  },
+  "requirements": [
+    {
+      "id": "USR-01",
+      "status": "passed"
+    },
+    {
+      "id": "USR-02",
+      "status": "passed"
+    },
+    {
+      "id": "USR-05",
+      "status": "passed"
+    },
+    {
+      "id": "USR-06",
+      "status": "passed"
+    },
+    {
+      "id": "USR-07",
+      "status": "passed"
+    },
+    {
+      "id": "USR-08",
+      "status": "passed"
+    },
+    {
+      "id": "USR-09",
+      "status": "passed"
+    },
+    {
+      "id": "USR-10",
+      "status": "passed"
+    },
+    {
+      "id": "USR-11",
+      "status": "passed"
+    },
+    {
+      "id": "USR-12",
+      "status": "passed"
+    },
+    {
+      "id": "USR-13",
+      "status": "failed"
+    },
+    {
+      "id": "USR-14",
+      "status": "passed"
+    },
+    {
+      "id": "USR-15",
+      "status": "passed"
+    },
+    {
+      "id": "USR-16",
+      "status": "passed"
+    },
+    {
+      "id": "USR-17",
+      "status": "passed"
+    },
+    {
+      "id": "USR-18",
+      "status": "passed"
+    },
+    {
+      "id": "USR-19",
+      "status": "passed"
+    },
+    {
+      "id": "USR-20",
+      "status": "passed"
+    },
+    {
+      "id": "USR-21",
+      "status": "passed"
+    },
+    {
+      "id": "USR-22",
+      "status": "passed"
+    },
+    {
+      "id": "GGA-01",
+      "status": "passed"
+    },
+    {
+      "id": "GGA-02",
+      "status": "passed"
+    },
+    {
+      "id": "GGA-03",
+      "status": "passed"
+    },
+    {
+      "id": "GGA-04",
+      "status": "passed"
+    },
+    {
+      "id": "GGA-05",
+      "status": "passed"
+    },
+    {
+      "id": "GGA-06",
+      "status": "passed"
+    },
+    {
+      "id": "GGA-07",
+      "status": "passed"
+    },
+    {
+      "id": "GGA-08",
+      "status": "passed"
+    },
+    {
+      "id": "GGA-09",
+      "status": "passed"
+    },
+    {
+      "id": "GGA-10",
+      "status": "failed"
+    }
+  ],
+  "groups": {
+    "total": 79,
+    "passed": 75,
+    "failed": 2,
+    "pending": 2,
+    "notApplicable": 0
+  },
+  "consumers": {
+    "total": 577,
+    "passed": 553,
+    "failed": 0,
+    "pending": 0,
+    "notApplicable": 24
+  },
+  "pendingOwners": [
+    "AT-56",
+    "AT-60",
+    "AT-61",
+    "AT-82"
+  ],
+  "qualification": "passed",
+  "pending": [
+    "AT-60",
+    "AT-61"
+  ],
+  "failed": [
+    "AT-56",
+    "AT-82"
+  ]
+}

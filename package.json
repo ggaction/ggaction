@@ -1,6 +1,6 @@
 {
   "name": "ggaction",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "Build charts through immutable, traceable graphical actions.",
   "license": "MIT",
   "author": "Hyeon Jeon",
@@ -97,6 +97,14 @@
     "./graph": {
       "types": "./types/graph.d.ts",
       "default": "./src/graph.js"
+    },
+    "./animation": {
+      "types": "./types/animation.d.ts",
+      "default": "./src/animation.js"
+    },
+    "./live": {
+      "types": "./types/live.d.ts",
+      "default": "./src/live.js"
     }
   },
   "scripts": {
@@ -204,6 +212,8 @@
     }
   },
   "dependencies": {
-    "geographic-math": "npm:d3-geo@3.1.1"
+    "d3-array": "3.2.4",
+    "geographic-math": "npm:d3-geo@3.1.1",
+    "internmap": "2.0.3"
   }
 }

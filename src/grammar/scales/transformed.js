@@ -7,7 +7,7 @@ import {
   SCALE_ROLES,
   validateScaleTypeForRole
 } from "./types.js";
-import { validatePair } from "./validation.js";
+import { readFinitePair, validatePair } from "./validation.js";
 const TRANSFORMED_TYPES = Object.freeze(["log", "pow", "sqrt", "symlog"]);
 
 function positiveFinite(value, label) {
@@ -18,6 +18,12 @@ function positiveFinite(value, label) {
 }
 
 export function normalizeTransformParameters(type, options = {}) {
+  return cloneAndFreeze(transformParameterValues(type, options));
+}
+
+// Same validation as normalizeTransformParameters for callers that only read
+// the parameters; the plain result is never stored or returned to users.
+export function transformParameterValues(type, options = {}) {
   if (!TRANSFORMED_TYPES.includes(type) && type !== "linear") {
     throw new Error(`Scale type "${type}" is not a quantitative transform.`);
   }
@@ -37,20 +43,16 @@ export function normalizeTransformParameters(type, options = {}) {
   if (type === "log") {
     const base = positiveFinite(options.base ?? 10, "Log scale base");
     if (base === 1) throw new RangeError("Log scale base must not equal 1.");
-    return cloneAndFreeze({ base });
+    return { base };
   }
   if (type === "pow") {
-    return cloneAndFreeze({
-      exponent: positiveFinite(options.exponent ?? 1, "Power scale exponent")
-    });
+    return { exponent: positiveFinite(options.exponent ?? 1, "Power scale exponent") };
   }
-  if (type === "sqrt") return cloneAndFreeze({ exponent: 0.5 });
+  if (type === "sqrt") return { exponent: 0.5 };
   if (type === "symlog") {
-    return cloneAndFreeze({
-      constant: positiveFinite(options.constant ?? 1, "Symlog scale constant")
-    });
+    return { constant: positiveFinite(options.constant ?? 1, "Symlog scale constant") };
   }
-  return cloneAndFreeze({});
+  return {};
 }
 
 function signedTransformProportion(value, start, end, transform) {
@@ -139,8 +141,12 @@ function transformedProportion(value, domain, type, parameters) {
 }
 
 export function validateTransformedDomain(type, domain, options = {}) {
+  return checkTransformedDomain(type, validatePair, domain, options);
+}
+
+function checkTransformedDomain(type, pair, domain, options) {
   validateScaleTypeForRole(type, SCALE_ROLES.quantitativePosition);
-  const validated = validatePair(domain, "Transformed scale domain");
+  const validated = pair(domain, "Transformed scale domain");
   if (validated[0] === validated[1]) {
     throw new RangeError("Transformed scale domain values must be distinct.");
   }
@@ -152,7 +158,7 @@ export function validateTransformedDomain(type, domain, options = {}) {
       "Log scale domain must be strictly positive or strictly negative."
     );
   }
-  normalizeTransformParameters(type, options);
+  transformParameterValues(type, options);
   return validated;
 }
 
@@ -278,6 +284,55 @@ export function resolveMappingRange(range, { reverse = false } = {}) {
     : validated;
 }
 
+// One value with mapTransformedValues' validation order, errors and arithmetic,
+// without owned intermediate arrays or records.
+export function mapTransformedScalar(
+  value,
+  domain,
+  range,
+  { type = "linear", clamp = false, reverse = false, ...options } = {}
+) {
+  if (typeof clamp !== "boolean") {
+    throw new TypeError("Scale clamp must be a boolean.");
+  }
+  const hasUnknown = Object.hasOwn(options, "unknown");
+  const { unknown, ...transformOptions } = options;
+  const parameters = transformParameterValues(type, transformOptions);
+  const validatedDomain = checkTransformedDomain(type, readFinitePair, domain, transformOptions);
+  const resolvedRange = readFinitePair(range, "Scale range");
+  if (typeof reverse !== "boolean") {
+    throw new TypeError("Scale reverse must be a boolean.");
+  }
+  if (reverse) resolvedRange.reverse();
+  return mapTransformedValue(value, validatedDomain, resolvedRange, type, parameters, clamp,
+    resolvedRange[1] - resolvedRange[0], hasUnknown, unknown);
+}
+
+function mapTransformedValue(value, validatedDomain, resolvedRange, type, parameters, clamp, span, hasUnknown, unknown) {
+  const valid = Number.isFinite(value) && !(type === "log" && (
+    value === 0 || Math.sign(value) !== Math.sign(validatedDomain[0])
+  ));
+  if (!valid) {
+    if (hasUnknown) return unknown;
+    throw new TypeError(`Scale type "${type}" received an invalid value.`);
+  }
+  let proportion = transformedProportion(
+    value,
+    validatedDomain,
+    type,
+    parameters
+  );
+  if (clamp) proportion = Math.max(0, Math.min(1, proportion));
+  const direct = resolvedRange[0] + proportion * span;
+  return Number.isFinite(span) && Number.isFinite(direct) && (
+    proportion !== 1 ||
+    Math.abs(direct - resolvedRange[1]) <=
+      Number.EPSILON * Math.abs(resolvedRange[1])
+  )
+    ? direct
+    : interpolateNumber(resolvedRange[0], resolvedRange[1], proportion);
+}
+
 export function mapTransformedValues(
   values,
   domain,
@@ -297,29 +352,19 @@ export function mapTransformedValues(
   const resolvedRange = resolveMappingRange(range, { reverse });
   const span = resolvedRange[1] - resolvedRange[0];
   return cloneAndFreeze(values.map(value => {
-    const valid = Number.isFinite(value) && !(type === "log" && (
-      value === 0 || Math.sign(value) !== Math.sign(validatedDomain[0])
-    ));
-    if (!valid) {
-      if (hasUnknown) return unknown;
-      throw new TypeError(`Scale type "${type}" received an invalid value.`);
-    }
-    let proportion = transformedProportion(
-      value,
-      validatedDomain,
-      type,
-      parameters
-    );
-    if (clamp) proportion = Math.max(0, Math.min(1, proportion));
-    const direct = resolvedRange[0] + proportion * span;
-    return Number.isFinite(span) && Number.isFinite(direct) && (
-      proportion !== 1 ||
-      Math.abs(direct - resolvedRange[1]) <=
-        Number.EPSILON * Math.abs(resolvedRange[1])
-    )
-      ? direct
-      : interpolateNumber(resolvedRange[0], resolvedRange[1], proportion);
+    return mapTransformedValue(value, validatedDomain, resolvedRange, type, parameters, clamp, span, hasUnknown, unknown);
   }));
+}
+
+// Inputs are internal plain snapshots; the returned closure retains only the
+// validated immutable pairs, normalized parameters and primitive policy values.
+export function prepareTransformedScalar(domain, range, { type, clamp = false, ...options }) {
+  if (typeof clamp !== "boolean") throw new TypeError("Scale clamp must be a boolean.");
+  const parameters = normalizeTransformParameters(type, options);
+  const validatedDomain = validateTransformedDomain(type, domain, options);
+  const resolvedRange = resolveMappingRange(range);
+  const span = resolvedRange[1] - resolvedRange[0];
+  return value => mapTransformedValue(value, validatedDomain, resolvedRange, type, parameters, clamp, span, false, undefined);
 }
 
 export function transformedTicks(type, domain, count, options = {}) {

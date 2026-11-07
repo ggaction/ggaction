@@ -11,7 +11,7 @@ Point marks represent individual observations or derived items. Their semantic
 type is `point`; circle, square, diamond, and other symbols are graphical
 realizations of that meaning.
 
-## `createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
+## `createPointMark({ id?, data?, maxItems?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 This heading shows common options. For the full callable contract and all branches, see [`createPointMark`](../../reference/actions/marks.md#createpointmark) and the [exact declarations](../../reference/types.md).
 
@@ -19,6 +19,7 @@ This heading shows common options. For the full callable contract and all branch
 | --- | --- | --- |
 | `id` | valid user-defined ID | first point mark uses `"point"` |
 | `data` | existing dataset ID | current dataset |
+| `maxItems` | integer from `1` to `100000` | `50000` |
 | `shape` | supported constant shape | `"circle"` |
 | `fill` | non-empty color string | theme color; conflicts with `encodeColor` |
 | `opacity` | number from `0` to `1` | `1` |
@@ -48,13 +49,22 @@ point is layered after one compatible source, omitted data, coordinate, x, and y
 encodings are inherited and persisted. Ambiguous sources require an explicit
 target or resource ID.
 
-A point layer supports at most **50,000 selected data rows**, including rows
-subsequently skipped by the missing-value policy. Creation, data revisions,
-property-array edits, facets, and editable snapshots use the same inclusive
-boundary. A 50,001-row point layer fails atomically with the structured
-`resource-limit` diagnostic `Point mark item count`. No sampling or layer
-splitting occurs. Ordinary extension graphics retain their 10,000-item limit;
-path-command and work limits are independent.
+A point layer defaults to **50,000 selected data rows**. Set `maxItems: 100000`
+to admit up to 100,000 rows explicitly. The limit checks both the raw selected
+rows, including rows later skipped by the missing-value policy, and concrete
+items. Creation, data revisions, property arrays, facets, and editable snapshots
+share the same owner capacity. Each retained composition child keeps its own
+limit; their combined total may exceed 100,000. An overflow fails atomically
+with the structured `resource-limit` diagnostic `Point mark item count`.
+
+Pass the same option through a facade's point style, such as
+`createScatterPlot({ x: "x", y: "y", point: { maxItems: 100000 } })`.
+`editPointMark({ maxItems })` changes the existing limit; omission preserves it.
+Explicit `maxItems: undefined` removes it and restores the 50,000 default.
+Lowering or removing the limit fails if the current raw rows or items exceed it.
+No sampling or layer splitting occurs. Ordinary extension graphics retain their
+10,000-item limit. Path commands, work, animation, and hit testing have separate
+limits; a larger point capacity does not guarantee a frame rate or latency.
 
 Radius is an encoding-owned graphical value rather than a `createPointMark`
 option. Until a constant or field-driven size is authored, materialization uses
@@ -63,7 +73,7 @@ Use `encodePointRadius({ value })` for another constant radius or `encodeSize`
 for a field-driven area mapping. `removePointRadius()` returns an explicitly
 sized point mark to the theme radius without changing Polar position.
 
-## `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`
+## `editPointMark({ target?, maxItems?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`
 
 This heading shows common options. For the full callable contract and all branches, see [`editPointMark`](../../reference/actions/marks.md#editpointmark) and the [exact declarations](../../reference/types.md).
 

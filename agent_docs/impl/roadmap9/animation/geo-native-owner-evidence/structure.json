@@ -1,0 +1,55 @@
+{
+  "status": "owner-mapping-validated",
+  "baseRevision": "693950d14fedff8cec22ccb83663152808125726",
+  "changedTargets": [
+    "geo-shape/scene-animation",
+    "geo-shape/types",
+    "geo-point/scene-animation",
+    "geo-point/types",
+    "geo-line/scene-animation",
+    "geo-line/types",
+    "graticule/scene-animation",
+    "graticule/types"
+  ],
+  "manifest": {
+    "path": "test/native-capabilities.json",
+    "sha256": "c5464319d474846391bb213555eaa39470b067276c95f4d809156e5fbe6fce12"
+  },
+  "scope": {
+    "requirements": 30,
+    "groups": 79,
+    "requiredConsumerCells": 577
+  },
+  "structuralTests": {
+    "command": "node scripts/run-tests.js contracts contracts/native-capability-completion.test.js",
+    "passed": 16,
+    "failed": 0,
+    "log": {
+      "path": "agent_docs/impl/roadmap9/animation/geo-native-owner-evidence/structure.log.gz",
+      "sha256": "647e6088974683912bcaeb9e8e5b7b5220862925582ea1f44f80a832aa3c8fbe"
+    }
+  },
+  "qualification": {
+    "status": "pending",
+    "candidate": null,
+    "groups": {
+      "total": 79,
+      "passed": 0,
+      "failed": 0,
+      "pending": 79,
+      "notApplicable": 0
+    },
+    "consumers": {
+      "total": 577,
+      "passed": 0,
+      "failed": 0,
+      "pending": 577,
+      "notApplicable": 0
+    }
+  },
+  "notes": [
+    "Only these eight assignedOwners additions differ from the base manifest.",
+    "No runtime result, not-applicable entry, requirement, denominator, global acceptance owner or other consumer owner changed.",
+    "This is owner assignment and structural validation, not final native candidate qualification."
+  ]
+}

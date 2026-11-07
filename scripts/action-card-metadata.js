@@ -3,6 +3,8 @@ import { SCALE_OPTION_UNITS } from "../src/grammar/scales/types.js";
 const ROLE_ORDER = Object.freeze(["H0", "H1", "H2", "H3", "H4"]);
 
 const analysisChartNames = new Set([
+  "createTablePlot",
+  "createTrailPlot",
   "createWaterfallPlot",
   "createOHLCPlot",
   "createPyramidPlot",
@@ -23,6 +25,8 @@ const analysisChartNames = new Set([
   "createTreemapPlot"
 ]);
 const analysisChartEditorNames = new Set([
+  "editTablePlot",
+  "editTrailPlot",
   "editPyramidPlot",
   "editCalendarPlot",
   "editEndpointPlot",
@@ -40,8 +44,9 @@ const coreH3Names = new Set([
   "editGeoJoinData",
   "editGeoLODData",
   "editProjection",
+  "navigateProjection",
   "editGeometryData",
-  "editEdgeRoute",
+  "editEdgeRoute", "applyGraphEdgeRoutesUpdate",
   "editContourData", "editInferredGraphData", "editFlowData", "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "removeResource",
   "applyTextMetrics",
   "removeTextMetrics",
@@ -85,19 +90,27 @@ const explicitLifecycleEditors = Object.freeze({
   editGeoPointMark: ["editGeoPointMark", "removeMark"],
   createGeoLineMark: ["editGeoLineMark", "removeMark"],
   editGeoLineMark: ["editGeoLineMark", "removeMark"],
+  createGeoAnnotation: ["editGeoAnnotation", "removeMark"],
+  editGeoAnnotation: ["editGeoAnnotation", "removeMark"],
   createGraticule: ["editGraticule", "removeMark"],
   editGraticule: ["editGraticule", "removeMark"],
   createProjection: ["editProjection", "removeResource"],
   editProjection: ["editProjection", "removeResource"],
+  navigateProjection: ["editProjection", "navigateProjection"],
   createGeometryData: ["editGeometryData", "removeResource"],
   editGeometryData: ["editGeometryData", "removeResource"],
   createGeoLODData: ["editGeoLODData", "removeResource"],
   editGeoLODData: ["editGeoLODData", "removeResource"],
+  createGeoRouteData: ["editGeoRouteData", "removeResource"],
+  editGeoRouteData: ["editGeoRouteData", "removeResource"],
   createGeoJoinData: ["editGeoJoinData", "removeResource"],
   editGeoJoinData: ["editGeoJoinData", "removeResource"],
   bundleGraphEdges: ["editEdgeRoute", "removeResource"],
   editEdgeRoute: ["editEdgeRoute", "removeResource"],
+  applyGraphEdgeRoutesUpdate: ["applyGraphEdgeRoutesUpdate", "editEdgeRoute", "removeResource"],
   createCalendarLayout: ["editLayout", "removeResource"],
+  createTablePlot: ["editTablePlot", "removeMark"],
+  createTrailPlot: ["editTrailPlot", "removeMark"],
   createWaterfallPlot: ["editWaterfallPlot", "removeMark"],
   createOHLCPlot: ["editOHLCPlot", "removeMark"],
   createPyramidPlot: ["editPyramidPlot", "removeMark"],
@@ -205,10 +218,12 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "createGeoAnnotation", "editGeoAnnotation",
   "createGeoLODData", "editGeoLODData",
   "createGeoJoinData", "editGeoJoinData",
+  "createGeoRouteData", "editGeoRouteData",
   "createGeometryData", "editGeometryData",
-  "bundleGraphEdges", "editEdgeRoute",
+  "bundleGraphEdges", "editEdgeRoute", "applyGraphEdgeRoutesUpdate",
   "createCalendarLayout", "createCalendarPlot", "editCalendarPlot",
   "createContourData", "createDensityContourData", "editContourData", "createContourMark", "editContourMark",
   "createFlowData", "editFlowData", "layoutFlow", "createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks",

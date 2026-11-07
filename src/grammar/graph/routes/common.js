@@ -36,11 +36,11 @@ function coordinateFrame(positions) {
 
 // Raw typed order keys are supplied by the source adapter. Normalized graph keys
 // remain opaque; route code never decodes another owner's identity token.
-export function prepareRouteInput(input, signal) {
+export function prepareRouteInput(input, signal, scope) {
   ownRecord(input, "Route input");
   rejectUnknownProperties(input, ["model", "positions", "order", "limits"], "route input");
   if (!["model", "positions", "order"].every(key => Object.hasOwn(input, key))) throw new TypeError("Route input requires own model, positions and order.");
-  const budget = createRouteBudget(input.limits, signal);
+  const budget = createRouteBudget(input.limits, signal, scope);
   const indexed = indexGraphModel(input.model, { maxNodes: budget.limits.maxNodes, maxEdges: budget.limits.maxEdges });
   budget.charge(indexed.work);
   budget.samples(indexed.edges.length * 2);

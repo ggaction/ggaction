@@ -1,0 +1,45 @@
+{
+  "page": "api/interaction/",
+  "results": [
+    {
+      "width": 320,
+      "dimensions": {
+        "width": 320,
+        "scroll": 320,
+        "escapes": 0
+      },
+      "violations": 0,
+      "errors": 0
+    },
+    {
+      "width": 390,
+      "dimensions": {
+        "width": 390,
+        "scroll": 390,
+        "escapes": 0
+      },
+      "violations": 0,
+      "errors": 0
+    },
+    {
+      "width": 768,
+      "dimensions": {
+        "width": 768,
+        "scroll": 768,
+        "escapes": 0
+      },
+      "violations": 0,
+      "errors": 0
+    },
+    {
+      "width": 1280,
+      "dimensions": {
+        "width": 1280,
+        "scroll": 1280,
+        "escapes": 0
+      },
+      "violations": 0,
+      "errors": 0
+    }
+  ]
+}

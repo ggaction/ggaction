@@ -252,6 +252,26 @@
     "rendering": "authoring-only"
   },
   {
+    "id": "sliced-data-revision",
+    "file": "data-updates.md",
+    "contains": "const revised = await reviseDataInSlices(program, {",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "revised",
+    "prerequisites": "Run the complete ES module with ggaction installed; it revises one chart in bounded slices.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "sliced-program-load",
+    "file": "data-updates.md",
+    "contains": "const program = await loadProgramInSlices(saved, { sliceMs: 20 });",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete ES module with ggaction installed; it saves one chart and restores it in bounded slices.",
+    "rendering": "authoring-only"
+  },
+  {
     "id": "parameter-filter-revision",
     "file": "api/data/filtering.md",
     "contains": "const revised = program.editParameter({ target: \"minimum\", value: 1 });",
@@ -295,7 +315,7 @@
   {
     "id": "graph-inference",
     "file": "api/graphs.md",
-    "contains": "id: 'neighbors'",
+    "contains": ".createInferredGraphData({\n    id: 'neighbors'",
     "environment": "node-esm",
     "rendering": "authoring-only",
     "mode": "complete",
@@ -524,6 +544,420 @@
     "importChart": false,
     "result": "program",
     "prerequisites": "Import chart from ggaction; this complete example creates its own Canvas, source, mark and single named Y axis.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "interaction-annotation",
+    "file": "api/interaction.md",
+    "contains": "const annotationSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Revise note and Offset note work with pointer, touch, Enter and Space; the text keeps its data anchor."
+  },
+  {
+    "id": "geographic-annotation",
+    "file": "api/geometry.md",
+    "contains": "text: \"Port\", dy: -12",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete module with its inline keyed planar port feature.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "geographic-annotation-example",
+    "file": "tutorials/geographic-marks.md",
+    "contains": "const labeled = createGeographicMarks()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "labeled",
+    "prerequisites": "Copy the linked geographic-marks program.js and fixture.js into a geographic-marks folder beside this module.",
+    "rendering": "authoring-only",
+    "supportFiles": {
+      "geographic-marks/program.js": "examples/geographic-marks/program.js",
+      "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
+    }
+  },
+  {
+    "id": "interaction-history",
+    "file": "api/interaction.md",
+    "contains": "const historySession = createInteractionSession",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "rendering": "authoring-only",
+    "prerequisites": "Run this ES module headlessly. The final program restores the Original note; history commands take no target or payload."
+  },
+  {
+    "id": "geographic-feature-fields",
+    "file": "api/geometry.md",
+    "contains": "population: 100, region: \"West\"",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "The two inline places supply their own population measurements.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "geographic-camera-reset",
+    "file": "api/geometry.md",
+    "contains": "const saved = getProjectionView(initial);",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "reset",
+    "resultKind": "semantic"
+  },
+  {
+    "id": "geographic-feature-conditions",
+    "file": "api/geometry.md",
+    "contains": "const emphasized = createGeographicMarks(\"fields\")",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "emphasized",
+    "prerequisites": "Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.",
+    "rendering": "authoring-only",
+    "supportFiles": {
+      "geographic-marks/program.js": "examples/geographic-marks/program.js",
+      "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
+    }
+  },
+  {
+    "id": "geographic-source-labels",
+    "file": "api/marks/labels.md",
+    "contains": "const featureLabels = createGeographicMarks(\"labels\");",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "gridLabels",
+    "prerequisites": "Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.",
+    "rendering": "authoring-only",
+    "supportFiles": {
+      "geographic-marks/program.js": "examples/geographic-marks/program.js",
+      "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
+    }
+  },
+  {
+    "id": "stream-baseline-switching",
+    "file": "tutorials/area-layout.md",
+    "contains": "const stream = base.createAreaPlot",
+    "mode": "complete",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "result": "stream, centered, zeroBased",
+    "prerequisites": "Run this complete ES module with its inline aligned observations. The three immutable programs preserve each series thickness while changing their shared baseline."
+  },
+  {
+    "id": "interaction-navigation",
+    "file": "api/interaction.md",
+    "contains": "const navigationSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Focus it with Tab for keyboard navigation. Drag or pinch the map, scroll to zoom, and press Escape to cancel a drag."
+  },
+  {
+    "id": "table-sparkline-column",
+    "file": "api/table.md",
+    "contains": "const sparklineColumn",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this complete example declares the nested observations and their shared sparkline channels.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "weighted-concrete-sources",
+    "file": "extension/primitives.md",
+    "contains": "const source = (weight, fill)",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "interaction-arbitration",
+    "file": "api/interaction.md",
+    "contains": "const gestureSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture."
+  },
+  {
+    "id": "accessible-items",
+    "file": "api/rendering.md",
+    "contains": "const alternative = exportAccessibleData(program, { format: \"items\", target: \"bars\" });",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "rendering": "authoring-only",
+    "prerequisites": "Use an ES module. The example prints native aggregate values and their named selection membership."
+  },
+  {
+    "id": "interaction-keyboard",
+    "file": "api/interaction.md",
+    "contains": "const keyboardSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.",
+    "host": "paired-html"
+  },
+  {
+    "id": "interaction-accessible-tooltip",
+    "file": "api/interaction.md",
+    "contains": "const accessibleSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use this section's HTML and JavaScript together. Hover, focus or tap an item; Escape dismisses its description.",
+    "host": "paired-html"
+  },
+  {
+    "id": "interaction-native-controls",
+    "file": "api/interaction.md",
+    "contains": "const controlSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "host": "paired-html",
+    "prerequisites": "Use this section's HTML and JavaScript together. Activate category and history controls with Enter, Space or touch."
+  },
+  {
+    "id": "animation-offline",
+    "file": "api/animation.md",
+    "contains": "const saved = serializeAnimation",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "animation-capacity",
+    "file": "api/animation.md",
+    "contains": "const largerPlan =",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "from,to",
+    "prerequisites": "Run with ggaction installed; both endpoints and explicit rebase limits are included.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "animation-numeric-format",
+    "file": "api/animation.md",
+    "contains": "const numericPlan =",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "from,to",
+    "prerequisites": "Run with ggaction installed; geographic source, capacity, both endpoints and offline replay are included.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "animation-guides",
+    "file": "api/animation.md",
+    "contains": ".createVerticalGrid({ values: [5] })",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "interaction-overlapping-edges",
+    "file": "api/interaction.md",
+    "contains": "const edgeSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use this section's HTML and JavaScript together. Hover the shared edge, focus the chart and use PageDown/PageUp, Enter and the expansion buttons.",
+    "host": "paired-html"
+  },
+  {
+    "id": "animation-gradient-legend",
+    "file": "api/animation.md",
+    "contains": ".createLegend({ channels: ['color'], values: [1, 10, 100]",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "from, to",
+    "prerequisites": "Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included."
+  },
+  {
+    "id": "geographic-route-map",
+    "file": "api/geometry.md",
+    "contains": "const routeMap =",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "routeMap",
+    "rendering": "authoring-only",
+    "prerequisites": "Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors."
+  },
+  {
+    "id": "animation-size-legend",
+    "file": "api/animation.md",
+    "contains": ".createLegend({ channels: [\"size\"], values: [5, 10], offset: 20 })",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included."
+  },
+  {
+    "id": "animation-categorical-legend",
+    "file": "api/animation.md",
+    "contains": "const to = from.editLegend({ symbol: { layers: [{ type: \"point\", size: 8 }] } });",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; both native categorical legends and their offline midpoint are included."
+  },
+  {
+    "id": "animation-grouped-legend",
+    "file": "api/animation.md",
+    "contains": ".editLegendLayout({ target: \"points\", position: \"bottom\", blockLayout: \"row\", offset: 20 })",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "from,to",
+    "prerequisites": "Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change."
+  },
+  {
+    "id": "resource-analytical-comparison",
+    "file": "recipes/composition.md",
+    "contains": "const comparison = createResourceComparison(\"tree\");",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "revised",
+    "prerequisites": "Copy the linked resource-comparison.js beside this module, use its public ggaction import, and provide a Canvas with id chart. The helper contains typed source rows and both complete child programs.",
+    "rendering": "renders-canvas",
+    "supportFiles": {
+      "resource-comparison.js": "examples/program-composition/resource-comparison.js"
+    }
+  },
+  {
+    "id": "edge-route-analytical-comparison",
+    "file": "tutorials/edge-routes.md",
+    "contains": "const comparisons = ['hierarchical', 'force-directed', 'density', 'edge-path']",
+    "mode": "complete",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "result": "revised",
+    "prerequisites": "Copy comparison.js, program.js, options.js and data.js beside the ES module and use their public ggaction imports. All route and analytical data are declared in these helpers.",
+    "supportFiles": {
+      "comparison.js": "examples/edge-routes/comparison.js",
+      "program.js": "examples/edge-routes/program.js",
+      "options.js": "examples/edge-routes/options.js",
+      "data.js": "examples/edge-routes/data.js"
+    }
+  },
+  {
+    "id": "graticule-analytical-comparison",
+    "file": "tutorials/geographic-marks.md",
+    "contains": "const comparison = createGraticuleComparison();",
+    "mode": "complete",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "result": "refreshed",
+    "prerequisites": "Copy geographic-marks/comparison.js, program.js and fixture.js beside this module and use their public package imports. The helper explicitly snapshots raw axis and numeric degree values.",
+    "supportFiles": {
+      "geographic-marks/comparison.js": "examples/geographic-marks/comparison.js",
+      "geographic-marks/program.js": "examples/geographic-marks/program.js",
+      "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
+    }
+  },
+  {
+    "id": "interaction-selection-handles",
+    "file": "api/interaction.md",
+    "contains": "const handles = session.getSelectionHandles()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete ES module with its inline observations and public imports. Inspect native CSS handle coordinates and replace the same persistent region with an explicit command.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "graph-inference-worker",
+    "file": "api/graphs.md",
+    "contains": "requestToken: 'neighbors-1'",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "program",
+    "supportFiles": {
+      "inference-worker.mjs": "examples/graph-inference/worker.mjs"
+    },
+    "resultKind": "semantic",
+    "host": "node"
+  },
+  {
+    "id": "interaction-hit-preparation",
+    "file": "api/interaction.md",
+    "contains": "hitPreparation: { maxSceneNodes: 100001",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete ES module with public imports. The explicit preparation allowance belongs only to this immutable program session.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "geographic-capacity",
+    "file": "api/geometry.md",
+    "contains": "const capacityProgram = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "capacityProgram",
+    "prerequisites": "Install ggaction and run this complete ES module in Node.js 20 or later.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "interaction-path-preparation",
+    "file": "api/interaction.md",
+    "contains": "const pathProgram =",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "pathProgram",
+    "prerequisites": "Run this complete ES module with public package imports. Concrete path capacity and session preparation are explicit.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "animation-batched-frames",
+    "file": "api/animation.md",
+    "contains": "const plan = planTransition({ from, to, options: { durationMs: 1000, formatVersion: 6 } });",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; both keyed endpoints, format6 sampling, SVG output and offline version narrowing are included.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "extension-circle-batch",
+    "file": "extension/primitives.md",
+    "contains": ".createGraphics({ id: \"circles\", type: \"circle-batch\", parent: \"canvas\" })",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete ES module with ggaction installed; it authors one canvas and fully materialized circle columns.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "extension-path-batch",
+    "file": "extension/primitives.md",
+    "contains": ".createGraphics({ id: \"cells\", type: \"path-batch\", parent: \"canvas\" })",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete ES module with ggaction installed; it authors one canvas and two closed path rows.",
     "rendering": "authoring-only"
   }
 ]

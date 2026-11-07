@@ -112,3 +112,26 @@ test("legacy validation rechecks mutable caller-owned commands", () => {
   commands.push({ op: "M", x: 6, y: 7 });
   assert.throws(() => validateLegacyPathCommands(commands), /one subpath/);
 });
+
+test("constructed linear paths are validated once while copies and capacity limits stay checked", () => {
+  const commands = buildLinearPathCommands([{ x: 0, y: 0 }, { x: 1, y: 1 }], { close: true });
+  assert.equal(validatePathCommands(commands), commands);
+  assert.throws(() => validatePathCommands(commands, 2), /path.commands length/);
+  const copy = [...commands, { op: "L", x: Number.NaN, y: 0 }];
+  assert.throws(() => validatePathCommands(copy), /finite|requires M/);
+  assert.throws(() => buildLinearPathCommands([{ x: 0, y: 0 }, { x: Infinity, y: 1 }]), /finite/);
+});
+
+test("ring path commands are valid by construction and reject malformed rings", async () => {
+  const { buildRingPathCommands } = await import("../../../src/grammar/pathCommands.js");
+  const line = buildRingPathCommands([[[0, 0], [1, 1]]], false);
+  assert.deepEqual(line, [{ op: "M", x: 0, y: 0 }, { op: "L", x: 1, y: 1 }]);
+  const rings = buildRingPathCommands([[[0, 0], [1, 0], [1, 1]], [[2, 2], [3, 2], [3, 3]]], true);
+  assert.deepEqual(rings.map(command => command.op).join(""), "MLLZMLLZ");
+  for (const commands of [line, rings]) {
+    assert.ok(Object.isFrozen(commands) && commands.every(Object.isFrozen));
+    assert.equal(validatePathCommands(commands), commands);
+    assert.throws(() => validatePathCommands(commands, commands.length - 1), /path.commands length/);
+  }
+  for (const input of [[], null, [[[0, 0]]], [[[0, 0], [1, Number.NaN]]], [[[0, 0], [Infinity, 1]]], [{}]]) assert.throws(() => buildRingPathCommands(input, true), TypeError);
+});

@@ -1,0 +1,67 @@
+[
+  {
+    "file": "camera-kernel-2.log.gz",
+    "sourceBytes": 6111,
+    "sourceSha256": "a146706237bac6e70fde9f511ef113ea91325e8920dfe868644d96b9b68b7926"
+  },
+  {
+    "file": "camera-kernel-1.log.gz",
+    "sourceBytes": 5024,
+    "sourceSha256": "a3189829a1c634267779ff79cdddc052fdbfdf7f75754e20c75875b3a2da3984"
+  },
+  {
+    "file": "camera-node20.log.gz",
+    "sourceBytes": 4857,
+    "sourceSha256": "7ce9083ce66ccc7b57db34c35f0ce2322a9a4b469a9370718dbf289aac8cda2d"
+  },
+  {
+    "file": "camera-node24.log.gz",
+    "sourceBytes": 2254,
+    "sourceSha256": "f30e0f42012075bca5600876a693f3df7220f5c0981bdcc5a6d4b63221e96ccb"
+  },
+  {
+    "file": "camera-package.log.gz",
+    "sourceBytes": 1713,
+    "sourceSha256": "dbc727b4e84a8be5e3a80b9e67c0e46a96982a05d61abb5a6062bb3e7753fbd6"
+  },
+  {
+    "file": "camera-boundaries.log.gz",
+    "sourceBytes": 5483,
+    "sourceSha256": "12902c70a891bd0e82f94d57851076c82c974464f4cfb9866c0916d24f01cfaf"
+  },
+  {
+    "file": "measure-camera-package.mjs.gz",
+    "sourceBytes": 840,
+    "sourceSha256": "6e3ce6fee2f24a0b424caf7312a9d1c2e369231ef23b34282fefc72f592f29ff"
+  },
+  {
+    "file": "package-size-20.json.gz",
+    "sourceBytes": 124,
+    "sourceSha256": "5ed21844cc81eeb848d2e4dc94017ae4eba5b352337823875ba0f76d19864518"
+  },
+  {
+    "file": "package-size-22.json.gz",
+    "sourceBytes": 117,
+    "sourceSha256": "8d0d4661b7b2cf7a720cdd5f11db918ba545841d365312baf80a22ecaa9fff55"
+  },
+  {
+    "file": "package-size-24.json.gz",
+    "sourceBytes": 133,
+    "sourceSha256": "a7af36f5b586e8e1f699f54d7a984b9e45fa46ea14bfb1cb6b05bbe559ce9d3d"
+  },
+  {
+    "file": "package-size-24.log.gz",
+    "sourceBytes": 332,
+    "sourceSha256": "33370ce415c1f199685eddb482e7b2942671da1364a678147841302d5a32fd2a"
+  },
+  {
+    "file": "package-size-22.log.gz",
+    "sourceBytes": 316,
+    "sourceSha256": "36331ee59114ac7e6e1a63c13831ad1573ba52f64b198f67defe0b393389878f"
+  },
+  {
+    "file": "package-size-20.log.gz",
+    "sourceBytes": 323,
+    "sourceSha256": "3249885a9fef5c46ed4a3cf8e2eea54a147773303980e6751d7b6e86cea14fae"
+  }
+]

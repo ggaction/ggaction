@@ -1,0 +1,39 @@
+not ok 414 - density output created in Node 22.23.1 restores and reserializes exactly in a fresh process
+not ok 415 - density output created in Node 24.22.1 restores and reserializes exactly in a fresh process
+not ok 6929 - legacy geographic version 3 preserves bytes and frames for capacity default
+not ok 6930 - legacy geographic version 4 preserves bytes and frames for capacity default
+not ok 6931 - legacy geographic version 3 preserves bytes and frames for capacity 1000
+not ok 6932 - legacy geographic version 4 preserves bytes and frames for capacity 1000
+not ok 6933 - legacy geographic version 3 preserves bytes and frames for capacity 200000
+not ok 6934 - legacy geographic version 4 preserves bytes and frames for capacity 200000
+# tests 10617
+# pass 10609
+# fail 8
+npmtest=done
+# tests 816
+# pass 816
+# fail 0
+realistic=done
+coverage-exit=1
+# tests 10617
+# pass 10609
+# fail 8
+browser-exit=0
+# tests 531
+# pass 531
+# fail 0
+render-exit=0
+# tests 513
+# pass 513
+# fail 0
+consumer node20 exit=0
+consumer node22 exit=0
+consumer node24 exit=0
+chain=done
+--- after normalizing packageVersion in two byte-preservation tests:
+# tests 10617
+# pass 10617
+# fail 0
+npmtest=done
+coverage-exit=0
+Coverage: 97.46% lines, 95.62% branches, 99.32% functions; 789 critical floors passed.

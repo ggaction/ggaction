@@ -1,19 +1,40 @@
-function compareSequence(a, b, budget) {
-  const length = Math.min(a.length, b.length);
-  budget.charge(length + 1);
-  for (let index = 0; index < length; index++) if (a[index] !== b[index]) return a[index] - b[index];
-  return a.length - b.length;
-}
-
-// Edge ordinals already represent raw typed-key order. All buffers belong to one
-// search; no graph topology or shared adjacency is written by this owner.
+// Edge ordinals already represent raw typed-key order. Predecessors belong to
+// one search; only successful paths and exact-cost comparisons allocate vectors.
+// No graph topology or shared adjacency is written by this owner.
 export function shortestRoutePath(adjacency, costs, skip, source, target, budget, heldSamples = 0) {
   const heap = [], best = new Map(), settled = new Set();
-  let activeCells = 0;
-  const compare = (a, b) => { budget.charge(1); return a.cost - b.cost || compareSequence(a.edges, b.edges, budget); };
+  // Each predecessor state is allocated once. Count every allocated state for
+  // the whole search, conservatively including stale states and queue/map refs.
+  let retainedCells = 0;
+  function state(node, cost, previous, edge) {
+    budget.samples(heldSamples + retainedCells + 8); budget.charge(5);
+    retainedCells += 8;
+    return { node, cost, previous, edge, depth: previous === null ? 0 : previous.depth + 1 };
+  }
+  function sequence(value) {
+    const edges = new Array(value.depth);
+    for (let index = edges.length - 1; index >= 0; index--) { edges[index] = value.edge; value = value.previous; }
+    return edges;
+  }
+  function compareSequence(a, b) {
+    const length = Math.min(a.depth, b.depth);
+    budget.samples(heldSamples + retainedCells + a.depth + b.depth);
+    budget.charge(a.depth + b.depth + length + 1);
+    const left = sequence(a), right = sequence(b);
+    for (let index = 0; index < length; index++) if (left[index] !== right[index]) return left[index] - right[index];
+    return left.length - right.length;
+  }
+  function result(value) {
+    budget.samples(heldSamples + retainedCells + value.depth * 2 + 1); budget.charge(value.depth * 2 + 1);
+    const cost = value.cost, edges = new Array(value.depth), nodes = new Array(value.depth + 1);
+    for (let index = edges.length - 1; index >= 0; index--) {
+      edges[index] = value.edge; nodes[index + 1] = value.node; value = value.previous;
+    }
+    nodes[0] = value.node;
+    return { edges, nodes, cost };
+  }
+  const compare = (a, b) => { budget.charge(1); return a.cost - b.cost || compareSequence(a, b); };
   function push(state) {
-    const cells = state.edges.length + state.nodes.length + 1;
-    budget.samples(heldSamples + activeCells + cells); budget.charge(cells); activeCells += cells;
     let child = heap.length; heap.push(state);
     while (child > 0) {
       const parent = Math.floor((child - 1) / 2);
@@ -36,14 +57,14 @@ export function shortestRoutePath(adjacency, costs, skip, source, target, budget
     }
     return first;
   }
-  const first = { node: source, cost: 0, edges: [], nodes: [source] };
+  const first = state(source, 0, null, undefined);
   best.set(source, first); push(first);
   while (heap.length) {
     budget.check();
-    const current = pop(), cells = current.edges.length + current.nodes.length + 1;
-    if (best.get(current.node) !== current) { activeCells -= cells; continue; }
+    const current = pop();
+    if (best.get(current.node) !== current) continue;
     best.delete(current.node); settled.add(current.node);
-    if (current.node === target) return { edges: current.edges, nodes: current.nodes, cost: current.cost };
+    if (current.node === target) return result(current);
     for (const next of adjacency.get(current.node)) {
       budget.charge(1);
       if (skip[next.edge] || settled.has(next.target)) continue;
@@ -51,13 +72,10 @@ export function shortestRoutePath(adjacency, costs, skip, source, target, budget
       if (!Number.isFinite(cost)) throw new RangeError("Edge route path cost must be finite.");
       const previous = best.get(next.target);
       if (previous !== undefined && cost > previous.cost) continue;
-      budget.charge(current.edges.length + current.nodes.length + 2);
-      budget.samples(heldSamples + activeCells + current.edges.length + current.nodes.length + 3);
-      const state = { node: next.target, cost, edges: [...current.edges, next.edge], nodes: [...current.nodes, next.target] };
-      if (previous !== undefined && cost === previous.cost && compareSequence(state.edges, previous.edges, budget) >= 0) continue;
-      best.set(next.target, state); push(state);
+      const candidate = state(next.target, cost, current, next.edge);
+      if (previous !== undefined && cost === previous.cost && compareSequence(candidate, previous) >= 0) continue;
+      best.set(next.target, candidate); push(candidate);
     }
-    activeCells -= cells;
   }
   return undefined;
 }

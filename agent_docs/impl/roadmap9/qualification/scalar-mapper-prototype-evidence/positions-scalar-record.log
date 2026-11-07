@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: semantic values map after interpolation with exact numeric endpoints and resolved range changes
+ok 1 - semantic values map after interpolation with exact numeric endpoints and resolved range changes
+  ---
+  duration_ms: 2.282041
+  type: 'test'
+  ...
+# Subtest: logarithmic values retain their meaning while domain endpoints morph geometrically
+ok 2 - logarithmic values retain their meaning while domain endpoints morph geometrically
+  ---
+  duration_ms: 0.987708
+  type: 'test'
+  ...
+# Subtest: all admitted continuous transforms agree with independent value-space formulas
+ok 3 - all admitted continuous transforms agree with independent value-space formulas
+  ---
+  duration_ms: 5.92625
+  type: 'test'
+  ...
+# Subtest: incompatible mapping policies yield explicit crossfade reasons
+ok 4 - incompatible mapping policies yield explicit crossfade reasons
+  ---
+  duration_ms: 0.385666
+  type: 'test'
+  ...
+# Subtest: unrepresentable intermediate mappings fade with a reason and preserve finite endpoints
+ok 5 - unrepresentable intermediate mappings fade with a reason and preserve finite endpoints
+  ---
+  duration_ms: 0.186417
+  type: 'test'
+  ...
+# Subtest: closed descriptor-safe position boundaries reject invalid state without evaluating getters
+ok 6 - closed descriptor-safe position boundaries reject invalid state without evaluating getters
+  ---
+  duration_ms: 0.569459
+  type: 'test'
+  ...
+# Subtest: owned position preparation and copied transport retain identical complete samples
+ok 7 - owned position preparation and copied transport retain identical complete samples
+  ---
+  duration_ms: 3.642666
+  type: 'test'
+  ...
+# Subtest: copied and caller-frozen position plans never acquire an ownership proof
+ok 8 - copied and caller-frozen position plans never acquire an ownership proof
+  ---
+  duration_ms: 0.273833
+  type: 'test'
+  ...
+# Subtest: position preparation contexts require exact opaque tokens and retain caller boundaries
+ok 9 - position preparation contexts require exact opaque tokens and retain caller boundaries
+  ---
+  duration_ms: 1.922667
+  type: 'test'
+  ...
+# Subtest: closed scale interning separates every normalized numeric and transform policy
+ok 10 - closed scale interning separates every normalized numeric and transform policy
+  ---
+  duration_ms: 3.958167
+  type: 'test'
+  ...
+# Subtest: four-entry preparation contexts evict without reducing supported scale diversity
+ok 11 - four-entry preparation contexts evict without reducing supported scale diversity
+  ---
+  duration_ms: 2.41775
+  type: 'test'
+  ...
+# Subtest: exact scale pairs share one successful progress while mapping every row value
+ok 12 - exact scale pairs share one successful progress while mapping every row value
+  ---
+  duration_ms: 0.894041
+  type: 'test'
+  ...
+# Subtest: failed value mappings and collapsed domains publish no partial sampled scale slot
+ok 13 - failed value mappings and collapsed domains publish no partial sampled scale slot
+  ---
+  duration_ms: 0.734875
+  type: 'test'
+  ...
+# Subtest: scale interning adds no optional inherited parameter reads
+ok 14 - scale interning adds no optional inherited parameter reads
+  ---
+  duration_ms: 0.430083
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 99.732542

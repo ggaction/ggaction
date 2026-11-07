@@ -7,7 +7,7 @@
 - [ ] STEP050·051·052 최종 통합과 명칭·제외 정책 검사
 - [x] Pyramid primitive 시각 증거와 공개 create/edit/revise 소비자 연결
 - [x] OHLC·waterfall 순수 값 역할과 독립 수치 검사
-- [ ] OHLC·waterfall 시각 증거와 공개 소비자 연결
+- [x] OHLC·waterfall 시각 증거와 공개 소비자 연결
 - [ ] 전체 mark consumer matrix·설치·문서 인수
 - [ ] STEP074·077 누적 인수
 
@@ -72,3 +72,5 @@ value, delta에 reset을 넣으면 거부한다. label 문자열로 역할을 �
 ## OHLC public checkpoint — 2026-10-29
 
 The subsequent [OHLC vertical slice](../chart/ohlc.md) now implements create/edit, stored price roles, source lifecycle, compound row selection/hit, guides/color/theme/fonts, nested composition and Canvas/SVG/PNG/PDF/offline consumers. Waterfall public work and STEP050/051/052/074 integration obligations remain open; the foundation-only statement above describes its earlier checkpoint.
+
+후속 공개 체크포인트: [OHLC](../chart/ohlc.md) `bfe92592c`, [Waterfall](../chart/waterfall.md) `419a0fe7f`. 독립 numeric·primitive/public4format·실제 데이터·같은 tar3Node 증거는 각각의 evidence에 있으며 STEP050 합산 admission과 STEP074 누적 인수는 별도다.

@@ -5,15 +5,19 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 743_900, // Native mark ownership and conditional category order: Node20/24 743,860 bytes.
-  "ggaction/basic": 398_300, // Combined creation paths and frame policy: Node20/24 398,278 bytes.
-  "ggaction/svg": 25_000,
-  "ggaction/graph": 44_000, // Shared region predicate validation: 43,572 gzip bytes.
-  "ggaction/interaction": 112_900 // Combined LOD/current hit frames and node movement: Node20 112,814.
+  ggaction: 804_801, // Review fixes: Node20/24 804,801 gzip bytes.
+  "ggaction/basic": 430_484, // Staged resource graph validation: Node20/24 430,484 gzip bytes.
+  "ggaction/svg": 27_461, // Partition path runs: Node20/24 27,461 gzip bytes.
+  "ggaction/graph": 78_097, // Review fixes: Node20/24 78,097 gzip bytes.
+  "ggaction/animation": 360_125, // Version 0.0.27: Node20/24 360,125 gzip bytes.
+  "ggaction/interaction": 144_184, // Sliced data revision: Node20/24 144,184 gzip bytes.
+  "ggaction/live": 1_023_988 // Live setData easing: Node20/24 1,023,988 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {
-  if (specifier === "ggaction/graph") return `import { prepareGraphEdgeRoutes, computeGraphEdgeRoutes, createGraphRouteExecutor } from "ggaction/graph"; globalThis.graphRoutes = { prepareGraphEdgeRoutes, computeGraphEdgeRoutes, createGraphRouteExecutor };`;
+  if (specifier === "ggaction/live") return `import { chart } from "ggaction/live"; globalThis.liveChart = chart;`;
+  if (specifier === "ggaction/animation") return `import * as animation from "ggaction/animation"; globalThis.chartAnimation = animation;`;
+  if (specifier === "ggaction/graph") return `import * as graph from "ggaction/graph"; globalThis.chartGraph = graph;`;
   if (specifier === "ggaction/interaction") return `import { createInteractionSession } from "ggaction/interaction"; globalThis.createChartInspection = createInteractionSession;`;
   if (specifier === "ggaction/svg") {
     return `

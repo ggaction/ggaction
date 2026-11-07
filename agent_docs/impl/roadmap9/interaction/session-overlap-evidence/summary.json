@@ -1,0 +1,158 @@
+{
+  "status": "qualified-overlap-and-native-authority-audit",
+  "runtimeSourceCommit": "8cd965393e05f10e13931675fd87a12fa2f66e1f",
+  "priorQualifiedCommit": "8b02f3560",
+  "archiveSha256": "ae486a9124187717bb8a3c95e54b14c636e6c924e8c0795288e60f9ab721275f",
+  "runtimeTypePackageChanges": false,
+  "fixture": {
+    "from": [
+      {
+        "id": "a",
+        "x": 5,
+        "y": 5
+      },
+      {
+        "id": "b",
+        "x": 5,
+        "y": 5
+      },
+      {
+        "id": "c",
+        "x": 5,
+        "y": 5
+      }
+    ],
+    "to": [
+      {
+        "id": "a",
+        "x": 5,
+        "y": 5
+      },
+      {
+        "id": "b",
+        "x": 5,
+        "y": 5
+      },
+      {
+        "id": "d",
+        "x": 5,
+        "y": 5
+      }
+    ],
+    "radius": 12,
+    "targetColor": "red",
+    "canvas": [
+      240,
+      180
+    ],
+    "margin": 20,
+    "xDomain": [
+      0,
+      10
+    ],
+    "yDomain": [
+      0,
+      10
+    ],
+    "center": [
+      120,
+      90
+    ],
+    "durationMs": 100,
+    "easing": "linear",
+    "times": [
+      0,
+      25,
+      50,
+      75,
+      100
+    ]
+  },
+  "inputSha256": "6026828b3cbd0b28cd51eeff4b12d9860b345588213590f21be2a21d06b507ed",
+  "testSourceSha256": {
+    "test/unit/interaction-animation.test.js": "c16bb3630595cebbc905d6b6eac01619c2e0bf4841368d021da265fb4835fa70",
+    "test/browser/interaction-animation.browser.js": "cf382da5299cdb54c405a3aa6c491a06e446b227f06f0a7431492bd24549db16",
+    "scripts/consumers/fixtures/node/interaction-animation.mjs": "3ee04fe41a4c0cae486f4c03f35f4793212f19687f94b9cc9e9800d3a89f3d61"
+  },
+  "expected": {
+    "at0Candidates": [
+      "c",
+      "b",
+      "a"
+    ],
+    "interiorCandidates": [
+      "c",
+      "d",
+      "b",
+      "a"
+    ],
+    "at100Candidates": [
+      "d",
+      "b",
+      "a"
+    ],
+    "beforeNativeSelected": {
+      "0": "c",
+      "25": "c",
+      "50": "c",
+      "75": "c",
+      "100": "b"
+    },
+    "afterNativeSelected": {
+      "0": "b",
+      "25": "d",
+      "50": "d",
+      "75": "d",
+      "100": "d"
+    },
+    "focusPoint": [
+      120,
+      90
+    ],
+    "selectionPhases": [
+      "commit",
+      "settled"
+    ],
+    "historyEntriesPerClick": 1,
+    "duplicateCandidateKeys": 0,
+    "earlierProgramMutations": 0
+  },
+  "actual": "Every independent ordered candidate, native selected key, focus point, terminal event and history assertion equals the literal expectations in the owning unit/browser tests. Exact native keys are derived only from public final items, not invented from row positions.",
+  "diff": {
+    "mismatchedAssertions": 0,
+    "duplicateCandidateKeys": 0,
+    "extraSelectionCommits": 0
+  },
+  "checks": {
+    "unitTests": 15,
+    "unitOverlapNativeScopeTimeCombinations": 10,
+    "sourceBrowserTests": 8,
+    "sourceBrowserNewOverlapCombinations": 8,
+    "installedSameBrowserTests": 8,
+    "installedArchiveUnchanged": true,
+    "offlineNativeAuditCasesPerNode": 1,
+    "offlineNativeAuditNodes": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "boundaries": 22,
+    "recordPaths": 1,
+    "fullSuiteRerun": false,
+    "bundlesReusedFromD1": true
+  },
+  "nativeAuthorityAudit": {
+    "sameTimeSceneEqual": true,
+    "restoredNativeProgramAndNewPlanInteractive": true,
+    "restoredAnimationEnvelopeInteractive": false,
+    "networkCalls": 0,
+    "newAPIs": 0,
+    "newPersistedSchemas": 0,
+    "requirementRecord": "../NATIVE_AUTHORITY_AUDIT.md"
+  },
+  "remaining": [
+    "STEP070 typed partition/routes/Geo/LOD/worker integration",
+    "STEP074 exhaustive qualification matrix",
+    "STEP077 overall roadmap completion"
+  ]
+}

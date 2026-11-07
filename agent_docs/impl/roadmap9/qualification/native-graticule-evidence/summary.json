@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "authorization": "../../AUTHORIZATION.json",
+  "baseline": "0fe36dd16",
+  "scope": [
+    "graticule/encodings",
+    "graticule/scales",
+    "graticule/guides"
+  ],
+  "addedOwners": 3,
+  "status": "verified conceptual checkpoint; combined candidate and whole Roadmap9 qualification remain pending",
+  "runtimeChange": false,
+  "checks": {
+    "owning": 62,
+    "node20": 4,
+    "node24": 4,
+    "browser": {
+      "tests": 1,
+      "backends": [
+        "Canvas",
+        "SVG"
+      ],
+      "DPR": [
+        1,
+        2
+      ]
+    },
+    "executableSnippet": 1,
+    "installed": {
+      "node": "v22.23.1",
+      "sha256": "c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4",
+      "docs": [
+        "graticule-analytical-comparison"
+      ],
+      "status": "passed"
+    },
+    "preflight": "passed",
+    "docs": 51,
+    "built": {
+      "pages": 186,
+      "llmArtifacts": 1603
+    },
+    "builtBrowser": {
+      "page": "tutorials/geographic-marks/",
+      "results": [
+        {
+          "width": 320,
+          "dimensions": {
+            "width": 320,
+            "scroll": 320,
+            "escapes": 0
+          },
+          "violations": 0,
+          "errors": 0
+        },
+        {
+          "width": 390,
+          "dimensions": {
+            "width": 390,
+            "scroll": 390,
+            "escapes": 0
+          },
+          "violations": 0,
+          "errors": 0
+        },
+        {
+          "width": 768,
+          "dimensions": {
+            "width": 768,
+            "scroll": 768,
+            "escapes": 0
+          },
+          "violations": 0,
+          "errors": 0
+        },
+        {
+          "width": 1280,
+          "dimensions": {
+            "width": 1280,
+            "scroll": 1280,
+            "escapes": 0
+          },
+          "violations": 0,
+          "errors": 0
+        }
+      ]
+    },
+    "imageManifest": "existing canonical images remain fresh; no renderer/source input changed"
+  },
+  "preserved": {
+    "nativeRows": 30,
+    "acceptanceGroups": 79,
+    "targets": 577,
+    "results": "pending",
+    "packageOwners": 30,
+    "imageNotApplicable": 3,
+    "otherNativeRows": "exactly unchanged"
+  },
+  "failure": "First executable snippet rejected the canonical inspection import; the bounded public inspection mapping fixes the actual source-free example while private imports remain rejected.",
+  "remaining": [
+    "Combined candidate qualification",
+    "Whole Roadmap9 through STEP077",
+    "Large route performance and rendering limits"
+  ],
+  "sourceCommit": "8c0b2e979",
+  "searchBudget": {
+    "firstResult": "50/51 docs; search exceeded old cap",
+    "old": 1089900,
+    "measuredIncludingNewline": 1090602,
+    "new": 1090700
+  },
+  "proofScope": "Only new analytical recipe and its consumer evidence; no runtime/types/public API/solver/renderer/large SLO changes."
+}

@@ -1,0 +1,30 @@
+{
+  "rows": [
+    {
+      "id": "contour-line",
+      "before": 5,
+      "after": 18,
+      "pending": [
+        "package"
+      ]
+    },
+    {
+      "id": "contour-filled",
+      "before": 5,
+      "after": 18,
+      "pending": [
+        "package"
+      ]
+    },
+    {
+      "id": "calendar",
+      "before": 5,
+      "after": 18,
+      "pending": [
+        "package"
+      ]
+    }
+  ],
+  "otherRowsAndFieldsDeepEqual": true,
+  "existingOwnersPreserved": true
+}

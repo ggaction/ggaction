@@ -1,0 +1,99 @@
+{
+  "status": "qualified-private-geo-source-hit-consumer",
+  "previousCheckpoint": "2bdc1486c",
+  "sourceSha256": {
+    "src/ChartProgram.js": "720ad67be3590901b0c9361e45cf98cbbcb9fd45ed116c072f88a93f631ab72c",
+    "src/BasicChartProgram.js": "61c13251a5072945c886d5fe562a046c1dfd989b3c7857c80cf7a98adcbe3e41",
+    "src/interaction/hitProgram.js": "fac4b554bf4024830ea9735baafad372c5f0363ecf8648c3830fd7cd64116bda",
+    "src/materialization/selection/itemResolver.js": "2bd25e6c81e32b8f20c02a19968e099af56fb222bedefc277ee05e4e5aecfe19",
+    "test/unit/animation/geo-source-hit.test.js": "94025272ddddab0e79df228e5f74e16bc114d8c104a1f6b5834ce50f27ba7426",
+    "test/unit/interaction-keyboard.test.js": "5dbcef23950117c5cfecb11a63a3b327ee9a5cadbb632bc3ea7efff75f3ef230"
+  },
+  "sharedGeoPresentationReference": "a7787efd7",
+  "publicApiOrStoredSchemaChanges": false,
+  "publicGeoTypedSamplerIntegrated": false,
+  "checks": {
+    "relatedCoverageTests": 371,
+    "laterNode22OwningWithClipAndExplicitFocusRejection": 4,
+    "sourcePackageDiscoveryContracts": 35,
+    "architecturePaths": 1,
+    "node20Owning": 16,
+    "node24Owning": 16,
+    "fullRepositorySuiteRerun": false
+  },
+  "coverage": {
+    "hitProgram": [
+      100,
+      95.18,
+      100
+    ],
+    "itemResolver": [
+      100,
+      100,
+      100
+    ]
+  },
+  "package": {
+    "entryCount": 1132,
+    "packedBytes": 1613366,
+    "unpackedBytes": 7328382,
+    "sha256": "e570671394157045fd971f3bcfcf36c896b1b43d1eac2390bba7c75bcbafbb11",
+    "caps": {
+      "entries": 1132,
+      "packedBytes": 1614000,
+      "unpackedBytes": 7329000
+    }
+  },
+  "installed": {
+    "sameArchive": true,
+    "nodes": [
+      "v20.20.2",
+      "v22.23.1",
+      "v24.22.1"
+    ],
+    "eachExistingPublicRuntimeCases": 3,
+    "strictTypes": true,
+    "optionalPeers": true,
+    "sixBrowserEntries": true,
+    "newGeoSamplerCase": false
+  },
+  "bundleGzipBytes": {
+    "20": {
+      "ggaction": 773979,
+      "ggaction/basic": 422045,
+      "ggaction/svg": 24954,
+      "ggaction/graph": 44076,
+      "ggaction/animation": 186027,
+      "ggaction/interaction": 130506
+    },
+    "22": {
+      "ggaction": 772362,
+      "ggaction/basic": 421163,
+      "ggaction/svg": 24779,
+      "ggaction/graph": 43923,
+      "ggaction/animation": 185619,
+      "ggaction/interaction": 130053
+    },
+    "24": {
+      "ggaction": 773979,
+      "ggaction/basic": 422045,
+      "ggaction/svg": 24954,
+      "ggaction/graph": 44076,
+      "ggaction/animation": 186027,
+      "ggaction/interaction": 130506
+    }
+  },
+  "sourceBoundary": "Interaction imports only the registered reader; Full and Basic provide exact-constructor frozen builtin callbacks. No inheritance or public registry.",
+  "activation": "Dynamic source features are inspectable; keyboard/native click activation retains current native final-item intersection.",
+  "failureHistory": [
+    "Initial test fixtures used incorrect public calls/scene time and were repaired before claiming runtime success. Logs retained.",
+    "The first narrow coverage run passed 50 tests but did not exercise one old hitProgram callback; related owning371 reached all critical floors.",
+    "Packed1613366 exceeded the previous1612000 cap. Actual unpacked7328382 and measured interaction130506 required minimum cap increases; all final checks passed."
+  ],
+  "remaining": [
+    "Public Geo presentation/closed decision/frame proof integration",
+    "Actual public Geo sample installed/browser current-frame qualification",
+    "Remaining STEP070 partition/routes/LOD/worker cells and STEP074 full qualification"
+  ],
+  "sourceCommit": "a9cc561e84538c4918fae4b4981efb31d4522612"
+}

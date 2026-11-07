@@ -1,0 +1,58 @@
+{
+  "node": "v24.22.1",
+  "count": 100,
+  "edges": 100,
+  "hash": "212ae9c180c0db17f20d80728de1e12309e20ce7765bb732059b0ac030996322",
+  "diagnostics": {
+    "work": 1264670,
+    "candidatePairs": 4950,
+    "peakSamples": 7000,
+    "compatibilityPairs": 750,
+    "displacementCaps": 81899,
+    "totalIterations": 165,
+    "schedule": [
+      {
+        "cycle": 0,
+        "internalSamples": 1,
+        "step": 0.1,
+        "iterations": 60
+      },
+      {
+        "cycle": 1,
+        "internalSamples": 2,
+        "step": 0.05,
+        "iterations": 40
+      },
+      {
+        "cycle": 2,
+        "internalSamples": 4,
+        "step": 0.025,
+        "iterations": 27
+      },
+      {
+        "cycle": 3,
+        "internalSamples": 8,
+        "step": 0.0125,
+        "iterations": 18
+      },
+      {
+        "cycle": 4,
+        "internalSamples": 16,
+        "step": 0.00625,
+        "iterations": 12
+      },
+      {
+        "cycle": 5,
+        "internalSamples": 32,
+        "step": 0.003125,
+        "iterations": 8
+      }
+    ]
+  },
+  "previousSource": "68627051f627a04a5477dbe52b12d3c31e90f70e",
+  "currentSourceSHA256": {
+    "forceDirected.js": "c304473a35e1b938a212970e86cb2674afb8f2b76e5e728773b4ed897b1a19ef",
+    "forceNeighbors.js": "0792585f944cfc10e01336c651966ddc111a0b86106ae70f09480ff4f61382f1"
+  },
+  "equal": "all result keys, finite coordinates including signed zero, bounds/provenance/order, options, diagnostics and canonical hash"
+}

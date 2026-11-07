@@ -1,23 +1,12 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { createSourceIdentity, encodeRowKey } from "../../core/itemIdentity.js";
-import { validateWorkLimit } from "../../core/validation.js";
+import { geographicFeatureKeys } from "./features.js";
 import { geographicCoordinateKind } from "../../selectors/geometry.js";
 import { resolveInputReference } from "../../selectors/resources.js";
-import { geometryFeatureKeys } from "../../grammar/geo/options.js";
 import { normalizeGeoLODOptions } from "../../grammar/geo/lodOptions.js";
 import { resolveGeoLevels } from "../../grammar/geo/levels.js";
 import { simplifySharedTopology } from "../../grammar/geo/simplify.js";
 
-function explicitKeys(resource, input) {
-  const seen = new Set(); let source = resource;
-  while (source.options.method === "geo-join") {
-    if (seen.has(source.id)) throw new TypeError("Geographic levels cannot contain cyclic joins.");
-    seen.add(source.id); validateWorkLimit(seen.size, "Geographic level source work");
-    source = input(source.inputs[0]);
-  }
-  if (source.options.method !== "geo" || source.options.featureKey === undefined) throw new TypeError("Geographic levels require source featureKey and cannot contain nested levels.");
-  return geometryFeatureKeys(resource.result.features, source.options.featureKey);
-}
 
 export function createGeoLODResource({ program, id, revision = 0, definition, geometries, logicalId, allocationId,
   input = ref => resolveInputReference(program, ref) }) {
@@ -29,7 +18,7 @@ export function createGeoLODResource({ program, id, revision = 0, definition, ge
     if (geographicCoordinateKind(geometry) !== coordinateKind) throw new TypeError("Geographic levels require one coordinateKind.");
     if (level.tolerance > 0 && geometry.result.topology === undefined) throw new TypeError("Positive geographic tolerance requires shared topology.");
     const { input: role, tolerance, ...mapping } = level;
-    return { ...mapping, keys: explicitKeys(geometry, input) };
+    return { ...mapping, keys: geographicFeatureKeys(geometry, input) };
   });
   const resolved = resolveGeoLevels(levels, { zoom: normalized.zoom,
     ...(normalized.activeLevel === undefined ? {} : { previousLevel: normalized.activeLevel }) });

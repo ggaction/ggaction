@@ -1,0 +1,20 @@
+{
+  "observedAt": "2026-10-30T05:26:29.119Z",
+  "phase": "DPR1, 1000-edge hierarchical warmup/measurement",
+  "source": "ps -axo pid,pcpu,comm and ps -p ... -o pid,ppid,etime,pcpu,args",
+  "parentPid": 68964,
+  "commands": "node --test-coverage-include=src/materialization/guides/legendLayout.js --test-coverage-include=src/materialization/guides/legendSamples.js --test-coverage-include=src/materialization/guides/legendGradient.js --test-coverage-include=src/materialization/guides/legendItems.js test/unit/actions/guides/*",
+  "observedChildCpuPercent": [
+    81.1,
+    77.5,
+    73.5,
+    72.4,
+    67.3,
+    67.2,
+    63.9,
+    59.1,
+    51.4
+  ],
+  "peerConfirmedEnded": true,
+  "handling": "Preserve initial measurement and supplement only affected cell after peer ends; no other agent process killed."
+}

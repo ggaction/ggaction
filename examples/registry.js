@@ -1,4 +1,9 @@
+import { createMarginal } from "./marginal/program.js";
+import { createBullet } from "./bullet/program.js";
 import { createGeographicMarks } from "./geographic-marks/program.js";
+import { createTable } from "./table/program.js";
+import { createTrail } from "./trail/program.js";
+import { variants as trailVariants } from "./trail/fixture.js";
 import { createWaterfall } from "./waterfall/program.js";
 import { variants as waterfallVariants } from "./waterfall/fixture.js";
 import { createOHLC } from "./ohlc/program.js";
@@ -58,6 +63,7 @@ import { createBarTransition } from "./color-transitions/program.js";
 import { createMidpoint } from "./color-midpoint/program.js";
 import { createRoseHole } from "./radial-sectors/program.js";
 import { createLinkedThetaLegend } from "./theta-legend-order/program.js";
+import { createStreamgraph } from "./streamgraph/program.js";
 import { createAreaSimple } from "./area-layout/program.js";
 import { createDotPlotExample } from "./dot-plot/program.js";
 import { createLollipopPlotExample } from "./lollipop-plot/program.js";
@@ -314,6 +320,20 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "area-layout/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
   }),
+  example({ id: "streamgraph", data: {}, width: 380, height: 280, docsGroup: "tutorials", createProgram: createStreamgraph,
+    browser: { path: "streamgraph/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "streamgraph", width: 380, height: 280 } } }
+  }),
+  example({ id: "marginal", data: {}, width: 472, height: 400, docsGroup: "tutorials", createProgram: () => createMarginal(),
+    browser: { path: "marginal/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "marginal", width: 472, height: 400 } } } }),
+  example({ id: "bullet", data: {}, width: 360, height: 160, docsGroup: "tutorials", createProgram: () => createBullet(),
+    browser: { path: "bullet/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "bullet", width: 360, height: 160 } } } }),
+  example({ id: "table", data: {}, width: 360, height: 220, docsGroup: "tutorials", createProgram: createTable,
+    browser: { path: "table/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "table", width: 360, height: 220 } } }
+  }),
+  ...trailVariants.map(variant => example({ id: variant.chart, programDirectory: "trail", testDirectory: "trail", data: {}, width: 420, height: 240, docsGroup: "tutorials",
+    createProgram: () => createTrail(variant.id),
+    browser: { path: `browser-host/?chart=${variant.chart}`, canvas: "#chart", state: { global: "__ggactionExample", expected: { id: variant.chart, width: 420, height: 240 } } }
+  })),
   ...waterfallVariants.map(variant => example({ id: variant.chart, programDirectory: "waterfall", testDirectory: "waterfall", data: {}, width: 500, height: 320, docsGroup: "tutorials",
     createProgram: () => createWaterfall(variant.id),
     browser: { path: `browser-host/?chart=${variant.chart}`, canvas: "#chart", state: { global: "__ggactionExample", expected: { id: variant.chart, width: 500, height: 320 } } }
@@ -350,6 +370,12 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "responsive-guides/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "responsive-guides", width: 400, height: 320 } } }
   }),
+  example({ id: "geographic-fields", programDirectory: "geographic-marks", testDirectory: "geographic-marks", data: {}, width: 640, height: 480, docsGroup: "tutorials",
+    createProgram: () => createGeographicMarks("fields"), browser: { path: "browser-host/?chart=geographic-fields", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "geographic-fields", width: 640, height: 480 } } } }),
+  example({ id: "geographic-annotations", programDirectory: "geographic-marks", testDirectory: "geographic-marks", data: {}, width: 640, height: 480, docsGroup: "tutorials",
+    createProgram: () => createGeographicMarks("annotations"), browser: { path: "browser-host/?chart=geographic-annotations", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "geographic-annotations", width: 640, height: 480 } } } }),
   example({ id: "geographic-marks", programDirectory: "geographic-marks", testDirectory: "geographic-marks", data: {}, width: 640, height: 480, docsGroup: "tutorials",
     createProgram: () => createGeographicMarks("planar"), browser: { path: "browser-host/?chart=geographic-marks", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "geographic-marks", width: 640, height: 480 } } } }),

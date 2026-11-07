@@ -1,0 +1,392 @@
+{
+  "status": "axis-free-implicit-lane10-integrated; axis-dependent-clearance-and-dynamic-labels-pending",
+  "base": "4baa8b721",
+  "incomingSource": "dc704e9f6",
+  "upstreamPin": "5c054738f",
+  "sourceRevision": "d165696d6ef93fa5b1c4c6e9c26b881d66567dcb",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1229,
+    "packedBytes": 1755879,
+    "unpackedBytes": 7927055,
+    "file": "ggaction-ebfa7ce25443b4fcf56205a5cf8cb241531e8fffe7b217a60fc5e1a5727150f0.tgz",
+    "sha256": "ebfa7ce25443b4fcf56205a5cf8cb241531e8fffe7b217a60fc5e1a5727150f0"
+  },
+  "runtimeIncomingOwnersExact": 9,
+  "sharedSampleSeam": "Preserved root timeline3/GeoText2 and entire sampler; only import retainSampledGuideMeaning and wrap final guides vector once. Other shared4 byte unchanged.",
+  "versions": {
+    "transition": 3,
+    "guide": "native-guide-values@10",
+    "cartesian": "semantic-cartesian-geometry@2",
+    "geographicText": "native-geo-text@2"
+  },
+  "checks": {
+    "animation.log": 640,
+    "coverage.log": 823,
+    "legend-samples-coverage.log": 1159,
+    "boundaries.log": 57,
+    "boundaries-final.log": 57,
+    "realistic.log": 5,
+    "render.log": 12,
+    "browser.log": 1,
+    "docs.log": 238,
+    "package.log": 13
+  },
+  "coverage": {
+    "guideTracks": [
+      100,
+      99.44,
+      100
+    ],
+    "sample": [
+      100,
+      99.25,
+      100
+    ],
+    "legendBlockState": [
+      100,
+      100,
+      100
+    ],
+    "legendGroupState": [
+      100,
+      92.98,
+      100
+    ],
+    "legendGuides": [
+      100,
+      100,
+      100
+    ],
+    "legendLaneGuides": [
+      100,
+      100,
+      100
+    ],
+    "legendLaneState": [
+      98.64,
+      93.3,
+      100
+    ],
+    "legendSamplesSupplement": [
+      97.87,
+      95.41,
+      100
+    ],
+    "scope": "Seven animation owners pass in823 tests; legendSamples initial narrow82.45/90.36/90 is NOT a floor pass. Separate existing1159 native-guide/materialization tests enforce95/90/100 for that owner. No global coverage claim."
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "runtime": 22,
+      "animationTypes": "passed",
+      "responsiveTypes": "passed",
+      "fontTypes": "passed",
+      "contourTypes": "passed",
+      "doc": "passed",
+      "bundles": 6
+    },
+    "22": {
+      "node": "v22.23.1",
+      "runtime": 22,
+      "animationTypes": "passed",
+      "responsiveTypes": "passed",
+      "fontTypes": "passed",
+      "contourTypes": "passed",
+      "doc": "passed",
+      "bundles": 6
+    },
+    "24": {
+      "node": "v24.22.1",
+      "runtime": 22,
+      "animationTypes": "passed",
+      "responsiveTypes": "passed",
+      "fontTypes": "passed",
+      "contourTypes": "passed",
+      "doc": "passed",
+      "bundles": 6
+    }
+  },
+  "realistic": {
+    "datasets": 5,
+    "recipes": 14,
+    "pairs": 70
+  },
+  "render": {
+    "tests": 12,
+    "backends": [
+      "Canvas",
+      "SVG",
+      "PNG",
+      "PDF"
+    ]
+  },
+  "browser": {
+    "tests": 1,
+    "variants": 12,
+    "dpr": [
+      1,
+      2
+    ],
+    "backends": [
+      "Canvas",
+      "SVG"
+    ]
+  },
+  "built": {
+    "pages": 186,
+    "selectiveLlm": 1603
+  },
+  "docsBrowser": {
+    "pairs": 8,
+    "widths": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "pages": [
+      "api/animation",
+      "reference/runtime"
+    ],
+    "overflow": 0,
+    "axe": 0,
+    "errors": 0
+  },
+  "limits": {
+    "entries": 1229,
+    "packed": 1759100,
+    "unpacked": 7927100,
+    "maximumMeasuredPacked": 1759063,
+    "measuredUnpacked": 7927055,
+    "animationGzip": 317900,
+    "maximumAnimationGzip": 317874,
+    "maxFullGzip": 783590,
+    "maxBasicGzip": 424224,
+    "otherBundleCeilingsUnchanged": true
+  },
+  "nativeManifest": {
+    "requirements": 30,
+    "groups": 79,
+    "consumerTargets": 577,
+    "requiredConsumers": 574,
+    "canonicalNotApplicable": 3,
+    "assignedAcceptanceOwners": 55,
+    "assignedConsumerOwners": 489,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577
+  },
+  "diagnostics": [
+    "Initial source merge helper exceeded default child-process output buffer while reading generated llms-full; repeated with bounded16MiB buffer, then fully regenerated outputs.",
+    "Initial direct node --test directory arguments were not discovered modules; used canonical unit runner with explicit directory selectors. Original failure preserved.",
+    "First canonical pack found1229 entries versus1226; measured canonical counts/bytes and selected minimum ceilings. Diagnostic prepack is not a validation receipt.",
+    "First installed runs missed Basic import when unioning new fixture into root animation file. Added incoming Basic import and reran same final tar on all three Node versions. No runtime change or archive change for fixture repair."
+  ],
+  "remaining": [
+    "Dynamic label group actual emission/source hit/offline integration",
+    "Axis-dependent inferred legend clearance at actual owner timeline progress/style/frame",
+    "85 native consumer owners24 acceptance owners and same-candidate actual results",
+    "Route SLO/admission; final nine commands/review/protected delivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "installed-22-first.log": {
+      "sha256": "d59f1642d858d321158f6a4249cad96c13e61e2f10bba254088464be402079c8",
+      "bytes": 6365
+    },
+    "coverage.log": {
+      "sha256": "b09b8e5f5a0d98eceb679f042caa0a32f963012de717727a569e48cc5558a960",
+      "bytes": 194200
+    },
+    "docs-browser.log": {
+      "sha256": "5a3c64266d4efdb7a39b58387ad78a2a8dd19b04ff830dc2a0475375030ebc27",
+      "bytes": 610
+    },
+    "pack22.json": {
+      "sha256": "cd0b2b035136adbd00ed4e5aec5fedbe31f401563bb71565354d381550bf29ea",
+      "bytes": 391
+    },
+    "installed-24.json": {
+      "sha256": "af853c42913bddbff61897aff2d2f79c18f17dd4e6a6bf7ee112bad764b3734e",
+      "bytes": 1782
+    },
+    "browser.log": {
+      "sha256": "de384b804d6d60a5524a5bf806867d40c3f8dc3847e0a3e54c7b55088ba73e93",
+      "bytes": 359
+    },
+    "render.log": {
+      "sha256": "6400e01bbf6bc900370fdc7c70a01a8e0486107211ad4d76e451829ede0befeb",
+      "bytes": 2945
+    },
+    "installed-24-first.log": {
+      "sha256": "1232a445de22687ab04ac10c3cc133cefbaaa4f6fcb95239693f438ccb4136b2",
+      "bytes": 6440
+    },
+    "frozen.json": {
+      "sha256": "f11f0464cc775f2dcc8ef463020cd2e25ed76e97acdb78d0487a0d1160bae2a1",
+      "bytes": 436
+    },
+    "pack22-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "installed-24.log": {
+      "sha256": "d28d07fec50bd048d257affc071ce2dfb2d5f5eecf4957f7a148f4fbe535c5ff",
+      "bytes": 1444
+    },
+    "installed-24-first.json": {
+      "sha256": "1420ecbeeac72d16388927afa88924928adc1c4aaa7fe50c81e209972b53325a",
+      "bytes": 2703
+    },
+    "installed-22.json": {
+      "sha256": "7abb36af55ba4cd5cabaa84e8ec3772c7c06b3e147333039b88490639e20d61c",
+      "bytes": 1782
+    },
+    "pack24.json": {
+      "sha256": "efe23eb8d4b7d06ebd0bef3b1f61c19c7ed438d51724ba3af0410c6d71c54416",
+      "bytes": 391
+    },
+    "installed-22.log": {
+      "sha256": "999155b33f39bab840598cc199f2d279f8f0d79d5a717d81bb88b1baa4270efb",
+      "bytes": 1444
+    },
+    "docs.log": {
+      "sha256": "97d34d62525fff4dc461591010b47ad66314ba29a0532786f0b5c643d3c4c6cb",
+      "bytes": 72586
+    },
+    "prepack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "boundaries.log": {
+      "sha256": "a54c2ae39f9add099b5b7f294905bec27c60c22e96e8b058b52327a82d45f4d4",
+      "bytes": 12332
+    },
+    "installed-20.log": {
+      "sha256": "4b9cd3cf2013042ce2a18443dff2c5d65876659bb657873fab54fc595faca9f4",
+      "bytes": 1444
+    },
+    "installed-20-first.log": {
+      "sha256": "39dd54d877d3ba512521d276d808a7de4f07c2a9902051c336f24c4bd6e39fc2",
+      "bytes": 6421
+    },
+    "animation.log": {
+      "sha256": "41fcbf13f317d4dd9ee51bca273a98aed150f53591d93056da558de4111ff6d6",
+      "bytes": 151267
+    },
+    "installed-20.json": {
+      "sha256": "62e5fda749b042b4b6fa8617476f9a17936a5cd8a2bb7ec285e5e55385dd88cf",
+      "bytes": 1782
+    },
+    "installed-22-first.json": {
+      "sha256": "bbd9aef968d66d077de06b67e641a9beb50f4dec6a89184cb18b7e25a2b73724",
+      "bytes": 2678
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "premeasure20.json": {
+      "sha256": "06b3c05f5e32adf61e603a9308f97563e9b31ce2fdca4942d5c75bc64d69fab6",
+      "bytes": 305
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack22-first.stderr": {
+      "sha256": "c3330f0d185c0e72c5eb1ae679682c81b77c04a82104284fb556cba957dc28ba",
+      "bytes": 966
+    },
+    "prepack.json": {
+      "sha256": "15fa83101c49c14d042fd1d203d30688e69eb1166c48ce6642c4ab8b20b70468",
+      "bytes": 297
+    },
+    "legend-samples-coverage.log": {
+      "sha256": "df3928b767139ec2791ad1e0b21902acd3309022556d7ad7b416bafdaedefbdd",
+      "bytes": 253495
+    },
+    "pack20.json": {
+      "sha256": "3bce02b4bcad307002fbb6a9705843ae2b4e90d3317cf5e2441045fc8e293bae",
+      "bytes": 391
+    },
+    "animation-selector-first.log": {
+      "sha256": "f18645e40c5e4272c8133187a35c107f3024363bfa1f292660568ccf342cc57f",
+      "bytes": 2276
+    },
+    "built.log": {
+      "sha256": "52552c274bf016d373a8bf4dcd752a76c79cd04e3adb9b6ba0c95f38e502f307",
+      "bytes": 179
+    },
+    "premeasure20.log": {
+      "sha256": "d00273d29efbe1cd679ffa8ad478a930774446950b239e6ae34704c0bb5c82eb",
+      "bytes": 253
+    },
+    "installed-20-first.json": {
+      "sha256": "df258d8486cb6da46d9f59bf05d9ba892a3b13039eb4b71f0a7e846a05a9c481",
+      "bytes": 2703
+    },
+    "generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "realistic.log": {
+      "sha256": "c3e2cd776345551b375a07b5c0d8d0c3f35199d68a6eb846127000ef5a7ded45",
+      "bytes": 1325
+    },
+    "boundaries-final.log": {
+      "sha256": "6474cf3e521308f2efffface4441f1b6118468a5189ace72e9f472c49b85168d",
+      "bytes": 12311
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "package.log": {
+      "sha256": "2d775d19311d9ce415878b559712300dc8b0933319899d647d178f8ecba73081",
+      "bytes": 2778
+    },
+    "build.log": {
+      "sha256": "fadad2a55946566dc8da8c15474d2c1d7aa66a09e46b8ddc65e1576f394b8aa5",
+      "bytes": 420
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "8dc187964b43e1190482cd62ce8fd76c8e4e87702335cdc317ca835ded7137b8",
+      "bytes": 1806
+    },
+    "source-pin-pack.json": {
+      "sha256": "e5304fd9b37c2e5074b0e2f54c2efa16e8c30c20fb0dbdb66eb38916e9d183bb",
+      "bytes": 390
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite claim."
+  }
+}

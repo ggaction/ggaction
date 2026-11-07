@@ -1,6 +1,7 @@
 import { cloneAndFreeze } from "../core/immutable.js";
 import { validateWorkLimit } from "../core/validation.js";
-import { normalizeHitQuery } from "../grammar/hitShapes.js";
+import { currentFrameSelectionItems } from "./frameSelection.js";
+import { hitShape, normalizeHitQuery } from "../grammar/hitShapes.js";
 import { interactionOptions as options } from "./input.js";
 import { interactionOwner, resolveInteractionSelection, scopeSelectionKeys } from "./selection.js";
 
@@ -27,14 +28,18 @@ export function normalizeClickSelection(program, value, links) {
 
 // Host click selection consumes the same current-frame candidates as inspection.
 // Native commands remain the only authoring path and own all dependent updates.
-export function clickSelectionCommand(program, binding, hit) {
+export function clickSelectionCommand(program, binding, hit, frame) {
   const owner = resolveClickSelection(program, binding.target, binding.selection, true);
   if (!owner) return null;
   let work = 0;
   const spend = count => validateWorkLimit(work += count, "Click selection work"), { resolved, target } = owner;
-  const itemKeys = new Set(scopeSelectionKeys(program, target, resolved.items.filter(item => item.visible !== false).map(item => item.key), spend));
+  const items = currentFrameSelectionItems(program, owner, resolved.items, frame, spend);
+  const itemKeys = new Set(scopeSelectionKeys(program, target, items.filter(item => item.visible !== false).map(item => item.key), spend));
+  const nativeKeys = items === resolved.items ? itemKeys : new Set(scopeSelectionKeys(program, target, resolved.items.map(item => item.key), spend));
+  const currentEntries = items === resolved.items ? null : new Map(frame.entries.map(entry => { spend(1); return [entry.zIndex, entry]; }));
   const candidate = hit.candidates.find(item => { spend(1 + item.itemKey.length); return item.ownerId === target.id &&
-    item.childPath.length === target.childPath.length && item.childPath.every((id, index) => id === target.childPath[index]) && itemKeys.has(item.itemKey); });
+    item.childPath.length === target.childPath.length && item.childPath.every((id, index) => id === target.childPath[index]) && itemKeys.has(item.itemKey) && (nativeKeys.has(item.itemKey) ||
+      hitShape(currentEntries.get(item.zIndex).shape, item.screenPoint, { slop: binding.slop ?? 0 }).hit); });
   const selector = resolved.selector;
   if (!candidate) {
     if (binding.onMiss === "ignore" || (selector.items?.length === 0 && selector.empty === "none")) return null;

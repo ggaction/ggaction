@@ -1,0 +1,236 @@
+{
+  "status": "focused-verified-public-integration",
+  "runtimeSource": "0bcba0bbb",
+  "qualifiedTestGuardSource": "10534f491",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1132,
+    "packedBytes": 1610002,
+    "unpackedBytes": 7314217,
+    "sha1": "2fb8f84b13175149b2dc56fe1aa2583d1f6c7707",
+    "sha256": "e36d5b046588f4f80c91f620f29e391f0137cf4a6a67aa7c512bdd197757360a"
+  },
+  "bundles": {
+    "status": "passed",
+    "limits": {
+      "ggaction": 774000,
+      "ggaction/basic": 422100,
+      "ggaction/svg": 26000,
+      "ggaction/graph": 46000,
+      "ggaction/animation": 185500,
+      "ggaction/interaction": 128600
+    },
+    "records": [
+      {
+        "node": "v20.20.2",
+        "archive": "e36d5b046588f4f80c91f620f29e391f0137cf4a6a67aa7c512bdd197757360a",
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1024,
+            "minifiedBytes": 2701537,
+            "gzipBytes": 773950
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 608,
+            "minifiedBytes": 1440971,
+            "gzipBytes": 422008
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24954
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 147084,
+            "gzipBytes": 44076
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 199,
+            "minifiedBytes": 400770,
+            "gzipBytes": 128570
+          },
+          "ggaction/animation": {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 307,
+            "minifiedBytes": 611748,
+            "gzipBytes": 185433
+          }
+        }
+      },
+      {
+        "node": "v22.23.1",
+        "archive": "e36d5b046588f4f80c91f620f29e391f0137cf4a6a67aa7c512bdd197757360a",
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1024,
+            "minifiedBytes": 2701537,
+            "gzipBytes": 772328
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 608,
+            "minifiedBytes": 1440971,
+            "gzipBytes": 421122
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24779
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 147084,
+            "gzipBytes": 43923
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 199,
+            "minifiedBytes": 400770,
+            "gzipBytes": 128129
+          },
+          "ggaction/animation": {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 307,
+            "minifiedBytes": 611748,
+            "gzipBytes": 184999
+          }
+        }
+      },
+      {
+        "node": "v24.22.1",
+        "archive": "e36d5b046588f4f80c91f620f29e391f0137cf4a6a67aa7c512bdd197757360a",
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1024,
+            "minifiedBytes": 2701537,
+            "gzipBytes": 773950
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 608,
+            "minifiedBytes": 1440971,
+            "gzipBytes": 422008
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24954
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 147084,
+            "gzipBytes": 44076
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 199,
+            "minifiedBytes": 400770,
+            "gzipBytes": 128570
+          },
+          "ggaction/animation": {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 307,
+            "minifiedBytes": 611748,
+            "gzipBytes": 185433
+          }
+        }
+      }
+    ]
+  },
+  "checks": {
+    "unit": 175,
+    "boundariesInitial": 52,
+    "boundariesPackageDiscoveryTypesFinal": 59,
+    "browser": 2,
+    "render": 3,
+    "docs": 231,
+    "installedNodes": {
+      "20": "five runtime cases, strict types, executable docs and animation bundle",
+      "22": "five runtime cases, strict types, executable docs and animation bundle",
+      "24": "five runtime cases, strict types, executable docs and animation bundle"
+    },
+    "finalImportGuardOwning": 7,
+    "packageNode20": 7,
+    "packageNode24": 7,
+    "builtDocs": 186,
+    "selectiveLlmArtifacts": 1598,
+    "builtBrowser": "desktop search and all186 pages at320/390/768; accessibility smoke passed"
+  },
+  "manifestOwnerAssignment": {
+    "requirement": "AT-45",
+    "contract": "agent_docs/contract/current/ANIMATION.md",
+    "effect": "Assigns exact Current owner and five discovered tests; completion result and consumer counts remain unchanged."
+  },
+  "preservedFailures": [
+    "Initial documentation231 checks had two payload-ceiling failures. The actual generated search payload1079906 bytes requires the minimal1080000 ceiling. Repaired full suite231/231.",
+    "Combined package1132 entries /1610002 Node22 packed /7314217 unpacked exceeds inherited1125 /1606000 /7299000. Actual npm under Node20/24 packs1614054 bytes; final minimal ceilings1132 /1615000 /7315000 pass canonical package contracts on all3Nodes.",
+    "Integration retained the animation bundle budget but omitted its actual import fixture. Restored the six-export installed animation fixture before measuring all six entries.",
+    "Five old installed bundles were initially measured only under Node22. Real Node20/24 gzip gives Full773950, Basic422008, interaction128570; ceilings minimally become774000 /422100 /128600. SVG, graph and animation already fit unchanged bounds.",
+    "Cross-Node diagnostic first used a relative npm pack destination resolved beneath staging and failed ENOENT. Absolute per-Node output directories repair the measurement harness; source and frozen Node22 consumer archive are unchanged."
+  ],
+  "remaining": [
+    "Other typed animation families, guide interpolation and timeline integration",
+    "Public accepted animation frame, exact native hit metadata and bounded repeated interruption retention",
+    "Complete cumulative native consumer and final release qualification through STEP077"
+  ],
+  "limits": {
+    "package": {
+      "entries": 1132,
+      "packedBytes": 1615000,
+      "unpackedBytes": 7315000
+    },
+    "searchBytes": {
+      "actual": 1079906,
+      "limit": 1080000
+    }
+  },
+  "packMeasurements": {
+    "20": {
+      "node": "v20.20.2",
+      "entryCount": 1132,
+      "packedBytes": 1614054,
+      "unpackedBytes": 7314217,
+      "sha256": "a45fc4fec327c8918c0bd2656019548411a9fbc66a9577c6bd1f3e380e95b9a7"
+    },
+    "24": {
+      "node": "v24.22.1",
+      "entryCount": 1132,
+      "packedBytes": 1614054,
+      "unpackedBytes": 7314217,
+      "sha256": "a45fc4fec327c8918c0bd2656019548411a9fbc66a9577c6bd1f3e380e95b9a7"
+    }
+  }
+}

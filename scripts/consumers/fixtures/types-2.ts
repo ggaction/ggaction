@@ -2180,6 +2180,9 @@ const withFont = fontBase.createFontResource({ prepared: fontCreate, requestToke
 const fontReplace = await prepareFontResource(withFont, { kind: "replace", target: "font", ...fontSource }, fontHost);
 withFont.replaceFontResource({ prepared: fontReplace, requestToken: "current" });
 const fontMetrics = await prepareTextMetrics(withFont, { id: "measured", fonts: ["font"] }, fontMetricsHost);
+await prepareTextMetrics(withFont, { id: "reflow", fonts: ["font"], axisLabelReflow: true }, fontMetricsHost);
+// @ts-expect-error axis reflow preparation is an explicit boolean
+await prepareTextMetrics(withFont, { id: "bad-reflow", fonts: ["font"], axisLabelReflow: "true" }, fontMetricsHost);
 const exactFontProgram = withFont.applyTextMetrics({ prepared: fontMetrics, requestToken: "current" });
 const preparedFonts = await prepareFontRendering(exactFontProgram, fontRenderHost);
 render(exactFontProgram, {} as CanvasRenderingContext2D, { fonts: preparedFonts });

@@ -22,6 +22,7 @@ const INTERVAL_OPTIONS = Object.freeze([
   "color", "point", "errorBar", "guides"
 ]);
 const POINT_OPTIONS = Object.freeze([
+  "maxItems",
   "clip",   "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
   ...STROKE_STYLE_PROPERTIES
 ]);

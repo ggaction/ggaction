@@ -11,7 +11,7 @@ import { resolveEdgeRouteResource } from "../../selectors/edgeRoutes.js";
 
 export function normalizeEdgeRouteRequest(program, args, editing) {
   if (program.compositionSpec !== undefined) throw new TypeError("Edge routes require an explicit unit chart scope.");
-  ownRecord(args, "Edge route request");
+  args = Object.assign(Object.create(null), ownRecord(args, "Edge route request"));
   rejectUnknownProperties(args, [editing ? "target" : "id", "graph", "layout", "method", "options", "coordinateSpace"], "edge route request");
   if (Object.values(args).some(value => value === undefined || value === null)) throw new TypeError("Edge route arguments cannot contain null or undefined.");
   if (editing && !Object.keys(args).some(key => key !== "target" && (key !== "options" || Object.keys(ownRecord(args.options, "Edge route options")).length))) throw new TypeError("Edge route edits require a nonempty patch.");
@@ -30,11 +30,12 @@ export function resolveEdgeRouteRequest(program, args, previous) {
   const layout = resolveLayoutResource(program, args.layout ?? previous?.inputs[1].id, "graph", GRAPH_LAYOUT_METHODS, explicitGraph?.id);
   const graph = resolveInputReference(program, layout.inputs[0]);
   const method = args.method ?? previous?.options.method;
-  if (Object.hasOwn(args, "options")) ownRecord(args.options, "Edge route options");
+  const patch = Object.assign(Object.create(null), Object.hasOwn(args, "options") ? ownRecord(args.options, "Edge route options") : {});
   const preserve = previous !== undefined && method === previous.options.method;
-  const input = { ...(preserve ? previous.options.options : {}), ...args.options };
+  if (previous?.algorithmVersion === "2" && !preserve && !Object.hasOwn(patch, "execution")) throw new TypeError("Changing a bounded route method requires explicit execution policy.");
+  const input = Object.assign(Object.create(null), preserve ? previous.options.options : {}, patch);
   if (Object.values(input).some(value => value === undefined || value === null)) throw new TypeError("Edge route options cannot contain null or undefined.");
-  if (preserve && args.options?.limits) input.limits = { ...previous.options.options.limits, ...args.options.limits };
+  if (preserve && patch.limits) input.limits = { ...previous.options.options.limits, ...ownRecord(patch.limits, "Route limits") };
   const { hierarchy: hierarchyId, hierarchyLayout: hierarchyLayoutId, ...options } = input;
   let hierarchy, hierarchyLayout;
   if (method === "hierarchical") {
@@ -45,4 +46,14 @@ export function resolveEdgeRouteRequest(program, args, previous) {
   const intent = normalizeRouteIntent(method, options, args.coordinateSpace ?? previous?.options.coordinateSpace);
   return { id: previous?.id ?? args.id, revision: previous === undefined ? 0 : previous.revision + 1,
     program, graph, layout, hierarchy, hierarchyLayout, intent };
+}
+
+
+// Only classify the new host option; normal request validation still owns every
+// error and resource choice. A failed lookup never admits a deadline for v1.
+export function permitsRouteDeadline(program, args, editing) {
+  if (args.options !== null && typeof args.options === "object" && Object.hasOwn(args.options, "execution")) return true;
+  if (!editing) return false;
+  try { return resolveEdgeRouteResource(program, args.target).algorithmVersion === "2"; }
+  catch { return false; }
 }

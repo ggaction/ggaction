@@ -70,3 +70,25 @@ export function restoreProgramContextKeys(program, reference, keys) {
   }
   return program._clone({ context: freezeOwned(context) });
 }
+
+
+// Shared read-only admission for consumers that need settled native meaning.
+// Callers retain their own ChartProgram class check and domain-specific message.
+export function requireClosedProgramState(program, label) {
+  const pending = [program], seen = new WeakSet();
+  while (pending.length) {
+    const current = pending.pop();
+    if (seen.has(current)) continue;
+    if (!Object.isFrozen(current)) throw new TypeError(`${label} requires an immutable ChartProgram.`);
+    for (const key of ["graphicSpec", "semanticSpec", "materializationConfigs", "resolvedScales", "children", "compositionSpec", "actionStack"]) {
+      const descriptor = Object.getOwnPropertyDescriptor(current, key);
+      if (descriptor === undefined || !Object.hasOwn(descriptor, "value") ||
+          !(key === "compositionSpec" && descriptor.value === undefined) && !isOwned(descriptor.value)) {
+        throw new TypeError(`${label} requires immutable own program state.`);
+      }
+    }
+    if (current.actionStack.length !== 0) throw new Error(`${label} requires a closed action stack.`);
+    seen.add(current);
+    pending.push(...Object.values(current.children));
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "method": "Reproduce the preserved initial endpoint algorithm; seed12345, Park-Miller48271,1000cases",
+  "count": 116,
+  "first": {
+    "attempt": 5,
+    "width": 3.3103826080529086e+255,
+    "columns": [
+      {
+        "key": 0,
+        "width": "auto",
+        "intrinsicWidth": 1.095351022998152e-132
+      },
+      {
+        "key": 1,
+        "width": "auto",
+        "intrinsicWidth": 0
+      },
+      {
+        "key": 2,
+        "width": "auto",
+        "intrinsicWidth": 0
+      },
+      {
+        "key": 3,
+        "width": "auto",
+        "intrinsicWidth": 4.0026635382902255e+270
+      },
+      {
+        "key": 4,
+        "width": "auto",
+        "intrinsicWidth": 8.844160833569429e-288
+      },
+      {
+        "key": 5,
+        "width": "auto",
+        "intrinsicWidth": 7.681745517747943e-187
+      },
+      {
+        "key": 6,
+        "width": "auto",
+        "intrinsicWidth": 9.082212281127512e-68
+      },
+      {
+        "key": 7,
+        "width": "auto",
+        "intrinsicWidth": 6.18913617741785e+54
+      },
+      {
+        "key": 8,
+        "width": "auto",
+        "intrinsicWidth": 52669115.88045909
+      },
+      {
+        "key": 9,
+        "width": "auto",
+        "intrinsicWidth": 2.8111134238578076e-31
+      },
+      {
+        "key": 10,
+        "width": "auto",
+        "intrinsicWidth": 9.716556916458921e-124
+      },
+      {
+        "key": 11,
+        "width": "auto",
+        "intrinsicWidth": 4.999740436915571e+129
+      },
+      {
+        "key": 12,
+        "width": "auto",
+        "intrinsicWidth": 4.0103754433772896e-19
+      },
+      {
+        "key": 13,
+        "width": "auto",
+        "intrinsicWidth": 5.672929497908153e-105
+      },
+      {
+        "key": 14,
+        "width": "auto",
+        "intrinsicWidth": 1.9618860991911854e-274
+      },
+      {
+        "key": 15,
+        "width": "auto",
+        "intrinsicWidth": 6.484074315735716e+273
+      },
+      {
+        "key": 16,
+        "width": "auto",
+        "intrinsicWidth": 0
+      },
+      {
+        "key": 17,
+        "width": "auto",
+        "intrinsicWidth": 2.8339786229318403e+112
+      },
+      {
+        "key": 18,
+        "width": "auto",
+        "intrinsicWidth": 7.32562634663648e+62
+      },
+      {
+        "key": 19,
+        "width": "auto",
+        "intrinsicWidth": 0
+      },
+      {
+        "key": 20,
+        "width": "auto",
+        "intrinsicWidth": 1.908906191462131e-264
+      },
+      {
+        "key": 21,
+        "width": "auto",
+        "intrinsicWidth": 2.368835116035516e-24
+      },
+      {
+        "key": 22,
+        "width": "auto",
+        "intrinsicWidth": 2.9318366691316572e-126
+      },
+      {
+        "key": 23,
+        "width": "auto",
+        "intrinsicWidth": 0
+      },
+      {
+        "key": 24,
+        "width": "auto",
+        "intrinsicWidth": 1.1723517407327873e-23
+      },
+      {
+        "key": 25,
+        "width": "auto",
+        "intrinsicWidth": 41526189029744024
+      },
+      {
+        "key": 26,
+        "width": "auto",
+        "intrinsicWidth": 5.478666786058256e+197
+      },
+      {
+        "key": 27,
+        "width": "auto",
+        "intrinsicWidth": 2.0395876733300995e+32
+      },
+      {
+        "key": 28,
+        "width": "auto",
+        "intrinsicWidth": 6.496133289262715e+139
+      },
+      {
+        "key": 29,
+        "width": "auto",
+        "intrinsicWidth": 1.7579893949664373e-36
+      },
+      {
+        "key": 30,
+        "width": "auto",
+        "intrinsicWidth": 1.080565126526515e-97
+      },
+      {
+        "key": 31,
+        "width": "auto",
+        "intrinsicWidth": 8.86704358747215e-61
+      },
+      {
+        "key": 32,
+        "width": "auto",
+        "intrinsicWidth": 0
+      },
+      {
+        "key": 33,
+        "width": "auto",
+        "intrinsicWidth": 209447.44711764238
+      },
+      {
+        "key": 34,
+        "width": "auto",
+        "intrinsicWidth": 2.0983183320672779e+238
+      },
+      {
+        "key": 35,
+        "width": "auto",
+        "intrinsicWidth": 9.473200902491864e+249
+      },
+      {
+        "key": 36,
+        "width": "auto",
+        "intrinsicWidth": 8.897092240953407e-31
+      },
+      {
+        "key": 37,
+        "width": "auto",
+        "intrinsicWidth": 5.673744486277119e-113
+      },
+      {
+        "key": 38,
+        "width": "auto",
+        "intrinsicWidth": 0
+      },
+      {
+        "key": 39,
+        "width": "auto",
+        "intrinsicWidth": 0
+      },
+      {
+        "key": 40,
+        "width": "auto",
+        "intrinsicWidth": 0
+      },
+      {
+        "key": 41,
+        "width": "auto",
+        "intrinsicWidth": 3.52493995277869e-274
+      }
+    ],
+    "bad": {
+      "key": "[\"header\",null,\"[\\\"scalar\\\",[[\\\"number\\\",15]]]\"]",
+      "role": "header",
+      "rowIndex": null,
+      "columnIndex": 15,
+      "columnKey": "[\"scalar\",[[\"number\",15]]]",
+      "bounds": {
+        "left": 2.0422611823767463e+252,
+        "top": 0,
+        "right": 3.310382608052909e+255,
+        "bottom": 24
+      }
+    }
+  }
+}

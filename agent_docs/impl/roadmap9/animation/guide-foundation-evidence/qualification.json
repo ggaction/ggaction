@@ -1,0 +1,61 @@
+{
+  "status": "verified-private-foundation",
+  "baseline": "2100b6927",
+  "authorization": "../AUTHORIZATION.json#remainingApproval",
+  "scope": [
+    "native guide geometry and tick-value shared owners",
+    "bounded scoped graphic traversal",
+    "closed semantic guide state and independent interpolation",
+    "read-only native axis/grid projection",
+    "typed raw-value correspondence and ambiguity"
+  ],
+  "notYetPublic": [
+    "planner/sample/frame endpoint wiring",
+    "strict guide offline payload",
+    "public guide 4-renderer intermediate frames",
+    "title/legend/Parallel/reflow/boundary grid",
+    "timeline"
+  ],
+  "sourceTests": {
+    "focused": 95,
+    "failed": 0,
+    "criticalOwners": 7,
+    "line": 99.47,
+    "branch": 95.17,
+    "functions": 100
+  },
+  "contracts": {
+    "boundaryPackageDocTruth": 23,
+    "afterCeilingSyncPackageDocTruth": 10
+  },
+  "installed": {
+    "nodes": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "nativeGuideCasesEach": 6,
+    "publicEntriesEach": 6,
+    "optionalPeersEach": true,
+    "archiveSha256": "bcb9d46da1d6404e729ecaa91dd2415413b2c667974d2b5e460eaf835f66d614"
+  },
+  "finalArchive": {
+    "status": "passed",
+    "installedArchiveSha256": "bcb9d46da1d6404e729ecaa91dd2415413b2c667974d2b5e460eaf835f66d614",
+    "finalArchiveSha256": "25f72806c04f44d78d27742cf49815de89296cc01cb7625de70062ce81edf142",
+    "entryCount": 1151,
+    "changedMembers": [
+      "package/README.md"
+    ],
+    "unchangedMembers": 1150,
+    "reuse": "Three-Node runtime/bundle evidence is reused only for byte-identical package members. Final README-only archive was not reinstalled."
+  },
+  "firstFailures": [
+    "kernel literal fixture expectations corrected",
+    "native Cartesian line projection now reads explicit owner.scale",
+    "package entries exceeded previous 1144 ceiling",
+    "installed fixture missing example support copied then same archive passed",
+    "Basic and interaction bundle old ceilings exceeded and minimum measured ceilings applied"
+  ],
+  "extractionIncident": "An early import-owner extraction script touched unrelated import blocks. All changes from that script were restored from the clean baseline before the scoped extraction was rerun. The final diff contains only the recorded scoped owners."
+}

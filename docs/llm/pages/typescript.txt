@@ -20,7 +20,9 @@ and action-reference pages.
 ```
 
 Browser projects also need the DOM library supplied by their toolchain because
-`render` accepts `CanvasRenderingContext2D`. Node-only SVG, PNG, and PDF
+`render` accepts `CanvasRenderingContext2D`; `ggaction/live` and mounted
+`ggaction/interaction` sessions also use DOM types. Worker modules for
+`ggaction/graph` need the `WebWorker` library. Node-only SVG, PNG, and PDF
 consumers do not need to construct a browser Canvas context.
 
 ## Type chart options before authoring
@@ -79,6 +81,10 @@ await renderToPDF(program, { output: "chart.pdf", metadata });
 
 Keep Node-only `ggaction/png` and `ggaction/pdf` imports out of browser source.
 Type-only imports do not authorize a runtime entry in the wrong environment.
+
+`ggaction/live` exports `LiveChart` and its event types, `ggaction/graph` exports
+route and inference worker and executor types, and `ggaction/animation` exports
+transition plan, player and frame types. Import each from its own entry.
 
 ## Extensions
 

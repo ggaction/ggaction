@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "state": "approved",
+  "date": "2026-11-06",
+  "source": "Explicit user reply in the current task",
+  "designReply": "결정 1: A / 결정 2: A",
+  "approvedDesigns": [
+    { "id": "GEO-100K-COLUMNAR-PROJECTION", "document": "GEO_100K_PROPOSAL.md", "choice": "A",
+      "condition": "Adopt only when every projected command equals the current d3 stream path bit for bit; otherwise record the known limit." },
+    { "id": "NATIVE-CONSUMER-NOT-APPLICABLE", "document": "NATIVE_CONSUMER_APPLICABILITY.md", "choice": "A",
+      "condition": "A required consumer cell may close as not-applicable only with a current contract reason that the feature is not part of that family; existing behavior is never removed." }
+  ],
+  "deferred": ["STEP-077 publication: PR, npm publish, docs deployment, tag and registry comparison"],
+  "remainingObligations": ["Implement and verify each as its own checkpoint; approval does not imply completion."]
+}

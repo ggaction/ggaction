@@ -1,4 +1,5 @@
 import { isLiteralAnnotation } from "../text.js";
+import { isScreenAnnotation } from "../screenAnnotation.js";
 import { hasPositionBinding } from "../../core/encodingBindings.js";
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -35,8 +36,10 @@ function classifyPrimaryLayer(semanticSpec, layer) {
     if (!layer.hierarchyBinding?.layout) throw new Error("Hierarchy facets require a complete layout binding.");
     return "hierarchy";
   }
+  if (type === "trail" && layer.trail !== undefined && coordinateType(semanticSpec, layer) === "cartesian") return "cartesian";
   if (type === "waterfall" && layer.waterfall !== undefined && coordinateType(semanticSpec, layer) === "cartesian") return "cartesian";
   if (type === "ohlc" && layer.ohlc !== undefined && coordinateType(semanticSpec, layer) === "cartesian") return "cartesian";
+  if (type === "table" && layer.table !== undefined && coordinateType(semanticSpec, layer) === "cartesian") return "cartesian";
   if (type === "pyramid" && layer.pyramid !== undefined && coordinateType(semanticSpec, layer) === "cartesian") return "cartesian";
   const parallel = layer.encoding?.parallel;
   if (parallel !== undefined || coordinateType(semanticSpec, layer) === "parallel") {
@@ -57,7 +60,7 @@ function classifyPrimaryLayer(semanticSpec, layer) {
   if (polar) {
     const theta = layer.encoding?.theta?.scale !== undefined;
     const radius = layer.encoding?.radius?.scale !== undefined;
-    const complete = (type === "point" || type === "line")
+    const complete = (type === "point" || type === "line" || type === "trail")
       ? theta && radius
       : type === "arc" && theta;
     if (!complete) {
@@ -133,7 +136,7 @@ export function resolveFacetFamily(semanticSpec) {
   // or parallel facet. A text-only chart still supplies its own primary layer.
   const annotations = semanticSpec.layers.filter(isLiteralAnnotation);
   const dataLayers = semanticSpec.layers.filter(layer =>
-    layer.mark?.type !== "image" && !(layer.mark?.type === 'text' && layer.source !== undefined) && !annotations.includes(layer));
+    layer.mark?.type !== "image" && !isScreenAnnotation(layer) && !(layer.mark?.type === 'text' && layer.source !== undefined) && !annotations.includes(layer));
   const primary = dataLayers.length ? dataLayers : annotations;
   for (const note of annotations) classifyPrimaryLayer(semanticSpec, note);
   if (primary.length === 0) {
@@ -292,7 +295,7 @@ export function planFacetDependencies(semanticSpec, options = {}) {
   const classifications = new Map(
     [...datasets].map(([id, { value }]) => [id, classifyDataset(value)])
   );
-  const layerPaths = [...layers].filter(([, { value: layer }]) => layer.mark?.type !== "image").map(([layerId, { value: layer }]) => {
+  const layerPaths = [...layers].filter(([, { value: layer }]) => layer.mark?.type !== "image" && !isScreenAnnotation(layer)).map(([layerId, { value: layer }]) => {
     const data = validateUserId(layer.data, `Facet layer "${layerId}" dataset id`);
     return { layerId, data, path: tracePath(data, datasets, classifications) };
   });

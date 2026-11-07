@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "sourceReceipt": ".artifacts/geo-label-source-installed/node20-measure/receipt.json",
+  "package": {
+    "entries": 1162,
+    "packedBytes": 1665000,
+    "unpackedBytes": 7521000
+  },
+  "bundles": {
+    "ggaction": 774700,
+    "ggaction/basic": 422700,
+    "ggaction/svg": 26000,
+    "ggaction/graph": 46000,
+    "ggaction/animation": 233200,
+    "ggaction/interaction": 136200
+  }
+}

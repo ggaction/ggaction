@@ -27,6 +27,7 @@
       "source",
       "data",
       "coordinate",
+      "selection",
       "target"
     ]
   },
@@ -35,19 +36,17 @@
     "H2"
   ],
   "wraps": [
-    "createScale",
     "createTextMark",
     "encodeText",
     "encodeX",
-    "encodeY"
+    "encodeY",
+    "createMarkLabels",
+    "editSemantic",
+    "createGraphics",
+    "createScale"
   ],
   "editableVia": [
-    "encodeText",
-    "editTextMark",
-    "layoutLabels",
-    "removeLabelLayout",
-    "editScale",
-    "removeMark"
+    "editAnnotation"
   ],
   "supports": {
     "entryPoints": [
@@ -83,6 +82,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "selection",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -233,6 +236,11 @@
       "type": "\"plot-center\" | undefined"
     },
     {
+      "name": "space",
+      "required": false,
+      "type": "\"data\" | \"plot\" | \"screen\" | undefined"
+    },
+    {
       "name": "x",
       "required": false,
       "type": "unknown"
@@ -241,11 +249,6 @@
       "name": "y",
       "required": false,
       "type": "unknown"
-    },
-    {
-      "name": "space",
-      "required": false,
-      "type": "\"data\" | \"plot\" | undefined"
     },
     {
       "name": "source",
@@ -259,6 +262,16 @@
     },
     {
       "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "select",
+      "required": false,
+      "type": "MarkSelector | undefined"
+    },
+    {
+      "name": "selection",
       "required": false,
       "type": "string | undefined"
     },

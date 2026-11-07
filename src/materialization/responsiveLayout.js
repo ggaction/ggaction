@@ -1,3 +1,4 @@
+import { finishCanvasStages } from "./canvasResourceRevision.js";
 import { annotateError } from "../core/diagnostics.js";
 import { createGraphicBounds } from "../layout/canvas.js";
 import { evaluateResponsiveLayout, RESPONSIVE_ITERATIONS } from "../layout/responsivePolicy.js";
@@ -42,6 +43,10 @@ function failure(result, reason = result.reason) {
 // Every candidate replays the original domain action; no intermediate program
 // or authored margin escapes. Scale ranges are prepared before its preflight.
 export function withResponsiveLayout(program, apply, validateCandidate) {
+  return finishCanvasStages(withResponsiveLayoutStages(program, function* (candidate) { return apply(candidate); }, validateCandidate));
+}
+
+export function* withResponsiveLayoutStages(program, apply, validateCandidate) {
   const config = program.materializationConfigs.canvas;
   const canvas = program.graphicSpec.objects.canvas.properties;
   const options = { canvas: { width: canvas.width, height: canvas.height }, minPlotSize: config.responsive.minPlotSize };
@@ -56,7 +61,7 @@ export function withResponsiveLayout(program, apply, validateCandidate) {
     validateCandidate?.(candidate);
     candidate = applyMaterializationPlan(candidate, planCanvasRematerialization(candidate)
       .filter(step => step.op === "rematerializeScale"));
-    candidate = apply(candidate);
+    candidate = yield* apply(candidate);
     passes.push(measuredPass(candidate, plot));
     const result = evaluateResponsiveLayout(passes, options);
     if (result.status === "satisfied") {

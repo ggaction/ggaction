@@ -263,7 +263,7 @@ try {
       "/ggaction/reference/actions/marks/"
     ]],
     ["logarithmic scale", ["/ggaction/api/scales/"]],
-    ["tooltip", ["/ggaction/supported-features/"]],
+    ["tooltip", ["/ggaction/api/live/"]],
     ["responsive canvas", ["/ggaction/responsive-charts/"]],
     ["high dpi", ["/ggaction/api/rendering/"]],
     ["serialize svg", ["/ggaction/api/rendering/"]],

@@ -2,9 +2,30 @@ import { freezeOwned, isOwned, isPlainObject } from "../core/immutable.js";
 import { validateGeneratedItemLimit } from "../core/validation.js";
 
 export const MAX_PATH_COMMANDS = 30_000;
+export const MAX_DECLARED_PATH_COMMANDS = 200_000;
 
-export function validatePathCommandCount(count, label) {
-  return validateGeneratedItemLimit(count, label, MAX_PATH_COMMANDS);
+export function validatePathCapacity(value) {
+  if (!Number.isSafeInteger(value) || value < 1 || value > MAX_DECLARED_PATH_COMMANDS) {
+    throw new RangeError("Path maxCommands must be an integer from 1 to 200000.");
+  }
+  return value;
+}
+
+// A declaration applies only to this path, never to clips or other generators.
+export function pathCommandCapacity(properties) {
+  const descriptor = Object.getOwnPropertyDescriptor(properties, "maxCommands");
+  if (descriptor === undefined) {
+    if ("maxCommands" in properties) throw new TypeError("Path maxCommands requires an own property.");
+    return MAX_PATH_COMMANDS;
+  }
+  if (!Object.hasOwn(descriptor, "value") || !descriptor.enumerable) {
+    throw new TypeError("Path maxCommands requires an enumerable own data property.");
+  }
+  return validatePathCapacity(descriptor.value);
+}
+
+export function validatePathCommandCount(count, label, maximum = MAX_PATH_COMMANDS) {
+  return validateGeneratedItemLimit(count, label, validatePathCapacity(maximum));
 }
 
 const COMMAND_KEYS = Object.freeze({
@@ -66,10 +87,11 @@ function commandShape(command, index) {
 }
 
 // Canonical command grammar shared by edits, geometry, clipping and persistence.
-export function resolvePathSubpaths(commands) {
+export function resolvePathSubpaths(commands, maximum = MAX_PATH_COMMANDS) {
+  if (!Array.isArray(commands)) throw new TypeError("path.commands must contain at least one entry.");
+  validatePathCommandCount(commands.length, "path.commands length", maximum);
   if (topologyCache.has(commands)) return topologyCache.get(commands);
   dense(commands, "path.commands");
-  validatePathCommandCount(commands.length, "path.commands length");
   const subpaths = [];
   let start;
   let closed = false;

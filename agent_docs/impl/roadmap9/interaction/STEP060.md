@@ -10,7 +10,11 @@
 - [x] C2: categorical legend visibility, 사용자 filter 합성 및 visible-data/all-data 정책
 - [ ] continuous/interval legend 조작의 원 카드 후행 범위
 - [x] D: 기존 setParameter host controls와 context semantic targets
-- [ ] annotation anchor/offset 편집
+- [x] E5: 기존 Text annotation의 datum anchor/offset/content/placement 원자 편집
+- [x] E6: native Geo annotation의 명시 command 연결
+- [x] E7: source-owned item membership의 inline/named/all 편집과 scoped key 연결
+- [x] E8: 데이터 없는 screen anchor와 native Text/codec/hit 연결
+- [x] E9: anchor를 보존하는 native dx/dy pointer drag
 - [x] E1: native partition focus 명령과 host breadcrumb/button keyboard 연결
 - [x] E2: explicit projection viewport 명령과 host button/keyboard 연결
 - [x] E3: fixed/force node 이동과 실제 pointer/touch drag·host keyboard
@@ -489,3 +493,161 @@ Docs204/204, built172pages/1523LLM 및 네 폭overflow0/Axe0이 통과했다.
 
 E4 source `41621fb78` push 뒤 provenance를 고정해 owning docs30과 built172pages/1523LLM을
 다시 통과했다. Runtime·타입·최종 archive 및 시각 입력은 그대로여서 앞선 설치와 네 폭Axe 증거를 재사용한다.
+
+## E5 annotation 편집의 기존 Text owner 연결
+
+전체 승인 AUTHORIZATION을 재사용한다. `editAnnotation({target?,text?,format?,x?,y?,placement?,layout?,...TextStyle})`는
+Full-only thin wrapped facade이며 기존 annotation이 만든 독립 Text 또는 source-owned labels를 편집한다.
+별도 registry나 저장 schema는 만들지 않고 같은 lower editable resource인 일반 Text도 허용한다.
+명시 target → current eligible Text → unique Text 순서로 해석하며 ambiguity는 거부한다.
+`annotate` command는 명시 owner target과 같은 nonempty payload를 받고 이 action만 호출한다.
+
+x/y는 기존 독립 Cartesian constant datum anchor의 scale/type/temporal unit을 그대로 써서 갱신한다.
+Field/conditional position을 임의로 constant anchor로 바꾸거나 source-owned 위치를 분리하지 않는다.
+text는 encodeText, format-only는 기존 constant text, style/offset은 editTextMark,
+placement는 editMarkLabelPlacement, layout은 layoutLabels/removeLabelLayout으로 위임한다.
+기존 numeric/conditional offset이 있다면 style offset을 조용히 무시하지 않고 명시 거부한다.
+전체 chain을 discarded immutable branch에서 preflight한 뒤 wrapped child actions로 한 번 적용한다.
+
+Consumer matrix는 scoped composition/facet dispatch, data/scale/Canvas replay, label ownership/selection/layout,
+codec, session selection/link closure와 one-commit/error atomicity, Canvas/SVG/PNG/PDF 기존 Text geometry,
+Full installed/Basic unsupported, declarations/current/catalog/docs/realistic witnesses다.
+새 renderer·geometry owner는 없다. Geo feature anchor는 동료의 native editGeoAnnotation 안정 checkpoint 뒤
+별도 연결하고 screen-anchored 생성, item membership 편집/drag, pointer navigation와 history/focus는
+원 카드의 후행 의무로 유지한다.
+
+
+E5 집중 interaction190/190에서 새6회귀와 변경 두 owner100/93.55/100 및100/98.47/100을 확인했다.
+타입·source/package/discovery/catalog60, 실제5datasets×3recipes16, 기존 lifecycle inventory2,
+실제 Chromium pointer/tap/Enter/Space1을 통과했다. Native lower chain/codec와 Canvas calls·SVG,
+PNG·72dpi PDF decoded pixels가 정확히 같다. 새 renderer나 visual primitive는 없다.
+
+동일 tar b9124cb2에서 Node20/22/24 각각10runtime·strictTS·5bundles를 검증했다.
+Node20 최초 Full723,738>723,200 실패를 보존하고 runtime/types 재실행 없이 동일 측정에 최소723,800
+cap을 적용해 확인했다. Node22/24 전체 명령은 exit0이다. Package1037entries,
+Node20 packed1,475,547/unpacked6,716,141에1,476,000/6,717,000 cap을 적용한다.
+Docs 최초202/205의 changelog1·search cap2 실패는 owning49/49로 수리 검증했다.
+Built172pages/1525LLM 및320/390/768/1440px overflow0/Axe0을 통과했다.
+[정확 artifact·명령·원본 실패](annotation-edit-evidence/qualification.json)를 보존한다.
+전수 normal/coverage·전체 installed matrix·STEP060/077 완료는 주장하지 않는다.
+
+E5 source `895517eb7` push 뒤 provenance를 고정해 owning docs32와 built172pages/1525LLM을
+다시 통과했다. Runtime·타입·최종 archive와 시각 입력은 같으므로 앞선 설치/4backend/네 폭Axe를 재사용한다.
+
+## E6 geographic annotation command 연결
+
+전체 승인을 재사용하고 검증된 Geo79d72577를 E57b6df990a에 병합한다. Runtime owner 충돌은 없다.
+`annotate`는 명시 target의 native layer가 geo annotation이면 editGeoAnnotation을 호출하고 일반 Text는
+editAnnotation을 유지한다. 별도 registry/schema/renderer/Full static import는 없다. Payload는 두 native editor의
+target 제외 union이며 선택된 target kind가 실제 닫힌 옵션을 검증한다. Geo anchor·typed feature·원 LOD level과
+projection/source revision, source grain 및 immutable one-commit lifecycle은 기존 owner를 재사용한다.
+
+E6 초기 interaction+Geo204/204, named selector 보강 뒤 interaction+source boundary203/203 및
+변경 owner100/98.52/100을 통과했다. 최초 contracts59/60의 직접조회 위반을 기존 findLayer 재사용으로
+고쳤으며 해당11 boundary는 최종203에 포함된다. 실제5datasets×3recipes16은 native source와 typed
+feature key를 검증했고, 마지막 lookup 추출 후 browser1 및4backend session/native/codec exact를 재확인했다.
+
+동일 최종 taref611d30에서3Node 각각11runtime·strictTS·5bundles를 검증했다. 최초 cce9e084는
+selector 추출 전 archive로 보존한다. Node20에서 유입 branch의 낡은 interaction cap109200 실패를
+보존하고 실측112841→112900로 수리해 숫자 재검증했다. Node22/24 명령은 exit0이다.
+Docs 최초203/207 중 상대link1·fingerprint2는 owning3으로 확인했고, 남은 canonical example source link는
+source commit 뒤 고정한다. Built172pages/1531LLM 및 네 폭overflow0/Axe0이 통과했다.
+[정확 archive·원본 실패·명령](geographic-annotation-evidence/qualification.json)을 보존한다.
+전체 normal/coverage·전체 installed matrix 및060/077 완료는 주장하지 않는다.
+
+E6 source `fe03a4148` push 뒤 canonical example source link를 포함한 owning docs50/50과
+built172pages/1531LLM을 통과했다. 최종 source/타입/taref611 및 시각 입력은 동일하므로3Node·4backend·
+네 폭Axe 증거를 재사용한다. 원본207개 실행의4실패와 수정후 owning 검증을 구분해 남긴다.
+
+## E7 item anchor membership의 기존 label owner 연결
+
+전체 승인과 기존 item anchor 계약을 재사용한다. source-owned createAnnotation에 select 또는 selection을
+전달하고 editAnnotation/annotate에 select·selection·all:true 중 하나를 전달한다. createMarkLabels와
+editMarkLabelSelection이 기존 final-item membership을 단일 소유하며 새 저장 schema는 없다.
+Coordinate/data/plot/Geo anchor와 item membership을 섞지 않는다. Empty selector는 native empty 의미를
+유지하며 named selection은 같은 source를 가리켜야 한다. 원 aggregate grain/typed item key·source revision·
+선택 제거 참조와 label layout/selection replay, child scope 및 immutable one-commit을 검증한다.
+
+
+E7은 새 unit2개를 포함한 Text92/92와 scoped interaction/composition52/52를 통과했다.
+Text annotation owner100/93.94/100, Text actions94.95/89.32/100,
+composition target94.70/91.67/93.33을 기록한다. 부모 inspection의 namespaced key가 child annotation에서
+빈 선택으로 해석되는 실제 반례를 보존했고 기존 ITEM_SELECTION_ACTIONS에 두 facade를 등록해 고쳤다.
+새 namespace 변환 owner나 selector grammar는 만들지 않는다.
+
+Source/type/discovery28 및 contracts32, 실제5datasets×3recipes16, Chromium pointer/touch/Enter/Space1,
+public/native/codec Canvas calls·SVG·decoded PNG/PDF exact를 확인했다.
+마지막 scoped key 등록 후에는 Text92·scope52·boundary28과 최종 설치 회귀를 재실행하고,
+입력이 동일한 unscoped realistic/browser/renderer 증거는 재사용한다.
+Docs207/207·built172pages/1531LLM·네 폭overflow0/Axe0과 모바일 화면을 확인했다.
+전체 normal/coverage·전체 installed matrix 및060/074/077 완료는 주장하지 않는다.
+
+동일 최종 tar22b79797에서 Node20/22/24 각각11runtime·strictTS·5bundles 명령이 exit0이다.
+Full gzip728,292→728,300과 package1044entries/packed1,481,747/unpacked6,746,635를 실측했다.
+처음 archive07712260의 cap 실패와 scoped key 버그를 보존한다. Source 최종 변경 뒤 owning docs34/34 및
+이미지 manifest를 갱신했고 source commit 뒤 provenance를 다시 고정한다.
+[정확 artifact·명령·원본 실패](annotation-membership-evidence/qualification.json)를 참고한다.
+
+E7 source `81ea3c791` push 뒤 provenance를 고정하고 source docs owning47/47과 built172pages/1531LLM을
+통과했다. Runtime·타입과 finaltar22b79797, 시각 입력은 같으므로 동일 패키지3Node·4backend·네 폭Axe
+증거를 재사용한다. 이후 screen anchor와 pointer anchor drag를 별도 개념으로 계속한다.
+
+## E8 data-less screen annotation 최소 경계
+
+기존 전체 승인과 root 확인을 재사용한다. `createAnnotation({space:"screen",x,y,text,...TextStyle})`는
+선택된 local Canvas의 논리 pixel 위치를 저장한다. 브라우저 page/client 좌표를 저장하지 않고
+margin/resize/data/scale 변경에도 x/y를 그대로 유지하며 중첩 합성만 기존 child transform을 적용한다.
+source/data/coordinate/select/selection/placement와 혼합하지 않으며 가짜 dataset/scale은 만들지 않는다.
+`editAnnotation`/`annotate`의 x/y는 같은 screen 위치를 편집하고 기존 content/style/layout owner를 유지한다.
+
+Text layer의 `annotationAnchor:{space:"screen",x,y}`가 유일한 위치 intent다. content는 기존
+encoding.text.datum/format, style은 markConfig, 실제 glyph는 기존 concreteTextItem/materializer가 소유한다.
+Rowless item key는 `[[],owner,"item",["annotation","screen"]]`, concrete lineage는 `{kind:"screen"}`다.
+rows/resourceRefs는 빈 배열이며 codec는 namespace를 해석한 정확 Text owner의 screen anchor를 확인한다.
+일반 Text의 dataset 검증은 유지한다. 후속 pointer anchor drag와 history/focus는 이 단계 완료와 구분한다.
+
+
+E8 검증: interaction/persistence/composition304/304, Text96/96와 이후 추가 prepared-font 회귀5/5,
+source/types/catalog/discovery54/54, 최종 architecture/boundary12/12를 통과했다. Screen grammar
+100/100/100, Annotation100/98.57/100, Text actions95.86/89.71/100, encodeText96.83/91.94/100이다.
+Pinned 실제5개 데이터×3개 recipe16/16, 실제 browser1/1, 독립 literal primitive와 public/codec의
+Canvas calls/SVG/PNG/decoded PDF pixels exact equality를 확인했다.
+
+고정 archive c7871dee10608758da5c9b1878bd739469267bd4d11e2771f5047ba21783565b를 세 Node에서
+12 runtime+strict TypeScript+5 bundle로 검증했다. 최초 Node20은 runtime/type 통과 후 기존 bundle
+ceiling에서 실패했고, 동일 archive·측정의 owning cap 재검사로 닫았다. Node22/24는 종료0이다.
+Source docs207/207, built172pages/1531LLM, Text/interaction 페이지의320/390/768/1440 containment와
+Axe0을 확인했다. 이 증거는 전체 normal/coverage·전체 installed sweep을 주장하지 않는다.
+[원본 실패·정확 artifact·명령](screen-annotation-evidence/qualification.json)에 분리 기록한다.
+
+후속 E9의 pointer anchor drag와 navigation/history/focus, 전체AT35/38/65/80 및 STEP074/077은 남아 있다.
+
+
+## E9 native offset drag 최소 계약
+
+전체 승인과 root의 offset 보존 확인을 재사용한다. `bindings:[{type:"annotate",target}]`는 명시된
+Text 또는 Geo annotation layer의 dx/dy를 local pointer delta로 편집한다. Layer가 편집 단위이므로
+source-owned labels가 여러 개이면 모두 같은 offset으로 이동한다. 개별 label만 이동하려면 기존
+item membership으로 별도 annotation owner를 만든다. 기존 data/plot/feature/item/screen anchor와
+lineage는 그대로 유지하며 임의 scale inverse나 projection inverse를 만들지 않는다. Encoded offsets와
+facet source는 명시 거부한다. Missing owner는 capture 없이 inert하다.
+
+기존 pointer capture와 preview/commit/cancel 경계를 재사용하며 annotation priority는 원 reducer의50이다.
+현재 public session의 한 editing pointer binding 제한은 유지한다. Node와 annotation이 공통
+movementFrame에서 committed scene 확인과 root/child inverse를 공유한다. Cancel은 trace/program을
+원상태로 유지하고 pointerup은 최종 위치로 한 번 commit한다. Preview hit는 같은 실제 preview frame을
+읽는다. Native edit/update/frame/unmount/destroy는 기존 취소 정책을 따른다. History/focus/navigation과
+복수 editing binding arbitration의 최종 소비자 의무는 남긴다.
+
+
+E9 source 검증은 Node/Annotation18/18, 관련 interaction/types/source boundary/discovery228/228이다.
+Annotation movement100/91.43/100, shared frame100/93.33/100, Node100/93.33/100, session100/95.95/100을
+통과했다. 실제5개 dataset×3개 recipe16/16, canonical browser3/3(mouse/touch/keyboard/Escape),
+실제 drag result와 독립 literal/codec의 Canvas/SVG/PNG/PDF exact equality를 확인했다.
+
+고정 tar4baf595d89923b6725facd6b1d89eba9c8345f585f47b0b71688c6bf2e9df102에서 세 Node의
+runtime13+strict TypeScript+5 bundle을 측정했다. Node20 기존 interaction cap 실패는 보존하고
+같은 archive의 cap-only 재검사로 닫았으며 Node22/24는 종료0이다. Docs207/207, built172/1531,
+4폭 containment/Axe0을 통과했다. 전체 normal/coverage·전체 installed sweep을 주장하지 않는다.
+[정확 명령·artifact·초기 실패](annotation-drag-evidence/qualification.json)를 보존한다.
+후속065~067의 history/reset/event/lifecycle와 camera/player 교차, 전체077 인수는 계속 남아 있다.

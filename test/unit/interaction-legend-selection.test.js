@@ -120,7 +120,7 @@ test("legend validation is explicit, bounded, immutable and never executes input
   assert.throws(() => createInteractionSession({ program: continuous, bindings: [binding()] }), /categorical legend block/);
   assert.throws(() => normalizeLegendSelection(p, binding({ type: "other" }), []));
   assert.throws(() => createInteractionSession({ program: base(basic), bindings: [binding()] }), /Full selection owner/);
-  assert.throws(() => createInteractionSession({ program: p, bindings: [binding(), { type: "select", target: "points", selection: "picked" }] }), /at most one/);
+  assert.throws(() => createInteractionSession({ program: p, bindings: [binding(), { type: "select", target: "points", selection: "picked" }] }), /ambiguous priority/);
   let reads = 0; const bad = binding(); Object.defineProperty(bad, "channel", { get() { reads++; return "color"; } });
   assert.throws(() => createInteractionSession({ program: p, bindings: [bad] })); assert.equal(reads, 0);
   const request = binding(), session = createInteractionSession({ program: p, bindings: [request] }), host = surface(); request.mode = "replace"; session.mount(host);

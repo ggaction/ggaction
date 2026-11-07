@@ -1,0 +1,17 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import assert from 'node:assert/strict';
+import { preparePackageConsumer } from '../scripts/package-consumer.js';
+import { measureMinimalBrowserBundle } from '../scripts/browser-bundle-size.js';
+const artifact=JSON.parse(await readFile(new URL(process.argv[2] ?? './combined-preview-package-measure.json',import.meta.url),'utf8'));
+assert.equal(createHash('sha256').update(await readFile(artifact.file)).digest('hex'),artifact.sha256);
+const consumer=await preparePackageConsumer({packageSpec:artifact.file});
+const report={node:process.version,archive:artifact.sha256,bundles:{}};
+try {
+ for (const specifier of ['ggaction','ggaction/basic','ggaction/svg','ggaction/graph','ggaction/interaction','ggaction/animation']) {
+  const measured=await measureMinimalBrowserBundle(consumer.directory,{specifier});
+  report.bundles[specifier]=measured;
+  console.log(JSON.stringify({specifier,gzipBytes:measured.gzipBytes,modules:measured.modules}));
+ }
+ await writeFile(new URL(process.argv[3] ?? './combined-preview-bundles-measure.json',import.meta.url),JSON.stringify(report,null,2)+'\n');
+} finally {await consumer.cleanup();}

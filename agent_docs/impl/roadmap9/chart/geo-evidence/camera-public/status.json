@@ -1,0 +1,392 @@
+{
+  "scope": "명시적 native projection camera action과 읽기 전용 view snapshot",
+  "base": "9c8193c94",
+  "approval": "AUTHORIZATION.json remainingApproval: STEP077 전체 설계·시각 승인 재사용",
+  "checks": {
+    "geo": {
+      "tests": 178,
+      "pass": 178
+    },
+    "ownerCoverage": {
+      "tests": 23,
+      "pass": 23,
+      "owners": [
+        "actions/geo/camera.js",
+        "grammar/geo/camera.js",
+        "grammar/geo/cameraInterpolation.js"
+      ],
+      "coverage": [
+        100,
+        100,
+        100
+      ],
+      "unchangedFloor": [
+        95,
+        90,
+        100
+      ]
+    },
+    "sourcePackageTypesCards": {
+      "tests": 52,
+      "pass": 52
+    },
+    "snapshotPackageBoundaries": {
+      "tests": 16,
+      "pass": 16
+    },
+    "packageContracts": {
+      "tests": 7,
+      "pass": 7
+    },
+    "actualData": {
+      "tests": 16,
+      "pass": 16,
+      "datasets": 5,
+      "recipesPerDataset": 3
+    },
+    "inventory": {
+      "tests": 10,
+      "pass": 10
+    },
+    "primitive": {
+      "tests": 5,
+      "pass": 5
+    },
+    "renderers": {
+      "tests": 10,
+      "pass": 10,
+      "backends": [
+        "Canvas",
+        "SVG",
+        "PNG",
+        "PDF"
+      ]
+    },
+    "browser": {
+      "tests": 5,
+      "pass": 5,
+      "backends": [
+        "Canvas",
+        "SVG"
+      ],
+      "dpr": [
+        1,
+        2
+      ]
+    },
+    "snippets": {
+      "tests": 111,
+      "pass": 111
+    },
+    "sourceDocs": {
+      "initial": {
+        "tests": 202,
+        "pass": 197
+      },
+      "afterMetadata": {
+        "tests": 202,
+        "pass": 200
+      },
+      "final": {
+        "tests": 202,
+        "pass": 202
+      }
+    },
+    "builtDocs": {
+      "beforeSourcePin": {
+        "pages": 172,
+        "llmArtifacts": 1529,
+        "responsiveWidths": [
+          320,
+          390,
+          768
+        ]
+      },
+      "final": {
+        "pages": 172,
+        "llmArtifacts": 1529,
+        "responsiveWidths": [
+          320,
+          390,
+          768
+        ],
+        "desktopSearch": "passed"
+      }
+    }
+  },
+  "package": {
+    "sha256": "63df5876f4ba396a317cd2d5aac13b379355d3097106a4e2cce5bc9c66f8dc54",
+    "entries": 1039,
+    "packedBytes": 1472679,
+    "unpackedBytes": 6717583,
+    "limits": {
+      "entries": 1039,
+      "packedBytes": 1476000,
+      "unpackedBytes": 6718000,
+      "fullBundleGzip": 728000
+    },
+    "measurements": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "entries": 1039,
+        "packedBytes": 1475716,
+        "unpackedBytes": 6717583
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "entries": 1039,
+        "packedBytes": 1472679,
+        "unpackedBytes": 6717583
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "entries": 1039,
+        "packedBytes": 1475716,
+        "unpackedBytes": 6717583
+      }
+    ],
+    "inputParity": {
+      "sha256": "63df5876f4ba396a317cd2d5aac13b379355d3097106a4e2cce5bc9c66f8dc54",
+      "files": 1039,
+      "canonicalPackageTransforms": true,
+      "mismatches": []
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "sha256": "63df5876f4ba396a317cd2d5aac13b379355d3097106a4e2cce5bc9c66f8dc54",
+        "cases": [
+          {
+            "id": "geographic-camera/explicit-native-view-lifecycle",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-camera/fresh-process-restored-native-navigation",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-camera/four-renderer-anchored-view-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 962,
+            "minifiedBytes": 2538243,
+            "gzipBytes": 727461
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 560,
+            "minifiedBytes": 1315392,
+            "gzipBytes": 383859
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335406,
+            "gzipBytes": 109154
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146183,
+            "gzipBytes": 43764
+          }
+        },
+        "types": "strict Full/Basic geographic camera consumer passed",
+        "snippets": [
+          "geographic-camera-reset"
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "sha256": "63df5876f4ba396a317cd2d5aac13b379355d3097106a4e2cce5bc9c66f8dc54",
+        "cases": [
+          {
+            "id": "geographic-camera/explicit-native-view-lifecycle",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-camera/fresh-process-restored-native-navigation",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-camera/four-renderer-anchored-view-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 962,
+            "minifiedBytes": 2538243,
+            "gzipBytes": 725639
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 560,
+            "minifiedBytes": 1315392,
+            "gzipBytes": 383028
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335406,
+            "gzipBytes": 108525
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146183,
+            "gzipBytes": 43604
+          }
+        },
+        "types": "strict Full/Basic geographic camera consumer passed",
+        "snippets": [
+          "geographic-camera-reset"
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "sha256": "63df5876f4ba396a317cd2d5aac13b379355d3097106a4e2cce5bc9c66f8dc54",
+        "cases": [
+          {
+            "id": "geographic-camera/explicit-native-view-lifecycle",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-camera/fresh-process-restored-native-navigation",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-camera/four-renderer-anchored-view-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 962,
+            "minifiedBytes": 2538243,
+            "gzipBytes": 727461
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 560,
+            "minifiedBytes": 1315392,
+            "gzipBytes": 383859
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335406,
+            "gzipBytes": 109154
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146183,
+            "gzipBytes": 43764
+          }
+        },
+        "types": "strict Full/Basic geographic camera consumer passed",
+        "snippets": [
+          "geographic-camera-reset"
+        ]
+      }
+    ],
+    "finalSnippet": {
+      "archive": "63df5876f4ba396a317cd2d5aac13b379355d3097106a4e2cce5bc9c66f8dc54",
+      "results": [
+        {
+          "node": 20,
+          "sha256": "b6095cb38a3fab998ff59f4eb62160f1b62ed1c90558ccf5d35f09817d9a35e0",
+          "status": "passed"
+        },
+        {
+          "node": 22,
+          "sha256": "b6095cb38a3fab998ff59f4eb62160f1b62ed1c90558ccf5d35f09817d9a35e0",
+          "status": "passed"
+        },
+        {
+          "node": 24,
+          "sha256": "b6095cb38a3fab998ff59f4eb62160f1b62ed1c90558ccf5d35f09817d9a35e0",
+          "status": "passed"
+        }
+      ]
+    }
+  },
+  "commands": [
+    "node --test test/unit/geo/*.test.js",
+    "node --experimental-test-coverage --test-coverage-include=src/actions/geo/camera.js --test-coverage-include=src/grammar/geo/camera.js --test-coverage-include=src/grammar/geo/cameraInterpolation.js --test test/unit/geo/camera-actions.test.js test/unit/geo/camera.test.js",
+    "node scripts/run-tests.js realistic contracts/realistic-geographic-camera.test.js",
+    "node scripts/run-tests.js realistic contracts/generated-lifecycle-scenarios.test.js contracts/generated-scenario-feature-coverage.test.js",
+    "node scripts/run-tests.js charts charts/geographic-marks/public.test.js",
+    "node scripts/run-render-tests.js charts/geographic-marks/backends.render.js",
+    "node scripts/run-tests.js browser browser/geographic-marks.browser.js",
+    "node .artifacts/geo/run-camera-public-installed.mjs",
+    "node .artifacts/geo/camera-public-package-parity.mjs"
+  ],
+  "repairs": [
+    "최초 회전 fixture의 coordinateKind 누락(7/8), 카드 sample operation 누락(45/46), inventory 기대 action 수(8/10)는 fixture/metadata를 고쳐 검증했다.",
+    "기존 fields primitive에 실수로 추가된 camera argument를 원복하여 chart 4/5, render 8/10, browser 4/5를 각각 5/5, 10/10, 5/5로 회복했다.",
+    "문서 첫197/202는 search cap·provenance·source pin·empty Canvas snippet 문제였다. Search 실측에 맞춘 cap, 생성물 및 resource-only snippet을 고쳤다. Source pin은 푸시 이후 별도 최종 검증한다.",
+    "설치용 최초 relative output directory 및 미생성 archive 실패는 패키지 harness 문제이며 실제 제품 시험이 아니다. 절대 경로로 생성한 같은 tar의 세 Node 검사는 모두 통과했다."
+  ],
+  "limits": [
+    "전체 unit/global coverage를 새로 실행했다고 주장하지 않는다. Geo와 camera owner 및 영향 범위 검증이다.",
+    "Canvas 없는 resource-only view의 viewport는 null이며 초기 baseline은 caller가 보존한다. 저장 camera 상태나 자동 추론 zoom은 없다.",
+    "Session gesture/history/keyboard/abort와 root generic player/current-frame hit/reduced-motion 연결은 후행 소비자 의무다.",
+    "Conditional resource-grain fields와 feature/graticule labels는 다음 Geo 개념으로 남는다.",
+    "buildDirectDataResources에 native pan이 추가됐다. 공통 realistic-lifecycle-factor-effects, realistic-scenario-generator, realistic-scenario-generation-isolation의 최종 합산 재검증은 root가 수행한다."
+  ],
+  "sourceCommit": "c59dba999f605eb6f0afe09da287babf317e3901",
+  "metadataFollowup": "이 기록을 포함하는 후속 commit은 문서 provenance와 증거만 변경한다. 1039개 package 입력 parity가 다시 통과했다.",
+  "visual": {
+    "image": ".artifacts/test/png/charts/geographic-marks/geographic-marks/camera/user-facing.png",
+    "sha256": "20af591c74cc86bcadb7783aaa3d79da982474e37e3ff2c6bbd268e5ddaeaab0",
+    "inspected": true,
+    "expectation": "기존 planar district를 중심 확대·이동한 좌표이며 point CSS 반경은 8px로 유지한다. 독립 affine primitive와 같은 렌더 결과를 검증했다."
+  }
+}

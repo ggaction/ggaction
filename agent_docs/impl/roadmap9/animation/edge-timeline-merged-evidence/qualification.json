@@ -1,0 +1,141 @@
+{
+  "status": "verified-route-presentation-and-timeline-integration; STEP077 remains open",
+  "sourceRevision": "254bb9e35cfc6202513e7cc5c70b32bece9de57a",
+  "base": "e4cb77490",
+  "routeSource": "04539ff7a",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1194,
+    "packedBytes": 1700969,
+    "unpackedBytes": 7693163,
+    "file": "ggaction-07ea97dea2af00ab3f7fcce17d4f1ba6de0d907bd6f9e8d9e6ed648caa5a78b0.tgz",
+    "sha256": "07ea97dea2af00ab3f7fcce17d4f1ba6de0d907bd6f9e8d9e6ed648caa5a78b0"
+  },
+  "archiveReproduction": "After source commit, canonical production package staging reproduces exact07ea SHA256. Canonical JSON/JS compaction intentionally makes some tar members differ from raw checkout files; a raw per-file comparison was rejected and is not claimed as validation.",
+  "checks": {
+    "animationRoutesEdgeUnit": 588,
+    "flowGraphMoveRun": 27,
+    "explicitFlowOwning": 31,
+    "boundaryTypesDiscovery": 38,
+    "packageArtifact": 7,
+    "docsFirst": {
+      "passed": 229,
+      "failed": 3
+    },
+    "docsRepairedOwners": 49,
+    "realistic": 32,
+    "render": 4,
+    "interactionAnimationBrowser": 16,
+    "installed": {
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "runtimeEach": 45,
+      "types": "passed",
+      "doc": "passed",
+      "optionalPeers": "passed",
+      "bundlesEach": 6,
+      "sameArchive": true
+    },
+    "built": {
+      "pages": 186,
+      "selectiveArtifacts": 1598
+    },
+    "changedDocsBrowser": {
+      "pages": [
+        "api/interaction/",
+        "reference/runtime/"
+      ],
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "overflow": 0,
+      "axe": 0,
+      "consoleErrors": 0
+    }
+  },
+  "coverage": {
+    "freshSharedProof": {
+      "tests": 518,
+      "owner": "src/animation/frameProvenance.js",
+      "actual": [
+        97.98,
+        94.25,
+        100
+      ],
+      "floor": [
+        95,
+        90,
+        100
+      ],
+      "passed": true
+    },
+    "reusedSourceIdentical": "Upstream edge-presentation, route-host, route-own-options and route-work source owners remain byte-identical. planner/sample/frameEndpoint retain qualified root timeline version3. This is not full candidate coverage.",
+    "upstream": [
+      "../../interaction/edge-presentation-evidence/summary.json",
+      "../../interaction/route-host-evidence/summary.json",
+      "../../interaction/route-own-options-evidence/summary.json",
+      "../../interaction/route-work-evidence/summary.json"
+    ],
+    "exploratoryNoncriticalFlowOwner": {
+      "tests": 138,
+      "runtimeFailures": 0,
+      "actual": [
+        94.69,
+        95.65,
+        95
+      ],
+      "chosenExploratoryGoal": [
+        95,
+        90,
+        100
+      ],
+      "goalPassed": false,
+      "note": "Not a configured critical owner. Original stricter exploratory threshold failure and uncovered pre-existing source-map/candidate-chain paths are preserved; full candidate coverage is still required."
+    }
+  },
+  "bundleMaximums": {
+    "ggaction": 779857,
+    "ggaction/basic": 423068,
+    "ggaction/svg": 24954,
+    "ggaction/graph": 44077,
+    "ggaction/animation": 267065,
+    "ggaction/interaction": 129518
+  },
+  "package3Node": {
+    "entries": 1194,
+    "maximumPacked": 1704959,
+    "unpacked": 7693163,
+    "ceilings": [
+      1194,
+      1705000,
+      7693163
+    ]
+  },
+  "repairs": [
+    "Existing Flow dag/cyclic editLayout must select its native normalizer before unchanged resource factory and atomic consumer closure. First generator failures preserved.",
+    "Both authored snippet-case registries retained; edge example registered and search1085275 measured, minimal ceiling1085300.",
+    "Initial package and bundle limit failures retained; same final archive rerun with45 cases each."
+  ],
+  "remaining": [
+    "Cartesian and typed legend integration",
+    "legend families/reflow/inferred title",
+    "GeoText camera+content/layout",
+    "GeoRoute adapter and remaining large-route performance",
+    "full STEP057–077 acceptance matrix/coverage/final qualification and separately authorized release operations"
+  ],
+  "sourcePin": {
+    "docs": 32,
+    "builtPages": 186,
+    "selectiveArtifacts": 1598,
+    "browserReuse": "Only source provenance links changed; freshly checked8 interaction/runtime page-width pairs retained. Unchanged pages/CSS retain earlier full documentation browser evidence."
+  }
+}

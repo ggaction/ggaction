@@ -1,0 +1,297 @@
+{
+  "scope": "Read-only diagnostic. Only Animation/Partition animation labels temporarily admit 200002 nodes / 200M work. Product global bounds, codec64MiB/1M values, fixture cardinality and SLO are unchanged. Not P95 qualification.",
+  "kind": "partition",
+  "n": 10000,
+  "node": "v22.23.1",
+  "inputSHA256": "e204dd2c1ab81f7c75b8d32aa006841fcda7e1e140ffd6a983dc1d5b448e1a1e",
+  "validationSourceSHA256": "3030d9c3835555c141c3b76cd6645ee055ac32c92e9c1916c9109f17c42d2abf",
+  "rootPositionProofSourceSHA256": "12f919cbed5026dd0ba4ad3f3fd918fb197cae5532ee865dbe22e7db58f8eb05",
+  "phases": {
+    "prepare": {
+      "ms": 116958.65462500001,
+      "audit": {
+        "guards": {
+          "Animation preparation work": {
+            "calls": 1320123,
+            "maximum": 6535934,
+            "originalLimit": 10000000
+          },
+          "Animation Geo groups": {
+            "calls": 2,
+            "maximum": 0,
+            "originalLimit": 10000
+          },
+          "Animation guide endpoint size": {
+            "calls": 2,
+            "maximum": 10001,
+            "originalLimit": 10000
+          },
+          "Animation guide preparation work": {
+            "calls": 2,
+            "maximum": 1,
+            "originalLimit": 10000000
+          },
+          "Animation graph groups": {
+            "calls": 2,
+            "maximum": 0,
+            "originalLimit": 10000
+          },
+          "Native partition animation nodes": {
+            "calls": 2,
+            "maximum": 10000,
+            "originalLimit": 10000
+          },
+          "Partition animation projection work": {
+            "calls": 2,
+            "maximum": 2118818,
+            "originalLimit": 10000000
+          },
+          "Animation partition groups": {
+            "calls": 2,
+            "maximum": 1,
+            "originalLimit": 10000
+          },
+          "Animation partition restore work": {
+            "calls": 2,
+            "maximum": 2118818,
+            "originalLimit": 10000000
+          },
+          "Partition animation geometry work": {
+            "calls": 2,
+            "maximum": 1970000,
+            "originalLimit": 10000000
+          },
+          "Animation endpoint nodes": {
+            "calls": 1,
+            "maximum": 20002,
+            "originalLimit": 10000
+          },
+          "Animation Geo track preparation": {
+            "calls": 1,
+            "maximum": 20002,
+            "originalLimit": 10000000
+          },
+          "Animation Geo paired groups": {
+            "calls": 1,
+            "maximum": 0,
+            "originalLimit": 10000
+          },
+          "Partition animation track work": {
+            "calls": 2,
+            "maximum": 16950544,
+            "originalLimit": 10000000
+          },
+          "Animation owner identity work": {
+            "calls": 40000,
+            "maximum": 16,
+            "originalLimit": 10000000
+          }
+        },
+        "normalizePosition": 0,
+        "preparePosition": 0,
+        "samplePosition": 0,
+        "proofHit": 0
+      },
+      "memory": {
+        "rss": 523124736,
+        "heapTotal": 468926464,
+        "heapUsed": 441109384,
+        "external": 2323005,
+        "arrayBuffers": 46876
+      }
+    },
+    "sample": {
+      "ms": 1103.7829579999961,
+      "audit": {
+        "guards": {
+          "Partition animation geometry work": {
+            "calls": 1,
+            "maximum": 1970000,
+            "originalLimit": 10000000
+          },
+          "Partition animation frame work": {
+            "calls": 1,
+            "maximum": 2118818,
+            "originalLimit": 10000000
+          },
+          "Animation sampled nodes": {
+            "calls": 1,
+            "maximum": 10001,
+            "originalLimit": 10000
+          }
+        },
+        "normalizePosition": 0,
+        "preparePosition": 0,
+        "samplePosition": 0,
+        "proofHit": 0
+      },
+      "memory": {
+        "rss": 552845312,
+        "heapTotal": 501252096,
+        "heapUsed": 468559576,
+        "external": 2331197,
+        "arrayBuffers": 55068
+      }
+    }
+  },
+  "product": {
+    "status": "rejected",
+    "name": "RangeError",
+    "message": "Animation guide endpoint size must not exceed 10000."
+  },
+  "verified": {
+    "rawRows": 10000,
+    "allNativeItems": 10000,
+    "endpoints": [
+      10001,
+      10001
+    ],
+    "sampledNodes": 10001
+  },
+  "transport": {
+    "total": {
+      "jsonBytes": 18341824,
+      "decodedValues": 720136,
+      "encodedValues": 2320474
+    },
+    "fromGraphics": {
+      "jsonBytes": 4729500,
+      "decodedValues": 220020,
+      "encodedValues": 740074
+    },
+    "toGraphics": {
+      "jsonBytes": 4724005,
+      "decodedValues": 220020,
+      "encodedValues": 740074
+    },
+    "fromPositions": {
+      "jsonBytes": 320024,
+      "decodedValues": 20003,
+      "encodedValues": 60009
+    },
+    "toPositions": {
+      "jsonBytes": 320024,
+      "decodedValues": 20003,
+      "encodedValues": 60009
+    }
+  },
+  "scaleStorage": {
+    "scaleOccurrences": 0,
+    "uniqueObjects": 0,
+    "uniqueDefinitions": 0
+  },
+  "codec": {
+    "status": "rejected",
+    "name": "RangeError",
+    "message": "Animation envelope values exceed its limit."
+  },
+  "rebase": {
+    "status": "admitted",
+    "ms": 102638.79391599998,
+    "audit": {
+      "guards": {
+        "Animation preparation work": {
+          "calls": 1410196,
+          "maximum": 4715012,
+          "originalLimit": 10000000
+        },
+        "Animation Geo groups": {
+          "calls": 1,
+          "maximum": 0,
+          "originalLimit": 10000
+        },
+        "Animation guide endpoint size": {
+          "calls": 1,
+          "maximum": 10001,
+          "originalLimit": 10000
+        },
+        "Animation guide preparation work": {
+          "calls": 1,
+          "maximum": 1,
+          "originalLimit": 10000000
+        },
+        "Animation graph groups": {
+          "calls": 1,
+          "maximum": 0,
+          "originalLimit": 10000
+        },
+        "Native partition animation nodes": {
+          "calls": 1,
+          "maximum": 10000,
+          "originalLimit": 10000
+        },
+        "Partition animation projection work": {
+          "calls": 1,
+          "maximum": 2118818,
+          "originalLimit": 10000000
+        },
+        "Animation partition groups": {
+          "calls": 1,
+          "maximum": 1,
+          "originalLimit": 10000
+        },
+        "Animation partition restore work": {
+          "calls": 1,
+          "maximum": 2118818,
+          "originalLimit": 10000000
+        },
+        "Partition animation geometry work": {
+          "calls": 2,
+          "maximum": 1970000,
+          "originalLimit": 10000000
+        },
+        "Animation endpoint nodes": {
+          "calls": 1,
+          "maximum": 20002,
+          "originalLimit": 10000
+        },
+        "Animation Geo track preparation": {
+          "calls": 1,
+          "maximum": 20002,
+          "originalLimit": 10000000
+        },
+        "Animation Geo paired groups": {
+          "calls": 1,
+          "maximum": 0,
+          "originalLimit": 10000
+        },
+        "Partition animation track work": {
+          "calls": 2,
+          "maximum": 16950544,
+          "originalLimit": 10000000
+        },
+        "Animation owner identity work": {
+          "calls": 40000,
+          "maximum": 16,
+          "originalLimit": 10000000
+        },
+        "Partition animation frame work": {
+          "calls": 1,
+          "maximum": 2118818,
+          "originalLimit": 10000000
+        },
+        "Animation sampled nodes": {
+          "calls": 1,
+          "maximum": 10001,
+          "originalLimit": 10000
+        }
+      },
+      "normalizePosition": 0,
+      "preparePosition": 0,
+      "samplePosition": 0,
+      "proofHit": 0
+    },
+    "transport": {
+      "jsonBytes": 22856340,
+      "decodedValues": 1090200,
+      "encodedValues": 3370671
+    }
+  },
+  "peakFinalMemory": {
+    "rss": 429293568,
+    "heapTotal": 329826304,
+    "heapUsed": 292448848,
+    "external": 2323005,
+    "arrayBuffers": 46876
+  }
+}

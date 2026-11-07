@@ -4,7 +4,7 @@ import { ChartProgram } from "../../../src/ChartProgram.js";
 import { chart as basicChart } from "../../../src/basic.js";
 import { chart } from "../../../src/index.js";
 import { registerBuiltinResourceKinds, getBuiltinResourceKindHandler } from "../../../src/materialization/resourceKinds.js";
-import { validateStoredResource, validateResourceGraph, prepareResourceResult, validatePreparedResource, planStoredResourceRemoval } from "../../../src/materialization/resourceState.js";
+import { validateStoredResource, validateResourceGraph, validateResourceGraphStages, prepareResourceResult, validatePreparedResource, planStoredResourceRemoval } from "../../../src/materialization/resourceState.js";
 import { collectResourceReferences } from "../../../src/core/resourceReferences.js";
 import { validateProgramState } from "../../../src/persistence/validation.js";
 import { deserializeProgram, serializeProgram } from "../../../src/persistence.js";
@@ -44,6 +44,7 @@ test("registration rejects malformed records before invoking getters or consumin
   for (const invalid of [null, [], { future: handler() }, { parameter: handler() },
     { hierarchy: { validateStored() {} } }, { hierarchy: { ...handler(), extra: true } },
     { hierarchy: { validateStored: false, validateBindings() {} } },
+    { hierarchy: { ...handler(), validateBindingsStages: false } }, { hierarchy: { ...handler(), validateBindingsStages() {}, extra: true } },
     { get hierarchy() { reads++; return handler(); } },
     { hierarchy: { get validateStored() { reads++; return () => {}; }, validateBindings() {} } }]) {
     class Program extends ChartProgram {}
@@ -164,4 +165,24 @@ test("typed mark references reject missing, wrong-kind and stale bindings before
   const stale = base._clone({ semanticSpec: { ...base.semanticSpec, layers: [{ id: "photo", mark: { type: "image" }, image: refs[1] }] } });
   assert.throws(() => put(stale, { ...resource(), kind: "image", revision: 1 }), /stale/);
   assert.equal(calls, count);
+});
+
+test("a staged binding check runs in the staged graph check and the synchronous form drains the same stages", () => {
+  class Program extends ChartProgram {}
+  const calls = [];
+  registerBuiltinResourceKinds(Program, { hierarchy: { ...handler(),
+    validateBindings() { calls.push("sync"); },
+    *validateBindingsStages(program, value) { calls.push(`start ${value.id}`); yield; calls.push(`end ${value.id}`); } } });
+  assert.equal(Object.keys(getBuiltinResourceKindHandler(Program, "hierarchy")).length, 3);
+  const program = put(put(new Program(), resource()), resource("second"));
+  calls.length = 0;
+  const stages = validateResourceGraphStages(program);
+  let turns = 0;
+  for (let step = stages.next(); !step.done; step = stages.next()) turns++;
+  assert.deepEqual(calls, ["start model", "end model", "start second", "end second"]);
+  // One turn before each stored check, each binding check and each staged pause.
+  assert.equal(turns, 6);
+  calls.length = 0;
+  validateResourceGraph(program);
+  assert.deepEqual(calls, ["start model", "end model", "start second", "end second"]);
 });

@@ -91,6 +91,7 @@ function operationAndSubject(name) {
   if (name === "reorderCompositionChildren") {
     return { operation: "edit", subject: "CompositionChildren" };
   }
+  if (name === "navigateProjection") return { operation: "edit", subject: "Projection" };
   if (name === "fitCanvas") return { operation: "layout", subject: "Canvas" };
   const operation = operationPrefixes.find(prefix => name.startsWith(prefix));
   if (!operation) throw new Error(`Compact card operation is missing for ${name}.`);
@@ -188,9 +189,17 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (["createGeoAnnotation", "editGeoAnnotation"].includes(action.name)) return {
+    prerequisites: ["Canvas", "Geo coordinate", "explicit position or keyed geographic feature"], owns: ["geographic annotation"],
+    idOptions: [action.name.startsWith("create") ? "id" : "target", "coordinate"]
+  };
   if (["createGeoLODData", "editGeoLODData"].includes(action.name)) return {
     prerequisites: ["explicit keyed geometry levels and parent mappings"], owns: ["geographic detail resource"],
     idOptions: [action.name.startsWith("create") ? "id" : "target"]
+  };
+  if (["createGeoRouteData", "editGeoRouteData"].includes(action.name)) return {
+    prerequisites: ["explicit retained edge-route resource", "explicit coordinate interpretation"], owns: ["route-derived geometry resource"],
+    idOptions: [action.name.startsWith("create") ? "id" : "target", "routes"]
   };
   if (["createGeoJoinData", "editGeoJoinData"].includes(action.name)) return {
     prerequisites: ["geographic geometry resource", "materialized table"], owns: ["joined geometry resource"],
@@ -200,14 +209,17 @@ function actionResources(action, optionNames, intentSource) {
     prerequisites: ["Canvas", "Geo coordinate", ...(action.name.endsWith("Graticule") ? [] : ["compatible geometry source"])], owns: ["geographic mark"],
     idOptions: [action.name.startsWith("create") ? "id" : "target", "coordinate", ...(action.name.endsWith("Graticule") ? [] : ["geometry"])]
   };
-  if (["createProjection", "editProjection"].includes(action.name)) return {
-    prerequisites: action.name === "editProjection" ? ["existing named projection"] : ["explicit native projection type"],
+  if (["createProjection", "editProjection", "navigateProjection"].includes(action.name)) return {
+    prerequisites: action.name !== "createProjection" ? ["existing named projection"] : ["explicit native projection type"],
     owns: ["projection resource"], idOptions: [action.name === "createProjection" ? "id" : "target"]
   };
+  if (action.name === "applyGraphEdgeRoutesUpdate") return { prerequisites: ["authentic prepared native route update", "exact original Full unit receiver"], owns: ["native layout revision and affected consumers"], idOptions: [] };
   if (["bundleGraphEdges", "editEdgeRoute"].includes(action.name)) return {
     prerequisites: ["existing graph and compatible node layout"], owns: ["edge-route resource"],
     idOptions: [action.name === "bundleGraphEdges" ? "id" : "target", "graph", "layout"]
   };
+  if (["createTablePlot", "editTablePlot"].includes(action.name)) return { prerequisites: ["materialized dataset", "Canvas"], owns: ["Table keyed cells and inline charts"], idOptions: [action.name.startsWith("create") ? "id" : "target", "data", "coordinate"] };
+  if (["createTrailPlot", "editTrailPlot"].includes(action.name)) return { prerequisites: ["materialized dataset", "Canvas"], owns: ["Trail variable-width series mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "data", "coordinate"] };
   if (["createWaterfallPlot", "editWaterfallPlot"].includes(action.name)) return { prerequisites: ["materialized dataset", "Canvas"], owns: ["Waterfall contribution mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "data", "coordinate"] };
   if (["createOHLCPlot", "editOHLCPlot"].includes(action.name)) return { prerequisites: ["materialized dataset", "Canvas"], owns: ["OHLC price mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "data", "coordinate"] };
   if (["createPyramidPlot", "editPyramidPlot"].includes(action.name)) return { prerequisites: ["materialized dataset", "Canvas"], owns: ["Pyramid stage mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "data", "coordinate"] };
@@ -674,8 +686,10 @@ export function compactActionCardByteLimit(name) {
   // Annotation 4057 bytes; ceilings round up by at most 7.
   // Legend cards also retain the closed overflow summary-symbol policy and three-channel combination literal.
   // Angular pointer metadata measures editMarkSelection at 3606 bytes.
+  // Screen anchor and membership unions measure createAnnotation4265/editAnnotation3772 bytes.
+  // Explicit point maxItems measures createRegressionPlot3667 bytes; only its ceiling rises to3670.
   return 180 + ({editMarkSelection: 3430, editLegend: 4505, createLegend: 3873, createMarkLabels: 3890,
-    createAnnotation: 3880, createRegressionPlot: 3460, createReferenceBand: 3630}[name] ?? 3360);
+    createAnnotation: 4090, editAnnotation: 3600, createRegressionPlot: 3490, createReferenceBand: 3630}[name] ?? 3360);
 }
 
 export async function buildActionCards() {

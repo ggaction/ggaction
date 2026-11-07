@@ -1,0 +1,511 @@
+{
+  "sourceCommit": "ea543c62f1b945da4b777fc3f212237e5cf36cda",
+  "base": "0bcba0bbb",
+  "peerSource": "350b72e55",
+  "scope": "typed Cartesian rule/rect/bar/histogram/line/area, point+completed graph and flat provenance preserved",
+  "authorization": "../AUTHORIZATION.json#remainingApproval",
+  "publicSignaturesChanged": false,
+  "status": "qualified-focused-checkpoint",
+  "checks": {
+    "animationTests": 182,
+    "criticalFiles": 29,
+    "criticalFloors": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "actualDataTests": 20,
+    "fourRendererTests": 7,
+    "boundariesNativeRegressionTests": 63,
+    "boundaryTypeTests": 14,
+    "docsInitial": {
+      "tests": 231,
+      "passed": 229,
+      "failed": 2,
+      "reason": "generated search payload exceeds previous cap"
+    },
+    "docsOwningRepair": {
+      "tests": 31,
+      "passed": 31
+    },
+    "installed": {
+      "sameArchive": true,
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "runtimeCasesPerNode": 8,
+      "strictTypes": true,
+      "documentedSnippet": true,
+      "browserEntriesPerNode": 6
+    },
+    "docsSourcePin": {
+      "tests": 18,
+      "passed": 18
+    },
+    "builtDocs": {
+      "pages": 186,
+      "selectiveLLMArtifacts": 1598
+    },
+    "docsBrowser": {
+      "status": "passed",
+      "widths": [
+        320,
+        390,
+        768
+      ]
+    },
+    "basicSupplement": {
+      "sourceOnly": true,
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "testsPerNode": 1,
+      "families": [
+        "bar",
+        "line",
+        "range rectangle",
+        "band rectangle",
+        "histogram"
+      ],
+      "note": "Basic has no public rule/area creation. Same native item meaning is retained; bar/line domain change interpolates, identical endpoints retain exact output."
+    }
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1141,
+    "packedBytes": 1627886,
+    "unpackedBytes": 7381995,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "81266162c71044f519666a2e45c6f95fa5674e32",
+    "sha256": "2179358c355a2786344f5292bbc701bee209319dc2fd7134f2a0b4ad1b29656f"
+  },
+  "packageLimits": {
+    "entries": 1141,
+    "packedBytes": 1631000,
+    "unpackedBytes": 7383000
+  },
+  "packageMeasureMaximum": {
+    "entries": 1141,
+    "packedBytes": 1630635,
+    "unpackedBytes": 7381995
+  },
+  "remaining": [
+    "Other typed families and incompatible-policy/appearance fallback cells retain their explicit status.",
+    "No claim of full STEP061/062/074/077 qualification or release."
+  ],
+  "logs": [
+    {
+      "file": "cartesian-all-animation-first.log.gz",
+      "sha256": "858d1e9507dfacea9f08be3502b247a1e7fe6cf6f8449ce95b6fb5350db787fa",
+      "bytes": 43060
+    },
+    {
+      "file": "cartesian-basic-binding-first.log.gz",
+      "sha256": "4217bfbb14a7586bf3286a9383eb3922f8a905a2704bdd6065c55bdb296411c5",
+      "bytes": 1198
+    },
+    {
+      "file": "cartesian-basic-first.log.gz",
+      "sha256": "6504b8d5fcd8b82f4211240ff4c80f5cec4af8cac53b4ff70ae0b07871363964",
+      "bytes": 1172
+    },
+    {
+      "file": "cartesian-basic20.log.gz",
+      "sha256": "e62505139c907354184e093477c12a989442f4efda279f121938056e3c644e52",
+      "bytes": 2163
+    },
+    {
+      "file": "cartesian-basic22.log.gz",
+      "sha256": "34c20133749d2fcd8ebd0891680fb7ff3c05ff3f42a036c6666dea0077482fe3",
+      "bytes": 368
+    },
+    {
+      "file": "cartesian-basic24.log.gz",
+      "sha256": "5af646a968d8c82b3450b40fc4decf595d6a5e0f860d84fdf08f0e0a8220a9aa",
+      "bytes": 223
+    },
+    {
+      "file": "cartesian-boundaries-first.log.gz",
+      "sha256": "98a93305702b117a6175f94a94e1d5705fa539877b3c125f0990c4af25dfec47",
+      "bytes": 3025
+    },
+    {
+      "file": "cartesian-boundaries-native-final.log.gz",
+      "sha256": "5bc6bd4e10c1f8d388158765eda42d30c84464be1b0378c86d358e189abc3ad3",
+      "bytes": 13304
+    },
+    {
+      "file": "cartesian-coverage-final.log.gz",
+      "sha256": "9bdc5201088fc1904902dcd8ead9b30b75bb2d5234fd9c83e6feee6e830033bf",
+      "bytes": 46172
+    },
+    {
+      "file": "cartesian-coverage-first.log.gz",
+      "sha256": "a39ae55dc0b50d7d53f0fe4c61bd6671647f42c49df22b04964512cce52c7492",
+      "bytes": 44765
+    },
+    {
+      "file": "cartesian-coverage-second.log.gz",
+      "sha256": "b46628f5002a6f91030cb913134e55e3598db259dbc93f4aaabbfdaaa6d5183d",
+      "bytes": 45673
+    },
+    {
+      "file": "cartesian-curves-first.log.gz",
+      "sha256": "0872879803425bcafe6863f4bb4b79758721c2afcc068dbd48841679b819c173",
+      "bytes": 2716
+    },
+    {
+      "file": "cartesian-docs-browser-final.log.gz",
+      "sha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d",
+      "bytes": 79
+    },
+    {
+      "file": "cartesian-docs-budget-final.log.gz",
+      "sha256": "0e8f708453b534800aa6a1f912373bd487bf0b190c81ac2e1aa1f25dd9365b74",
+      "bytes": 6142
+    },
+    {
+      "file": "cartesian-docs-build-final.log.gz",
+      "sha256": "2cd5cb0336af2da3c691107c568b9613a34fea2f12a98a7dde904616d1fed88c",
+      "bytes": 418
+    },
+    {
+      "file": "cartesian-docs-build-first.log.gz",
+      "sha256": "9c692d371dceba838f8603e2d7623f723019fe0739d6556cb00f11fd40881df1",
+      "bytes": 420
+    },
+    {
+      "file": "cartesian-docs-built-final.log.gz",
+      "sha256": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b",
+      "bytes": 102
+    },
+    {
+      "file": "cartesian-docs-first.log.gz",
+      "sha256": "aa46472eba595864c963c345ace23ef0e46a6940145be4826e3205db8464d964",
+      "bytes": 56274
+    },
+    {
+      "file": "cartesian-docs-generate.log.gz",
+      "sha256": "1fc5d7932025f3f97f961085a4340f6cee20368d9aea4d08e7e56fa4acd8d823",
+      "bytes": 13431
+    },
+    {
+      "file": "cartesian-docs-pin-final.log.gz",
+      "sha256": "26f70e023f96c0c416536df67af27c0d2bded56756db03b7a40053e06bf0849b",
+      "bytes": 4229
+    },
+    {
+      "file": "cartesian-fallbacks-final-2.log.gz",
+      "sha256": "00cd3bd19aeba1c40310534ba9edee6c3658b7e0ae2522abd5112b5f3e872ba5",
+      "bytes": 4124
+    },
+    {
+      "file": "cartesian-fallbacks-final-3.log.gz",
+      "sha256": "0b5f14dd1fa2fe8d294df07c33228275bca01a72a8bd2ade1d2c6eb759764548",
+      "bytes": 1058
+    },
+    {
+      "file": "cartesian-fallbacks-final.log.gz",
+      "sha256": "9776f63dfef2db66c39740f81bb2e4987ddb2ef7202121eb10d12f52a6aab2f1",
+      "bytes": 3385
+    },
+    {
+      "file": "cartesian-fallbacks-first.log.gz",
+      "sha256": "e3b69e7f377ce805d73a56732247eb7658b308a3766875dc742461fd7c552214",
+      "bytes": 4962
+    },
+    {
+      "file": "cartesian-fallbacks-repaired.log.gz",
+      "sha256": "7527e886cdbd64a98cb4f9ffa08561545d5eefc770d6d25e339ffb48996baa40",
+      "bytes": 4041
+    },
+    {
+      "file": "cartesian-four-renderers.log.gz",
+      "sha256": "eb5257a31e745405eb94814e25cd06450cf6c8fdababdf5b41bdcd1aeb4d2317",
+      "bytes": 1753
+    },
+    {
+      "file": "cartesian-histogram-final.log.gz",
+      "sha256": "0378fda80f9e4a4a1caba6f46b47fa605f068b220e202c81a2e3b3a3cf8a2ac3",
+      "bytes": 1522
+    },
+    {
+      "file": "cartesian-histogram-first.log.gz",
+      "sha256": "400f8906352402329429ad69661ff7cdc3ba08960f09145b027bc9ceede16a45",
+      "bytes": 2839
+    },
+    {
+      "file": "cartesian-installed-measure20-repaired.log.gz",
+      "sha256": "7ea212a4519865041e18ff8a4598012d4e5b4432a29a11615b4559d98d4b28b0",
+      "bytes": 2141
+    },
+    {
+      "file": "cartesian-installed-measure20.log.gz",
+      "sha256": "602c724d9527970245f8a085f74e625116ca4e9ddee42243329807119bfa1561",
+      "bytes": 17043
+    },
+    {
+      "file": "cartesian-installed20-first.log.gz",
+      "sha256": "afe6cb8d504beeeac27c6c5afe38300927250745552cd553283f4cea6764c042",
+      "bytes": 2912
+    },
+    {
+      "file": "cartesian-installed22.log.gz",
+      "sha256": "3a33e1736efe19bced18b8b84c66f169e14001dd0cf3d9b99f90bd8320058d06",
+      "bytes": 2905
+    },
+    {
+      "file": "cartesian-installed24.log.gz",
+      "sha256": "16ed1ac9aec1fdf96c52e0340c350e50ff874d044ed2fa9d62ada6f85b62944e",
+      "bytes": 2912
+    },
+    {
+      "file": "cartesian-lifecycle-final.log.gz",
+      "sha256": "39328e9fce5325fa746572c9db517ae05bb78cef6275793447a8660355150b76",
+      "bytes": 1632
+    },
+    {
+      "file": "cartesian-lifecycle-first.log.gz",
+      "sha256": "93a0cbdf394655bbead7ac9212516c4830d82aa660d836d18c768d0d0d8a4b77",
+      "bytes": 2437
+    },
+    {
+      "file": "cartesian-lineage.log.gz",
+      "sha256": "7eaed043ac55e5402265fea90a113dc3fc9d2eb47ee7df816ffdcdddf7c814b8",
+      "bytes": 5118
+    },
+    {
+      "file": "cartesian-owning-current.log.gz",
+      "sha256": "1339f43d3eb2de6459036dc5d859861f1143ff2b986aa8144d8b568c97564b3b",
+      "bytes": 3699
+    },
+    {
+      "file": "cartesian-package-discovery-first.log.gz",
+      "sha256": "cba2496c173cffe96f2be2f17f09190277458a5a9d98bb130c3e6bd90989f03a",
+      "bytes": 5688
+    },
+    {
+      "file": "cartesian-peer-integration.log.gz",
+      "sha256": "a74fa035adea2c13f96cf4a8a24e963187933df492d1bc6030c9ec038781b0f3",
+      "bytes": 5513
+    },
+    {
+      "file": "cartesian-public-first.log.gz",
+      "sha256": "bc87bf89ea3a4f2fbd8eb8227db12ad92454bf03b734960a1c51adabceadc5f2",
+      "bytes": 1295
+    },
+    {
+      "file": "cartesian-realistic-final.log.gz",
+      "sha256": "09953d3858420669fd8e090edc9cf1f5d5edf2964f93dbaa616855ae2adb9d64",
+      "bytes": 4913
+    },
+    {
+      "file": "cartesian-realistic.log.gz",
+      "sha256": "61ab39ca607bfecaf608747c83b3e1aafa11c0e617a4d8087ac9ef315e3225c9",
+      "bytes": 8578
+    },
+    {
+      "file": "cartesian-render-final.log.gz",
+      "sha256": "4754ebd678fd1a0d8d11c30ea6d2e03d1fe5231ff747159b701dcbe60b9b838b",
+      "bytes": 11263
+    },
+    {
+      "file": "cartesian-render-first.log.gz",
+      "sha256": "40c07ca8fe0e4849169d24de9256dbe63bb351305512136b7052c8edeb823ed3",
+      "bytes": 4708
+    },
+    {
+      "file": "cartesian-row-coverage-final-2.log.gz",
+      "sha256": "bb5eb3206f5569e5a30c761e7795aa520119ff79fc525eea52b6006dd54ca1de",
+      "bytes": 6293
+    },
+    {
+      "file": "cartesian-row-coverage-final.log.gz",
+      "sha256": "83c804868d97e0e28c48188be9a57231d544372e77379a07fbab76252d19cf31",
+      "bytes": 8051
+    },
+    {
+      "file": "cartesian-row-coverage.log.gz",
+      "sha256": "0ecf8ee46be6e99a60499e946779c848c75bd1a0276b8d1fc7f70c9aeeda5d0d",
+      "bytes": 7832
+    },
+    {
+      "file": "cartesian-source-pin-artifact.log.gz",
+      "sha256": "eebcb06f02183cd330c0c7893661e4d46647635daf2e8af8b599d9995bfe6052",
+      "bytes": 311
+    },
+    {
+      "file": "cartesian-values-first.log.gz",
+      "sha256": "987c9a58545ef0f104581535832125df28bc56c800ad9b71b3d72d95ff49eba6",
+      "bytes": 2982
+    },
+    {
+      "file": "cartesian-wiring-first.log.gz",
+      "sha256": "fe4ae737bd4bfd61c2c79744c8c1afe4b9e47c6ebdd9f8175feaa74b9e08462f",
+      "bytes": 21147
+    },
+    {
+      "file": "cartesian-wiring-repaired.log.gz",
+      "sha256": "68e200e86fa11c1db615bb88fff62b1935726d621731f835e9afd134f33b9552",
+      "bytes": 4755
+    }
+  ],
+  "renderArtifacts": [
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/area/cartesian-middle-pdf.png",
+      "sha256": "09616743ea4189ae0f1449b5bdbd43bf154393a97c0229092609ff4667dee8c0",
+      "bytes": 527
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/area/cartesian-middle.json",
+      "sha256": "5e4ab3a997d3845bc19c2a7feee4f185e3ef79a673ce4b5a734667771680ec47",
+      "bytes": 309
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/area/cartesian-middle.pdf",
+      "sha256": "a7e05e19a607eaf3ed3ee032923bf6b6d6f6ecb7832134fd52a4d5ac0578e323",
+      "bytes": 747
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/area/cartesian-middle.png",
+      "sha256": "3a24c69738ed4e9bfc80299c4ce88c3792e2236fc0879920d52f4a673b457682",
+      "bytes": 784
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/area/cartesian-middle.svg",
+      "sha256": "cfa6501bb78f5dc57f95289be6c17ef926f7a4ea93476bf9b88b0a42c239c899",
+      "bytes": 263
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/bar/cartesian-middle-pdf.png",
+      "sha256": "3fe0e0bcd0cf66424f488a1cd090c4b2fe3c3326793ee05f24a11705fba0677f",
+      "bytes": 527
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/bar/cartesian-middle.json",
+      "sha256": "5e4ab3a997d3845bc19c2a7feee4f185e3ef79a673ce4b5a734667771680ec47",
+      "bytes": 309
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/bar/cartesian-middle.pdf",
+      "sha256": "f18501110adde57797a1e9e7788124f72bf9a28fb2d84659faa22ee887c22a12",
+      "bytes": 887
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/bar/cartesian-middle.png",
+      "sha256": "2f55354d908828ee98d30de5898cc49fd6df9d30214d0148b29185239c2d4956",
+      "bytes": 862
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/bar/cartesian-middle.svg",
+      "sha256": "146b8dea6307313ff915ae63de95f4739bcae8df7047bf30c6411fa634f48c19",
+      "bytes": 406
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/histogram/cartesian-middle-pdf.png",
+      "sha256": "de914ef0a6a0234f840c3902171e0f81a0bcec0a0ccd5cd7e08344d9ec26ec2e",
+      "bytes": 634
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/histogram/cartesian-middle.json",
+      "sha256": "5e4ab3a997d3845bc19c2a7feee4f185e3ef79a673ce4b5a734667771680ec47",
+      "bytes": 309
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/histogram/cartesian-middle.pdf",
+      "sha256": "23ccdd948c50274cbd15a0465c48ce9c73ebd2ce3354fe2936618e4e2e0707d2",
+      "bytes": 2453
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/histogram/cartesian-middle.png",
+      "sha256": "d22159079bf3069d6bb18a9641881a00cacffde61c7d3e01632365bf95704b05",
+      "bytes": 1070
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/histogram/cartesian-middle.svg",
+      "sha256": "9ccc47a3f64e719ce530f5a6ced686eed9fd90182972a3a5dca0df71b92c3046",
+      "bytes": 1686
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/line/cartesian-middle-pdf.png",
+      "sha256": "7299285542d3b89ee2a43016c8d8ddcabcee15330572568965548c9995b95c47",
+      "bytes": 528
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/line/cartesian-middle.json",
+      "sha256": "5e4ab3a997d3845bc19c2a7feee4f185e3ef79a673ce4b5a734667771680ec47",
+      "bytes": 309
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/line/cartesian-middle.pdf",
+      "sha256": "3f04709f76fd2741c9fd4b33b71c3f148d7f2643e280c8d96ff53c46330af579",
+      "bytes": 852
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/line/cartesian-middle.png",
+      "sha256": "47533f0232d7f6609968c49273c5ab1c94d296c09d2e2af9a572848ef1d3b36a",
+      "bytes": 787
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/line/cartesian-middle.svg",
+      "sha256": "cebea93f3abf040fe752c525cc71de8c91200cd92b81dec0a94ed2a85230f10b",
+      "bytes": 293
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/rect/cartesian-middle-pdf.png",
+      "sha256": "8f0bc9402818e4e6bccee06d1822f057894c792d99e6a53f53fff0eed9a7fe20",
+      "bytes": 523
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/rect/cartesian-middle.json",
+      "sha256": "5e4ab3a997d3845bc19c2a7feee4f185e3ef79a673ce4b5a734667771680ec47",
+      "bytes": 309
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/rect/cartesian-middle.pdf",
+      "sha256": "f6776ba8090c8757f584277035952dcb30cf2d12e7c5fa939c5440b8696d3131",
+      "bytes": 891
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/rect/cartesian-middle.png",
+      "sha256": "d51543623e8f369171c1f628157106c951861deec119ec7c856f57e3561dbb24",
+      "bytes": 853
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/rect/cartesian-middle.svg",
+      "sha256": "06b10937e3685c95e05fe15c6c2717d4dc0234b23370d84602ee56e0d52c30bb",
+      "bytes": 455
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/rule/cartesian-middle-pdf.png",
+      "sha256": "7299285542d3b89ee2a43016c8d8ddcabcee15330572568965548c9995b95c47",
+      "bytes": 528
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/rule/cartesian-middle.json",
+      "sha256": "5e4ab3a997d3845bc19c2a7feee4f185e3ef79a673ce4b5a734667771680ec47",
+      "bytes": 309
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/rule/cartesian-middle.pdf",
+      "sha256": "b86d9dc57140d136f9caaef1b4db76d61b3b5f4084387bfbad059a4b4d46058d",
+      "bytes": 852
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/rule/cartesian-middle.png",
+      "sha256": "47533f0232d7f6609968c49273c5ab1c94d296c09d2e2af9a572848ef1d3b36a",
+      "bytes": 787
+    },
+    {
+      "file": ".artifacts/test/png/charts/cross-feature-integration/animation/cartesian/rule/cartesian-middle.svg",
+      "sha256": "8fa1f4772f634aa8c54e7eb3c35b01fbc97311b6b4349418fc48aa648669c0e8",
+      "bytes": 385
+    }
+  ]
+}

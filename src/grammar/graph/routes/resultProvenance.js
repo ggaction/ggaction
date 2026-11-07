@@ -21,8 +21,9 @@ export function validateRouteProvenance(job, result, context) {
   const method = job.intent.method, options = job.intent.options;
   const positions = new Map(context.positions.map(node => [node.key, node]));
   const edges = new Map(context.model.edges.map(edge => [edge.key, edge]));
-  const hierarchy = job.hierarchy && new Map(job.hierarchy.model.nodes.map(node => [node.key, node]));
-  const mapping = job.hierarchy && new Map(job.hierarchy.mapping.map(item => [item.nodeKey, item.hierarchyKey]));
+  const hierarchyInput = Object.hasOwn(job, "hierarchy") ? job.hierarchy : undefined;
+  const hierarchy = hierarchyInput && new Map(hierarchyInput.model.nodes.map(node => [node.key, node]));
+  const mapping = hierarchyInput && new Map(hierarchyInput.mapping.map(item => [item.nodeKey, item.hierarchyKey]));
   for (const route of result.routes) {
     const p = route.provenance, a = positions.get(route.sourceKey), b = positions.get(route.targetKey);
     ownRecord(p, "Route provenance");
@@ -77,8 +78,10 @@ export function validateRouteDiagnostics(job, result, context) {
   const extra = method === "force-directed" ? ["compatibilityPairs", "displacementCaps", "totalIterations", "schedule"]
     : method === "density" ? ["gridSize", "step", "iterations", "schedule"]
       : method === "edge-path" ? ["processingOrder", "lockedEdges", "bundledEdges"] : [];
-  exact(d, ["work", "candidatePairs", "peakSamples", ...extra], "Route diagnostics");
-  integer(d.work, 10_000_000, "Route work");
+  const execution = job.schemaVersion === 2 ? job.intent.options.execution : undefined;
+  exact(d, ["work", "candidatePairs", "peakSamples", ...(execution === undefined ? [] : ["peakBufferBytes"]), ...extra], "Route diagnostics");
+  integer(d.work, execution?.maxWork ?? 10_000_000, "Route work");
+  if (execution !== undefined) integer(d.peakBufferBytes, execution.maxBufferBytes, "Route buffer bytes");
   integer(d.candidatePairs, context.budget.limits.maxCandidatePairs, "Route candidate pairs");
   integer(d.peakSamples, context.budget.limits.maxSamples, "Route peak samples");
   const active = context.edges.some(edge => Math.hypot(edge.target.x - edge.source.x, edge.target.y - edge.source.y) > (method === "force-directed" ? FDEB_EPSILON : 0));
@@ -97,7 +100,16 @@ export function validateRouteDiagnostics(job, result, context) {
     if (d.gridSize !== DENSITY_ROUTE_POLICY.gridSize || d.step !== DENSITY_ROUTE_POLICY.step || d.iterations !== (active ? DENSITY_ROUTE_POLICY.iterations : 0) || d.schedule.length !== d.iterations) throw new TypeError("Route density schedule is stale.");
     d.schedule.forEach((iteration, index) => {
       exact(iteration, ["iteration", "bandwidth", "fieldCells", "samples"], "Route density iteration");
-      if (iteration.iteration !== index || iteration.bandwidth !== densityRouteBandwidth(index)) throw new TypeError("Route density bandwidth is stale.");
+      const expected = densityRouteBandwidth(index), bandwidth = iteration.bandwidth;
+      // Exponentiation may round one binary64 step differently across engines.
+      // Preserve exact constants and the clamped floor; otherwise admit at most
+      // one adjacent value for this positive, non-power-of-two schedule. This
+      // validates stored diagnostics without changing coordinates or their hash.
+      const exactBandwidth = index === 0 || expected === 2 / DENSITY_ROUTE_POLICY.gridSize;
+      const validBandwidth = Number.isFinite(bandwidth) && (exactBandwidth
+        ? bandwidth === expected
+        : Math.abs(bandwidth - expected) <= Number.EPSILON * expected);
+      if (iteration.iteration !== index || !validBandwidth) throw new TypeError("Route density bandwidth is stale.");
       integer(iteration.fieldCells, 8 * d.gridSize * d.gridSize, "Route density cells");
       integer(iteration.samples, context.budget.limits.maxSamples, "Route density samples");
     });

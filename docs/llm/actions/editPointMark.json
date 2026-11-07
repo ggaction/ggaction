@@ -3,8 +3,8 @@
   "name": "editPointMark",
   "layer": "user-facing",
   "domain": "marks",
-  "summary": "Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.",
-  "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+  "summary": "Change point shape, appearance, or maxItems capacity and rematerialize its concrete items.",
+  "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { maxItems?: number | undefined; blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
   "intents": [
     "edit point mark",
     "edit",
@@ -76,6 +76,11 @@
       "type": "number | undefined"
     },
     {
+      "name": "maxItems",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
       "name": "blend",
       "required": false,
       "type": "BlendMode | undefined"
@@ -132,7 +137,7 @@
     }
   ],
   "callPatterns": [
-    "editPointMark({ target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow?, clip?, missing? })"
+    "editPointMark({ target?, lineCap?, lineJoin?, miterLimit?, maxItems?, blend?, shadow?, clip? })"
   ],
   "snippet": "program.editPointMark({ fill: \"#f28e2b\" })",
   "errors": [],

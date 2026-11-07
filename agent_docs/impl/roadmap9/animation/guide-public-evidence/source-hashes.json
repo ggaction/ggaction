@@ -1,0 +1,18 @@
+{
+  "src/animation/concrete.js": "601bc64e81813a76e129b5d01b3ddad574455ef55c41e66e2d92151fa41e2d80",
+  "src/animation/frameEndpoint.js": "fa0e9459ee9a35083b7182be2e2eef576f21584bef442bff0e458bb0f1ade3ea",
+  "src/animation/frameProvenance.js": "2e1b3443d3b48545a9059b9a34a47e011084c42746cd38f1ef08c81767cb4e24",
+  "src/animation/guideTracks.js": "df5bd00ad562fff03bd843eaa872a7e5c180f9b63ee12df61d7653ae33658a2d",
+  "src/animation/planner.js": "18308e22d7f87d6984fbf9e75652ccadfadbbddd3f990fe83ced597f4743ec4a",
+  "src/animation/sample.js": "815b98212044c67ffabba5bed31979e6240c8030c27277c48abddff462e417af",
+  "src/grammar/animation/guideState.js": "2d92c045bba85703082c6a90caa078a99021022a7c5cf64643ccee015aa15c83",
+  "src/materialization/animation/guides.js": "97a86ced72031a876b111dbc573690241d65ad4a8bfd590301d788d2d29eba0a",
+  "types/animation.d.ts": "0ac5dbfb1ce65f9588f1a583ffca7c5046d55bdf47ea4799502b17772414e4e3",
+  "test/unit/animation/guide-transition.test.js": "290c9e7ec341a5939e1fb9273f3e775f2fabd0eb0507df96b99643e834126c9a",
+  "test/contracts/realistic-guide-transitions.test.js": "772ec7929e55ad01fb2e0f4e950d049d87fc652cdf299dd32878493d68e5460a",
+  "test/browser/animation-guides.browser.js": "cb78a11489595bcdb579457653be6a450ddca94cd98082e5c9dd4afc37365664",
+  "test/charts/cross-feature-integration/variants/animation/guides.render.js": "5f3f6c87ec50dc492312fbc2690f6d4610a8d73031877bc0f06eac22d8bd96a4",
+  "test/support/animation-guide-frame.js": "eb0b70d632660312a714f21fdcb69685697c0b00bce52375d28bd42fe97bbad6",
+  "scripts/consumers/fixtures/node/animation.mjs": "58b886584a8dbaad2c40e68810086d57b816351ac43e8f15e5d4170cf42dd680",
+  "scripts/consumers/fixtures/animation.ts": "f195af3d3492d8895738935e082d54ec9ddc07f5e0a49fd29eb53ea16fc6431b"
+}

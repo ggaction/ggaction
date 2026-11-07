@@ -1,0 +1,34 @@
+{
+  "affectedPage": "supported-features",
+  "results": [
+    {
+      "width": 1440,
+      "contained": true,
+      "axeViolations": 0,
+      "pageErrors": 0,
+      "search": "passed"
+    },
+    {
+      "width": 320,
+      "contained": true,
+      "axeViolations": 0,
+      "pageErrors": 0,
+      "search": "desktop-only"
+    },
+    {
+      "width": 390,
+      "contained": true,
+      "axeViolations": 0,
+      "pageErrors": 0,
+      "search": "desktop-only"
+    },
+    {
+      "width": 768,
+      "contained": true,
+      "axeViolations": 0,
+      "pageErrors": 0,
+      "search": "desktop-only"
+    }
+  ],
+  "unchangedSiteEvidence": "c749a4f40:composition-recipes-built-browser.log.gz"
+}

@@ -1,4 +1,9 @@
-export type { GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
+export type { CreateGeoRouteDataOptions, EditGeoRouteDataOptions, GeoRouteResource } from "./program.js";
+export type { GeoCameraOperation, NavigateProjectionOptions, ProjectionViewport } from "./program.js";
+export type { GeoAnnotationAnchor, GeoAnnotationOptions, EditGeoAnnotationOptions, GeoAnnotationBinding } from "./program.js";
+export type { GeoMarkCapacity, GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
+export type { TableCellPaint, TableLabelPaint, TableBandPaint, TableSparklinePaint, TableFooterOptions, TableSparklineCell, TableColumn, CreateTablePlotOptions, EditTablePlotOptions } from "./program.js";
+export type { TrailBodyPaint, TrailPosition, TrailPlotOptions, CreateTrailPlotOptions, EditTrailPlotOptions } from "./program.js";
 export type { WaterfallBarPaint, WaterfallConnectorPaint, WaterfallLabelPaint, WaterfallX, WaterfallColor, WaterfallWidth, CreateWaterfallPlotOptions, EditWaterfallPlotOptions } from "./program.js";
 export type { OHLCBodyPaint, OHLCStemPaint, OHLCLabelPaint, OHLCX, OHLCColor, OHLCWidth, CreateOHLCPlotOptions, EditOHLCPlotOptions } from "./program.js";
 export type { GeometryJSONValue, GeometryPosition, GeographicGeometry, GeometryFeature, GeoJSONInput, TopologyGeometry, TopoJSONInput, GeometryLimits, GeometryFeatureKey, CreateGeometryDataOptions, EditGeometryDataOptions, GeometrySourceResource } from "./program.js";
@@ -10,7 +15,7 @@ export type { FlowDefinition, CreateFlowDataOptions, EditFlowDataOptions, FlowNo
 export type { ImageResourceSource, CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost,
   PreparedImageResource, ApplyImageResourceOptions, ImageRef, ImageResource, ImageMarkOptions, CreateImageMarkOptions, EditImageMarkOptions } from "./program.js";
 import type { CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost, PreparedImageResource } from "./program.js";
-import type { CanvasTransitionScene } from "./scene.js";
+import type { AnyCanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 export type { PartitionPlotOptions, EditPartitionPlotOptions, PartitionViewState } from "./program.js";
@@ -19,7 +24,7 @@ export type { ConditionalEncodingOptions } from "./program.js";
 export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
 export type { GraphPosition, GraphPin, GraphLayoutLimits, GraphFixedOptions, GraphCircularOptions, GraphForceOptions, LayoutGraphOptions, GraphLayoutResource } from "./program.js";
 export type { GraphNodePaint, GraphEdgePaint, GraphLabelPaint, GraphLabelsOptions, GraphPlotOptions, EditGraphPlotOptions } from "./program.js";
-export type { EdgeRouteMethod, EdgeRouteLimits, EdgeRouteCommonOptions, HierarchicalEdgeRouteOptions, ForceDirectedEdgeRouteOptions, EdgePathRouteOptions, EdgeRouteDefinition, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, ApplyGraphEdgeRoutesOptions, EdgeRoutePoint, EdgeRouteVector, EdgeRouteResult, EdgeRouteResource } from "./program.js";
+export type { EdgeRouteMethod, EdgeRouteLimits, EdgeRouteCommonOptions, HierarchicalEdgeRouteOptions, ForceDirectedEdgeRouteOptions, EdgePathRouteOptions, EdgeRouteDefinition, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, ApplyGraphEdgeRoutesOptions, PreparedGraphEdgeRoutesUpdate, ApplyGraphEdgeRoutesUpdateOptions, EdgeRoutePoint, EdgeRouteVector, EdgeRouteResult, EdgeRouteResource, EdgeRouteResourceV2, EdgeRouteExecution } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
@@ -354,6 +359,12 @@ export type {
   GraphicObject,
   GraphicSpec,
   GraphicType,
+  GraphicCircleAppearance,
+  GraphicCircleBatchProperties,
+  GraphicPathAppearance,
+  GraphicPathBatchProperties,
+  GraphicBlendSource,
+  GraphicWeightedBlendProperties,
   GroupEncodingOptions,
   GradientPlotAppearanceOptions,
   GradientPlotCenterOptions,
@@ -499,6 +510,7 @@ export type {
   MarkLabelSelectionOptions,
   RemoveMarkLabelsOptions,
   CreateAnnotationOptions,
+  EditAnnotationOptions,
   ReferenceStatistic,
   CreateStatisticalReferenceOptions,
   CreateReferenceLineOptions,
@@ -518,6 +530,10 @@ export function prepareDataUpdate(program: ChartProgram, request: CreateDataUpda
 export function prepareDataUpdate(program: ChartProgram, request: ReviseDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"revise">>;
 export function prepareDataUpdate(program: ChartProgram, request: ParameterDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"parameter">>;
 export function prepareDataUpdate(program: ChartProgram, request: DataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate>;
+/** The same revision as program.reviseData(options), run in bounded host turns (sliceMs 1..1000, default 40). */
+export function reviseDataInSlices<Row extends object>(program: ChartProgram,
+  options: import("./program.js").TargetedOptions<import("./program.js").ReviseDataOptions<Row>>,
+  slices?: { readonly sliceMs?: number; readonly signal?: AbortSignal }): Promise<ChartProgram>;
 export function hconcat(options: CompositionOptions): ChartProgram;
 export function vconcat(options: CompositionOptions): ChartProgram;
 export function render(
@@ -527,7 +543,7 @@ export function render(
 ): void;
 
 export function prepareImageRendering(program: Pick<ChartProgram, "graphicSpec">, host: ImageRenderingHost): Promise<PreparedImageRendering>;
-export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
+export function prepareImageRendering(scene: AnyCanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
 
 export function prepareImageResource(program: ChartProgram, request: CreateImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"create">>;
 export function prepareImageResource(program: ChartProgram, request: ReplaceImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"replace">>;
@@ -543,13 +559,13 @@ export function prepareFontResource(program: ChartProgram, request: ReplaceFontR
 export function prepareFontResource(program: ChartProgram, request: FontResourceRequest, host: FontResourceHost): Promise<PreparedFontResource>;
 export function prepareTextMetrics(program: ChartProgram, request: TextMetricsRequest, host: TextMetricsHost): Promise<PreparedTextMetrics>;
 export function prepareFontRendering(program: Pick<ChartProgram, "graphicSpec">, host: FontRenderingHost): Promise<PreparedFontRendering>;
-export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
+export function prepareFontRendering(scene: AnyCanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
 
 export type { GraphMetric, GraphFeatures, GraphSearchOptions, GraphFeaturePolicy, InferredGraphSource, GraphMetricDefinition, GraphNeighborDefinition, GraphMetricMstDefinition, GraphCandidateMstDefinition, GraphStructuralDefinition, InferredGraphDefinition, CreateInferredGraphDataOptions, EditInferredGraphDataOptions, GraphInferenceDiagnostics, ObservedGraphResource, InferredGraphResource } from "./program.js";
 export type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
 import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
 export function prepareShadowRendering(program: Pick<ChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
-export function prepareShadowRendering(scene: CanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
+export function prepareShadowRendering(scene: AnyCanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
 export type { GeoJoinKeyOptions, CreateGeoJoinDataOptions, EditGeoJoinDataOptions, GeoJoinResource } from "./program.js";
 
 export type { GeoLODBaseLevel, GeoLODChildLevel, GeoLODLevels, CreateGeoLODDataOptions, EditGeoLODDataOptions, GeoLODResource } from "./program.js";

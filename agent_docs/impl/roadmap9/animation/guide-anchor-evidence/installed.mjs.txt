@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import {readFile,writeFile} from 'node:fs/promises';
+import {execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
+import {preparePackageConsumer} from '../scripts/package-consumer.js';
+import {measureMinimalBrowserBundle,BROWSER_BUNDLE_GZIP_LIMITS} from '../scripts/browser-bundle-size.js';
+const artifact=JSON.parse(await readFile('.artifacts/guide-details-archive.json'));
+assert.equal(createHash('sha256').update(await readFile(artifact.file)).digest('hex'),artifact.sha256);
+const consumer=await preparePackageConsumer({packageSpec:artifact.file});
+const report={node:process.version,archive:artifact.sha256,bundles:{},errors:[]};
+const source=`import assert from 'node:assert/strict';
+import {chart} from 'ggaction';
+const title=chart().createCanvas({width:400,height:300,margin:70}).createData({values:[{x:1,y:2},{x:10,y:8}]}).createScatterPlot({x:'x',y:'y',guides:false}).createXAxisTitle({text:'Horizontal',at:'center'});
+assert.equal(title.graphicSpec.objects.xAxisTitle.properties.x,200);
+assert.equal(title.editCanvas({width:600}).graphicSpec.objects.xAxisTitle.properties.x,300);
+const band=chart().createCanvas({width:300,height:220,margin:50}).createData({values:[{x:'A',y:'Q',value:1},{x:'B',y:'R',value:2}]}).createHeatmap({x:{field:'x',scale:{paddingInner:0,paddingOuter:0}},y:{field:'y',scale:{paddingInner:0,paddingOuter:0}},guides:false}).createVerticalGrid({bandPosition:'boundary'});
+assert.deepEqual(band.graphicSpec.objects.verticalGridLines.items.map(i=>i.properties.x1),[50,150,250]);
+assert.deepEqual(band.editXScale({reverse:true}).graphicSpec.objects.verticalGridLines.items.map(i=>i.properties.x1),[250,150,50]);
+const parallel=chart().createCanvas({width:600,height:400,margin:70}).createData({values:[{a:0,b:10,c:100},{a:10,b:20,c:200}]}).createParallelCoordinates({id:'lines',dimensions:['a','b','c'],guides:false}).createParallelAxes();
+assert.deepEqual(parallel.graphicSpec.objects.parallelAxisLines.items.map(i=>i.properties.x1),[70,300,530]);
+assert.deepEqual(parallel.editCanvas({width:700}).graphicSpec.objects.parallelAxisLines.items.map(i=>i.properties.x1),[70,350,630]);
+console.log(JSON.stringify(['title','band-boundary','parallel']));`;
+try {
+ await writeFile(consumer.directory+'/native.mjs',source);
+ report.cases=JSON.parse(execFileSync(process.execPath,['native.mjs'],{cwd:consumer.directory,encoding:'utf8',timeout:30000}));
+ for(const specifier of Object.keys(BROWSER_BUNDLE_GZIP_LIMITS)){
+  const result=await measureMinimalBrowserBundle(consumer.directory,{specifier});
+  report.bundles[specifier]={...result,limit:BROWSER_BUNDLE_GZIP_LIMITS[specifier]};
+  if(result.gzipBytes>BROWSER_BUNDLE_GZIP_LIMITS[specifier])report.errors.push({specifier,gzipBytes:result.gzipBytes,limit:BROWSER_BUNDLE_GZIP_LIMITS[specifier]});
+ }
+}finally{await writeFile(process.argv[2],JSON.stringify(report,null,2)+'\n');await consumer.cleanup();}
+console.log(JSON.stringify(report));assert.deepEqual(report.errors,[]);

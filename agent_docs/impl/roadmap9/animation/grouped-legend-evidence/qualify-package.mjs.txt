@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import {readFile,writeFile,mkdir,copyFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import path from 'node:path';
+import {documentationPrograms} from '../scripts/doc-snippets.js';
+import {preparePackageConsumer} from '../scripts/package-consumer.js';
+import {testOptionalDependencies} from '../scripts/consumers/optional-peers.js';
+import {root,run,tscCommand} from '../scripts/consumers/runtime.js';
+import {measureMinimalBrowserBundle,BROWSER_BUNDLE_GZIP_LIMITS} from '../scripts/browser-bundle-size.js';
+const packageSpec=path.resolve(process.env.ANIMATION_PACKAGE_SPEC),tag=process.versions.node.split('.')[0];
+const directory=path.resolve('.artifacts/grouped-legend-installed/node'+tag);await mkdir(directory,{recursive:true});
+const receipt={node:process.version,archive:packageSpec,sha256:createHash('sha256').update(await readFile(packageSpec)).digest('hex'),records:[],limitFailures:[]};
+const save=()=>writeFile(path.join(directory,'receipt.json'),JSON.stringify(receipt,null,2)+'\n');
+const consumer=await preparePackageConsumer({packageSpec});
+async function check(id,fn){const start=performance.now();try{const value=await fn();receipt.records.push({id,status:'passed',durationMs:performance.now()-start,value});}catch(error){receipt.records.push({id,status:'failed',durationMs:performance.now()-start,error:error.stack});throw error;}finally{await save();}}
+try{
+ await check('optional-peers',()=>testOptionalDependencies(consumer));
+ await copyFile(path.join(root,'scripts/consumers/fixtures/node/animation.mjs'),path.join(consumer.directory,'animation.mjs'));
+ const ids=['animation/grouped-legend-offline-native','animation/categorical-legend-offline-native','animation/size-legend-offline-native','animation/axis-label-layout-offline-native','animation/legend-offline-native','animation/guides-offline-native'];
+ await writeFile(path.join(consumer.directory,'run.mjs'),`import {cases} from './animation.mjs';for(const id of ${JSON.stringify(ids)}){const entry=cases.find(c=>c.id===id);if(!entry)throw Error(id);await entry.run();console.log(id+' passed');}`);
+ await check('six-native-guide-cases',()=>run(process.execPath,['run.mjs'],consumer.directory));
+ await copyFile(path.join(root,'scripts/consumers/fixtures/animation.ts'),path.join(consumer.directory,'animation.mts'));
+ await check('animation-strict-types',()=>run(process.execPath,[tscCommand,'--noEmit','--strict','--exactOptionalPropertyTypes','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext','animation.mts'],consumer.directory));
+ const doc=(await documentationPrograms()).find(item=>item.id==='animation-grouped-legend');assert.ok(doc);
+ await writeFile(path.join(consumer.directory,'doc.mjs'),doc.code+'\nif(!sampleTransition(transition,50).decisions.some(d=>d.role==="guide-legend-symbol"&&d.kernel==="guide-geometry"))throw Error("Missing native legend");');
+ await check('grouped-legend-doc-example',()=>run(process.execPath,['doc.mjs'],consumer.directory));
+ for(const specifier of Object.keys(BROWSER_BUNDLE_GZIP_LIMITS))await check(specifier,async()=>{
+  const measured=await measureMinimalBrowserBundle(consumer.directory,{specifier}),limit=BROWSER_BUNDLE_GZIP_LIMITS[specifier];
+  if(measured.gzipBytes>limit)receipt.limitFailures.push({specifier,actual:measured.gzipBytes,limit});return measured;
+ });
+ receipt.peers=consumer.resolvedPeers;receipt.status=receipt.limitFailures.length?'bundle-limit-failed':'passed';await save();console.log(JSON.stringify(receipt));
+ assert.deepEqual(receipt.limitFailures,[]);
+}finally{await consumer.cleanup();}

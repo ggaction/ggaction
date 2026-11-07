@@ -1,0 +1,386 @@
+{
+  "status": "exact-hit-order-work-integrated; final-performance-pending",
+  "base": "317de21f8",
+  "sourceRevision": "c960448ac92da407d08c5a0ee83bd7612cdef948",
+  "incoming": "5eee2e243",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1236,
+    "packedBytes": 1769188,
+    "unpackedBytes": 7985730,
+    "file": "ggaction-6234764d952d5c42e1c93e6344a47eecbb44c088934ca7c322deb49220e3c297.tgz",
+    "sha256": "6234764d952d5c42e1c93e6344a47eecbb44c088934ca7c322deb49220e3c297"
+  },
+  "runtimeEquality": {
+    "src/grammar/hitIndex.js": "22b403f0ebb0ddca982fa3e0b2e9412742bd80e4d4e8d78e872b8699317d79e5"
+  },
+  "checks": {
+    "owning.log": 72,
+    "contracts.log": 38,
+    "docs-package.log": 10
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "archive": "6234764d952d5c42e1c93e6344a47eecbb44c088934ca7c322deb49220e3c297",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1057,
+          "minifiedBytes": 2733993,
+          "gzipBytes": 783863
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 624,
+          "minifiedBytes": 1446511,
+          "gzipBytes": 424277
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44851
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 506,
+          "minifiedBytes": 1093639,
+          "gzipBytes": 327739
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 205,
+          "minifiedBytes": 410499,
+          "gzipBytes": 131316
+        }
+      ],
+      "runtime": "10000 points / 9 exact CSS queries passed"
+    },
+    {
+      "node": "v22.23.1",
+      "archive": "6234764d952d5c42e1c93e6344a47eecbb44c088934ca7c322deb49220e3c297",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1057,
+          "minifiedBytes": 2733993,
+          "gzipBytes": 782466
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 624,
+          "minifiedBytes": 1446511,
+          "gzipBytes": 423405
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24779
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44700
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 506,
+          "minifiedBytes": 1093639,
+          "gzipBytes": 326698
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 205,
+          "minifiedBytes": 410499,
+          "gzipBytes": 130861
+        }
+      ],
+      "runtime": "10000 points / 9 exact CSS queries passed"
+    },
+    {
+      "node": "v24.22.1",
+      "archive": "6234764d952d5c42e1c93e6344a47eecbb44c088934ca7c322deb49220e3c297",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1057,
+          "minifiedBytes": 2733993,
+          "gzipBytes": 783863
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 624,
+          "minifiedBytes": 1446511,
+          "gzipBytes": 424277
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44851
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 506,
+          "minifiedBytes": 1093639,
+          "gzipBytes": 327739
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 205,
+          "minifiedBytes": 410499,
+          "gzipBytes": 131316
+        }
+      ],
+      "runtime": "10000 points / 9 exact CSS queries passed"
+    }
+  ],
+  "reusedCoverage": "../hit-order-evidence/qualification.json: hitIndex owner100/100/100 and actual47tests on eachNode20/22/24; same production bytes",
+  "priorFailures": [
+    {
+      "file": "owning-invalid-selector.log",
+      "reason": "Rejected invalid normal selector before any test execution; reran canonical all suite with actual5matching selectors."
+    },
+    {
+      "file": "pack20-initial.stderr",
+      "reason": "Measured1772351 exceeded previous1772300; minimumcap1772400, unpacked7985730 cap7985800."
+    }
+  ],
+  "remaining": [
+    "Original10000point animation and100000point authoring limits remain explicit errors",
+    "P13union; capacity policy proposals unimplemented",
+    "ProductionP95, allsamecandidate577consumers/79ATgroups, ninecommands, independentreview and protecteddelivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "browser.log": {
+      "sha256": "c71cda8a17ad966fd07357e420de645e82e50f85226398d02fb2648727069cc2",
+      "bytes": 1722
+    },
+    "bundles20.json": {
+      "sha256": "f723ecaa2423d4e693f64c1465f8f60f2f40a37e77e58831bda4fc554eb93a99",
+      "bytes": 305
+    },
+    "bundles20.log": {
+      "sha256": "522c88cbb9891cf3a85466b21ee2814e7243280a95bb27465b7acbc59ba3f174",
+      "bytes": 253
+    },
+    "bundles22.json": {
+      "sha256": "ce2a05bde5880e8817832a14974f630bd8489d587f64cd9831cd54418ff51048",
+      "bytes": 305
+    },
+    "bundles22.log": {
+      "sha256": "b7ee8abe7a8d85a8539d9ba06a1cc8503ea34583e71d28e0e6cbdad8c6c414ee",
+      "bytes": 253
+    },
+    "bundles24.json": {
+      "sha256": "6b83bbae19c8d58711485717e183008cc922d025a5a78f5321b8be14f9a36c8d",
+      "bytes": 305
+    },
+    "bundles24.log": {
+      "sha256": "a77710e3dfb20b95e4b57ac83ef1681912e5cfe7ef7416a642096a448879796b",
+      "bytes": 253
+    },
+    "contracts.log": {
+      "sha256": "08d8e8d82f7880f322d8f8e0e463055cdc65deebeeb7d112633f2b136fe25175",
+      "bytes": 7758
+    },
+    "descriptor.json": {
+      "sha256": "899ca6e13eb22466cd2d1d1dd5f08e688637ce9d1c32179a78a50af3b4800039",
+      "bytes": 217
+    },
+    "docs-package.log": {
+      "sha256": "babfa9e95ee8bab3199f12da1c39e3d9d0c423c7e9f65bc700a60fcd0e5b5c14",
+      "bytes": 2358
+    },
+    "frozen.json": {
+      "sha256": "844e43e63b6a3c0df4b19e779171d56dcf142b30520d30477a62ccb4731968f5",
+      "bytes": 436
+    },
+    "installed.mjs": {
+      "sha256": "fe1a83d0562f53a870f5afe6d33d625ce369548c77669d29e861a4b94f303891",
+      "bytes": 1988
+    },
+    "installed20.json": {
+      "sha256": "3c3f6d1a3bf11518298242f8e89e44df7560ab4bdc87faf6e727aaaae3840cec",
+      "bytes": 1072
+    },
+    "installed20.log": {
+      "sha256": "f6cea3bd8d9010d6f3ff8bda82740a1d7ffaffd002acc38a9f419d7f0608bccf",
+      "bytes": 752
+    },
+    "installed22.json": {
+      "sha256": "1f23a31439cfdebdf26ecff4e83dafb19ebf17b56f5b28cb177281379ac5a4c9",
+      "bytes": 1072
+    },
+    "installed22.log": {
+      "sha256": "40407fe6479ee7f7fc46bf9480b7154af9f4ff3b61c9f40a3c3655c1a4f43c25",
+      "bytes": 752
+    },
+    "installed24.json": {
+      "sha256": "5450386ea71143627c20ae0f63eddffefb7f6c07f075b3ff882aab15089b17ab",
+      "bytes": 1072
+    },
+    "installed24.log": {
+      "sha256": "0c5ebaf010e54322ba276879fbe7e5551af2b3b6a0be25bd23f5efbadbdc25f5",
+      "bytes": 752
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "owning-invalid-selector.log": {
+      "sha256": "64a5d7b914af3fe5b943029fc2b6f2945ab95535893ceefeb92a1c974d66c1b3",
+      "bytes": 525
+    },
+    "owning.log": {
+      "sha256": "d90139e737c66e8b00508d68c96820365fa2a36d0fa5b39a227ead26d7411ea1",
+      "bytes": 17334
+    },
+    "pack20-initial.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack20-initial.stderr": {
+      "sha256": "91e6ebe05b8ad967fca9371f184e4e1f36325119a03909d9308eaec6c0f2997d",
+      "bytes": 966
+    },
+    "pack20.json": {
+      "sha256": "4a989459dc61ac28e33d4638c035ff031c8a3d1a596a537d5beb0919b2051ac1",
+      "bytes": 381
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack22.json": {
+      "sha256": "18c32ca71863b7bd364769f9b6e8f0ae6669562a60d927b450a6faf9609a504d",
+      "bytes": 381
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24.json": {
+      "sha256": "268287c0d0a1fd21ff04175b60107e0f73e34ecdaf17b9edfe91e663aace923a",
+      "bytes": 381
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "prepack.json": {
+      "sha256": "ebb9351d850d5e5dd1b7ea65e79e38e419fa3d7c4b4eb3d8c0abcfeb3ba82c5d",
+      "bytes": 293
+    },
+    "prepack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "browser/report.json": {
+      "sha256": "cd9e1f614aba6af582c6eccac5042f6dbac0ded7c19c5b0f9e306c2d7bd74845",
+      "bytes": 16980
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "76246391e1f2e56eb56557accaa22ab127197796db84427d821de40a9f8fc69f",
+      "bytes": 1812
+    },
+    "source-pin-pack.json": {
+      "sha256": "09d48829e29a761723a4260a0f949b54eb7246c9c45f8081de5544e845266e52",
+      "bytes": 386
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "browser": {
+    "archive": "6234764d952d5c42e1c93e6344a47eecbb44c088934ca7c322deb49220e3c297",
+    "profile": {
+      "seed": 0,
+      "dpr": [
+        1,
+        2
+      ],
+      "warmups": 0,
+      "measured": 1,
+      "cycles": 4
+    },
+    "sizeDprCells": 6,
+    "stages": {
+      "measured": 6,
+      "explicit-limit": 6
+    },
+    "actual10000PointCssHit": [
+      1,
+      2
+    ],
+    "performanceQualified": false
+  },
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

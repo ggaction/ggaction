@@ -14,6 +14,7 @@ import { validateKeys, validateWorkLimit } from "../../core/validation.js";
 import { validatePointShape } from "../../grammar/pointShapes.js";
 import { collectResourceReferences } from "../../core/resourceReferences.js";
 import { findLayer, resolveEligibleLayer } from "../../selectors/layers.js";
+import { collectGraphicSubtreeIds } from "../../grammar/schemas/graphicTree.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import { transformPointHighlightChild } from "../../materialization/selection/point.js";
 import {
@@ -192,18 +193,19 @@ function selectedKeys(args, resolved) {
 
 function selectedGraphicItems(program, resolved, keys) {
   const selected = new Set(keys);
-  const graphic = program.graphicSpec.objects[resolved.definition.target];
+  const target = resolved.definition.target;
   const keyByGraphic = new Map(resolved.items.flatMap(item =>
     item.graphicIds.map(id => [id, item.key])
   ));
-  return {
-    selected,
-    target: resolved.definition.target,
-    items: graphic.items.map(child => ({
+  const owners = collectGraphicSubtreeIds(program.graphicSpec, target).flatMap(id => {
+    const graphic = program.graphicSpec.objects[id];
+    if (!Array.isArray(graphic?.items)) return [];
+    return [{ target: id, items: graphic.items.map(child => ({
       key: keyByGraphic.get(child.id),
       child: { type: child.type ?? graphic.type, properties: child.properties, ...(child.identity === undefined ? {} : { identity: child.identity }) }
-    }))
-  };
+    })) }];
+  });
+  return { selected, target, owners, items: owners.flatMap(owner => owner.items) };
 }
 
 function editSelectedItems(
@@ -213,14 +215,15 @@ function editSelectedItems(
   transform,
   complement = false
 ) {
-  const { selected, target, items } = selectedGraphicItems(program, resolved, keys);
-  return program.editGraphics({
-    target,
-    property: "items",
-    value: items.map(item => selected.has(item.key) !== complement
+  const { selected, owners } = selectedGraphicItems(program, resolved, keys);
+  let next = program;
+  for (const { target, items } of owners) {
+    if (!items.some(item => item.key !== undefined && selected.has(item.key) !== complement)) continue;
+    next = next.editGraphics({ target, property: "items", value: items.map(item => item.key !== undefined && selected.has(item.key) !== complement
       ? { ...transform(item.child), ...(item.child.identity === undefined ? {} : { identity: item.child.identity }) }
-      : item.child)
-  });
+      : item.child) });
+  }
+  return next;
 }
 
 function applyHighlight(program, config, keys) {
@@ -550,15 +553,28 @@ export const placeSelectedMarkItemsLast = /* @__PURE__ */ closedAction(
     if (keys.length === 0 || keys.length === resolved.items.length) {
       return this;
     }
-    const { selected, target, items } = selectedGraphicItems(this, resolved, keys);
-    return this.editGraphics({
-      target,
-      property: "items",
-      value: [
-        ...items.filter(item => !selected.has(item.key)),
-        ...items.filter(item => selected.has(item.key))
-      ].map(item => item.child)
-    });
+    const { selected, target, owners } = selectedGraphicItems(this, resolved, keys);
+    let next = this;
+    const selectedOwners = new Set();
+    for (const owner of owners) {
+      if (!owner.items.some(item => selected.has(item.key))) continue;
+      selectedOwners.add(owner.target);
+      next = next.editGraphics({ target: owner.target, property: "items", value: [
+        ...owner.items.filter(item => !selected.has(item.key)), ...owner.items.filter(item => selected.has(item.key))
+      ].map(item => item.child) });
+    }
+    // A clipped cell is one existing named collection. Reorder that subtree,
+    // preserving its clip and the relative order of all unselected siblings.
+    const subtree = collectGraphicSubtreeIds(this.graphicSpec, target);
+    for (const id of [...subtree].reverse()) {
+      const children = next.graphicSpec.objects[id]?.children;
+      if (!children?.length || !children.some(child => selectedOwners.has(child))) continue;
+      selectedOwners.add(id);
+      next = next.editGraphics({ target: id, property: "children", value: [
+        ...children.filter(child => !selectedOwners.has(child)), ...children.filter(child => selectedOwners.has(child))
+      ] });
+    }
+    return next;
   }
 );
 

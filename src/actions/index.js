@@ -1,9 +1,10 @@
+import { registerGeoRouteActions } from "./geo/routes.js";
 import { registerGeoMarkActions } from "./geo/marks.js";
 import { registerGeometryActions } from "./geo/resources.js";
 import { registerGeoLODActions } from "./geo/lod.js";
 import { registerGeoJoinActions } from "./geo/join.js";
 import { registerProjectionActions } from "./geo/projections.js";
-import { reviseSourceResourceInputs } from "./data/resourcePlan.js";
+import { reviseSourceResourceInputsStages } from "./data/resourcePlan.js";
 import { registerCalendarResourceActions, reviseCalendarInputs } from "./calendar/resources.js";
 import { registerCalendarPlotActions } from "./calendar/plots.js";
 import { registerImageResourceActions } from "./images/index.js";
@@ -87,6 +88,7 @@ export function registerActions(ProgramClass) {
   registerCalendarPlotActions(ProgramClass);
   registerGeometryActions(ProgramClass);
   registerGeoJoinActions(ProgramClass);
+  registerGeoRouteActions(ProgramClass);
   registerGeoLODActions(ProgramClass);
   registerProjectionActions(ProgramClass);
   registerContourResourceActions(ProgramClass);
@@ -97,6 +99,6 @@ export function registerActions(ProgramClass) {
   registerDataResourceRevision(ProgramClass, { kinds: ["hierarchy", "graph", "geometry", "layout", "edge-route"],
     revise: (program, replacements) => reviseCalendarInputs(reviseContourInputs(reviseGraphInputs(reviseHierarchyInputs(program, replacements), replacements), replacements), replacements),
     project: (program, replacements) => reviseCalendarInputs(reviseContourInputs(projectGraphInputs(reviseHierarchyInputs(program, replacements), replacements), replacements), replacements),
-    reviseSource: reviseSourceResourceInputs });
+    reviseSourceStages: reviseSourceResourceInputsStages });
   registerTextMetricActions(ProgramClass);
 }

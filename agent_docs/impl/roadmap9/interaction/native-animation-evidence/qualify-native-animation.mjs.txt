@@ -1,0 +1,24 @@
+import {readFile,writeFile,mkdir,copyFile,cp} from 'node:fs/promises';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+import {preparePackageConsumer} from '../scripts/package-consumer.js';
+import {testOptionalDependencies} from '../scripts/consumers/optional-peers.js';
+import {root,run} from '../scripts/consumers/runtime.js';
+const packageSpec=path.resolve('.artifacts/geo-source-archives/ggaction-e570671394157045fd971f3bcfcf36c896b1b43d1eac2390bba7c75bcbafbb11.tgz');
+const tag='node'+process.versions.node.split('.')[0],directory=path.resolve('.artifacts/native-animation-installed/'+tag);
+await mkdir(directory,{recursive:true});
+const artifact=await readFile(packageSpec),sha256=createHash('sha256').update(artifact).digest('hex');
+const receipt={node:process.version,archive:packageSpec,sha256,records:[]};
+const save=()=>writeFile(path.join(directory,'receipt.json'),JSON.stringify(receipt,null,2)+'\n');
+const consumer=await preparePackageConsumer({packageSpec});
+async function check(id,fn){const start=performance.now();try{const value=await fn();receipt.records.push({id,status:'passed',durationMs:performance.now()-start,value});}catch(error){receipt.records.push({id,status:'failed',durationMs:performance.now()-start,error:error.stack});throw error;}finally{await save();}}
+try {
+ await check('optional-peers',()=>testOptionalDependencies(consumer));
+ for(const file of ['static-delivery.mjs','fonts.mjs'])await copyFile(path.join(root,'scripts/consumers/fixtures/node',file),path.join(consumer.directory,file));
+ await writeFile(path.join(consumer.directory,'native-animation-run.mjs'),`import {writeFile} from 'node:fs/promises';import {cases} from './static-delivery.mjs';const records=[];for(const entry of cases){const start=performance.now();try{await entry.run();records.push({id:entry.id,status:'passed',durationMs:performance.now()-start});console.log(entry.id+' passed');}catch(error){records.push({id:entry.id,status:'failed',durationMs:performance.now()-start,error:error.stack});throw error;}finally{await writeFile('case-results.json',JSON.stringify(records,null,2));}}`);
+ await check('static-native-and-animation-two-cases',()=>run(process.execPath,['native-animation-run.mjs'],consumer.directory,{stdio:'inherit'}));
+ receipt.status='passed';receipt.peers=consumer.resolvedPeers;await save();console.log(JSON.stringify(receipt,null,2));
+}finally {
+ for(const file of ['case-results.json','static-delivery','native-animation'])try{await cp(path.join(consumer.directory,file),path.join(directory,file),{recursive:true});}catch(error){if(error.code!=='ENOENT')throw error;}
+ await consumer.cleanup();
+}

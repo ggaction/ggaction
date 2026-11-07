@@ -1,0 +1,108 @@
+{
+  "status": "focused-verified-private-integration",
+  "sourceRevision": "d86e49cd3",
+  "combinedRevision": "c0f41f74c",
+  "pointSourceRevision": "69cb70d0c9d5b289569d7228773f71ef5cc1673d",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "checks": {
+    "owningNode22": 156,
+    "owningNode20": 156,
+    "owningNode24": 156,
+    "boundariesDiscoveryAndPackage": 43,
+    "newImportClosure": 13,
+    "docs": 230,
+    "playerOwning": 23
+  },
+  "coverage": {
+    "createPlayer": [
+      100,
+      94.44,
+      100
+    ],
+    "player": [
+      100,
+      98.68,
+      100
+    ],
+    "frameProvenance": [
+      100,
+      100,
+      100
+    ],
+    "hitProgram": [
+      100,
+      93.8,
+      100
+    ],
+    "hitConcrete": [
+      100,
+      93.22,
+      100
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1125,
+    "packedBytes": 1605787,
+    "unpackedBytes": 7298169,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-animation/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "d1a7469640c07ee40019952ef144de744c1310a6",
+    "sha256": "9b3c3eea486b50efa7684890a2e9897f181a0abed73706ed01d689816da9e69a"
+  },
+  "browserBundles": {
+    "node": "v22.23.1",
+    "archive": "9b3c3eea486b50efa7684890a2e9897f181a0abed73706ed01d689816da9e69a",
+    "bundles": {
+      "ggaction": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 1024,
+        "minifiedBytes": 2701537,
+        "gzipBytes": 772328
+      },
+      "ggaction/basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 608,
+        "minifiedBytes": 1440971,
+        "gzipBytes": 421122
+      },
+      "ggaction/svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 44,
+        "minifiedBytes": 73991,
+        "gzipBytes": 24779
+      },
+      "ggaction/graph": {
+        "specifier": "ggaction/graph",
+        "chunks": 1,
+        "modules": 85,
+        "minifiedBytes": 147084,
+        "gzipBytes": 43923
+      },
+      "ggaction/interaction": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 199,
+        "minifiedBytes": 400770,
+        "gzipBytes": 128129
+      }
+    }
+  },
+  "preservedFailures": [
+    "Initial native-player fixtures used unsupported encodeX domain and editData options, then a virtual clock accessor. The fixtures now use existing scale/reviseData and plain clock methods.",
+    "First current-hit fixture expected public inspection to expose rowKeys. Exact native dataset membership is now checked with the same expected item key.",
+    "Source boundary originally rejected interaction to animation; only the lightweight association is permitted, with an explicit transitive core-only closure test.",
+    "Canonical package entries1125 exceed the inherited1115 ceiling; measured1125/1605787/7298169 informs caps1125/1606000/7299000.",
+    "The five installed bundles measured interaction128129 above128000. Only that ceiling rises to128200; the remaining four fit their existing combined bounds."
+  ],
+  "remaining": [
+    "Public animation entry, types, Current and frozen installed consumers owned by offline integration",
+    "Session publication, accepted-frame asset preparation and accessible reduced-motion integration",
+    "Offline native hit metadata, repeated-interruption retention and all remaining typed families/timeline",
+    "Final STEP077 complete qualification"
+  ]
+}

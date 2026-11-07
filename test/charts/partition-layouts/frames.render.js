@@ -35,7 +35,7 @@ function compareCalculation(actual,expected){
 test("renders prepared partition frames through native PNG, browser Canvas, SVG and vector PDF",async()=>{
   let server,browser;const evidence=[];await mkdir(directory,{recursive:true});
   try{
-    server=await startStaticServer(root);browser=await chromium.launch({headless:true});
+    server=await startStaticServer(root,{dependencies:"repository"});browser=await chromium.launch({headless:true});
     const opened=await openBrowserPage(browser,`${server.baseUrl}test/charts/partition-layouts/browser.html`,{waitFor:()=>document.getElementById("status").textContent==="Ready"});
     for(const variant of variants){
       const output=path.join(directory,variant.variant);await mkdir(output,{recursive:true});

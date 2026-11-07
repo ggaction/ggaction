@@ -1,0 +1,4 @@
+export interface GraphicPathAppearance extends GraphicCircleAppearance {
+  readonly strokeDash?: readonly number[];
+  readonly fillRule?: PathFillRule;
+}

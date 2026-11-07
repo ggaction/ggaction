@@ -20,6 +20,9 @@ import type {
 } from ${JSON.stringify(path.join(root, "types/program.js"))};
 declare const p: ChartProgram;
 declare const child: ChartProgram;
+p.encodeColor({ target: { childPath: ["analysis"], id: "values" }, field: "alternative" });
+p.editScale({ target: { childPath: ["analysis"] }, id: "measure", domain: [0, 20] });
+p.reviseData({ target: [{ childPath: ["structure"] }, { childPath: ["analysis"] }], source: "data", id: "updated", values: [{ id: 1, amount: 6 }, { id: "1", amount: 2 }] });
 const grid: FacetGridOptions = {
   rows: { field: "region", values: ["east", "west"] },
   columns: { field: "year", values: [2024, 2025] },

@@ -36,7 +36,7 @@ const program = new ChartProgram()
 Ordinary chart authors use complete-axis `underlay` and Canvas `plotBorder`
 options for guide placement; direct child IDs belong to extension authoring.
 
-<div class="docs-concept-flow" role="img" aria-label="Extension actions compose editSemantic, createGraphics, and editGraphics primitives">
+<div class="docs-concept-flow" role="img" tabindex="0" aria-label="Extension actions compose editSemantic, createGraphics, and editGraphics primitives">
   <span>editSemantic<strong>meaning</strong></span>
   <span>createGraphics<strong>identity</strong></span>
   <span>editGraphics<strong>concrete value</strong></span>
@@ -471,3 +471,146 @@ Typed `editGraphics({ property: "items", ... })` entries may include
 produce a stable private child ID; ordered path membership produces its topology
 fingerprint. `GraphicLineageRef` links to the exact data revision and row keys.
 Renderers consume this concrete metadata without reading semantic state.
+
+
+## Blend concrete sources for one item
+
+Use the `weighted-blend` graphic type when an extension needs a crossfade between
+fully materialized primitives, including different Text or primitive kinds.
+It combines colors in premultiplied linear-light sRGB. Two overlapping source-over
+opacity layers do not produce this result.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { ChartProgram } from "ggaction/extension";
+
+const source = (weight, fill) => ({
+  weight, type: "rect",
+  properties: { x: 10, y: 10, width: 20, height: 20,
+    fill, stroke: "none", strokeWidth: 0 },
+  offset: [0, 0], clip: { x: 0, y: 0, width: 80, height: 80 }, clips: []
+});
+const program = new ChartProgram()
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .editGraphics({ target: "canvas", property: "width", value: 80 })
+  .editGraphics({ target: "canvas", property: "height", value: 80 })
+  .createGraphics({ id: "item", type: "weighted-blend" })
+  .editGraphics({ target: "item", property: "sources",
+    value: [source(0.5, "red"), source(0.5, "blue")] });
+```
+
+Each source has exactly `weight`, `type`, `properties`, `offset`, `clip`, and
+`clips`. Types are `circle`, `rect`, `line`, `text`, `path`, or `image` with their
+complete concrete properties. Offsets translate primitive geometry. The required
+rectangular `clip` and additional rectangular/path `clips` use the group's local
+frame. Embedded image/font bytes and outline/shadow properties stay with each source.
+
+Provide 2–64 flat sources with finite weights from 0 to 1 summing to 1. A weight
+of zero does not bypass validation or asset preparation. Nested blends are rejected;
+flatten an interrupted blend's weights before combining it with another source.
+The group's optional `opacity` and `blend` apply once after the weighted sum.
+Source `blend` must be absent or `normal`; one shared backdrop mode belongs to
+the group. Transitions between different backdrop modes need an explicit policy.
+
+[Renderer limits and preparation](../api/rendering.md#weighted-concrete-blends)
+apply to all sources. Graphic and editable serialization preserve the concrete
+sources without retaining callbacks or renderer objects.
+
+## Explicit path command capacity
+
+A concrete path may declare `properties.maxCommands`, an own enumerable integer
+from 1 through 200000. Its default remains 30000. Set `maxCommands` with
+`editGraphics` before assigning a larger command array. Lowering the declaration
+below the current command count rejects atomically. Explicit undefined, null,
+accessors and inherited declarations reject. Clips and existing native path
+builders keep their independent limits.
+
+The declaration travels with the concrete path through scenes, weighted sources,
+rendering and graphic persistence. Renderers still consume only concrete graphics.
+A Geo-owned path must match its mark's explicit capacity; use the Geo domain edit
+to change that policy. Path capacity does not raise hit stroke or query budgets.
+
+## Store fully materialized circles in columns
+
+Extension authors can use `circle-batch` for an ordered set of circles sharing
+one concrete appearance. Its properties are exactly `x`, `y`, `radius`, and
+`appearance`. The three coordinate arrays must be dense ordinary arrays with the
+same length from 1 through 10000. Coordinates are finite and radii non-negative.
+`appearance` accepts the existing concrete circle paint, outline, stroke, opacity,
+blend and shadow properties; it cannot contain coordinates or `length`.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run the complete ES module with ggaction installed; it authors one canvas and fully materialized circle columns.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { ChartProgram } from "ggaction/extension";
+
+const program = new ChartProgram()
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .editGraphics({ target: "canvas", property: "width", value: 100 })
+  .editGraphics({ target: "canvas", property: "height", value: 80 })
+  .createGraphics({ id: "circles", type: "circle-batch", parent: "canvas" })
+  .editGraphics({ target: "circles", property: "x", value: [25, 40, 70] })
+  .editGraphics({ target: "circles", property: "y", value: [30, 35, 45] })
+  .editGraphics({ target: "circles", property: "radius", value: [12, 16, 9] })
+  .editGraphics({ target: "circles", property: "appearance",
+    value: { fill: "#247ca8", opacity: 0.5 } });
+```
+
+Each row is painted individually in array order. Overlapping transparent circles,
+patterns, outlines, blend modes and prepared shadows retain ordinary circle
+behavior across Canvas, SVG, PNG and PDF. A batch cannot own items or children,
+and does not accept the `length` option. Rendering and persistence require all
+four properties and equal column lengths. A heterogeneous collection can contain
+a complete batch item; weighted blend sources retain their existing type list.
+
+Graphic and editable snapshots preserve the columns. Older package versions
+that do not recognize this type reject it; no automatic conversion is performed.
+
+## Store fully materialized paths in columns
+
+`path-batch` stores an ordered set of paths sharing one concrete appearance.
+Its properties are exactly `x`, `y`, `starts`, `closed`, and `appearance`. `x`
+and `y` are dense finite point coordinates of equal length. `starts` gives the
+first point of each of 1 through 10000 rows, beginning at 0 and increasing; a row
+runs to the next start, or to the end. Each row has at least two points and is
+drawn as one `M`/`L` subpath, closed with `Z` when `closed` is true.
+`appearance` accepts the existing concrete path paint, fill rule, stroke, dash,
+opacity, blend and shadow properties; it cannot contain `commands`,
+`maxCommands` or `length`.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run the complete ES module with ggaction installed; it authors one canvas and two closed path rows.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { ChartProgram } from "ggaction/extension";
+
+const program = new ChartProgram()
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .editGraphics({ target: "canvas", property: "width", value: 100 })
+  .editGraphics({ target: "canvas", property: "height", value: 80 })
+  .createGraphics({ id: "cells", type: "path-batch", parent: "canvas" })
+  .editGraphics({ target: "cells", property: "x", value: [10, 45, 45, 10, 55, 90, 72] })
+  .editGraphics({ target: "cells", property: "y", value: [10, 10, 60, 60, 20, 20, 70] })
+  .editGraphics({ target: "cells", property: "starts", value: [0, 4] })
+  .editGraphics({ target: "cells", property: "closed", value: true })
+  .editGraphics({ target: "cells", property: "appearance",
+    value: { fill: "#247ca8", stroke: "#ffffff", strokeWidth: 1 } });
+```
+
+Each row is painted as an individual path in order, with the same Canvas, SVG,
+PNG and PDF output as separate `path` graphics. The batch cannot own items or
+children. Partition animation uses this type for `path-run` frame entries.
+Authoring a batch does not grant it a domain mark's selection identity. Ordinary
+chart authors continue to use domain mark actions.

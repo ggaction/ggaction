@@ -11,7 +11,7 @@ import { writeGeometryResource } from "./closure.js";
 
 export const createGeometryData = /* @__PURE__ */ closedAction(
   { op: "createGeometryData", description: "Normalize an immutable geographic or planar geometry source." },
-  ["id", "format", "values", "coordinateKind", "featureKey", "topoObject", "limits"], function (args = {}) {
+  ["id", "format", "values", "coordinateKind", "featureKey", "topoObject", "limits", "polygonWinding"], function (args = {}) {
     const { id, values, ...intent } = args;
     validateUserId(id, "Geometry id");
     if (findStoredResource(this, "geometry", id)) throw annotateError(new Error("Geometry already exists."), { code: "duplicate-id", resourceId: id });
@@ -22,10 +22,11 @@ export const createGeometryData = /* @__PURE__ */ closedAction(
 
 export const editGeometryData = /* @__PURE__ */ closedAction(
   { op: "editGeometryData", description: "Revise a geometry source while retaining its feature identity policy." },
-  ["target", "values", "coordinateKind", "topoObject", "limits"], function (args = {}) {
+  ["target", "values", "coordinateKind", "topoObject", "limits", "polygonWinding"], function (args = {}) {
     const previous = resolveGeometryResource(this, args.target, { method: "geo" }), { target, values, ...patch } = args;
     if (Object.keys(args).every(key => key === "target") || Object.values(args).some(value => value === undefined)) throw new TypeError("Geometry edits require a nonempty patch without undefined values.");
     const { method, ...intent } = previous.options;
+    if (patch.coordinateKind === "planar" && !Object.hasOwn(patch, "polygonWinding")) delete intent.polygonWinding;
     const resource = createGeometryResource({ id: previous.id, options: normalizeGeometryOptions({ ...intent, ...patch,
       ...(Object.hasOwn(patch, "limits") ? { limits: { ...intent.limits, ...ownRecord(patch.limits, "Geometry limit patch") } } : {}) }),
       values: Object.hasOwn(args, "values") ? values : previous.result.source.values, allocationId: newDatasetNamespace(),

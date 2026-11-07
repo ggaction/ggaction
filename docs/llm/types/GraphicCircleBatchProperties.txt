@@ -1,0 +1,9 @@
+export interface GraphicCircleBatchProperties {
+  /** Dense equal-length finite arrays, each with 1..10000 entries. */
+  readonly x: readonly number[];
+  readonly y: readonly number[];
+  /** Non-negative radii; each row is painted as an individual circle. */
+  readonly radius: readonly number[];
+  readonly appearance: GraphicCircleAppearance;
+}
+/** Shared concrete path paint; each row's outline is stored in the coordinate columns. */

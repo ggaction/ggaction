@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 369,
+  "actionCount": 380,
   "relationships": [
     {
       "name": "createCanvas",
@@ -471,11 +471,28 @@
     {
       "name": "createAnnotation",
       "wraps": [
-        "createScale",
         "createTextMark",
         "encodeText",
         "encodeX",
-        "encodeY"
+        "encodeY",
+        "createMarkLabels",
+        "editSemantic",
+        "createGraphics",
+        "createScale"
+      ]
+    },
+    {
+      "name": "editAnnotation",
+      "wraps": [
+        "encodeText",
+        "encodeX",
+        "encodeY",
+        "editTextMark",
+        "layoutLabels",
+        "removeLabelLayout",
+        "editMarkLabelPlacement",
+        "editMarkLabelSelection",
+        "editSemantic"
       ]
     },
     {
@@ -629,7 +646,9 @@
       "wraps": [
         "editSemantic",
         "createScale",
-        "layoutSeries"
+        "layoutSeries",
+        "removeEncoding",
+        "editGeoPointMark"
       ]
     },
     {
@@ -657,7 +676,9 @@
       "name": "encodeSize",
       "wraps": [
         "editSemantic",
-        "createScale"
+        "createScale",
+        "removeEncoding",
+        "editGeoPointMark"
       ]
     },
     {
@@ -2120,6 +2141,7 @@
       "wraps": [
         "createAreaMark",
         "encodeGroup",
+        "editSemantic",
         "encodeX",
         "encodeYRange",
         "layoutSeries",
@@ -2400,6 +2422,12 @@
       ]
     },
     {
+      "name": "applyGraphEdgeRoutesUpdate",
+      "wraps": [
+        "editLayout"
+      ]
+    },
+    {
       "name": "createGeometryData",
       "wraps": [
         "editSemantic"
@@ -2419,6 +2447,18 @@
     },
     {
       "name": "editGeoJoinData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createGeoRouteData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editGeoRouteData",
       "wraps": [
         "editSemantic"
       ]
@@ -2445,6 +2485,13 @@
       "name": "editProjection",
       "wraps": [
         "editSemantic"
+      ]
+    },
+    {
+      "name": "navigateProjection",
+      "wraps": [
+        "editProjection",
+        "editCanvas"
       ]
     },
     {
@@ -2479,6 +2526,18 @@
     },
     {
       "name": "editGeoLineMark",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createGeoAnnotation",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editGeoAnnotation",
       "wraps": [
         "editSemantic"
       ]
@@ -2530,6 +2589,29 @@
       "wraps": [
         "createScale"
       ]
+    },
+    {
+      "name": "createTrailPlot",
+      "wraps": [
+        "createCoordinate",
+        "createScale"
+      ]
+    },
+    {
+      "name": "editTrailPlot",
+      "wraps": [
+        "createScale"
+      ]
+    },
+    {
+      "name": "createTablePlot",
+      "wraps": [
+        "createCoordinate"
+      ]
+    },
+    {
+      "name": "editTablePlot",
+      "wraps": []
     }
   ]
 }

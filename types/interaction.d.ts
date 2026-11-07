@@ -1,7 +1,36 @@
-import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, GraphPosition, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, ProjectionParameters, GeoCameraOperation, GraphPosition, EditAnnotationOptions, EditGeoAnnotationOptions, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
-import type { CanvasTransitionScene } from './scene.js';
+import type { AnyCanvasTransitionScene } from './scene.js';
+import type { AnyTransitionFrame } from './animation.js';
+import type { PreparedImageRendering, PreparedFontRendering, PreparedShadowRendering } from './program.js';
+export interface InteractionAssets {
+  readonly images?: PreparedImageRendering;
+  readonly fonts?: PreparedFontRendering;
+  readonly shadows?: PreparedShadowRendering;
+}
+/** Host owns partially prepared assets; the session disposes each returned lease once. */
+export interface InteractionAssetLease extends InteractionAssets { dispose(): void; }
+export interface InteractionPreparation {
+  /** Present only while preparing an authentic animation frame. */
+  readonly frameVersion?: number;
+  readonly sessionGeneration: number;
+  readonly transactionId: string;
+  readonly baseRevision: number;
+  readonly resourceRevisionVector: readonly (InputRef & { readonly childPath: readonly string[] })[];
+}
+export interface InteractionUpdateRequest extends InteractionPreparation {
+  readonly program: InteractionProgram;
+  readonly signal: AbortSignal;
+}
+export interface InteractionAssetRequest extends InteractionUpdateRequest {
+  /** Prepare this exact renderer-ready frame instead of program when present. */
+  readonly frame?: AnyTransitionFrame;
+}
+export interface InteractionSettlement {
+  readonly status: 'settled' | 'cancelled' | 'error';
+  readonly preparation?: InteractionPreparation;
+}
 export interface InteractionPoint { readonly x: number; readonly y: number; }
 /** Explicit local-to-CSS affine matrix [a,b,c,d,e,f]; no device pixel ratio. */
 export type InteractionTransform = readonly [number, number, number, number, number, number];
@@ -36,7 +65,39 @@ export interface ContextMenuBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
-export interface ClickSelectionBinding {
+/** Host supplies a focusable surface and safe accessible descriptions. Targets are leaf marks. */
+export interface KeyboardBinding {
+  readonly type: 'keyboard';
+  readonly targets: readonly {
+    readonly target: InteractionTarget;
+    readonly activation?: { readonly type: 'select'; readonly selection: string; readonly mode?: 'replace' | 'toggle' }
+      | { readonly type: 'focusHierarchy' };
+  }[];
+}
+/** Runtime-only focus. Null keys designate the configured owner container. */
+export interface InteractionFocus {
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  /** Stable authored scoped key, preserved when one current item represents it. */
+  readonly itemKey: string | null;
+  readonly currentItemKey: string | null;
+  readonly screenPoint: InteractionPoint | null;
+  readonly role: string | null;
+}
+export type InteractionFocusCommand = { readonly type: 'focus'; readonly target: InteractionTarget; readonly itemKey: string | null; readonly move?: never }
+  | { readonly type: 'focus'; readonly move: 'next' | 'previous' | 'first' | 'last' | 'parent' | 'firstChild' | 'previousSibling' | 'nextSibling' | 'root' | 'nextCandidate' | 'previousCandidate'; readonly target?: never; readonly itemKey?: never };
+/** Temporarily show one painted GraphPlot edge without changing native routes or history. */
+export interface InteractionEdgePresentationCommand {
+  readonly type: 'unbundleEdge';
+  readonly target: InteractionTarget;
+  /** Current scoped logical edge key. Null restores the accepted baseline. */
+  readonly itemKey: string | null;
+}
+/** Pointer arbitration uses explicit modifier conjunctions and bounded integer priorities. */
+export interface GestureBindingOptions {
+  readonly priority?: number;
+  readonly modifiers?: { readonly alt?: boolean; readonly ctrl?: boolean; readonly meta?: boolean; readonly shift?: boolean };
+}
+export interface ClickSelectionBinding extends GestureBindingOptions {
   readonly type: 'select';
   /** Existing authored selection on an explicit root or concat mark owner. */
   readonly target: InteractionTarget;
@@ -47,7 +108,7 @@ export interface ClickSelectionBinding {
   readonly hitInvisible?: boolean;
 }
 /** Activate a categorical legend block using its public channel and existing selection. */
-export interface LegendSelectionBinding {
+export interface LegendSelectionBinding extends GestureBindingOptions {
   readonly type: 'legend';
   readonly effect: 'selection';
   readonly target: InteractionTarget;
@@ -58,7 +119,7 @@ export interface LegendSelectionBinding {
   readonly slop?: number;
 }
 /** Toggle actual category membership; the control legend remains available to restore it. */
-export interface LegendVisibilityBinding {
+export interface LegendVisibilityBinding extends GestureBindingOptions {
   readonly type: 'legend';
   readonly effect: 'visibility';
   readonly target: InteractionTarget;
@@ -66,7 +127,7 @@ export interface LegendVisibilityBinding {
   readonly scaleDomain: 'visible-data' | 'all-data';
   readonly slop?: number;
 }
-interface RegionSelectionBindingOptions {
+interface RegionSelectionBindingOptions extends GestureBindingOptions {
   readonly target: InteractionTarget;
   readonly selection: string;
   readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
@@ -80,8 +141,48 @@ export type BrushSelectionBinding = RegionSelectionBindingOptions & { readonly t
 export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
   readonly type: 'lasso';
 }
+/** Resize an existing persisted region. Idle handle drawing and keyboard controls belong to the host. */
+export type SelectionResizeBinding = GestureBindingOptions & {
+  readonly type: 'resize'; readonly target: InteractionTarget; readonly selection: string; readonly slop?: number;
+} & (
+  { readonly axis: 'xy'; readonly channels?: { readonly x?: 'x' | 'x2'; readonly y?: 'y' | 'y2' } }
+  | { readonly axis: 'x'; readonly channels?: { readonly x?: 'x' | 'x2'; readonly y?: never } }
+  | { readonly axis: 'y'; readonly channels?: { readonly y?: 'y' | 'y2'; readonly x?: never } }
+  | { readonly axis: 'theta'; readonly channels?: { readonly theta?: 'theta'; readonly x?: never; readonly y?: never } }
+);
+/** Drag a painted native categorical axis tick or label to reorder its existing categories. */
+export interface CategoryReorderBinding extends GestureBindingOptions {
+  readonly type: 'reorder'; readonly target: InteractionTarget; readonly channel: 'x' | 'y' | 'theta'; readonly slop?: number;
+}
+export type SelectionHandle = {
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  readonly selection: string;
+  /** CSS-local coordinates, with child placement and the mounted rootTransform already applied. */
+  readonly point: InteractionPoint;
+} & (
+  { readonly axis: 'x'; readonly handle: 'x-min' | 'x-max' }
+  | { readonly axis: 'y'; readonly handle: 'y-min' | 'y-max' }
+  | { readonly axis: 'xy'; readonly handle: 'x-min' | 'x-max' | 'y-min' | 'y-max' | 'x-min-y-min' | 'x-min-y-max' | 'x-max-y-min' | 'x-max-y-max' }
+  | { readonly axis: 'theta'; readonly handle: 'theta-start' | 'theta-end' }
+);
+export interface SelectionHandlesView {
+  /** Existing accepted scene version; this query adds no counter or persisted state. */
+  readonly frameVersion: number;
+  readonly handles: readonly SelectionHandle[];
+}
 /** Drag one current graph node; target must have an explicit plot origin and fixed or force layout. */
-export interface NodeMovementBinding { readonly type: 'moveNode'; readonly target: InteractionTarget; }
+export interface NodeMovementBinding extends GestureBindingOptions { readonly type: 'moveNode'; readonly target: InteractionTarget; }
+/** Drag the target annotation layer by native pixel offsets, preserving its semantic anchor. */
+export interface AnnotationMovementBinding extends GestureBindingOptions { readonly type: 'annotate'; readonly target: InteractionTarget; }
+/** Native projection navigation. The host supplies focus and touch-action: none. */
+export type NavigationBinding = GestureBindingOptions & {
+  readonly type: 'navigate';
+  readonly target: InteractionTarget;
+  readonly scaleExtent: readonly [number, number];
+  /** Explicit reset parameters; their type must match the target projection. */
+  readonly initial: ProjectionParameters;
+} & ({ readonly mode: 'pan'; readonly rotationStepDeg?: never }
+  | { readonly mode: 'rotate'; readonly rotationStepDeg: number });
 export type SelectionProjection = {
   readonly type: 'rows';
   readonly sourceData: string;
@@ -141,18 +242,39 @@ export interface InteractionState {
   readonly program: InteractionProgram;
   /** Separate transient editing result. Null outside an active preview. */
   readonly previewProgram: InteractionProgram | null;
-  readonly scene: CanvasTransitionScene;
+  /** Authentic graph drag or temporary edge presentation; separate from the accepted animation baseline. */
+  readonly previewFrame: AnyTransitionFrame | null;
+  /** Exact accepted sampled frame; null for committed programs and plain scenes. */
+  readonly animationFrame: AnyTransitionFrame | null;
+  readonly scene: AnyCanvasTransitionScene;
   readonly frameVersion: number;
   readonly generation: number;
   /** Session-local committed program revision; inspection and frames do not increment it. */
   readonly revision: number;
   readonly hit: InteractionHit | null;
+  readonly focus: InteractionFocus | null;
   readonly linkedSelections: readonly LinkedSelectionState[];
+  /** Bounded immutable snapshots. Preview and cancelled edits are never recorded. */
+  readonly history: { readonly undoCount: number; readonly redoCount: number; readonly limit: number };
+  /** Prepared handles for this exact committed program; host passes them to its renderer. */
+  readonly assets: Readonly<InteractionAssets> | null;
+  /** Transient handles for the exact previewFrame or previewProgram; never reuse baseline assets. */
+  readonly previewAssets: Readonly<InteractionAssets> | null;
+  /** Transient handles bound to animationFrame, separately from committed assets. */
+  readonly frameAssets: Readonly<InteractionAssets> | null;
+  /** Pending candidate identity. Program and history remain committed until ready. */
+  readonly preparation: InteractionPreparation | null;
   readonly mounted: boolean;
   readonly destroyed: boolean;
 }
 export interface InteractionLifecycleEvent {
-  readonly type: 'inspect' | 'contextMenu' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy';
+  readonly type: 'inspect' | 'contextMenu' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy' | 'focus';
+  readonly state: InteractionState;
+}
+export interface InteractionEdgePresentationEvent {
+  readonly type: 'unbundleEdge';
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  readonly itemKey: string | null;
   readonly state: InteractionState;
 }
 /** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
@@ -198,9 +320,16 @@ export type InteractionReorderPayload = { readonly channel: 'x' | 'y' | 'theta' 
   (CategoryOrder & { readonly clear?: never })
   | { readonly clear: true; readonly values?: never; readonly by?: never; readonly direction?: never }
 );
-/** Nonempty native projection transform patch. Pixel units precede composition and host transforms. */
-export type InteractionViewportPayload = Pick<ProjectionSphereParameters, 'scalePx' | 'translatePx' | 'centerDeg' | 'rotateDeg'>;
+/** Absolute transform patch or one native camera operation, exclusively. Full-only. */
+export type InteractionViewportPayload = (Pick<ProjectionSphereParameters, 'scalePx' | 'translatePx' | 'centerDeg' | 'rotateDeg'> & { readonly operation?: never })
+  | { readonly operation: GeoCameraOperation; readonly scalePx?: never; readonly translatePx?: never; readonly centerDeg?: never; readonly rotateDeg?: never };
+/** Nonempty native Text/label or geographic annotation patch; target kind selects its editor. Full-only. */
+export type InteractionAnnotationPayload = Omit<EditAnnotationOptions, 'target'> | Omit<EditGeoAnnotationOptions, 'target'>;
 export type InteractionEditCommand = InteractionTransaction & ({
+  readonly type: 'annotate';
+  readonly target: InteractionTarget;
+  readonly payload: InteractionAnnotationPayload;
+} | {
   readonly type: 'select';
   readonly target: InteractionTarget;
   readonly payload: InteractionSelectionPayload;
@@ -237,8 +366,10 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly target: InteractionTarget;
   readonly payload: InteractionReorderPayload;
 });
+/** Whole-session restore, without a target or editing payload. */
+export type InteractionHistoryCommand = InteractionTransaction & { readonly type: 'undo' | 'redo' | 'reset' };
 export interface InteractionTransactionEvent {
-  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility' | 'focusHierarchy' | 'setViewport' | 'moveNode';
+  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility' | 'focusHierarchy' | 'setViewport' | 'moveNode' | 'annotate' | 'undo' | 'redo' | 'reset';
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
@@ -253,37 +384,96 @@ export interface InteractionTransactionEvent {
 }
 export interface InteractionProgramEvent {
   readonly type: 'program';
+  readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
+  readonly history: 'reset' | 'record';
   readonly state: InteractionState;
   readonly selectionChanges: readonly SelectionChange[];
 }
-export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent;
-export type InteractionCommand = InteractionEditCommand | {
+/** Initial and external replacement preparation; native edits retain their transaction event. */
+export interface InteractionAssetEvent {
+  readonly type: 'assets';
+  readonly status: 'settled' | 'cancelled' | 'error';
+  readonly preparation: InteractionPreparation;
+  readonly diagnostics: readonly { readonly code: string; readonly message: string }[];
+  readonly state: InteractionState;
+}
+export interface InteractionResizeEvent {
+  readonly type: 'resize';
+  /** Content-box CSS pixels; zero is allowed for a hidden or collapsed surface. */
+  readonly size: { readonly width: number; readonly height: number };
+  readonly state: InteractionState;
+}
+export interface InteractionUpdateEvent extends Omit<InteractionAssetEvent, 'type'> {
+  readonly type: 'update';
+  readonly transactionId: string;
+  readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
+  readonly causeTransactionId?: string;
+}
+export type InteractionEvent = InteractionLifecycleEvent | InteractionEdgePresentationEvent | InteractionProgramEvent | InteractionTransactionEvent | InteractionAssetEvent | InteractionUpdateEvent | InteractionResizeEvent;
+export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | InteractionFocusCommand | InteractionEdgePresentationCommand | { readonly type: 'activate' } | {
   readonly type: 'inspect' | 'contextMenu';
   /** CSS-local point, after subtracting the host client rectangle. */
   readonly point: InteractionPoint;
   readonly pointerType?: 'mouse' | 'pen' | 'touch';
   readonly slop?: number;
   readonly hitInvisible?: boolean;
-} | { readonly type: 'leave' } | {
+} | { readonly type: 'leave' } | ({
   readonly type: 'frame';
-  /** Sampled scene containing only current program node keys and unchanged topology. */
-  readonly scene: CanvasTransitionScene;
   readonly version: number;
   readonly generation: number;
-};
+} & ({
+  /** Scene containing only current program node keys and unchanged topology. */
+  readonly scene: AnyCanvasTransitionScene;
+  readonly frame?: never;
+} | {
+  /** Authentic sample with the exact current native program in its displayed or direct endpoint owners.
+   * Painted geographic source parts and attached Text labels may focus/activate only within the same current native owner,
+   * child scope, resource identity and logical feature membership. Endpoint revisions remain distinct. */
+  readonly frame: AnyTransitionFrame;
+  readonly scene?: never;
+}));
 export interface InteractionDispatchResult { readonly status: 'applied' | 'queued' | 'stale' | 'unchanged'; }
 export interface InteractionSession {
-  mount(element: Element, options?: { readonly rootTransform?: InteractionTransform }): () => boolean;
-  updateProgram(program: InteractionProgram): InteractionDispatchResult;
+  mount(element: Element, options?: { readonly rootTransform?: InteractionTransform; readonly observeResize?: boolean }): () => boolean;
+  /** External replacement cancels previews. Default clears history; record retains the previous snapshot. */
+  updateProgram(program: InteractionProgram, options?: { readonly history?: 'reset' | 'record'; readonly origin?: 'user' | 'programmatic' | 'replay' | 'linked' }): InteractionDispatchResult;
+  /** Prepare native async work from the exact committed base; stale results never replace newer state. */
+  updateProgram(prepare: (request: InteractionUpdateRequest) => InteractionProgram | Promise<InteractionProgram>, options?: InteractionTransaction & { readonly history?: 'reset' | 'record' }): InteractionDispatchResult;
   dispatch(command: InteractionCommand): InteractionDispatchResult;
   subscribe(listener: (event: InteractionEvent) => void): () => boolean;
   getState(): InteractionState;
+  /** Read currently eligible resize handles; throws after destruction. */
+  getSelectionHandles(): SelectionHandlesView;
+  /** Observe the job current at this call. Subscriber/disposer exceptions reject this promise. */
+  whenSettled(): Promise<InteractionSettlement>;
   destroy(): boolean;
 }
 export declare function createInteractionSession(options: {
   readonly program: InteractionProgram;
+  /** Session-local preparation only. Omitted/undefined fields retain the defaults.
+   * Entry, query, snapshot, selection and animation limits are unchanged. */
+  readonly hitPreparation?: {
+    /** Safe integer 1..200000. Default 100000, including background and nested nodes. */
+    readonly maxSceneNodes?: number;
+    /** Safe integer 1..128000000. Default 10000000, independently for binding and indexing. */
+    readonly maxWork?: number;
+    /** Explicit indexed preparation only for paths with their own maxCommands declaration.
+     * Omission preserves the existing path/clip/primitive preparation and query behavior. */
+    readonly pathGeometry?: {
+      /** Safe integer 1..400000. Default 30000 stroke parts per path. */
+      readonly maxParts?: number;
+      /** Safe integer 1..2000000. Default 1000000 independently for stroke and geometry work. */
+      readonly maxWork?: number;
+      /** Safe integer 1..16000000. Default 10000000 additional index build work per path. */
+      readonly maxIndexWork?: number;
+    };
+  };
+  /** Explicit host preparation. Candidate state commits only after this lease is ready. */
+  readonly assetResolver?: (request: InteractionAssetRequest) => InteractionAssetLease | Promise<InteractionAssetLease>;
+  /** Integer 0..10000, default 100. Zero disables undo/redo, but preserves the initial reset baseline. */
+  readonly historyLimit?: number;
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | KeyboardBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | SelectionResizeBinding | CategoryReorderBinding | NodeMovementBinding | AnnotationMovementBinding | NavigationBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;

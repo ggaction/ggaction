@@ -1,4 +1,20 @@
-const ownedValues = new WeakSet();
+import { STAGE_ROWS } from "./stages.js";
+
+// Exact-object ownership is a module-private field on the owned value itself.
+// A process-wide weak table rehashes in place under short-lived registrations
+// (see agent_docs/impl/roadmap9/qualification/OWNED_MARK_DECISION.md). Only this
+// module can add or test the mark; copies, clones, spreads and proxy targets of
+// an owned value are not owned, and a parent never vouches for its descendants.
+class OwnedTarget { constructor(value) { return value; } }
+class OwnedMark extends OwnedTarget {
+  #owned;
+  // Return the constructed value so minifiers cannot drop the marking call.
+  static add(value) { return new OwnedMark(value); }
+  static has(value) { return #owned in value; }
+}
+// Engines that refuse private fields on non-extensible objects keep the same
+// exact-object semantics through this fallback.
+const unmarkableOwnedValues = new WeakSet();
 
 export function isPlainObject(value) {
   if (value === null || typeof value !== "object") {
@@ -11,19 +27,53 @@ export function isPlainObject(value) {
 
 export function freezeOwned(value) {
   if (value !== null && typeof value === "object") {
-    if (ownedValues.has(value)) return value;
+    if (isOwned(value)) return value;
     Object.freeze(value);
-    ownedValues.add(value);
+    try {
+      if (OwnedMark.add(value) !== value) throw new TypeError("Ownership mark did not attach to its value.");
+    } catch (error) {
+      if (!(error instanceof TypeError)) throw error;
+      unmarkableOwnedValues.add(value);
+    }
   }
 
   return value;
 }
 
+// A fresh record whose every member is a primitive or an owned value is
+// already a complete immutable value. Owning it lets cloneAndFreeze reuse it;
+// any unowned object member leaves the record for an ordinary copy.
+export function ownWhenMembersOwned(value) {
+  if (!Array.isArray(value) && !isPlainObject(value)) return value;
+  for (const member of Object.values(value)) {
+    if (member !== null && typeof member === "object" ? !isOwned(member) : typeof member === "function") return value;
+  }
+  return freezeOwned(value);
+}
+
 export function isOwned(value) {
-  return value !== null && typeof value === "object" && ownedValues.has(value);
+  return value !== null && typeof value === "object" &&
+    (OwnedMark.has(value) || unmarkableOwnedValues.has(value));
 }
 
 export function cloneAndFreeze(value, ancestors = new WeakSet(), path = "state") {
+  const state = cloneFrames(value, ancestors, path);
+  while (state.pending.length) state.step();
+  return state.result;
+}
+
+// The same copy as cloneAndFreeze, yielding between batches of visited values.
+export function* cloneAndFreezeStages(value, ancestors = new WeakSet(), path = "state") {
+  const state = cloneFrames(value, ancestors, path);
+  for (let steps = 1; state.pending.length; steps++) {
+    state.step();
+    if (steps % STAGE_ROWS === 0) yield;
+  }
+  return state.result;
+}
+
+// One explicit-stack copy shared by the synchronous and staged forms.
+function cloneFrames(value, ancestors, path) {
   const pending = [];
   function copy(input, location) {
     if (typeof input === "function") throw new TypeError(`Cannot store a function at ${location} in a ChartProgram.`);
@@ -42,24 +92,24 @@ export function cloneAndFreeze(value, ancestors = new WeakSet(), path = "state")
     return clone;
   }
   const result = copy(value, path);
-  while (pending.length) {
+  const step = () => {
     const frame = pending.at(-1);
     if (frame.cursor === frame.length) {
       freezeOwned(frame.clone);
       ancestors.delete(frame.input);
       pending.pop();
-      continue;
+      return;
     }
     const index = frame.cursor++;
-    if (frame.array && !(index in frame.input)) continue;
+    if (frame.array && !(index in frame.input)) return;
     const [key, item] = frame.array ? [index, frame.input[index]] : frame.entries[index];
     const child = copy(item, frame.array ? `${frame.location}[${key}]` : `${frame.location}.${key}`);
     if (!frame.array && key in Object.prototype) Object.defineProperty(frame.clone, key, {
       value: child, enumerable: true, writable: true, configurable: true
     });
     else frame.clone[key] = child;
-  }
-  return result;
+  };
+  return { result, pending, step };
 }
 
 export function removeOwnedPath(source, path) {

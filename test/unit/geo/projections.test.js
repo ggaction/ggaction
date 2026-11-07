@@ -1,8 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createProjectionKernel, projectRaw } from "../../../src/grammar/geo/projections.js";
+import { createProjectionCalculation, createProjectionKernel, projectRaw } from "../../../src/grammar/geo/projections.js";
 import { PROJECTION_DESCRIPTORS, normalizeProjectionOptions } from "../../../src/grammar/geo/projectionOptions.js";
 import { fitProjectedBounds } from "../../../src/grammar/geo/projectionFit.js";
+
+import { isOwned } from "../../../src/core/immutable.js";
 
 const radians = Math.PI / 180;
 function close(actual, expected, tolerance = 1e-9) {
@@ -189,4 +191,42 @@ test("fit rejects empty, malformed, overflowing and unsupported states without m
   assert.throws(() => fitProjectedBounds([0, 0, 0, 0], valid), /Point-only/);
   assert.throws(() => fitProjectedBounds([1e308, 1, 1e308, 1], { ...valid, pointScale: 10 }), /overflow/);
   assert.deepEqual(valid, { width: 100, height: 100 });
+});
+
+
+test("synchronous projection assembly preserves the owned facade and isolates raw results", () => {
+  for (const {type} of PROJECTION_DESCRIPTORS) {
+    const options = {type, scalePx:100, translatePx:[200,200]}, raw = createProjectionCalculation(options), owned = createProjectionKernel(options);
+    options.translatePx[0] = -100;
+    for (const input of [[-0,-0],[0,0],[180,0],[0,90],[-150,64],[-157,20],[-100,40],[30,20]]) {
+      const saved = [...input], direct = raw.forward(input), result = owned.forward(input);
+      assert.deepEqual(direct,result); assert.deepEqual(input,saved);
+      assert.equal(isOwned(direct),false); assert.equal(Object.isFrozen(direct),false);
+      assert.ok(isOwned(result)); assert.ok(Object.isFrozen(result));
+      if (direct.point) {
+        assert.equal(isOwned(direct.point),false); assert.ok(isOwned(result.point));
+        assert.deepEqual(raw.inverse(direct.point),owned.inverse(direct.point));
+        direct.point[0] += 123;
+        assert.deepEqual(owned.forward(input),result);
+      }
+      const bad=[Infinity,0];
+      assert.throws(()=>raw.forward(bad),/finite/); assert.throws(()=>owned.forward(bad),/finite/);
+    }
+  }
+});
+
+test("stream point projection keeps value checks and stays out of the public kernel", () => {
+  const options = { type: "equirectangular", scalePx: 100, translatePx: [200, 200], rotateDeg: [10, -5, 3] };
+  const calculation = createProjectionCalculation(options), kernel = createProjectionKernel(options);
+  assert.deepEqual(Object.keys(kernel).sort(), ["descriptor", "forward", "inverse", "options"]);
+  for (const point of [[0, 0], [12.5, -33], [179.9, 89.9], [-540, 10]]) {
+    assert.deepEqual(calculation.forwardPoint([...point]), calculation.forward([...point]));
+  }
+  const outcome = run => { try { run(); return null; } catch (error) { return [error.constructor.name, error.message]; } };
+  for (const point of [[1], [1, 2, 3], [Number.NaN, 0], [0, Infinity], [0, 91]]) {
+    assert.deepEqual(outcome(() => calculation.forwardPoint(point)), outcome(() => calculation.forward(point)));
+  }
+  // The public forward still rejects non-data arrays.
+  const accessor = [0, 0]; Object.defineProperty(accessor, 1, { get: () => 0, enumerable: true });
+  assert.throws(() => kernel.forward(accessor), /accessors are not supported/);
 });

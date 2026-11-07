@@ -1,0 +1,111 @@
+{
+  "status": "independent native policy checkpoint verified; combined qualification pending",
+  "baseCommit": "9b19a63d04dceffac439ca30d6c7fb71af83362f",
+  "runtimeDelta": 0,
+  "typeDelta": 0,
+  "packageInputDelta": 0,
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "files": {
+    "docs/llm/index.json": "ef0181154ae7dbd9ed6b55f5994918c2bc745daba771c2e5845a59ae319d7bd7",
+    "docs/llm/pages.json": "a17c97403469d981f86402fc7a1d9ecaea56d05f382087309e02c558a1f8caee",
+    "docs/llm/pages/supported-features.txt": "e436a6d58ac15ed24b2bf3061056df6b5005c6b00c6b978573f2a157e2a2e196",
+    "docs/llms-full.txt": "111b035e4b2cb1af85eb10e9f3fd9799c54c948486d74db0fce223d0be94d453",
+    "docs/llms-manifest.json": "a4a206647e96a2102a33481a758907df823ab8854b47e1792cf9c634392b0aa3",
+    "docs/search-index.json": "e430ec71887eb309ba160a3dc290562e03fe9ef1dc6fd9c3785c8d5e2ec34fc6",
+    "docs/supported-features.md": "537da2ede73c28d1510a4ada4da3ba874fec274a4649d97e4e1c44b1487277fd",
+    "scripts/generate-doc-search-index.js": "3a341ca6b5af1820863ed32cdb381de38f48567bc29a7ff2e732127cb835fca9",
+    "test/native-capabilities.json": "3f50641cf3be3d654a8fe137e84d2e4f744658641e14559569042ab80b0b76ed",
+    "agent_docs/contract/current/NATIVE_POLICY.md": "2a82943fb0a14fa1dbd3713ecb27421fe9599530aa295d196a48a749b4d9b317",
+    "test/contracts/native-api-policy.test.js": "68957b2369d4f5e4854a973b9e2c9b0a898fb3cecb352d3f6836192b951ed3d6"
+  },
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js contracts contracts/native-api-policy.test.js contracts/composition-recipes.test.js contracts/native-capability-completion.test.js contracts/package-boundaries.test.js",
+      "total": 26,
+      "passed": 25,
+      "failed": 1,
+      "failure": "New provider guard initially omitted the existing packaged protocol knowledge resolver; preserved. All other 23 tests were unchanged."
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/native-api-policy.test.js",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "exit": 0,
+      "repair": "Exact packaged knowledge/task-resolver.js remains local; literal public imports and optional provider roles validated."
+    },
+    {
+      "command": "npm run test:docs",
+      "total": 224,
+      "passed": 224,
+      "failed": 0,
+      "exit": 0
+    },
+    {
+      "command": "npm run docs:build",
+      "exit": 0,
+      "expanded": "bundle exec jekyll build --source docs --destination _site --baseurl /ggaction"
+    },
+    {
+      "command": "node scripts/check-built-docs.js _site",
+      "pages": 185,
+      "llmArtifacts": 1595,
+      "exit": 0
+    },
+    {
+      "command": "node .artifacts/native-policy-browser.mjs",
+      "widths": [
+        1440,
+        320,
+        390,
+        768
+      ],
+      "axeViolations": 0,
+      "search": "passed",
+      "exit": 0
+    }
+  ],
+  "search": {
+    "measuredBytes": 1072351,
+    "previousLimit": 1072000,
+    "limit": 1072400,
+    "measurementDelta": 451
+  },
+  "scope": {
+    "requirements": 30,
+    "groups": 79,
+    "consumerCells": 577,
+    "passedGroups": 0,
+    "passedConsumerCells": 0,
+    "assignedOwners": [
+      "AT-83",
+      "AT-84",
+      "AT-87",
+      "AT-88",
+      "AT-92"
+    ]
+  },
+  "reuse": {
+    "unchangedSiteBrowser": "c749a4f40:agent_docs/impl/roadmap9/native/composition-recipes-evidence/composition-recipes-built-browser.log.gz",
+    "runtimeRenderInstalled": "Existing Pyramid and composition-recipe evidence; no runtime/types/package inputs changed"
+  },
+  "openObligations": [
+    "STEP050 final combined admission qualification",
+    "STEP074-077 exact combined native candidate and all required consumer evidence"
+  ],
+  "combinedIntegration": {
+    "sourceRevision": "a1deea942528535c0e4bc21d4ee7e7935dc4166e",
+    "owningPassed": 19,
+    "docsFirst": {
+      "total": 227,
+      "passed": 225,
+      "failed": 2
+    },
+    "docsRepairedPassed": 227,
+    "searchBytes": 1074694,
+    "previousCeilingBytes": 1074300,
+    "ceilingBytes": 1074700,
+    "runtimeDelta": 0,
+    "remaining": "Whole native completion remains pending; owner assignment does not mean passing evidence."
+  }
+}

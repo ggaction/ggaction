@@ -1,4 +1,6 @@
 import { cloneAndFreeze } from "../core/immutable.js";
+import { invokeActionStages } from "../core/action.js";
+import { drainStages } from "../core/stages.js";
 
 const STAGES = Object.freeze([
   "scales",
@@ -117,6 +119,10 @@ export function buildMaterializationPlan(stages = {}) {
 }
 
 export function applyMaterializationPlan(program, plan) {
+  return drainStages(applyMaterializationPlanStages(program, plan));
+}
+
+export function* applyMaterializationPlanStages(program, plan) {
   const steps = deduplicateSteps(normalizeSteps(plan));
   const ownedSteps = typeof program?._withContext === "function" ? cloneAndFreeze(steps) : steps;
   let next = program;
@@ -133,7 +139,9 @@ export function applyMaterializationPlan(program, plan) {
     const current = scoped ? previous._withContext({ pendingMaterializationPlan: {
       steps: ownedSteps, next: index + 1
     } }) : previous;
-    next = step.args === undefined ? current[step.op]() : current[step.op](step.args);
+    next = yield* invokeActionStages(current, current[step.op], step.args);
+    // Each plan step is a separate stage boundary.
+    yield;
     if (scoped) {
       const { pendingMaterializationPlan: _pending, ...context } = next.context;
       if (Object.hasOwn(previous.context, "pendingMaterializationPlan")) {

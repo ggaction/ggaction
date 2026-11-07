@@ -1,0 +1,151 @@
+import { validateAxisLabelDecision } from "../grammar/animation/axisLabelDecision.js";
+import { axisLabelGroupIdentity } from "../materialization/animation/axisLabelGroups.js";
+import { axisLabelReflowMatchesNodes, resolveAxisLabelReflow } from "../materialization/animation/axisLabelReflowState.js";
+import { guideAnimationKey } from "../grammar/animation/guideState.js";
+import { graphicAnimationOwnerKey, guideAnimationOwnerKey } from "../grammar/animation/ownerKey.js";
+import { validateGeoAnimationDecision } from "../grammar/animation/geoDecision.js";
+import { unavailablePolarAnimation } from "../grammar/animation/polarState.js";
+import { unavailableCartesianAnimation } from "../grammar/animation/cartesianState.js";
+import { cloneAndFreeze } from "../core/immutable.js";
+import { ownRecord, ownArray } from "../core/ownData.js";
+import { rejectUnknownProperties, validateUnitInterval } from "../core/validation.js";
+import { transitionSampleState } from "../grammar/animation/values.js";
+import { unavailablePointAnimationPosition } from "../grammar/animation/pointState.js";
+import { projectSampledAnimationEndpoint } from "./endpoints.js";
+import { animationPlanProvenance } from "./frameProvenance.js";
+import { validateAnimationFallbackReason, sameConcreteValue } from "./concrete.js";
+
+// Each live plan remembers only its last immutable identity vector. Sharing
+// these records never retains an earlier sampled frame or its concrete scene.
+import { projectBatchSceneRows } from "./batchScene.js";
+
+const sampledIdentities=new WeakMap();
+function frameIdentities(plan,identities){
+  const previous=sampledIdentities.get(plan);
+  let same=previous!==undefined&&previous.length===identities.length;
+  for(let index=0;same&&index<identities.length;index++){
+    same=(index in identities)===(index in previous)&&identities[index]===previous[index];
+  }
+  return same?previous:cloneAndFreeze(identities);
+}
+
+// Capture correspondence once while the authentic plan is available. No earlier
+// plan or sampled endpoint is retained by the resulting frame meaning.
+export function captureFrameMeaning(frame, plan, timeMs, geographic = [], axislabels = []) {
+  const { side } = transitionSampleState(timeMs, plan.durationMs, plan.easing);
+  const exact = side === undefined ? undefined : plan[side];
+  let identities, backgrounds;
+  if (exact) { identities = exact.identities; backgrounds = exact.backgrounds; }
+  else {
+    if (frame.decisions.length !== frame.scene.nodes.length) throw new TypeError("Animation decisions must follow the exact sampled nodes.");
+    identities = frame.decisions.map((decision, index) => {
+      if(decision.kind==="guide"){const value=axislabels[index];if(value===undefined)throw new TypeError("Axis label decision requires its actual generated identity.");validateAxisLabelDecision(decision,value.identity);return undefined;}
+      if(decision.kind==="geographic"){const value=geographic[index];if(value===undefined)throw new TypeError("Geographic decision requires its actual generated identity.");validateGeoAnimationDecision(decision,value.identity);return value.identity;}
+      const endpoint = decision.targetIndex === undefined ? plan.from : plan.to;
+      const originalIndex = decision.targetIndex ?? decision.sourceIndex;
+      if (endpoint.scene.nodes[originalIndex] === undefined) throw new TypeError("Animation decision requires an exact endpoint node.");
+      return endpoint.identities[originalIndex];
+    });
+    backgrounds = frame.decisions.flatMap((decision, index) => {
+      if(decision.kind==="geographic"||decision.kind==="guide")return [];
+      const endpoint = decision.targetIndex === undefined ? plan.from : plan.to;
+      const original = decision.targetIndex ?? decision.sourceIndex;
+      const background = endpoint.backgrounds.find(value => value.index === original);
+      return background === undefined ? [] : [{ index, owner: background.owner }];
+    });
+  }
+  const endpoint = exact ?? projectSampledAnimationEndpoint(frame, frameIdentities(plan,identities), cloneAndFreeze(backgrounds));
+  const proof = animationPlanProvenance(plan);
+  let native;
+  if (proof?.from !== undefined && proof.to !== undefined) {
+    const nodes = exact ? proof[side].nodes : frame.decisions.map((decision,index) => {
+      if(decision.kind==="guide"){const origin=axislabels[index]?.origin;if(origin===undefined)throw new TypeError("Axis label hit requires its actual native source.");return Object.freeze({origin,metrics:Object.freeze([origin])});}
+      if(decision.kind==="geographic"){const origin=geographic[index]?.origin;if(origin===undefined)throw new TypeError("Geographic hit requires its actual native source.");return Object.freeze({origin,metrics:Object.freeze(geographic[index].metrics??[origin])});}
+      const origin = decision.kind === "exit" ? proof.from.nodes[decision.sourceIndex] : proof.to.nodes[decision.targetIndex];
+      if (origin === undefined) throw new TypeError("Animation hit requires an exact native source.");
+      if (decision.kind !== "crossfade") return origin;
+      const from = proof.from.nodes[decision.sourceIndex], to = proof.to.nodes[decision.targetIndex];
+      if (from === undefined || to === undefined) throw new TypeError("Animation hit blend requires both native sources.");
+      return Object.freeze({ origin: origin.origin, metrics: Object.freeze([...from.metrics, ...to.metrics]) });
+    });
+    const placement = (side === "from" ? proof.from : proof.to).placement;
+    const owners = new Set([...proof.directOwners, placement]);
+    for (const node of nodes) { owners.add(node.origin.program); for (const origin of node.metrics) owners.add(origin.program); }
+    native = Object.freeze({ nodes: Object.freeze(nodes), owners: Object.freeze([...owners]), placement });
+  }
+  if(exact===undefined)sampledIdentities.set(plan,endpoint.identities);
+  return Object.freeze({ endpoint, native });
+}
+
+export function prepareFrameEndpoint(frame, proof) {
+  if (proof.endpoint === undefined) throw new TypeError("Sampled endpoint requires prepared identity metadata.");
+  if(frame.scene.version===3){
+    const rows=projectBatchSceneRows(frame.scene,proof.positions);
+    const endpoint=projectSampledAnimationEndpoint({graphicSpec:frame.graphicSpec,scene:rows.scene},proof.endpoint.identities,proof.endpoint.backgrounds);
+    return {...prepareFrameEndpoint({scene:rows.scene},{...proof,endpoint,positions:rows.positions}),frame};
+  }
+  const positions = proof.positions.map((position, index) => position ?? unavailablePointAnimationPosition(proof.endpoint.identities[index] === undefined ? "anonymous" : "sampled-concrete"));
+  return { endpoint: proof.endpoint, axislabels:proof.axislabels, geotexts: proof.geotexts, guides: proof.guides, positions: cloneAndFreeze(positions), geos: proof.geos, graphs: proof.graphs, polars: proof.polars?.map((state,index)=>state??unavailablePolarAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), partitions: proof.partitions, cartesian: proof.cartesian?.map((state,index)=>state??unavailableCartesianAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), frame };
+}
+
+export function validateSampledEndpointMetadata(scene,identities,backgrounds,view,guides=[],axislabels,maxDecisionIndex=10000) {
+  ownRecord(scene,"Sampled scene");rejectUnknownProperties(scene,["version","width","height","nodes"],"sampled scene");
+  for(const node of scene.nodes){
+    ownRecord(node,"Sampled scene node");rejectUnknownProperties(node,["key","type","topology","properties","offset","clip","clips"],"sampled scene node");
+    if(typeof node.topology!=="string")throw new TypeError("Sampled node requires its topology.");
+  }
+  ownArray(identities,"Sampled identities");ownArray(backgrounds,"Sampled backgrounds");
+  if(identities.length!==scene.nodes.length)throw new TypeError("Sampled identities must follow every scene node.");
+  const indices=new Set(),owners=new Set();
+  for(const entry of backgrounds){
+    ownRecord(entry,"Sampled background");rejectUnknownProperties(entry,["index","owner"],"sampled background");
+    if(!Number.isSafeInteger(entry.index)||entry.index<0||entry.index>=scene.nodes.length||indices.has(entry.index)||
+        identities[entry.index]!==undefined||typeof entry.owner!=="string"||!entry.owner||owners.has(entry.owner))throw new TypeError("Invalid sampled background identity.");
+    indices.add(entry.index);owners.add(entry.owner);
+  }
+  ownRecord(view,"Sampled frame view");rejectUnknownProperties(view,["progress","decisions","timeMs"],"sampled frame view");
+  validateUnitInterval(view.progress,"Sampled frame progress");
+  if(Object.hasOwn(view,"timeMs")&&!Number.isFinite(view.timeMs))throw new TypeError("Sampled frame time must be finite.");
+  ownArray(view.decisions,"Sampled frame decisions");
+  if(view.decisions.length!==0&&view.decisions.length!==scene.nodes.length)throw new TypeError("Sampled decisions must follow the scene order.");
+  if(scene.nodes.length>0&&((view.progress===0||view.progress===1)!==(view.decisions.length===0)))throw new TypeError("Sampled decisions disagree with endpoint progress.");
+  const checkedAxisGroups=new Set();
+  for(const [index,decision]of view.decisions.entries()){
+    ownRecord(decision,"Sampled decision");
+    if(decision.kind==="guide"){
+      const item=axislabels?.items[index],group=item==null?undefined:axislabels.groups[item.group],guide=guides[index];
+      if(group===undefined||identities[index]!==undefined||indices.has(index)||scene.nodes[index].type!=="text"||guide==null)throw new TypeError("Axis label decision requires its current prepared group.");
+      const identity=axisLabelGroupIdentity(group,item.value,item.line);
+      validateAxisLabelDecision(decision,identity);
+      if(guideAnimationKey(guide.identity)!==guideAnimationKey(identity))throw new TypeError("Axis label decision differs from its retained guide identity.");
+      if(!checkedAxisGroups.has(item.group)){
+        const length=resolveAxisLabelReflow(group.layout).entries.length,nodes=scene.nodes.slice(group.placement.insertion,group.placement.insertion+length);
+        if(!axisLabelReflowMatchesNodes(group.layout,nodes)||nodes.some(({offset,clip,clips})=>!sameConcreteValue({offset,clip,clips},group.placement.frame)))throw new TypeError("Sampled axis label geometry differs from its current native layout.");
+        checkedAxisGroups.add(item.group);
+      }
+      continue;
+    }
+    if(decision.kind==="geographic"){validateGeoAnimationDecision(decision,identities[index]);if(!(decision.kernel==="native-geo-text"?["text","line","weighted-blend"]:["circle","path"]).includes(scene.nodes[index].type))throw new TypeError("Geographic decision requires a native geographic primitive.");continue;}
+    const ownerKey=identities[index]!==undefined?graphicAnimationOwnerKey(identities[index]):guides[index]==null?undefined:guideAnimationOwnerKey(guides[index].identity);
+    const singular=decision.kind==="enter"?"targetIndex":decision.kind==="exit"?"sourceIndex":undefined;
+    const identityFields=Object.hasOwn(decision,"guideKey")?["guideKey","role"]:Object.hasOwn(decision,"itemKey")?["itemKey","role"]:["owner","role"];
+    const fields=[...(singular?["kind",singular,...(Object.hasOwn(decision,"reason")?["reason"]:[])]:["kind","sourceIndex","targetIndex",...identityFields,
+      ...(decision.kind==="crossfade"?["reason"]:decision.kind==="semantic-kernel"?["kernel"]:[])]),...(ownerKey===undefined?[]:["ownerKey"])];
+    rejectUnknownProperties(decision,fields,"sampled decision");
+    if(fields.some(key=>!Object.hasOwn(decision,key))||!["enter","exit","exact","crossfade","semantic-kernel"].includes(decision.kind))throw new TypeError("Unknown or incomplete sampled decision.");
+    if(ownerKey!==undefined&&decision.ownerKey!==ownerKey)throw new TypeError("Sampled owner differs from its exact native identity.");
+    for(const key of ["sourceIndex","targetIndex"])if(Object.hasOwn(decision,key)&&(!Number.isSafeInteger(decision[key])||decision[key]<0||decision[key]>=maxDecisionIndex))throw new TypeError("Invalid sampled decision index.");
+    if(singular&&Object.hasOwn(decision,"reason")&&(decision.reason!=="guide-ambiguity"||guides[index]==null))throw new TypeError("Only an ambiguous guide may add an unmatched decision reason.");
+    if(!singular){
+      const identity=identities[index],background=backgrounds.find(value=>value.index===index);
+      if(Object.hasOwn(decision,"guideKey")){
+        const guide=guides[index];
+        if(identity!==undefined||background!==undefined||guide==null||decision.guideKey!==guideAnimationKey(guide.identity)||decision.role!==`guide-${guide.identity.component}`)throw new TypeError("Sampled guide decision differs from its retained identity.");
+        if(decision.kind==="exact"&&guide.reason!==undefined)throw new TypeError("Exact guide decisions require retained native geometry.");
+      }else if(guides[index]!=null || (identity?(decision.itemKey!==identity.key||decision.role!==identity.role):(background===undefined||decision.owner!==background.owner||decision.role!=="canvas-background")))throw new TypeError("Sampled decision differs from its retained identity.");
+      if(decision.kind==="semantic-kernel"&&!["cartesian-point","completed-graph","cartesian-geometry","partition","polar-geometry","guide-geometry"].includes(decision.kernel))throw new TypeError("Unsupported sampled semantic kernel.");
+      if((decision.kind==="semantic-kernel"&&(decision.kernel==="guide-geometry"?!["line","path","text","rect","circle"].includes(scene.nodes[index].type):decision.kernel==="polar-geometry"?!["circle","path"].includes(scene.nodes[index].type):decision.kernel==="cartesian-point"?scene.nodes[index].type!=="circle":decision.kernel==="cartesian-geometry"?!["line","rect","path","circle"].includes(scene.nodes[index].type):!["circle","path","text"].includes(scene.nodes[index].type)))||(decision.kind==="crossfade"&&scene.nodes[index].type!=="weighted-blend"))throw new TypeError("Sampled decision differs from its concrete primitive.");
+      if(decision.kind==="crossfade")validateAnimationFallbackReason(decision.reason);
+    }
+  }
+}

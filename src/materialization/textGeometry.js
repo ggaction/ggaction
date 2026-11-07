@@ -1,5 +1,6 @@
-import { bindTextFontProperties } from "./textFont.js";
-import { requestedStrokeDetails } from "../grammar/strokeStyle.js";
+import { isScreenAnnotation, validateScreenAnnotationLayer } from "../grammar/screenAnnotation.js";
+import { resolveSourceTextAnchors } from "./textSourceAnchors.js";
+import { concreteTextItem } from "./textItem.js";
 import { hasPositionBinding } from "../core/encodingBindings.js";
 import { contentValue, resolveTextSourceBindings } from "./textContent.js";
 export { sourceValue } from "./textContent.js";
@@ -65,6 +66,12 @@ function sourceAnchor(program, source, item) {
       x: item.properties.x2,
       y: item.properties.y2
     };
+  }
+  if (source.mark.type === "trail") {
+    const geometry = item.geometry;
+    const graphic = findGraphic(program.graphicSpec, item.graphicIds?.at(-1))?.object;
+    const origin = graphic?.properties?.commands?.[0] ?? geometry.origin;
+    return { x: geometry.endpoint.x + origin.x - geometry.origin.x, y: geometry.endpoint.y + origin.y - geometry.origin.y };
   }
   if (source.mark.type === "line") {
     const graphicId = item.graphicIds?.[0];
@@ -245,32 +252,6 @@ function sourcePlacementGeometry(program, source, item) {
   return { kind: "point", center: sourceAnchor(program, source, item) };
 }
 
-function concreteTextItem(program, config, position, text, { offsets = true } = {}) {
-  const x = position.x;
-  const y = position.y;
-  if (text === undefined || !Number.isFinite(x) || !Number.isFinite(y)) {
-    return undefined;
-  }
-  const lines = resolveTextLines(text, config);
-  return {
-    type: "text",
-    properties: bindTextFontProperties(program, {
-      x: x + (offsets ? config.dx : 0),
-      y: y + (offsets ? config.dy : 0),
-      text,
-      ...requestedStrokeDetails(config),
-      ...(lines === undefined ? {} : { lines }),
-      fill: config.fill,
-      opacity: config.opacity,
-      fontSize: config.fontSize,
-      fontFamily: config.fontFamily,
-      fontWeight: config.fontWeight,
-      textAlign: config.align,
-      textBaseline: config.baseline,
-      rotation: config.rotation
-    })
-  };
-}
 
 function relativeLuminance(color) {
   if (typeof color !== "string" || !/^#[0-9a-f]{6}$/i.test(color)) {
@@ -348,7 +329,10 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
   } else {
     throw new Error(`Unknown label selection kind "${requested.kind}".`);
   }
-  if (sourceOnly) return items.map(item => ({ members: item.members, fields: item.fields, channels: item.channels, semanticIdentity: ["label", item.key] }));
+  const anchors = resolvers.sourceAnchors ?? resolveSourceTextAnchors(program, source, items);
+  if (anchors !== undefined) items = items.filter(item => anchors.get(item.key) !== undefined);
+  const provenanceFor = item => ({ members: item.members, fields: item.fields, channels: item.channels, semanticIdentity: ["label", item.key], ...(anchors === undefined ? {} : { sourceItem: item }) });
+  if (sourceOnly) return items.map(provenanceFor);
   const sourceBindings = resolveTextSourceBindings(program, layer, allItems, resolvers);
   const sourceByKey = sourceBindings === undefined ? undefined : new Map(allItems.map((item, index) => [item.key, sourceBindings[index]]));
   const conditionalFill = resolvers.skipAppearance ? undefined : resolveTextConditional(program, layer, "color", allItems, resolvers);
@@ -366,7 +350,7 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
   return items.flatMap(item => {
     const itemSource = sourceByKey?.get(item.key) ?? source;
     const identity = identityRecords?.get(item);
-    const provenance = members ? { members: item.members, fields: item.fields, channels: item.channels, semanticIdentity: ["label", item.key] } : {};
+    const provenance = members ? provenanceFor(item) : {};
     let resolvedConfig = sourceTextConfig(program, config, itemSource, item);
     if (resolvers.skipAppearance && resolvedConfig.fill === undefined) resolvedConfig = { ...resolvedConfig, fill: DEFAULT_TEXT_MARK.fill };
     if (fillByKey !== undefined) resolvedConfig = { ...resolvedConfig, fill: fillByKey.get(item.key), fillExplicit: true };
@@ -376,17 +360,17 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
         : values.get(item.key),
       layer.encoding.text.format
     );
-    if (text === undefined) return [];
+    if (text === undefined) return resolvers.retainEmptyText ? [{ ...identity, ...provenance }] : [];
     const placement = program.markConfigs[layer.id]?.labelAuthoring?.placement;
     if (placement === undefined) {
-      const anchor = sourceAnchor(program, itemSource, item);
+      const anchor = anchors?.get(item.key) ?? sourceAnchor(program, itemSource, item);
       const concrete = concreteTextItem(program, resolvedConfig, anchor, text);
       return concrete === undefined ? [] : [{ graphic: concrete, anchor, ...identity, ...provenance }];
     }
     assertMarkLabelPlacementSupport(sourcePlacementContext(program, itemSource), placement);
     const resolved = resolveMarkLabelPlacement({
       placement,
-      geometry: sourcePlacementGeometry(program, itemSource, item),
+      geometry: anchors === undefined ? sourcePlacementGeometry(program, itemSource, item) : { kind: "point", center: anchors.get(item.key) },
       text: {
         text,
         lines: resolveTextLines(text, resolvedConfig),
@@ -400,7 +384,7 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
         dy: resolvedConfig.dy
       }
     }, program.materializationConfigs.textMetrics);
-    if (!resolved.visible) return [];
+    if (!resolved.visible) return resolvers.retainEmptyText ? [{ ...identity, ...provenance }] : [];
     if (
       resolved.anchor.startsWith("outside") &&
       config.fillExplicit !== true && !config.inheritColor && fillByKey === undefined
@@ -501,9 +485,28 @@ function resolveRowTextItems(program, layer, config, includeIdentities, members,
 }
 
 export function resolveTextGraphicEntries(program, layer, config, { identities = false, members = false, resolveMarkItems, resolveMarkSourceItems, sourceOnly = false, skipAppearance = false } = {}) {
+  if (isScreenAnnotation(layer)) {
+    validateScreenAnnotationLayer(layer);
+    const text = formatTextValue(layer.encoding.text.datum, layer.encoding.text.format);
+    const anchor = { x: layer.annotationAnchor.x, y: layer.annotationAnchor.y };
+    const graphic = concreteTextItem(program, config, anchor, text);
+    return graphic === undefined ? [] : [{ graphic, anchor, semanticIdentity: ["annotation", "screen"], members: [], fields: {}, channels: { text: layer.encoding.text.datum } }];
+  }
   return layer.source === undefined
     ? resolveRowTextItems(program, layer, config, identities, members, { resolveMarkItems, resolveMarkSourceItems })
     : resolveSourceTextItems(program, layer, config, identities, members, { resolveMarkItems, resolveMarkSourceItems, skipAppearance }, sourceOnly);
+}
+
+// Private preparation at explicit source-space anchors. The caller supplies
+// native source membership; selection, content, overrides and placement remain
+// owned by the same Text implementation as ordinary materialization.
+export function resolvePreparedSourceTextEntries(program, layer, config, sourceAnchors, resolvers, { sourceOnly = false, retainEmptyText = false } = {}) {
+  if (typeof sourceOnly !== "boolean" || typeof retainEmptyText !== "boolean" || layer.source === undefined || !(sourceAnchors instanceof Map) ||
+      [...sourceAnchors].some(([key, point]) => typeof key !== "string" || point === null ||
+        !Number.isFinite(point?.x) || !Number.isFinite(point?.y))) {
+    throw new TypeError("Prepared source Text requires explicit finite anchors by item key.");
+  }
+  return resolveSourceTextItems(program, layer, config, false, true, { ...resolvers, sourceAnchors, retainEmptyText }, sourceOnly);
 }
 
 // Row membership is available before position materialization. Raw-field

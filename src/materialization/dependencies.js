@@ -1,4 +1,4 @@
-import { withGuideLayoutTransaction } from "./guides/layout.js";
+import { withGuideLayoutTransaction, withGuideLayoutTransactionStages } from "./guides/layout.js";
 import {
   getLayerScaleIds,
   getExistingMarkRematerializationStep,
@@ -10,6 +10,7 @@ import {
 import { findLayer, requireLayer } from "../selectors/layers.js";
 import {
   applyMaterializationPlan as executeMaterializationPlan,
+  applyMaterializationPlanStages as executeMaterializationPlanStages,
   buildMaterializationPlan
 } from "./planner.js";
 import {
@@ -139,5 +140,9 @@ export function applyDetachedScaleRematerialization(program, previousLayers) {
 
 export function applyMaterializationPlan(program, plan) {
   return withGuideLayoutTransaction(program, next => executeMaterializationPlan(next, plan));
+}
+
+export function* applyMaterializationPlanStages(program, plan) {
+  return yield* withGuideLayoutTransactionStages(program, function* (next) { return yield* executeMaterializationPlanStages(next, plan); });
 }
 export { planScaleGuideRematerialization };

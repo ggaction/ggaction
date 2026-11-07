@@ -114,7 +114,7 @@ test("destroy disposes once, clears queued callbacks and leaves a readable termi
   const retry = createInteractionSession({ program: pointProgram() });
   retry.subscribe(event => { if (event.type === "inspect") { retry.destroy(); throw new Error("subscriber failed"); } });
   assert.throws(() => retry.dispatch({ type: "inspect", point }), /subscriber failed/);
-  assert.equal(retry.getState().destroyed, false); assert.equal(retry.destroy(), true);
+  assert.equal(retry.getState().destroyed, true); assert.equal(retry.destroy(), false);
 });
 
 test("closed options, accessor frames and malformed bindings reject before changing session state", () => {

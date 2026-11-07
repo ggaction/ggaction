@@ -1,0 +1,276 @@
+{
+  "kind": "diagnostic-not-qualification",
+  "archive": {
+    "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/edge-methods-archives/ggaction-c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4.tgz",
+    "sha256": "c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4"
+  },
+  "sourceRevision": "587840986997c54945ba561c6aa70c98fc9b0f7e",
+  "sourceRevisionScope": "Checkout HEAD; executable harness bytes are pinned separately in inputs, including uncommitted changes. Runtime identity is the installed archive hash.",
+  "profile": {
+    "seed": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "warmups": 0,
+    "measured": 1,
+    "cycles": 4
+  },
+  "environment": {
+    "cpu": "Apple M4",
+    "cores": 10,
+    "ramBytes": 17179869184,
+    "os": "Darwin 27.0.0 arm64",
+    "node": "v22.23.1",
+    "start": "2026-11-01T15:34:34.658Z",
+    "loadStart": [
+      2.01318359375,
+      2.33642578125,
+      2.875
+    ],
+    "browser": "153.0.8010.12",
+    "end": "2026-11-01T15:34:37.005Z",
+    "loadEnd": [
+      2.01318359375,
+      2.33642578125,
+      2.875
+    ]
+  },
+  "scope": "Unchanged full native route fixtures; real DOM inspect mount, Blob route worker, alternating completion and abort. Memory fixture has no editing gesture, ResizeObserver or asset decoder; their combined heap obligation remains separate.",
+  "font": "No Text, labels or guides in measured graphics; host status text is outside measurement.",
+  "network": "Local bootstrap only, then offline; zero post-bootstrap HTTP requests required.",
+  "stages": {
+    "sourcePreparationMs": "one-time diagnostic, outside P95",
+    "computeMs": "worker public computation",
+    "prepareComputeValidateMs": "public preparation including worker startup, clone, computation and validation",
+    "applyMs": "native prepared commit",
+    "bundlingMs": "preparation plus apply",
+    "materializeMs": "native GraphPlot",
+    "canvasRenderMs": "synchronous commands",
+    "svgSerializeDomMs": "serialization and DOM insertion, excludes compositor paint"
+  },
+  "workloadScope": "Complete deterministic native point/hierarchy/Geo/data inputs at every required size. Native authoring and independent numeric preflight precede timing. Public layout includes immutable action validation; data blocking slice is the entire synchronous deserialize/revise call. Unsupported cells remain failures of support; no downsampling. Production P95 is not final qualification by itself.",
+  "inputs": {
+    "scripts/benchmark-native.js": "236b17f24b06575c3aea7b826fe454334a4da1e9c9c4ca5c9b143a3146982705",
+    "scripts/benchmarks/routes.browser.js": "3f6b14d9b09a33e51d6f0afb59b709539c14d313bf7110e09c688fcf0ca46d55",
+    "scripts/benchmarks/routes.worker.js": "d52c9b779d4db10e66faff28751b12a13408b1d57c3bbfdfa4ff4f089857c729",
+    "scripts/benchmarks/workloads.browser.js": "4e78ed78da0efc652f1e2dbe21c96e26e420496badf0ad6629b3efcfb7e5d15d",
+    "app.js": {
+      "sha256": "21e049ffec7dfe57623831c4d37a95a2b89da2b821e73828b3e696c16f32e3af",
+      "bytes": 2797084
+    },
+    "worker.js": {
+      "sha256": "fc51259225ffb13147d7a41f54333d17c3c5b44fe2f67bf312bcf09235e15770",
+      "bytes": 56868
+    },
+    "workloads.js": {
+      "sha256": "8ca3bb77b0b5598dd8c2351c0c266c14e6d4296da9a715a0b8e9c5bd4031a05a",
+      "bytes": 3076811
+    }
+  },
+  "cases": [],
+  "workloads": [],
+  "lifecycle": [
+    {
+      "ratio": 1,
+      "cycles": 4,
+      "samples": [
+        {
+          "cycle": 0,
+          "usedSize": 3630988,
+          "totalSize": 4587520,
+          "embedderHeapUsedSize": 324888,
+          "backingStorageSize": 2857487
+        },
+        {
+          "cycle": 1,
+          "usedSize": 3893024,
+          "totalSize": 4325376,
+          "embedderHeapUsedSize": 325928,
+          "backingStorageSize": 2857535
+        },
+        {
+          "cycle": 2,
+          "usedSize": 5956204,
+          "totalSize": 6701056,
+          "embedderHeapUsedSize": 496184,
+          "backingStorageSize": 2857596
+        },
+        {
+          "cycle": 3,
+          "usedSize": 5985328,
+          "totalSize": 6438912,
+          "embedderHeapUsedSize": 327896,
+          "backingStorageSize": 2857596
+        },
+        {
+          "cycle": 4,
+          "usedSize": 6218480,
+          "totalSize": 7225344,
+          "embedderHeapUsedSize": 328704,
+          "backingStorageSize": 2857596
+        }
+      ],
+      "results": [
+        {
+          "status": "aborted",
+          "abortAcknowledgementMs": 0.5999999046325684,
+          "counters": {
+            "workers": 0,
+            "workerListeners": 0,
+            "listeners": 0,
+            "timers": 0,
+            "captures": 0,
+            "callbacksAfterDestroy": 0
+          }
+        },
+        {
+          "status": "completed",
+          "abortAcknowledgementMs": null,
+          "counters": {
+            "workers": 0,
+            "workerListeners": 0,
+            "listeners": 0,
+            "timers": 0,
+            "captures": 0,
+            "callbacksAfterDestroy": 0
+          }
+        },
+        {
+          "status": "aborted",
+          "abortAcknowledgementMs": 0.20000004768371582,
+          "counters": {
+            "workers": 0,
+            "workerListeners": 0,
+            "listeners": 0,
+            "timers": 0,
+            "captures": 0,
+            "callbacksAfterDestroy": 0
+          }
+        },
+        {
+          "status": "completed",
+          "abortAcknowledgementMs": null,
+          "counters": {
+            "workers": 0,
+            "workerListeners": 0,
+            "listeners": 0,
+            "timers": 0,
+            "captures": 0,
+            "callbacksAfterDestroy": 0
+          }
+        }
+      ],
+      "gc": "CDP collectGarbage before every sample",
+      "slopeBytesPerCycle": 726728.8,
+      "growthBytes": 2587492,
+      "thresholds": {
+        "slopeBytesPerCycle": 10240,
+        "growthBytes": 2097152
+      },
+      "heapStatus": "not-qualified-diagnostic",
+      "abortAcknowledgementP95Ms": 0.5999999046325684
+    },
+    {
+      "ratio": 2,
+      "cycles": 4,
+      "samples": [
+        {
+          "cycle": 0,
+          "usedSize": 3630988,
+          "totalSize": 4063232,
+          "embedderHeapUsedSize": 324888,
+          "backingStorageSize": 2857487
+        },
+        {
+          "cycle": 1,
+          "usedSize": 3893024,
+          "totalSize": 4325376,
+          "embedderHeapUsedSize": 325928,
+          "backingStorageSize": 2857535
+        },
+        {
+          "cycle": 2,
+          "usedSize": 5957836,
+          "totalSize": 7487488,
+          "embedderHeapUsedSize": 327976,
+          "backingStorageSize": 2857596
+        },
+        {
+          "cycle": 3,
+          "usedSize": 5987392,
+          "totalSize": 6438912,
+          "embedderHeapUsedSize": 327896,
+          "backingStorageSize": 2857596
+        },
+        {
+          "cycle": 4,
+          "usedSize": 6218296,
+          "totalSize": 7225344,
+          "embedderHeapUsedSize": 328704,
+          "backingStorageSize": 2857596
+        }
+      ],
+      "results": [
+        {
+          "status": "aborted",
+          "abortAcknowledgementMs": 0.3000001907348633,
+          "counters": {
+            "workers": 0,
+            "workerListeners": 0,
+            "listeners": 0,
+            "timers": 0,
+            "captures": 0,
+            "callbacksAfterDestroy": 0
+          }
+        },
+        {
+          "status": "completed",
+          "abortAcknowledgementMs": null,
+          "counters": {
+            "workers": 0,
+            "workerListeners": 0,
+            "listeners": 0,
+            "timers": 0,
+            "captures": 0,
+            "callbacksAfterDestroy": 0
+          }
+        },
+        {
+          "status": "aborted",
+          "abortAcknowledgementMs": 0.20000004768371582,
+          "counters": {
+            "workers": 0,
+            "workerListeners": 0,
+            "listeners": 0,
+            "timers": 0,
+            "captures": 0,
+            "callbacksAfterDestroy": 0
+          }
+        },
+        {
+          "status": "completed",
+          "abortAcknowledgementMs": null,
+          "counters": {
+            "workers": 0,
+            "workerListeners": 0,
+            "listeners": 0,
+            "timers": 0,
+            "captures": 0,
+            "callbacksAfterDestroy": 0
+          }
+        }
+      ],
+      "gc": "CDP collectGarbage before every sample",
+      "slopeBytesPerCycle": 726898.4,
+      "growthBytes": 2587308,
+      "thresholds": {
+        "slopeBytesPerCycle": 10240,
+        "growthBytes": 2097152
+      },
+      "heapStatus": "not-qualified-diagnostic",
+      "abortAcknowledgementP95Ms": 0.3000001907348633
+    }
+  ],
+  "status": "diagnostic-completed-not-qualification"
+}

@@ -1,0 +1,141 @@
+{
+  "targets": [
+    {
+      "target": "AT-65",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-hierarchy-focus.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/partition-transition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/partition-session.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/animation-partition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/cross-feature-integration/variants/animation/partition.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/partition-transition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/animation-partition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/cross-feature-integration/variants/animation/partition.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/partition-transition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/animation-partition.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/cross-feature-integration/variants/animation/partition.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/geo-public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-text-public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-text-expressions.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-text-state.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-public-selection.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/cross-feature-integration/variants/animation/geotext-expressions.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/animation-geotext-expressions.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    }
+  ]
+}

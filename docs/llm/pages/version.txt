@@ -1,7 +1,7 @@
 # Documentation Version
 
-The current site documents **ggaction 0.0.26** with a
-**development** contract.
+The current site documents **ggaction 0.0.27** with a
+**published-release** contract.
 A `published-release` contract matches that package version. A `development`
 contract can include newer behavior; its package version alone does not establish
 API availability. Each action entry identifies its release availability.
@@ -9,11 +9,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:68077e6a53b125bb36c5c8437d95b93244630926012e5d2a369eff898d23f9f7` |
-| Example and dataset source | `0a46877e019d00163dc55c681ce4833b14d8e541` |
-| Runtime source commit | `e56b8e4c16afe328947bd9840f3412a014874c98` |
+| Contract fingerprint | `sha256:cdfbebb474d11f7d3608c8c465f43cc2fcf995bfcc885da0165bb9410577c9fd` |
+| Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
+| Runtime source commit | `6322f990c79f93a7d9cf1e61af8f49a7f36648fe` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 369 |
+| Declared actions here | 380 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -22,13 +22,29 @@ The comparison baseline below is the older release used by the migration notes.
 - Use this site's action entries for the contract shown above. Each entry identifies
  the release that provides the action or explicitly marks it as development-only.
 - Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md)
- and [migration notes](../../version/#migration-from-v0013) when upgrading.
+ and the migration notes from [v0.0.26](../../version/#migration-from-v0026) and
+ [v0.0.13](../../version/#migration-from-v0013) when upgrading.
 
 The machine-readable [provenance manifest](../../doc-provenance.json) records the same
 contract fingerprint, runtime source revision, baseline, and action availability.
 The full LLM bundle and its section manifest carry that identity too. The fingerprint
 covers runtime code, declarations, and public package configuration; documentation
 edits alone do not change the chart API fingerprint.
+
+## Migration from v0.0.26 {#migration-from-v0026}
+
+Editable snapshots are now written as schema 4. Schemas 1–3 still load, but
+ggaction 0.0.26 and earlier cannot load a schema 4 snapshot; render-only snapshots
+are unchanged. `ggaction` now has three exactly pinned runtime dependencies
+(`d3-array`, `internmap`, and `d3-geo` installed as `geographic-math`).
+Browser bundles are larger: the gzip budget of `ggaction` grew from about 495 KB
+to about 805 KB and `ggaction/basic` from about 255 KB to about 430 KB; import the
+narrowest entry that provides the actions you need. Most new actions, including
+graphs, hierarchies, flows, maps, contours, calendars, images, fonts and the
+specialized plots, are available from `ggaction` and not from `ggaction/basic`.
+Charts with version 2 edge routes change their dependent data, layouts and Canvas
+through [`applyGraphEdgeRoutesUpdate`](../../api/edge-routes/#applygraphedgeroutesupdate).
+See [Performance](../../performance/#known-limits) for the measured limits of this release.
 
 ## Migration from v0.0.13 {#migration-from-v0013}
 

@@ -13,17 +13,20 @@ import {
   describeAction,
   getDatasetSchema,
   getPlotComposition,
+  getProjectionView,
   inspectProgram
 } from "../../src/inspection.js";
 
 const PUBLIC_ENTRIES = Object.freeze({
-  "./graph": Object.freeze({ runtime: "./src/graph.js", types: "./types/graph.d.ts", values: Object.freeze(["computeGraphEdgeRoutes", "createGraphRouteExecutor", "prepareGraphEdgeRoutes"]) }),
+  "./animation": Object.freeze({ runtime: "./src/animation.js", types: "./types/animation.d.ts", values: Object.freeze(["createAnimationPlayer", "deserializeAnimation", "exportAnimationFrames", "planTransition", "sampleTransition", "serializeAnimation"]) }),
+  "./graph": Object.freeze({ runtime: "./src/graph.js", types: "./types/graph.d.ts", values: Object.freeze(["computeGraphEdgeRoutes", "computeGraphEdgeRoutesAsync", "computeGraphInference", "createGraphInferenceExecutor", "createGraphRouteExecutor", "prepareGraphEdgeRoutes", "prepareInferredGraphData"]) }),
   "./interaction": Object.freeze({ runtime: "./src/interaction.js", types: "./types/interaction.d.ts", values: Object.freeze(["createInteractionSession"]) }),
+  "./live": Object.freeze({ runtime: "./src/live.js", types: "./types/live.d.ts", values: Object.freeze(["LiveChart", "chart", "playAnimation"]) }),
   "./scene": Object.freeze({ runtime: "./src/scene.js", types: "./types/scene.d.ts", values: Object.freeze(["createTransitionScene", "renderTransitionScene"]) }),
   ".": Object.freeze({
     runtime: "./src/index.js",
     types: "./types/index.d.ts",
-    values: Object.freeze(["chart", "hconcat", "prepareDataUpdate", "prepareFontRendering", "prepareFontResource", "prepareImageRendering", "prepareImageResource", "prepareShadowRendering", "prepareTextMetrics", "render", "vconcat"])
+    values: Object.freeze(["chart", "hconcat", "prepareDataUpdate", "prepareFontRendering", "prepareFontResource", "prepareImageRendering", "prepareImageResource", "prepareShadowRendering", "prepareTextMetrics", "render", "reviseDataInSlices", "vconcat"])
   }),
   "./basic": Object.freeze({
     runtime: "./src/basic.js",
@@ -48,7 +51,7 @@ const PUBLIC_ENTRIES = Object.freeze({
   "./persistence": Object.freeze({
     runtime: "./src/persistence.js",
     types: "./types/persistence.d.ts",
-    values: Object.freeze(["deserializeGraphic", "deserializeProgram", "serializeGraphic", "serializeProgram"])
+    values: Object.freeze(["deserializeGraphic", "deserializeProgram", "loadProgramInSlices", "serializeGraphic", "serializeProgram"])
   }),
   "./accessibility": Object.freeze({
     runtime: "./src/accessibility.js",
@@ -64,7 +67,7 @@ const PUBLIC_ENTRIES = Object.freeze({
     runtime: "./src/inspection.js",
     types: "./types/inspection.d.ts",
     values: Object.freeze([
-      "comparePrograms", "describeAction", "getDatasetSchema", "getExpressionFunctions", "getMarkItems", "getPlotComposition", "inspectProgram"
+      "comparePrograms", "describeAction", "getDatasetSchema", "getExpressionFunctions", "getMarkItems", "getPlotComposition", "getProjectionView", "inspectProgram"
     ])
   }),
   "./svg": Object.freeze({
@@ -96,6 +99,7 @@ test("exports the public module boundaries", () => {
   assert.equal(typeof describeAction, "function");
   assert.equal(typeof getDatasetSchema, "function");
   assert.equal(typeof getPlotComposition, "function");
+  assert.equal(typeof getProjectionView, "function");
   assert.equal(typeof inspectProgram, "function");
 });
 

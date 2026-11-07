@@ -1,0 +1,193 @@
+{
+  "status": "explicit-paired-native-resource-consumers-integrated; final-results-pending",
+  "base": "d2bbf53c8",
+  "incomingSource": "951b130748b3a1d9b008f9b3c2797ca28f810cfa",
+  "upstreamPin": "6f02b07870ba96c7e9bcbdd433cb25e84fa12be7",
+  "sourceRevision": "ac5f2191f2796c8bd256668704158add5ddcd105",
+  "approval": "../../AUTHORIZATION.json#remainingApproval; root chose concrete Current compositional consumer interpretation",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1229,
+    "packedBytes": 1755879,
+    "unpackedBytes": 7927055,
+    "file": "ggaction-0.0.26.tgz",
+    "sha256": "ebfa7ce25443b4fcf56205a5cf8cb241531e8fffe7b217a60fc5e1a5727150f0"
+  },
+  "runtimeTypesAndPackageInputsUnchanged": true,
+  "scope": "21 encoding/scale/guide consumers: seven existing native resource families paired explicitly with an analytical child from the same typed values. Child-target field/scale/guide edits isolate exact resource sibling refs; one explicit multi-child reviseData refreshes both atomically.",
+  "notClaimed": "No field binding, scale-driven geometry or value-to-color legend added to resource facade. Analytical guide belongs only to analytical child. No required/N/A denominator change.",
+  "checks": {
+    "owning.log": 53,
+    "node20.log": 14,
+    "node24.log": 14,
+    "browser.log": 7,
+    "docs.log": 239
+  },
+  "browser": {
+    "families": 7,
+    "backends": [
+      "Canvas",
+      "SVG"
+    ],
+    "dpr": [
+      1,
+      2
+    ],
+    "proof": "unchanged resource pixel crop after analytical edits; changed analytical crop, codec full pixels exact"
+  },
+  "installedDoc": {
+    "node": "v22.23.1",
+    "archive": "ebfa7ce25443b4fcf56205a5cf8cb241531e8fffe7b217a60fc5e1a5727150f0",
+    "examples": 1,
+    "sourceFreeBrowser": true,
+    "actualDisplayedRecipeAndSupportFile": true
+  },
+  "built": {
+    "pages": 186,
+    "selectiveLlm": 1603
+  },
+  "docsBrowser": {
+    "changedPage": "recipes/composition",
+    "widths": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "pairs": 4,
+    "overflow": 0,
+    "axe": 0,
+    "errors": 0,
+    "additionalUnchangedBasePairs": 8
+  },
+  "searchBudget": {
+    "beforeLimit": 1088500,
+    "measuredBytes": 1089169,
+    "afterLimit": 1089200
+  },
+  "manifest": {
+    "requirements": 30,
+    "groups": 79,
+    "targets": 577,
+    "required": 574,
+    "canonicalNotApplicable": 3,
+    "previousAssignedConsumers": 500,
+    "addedAssignedConsumers": 21,
+    "assignedConsumers": 521,
+    "pendingRequiredConsumers": 53,
+    "assignedGroups": 61,
+    "pendingGroups": 18,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577,
+    "otherRowsAndFieldsPreserved": true
+  },
+  "remaining": [
+    "R dynamic labels/P axis-dependent inferred clearance",
+    "53 native consumers/18 acceptance owners plus final same-candidate actual evidence",
+    "Route/heap/SLO, nine final commands/review/protected delivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "docs-browser.log": {
+      "sha256": "15fc03001beec24c8623f542b4fd2982c3924dad9db85af2e564c041598c1a48",
+      "bytes": 321
+    },
+    "pack.json": {
+      "sha256": "f6af5672492e46fde6013d3be70b13a9ad7b522d742a1436c24faa36c595c553",
+      "bytes": 400
+    },
+    "browser.log": {
+      "sha256": "3ad57d240c910ed102c80f4a100e66165dfd3fcf0ba858f75620d2851073d2e2",
+      "bytes": 1917
+    },
+    "docs-browser.mjs": {
+      "sha256": "62f02be71cbb21a8228cb5bf4ede202593c61e9e15eef882ff14b96a8e8bddc0",
+      "bytes": 2460
+    },
+    "search-budget.json": {
+      "sha256": "f3b0895ef13910cdddbcded5e171ac5fa5a0cf91b1732b1b5792970640e50967",
+      "bytes": 82
+    },
+    "installed-doc.log": {
+      "sha256": "473ae72120707997185465107c5b5b23f159fd52cc0d0aa9f498d3c0b11cc9b6",
+      "bytes": 161
+    },
+    "docs.log": {
+      "sha256": "da851d437e74b82760a4652792f50754cb2e01f77e882e5cf752db73d578d71d",
+      "bytes": 72838
+    },
+    "installed-doc.json": {
+      "sha256": "71f7444e797dd7ef8ff2848b0707bba7011802950a298ea17699e03040c538e7",
+      "bytes": 337
+    },
+    "pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "owning.log": {
+      "sha256": "783ae0a3a4aea91ad869f38842a51c3319b1ff27f6b8e33e72ff4caa6f2732e9",
+      "bytes": 12797
+    },
+    "built.log": {
+      "sha256": "52552c274bf016d373a8bf4dcd752a76c79cd04e3adb9b6ba0c95f38e502f307",
+      "bytes": 179
+    },
+    "node20.log": {
+      "sha256": "ad8d983f3039cdb8c057a082950a79eff409e992da5357d87346210e97d7cf0d",
+      "bytes": 3786
+    },
+    "docs-browser-base.log": {
+      "sha256": "5a3c64266d4efdb7a39b58387ad78a2a8dd19b04ff830dc2a0475375030ebc27",
+      "bytes": 610
+    },
+    "generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "node24.log": {
+      "sha256": "1afc62d65730f8b1ac46ec1fee40bb2e0c655ce4489fa934208e19a5cabbb9e0",
+      "bytes": 3997
+    },
+    "build.log": {
+      "sha256": "2f208d559eefcd998f8ff1afb2ad24078a4afbdc91449bf61163997faa56f91c",
+      "bytes": 420
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "5aa186d55af524f6081b6283bdf01e479b1fb077d4d2629963cce76ec09901d1",
+      "bytes": 1810
+    },
+    "source-pin-pack.json": {
+      "sha256": "dcb75a62aa53159e5b1269831c3bf69b1e8cc5c7452514d80e9cc94e54dea89d",
+      "bytes": 397
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

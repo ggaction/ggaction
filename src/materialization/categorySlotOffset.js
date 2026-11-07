@@ -15,7 +15,7 @@ export function resolveCategorySlotOffset(program, layer) {
   if (scale?.type !== "band" || !Number.isFinite(scale.bandwidth) || scale.bandwidth <= 0) {
     throw new Error(`Category slot offset for "${layer.id}" requires a positive band scale.`);
   }
-  return { channel: policy.channel, pixels: scale.bandwidth * policy.band };
+  return { channel: policy.channel, pixels: categorySlotPixels(scale, policy.band) };
 }
 
 export function offsetCategoryPositions(program, layer, positions) {
@@ -38,3 +38,4 @@ export function offsetCategoryRectangles(program, layer, rectangles) {
     [offset.channel]: rectangle[offset.channel] + offset.pixels
   }));
 }
+import { categorySlotPixels } from "../grammar/positionOffset.js";

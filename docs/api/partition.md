@@ -22,6 +22,10 @@ Cartesian orientation is horizontal (value along x, depth along y) or vertical (
 
 `padding` defaults to `[0,0]`; a scalar applies to both sibling and depth gaps. Values are nonnegative screen pixels. Cartesian gaps inset each side by half a gap; polar angular gaps use the local band mid-radius and radial gaps use pixels. Oversized gaps yield no ink, never negative geometry. `clip:false` is default. Cells and labels use the hierarchy style owner, including solid, linear gradient, pattern and radial gradient fills. Labels default to false; enabling `{}` uses total values. `minWidth:0` and `minArcLength:0` are nonnegative pixel thresholds. Cell overrides and label text use exact typed node targets.
 
+Positions come from the stored layout, so `encodeColor`, `encodeX` and other encoding or legend actions reject partition layers as unknown mark targets. Use `cells` and `labels` styles and typed overrides for paint, shared highlights for emphasis, and separately composed marks for axes or legends.
+
+For animated focus changes on large partitions, sample with [`formatVersion: 6`](animation.md#sample-materialized-batches): body cells with equal paint and placement become `path-run` scene rows, which all four renderers draw identically to per-cell paths.
+
 
 ## createPartitionPlot
 

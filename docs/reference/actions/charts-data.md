@@ -134,7 +134,7 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
@@ -175,7 +175,7 @@ receiver; missing font queries fail instead of using an estimate. See
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 removeTextMetrics(): ChartProgram;
@@ -345,7 +345,7 @@ Create one immutable named dataset. [Data](../../api/data.md)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
@@ -384,7 +384,7 @@ and [refresh workflow](../../data-updates.md#prepare-and-apply-source-data).
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
@@ -424,7 +424,7 @@ See [Data updates](../../data-updates.md#revise-a-source-and-its-dependent-chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -462,7 +462,7 @@ does not infer, cascade, or change graphics.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -498,7 +498,7 @@ graphics. [Scale Options](../../api/scales.md#removescale-id)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 removeCoordinate(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -615,7 +615,7 @@ filter options. Parameter edits revise dependent filters and their chart resourc
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createGraphData(options: CreateGraphDataOptions): ChartProgram;
@@ -660,7 +660,7 @@ and parallel-edge identity. See [observed graph data](../../api/data/source-and-
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
@@ -696,13 +696,13 @@ column belongs in `definition.target`. See [observed graph data](../../api/data/
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
-editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
+editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions> | ApplyInferredGraphOptions): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditInferredGraphDataOptions`](./../types.md#type-editinferredgraphdataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditInferredGraphDataOptions`](./../types.md#type-editinferredgraphdataoptions) · [`ApplyInferredGraphOptions`](./../types.md#type-applyinferredgraphoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -711,6 +711,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `prepared` | Optional / branch-dependent | `PreparedInferredGraphData \| undefined` |
+| `requestToken` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `candidateGraph` | Optional / branch-dependent | `string \| null \| undefined` |
@@ -721,7 +723,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editInferredGraphData({ target?, data?, candidateGraph?, definition? })
+editInferredGraphData({ target?, data?, candidateGraph?, definition? }) or editInferredGraphData({ prepared, requestToken })
 ```
 
 Revise an inferred graph and its dependent layouts and plots. Use
@@ -733,13 +735,13 @@ See [graph inference](../../api/graphs.md#graph-inference).
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
-createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
+createInferredGraphData(options: CreateInferredGraphDataOptions | ApplyInferredGraphOptions): ChartProgram;
 ```
 
-Named option contracts: [`CreateInferredGraphDataOptions`](./../types.md#type-createinferredgraphdataoptions).
+Named option contracts: [`CreateInferredGraphDataOptions`](./../types.md#type-createinferredgraphdataoptions) · [`ApplyInferredGraphOptions`](./../types.md#type-applyinferredgraphoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -748,26 +750,29 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `id` | Required | `string` |
-| `data` | Optional / branch-dependent | `string \| undefined` |
-| `nodeKey` | Required | `GraphKeyField` |
-| `ruleId` | Required | `string` |
+| `prepared` | Optional / branch-dependent | `PreparedInferredGraphData \| undefined` |
+| `requestToken` | Optional / branch-dependent | `string \| undefined` |
 | `attributes` | Optional / branch-dependent | `readonly string[] \| undefined` |
-| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
-| `maxEdges` | Optional / branch-dependent | `number \| undefined` |
-| `rule` | Required | `"group" \| "knn" \| "mst" \| "radius" \| "sequence" \| "similarity"` |
-| `options` | Optional / branch-dependent | `{ readonly forest?: boolean \| undefined; } \| { readonly fields: readonly string[]; readonly missing?: "error" \| "include" \| "omit-node" \| undefined; readonly mode?: "clique" \| "star" \| undefined; readonly hubKey?: RowKey \| undefined; readonly hubs?: readonly { ...; }[] \| undefined; } \| ... 5 more ... \| undefined` |
-| `features` | Optional / branch-dependent | `readonly string[] \| { readonly set: string; } \| { readonly longitude: string; readonly latitude: string; } \| undefined` |
-| `metric` | Optional / branch-dependent | `"cosine" \| "euclidean" \| "great-circle" \| "jaccard" \| "manhattan" \| undefined` |
-| `preprocess` | Optional / branch-dependent | `"minmax" \| "none" \| "standardize" \| undefined` |
 | `candidateGraph` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `execution` | Optional / branch-dependent | `GraphInferenceExecution \| undefined` |
+| `features` | Optional / branch-dependent | `readonly string[] \| { readonly set: string; } \| { readonly longitude: string; readonly latitude: string; } \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `maxEdges` | Optional / branch-dependent | `number \| undefined` |
+| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
+| `metric` | Optional / branch-dependent | `"cosine" \| "euclidean" \| "great-circle" \| "jaccard" \| "manhattan" \| undefined` |
+| `nodeKey` | Optional / branch-dependent | `GraphKeyField \| undefined` |
+| `options` | Optional / branch-dependent | `{ readonly forest?: boolean \| undefined; } \| { readonly fields: readonly string[]; readonly missing?: "error" \| "include" \| "omit-node" \| undefined; readonly mode?: "clique" \| "star" \| undefined; readonly hubKey?: RowKey \| undefined; readonly hubs?: readonly { ...; }[] \| undefined; } \| ... 5 more ... \| undefined` |
+| `preprocess` | Optional / branch-dependent | `"minmax" \| "none" \| "standardize" \| undefined` |
+| `rule` | Optional / branch-dependent | `"group" \| "knn" \| "mst" \| "radius" \| "sequence" \| "similarity" \| undefined` |
+| `ruleId` | Optional / branch-dependent | `string \| undefined` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges? })
+createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges?, execution? }) or createInferredGraphData({ prepared, requestToken })
 ```
 
 Infer a graph using nearest neighbors, radius, similarity, a spanning tree,
@@ -779,7 +784,7 @@ See [graph inference](../../api/graphs.md#graph-inference).
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
@@ -817,7 +822,7 @@ Available in Full and Basic. [Parameters](../../api/data/expressions-and-normali
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
@@ -852,7 +857,7 @@ Type and nullability remain fixed. Available in Full.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
@@ -990,7 +995,7 @@ adds residual reweighting; see [regression](../../api/regression.md) for the est
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createRegressionStatisticsData(options: TargetedOptions<RegressionStatisticsDataOptions>): ChartProgram;
@@ -1209,7 +1214,7 @@ rebind direct visual consumers, and safely release the prior revision.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editDerivedData(options: TargetedOptions<EditDerivedDataOptions>): ChartProgram;
@@ -1238,7 +1243,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editFilteredData(options: TargetedOptions<EditFilteredDataOptions>): ChartProgram;
@@ -1273,7 +1278,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editTimeUnitData(options: TargetedOptions<EditTimeUnitDataOptions>): ChartProgram;
@@ -1309,7 +1314,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editWindowData(options: TargetedOptions<EditWindowDataOptions>): ChartProgram;
@@ -1341,7 +1346,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editDensityData(options: TargetedOptions<EditDensityDataOptions>): ChartProgram;
@@ -1379,7 +1384,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editRegressionData(options: TargetedOptions<EditRegressionDataOptions>): ChartProgram;
@@ -1420,7 +1425,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editRegressionStatisticsData(options?: TargetedOptions<EditRegressionStatisticsDataOptions>): ChartProgram;
@@ -1486,7 +1491,7 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editCoordinate(options: TargetedOptions<EditCoordinateOptions>): ChartProgram;
@@ -1616,7 +1621,7 @@ Behavior, inference, resets, and errors: [Extension and scale contracts](./exten
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editXScale(options: TargetedOptions<EditXScaleOptions>): ChartProgram;
@@ -1659,7 +1664,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editYScale(options: TargetedOptions<EditYScaleOptions>): ChartProgram;
@@ -1702,7 +1707,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editXOffsetScale(options: TargetedOptions<EditXOffsetScaleOptions>): ChartProgram;
@@ -1735,7 +1740,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editYOffsetScale(options: TargetedOptions<EditYOffsetScaleOptions>): ChartProgram;
@@ -1768,7 +1773,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editParallelScale(options: TargetedOptions<EditParallelScaleOptions>): ChartProgram;
@@ -1811,7 +1816,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editThetaScale(options: TargetedOptions<EditThetaScaleOptions>): ChartProgram;
@@ -1850,7 +1855,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editRScale(options: TargetedOptions<EditRScaleOptions>): ChartProgram;
@@ -1889,7 +1894,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editColorScale(options: TargetedOptions<EditColorScaleOptions>): ChartProgram;
@@ -1931,7 +1936,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeScale(options: TargetedOptions<EditStrokeScaleOptions>): ChartProgram;
@@ -1972,7 +1977,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editSizeScale(options: TargetedOptions<EditSizeScaleOptions>): ChartProgram;
@@ -2008,7 +2013,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editOpacityScale(options: TargetedOptions<EditOpacityScaleOptions>): ChartProgram;
@@ -2044,7 +2049,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editShapeScale(options: TargetedOptions<EditShapeScaleOptions>): ChartProgram;
@@ -2076,7 +2081,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeWidthScale(options: TargetedOptions<EditStrokeWidthScaleOptions>): ChartProgram;
@@ -2114,7 +2119,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeDashScale(options: TargetedOptions<EditStrokeDashScaleOptions>): ChartProgram;
@@ -2942,7 +2947,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `stroke` | Optional / branch-dependent | `string \| Omit<{ target?: string \| undefined; field: string; value?: undefined; fieldType?: "nominal" \| "ordinal" \| undefined; temporalUnit?: undefined; scale?: CategoricalColorScaleOptions \| undefined; }, "coordinate" \| "target"> \| Omit<...> \| Omit<...> \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
@@ -2962,7 +2967,7 @@ appearance encodings. [Basic Charts](../../api/basic-charts.md#createscatterplot
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createTextPlot(options: TargetedOptions<CreateTextPlotOptions>): ChartProgram;
@@ -3021,7 +3026,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `value` | Required | `EndpointValueChannel` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
@@ -3066,7 +3071,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `value` | Required | `EndpointValueChannel` |
 | `baseline` | Optional / branch-dependent | `number \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `stem` | Optional / branch-dependent | `(RuleStyleOptions & { clip?: boolean \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -3112,8 +3117,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `start` | Required | `EndpointValueChannel` |
 | `end` | Required | `EndpointValueChannel` |
-| `startPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
-| `endPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `startPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `endPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `connector` | Optional / branch-dependent | `(RuleStyleOptions & { clip?: boolean \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| (EndpointLabelOptions & { endpoint?: "both" \| "end" \| "start" \| undefined; }) \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -3304,7 +3309,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `yOffset` | Optional / branch-dependent | `ErrorBarOffsetChannel \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `errorBar` | Optional / branch-dependent | `IntervalPlotErrorBarOptions \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianSeparateGuideOptions \| undefined` |
 | `x` | Required | `string \| ErrorBarIntervalChannel \| ErrorBarPositionChannel` |
@@ -3354,7 +3359,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorMappedPointGuideOptions \| undefined` |
 | `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
 | `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
@@ -3461,7 +3466,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `Omit<StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }, "clip"> \| undefined` |
+| `point` | Optional / branch-dependent | `Omit<StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }, "clip"> \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| PolarPointGuideOptions \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
@@ -3572,7 +3577,7 @@ are used as supplied; the facade does not infer normalization. [Polar positions]
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editRadarPlot(options: TargetedOptions<EditRadarPlotOptions>): ChartProgram;
@@ -3707,7 +3712,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorMappedPointGuideOptions \| undefined` |
 | `x` | Required | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; }` |
 | `y` | Optional / branch-dependent | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; } \| undefined` |
@@ -3754,7 +3759,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { maxItems?: number \| undefined; clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `packing` | Optional / branch-dependent | `false \| BeeswarmPackingOptions \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorMappedPointGuideOptions \| undefined` |
 | `x` | Required | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; }` |
@@ -4242,14 +4247,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
-| `layout` | Optional / branch-dependent | `"center" \| "diverging" \| "fill" \| "overlay" \| "stack" \| undefined` |
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; } \| undefined` |
 | `area` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false \| CartesianGridOptions \| undefined; }) \| undefined` |
+| `layout` | Optional / branch-dependent | `"center" \| "diverging" \| "fill" \| "overlay" \| "stack" \| "wiggle" \| undefined` |
 | `valueChannel` | Optional / branch-dependent | `"x" \| "y" \| undefined` |
 | `x` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |
-| `y` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |
+| `y` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { field: string; scale?: NonPointZeroSupportingPositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; })) \| ({ ...; } & ({ ...; } \| { ...; }))` |
 | `baseline` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
@@ -4284,7 +4289,7 @@ See the [Area and series layout tutorial](../../tutorials/area-layout.md).
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createLayerPlot(options: TargetedOptions<CreateLayerPlotOptions>): ChartProgram;
@@ -4326,7 +4331,7 @@ roles. Use `createOverlay` to follow already computed visible results instead.
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createAdjacentPlot(options?: TargetedOptions<CreateAdjacentPlotOptions>): ChartProgram;
@@ -4379,7 +4384,7 @@ retained content; explicit offsets remain exact and reject collisions.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editCompositionScales(options: TargetedOptions<EditCompositionScalesOptions>): ChartProgram;
@@ -4415,7 +4420,7 @@ channel false restores independent domain inference. This edit is atomic.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
@@ -4450,7 +4455,7 @@ before synchronous authoring. [Preparation and rendering](../../api/rendering.md
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
@@ -4484,7 +4489,7 @@ referencing image marks while preserving item identity and highlight intent.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 removeResource(options: RemoveStoredResourceOptions): ChartProgram;
@@ -4519,7 +4524,7 @@ Explicit image cascade removes its image marks before removing the source.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;
@@ -4563,7 +4568,7 @@ Create a typed hierarchy from flat parent rows, nested children, or grouped path
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editHierarchyData(options: TargetedOptions<EditHierarchyDataOptions>): ChartProgram;
@@ -4606,7 +4611,7 @@ Revise hierarchy input options and refresh every dependent layout and plot atomi
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
@@ -4644,7 +4649,7 @@ Compute an explicit tree, treemap, or normalized partition layout from a named h
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
@@ -4680,7 +4685,7 @@ Patch a stored layout and refresh its existing consumers. A fixed/force graph la
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
@@ -4720,7 +4725,7 @@ Draw hierarchy nodes and parent links from a stored tree layout. Full only.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
@@ -4759,7 +4764,7 @@ Edit tree nodes, links, labels, placement, or the bound tree layout. Full only.
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
@@ -4798,7 +4803,7 @@ Draw nested rectangles from a stored treemap layout. Full only.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
@@ -4836,7 +4841,7 @@ Edit treemap cells, labels, placement, or the bound treemap layout. Full only.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;
@@ -4873,7 +4878,7 @@ Store a fixed, circular, or deterministic force layout of an existing graph. Ful
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
@@ -4896,6 +4901,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `nodes` | Optional / branch-dependent | `(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] \| undefined; }) \| undefined` |
 | `edges` | Optional / branch-dependent | `GraphEdgePaint \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| GraphLabelsOptions \| undefined` |
+| `maxItems` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
@@ -4909,7 +4915,7 @@ Draw stored graph nodes, edge routes and optional labels. See [Graph plots](../.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
@@ -4932,6 +4938,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `nodes` | Optional / branch-dependent | `(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] \| undefined; }) \| undefined` |
 | `edges` | Optional / branch-dependent | `GraphEdgePaint \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| GraphLabelsOptions \| undefined` |
+| `maxItems` | Optional / branch-dependent | `number \| undefined` |
 
 </details>
 
@@ -4944,7 +4951,7 @@ Apply a nonempty graph appearance or layout-binding patch and rebuild its logica
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createFontResource(options: ApplyFontResourceOptions<"create">): ChartProgram;
@@ -4980,7 +4987,7 @@ layout changes until prepared metrics are applied. See
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 replaceFontResource(options: ApplyFontResourceOptions<"replace">): ChartProgram;
@@ -5015,7 +5022,7 @@ host must measure the new font before this action can replace a bound resource.
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
@@ -5067,7 +5074,7 @@ Draw an icicle or sunburst from stored partition intervals, with explicit focus 
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
@@ -5118,7 +5125,7 @@ Edit an icicle or sunburst from stored partition intervals, with explicit focus 
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createFlowData(options: CreateFlowDataOptions): ChartProgram;
@@ -5163,7 +5170,7 @@ Store directed flow values and an explicit balance policy. Full only.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editFlowData(options: TargetedOptions<EditFlowDataOptions>): ChartProgram;
@@ -5199,7 +5206,7 @@ Revise flow data and refresh dependent layouts, nodes, links, labels and selecti
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 layoutFlow(options: TargetedOptions<LayoutFlowOptions>): ChartProgram;
@@ -5236,7 +5243,7 @@ Store a DAG or cyclic Sankey layout while preserving every edge. Full only.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
@@ -5271,7 +5278,7 @@ Create bounded contour geometry from an explicit scalar grid and thresholds. See
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
@@ -5314,7 +5321,7 @@ Create weighted two-dimensional histogram or kernel density contours with explic
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
@@ -5350,7 +5357,7 @@ Revise contour geometry and update its shared scales, marks and guides atomicall
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
@@ -5392,7 +5399,7 @@ Store civil-day aggregates, week/weekday cells and month boundaries. See [Calend
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 bundleGraphEdges(options: TargetedOptions<BundleGraphEdgesOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
@@ -5432,7 +5439,7 @@ Create a Full-only stored edge route using hierarchical, force-directed, density
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editEdgeRoute(options: TargetedOptions<EditEdgeRouteOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
@@ -5467,11 +5474,44 @@ editEdgeRoute({ target?, graph?, layout?, method?, options?, coordinateSpace? })
 Apply a nonempty patch to a stored route and refresh each consuming GraphPlot once. Same-method options preserve omitted values; a changed method starts from its defaults. Exact preparation handles also support `{prepared,requestToken}`. See [Edge routes](../../api/edge-routes.md) for validation, async lifetime, source revision and Canvas invalidation.
 
 
+## `applyGraphEdgeRoutesUpdate`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
+
+```typescript
+applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;
+```
+
+Named option contracts: [`ApplyGraphEdgeRoutesUpdateOptions`](./../types.md#type-applygraphedgeroutesupdateoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedGraphEdgeRoutesUpdate` |
+| `requestToken` | Required | `string` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+applyGraphEdgeRoutesUpdate({ prepared, requestToken })
+```
+
+Apply an authentic prepared native update on its exact original Full receiver. Prepare any affected native edit (layout, graph, flow, hierarchy, data, parameter, Canvas, fit, filter, or another public action that reaches a version 2 route) with `kind:"update"` through `ggaction/graph`; the original action, affected route consumers and theme completion execute synchronously with the shared budget. See [Edge routes](../../api/edge-routes.md#applygraphedgeroutesupdate).
+
+
 ## `createGeometryData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
@@ -5487,9 +5527,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Required | `string` |
-| `coordinateKind` | Required | `"geographic" \| "planar"` |
 | `featureKey` | Optional / branch-dependent | `GeometryFeatureKey \| undefined` |
 | `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `coordinateKind` | Required | `"geographic" \| "planar"` |
+| `polygonWinding` | Optional / branch-dependent | `"left-hand" \| "right-hand" \| undefined` |
 | `format` | Required | `"geojson" \| "topojson"` |
 | `values` | Required | `TopoJSONInput \| GeoJSONInput` |
 | `topoObject` | Optional / branch-dependent | `string \| undefined` |
@@ -5500,7 +5541,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, limits? })
+createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, polygonWinding?, limits? })
 ```
 
 Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values. See [Geometry sources](../../api/geometry.md#creategeometrydata).
@@ -5510,7 +5551,7 @@ Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature 
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
@@ -5530,13 +5571,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinateKind` | Optional / branch-dependent | `"geographic" \| "planar" \| undefined` |
 | `topoObject` | Optional / branch-dependent | `string \| undefined` |
 | `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `polygonWinding` | Optional / branch-dependent | `"left-hand" \| "right-hand" \| undefined` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
+editGeometryData({ target?, values?, coordinateKind?, topoObject?, polygonWinding?, limits? })
 ```
 
 Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](../../api/geometry.md#editgeometrydata).
@@ -5546,7 +5588,7 @@ Revise a geometry source atomically while preserving its format and feature-key 
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
@@ -5584,7 +5626,7 @@ See [Geometry and projections](../../api/geometry.md#creategeojoindata) for exac
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
@@ -5617,11 +5659,82 @@ Revise join inputs or key paths and refresh all dependent projections and geogra
 See [Geometry and projections](../../api/geometry.md#editgeojoindata).
 
 
+## `createGeoRouteData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
+
+```typescript
+createGeoRouteData(options: TargetedOptions<CreateGeoRouteDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateGeoRouteDataOptions`](./../types.md#type-creategeoroutedataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `routes` | Required | `string` |
+| `coordinateKind` | Required | `"geographic" \| "planar"` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeoRouteData({ id, routes, coordinateKind })
+```
+
+Interpret retained graph edge samples as geographic or planar LineStrings with original edge identity and rows.
+See [Geometry and projections](../../api/geometry.md#creategeoroutedata).
+
+
+## `editGeoRouteData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
+
+```typescript
+editGeoRouteData(options: TargetedOptions<EditGeoRouteDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGeoRouteDataOptions`](./../types.md#type-editgeoroutedataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `routes` | Optional / branch-dependent | `string \| undefined` |
+| `coordinateKind` | Optional / branch-dependent | `"geographic" \| "planar" \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeoRouteData({ target?, routes?, coordinateKind? })
+```
+
+Revise the route source or coordinate interpretation and refresh dependent geographic consumers atomically.
+See [Geometry and projections](../../api/geometry.md#editgeoroutedata).
+
+
 ## `createGeoLODData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
@@ -5657,7 +5770,7 @@ See [Geometry and projections](../../api/geometry.md#creategeoloddata).
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
@@ -5692,7 +5805,7 @@ See [Geometry and projections](../../api/geometry.md#editgeoloddata).
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
@@ -5737,7 +5850,7 @@ Create a named projection, optionally fitted to one exact geometry source and ex
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
 
 ```typescript
 editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
@@ -5775,6 +5888,39 @@ editProjection({ target?, type?, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?
 ```
 
 Edit a projection atomically. Explicit scale or translation detaches an existing geometry fit. See [Geometry and projections](../../api/geometry.md#editprojection).
+
+
+## `navigateProjection`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
+
+```typescript
+navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`NavigateProjectionOptions`](./../types.md#type-navigateprojectionoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `operation` | Required | `GeoCameraOperation` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+navigateProjection({ target?, operation })
+```
+
+Navigate a projection with explicit pan, anchored zoom, pinch, rotation, fit, reset or native Canvas resize. Use a saved `getProjectionView` snapshot for reset parameters. Existing projection/Canvas children retain exact resources, consumer refresh and immutable failure.
 
 
 ## Focused core data editing

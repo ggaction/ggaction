@@ -1,0 +1,78 @@
+{
+  "status": "qualified moving Area baseline slice; STEP050, remaining native variants and STEP074 cumulative qualification remain open",
+  "sourceCommit": "68873baa2ed1b2c73db31124f8237df3b3cc428f",
+  "base": "ec9d413cbbb90680fde210cb2cc4f0b8f0304bf0",
+  "approval": "../../AUTHORIZATION.json remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1029,
+    "packedBytes": 1472038,
+    "unpackedBytes": 6712299,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "bc02fb2a31304f55af2907d22939fb1ed95ef7f9",
+    "sha256": "aa6d3ef2e7c28849f1f2ceb88b6151fe6bcef461af07cb3abfd76efe827d9fbe"
+  },
+  "cases": {
+    "owningAndShared": 162,
+    "criticalFloors": 3,
+    "newKernelCoverage": [
+      100,
+      100,
+      100
+    ],
+    "realistic": 15,
+    "realSourceTables": 5,
+    "independentRendererPairs": 2,
+    "browserDensities": [
+      1,
+      2
+    ],
+    "boundaries": 26,
+    "semanticVocabulary": 15,
+    "inventoryContracts": 7,
+    "docs": 199,
+    "docsInitial": {
+      "pass": 193,
+      "fail": 5,
+      "repairedOwners": 4,
+      "sourcePinnedFinal": 199
+    },
+    "builtPages": 179,
+    "builtMachineArtifacts": 1525,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ],
+    "installedPerNode": {
+      "runtime": 3,
+      "strictTypes": 1,
+      "optionalPeers": 1,
+      "bundles": 5
+    }
+  },
+  "packageMeasurements": {
+    "entries": 1029,
+    "node22PackedBytes": 1472038,
+    "node20and24PackedBytes": 1474814,
+    "unpackedBytes": 6712299,
+    "canonicalStagingDifferences": []
+  },
+  "scopeNotes": [
+    "No new renderer or public action; existing Area layout value is extended.",
+    "Existing semantic source and series identity are preserved.",
+    "Basic/Bar, horizontal/categorical-independent/custom-order layouts reject wiggle.",
+    "No whole corpus/full coverage sweep; cumulative qualification belongs to STEP074."
+  ],
+  "inventory": {
+    "publicActions": 350,
+    "optionPaths": 35505,
+    "topLevelLiterals": 4302,
+    "pathLiteralRequirements": 17103,
+    "ledger": 41930,
+    "ledgerWithoutRendererFeatures": 41926,
+    "owningCheck": "7/7 passed; exit 0"
+  }
+}

@@ -1,0 +1,276 @@
+{
+  "sourceCommit": "cae13ebe44231073489d18020c34dc327f3d6235",
+  "runtimeCommit": "d2441294413d13de40fc545f070489645c038276",
+  "parent": "d4c921eff",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json#remainingApproval",
+  "scope": "Static native control alternatives and command witness matrix; same renderer/program/session APIs, no new runtime/types/persisted schema.",
+  "runtimeAndTypesFingerprint": "1de97951c461f31f5403a0d18ea396b04450f9400e2e968a4e7df9a39add6743",
+  "checks": {
+    "browser": {
+      "new": 7,
+      "existing": 5,
+      "actualChromium": true,
+      "canvasAndSVG": true,
+      "keyboard": true,
+      "touch": true,
+      "tabExit": true,
+      "axeViolations": 0,
+      "commands": 13,
+      "perCategoryAndNodeControls": true,
+      "contextActionWithoutHover": true,
+      "selectionVisibilityFilterHistory": true
+    },
+    "docsAndDiscovery": 66,
+    "actualExecutableSnippets": 3,
+    "sourceFreeInstalled": {
+      "node": "v22.23.1",
+      "artifact": "7cab0f5b1ee890ee76526f0c5e620a6abd75f149ee8a037d30e76411a9a77fad",
+      "sourceFree": true,
+      "actualChromium": true,
+      "modules": 1030,
+      "examples": [
+        {
+          "id": "interaction-parameter-context",
+          "sha256": "985d396067408a32d5e40362ccac8f29ab2c5671113ab5d78eac3753b2e6dfdf"
+        },
+        {
+          "id": "interaction-node-movement",
+          "sha256": "6fab75ac1026f92312c9d058fae555a9708b13a3394784cd7e87a9da292dff23"
+        },
+        {
+          "id": "interaction-native-controls",
+          "sha256": "262373f5d1dc5cd6c83e564101d1e95722572cad747d30dfbdc4b88c167f437e",
+          "htmlSha256": "4e8bca2df8af6c4b82305a7e5ddb041c22669f0856372cc9cf52aae2fe9e921e"
+        }
+      ],
+      "keyboard": true,
+      "touch": true,
+      "nativeSelection": true,
+      "visibilityFilterCoexistence": true,
+      "contextActionWithoutHover": true
+    },
+    "built": {
+      "pages": 172,
+      "llmArtifacts": 1535,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "overflow": false,
+      "inspected": [
+        320,
+        1440
+      ]
+    }
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1064,
+    "packedBytes": 1509459,
+    "unpackedBytes": 6874696,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/keyboard-focus-7cab0f5b.tgz",
+    "sha1": "279b8c7c38237888e5ac0b186297f185e08d8f14",
+    "sha256": "7cab0f5b1ee890ee76526f0c5e620a6abd75f149ee8a037d30e76411a9a77fad"
+  },
+  "search": {
+    "measured": 1040495,
+    "limit": 1040500
+  },
+  "commandInventory": "../../../../../../test/support/accessible-control-cases.json",
+  "matrix": "../ACCESSIBILITY_MATRIX.md",
+  "reusedEvidence": {
+    "path": "../keyboard-focus-evidence/qualification.json",
+    "reason": "Exact src/types fingerprint and unchanged packed inputs. B three-Node runtime/types/bundles/critical floors and native owner semantics stay valid; latest three canonical snippets are rerun from the exact same7cab archive with actual input."
+  },
+  "preservedFailures": [
+    "Two initial parameter assertions assumed the derived dataset retained its old id after native revision. Public final-item fields supply the correct independent literal computed values.",
+    "Initial command inventory misspelled the existing node snippet id; corrected against the canonical snippet registry.",
+    "Initial owner check64/66 failed only search bound. Measured1040495 bytes informs minimal1040500 bound; final66/66 pass."
+  ],
+  "evidencePolicy": "No whole repository, all-renderer, all-installed or full documentation sweep is claimed. New host witnesses reuse existing native owners; browser Canvas/SVG presence, native data and events are checked, without claiming a new exhaustive pixel-parity run. Prior HTML-host evidence preserves two old branch scaffold failures pending root combined integration.",
+  "remaining": [
+    "Public animation/current-frame/reduced-motion D with root player owner",
+    "AT53 combined acceptance",
+    "STEP069 offline interacted chart/animation integration and STEP074-077 final qualification"
+  ],
+  "evidenceFiles": [
+    {
+      "path": "native-controls-browser-all-targets.log.gz",
+      "sha256": "1f6b1c5b5bde5ebb876a218f967a614c9ee68419c19e272a57a027342aefd607"
+    },
+    {
+      "path": "native-controls-browser-final.log.gz",
+      "sha256": "82204be2bc9a4bbe2a395c983ee03e22002bdddd12f89a688dce21dd721045ce"
+    },
+    {
+      "path": "native-controls-browser-first.log.gz",
+      "sha256": "5c842102838d752097e00534dd68e4ae8b99d024311d37fd1cff38f90fe8277f"
+    },
+    {
+      "path": "native-controls-build-final.log.gz",
+      "sha256": "56578d57770f5853f0237bf00ab1328a504b3d63fa42ae5335f48f2041bf61ca"
+    },
+    {
+      "path": "native-controls-build.log.gz",
+      "sha256": "85fea645c4d167dcd0be1f3121715f2f82713adce88e1abbb0c6a11e721b71bf"
+    },
+    {
+      "path": "native-controls-built-final.log.gz",
+      "sha256": "1ec05c4e74288ef806fa965037bd3335acae6f1b91d245a6f566a0dc03be2546"
+    },
+    {
+      "path": "native-controls-built.log.gz",
+      "sha256": "1ec05c4e74288ef806fa965037bd3335acae6f1b91d245a6f566a0dc03be2546"
+    },
+    {
+      "path": "native-controls-consumer-final.log.gz",
+      "sha256": "e588307f1e86d17bce7d1229c50d40f71a3c146f1ef2c46766f5936575197f1e"
+    },
+    {
+      "path": "native-controls-consumer.log.gz",
+      "sha256": "3387f769397648dafc8cc1f403ad34f86ee59e38e96148cb22537a0c81fc2a42"
+    },
+    {
+      "path": "native-controls-consumer.mjs.gz",
+      "sha256": "b0523eae949194fa66602d6b49f68153b7750efff64f928612a03c6b691ff0c1"
+    },
+    {
+      "path": "native-controls-doc-browser-final.log.gz",
+      "sha256": "68e6f452728d899b6f1086441c65bf07f29924a7b724268fa8b2d900221ba5d9"
+    },
+    {
+      "path": "native-controls-doc-browser.mjs.gz",
+      "sha256": "0ab61561d50036f1997afa81d52d6a4d30b9498e5c11362f663fac00133ff881"
+    },
+    {
+      "path": "native-controls-doc-execution-final.log.gz",
+      "sha256": "a3432149578aee53f1ad146f26cfc4febcf025e41607f653badd6373fbd7c7c0"
+    },
+    {
+      "path": "native-controls-doc-execution-first.log.gz",
+      "sha256": "fc3c5a9c8e31c13f6255bc99b864c9a8b70fb1512176b0a539aa10d7eb8bb568"
+    },
+    {
+      "path": "native-controls-existing-browser-final.log.gz",
+      "sha256": "d95d6f23d865e20fca49a440e0a5e92b35d376034056b547367f4f8ec7827cb5"
+    },
+    {
+      "path": "native-controls-existing-browser.log.gz",
+      "sha256": "9d360e269c790461650bda2dda714a3017340659947b59a50b636e962167744b"
+    },
+    {
+      "path": "native-controls-generation-final.log.gz",
+      "sha256": "4d19f3cc3e71814ecd950e0ec5b1db2808ecb323b76d79885f82eee7a242dd20"
+    },
+    {
+      "path": "native-controls-generation-first.log.gz",
+      "sha256": "4d19f3cc3e71814ecd950e0ec5b1db2808ecb323b76d79885f82eee7a242dd20"
+    },
+    {
+      "path": "native-controls-inventory-first.log.gz",
+      "sha256": "4f1843dbc1aea4eece35e8f70a2c924266d6b84ed646e60a3a60784c2cdc2e6c"
+    },
+    {
+      "path": "native-controls-owning-current.log.gz",
+      "sha256": "2ca806735e21a7a026827f1e590dac90e5eb69ce8d17785bcd3de57dc79217ce"
+    },
+    {
+      "path": "native-controls-owning-final.log.gz",
+      "sha256": "6d8903154d35936587031632fbdf794b5334818cbf15083d88340c78177bb565"
+    },
+    {
+      "path": "native-controls-owning-first.log.gz",
+      "sha256": "d15a0175a8396fa338f451ee0af6cf25042b247255258d06115709b6063b3c57"
+    },
+    {
+      "path": "native-controls-preflight.log.gz",
+      "sha256": "9d47135d2561c027deaf16e720d64974cf552ac3d951ea969da392572442ebdf"
+    },
+    {
+      "path": "native-controls-qualify.mjs.gz",
+      "sha256": "74afcb55db96b4c90647a389e08ae426727b7cbba3f25ed220662c934e7619b9"
+    },
+    {
+      "path": "api-interaction-1440.png",
+      "sha256": "b0f24242c1e8f15083827f2be5611597aa5227d15a4b139ec9292fac1b326831"
+    },
+    {
+      "path": "api-interaction-320.png",
+      "sha256": "3ffa0f02261945b76c9770a10ceccc25fe91db890ccd74845425429b513b295a"
+    },
+    {
+      "path": "api-interaction-390.png",
+      "sha256": "f8836298e7c0393684eddb361926c7aaa5f0f95ad67c1d6f53ee6e45ea57088a"
+    },
+    {
+      "path": "api-interaction-768.png",
+      "sha256": "8c721dae890516fe6330e1f28b7aa52280c6404df899fdb9d14c48af9b1017e3"
+    }
+  ],
+  "combinedIntegration": {
+    "sourceRevision": "f374cd532",
+    "runtimeArchive": "ecbd493db25236a7410057f261a8a8a9516bcb74930f5e907ec179a638803629",
+    "docsFirst": {
+      "total": 230,
+      "passed": 228,
+      "failed": 2
+    },
+    "docsRepairedPassed": 230,
+    "searchBytes": 1076418,
+    "previousCeilingBytes": 1075900,
+    "ceilingBytes": 1076500,
+    "controlInventory": 1,
+    "actualInputBrowser": 7,
+    "installedHtmlConsumers": [
+      {
+        "name": "api-interaction--interaction-keyboard",
+        "id": "interaction-keyboard",
+        "file": "api/interaction.md",
+        "sha256": "e8023f8f5184e2dc050252e75cab538932e48ea8326710e1822d028b0c52f10d",
+        "htmlSha256": "47a3c10ee52191151dc7633d054e5c7c7db3b85e919f1656a11175fb1e4bac9d",
+        "rendering": "renders-canvas",
+        "status": "passed",
+        "durationMs": 804.1287499999999
+      },
+      {
+        "name": "api-interaction--interaction-accessible-tooltip",
+        "id": "interaction-accessible-tooltip",
+        "file": "api/interaction.md",
+        "sha256": "c5147eb184d5bfbfd1f377f06f875c203d95aad613001dcfc5f0fbf92eb9d8ee",
+        "htmlSha256": "6bc24b86e914dbb7823f2ff0c8b56c64d3b7d9778f4b7920baa1b8c1674f35c5",
+        "rendering": "renders-canvas",
+        "status": "passed",
+        "durationMs": 650.2414580000004
+      },
+      {
+        "name": "api-interaction--interaction-native-controls",
+        "id": "interaction-native-controls",
+        "file": "api/interaction.md",
+        "sha256": "262373f5d1dc5cd6c83e564101d1e95722572cad747d30dfbdc4b88c167f437e",
+        "htmlSha256": "4e8bca2df8af6c4b82305a7e5ddb041c22669f0856372cc9cf52aae2fe9e921e",
+        "rendering": "renders-canvas",
+        "status": "passed",
+        "durationMs": 678.2043749999993
+      }
+    ],
+    "builtPages": 185,
+    "selectiveLlmArtifacts": 1597,
+    "changedPageWidths": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "axeViolations": 0,
+    "runtimeDelta": 0,
+    "remaining": [
+      "Public animation and reduced motion",
+      "Static combined interacted offline fixture and final qualification"
+    ]
+  }
+}

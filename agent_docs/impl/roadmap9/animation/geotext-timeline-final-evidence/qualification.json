@@ -1,0 +1,16 @@
+{
+  "status": "verified-metadata-and-test-integration; expanded-guide-and-edge integration pending",
+  "base": "5ff53c12d",
+  "geographicTextFinal": "a1b1673df6075ba8eab311a0ac98b0ae600c142a",
+  "runtimeRevision": "933cacad0da8e86b30a62cca09c5260cbc7a96d7",
+  "packagedInputDelta": [],
+  "unchangedArchive": "ddc3458494835d98c102d0ca7b9d6cad6f871cdb67877c23034778bf01f6fca6",
+  "checks": {
+    "newGeoTextAndTimelineUnit": 12,
+    "boundaryTypesPackageDiscovery": 51,
+    "owningDocs": 48
+  },
+  "reuse": "Runtime/types and all packaged inputs are unchanged from the qualified public timeline source. Keep its same-archive3Node31cases/critical floors/render/browser/docs evidence; upstream Geo final additional fixtures and logs are retained without pretending they ran against a new archive.",
+  "conflicts": "Keep v3 declarations, larger measured current package/bundle/search caps and63 realistic files; regenerate canonical references/provenance/machine/LLM artifacts. Correct current architecture bundle table to animation262200 and interaction136600; earlier timeline paragraph already recorded actual values.",
+  "remaining": "Expanded guide and edge source integration, required unfinished native typed paths, full STEP077 qualification and final delivery."
+}

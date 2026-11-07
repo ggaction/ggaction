@@ -1,3 +1,4 @@
+import { requireLayer } from "./layers.js";
 import { annotateError } from "../core/diagnostics.js";
 import { requireDataset } from "./datasets.js";
 
@@ -42,7 +43,7 @@ export function resolveRowReference(program, ref) {
   return dataset;
 }
 
-export function resolveGraphicLineage(program, identity) {
+export function resolveGraphicScope(program, identity) {
   let scope = program;
   for (const namespace of JSON.parse(identity.key)[0]) {
     const children = (scope.compositionSpec?.children ?? []).filter(id => `${scope.compositionSpec.id}-${id}` === namespace);
@@ -50,6 +51,17 @@ export function resolveGraphicLineage(program, identity) {
       throw annotateError(new Error("Graphic identity has an unknown child scope."), { code: "missing-resource" });
     }
     scope = scope.children[children[0]];
+  }
+  return scope;
+}
+
+export function resolveGraphicLineage(program, identity) {
+  const scope = resolveGraphicScope(program, identity);
+  if (identity.lineage.kind === "screen") {
+    const [, owner, grain, value] = JSON.parse(identity.key), layer = requireLayer(scope, owner);
+    if (layer.mark.type !== "text" || layer.annotationAnchor?.space !== "screen" || grain !== "item" ||
+        value[0] !== "annotation" || value[1] !== "screen") throw new TypeError("Screen lineage requires its exact screen annotation owner.");
+    return layer;
   }
   if (identity.lineage.kind === "resource") return requireStoredResource(scope, identity.lineage.resource);
   const { data, logicalDataId, revision, rowKeys: keys } = identity.lineage;

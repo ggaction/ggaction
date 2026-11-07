@@ -1,0 +1,100 @@
+# Geo camera preview
+
+## 진행 상태
+
+- [x] 10k 한 frame 귀속(Node source).
+- [x] 검증 의미를 바꾸지 않는 네 가지 비용 제거.
+- [x] 전체 검증과 정본 Geo benchmark(archive `864ae6c7…`).
+- [x] 100k hit 20ms(아래 hit query 절).
+- [x] Camera preview 10k 33ms (21.3 / 20.8ms, 아래 authentic sampled admission 절).
+- [ ] Camera preview 100k 50ms (최신 145.2 / 148.0ms, [GEO_100K_PROPOSAL](GEO_100K_PROPOSAL.md); 이전 228 / 232ms).
+
+## 수리
+
+1. **Stream 점 투영** (`grammar/geo/projections.js`, `stream.js`): 선분 세분은 frame마다 `[경도, 위도]` 리터럴을 새로 만들어 공개 `forward`로 넘겼고, 그때마다 caller 입력용 own-data 구조 검사가 돌았다. 내부 전용 `forwardPoint`는 구조 검사만 빼고 길이·유한성·위도 검사와 오류 문구·순서를 그대로 둔다. 공개 `createProjectionKernel`은 필드를 명시해 만들어 이 함수를 노출하지 않는다.
+2. **Geometry snapshot 2단계** (`grammar/geo/input.js`): 검증과 예산 계량을 위한 전체 순회는 그대로 한 번 한다. 끝까지 재사용 가능한 소유 트리이면 입력을 반환하고, 아니면 검증이 끝난 입력을 기존과 같은 JSON 방식(alias는 분리 복사)으로 복사한다. 재사용 가능한 입력에 대해 버려질 사본을 만들던 비용이 사라진다. 호출 안에서만 쓰는 조상·방문 추적은 weak table 대신 일반 `Set`이다.
+3. **예산 계량 label**: `count`가 값마다 만들던 kind별 limit key와 label 문자열을 모듈 로드 때 한 번 만든다.
+4. **Projection stream sink 재사용**: 점마다 새 sink로 stream을 만들어 수학 라이브러리의 stream cache가 적중하지 않았다. Part별 sink 하나를 재사용한다. 단일 `point()` 호출은 stream 상태를 남기지 않는다.
+
+시도했지만 측정 효과가 없어 되돌린 것: 소유된 위치 배열 공유, 정규화 위치 사본의 사전 표식, admission의 "정규형 증명 + 동일 예산 재부과". 이 workload의 frame 경로에서는 해당 값이 소유된 입력으로 도달하지 않았다.
+
+반례: `test/unit/geo/projections.test.js`의 `stream point projection keeps value checks and stays out of the public kernel`(공개 kernel 필드, 값 검사 동일성, 공개 `forward`의 accessor 거부). Snapshot 동등성은 기존 `test/unit/geo/json-snapshot.test.js`의 소유/비소유 예산 동일성 검사가 통과한다. Geo owner 400/400, input·stream 100/100/100, projections 100/97.62/100.
+
+## 결과
+
+Node source 10k 한 frame 약 160 → 64ms, 100k 약 700ms. 정본 benchmark(Chromium P95, ms):
+
+| 크기 | camera DPR1 / DPR2 (기준) | hit DPR1 / DPR2 (기준) |
+| --- | --- | --- |
+| 1k | 5.6 / 5.5 (16.7) | 0.7 / 0.7 (20) |
+| 10k | 55.2 / 58.0 (33) | 2.5 / 2.3 (20) |
+| 100k | 575.0 / 569.1 (50) | 21.1 / 21.0 (20) |
+
+이전 `bc7633b5…`의 camera 14.0/131.8/1,345.9ms에서 줄었지만 10k·100k camera와 100k hit는 미달이다. 같은 source의 전체 coverage(일반 10548/10548) 97.42/95.69/99.36%, critical floor 785, browser 529/529, render 513/513, 같은 archive Node20/22/24 통과.
+
+## 다음
+
+10k frame(약 64ms)은 admission 약 29ms, 투영 약 31ms(선분 세분 16ms), 물질화 약 11ms로 나뉜다. 100k는 frame마다 path 명령 객체 10만 개를 만들고 검증하는 표현 자체가 비용이다. Points의 format6처럼 명령을 열(batch)로 다루는 표현을 검토해야 한다.
+
+## Hit query의 평탄화 재사용
+
+Geo 100k hit P95는 21.1ms로 기준 20ms를 근소하게 넘었다. Hit index가 후보 segment를 줄여도 `queryIndexedShape`의 채우기 포함 판정과 경계 거리가 query마다 `pathFillContains`/`pathStrokeDistance`를 통해 part의 명령 10만 개를 다시 평탄화·검증했다.
+
+준비된 part의 명령은 private·불변이므로 `grammar/hitShapes.js`는 첫 query에서 `preparePathQueries`(`grammar/pathGeometry.js`)로 한 번 평탄화한 결과를 part별로 재사용한다. 매 query의 점 검사와 fill rule 검사는 그대로이고, 평탄화가 실패하면 기록하지 않아 같은 오류를 계속 낸다. 공개 `pathFillContains`/`pathStrokeDistance`는 기존대로 매번 평탄화한다.
+
+반례: `test/unit/grammar/hit-focus.test.js`의 `repeated queries on one prepared path match freshly prepared shapes`(nonzero/evenodd, slop 0/5, 3회 반복, 비유한 점 거부). Hit·path owner 387/387, hitShapes 100/96.89/100, pathGeometry 98.53/97.67/100.
+
+정본 benchmark(archive `242a7cc3…`): Geo hit 1k/10k/100k 0.2/0.4/1.9ms(이전 0.7/2.5/21.1), camera 5.6/58.3/574.3ms(변화 없음). Points 전 크기 통과 유지. 같은 source의 전체 coverage(일반 10549/10549) 97.42/95.69/99.36%, critical floor 785, browser 529/529, render 513/513, 같은 archive Node20/22/24 통과.
+
+## Canonical 동등성 비교
+
+10k frame profile에서 `canonicalJSON` 문자열 생성이 큰 몫이었다. Admission은 sample마다 정규화한 geometry와 입력 geometry를 각각 `canonicalJSON` 문자열로 만들어 비교한다(1만 좌표 두 벌). `core/contentDigest.js`의 `sameCanonicalJSON(a, b)`는 두 문자열을 만들지 않고 `canonicalJSON(a) === canonicalJSON(b)`와 정확히 같은 답을 낸다. 숫자 표기(-0, NaN·Infinity의 `null`), 빈 값(undefined·함수·symbol·배열 빈 칸)끼리의 일치, 원소 하나가 빈 값인 배열과 빈 배열의 일치까지 그대로다. Geo admission(`geoState`, `geoPresentation`, `geoTracks`)의 동등성 비교만 이것으로 바꿨다. 비교되는 값과 오류는 그대로다.
+
+반례: `test/unit/core/same-canonical-json.test.js`(경계 사례 21쌍 양방향과 무작위 2만 쌍을 문자열 비교와 대조). 별도로 무작위 30만 쌍(동치 10만여 쌍)도 대조했다. Geo·animation 1114/1114.
+
+정본 benchmark(archive `40ac9fe0…`, [report](geo-equality-evidence/report-geo.json.gz)): camera 1k/10k/100k DPR1 5.5/58.6/553.6ms, DPR2 5.2/50.7/550.2ms. Hit 0.2/0.5/2.5ms, 0.2/0.4/1.6ms. 개선은 작고(Node 63.7 → 60.4ms) 10k·100k camera는 여전히 미달이다.
+
+남은 10k 비용은 sample마다 변하지 않는 1만 좌표 geometry 전체를 presentation snapshot(복사), group snapshot, 정규화 비교, 투영 입력 snapshot으로 다시 순회하는 admission과, 투영 결과 1만 명령의 검증·복사다. 앞서 "정규형 증명 + 동일 예산 재부과"는 frame 경로에서 소유된 입력이 도달하지 않아 효과가 없었다. Presentation snapshot이 사본을 만들어 소유 정체성을 끊기 때문이다. 다음 후보는 authentic sampled group(정확한 plan의 sample만 module-private로 기록)과, alias 없는 소유 subtree 예산의 정확한 재부과다. 재부과는 남은 한도가 모든 부과를 수용할 때만 쓰고, 아니면 기존 전체 순회로 같은 오류를 낸다. 이 둘을 함께 설계해야 한다. 100k는 명령 열(batch) 표현이 필요하다.
+
+## Authentic sampled admission과 구성 경로 명령
+
+앞 절에서 남긴 두 비용을 함께 제거했다. 임시 실험에서 sampled presentation 재수용을 통째로 빼면 Node 10k가 60 → 39ms였다. 그래서 admission만으로는 33ms에 닿지 않고, 투영 결과 경로의 재검증·복사까지 함께 줄여야 했다.
+
+1. **정확한 재수용 총량** (`grammar/animation/geoState.js`, `materialization/animation/geoPresentation.js`). `normalizeAnimationGeoGroup`이 수용한 소유 group마다 snapshot 단계와 전체 단계의 예산 부과량을 module-private `WeakMap`에 기록한다. `sampleGeoInterpolation`이 만든 sample group은 정확한 plan의 `to` group을 가리키도록 따로 기록한다.
+
+   Sample group의 새 수용 결과는 원 group에서 정확히 계산된다. Parameters와 feature radius 외의 모든 값이 원 group의 값과 동일 객체이고 key 순서까지 같은지 실제로 확인한다. Parameters는 매번 새 snapshot으로 따로 잰다.
+
+   총량이 모든 한도(values 2,000,000, work 10,000,000, depth 128) 안에 들 때만 순회를 생략한다. 이 경우 새 순회는 어떤 부과에서도 실패할 수 없다. 넘거나 구조가 다르면 기존 전체 경로가 같은 위치에서 같은 오류를 낸다.
+
+   Presentation 수준에서는 geometry 외의 모든 필드(styles·plotOrigin·frame·기타)를 매번 전체 snapshot한다. Root의 `geometry` key와 이름 부과까지 더한다. Root의 descriptor 검사는 원 경로와 같은 순서·문구다.
+
+   변하지 않는 feature geometry의 `normalizeGeometry`·정규형 비교·mark geometry 검사는 같은 객체·같은 binding·같은 coordinateKind의 결정적 재실행이라 생략한다. Parameters 정규형, radius, key, binding, projection, winding 등 나머지 의미 검사는 모두 매번 실행한다. 복사본은 소유되었더라도 authentic이 아니므로 전체 경로다.
+2. **투영 경로 명령** (`grammar/pathCommands.js`의 `buildRingPathCommands`, `grammar/geo/stream.js`). 선과 다각형 ring은 처음 M, 유한 L, 닫을 때 Z로만 만들어지므로 구성상 유효하다. 빌더가 점의 유한성을 다시 확인하고 소유 freeze 결과를 검증 캐시에 등록한다. 매 사용의 command capacity 검사는 캐시보다 먼저라 그대로다. Stream의 명령 한도 계수는 이전과 같은 순서로 명령마다 증가한다. 결과 경로 배열이 소유되어 최종 `cloneAndFreeze`가 다시 복사하지 않는다.
+
+반례: `geo-sample-admission.test.js`의 `an authentic sampled group keeps its identity and exact admission while other fields stay fully checked`. 이 시험은 다음을 확인한다.
+
+- 기록된 부과량이 실제 snapshot과 같다.
+- 복사본은 authentic이 아니다.
+- 다섯 가지 필드 변형과 getter(읽기 0회)가 원 경로와 같은 오류를 낸다.
+- 필드만으로는 맞지만 group과 합치면 정확히 1값 초과하는 경우와 한도에 정확히 맞는 경우가 원 경로와 같은 결과를 낸다.
+
+`path-commands.test.js`의 ring 빌더 시험은 구성 결과, capacity 재검사, 잘못된 ring 거부를 확인한다. 기존 sample admission 오류 순서 시험 4개도 그대로 통과한다. Geo·animation·path 1147/1147이다.
+
+정본 benchmark(archive `49497b5e…`, [report](geo-sample-evidence/report-geo.json.gz)):
+
+| 크기 | camera DPR1 / DPR2 (기준) | hit DPR1 / DPR2 |
+| --- | --- | --- |
+| 1k | 2.6 / 2.4 (16.7) | 0.2 / 0.2 |
+| 10k | **21.3 / 20.8 (33) 통과** | 0.4 / 0.4 |
+| 100k | 228.0 / 232.4 (50) | 1.9 / 2.8 |
+
+100k frame(Node 약 260ms)의 대부분은 선분 세분과 보간 등 투영 수학 자체다. 그 밖에는 frame마다 part topology의 SHA-256(약 11ms)과 bounds 계산이 남는다. Precision resampling은 scale에 의존하므로 이전 frame의 투영을 재사용할 수 없다. 50ms는 투영 계산의 열(batch) 표현 없이는 닿지 않는다.
+
+## 저장 자원 검증 재사용 (2026-11-05)
+
+Projection 편집(`editProjection`, native camera)은 자원 graph 전체를 다시 검증하며, 바뀌지 않은 geometry 자원(100k 좌표)을 매번 encode·정규화·canonical 비교했다. 자원 종류별 검증은 그 자원 객체와 program constructor만의 순수 함수다. 그래서 통과한 정확한 객체에 private field로 constructor를 기록하고 같은 객체·같은 constructor면 다시 증명하지 않는다. 저장 member(ownership·inputs·options·result·provenance)가 모두 소유 표시된 자원만 해당하며, 사본·변조본·소유 표시 안 된 record는 매번 검증한다(`test/unit/geo/resource-validation-reuse.test.js`).
+
+- Node 100k `editProjection`: 약 1,100ms → 440ms.
+- Camera preview sample에는 영향이 없다. 100k sample의 거의 전부는 투영 계산이다(Node profile: 선분 세분·점 투영 약 91ms, d3 stream antimeridian 처리 약 52ms, 입력 geometry 사본 약 21ms). 50ms에 닿으려면 투영 경로 자체의 열(batch) 계산이 필요하며 별도 설계·승인 대상으로 남긴다.
+
+검증(archive `429a9f21…`): 전체 시험 10,604개, coverage 97.45/95.6/99.32%(critical floor 789), browser 531/531, render 513/513, Node20/22/24 consumer 통과. [증거](geo-resource-reuse-evidence/)

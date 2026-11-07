@@ -2,8 +2,11 @@ export type GraphicType =
   | "canvas"
   | "collection"
   | "circle"
+  | "circle-batch"
+  | "path-batch"
   | "rect"
   | "line"
   | "text"
   | "path"
-  | "image";
+  | "image"
+  | "weighted-blend";

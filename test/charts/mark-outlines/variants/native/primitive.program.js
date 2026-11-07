@@ -1,4 +1,5 @@
 import {frame,fontFamily} from "./fixture.js";
+import {rendererFontFamily} from "../../../../../src/renderers/text.js";
 const rgb=c=>`rgb(${c.join(",")})`;
 function shape(context,fixture){
  context.beginPath();
@@ -14,7 +15,7 @@ export function drawOutlineGlyph(context,fixture){
  }else{shape(context,fixture);if(fixture.strokeWidth>0)context.stroke();context.fill();}context.restore();
 }
 export function drawOutlinePrimitive(context,fixture,groupImage){
- context.save();context.fillStyle="white";context.fillRect(0,0,frame.width,frame.height);context.fillStyle="#243447";context.font="14px Arial";context.fillText(fixture.title,20,24);
+ context.save();context.fillStyle="white";context.fillRect(0,0,frame.width,frame.height);context.fillStyle="#243447";context.font=`14px ${rendererFontFamily("Arial")}`;context.fillText(fixture.title,20,24);
  context.fillStyle=rgb(fixture.underlay);context.fillRect(20,45,240,135);context.save();
  if(fixture.clip){const c=fixture.clip;context.beginPath();context.rect(c.x,c.y,c.width,c.height);context.clip();}
  if(groupImage){context.drawImage(groupImage,fixture.group.x,fixture.group.y);}else drawOutlineGlyph(context,fixture);

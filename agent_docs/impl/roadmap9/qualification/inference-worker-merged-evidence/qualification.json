@@ -1,0 +1,584 @@
+{
+  "status": "dedicated-inference-worker-integrated; final-native-qualification-pending",
+  "base": "9b32fccdc",
+  "incoming": "cb08d22a8adf528d105af574786e78573431d4b0",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1251,
+    "packedBytes": 1791235,
+    "unpackedBytes": 8085282,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-ed5f57d5576be46577f8eefe09a09f284a321aef5e25a71854073eb5bbb3423f.tgz",
+    "sha256": "ed5f57d5576be46577f8eefe09a09f284a321aef5e25a71854073eb5bbb3423f"
+  },
+  "sourceInputEquality": {
+    "incoming": "cb08d22a8",
+    "files": [
+      "src/actions/graphs/inference.js",
+      "src/grammar/graph/approximate.js",
+      "src/grammar/graph/fields.js",
+      "src/grammar/graph/inferenceBudget.js",
+      "src/grammar/graph/inferenceDefinition.js",
+      "src/grammar/graph/inferenceJob.js",
+      "src/grammar/graph/input.js",
+      "src/grammar/graph/model.js",
+      "src/grammar/graph/neighbors.js",
+      "src/grammar/graph/preprocess.js",
+      "src/grammar/graph/search.js",
+      "src/grammar/graph/spanning.js",
+      "src/grammar/graph/structural.js",
+      "src/graph.js",
+      "src/materialization/graph/inferenceRequest.js",
+      "src/materialization/graph/inferredResource.js",
+      "src/materialization/graph/inferredState.js",
+      "src/resources/graphInference.js",
+      "src/resources/graphInferenceExecutor.js"
+    ],
+    "different": []
+  },
+  "checks": {
+    "owning.log": 227,
+    "contracts.log": 45,
+    "coverage-policy.log": 7,
+    "docs.log": 243,
+    "browser.log": 1,
+    "inspection-coverage.log": 14
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "sha256": "ed5f57d5576be46577f8eefe09a09f284a321aef5e25a71854073eb5bbb3423f",
+      "checks": [
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed",
+          "durationMs": 327.282959
+        },
+        {
+          "id": "data/inferred-graph-explicit-capacity",
+          "status": "passed",
+          "durationMs": 3996.5316669999997
+        },
+        {
+          "id": "data/inferred-graph-bounded-execution",
+          "status": "passed",
+          "durationMs": 30836.402875
+        },
+        {
+          "id": "data/inferred-graph-worker-lifecycle",
+          "status": "passed",
+          "durationMs": 433.9655829999974
+        },
+        {
+          "id": "data/inferred-graph-worker-complete-grid",
+          "status": "passed",
+          "durationMs": 30437.275499999996
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1064,
+          "minifiedBytes": 2739939,
+          "gzipBytes": 785911
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 424647
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 113,
+          "minifiedBytes": 225198,
+          "gzipBytes": 67555
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113099,
+          "gzipBytes": 333793
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135989
+        }
+      ],
+      "types": "passed",
+      "snippets": [
+        {
+          "id": "graph-inference",
+          "status": "passed",
+          "sha256": "763a08ab408e0e4ebc51c3c1aee83c4c9e841ff22d1ab03e1017dbf6617a2726"
+        },
+        {
+          "id": "graph-inference-worker",
+          "status": "passed",
+          "sha256": "2dc2d94e53c93d1b8c754336235f3fbe50c0029a58677bfda99139ad5113e831"
+        }
+      ],
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "node": "v22.23.1",
+      "sha256": "ed5f57d5576be46577f8eefe09a09f284a321aef5e25a71854073eb5bbb3423f",
+      "checks": [
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed",
+          "durationMs": 364.2139169999999
+        },
+        {
+          "id": "data/inferred-graph-explicit-capacity",
+          "status": "passed",
+          "durationMs": 3307.268
+        },
+        {
+          "id": "data/inferred-graph-bounded-execution",
+          "status": "passed",
+          "durationMs": 25835.326708
+        },
+        {
+          "id": "data/inferred-graph-worker-lifecycle",
+          "status": "passed",
+          "durationMs": 348.67104200000176
+        },
+        {
+          "id": "data/inferred-graph-worker-complete-grid",
+          "status": "passed",
+          "durationMs": 26323.799542
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1064,
+          "minifiedBytes": 2739939,
+          "gzipBytes": 784530
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 423769
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24779
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 113,
+          "minifiedBytes": 225198,
+          "gzipBytes": 67406
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113099,
+          "gzipBytes": 332660
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135493
+        }
+      ],
+      "types": "passed",
+      "snippets": [
+        {
+          "id": "graph-inference",
+          "status": "passed",
+          "sha256": "763a08ab408e0e4ebc51c3c1aee83c4c9e841ff22d1ab03e1017dbf6617a2726"
+        },
+        {
+          "id": "graph-inference-worker",
+          "status": "passed",
+          "sha256": "2dc2d94e53c93d1b8c754336235f3fbe50c0029a58677bfda99139ad5113e831"
+        }
+      ],
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "sha256": "ed5f57d5576be46577f8eefe09a09f284a321aef5e25a71854073eb5bbb3423f",
+      "checks": [
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed",
+          "durationMs": 292.0244170000001
+        },
+        {
+          "id": "data/inferred-graph-explicit-capacity",
+          "status": "passed",
+          "durationMs": 2946.887958
+        },
+        {
+          "id": "data/inferred-graph-bounded-execution",
+          "status": "passed",
+          "durationMs": 24046.073667
+        },
+        {
+          "id": "data/inferred-graph-worker-lifecycle",
+          "status": "passed",
+          "durationMs": 276.984166000002
+        },
+        {
+          "id": "data/inferred-graph-worker-complete-grid",
+          "status": "passed",
+          "durationMs": 26171.101625000003
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1064,
+          "minifiedBytes": 2739939,
+          "gzipBytes": 785911
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 424647
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 113,
+          "minifiedBytes": 225198,
+          "gzipBytes": 67555
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113099,
+          "gzipBytes": 333793
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135989
+        }
+      ],
+      "types": "passed",
+      "snippets": [
+        {
+          "id": "graph-inference",
+          "status": "passed",
+          "sha256": "763a08ab408e0e4ebc51c3c1aee83c4c9e841ff22d1ab03e1017dbf6617a2726"
+        },
+        {
+          "id": "graph-inference-worker",
+          "status": "passed",
+          "sha256": "2dc2d94e53c93d1b8c754336235f3fbe50c0029a58677bfda99139ad5113e831"
+        }
+      ],
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    }
+  ],
+  "built": {
+    "pages": 186,
+    "selectiveArtifacts": 1606,
+    "status": "passed"
+  },
+  "coverage": {
+    "reusedCriticalOwners": [
+      "actions/graphs/inference.js",
+      "grammar/graph/approximate.js",
+      "grammar/graph/fields.js",
+      "grammar/graph/inferenceBudget.js",
+      "grammar/graph/input.js",
+      "grammar/graph/model.js",
+      "grammar/graph/neighbors.js",
+      "grammar/graph/preprocess.js",
+      "grammar/graph/search.js",
+      "grammar/graph/spanning.js",
+      "grammar/graph/structural.js",
+      "materialization/graph/inferredResource.js",
+      "materialization/graph/inferredState.js",
+      "grammar/graph/inferenceDefinition.js",
+      "grammar/graph/inferenceJob.js",
+      "materialization/graph/inferenceRequest.js",
+      "resources/graphInference.js",
+      "resources/graphInferenceExecutor.js"
+    ],
+    "source": "../inference-worker-evidence/critical.json",
+    "actualRoot": {
+      "inspectionDescriptors.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      }
+    },
+    "wholeCoverageRunClaimed": false
+  },
+  "limits": {
+    "entries": 1251,
+    "packedBytes": 1795000,
+    "unpackedBytes": 8085300,
+    "FullGzip": 786000,
+    "graphGzip": 67600,
+    "searchBytes": 1092700
+  },
+  "browser": {
+    "actualWorker": true,
+    "sizes": [
+      100,
+      1000,
+      10000
+    ],
+    "eachAllEdges": true,
+    "singleDiagnosticNotP95": true,
+    "largePrepareMs": 22768.10000014305,
+    "largeCommitMs": 4614.899999856949,
+    "qualification": false,
+    "log": "browser.log.gz"
+  },
+  "reuse": {
+    "builtBrowser": "Upstream responsive and accessibility evidence reused for unchanged UI/layout. Root source tests/build/check built pages actually rerun; no new whole built browser sweep claimed."
+  },
+  "corrections": [
+    "Merged both existing handles and new worker installed manifests",
+    "Used the unambiguous existing snippet marker and added worker executable example",
+    "Removed stale no-worker statement from Current GRAPHS"
+  ],
+  "pending": [
+    "Worker repeated-validation optimization checkpoint",
+    "Original AT82 large performance P95/heap/100-cycle qualification",
+    "Final combined candidate required suites"
+  ],
+  "evidenceFiles": {
+    "generate-initial.log": {
+      "bytes": 2600,
+      "sha256": "2d0b2989f485c7ae37151bd69b60453278532a516b579c45f06968892b3b0ee8"
+    },
+    "reassert.json": {
+      "bytes": 390,
+      "sha256": "9366ef3913b5bc5ea6bf192247b975892fa8b81ad57130d383ebec386897ce4a"
+    },
+    "pack22.json": {
+      "bytes": 388,
+      "sha256": "4d51df892f030fd5ea5b6b55c740f4ebc1e1b3dd3607aa485146cb062847d0a8"
+    },
+    "installed-24.json": {
+      "bytes": 2133,
+      "sha256": "6282505463e44bc439eb3945850d2b48660b043de453349232ac150f1813e3f4"
+    },
+    "browser.log": {
+      "bytes": 833,
+      "sha256": "a9614ea8f1a55081d16112d7648b32bdb96e8f2100ada9dc5be08e321d35d248"
+    },
+    "pack20-initial.json": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "contracts.log": {
+      "bytes": 9359,
+      "sha256": "203a04144832d57c336fd62801878482a028077f7593b7b310b01ea70c86759f"
+    },
+    "frozen.json": {
+      "bytes": 436,
+      "sha256": "3f99c0bc452f44e1a003a4ba10963e91c3d00f8de627cb495ac3b9946d0a5af6"
+    },
+    "source-equality.json": {
+      "bytes": 831,
+      "sha256": "e85763ddb70ee853f91581a1ffeb54924a6b4dd7a8e5d585ea7203a3e54cd736"
+    },
+    "installed-22.json": {
+      "bytes": 2126,
+      "sha256": "1e741658b9fa1b1e62679a85fe88b2fb7929e7b777b95d36cb6155b96fd70bd6"
+    },
+    "pack24.json": {
+      "bytes": 388,
+      "sha256": "ebe3dd6508c122afec02df35c632082e6e40ddff2167013ab0f9ffd873d95033"
+    },
+    "diff-check.log": {
+      "bytes": 68,
+      "sha256": "9bdf672f5ee33641d6a1ce8e1d1652a798a48ebed26367af7776de71bdf6fb14"
+    },
+    "inspection-coverage.log": {
+      "bytes": 3861,
+      "sha256": "718c21011ae79c176c270df9dd5747a1398816f58c89b3d4897835f8339942d8"
+    },
+    "docs.log": {
+      "bytes": 74098,
+      "sha256": "2ce40a1953ef542558666267e10b996da7a606a7f212b4bfe02bc0f1fa77c516"
+    },
+    "installed-20.json": {
+      "bytes": 2134,
+      "sha256": "f8ccb4e60ec5de26d31d3b9e35bc6d96bdb56a9f5dee14fb36ee66d3359e2a6f"
+    },
+    "contracts-initial.log": {
+      "bytes": 10191,
+      "sha256": "db37f39a4bb92fb15255422ad9f8eba27d6cb9fa059b1f595056bb13fe30c77a"
+    },
+    "pack20.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "premeasure20.json": {
+      "bytes": 305,
+      "sha256": "c3af04eaec36320f9674c5fd1c49e86ecc50b509ca594fc52b7bbc56e7b673bd"
+    },
+    "pack22.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "reassert.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "docs-initial.log": {
+      "bytes": 75413,
+      "sha256": "25a9ae8dd9961c18ee11c2bb4bd6802120a22de5d39dd71893b92c10643540e2"
+    },
+    "pack20.json": {
+      "bytes": 388,
+      "sha256": "6b7fb21011a7d697e50a7e6adf363c994c4ff7cda7dca79d8c14ee30630ac0e4"
+    },
+    "installed22.log": {
+      "bytes": 2126,
+      "sha256": "1e741658b9fa1b1e62679a85fe88b2fb7929e7b777b95d36cb6155b96fd70bd6"
+    },
+    "prepack.log": {
+      "bytes": 508,
+      "sha256": "406fee206c31476e34e3715d1eb6e68aad23fd31d0593e8328425be06fbb8488"
+    },
+    "premeasure-descriptor.json": {
+      "bytes": 224,
+      "sha256": "04729c538657b1ae6bdf1298184e49e99f11e6b109b241f1376a9eb65a16e74c"
+    },
+    "owning.log": {
+      "bytes": 55762,
+      "sha256": "273ffe1bdf668e573e3096bffb52b587e4d423c8825363ac98a3acb4d33b7b2a"
+    },
+    "built.log": {
+      "bytes": 179,
+      "sha256": "5f7c3f9b1c8ac3ccc433e50b7242fcacd404bea41fc8c2cd5b96f38600c1c8f4"
+    },
+    "premeasure20.log": {
+      "bytes": 253,
+      "sha256": "750d624db1dbcc271b85225e581351d161cd5c694764ffd39895c9e813174bc1"
+    },
+    "installed20.log": {
+      "bytes": 2134,
+      "sha256": "f8ccb4e60ec5de26d31d3b9e35bc6d96bdb56a9f5dee14fb36ee66d3359e2a6f"
+    },
+    "coverage-policy.log": {
+      "bytes": 1396,
+      "sha256": "b185591ab253afe047e2f309d0239ebdf7e2371123617228b3ea5cf1efd065e3"
+    },
+    "evidence.py": {
+      "bytes": 3244,
+      "sha256": "b3b5ead264079bee4806d3b39eec7cfd0509a88ea2ab0714736db7d458715951"
+    },
+    "installed24.log": {
+      "bytes": 2133,
+      "sha256": "6282505463e44bc439eb3945850d2b48660b043de453349232ac150f1813e3f4"
+    },
+    "generate.log": {
+      "bytes": 13431,
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5"
+    },
+    "pack24.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "pack20-initial.stderr": {
+      "bytes": 966,
+      "sha256": "1f93cfd8f77e1c19ec44ef436c5dd5a686ff245c104efd5bba68f799c064d2e0"
+    },
+    "build.log": {
+      "bytes": 420,
+      "sha256": "20be14bf5ec236278909939bc9ba4853bdb6ddb51705afeb13ecbfb77b95fa98"
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "2d24132e33d561cf5f08c245c892edd991ad3f55e39b6ae939bf1e625b08e8d1",
+      "bytes": 1812
+    },
+    "source-pin-pack.json": {
+      "sha256": "3c7145dd00f495044ad06ce58cdaf45d9c9f3b4f9a767e7d6b0c94a6772f5443",
+      "bytes": 393
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "whitespaceNote": "Incoming inferenceDefinition.js contains one final blank line. Preserved byte-identical runtime/package inputs; raw diff-check diagnostic retained. Remaining non-log paths pass diff-check.",
+  "sourceRevision": "64045b214475110de9621328bbe7d060c9149f04",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "node": "v22.23.1",
+  "archiveSha256": "ae486a9124187717bb8a3c95e54b14c636e6c924e8c0795288e60f9ab721275f",
+  "owningBrowserCases": 8,
+  "status": "passed",
+  "repositorySourceImports": false
+}

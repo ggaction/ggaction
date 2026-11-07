@@ -1,0 +1,588 @@
+# Animation
+
+공개 고급 작성 entry는 `ggaction/animation`이다. ChartProgram action을 추가하지 않으며
+원 프로그램·trace를 변경하지 않는다. 계획/프레임은 불변값이고 재생기는 명시적인 host
+clock·render callback을 가진 일시적 controller다.
+
+## 계획과 sample
+
+`planTransition({from,to,options:{durationMs,easing?,tracks?,markers?,composite?,maxEndpointNodes?,maxOutputNodes?,formatVersion?}})`은 닫힌 Full/Basic 프로그램을
+받아 authentic frozen plan을 반환한다. from/to는 authentic sampled frame도 허용한다.
+durationMs는0이상 finite, easing은 `linear|cubic-in-out`이며 기본값은 cubic-in-out이다.
+양 endpoint의 실제 materialized graphics와 typed identity·row grain을 사용한다.
+행 인덱스·draw order·label을 item correspondence로 추정하지 않는다.
+
+기존 format3–5의 `sampleTransition(plan,timeMs)`는 `{graphicSpec,scene,progress,decisions}`를 반환한다.
+이미 sampled frame을 endpoint로 재사용한 경우 그 endpoint에서는 원본 객체와 원래
+progress/decisions를 그대로 돌려준다. `exportAnimationFrames`의 timeMs는 새 계획의
+시간축이며 기존 endpoint의 원래 progress를 덮어쓰지 않는다.
+임시 graph unbundle을 새 endpoint로 사용할 때도 원 sample decision을 생성 이력으로 보존한다.
+변경된 edge는 검증된 graph item의 `edited-graph-geometry`로 구분하며, 이후 계획은
+그 간선을 concrete fallback으로 처리한다. 저장·복원은 이 조합을 보존하되 kernel 적용
+가능성이나 native interaction 권한을 부여하지 않는다. 다른 의미값 누락은 계속 거부한다.
+finite time은 양 끝으로 clamp하며0duration의 time0은 target이다. exact endpoint는
+원 graphicSpec/scene 참조를 보존한다. 중간 graphicSpec은 기존 scene concrete owner를
+재사용하므로 네 공개 renderer에 frame 자체를 전달할 수 있다. frame clone은 authentic
+계획 입력이 아니며 외부에서 재생결과처럼 꾸민 object를 허용하지 않는다.
+호환되는 bounded geometry를 반복 중단해도 이전 계획의 재귀 깊이를 누적하지 않는다.
+현재 sample의 identity·준비된 의미값만 유지하며 이전 playback controller를 보존하지 않는다.
+Weighted crossfade의 실제 source/clip 수 제한은 그대로 적용한다.
+Exact endpoint 판정은 eased progress의 반올림이 아닌 원 timeMs 경계로만 한다. 엄밀한 중간 시각의
+progress는 floating-point underflow/rounding에도0과1 사이의 표현 가능한 값으로 유지하므로,
+끝 직전의 명시 keyframe이 endpoint 단축 경로에 가려지지 않는다.
+
+Cartesian point typed vertical은 resolved continuous circle point다. 실제 semantic
+값과 scale(domain/range/clamp/parameters)을 먼저 보간한 다음 forward mapping한다.
+linear/time/log/pow/sqrt/symlog의 기존 버전 kernel을 사용하며 log pixel 역산으로 값을
+추정하지 않는다. topology·지원되지 않는 style·coordinate·scale policy가 호환되지 않거나
+현재 typed family가 없는 항목은 명시한 reason과 공통 weighted concrete crossfade다.
+새 item은 enter, 사라진 item은 exit이며 role/childPath/typed key를 보존한다.
+formatVersion과 두 node 옵션을 모두 생략하면 version3의 준비 누적work10,000,000과 양 endpoint 총node10,000,
+출력node10,000 한도 및 기존 실패 순서를 그대로 적용한다.
+
+## 명시 node 용량과 version4
+
+`maxEndpointNodes`는 두 endpoint 실제 scene node의 합이며 safe integer1..200002다.
+`maxOutputNodes`는 각 endpoint 및 모든 sampled output의 실제 node 수이며1..100001다.
+각 생략값은10000이며 하나를 명시해도 다른 값은 자동 증가하지 않는다. Own undefined는
+거부한다. Background·guide·label·weighted concrete output도 실제 개수에 포함한다.
+Point의 maxItems는 animation 옵션에 자동 전달하지 않는다.
+
+formatVersion 없이 한 node 옵션이라도 own으로 명시하면 version4와 transition kernel4를 선택한다. 닫힌 native
+프로그램과 retained child의 원 raw/items 및 실제 collection 소유자를 전수 검산한다.
+Point는 자기 maxItems의 기본50000/명시최대100000을 보존하며 다른 native family의 각
+owner10000과 primitive/graphic-only 한도는 그대로다. 서로 다른 native owner가 장식과 함께
+endpoint 총10000을 넘는 혼합 scene은 명시 총합/출력 한도 안에서 허용한다. Owner/type/
+namespace 위조나 caller shallow freeze는 이 권한을 만들지 못한다.
+
+명시 scope의 준비 traversal 및 partition track 준비는 원 charge 수학을 그대로 적용해
+140000000까지 검산한다. Column expanded values12000000, descriptor/cell visits각16000000,
+독립 intern work140000000과 metadata1000000을 할당 전에 검사한다. 전역10M, 다른 family의
+geometry/path/identity 작업, timeline/native sample/partition frame/batch10M 및 weighted64는
+늘리지 않는다. Node 옵션은 이 다른 경계를 우회하거나 일정한 재생 속도를 보장하지 않는다.
+
+Sample/rebase는 원 concrete/meaning/scale/identity의 현재 flat proof만 유지한다. 새 rebase와
+`player.interrupt`에도 두 옵션 중 필요한 값을 다시 명시해야 한다. 이전 plan의 숫자를 자동
+상속하지 않으며 생략 시 version3의 기존 한도에서 거부될 수 있다. Exact sampled endpoint는
+원 객체다. Offline은 동일 strict 검산 뒤 재생·재기준 가능하지만 native source 권한을 복원하지 않는다.
+
+## 명시 format5와 지리 용량
+
+`formatVersion:5`를 own으로 명시하면 version5·transition5와 `animation-columns@2`를 선택한다.
+명시6은 아래 batch frame 계약을 선택한다. 나머지 명시값(null/undefined/3/4 포함)은 거부한다. Node 두 옵션을 생략할 수 있으며 각 기본10000과
+기존 명시 최대·scope quota를 그대로 적용한다. 기존 options의 v3/v4 선택·bytes·reader는 유지한다.
+
+Format5는 같은 실제 endpoint/timeline을 저장하며 compound 내부를 손실 없이 내려간다.
+Vector는 기존 dense scalar array 또는 정확 `{kind:"float64-le",length,base64}`다. 후자는 finite
+IEEE754 little-endian이며 -0을 보존한다. Canonical ASCII base64/padding·8×length와 storage
+cell 비용을 할당 전에 검사하고 unused pool·반복 ref도 원 logical/cell/descriptor 비용을 과금한다.
+Envelope64MiB, encoded/decoded 각1M, depth128 및 expanded12M/cells16M/prepared140M을 늘리지 않는다.
+
+Own Geo binding capacity가 하나라도 있으면 `native-geo-camera@2`, 없으면 기존@1이다.
+각 group의 maxProjectedPoints·maxPathCommands는 native owner의 정책을 그대로 사용한다.
+실제 path.maxCommands는 binding과 정확히 같아야 하며 낮은 정책/위조는 복원·rebase에서도 거부한다.
+Default group들의 aggregate projected point10000과 전체 Geo work10M·batch10M은 유지한다.
+서로 다른 capacity의 전환은 기존 geo-binding fallback이며 기존 v3/v4 own capacity의
+edited-geo-graphics fallback을 바꾸지 않는다. 현재 capacity frame은 새 rebase에서도 format5를
+명시해야 typed capacity를 유지한다. 이전 plan의 옵션이나 native 권한을 offline에 상속하지 않는다.
+
+Version5는 version4와 같은 top-level fields를 가지며 kernels.columns를 추가로 요구한다.
+Unknown/mismatched version·kernel은 column 확장 전에 거부하고, 실제 family·capacity와 manifest를
+복원 뒤 다시 대조한다. Restored wire bytes·native exact endpoint·sample/timeline/rebase/renderer
+입력은 보존한다. 저장 형식 선택은 재생 시간 보장이 아니다.
+
+## 명시 format6와 완성된 batch frame
+
+명시 `formatVersion:6`만 transition6·columns@2·batchFrame1을 선택한다. 기본v3/명시nodev4/명시5와
+기존 정상 저장 bytes는 유지한다. 공개 `BatchedTransitionPlan`의 sample은 완성된
+`{graphicSpec,scene:{version:3,width,height,entries},progress}`다. Scene3는 single node/decision 또는
+circle-run keys/placement/properties/decisions를 저장한다. Exact endpoint decision은null, interior
+point run은 동일 owner/role/kernel과 sourceIndices/targetIndices/itemKeys의 dense table이다.
+각 run은1..10000행이며 연속 draw order·appearance·placement·scale 경계에서 나눈다.
+
+모든 좌표/appearance/placement/현재 의미/native identity는 sample 반환 전에 완성·검산된다.
+Renderer는 graphicSpec의 공통 circle-batch·path-batch primitive를 직접 소비하고 의미 평가를 하지 않는다.
+
+Partition body cell은 `path-run` entry로 묶는다. 같은 prepared pair·owner·role·topology·paint·
+appearance track·placement가 이어지는 `semantic-partition` body track만 대상이며 1..10,000행이다.
+properties는 path-batch이고 행은 per-node 경로와 같은 tessellation의 닫힌 외곽선이다. decisions는
+`kernel:"partition"` dense table이고 position은 좌표 channel 없는 `{kind:"path-run"}`이다. Frame
+partition 의미는 pair마다 한 번 sample한 group과 행 순서의 item이다. 숨겨진 셀·label·다른 family가
+있으면 그 frame은 기존 per-node 경로를 그대로 쓴다. Codec·rebase·offline은 circle-run 규칙을 따르며
+논리 work는 행별 M/L/Z 명령을 펼친 legacy node 비용이다. Evidence: `test/unit/animation/batched-partition.test.js`.
+기존 family/복잡 paint fallback은 single entry로 유지한다. Private positions는 entries에 대응하는
+single value 또는 point-run x/y values와 exact scale이다. Native proof는 logical row 순서와
+(graphicId,rowIndex)를 사용하고 offline/clone/caller batch에는 native 권한을 부여하지 않는다.
+
+Node/owner/work/export 과금은 physical entry 수가 아닌 logical row 및 원 primitive 비용이다.
+기존 명시scope/point maxItems·모든 전송 상계를 유지한다. Numeric projection은 알려진 batch
+좌표/반지름/position/decision-index 경로만 기존 float64-le로 저장하며 -0를 보존한다.
+columns@2 pool 검산 뒤 모든 length/cells/논리work·owner 경계를 숫자 배열 할당 전에 검사한다.
+SHA digest는 전체 tagged payload를 덮고 모든 single legacy 값도 기존 strict codec을 따른다.
+
+Batch frame→legacy plan의 암묵변환은 거부한다. Format6 rebase는 완성된 row를 직접 읽어
+private track 입력을 준비하며 과거 frame/plan을 보존하지 않는다. 같은 representation의 exact
+sample은 원 frame identity를 유지한다. Player는 생성 representation을 보존하고 cross-mode
+interrupt를 상태 변경 전에 거부한다. Serializer는 현재 version을 유지하며 downgrade API는 없다.
+
+`AnyTransitionPlan/AnyTransitionFrame` union과 format6 overload를 공개한다. deserialize 반환 plan은
+AnyTransitionPlan이므로 기존 TypeScript 소비자가 representation별 필드를 읽으려면 version6 분기가
+필요하다. Literal legacy options는 기존 precise 타입, literal6은 batch 타입, 동적options는 union이다.
+정확 예제는 [공개 Animation 문서](../../../docs/api/animation.md)의 version 분기를 따른다.
+
+## 완료된 Graph 배치 전환
+
+GraphPlot은 stable node/edge key와 실제 역할에 따라 완료된 layout의 좌표·반지름·origin·
+label offset을 보간한다. Ordinary parallel/loop edge와 arrow는 현재 node anchor에서 기존
+geometry 규칙으로 계산한다. Stored world/screen route는 공통 arc-length 기준으로 보간한
+뒤 현재 anchor와 radius inset을 적용한다. 매 frame layout·inference·bundling을 다시 실행하지 않는다.
+Node/edge reorder, enter/exit, composition namespace와 현재 frame 양방향 재기준을 보존한다.
+
+동일 graph 의미와 concrete output은 exact이며, pixel만 같고 raw layout/origin이 다르면
+의미 값을 계속 보간한다. 같은 centerline/anchor는 원 경로의 모서리를 유지한다. Endpoint
+관계·parallel 순서·route kind/coordinate space·primitive/clip/appearance 불일치 및 경로
+붕괴/stretch는 항목별 명시 사유 crossfade다. 호환 node는 해당 edge와 독립적으로 계속 움직인다.
+현재 typed 계산의 decision kernel은 `completed-graph`다. Structured paint 전환 자체는
+별도 typed paint 지원이 아니며 실제 공통 weighted concrete 경로를 사용한다.
+
+Graph 준비값은 group당 한 번 보존하고 각 scene item은 key/kind/role로 참조한다. 같은
+10M work 한도를 적용하며 복원은 exact refs·원 item identity·forward geometry·kernel version을
+검증한다. 재기준 graph 의미는 flat private frame proof에 보존되어 이전 plan 연쇄를 만들지 않는다.
+Native current-frame hit는 현재 node/edge 모양과 정확한 endpoint metadata를 사용한다.
+Offline 복원 frame은 렌더링·재기준 가능하나 native 프로그램 metadata가 없어 session hit binding은
+지원하지 않는다.
+
+## Cartesian Rule·Rect·Bar·Line·Area 전환
+
+동일 final item key/role과 실제 source row lineage를 가진 Cartesian rule, range/band rect,
+aggregate/ranged/centered bar, histogram, ordered line 및 area는 `cartesian-geometry` kernel을
+사용한다. 준비 시 기존 native owner에서 각 item의 값·resolved scale·구간 endpoint와
+곡선/막대 폭/모서리 정책을 읽고 concrete endpoint로 forward 검산한다. 범위·stack·fill·center·
+wiggle은 이때 완성한 endpoint 값을 보존하며 sampling 때 집계·binning·stack/layout을 다시 하지 않는다.
+
+Continuous mapping은 point와 같은 linear/time/log/pow/sqrt/symlog owner를 사용한다.
+동일 typed categorical domain/order/value와 padding policy의 ordinal/band/point는 range를
+보간하고 기존 native band resolver를 사용한다. 선의 linear/step/step-before/step-after/basis/
+cardinal/monotone/monotone-steffen/natural 및 area의 허용 curve는 기존 path 계산기를 재사용한다.
+수평/수직 방향, 명시 pixel/band/calendar interval 폭과 native grouped offset placement를 보존한다.
+
+곡선·layout·radius·폭 policy, ordered vertex row membership, categorical domain/order 또는
+scale policy가 달라지면 명시 reason crossfade다. Conditional position은 native final item/vertex의
+선택된 branch 값과 scale을 준비한다. Sample/restore는 조건 AST를 다시 실행하지 않는다.
+Rule과 원형 point의 ordinal offset, error-bar fixed span, box median span 및 실제 raincloud
+category-slot은 native placement 계산을 공유한다. 같은 span 단위의 크기와 slot band 값은 보간한다.
+
+Continuous/category density area는 완료된 sample grid·density·정규화 maximum과 native path를
+사용한다. 밀도 추정 자체를 frame마다 반복하지 않는다. Source-follow point/line overlay는
+native source item/segment/order와 원 값·scale에서 anchor를 forward 계산한다. Bar endpoint는
+현재 category cell 중심과 measure 끝점이며, nested overlay state는 허용하지 않는다.
+다른 source/ordered member grid 또는 native segment topology는 기존 enter/exit·crossfade다.
+Non-Cartesian은 각 별도 kernel의 범위이며, jitter/packing·비원형 point anchor는 이 확장에
+포함되지 않는다. Structured paint나 아래 solid 범위를 벗어나는 style 변경도 공통 concrete fallback이다.
+성공한 sample은 현재 의미 vector만 flat proof에 보존하여 양방향 재기준과 offline 복원을 지원한다.
+저장 payload는 endpoint별 optional Cartesian state와 `semantic-cartesian-geometry@2` version을
+포함하며 unknown version·다른 row membership·forward geometry 오염을 원자적으로 거부한다.
+기존 public 함수 signature와 scene schema는 바뀌지 않는다. 다른 typed family의 완료를 뜻하지 않는다.
+## Partition의 native 일반 방향 전환
+
+PartitionPlot은 저장된 hierarchy layout/view의 normalized cell interval과 정확한
+node/parent identity에서 Icicle↔Sunburst 및 같은 좌표 계열의 전환을 준비한다.
+호환되는 일반 방향은 기존 bend kernel로 frame origin/basis·치수·각도·hole·CSS gap을
+보간한다. 원 구간을 먼저 휜 뒤 현재 CSS gap을 적용하며, body path와 label anchor는
+같은 현재 cell을 사용한다. 매 frame hierarchy layout을 다시 계산하지 않는다.
+Decision kernel은 `partition`이며 정확 endpoint는 원 native graphics를 보존한다.
+
+현재 curved frame을 양방향 endpoint로 재사용해도 보간한 normalized interval/frame을
+보존하고 pixel에서 의미값을 복원하지 않는다. Scene 순서의 body/label item refs와
+namespace별 group은 flat provenance에 저장되며 앞선 계획을 붙잡지 않는다.
+정확한 layout/hierarchy refs·node lineage·forward geometry·closed kernel version을
+저장·복원 시 검증한다. Native cubic sector와 현재 tessellated cell은 각 owner의
+동일 계산 결과와 일치해야 한다. 별도 공개 함수나 ChartProgram 저장 schema는 추가하지 않는다.
+
+Hierarchy topology·보이는 item 집합·handedness·radial depth direction·radius policy·
+clip·appearance 불일치, 명시 geometry 편집은 사유가 있는 concrete crossfade다.
+현재 CSS gap이 cell을 소비하면 `partition-collapsed-cell` 사유로 body와 label이 함께
+fallback한다. Structured paint를 의미별로 보간한다고 주장하지 않는다. Native 현재
+path hit는 현재 shape와 정확한 native item metadata를 재사용한다. Offline animation
+복원에는 editable native 프로그램 권한이 포함되지 않는다.
+
+## Polar point·line·arc 전환
+
+Native polar coordinate의 point(circle), ordered line, proportional/radial/measured arc는
+`polar-geometry` kernel을 사용한다. Native mapping/sector owner에서 준비한 각도(degree),
+반지름, frame, exact member-key grid를 보존하며 x/y 역산을 하지 않는다. 매 frame 기존
+polar projection·line·annular-sector builder를 재사용한다. 각도는 shortest 방향을 따르고
+180도 동률은 양의 방향이다. 현재 frame에는 unwrapped 각도를 보존한다. Arc의 signed sweep은
+별도로 보간하여 full turn을 유지하며 반대 sweep 방향은 crossfade한다.
+
+이 kernel은 resolved polar-coordinate 의미를 보간한다. Raw 값과 nonlinear scale 자체를
+동시에 보간한다고 주장하지 않는다. 원 native mapping descriptor(domain, range, clamp 및
+transform/padding policy)의 fingerprint가 다르면 `polar-mapping`이다. Radius range는 frame의
+available radius에 대한 비율로 비교하여 같은 상대 범위의 Canvas resize를 지원한다. Proportional
+arc는 실제 sector owner가 쓰는 theta range만 비교한다. Digest는 호환성 표식이고 실제 재생 값은
+payload의 angle/radius/frame/grid다.
+
+Line은 ordered member grid와 closed policy를 유지한다. 순서·누락·break·categorical domain 변경,
+conditional position, 비원형 point, edited geometry, 지원되지 않는 style/structured paint 변경은 기존
+명시 fallback이다. Arc pad policy 변경도 fallback이다. Polar Rule/Rect authoring은 native vocabulary에
+없으며 새로 추가하지 않는다. Guide circle/rule의 typed 전환은 별도 범위다.
+
+Optional endpoint `polars` vector와 `native-polar-coordinates@1` version을 저장한다. Strict restore는
+closed shape, finite/ordered radius, node cardinality, exact lineage 및 native forward geometry를 검증한다.
+현재 polar 의미는 flat provenance에 보존되어 이전 plan 없이 양방향 재기준과 offline 재생이 가능하다.
+공개 6개 함수 원형과 concrete scene schema는 바뀌지 않는다.
+
+## Native guide 값 전환
+
+Cartesian axis line/tick/fixed label/grid와 polar axis/tick/fixed label/spoke/circle grid는
+`guide-geometry` kernel을 사용한다. 기존 native geometry 및 scale owner의 값→위치 계산을
+재사용하며 현재 frame을 양방향 endpoint로 사용할 수 있다. 키는 실제 child namespace,
+명시 guide owner, component, typed raw value, label line role로 구성한다. 표시 문자열이나
+배열 index로 다른 값을 대응시키지 않는다. matched decision의 `guideKey`는 mark `itemKey`와
+별도이며 role은 `guide-line|guide-ticks|guide-labels|guide-grid`, `guide-title|guide-boundary`,
+`guide-parallel-line|guide-parallel-ticks|guide-parallel-labels|guide-parallel-title`이다.
+
+동일 raw value의 scale/domain/range와 frame을 먼저 보간한 뒤 native geometry를 만든다.
+새 값과 제거된 값은 enter/exit이며 중복 raw value는 `guide-ambiguity` reason의 별도 enter/exit다.
+같은 값의 label 문자열·font/static policy 변경은 appearance crossfade다. 명시 geometry
+편집은 `guide-edited`다. 현재 crossfade guide는 identity만 보존한 `guide-unavailable` 상태에서
+다음 transition도 명시 fallback한다.
+
+Cartesian label의 고정 회전, flush/flushThreshold, plot-edge 정렬은 `label-layout` 준비값에서
+원 native 측정·배치 함수를 재생한다. 같은 raw 값 집합과 표시 문자열·hard-break 줄·font·정렬 정책을
+유지하고 frame/scale/offset/alongOffset을 먼저 보간한다. Canvas fit과 원 overlap 정책을 검증하며
+중간 배치가 불가능하면 `guide-layout`으로 fade한다. 필요한 정확 metric query만 보존하고 schema2
+font resource/content identity와 측정 누락 오류를 유지한다. LabelMap의 숨긴 값은 다시 나타나지 않고
+중복 문자열은 raw value/line identity를 합치지 않는다. maxWidth wrapping, responsiveResult에 따른
+줄 수·skip·rotation 선택 변화는 이 고정 배치 범위에 포함되지 않는다.
+
+Cartesian `maxWidth` 또는 responsive label policy는 별도 native raw 그룹에서 현재 frame/scale/
+offset을 먼저 계산하고 원 wrapping·skip·rotation 후보를 다시 선택한다. 동일 raw cohort, 표시 내용,
+font와 policy가 필요하며 바뀌면 `guide-layout` fallback이다. 현재 native 배치가 Canvas에 들어가지
+않아도 명시 fallback하며 metric 누락/예산 오류는 fade로 숨기지 않는다. Schema2 폰트의 중간 줄
+측정은 [CORE의 명시 폰트 준비](CORE.md)를 따르는 `axisLabelReflow:true` 옵션으로 준비해야 한다.
+Font 교체 뒤에는 새 exact query closure를 다시 준비한다. 기본 측정 요청은 바뀌지 않는다.
+
+Dynamic decision은 `{kind:'guide',kernel:'native-axis-label',ownerKey,guideKey,role:'guide-labels'}`다.
+현재 raw tick+line identity를 사용하며 새 줄에 sourceIndex/targetIndex를 만들지 않는다. 빈 collection도
+실제 slot과 owner 의미를 유지하므로 geometry retime 대상이다. 기존 줄의 개별 style keyframe은 현재
+그림에 반영한다. 같은 raw의 줄들이 서로 다른 style을 가지면 다음 전환은 `guide-edited` fallback이고,
+공통 style이면 현재 typed 의미를 유지한다. 실제 native source의 raw membership과 exact metrics로
+현재 hit metadata를 만들지만 mark selection 권한을 추가하지 않는다. MaxWidth/responsive 그룹의
+현재 native 결과는 아래 title/legend clearance에도 같은 owner 참조로 연결한다.
+
+명시 numeric offset의 Cartesian title은 `start/center/end` range 역할 또는 numeric `at` 값을
+보존한다. Numeric at와 scale을 보간한 후 native mapping을 적용하며 text/font 변경은 fade다.
+Inferred·label-relative clearance는 `title-layout`에서 같은 native label recipe와 exact font metrics를
+보존한다. 현재 scale/frame의 실제 nonempty label bounds와 union으로 원 4px gap, theme/default
+preferred offset, legacy Canvas clamp 또는 plot-edge 정책, label-relative gap을 다시 계산한다.
+같은 owner의 전체 label sibling 의미를 forward proof로 검증하며 label을 직접 편집하면 title도
+`guide-edited`다. 중간 Canvas fit/overlap 실패는 `guide-layout`으로 fade한다. No-label inferred
+제목은 native preferred offset을 유지한다. Title strings/font 변경은 기존 appearance fade이며
+maxWidth/responsive label reflow도 현재 그룹의 exact metrics와 실제 clipped label ink를 사용한다.
+최종 pixel offset을 의미로
+추정하거나 endpoint label bounds를 보간하지 않는다. Polar title은 native theta frame 또는 radial inside/outside·shortest angle을 재사용한다.
+Band-boundary grid는 같은 경계를 공유하는 모든 typed `{value,edge}`의 canonical set으로
+대응한다. Membership이 달라지면 enter/exit이며 중간 native 계산에서 경계가 분리되면
+`guide-layout` fade다. 임의 epsilon이나 첫 member 선택으로 합치지 않는다.
+Parallel line/tick/label/title은 field와 component, typed raw tick으로 대응한다. Field 재정렬과
+삽입·삭제에도 field identity를 보존하며 현재 slot index/count와 frame을 native slot owner로
+계산한다. Raw tick은 같은 scale owner를 쓰고 field 이름·표시 문자열·배열 순번을 혼동하지 않는다.
+이 확대는 기존 opaque plan과 optional guide vector 안에서 이루어지며 공개 함수 원형은 같다.
+
+연속 color/stroke gradient 범례는 exact raw `values`, 명시 numeric offset, 하나의 edge block을
+준비한다. Tick/label은 raw value, title은 명시 title role, strip은 native 60분할의 정규화 segment
+role로 대응하며 표시 text나 데이터 행 순번을 identity로 쓰지 않는다. 현재 plot/Canvas frame,
+gradient 크기·offset과 scale의 의미값을 보간한 뒤 기존 native layout/strip owner를 재생한다.
+동일 raw tick도 log scale은 현재 domain으로 다시 매핑한다. Solid 색은 공통 appearance owner다.
+새 sample은 enter/exit이며 sampling/문자열/font/배치정책 변경은 정확한 identity를 보존한 fade다.
+필요한 text query closure만 저장하고 schema2의 정확 font binding/측정치가 빠지면 준비 오류다.
+중간 frame은 같은 native 의미로 재기준·오프라인 재생한다. Auto sampling, gradient symbol
+범례, border와 복잡한 label reflow는 아직 typed 범위 밖이며 지원되는 gradient component에는
+`guide-layout` reason을 보존한다. Inferred axis clearance는 아래 implicit lane 조건을 따른다.
+
+연속 size 범례도 exact raw `values`와 명시 offset의 독립 edge block을 지원한다. Native
+linear/log/sqrt/pow size scale의 값→면적 mapping을 먼저 계산하고 그 면적에서 반지름을 얻는다.
+단순 반지름 보간은 사용하지 않는다. 같은 sample/문자열/font/배치 정책에서 frame, offset,
+itemGap, rowPadding, titlePadding과 labels.offset을 보간한 뒤 native measured layout을 재생한다.
+숨긴 label은 숨긴 채 유지하고 hard-break 줄·명시 정렬·현재 frame 재기준과 offline 복원이 같다.
+Auto sampling, ordinal/discrete size와 clip/border는 이 size slice에
+포함되지 않으며 `guide-layout`을 보존한다.
+
+범주형 series/color/stroke 범례도 명시 offset의 독립 edge block을 준비한다. 같은 raw domain과
+순서·shape·문자열/font·배치정책에서 line/point/swatch의 native recipe 크기, frame/offset/간격을
+보간하고 기존 measured layout과 shape builder를 재생한다. Typed category와 symbol 역할이
+key이며 같은 표시 문자열도 합치지 않는다. 숨김과 hard-break, 네 edge·nested scope·현재 frame
+재기준 및 strict offline이 같다. Solid appearance는 공통 owner가 보간한다. Domain/shape/layout
+정책 변경, overflow/clip/border는 명시 fade 또는 enter/exit이며 새 배치를 임의로 추정하지 않는다.
+Inferred clearance는 아래 implicit lane 조건을 따른다. 원 native block symbol override도
+같은 geometry proof를 따른다.
+
+명시 `editLegendLayout` 그룹은 같은 target의 categorical·size·gradient/strokeGradient 블록을
+하나의 종속 배치로 준비한다. `row/column/wrap`, 네 edge·네 corner·plot-relative `at`와
+명시 offset/alongOffset을 보존하고 현재 frame과 각 블록 의미를 먼저 샘플링한다. 기존 native
+occupied-bounds와 group packing owner가 현재 경계·행을 계산하므로 wrap의 행 전환도 정적
+동일 옵션 결과와 같다. Frame은 그룹 한 곳에 저장하고 각 item은 원 typed raw value·role로
+그 안의 블록을 참조한다. 정확 text metric closure와 native Canvas/plot fit 검사를 유지한다.
+블록 순서/집합·placement 정책·문자열/font 변경 또는 미지원 sibling은 전체 그룹을 명시 fade한다.
+Inferred axis clearance, border/clip/overflow·자동 sample·개별 local placement와
+opacity/strokeWidth 등 아직 typed 의미가 없는 sibling은 이 그룹 확대에 포함되지 않는다.
+현재 그룹 frame 재기준과 strict offline 복원은 같은 native 의미를 유지한다.
+
+암묵적 edge lane도 같은 categorical·size·gradient/strokeGradient 블록 순서와 native
+categorical+size 결합 규칙으로 준비한다. 네 방향에서 현재 frame·symbol/size 의미값과 exact
+font metrics의 occupied bounds를 기존 lane owner에 전달한다. Offset이 추론되었어도 같은
+edge의 axis 여백에 의존하지 않는 경우를 지원한다. 각 component는 원 target·typed raw
+value·role을 유지하고 현재 lane의 완전한 sibling 집합·동일 배치 의미를 검산한다. 실제
+font/선 두께를 직접 수정해 bounds 의미가 달라지면 lane 전체가 `guide-edited`다. 블록 제거·
+정책/문자열 변화로 중간 fade/exit가 lane/group/title 의존을 끊으면 그 불완전한 typed owner는
+identity와 `guide-unavailable`만 보존한다. 관계없는 scope의 정상 guide는 유지하며 같은
+중간 frame→재기준→strict offline 복원 결과가 같다. 자동 sample·border/clip/overflow·개별
+local placement·미지원 sibling은 명시 fallback을 유지한다.
+
+Same-edge Cartesian axis-dependent inferred clearance도 native line/ticks, 고정 label layout,
+inferred/label-relative/fixed-offset title의 실제 현재 ink에서 계산한다. Lane 저장은 정렬된
+exact guide refs와 native offset 상속 정책뿐이며 축 layout·이전 plan을 복제하지 않는다.
+준비 시 완전한 scope/edge/sibling 의미를 검산하고 sample은 각 축 owner의 실제 timeline
+progress와 해당 target node의 현재 strokeWidth/style, nested offset/clip을 반영한다.
+범례 자체의 progress와 축의 progress가 달라도 현재 경계에서 원 네 방향 clearance 식과
+native lane placement를 재생한다. Title font metric·lines가 오염되거나 dependency가 fade/
+enter/exit로 불완전해지면 전체 종속 lane을 명시 fallback한다. 중간 재기준·offline full frame이
+동일하다. 동적 wrap/skip/rotation도 같은 native raw group의 현재 출력과 exact metrics를 소비한다.
+Lane의 `labelGroups`와 title의 `labels:{group}`는 exact axis ownerKey만 저장하며 raw layout·
+metric·slot 또는 이전 plan을 복제하지 않는다. 숨긴 raw 값과 0줄 그룹도 참조를 보존한다.
+각 축의 실제 timeline progress와 최종 line style을 한 번 적용한 graphics에서 occupied bounds를
+계산하므로 범례의 clock과 독립적이며 nested offset/clip을 보존한다. 같은 raw의 line style이
+불일치하거나 그룹이 fade·source-only·target-only가 되면 전체 종속 owner는 명시 fallback이다.
+현재 label이 없는 label-relative title은 native 배치 실패를 유지하고 inferred title은 preferred
+정책을 따른다. 바뀐 maxWidth/responsive 정책과 비Cartesian 의존 여백은 여전히 fallback이다.
+실제 label/line/text/clip command 방문량은 기존 sample·batch work 한도에 합산한다. 동일
+current dependency의 cache hit는 중복 과금하지 않고 예산 오류를 배치 fade로 삼키지 않는다.
+
+Optional endpoint `guides` vector 및 dynamic `axislabels:{groups,items}`와 `native-guide-values@13` manifest를 보존한다. 이전 guide11/12는 명시 거부한다. Strict restore는
+closed shape, node cardinality, 실제 mark/background identity와의 배타성, typed guide key,
+sample decision 및 native forward geometry를 검증한다. 현재 guide 의미는 flat frame proof에
+저장하여 이전 plan을 보존하지 않는다. 오프라인 복원도 동일 시각의 scene을 만든다.
+Canvas resize background의 기존 weighted lowering과 guide 자체 vector 출력은 구분한다.
+Dynamic group은 현재 raw cohort/metrics/font/전체 줄·실제 collection slot과 Geo 역할에 대한 상대
+drawing order를 검산한다. 현재 sample/rebase/offline에서 같은 drawing 순서를 보존하고 이전 plan을
+참조하지 않는다. 빈 출력의 native 계산도 단일 sample10M 및 frame export 누적10M work에 포함되며,
+실제 output node10k와 schedule10k 한도도 유지한다. Batch 실패 시 부분 결과를 반환하지 않는다.
+
+## Solid 색·투명도·선 두께 전환
+
+호환되는 point·Cartesian·polar·guide·graph·partition geometry track과 native Geo feature는
+같은 현재 geometry에 solid fill/stroke, opacity, 명시 strokeWidth를 함께 보간한다.
+색은 기존 host-independent parser와 premultiplied linear-sRGB kernel을 사용한다.
+예를 들어 black→white의 절반은 sRGB 약0.735357(8bit188)이며, none→red는 red chroma를
+유지하면서 alpha만 증가한다. 별도 opacity는 linear이고 생략은 기존 기본1이다.
+StrokeWidth는 양 endpoint에 명시된 finite non-negative 값일 때만 보간한다.
+원 endpoint의 작성된 CSS 색 문자열과 graphicSpec은 정확히 보존한다.
+
+Structured fill 변경·미해결 host color·다른 font/text/effect/static policy 변경은
+appearance 사유 crossfade다. 동일 structured Geo style의 native part 재물질화는 기존대로
+유지하며 structured paint 자체를 보간하지 않는다. 현재 solid 색/수치는 concrete properties에서
+재기준하고 별도 semantic state나 이전 plan 연쇄를 보존하지 않는다. Decision kernel은 해당
+geometry owner를 그대로 사용한다. Native hit/focus는 현재 paint·opacity·clip footprint를 읽는다.
+
+기본 Transition plan/kernel은 version3이며 명시 node 옵션은4, formatVersion5는5다. Required kernels.appearance는
+`premultiplied-linear-srgb@1`이다. 미발행 개발 plan version1·2나 빠진/unknown appearance kernel은
+복원을 거부한다. Envelope schema1은 그대로이고 새 public function이나 ChartProgram 저장
+resource는 추가하지 않는다.
+
+## 키프레임과 exact native 대상
+
+`tracks`는 닫힌 `{target,property,kernel,keyframes,priority?}` 배열이다. Keyframe은
+`{timeMs,value,easingToNext?}`이며 시간은 duration 안의 nondecreasing 값이고 생략 easing은
+plan easing을 따른다. 같은 시각의 마지막 값이 그 시각부터 적용되며 양 끝 바깥은 끝값을 유지한다.
+같은 대상/property의 interval overlap은 기본 `composite:'reject'`에서 오류다. 명시 `priority`는
+모든 track의 safe integer priority를 요구하며 겹친 동률을 거부한다. Active interval은 `[start,end)`이고
+한 시각 track은 해당 instant다. 가장 높은 active priority가 우선이며 active가 없는 gap은 가장
+최근 완료 track을 유지한다. 시작 전은 가장 이른 track 값이다.
+
+Geometry target은 `{ownerKey}`, property는 `geometry`, kernel은 `native-progress`이고 모든
+value는0..1이다. 중간 decision에서 얻은 readonly ownerKey는 native namespace/resource owner이며
+raw graphic ID나 index가 아니다. Graph node/edge·partition cell·Geo feature·guide는 동일 owner의
+현재 progress를 공유한다. 기존 typed 계산 또는 명시 concrete fallback만 재사용하며 solver를 다시
+실행하지 않는다. Frame의 progress와 Canvas 크기는 plan 전체 시각이다.
+
+Style target은 `{itemKey,role?}` 또는 `{guideKey}`다. fill/stroke는 CSS string value의 `color`,
+opacity/strokeWidth는 number value의 `number|positive-scale`이다. Opacity는0..1,
+strokeWidth는 nonnegative이며 positive-scale은 양수다. Role 생략은 하나의 호환 native primitive가
+유일할 때만 허용한다. 같은 key의 다른 fallback role도 모호성에 포함한다. Geo paint는 whole-feature
+grain이며 dynamic part role selector를 거부한다. Geo Text label/body는 현재 entry의 style도 갱신하며
+공유 leader style의 개별 keyframe은 지원하지 않는다. Leader 가능 group에서는 label/body role을 명시한다.
+지원하지 않는 property/kernel, 없는/모호한 대상, fallback primitive의 style 연결은 준비 중 거부한다.
+
+Resolved composite schedule의0/duration 값은 실제 native endpoint 값과 일치해야 한다.
+Color는 parser가 만든 normalized RGBA, 생략 opacity는1로 비교하며 exact endpoint의 원 CSS 문자열과
+graphicSpec 참조는 보존한다. Zero duration의 time0은 target 값이다. 현재 style은 concrete output과
+Geo/Geo Text prepared presentation에 함께 반영되어 rebase·strict restore가 과거 paint를 되살리지 않는다.
+Track/keyframe/marker 각각10,000 및 누적 준비 work10M을 적용한다. Caller 입력은 복사하며 getter,
+host value, callback과 unknown field를 실행하지 않고 거부한다.
+
+## 오프라인 저장·복원
+
+`serializeAnimation(plan,playback?) → string`,
+`deserializeAnimation(text) → frozen {plan,playback}`다.
+playback은 rate1/repeat0/reducedMotionfalse가 기본이며 기존 player와 한 normalizer를
+공유한다. rate는 finite(음수·0허용), repeat는0이상 정수 또는 Infinity다.
+runtime Infinity는 저장에서만 문자열 `infinite`로 표현한다.
+
+schema1 envelope는 `{kind:'animation',schemaVersion:1,packageVersion,payload,digest}`다.
+payload의 plan은 planner 단일 export/restore owner가 검증하며 kernels manifest를 포함한다.
+Version3의 원 literal payload/회계는 그대로 import/export/restore한다. Version4는 정확히
+`{kind:"transition-plan",version:4,limits,kernels,durationMs,easing,from,to,vectors,timeline?}`다.
+Limits는 두 resolved own node 한도를 모두 요구하며 kernels.transition은4다. 다른 수학 kernel
+version은 그대로다. from/to와 optional timeline만 아래 lossless Node를 사용한다.
+
+Node는 한 own variant인 `{literal:value}`, `{object:[[key,node],...]}`, `{array:[node,...]}` 또는
+`{records:{length,shapes,shape,columns}}`다. Object key 순서와 unique key를 보존한다. Records는
+shape별 dense columns와 정확 shape selection을 가진다. Shape는 `{keys}`, array의 `{length,keys}`,
+`{literal:null|undefined}` 또는 `{hole:true}`이며 absent/own undefined/actual hole/null을 구별한다.
+Selection은 `{constant:shapeIndex}`, `{vector:index}` 또는 `{runs:[[count,shapeIndex],...]}`다.
+Columns는 `[shapeIndex,[[field,column],...]]`이며 각 shape의 원 key 순서·field 전체와 정확히
+일치한다. Column의 `{constant:value}`는 scalar 또는 기존 plain literal data를 보존하며
+각 row의 실제 logical expansion을 그대로 검산한다. Scalar column의 나머지 표현은
+`{vector:index}`, `{runs:[[count,scalar],...]}`이며
+nested column은 `{node:Node}`다. 각 column은 해당 shape의 실제 row 수와 길이가 같아야 한다.
+Array shape의 keys는 원 length 안의 canonical index만 허용한다. Runs의 양의 safe
+integer count 합, ref 범위와 길이, shape index/빈도 및 field별 정확 column 수를 확장 할당 전에
+검산한다. Vectors는 dense scalar arrays다. Unknown/missing/duplicate field와 overflow를 거부한다.
+임의 편집/style/clip/IDs/lineage는 원 값 그대로이며 지원하지 않는 mix는 기존 literal로 보존한다.
+원 actual graphic을 복원한 뒤 기존 semantic-forward/identity/geometry validators로 검산하며
+semantic-to-graphic compiler나 pixel 역산을 실행하지 않는다.
+새 version4 계획은 같은 값이어도 lossless compact 선택이 달라질 수 있어 계획 사이의
+canonical byte 표현을 보장하지 않는다. 복원한 version4 계획은 원 wire 표현을 보존하며,
+같은 packageVersion/playback으로 재직렬화하면 저장한 bytes를 유지한다. Version3 replay는 그대로다.
+
+digest는 기존 tagged value의 canonical JSON SHA256이다. 실제 endpoint graphicSpec의
+image/font base64 bytes와 semantic position·Cartesian geometry·완료 graph layout/route·normalized partition 준비값을 보존한다. hash만 저장하지 않는다.
+Native tracks·correspondence는 동일 version owner에서 재구성하며 중복 authority로 저장하지 않는다.
+선택적 timeline은 `keyframe-schedule@1`과 원 authored target/value/marker/composite를 저장하고
+kernels.timeline을 요구한다. Numeric schedule/cache/index는 저장하지 않으며 restore가 대상·경계값을
+다시 검증해 준비한다. Timeline 없는 plan에 불필요한 timeline manifest를 허용하지 않는다.
+선택적 Cartesian/polar vector는 실제 typed 의미뿐 아니라 기본 omitted 상태와 다른 명시 fallback
+사유도 보존한다. 이 transport 판정은 typed track 선택의 family 판정과 분리되어 live/offline decision을
+같게 유지하며, 완전히 기본값인 vector는 계속 생략한다.
+unknown schema/kernel, 잘못된 forward mapping/identity, 오염·빠진 asset bytes는 복원실패다.
+복원에는 semantic dataset 조회·fetch·loader·clock·renderer 호출이 없다.
+
+최대64MiB UTF8 JSON, decoded depth128, encoded/decoded 각각1,000,000값 발생 횟수를
+먼저 검사한다. 공유객체도 occurrence마다 센다. callbacks·DOM·진행중 clock/time/status,
+Promise·runtime handle은 저장하지 않는다. 실패는 authentic 계획을 반환하지 않으며
+원래 프로그램과 앞선 계획은 그대로 유지한다.
+
+## 프레임 내보내기
+
+`exportAnimationFrames(plan,{timesMs}|{fps})`는 frozen frame 배열이며 각 원소에
+`timeMs`를 추가한다. timesMs는 duration범위 내 비어있지 않은 엄격 오름차순 finite값이다.
+fps는 양의finite, 시각은 `index/fps*1000`이며0부터 duration이하만 생성한다.
+종료시각이 grid바깥이면 자동추가하지 않는다. 정확한 마지막 장면이 필요하면 timesMs에
+duration을 직접 넣는다. duration0은[0]이다. frame10,000 및
+frame수×max(1,양endpointnode수)10,000,000을 sampling전에검증한다.
+시간목록은 caller입력을 변경하지 않으며 파일출력·새renderer·hiddenI/O를 만들지 않는다.
+
+## 공개 player
+
+`createAnimationPlayer({plan,clock,render,commit?,onMarker?,rate?,repeat?,reducedMotion?})`는 기존
+controller를 재사용한다. clock은 명시적인 `now/requestFrame/cancelFrame`이며 단조롭고
+finite인 milliseconds와 비동기 frame callback을 제공한다. render/commit은 동일한
+renderer-ready frame을 받는다. 기본 browser clock이나 renderer를 암묵적으로 생성하지 않는다.
+
+methods는 `play/pause/seek/reverse/setRate/setRepeat/cancel/dispose/getState/getFrame`,
+`finished` Promise, `interrupt({to,options:TransitionOptions,rate?,repeat?,reducedMotion?})`다.
+interrupt의 to는 프로그램 또는 authentic sampled frame이다. 양의 rate는 현재 frame을
+from, 음의 rate는 현재 frame을 to에 놓고 반대 방향으로 진행한다. 거절된 target은
+활성run과 pendingframe을 유지한다. commit은 완료시1회, dispose는 반복호출 안전하다.
+reducedMotion은 진행방향 endpoint로 이동하되 같은 frame과 완료정책을 사용한다.
+재진입 제어는 기존 FIFO256한도를 공유하며 끝난 run의 finished는
+completed/cancelled/interrupted/disposed 이유와 timeMs/iteration으로 settle한다.
+
+Marker는 unique id와 duration 안의 timeMs를 가진다. `onMarker({id,timeMs,iteration,frame})`는 실제
+render 뒤, 완료 commit 전에 호출하며 frame은 현재 표시한 authentic frame이다. 건너뛴 marker의
+timeMs가 current frame 시각과 같다는 뜻은 아니다. 양의 재생은 실제 forward crossing을 iteration별
+한 번씩 내보내고0에서 시작할 때0 marker도 포함한다. Reverse crossing은 내보내지 않는다.
+`seek(timeMs,{emit?})`의 기본 emit은 false이며 true는 forward seek의 crossing을 내보낸다.
+Seek 직전 이미 재생한 시간의 동기화는 정상 재생 crossing으로 처리한다. 반복을 건너뛴 경우도
+iteration/time 순서를 유지하되 callback10,000과 ID work10M을 전체 batch에 먼저 검사한다.
+한도 실패는 batch를 부분 전달하지 않고 현재 run을 취소한다. Reduced motion도 실제 건너간
+forward marker를 같은 한도로 처리하며 Infinity는 단일 final iteration0을 사용한다.
+Interruption은 거절되지 않은 captured old crossing 뒤 새 sampler/run의 marker 수명을 시작한다.
+Dispose는 남은 callback과 완료 commit을 중단하며 callback 예외는 run을 cancelled로 settle한다.
+Callback/clock/진행 상태는 저장하지 않는다.
+
+## 증거
+
+`test/unit/animation/`의 pure/planner/restore/controller/offline 검사는 version·identity·
+시간·failureatomicity를 소유한다. assets fresh-process 검사는 endpoint에 포함한 실제bytes만
+읽고 network0에서 같은시각의scene/SVG/PNG/Canvas를 비교한다. renderer/browser와설치
+검사는 동일 frame을공개renderer에직접전달하며 privatecompilerimport를 요구하지 않는다.
+모든 typedfamily의 의미별보간이나 전체roadmap완료를 뜻하지 않는다.
+
+## Geographic camera frames
+
+동일 scoped Geo owner와 typed feature key의 shape/point/line/graticule은 `native-geo` camera
+kernel을 사용한다. 원 geographic/planar geometry, polygon winding, mode, exact resource ref와
+해결된 camera parameters를 한 번 준비한다. Quaternion 최단 회전, positive scale의 log 보간,
+translation 및 CSS point radius를 기존 camera/value owner로 계산한 후 native projection stream을
+다시 실행한다. Pixel 역산이나 endpoint path command의 단순 보간을 하지 않는다.
+
+중간 clip/horizon/seam 때문에 endpoint에 없던 feature 또는 part가 나타날 수 있다. 이 경우
+`{kind:'geographic',kernel:'native-geo',ownerKey,itemKey,role}` decision을 사용하며 가짜
+`sourceIndex`/`targetIndex`를 만들지 않는다. 실제 현재 geometry와 native item identity를
+같은 순서로 만들고 native scene key 규칙을 재사용한다. 정확 t0/t1은 원 scene/graphicSpec을
+그대로 반환한다. Hidden source도 명시 collection slot에 보존하여 drawing order를 유지한다.
+
+Projection type·static clip/parameter·binding·원 geometry/winding·source paint 정책이 다른
+feature는 명시 reason의 concrete crossfade다. 같은 owner의 다른 호환 feature는 typed camera
+경로를 유지한다. 변경되는 structured paint 보간은 지원하지 않지만 동일 paint의 현재 geometry
+bounds는 기존 materializer로 계산한다. Primitive 직접 편집도 `edited-geo-graphics`로 구분한다.
+
+현재 프레임은 실제 prepared geometry/camera/style와 target exact resource lineage를 flat private
+proof에 유지한다. 양방향 rebase와 offline 저장은 같은 상태를 소비하며 이전 plan을 보유하지
+않는다. Optional endpoint `geos`와 `native-geo-camera@1`을 저장하고 closed shape, feature/part,
+forward geometry, order, work bounds 및 version을 재검증한다. Native hit는 실제 target program의
+childPath/owner/source feature를 검증한다. Offline payload는 native program 권한을 만들지 않는다.
+중간-only feature의 session click/keyboard activation은 실제 그려진 source key와 현재 native
+source의 child scope/owner/resource kind+id/key 교집합을 사용한다. 각 source revision을 독립
+검증하며 서로 같다고 가정하지 않는다. Target hit lineage는 유지하고 선택 intent가 현재 native
+projection에서 숨겨지면 저장은 유지하되 visible highlight는 비어 있다.
+
+### Geographic Text camera frames
+
+Geo source의 `createMarkLabels` Text와 `createGeoAnnotation`은 기존 centroid/지리 anchor를
+현재 camera에 forward-project한다. 같은 source key·binding·geometry digest와 호환 camera에서
+`native-geo-text` geographic decision을 사용한다. 정확 t0/t1은 원 endpoint를 유지하며,
+중간-only Text와 collision leader도 실제 현재 identity로 생성한다. Native Text의 content,
+conditional appearance, selection, placement offset, collision layout, leader, outline/shadow,
+fill bounds, prepared font profile과 composition clip/order를 동일 owner에서 재사용한다.
+
+같은 source key·binding·geometry digest를 유지하는 content/font/static style/layout 변경은
+각 표현을 현재 native camera와 raw anchor에서 독립 배치한 뒤 per-item weighted blend한다.
+각 표현의 collision layout과 leader는 기존 native owner를 재사용하며, leader가 한쪽에만
+있어도 현재 geometry와 원 drawing order를 유지한다. 호환 solid fill/opacity 변화는 기존
+appearance 보간을 유지한다. Membership/geometry/비호환 camera·clip 변화는 기존 명시 fallback이며,
+서로 다른 backdrop blend mode의 조합은 거부한다.
+Geo body가 appearance crossfade하더라도 독립적인 호환 Text는 camera 경로를 유지한다.
+고정 annotation이나 Geo source Text 외 일반 Text의 typed anchor 이동은 이 경로에 포함하지 않는다.
+
+Optional `geotexts`는 raw anchor, exact binding/key, digest, 현재 camera와 Text 상대 offsets를
+한 번 보존한다. `native-geo-text@2`는 문자열·font/profile·상대 offset·layout·leader를
+최대 64개의 평탄한 표현으로 보존한다. 실제 누락된 formatted Text는 null entry이며,
+명시 empty Text primitive와 구분한다. 동일 표현은 합치고 양의 weight는 임의 삭제하지 않는다.
+Native endpoint에서는 원 geometry의 centroid/digest를 검산한다.
+Sampled-only payload의 digest는 과거 source의 인증서가 아니며 내부 forward consistency만
+검증한다. 같은 binding/key/digest가 모순된 anchor를 주장하면 거부한다. Closed restore,
+반복 rebase와 renderer-ready frame은 같은 prepared owner를 사용한다. 모든 Geo body/Text
+샘플의 stream/layout 작업은 합산 10,000,000, 실제 출력은 10,000 item 한도를 공유한다.
+Native session은 실제 current frame이 그린 Geo Text의 exact source key를 현재 native Text
+source reader로 다시 확인해 click/keyboard를 허용한다. 양 endpoint의 projection에서 숨겨진
+label도 source key가 존재하면 선택 intent를 유지하고 visible highlight는 현재 native 결과에 따른다.
+현재 hit는 각 표현의 실제 font metrics와 visible geometry를 사용하지만 primary raw lineage는
+target source에 고정한다. 현재 scene에서 최대 weight의 Text 표현이 대표이며 동률은 뒤 표현이다.
+이 대표가 native item의 `channels.text`를 덮어쓰지는 않는다. 기존 정적 accessibility/formatter는
+native program 값을 읽으며, sampled display 문자열을 제공하는 새 공개 API는 없다.
+반복 rebase는 현재 camera/표현 weight만 평탄하게 보존하고 과거 plan/program chain을 저장하지 않는다.
+Timeline style은 모든 표현에 적용하며 서로 다른 scalar endpoint 값을 단일 값으로 추정하지 않는다.
+일반 Text family와 전체 animation의 후행 qualification은 이 범위의 완료와 구분한다.

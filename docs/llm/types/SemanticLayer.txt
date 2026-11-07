@@ -1,4 +1,6 @@
 export interface SemanticLayer {
+  /** Explicit local Canvas logical-pixel anchor for rowless Text. */
+  readonly annotationAnchor?: { readonly space: "screen"; readonly x: number; readonly y: number };
   readonly id: string;
   readonly image?: ImageRef;
   readonly alt?: string;

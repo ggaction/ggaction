@@ -50,8 +50,8 @@ interface ChartProgramActions {
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
-  createPointMark(options?: { blend?: BlendMode; id?: string; data?: string; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editPointMark(options: { blend?: BlendMode; target?: string; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  createPointMark(options?: { blend?: BlendMode; id?: string; data?: string; maxItems?: number; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editPointMark(options: { blend?: BlendMode; target?: string; maxItems?: number | undefined; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   createLineMark(options?: { blend?: BlendMode; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
@@ -72,6 +72,7 @@ interface ChartProgramActions {
   editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
   removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
+  editAnnotation(options: EditAnnotationOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
@@ -589,6 +590,14 @@ editEdgeRoute({ target?, graph?, layout?, method?, options?, coordinateSpace? })
 
 Apply a nonempty patch to a stored route and refresh each consuming GraphPlot once. Same-method options preserve omitted values; a changed method starts from its defaults. Exact preparation handles also support `{prepared,requestToken}`. See [Edge routes](../api/edge-routes.md) for validation, async lifetime, source revision and Canvas invalidation.
 
+### `applyGraphEdgeRoutesUpdate`
+
+```javascript
+applyGraphEdgeRoutesUpdate({ prepared, requestToken })
+```
+
+Apply an authentic prepared native update on its exact original Full receiver. Prepare any affected native edit (layout, graph, flow, hierarchy, data, parameter, Canvas, fit, filter, or another public action that reaches a version 2 route) with `kind:"update"` through `ggaction/graph`; the original action, affected route consumers and theme completion execute synchronously with the shared budget. See [Edge routes](../api/edge-routes.md#applygraphedgeroutesupdate).
+
 ### `createGraphData`
 
 ```javascript
@@ -610,7 +619,7 @@ column belongs in `definition.target`. See [observed graph data](../api/data/sou
 ### `createInferredGraphData`
 
 ```javascript
-createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges? })
+createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges?, execution? }) or createInferredGraphData({ prepared, requestToken })
 ```
 
 Infer a graph using nearest neighbors, radius, similarity, a spanning tree,
@@ -620,7 +629,7 @@ See [graph inference](../api/graphs.md#graph-inference).
 ### `editInferredGraphData`
 
 ```javascript
-editInferredGraphData({ target?, data?, candidateGraph?, definition? })
+editInferredGraphData({ target?, data?, candidateGraph?, definition? }) or editInferredGraphData({ prepared, requestToken })
 ```
 
 Revise an inferred graph and its dependent layouts and plots. Use
@@ -1552,19 +1561,20 @@ belong only to the previous mode before validating the final definition.
 ### `createPointMark`
 
 ```javascript
-createPointMark({ blend?, shadow?, clip?, id?, data?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ blend?, shadow?, clip?, id?, data?, maxItems?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a point mark using fourteen named shapes or polygons with area/radius normalization.
-`stroke: false` disables the outline and its width at creation. [Marks](../api/marks.md)
+`stroke: false` disables the outline and its width at creation. Point `maxItems` defaults to 50,000 and accepts explicit values through 100,000. [Marks](../api/marks.md)
 
 ### `editPointMark`
 
 ```javascript
-editPointMark({ blend?, shadow?, clip?, target?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
+editPointMark({ blend?, shadow?, clip?, target?, maxItems?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
-Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
+Change point shape, appearance, or `maxItems` capacity and rematerialize its concrete items.
+Explicit `maxItems: undefined` restores the 50,000 default after raw/item preflight.
 `stroke: false` disables the outline and its width. [Marks](../api/marks.md)
 
 ### `createTickMark`
@@ -1940,15 +1950,17 @@ to use `removeMark`.
 ### `createAnnotation`
 
 ```javascript
-createAnnotation({ clip?, id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
+createAnnotation({ clip?, id?, text, anchor?, format?, source?, select?, selection?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
 ```
 
 Create anchored text. Omit x/y/space for a
 final-item mark anchor; `source` selects the mark, otherwise current/unique mark
-inference applies. Provide both x and y for a data anchor; `source` selects one
+inference applies. A mark anchor can use inline `select` or a named `selection` belonging to the same source; both retain final-item grain, and empty membership stays empty. Coordinate anchors reject these options. Provide both x and y for a data anchor; `source` selects one
 complete Cartesian layer whose data, coordinate, scales, field types, and temporal
 units are reused. The annotation participates in automatic domains without becoming
 a source-owned label.
+
+With `space: "screen"`, x and y are finite logical pixels from the local Canvas top-left, increasing right/down. This branch needs no data, scale or coordinate. It rejects source/data/coordinate/membership and keeps its position across resize, margin, data and scale changes. Nested charts apply their existing child transform. `clip:true` clips to the local Canvas. Edit x/y with `editAnnotation`; field encodings and source placement do not apply.
 
 With `space: "plot"`, x and y are finite fractions in `[0,1]`, where x=0 is left
 and y=0 is bottom. Existing `data` is explicit or inferred, and `coordinate` is
@@ -1963,9 +1975,31 @@ can accompany polar and parallel-coordinate charts, including facets. Keep the
 note in its Cartesian plot frame by omitting the chart's polar/parallel coordinate.
 
 Omit `layout` or pass `false` to retain the exact anchor. A layout object accepts
-`layoutLabels` options except `target`. Later changes use `encodeText`, `encodeX/Y`,
+`layoutLabels` options except `target`. Later changes use `editAnnotation`, `encodeText`, `encodeX/Y`,
 `editTextMark`, `layoutLabels`, `removeLabelLayout`, `editScale`, and `removeMark`.
 [Text marks](../api/marks/text.md#createannotationoptions)
+
+### `editAnnotation`
+
+```javascript
+editAnnotation({ target?, text?, format?, x?, y?, placement?, layout?, select?, selection?, all?, blend?, shadow?, clip?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, lineHeight?, blockAlign?, inheritColor?, lineCap?, lineJoin?, miterLimit? })
+```
+
+Edit existing Text or attached labels in one atomic change. Available in Full. Choose `target` explicitly,
+otherwise the current Text or one unique Text is used. An empty edit, ambiguous target or invalid child option rejects
+without changing the program or its trace.
+
+`x` and `y` replace existing independent Cartesian constant datums using the same scales, field types and temporal
+units. Existing screen anchors instead use finite local Canvas logical pixels. Supply either or both. Source-owned labels and field-driven or conditional positions reject this patch.
+`text` supplies constant content; `format` alone reformats existing constant content. Style options follow
+`editTextMark`. An encoded dx/dy channel must be edited through its encoding action instead.
+
+For attached labels, exactly one of `select`, `selection`, or `all:true` replaces membership through `editMarkLabelSelection`. Independent annotations reject membership edits. Named selection and source revisions keep their native replay and removal rules.
+
+`placement` uses `editMarkLabelPlacement`; `"auto"` restores its ordinary source anchor. A `layout` object uses
+`layoutLabels`, and `false` removes collision layout. These edits retain source ownership, selection, replay and
+removal behavior. The action also accepts ordinary Text layers; no separate annotation registry is required.
+[Text marks](../api/marks/text.md#editannotationoptions)
 
 ### `createTextMark`
 
@@ -3549,6 +3583,38 @@ createCalendarLayout({ id?, data?, date, value?, start, end, timeZone, weekStart
 
 Store civil-day aggregates, week/weekday cells and month boundaries. See [Calendar plots](../api/calendar.md#createcalendarlayout).
 
+### `createTablePlot`
+
+```js
+createTablePlot({ id?, data?, coordinate?, columns, sortBy?, rowLimit?, rowHeight?, padding?, header?, cells?, labels?, headerStyle?, footerStyle?, bars?, sparklines?, color?, clip? })
+```
+
+Draw keyed cells with text, bars, sparklines and explicit whole-source footer summaries. Full only. See [Table plots](../api/table.md).
+
+### `editTablePlot`
+
+```js
+editTablePlot({ target?, data?, coordinate?, columns?, sortBy?, rowLimit?, rowHeight?, padding?, header?, cells?, labels?, headerStyle?, footerStyle?, bars?, sparklines?, color?, clip? })
+```
+
+Patch table meaning and appearance while preserving typed row and column identities. See [Table plots](../api/table.md).
+
+### `createTrailPlot`
+
+```js
+createTrailPlot({ id?, data?, coordinate?, x?, y?, theta?, radius?, width, groupBy?, order?, missing?, curve?, tension?, lineJoin?, lineCap?, miterLimit?, fillRule?, closed?, body?, color?, clip?, blend?, guides? })
+```
+
+Draw a filled ribbon with an explicit screen width at each sample. Choose Cartesian x/y or Polar theta/radius. See [Trail plots](../api/trail.md).
+
+### `editTrailPlot`
+
+```js
+editTrailPlot({ target?, data?, coordinate?, x?, y?, theta?, radius?, width?, groupBy?, order?, missing?, curve?, tension?, lineJoin?, lineCap?, miterLimit?, fillRule?, closed?, body?, color?, clip?, blend?, guides? })
+```
+
+Patch native series meaning and appearance while preserving typed logical identity. See [Trail plots](../api/trail.md).
+
 ### `createWaterfallPlot`
 
 ```javascript
@@ -3616,7 +3682,7 @@ Edit a calendar plot while preserving day identities and source lineage. See [Ca
 ### `createGeometryData`
 
 ```javascript
-createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, limits? })
+createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, polygonWinding?, limits? })
 ```
 
 Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values. See [Geometry sources](../api/geometry.md#creategeometrydata).
@@ -3624,7 +3690,7 @@ Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature 
 ### `editGeometryData`
 
 ```javascript
-editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
+editGeometryData({ target?, values?, coordinateKind?, topoObject?, polygonWinding?, limits? })
 ```
 
 Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](../api/geometry.md#editgeometrydata).
@@ -3646,6 +3712,25 @@ editGeoJoinData({ target?, geometry?, data?, geometryKey?, dataKey? })
 
 Revise join inputs or key paths and refresh all dependent projections and geographic marks atomically.
 See [Geometry and projections](../api/geometry.md#editgeojoindata).
+
+### `createGeoRouteData`
+
+```javascript
+createGeoRouteData({ id, routes, coordinateKind })
+```
+
+Interpret retained graph edge samples as geographic or planar LineStrings with original edge identity and rows.
+See [Geometry and projections](../api/geometry.md#creategeoroutedata).
+
+### `editGeoRouteData`
+
+```javascript
+editGeoRouteData({ target?, routes?, coordinateKind? })
+```
+
+Revise the route source or coordinate interpretation and refresh dependent geographic consumers atomically.
+See [Geometry and projections](../api/geometry.md#editgeoroutedata).
+
 
 ### `createGeoLODData`
 
@@ -3681,10 +3766,18 @@ editProjection({ target?, type?, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?
 
 Edit a projection atomically. Explicit scale or translation detaches an existing geometry fit. See [Geometry and projections](../api/geometry.md#editprojection).
 
+### `navigateProjection`
+
+```javascript
+navigateProjection({ target?, operation })
+```
+
+Navigate a projection with explicit pan, anchored zoom, pinch, rotation, fit, reset or native Canvas resize. Use a saved `getProjectionView` snapshot for reset parameters. Existing projection/Canvas children retain exact resources, consumer refresh and immutable failure.
+
 ### `createGeoShapeMark`
 
 ```javascript
-createGeoShapeMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoShapeMark({id?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, capacity?, ...style})
 ```
 
 Create projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](../api/geometry.md#creategeoshapemark).
@@ -3692,7 +3785,7 @@ Create projected geographic GeoShapeMark geometry with native style. See [Geomet
 ### `editGeoShapeMark`
 
 ```javascript
-editGeoShapeMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoShapeMark({target?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](../api/geometry.md#editgeoshapemark).
@@ -3700,7 +3793,7 @@ Edit projected geographic GeoShapeMark geometry with native style. See [Geometry
 ### `createGeoPointMark`
 
 ```javascript
-createGeoPointMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoPointMark({id?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, radiusDeg?, capacity?, ...style})
 ```
 
 Create projected geographic GeoPointMark geometry with native style. See [Geometry and projections](../api/geometry.md#creategeopointmark).
@@ -3708,7 +3801,7 @@ Create projected geographic GeoPointMark geometry with native style. See [Geomet
 ### `editGeoPointMark`
 
 ```javascript
-editGeoPointMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoPointMark({target?, coordinate?, geometry?, interpolation?, routeHint?, radiusPx?, radiusDeg?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoPointMark geometry with native style. See [Geometry and projections](../api/geometry.md#editgeopointmark).
@@ -3716,7 +3809,7 @@ Edit projected geographic GeoPointMark geometry with native style. See [Geometry
 ### `createGeoLineMark`
 
 ```javascript
-createGeoLineMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+createGeoLineMark({id?, coordinate?, geometry?, interpolation?, routeHint?, capacity?, ...style})
 ```
 
 Create projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../api/geometry.md#creategeolinemark).
@@ -3724,15 +3817,31 @@ Create projected geographic GeoLineMark geometry with native style. See [Geometr
 ### `editGeoLineMark`
 
 ```javascript
-editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?, capacity?, ...style})
 ```
 
 Edit projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../api/geometry.md#editgeolinemark).
 
+### `createGeoAnnotation`
+
+```js
+createGeoAnnotation({ id?, coordinate?, anchor, text, ...textStyle })
+```
+
+Attach native Text to a semantic geographic position or original feature centroid. See [Geometry and projections](../api/geometry.md#creategeoannotation).
+
+### `editGeoAnnotation`
+
+```js
+editGeoAnnotation({ target?, coordinate?, anchor?, text?, ...textStyle })
+```
+
+Edit the annotation while preserving omitted intent, original feature identity and native Text styles. See [Geometry and projections](../api/geometry.md#editgeoannotation).
+
 ### `createGraticule`
 
 ```javascript
-createGraticule({id?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+createGraticule({id?, coordinate?, stepDeg?, extentDeg?, precisionDeg?, capacity?, ...style})
 ```
 
 Create projected geographic Graticule geometry with native style. See [Geometry and projections](../api/geometry.md#creategraticule).
@@ -3740,7 +3849,7 @@ Create projected geographic Graticule geometry with native style. See [Geometry 
 ### `editGraticule`
 
 ```javascript
-editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?, capacity?, ...style})
 ```
 
 Edit projected geographic Graticule geometry with native style. See [Geometry and projections](../api/geometry.md#editgraticule).

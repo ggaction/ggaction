@@ -1,0 +1,8 @@
+{
+  "node": "v22.23.1",
+  "baseline": "36de5a4f9bd4990804ef94671a06c7041c5f7456",
+  "baselineSourceSHA256": "d2a8a405a44620653c2611775d20b6fde3fc8c430baf032e17553c89f3bf931a",
+  "comparisons": 868,
+  "getterCalls": 0,
+  "result": "exact values and error class/message/details"
+}

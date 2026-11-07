@@ -1,0 +1,1555 @@
+{
+  "schemaVersion": 1,
+  "status": "candidate superset snapshot for closed adapters; not a proven minimal union, product admission or completion",
+  "source": "90ae731513ec85a8eb5bd378a82d5904d1be6da4",
+  "actionIndexSHA256": "78d2253beabf3620a670a9e46f6d670c24b0eba6db1a06955c49a49891135472",
+  "count": 332,
+  "groups": {
+    "core": [
+      {
+        "action": "editCanvas",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "fitCanvas",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "applyTextMetrics",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "removeTextMetrics",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "applyTheme",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "removeTheme",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "applyDataUpdate",
+        "contract": "agent_docs/contract/current/CORE.md",
+        "restriction": "authentic exact-base/token source preparation only"
+      },
+      {
+        "action": "reviseData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "removeData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "removeScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "removeCoordinate",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "bindMarkData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "filterData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editGraphData",
+        "contract": "agent_docs/contract/current/GRAPHS.md"
+      },
+      {
+        "action": "editInferredGraphData",
+        "contract": "agent_docs/contract/current/GRAPHS.md"
+      },
+      {
+        "action": "editParameter",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "removeParameter",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editBin2DData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editDerivedData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editFilteredData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editTimeUnitData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editWindowData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editDensityData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editRegressionData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editRegressionStatisticsData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editCoordinate",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "createScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editXScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editYScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editXOffsetScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editYOffsetScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editParallelScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editThetaScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editRScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editColorScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editStrokeScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editSizeScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editOpacityScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editShapeScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editStrokeWidthScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editStrokeDashScale",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "replaceImageResource",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "removeResource",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editHierarchyData",
+        "contract": "agent_docs/contract/current/HIERARCHY.md"
+      },
+      {
+        "action": "editLayout",
+        "contract": "agent_docs/contract/current/LAYOUTS.md"
+      },
+      {
+        "action": "replaceFontResource",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editFlowData",
+        "contract": "agent_docs/contract/current/FLOWS.md"
+      },
+      {
+        "action": "editContourData",
+        "contract": "agent_docs/contract/current/CONTOURS.md"
+      },
+      {
+        "action": "editGeometryData",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "editGeoJoinData",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "editGeoRouteData",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "editGeoLODData",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "editProjection",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "navigateProjection",
+        "contract": "agent_docs/contract/current/GEOMETRY.md",
+        "restriction": "resize only; other native operations remain ordinary projection actions"
+      }
+    ],
+    "statistics": [
+      {
+        "action": "editComputedData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editLookupData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editFlattenData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editFoldData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editPivotData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editSummaryData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editBinData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editStackData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editIntervalData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editECDFData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editNormalizedData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editSortedData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editCompleteData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "editImputedData",
+        "contract": "agent_docs/contract/current/CORE.md"
+      },
+      {
+        "action": "createRegression",
+        "contract": "agent_docs/contract/current/STATISTICS.md"
+      },
+      {
+        "action": "editRegression",
+        "contract": "agent_docs/contract/current/STATISTICS.md"
+      },
+      {
+        "action": "createErrorBar",
+        "contract": "agent_docs/contract/current/STATISTICS.md"
+      },
+      {
+        "action": "editErrorBar",
+        "contract": "agent_docs/contract/current/STATISTICS.md"
+      },
+      {
+        "action": "createErrorBand",
+        "contract": "agent_docs/contract/current/STATISTICS.md"
+      },
+      {
+        "action": "editErrorBand",
+        "contract": "agent_docs/contract/current/STATISTICS.md"
+      },
+      {
+        "action": "editErrorBandBoundary",
+        "contract": "agent_docs/contract/current/STATISTICS.md"
+      },
+      {
+        "action": "createBoxPlot",
+        "contract": "agent_docs/contract/current/COMPOSITE_MARKS.md"
+      },
+      {
+        "action": "editBoxPlot",
+        "contract": "agent_docs/contract/current/COMPOSITE_MARKS.md"
+      },
+      {
+        "action": "createGradientPlot",
+        "contract": "agent_docs/contract/current/GRADIENT_PLOTS.md"
+      },
+      {
+        "action": "editGradientPlot",
+        "contract": "agent_docs/contract/current/GRADIENT_PLOTS.md"
+      },
+      {
+        "action": "createViolinPlot",
+        "contract": "agent_docs/contract/current/VIOLIN_PLOTS.md"
+      },
+      {
+        "action": "editViolinPlot",
+        "contract": "agent_docs/contract/current/VIOLIN_PLOTS.md"
+      },
+      {
+        "action": "createRegressionBand",
+        "contract": "agent_docs/contract/current/STATISTICS.md"
+      },
+      {
+        "action": "editRegressionBand",
+        "contract": "agent_docs/contract/current/STATISTICS.md"
+      },
+      {
+        "action": "createRegressionLine",
+        "contract": "agent_docs/contract/current/STATISTICS.md"
+      },
+      {
+        "action": "editRegressionLine",
+        "contract": "agent_docs/contract/current/STATISTICS.md"
+      },
+      {
+        "action": "createDensityPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createHorizonPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      }
+    ],
+    "marks": [
+      {
+        "action": "createPointMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createTickMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createStatisticalReference",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createReferenceLine",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createReferenceBand",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createMarkLabels",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "editMarkLabelSelection",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "editMarkLabelPlacement",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "removeMarkLabels",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createAnnotation",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "editAnnotation",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createTextMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "editTextMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "layoutLabels",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "removeLabelLayout",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "editPointMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "editTickMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "jitterPoints",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "removeJitter",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "packPoints",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "removePointPacking",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "removeMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createLineMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "editLineMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createBarMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "editBarMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createAreaMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createRuleMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "editRuleMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "editAreaMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createArcMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "editArcMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createRectMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "editRectMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createOverlay",
+        "contract": "agent_docs/contract/current/OVERLAYS.md"
+      },
+      {
+        "action": "editOverlay",
+        "contract": "agent_docs/contract/current/OVERLAYS.md"
+      },
+      {
+        "action": "createImageMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "editImageMark",
+        "contract": "agent_docs/contract/current/MARKS.md"
+      },
+      {
+        "action": "createFlowNodes",
+        "contract": "agent_docs/contract/current/FLOWS.md"
+      },
+      {
+        "action": "editFlowNodes",
+        "contract": "agent_docs/contract/current/FLOWS.md"
+      },
+      {
+        "action": "createFlowLinks",
+        "contract": "agent_docs/contract/current/FLOWS.md"
+      },
+      {
+        "action": "editFlowLinks",
+        "contract": "agent_docs/contract/current/FLOWS.md"
+      },
+      {
+        "action": "createContourMark",
+        "contract": "agent_docs/contract/current/CONTOURS.md"
+      },
+      {
+        "action": "editContourMark",
+        "contract": "agent_docs/contract/current/CONTOURS.md"
+      },
+      {
+        "action": "createCalendarPlot",
+        "contract": "agent_docs/contract/current/CALENDAR.md"
+      },
+      {
+        "action": "editCalendarPlot",
+        "contract": "agent_docs/contract/current/CALENDAR.md"
+      },
+      {
+        "action": "createGeoShapeMark",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "editGeoShapeMark",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "createGeoPointMark",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "editGeoPointMark",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "createGeoLineMark",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "editGeoLineMark",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "createGeoAnnotation",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "editGeoAnnotation",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "createGraticule",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "editGraticule",
+        "contract": "agent_docs/contract/current/GEOMETRY.md"
+      },
+      {
+        "action": "createPyramidPlot",
+        "contract": "agent_docs/contract/current/PYRAMID.md"
+      },
+      {
+        "action": "editPyramidPlot",
+        "contract": "agent_docs/contract/current/PYRAMID.md"
+      },
+      {
+        "action": "createOHLCPlot",
+        "contract": "agent_docs/contract/current/OHLC.md"
+      },
+      {
+        "action": "editOHLCPlot",
+        "contract": "agent_docs/contract/current/OHLC.md"
+      },
+      {
+        "action": "createWaterfallPlot",
+        "contract": "agent_docs/contract/current/WATERFALL.md"
+      },
+      {
+        "action": "editWaterfallPlot",
+        "contract": "agent_docs/contract/current/WATERFALL.md"
+      },
+      {
+        "action": "createTrailPlot",
+        "contract": "agent_docs/contract/current/TRAIL.md"
+      },
+      {
+        "action": "editTrailPlot",
+        "contract": "agent_docs/contract/current/TRAIL.md"
+      },
+      {
+        "action": "createTablePlot",
+        "contract": "agent_docs/contract/current/TABLE.md"
+      },
+      {
+        "action": "editTablePlot",
+        "contract": "agent_docs/contract/current/TABLE.md"
+      }
+    ],
+    "encodings": [
+      {
+        "action": "encodeX",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeY",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeChannels",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeX2",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeColor",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeStrokeDash",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeStroke",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeStrokeWidth",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeSize",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeShape",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeAngle",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeOpacity",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeRadius",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeTheta",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeR",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodePointRadius",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "removePointRadius",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeXOffset",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeYOffset",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeY2",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeYRange",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeXRange",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeGroup",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodePathOrder",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeParallelCoordinates",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "removePathOrder",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "orderCategories",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "removeCategoryOrder",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "removeEncoding",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeText",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeDx",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeDy",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeHistogram",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeDensity",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "editDensity",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeHorizon",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "editHorizon",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "encodeBarWidth",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      },
+      {
+        "action": "layoutSeries",
+        "contract": "agent_docs/contract/current/ENCODINGS.md"
+      }
+    ],
+    "axes": [
+      {
+        "action": "createParallelAxes",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createParallelAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editParallelAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "removeParallelAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "removeParallelAxes",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createAxes",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createXAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createYAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createXAxisLine",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createYAxisLine",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editXAxisLine",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editYAxisLine",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createXAxisTicks",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createYAxisTicks",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editXAxisTicks",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editYAxisTicks",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createXAxisLabels",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createYAxisLabels",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editXAxisLabels",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editYAxisLabels",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createXAxisTicksAndLabels",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createYAxisTicksAndLabels",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editXAxisTicksAndLabels",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editYAxisTicksAndLabels",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createXAxisTitle",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createYAxisTitle",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editXAxisTitle",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editYAxisTitle",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editAxes",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editXAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editYAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "removeXAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "removeYAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createThetaAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createRadialAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editThetaAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editRadialAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "removeThetaAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "removeRadialAxis",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createThetaAxisLine",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editThetaAxisLine",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createRadialAxisLine",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editRadialAxisLine",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createThetaAxisTicks",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editThetaAxisTicks",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createRadialAxisTicks",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editRadialAxisTicks",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createThetaAxisLabels",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editThetaAxisLabels",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createRadialAxisLabels",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editRadialAxisLabels",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createThetaAxisTitle",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editThetaAxisTitle",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "createRadialAxisTitle",
+        "contract": "agent_docs/contract/current/AXES.md"
+      },
+      {
+        "action": "editRadialAxisTitle",
+        "contract": "agent_docs/contract/current/AXES.md"
+      }
+    ],
+    "grid": [
+      {
+        "action": "createGrid",
+        "contract": "agent_docs/contract/current/GRID.md"
+      },
+      {
+        "action": "createHorizontalGrid",
+        "contract": "agent_docs/contract/current/GRID.md"
+      },
+      {
+        "action": "createVerticalGrid",
+        "contract": "agent_docs/contract/current/GRID.md"
+      },
+      {
+        "action": "editHorizontalGrid",
+        "contract": "agent_docs/contract/current/GRID.md"
+      },
+      {
+        "action": "editVerticalGrid",
+        "contract": "agent_docs/contract/current/GRID.md"
+      },
+      {
+        "action": "editGrid",
+        "contract": "agent_docs/contract/current/GRID.md"
+      },
+      {
+        "action": "removeGrid",
+        "contract": "agent_docs/contract/current/GRID.md"
+      },
+      {
+        "action": "createThetaGrid",
+        "contract": "agent_docs/contract/current/GRID.md"
+      },
+      {
+        "action": "createRadialGrid",
+        "contract": "agent_docs/contract/current/GRID.md"
+      },
+      {
+        "action": "editThetaGrid",
+        "contract": "agent_docs/contract/current/GRID.md"
+      },
+      {
+        "action": "editRadialGrid",
+        "contract": "agent_docs/contract/current/GRID.md"
+      }
+    ],
+    "legend_and_title": [
+      {
+        "action": "createLegend",
+        "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md"
+      },
+      {
+        "action": "editLegend",
+        "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md"
+      },
+      {
+        "action": "editLegendBlock",
+        "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md"
+      },
+      {
+        "action": "editLegendLayout",
+        "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md"
+      },
+      {
+        "action": "editLegendLabels",
+        "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md"
+      },
+      {
+        "action": "editLegendTitle",
+        "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md"
+      },
+      {
+        "action": "editLegendSymbols",
+        "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md"
+      },
+      {
+        "action": "editLegendBorder",
+        "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md"
+      },
+      {
+        "action": "createGuides",
+        "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md"
+      },
+      {
+        "action": "removeLegend",
+        "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md"
+      },
+      {
+        "action": "createTitle",
+        "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md"
+      },
+      {
+        "action": "editTitle",
+        "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md"
+      },
+      {
+        "action": "removeTitle",
+        "contract": "agent_docs/contract/current/LEGEND_AND_TITLE.md"
+      }
+    ],
+    "mark-selection": [
+      {
+        "action": "filterMarks",
+        "contract": "agent_docs/contract/current/MARK_SELECTION.md"
+      },
+      {
+        "action": "removeMarkFilter",
+        "contract": "agent_docs/contract/current/MARK_SELECTION.md"
+      },
+      {
+        "action": "setMarkVisibility",
+        "contract": "agent_docs/contract/current/MARK_SELECTION.md"
+      },
+      {
+        "action": "removeMarkVisibility",
+        "contract": "agent_docs/contract/current/MARK_SELECTION.md"
+      },
+      {
+        "action": "selectMarks",
+        "contract": "agent_docs/contract/current/MARK_SELECTION.md"
+      },
+      {
+        "action": "editMarkSelection",
+        "contract": "agent_docs/contract/current/MARK_SELECTION.md"
+      },
+      {
+        "action": "removeMarkHighlight",
+        "contract": "agent_docs/contract/current/MARK_SELECTION.md"
+      },
+      {
+        "action": "removeMarkSelection",
+        "contract": "agent_docs/contract/current/MARK_SELECTION.md"
+      },
+      {
+        "action": "highlightMarks",
+        "contract": "agent_docs/contract/current/MARK_SELECTION.md"
+      }
+    ],
+    "composition": [
+      {
+        "action": "editCompositionLayout",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      },
+      {
+        "action": "replaceCompositionChild",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      },
+      {
+        "action": "insertCompositionChild",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      },
+      {
+        "action": "removeCompositionChild",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      },
+      {
+        "action": "reorderCompositionChildren",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      },
+      {
+        "action": "facet",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      },
+      {
+        "action": "facetGrid",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      },
+      {
+        "action": "repeatCharts",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      },
+      {
+        "action": "editFacetSource",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      },
+      {
+        "action": "editFacetHeaders",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      },
+      {
+        "action": "editFacetScales",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      },
+      {
+        "action": "editFacetGuides",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      },
+      {
+        "action": "createLayerPlot",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      },
+      {
+        "action": "createAdjacentPlot",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      },
+      {
+        "action": "editCompositionScales",
+        "contract": "agent_docs/contract/current/COMPOSITION.md"
+      }
+    ],
+    "charts": [
+      {
+        "action": "createScatterPlot",
+        "contract": "agent_docs/contract/current/BASIC_CHARTS.md"
+      },
+      {
+        "action": "createTextPlot",
+        "contract": "agent_docs/contract/current/BASIC_CHARTS.md"
+      },
+      {
+        "action": "createDotPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createLollipopPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createDumbbellPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "editEndpointPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createECDFPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "editECDFPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createIntervalPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createRegressionPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createLinePlot",
+        "contract": "agent_docs/contract/current/BASIC_CHARTS.md"
+      },
+      {
+        "action": "createPolarScatterPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createPolarLinePlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createRadarPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "editRadarPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createRugPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createStripPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createBeeswarmPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createRaincloudPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "editRaincloudPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createBarPlot",
+        "contract": "agent_docs/contract/current/BASIC_CHARTS.md"
+      },
+      {
+        "action": "createHistogram",
+        "contract": "agent_docs/contract/current/BASIC_CHARTS.md"
+      },
+      {
+        "action": "createHeatmap",
+        "contract": "agent_docs/contract/current/BASIC_CHARTS.md"
+      },
+      {
+        "action": "createParallelCoordinates",
+        "contract": "agent_docs/contract/current/BASIC_CHARTS.md"
+      },
+      {
+        "action": "createPiePlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createRosePlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createRadialBarPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createAreaPlot",
+        "contract": "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      },
+      {
+        "action": "createTreePlot",
+        "contract": "agent_docs/contract/current/HIERARCHY.md"
+      },
+      {
+        "action": "editTreePlot",
+        "contract": "agent_docs/contract/current/HIERARCHY.md"
+      },
+      {
+        "action": "createTreemapPlot",
+        "contract": "agent_docs/contract/current/HIERARCHY.md"
+      },
+      {
+        "action": "editTreemapPlot",
+        "contract": "agent_docs/contract/current/HIERARCHY.md"
+      },
+      {
+        "action": "createGraphPlot",
+        "contract": "agent_docs/contract/current/GRAPHS.md"
+      },
+      {
+        "action": "editGraphPlot",
+        "contract": "agent_docs/contract/current/GRAPHS.md"
+      },
+      {
+        "action": "createPartitionPlot",
+        "contract": "agent_docs/contract/current/PARTITION.md"
+      },
+      {
+        "action": "editPartitionPlot",
+        "contract": "agent_docs/contract/current/PARTITION.md"
+      }
+    ]
+  },
+  "excluded": [
+    {
+      "action": "createCanvas",
+      "domain": "core"
+    },
+    {
+      "action": "createData",
+      "domain": "core"
+    },
+    {
+      "action": "createSummaryData",
+      "domain": "statistics"
+    },
+    {
+      "action": "createBinData",
+      "domain": "statistics"
+    },
+    {
+      "action": "createLookupData",
+      "domain": "statistics"
+    },
+    {
+      "action": "createFlattenData",
+      "domain": "statistics"
+    },
+    {
+      "action": "createFoldData",
+      "domain": "statistics"
+    },
+    {
+      "action": "createPivotData",
+      "domain": "statistics"
+    },
+    {
+      "action": "createGraphData",
+      "domain": "core"
+    },
+    {
+      "action": "createInferredGraphData",
+      "domain": "core"
+    },
+    {
+      "action": "createParameter",
+      "domain": "core"
+    },
+    {
+      "action": "createComputedData",
+      "domain": "statistics"
+    },
+    {
+      "action": "createNormalizedData",
+      "domain": "statistics"
+    },
+    {
+      "action": "createSortedData",
+      "domain": "statistics"
+    },
+    {
+      "action": "createCompleteData",
+      "domain": "statistics"
+    },
+    {
+      "action": "createImputedData",
+      "domain": "statistics"
+    },
+    {
+      "action": "createStackData",
+      "domain": "statistics"
+    },
+    {
+      "action": "createDensityData",
+      "domain": "core"
+    },
+    {
+      "action": "createRegressionData",
+      "domain": "core"
+    },
+    {
+      "action": "createRegressionStatisticsData",
+      "domain": "core"
+    },
+    {
+      "action": "createWindowData",
+      "domain": "core"
+    },
+    {
+      "action": "createTimeUnitData",
+      "domain": "core"
+    },
+    {
+      "action": "createBin2DData",
+      "domain": "core"
+    },
+    {
+      "action": "createIntervalData",
+      "domain": "statistics"
+    },
+    {
+      "action": "createECDFData",
+      "domain": "statistics"
+    },
+    {
+      "action": "createCoordinate",
+      "domain": "core"
+    },
+    {
+      "action": "createDerivedData",
+      "domain": "core"
+    },
+    {
+      "action": "editSemantic",
+      "domain": "primitives"
+    },
+    {
+      "action": "createGraphics",
+      "domain": "primitives"
+    },
+    {
+      "action": "editGraphics",
+      "domain": "primitives"
+    },
+    {
+      "action": "createImageResource",
+      "domain": "core"
+    },
+    {
+      "action": "createHierarchyData",
+      "domain": "core"
+    },
+    {
+      "action": "layoutHierarchy",
+      "domain": "core"
+    },
+    {
+      "action": "layoutGraph",
+      "domain": "core"
+    },
+    {
+      "action": "createFontResource",
+      "domain": "core"
+    },
+    {
+      "action": "createFlowData",
+      "domain": "core"
+    },
+    {
+      "action": "layoutFlow",
+      "domain": "core"
+    },
+    {
+      "action": "createContourData",
+      "domain": "core"
+    },
+    {
+      "action": "createDensityContourData",
+      "domain": "core"
+    },
+    {
+      "action": "createCalendarLayout",
+      "domain": "core"
+    },
+    {
+      "action": "bundleGraphEdges",
+      "domain": "core"
+    },
+    {
+      "action": "editEdgeRoute",
+      "domain": "core"
+    },
+    {
+      "action": "createGeometryData",
+      "domain": "core"
+    },
+    {
+      "action": "createGeoJoinData",
+      "domain": "core"
+    },
+    {
+      "action": "createGeoRouteData",
+      "domain": "core"
+    },
+    {
+      "action": "createGeoLODData",
+      "domain": "core"
+    },
+    {
+      "action": "createProjection",
+      "domain": "core"
+    }
+  ],
+  "constraints": [
+    "No runtime domain wildcard: exact names must be reviewed and compiled into closed adapters.",
+    "Every request requires at least one existing bounded route and actual native route-input/viewport/removal closure; otherwise use its ordinary action.",
+    "Original native args/alias/validation/trace and exact child program identity must be preserved.",
+    "All listed adapters remain unimplemented and need per-family positive/atomic failure tests. Membership alone is not support evidence."
+  ]
+}

@@ -1,0 +1,318 @@
+{
+  "status": "qualified-conceptual-checkpoint",
+  "sourceCommit": "106f9ff3035e62493430cb9053768b15ae7a2e97",
+  "base": "7f6a747fc",
+  "authorization": "../AUTHORIZATION.json remainingApproval",
+  "scope": "Restore existing route host own-data option boundaries; no API/schema/default/limit changes",
+  "fix": {
+    "boundaries": [
+      "executor options",
+      "compute args",
+      "prepare request",
+      "prepare host"
+    ],
+    "originalInheritedGetterReads": 1,
+    "finalInheritedGetterReads": 0,
+    "testedKeys": [
+      "createWorker",
+      "signal",
+      "executor",
+      "requestToken",
+      "kind"
+    ],
+    "ownHandlesPreserved": true
+  },
+  "checks": {
+    "source": 20,
+    "criticalCoverage": {
+      "floors": {
+        "resources/graphRouteExecutor.js": {
+          "lines": 90,
+          "branches": 80,
+          "functions": 100
+        },
+        "resources/graphRoutes.js": {
+          "lines": 90,
+          "branches": 80,
+          "functions": 100
+        }
+      },
+      "actual": {
+        "resources/graphRouteExecutor.js": {
+          "lines": 100,
+          "branches": 97.18,
+          "functions": 100
+        },
+        "resources/graphRoutes.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        }
+      },
+      "status": "passed"
+    },
+    "sourcePackageDiscovery": 43,
+    "sessionLifetime": {
+      "tests": 15,
+      "nativeCancellationCycles": 100,
+      "resizeWorkerAssetsCycles": 100,
+      "latePublication": 0,
+      "transportListenersAfter": 0
+    },
+    "sourcePinnedDocumentation": 31,
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "sha256": "b7a2808fffaf793250dfa5e54103a1dede1a4565668ba22f18868647dbef860a",
+        "checks": [
+          {
+            "id": "edge-routes/own-host-options",
+            "status": "passed",
+            "durationMs": 57.38520799999992
+          },
+          {
+            "id": "edge-routes/worker-authority-and-cache",
+            "status": "passed",
+            "durationMs": 135.04591700000003
+          }
+        ],
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1035,
+            "minifiedBytes": 2719738,
+            "gzipBytes": 779346
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 609,
+            "minifiedBytes": 1442605,
+            "gzipBytes": 422618
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24954
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 83,
+            "minifiedBytes": 146832,
+            "gzipBytes": 43931
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 393,
+            "minifiedBytes": 766897,
+            "gzipBytes": 233184
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 214,
+            "minifiedBytes": 429949,
+            "gzipBytes": 137437
+          }
+        ],
+        "status": "passed",
+        "peers": {
+          "@modelcontextprotocol/sdk": "1.32.1",
+          "@napi-rs/canvas": "1.0.9"
+        }
+      },
+      {
+        "node": "v22.23.1",
+        "sha256": "b7a2808fffaf793250dfa5e54103a1dede1a4565668ba22f18868647dbef860a",
+        "checks": [
+          {
+            "id": "edge-routes/own-host-options",
+            "status": "passed",
+            "durationMs": 61.61304199999995
+          },
+          {
+            "id": "edge-routes/worker-authority-and-cache",
+            "status": "passed",
+            "durationMs": 154.19558300000006
+          }
+        ],
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1035,
+            "minifiedBytes": 2719738,
+            "gzipBytes": 777936
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 609,
+            "minifiedBytes": 1442605,
+            "gzipBytes": 421720
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24779
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 83,
+            "minifiedBytes": 146832,
+            "gzipBytes": 43779
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 393,
+            "minifiedBytes": 766897,
+            "gzipBytes": 232405
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 214,
+            "minifiedBytes": 429949,
+            "gzipBytes": 136997
+          }
+        ],
+        "status": "passed",
+        "peers": {
+          "@modelcontextprotocol/sdk": "1.32.1",
+          "@napi-rs/canvas": "1.0.9"
+        }
+      },
+      {
+        "node": "v24.22.1",
+        "sha256": "b7a2808fffaf793250dfa5e54103a1dede1a4565668ba22f18868647dbef860a",
+        "checks": [
+          {
+            "id": "edge-routes/own-host-options",
+            "status": "passed",
+            "durationMs": 43.67395799999997
+          },
+          {
+            "id": "edge-routes/worker-authority-and-cache",
+            "status": "passed",
+            "durationMs": 149.04525
+          }
+        ],
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1035,
+            "minifiedBytes": 2719738,
+            "gzipBytes": 779346
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 609,
+            "minifiedBytes": 1442605,
+            "gzipBytes": 422618
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24954
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 83,
+            "minifiedBytes": 146832,
+            "gzipBytes": 43931
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 393,
+            "minifiedBytes": 766897,
+            "gzipBytes": 233184
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 214,
+            "minifiedBytes": 429949,
+            "gzipBytes": 137437
+          }
+        ],
+        "status": "passed",
+        "peers": {
+          "@modelcontextprotocol/sdk": "1.32.1",
+          "@napi-rs/canvas": "1.0.9"
+        }
+      }
+    ]
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1165,
+    "packedBytes": 1664348,
+    "unpackedBytes": 7534812,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "80f349574865b6cc033fc76e76a1e598e1aac34b",
+    "sha256": "b7a2808fffaf793250dfa5e54103a1dede1a4565668ba22f18868647dbef860a",
+    "frozenFile": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/route-host-own-archives/ggaction-b7a2808fffaf793250dfa5e54103a1dede1a4565668ba22f18868647dbef860a.tgz"
+  },
+  "packageNode20": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1165,
+    "packedBytes": 1667969,
+    "unpackedBytes": 7534812
+  },
+  "bundleMaximumGzip": {
+    "ggaction": 779346,
+    "ggaction/basic": 422618,
+    "ggaction/svg": 24954,
+    "ggaction/graph": 43931,
+    "ggaction/animation": 233184,
+    "ggaction/interaction": 137437
+  },
+  "budgetChanges": false,
+  "firstFailure": "route-host-own-first.log.gz: createGraphRouteExecutor({}) evaluated inherited createWorker getter; unchanged regression passed after own-copy repair",
+  "generated": "provenance \u2192 machine \u2192 llms, source pinned to 106f9ff3035e62493430cb9053768b15ae7a2e97",
+  "reused": {
+    "typesCurrentPublicProse": "No signature or supported-value changes. Existing EDGE_ROUTES own-data contract restored.",
+    "rendererBrowser": "No materialization/renderer/DOM behavior changed; prior edge-presentation representative evidence remains relevant.",
+    "noFullSuiteClaim": true,
+    "noNewDocsBuildClaim": true
+  },
+  "hashes": {
+    "src/resources/graphRouteExecutor.js": "569fd8360d8dca1b5d02e6384bf5d3505a8a23ae1673633f9aa711638ba885b6",
+    "src/resources/graphRoutes.js": "9d2876febd4b47a0553a5dc6ddee7040dfb7b18de4e6d42703822c29473f95fc",
+    "test/unit/resources/graph-route-host.test.js": "c6bd46fd7ec9cea2e5f7089e39f5134c5c0c12ea115ed4eecee6db325a3b8886",
+    "scripts/consumers/fixtures/node/edge-routes.mjs": "f75ba0880c864d26955e9c3f5f3b37db4a2b5e672115cb59f1f452035903d9d5"
+  },
+  "commands": {
+    "source": "node --test test/unit/resources/graph-route-host.test.js test/unit/resources/graph-route-lifecycle.test.js test/unit/resources/graph-route-input.test.js",
+    "coverage": "node --test-concurrency=2 --experimental-test-coverage --test-coverage-include=src/resources/graphRouteExecutor.js --test-coverage-include=src/resources/graphRoutes.js --test test/unit/resources/graph-route-host.test.js test/unit/resources/graph-route-lifecycle.test.js test/unit/resources/graph-route-input.test.js",
+    "boundaries": "node --test test/contracts/source-boundaries.test.js test/contracts/package-boundaries.test.js test/contracts/package-artifact.test.js test/contracts/test-discovery.test.js",
+    "session": "node --test test/unit/interaction-update.test.js",
+    "installed": "node .artifacts/qualify-route-host-own.mjs (copy qualify-installed.mjs.txt, retain fixed manifest, prepend each Node bin to PATH)",
+    "docs": "npm run docs:provenance; npm run docs:machine; npm run docs:llms; node --test test/docs/action-reference.test.js test/docs/documentation.test.js",
+    "pack": "npm run package:pack; Node20 node scripts/package-artifact.js"
+  },
+  "remaining": [
+    "AT82 production Chromium sizeclass P95 and memory qualification",
+    "AT82 retained-heap slope, separate from exact listener/worker cleanup counters",
+    "Latest GeoText/guide/timeline and STEP070/074/077 complete integration"
+  ]
+}

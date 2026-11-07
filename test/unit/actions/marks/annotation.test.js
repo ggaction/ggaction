@@ -160,7 +160,7 @@ test("annotation branch and child errors reject without partial effects", () => 
   for (const [options, pattern] of [
     [{}, /requires text/],
     [{ text: "note", x: 1 }, /requires both x and y/],
-    [{ text: "note", x: 1, y: 2, space: "screen" }, /space must be data or plot/],
+    [{ text: "note", x: 1, y: 2, space: "window" }, /space must be data, plot or screen/],
     [{ text: "note", x: 1, y: 2, data: "data" }, /uses source data and coordinate/],
     [{ text: "note", space: "plot", x: -0.1, y: 0.5 }, /finite numbers in \[0, 1\]/],
     [{ text: "note", space: "plot", x: 0.5, y: 0.5, source: "point" }, /does not accept source/],

@@ -1,0 +1,7231 @@
+{
+  "targets": [
+    {
+      "target": "AT-02",
+      "owners": [
+        {
+          "test": "test/contracts/oracle-independence.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/oracles/native-fixtures.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-04",
+      "owners": [
+        {
+          "test": "test/unit/resources/data-update-preparation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/prepared-data-public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/image-preparation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/font-preparation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/geometry-data.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/offline-assets.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "AT-06",
+      "owners": [
+        {
+          "test": "test/unit/actions/data/row-identity.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/core/item-identity.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-07",
+      "owners": [
+        {
+          "test": "test/unit/actions/data/row-identity.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-08",
+      "owners": [
+        {
+          "test": "test/unit/actions/data/row-lineage.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-09",
+      "owners": [
+        {
+          "test": "test/unit/persistence/legacy-selection.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/graphic-hierarchy-migration.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "AT-10",
+      "owners": [
+        {
+          "test": "test/unit/persistence/program.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/persistence/codec.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-15",
+      "owners": [
+        {
+          "test": "test/unit/resources/font-public-preparation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/font-layout-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-16",
+      "owners": [
+        {
+          "test": "test/unit/actions/data/computed-v2.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-17",
+      "owners": [
+        {
+          "test": "test/unit/actions/data/pivot-data.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/data/robust-loess.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/data/calendar-completion.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/STATISTICS.md"
+      ]
+    },
+    {
+      "target": "AT-18",
+      "owners": [
+        {
+          "test": "test/unit/actions/conditional-encoding.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/materialization/conditional-dependencies.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/prepared-conditionals.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/ENCODINGS.md"
+      ]
+    },
+    {
+      "target": "AT-19",
+      "owners": [
+        {
+          "test": "test/unit/actions/theme-provenance.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/theme-typography.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/theme-paint-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-20",
+      "owners": [
+        {
+          "test": "test/unit/grammar/frame-policy.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/frame-state.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/single-y-admission.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/single-y-aggregate-admission.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/canvas/responsive-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/composition-family-matrix.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "AT-22",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-validation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "AT-24",
+      "owners": [
+        {
+          "test": "test/unit/contour-layouts.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/contour-density.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/contours/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "AT-25",
+      "owners": [
+        {
+          "test": "test/unit/calendar-layout.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/calendar-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "AT-26",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/composition-family-matrix.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/resource-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "AT-27",
+      "owners": [
+        {
+          "test": "test/unit/grammar/pyramid-layout.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/pyramid-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/financial-roles.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/ohlc-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/waterfall-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/table-cells.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/table-data.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/materialization/table-content.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/table-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/composition-recipes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/composition-recipes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/native-api-policy.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md",
+        "agent_docs/contract/current/OHLC.md",
+        "agent_docs/contract/current/WATERFALL.md",
+        "agent_docs/contract/current/TABLE.md",
+        "agent_docs/contract/current/NATIVE_POLICY.md"
+      ]
+    },
+    {
+      "target": "AT-28",
+      "owners": [
+        {
+          "test": "test/unit/grammar/trail.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/trail-curve.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/trail-series.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/trail-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/polar.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/polar-line-series.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/encodings/polar-position-encodings.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/charts/polar-facades.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/charts/radar-facade.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/charts/radar-summary.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/measured-radius.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/charts/radial-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/stream-baseline.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/wiggle-area.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/data/density-data.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/cars-density-area/reference-values.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/transforms/numeric-invariants.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/categorical-density.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/charts/violin-plot-facade.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md",
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/ENCODINGS.md",
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/VIOLIN_PLOTS.md"
+      ]
+    },
+    {
+      "target": "AT-29",
+      "owners": [
+        {
+          "test": "test/unit/geo/projections.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/projection-resources.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/geographic-math.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "AT-30",
+      "owners": [
+        {
+          "test": "test/unit/geo/geometry-resources.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/join-resources.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/geographic-marks/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "AT-31",
+      "owners": [
+        {
+          "test": "test/unit/geo/lod-resources.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/join-resources.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/annotations.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-geo-representation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-annotation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "AT-32",
+      "owners": [
+        {
+          "test": "test/unit/geo/camera.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/camera-actions.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "AT-33",
+      "owners": [
+        {
+          "test": "test/unit/grammar/hit-coordinates.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/hit-shapes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/hit-stroke.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/hit-index.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/hit-program.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/hit-guides.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/hit-frame.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "AT-37",
+      "owners": [
+        {
+          "test": "test/unit/interaction-direct-controls.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "AT-40",
+      "owners": [
+        {
+          "test": "test/unit/interaction-session.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-history.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-update.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-region-gesture.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-reconciliation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "AT-41",
+      "owners": [
+        {
+          "test": "test/unit/interaction-update.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-preparation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-preview-preparation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-resize.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-pointer-capture.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "AT-42",
+      "owners": [
+        {
+          "test": "test/unit/animation/values.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/matching.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/timing.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/planner.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/cartesian-values.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/polar-kernel.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/partition-transition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/graph-tracks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "AT-43",
+      "owners": [
+        {
+          "test": "test/unit/animation/player.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/rebase.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/timeline-public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-animation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/route-session.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "AT-44",
+      "owners": [
+        {
+          "test": "test/unit/animation/cartesian-fallbacks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/cartesian-values.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/polar-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/partition-transition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/graph-tracks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/resource-layout-fallbacks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "AT-54",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/offline-assets.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-text-assets.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "AT-55",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/interaction.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/offline-assets.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/offline.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "AT-58",
+      "owners": [
+        {
+          "test": "test/contracts/documentation-truth.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/compact-action-cards.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-59",
+      "owners": [
+        {
+          "test": "test/contracts/native-capability-completion.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/verification-evidence.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-62",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/hierarchy-partition-view.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "AT-63",
+      "owners": [
+        {
+          "test": "test/unit/grammar/hierarchy-partition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/hierarchy-partition-mapping.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "AT-64",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-frames.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/partition-layouts/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "AT-70",
+      "owners": [
+        {
+          "test": "test/unit/grammar/graph/neighbors.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/graph/edge-identity.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "AT-71",
+      "owners": [
+        {
+          "test": "test/unit/grammar/graph/metrics.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/graph/neighbors.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "AT-72",
+      "owners": [
+        {
+          "test": "test/unit/grammar/graph/spanning.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/graph/structural.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "AT-73",
+      "owners": [
+        {
+          "test": "test/unit/grammar/graph/search.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/graph/approximate.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "AT-74",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-recompute.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-filter.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "AT-75",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "AT-76",
+      "owners": [
+        {
+          "test": "test/unit/grammar/graph/routes/hierarchical.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "AT-77",
+      "owners": [
+        {
+          "test": "test/unit/grammar/graph/routes/force-directed.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "AT-78",
+      "owners": [
+        {
+          "test": "test/unit/grammar/graph/routes/density.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "AT-79",
+      "owners": [
+        {
+          "test": "test/unit/grammar/graph/routes/edge-path.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "AT-80",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-edge-presentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/graph-presentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/route-session.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "AT-81",
+      "owners": [
+        {
+          "test": "test/unit/animation/routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/graph-public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/route-session.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-source-hit.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "AT-83",
+      "owners": [
+        {
+          "test": "test/contracts/native-api-policy.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/pyramid-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/pyramid/primitive.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/pyramid/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/NATIVE_POLICY.md",
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "AT-85",
+      "owners": [
+        {
+          "test": "test/unit/grammar/frame-policy.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/frame-state.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/single-y-admission.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/single-y-aggregate-admission.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/AXES.md",
+        "agent_docs/contract/current/ENCODINGS.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "AT-86",
+      "owners": [
+        {
+          "test": "test/unit/grammar/frame-policy.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/frame-state.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/single-y-admission.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/composition/polar-facets.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-native-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/AXES.md",
+        "agent_docs/contract/current/ENCODINGS.md",
+        "agent_docs/contract/current/COMPOSITION.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "AT-87",
+      "owners": [
+        {
+          "test": "test/contracts/native-api-policy.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/NATIVE_POLICY.md"
+      ]
+    },
+    {
+      "target": "AT-88",
+      "owners": [
+        {
+          "test": "test/contracts/native-capability-completion.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/native-api-policy.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/NATIVE_POLICY.md"
+      ]
+    },
+    {
+      "target": "AT-89",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/persistence/program.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/persistence/image-resources.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-91",
+      "owners": [
+        {
+          "test": "test/contracts/native-capability-completion.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/verification-evidence.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "AT-92",
+      "owners": [
+        {
+          "test": "test/contracts/native-api-policy.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/native-capability-completion.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/package-boundaries.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/NATIVE_POLICY.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/create",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/edit",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/source-revise",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/encodings",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/scales",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/guides",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/composition",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/hit",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/scene-animation",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/persistence",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/types",
+      "owners": [
+        {
+          "test": "test/contracts/compound-path-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/accessibility",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/create",
+      "owners": [
+        {
+          "test": "test/charts/structured-paints/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/edit",
+      "owners": [
+        {
+          "test": "test/unit/actions/marks/structured-fill.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/actions/marks/structured-fill.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/encodings",
+      "owners": [
+        {
+          "test": "test/unit/actions/marks/structured-fill.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/scales",
+      "owners": [
+        {
+          "test": "test/unit/actions/marks/structured-fill.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/guides",
+      "owners": [
+        {
+          "test": "test/unit/actions/marks/structured-fill.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/composition",
+      "owners": [
+        {
+          "test": "test/unit/actions/marks/structured-fill.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/actions/marks/structured-fill.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/hit",
+      "owners": [
+        {
+          "test": "test/unit/actions/marks/structured-fill.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/partition-transition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/persistence",
+      "owners": [
+        {
+          "test": "test/unit/actions/marks/structured-fill.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/types",
+      "owners": [
+        {
+          "test": "test/contracts/structured-paint-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/actions/marks/structured-fill.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:image/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/image-resource-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/persistence/image-resources.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/image-resource-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/persistence/image-resources.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/image-resource-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/image-resource-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/persistence/image-resources.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/image-resource-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/persistence/image-resources.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/image-resource-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:image/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/resources/image-resource-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/offline-assets.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/MARKS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:image/svg",
+      "owners": [
+        {
+          "test": "test/unit/renderers/image-rendering.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/image-assets/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/canvas",
+      "owners": [
+        {
+          "test": "test/unit/renderers/image-rendering.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/image-assets/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/png",
+      "owners": [
+        {
+          "test": "test/unit/renderers/image-rendering.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/image-assets/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/pdf",
+      "owners": [
+        {
+          "test": "test/unit/renderers/image-rendering.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/image-assets/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/image-resource-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/persistence/image-resources.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/types",
+      "owners": [
+        {
+          "test": "test/contracts/image-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/image-resource-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/persistence/image-resources.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PRIMITIVES.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/types",
+      "owners": [
+        {
+          "test": "test/contracts/hierarchy-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/types",
+      "owners": [
+        {
+          "test": "test/contracts/hierarchy-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/partition-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/resource-layout-fallbacks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/types",
+      "owners": [
+        {
+          "test": "test/contracts/hierarchy-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/resource-layout-fallbacks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/types",
+      "owners": [
+        {
+          "test": "test/contracts/hierarchy-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/hierarchy-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/types",
+      "owners": [
+        {
+          "test": "test/contracts/observed-graph-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/route-session.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-edge-presentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/types",
+      "owners": [
+        {
+          "test": "test/contracts/graph-route-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/route-session.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-edge-presentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/types",
+      "owners": [
+        {
+          "test": "test/contracts/graph-route-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/route-session.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-edge-presentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/types",
+      "owners": [
+        {
+          "test": "test/contracts/graph-route-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/route-session.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-edge-presentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/types",
+      "owners": [
+        {
+          "test": "test/contracts/graph-route-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/graph-routes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/graph-route-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/resource-layout-fallbacks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/types",
+      "owners": [
+        {
+          "test": "test/contracts/flow-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/resource-layout-fallbacks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/types",
+      "owners": [
+        {
+          "test": "test/contracts/flow-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/flow-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/encodings",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/scales",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/guides",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/resource-mark-fallbacks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/types",
+      "owners": [
+        {
+          "test": "test/contracts/contour-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/encodings",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/scales",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/guides",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/resource-mark-fallbacks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/types",
+      "owners": [
+        {
+          "test": "test/contracts/contour-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/contour-marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/create",
+      "owners": [
+        {
+          "test": "test/unit/resources/calendar-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/edit",
+      "owners": [
+        {
+          "test": "test/unit/resources/calendar-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/resources/calendar-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/encodings",
+      "owners": [
+        {
+          "test": "test/unit/resources/calendar-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/scales",
+      "owners": [
+        {
+          "test": "test/unit/resources/calendar-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/guides",
+      "owners": [
+        {
+          "test": "test/unit/resources/calendar-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/composition",
+      "owners": [
+        {
+          "test": "test/unit/resources/calendar-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/resources/calendar-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/hit",
+      "owners": [
+        {
+          "test": "test/unit/resources/calendar-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-calendar-region.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/resource-mark-fallbacks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/persistence",
+      "owners": [
+        {
+          "test": "test/unit/resources/calendar-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/types",
+      "owners": [
+        {
+          "test": "test/contracts/calendar-plot-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/resources/calendar-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:table/create",
+      "owners": [
+        {
+          "test": "test/unit/table-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/edit",
+      "owners": [
+        {
+          "test": "test/unit/table-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/table-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/encodings",
+      "owners": [
+        {
+          "test": "test/unit/table-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/table-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/scales",
+      "owners": [
+        {
+          "test": "test/unit/table-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/table-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/guides",
+      "owners": [
+        {
+          "test": "test/unit/table-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/table-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/composition",
+      "owners": [
+        {
+          "test": "test/unit/table-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/table-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/hit",
+      "owners": [
+        {
+          "test": "test/unit/table-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/domain-facade-fallbacks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:table/persistence",
+      "owners": [
+        {
+          "test": "test/unit/table-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/types",
+      "owners": [
+        {
+          "test": "test/contracts/table-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/table-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/create",
+      "owners": [
+        {
+          "test": "test/unit/pyramid-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/edit",
+      "owners": [
+        {
+          "test": "test/unit/pyramid-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/pyramid-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/encodings",
+      "owners": [
+        {
+          "test": "test/unit/pyramid-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/scales",
+      "owners": [
+        {
+          "test": "test/unit/pyramid-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/guides",
+      "owners": [
+        {
+          "test": "test/unit/pyramid-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/composition",
+      "owners": [
+        {
+          "test": "test/unit/pyramid-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/pyramid-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/hit",
+      "owners": [
+        {
+          "test": "test/unit/pyramid-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/domain-facade-fallbacks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/persistence",
+      "owners": [
+        {
+          "test": "test/unit/pyramid-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/types",
+      "owners": [
+        {
+          "test": "test/contracts/pyramid-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/pyramid-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/create",
+      "owners": [
+        {
+          "test": "test/unit/ohlc-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/edit",
+      "owners": [
+        {
+          "test": "test/unit/ohlc-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/ohlc-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/encodings",
+      "owners": [
+        {
+          "test": "test/unit/ohlc-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/scales",
+      "owners": [
+        {
+          "test": "test/unit/ohlc-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/guides",
+      "owners": [
+        {
+          "test": "test/unit/ohlc-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/composition",
+      "owners": [
+        {
+          "test": "test/unit/ohlc-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/ohlc-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/hit",
+      "owners": [
+        {
+          "test": "test/unit/ohlc-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/domain-facade-fallbacks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/persistence",
+      "owners": [
+        {
+          "test": "test/unit/ohlc-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/types",
+      "owners": [
+        {
+          "test": "test/contracts/ohlc-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/ohlc-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/create",
+      "owners": [
+        {
+          "test": "test/unit/waterfall-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/edit",
+      "owners": [
+        {
+          "test": "test/unit/waterfall-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/waterfall-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/encodings",
+      "owners": [
+        {
+          "test": "test/unit/waterfall-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/scales",
+      "owners": [
+        {
+          "test": "test/unit/waterfall-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/guides",
+      "owners": [
+        {
+          "test": "test/unit/waterfall-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/composition",
+      "owners": [
+        {
+          "test": "test/unit/waterfall-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/waterfall-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/hit",
+      "owners": [
+        {
+          "test": "test/unit/waterfall-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/domain-facade-fallbacks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/persistence",
+      "owners": [
+        {
+          "test": "test/unit/waterfall-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/types",
+      "owners": [
+        {
+          "test": "test/contracts/waterfall-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/waterfall-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/create",
+      "owners": [
+        {
+          "test": "test/unit/trail-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/edit",
+      "owners": [
+        {
+          "test": "test/unit/trail-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/trail-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/encodings",
+      "owners": [
+        {
+          "test": "test/unit/trail-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/scales",
+      "owners": [
+        {
+          "test": "test/unit/trail-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/guides",
+      "owners": [
+        {
+          "test": "test/unit/trail-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/composition",
+      "owners": [
+        {
+          "test": "test/unit/trail-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/trail-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/hit",
+      "owners": [
+        {
+          "test": "test/unit/trail-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/domain-facade-fallbacks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/persistence",
+      "owners": [
+        {
+          "test": "test/unit/trail-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/types",
+      "owners": [
+        {
+          "test": "test/contracts/trail-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/trail-plot.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/create",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/edit",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/encoding-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/encodings",
+      "owners": [
+        {
+          "test": "test/unit/geo/encodings.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/conditional-encodings.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/scales",
+      "owners": [
+        {
+          "test": "test/unit/geo/encoding-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/guides",
+      "owners": [
+        {
+          "test": "test/unit/geo/encodings.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/composition",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/hit",
+      "owners": [
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/geo-public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/persistence",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/coordinates.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/types",
+      "owners": [
+        {
+          "test": "test/contracts/geo-mark-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/animation-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/create",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/edit",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/encoding-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/encodings",
+      "owners": [
+        {
+          "test": "test/unit/geo/encodings.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/conditional-encodings.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/scales",
+      "owners": [
+        {
+          "test": "test/unit/geo/encoding-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/guides",
+      "owners": [
+        {
+          "test": "test/unit/geo/encodings.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/composition",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/hit",
+      "owners": [
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/persistence",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/coordinates.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/types",
+      "owners": [
+        {
+          "test": "test/contracts/geo-mark-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/animation-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/create",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/edit",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/encoding-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/encodings",
+      "owners": [
+        {
+          "test": "test/unit/geo/encodings.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/conditional-encodings.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/scales",
+      "owners": [
+        {
+          "test": "test/unit/geo/encoding-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/guides",
+      "owners": [
+        {
+          "test": "test/unit/geo/encodings.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/composition",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/hit",
+      "owners": [
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/geo-public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/persistence",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/coordinates.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/types",
+      "owners": [
+        {
+          "test": "test/contracts/geo-mark-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/animation-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/create",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/edit",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/composition",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/hit",
+      "owners": [
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/animation/geo-public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-lifecycle.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-text-public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/geo-public-selection.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/persistence",
+      "owners": [
+        {
+          "test": "test/unit/geo/marks.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/geo/coordinates.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/types",
+      "owners": [
+        {
+          "test": "test/contracts/geo-mark-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/animation-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/geo/mark-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/create",
+      "owners": [
+        {
+          "test": "test/unit/actions/charts/radial-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/radial-sectors/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/edit",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/encodings",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ENCODINGS.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/scales",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/guides",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/charts/radial-plots.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/radial-sectors/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/AXES.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/composition",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/hit",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/canvas",
+      "owners": [
+        {
+          "test": "test/charts/radial-sectors/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/persistence",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/types",
+      "owners": [
+        {
+          "test": "test/contracts/radial-chart-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/create",
+      "owners": [
+        {
+          "test": "test/unit/actions/charts/radar-facade.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/charts/radar-summary.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/polar-line-radar/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/edit",
+      "owners": [
+        {
+          "test": "test/unit/actions/charts/radar-edit.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/encodings",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ENCODINGS.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/scales",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/guides",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/charts/radar-facade.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/charts/radar-summary.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/polar-line-radar/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/AXES.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/composition",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/hit",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/canvas",
+      "owners": [
+        {
+          "test": "test/charts/polar-line-radar/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/persistence",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/types",
+      "owners": [
+        {
+          "test": "test/contracts/radar-facade-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/create",
+      "owners": [
+        {
+          "test": "test/unit/wiggle-area.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/streamgraph/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/centered-area-stream/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/edit",
+      "owners": [
+        {
+          "test": "test/unit/wiggle-area.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/encodings",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ENCODINGS.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/scales",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/guides",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/wiggle-area.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/streamgraph/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/centered-area-stream/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/AXES.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/composition",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/hit",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/persistence",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/types",
+      "owners": [
+        {
+          "test": "test/contracts/area-endpoint-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/create",
+      "owners": [
+        {
+          "test": "test/unit/actions/charts/violin-plot-facade.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/categorical-density.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/cars-acceleration-violins/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/edit",
+      "owners": [
+        {
+          "test": "test/unit/actions/charts/violin-plot-facade.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/source-revise",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/encodings",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/ENCODINGS.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/scales",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/guides",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/actions/charts/violin-plot-facade.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/grammar/categorical-density.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/cars-acceleration-violins/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/AXES.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/composition",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/selection-highlight",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/hit",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/scene-animation",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/animation/cartesian-density.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/canvas",
+      "owners": [
+        {
+          "test": "test/charts/cars-acceleration-violins/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/persistence",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/types",
+      "owners": [
+        {
+          "test": "test/contracts/violin-plot-types.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/package",
+      "owners": [
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/VIOLIN_PLOTS.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/accessibility",
+      "owners": [
+        {
+          "test": "test/unit/profile-facade-consumers.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "consumer:interaction/async-dispose",
+      "owners": [
+        {
+          "test": "test/unit/interaction-update.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-preparation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-preview-preparation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-resize.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-pointer-capture.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:interaction/restore",
+      "owners": [
+        {
+          "test": "test/unit/interaction-history.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-reconciliation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-update.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/interaction-linked-filter.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/installed-native-families.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    }
+  ]
+}

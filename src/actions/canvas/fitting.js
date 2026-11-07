@@ -89,6 +89,14 @@ function fitExactPlot(program, policy) {
   } });
 }
 
+// Full binds its route continuation check: a probe never absorbs a prepared
+// route continuation, its mismatch, or its quota, deadline or abort.
+const continuationChecks = new WeakMap();
+export function registerFitContinuationCheck(ProgramClass, check) {
+  if (typeof ProgramClass !== "function" || typeof check !== "function" || continuationChecks.has(ProgramClass)) throw new TypeError("Fit continuation check requires one exact constructor binding.");
+  continuationChecks.set(ProgramClass, check);
+}
+
 function probe(program, margin) {
   try {
     const next = program.editCanvas({ margin });
@@ -105,6 +113,7 @@ function probe(program, margin) {
     }
     return { ok: true, program: next };
   } catch (error) {
+    continuationChecks.get(program.constructor)?.(error);
     return {
       ok: false,
       message: error instanceof Error ? error.message : String(error)

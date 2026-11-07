@@ -220,17 +220,24 @@ const publicInventory = () => publicInventoryPromise ??= buildPublicOptionInvent
 test("derives a bounded public option inventory without runtime prototype paths", async () => {
   const inventory = await publicInventory();
 
-  assert.equal(inventory.counts.publicActions, 360);
-  assert.equal(inventory.counts.topLevelOptionPaths, 3495);
-  assert.equal(inventory.counts.nestedOptionPaths, 31230);
-  assert.equal(inventory.counts.optionPaths, 34725);
-  assert.equal(inventory.counts.requiredOptionPaths, 23349);
-  assert.equal(inventory.counts.excludedOptionPaths, 11376);
-  for (const action of ["createWaterfallPlot", "editWaterfallPlot", "createGeoLODData", "editGeoLODData", "createOHLCPlot", "editOHLCPlot", "createPyramidPlot", "editPyramidPlot", "createGeoJoinData", "editGeoJoinData", "createGeometryData", "editGeometryData", "createProjection", "editProjection", "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule"]) {
+  assert.equal(inventory.counts.publicActions, 371);
+  assert.equal(inventory.counts.topLevelOptionPaths, 3686);
+  assert.equal(inventory.counts.nestedOptionPaths, 33413);
+  assert.equal(inventory.counts.optionPaths, 37099);
+  assert.equal(inventory.counts.requiredOptionPaths, 25145);
+  assert.equal(inventory.counts.excludedOptionPaths, 11954);
+  for (const action of ["navigateProjection", "createGeoAnnotation", "editGeoAnnotation", "createTablePlot", "editTablePlot", "createTrailPlot", "editTrailPlot", "createWaterfallPlot", "editWaterfallPlot", "createGeoLODData", "editGeoLODData", "createOHLCPlot", "editOHLCPlot", "createPyramidPlot", "editPyramidPlot", "createGeoJoinData", "editGeoJoinData", "createGeoRouteData", "editGeoRouteData", "createGeometryData", "editGeometryData", "createProjection", "editProjection", "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule"]) {
     assert.ok(inventory.publicActions.some(value => value.name === action), action);
   }
-  for (const id of ["option-path:editLayout.node.key", "option-path:editLayout.node.x", "option-path:editLayout.node.y", "option-path:createWaterfallPlot.role", "option-path:createWaterfallPlot.value", "option-path:createGeoLODData.levels", "option-path:createGeoLODData.zoom", "option-path:editGeoLODData.zoom", "option-path:createGeoJoinData.geometryKey", "option-path:createGeoJoinData.dataKey", "option-path:editGeoJoinData.dataKey", "option-path:createGeoShapeMark.geometry", "option-path:createGeoPointMark.radiusDeg", "option-path:editGeoLineMark.routeHint", "option-path:editGraticule.extentDeg", "option-path:createCoordinate.projection", "option-path:createGeometryData.format", "option-path:createGeometryData.featureKey", "option-path:editGeometryData.limits.maxFeatures", "option-path:createProjection.type", "option-path:createProjection.fit.geometry", "option-path:createProjection.fit.width", "option-path:createProjection.fit.height", "option-path:createProjection.fit.padding", "option-path:editProjection.reflectX"]) {
+  // Explicit graph plot capacity (c13d92000) adds createGraphPlot.maxItems and editGraphPlot.maxItems.
+  for (const id of ["option-path:createGraphPlot.maxItems", "option-path:editGraphPlot.maxItems", "option-path:editLayout.node.key", "option-path:editLayout.node.x", "option-path:editLayout.node.y", "option-path:createWaterfallPlot.role", "option-path:createWaterfallPlot.value", "option-path:createGeoLODData.levels", "option-path:createGeoLODData.zoom", "option-path:editGeoLODData.zoom", "option-path:createGeoJoinData.geometryKey", "option-path:createGeoJoinData.dataKey", "option-path:editGeoJoinData.dataKey", "option-path:createGeoShapeMark.geometry", "option-path:createGeoPointMark.radiusDeg", "option-path:editGeoLineMark.routeHint", "option-path:editGraticule.extentDeg", "option-path:createCoordinate.projection", "option-path:createGeometryData.format", "option-path:createGeometryData.featureKey", "option-path:editGeometryData.limits.maxFeatures", "option-path:createProjection.type", "option-path:createProjection.fit.geometry", "option-path:createProjection.fit.width", "option-path:createProjection.fit.height", "option-path:createProjection.fit.padding", "option-path:editProjection.reflectX"]) {
     assert.ok(inventory.optionPaths.some(value => value.id === id), id);
+  }
+  for (const action of ["createGeometryData", "editGeometryData"]) {
+    const option = inventory.optionPaths.find(value => value.id === `option-path:${action}.polygonWinding`);
+    assert.equal(option?.required, true);
+    assert.equal(option?.evidence, "direct-trace");
+    assert.deepEqual(option?.values, ["string:left-hand", "string:right-hand"]);
   }
   for (const action of ["bundleGraphEdges", "editEdgeRoute", "createCalendarLayout", "createCalendarPlot", "editCalendarPlot", "createContourData", "createDensityContourData", "editContourData", "createContourMark", "editContourMark", "createFlowData", "editFlowData", "layoutFlow", "createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks"]) {
     assert.ok(inventory.publicActions.some(value => value.name === action), action);
@@ -255,12 +262,18 @@ test("derives a bounded public option inventory without runtime prototype paths"
       "option-path:createTitle.subtitleLineHeight",
       "option-path:editTitle.subtitleLineHeight"
     ]);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 1230);
-  assert.equal(inventory.counts.topLevelLiteralValues, 4372);
-  assert.equal(inventory.counts.literalFamilies, 277);
-  assert.equal(inventory.counts.pathLiteralRequirements, 16628);
-  assert.equal(inventory.counts.familyLiteralRequirements, 561);
-  assert.equal(inventory.counts.pathDiversityRequirements, 560);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 1300);
+  assert.equal(inventory.counts.topLevelLiteralValues, 4641);
+  assert.equal(inventory.counts.literalFamilies, 292);
+  assert.equal(inventory.counts.pathLiteralRequirements, 17777);
+  // The prepared route update handle names any public action since ccfac9c8f, so
+  // its unassigned action family lists every discovered action (35 -> 377 values).
+  assert.equal(inventory.counts.familyLiteralRequirements, 938);
+  assert.equal(inventory.counts.pathDiversityRequirements, 603);
+  for (const action of ["createAreaPlot", "layoutSeries", "encodeColor"]) {
+    const path = action === "layoutSeries" ? "mode" : "layout";
+    assert.ok(inventory.optionPaths.find(option => option.action === action && option.path === path).values.includes("string:wiggle"));
+  }
   for (const action of ["createHierarchyData", "editHierarchyData", "layoutHierarchy", "editLayout", "removeResource", "createTreePlot", "editTreePlot", "createTreemapPlot", "editTreemapPlot", "createPartitionPlot", "editPartitionPlot"]) {
     const options = inventory.optionPaths.filter(option => option.action === action && option.topLevel);
     assert.ok(options.length > 0 && options.every(option => option.required && option.evidence === "direct-trace"), action);
@@ -335,7 +348,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     ...["createGuides", "editFacetGuides"].map(action => `${action}.legend.clipHeight`),
     ...["createAreaPlot", "createBarPlot", "createBeeswarmPlot", "createDensityPlot", "createDotPlot",
       "createDumbbellPlot", "createECDFPlot", "createHeatmap", "createHistogram", "createIntervalPlot",
-      "createLinePlot", "createLollipopPlot", "createWaterfallPlot", "editWaterfallPlot", "createOHLCPlot", "editOHLCPlot", "createParallelCoordinates", "createPiePlot", "createPolarLinePlot",
+      "createLinePlot", "createLollipopPlot", "createTrailPlot", "editTrailPlot", "createWaterfallPlot", "editWaterfallPlot", "createOHLCPlot", "editOHLCPlot", "createParallelCoordinates", "createPiePlot", "createPolarLinePlot",
       "createPolarScatterPlot", "createRadarPlot", "createRadialBarPlot", "createRaincloudPlot", "createRegressionPlot",
       "createRosePlot", "createScatterPlot", "createStripPlot", "createTextPlot", "createViolinPlot",
       "facet", "facetGrid", "repeatCharts"].map(action => `${action}.guides.legend.clipHeight`)
@@ -514,6 +527,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     .filter(option => option.path.endsWith(".anchor"))
     .map(option => option.id), [
     "option-path:createMarkLabels.placement.anchor",
+    "option-path:editAnnotation.placement.anchor",
     "option-path:editMarkLabelPlacement.placement.anchor",
     "option-path:facet.headers.anchor",
     "option-path:facet.headers.column.anchor",
@@ -530,7 +544,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 11376 }
+    { "redacted-array": 11954 }
   );
   for (const id of ["createCanvas.responsive.minPlotSize.width", "editCanvas.responsive.minPlotSize.height",
     "createXAxisLabels.responsive.maxLines", "editYAxisLabels.responsive.skipStride"]) {
@@ -564,8 +578,8 @@ test("derives a bounded public option inventory without runtime prototype paths"
     option.required &&
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
-  assert.equal(scaleTypePaths.length, 219);
-  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 1050);
+  assert.equal(scaleTypePaths.length, 231);
+  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 1136);
   assert.equal(inventory.excludedOptionPaths.every(option =>
     optionById.get(option.replacement)?.required === true
   ), true);
@@ -603,7 +617,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
         effectiveFeatures: [], renderers: ["svg"] };
     }), datasetCorpus: { datasets: [preparedRecipe, rangeRecipe].map(recipe => datasetDefinition(recipe.datasets[0])) }, ledger
   });
-  for (const id of ["action:createWaterfallPlot", "action:editWaterfallPlot", "option-path:createWaterfallPlot.role", "option-path:createWaterfallPlot.value", "option-path:editWaterfallPlot.connectors", "action:createOHLCPlot", "action:editOHLCPlot", "option-path:createOHLCPlot.low", "option-path:createOHLCPlot.high", "option-path:createOHLCPlot.open", "option-path:createOHLCPlot.close", "option-path:editOHLCPlot.doji", "action:createPyramidPlot", "action:editPyramidPlot", "option-path:createPyramidPlot.stage", "option-path:createPyramidPlot.value", "option-path:createPyramidPlot.labels", "option-path:editPyramidPlot.encoding", "action:createCalendarLayout", "action:createCalendarPlot", "action:editCalendarPlot",
+  for (const id of ["action:createTrailPlot", "action:editTrailPlot", "option-path:createTrailPlot.width", "option-path:createTrailPlot.x", "option-path:createTrailPlot.y", "option-path:editTrailPlot.width", "option-path:editTrailPlot.lineCap", "action:createWaterfallPlot", "action:editWaterfallPlot", "option-path:createWaterfallPlot.role", "option-path:createWaterfallPlot.value", "option-path:editWaterfallPlot.connectors", "action:createOHLCPlot", "action:editOHLCPlot", "option-path:createOHLCPlot.low", "option-path:createOHLCPlot.high", "option-path:createOHLCPlot.open", "option-path:createOHLCPlot.close", "option-path:editOHLCPlot.doji", "action:createPyramidPlot", "action:editPyramidPlot", "option-path:createPyramidPlot.stage", "option-path:createPyramidPlot.value", "option-path:createPyramidPlot.labels", "option-path:editPyramidPlot.encoding", "action:createCalendarLayout", "action:createCalendarPlot", "action:editCalendarPlot",
     "option-path:createCalendarLayout.date", "option-path:createCalendarLayout.aggregate", "option-path:createCalendarPlot.color", "option-path:createCalendarPlot.cells.opacity", "option-path:editCalendarPlot.monthBoundary", "action:createContourData", "action:createDensityContourData", "action:editContourData", "action:createContourMark", "action:editContourMark",
     "option-path:createContourData.grid", "option-path:createDensityContourData.estimator", "option-path:editContourData.thresholds", "option-path:createContourMark.mode", "option-path:editContourMark.opacity", "option-path:createContourMark.outline.width", "option-path:createContourMark.shadow", "option-path:editContourMark.outline", "option-path:editContourMark.shadow", "action:createFlowData", "action:editFlowData", "action:layoutFlow",
     "action:createFlowNodes", "action:editFlowNodes", "action:createFlowLinks", "action:editFlowLinks",
@@ -622,12 +636,18 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createPivotData.value", "option-path:createPivotData.op",
     "option-path:editPivotData.op", "option-path:editPivotData.groupBy",
     "option-path:filterData.where", "option-path:editFilteredData.where",
+    "action:createGeoAnnotation", "action:editGeoAnnotation", "option-path:createGeoAnnotation.anchor.type", "option-path:createGeoAnnotation.anchor.geometry", "option-path:createGeoAnnotation.anchor.key", "option-path:createGeoAnnotation.text", "option-path:editGeoAnnotation.dx",
     "action:createGeoLODData", "action:editGeoLODData", "option-path:createGeoLODData.levels", "option-path:createGeoLODData.zoom", "option-path:editGeoLODData.zoom",
     "action:createGeoShapeMark", "action:editGeoShapeMark", "action:createGeoPointMark", "action:editGeoPointMark", "action:createGeoLineMark", "action:editGeoLineMark", "action:createGraticule", "action:editGraticule", "option-path:createGeoShapeMark.geometry", "option-path:editGeoPointMark.radiusPx", "option-path:editGeoLineMark.opacity", "option-path:editGraticule.opacity",
+    "action:createGeoRouteData", "action:editGeoRouteData",
+    "option-path:createGeoRouteData.id", "option-path:createGeoRouteData.routes", "option-path:createGeoRouteData.coordinateKind",
+    "option-path:editGeoRouteData.target", "option-path:editGeoRouteData.routes", "option-path:editGeoRouteData.coordinateKind",
     "action:createGeoJoinData", "action:editGeoJoinData",
     "option-path:createGeoJoinData.geometryKey", "option-path:createGeoJoinData.dataKey", "option-path:editGeoJoinData.dataKey",
     "action:createProjection", "action:editProjection",
     "option-path:createGeometryData.format", "option-path:createGeometryData.coordinateKind",
+    "option-path:createGeometryData.polygonWinding", "option-path:editGeometryData.polygonWinding",
+    "option-value:createGeometryData.polygonWinding=string:left-hand", "option-value:editGeometryData.polygonWinding=string:right-hand",
     "option-path:createGeometryData.featureKey", "option-path:editGeometryData.limits.maxFeatures", "option-path:createProjection.type", "option-path:createProjection.fit.geometry", "option-path:createProjection.fit.width", "option-path:createProjection.fit.height", "option-path:createProjection.fit.padding", "option-path:editProjection.reflectX"]) {
     assert.equal(preparedReport.requirements.find(requirement => requirement.id === id)?.occurrences,
       1, `${id} must be observed from an executed public action`);
@@ -651,7 +671,8 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 40904);
+  // Graph plot maxItems options (2) and the route update action family (342 more values).
+  assert.equal(ledger.requirements.length, 44237);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

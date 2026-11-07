@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "status": "small numerical duplicate-input audit; not large support or performance qualification",
+  "n": 100,
+  "compatiblePairs": 750,
+  "calls": 84000,
+  "uniqueInputSequences": 84000,
+  "repeatedInputSequences": 0,
+  "adjacentSameLocationRepeats": 0,
+  "collisionEqualityChecks": 0,
+  "pairCalls": 630000,
+  "pairWithinIterationRepeats": 1,
+  "pairPreviousIterationMatches": 0,
+  "retainedAuditOperandBytes": 36288000,
+  "cycles": [
+    {
+      "cycle": 0,
+      "iterations": 60,
+      "internalSamples": 1,
+      "calls": 6000,
+      "repeatedInputs": 0
+    },
+    {
+      "cycle": 1,
+      "iterations": 40,
+      "internalSamples": 2,
+      "calls": 8000,
+      "repeatedInputs": 0
+    },
+    {
+      "cycle": 2,
+      "iterations": 27,
+      "internalSamples": 4,
+      "calls": 10800,
+      "repeatedInputs": 0
+    },
+    {
+      "cycle": 3,
+      "iterations": 18,
+      "internalSamples": 8,
+      "calls": 14400,
+      "repeatedInputs": 0
+    },
+    {
+      "cycle": 4,
+      "iterations": 12,
+      "internalSamples": 16,
+      "calls": 19200,
+      "repeatedInputs": 0
+    },
+    {
+      "cycle": 5,
+      "iterations": 8,
+      "internalSamples": 32,
+      "calls": 25600,
+      "repeatedInputs": 0
+    }
+  ],
+  "elapsedMs": 395.744167,
+  "finalCoordinateHash": "15eac8bdbb69f022263b3dcde1bc20201e6145ad63121591c76be4bc387b9dcc",
+  "node": "v22.23.1",
+  "source": "fa943e864982783ae8ae10bc18a4257ea8f0b2bb",
+  "fixtureReference": "0bd402486:scripts/benchmarks/routes.browser.js",
+  "sourceSHA256": {
+    "forceDirected.js": "f81f4307ba5f27e190b8bbd0bd22541c5b2bbd5ab36fe4a190ef207078a7381e",
+    "compatibility.js": "4d9c41a8ae6413b08634f1b7cccedfddae8748e7f605d00c0abfe2c7f5caf727",
+    "polyline.js": "ad2762f7c2ba6f542a5506479dcb2a17c1a058018258a3a692a8395ea82d46be"
+  },
+  "limitation": "The exact 100-edge operand audit is not extrapolated to unseen 1k/10k iterations. No runtime cache is added."
+}

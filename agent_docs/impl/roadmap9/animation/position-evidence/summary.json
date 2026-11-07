@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "status": "private-semantic-position-kernel-verified",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "runtimeSource": "96285097c87a610b1faba45587ca1ed47137941f",
+  "publicPlannerComplete": false,
+  "scope": "Resolved continuous semantic value/scale numerics; no public entry, renderer or offline-plan support claimed",
+  "tests": {
+    "node20": 60,
+    "node22": 60,
+    "node24": 60,
+    "newPositionTests": 6,
+    "sourcePinnedDocs": 32,
+    "packageBoundariesAndArtifact": 13
+  },
+  "coverage": {
+    "scope": "seven private animation owners",
+    "lines": 100,
+    "branches": 98.41,
+    "functions": 100,
+    "position": {
+      "lines": 100,
+      "branches": 96.1,
+      "functions": 100
+    }
+  },
+  "packageMeasure": {
+    "entries": 1066,
+    "packedBytes": 1517992,
+    "unpackedBytes": 6918212,
+    "path": ".artifacts/release/ggaction-0.0.26.tgz",
+    "sha256": "82d88796923331c5e6ba1b58a8ffa2ababe69f41ceaceef8929d35dd01e01390",
+    "canonicalFinalPack": true,
+    "diagnosticPackExcluded": true
+  },
+  "sourceInputDelta": [],
+  "inputSha256": {
+    "src/grammar/animation/positions.js": "9fe893eae8cbbe46b9aa426879e921bcd7cf46cf90506be4e041121b9ba96e18",
+    "src/grammar/animation/values.js": "73ebb6ff563309e5338f336d8c5568aae3ba878696d11f8e1c65e3cd9226cbc2",
+    "src/grammar/scales/mapping.js": "abd6f57612c14c1137f2fc7f013dc225ea3b713fd517a3b9c755b83967f65d95",
+    "src/grammar/scales/transformed.js": "b939a3e5276718a977caa4e4def86c44208dc06700aabcaf4b7335eddcc8e8e1",
+    "src/grammar/scales/continuous.js": "97ad380ba556ceb332241d42c0a79297aec128d7551d97afe4e80d17ee03de13",
+    "src/grammar/numeric.js": "97f65492ffe9ecf98878323f82af7a8c6008323568da69e4d876c31aabcc2c6c",
+    "src/core/ownData.js": "fa81e2edca5037e2c1f13a82240e5d70097e292073b05e3bbe682b68358dad7d",
+    "test/unit/animation/positions.test.js": "a21b99b40c80800f83fff0a67ce1e7e26778ed87bdf677807d524d40701cb1c8",
+    "scripts/package-artifact.js": "2d3003d1a87d3a30f861ed6f612912f41974af70714ffaf6f0983d727edd3575"
+  },
+  "logs": [
+    {
+      "file": "animation-position-first.log.gz",
+      "sha256": "5e39e22f49ab0d6df906c30c888c63ed2c138890baaf40d503be4750a6f52621",
+      "uncompressedBytes": 3638
+    },
+    {
+      "file": "animation-position-second.log.gz",
+      "sha256": "e2c8d2a4e2cb832a3da9c846dd1bd6ba11232f232edf7052dcbe0603002a79fd",
+      "uncompressedBytes": 4237
+    },
+    {
+      "file": "animation-position-all-coverage.log.gz",
+      "sha256": "2f8459676c6ff397029b33f18b0e50d15bd439b1eb27199d20edbaf30d4649a4",
+      "uncompressedBytes": 15172
+    },
+    {
+      "file": "animation-position-pinned-coverage.log.gz",
+      "sha256": "46c61622d3b81b00fbffd136f1bec4282900b94d563410fbe5b887d9a00cb5d6",
+      "uncompressedBytes": 15189
+    },
+    {
+      "file": "animation-position-package-contract.log.gz",
+      "sha256": "2fa0f9ca6646aba19a976b734683af58b13b8fc73be5084ef9051806b287db59",
+      "uncompressedBytes": 1715
+    },
+    {
+      "file": "animation-position-pinned-boundaries.log.gz",
+      "sha256": "b7c4b0f32423e35ce16ead41b43400cea972e9d58ea5055e604116a118c0423c",
+      "uncompressedBytes": 2774
+    },
+    {
+      "file": "animation-position-package-final.log.gz",
+      "sha256": "47a8982c7c13ca8e9b393db3d1c1612d5d3c7602d2c9efc23ac4ca2151ab3493",
+      "uncompressedBytes": 700
+    },
+    {
+      "file": "animation-position-pin-docs.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9",
+      "uncompressedBytes": 335
+    },
+    {
+      "file": "animation-position-pinned-docs-final.log.gz",
+      "sha256": "bb2f4e47aadd7fe02c1203d6e4ae9606b121b2e7913e79bf90d4c15b6d041072",
+      "uncompressedBytes": 6359
+    },
+    {
+      "file": "animation-position-pinned-node20.log.gz",
+      "sha256": "4ff3bab354fb8a82cca97d325680beac7c8b97203d3d490e1311bf0777a565d9",
+      "uncompressedBytes": 13284
+    },
+    {
+      "file": "animation-position-pinned-node22.log.gz",
+      "sha256": "fba35421bcc14c99a555d52c9eb7cba5b3fc0cbe160bb477177451de2ca86140",
+      "uncompressedBytes": 14198
+    },
+    {
+      "file": "animation-position-pinned-node24.log.gz",
+      "sha256": "48275e4dc0bfb1b20c7a4d0ce1a39653c94dbf7be1abbf77378972a4dd31e5b4",
+      "uncompressedBytes": 6079
+    }
+  ],
+  "limitations": [
+    "Typed item/channel planner and scene integration pending",
+    "Band, polar, path/area, partition and Geo integration pending",
+    "Offline envelope, public API, current-frame/session and final consumer matrix pending",
+    "Final Roadmap9 integration must reuse one source-pinned artifact across consumers"
+  ]
+}

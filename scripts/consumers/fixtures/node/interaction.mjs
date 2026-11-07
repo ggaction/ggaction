@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
-import { chart, hconcat } from "ggaction";
+import { chart, hconcat, prepareImageRendering } from "ggaction";
 import { chart as basic } from "ggaction/basic";
 import { createInteractionSession } from "ggaction/interaction";
-import { getMarkItems } from "ggaction/inspection";
+import { createGraphRouteExecutor, prepareGraphEdgeRoutes } from "ggaction/graph";
+import { getMarkItems, getProjectionView } from "ggaction/inspection";
 import { serializeProgram, deserializeProgram } from "ggaction/persistence";
 const make = factory => factory().createCanvas({ width: 200, height: 160, margin: 0 })
   .createData({ id: "rows", values: [{ x: 50, y: 60 }, { x: 50, y: 60 }] })
@@ -10,6 +11,163 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/editing-arbitration", run() {
+    const p=make(chart).selectMarks({id:"picked",target:"points",items:[]}).createAnnotation({id:"note",space:"screen",x:100,y:30,text:"Move",align:"center",baseline:"middle"});
+    const s=createInteractionSession({program:p,bindings:[{type:"annotate",target:"note"},{type:"brush",target:"points",selection:"picked",modifiers:{shift:true}},{type:"select",target:"points",selection:"picked",modifiers:{shift:false}}]}),listeners=new Map(),captures=new Set(),phases=[];let frame;
+    const host={getBoundingClientRect:()=>({left:0,top:0,width:200,height:160}),addEventListener(type,fn){const group=listeners.get(type)??new Set();group.add(fn);listeners.set(type,group);},removeEventListener:(type,fn)=>listeners.get(type)?.delete(fn),setPointerCapture:id=>captures.add(id),releasePointerCapture:id=>captures.delete(id),hasPointerCapture:id=>captures.has(id),requestAnimationFrame:fn=>(frame=fn,1),cancelAnimationFrame(){frame=undefined;}};
+    const fire=(type,x,y,extra={})=>{for(const fn of listeners.get(type)??[])fn({pointerId:1,pointerType:"mouse",button:0,clientX:x,clientY:y,...extra});};s.subscribe(e=>{if(e.phase==="commit")phases.push(e.type);});s.mount(host);assert.equal(listeners.get("pointerdown").size,1);
+    fire("pointerdown",100,30,{shiftKey:true});fire("pointermove",120,40,{shiftKey:true});frame();fire("pointerup",120,40,{shiftKey:true});assert.equal(s.getState().program.graphicSpec.objects.note.items[0].properties.x,120);
+    fire("pointerdown",20,30,{shiftKey:true});fire("pointerup",90,90,{shiftKey:true});assert.deepEqual(phases,["annotate","select"]);assert.equal(s.getState().history.undoCount,2);assert.equal(captures.size,0);
+    s.dispatch({type:"undo"});assert.equal(s.getState().history.undoCount,1);assert.equal(p.graphicSpec.objects.note.items[0].properties.x,100);assert.deepEqual(deserializeProgram(serializeProgram(s.getState().program)).graphicSpec,s.getState().program.graphicSpec);s.destroy();assert.ok([...listeners.values()].every(set=>set.size===0));
+  } },
+  { id: "interaction/prepared-native-preview", async run() {
+    const p=chart().createCanvas({width:200,height:160,margin:0}).createGeometryData({id:'places',format:'geojson',coordinateKind:'planar',featureKey:'id',values:{type:'Feature',id:'a',properties:{},geometry:{type:'Point',coordinates:[80,90]}}}).createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'}).createGeoPointMark({id:'places'});
+    const calls=[],released=[],s=createInteractionSession({program:p,bindings:[{type:'navigate',target:'map',mode:'pan',scaleExtent:[0.5,8],initial:getProjectionView(p,{target:'map'}).parameters}],async assetResolver(q){calls.push(q);const images=await prepareImageRendering(q.program,{decode(){throw new Error('No image decode expected');},signal:q.signal});return {images,dispose(){released.push(q.program);}};}});
+    const listeners=new Map();let frame;const h={getBoundingClientRect:()=>({left:0,top:0,width:200,height:160}),addEventListener(type,fn){const set=listeners.get(type)??new Set();set.add(fn);listeners.set(type,set);},removeEventListener:(type,fn)=>listeners.get(type)?.delete(fn),setPointerCapture(){},releasePointerCapture(){},requestAnimationFrame:fn=>(frame=fn,1),cancelAnimationFrame(){frame=undefined}};
+    const fire=(type,x=80,y=90,extra={})=>{for(const fn of listeners.get(type)??[])fn({pointerId:1,pointerType:'mouse',button:0,clientX:x,clientY:y,preventDefault(){},...extra});};s.mount(h);await s.whenSettled();const assets=s.getState().assets;
+    fire('pointerdown');fire('pointermove',100,90);frame();assert.equal(s.getState().previewProgram,null);await s.whenSettled();const preview=s.getState();assert.equal(preview.previewAssets.images.kind,'image-rendering');assert.equal(preview.program,p);assert.equal(preview.assets,assets);assert.equal(preview.scene.nodes.find(n=>n.type==='circle').properties.x,100);
+    fire('keydown',0,0,{key:'Escape'});assert.equal(s.getState().previewAssets,null);assert.equal(s.getState().history.undoCount,0);assert.equal(calls[1].signal.aborted,true);assert.equal(released.length,1);s.destroy();assert.equal(released.length,2);assert.ok([...listeners.values()].every(set=>set.size===0));
+  } },
+  { id: "interaction/native-camera-navigation", run() {
+    const p=chart().createCanvas({width:400,height:300,margin:0}).createGeometryData({id:'places',format:'geojson',coordinateKind:'planar',featureKey:'id',values:{type:'Feature',id:'a',properties:{},geometry:{type:'Point',coordinates:[80,90]}}})
+      .createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'}).createGeoPointMark({id:'places'});
+    const s=createInteractionSession({program:p,bindings:[{type:'navigate',target:'map',mode:'pan',scaleExtent:[0.5,8],initial:getProjectionView(p,{target:'map'}).parameters}]}),listeners=new Map(),captures=new Set();let raf;
+    const host={getBoundingClientRect:()=>({left:0,top:0,width:400,height:300}),addEventListener(type,fn){const set=listeners.get(type)??new Set();set.add(fn);listeners.set(type,set);},removeEventListener:(type,fn)=>listeners.get(type)?.delete(fn),setPointerCapture:id=>captures.add(id),releasePointerCapture:id=>captures.delete(id),hasPointerCapture:id=>captures.has(id),requestAnimationFrame:fn=>(raf=fn,1),cancelAnimationFrame:()=>{raf=undefined}};
+    const fire=(type,x,y,extra={})=>{for(const fn of listeners.get(type)??[])fn({pointerId:1,pointerType:'touch',button:0,clientX:x,clientY:y,preventDefault(){},...extra});};
+    s.mount(host);fire('pointerdown',80,90);fire('pointermove',100,90);raf();assert.equal(s.getState().program,p);
+    fire('pointerdown',140,90,{pointerId:2});fire('pointermove',180,90,{pointerId:2});raf();fire('pointerup',100,90);
+    assert.equal(s.getState().history.undoCount,1);assert.equal(captures.size,0);assert.equal(getProjectionView(s.getState().program,{target:'map'}).parameters.scalePx,2);
+    assert.deepEqual(getMarkItems(s.getState().program,{target:'places'}).map(i=>[i.properties.x,i.properties.y]),[[100,90]]);
+    assert.deepEqual(deserializeProgram(serializeProgram(s.getState().program)).graphicSpec,s.getState().program.graphicSpec);
+    fire('keydown',0,0,{key:'Home'});assert.deepEqual(s.getState().program.graphicSpec,p.graphicSpec);s.destroy();assert.ok([...listeners.values()].every(set=>set.size===0));
+  } },
+  { id: "interaction/geographic-label-screen-history", async run() {
+    const p=chart().createCanvas({width:300,height:200,margin:0})
+      .createGeometryData({id:'places',format:'geojson',coordinateKind:'planar',featureKey:'id',values:{type:'Feature',id:'a',properties:{name:'Alpha'},geometry:{type:'Point',coordinates:[40,50]}}})
+      .createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'}).createGeoPointMark({id:'places'})
+      .createMarkLabels({field:'name'}).createAnnotation({id:'note',space:'screen',x:10,y:20,text:'Fixed'});
+    const session=createInteractionSession({program:p,bindings:[]}), key=getMarkItems(p,{target:'places-labels'})[0].key;
+    session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'pan',deltaPx:[30,-10]}}});await session.whenSettled();
+    const q=session.getState().program;assert.deepEqual(q.graphicSpec.objects['places-labels'].items.map(item=>[item.properties.x,item.properties.y]),[[70,40]]);
+    assert.equal(getMarkItems(q,{target:'places-labels'})[0].key,key);assert.deepEqual(q.graphicSpec.objects.note,p.graphicSpec.objects.note);
+    assert.deepEqual(q.graphicSpec.objects.note.items[0].identity.lineage,{kind:'screen'});assert.equal(q.graphicSpec.objects['places-labels'].items[0].identity.lineage.resource.kind,'geometry');
+    assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec,q.graphicSpec);session.dispatch({type:'undo'});assert.equal(session.getState().program,p);session.dispatch({type:'redo'});assert.equal(session.getState().program,q);session.destroy();
+  } },
+  { id: "interaction/observed-resize-prepared-native-policy", async run() {
+    const program=make(chart), session=createInteractionSession({program,bindings:[]}), observers=[], pending=[];
+    class ResizeObserver { constructor(callback){this.callback=callback;this.disconnected=0;observers.push(this);} observe(target,options){this.target=target;assert.deepEqual(options,{box:'content-box'});} disconnect(){this.disconnected++;} resize(width,height){this.callback([{target:this.target,contentRect:{width,height}}]);} }
+    const listeners=new Map(), element={ownerDocument:{defaultView:{ResizeObserver}},getBoundingClientRect:()=>({left:0,top:0,width:200,height:160}),addEventListener:(type,fn)=>listeners.set(type,fn),removeEventListener:type=>listeners.delete(type)};
+    session.subscribe(event=>{if(event.type==='resize')session.updateProgram(request=>new Promise(resolve=>pending.push({request,resolve,size:event.size})),{history:'record'});});
+    const off=session.mount(element,{observeResize:true});observers[0].resize(300,200);await new Promise(setImmediate);
+    const old=session.whenSettled();observers[0].resize(400,240);await new Promise(setImmediate);assert.equal((await old).status,'cancelled');
+    assert.equal(session.getState().program,program);assert.equal(pending[0].request.signal.aborted,true);
+    pending[1].resolve(pending[1].request.program.editCanvas(pending[1].size));await session.whenSettled();
+    assert.equal(session.getState().history.undoCount,1);assert.equal(session.getState().program.graphicSpec.objects.canvas.properties.width,400);
+    const accepted=session.getState().program;pending[0].resolve(program.editCanvas(pending[0].size));await new Promise(setImmediate);assert.equal(session.getState().program,accepted);
+    off();observers[0].resize(500,300);assert.equal(pending.length,2);session.destroy();assert.equal(listeners.size,0);assert.equal(observers[0].disconnected,1);
+  } },
+  { id: "interaction/prepared-update", async run() {
+    const p=chart().createCanvas({width:400,height:300}).createData({id:"nodes",values:[{id:"a"},{id:"b"}]}).createData({id:"edges",values:[{s:"a",t:"b"}]})
+      .createGraphData({id:"graph",nodes:"nodes",edges:"edges",nodeKey:"id",source:"s",target:"t"})
+      .layoutGraph({id:"layout",method:"fixed",options:{positions:[{key:"a",x:0,y:0},{key:"b",x:100,y:100}]}}).createGraphPlot({id:"network"});
+    const executor=createGraphRouteExecutor(),session=createInteractionSession({program:p,bindings:[]}),events=[];
+    session.subscribe(event=>events.push(event));
+    session.updateProgram(async({program,signal,transactionId})=>{
+      const prepared=await prepareGraphEdgeRoutes(program,{kind:"create",id:"routes",graph:"graph",layout:"layout",method:"edge-path"},{executor,signal,requestToken:transactionId});
+      return program.bundleGraphEdges({prepared,requestToken:transactionId}).editGraphPlot({target:"network",routes:"routes"});
+    },{history:"record",transactionId:"route"});
+    assert.equal(session.getState().program,p);assert.equal((await session.whenSettled()).status,"settled");
+    const expected=p.bundleGraphEdges({id:"routes",graph:"graph",layout:"layout",method:"edge-path"}).editGraphPlot({target:"network",routes:"routes"});
+    assert.deepEqual(session.getState().program.graphicSpec,expected.graphicSpec);assert.deepEqual(deserializeProgram(serializeProgram(session.getState().program)).semanticSpec,expected.semanticSpec);
+    assert.deepEqual(events.map(e=>[e.type,e.status]),[["program",undefined],["update","settled"]]);
+    session.dispatch({type:"undo"});assert.equal(session.getState().program,p);
+    let finish,aborted;session.updateProgram(({signal})=>new Promise(resolve=>{finish=resolve;aborted=signal}));const waiting=session.whenSettled();await new Promise(setImmediate);
+    session.destroy();assert.equal((await waiting).status,"cancelled");assert.equal(aborted.aborted,true);finish(expected);await new Promise(setImmediate);assert.equal(session.getState().program,p);executor.dispose();
+  } },
+  { id: "interaction/asset-preparation", async run() {
+    const p=make(chart).createParameter({id:"level",value:1}),calls=[],disposed=[];
+    const session=createInteractionSession({program:p,bindings:[],async assetResolver(request){
+      const images=await prepareImageRendering(request.program,{signal:request.signal,decode(){throw new Error("no images")}});
+      if(!calls.length){calls.push(request);return{images,dispose(){disposed.push("initial")}}}
+      return new Promise(resolve=>calls.push({...request,finish(){resolve({images,dispose(){disposed.push(request.transactionId)}})}}));
+    }});
+    await session.whenSettled();const before=session.getState(),events=[];session.subscribe(e=>events.push(e));
+    session.dispatch({type:"setParameter",target:"level",payload:{value:2},transactionId:"old"});const first=session.whenSettled();await new Promise(setImmediate);
+    session.dispatch({type:"setParameter",target:"level",payload:{value:3},transactionId:"new"});const second=session.whenSettled();await new Promise(setImmediate);
+    assert.equal((await first).status,"cancelled");assert.equal(calls[1].signal.aborted,true);assert.equal(session.getState().program,p);assert.equal(session.getState().assets,before.assets);
+    calls[2].finish();assert.equal((await second).status,"settled");const committed=session.getState();calls[1].finish();await new Promise(setImmediate);
+    assert.equal(session.getState(),committed);assert.equal(committed.history.undoCount,1);assert.deepEqual(events.map(e=>e.phase),["cancel","commit","settled"]);
+    session.destroy();assert.deepEqual(disposed,["initial","old","new"]);assert.equal(session.getState().assets,null);
+  } },
+  { id: "interaction/history", run() {
+    const p=make(chart).createParameter({id:"level",value:1}),s=createInteractionSession({program:p,historyLimit:2});
+    const events=[];s.subscribe(e=>events.push(e));
+    s.dispatch({type:"setParameter",target:"level",payload:{value:2}});const next=s.getState().program;
+    assert.deepEqual(s.getState().history,{undoCount:1,redoCount:0,limit:2});
+    s.dispatch({type:"undo",origin:"user"});assert.equal(s.getState().program,p);
+    s.dispatch({type:"redo"});assert.equal(s.getState().program,next);
+    const external=deserializeProgram(serializeProgram(next));s.updateProgram(external,{history:"record",origin:"replay"});
+    s.dispatch({type:"undo"});assert.equal(s.getState().program,next);
+    s.dispatch({type:"reset"});assert.equal(s.getState().program,p);
+    assert.deepEqual(events.filter(e=>e.phase).map(e=>e.phase),Array.from({length:5},()=>["commit","settled"]).flat());
+    s.destroy();assert.equal(s.getState().history.undoCount,0);
+  } },
+  { id: "interaction/annotation-drag", run() {
+    const p=chart().createCanvas({width:300,height:200,margin:0}).createAnnotation({id:'note',space:'screen',x:40,y:60,text:'Move',align:'center',baseline:'middle'});
+    const listeners=new Map(),frames=new Map(),captures=new Set();let id=0;
+    const host={getBoundingClientRect:()=>({left:0,top:0,width:300,height:200}),addEventListener:(key,fn)=>listeners.set(key,fn),removeEventListener:key=>listeners.delete(key),
+      setPointerCapture:key=>captures.add(key),releasePointerCapture:key=>captures.delete(key),hasPointerCapture:key=>captures.has(key),
+      requestAnimationFrame:fn=>{frames.set(++id,fn);return id},cancelAnimationFrame:key=>frames.delete(key)};
+    const s=createInteractionSession({program:p,bindings:[{type:'annotate',target:'note'}]}),phases=[];s.subscribe(e=>{if(e.phase)phases.push(e.phase)});s.mount(host);
+    const fire=(type,x,y)=>listeners.get(type)({pointerId:1,pointerType:'touch',clientX:x,clientY:y});
+    fire('pointerdown',40,60);fire('pointermove',60,90);for(const fn of frames.values())fn();frames.clear();
+    assert.equal(s.getState().program,p);assert.equal(s.getState().previewProgram.graphicSpec.objects.note.items[0].properties.x,60);
+    fire('pointerup',60,90);const next=deserializeProgram(serializeProgram(s.getState().program));
+    assert.deepEqual(next.graphicSpec,p.editAnnotation({dx:20,dy:30}).graphicSpec);assert.deepEqual(next.semanticSpec,p.semanticSpec);
+    assert.deepEqual(phases,['preview','preview','commit','settled']);s.destroy();assert.equal(listeners.size,0);assert.equal(captures.size,0);
+  } },
+  { id: "interaction/screen-annotation", run() {
+    const p=chart().createCanvas({width:300,height:200,margin:20}).createAnnotation({id:'screen',space:'screen',x:12,y:23,text:'Screen'});
+    const session=createInteractionSession({program:p,bindings:[]}),events=[];session.subscribe(event=>events.push(event.phase));
+    session.dispatch({type:'annotate',target:'screen',payload:{x:40,y:60,text:'Moved',dx:2,dy:-3}});
+    const next=deserializeProgram(serializeProgram(session.getState().program)).editCanvas({width:600,margin:40}),item=getMarkItems(next,{target:'screen'})[0];
+    assert.deepEqual([item.geometry[0].properties.x,item.geometry[0].properties.y],[42,57]);assert.deepEqual(item.rows,[]);
+    assert.deepEqual(next.semanticSpec.datasets,[]);assert.deepEqual(next.semanticSpec.scales,[]);assert.deepEqual(next.semanticSpec.coordinates,[]);
+    assert.deepEqual(events,['commit','settled']);session.destroy();
+    const parent=hconcat({programs:[{id:'a',program:p},{id:'b',program:next}]});assert.deepEqual(deserializeProgram(serializeProgram(parent)).graphicSpec,parent.graphicSpec);
+  } },
+  { id: "interaction/geographic-annotation-edit", run() {
+    const p=chart().createCanvas({width:300,height:200,margin:0}).createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'})
+      .createGeoAnnotation({id:'note',anchor:{type:'position',position:[20,30]},text:'Before'});
+    const session=createInteractionSession({program:p,bindings:[]}),events=[];session.subscribe(event=>events.push(event));
+    session.dispatch({type:'annotate',target:'note',payload:{anchor:{type:'position',position:[80,90]},text:'After',dx:4,dy:-8}});
+    const next=deserializeProgram(serializeProgram(session.getState().program)),note=getMarkItems(next,{target:'note'})[0].geometry[0];
+    assert.deepEqual([note.properties.text,note.properties.x,note.properties.y],['After',84,82]);
+    assert.deepEqual(events.map(event=>event.phase),['commit','settled']);
+    const before=session.getState().program;assert.throws(()=>session.dispatch({type:'annotate',target:'note',payload:{text:'Partial',x:2}}));
+    assert.equal(session.getState().program,before);session.destroy();
+  } },
+  { id: "interaction/annotation-edit", run() {
+    const p=chart().createCanvas({width:300,height:200,margin:20}).createData({values:[{x:1,y:2},{x:9,y:8}]})
+      .createPointMark().encodeX({field:'x',scale:{domain:[0,10]}}).encodeY({field:'y',scale:{domain:[0,10]}})
+      .createAnnotation({id:'note',text:'Before',x:1,y:2});
+    const session=createInteractionSession({program:p,bindings:[]}),events=[];session.subscribe(event=>events.push(event));
+    session.dispatch({type:'annotate',target:'note',payload:{text:'After',x:5,y:5,dx:4,dy:-8}});
+    const next=deserializeProgram(serializeProgram(session.getState().program)),note=getMarkItems(next,{target:'note'})[0].geometry[0];
+    assert.deepEqual([note.properties.text,note.properties.x,note.properties.y],['After',154,92]);
+    assert.deepEqual(events.map(event=>event.phase),['commit','settled']);
+    const before=session.getState().program;assert.throws(()=>session.dispatch({type:'annotate',target:'note',payload:{text:'Partial',opacity:2}}));
+    assert.equal(session.getState().program,before);assert.equal(p.graphicSpec.objects.note.items[0].properties.text,'Before');session.destroy();
+    const source=p.semanticSpec.layers.find(layer=>layer.mark.type==='point').id,keys=getMarkItems(p,{target:source}).map(item=>item.key);
+    const labels=p.createAnnotation({id:'items',source,text:'Chosen',select:{items:[keys[0]]}});
+    const member=createInteractionSession({program:labels,bindings:[]});member.dispatch({type:'annotate',target:'items',payload:{all:true}});
+    assert.equal(getMarkItems(member.getState().program,{target:'items'}).length,2);
+    member.dispatch({type:'annotate',target:'items',payload:{select:{items:[]}}});assert.equal(getMarkItems(deserializeProgram(serializeProgram(member.getState().program)),{target:'items'}).length,0);member.destroy();
+    const parent=hconcat({programs:[{id:'left',program:labels},{id:'right',program:labels}]}),scopedKey=getMarkItems(parent,{target:{childPath:['left'],id:source}})[0].key;
+    const scoped=createInteractionSession({program:parent,bindings:[]});scoped.dispatch({type:'annotate',target:{childPath:['left'],id:'items'},payload:{select:{items:[scopedKey]}}});
+    assert.equal(getMarkItems(scoped.getState().program.children.left,{target:'items'}).length,1);assert.equal(scoped.getState().program.children.right,labels);scoped.destroy();
+    const b=createInteractionSession({program:basic().createCanvas(),bindings:[]});assert.throws(()=>b.dispatch({type:'annotate',target:'note',payload:{text:'No'}}),/editAnnotation/);b.destroy();
+  } },
   { id: "interaction/geographic-representation", run() {
     const feature = (id, x) => ({ type: 'Feature', id, properties: {}, geometry: { type: 'Point', coordinates: [x,60] } });
     const geometry = features => ({ type: 'FeatureCollection', features });

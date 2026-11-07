@@ -1,0 +1,18 @@
+{
+  "node": "v20.20.2",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/session-animation-archives/ggaction-ae486a9124187717bb8a3c95e54b14c636e6c924e8c0795288e60f9ab721275f.tgz",
+  "sha256": "ae486a9124187717bb8a3c95e54b14c636e6c924e8c0795288e60f9ab721275f",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2868.3569169999996
+    },
+    {
+      "id": "interaction-animation-three-public-cases",
+      "status": "failed",
+      "durationMs": 935.5270410000003,
+      "error": "Error: Command failed: /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node animation-run.mjs\n    at genericNodeError (node:internal/errors:984:15)\n    at wrappedFn (node:internal/errors:538:14)\n    at checkExecSyncError (node:child_process:891:11)\n    at execFileSync (node:child_process:927:15)\n    at run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/scripts/consumers/runtime.js:19:3)\n    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-session-animation.mjs:25:61\n    at check (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-session-animation.mjs:19:81)\n    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-session-animation.mjs:25:8"
+    }
+  ]
+}

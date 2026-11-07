@@ -1,0 +1,158 @@
+{
+  "status": "original-point-data-benchmark-native-capacity-connected; diagnostic-only-not-qualified",
+  "base": "742ed2e413697dd493211e520d83001b8960e0f0",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "runtimeSourceRevision": "def731fe2aa1a56ffdb11fbc0c595a16488a8988",
+  "archiveSHA256": "0f38bed7adfe2e13f08a86af21214e6696d9e2e5e0d99c3682c6b15a965f48c8",
+  "fixtureHashesUnchanged": {
+    "points/1000": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+    "points/10000": "679628ed88a528915e95744c49ad18a19a005fa55d515f70ee02d199e8729845",
+    "points/100000": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+    "partition/100": "b1d25b7c54960f73f5b1582e0838ef8d0a19cfc5acafe3836cb99f49ce7d92eb",
+    "partition/1000": "dfe300b478fb1d3b701848ef166eb05b20a1f6cbbd6d298c303fe04394e02f98",
+    "partition/10000": "e204dd2c1ab81f7c75b8d32aa006841fcda7e1e140ffd6a983dc1d5b448e1a1e",
+    "geo/1000": "8028f2da2e9bbbcd45e287854f20e66f240d98da6dd30f88cc3a9d0bc2898fe6",
+    "geo/10000": "eedbb01f96fbfa4448a4ebf9bf5398a660b990c042e05ebfea957b07b3a986cc",
+    "geo/100000": "3abb4487631f9099de7725acc9bf1fec159d3c6807f5abeba6e583ef3d5d5079",
+    "data/1000": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+    "data/10000": "679628ed88a528915e95744c49ad18a19a005fa55d515f70ee02d199e8729845",
+    "data/100000": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+    "inference/100": "fce20cc838f845aee8653e28abcdf74727e48ce0a84cd68cf4bb58c4599125f3",
+    "inference/1000": "599b856519a0d8a10c76cfa72dd361c840154b55f3baa0f0620d2038e218db34",
+    "inference/10000": "85bf9876dd097ce27cfeccafd500f93f3b69fac4361cea27ec0f6d8a8d48f48b"
+  },
+  "contracts": 38,
+  "runtimeTypePackageInputsChanged": false,
+  "diagnostic": {
+    "points": {
+      "cells": 6,
+      "stages": 12,
+      "statuses": {
+        "explicit-limit": 6,
+        "measured": 6
+      },
+      "profile": {
+        "seed": 0,
+        "dpr": [
+          1,
+          2
+        ],
+        "warmups": 0,
+        "measured": 1,
+        "cycles": 4
+      },
+      "archive": {
+        "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-0f38bed7adfe2e13f08a86af21214e6696d9e2e5e0d99c3682c6b15a965f48c8.tgz",
+        "sha256": "0f38bed7adfe2e13f08a86af21214e6696d9e2e5e0d99c3682c6b15a965f48c8"
+      },
+      "harnessInputs": {
+        "scripts/benchmark-native.js": "b29398bca4c1488c1bf7daeb4ca9c23b8243c1a7e135a62af4856b4a01fc5b1a",
+        "scripts/benchmarks/routes.browser.js": "e2364026412edca805c84a4219b8413a4089b52d6ae25df542c17176242e3843",
+        "scripts/benchmarks/routes.worker.js": "d52c9b779d4db10e66faff28751b12a13408b1d57c3bbfdfa4ff4f089857c729",
+        "scripts/benchmarks/workloads.browser.js": "3612d851f6023a818fc8b6b1aebbc096e98ca5621dd56721875784352b34f4a2",
+        "test/oracles/inference-grid.js": "9def3438a82a59590be540bf2b5f079cc77ad208c429db59d4276f724a06dc1f",
+        "scripts/benchmarks/lifecycle.js": "d66082257f0db348fb6b601ff4ef830869c96ed05a3b03baf78ff0a2d4a0b502",
+        "app.js": {
+          "sha256": "c76ee526d7ae953fe324c7dde07e099a1241bf483a6fa7cab4540dd1a1b33901",
+          "bytes": 2815382
+        },
+        "worker.js": {
+          "sha256": "db88b3dea4fa89d3fe9f730fd44b2d5f4bcfe763ce81972a1388258b7a90c579",
+          "bytes": 57398
+        },
+        "workloads.js": {
+          "sha256": "c0b95bacea06ec35310f3b17e09837bdb8954537ae4e3a9e40e53ee8a7459f1e",
+          "bytes": 3127682
+        }
+      }
+    },
+    "data": {
+      "cells": 6,
+      "stages": 12,
+      "statuses": {
+        "measured": 12
+      },
+      "profile": {
+        "seed": 0,
+        "dpr": [
+          1,
+          2
+        ],
+        "warmups": 0,
+        "measured": 1,
+        "cycles": 4
+      },
+      "archive": {
+        "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-0f38bed7adfe2e13f08a86af21214e6696d9e2e5e0d99c3682c6b15a965f48c8.tgz",
+        "sha256": "0f38bed7adfe2e13f08a86af21214e6696d9e2e5e0d99c3682c6b15a965f48c8"
+      },
+      "harnessInputs": {
+        "scripts/benchmark-native.js": "b29398bca4c1488c1bf7daeb4ca9c23b8243c1a7e135a62af4856b4a01fc5b1a",
+        "scripts/benchmarks/routes.browser.js": "e2364026412edca805c84a4219b8413a4089b52d6ae25df542c17176242e3843",
+        "scripts/benchmarks/routes.worker.js": "d52c9b779d4db10e66faff28751b12a13408b1d57c3bbfdfa4ff4f089857c729",
+        "scripts/benchmarks/workloads.browser.js": "647fedda66c7e5b8078a72a1a8978ddf00aaebd1ceeacf322605a6141a307844",
+        "test/oracles/inference-grid.js": "9def3438a82a59590be540bf2b5f079cc77ad208c429db59d4276f724a06dc1f",
+        "scripts/benchmarks/lifecycle.js": "d66082257f0db348fb6b601ff4ef830869c96ed05a3b03baf78ff0a2d4a0b502",
+        "app.js": {
+          "sha256": "c76ee526d7ae953fe324c7dde07e099a1241bf483a6fa7cab4540dd1a1b33901",
+          "bytes": 2815382
+        },
+        "worker.js": {
+          "sha256": "db88b3dea4fa89d3fe9f730fd44b2d5f4bcfe763ce81972a1388258b7a90c579",
+          "bytes": 57398
+        },
+        "workloads.js": {
+          "sha256": "f9e66327a24d1eca4a482ad28e105b9c420c2324109b76f609db954f7088fd5e",
+          "bytes": 3127673
+        }
+      }
+    }
+  },
+  "evidenceFiles": {
+    "points-initial.log": {
+      "sha256": "cc7b67902b4a3a5438906e37d5ab5191d3db06ac80f68c2a1ef43bc84c311f0b",
+      "bytes": 1707
+    },
+    "contracts-final.log": {
+      "sha256": "e72f94539a4ef44a95cf138d3930e7d688def0ef93ca18998367ab09a6392489",
+      "bytes": 8472
+    },
+    "contracts.log": {
+      "sha256": "53eaa13c00cbc9a13352a5bb2a58fab407c54270b07b3c6a161bbbc97e246a6c",
+      "bytes": 8469
+    },
+    "points.log": {
+      "sha256": "cb43db2e0b323ac13541cacd842b29d7cef9f1fbe53401a10e616d48e8682db9",
+      "bytes": 1705
+    },
+    "data.log": {
+      "sha256": "4f1bab3a6df02487359aa855ed24d4609896fc87fed325cc18a95ab63eb698fb",
+      "bytes": 1808
+    },
+    "fixtures-after.json": {
+      "sha256": "34c82bde5a15fb4136211d877b474ea3145ada03983dff39190ee3e180e76687",
+      "bytes": 1290
+    },
+    "fixtures-before.json": {
+      "sha256": "34c82bde5a15fb4136211d877b474ea3145ada03983dff39190ee3e180e76687",
+      "bytes": 1290
+    },
+    "points-report.json": {
+      "sha256": "24eed15a305752c77c488b3a98ab02b9dd5c9aea7793b00969c7ff31b0cac396",
+      "bytes": 17180
+    },
+    "points-initial-report.json": {
+      "sha256": "15a4f644277bbec41358336af978c04330015b21a2cca6d40d35b7a5ff561837",
+      "bytes": 17196
+    },
+    "data-report.json": {
+      "sha256": "4094bfa7855e4e68680a07c82a03b5748b9e2f5e042d0422a132de28369c35b1",
+      "bytes": 26065
+    }
+  },
+  "remaining": [
+    "original100k hit/animation native support",
+    "full immutable data preparation/revise and50ms blocking",
+    "original P95/100cycle heap/all native qualification; STEP077 incomplete"
+  ]
+}

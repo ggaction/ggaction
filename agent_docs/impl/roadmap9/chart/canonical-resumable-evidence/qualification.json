@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "status": "review proposal and current sync baseline only; no candidate implementation",
+  "authorization": "../../AUTHORIZATION.json",
+  "source": "a9994e302",
+  "productChanges": 0,
+  "largeExecutions": 0,
+  "node": "v22.23.1",
+  "baselineGroups": 6,
+  "sourceFiles": 95,
+  "sourceLines": 144,
+  "observerSHA256": "b37fa3350e2fd84ab0d9993d3e10d1fac71822be22bee61ff8f6ddce1ae31269",
+  "documentationLinks": 3,
+  "command": "node agent_docs/impl/roadmap9/chart/canonical-resumable-evidence/audit.mjs",
+  "firstImplementationRequested": "private SHA block-state extraction only; preserve synchronous wrappers and byte/hash behavior",
+  "remaining": [
+    "scalar tagged/JSON cursor implementation",
+    "wide record/BigInt/structured-clone indivisible operations",
+    "whole main preparation abort100ms",
+    "v2 hard maxima and full native update union",
+    "original1000/10000 and final P95"
+  ]
+}

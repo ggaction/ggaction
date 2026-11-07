@@ -1,10 +1,10 @@
+import { axisGuideItems } from "../materialization/guides/axisItems.js";
 import { bindLegendHitMetadata } from "./hitLegends.js";
 import { encodeValue } from "../core/valueEncoding.js";
-import { cartesianAxisOwners, axisGraphicIds } from "../selectors/axes.js";
-import { axisLabelTexts, axisLabelLines, axisLabelValues } from "../materialization/axisLabelText.js";
+import { axisGraphicIds } from "../selectors/axes.js";
 import { facetHeaderGraphicId, facetHeaderTextEntries } from "../materialization/facetHeaders.js";
-import { valuesFromTickConfig } from "../actions/guides/tickValues.js";
-import { resolvePolarTickValues } from "../actions/guides/polar/resolve.js";
+
+
 import { requireParallelAxisLayer, resolveStyledParallelAxes } from "../actions/guides/axes/parallel/resolve.js";
 
 export function guideHitToken(ownerId, role, value) { return { ownerId, role, value: encodeValue(value) }; }
@@ -29,37 +29,8 @@ export function guideHitMetadata(program, spend) {
   const single = (id, entry) => {
     if (objects[id] !== undefined) bind(id, (objects[id].items ?? [objects[id]]).map(() => entry));
   };
-  for (const owner of cartesianAxisOwners(program)) {
-    const [, ticks, labels, title] = axisGraphicIds(owner.channel, owner.id);
-    for (const [part, id] of [["ticks", ticks], ["labels", labels]]) {
-      const config = owner.config?.[part];
-      if (config === undefined || objects[id] === undefined) continue;
-      const raw = valuesFromTickConfig(program, config);
-      const values = part === "labels" ? axisLabelValues(raw, config) : raw;
-      spend(values.length);
-      let entries = values.map(value => token(owner.id, "axis-tick", ["axis", value]));
-      if (part === "labels") {
-        const texts = axisLabelTexts(values, program.resolvedScales[config.scale], config);
-        entries = texts.flatMap((text, index) => {
-          spend(text.length);
-          return text === "" ? [] : axisLabelLines(text, config, program.materializationConfigs.textMetrics).map(() => entries[index]);
-        });
-      }
-      bind(id, entries);
-    }
-    if (owner.config?.title !== undefined) single(title, token(owner.id, "axis-title", ["axis-title"]));
-  }
-  for (const channel of ["theta", "radius"]) {
-    const config = program.materializationConfigs.guides?.axis?.[channel];
-    if (config === undefined) continue;
-    const [, ticks, labels, title] = axisGraphicIds(channel);
-    for (const [part, id] of [["ticks", ticks], ["labels", labels]]) {
-      if (config[part] === undefined || objects[id] === undefined) continue;
-      const values = resolvePolarTickValues(program, config[part]);
-      spend(values.length);
-      bind(id, values.map(value => token(channel, "axis-tick", ["axis", value])));
-    }
-    if (config.title !== undefined) single(title, token(channel, "axis-title", ["axis-title"]));
+  for (const item of axisGuideItems(program, spend)) {
+    direct(item.graphicId, token(item.ownerId, item.role, item.value));
   }
   const parallel = program.materializationConfigs.guides?.axis?.parallel?.axes;
   if (parallel !== undefined) {

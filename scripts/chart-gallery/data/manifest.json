@@ -1,0 +1,23 @@
+{
+  "ibm-daily.json": {
+    "name": "Alpha Vantage \u00b7 IBM daily OHLCV",
+    "url": "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&apikey=demo",
+    "origin": "https://www.alphavantage.co/documentation/",
+    "sha256": "bc463c1079bf3f669cf4882a2607dcce7e751f95ec6919dec3e6d27ccc9e12aa",
+    "retrievedAt": "2026-10-29"
+  },
+  "earthquakes-2024-01.geojson": {
+    "name": "USGS \u00b7 January 2024 earthquakes M\u22655",
+    "url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2024-01-01&endtime=2024-02-01&minmagnitude=5&orderby=time-asc",
+    "origin": "https://earthquake.usgs.gov/fdsnws/event/1/",
+    "sha256": "b2f4ab477325ab63819f73d2e6f56e1cef97dfa7b459588ed13c714aa2777346",
+    "retrievedAt": "2026-10-29"
+  },
+  "land-110m.geojson": {
+    "name": "Natural Earth \u00b7 1:110m land v5.1.2",
+    "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_110m_land.geojson",
+    "origin": "https://www.naturalearthdata.com/about/terms-of-use/",
+    "sha256": "9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9",
+    "retrievedAt": "2026-10-29"
+  }
+}

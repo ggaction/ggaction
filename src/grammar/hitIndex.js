@@ -2,16 +2,27 @@ import { cloneAndFreeze, freezeOwned, isOwned } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { validateInputReference } from "../core/resourceReference.js";
 import { transformHitPoint } from "./hitCoordinates.js";
-import { hitShape, nearestHitShape, hitShapeWork, normalizeHitQuery } from "./hitShapes.js";
+import { hitShape, nearestHitShape, hitShapeWork, hitShapeUsesIndex, validateHitShapePolicy, normalizeHitQuery } from "./hitShapes.js";
 
-export const MAX_HIT_INDEX_ITEMS = 100_000;
-export const MAX_HIT_INDEX_WORK = 10_000_000;
-export const MAX_HIT_QUERY_WORK = 2_000_000;
-const states = new WeakMap(), identity = [1, 0, 0, 1, 0, 0];
-const compareText = (a, b) => a < b ? -1 : a > b ? 1 : 0;
+import { MAX_HIT_INDEX_ITEMS, MAX_HIT_QUERY_WORK, normalizeHitPreparation } from "./hitPolicy.js";
+export { MAX_HIT_INDEX_ITEMS, MAX_HIT_INDEX_WORK, MAX_HIT_QUERY_WORK } from "./hitPolicy.js";
+const states = new WeakMap(), metadataProofs = new WeakMap(), identity = [1, 0, 0, 1, 0, 0];
 function spend(work, count = 1) {
   work.value += count;
   if (work.value > work.limit) throw new RangeError("Hit index exceeds its work budget.");
+}
+// Private ordering owner: charge only the UTF-16 units actually compared.
+// This is JavaScript string ordering, including unpaired surrogates, without
+// running an additional whole-string comparison or retaining a prefix cache.
+export function compareHitText(a, b, work) {
+  const length = Math.min(a.length, b.length);
+  for (let index = 0; index < length; index++) {
+    spend(work, 2);
+    const left = a.charCodeAt(index), right = b.charCodeAt(index);
+    if (left !== right) return left < right ? -1 : 1;
+  }
+  spend(work);
+  return a.length < b.length ? -1 : a.length > b.length ? 1 : 0;
 }
 function exact(value, keys, label) {
   ownRecord(value, label);
@@ -30,6 +41,9 @@ function strings(value, work, unique = false) {
   return value;
 }
 function metadata(value, work) {
+  const previous = metadataProofs.get(value);
+  if (previous !== undefined) { spend(work, previous.cost); return previous; }
+  const initial = work.value;
   exact(value, ["itemKey", "ownerId", "role", "childPath", "rowKeys", "resourceRefs"], "Hit metadata");
   const itemKey = text(value.itemKey, work), ownerId = text(value.ownerId, work), role = text(value.role, work);
   const childPath = strings(value.childPath, work), rowKeys = strings(value.rowKeys, work, true);
@@ -37,30 +51,61 @@ function metadata(value, work) {
   if (!Array.isArray(refs) || refs.length > MAX_HIT_INDEX_ITEMS) throw new RangeError("Hit resource refs exceed their item budget.");
   ownArray(refs, "Hit resource refs"); spend(work, refs.length);
   const resourceRefs = [], used = new Set();
+  let reusable = isOwned(value) && isOwned(childPath) && isOwned(rowKeys) && isOwned(refs) &&
+    Object.keys(value).join(",") === "itemKey,ownerId,role,childPath,rowKeys,resourceRefs";
   for (const ref of refs) {
     ownRecord(ref, "Hit resource ref");
     // Supply an own-data null-prototype view to the existing revision validator.
     const copy = Object.assign(Object.create(null), ref); validateInputReference(copy);
     const normalized = ref.kind === "data" ? { kind: ref.kind, id: ref.id, logicalId: ref.logicalId, revision: ref.revision }
       : { kind: ref.kind, id: ref.id, revision: ref.revision };
+    reusable &&= isOwned(ref) && Object.keys(ref).join(",") === Object.keys(normalized).join(",");
     const key = JSON.stringify(normalized); text(key, work);
     if (used.has(key)) throw new TypeError("Hit resource refs must be unique.");
     used.add(key); resourceRefs.push(normalized);
   }
-  return cloneAndFreeze({ itemKey, ownerId, role, childPath, rowKeys, resourceRefs });
+  // Only the exact fully validated owned tree can retain its original identity.
+  // Caller records and shallow ownership still produce an isolated normal form.
+  const info = reusable ? value : cloneAndFreeze({ itemKey, ownerId, role, childPath, rowKeys, resourceRefs });
+  const semanticKey = JSON.stringify([childPath, ownerId, itemKey]), signature = JSON.stringify(info);
+  spend(work, signature.length);
+  const proof = { info, semanticKey, signature, cost: work.value - initial };
+  metadataProofs.set(info, proof);
+  return proof;
 }
-function sceneKeys(scene, work) {
+function sceneKeys(scene, work, maxSceneNodes) {
   ownRecord(scene, "Hit scene");
-  if (!isOwned(scene) || !Object.hasOwn(scene, "version") || scene.version !== 2 || !Object.hasOwn(scene, "nodes") || !isOwned(scene.nodes) ||
-      !Array.isArray(scene.nodes) || scene.nodes.length > MAX_HIT_INDEX_ITEMS) throw new TypeError("Hit index requires an immutable owned Canvas scene within its item budget.");
-  ownArray(scene.nodes, "Hit scene nodes");
+  if (!isOwned(scene) || !Object.hasOwn(scene, "version")) throw new TypeError("Hit index requires an immutable owned Canvas scene within its item budget.");
+  const batch = scene.version === 3;
+  if (!Object.hasOwn(scene, batch ? "entries" : "nodes")) throw new TypeError("Hit index requires an immutable owned Canvas scene within its item budget.");
+  const rows = batch ? scene.entries : scene.nodes;
+  if (![2, 3].includes(scene.version) || !isOwned(rows) || !Array.isArray(rows) || rows.length > maxSceneNodes) {
+    throw new TypeError("Hit index requires an immutable owned Canvas scene within its item budget.");
+  }
+  ownArray(rows, "Hit scene nodes");
   const keys = new Set();
-  for (const node of scene.nodes) {
-    ownRecord(node, "Hit scene node");
-    if (!isOwned(node) || !Object.hasOwn(node, "key")) throw new TypeError("Hit scene nodes require immutable own keys.");
-    const key = text(node.key, work);
+  const add = value => {
+    if (keys.size >= maxSceneNodes) throw new RangeError("Hit scene exceeds its item budget.");
+    const key = text(value, work);
     if (keys.has(key)) throw new TypeError("Hit scene node keys must be unique.");
     keys.add(key);
+  };
+  for (const row of rows) {
+    ownRecord(row, "Hit scene node");
+    if (!isOwned(row)) throw new TypeError("Hit scene nodes require immutable own keys.");
+    if (batch && !Object.hasOwn(row, "kind")) throw new TypeError("Hit scene entry requires its own kind.");
+    if (batch && (row.kind === "circle-run" || row.kind === "path-run")) {
+      const label = row.kind === "circle-run" ? "circle" : "path";
+      if (!Object.hasOwn(row, "keys") || !isOwned(row.keys)) throw new TypeError(`Hit ${label} run requires immutable own keys.`);
+      ownArray(row.keys, `Hit ${label} run keys`);
+      if (!row.keys.length || row.keys.length > 10000) throw new RangeError(`Hit ${label} run exceeds its row budget.`);
+      for (const key of row.keys) add(key);
+    } else {
+      const node = batch ? row.kind === "single" && row.node : row;
+      ownRecord(node, "Hit scene node");
+      if (!isOwned(node) || !Object.hasOwn(node, "key")) throw new TypeError("Hit scene nodes require immutable own keys.");
+      add(node.key);
+    }
   }
   return keys;
 }
@@ -87,8 +132,7 @@ function build(items, work) {
       const x = a.shape.bounds, y = b.shape.bounds;
       const cx = x[axis[0]] / 2 + x[axis[1]] / 2, cy = y[axis[0]] / 2 + y[axis[1]] / 2;
       if (cx !== cy) return cx < cy ? -1 : 1;
-      spend(work, a.nodeKey.length + b.nodeKey.length);
-      return compareText(a.nodeKey, b.nodeKey);
+      return compareHitText(a.nodeKey, b.nodeKey, work);
     });
     const mid = Math.floor(task.items.length / 2); node.left = {}; node.right = {};
     pending.push({ node: node.right, items: task.items.slice(mid) }, { node: node.left, items: task.items.slice(0, mid) });
@@ -106,17 +150,17 @@ function candidateOrder(a, b, work, nearest = false) {
   spend(work);
   const priority = nearest ? a.distance - b.distance : b.zIndex - a.zIndex || a.distance - b.distance;
   if (priority) return priority;
-  spend(work, a.itemKey.length + b.itemKey.length);
-  const item = compareText(a.itemKey, b.itemKey);
+  const item = compareHitText(a.itemKey, b.itemKey, work);
   if (item) return item;
   const ap = JSON.stringify(a.childPath), bp = JSON.stringify(b.childPath);
-  spend(work, ap.length + bp.length + a.ownerId.length + b.ownerId.length);
-  return compareText(ap, bp) || compareText(a.ownerId, b.ownerId) || (nearest ? b.zIndex - a.zIndex : 0);
+  spend(work, ap.length + bp.length);
+  return compareHitText(ap, bp, work) || compareHitText(a.ownerId, b.ownerId, work) || (nearest ? b.zIndex - a.zIndex : 0);
 }
 
 /** Bind explicit node/semantic mappings to one immutable current scene; no resource inference. */
-export function prepareHitIndex(scene, entries) {
-  const work = { value: 0, limit: MAX_HIT_INDEX_WORK }, available = sceneKeys(scene, work);
+export function prepareHitIndex(scene, entries, options) {
+  const policy = normalizeHitPreparation(options);
+  const work = { value: 0, limit: policy.maxWork }, available = sceneKeys(scene, work, policy.maxSceneNodes);
   if (!Array.isArray(entries) || entries.length > MAX_HIT_INDEX_ITEMS) throw new RangeError("Hit entries exceed their item budget.");
   ownArray(entries, "Hit entries"); spend(work, entries.length);
   const used = new Set(), semantic = new Map(), items = [], diagnostics = [];
@@ -126,9 +170,8 @@ export function prepareHitIndex(scene, entries) {
     if (!available.has(nodeKey) || used.has(nodeKey)) throw new TypeError("Hit entries require unique nodes from their exact scene.");
     if (!Number.isSafeInteger(entry.zIndex)) throw new TypeError("Hit entry requires an explicit safe integer zIndex.");
     used.add(nodeKey);
-    const cost = hitShapeWork(entry.shape), info = metadata(entry.metadata, work);
-    const semanticKey = JSON.stringify([info.childPath, info.ownerId, info.itemKey]), signature = JSON.stringify(info);
-    spend(work, signature.length);
+    validateHitShapePolicy(entry.shape, policy.pathGeometry);
+    const cost = hitShapeWork(entry.shape), { info, semanticKey, signature } = metadata(entry.metadata, work);
     if (semantic.has(semanticKey) && semantic.get(semanticKey) !== signature) throw new TypeError("Duplicate hit primitives require identical semantic metadata.");
     semantic.set(semanticKey, signature);
     for (const diagnostic of entry.shape.diagnostics) { spend(work); diagnostics.push({ itemKey: info.itemKey, ...diagnostic }); }
@@ -160,7 +203,7 @@ function queryIndex(index, scene, point, options, scope, work = { value: 0, limi
       }
       if (!within(item.shape.bounds, screenPoint, query.slop)) continue;
       let result = testedShapes.get(item.shape);
-      if (result === undefined) { spend(work, item.cost); result = (scope ? nearestHitShape : hitShape)(item.shape, screenPoint, query, count => spend(work, count)); testedShapes.set(item.shape, result); tested++; }
+      if (result === undefined) { if (!hitShapeUsesIndex(item.shape)) spend(work, item.cost); result = (scope ? nearestHitShape : hitShape)(item.shape, screenPoint, query, count => spend(work, count)); testedShapes.set(item.shape, result); tested++; }
       if (result.diagnostics !== item.shape.diagnostics) for (const diagnostic of result.diagnostics) {
         const key = JSON.stringify([item.semanticKey, diagnostic.code, diagnostic.transformIndex]); spend(work, key.length);
         if (!diagnosticKeys.has(key)) { diagnosticKeys.add(key); diagnostics.push(freezeOwned({ itemKey: item.metadata.itemKey, ...diagnostic })); }

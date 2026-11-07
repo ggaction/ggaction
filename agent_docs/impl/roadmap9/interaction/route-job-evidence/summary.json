@@ -1,0 +1,93 @@
+{
+  "status": "qualified",
+  "date": "2026-11-01",
+  "base": "5ec16aab2",
+  "authorization": "../../AUTHORIZATION.json remainingApproval and parent explicit exact-owned WeakSet approval",
+  "change": "Reuse completed private own-data/deep-clone/hash validation for the exact immutable job only. External/frozen/worker copies still validate fully.",
+  "unchanged": [
+    "public API/types/schema",
+    "solver input/math/work limits/diagnostics",
+    "abort before validation",
+    "result endpoint/provenance/hash validation"
+  ],
+  "checks": {
+    "sourceNode20": 96,
+    "sourceNode22": 96,
+    "sourceNode24": 96,
+    "jobCoverage": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "boundariesAndSharding": 24,
+    "discoveryAndPackage": 23,
+    "installedPerNode": 5,
+    "bundlesPerNode": 6,
+    "installedNodes": [
+      20,
+      22,
+      24
+    ]
+  },
+  "comparison": {
+    "cases": 12,
+    "methods": [
+      "hierarchical",
+      "force-directed",
+      "density",
+      "edge-path"
+    ],
+    "variants": [
+      "normal",
+      "empty",
+      "zero"
+    ],
+    "completeEnvelopeIncludingDiagnosticsIdentical": true,
+    "SHA256IncludingNewline": "8bc2ca452c491ccc2d7835eb9283849bcec5f7c46d359872e46d90f2753d80e1"
+  },
+  "archive": {
+    "sha256": "4cb4826dd4d0a96945d79a65f8fcb32d55ecb045bab5436666add71b5d85b223",
+    "entryCount": 1170,
+    "size": 1669229,
+    "unpackedSize": 7558920,
+    "afterMetadataSHAUnchanged": true
+  },
+  "packageMeasurementNode20": {
+    "entries": 1170,
+    "packed": 1673263,
+    "unpacked": 7558920
+  },
+  "caps": {
+    "entries": 1170,
+    "packed": 1673300,
+    "unpacked": 7559000
+  },
+  "firstFailures": [
+    {
+      "scope": "Node22 package",
+      "message": "Unpacked7558920 >7558700",
+      "resolution": "minimal rounded7559000"
+    },
+    {
+      "scope": "Node20 package",
+      "message": "Packed1673263 >1673200",
+      "resolution": "minimal rounded1673300"
+    }
+  ],
+  "performance": "No new P95 on this source yet; prior single-span browser measurements not relabelled. Exact-job latency effect will be measured separately.",
+  "remaining": [
+    "cycle stretch proof",
+    "force/density large input",
+    "all-item graphic limit",
+    "AT82 and STEP077 incomplete"
+  ],
+  "source": "875a8ae9b",
+  "documentation": {
+    "provenance": true,
+    "machine": true,
+    "llms": true,
+    "owningChecks": 47,
+    "publicContentChanged": false,
+    "builtBrowserReuse": "Private validation proof and source identifiers only; no public HTML/CSS/JS change."
+  }
+}

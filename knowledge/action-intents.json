@@ -1129,6 +1129,31 @@
       "Waterfall plot",
       "ordered contributions and totals",
       "running balance"
+    ],
+    "GeoAnnotation": [
+      "geographic annotation",
+      "feature anchor",
+      "map text"
+    ],
+    "TrailPlot": [
+      "Trail plot",
+      "variable width ribbon",
+      "sample width path"
+    ],
+    "TablePlot": [
+      "table plot",
+      "keyed table",
+      "formatted cells",
+      "in-cell bars",
+      "sparklines"
+    ],
+    "GeoRouteData": [
+      "geographic graph routes",
+      "retained edge route geometry"
+    ],
+    "GraphEdgeRoutesUpdate": [
+      "prepared native route update",
+      "layout and route revision"
     ]
   },
   "summaryOverrides": {
@@ -2335,6 +2360,80 @@
     "editWaterfallPlot": {
       "target": "waterfall",
       "connectors": false
+    },
+    "createGeoAnnotation": {
+      "anchor": {
+        "type": "position",
+        "position": [
+          10,
+          20
+        ]
+      },
+      "text": "Location"
+    },
+    "editGeoAnnotation": {
+      "text": "Updated location",
+      "dx": 4
+    },
+    "navigateProjection": {
+      "operation": {
+        "type": "pan",
+        "deltaPx": [
+          10,
+          0
+        ]
+      }
+    },
+    "createTrailPlot": {
+      "x": "time",
+      "y": "signal",
+      "width": "width"
+    },
+    "editTrailPlot": {
+      "target": "trail",
+      "width": 12
+    },
+    "editAnnotation": {
+      "target": "annotation",
+      "text": "Updated note",
+      "dx": 8
+    },
+    "createTablePlot": {
+      "columns": [
+        "name",
+        {
+          "field": "value",
+          "cell": "bar",
+          "footer": "sum"
+        }
+      ]
+    },
+    "editTablePlot": {
+      "target": "table",
+      "sortBy": [
+        {
+          "field": "value",
+          "order": "descending"
+        }
+      ]
+    },
+    "createGeoRouteData": {
+      "id": "routeGeometry",
+      "routes": "routes",
+      "coordinateKind": "geographic"
+    },
+    "editGeoRouteData": {
+      "target": "routeGeometry",
+      "routes": "routes",
+      "coordinateKind": "geographic"
+    },
+    "applyGraphEdgeRoutesUpdate": {
+      "prepared": {
+        "$code": "preparedRouteUpdate"
+      },
+      "requestToken": {
+        "$code": "currentToken"
+      }
     }
   },
   "callPatternOverrides": {
@@ -2588,6 +2687,10 @@
     ],
     "removeMarkVisibility": [
       "removeMarkVisibility({ target? })"
+    ],
+    "editAnnotation": [
+      "editAnnotation({ target?, text?, x?, y?, dx?, dy? })",
+      "editAnnotation({ target?, placement?, layout?, fill?, fontSize? })"
     ]
   },
   "errorOverrides": {

@@ -38,7 +38,7 @@ export function validateContinuousColorConsumer(layer, encoding, scale, {
     if (encoding.aggregate !== undefined) {
       throw new Error("Continuous stroke does not support aggregate.");
     }
-    if (Object.hasOwn(scale, "unknown") && kind !== "point") {
+    if (Object.hasOwn(scale, "unknown") && !["point", "geo"].includes(kind)) {
       throw new Error("Continuous stroke scale unknown currently requires a row-owned point mark.");
     }
     return undefined;
@@ -50,7 +50,7 @@ export function validateContinuousColorConsumer(layer, encoding, scale, {
     (isDiscretizedColorScaleType(scale.type) && encoding.fieldType !== "quantitative")) {
     throw new Error(`Scale type "${scale.type}" has an incompatible color field type.`);
   }
-  if (Object.hasOwn(scale, "unknown") && kind !== "point") {
+  if (Object.hasOwn(scale, "unknown") && !["point", "geo"].includes(kind)) {
     throw new Error("Continuous color scale unknown currently requires a row-owned point mark.");
   }
   if (kind === "area" && encoding.fieldType !== "quantitative") {
@@ -81,7 +81,7 @@ export function validateContinuousColorConsumer(layer, encoding, scale, {
 
 export function validateCategoricalColorConsumer(layer, encoding, scale, channel = "color") {
   if (!Object.hasOwn(scale, "unknown")) return false;
-  if (layer.mark?.type === "point") return false;
+  if (["point", "geo"].includes(layer.mark?.type)) return false;
   const position = layer.encoding ?? {};
   if (channel === "strokeDash") {
     if (!["line", "rule"].includes(layer.mark?.type) ||

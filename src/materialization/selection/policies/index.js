@@ -1,4 +1,7 @@
 import { geoSelectionPolicy } from "./geo.js";
+import { drainStages } from "../../../core/stages.js";
+import { tableSelectionPolicy } from "./table.js";
+import { trailSelectionPolicy } from "./trail.js";
 import { waterfallSelectionPolicy } from "./waterfall.js";
 import { ohlcSelectionPolicy } from "./ohlc.js";
 import { pyramidSelectionPolicy } from "./pyramid.js";
@@ -31,8 +34,10 @@ const POLICIES = Object.freeze({
   graph: graphSelectionPolicy,
   image: imageSelectionPolicy,
   calendar: calendarSelectionPolicy,
+  table: tableSelectionPolicy,
   pyramid: pyramidSelectionPolicy,
   waterfall: waterfallSelectionPolicy,
+  trail: trailSelectionPolicy,
   ohlc: ohlcSelectionPolicy,
   contour: contourSelectionPolicy,
   tree: treeSelectionPolicy, treemap: treemapSelectionPolicy, partition: partitionSelectionPolicy,
@@ -70,7 +75,16 @@ export function resolveMarkIdentities(program, target) {
   return resolveItems(program, target, "item", true);
 }
 
+export function* resolveMarkIdentitiesStages(program, target) {
+  return yield* resolveItemsStages(program, target, "item", true);
+}
+
 function resolveItems(program, target, grain, identityOnly, options) {
+  return drainStages(resolveItemsStages(program, target, grain, identityOnly, options));
+}
+
+// A policy may resolve its rows as stages; others resolve in one step.
+function* resolveItemsStages(program, target, grain, identityOnly, options) {
   const resolvers = { resolveMarkItems, resolveMarkSourceItems, identityOnly,
     pointAppearance: (layer, items) => conditionalPointAppearance(program, layer, items) };
   const layer = requireLayer(program, target, `Unknown mark target "${target}"`);
@@ -81,7 +95,7 @@ function resolveItems(program, target, grain, identityOnly, options) {
   }
   const policy = requireSelectionPolicy(layer.mark?.type);
   const dataset = findDataset(program, layer.data);
-  if (dataset === undefined && !policy.resourceBacked) {
+  if (dataset === undefined && !(typeof policy.resourceBacked === "function" ? policy.resourceBacked(program, layer) : policy.resourceBacked) && policy.dataOptional?.(layer) !== true) {
     throw new Error(`Mark "${target}" requires an existing dataset for selection.`);
   }
   if (!policy.supportedGrains.includes(grain)) {
@@ -89,7 +103,9 @@ function resolveItems(program, target, grain, identityOnly, options) {
   }
   policy.validateGrain?.(layer, grain);
   if (emptyFilteredItems(program, layer, dataset)) return [];
-  const items = policy.resolveItems(program, layer, applyItemMissingPolicy(layer, dataset), grain, resolveMarkItems, resolvers);
+  const items = policy.resolveItemsStages === undefined
+    ? policy.resolveItems(program, layer, applyItemMissingPolicy(layer, dataset), grain, resolveMarkItems, resolvers)
+    : yield* policy.resolveItemsStages(program, layer, applyItemMissingPolicy(layer, dataset), grain, resolveMarkItems, resolvers);
   return identityOnly ? items : withConditionalChannels(program, layer, items, options);
 }
 

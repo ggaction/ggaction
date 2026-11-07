@@ -1,0 +1,161 @@
+{
+  "status": "verified-geographic-route-adapter; final STEP077 and large-route performance remain open",
+  "sourceRevision": "8710ce08ea3938066173b9d9d2d3a70e76a99277",
+  "base": "04539ff7a",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "publicActions": [
+    "createGeoRouteData",
+    "editGeoRouteData"
+  ],
+  "scope": "Explicit geographic(world longitude/latitude) or planar interpretation of exact retained GraphRoute M/L in source-edge order, using existing GeoLine projection/interpolation/clipping and atomic route→geometry→join/LOD/fit→marks closure. No new solver or renderer.",
+  "archive": {
+    "file": "ggaction-0.0.26.tgz",
+    "sha256": "eefc4c4e8d4e78f578e23491b70768258b9f21120dbc9b210c4f64f42c82f3e0",
+    "entryCount": 1170,
+    "packedBytes": 1668835,
+    "unpackedBytes": 7557837
+  },
+  "checks": {
+    "owning": 50,
+    "focusedCoverage": {
+      "tests": 351,
+      "aggregate": [
+        100,
+        99.44,
+        100
+      ],
+      "ownerMinimums": [
+        100,
+        95.83,
+        100
+      ],
+      "floor": [
+        95,
+        90,
+        100
+      ],
+      "owners": [
+        "src/actions/geo/routes.js",
+        "src/actions/geo/closure.js",
+        "src/grammar/geo/routes.js",
+        "src/materialization/geo/features.js",
+        "src/materialization/geo/routeResource.js",
+        "src/materialization/geo/routeState.js",
+        "src/materialization/graph/sourceItems.js"
+      ]
+    },
+    "boundaryTypesPackageShards": 52,
+    "discoveryGeographic": 35,
+    "realistic": {
+      "tests": 16,
+      "sources": 5,
+      "recipesEach": 3
+    },
+    "render": 1,
+    "browser": {
+      "tests": 2,
+      "DPR": [
+        1,
+        2
+      ]
+    },
+    "commonLifecycle": 3,
+    "publicOptionInventory": 7,
+    "publicCatalogCardsPackage": 30,
+    "docsOwning": 49,
+    "installed": {
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "sameArchive": true,
+      "runtimeEach": 3,
+      "strictTypes": "passed",
+      "publicRouteMapSnippet": "passed",
+      "optionalPeers": "passed",
+      "bundleMeasurements": 18
+    },
+    "built": {
+      "pages": 186,
+      "selectiveArtifacts": 1603
+    },
+    "changedGeometryDocsBrowser": {
+      "widths": [
+        320,
+        390,
+        768,
+        1280
+      ],
+      "overflow": 0,
+      "axe": 0,
+      "consoleErrors": 0
+    }
+  },
+  "inventoryDelta": {
+    "publicActions": [
+      368,
+      370
+    ],
+    "optionPaths": [
+      36977,
+      37002
+    ],
+    "requiredOptionPaths": [
+      25036,
+      25049
+    ],
+    "ledgerRequirements": [
+      43730,
+      43751
+    ],
+    "addedRequirements": 21,
+    "removedRequirements": 0,
+    "proof": "geo-route-ledger-diff.json.gz; all added IDs belong to the two new actions,13 required paths plus6 literal requirements plus2 action requirements."
+  },
+  "package3Node": {
+    "entries": 1170,
+    "maximumPacked": 1672857,
+    "unpacked": 7557837,
+    "ceilings": [
+      1170,
+      1672900,
+      7557900
+    ]
+  },
+  "bundleMaximums": {
+    "ggaction": 781405,
+    "ggaction/basic": 422951,
+    "ggaction/svg": 24954,
+    "ggaction/graph": 44077,
+    "ggaction/animation": 233459,
+    "ggaction/interaction": 137439
+  },
+  "inputHashes": {
+    "src/actions/geo/routes.js": "d6abcc853dfe1fd9006b78d78bf59e051a55e8ab74be5a11470ea842abdf2db9",
+    "src/actions/geo/closure.js": "6e32e0579e2a5d66d10075f0c5dfb7bbf0e7e0db632fcd328725e0fb6246b36a",
+    "src/grammar/geo/routes.js": "b3a793b3bc7342a130c92fb0d9542da33c3205d240e9466d718fd79e0d59a7cf",
+    "src/materialization/geo/features.js": "f5e0990c9dca342de234879867a84bcf92c6e5a28dec13593a882433327ecd1f",
+    "src/materialization/geo/routeResource.js": "68e326fdc11ce50bd18a83f2d6441c8743880e05a9637530bacfa23381ceef89",
+    "src/materialization/geo/routeState.js": "ac913077fc983b31b7f8d9a37a86eabe1c37294edf7792e25ceca573f2850cc5",
+    "src/materialization/graph/sourceItems.js": "9bf2782293201e5c5054490dd5aaa394bd2af4dac6df697984a1188c80d02a0e"
+  },
+  "repairs": [
+    "Flow dag/cyclic normalizer restoration is identical to root integration.",
+    "Preserve initial wrong scene invocation, zero-ink browser fixture and corrected native parity evidence separately.",
+    "Preserve original inventory ledger count failure and incorrect contracts selector; canonical realistic7 now passes after exact baseline/current21-ID diff.",
+    "Original0548 archive differs only README/CHANGELOG. Final current eef archive was freshly installed on all three Node versions; original receipts retained."
+  ],
+  "remaining": [
+    "Integrate this source with root transition3/native guide4 and Cartesian2 candidate",
+    "Remaining large-route workloads and target performance budget",
+    "GeoText expressions and remaining native legend/reflow obligations",
+    "Complete STEP057–077 acceptance matrix, full qualification and separately authorized release operations"
+  ],
+  "sourcePin": {
+    "docs": 32,
+    "builtPages": 186,
+    "selectiveArtifacts": 1603,
+    "browserReuse": "Only source identity links changed. Geometry content/CSS retain fresh4viewport browser checks; unchanged pages retain previous full browser evidence."
+  }
+}

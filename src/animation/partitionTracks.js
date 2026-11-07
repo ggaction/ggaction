@@ -1,0 +1,92 @@
+import { validateAnimationResourceWork } from "./resources.js";
+import { prepareAnimationAppearance } from "./appearance.js";
+import { cloneAndFreeze, freezeOwned, isOwned } from "../core/immutable.js";
+import { validateWorkLimit } from "../core/validation.js";
+import { preparePartitionAnimationState, samplePartitionAnimationState } from "../grammar/animation/partitionState.js";
+import { interpolateNumber } from "../grammar/animation/values.js";
+import { resolvePartitionAnimationGeometry, partitionAnimationItemGeometry, partitionAnimationGroupWork } from "../materialization/animation/partitionGeometry.js";
+import { sameConcreteValue, clipInterpolationCompatible } from "./concrete.js";
+
+export const emptyAnimationPartitions = length => Object.freeze({ groups: Object.freeze([]), items: Object.freeze(Array(length).fill(null)) });
+const geometryKeys = new Set(["x", "y", "width", "height", "commands", "fillBounds"]);
+const ownedPaint = new WeakMap();
+const paintOf = properties => Object.fromEntries(Object.entries(properties).filter(([key]) => !geometryKeys.has(key)));
+// An owned endpoint's paint never changes, so its filtered copy is reused.
+export const partitionAnimationPaint = properties => {
+  if (!isOwned(properties)) return paintOf(properties);
+  let paint = ownedPaint.get(properties);
+  if (paint === undefined) ownedPaint.set(properties, paint = freezeOwned(paintOf(properties)));
+  return paint;
+};
+function roles(state) {
+  const values = state.groups.map(() => new Set());
+  for (const item of state.items) if (item !== null) values[item.group].add(JSON.stringify([item.key, item.role]));
+  return values;
+}
+export function partitionTrackPreparation(from, to, a, b, resources) {
+  const pairs = [], indices = new Map(), equalities = new WeakMap(), aRoles = roles(a), bRoles = roles(b); let work = 0;
+  const track = match => {
+    const source = a.items[match.sourceIndex], target = b.items[match.targetIndex];
+    if (source === null && target === null) return undefined;
+    const fade = reason => ({ ...match, kind: "crossfade", reason });
+    if (source === null || target === null) return fade("unsupported-family");
+    if (source.reason || target.reason) return fade(source.reason ?? target.reason);
+    const first = from.scene.nodes[match.sourceIndex], last = to.scene.nodes[match.targetIndex];
+    if (source.role !== target.role || (source.role === "label" ? first.type !== "text" || last.type !== "text" : ![first.type, last.type].every(type => type === "rect" || type === "path"))) return fade("primitive-kind");
+    if (!clipInterpolationCompatible(first, last)) return fade("clip-topology");
+    const key = JSON.stringify([source.group, target.group]); let pair = indices.get(key);
+    if (pair === undefined) {
+      for (const group of [a.groups[source.group], b.groups[target.group]]) validateAnimationResourceWork(work += partitionAnimationGroupWork(group) * 4, "Partition animation track work",resources);
+      const firstRoles = aRoles[source.group], lastRoles = bRoles[target.group], visibility = firstRoles.size !== lastRoles.size || [...firstRoles].some(role => !lastRoles.has(role));
+      const plan = preparePartitionAnimationState(a.groups[source.group].meaning, b.groups[target.group].meaning);
+      pair = pairs.length; indices.set(key, pair); pairs.push({ sourceGroup: source.group, targetGroup: target.group, plan, ...(visibility ? { reason: "visibility" } : {}) });
+    }
+    const prepared = pairs[pair], reason = prepared.reason ?? prepared.plan.reason ?? (prepared.plan.track.mode === "crossfade" ? prepared.plan.track.reason : undefined);
+    if (reason) return fade(reason);
+    const sourceGroup = a.groups[source.group], targetGroup = b.groups[target.group];
+    let equality = equalities.get(prepared);
+    if (equality?.from !== sourceGroup || equality?.to !== targetGroup) {
+      equality = { from: sourceGroup, to: targetGroup, value: sameConcreteValue(sourceGroup, targetGroup) };
+      if (isOwned(sourceGroup) && isOwned(targetGroup)) equalities.set(prepared, equality);
+    }
+    if (equality.value && sameConcreteValue(first, last)) return { ...match, kind: "exact" };
+    const appearance = prepareAnimationAppearance(partitionAnimationPaint(first.properties), partitionAnimationPaint(last.properties));
+    if (appearance.kind === "crossfade") return fade(appearance.reason);
+    return { ...match, kind: "semantic-partition", pair, appearance };
+  };
+  return { pairs, track };
+}
+// One sampled partition group per prepared pair and owner progress.
+export function samplePartitionPairGroup(state, index, progress, ownerProgress) {
+  const pair = state.pairs[index], current = ownerProgress===undefined?progress:ownerProgress(state.to.groups[pair.targetGroup].id), sample = samplePartitionAnimationState(pair.plan, current);
+  if (sample.mode !== "partition") return { reason: sample.reason };
+  const from = state.from.groups[pair.sourceGroup], to = state.to.groups[pair.targetGroup];
+  return { group: cloneAndFreeze({ ...to, meaning: sample.state, labelOffset: from.labelOffset.map((value, i) => interpolateNumber(value, to.labelOffset[i], current)) }) };
+}
+export function partitionTrackSamples(state, progress, ownerProgress) {
+  const sampled = new Map();
+  return index => {
+    if (!sampled.has(index)) {
+      const sample = samplePartitionPairGroup(state, index, progress, ownerProgress);
+      sampled.set(index, sample.reason ? sample : { group: sample.group, geometry: resolvePartitionAnimationGeometry(sample.group) });
+    }
+    return sampled.get(index);
+  };
+}
+export function samplePartitionTrack(sampled, item) {
+  if (sampled.reason) return sampled;
+  return partitionAnimationItemGeometry(sampled.group, item, sampled.geometry) ?? { reason: "partition-collapsed-cell" };
+}
+export function partitionFrameCollector() {
+  const groups = [], items = [], indices = new Map(); let work = 0;
+  const append = (group, item) => {
+    if (item === null) { items.push(null); return; }
+    let index = indices.get(group);
+    if (index === undefined) {
+      validateWorkLimit(work += partitionAnimationGroupWork(group), "Partition animation frame work");
+      index = groups.length; indices.set(group, index); groups.push(group);
+    }
+    items.push({ ...item, group: index });
+  };
+  return { append, finish: () => cloneAndFreeze({ groups, items }) };
+}

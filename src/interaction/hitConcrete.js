@@ -1,5 +1,7 @@
+import { translateGraphicClip } from "../grammar/schemas/graphicClip.js";
+import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 import { resolveTextBounds } from "../core/textMetrics.js";
-import { prepareHitShape } from "../grammar/hitShapes.js";
+import { prepareHitShape, prepareHitShapeUnion } from "../grammar/hitShapes.js";
 import { transformHitPoint } from "../grammar/hitCoordinates.js";
 import { resolveStrokeDetails } from "../grammar/strokeStyle.js";
 
@@ -20,13 +22,13 @@ function textGeometry(properties, metrics) {
   // Metrics define Text targeting. Empty lines deliberately have no target area.
   return { type: "path", commands: commands.length ? commands : [{ op: "M", x: p.x, y: p.y }], fillRule: "nonzero" };
 }
-function geometry(node, metrics) {
+function geometry(node, metrics, policy) {
   const p = node.properties;
   switch (node.type) {
     case "rect": case "image": return { type: node.type, rect: { x: p.x, y: p.y, width: p.width, height: p.height } };
     case "circle": return { type: "circle", x: p.x, y: p.y, radius: p.radius };
     case "line": return { type: "line", from: { x: p.x1, y: p.y1 }, to: { x: p.x2, y: p.y2 } };
-    case "path": return { type: "path", commands: p.commands, fillRule: p.fillRule ?? "nonzero" };
+    case "path": return { type: "path", commands: p.commands, fillRule: p.fillRule ?? "nonzero", ...(policy !== undefined && Object.hasOwn(p,"maxCommands") ? { maxCommands:p.maxCommands } : {}) };
     case "text": return textGeometry(p, metrics);
     default: throw new TypeError("Hit adapter requires a supported concrete scene node.");
   }
@@ -44,13 +46,24 @@ function clipGeometry(clip) {
 }
 
 /** Consume validated concrete scene geometry, never semantic encodings or renderer objects. */
-export function prepareConcreteHitShape(node, metrics, rootTransform = identity) {
+export function prepareConcreteHitShape(node, metrics, rootTransform = identity, pathGeometry) {
+  if (node.type === "weighted-blend") {
+    validateConcreteGraphicProperties(node.type, node.properties);
+    const asSceneClip = clip => clip.type === "path" ? clip : [clip.x, clip.y, clip.width, clip.height];
+    return prepareHitShapeUnion(node.properties.sources.map((source, index) => {
+      const moved = clip => asSceneClip(translateGraphicClip(clip, ...node.offset));
+      return prepareConcreteHitShape({ type: source.type,
+        properties: { ...source.properties, opacity: (source.properties.opacity ?? 1) * source.weight * (node.properties.opacity ?? 1) },
+        offset: [node.offset[0] + source.offset[0], node.offset[1] + source.offset[1]], clip: node.clip,
+        clips: [...node.clips ?? [], moved(source.clip), ...source.clips.map(moved)] }, Array.isArray(metrics) ? metrics[index] : metrics, rootTransform, pathGeometry);
+    }));
+  }
   const p = node.properties, edge = stroke(p);
   const origin = transformHitPoint(rootTransform, { x: node.offset[0], y: node.offset[1] });
   const fill = node.type === "image" || p.fill !== undefined && p.fill !== "none";
-  return prepareHitShape({ geometry: geometry(node, metrics),
+  return prepareHitShape({ geometry: geometry(node, metrics, pathGeometry),
     paint: { fill: node.type === "text" ? fill || edge !== null : fill,
       stroke: node.type === "text" ? null : edge, opacity: p.opacity ?? 1 },
     transform: [...rootTransform.slice(0, 4), origin.x, origin.y],
-    clips: [node.clip, ...(node.clips ?? [])].map(clip => ({ geometry: clipGeometry(clip), transform: rootTransform })) });
+    clips: [node.clip, ...(node.clips ?? [])].map(clip => ({ geometry: clipGeometry(clip), transform: rootTransform })) }, pathGeometry);
 }

@@ -20,6 +20,23 @@ declare const basic: BasicChartProgram;
 program.createAreaPlot({ x: "time", y: "value" }).layoutSeries({ mode: "center" });
 program.createAreaPlot({ x: { field: "value", scale: { type: "log" } }, y: "time", valueChannel: "x", baseline: 1 });
 program.createAreaPlot({ x: "time", y: { lower: { datum: 0 }, upper: "value" }, missing: "break" });
+program.createAreaPlot({ x: "time", y: "value", groupBy: "group", layout: "wiggle" });
+program.createAreaPlot({ x: {field:"time",fieldType:"temporal",temporalUnit:"timestamp"}, y: {lower:"value",upper:{datum:0}}, layout:"wiggle" });
+program.encodeColor({field:"group",layout:"wiggle"});
+// @ts-expect-error wiggle is vertical only
+program.createAreaPlot({x:"value",y:"time",valueChannel:"x",layout:"wiggle"});
+// @ts-expect-error wiggle needs numerical independent positions
+program.createAreaPlot({x:{field:"category",fieldType:"nominal"},y:"value",layout:"wiggle"});
+// @ts-expect-error wiggle uses zero baseline thickness
+program.createAreaPlot({x:"time",y:"value",baseline:1,layout:"wiggle"});
+// @ts-expect-error wiggle baseline includes zero
+program.createAreaPlot({x:"time",y:{field:"value",scale:{type:"log"}},layout:"wiggle"});
+// @ts-expect-error wiggle cannot use two independent endpoints
+program.createAreaPlot({x:"time",y:{lower:"lo",upper:"hi"},layout:"wiggle"});
+// @ts-expect-error wiggle is not a bar mode
+basic.layoutSeries({mode:"wiggle"});
+// @ts-expect-error histogram does not support wiggle
+program.createHistogram({field:"value",color:{field:"group",layout:"wiggle"}});
 basic.encodeGroup({ fields: ["series", "region"] }).layoutSeries({ mode: "stack" });
 // @ts-expect-error Area belongs to the full entry
 basic.createAreaPlot({ x: "time", y: "value" });

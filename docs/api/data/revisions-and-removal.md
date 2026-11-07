@@ -33,6 +33,9 @@ contains its old row index or `null` for a new row. The array must match the new
 row count and cannot repeat old indices. Keyed sources reject `rowMap`.
 Independent branches allocate distinct identities for new rows. Earlier
 programs remain unchanged, and invalid mappings reject the whole revision.
+For large sources, `reviseDataInSlices` from `ggaction` performs the same
+revision in bounded host turns; see
+[Data updates](../../data-updates.md#revise-a-source-and-its-dependent-chart).
 
 For a live source created with `prepareDataUpdate`, use a prepared `revise`
 request to reload its URL or name while retaining that binding. A direct
@@ -98,6 +101,11 @@ top-level decision:
 | normalize | `editNormalizedData` |
 | complete | `editCompleteData` |
 | impute | `editImputedData` |
+| pivot | `editPivotData` |
+| lookup | `editLookupData` |
+| flatten | `editFlattenData` |
+| two-dimensional bin | `editBin2DData` |
+| regression statistics | `editRegressionStatisticsData` |
 
 Each focused action requires `target`. It accepts the stable logical owner ID or
 the owner's current physical revision ID. An older physical revision is stale
@@ -144,7 +152,7 @@ must advance with the new row order.
 ```javascript
 const descending = ordered.editSortedData({
   target: "orderedSales",
-  sortBy: [{ field: "revenue", fieldType: "quantitative", order: "descending" }]
+  sortBy: [{ field: "revenue", order: "descending" }]
 });
 ```
 

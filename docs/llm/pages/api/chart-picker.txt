@@ -76,6 +76,25 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 | Explicit node and edge tables with a stored graph layout | [`createGraphPlot`](../../../reference/actions/charts-data/#creategraphplot) | default | [`editGraphPlot`](../../../reference/actions/charts-data/#editgraphplot) · [`removeMark`](../../../reference/actions/marks/#removemark) |
 | Typed hierarchy and a partition layout projected as rectangles or sectors | [`createPartitionPlot`](../../../reference/actions/charts-data/#createpartitionplot) | default | [`editPartitionPlot`](../../../reference/actions/charts-data/#editpartitionplot) · [`removeMark`](../../../reference/actions/marks/#removemark) |
 
+## Specialized chart families
+
+These families own their own layout or resource and are edited with their paired
+`edit*` action. They are available from `ggaction`, not `ggaction/basic`.
+
+| Task / input | Start with | Guide |
+| --- | --- | --- |
+| Civil-day aggregates in week/weekday cells | `createCalendarLayout` → `createCalendarPlot` | [Calendar](../../../api/calendar/) |
+| Scalar grid or 2D point density as levels or bands | `createContourData` / `createDensityContourData` → `createContourMark` | [Contours](../../../api/contours/) |
+| Open/high/low/close per row | `createOHLCPlot` | [OHLC](../../../api/ohlc/) |
+| Ordered stages as trapezoids | `createPyramidPlot` | [Pyramid](../../../api/pyramid/) |
+| Formatted rows with in-cell bars and sparklines | `createTablePlot` | [Table](../../../api/table/) |
+| Ribbon whose pixel width varies per sample | `createTrailPlot` | [Trail](../../../api/trail/) |
+| Signed contributions, subtotals and totals | `createWaterfallPlot` | [Waterfall](../../../api/waterfall/) |
+| Explicit node and edge tables with conserved quantities | `createFlowData` → `layoutFlow` → `createFlowLinks` + `createFlowNodes` | [Flows and Sankey](../../../api/flows/) |
+| Parent/child rows, nested children or grouped paths | `createHierarchyData` → `layoutHierarchy` → `createTreePlot` / `createTreemapPlot` / `createPartitionPlot` | [Hierarchy](../../../api/hierarchy/), [Partition](../../../api/partition/) |
+| Nodes and edges, observed or inferred | `createGraphData` → `layoutGraph` → `createGraphPlot` | [Graphs](../../../api/graphs/), [Edge routes](../../../api/edge-routes/) |
+| GeoJSON or TopoJSON features | `createGeometryData` → `createProjection` → `createGeoShapeMark` | [Geometry and maps](../../../api/geometry/) |
+
 ## Compose or refine
 
 `hconcat` and `vconcat` are exported functions for arranging independent complete

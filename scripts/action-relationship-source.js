@@ -1,3 +1,4 @@
+import { nativeRouteUpdateCase } from "../test/support/native-route-update.js";
 import { programTraceOwners } from "../test/support/program-traces.js";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
@@ -426,6 +427,18 @@ function collectDirectRelationships(trace, directNames, relationships, observed)
   }
 }
 
+function annotationEditingPrograms() {
+  const base = chart().createCanvas().createData({values:[{x:1,y:2},{x:2,y:3}]})
+    .createPointMark().encodeX({field:'x'}).encodeY({field:'y'});
+  const datum = base.createAnnotation({id:'note',text:'Old',x:1,y:2})
+    .editAnnotation({target:'note',text:'New',x:2,y:3,dx:4,layout:{maxDisplacement:0}})
+    .editAnnotation({target:'note',layout:false});
+  const attached = base.createAnnotation({id:'labels',text:'Old'})
+    .editAnnotation({target:'labels',placement:{anchor:'center'},text:'New'})
+    .editAnnotation({target:'labels',select:{items:[]}}).editAnnotation({target:'labels',all:true});
+  return [datum,attached,chart().createCanvas().createAnnotation({space:"screen",x:12,y:24,text:"Screen"}).editAnnotation({x:30})];
+}
+
 async function imageResourcePrograms() {
   const base = chart().createCanvas({width: 100, height: 80, margin: 0});
   const bytes = new TextEncoder().encode('<svg xmlns="http://www.w3.org/2000/svg" width="2" height="1"><rect width="2" height="1" fill="red"/></svg>');
@@ -463,7 +476,7 @@ export async function buildActionRelationships() {
   const preparedBase = chart();
   const prepared = await prepareDataUpdate(preparedBase, { kind: "create", id: "received",
     source: { kind: "inline", values: [{ x: 1 }] } }, { requestToken: "received" });
-  const programs = [...await fontResourcePrograms(), ...await imageResourcePrograms(), preparedBase.applyDataUpdate({ prepared, requestToken: "received" }), ...buildActionRelationshipPrograms(), chart()
+  const programs = [(await nativeRouteUpdateCase()).result, ...annotationEditingPrograms(), ...await fontResourcePrograms(), ...await imageResourcePrograms(), preparedBase.applyDataUpdate({ prepared, requestToken: "received" }), ...buildActionRelationshipPrograms(), chart()
     .createCanvas({ width: 500, height: 400, margin: 70 })
     .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
     .createScatterPlot({ x: "x", y: "y" })
@@ -584,6 +597,8 @@ export function buildActionRelationshipPrograms() {
       .editEdgeRoute({ options: { exponent: 3 } }).editCanvas({ width: 650 })
       .editLayout({ target: "network-layout", options: { radius: 80 } })
       .editGraphData({ definition: { directed: true } }),
+    chart().createCanvas({ width: 400, height: 300, margin: 0 }).createProjection({ id: "camera", type: "identity" })
+      .navigateProjection({ operation: { type: "resize", canvas: { width: 800, height: 600 }, scaling: "fit" } }),
     chart().createCanvas().createGeometryData({ id: "geoPoints", format: "geojson", coordinateKind: "planar", values: { type: "MultiPoint", coordinates: [[10, 10], [30, 20]] } })
       .createProjection({ id: "geoPlane", type: "identity" }).createCoordinate({ id: "geo", type: "geo", projection: "geoPlane" })
       .createGeoShapeMark({ id: "geoShape", coordinate: "geo", geometry: "geoPoints" }).editGeoShapeMark({ opacity: .8 })
@@ -593,6 +608,13 @@ export function buildActionRelationshipPrograms() {
       .createProjection({ id: "geoSphere", type: "equirectangular", translatePx: [200, 150] })
       .createCoordinate({ id: "sphere", type: "geo", projection: "geoSphere" }).createGraticule({ id: "geoGrid", coordinate: "sphere" })
       .editGraticule({ opacity: .3 }).editProjection({ target: "geoPlane", scalePx: 2 }).editCoordinate({ target: "geo", projection: "geoPlane" }),
+    chart().createData({ id: "routeNodes", values: [{ id: "a" }, { id: "b" }] })
+      .createData({ id: "routeEdges", values: [{ id: "ab", source: "a", target: "b" }] })
+      .createGraphData({ id: "routeGraph", nodes: "routeNodes", edges: "routeEdges", nodeKey: "id", edgeKey: "id", source: "source", target: "target" })
+      .layoutGraph({ id: "routeLayout", method: "fixed", options: { positions: [{ key: "a", x: 10, y: 20 }, { key: "b", x: 30, y: 40 }] } })
+      .bundleGraphEdges({ id: "routes", method: "edge-path" })
+      .createGeoRouteData({ id: "routeGeometry", routes: "routes", coordinateKind: "geographic" })
+      .editGeoRouteData({ target: "routeGeometry", routes: "routes" }),
     chart().createData({ id: "measurements", values: [{ code: "place", value: 10 }] })
       .createGeometryData({ id: "geometry", format: "geojson", coordinateKind: "planar", featureKey: "id",
         values: { type: "Feature", id: "place", properties: {}, geometry: { type: "Point", coordinates: [10, 20] } } })
@@ -607,6 +629,11 @@ export function buildActionRelationshipPrograms() {
         { id: "county", geometry: "fine", parents: [{ key: "c", parent: "s" }], enterZoom: 4.2, exitZoom: 3.8 }], zoom: 5 })
       .createProjection({ id: "detailFit", type: "identity", fit: { width: 100, height: 100 } })
       .createCoordinate({ type: "geo" }).createGeoPointMark({ id: "details" }).editGeoLODData({ zoom: 3 }),
+    chart().createCanvas().createGeometryData({ id: "featureFields", format: "geojson", coordinateKind: "planar", values: { type: "Feature", properties: { value: 1, category: "A" }, geometry: { type: "Point", coordinates: [20, 30] } } })
+      .createProjection({ id: "fieldMap", type: "identity" }).createCoordinate({ type: "geo" }).createGeoPointMark({ id: "fieldPoints" })
+      .encodeColor({ field: "category" }).encodeSize({ field: "value" }).encodeColor({ value: "red" }).encodeSize({ value: 100 }),
+    chart().createCanvas().createProjection({ id: "noteMap", type: "identity" }).createCoordinate({ type: "geo" })
+      .createGeoAnnotation({ anchor: { type: "position", position: [20, 30] }, text: "Location" }).editGeoAnnotation({ text: "Updated", dx: 5 }),
     chart().createGeometryData({ id: "fitShape", format: "geojson", coordinateKind: "planar",
       values: { type: "LineString", coordinates: [[0, 0], [10, 20]] } })
       .createProjection({ id: "fittedMap", type: "identity", fit: { geometry: "fitShape", width: 100, height: 100 } })

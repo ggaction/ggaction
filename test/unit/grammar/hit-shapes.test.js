@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { createCanvas } from "@napi-rs/canvas";
-import { prepareHitShape, hitShape, normalizeHitQuery, MAX_HIT_CLIPS, MAX_HIT_SHAPE_PARTS } from "../../../src/grammar/hitShapes.js";
+import { prepareHitShape, prepareHitShapeUnion, hitShape, nearestHitShape, hitShapeAnchor, hitShapeWork, normalizeHitQuery, MAX_HIT_CLIPS, MAX_HIT_SHAPE_PARTS } from "../../../src/grammar/hitShapes.js";
 
 const identity = [1, 0, 0, 1, 0, 0];
 const rectangle = { type: "rect", rect: { x: 10, y: 20, width: 20, height: 10 } };
@@ -22,6 +22,41 @@ test("filled circle and rectangle hit exact geometry without expanding holes by 
   assert.equal(query(b, 29, 29).hit, false); assert.equal(query(b, 31, 20).hit, false);
   assert.equal(query(prepare({ ...circle, radius: 0 }), 20, 20).hit, false);
   assert.equal(query(prepare({ ...rectangle, rect: { x: 10, y: 20, width: 0, height: 10 } }), 10, 25).hit, false);
+});
+
+test("circle preparation retains analytic membership, nearest distance and conservative work", () => {
+  const input = config({ type: "circle", x: -0, y: 20, radius: 10 });
+  const before = structuredClone(input), shape = prepareHitShape(input);
+  assert.deepEqual(input, before);
+  assert.equal(Object.is(input.geometry.x, -0), true);
+  assert.equal(hitShapeWork(shape), 266);
+  assert.deepEqual(shape.bounds, { left: -10.25, right: 10.25, top: 9.75, bottom: 30.25 });
+  assert.equal(nearestHitShape(shape, { x: 15, y: 20 }, { slop: 0 }).distance, 5);
+  // An arbitrary boundary point is admitted analytically, independent of the subdivided path.
+  assert.equal(query(shape, 6, 28, { slop: 0 }).hit, true);
+  assert.equal(query(shape, 6.00001, 28, { slop: 0 }).hit, false);
+  input.geometry.radius = 100; input.transform[4] = 200;
+  assert.equal(query(shape, 15, 20, { slop: 0 }).hit, false);
+  for (const radius of [0, -0]) {
+    const empty = prepare({ type: "circle", x: -0, y: 20, radius });
+    assert.equal(hitShapeWork(empty), 1);
+    assert.equal(empty.bounds, null);
+    assert.equal(nearestHitShape(empty, { x: 0, y: 20 }, { slop: 0 }).distance, Infinity);
+  }
+});
+
+test("transformed circle fill keeps clip membership and independent nearest distance", () => {
+  const transform = [0, 2, -2, 0, 100, 20];
+  const geometry = { type: "circle", x: 0, y: 0, radius: 10 };
+  const shape = prepare(geometry, { transform });
+  assert.equal(query(shape, 100, 40, { slop: 0 }).hit, true);
+  assert.equal(query(shape, 100, 40.00001, { slop: 0 }).hit, false);
+  assert.equal(nearestHitShape(shape, { x: 130, y: 20 }, { slop: 0 }).distance, 10);
+  const clipped = prepare(geometry, { transform,
+    clips: [{ geometry: { type: "rect", rect: { x: -10, y: -10, width: 10, height: 20 } }, transform }] });
+  assert.equal(query(clipped, 100, 10, { slop: 0 }).hit, true);
+  assert.equal(query(clipped, 100, 30, { slop: 0 }).hit, false);
+  assert.equal(nearestHitShape(clipped, { x: 100, y: 30 }, { slop: 0 }).distance, Infinity);
 });
 
 test("closed stroke, dash gaps and pointer/touch slop refer to painted CSS footprints", () => {
@@ -136,4 +171,42 @@ test("shape preparation bounds work, preserves inputs and freezes cached geometr
   assert.deepEqual(input, before); assert.ok(Object.isFrozen(prepared) && Object.isFrozen(prepared.bounds) && Object.isFrozen(prepared.diagnostics));
   input.transform[4] = 100; input.geometry.rect.x = 100;
   assert.equal(query(prepared, 20, 25).hit, true);
+});
+
+test("private geometry isolates shared caller transforms, clips, commands and later preparations", () => {
+  const transform = [1, 0, 0, 1, 10, 20];
+  const commands = ring([[0, 0], [10, 0], [10, 10], [0, 10]]);
+  const geometry = { type: "path", commands, fillRule: "nonzero" };
+  const input = config(geometry, { transform, clips: [{ geometry, transform }] });
+  const first = prepareHitShape(input), work = hitShapeWork(first), anchor = hitShapeAnchor(first);
+  const sharedCircle = config({ type: "circle", x: 5, y: 5, radius: 3 }, {
+    transform, clips: [{ geometry, transform }],
+    paint: { fill: true, stroke: { width: 2, dash: [2, 2] }, opacity: 1 }
+  });
+  const circleShape = prepareHitShape(sharedCircle);
+  assert.equal(query(first, 15, 25, { slop: 0 }).hit, true);
+  assert.equal(query(circleShape, 15, 25, { slop: 0 }).hit, true);
+  assert.equal(Object.isFrozen(transform), false);
+  assert.equal(Object.isFrozen(commands), false);
+  commands[0].x = -100; commands[1].x = 30; transform[4] = 100;
+  sharedCircle.geometry.radius = 1; sharedCircle.paint.stroke.width = 20;
+  sharedCircle.paint.stroke.dash[0] = 10;
+  const later = prepareHitShape(input);
+  assert.equal(query(later, 15, 25, { slop: 0 }).hit, false);
+  assert.equal(query(first, 15, 25, { slop: 0 }).hit, true);
+  assert.equal(query(circleShape, 15, 25, { slop: 0 }).hit, true);
+  assert.equal(hitShapeWork(first), work);
+  assert.deepEqual(hitShapeAnchor(first), anchor);
+  assert.equal(query(prepareHitShapeUnion([first, circleShape]), 15, 25, { slop: 0 }).hit, true);
+});
+
+test("private geometry requires its exact authentic handle even for frozen or cloned views", () => {
+  const original = prepare(circle);
+  for (const forged of [{}, { ...original }, Object.freeze({ ...original }), structuredClone(original)]) {
+    assert.throws(() => hitShape(forged, { x: 20, y: 20 }), /prepared/);
+    assert.throws(() => nearestHitShape(forged, { x: 20, y: 20 }), /prepared/);
+    assert.throws(() => hitShapeWork(forged), /prepared/);
+    assert.throws(() => hitShapeAnchor(forged), /prepared/);
+    assert.throws(() => prepareHitShapeUnion([original, forged]), /prepared/);
+  }
 });

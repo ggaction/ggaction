@@ -15,6 +15,9 @@ dependent chart, or rebuild a program from application-owned rows.
 | --- | --- | --- |
 | CSV/JSON, named, or URL data | `prepareDataUpdate` then `applyDataUpdate` | Explicit host loader and current request token |
 | New rows with compatible fields | `reviseData({ source, id, values })` | Existing source ID and fresh revision ID; dependent transforms remain valid |
+| Large compatible row refresh | `reviseDataInSlices(program, options, { sliceMs?, signal? })` | Same as `reviseData`; await the promise |
+| Scalar input change | `editParameter({ target, value })`, or a prepared parameter request for URL sources | Existing parameter |
+| Attached live chart | `setData(rows)` from [`ggaction/live`](./api/live.md) | Runs `reviseData` and animates the change |
 | Field names, types, or chart topology change | Rebuild from application-owned rows | Update affected encodings and transform definitions together |
 | Transform parameters change | The owning `edit*Data` action | Existing logical transform ID and valid options |
 | One mark should use independent data | `createData` then the mark's data editor | Explicit target and a compatible replacement schema |
@@ -99,6 +102,35 @@ current source ID and another fresh ID. Old source snapshots are not deleted
 automatically. Standalone derived-data definitions keep their existing logical
 editor targets.
 
+`reviseDataInSlices(program, options, { sliceMs?, signal? })` from `ggaction`
+returns the same revision, or rejects with the same error, as
+`program.reviseData(options)`. Large revisions run in synchronous slices and
+yield to the host between them; `sliceMs` is an integer from 1 to 1000 (default
+40). Aborting `signal` rejects with its reason and leaves `program` unchanged.
+Unit charts revise their rows, derived data, scales and point marks in batches
+of 1,024 rows. Other mark families and facet revisions each run as one step, so
+their pause grows with the row count. A slice ends at the first batch boundary
+after `sliceMs`, so a pause can exceed `sliceMs` by one batch plus host garbage
+collection. Plain data options, rows included, are copied and frozen before the
+call returns, so later changes to them do not affect the pending revision. The
+copy counts toward the first slice, which can therefore exceed `sliceMs` for
+very large inputs. See [Performance](./performance.md#keep-large-updates-responsive)
+for measured limits.
+
+```javascript
+import { chart, reviseDataInSlices } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ id: "sales", values: [{ quarter: "Q1", revenue: 12 }] })
+  .createBarPlot({ x: "quarter", y: "revenue", guides: false });
+const revised = await reviseDataInSlices(program, {
+  source: "sales",
+  id: "salesUpdated",
+  values: [{ quarter: "Q1", revenue: 15 }, { quarter: "Q2", revenue: 20 }]
+}, { sliceMs: 10 });
+```
+
 Retained-source facets, facet grids, and repeats rederive their cells using the
 existing recipe, including its selected values and fields. They do not add new
 facet categories automatically. For concat, revise an explicit child and pass it
@@ -172,8 +204,14 @@ new schema or intended chart structure requires a different authoring flow.
 - Validate rows before committing the new snapshot. A failed action leaves the
   previous program untouched.
 - Debounce high-frequency feeds according to the product's acceptable
-  staleness; ggaction is a static snapshot authoring library, not a streaming
-  scene graph.
+  staleness. Each update produces a new immutable snapshot; even
+  [`ggaction/live`](./api/live.md) and interaction sessions commit whole
+  revisions rather than streaming individual rows. For an attached browser
+  chart, `setData(rows)` revises and animates the change; use
+  [`planTransition`](./api/animation.md) to animate between two revisions yourself.
+- Only `reviseDataInSlices` and `loadProgramInSlices` yield during work.
+  `applyDataUpdate`, parameter and derived-data edits, and `ggaction/live`
+  `setData`/`load` run synchronously.
 - Rebuild once for a batch. Do not call `createData` once per row or grow a
   trace as an event log.
 - Keep the current logical size in host state so data refresh and responsive
@@ -221,6 +259,26 @@ children, and composition state. It does not replay actions or recalculate the
 chart. Subsequent edits use the restored settings and leave the saved snapshot
 unchanged. Partial authoring states can be saved; restoring one does not supply
 missing Canvas dimensions or other prerequisites.
+
+`loadProgramInSlices(text, { sliceMs?, signal? }): Promise<ChartProgram>`
+restores the same editable snapshot in short synchronous slices so a large
+chart does not block the page. It returns the same program, and rejects with
+the same error, as `deserializeProgram`. Validation and restoration run in
+batches of 1,024 rows; a slice ends at the first batch boundary after `sliceMs`
+(an integer from 1 to 1000, default 40) and then yields to the host before
+continuing. Host garbage-collection pauses are included, so at 100,000 rows
+expect occasional pauses above 50 ms (see [Performance](./performance.md#known-limits)). Aborting `signal` rejects with its reason and returns
+no program. The snapshot text is a string and cannot change during the load.
+
+```javascript
+import { chart } from "ggaction";
+import { serializeProgram, loadProgramInSlices } from "ggaction/persistence";
+
+const saved = serializeProgram(chart().createCanvas()
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 5 }] })
+  .createScatterPlot({ x: "x", y: "y" }));
+const program = await loadProgramInSlices(saved, { sliceMs: 20 });
+```
 
 `serializeGraphic(program): string` accepts an object with `graphicSpec`.
 `deserializeGraphic(text): Readonly<Pick<ChartProgram, "graphicSpec">>` returns
@@ -310,7 +368,8 @@ not as an object-identity graph.
 
 [Source and derived data](./api/data/source-and-derived.md) ·
 [ChartProgram and immutability](./concepts/chart-program.md) ·
-[Responsive charts](./responsive-charts.md) · [Errors and recovery](./errors-and-recovery.md)
+[Responsive charts](./responsive-charts.md) · [Errors and recovery](./errors-and-recovery.md) ·
+[Live charts](./api/live.md) · [Animation](./api/animation.md)
 
 Full row contributions add storage proportional to the actual lineage. Shared
 arrays avoid duplicating complete source tables across facets. The regression

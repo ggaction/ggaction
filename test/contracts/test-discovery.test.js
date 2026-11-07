@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process";
 
 import {
   classifyTestFile,
@@ -58,13 +59,14 @@ test("separates network-backed corpus sweeps from source coverage", () => {
   const normal = collectTestFiles("all", testRoot);
   const realistic = collectTestFiles("realistic", testRoot);
 
-  assert.equal(realistic.length, 51);
+  assert.equal(realistic.length, 66);
   assert.equal(realistic.every(file => file.endsWith(".test.js")), true);
   assert.equal(realistic.some(file => file.endsWith(
     `${path.sep}dataset-fixtures.test.js`
   )), true);
   for (const name of [
     "realistic-edge-routes.test.js",
+    "realistic-graph-drag.test.js",
     "realistic-projections.test.js",
     "realistic-geographic-marks.test.js",
     "realistic-geographic-join.test.js",
@@ -72,6 +74,14 @@ test("separates network-backed corpus sweeps from source coverage", () => {
     "realistic-ohlc-plots.test.js",
     "realistic-waterfall-plots.test.js",
     "realistic-geographic-levels.test.js",
+    "realistic-geographic-annotations.test.js",
+    "realistic-geographic-encodings.test.js",
+    "realistic-geographic-camera.test.js",
+    "realistic-geographic-transitions.test.js",
+    "realistic-guide-transitions.test.js",
+    "realistic-axis-label-reflow.test.js",
+    "realistic-animation-timeline.test.js",
+    "realistic-cartesian-transitions.test.js",
     "realistic-calendar-plots.test.js",
     "realistic-axis-facet-owner-witness.test.js",
     "realistic-layer-plot.test.js",
@@ -90,7 +100,12 @@ test("separates network-backed corpus sweeps from source coverage", () => {
     "realistic-mark-shadows.test.js",
     "realistic-flow-layouts.test.js",
     "realistic-contours.test.js",
-    "realistic-responsive-layout.test.js"
+    "realistic-responsive-layout.test.js",
+    "realistic-stream-baselines.test.js",
+    "realistic-polar-transitions.test.js",
+    "realistic-trail-plots.test.js",
+    "realistic-table-plots.test.js",
+    "realistic-composition-recipes.test.js"
   ]) {
     assert.equal(realistic.some(file => file.endsWith(`${path.sep}${name}`)), true);
   }
@@ -347,6 +362,17 @@ test("validates every selector before short-circuit matching", () => {
     ["unit", "contracts", "charts", "docs", "gates", "capability:does-not-exist"],
     ["capability:does-not-exist", "unit"]
   ]) assert.throws(() => collectTestFiles("all", undefined, selectors), /Unknown test capability/);
+});
+
+test("runner rejects each unmatched selector before executing any selected tests", () => {
+  const runner = fileURLToPath(new URL("../../scripts/run-tests.js", import.meta.url));
+  for (const invalid of ["unit/no-such-test.test.js", "unit/no-such-directory", "contracts/test-discovery.test.js"]) {
+    const result = spawnSync(process.execPath, [runner, "unit", "unit/support/test-sharding.test.js", invalid], { encoding: "utf8", timeout: 30_000 });
+    assert.equal(result.error, undefined);
+    assert.equal(result.status, 1);
+    assert.ok(result.stderr.includes(`Test selector "${invalid}" matches no tests in suite "unit".`), result.stderr);
+    assert.doesNotMatch(result.stdout, /# tests|Subtest:/);
+  }
 });
 
 

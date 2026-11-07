@@ -1,0 +1,927 @@
+{
+  "status": "combined-explicit-hit-preparation-verified; full-native-performance-pending",
+  "base": "09257f38d",
+  "upstream": "ac96edb076fc9a299fa82e6ef18b63a2eb001845",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Session-local maxSceneNodes/maxWork; exact validated metadata proof with unchanged work recharging; same-call circle commands reuse; private geometry assembly/raw computation with existing immutable facade and numeric guards retained.",
+  "runtimeSHA256": {
+    "src/grammar/hitPolicy.js": "c69275fb3be3291526a6f6179b5ff580ef3441eebafe0fbf469f847ed88ca493",
+    "src/grammar/hitIndex.js": "df25c5040d01d2bae638d576145397e186982c79fdb7aa44774b4ffd7dc5b804",
+    "src/grammar/hitShapes.js": "7ecde953aa500e9ec340624075681dd2fd6af4be7dbeacb7bfcc2ecb4c3aa613",
+    "src/grammar/pathGeometry.js": "75a41f3b66275cee5994499c38a5eb1b316066465eff2d4a44d126b317c4427e",
+    "src/interaction/hitFrame.js": "c5710346a432375b1942f96a2fef41a96f4a3a547057a78ef417a3bf5c6b06ae",
+    "src/interaction/hitProgram.js": "3f22a13feb7a28ae9ab9be4d22c3a3d57d29080ccc2ac6b61f157bbcd8fc127a",
+    "src/interaction/sceneFrame.js": "b60d6ca9fc44273d112d20c33b71609c741ab98c98efc0afe53f0e9ccb5d2fd7",
+    "src/interaction/session.js": "7543342940a3cbcbd18f6cba549a8fc180f42cdcde596a9aa18735b41933edee",
+    "src/interaction/edgePresentation.js": "972db4e3f88cd05d8fc0922f6dbb5d566bb716fcbd7b362601f3d6a920508d49",
+    "src/interaction/regionSelection.js": "e86b74f9128d5b078f9adfc9daf3af24a00f3930644fd70a7023537fc8ea423e",
+    "src/interaction/regionResize.js": "ab56b19d3f74c151c11ab8037c9ce18e136b5532779ea03d822fbfcb6af79f9c",
+    "types/interaction.d.ts": "b21b3e11e4bd1f14a6002f4382350abbba39f43bd7254f101e170f8c4301b093"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1252,
+    "packedBytes": 1793316,
+    "unpackedBytes": 8093926,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-e266d9388f0a36836ad881edbb9293a1a14c655891e33464a4a708cf6019085e.tgz",
+    "sha256": "e266d9388f0a36836ad881edbb9293a1a14c655891e33464a4a708cf6019085e"
+  },
+  "checks": {
+    "owning.log": 127,
+    "coverage.log": 1269,
+    "contracts.log": 38,
+    "package-contracts.log": 7,
+    "coverage-policy.log": 7,
+    "docs.log": 244,
+    "animation-browser.log": 2,
+    "browser.log": 2
+  },
+  "critical": {
+    "grammar/pathGeometry.js": {
+      "lines": 98.45,
+      "branches": 97.66,
+      "functions": 100,
+      "floor": {
+        "lines": 80,
+        "branches": 75,
+        "functions": 80
+      }
+    },
+    "grammar/hitShapes.js": {
+      "lines": 100,
+      "branches": 95.38,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "grammar/hitIndex.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "grammar/hitPolicy.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "interaction/edgePresentation.js": {
+      "lines": 100,
+      "branches": 91.89,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "interaction/hitFrame.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "interaction/hitProgram.js": {
+      "lines": 100,
+      "branches": 94.95,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "interaction/regionResize.js": {
+      "lines": 100,
+      "branches": 90,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "interaction/regionSelection.js": {
+      "lines": 100,
+      "branches": 96.83,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "interaction/sceneFrame.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "interaction/session.js": {
+      "lines": 100,
+      "branches": 95.54,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    }
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "sha256": "e266d9388f0a36836ad881edbb9293a1a14c655891e33464a4a708cf6019085e",
+      "runtime": [
+        {
+          "id": "hit-preparation/all-100000-native-points",
+          "status": "passed",
+          "durationMs": 103716.156875
+        },
+        {
+          "id": "hit-preparation/closed-session-policy-atomic-replacement",
+          "status": "passed",
+          "durationMs": 58.67750000000524
+        }
+      ],
+      "qualification": {
+        "node": "v20.20.2",
+        "platform": "darwin",
+        "records": [
+          {
+            "id": "runtime",
+            "status": "passed",
+            "durationMs": 104161.52712500001
+          },
+          {
+            "id": "strict-types",
+            "status": "passed",
+            "durationMs": 261.2220410000009
+          },
+          {
+            "id": "documentation",
+            "status": "passed",
+            "durationMs": 476.9934579999972
+          },
+          {
+            "id": "optional-peers",
+            "status": "passed",
+            "durationMs": 3463.635500000004
+          },
+          {
+            "id": "bundle:ggaction",
+            "status": "passed",
+            "durationMs": 3731.209625000003
+          },
+          {
+            "id": "bundle:ggaction/basic",
+            "status": "passed",
+            "durationMs": 1956.0367499999993
+          },
+          {
+            "id": "bundle:ggaction/svg",
+            "status": "passed",
+            "durationMs": 113.4582500000106
+          },
+          {
+            "id": "bundle:ggaction/graph",
+            "status": "passed",
+            "durationMs": 453.5988330000109
+          },
+          {
+            "id": "bundle:ggaction/animation",
+            "status": "passed",
+            "durationMs": 1721.9229590000032
+          },
+          {
+            "id": "bundle:ggaction/interaction",
+            "status": "passed",
+            "durationMs": 1028.1391660000081
+          }
+        ]
+      },
+      "animation": {
+        "node": "v20.20.2",
+        "sha256": "e266d9388f0a36836ad881edbb9293a1a14c655891e33464a4a708cf6019085e",
+        "checks": [
+          {
+            "id": "animation-appearance/offline-four-renderers",
+            "status": "passed",
+            "durationMs": 337.44179099999997
+          },
+          {
+            "id": "animation-appearance/current-frame-interruption",
+            "status": "passed",
+            "durationMs": 47.72741599999995
+          },
+          {
+            "id": "animation-appearance/current-ink-selection",
+            "status": "passed",
+            "durationMs": 31.8927920000001
+          },
+          {
+            "id": "animation-cartesian-completion/native-four-renderers",
+            "status": "passed",
+            "durationMs": 174.7841249999999
+          },
+          {
+            "id": "animation-cartesian-completion/offline-network-free",
+            "status": "passed",
+            "durationMs": 611.0764590000001
+          },
+          {
+            "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+            "status": "passed",
+            "durationMs": 215.49762499999997
+          }
+        ],
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1065,
+            "minifiedBytes": 2740818,
+            "gzipBytes": 786220
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 625,
+            "minifiedBytes": 1447519,
+            "gzipBytes": 424672
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24954
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 113,
+            "minifiedBytes": 226043,
+            "gzipBytes": 67866
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 509,
+            "minifiedBytes": 1113353,
+            "gzipBytes": 333881
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 214,
+            "minifiedBytes": 427248,
+            "gzipBytes": 136692
+          }
+        ],
+        "types": "passed",
+        "peers": {
+          "@modelcontextprotocol/sdk": "1.32.1",
+          "@napi-rs/canvas": "1.0.9"
+        },
+        "status": "passed"
+      }
+    },
+    {
+      "node": "v22.23.1",
+      "sha256": "e266d9388f0a36836ad881edbb9293a1a14c655891e33464a4a708cf6019085e",
+      "runtime": [
+        {
+          "id": "hit-preparation/all-100000-native-points",
+          "status": "passed",
+          "durationMs": 68918.18325
+        },
+        {
+          "id": "hit-preparation/closed-session-policy-atomic-replacement",
+          "status": "passed",
+          "durationMs": 39.241334000005736
+        }
+      ],
+      "qualification": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "records": [
+          {
+            "id": "runtime",
+            "status": "passed",
+            "durationMs": 69518.9105
+          },
+          {
+            "id": "strict-types",
+            "status": "passed",
+            "durationMs": 196.23412500000268
+          },
+          {
+            "id": "documentation",
+            "status": "passed",
+            "durationMs": 477.4860839999892
+          },
+          {
+            "id": "optional-peers",
+            "status": "passed",
+            "durationMs": 2992.173624999996
+          },
+          {
+            "id": "bundle:ggaction",
+            "status": "passed",
+            "durationMs": 2389.5951670000068
+          },
+          {
+            "id": "bundle:ggaction/basic",
+            "status": "passed",
+            "durationMs": 1201.0679999999993
+          },
+          {
+            "id": "bundle:ggaction/svg",
+            "status": "passed",
+            "durationMs": 69.91941699999734
+          },
+          {
+            "id": "bundle:ggaction/graph",
+            "status": "passed",
+            "durationMs": 257.98608299999614
+          },
+          {
+            "id": "bundle:ggaction/animation",
+            "status": "passed",
+            "durationMs": 963.7270419999986
+          },
+          {
+            "id": "bundle:ggaction/interaction",
+            "status": "passed",
+            "durationMs": 524.0267080000049
+          }
+        ]
+      },
+      "animation": {
+        "node": "v22.23.1",
+        "sha256": "e266d9388f0a36836ad881edbb9293a1a14c655891e33464a4a708cf6019085e",
+        "checks": [
+          {
+            "id": "animation-appearance/offline-four-renderers",
+            "status": "passed",
+            "durationMs": 384.80991700000004
+          },
+          {
+            "id": "animation-appearance/current-frame-interruption",
+            "status": "passed",
+            "durationMs": 40.46195899999998
+          },
+          {
+            "id": "animation-appearance/current-ink-selection",
+            "status": "passed",
+            "durationMs": 25.59770800000001
+          },
+          {
+            "id": "animation-cartesian-completion/native-four-renderers",
+            "status": "passed",
+            "durationMs": 143.1864579999999
+          },
+          {
+            "id": "animation-cartesian-completion/offline-network-free",
+            "status": "passed",
+            "durationMs": 685.833083
+          },
+          {
+            "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+            "status": "passed",
+            "durationMs": 216.26129100000003
+          }
+        ],
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1065,
+            "minifiedBytes": 2740818,
+            "gzipBytes": 784862
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 625,
+            "minifiedBytes": 1447519,
+            "gzipBytes": 423795
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24779
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 113,
+            "minifiedBytes": 226043,
+            "gzipBytes": 67718
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 509,
+            "minifiedBytes": 1113353,
+            "gzipBytes": 332761
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 214,
+            "minifiedBytes": 427248,
+            "gzipBytes": 136200
+          }
+        ],
+        "types": "passed",
+        "peers": {
+          "@modelcontextprotocol/sdk": "1.32.1",
+          "@napi-rs/canvas": "1.0.9"
+        },
+        "status": "passed"
+      }
+    },
+    {
+      "node": "v24.22.1",
+      "sha256": "e266d9388f0a36836ad881edbb9293a1a14c655891e33464a4a708cf6019085e",
+      "runtime": [
+        {
+          "id": "hit-preparation/all-100000-native-points",
+          "status": "passed",
+          "durationMs": 24089.139667
+        },
+        {
+          "id": "hit-preparation/closed-session-policy-atomic-replacement",
+          "status": "passed",
+          "durationMs": 8.476999999998952
+        }
+      ],
+      "qualification": {
+        "node": "v24.22.1",
+        "platform": "darwin",
+        "records": [
+          {
+            "id": "runtime",
+            "status": "passed",
+            "durationMs": 24461.135
+          },
+          {
+            "id": "strict-types",
+            "status": "passed",
+            "durationMs": 196.34529199999815
+          },
+          {
+            "id": "documentation",
+            "status": "passed",
+            "durationMs": 453.6551249999975
+          },
+          {
+            "id": "optional-peers",
+            "status": "passed",
+            "durationMs": 2821.128417
+          },
+          {
+            "id": "bundle:ggaction",
+            "status": "passed",
+            "durationMs": 2241.3700419999986
+          },
+          {
+            "id": "bundle:ggaction/basic",
+            "status": "passed",
+            "durationMs": 1132.5169580000002
+          },
+          {
+            "id": "bundle:ggaction/svg",
+            "status": "passed",
+            "durationMs": 64.82229099999677
+          },
+          {
+            "id": "bundle:ggaction/graph",
+            "status": "passed",
+            "durationMs": 238.8902919999964
+          },
+          {
+            "id": "bundle:ggaction/animation",
+            "status": "passed",
+            "durationMs": 876.4025840000031
+          },
+          {
+            "id": "bundle:ggaction/interaction",
+            "status": "passed",
+            "durationMs": 502.8376250000001
+          }
+        ]
+      },
+      "animation": {
+        "node": "v24.22.1",
+        "sha256": "e266d9388f0a36836ad881edbb9293a1a14c655891e33464a4a708cf6019085e",
+        "checks": [
+          {
+            "id": "animation-appearance/offline-four-renderers",
+            "status": "passed",
+            "durationMs": 344.327625
+          },
+          {
+            "id": "animation-appearance/current-frame-interruption",
+            "status": "passed",
+            "durationMs": 28.424292000000037
+          },
+          {
+            "id": "animation-appearance/current-ink-selection",
+            "status": "passed",
+            "durationMs": 21.213292000000138
+          },
+          {
+            "id": "animation-cartesian-completion/native-four-renderers",
+            "status": "passed",
+            "durationMs": 138.81433399999992
+          },
+          {
+            "id": "animation-cartesian-completion/offline-network-free",
+            "status": "passed",
+            "durationMs": 622.8995
+          },
+          {
+            "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+            "status": "passed",
+            "durationMs": 189.50791600000002
+          }
+        ],
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1065,
+            "minifiedBytes": 2740818,
+            "gzipBytes": 786220
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 625,
+            "minifiedBytes": 1447519,
+            "gzipBytes": 424672
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24954
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 113,
+            "minifiedBytes": 226043,
+            "gzipBytes": 67866
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 509,
+            "minifiedBytes": 1113353,
+            "gzipBytes": 333881
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 214,
+            "minifiedBytes": 427248,
+            "gzipBytes": 136692
+          }
+        ],
+        "types": "passed",
+        "peers": {
+          "@modelcontextprotocol/sdk": "1.32.1",
+          "@napi-rs/canvas": "1.0.9"
+        },
+        "status": "passed"
+      }
+    }
+  ],
+  "built": {
+    "pages": 186,
+    "selectiveArtifacts": 1606,
+    "status": "passed"
+  },
+  "limits": {
+    "entries": 1252,
+    "packedBytes": 1797200,
+    "unpackedBytes": 8094000,
+    "FullGzip": 786300,
+    "interactionGzip": 136700,
+    "animationGzip": 333900,
+    "searchBytes": 1093300
+  },
+  "corrections": [
+    "Coverage-policy test was first sent to contracts instead of its unit/support owner; the corrected canonical unit run passed7.",
+    "Initial strict pack rejected1252entries over1251. Original Node20 packed1797146/unpacked8093926 and Full786220 were preserved and only artifact ceilings minimally reassessed.",
+    "Initial docs242/244 and built static checks failed solely at combined search1093282 over1092700. Rechecked same built output and docs after minimum1093300 threshold; runtime guards/SLO unchanged."
+  ],
+  "reuse": {
+    "upstream": "All12 runtime/type owners byte-identical to00e8ac18e; exact99matrix and prior boundary/large receipts retained in upstream HIT_PREPARATION. Actual combined-source1269 owning critical, same-tar original100k3Node+Chromium and animation consumers are rerun here.",
+    "docsUI": "Public interaction prose already underwent upstream4width/Axe/browser verification; shared UI/CSS unchanged; full docs and built static validation rerun."
+  },
+  "pending": [
+    "Dedicated browser P95/retained heap/lifecycle of final native candidate",
+    "Sequential STEP057-070 and final required suites",
+    "Final independent review and separately protected release delivery"
+  ],
+  "evidenceFiles": {
+    "coverage.log": {
+      "bytes": 307196,
+      "sha256": "3e3b797524cacd64c04e1a4209aa9559da462e0c76d7cf4def37781bae00ae0c"
+    },
+    "upstream-runtime.json": {
+      "bytes": 1222,
+      "sha256": "cd88fa9f86f3022f4524d644c41cbf862e1ddef412ebfe26bbc97bc2fc2e7ee2"
+    },
+    "coverage-policy-wrong-suite.log": {
+      "bytes": 536,
+      "sha256": "b6dbc160ef49683e4223f6e3e81805270ef28ff28b475872ee351da900a63219"
+    },
+    "pack22.json": {
+      "bytes": 387,
+      "sha256": "0cfa526fa1b3762ebc53ea8324edfcd7b242290ac718e9f3b44dde4a93c6ef54"
+    },
+    "browser.log": {
+      "bytes": 607,
+      "sha256": "7662cb3b9dfd5966b2510bd8330b9b6e842d45bf2e1110ee28065e0c30122dd2"
+    },
+    "animation-installed-24.log": {
+      "bytes": 1456,
+      "sha256": "6bbaad0ed92990e99bdc8c26643c0a78b53b829b0ef05b5de8227b8cbe2e83a6"
+    },
+    "contracts.log": {
+      "bytes": 7996,
+      "sha256": "3b1d59ab3ec0574c24b2197df8c41e1d3ebcecf9b160a809dd6e0ab31ef1e901"
+    },
+    "animation-installed-20.log": {
+      "bytes": 1469,
+      "sha256": "78ae35eab23ae31243e63e0d8772cb35c0fb30ac0b1199e4771e22ce16673737"
+    },
+    "animation-installed-22.log": {
+      "bytes": 1463,
+      "sha256": "5c434863f1eaee69776b49d317f17103c89a59514489f79e92fef701821ecd38"
+    },
+    "animation-installed-22.json": {
+      "bytes": 2017,
+      "sha256": "b4509480834b12f619d39bf1220e854de0d2a326c9a56ee67a495eeb3b75c121"
+    },
+    "frozen.json": {
+      "bytes": 436,
+      "sha256": "955549ad05155bdd3c9d82c4ca5b47a806c192e244d13c5a836694bab312cabe"
+    },
+    "installed-24.log": {
+      "bytes": 1216,
+      "sha256": "c509875c67138c5b59cfdd1ecab21afcd95c92928c4955ea395158817675186b"
+    },
+    "pack20.log": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "pack22.log": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "pack24.json": {
+      "bytes": 387,
+      "sha256": "4293c16a638bcea3c14d800b0457913528e5b8783e484c224ffac69ee37f9477"
+    },
+    "browser-dpr-1.json": {
+      "bytes": 940,
+      "sha256": "12aebbf3ae5ef774f18a182e401ef96e537bd245fd98c100a6e6ad50c4dbec62"
+    },
+    "built-first.log": {
+      "bytes": 431,
+      "sha256": "0baae7903b03c59bd124cc6fad78b4c66e488a56a2b177d9bab6c89b9c47fe6b"
+    },
+    "installed-22.log": {
+      "bytes": 1216,
+      "sha256": "e819cb60965927c6c5b138bb943099e20d475f0cee6fbb7d3fbd190fef4ab818"
+    },
+    "animation-installed-24.json": {
+      "bytes": 2010,
+      "sha256": "179d53df6b5a832d52ff066507884e0b3f20935dcd44c799bf1a523dec67d8cc"
+    },
+    "pack20-first-observed.json": {
+      "bytes": 109,
+      "sha256": "870e9463264b16cb0349bcbc502a4f06a69566b40fff812f807bb80df646423d"
+    },
+    "premeasure22.json": {
+      "bytes": 305,
+      "sha256": "dacd7af563e9947bde92ff9e88112868445cc2a00a14b9131df06e37de1809ba"
+    },
+    "pack20-first.json": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docs.log": {
+      "bytes": 74394,
+      "sha256": "8423e8b00a8396450dc8e6675b2574599d9d6e20ecedb551f06b3d1f66f04405"
+    },
+    "installed-20.log": {
+      "bytes": 1216,
+      "sha256": "0ff842f634bc808b10c27d3247585322395a5cd602b9a14d47ea9c63bf66a072"
+    },
+    "pack24.log": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "browser-dpr-2.json": {
+      "bytes": 940,
+      "sha256": "c103b0e2d11b3adfa9b744d516c136568053386fe025fbb3c2569bcfb5a212f7"
+    },
+    "package-contracts.log": {
+      "bytes": 1824,
+      "sha256": "061c5981dab8c1ba0e2c864383f407d99d3244aeca3f0392c5606feafaa1dc6b"
+    },
+    "premeasure20.json": {
+      "bytes": 305,
+      "sha256": "c0c0e3d3c5ee039d0bbaece764a59e80831fafc33857e3c976a6547b0f484086"
+    },
+    "pack20.json": {
+      "bytes": 387,
+      "sha256": "46e609f789d78674f4aa2387a2a67be95e85443f02e4570746fab703c663616d"
+    },
+    "prepack.log": {
+      "bytes": 507,
+      "sha256": "348be90f8a85c08d3f93e9734a985698cbc6367a36120845d33440de9d0146c5"
+    },
+    "animation-browser.log": {
+      "bytes": 1545,
+      "sha256": "3faccecdf3fda3f72e3549e87f427bb4822a2929b1b4dcb712628720fb33ab42"
+    },
+    "owning.log": {
+      "bytes": 31085,
+      "sha256": "e010bee058e05b8549f95347420f26c45cc795c3a37eda87e433d6cd948f5349"
+    },
+    "premeasure22.log": {
+      "bytes": 253,
+      "sha256": "ea1db884fc9b373d2b5eb39e39fb6af46584191812be98c060447da49b34061c"
+    },
+    "built.log": {
+      "bytes": 102,
+      "sha256": "16305e5926be746711cfe72bc6671fdf6880e924b51217fec344f785e933a341"
+    },
+    "pack20-first.log": {
+      "bytes": 966,
+      "sha256": "14007538f8cb41b50672ae9e0cfffe60d0fdbf8d6462ff9335258262e9ba1138"
+    },
+    "premeasure20.log": {
+      "bytes": 253,
+      "sha256": "8d97fe16486022ed4406b3452ed80e1c7ab003de60de4d9b032a2d2bb283b8bb"
+    },
+    "coverage-policy.log": {
+      "bytes": 1396,
+      "sha256": "1545178261e00eccdd1f37c9ba4b06b27bfc3c852b67e1d0b2e1e0b453892e9d"
+    },
+    "evidence.py": {
+      "bytes": 4153,
+      "sha256": "32e1176fdc36f2ddeac98be8e9248330a7ec408517d1dc9abd1c7292f5a60a51"
+    },
+    "generate.log": {
+      "bytes": 13431,
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5"
+    },
+    "docs-first.log": {
+      "bytes": 75731,
+      "sha256": "b56f7a17612ac4afeddd17fbd836cbb88389145f7873406dc9f7f1b1d2fbed53"
+    },
+    "animation-installed-20.json": {
+      "bytes": 2023,
+      "sha256": "87eb612eca1abf2acb89d41f1ca5da40fc4ebc6ae7ecea086a655bef042f6ca8"
+    },
+    "build.log": {
+      "bytes": 420,
+      "sha256": "3eded11f8caca08317dc258a98bcba94807442e08fd0da78eb9a0d12c5ac2dce"
+    },
+    "critical.json": {
+      "bytes": 2029,
+      "sha256": "58d2cf2652caa50a7b4a6812fbd4b410ebee54e6f895404d6bb915d425c7e93e"
+    },
+    "installed-24/runtime.json": {
+      "bytes": 259,
+      "sha256": "80fc4ad4fcc2db83f3aa5e5525baa9420f3459f0ba65c2a0cc2b99d60f0c0dd4"
+    },
+    "installed-24/installation.json": {
+      "bytes": 584,
+      "sha256": "f5d8d799671b89ae34977910250706b8a8f6cc028391407b50f04ac1bfaf7fc8"
+    },
+    "installed-24/qualification.json": {
+      "bytes": 1160,
+      "sha256": "45d8fef2c5f3ed3e9382fbbb9aed068e735bf4d55ea3041e5e305f4012418b48"
+    },
+    "installed-24/retained-installation.txt": {
+      "bytes": 74,
+      "sha256": "31a0c0b6edf9d8bf58168028263763a4bda8b38e5bafb9c9985a712c1d14c88b"
+    },
+    "installed-24/bundles.json": {
+      "bytes": 918,
+      "sha256": "a7302438cb9b72eeaee09a5a7929b2634eb303d6a53d908aafc7e7c98067a944"
+    },
+    "installed-22/runtime.json": {
+      "bytes": 259,
+      "sha256": "4981965113846acbd945cfd5bd4690ce75e62382e20d896cf4ffbfb0d6940d99"
+    },
+    "installed-22/installation.json": {
+      "bytes": 584,
+      "sha256": "0238b9ec34703f4b79039c05b41b8ba7e9c93c648ecdc37ec052ad843f8873b5"
+    },
+    "installed-22/qualification.json": {
+      "bytes": 1168,
+      "sha256": "1cb397a261ee0bcac3f8779d84f74b3d2eb97826b565618df42ad8f82922996e"
+    },
+    "installed-22/retained-installation.txt": {
+      "bytes": 74,
+      "sha256": "065fbb2243c8b3a87e83e03a5e687c57156bc01e1f781a7b9cb4a12fbb76b9c1"
+    },
+    "installed-22/bundles.json": {
+      "bytes": 918,
+      "sha256": "239679f52d1f7ab46015e559287fbcc9aa43f95cc36017643635881718f5ad20"
+    },
+    "installed-20/runtime.json": {
+      "bytes": 260,
+      "sha256": "d500b382186ab9bd2df14a4bc5e28fad9d086bcd7ca6638ec32006a777fc64fc"
+    },
+    "installed-20/installation.json": {
+      "bytes": 584,
+      "sha256": "a5d1c9bcf6d62d1e8ec5e5cc274260c659c1bb9495184e2cc661d0944ac9dd97"
+    },
+    "installed-20/qualification.json": {
+      "bytes": 1175,
+      "sha256": "b6c26db6fb3b1b4e41d011841120df28a592fb5bfe85cab28c76836039db8aa1"
+    },
+    "installed-20/retained-installation.txt": {
+      "bytes": 74,
+      "sha256": "06073b417e8b7427ec6199c6b87883888cff37af434f1c8b192f603b8ef860ff"
+    },
+    "installed-20/bundles.json": {
+      "bytes": 918,
+      "sha256": "a7302438cb9b72eeaee09a5a7929b2634eb303d6a53d908aafc7e7c98067a944"
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "af728417998dbc426cd55dedaed1c01a2fc14b9a71150f1b9aca540885e9adf3",
+      "bytes": 1809
+    },
+    "source-pin-pack.json": {
+      "sha256": "8bd859f624e74ccfa746c21b3bbcab602f6aece75bc47080a300c15d6fe558ac",
+      "bytes": 392
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "sourceRevision": "d2bad080d9e38240fe0043a17b9b75117f2f9f63",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

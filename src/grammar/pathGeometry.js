@@ -127,7 +127,11 @@ export function resolvePathCommandBounds(commands) {
 
 const MAX_FLATTENED_POINTS = 1_000_000;
 const point = (x, y) => ({ x, y });
-const midpoint = (a, b) => point(interpolateNumber(a.x, b.x, 0.5), interpolateNumber(a.y, b.y, 0.5));
+const midpoint = (a, b) => {
+  const result = point(interpolateNumber(a.x, b.x, 0.5), interpolateNumber(a.y, b.y, 0.5));
+  if (a.width !== undefined) result.width = interpolateNumber(a.width, b.width, 0.5);
+  return result;
+};
 
 export function segmentDistance(query, from, to) {
   const dx = to.x - from.x, dy = to.y - from.y, length = Math.hypot(dx, dy);
@@ -143,20 +147,55 @@ function geometryOptions(tolerance, maxDepth) {
 }
 
 // Input is transformed to scene CSS pixels before measuring subdivision error.
-export function flattenPathCommands(commands, { tolerance = 0.25, maxDepth = 20, maxPoints = MAX_FLATTENED_POINTS, transform = [1, 0, 0, 1, 0, 0] } = {}) {
+export function flattenPathCommands(commands, options) {
+  return ownFlattenedGeometry(calculateFlattenedPathCommands(commands, options));
+}
+
+// Internal consumers may assemble this newly calculated tree in private state.
+// It grants no program ownership or validation shortcut to its caller.
+export function calculateFlattenedPathCommands(commands, options) {
+  return flattenCommands(commands, options);
+}
+
+function ownFlattenedGeometry(result) {
+  for (const subpath of result.subpaths) {
+    subpath.points.forEach(freezeOwned);
+    freezeOwned(subpath.points); freezeOwned(subpath);
+  }
+  result.diagnostics.forEach(freezeOwned);
+  freezeOwned(result.subpaths); freezeOwned(result.diagnostics);
+  return freezeOwned(result);
+}
+
+// Private Trail bridge: width uses the same curve parameter and subdivision as
+// XY. Its control-polygon deviation from linear width also bounds refinement.
+export function flattenVariableWidthPath(commands, widthCommands, options) {
+  resolvePathSubpaths(commands); resolvePathSubpaths(widthCommands);
+  if (commands.length !== widthCommands.length || commands.some((command, index) => command.op !== widthCommands[index].op)) {
+    throw new TypeError("Variable-width paths require matching command topology.");
+  }
+  const bounds = resolvePathCommandBounds(widthCommands);
+  if (!Number.isFinite(bounds.top) || bounds.top < 0 || !Number.isFinite(bounds.bottom)) {
+    throw new RangeError("Variable-width path curves must remain finite and nonnegative.");
+  }
+  return ownFlattenedGeometry(flattenCommands(commands, options, widthCommands));
+}
+
+function flattenCommands(commands, { tolerance = 0.25, maxDepth = 20, maxPoints = MAX_FLATTENED_POINTS, maxCommands = MAX_PATH_COMMANDS, transform = [1, 0, 0, 1, 0, 0] } = {}, widthCommands) {
   geometryOptions(tolerance, maxDepth);
   if (!Number.isSafeInteger(maxPoints) || maxPoints < 1 || maxPoints > MAX_FLATTENED_POINTS) throw new RangeError("Path maxPoints must be an integer from 1 to 1000000.");
   if (!Array.isArray(transform) || transform.length !== 6 || !transform.every(Number.isFinite)) throw new TypeError("Path transform requires six finite numbers.");
-  const map = (x, y) => {
+  const map = (x, y, width) => {
     const [a, b, c, d, e, f] = transform, result = point(a * x + c * y + e, b * x + d * y + f);
+    if (width !== undefined) result.width = width;
     if (![result.x, result.y].every(Number.isFinite)) throw new RangeError("Transformed path coordinates must be finite.");
     return result;
   };
   const subpaths = [], diagnostics = [];
   let pointCount = 0;
-  const pointLimit = commandIndex => freezeOwned({ subpaths: freezeOwned([]), diagnostics: freezeOwned([freezeOwned({ code: "path-point-limit", limit: maxPoints, commandIndex })]) });
-  for (const { start, end, closed } of resolvePathSubpaths(commands)) {
-    const first = map(commands[start].x, commands[start].y), points = [first];
+  const pointLimit = commandIndex => ({ subpaths: [], diagnostics: [{ code: "path-point-limit", limit: maxPoints, commandIndex }] });
+  for (const { start, end, closed } of resolvePathSubpaths(commands, maxCommands)) {
+    const first = map(commands[start].x, commands[start].y, widthCommands?.[start].y), points = [first];
     let current = first, hasSegments = false;
     pointCount++;
     if (pointCount > maxPoints) return pointLimit(start);
@@ -165,13 +204,16 @@ export function flattenPathCommands(commands, { tolerance = 0.25, maxDepth = 20,
       const command = commands[index];
       if (command.op === "Z") { hasSegments = true; append(first); if (pointCount > maxPoints) return pointLimit(index); continue; }
       hasSegments = true;
-      const to = map(command.x, command.y);
+      const to = map(command.x, command.y, widthCommands?.[index].y);
       if (command.op === "L") append(to);
       else {
-        const stack = [{ points: [current, map(command.x1, command.y1), map(command.x2, command.y2), to], depth: 0 }];
+        const stack = [{ points: [current, map(command.x1, command.y1, widthCommands?.[index].y1), map(command.x2, command.y2, widthCommands?.[index].y2), to], depth: 0 }];
         while (stack.length) {
           const { points: [p0, p1, p2, p3], depth } = stack.pop();
-          const error = Math.max(segmentDistance(p1, p0, p3), segmentDistance(p2, p0, p3));
+          const widthError = widthCommands === undefined ? 0 : Math.max(
+            Math.abs(p1.width - interpolateNumber(p0.width, p3.width, 1 / 3)),
+            Math.abs(p2.width - interpolateNumber(p0.width, p3.width, 2 / 3)));
+          const error = Math.max(segmentDistance(p1, p0, p3), segmentDistance(p2, p0, p3), widthError);
           if (error <= tolerance || depth === maxDepth) {
             if (error > tolerance) diagnostics.push({ code: "path-subdivision-limit", commandIndex: index, maxDepth, error, tolerance });
             append(p3);
@@ -186,16 +228,16 @@ export function flattenPathCommands(commands, { tolerance = 0.25, maxDepth = 20,
       if (pointCount > maxPoints) return pointLimit(index);
       current = to;
     }
-    subpaths.push(freezeOwned({ closed, hasSegments, points: freezeOwned(points.map(value => freezeOwned(value))) }));
+    subpaths.push({ closed, hasSegments, points });
   }
-  return freezeOwned({ subpaths: freezeOwned(subpaths), diagnostics: freezeOwned(diagnostics.map(value => freezeOwned(value))) });
+  return { subpaths, diagnostics };
 }
 
 function requireFlattened(commands, options) {
-  const geometry = flattenPathCommands(commands, options);
+  const geometry = calculateFlattenedPathCommands(commands, options);
   if (geometry.diagnostics.length) {
     const error = new RangeError("Path geometry exceeded its subdivision budget.");
-    error.diagnostics = geometry.diagnostics;
+    error.diagnostics = ownFlattenedGeometry(geometry).diagnostics;
     throw error;
   }
   return geometry;
@@ -206,8 +248,22 @@ function requirePoint(query) {
 
 export function pathFillContains(commands, query, { fillRule = "nonzero", ...options } = {}) {
   requirePoint(query); validatePathFillRule(fillRule);
+  return fillContains(requireFlattened(commands, options), query, fillRule);
+}
+
+// Internal hit queries reuse one complete flattening of their private immutable
+// commands; every query still checks its point and fill rule.
+export function preparePathQueries(commands, options) {
+  const geometry = requireFlattened(commands, options);
+  return Object.freeze({
+    fillContains(query, fillRule = "nonzero") { requirePoint(query); validatePathFillRule(fillRule); return fillContains(geometry, query, fillRule); },
+    strokeDistance(query) { requirePoint(query); return strokeDistance(geometry, query); }
+  });
+}
+
+function fillContains(geometry, query, fillRule) {
   let winding = 0, crossings = 0;
-  for (const { points } of requireFlattened(commands, options).subpaths) {
+  for (const { points } of geometry.subpaths) {
     const origin = points[0], distinct = points.find(p => p.x !== origin.x || p.y !== origin.y);
     if (!distinct || !points.some(p => {
       const scale = Math.max(Number.MIN_VALUE, Math.abs(origin.x), Math.abs(origin.y), Math.abs(distinct.x), Math.abs(distinct.y), Math.abs(p.x), Math.abs(p.y));
@@ -228,8 +284,12 @@ export function pathFillContains(commands, query, { fillRule = "nonzero", ...opt
 
 export function pathStrokeDistance(commands, query, options) {
   requirePoint(query);
+  return strokeDistance(requireFlattened(commands, options), query);
+}
+
+function strokeDistance(geometry, query) {
   let distance = Infinity;
-  for (const { points, hasSegments } of requireFlattened(commands, options).subpaths) {
+  for (const { points, hasSegments } of geometry.subpaths) {
     if (!hasSegments) continue;
     for (let i = 1; i < points.length; i++) distance = Math.min(distance, segmentDistance(query, points[i - 1], points[i]));
   }
@@ -238,7 +298,15 @@ export function pathStrokeDistance(commands, query, options) {
 
 export const arcControlFactor = delta => 4 / 3 * Math.tan(delta / 4);
 
-export function arcToCubicCommands({ centerX, centerY, radiusX, radiusY = radiusX, startAngle, endAngle, rotation = 0, tolerance = 0.25, maxDepth = 20 }) {
+export function arcToCubicCommands(input) {
+  const result = calculateArcCubicCommands(input);
+  result.commands.forEach(freezeOwned); result.diagnostics.forEach(freezeOwned);
+  freezeOwned(result.commands); freezeOwned(result.diagnostics);
+  return freezeOwned(result);
+}
+
+// Raw commands contain only new numeric records; the normal facade owns them.
+export function calculateArcCubicCommands({ centerX, centerY, radiusX, radiusY = radiusX, startAngle, endAngle, rotation = 0, tolerance = 0.25, maxDepth = 20 }) {
   geometryOptions(tolerance, maxDepth);
   if (![centerX, centerY, radiusX, radiusY, startAngle, endAngle, rotation].every(Number.isFinite) || radiusX <= 0 || radiusY <= 0) throw new RangeError("Arc requires finite geometry and positive radii.");
   const cosine = Math.cos(rotation), sine = Math.sin(rotation);
@@ -261,12 +329,12 @@ export function arcToCubicCommands({ centerX, centerY, radiusX, radiusY = radius
       const middle = interpolateNumber(start, end, 0.5);
       append(start, middle, depth + 1); append(middle, end, depth + 1); return;
     }
-    if (error > tolerance) diagnostics.push(freezeOwned({ code: "arc-subdivision-limit", maxDepth, error, tolerance }));
+    if (error > tolerance) diagnostics.push({ code: "arc-subdivision-limit", maxDepth, error, tolerance });
     if (commands.length >= MAX_PATH_COMMANDS) throw new RangeError("Arc exceeds the path command limit.");
     const command = { op: "C", x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, x: p3.x, y: p3.y };
     if (!Object.values(command).slice(1).every(Number.isFinite)) throw new RangeError("Arc coordinates must be finite.");
-    commands.push(freezeOwned(command));
+    commands.push(command);
   };
   for (let i = 0; i < count; i++) append(interpolateNumber(startAngle, endAngle, i / count), interpolateNumber(startAngle, endAngle, (i + 1) / count), 0);
-  return freezeOwned({ commands: freezeOwned(commands.map(value => freezeOwned(value))), diagnostics: freezeOwned(diagnostics) });
+  return { commands, diagnostics };
 }

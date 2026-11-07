@@ -51,7 +51,7 @@ test("compares compound paths through four product backends and both scenes", as
   const evidence = [];
   await mkdir(directory, { recursive: true });
   try {
-    server = await startStaticServer(root);
+    server = await startStaticServer(root, { dependencies: "repository" });
     browser = await chromium.launch({ headless: true });
     const opened = await openBrowserPage(browser, `${server.baseUrl}test/charts/compound-path/native.html`, {
       waitFor: () => document.querySelector("#status").textContent === "Ready"

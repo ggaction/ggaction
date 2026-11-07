@@ -6,10 +6,12 @@
 - [x] private bounded priority/modifier arbitration과 armed/dragging/pinch reducer
 - [x] 독립 literal threshold·100 move·cancel/late-up·own-data 검증
 - [x] 실제 DOM capture·Escape/blur/lostcapture 및 click adapter
-- [ ] domain preview/RAF coalescing과 final-up 처리 연결
+- [x] 기존 brush/lasso/node/annotation/navigation의 preview·RAF·final-up과 prepared assets 연결
 - [x] click의 실제 mouse/touch/Escape 및 installed public consumers
+- [x] 기존 annotation/region/node/navigation/click 후보의 공개 priority·modifiers와 단일 capture 연결
 - [ ] 후행 keyboard focus/activation 및 domain gesture consumers
-- [ ] 후행 brush/lasso/navigation 연결과 AT35/36 전체 종료
+- [x] brush/lasso/navigation 공개 연결과 취소·history 소비자
+- [ ] resize/reorder handle adapter 및 AT35/36 최종 통합 matrix
 
 원 카드와 남은 요구를 보존하며 private 계산만으로 STEP058 또는077을 완료하지 않는다.
 [전체 승인](../AUTHORIZATION.json)에 따라 같은 범위의 설계 승인을 다시 요청하지 않는다.
@@ -94,3 +96,38 @@ limits100,600 및922/1,332,000/6,090,000을 기록했다. 원본 실패와 수�
 Docs source185, 최종 provenance owning32, built164pages/1,411artifacts 및320/390/768/1440
 폭의 overflow0/Axe0을 확인했다. 390px 실제 이미지를 검토했다. 전체 repository sweep 또는
 전체 installed suite 통과로 확대하지 않는다. 후행 domain preview·RAF·keyboard·history 및077은 미완료다.
+
+## 공개 편집 후보 arbitration 후속
+
+전체 remainingApproval과 부모의 구체안 확인을 재사용한다. 기존 gestures owner의50/40/30/20/10
+기본 rank와 bounded priority·boolean modifiers를 native binding에 연결한다. Domain normalization은
+기존 소유자를 그대로 쓰고 wrapper만 공통 옵션을 분리한다. 같은 rank에서 조건이 겹치면 초기화
+오류이며 배열 순서나 owner 이름으로 tie를 숨기지 않는다. Public exact 계약은 Current INTERACTION에 둔다.
+
+새 pointerBindings owner는 읽기전용 candidate probe와 실제 begin을 분리하고 하나의 기존 capture
+adapter로 winner만 실행한다. Hidden/removed annotation, node hit miss, 다른 child viewport는
+낮은 rank로 넘어간다. Winner 이후 modifier 변경은 transaction을 바꾸지 않으며 navigation만 pinch다.
+Source/update/frame/remount/dispose 및 transient asset 취소는 기존 session owner를 사용한다.
+
+집중324검사와4owner coverage는 gestures100/100/100, pointerBindings100/100/100,
+pointerCapture100/97.52/100, session100/95.49/100을 통과했다. 신규9개는 실제 hit·modifier·
+단일 capture·nested viewport·hidden/removed·preview late asset·teardown을 포함한다. 실제 browser의
+정확 공개문서 call chain으로 Canvas/SVG 각각 label drag·Shift brush·click·Escape를 확인했다.
+초기 refactor의 scene 지역변수 누락과 click final-up cancel 분기 누락을 기존 회귀가 발견해 수리했고,
+과거 단일 binding 오류 기대는 동일rank ambiguity 거부로 교체했다. 설치/문서 최종 qualification은
+마감 중이며 이 기록은 STEP058/066/067/077 전체 완료를 뜻하지 않는다.
+
+## 편집 arbitration qualification
+
+Source `d74d66a6a`와 [qualification](arbitration-evidence/qualification.json)에 최종 검사를 고정한다.
+집중324, 신규9, 실제5데이터×3recipe16, 실제Canvas/SVG3, 문서·경계55와 source-pin49를 통과했다.
+동일 archive `1a470b78ee2fe50545634fd150beadacd0c4be142645b7eeaeb8bf070e89a4d5`의
+21 interaction runtime·strict types·5 entry bundles를 Node20/22/24로 검증했다. Node20 최초
+interaction120,959>120,000 실패와 이미 통과한runtime/types를 보존하고 cap121,000으로 동일
+측정값만 재검증했다. Node22/24는 전체 집중 소비자를 독립 실행했다.
+
+Built172pages/1,535LLM artifacts와320/390/768/1440폭의 overflow0/Axe0을 확인했다.
+최종 문서의 우선순위 숫자 공백만 다듬은 뒤 owning49/build/4폭을 재검증했으며 source와 tar는
+바뀌지 않았다. 320/1440 화면을 확인했다. 원본 refactor·package entry·stale provenance·search
+실패도 보존한다. 전체repository sweep·전체installed suite 또는058/066/067/077 전체 완료는
+주장하지 않는다. Animation, accessible focus, resize/reorder 및 후행 matrix 의무는 남아 있다.

@@ -920,7 +920,7 @@ test("directly covers every newly targeted action option and broad maximal paths
     // Nested routing is covered by realistic-scoped-composition.test.js.
     !option.path.startsWith("target.")
   );
-  assert.equal(newActionOptions.length, 138);
+  assert.equal(newActionOptions.length, 139);
   assert.deepEqual(
     newActionOptions.filter(option => !directlyObserves(entries, option)).map(option => option.id),
     []

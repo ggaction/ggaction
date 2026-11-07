@@ -31,7 +31,7 @@ test("compares public and explicit mark outlines across Canvas, SVG, PNG and PDF
  try{
   const font=await readFile(fontPath);assert.equal(hash(font),fontSHA256);key=GlobalFonts.registerFromPath(fontPath,fontFamily);assert.ok(key);const fontURL="data:font/ttf;base64,"+font.toString("base64");
   const measure=createCanvas(1,1).getContext("2d");measure.font=`60px "${fontFamily}"`;assert.equal(measure.measureText("AB").width,84);
-  server=await startStaticServer(root);browser=await chromium.launch({headless:true});const opened=await openBrowserPage(browser,`${server.baseUrl}test/charts/mark-outlines/variants/native/browser.html`,{waitFor:()=>document.getElementById("status").textContent==="Ready"});
+  server=await startStaticServer(root,{dependencies:"repository"});browser=await chromium.launch({headless:true});const opened=await openBrowserPage(browser,`${server.baseUrl}test/charts/mark-outlines/variants/native/browser.html`,{waitFor:()=>document.getElementById("status").textContent==="Ready"});
   for(const variant of variants){
    const output=path.join(directory,variant.variant);await mkdir(output,{recursive:true});await ensureVariantMetadata({scope:"charts",capability:"mark-outlines",chart:variant.chart,variant:variant.variant,kind:"primitive",title:variant.title,userFacingCallChain:variant.callChain});
    const prepared=await prepareGroup(variant,output),canvas=createCanvas(frame.width,frame.height);variant.primitive(canvas.getContext("2d"),variant.fixture,prepared.image);const svg=variant.svg(variant.fixture,fontURL,prepared.groupURL);await writeFile(path.join(output,"primitive.png"),canvas.toBuffer("image/png"));await writeFile(path.join(output,"primitive.svg"),svg);

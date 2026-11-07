@@ -1,0 +1,88 @@
+{
+  "base": "2ab9e9f64ea1689df5c3f75724019b92cd1c7efa",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json#remainingApproval",
+  "rootDecisionDate": "2026-11-01",
+  "sourceSha256": {
+    "src/core/validation.js": "3030d9c3835555c141c3b76cd6645ee055ac32c92e9c1916c9109f17c42d2abf",
+    "src/selectors/graphicCapacity.js": "c2e6aef88327ebdef408aaf7bd0e0334b723e2a7a18dde9892e1190e0a1a2fb7",
+    "src/actions/marks/point/create.js": "fb7f98194bf910f576456b28f951e21be738b169098a82d50b349c99cbd5ab29",
+    "src/actions/marks/point/edit.js": "baaef97f77320f89ee2dc80c5a19ae49b19e376a8447870042e62f705cd6fe9e",
+    "src/persistence/validation.js": "5d5e47f51ca62620061a23624a16488ffeab3bc98e2fbca0161387f482c29a50",
+    "types/program.d.ts": "817c7f9f198f8223ba4b1d9c9488f8c6e00d698544014f7edd5efec3e9e6d664",
+    "test/unit/actions/marks/point-explicit-capacity.test.js": "d92f9b843a69dd8f49f84df0a58155cfc8aca0a916d43a033e1f71e6e5db8e69",
+    "test/unit/selectors/graphic-capacity.test.js": "a4e09c4d8e9151952af40b478e30e8c9d821f424ac45a2f2a9e05610cdafb862",
+    "test/contracts/point-capacity-types.test.js": "35766c8d288c8e08cbe2cbe06f1a5f8da7d4aac550ed5280cd2b9c6102df0b65"
+  },
+  "defaultPointItems": 50000,
+  "explicitMaxPointItems": 100000,
+  "maxGeneratedItems": 10000,
+  "maxWorkItems": 10000000,
+  "rendererEvidence": {
+    "nativeRowsAndCoordinates": 100000,
+    "canvasArcs": 100000,
+    "svgCircles": 100000,
+    "pdfFillsIncludingBackground": 100001,
+    "representativeRasterInk": [
+      "PNG",
+      "SVG",
+      "PDF"
+    ],
+    "nativeCanvasSize": [
+      400,
+      300
+    ]
+  },
+  "compositionEvidence": {
+    "facetedSourceRows": 100000,
+    "childItems": [
+      50000,
+      50000
+    ],
+    "nestedAdditionalItems": 2,
+    "totalPointItems": 100002
+  },
+  "independentFailures": {
+    "hit100000Points": "Hit program exceeds its item budget.",
+    "animation10000Points": "Existing 10000 endpoint/guide capacity retained.",
+    "synchronousSlice50ms": "Not qualified by this checkpoint.",
+    "fullFrameP95": "Not qualified by this checkpoint."
+  },
+  "browserBundles": {
+    "fullGzipBytes": 782690,
+    "basicGzipBytes": 423769,
+    "fullLimit": 783900,
+    "basicLimit": 424400
+  },
+  "budgets": {
+    "entries": 1239,
+    "packedBytes": 1780500,
+    "unpackedBytes": 8024000,
+    "previousUnpackedBytes": 8021400,
+    "measuredUnpackedBytes": 8023985,
+    "regressionCompactCardBytes": 3667,
+    "regressionCompactCardLimit": 3670,
+    "previousRegressionCompactCardLimit": 3640
+  },
+  "benchmarkChange": "None. Root owns original fixture/hash/SLO preserving maxItems seam after integration.",
+  "qualificationScope": "Focused change checkpoint on Node22.23.1/darwin/arm64; final integrated cross-platform/package/P95 qualification remains with root.",
+  "checks": {
+    "unit": {
+      "passed": 66,
+      "failed": 0
+    },
+    "contracts": {
+      "passed": 40,
+      "failed": 0
+    },
+    "docs": {
+      "passed": 58,
+      "failed": 0
+    },
+    "packedExportedEntries": {
+      "passed": 2,
+      "itemsPerEntry": 100000
+    },
+    "packageCheck": "passed",
+    "installedFullBasicBundle": "passed"
+  }
+}

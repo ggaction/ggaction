@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { chart } from "../../../src/index.js";
+import { chart, hconcat } from "../../../src/index.js";
 import { serializeProgram, deserializeProgram } from "../../../src/persistence.js";
 import { getMarkItems } from "../../../src/inspection.js";
 import { renderToSVG } from "../../../src/renderers/svg.js";
@@ -8,10 +8,112 @@ import { prepareProgramHitFrame } from "../../../src/interaction/hitProgram.js";
 import { createHitFrameBridge } from "../../../src/interaction/hitFrame.js";
 import { geoMarkSource } from "../../../src/materialization/geo/source.js";
 import { createGeographicMarks } from "../../../examples/geographic-marks/program.js";
+import { createInteractionSession } from "../../../src/interaction.js";
+import { exportAccessibleData } from "../../../src/accessibility.js";
 
 const items = (program, id) => program.graphicSpec.objects[id].items;
 const pattern = { type: "pattern", style: "cross", pitch: 12, strokeWidth: 2, phase: [-1, 2], foreground: "#f00", background: "#00f8", coordinateSpace: "object" };
 const radial = { type: "radial-gradient", center: { x: .5, y: .5 }, radius: .5, stops: [{ offset: 0, color: "white" }, { offset: 1, color: "navy" }] };
+
+for (const [target, expected] of [
+  ["geo-shape", [{ name: "District" }]],
+  ["geo-point", [{ name: "West" }, { name: "Central" }, { name: "East" }]],
+  ["geo-line", [{ name: "Service route" }]],
+  ["graticule", [
+    { axis: "longitude", value: -40 }, { axis: "longitude", value: 0 }, { axis: "longitude", value: 40 },
+    { axis: "latitude", value: -20 }, { axis: "latitude", value: 0 }, { axis: "latitude", value: 20 }
+  ]]
+]) test(`${target} accessible items retain native fields, selected keys and independent nested scopes`, () => {
+  const p = createGeographicMarks(target === "graticule" ? "graticule" : "planar"), saved = serializeProgram(p);
+  const firstKey = getMarkItems(p, { target })[0].key;
+  const selected = p.selectMarks({ id: "picked", target, items: [firstKey] });
+  const changed = selected.editProjection({ target: "map", translatePx: target === "graticule" ? [325, 247] : [5, 7] });
+  const accessible = exportAccessibleData(changed, { format: "items", target });
+  assert.equal(accessible.views.length, 1);
+  const view = accessible.views[0];
+  assert.equal(view.ownerId, target); assert.equal(view.markType, "geo"); assert.deepEqual(view.childPath, []);
+  assert.deepEqual(view.items.map(item => item.fields), expected);
+  assert.deepEqual(view.items.map(item => item.key), getMarkItems(p, { target }).map(item => item.key));
+  assert.deepEqual(view.items.map(item => item.selectedBy), expected.map((_, i) => i === 0 ? ["picked"] : []));
+  assert.ok(view.items.every(item => item.visible && item.role === "feature"));
+  assert.throws(() => { view.items[0].fields.changed = true; }, TypeError);
+  assert.deepEqual(exportAccessibleData(deserializeProgram(serializeProgram(changed)), { format: "items", target }), accessible);
+  const nested = hconcat({ id: "outer", programs: [{ id: "selected", program: changed }, { id: "plain", program: p }] });
+  const views = exportAccessibleData(nested, { format: "items" }).views.filter(item => item.ownerId === target);
+  assert.deepEqual(views.map(item => item.childPath), [["selected"], ["plain"]]);
+  for (const child of views) {
+    assert.deepEqual(child.items.map(item => item.fields), expected);
+    assert.deepEqual(child.items.map(item => item.key), getMarkItems(nested, { target: { childPath: child.childPath, id: target } }).map(item => item.key));
+  }
+  assert.notEqual(views[0].items[0].key, views[1].items[0].key);
+  assert.deepEqual(views[0].items[0].selectedBy, ["picked"]); assert.deepEqual(views[1].items[0].selectedBy, []);
+  assert.deepEqual(exportAccessibleData(deserializeProgram(serializeProgram(nested)), { format: "items" }), exportAccessibleData(nested, { format: "items" }));
+  assert.equal(serializeProgram(p), saved);
+});
+
+test("graticule source revision rematerializes its explicit generated ticks and exact projection lineage", () => {
+  const p = createGeographicMarks("graticule"), saved = serializeProgram(p), keys = getMarkItems(p, { target: "graticule" }).map(item => item.key);
+  const moved = p.editProjection({ target: "map", translatePx: [325, 247] });
+  assert.deepEqual(getMarkItems(moved, { target: "graticule" }).map(item => item.key), keys);
+  const expanded = moved.editGraticule({ target: "graticule", stepDeg: [20, 20] });
+  const logical = getMarkItems(expanded, { target: "graticule" });
+  assert.deepEqual(logical.map(item => [item.fields.axis, item.fields.value]), [
+    ["longitude", -40], ["longitude", -20], ["longitude", 0], ["longitude", 20], ["longitude", 40],
+    ["latitude", -20], ["latitude", 0], ["latitude", 20]
+  ]);
+  assert.ok(keys.every(key => logical.some(item => item.key === key)));
+  assert.deepEqual(expanded.semanticSpec.datasets, []);
+  assert.deepEqual(expanded.semanticSpec.resources.map(resource => [resource.kind, resource.id, resource.revision]), [["projection", "map", 1]]);
+  for (const item of expanded.graphicSpec.objects.graticule.items) assert.deepEqual(item.identity.lineage,
+    { kind: "resource", resource: { kind: "projection", id: "map", revision: 1 } });
+  const meridian = logical.find(item => item.fields.axis === "longitude" && item.fields.value === 0);
+  assert.ok(meridian.geometry[0].properties.commands.every(command => command.x === 325));
+  assert.deepEqual(deserializeProgram(serializeProgram(expanded)).graphicSpec, expanded.graphicSpec);
+  assert.equal(serializeProgram(p), saved);
+});
+
+test("native multipolygon holes retain compound fill, feature selection and exact source revision", () => {
+  const ring = (a, b) => [[a, a], [b, a], [b, b], [a, b], [a, a]];
+  const values = (a, b) => ({ type: "Feature", id: "region", properties: { name: "Region" }, geometry: {
+    type: "MultiPolygon", coordinates: [[ring(10, 110), [...ring(a, b)].reverse()], [ring(130, 170)]]
+  } });
+  const p = chart().createCanvas({ width: 200, height: 200, margin: 0 })
+    .createGeometryData({ id: "world", format: "geojson", coordinateKind: "planar", featureKey: "id", values: values(30, 70) })
+    .createProjection({ id: "map", type: "identity" }).createCoordinate({ id: "geo", type: "geo" })
+    .createGeoShapeMark({ id: "regions", fill: "orange", strokeWidth: 0 });
+  const before = serializeProgram(p), key = getMarkItems(p, { target: "regions" })[0].key;
+  const assertCompound = program => {
+    const paths = items(program, "regions").map(item => item.properties);
+    assert.ok(paths.every(properties => properties.fillRule === "evenodd"));
+    assert.equal(paths.flatMap(properties => properties.commands).filter(command => command.op === "M").length, 3);
+    assert.ok(paths.some(properties => properties.commands.filter(command => command.op === "M").length > 1));
+    assert.ok(items(program, "regions").every(item => item.identity.key === key));
+  };
+  assertCompound(p);
+  const selected = p.selectMarks({ id: "picked", target: "regions", items: [key] })
+    .highlightMarks({ selection: "picked", fill: "red", bringToFront: false });
+  assert.deepEqual(selected.removeMarkHighlight({ selection: "picked" }).graphicSpec, p.graphicSpec);
+  const next = selected.editGeometryData({ target: "world", values: values(40, 60) }).editProjection({ target: "map", translatePx: [5, 10] });
+  assertCompound(next);
+  assert.ok(items(next, "regions").every(item => item.properties.fill === "red"));
+  const logical = getMarkItems(next, { target: "regions" });
+  assert.equal(logical.length, 1); assert.equal(logical[0].key, key);
+  const restored = deserializeProgram(serializeProgram(next));
+  assert.deepEqual(restored.graphicSpec, next.graphicSpec);
+  const session = createInteractionSession({ program: restored });
+  try {
+    for (const [point, expected] of [[{ x: 40, y: 45 }, key], [{ x: 55, y: 60 }, null], [{ x: 155, y: 160 }, key]]) {
+      session.dispatch({ type: "inspect", point, slop: 0 });
+      assert.equal(session.getState().hit.target?.itemKey ?? null, expected);
+      if (expected) assert.deepEqual(session.getState().hit.target.resourceRefs, [{ kind: "geometry", id: "world", revision: 1 }]);
+    }
+  } finally { session.destroy(); }
+  const accessible = exportAccessibleData(restored, { format: "items" }).views[0].items;
+  assert.equal(accessible.length, 1); assert.equal(accessible[0].key, key);
+  assert.deepEqual(accessible[0].selectedBy, ["picked"]);
+  assert.equal(accessible[0].fields.name, "Region");
+  assert.equal(serializeProgram(p), before);
+});
 
 test("geographic filled paths and points preserve structured paint and effects across projection edits", () => {
   for (const [target, edit] of [["geo-shape", "editGeoShapeMark"], ["geo-point", "editGeoPointMark"]]) for (const fill of [pattern, radial]) {

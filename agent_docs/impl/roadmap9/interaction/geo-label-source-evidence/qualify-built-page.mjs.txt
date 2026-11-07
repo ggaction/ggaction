@@ -1,0 +1,39 @@
+import assert from 'node:assert/strict';
+import { mkdir, symlink, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import { chromium } from 'playwright';
+import AxeBuilder from '@axe-core/playwright';
+import { startStaticServer } from '../test/support/static-server.js';
+import { openBrowserPage, assertNoBrowserErrors } from '../test/support/browser.js';
+
+const root = path.resolve('.artifacts/geo-label-source-built-root');
+await mkdir(root, { recursive: true });
+try { await symlink(path.resolve('_site'), path.join(root, 'ggaction')); }
+catch (error) { if (error.code !== 'EEXIST') throw error; }
+const server = await startStaticServer(root);
+const browser = await chromium.launch({ headless: true });
+const results = [];
+try {
+  for (const width of [320, 390, 768, 1280]) {
+    const context = await browser.newContext({ viewport: { width, height: 900 } });
+    const { page, errors } = await openBrowserPage(context, `${server.baseUrl}ggaction/api/interaction/`);
+    await page.locator('#replace-a-program-or-sampled-frame').scrollIntoViewIfNeeded();
+    assert.match(await page.locator('.docs-content').innerText(), /Attached labels retain their source selection/);
+    const dimensions = await page.evaluate(() => ({
+      width: document.documentElement.clientWidth,
+      scroll: document.documentElement.scrollWidth,
+      escapes: [...document.querySelectorAll('.docs-content pre, .docs-content table, .docs-content img')]
+        .map(node => node.getBoundingClientRect()).filter(r => r.left < -1 || r.right > innerWidth + 1).length
+    }));
+    assert.ok(dimensions.scroll <= dimensions.width + 1);
+    assert.equal(dimensions.escapes, 0);
+    const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+    assert.deepEqual(axe.violations, []);
+    assertNoBrowserErrors(errors, `interaction at ${width}`);
+    await page.screenshot({ path: `.artifacts/geo-label-source-built-${width}.png` });
+    results.push({ width, dimensions, violations: 0, errors: 0 });
+    await context.close();
+  }
+  await writeFile('.artifacts/geo-label-source-built-browser.json', JSON.stringify({ page: 'api/interaction/', results }, null, 2) + '\n');
+  console.log(JSON.stringify(results));
+} finally { await browser.close(); await server.close(); }

@@ -1,0 +1,185 @@
+{
+  "kind": "Public version4 actual API path, phased plan lifetimes; no instrumentation; not SLO/P95",
+  "node": "v24.22.1",
+  "n": 10000,
+  "inputSHA256": "e204dd2c1ab81f7c75b8d32aa006841fcda7e1e140ffd6a983dc1d5b448e1a1e",
+  "phases": {
+    "prepare": {
+      "ms": 2738.062458,
+      "accounting": {
+        "native": true,
+        "limits": {
+          "maxEndpointNodes": 20002,
+          "maxOutputNodes": 10001
+        },
+        "maximumWork": {
+          "Animation preparation work": 6535934,
+          "Partition animation track work": 16950544
+        }
+      },
+      "columns": {
+        "logicalValues": 720136,
+        "descriptorVisits": 560067,
+        "cellVisits": 560006,
+        "interningWork": 9914328,
+        "internNodes": 139,
+        "uniqueLowerBound": {
+          "physicalValues": 60084,
+          "encodedValues": 60188,
+          "bytes": 2455061
+        },
+        "physicalValues": 220712,
+        "encodedValues": 541986,
+        "bytes": 8753321,
+        "validatedLogicalValues": 720136
+      }
+    },
+    "sample": {
+      "ms": 690.5588339999995
+    },
+    "offline": {
+      "ms": 3806.3826659999995,
+      "bytes": 8753223,
+      "sha256": "6f61499fc39b246c9a4c6c37a39931ac7e47e1ca834915ad4323438f37d32b47",
+      "accounting": {
+        "native": false,
+        "limits": {
+          "maxEndpointNodes": 20002,
+          "maxOutputNodes": 10001
+        },
+        "maximumWork": {
+          "Animation preparation work": 12785727,
+          "Partition animation track work": 16950544
+        }
+      },
+      "decodedPayload": {
+        "physicalValues": 220685,
+        "bytes": 4959551,
+        "estimatedEncodedValues": 541933,
+        "estimatedEncodedBytes": 8753072
+      },
+      "encodedEnvelope": {
+        "physicalValues": 541938,
+        "bytes": 8753223
+      }
+    },
+    "rebase": {
+      "ms": 2798.447209,
+      "accounting": {
+        "native": true,
+        "limits": {
+          "maxEndpointNodes": 20002,
+          "maxOutputNodes": 10001
+        },
+        "maximumWork": {
+          "Animation preparation work": 4715012,
+          "Partition animation track work": 16950544
+        }
+      },
+      "columns": {
+        "logicalValues": 1090200,
+        "descriptorVisits": 1010082,
+        "cellVisits": 1010026,
+        "interningWork": 12412455,
+        "internNodes": 273,
+        "uniqueLowerBound": {
+          "physicalValues": 80172,
+          "encodedValues": 80389,
+          "bytes": 3173292
+        },
+        "physicalValues": 241191,
+        "encodedValues": 563300,
+        "bytes": 9476860,
+        "validatedLogicalValues": 1090200
+      }
+    },
+    "rebaseOffline": {
+      "ms": 4117.709583000002,
+      "bytes": 9476692,
+      "sha256": "2ade7bb84901170d7e97956d62257ca564dceebca081fda9cb0fe50304152f9a",
+      "accounting": {
+        "native": false,
+        "limits": {
+          "maxEndpointNodes": 20002,
+          "maxOutputNodes": 10001
+        },
+        "maximumWork": {
+          "Animation preparation work": 15770738,
+          "Partition animation track work": 16950544
+        }
+      },
+      "decodedPayload": {
+        "physicalValues": 241158,
+        "bytes": 5621201,
+        "estimatedEncodedValues": 563233,
+        "estimatedEncodedBytes": 9476541
+      },
+      "encodedEnvelope": {
+        "physicalValues": 563238,
+        "bytes": 9476692
+      }
+    }
+  },
+  "lifetime": [
+    {
+      "stage": "native-plan-released",
+      "memory": {
+        "rss": 512983040,
+        "heapTotal": 294912000,
+        "heapUsed": 118425072,
+        "external": 19901864,
+        "arrayBuffers": 148239
+      }
+    },
+    {
+      "stage": "native-offline-plan-released",
+      "memory": {
+        "rss": 598147072,
+        "heapTotal": 299630592,
+        "heapUsed": 119629904,
+        "external": 19933376,
+        "arrayBuffers": 148239
+      }
+    },
+    {
+      "stage": "rebase-plan-and-source-frame-released",
+      "memory": {
+        "rss": 609058816,
+        "heapTotal": 322895872,
+        "heapUsed": 120770248,
+        "external": 21445901,
+        "arrayBuffers": 148239
+      }
+    },
+    {
+      "stage": "all-native-offline-rebase-exact",
+      "memory": {
+        "rss": 626343936,
+        "heapTotal": 314507264,
+        "heapUsed": 120838312,
+        "external": 21379002,
+        "arrayBuffers": 148239
+      }
+    }
+  ],
+  "allCoordinatesVerified": 10000,
+  "batch500Rejected": true,
+  "stage": "all-native-offline-rebase-exact",
+  "allRebaseCoordinatesVerified": 10000,
+  "sourceSHA256": {
+    "src/animation/columnCodec.js": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+    "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+    "src/animation/planner.js": "cf3fed95f4cc89dd8c276c2c4a31e31db8f14189a38b91764d95c7ae6789baac",
+    "src/animation/envelopeCodec.js": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+    "src/animation/sample.js": "db115d2b379fc50e8dd5a4aae923c726044e6a45380dd323c787929bb399b1a6",
+    "src/animation/frameEndpoint.js": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+    "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+    "src/materialization/animation/point.js": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+    "src/materialization/animation/guides.js": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+    "src/core/validation.js": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+    "src/selectors/graphicCapacity.js": "67bf3d75d92c9227d4f8ceb79afb2e45fa79828460c67d6c2cef06564148238a",
+    "src/grammar/animation/positions.js": "12f919cbed5026dd0ba4ad3f3fd918fb197cae5532ee865dbe22e7db58f8eb05",
+    "src/animation/appearance.js": "143f9f9968267ab542bb092262a355e072eb393584917b5a09f3ff12f94db0a9",
+    "types/animation.d.ts": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323"
+  }
+}

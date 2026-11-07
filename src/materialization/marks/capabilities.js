@@ -1,3 +1,6 @@
+import { isScreenAnnotation } from "../../grammar/screenAnnotation.js";
+import { isGeoLabelSource } from "../../grammar/geo/mark.js";
+import { TEXT_SOURCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { hasPositionBinding, conditionalPositionTemplate } from "../../core/encodingBindings.js";
 import { isHorizontalLine } from "../../grammar/lineSeries.js";
 import { findDataset } from "../../selectors/datasets.js";
@@ -172,6 +175,7 @@ export function canMaterializeRule(program, layer) {
 }
 
 const TEXT_SOURCE_CAPABILITIES = Object.freeze({
+  trail: (_program, layer) => layer.trail !== undefined && (hasCartesianPositionScales(layer) || hasPolarPositionScales(layer)),
   point: canMaterializePoint,
   line: canMaterializeLine,
   bar: canMaterializeBar,
@@ -182,12 +186,12 @@ const TEXT_SOURCE_CAPABILITIES = Object.freeze({
 });
 
 export function isTextSource(layer) {
-  return layer?.data !== undefined &&
-    Object.hasOwn(TEXT_SOURCE_CAPABILITIES, layer.mark?.type);
+  return layer?.mark?.type === "geo" ? isGeoLabelSource(layer) : layer?.data !== undefined &&
+    TEXT_SOURCE_MARK_TYPES.includes(layer.mark?.type);
 }
 
 export function canMaterializeTextSource(program, source) {
-  return isTextSource(source) && TEXT_SOURCE_CAPABILITIES[source.mark.type](program, source) &&
+  return isTextSource(source) && (isGeoLabelSource(source) || TEXT_SOURCE_CAPABILITIES[source.mark.type](program, source)) &&
     Array.isArray(program.graphicSpec.objects[source.id]?.items);
 }
 
@@ -195,6 +199,7 @@ export function canMaterializeText(program, layer) {
   if (layer.mark?.type !== "text" || (layer.encoding?.text === undefined && layer.conditionals?.text === undefined)) {
     return false;
   }
+  if (isScreenAnnotation(layer)) return true;
   if (layer.source !== undefined) {
     const source = findLayer(program, layer.source);
     return canMaterializeTextSource(program, source);

@@ -1,4 +1,4 @@
-import { cloneAndFreeze } from "../../core/immutable.js";
+import { cloneAndFreeze, isOwned } from "../../core/immutable.js";
 
 export function isNominalValue(value) {
   return (
@@ -42,9 +42,24 @@ function validateField(field) {
   }
 }
 
+// An owned row array and its owned rows never change, so a completed column
+// read is kept on the array itself and returned for the same field again.
+class ColumnTarget { constructor(value) { return value; } }
+class QuantitativeColumns extends ColumnTarget {
+  #columns = new Map();
+  static get(rows, field) { return #columns in rows ? rows.#columns.get(field) : undefined; }
+  static set(rows, field, column) {
+    if (!(#columns in rows)) { try { new QuantitativeColumns(rows); } catch { return column; } }
+    rows.#columns.set(field, column);
+    return column;
+  }
+}
+
 export function readQuantitativeField(rows, field) {
   validateField(field);
-  return cloneAndFreeze(rows.map((row, index) => {
+  const known = isOwned(rows) ? QuantitativeColumns.get(rows, field) : undefined;
+  if (known !== undefined) return known;
+  const column = cloneAndFreeze(rows.map((row, index) => {
     if (!Object.hasOwn(row, field) || !Number.isFinite(row[field])) {
       throw new TypeError(
         `Field "${field}" must contain a finite number at row ${index}.`
@@ -52,6 +67,8 @@ export function readQuantitativeField(rows, field) {
     }
     return row[field];
   }));
+  // Every row must be owned too: an unowned row could change after the read.
+  return isOwned(rows) && rows.every(isOwned) ? QuantitativeColumns.set(rows, field, column) : column;
 }
 
 function utcDate(year, month = 1, day = 1) {

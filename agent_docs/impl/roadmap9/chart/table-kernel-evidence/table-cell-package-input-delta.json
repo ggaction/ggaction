@@ -1,0 +1,14 @@
+{
+  "previousArchive": ".artifacts/streamgraph-package-measure/node22/ggaction-0.0.26.tgz",
+  "newArchive": ".artifacts/table-cell-package-22/ggaction-0.0.26.tgz",
+  "previousSha256": "87fdde18192757752928ccc50df363ff02966e7018caaee416967eb6582dd1f1",
+  "newSha256": "a13b5bd6feb9232544e50eb1ad80fcfec45b7d942e32a21da54b2d5e554e3a26",
+  "unchanged": 1028,
+  "modified": [
+    "package/README.md"
+  ],
+  "added": [
+    "package/src/grammar/cells.js"
+  ],
+  "removed": []
+}

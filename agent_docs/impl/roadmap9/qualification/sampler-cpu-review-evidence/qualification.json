@@ -1,0 +1,1071 @@
+{
+  "status": "read-only-profile-and-compiler-container-review; no-product-adoption",
+  "sourceRevision": "fcb84891671a1f7b3427a9f15790809b147dc1d8",
+  "productSourceChanges": 0,
+  "originalProfile": {
+    "kind": "Uninstrumented public sampler timing then V8 CPU attribution; original 100000 points; not SLO or P95",
+    "node": "v24.22.1",
+    "pid": 60561,
+    "execArgv": [
+      "--expose-gc",
+      "--max-old-space-size=6144"
+    ],
+    "n": 100000,
+    "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+    "sourceRevision": "fcb84891671a1f7b3427a9f15790809b147dc1d8",
+    "measurements": [
+      {
+        "kind": "uninstrumented-first-sample",
+        "samplerMs": 1300.1803750000036,
+        "oracleMs": 16.24762500000361,
+        "verifiedCoordinates": 100000,
+        "memory": {
+          "rss": 1585807360,
+          "heapTotal": 1103888384,
+          "heapUsed": 872291736,
+          "external": 2657939,
+          "arrayBuffers": 148243
+        }
+      },
+      {
+        "kind": "profiled-second-sample",
+        "samplerMs": 890.9753340000025,
+        "oracleMs": 13.577832999995735,
+        "profilerStopMs": 2.102375000002212,
+        "verifiedCoordinates": 100000,
+        "memory": {
+          "rss": 1576894464,
+          "heapTotal": 996409344,
+          "heapUsed": 824783152,
+          "external": 2657979,
+          "arrayBuffers": 148243
+        }
+      }
+    ],
+    "stage": "complete",
+    "profileSHA256": "df937224df1e0beb4e3a0743fe884d6e536bd4f60ca8aaa2762290290ab2b104",
+    "sourceSHA256": {
+      "src/animation/sample.js": "34f72d55de9f6e8da2aa020df68ece29dfabb73fbf0bf5bbac7bb5984c51df08",
+      "src/animation/frameEndpoint.js": "618634cbbdc930d986fae7a9a129d54f106e338ca9094e57f71decad51f94b3d",
+      "src/grammar/animation/positions.js": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+      "src/grammar/scales/mapping.js": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+      "src/grammar/scales/continuous.js": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+      "src/core/immutable.js": "1ec67bd4b674532050ef8351474840d7b947418469b79d976395b63c7bf62fc2",
+      "src/animation/endpoints.js": "4152afb99633d3fe3e3f7cd65c6a5b9b02dfdd0e036a7b10c2dad40c1b2236b2",
+      "src/animation/frameProvenance.js": "5cb5f29a1bc3544606d7766788ec7e24792004dd4f08ad3a4a29e6360296490d",
+      "src/renderers/canvasScene.js": "aabcd332bafa87ce6c900db1ce9c680dee8f57ff731473ca288750b91ea7e786"
+    }
+  },
+  "summary": {
+    "sampleMs": 752.04,
+    "nonSampleProfileMs": 432.08499999999947,
+    "profileTotalMs": 1185.583,
+    "samplingIntervalUs": 1000,
+    "functions": [
+      {
+        "name": "compile",
+        "file": "src/renderers/canvasScene.js",
+        "line": 23,
+        "selfMs": 124.416,
+        "inclusiveMs": 162.75099999999998,
+        "ticks": [
+          {
+            "line": 51,
+            "ticks": 5
+          },
+          {
+            "line": 42,
+            "ticks": 13
+          },
+          {
+            "line": 43,
+            "ticks": 25
+          },
+          {
+            "line": 47,
+            "ticks": 2
+          },
+          {
+            "line": 69,
+            "ticks": 1
+          },
+          {
+            "line": 70,
+            "ticks": 34
+          },
+          {
+            "line": 71,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "sampleNode",
+        "file": "src/animation/sample.js",
+        "line": 78,
+        "selfMs": 106.62199999999999,
+        "inclusiveMs": 373.1679999999995,
+        "ticks": [
+          {
+            "line": 85,
+            "ticks": 1
+          },
+          {
+            "line": 134,
+            "ticks": 1
+          },
+          {
+            "line": 100,
+            "ticks": 1
+          },
+          {
+            "line": 144,
+            "ticks": 3
+          },
+          {
+            "line": 137,
+            "ticks": 10
+          },
+          {
+            "line": 80,
+            "ticks": 1
+          },
+          {
+            "line": 149,
+            "ticks": 2
+          },
+          {
+            "line": 83,
+            "ticks": 1
+          },
+          {
+            "line": 84,
+            "ticks": 7
+          },
+          {
+            "line": 139,
+            "ticks": 12
+          },
+          {
+            "line": 142,
+            "ticks": 8
+          },
+          {
+            "line": 145,
+            "ticks": 7
+          },
+          {
+            "line": 136,
+            "ticks": 11
+          },
+          {
+            "line": 81,
+            "ticks": 3
+          }
+        ]
+      },
+      {
+        "name": "freezeOwned",
+        "file": "src/core/immutable.js",
+        "line": 12,
+        "selfMs": 73.917,
+        "inclusiveMs": 73.917,
+        "ticks": [
+          {
+            "line": 15,
+            "ticks": 2
+          },
+          {
+            "line": 14,
+            "ticks": 1
+          },
+          {
+            "line": 16,
+            "ticks": 42
+          }
+        ]
+      },
+      {
+        "name": "freezeOwned",
+        "file": "src/core/immutable.js",
+        "line": 12,
+        "selfMs": 65.043,
+        "inclusiveMs": 65.043,
+        "ticks": [
+          {
+            "line": 15,
+            "ticks": 2
+          },
+          {
+            "line": 16,
+            "ticks": 40
+          }
+        ]
+      },
+      {
+        "name": "sampleTransitionWithBudget",
+        "file": "src/animation/sample.js",
+        "line": 33,
+        "selfMs": 48.080999999999996,
+        "inclusiveMs": 752.04,
+        "ticks": [
+          {
+            "line": 14,
+            "ticks": 1
+          },
+          {
+            "line": 55,
+            "ticks": 2
+          },
+          {
+            "line": 154,
+            "ticks": 6
+          },
+          {
+            "line": 44,
+            "ticks": 1
+          },
+          {
+            "line": 48,
+            "ticks": 1
+          },
+          {
+            "line": 152,
+            "ticks": 17
+          }
+        ]
+      },
+      {
+        "name": "copy",
+        "file": "src/core/immutable.js",
+        "line": 28,
+        "selfMs": 35.917,
+        "inclusiveMs": 49.875,
+        "ticks": [
+          {
+            "line": 39,
+            "ticks": 22
+          }
+        ]
+      },
+      {
+        "name": "samplePositionInterpolation",
+        "file": "src/grammar/animation/positions.js",
+        "line": 115,
+        "selfMs": 34.54,
+        "inclusiveMs": 112.83400000000002,
+        "ticks": [
+          {
+            "line": 49,
+            "ticks": 1
+          },
+          {
+            "line": 134,
+            "ticks": 1
+          },
+          {
+            "line": 237,
+            "ticks": 1
+          },
+          {
+            "line": 138,
+            "ticks": 1
+          },
+          {
+            "line": 121,
+            "ticks": 8
+          },
+          {
+            "line": 141,
+            "ticks": 9
+          },
+          {
+            "line": 136,
+            "ticks": 1
+          },
+          {
+            "line": 129,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "freezeOwned",
+        "file": "src/core/immutable.js",
+        "line": 12,
+        "selfMs": 22.625,
+        "inclusiveMs": 22.625,
+        "ticks": [
+          {
+            "line": 15,
+            "ticks": 4
+          },
+          {
+            "line": 16,
+            "ticks": 11
+          }
+        ]
+      },
+      {
+        "name": "cloneAndFreeze",
+        "file": "src/core/immutable.js",
+        "line": 26,
+        "selfMs": 22.459,
+        "inclusiveMs": 73.834,
+        "ticks": [
+          {
+            "line": 57,
+            "ticks": 1
+          },
+          {
+            "line": 55,
+            "ticks": 1
+          },
+          {
+            "line": 60,
+            "ticks": 7
+          },
+          {
+            "line": 56,
+            "ticks": 3
+          }
+        ]
+      },
+      {
+        "name": "validateConcreteGraphicProperties",
+        "file": "src/grammar/schemas/concreteGraphic.js",
+        "line": 133,
+        "selfMs": 21.126000000000005,
+        "inclusiveMs": 45.00200000000001,
+        "ticks": [
+          {
+            "line": 140,
+            "ticks": 1
+          },
+          {
+            "line": 149,
+            "ticks": 2
+          },
+          {
+            "line": 147,
+            "ticks": 11
+          }
+        ]
+      },
+      {
+        "name": "freezeOwned",
+        "file": "src/core/immutable.js",
+        "line": 12,
+        "selfMs": 17.208000000000002,
+        "inclusiveMs": 17.208000000000002,
+        "ticks": [
+          {
+            "line": 15,
+            "ticks": 1
+          },
+          {
+            "line": 16,
+            "ticks": 11
+          }
+        ]
+      },
+      {
+        "name": "captureFrameMeaning",
+        "file": "src/animation/frameEndpoint.js",
+        "line": 32,
+        "selfMs": 15.042,
+        "inclusiveMs": 25.415999999999997,
+        "ticks": [
+          {
+            "line": 71,
+            "ticks": 3
+          },
+          {
+            "line": 55,
+            "ticks": 2
+          },
+          {
+            "line": 47,
+            "ticks": 3
+          },
+          {
+            "line": 59,
+            "ticks": 1
+          },
+          {
+            "line": 39,
+            "ticks": 2
+          }
+        ]
+      },
+      {
+        "name": "isOwned",
+        "file": "src/core/immutable.js",
+        "line": 22,
+        "selfMs": 15.001,
+        "inclusiveMs": 15.001,
+        "ticks": [
+          {
+            "line": 23,
+            "ticks": 10
+          }
+        ]
+      },
+      {
+        "name": "isOwned",
+        "file": "src/core/immutable.js",
+        "line": 22,
+        "selfMs": 13.958,
+        "inclusiveMs": 13.958,
+        "ticks": [
+          {
+            "line": 23,
+            "ticks": 7
+          }
+        ]
+      },
+      {
+        "name": "interpolateNumber",
+        "file": "src/grammar/animation/values.js",
+        "line": 33,
+        "selfMs": 11.709,
+        "inclusiveMs": 11.709,
+        "ticks": [
+          {
+            "line": 8,
+            "ticks": 1
+          },
+          {
+            "line": 100,
+            "ticks": 7
+          }
+        ]
+      },
+      {
+        "name": "isPlainObject",
+        "file": "src/core/immutable.js",
+        "line": 3,
+        "selfMs": 9.042,
+        "inclusiveMs": 9.042,
+        "ticks": [
+          {
+            "line": 8,
+            "ticks": 5
+          }
+        ]
+      },
+      {
+        "name": "validateConcreteGraphicValue",
+        "file": "src/grammar/schemas/concreteGraphic.js",
+        "line": 38,
+        "selfMs": 8.876,
+        "inclusiveMs": 8.876,
+        "ticks": [
+          {
+            "line": 125,
+            "ticks": 1
+          },
+          {
+            "line": 95,
+            "ticks": 2
+          },
+          {
+            "line": 80,
+            "ticks": 1
+          },
+          {
+            "line": 104,
+            "ticks": 1
+          },
+          {
+            "line": 39,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "isOwned",
+        "file": "src/core/immutable.js",
+        "line": 22,
+        "selfMs": 7.584,
+        "inclusiveMs": 7.584,
+        "ticks": [
+          {
+            "line": 23,
+            "ticks": 5
+          }
+        ]
+      },
+      {
+        "name": "sampleAnimationAppearance",
+        "file": "src/animation/appearance.js",
+        "line": 58,
+        "selfMs": 7.542,
+        "inclusiveMs": 7.542,
+        "ticks": [
+          {
+            "line": 59,
+            "ticks": 4
+          }
+        ]
+      },
+      {
+        "name": "canvasSceneProgram",
+        "file": "src/renderers/canvasScene.js",
+        "line": 92,
+        "selfMs": 7.497999999999999,
+        "inclusiveMs": 244.083,
+        "ticks": [
+          {
+            "line": 96,
+            "ticks": 5
+          }
+        ]
+      },
+      {
+        "name": "",
+        "file": "src/animation/concrete.js",
+        "line": 50,
+        "selfMs": 7.417,
+        "inclusiveMs": 7.417,
+        "ticks": [
+          {
+            "line": 39,
+            "ticks": 1
+          },
+          {
+            "line": 100,
+            "ticks": 1
+          },
+          {
+            "line": 50,
+            "ticks": 3
+          }
+        ]
+      },
+      {
+        "name": "vector",
+        "file": "src/animation/concrete.js",
+        "line": 50,
+        "selfMs": 6.667999999999999,
+        "inclusiveMs": 14.084999999999999,
+        "ticks": [
+          {
+            "line": 50,
+            "ticks": 5
+          }
+        ]
+      },
+      {
+        "name": "validClip",
+        "file": "src/renderers/canvasScene.js",
+        "line": 31,
+        "selfMs": 6.1259999999999994,
+        "inclusiveMs": 6.1259999999999994,
+        "ticks": [
+          {
+            "line": 32,
+            "ticks": 4
+          }
+        ]
+      },
+      {
+        "name": "validateGraphicProperty",
+        "file": "src/grammar/schemas/graphic.js",
+        "line": 165,
+        "selfMs": 5.958,
+        "inclusiveMs": 5.958,
+        "ticks": [
+          {
+            "line": 170,
+            "ticks": 4
+          }
+        ]
+      },
+      {
+        "name": "",
+        "file": "src/animation/frameEndpoint.js",
+        "line": 47,
+        "selfMs": 5.333,
+        "inclusiveMs": 5.333,
+        "ticks": [
+          {
+            "line": 52,
+            "ticks": 1
+          },
+          {
+            "line": 51,
+            "ticks": 3
+          }
+        ]
+      },
+      {
+        "name": "interpolateNumber",
+        "file": "src/grammar/animation/values.js",
+        "line": 33,
+        "selfMs": 4.542,
+        "inclusiveMs": 4.542,
+        "ticks": [
+          {
+            "line": 39,
+            "ticks": 2
+          },
+          {
+            "line": 100,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "registerAnimationFrame",
+        "file": "src/animation/frameProvenance.js",
+        "line": 30,
+        "selfMs": 4.5,
+        "inclusiveMs": 8.625,
+        "ticks": [
+          {
+            "line": 58,
+            "ticks": 1
+          },
+          {
+            "line": 57,
+            "ticks": 1
+          },
+          {
+            "line": 56,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "append",
+        "file": "src/animation/partitionTracks.js",
+        "line": 72,
+        "selfMs": 4.499,
+        "inclusiveMs": 4.499,
+        "ticks": [
+          {
+            "line": 73,
+            "ticks": 3
+          }
+        ]
+      },
+      {
+        "name": "cloneAndFreeze",
+        "file": "src/core/immutable.js",
+        "line": 26,
+        "selfMs": 4.125,
+        "inclusiveMs": 4.125,
+        "ticks": [
+          {
+            "line": 55,
+            "ticks": 2
+          },
+          {
+            "line": 56,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "axisLabelFrameCollector",
+        "file": "src/animation/axisLabelFrames.js",
+        "line": 9,
+        "selfMs": 3.208,
+        "inclusiveMs": 3.208,
+        "ticks": [
+          {
+            "line": 12,
+            "ticks": 2
+          }
+        ]
+      },
+      {
+        "name": "cloneAndFreeze",
+        "file": "src/core/immutable.js",
+        "line": 26,
+        "selfMs": 3.083,
+        "inclusiveMs": 3.083,
+        "ticks": [
+          {
+            "line": 56,
+            "ticks": 2
+          }
+        ]
+      },
+      {
+        "name": "retainSampledGuideMeaning",
+        "file": "src/animation/guideTracks.js",
+        "line": 44,
+        "selfMs": 3.042,
+        "inclusiveMs": 3.042,
+        "ticks": [
+          {
+            "line": 71,
+            "ticks": 1
+          },
+          {
+            "line": 46,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "cloneAndFreeze",
+        "file": "src/core/immutable.js",
+        "line": 26,
+        "selfMs": 3,
+        "inclusiveMs": 4.542,
+        "ticks": [
+          {
+            "line": 56,
+            "ticks": 1
+          },
+          {
+            "line": 26,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "cloneAndFreeze",
+        "file": "src/core/immutable.js",
+        "line": 26,
+        "selfMs": 2.666,
+        "inclusiveMs": 2.666,
+        "ticks": [
+          {
+            "line": 56,
+            "ticks": 1
+          },
+          {
+            "line": 54,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "cloneAndFreeze",
+        "file": "src/core/immutable.js",
+        "line": 26,
+        "selfMs": 2.542,
+        "inclusiveMs": 2.542,
+        "ticks": [
+          {
+            "line": 54,
+            "ticks": 1
+          },
+          {
+            "line": 56,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "projectSampledAnimationEndpoint",
+        "file": "src/animation/endpoints.js",
+        "line": 53,
+        "selfMs": 2.291,
+        "inclusiveMs": 2.291,
+        "ticks": [
+          {
+            "line": 64,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "finish",
+        "file": "src/animation/geoFrames.js",
+        "line": 44,
+        "selfMs": 1.875,
+        "inclusiveMs": 1.875,
+        "ticks": [
+          {
+            "line": 46,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "rememberedScale",
+        "file": "src/grammar/animation/positions.js",
+        "line": 47,
+        "selfMs": 1.542,
+        "inclusiveMs": 1.542,
+        "ticks": [
+          {
+            "line": 48,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "copy",
+        "file": "src/core/immutable.js",
+        "line": 28,
+        "selfMs": 1.542,
+        "inclusiveMs": 1.542,
+        "ticks": [
+          {
+            "line": 36,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "",
+        "file": "src/animation/frameEndpoint.js",
+        "line": 59,
+        "selfMs": 1.542,
+        "inclusiveMs": 1.542,
+        "ticks": [
+          {
+            "line": 60,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "append",
+        "file": "src/animation/graphTracks.js",
+        "line": 62,
+        "selfMs": 1.5,
+        "inclusiveMs": 1.5,
+        "ticks": [
+          {
+            "line": 63,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "appearance",
+        "file": "src/animation/sample.js",
+        "line": 87,
+        "selfMs": 1.5,
+        "inclusiveMs": 9.042,
+        "ticks": [
+          {
+            "line": 87,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "freezeOwned",
+        "file": "src/core/immutable.js",
+        "line": 12,
+        "selfMs": 1.5,
+        "inclusiveMs": 1.5,
+        "ticks": [
+          {
+            "line": 15,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "finish",
+        "file": "src/animation/sample.js",
+        "line": 46,
+        "selfMs": 1.5,
+        "inclusiveMs": 38.583,
+        "ticks": [
+          {
+            "line": 46,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "frameIdentities",
+        "file": "src/animation/frameEndpoint.js",
+        "line": 21,
+        "selfMs": 1.208,
+        "inclusiveMs": 1.208,
+        "ticks": [
+          {
+            "line": 25,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "progress",
+        "file": "src/animation/timelineSample.js",
+        "line": 19,
+        "selfMs": 1.125,
+        "inclusiveMs": 1.125,
+        "ticks": [
+          {
+            "line": 19,
+            "ticks": 1
+          }
+        ]
+      },
+      {
+        "name": "sampleTransition",
+        "file": "src/animation/sample.js",
+        "line": 27,
+        "selfMs": 0,
+        "inclusiveMs": 752.04,
+        "ticks": [
+          {
+            "line": 28,
+            "ticks": 2
+          }
+        ]
+      },
+      {
+        "name": "interpolateNodeFrame",
+        "file": "src/animation/concrete.js",
+        "line": 49,
+        "selfMs": 0,
+        "inclusiveMs": 14.084999999999999
+      },
+      {
+        "name": "finish",
+        "file": "src/animation/graphTracks.js",
+        "line": 68,
+        "selfMs": 0,
+        "inclusiveMs": 2.542
+      },
+      {
+        "name": "finish",
+        "file": "src/animation/partitionTracks.js",
+        "line": 81,
+        "selfMs": 0,
+        "inclusiveMs": 2.666
+      },
+      {
+        "name": "finish",
+        "file": "src/animation/geoTextFrames.js",
+        "line": 47,
+        "selfMs": 0,
+        "inclusiveMs": 4.542
+      },
+      {
+        "name": "finish",
+        "file": "src/animation/axisLabelFrames.js",
+        "line": 48,
+        "selfMs": 0,
+        "inclusiveMs": 3.083
+      }
+    ]
+  },
+  "tests": {
+    "regression": 1294,
+    "render": 52
+  },
+  "prototype": {
+    "scope": "compiler completed local containers only; cache0; unchanged child ownership and validation",
+    "sourceSHA256": "aabcd332bafa87ce6c900db1ce9c680dee8f57ff731473ca288750b91ea7e786",
+    "transformedSHA256": "a565443e4084b654f2ff66c7ebee82e1b698201b08716f04c41f06304767b864",
+    "counts": [
+      {
+        "clones": 31,
+        "ownedAdds": 6044,
+        "weakAdds": 6076,
+        "weakHas": 17145,
+        "freezeCalls": 12053,
+        "cloneArraySlots": 9011,
+        "cloneRecordKeys": 1031
+      },
+      {
+        "clones": 26,
+        "ownedAdds": 6044,
+        "weakAdds": 6071,
+        "weakHas": 16136,
+        "freezeCalls": 12053,
+        "cloneArraySlots": 8009,
+        "cloneRecordKeys": 26
+      }
+    ],
+    "actual1kWholeEquality": true,
+    "original100kCandidateRun": false,
+    "packageQualification": false,
+    "lifetime": {
+      "variants": 2,
+      "oldObjects": 8,
+      "cycles": 5,
+      "alive": 0
+    }
+  },
+  "limits": {
+    "performanceTargetMs": 50,
+    "p95Qualified": false,
+    "hundredCycleQualified": false,
+    "structuralBatchAdopted": false
+  },
+  "evidence": {
+    "boundary-lifetime.log": {
+      "bytes": 17163,
+      "sha256": "b1006ed2beb7cc1622ffcb4217899f336c6b9717fa7ebcd0873637a543d64e21"
+    },
+    "non-sample-profile.json": {
+      "bytes": 447,
+      "sha256": "84340ad4caf42e05c84e4e77a53da8625a576c19a5d41287667962e4c27282c6"
+    },
+    "product-compare.log": {
+      "bytes": 19655,
+      "sha256": "dd9e86bce1585210ead55089b1ff9cd53e540d3eafceca2218face08ad9fb238"
+    },
+    "receipt.json": {
+      "bytes": 2221,
+      "sha256": "62e8823d637a5d257705b62d44fa2c5b063e61624590c20edfc2a204e2cd6155"
+    },
+    "regression.log": {
+      "bytes": 307352,
+      "sha256": "76139a4542f3c72d5ce922884985cd87b7d98f28ae9117035cb6961cd1d921eb"
+    },
+    "render.log": {
+      "bytes": 12471,
+      "sha256": "bd3996e2c68a12756d65f4ea5f2458ffd2d697e471aeff15f1da48913586d9a5"
+    },
+    "run.log": {
+      "bytes": 1962,
+      "sha256": "23739dc2218588ebba7188c694511f35c21d3946e011f46689cbd14ca6abf86f"
+    },
+    "run.mjs": {
+      "bytes": 4037,
+      "sha256": "a96a11e02ab87cd016ea540be4a2778326f659d89a1b1b41443a1f3224464986"
+    },
+    "sample.cpuprofile": {
+      "bytes": 22376,
+      "sha256": "df937224df1e0beb4e3a0743fe884d6e536bd4f60ca8aaa2762290290ab2b104"
+    },
+    "summarize.mjs": {
+      "bytes": 1424,
+      "sha256": "bdd8aa6b12c00b580380c8ec08222b749775e09c3bffdcd5928a86e03bea0805"
+    },
+    "summary.json": {
+      "bytes": 16597,
+      "sha256": "d5b0c8fef5f84e161edbdbe6d626e25d418fc6adcb769fda8fc474b5afc2149b"
+    },
+    "boundary-lifetime.json": {
+      "bytes": 18767,
+      "sha256": "c472bd16eb8cff80b746f7dfeb4aee0fda7021db11be897aa77ec69c816cff7c"
+    },
+    "boundary-lifetime.mjs": {
+      "bytes": 6292,
+      "sha256": "a2d9511aa208432949fd248bef4f8e2d4eb39c9bab510a03d9e1feeddc36157e"
+    },
+    "loader.mjs": {
+      "bytes": 2906,
+      "sha256": "d5b5e2bc13386411064909fda49a6d614f65ddd15b4f733985719fddf57ba1eb"
+    },
+    "product-compare-compiler-finalize-linear.json": {
+      "bytes": 22422,
+      "sha256": "2b80e2629e4f1308c368652b5d5e6110d873e5228c22e47d5f43b5d2aa7e5f58"
+    },
+    "product-compare.mjs": {
+      "bytes": 9430,
+      "sha256": "2aad9d516fb05d007657cdecd8b15f8fcea2a5a0d56a4e0b2d8036c43fd8a4e2"
+    },
+    "qualify.mjs": {
+      "bytes": 4087,
+      "sha256": "adc5ee257c690b386e2b66eb49fa8dac18e81012bff611221359fa511658d960"
+    }
+  }
+}

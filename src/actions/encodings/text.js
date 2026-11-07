@@ -1,3 +1,4 @@
+import { isScreenAnnotation } from "../../grammar/screenAnnotation.js";
 import { action } from "../../core/action.js";
 import { schemaField } from "../../grammar/datasetSchema.js";
 import { formatTextValue, validateTextFormat, isIndependentText, resolveTextOffsetDataset, normalizeTextOffsetAssignment } from "../../grammar/text.js";
@@ -48,12 +49,11 @@ export const encodeText = /* @__PURE__ */ action(
     if (Object.hasOwn(args, "normalizeBy") && (!hasContent || args.content !== "share")) {
       throw new Error("Text normalizeBy is only supported with share content.");
     }
-    const { id: target, dataset: sourceDataset, layer } = resolveTarget(
-      this,
-      args.target,
-      ["text"],
-      "text mark"
-    );
+    const selected = resolveEligibleLayer(this, { target: args.target, predicate: layer => layer.mark?.type === "text", label: "text mark" });
+    if (isScreenAnnotation(selected) && !hasValue) throw new TypeError("Screen annotation requires constant Text content.");
+    const { id: target, dataset: sourceDataset, layer } = isScreenAnnotation(selected)
+      ? { id: selected.id, layer: selected }
+      : resolveTarget(this, selected.id, ["text"], "text mark");
     const dataset = hasField
       ? applyRequestedItemMissingPolicy(layer, sourceDataset, args.field)
       : applyRequestedItemMissingPolicy(layer, sourceDataset);

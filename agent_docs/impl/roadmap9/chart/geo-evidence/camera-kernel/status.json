@@ -1,0 +1,102 @@
+{
+  "scope": "Private geographic camera operations and quaternion sampler; no public camera action/session/player yet",
+  "base": "249f8d5ec",
+  "reusedAnimationValues": {
+    "upstream": "206524886c24c7a7d5a47b7b03e83b067457669c",
+    "cherryPick": "51910d0fb",
+    "note": "Only independent value kernel checkpoint taken; unqualified main integration not merged. Package limits retained current Geo until this measurement."
+  },
+  "checks": {
+    "kernel": {
+      "tests": 22,
+      "pass": 22,
+      "cameraTests": 13,
+      "sharedAnimationTests": 9,
+      "ownerCoverage": {
+        "camera.js": [
+          100,
+          100,
+          100
+        ],
+        "cameraInterpolation.js": [
+          100,
+          100,
+          100
+        ],
+        "animation/values.js": [
+          100,
+          100,
+          100
+        ]
+      },
+      "criticalFloor": [
+        95,
+        90,
+        100
+      ]
+    },
+    "supportedNodes": {
+      "20": {
+        "tests": 22,
+        "pass": 22
+      },
+      "22": {
+        "tests": 22,
+        "pass": 22
+      },
+      "24": {
+        "tests": 22,
+        "pass": 22
+      }
+    },
+    "sourceAndDiscovery": {
+      "tests": 27,
+      "pass": 27
+    },
+    "packageContracts": {
+      "tests": 7,
+      "pass": 7
+    }
+  },
+  "packageMeasurements": [
+    {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 1038,
+      "packedBytes": 1474207,
+      "unpackedBytes": 6710451
+    },
+    {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 1038,
+      "packedBytes": 1471245,
+      "unpackedBytes": 6710451
+    },
+    {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 1038,
+      "packedBytes": 1474207,
+      "unpackedBytes": 6710451
+    }
+  ],
+  "packageLimits": {
+    "entries": 1038,
+    "packedBytes": 1475000,
+    "unpackedBytes": 6711000
+  },
+  "originalFailure": {
+    "tests": 13,
+    "pass": 12,
+    "reason": "asin precision loss near Euler pole; replaced by atan2 of matrix elements and retained exact literal pole assertion."
+  },
+  "remaining": [
+    "Public navigation and explicit initial-view contract",
+    "Native projection revision/rematerialization and Canvas resize closure",
+    "Browser pointer/wheel/pinch/keyboard/history/abort and offline restore",
+    "Camera/player current-frame hit, reduced motion and crossfade integration",
+    "Other Geo obligations: conditional resource-grain fields and feature/graticule labels"
+  ],
+  "verificationBoundary": "No new full normal/global coverage or installed/archive claim. Public entries/types/renderers unchanged; standalone pure owners verified on three supported Node versions."
+}

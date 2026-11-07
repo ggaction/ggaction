@@ -65,6 +65,7 @@ const CHANNEL_METHODS = Object.freeze({
 const FORBIDDEN_PAYLOAD_KEYS = Object.freeze(["target", "coordinate", "id"]);
 
 const DEFERRED_MARK_OPERATIONS = Object.freeze([
+  "materializeGeoMark",
   "rematerializeOverlay",
   "materializeEmptyMark",
   "rematerializePointMark",

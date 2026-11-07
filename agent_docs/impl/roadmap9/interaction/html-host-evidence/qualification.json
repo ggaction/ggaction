@@ -1,0 +1,89 @@
+{
+  "runtimeUnchanged": "d2441294413d13de40fc545f070489645c038276",
+  "parent": "60d09cca5",
+  "authorization": "../AUTHORIZATION.json#remainingApproval",
+  "scope": "Paired HTML canonical documentation execution routing, browser and installed consumer; no runtime/types changes.",
+  "checks": {
+    "browserDocumentation": 4,
+    "ownerDocsAndDiscovery": 68,
+    "installed": {
+      "node": "v22.23.1",
+      "artifact": "7cab0f5b1ee890ee76526f0c5e620a6abd75f149ee8a037d30e76411a9a77fad",
+      "sourceFree": true,
+      "actualChromium": true,
+      "receipts": [
+        {
+          "name": "api-interaction--interaction-keyboard",
+          "id": "interaction-keyboard",
+          "file": "api/interaction.md",
+          "sha256": "e8023f8f5184e2dc050252e75cab538932e48ea8326710e1822d028b0c52f10d",
+          "htmlSha256": "47a3c10ee52191151dc7633d054e5c7c7db3b85e919f1656a11175fb1e4bac9d",
+          "rendering": "renders-canvas",
+          "status": "passed",
+          "durationMs": 786.9841669999996
+        },
+        {
+          "name": "api-interaction--interaction-accessible-tooltip",
+          "id": "interaction-accessible-tooltip",
+          "file": "api/interaction.md",
+          "sha256": "c5147eb184d5bfbfd1f377f06f875c203d95aad613001dcfc5f0fbf92eb9d8ee",
+          "htmlSha256": "6bc24b86e914dbb7823f2ff0c8b56c64d3b7d9778f4b7920baa1b8c1674f35c5",
+          "rendering": "renders-canvas",
+          "status": "passed",
+          "durationMs": 649.983416
+        }
+      ]
+    }
+  },
+  "fullAttempt": {
+    "tests": 129,
+    "passed": 126,
+    "failed": 3,
+    "resolvedOwnLiteral": true,
+    "remainingBranchBaseline": [
+      "interaction-navigation canvas.setAttribute mock",
+      "interaction-arbitration canvas.setAttribute mock"
+    ]
+  },
+  "reused": "C1 page/JS/runtime/types are unchanged: prior build172/1535, four widths Axe0, B same-tar three-Node runtime/types/bundles.",
+  "remaining": [
+    "Combined latest scaffold full docs",
+    "C2 native controls accessibility matrix",
+    "Public animation/reduced motion and AT53",
+    "STEP074-077"
+  ],
+  "evidenceFiles": [
+    {
+      "path": "html-host-consumer-receipts.json.gz",
+      "sha256": "b45935b62f910b55e31b6be9305e8fdeb947fb08a2dd0ff96afdaeedc97d7fcd"
+    },
+    {
+      "path": "html-host-consumer.log.gz",
+      "sha256": "cf8c69251a072313484968b15265f9be100e7c711fef4b32c7b6d00943a8c71c"
+    },
+    {
+      "path": "html-host-consumer.mjs.gz",
+      "sha256": "e1f44f05166f710a2059a53ccce1258c11b0fa92743a6e5b6b620a56adae9ffc"
+    },
+    {
+      "path": "html-host-executable-all.log.gz",
+      "sha256": "fcc4d153c381dc1b9de013b196cd122a675151664b11771dc97efc8fddde345c"
+    },
+    {
+      "path": "html-host-executable-final.log.gz",
+      "sha256": "219495a58e650c44237e2ff81c296c3f618d3706dbcffb46e1ab1749a2d022a3"
+    },
+    {
+      "path": "html-host-executable-first.log.gz",
+      "sha256": "af755e46ad2af5f4129a5144586c8f31232c473e59a86c253e48eccd02d93fcf"
+    },
+    {
+      "path": "html-host-generation.log.gz",
+      "sha256": "4d19f3cc3e71814ecd950e0ec5b1db2808ecb323b76d79885f82eee7a242dd20"
+    },
+    {
+      "path": "html-host-owning.log.gz",
+      "sha256": "3f16e3e20cc87cbeb8d09ce596102750a8953ec17d22f9c17e84fc39e4ca0be0"
+    }
+  ]
+}

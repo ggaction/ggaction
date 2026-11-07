@@ -1,0 +1,93 @@
+{
+  "status": "acceptance-owners-assigned; all-candidate-results-pending",
+  "base": "c006b87032be29fdd48e8ea6e5e9e554743abfbe",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1229,
+    "packedBytes": 1755879,
+    "unpackedBytes": 7927055,
+    "file": "ggaction-0.0.26.tgz",
+    "sha256": "ebfa7ce25443b4fcf56205a5cf8cb241531e8fffe7b217a60fc5e1a5727150f0"
+  },
+  "runtimeTypesAndPackageInputsUnchanged": true,
+  "scope": "14 acceptance groups linked to actual discovered native assertions. Installed family suite now explicitly requires five cross-cutting static/animation/font/offline receipts and rejects missing execution.",
+  "checks": {
+    "normal.log": 381,
+    "installed.log": 31,
+    "boundaries.log": 19
+  },
+  "reusedDocs": {
+    "record": "../native-domain-scene-merged-evidence/qualification.json",
+    "tests": 239,
+    "reason": "public documentation, generated inputs and runtime unchanged"
+  },
+  "manifest": {
+    "requirements": 30,
+    "groups": 79,
+    "targets": 577,
+    "required": 574,
+    "canonicalNotApplicable": 3,
+    "assignedConsumers": 539,
+    "pendingRequiredConsumers": 35,
+    "previousAssignedGroups": 61,
+    "addedAssignedGroups": 14,
+    "assignedGroups": 75,
+    "pendingGroups": 4,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577,
+    "otherRowsAndFieldsPreserved": true
+  },
+  "remaining": [
+    "R dynamic labels/P axis-dependent inferred clearance",
+    "35 consumer owners, four acceptance owners and all final same-candidate actual evidence",
+    "AT56/82 real latency/heap/route size qualification; AT60 independent review; AT61 exact protected release and artifact identity",
+    "Nine final commands; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "normal.log": {
+      "sha256": "e574c45275d1233ab86b49953693845d37a09b4e0937031f917e608ca9f21822",
+      "bytes": 91744,
+      "tests": 381
+    },
+    "installed.log": {
+      "sha256": "af042a1b14ba6137a4abd94fed614b48d8be20a623aa68112d1b6def2cdc9402",
+      "bytes": 6276,
+      "tests": 31
+    },
+    "boundaries.log": {
+      "sha256": "c5d8aeb1e8ed6bcc7b2456cb59b3794d2b8763554ee1cbdf4b655edb47ffb81f",
+      "bytes": 3923,
+      "tests": 19
+    },
+    "pending.json": {
+      "sha256": "d19683c79cc7796d13eec99195a97f47edefafc48513b5540e92bdedf2d85593",
+      "bytes": 26070
+    },
+    "normal-files.json": {
+      "sha256": "5b188db79f769382dfc3cb63e347e2ca9a628451354fea7456b50e0a9e04c431",
+      "bytes": 1984
+    },
+    "assign.py": {
+      "sha256": "bd505441ecce1e9340dcde117eb92b1788c5159b59f1cd646653e20b413e4923",
+      "bytes": 6420
+    }
+  },
+  "progressRecordRefresh": {
+    "steps": [
+      "STEP061",
+      "STEP063"
+    ],
+    "scope": "Refresh stale private-checkpoint checkboxes to already implemented public planner/player; retain dynamic guide/native matrix obligations and all historical prose. No runtime/types/package change.",
+    "checks": 47,
+    "localLinks": "all existing",
+    "log": {
+      "path": "progress-docs.log.gz",
+      "uncompressedSha256": "fdb18a80ee42ec24b0cd34eee019eb2ce0d36e8bf8e97f4d177bf14c7cb12245",
+      "uncompressedBytes": 10037
+    }
+  }
+}

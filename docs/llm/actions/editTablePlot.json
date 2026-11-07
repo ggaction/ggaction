@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 3,
+  "name": "editTablePlot",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Edits table plot, including settings for keyed table.",
+  "signature": "editTablePlot(options: TargetedOptions<EditTablePlotOptions>): ChartProgram;",
+  "intents": [
+    "edit table plot",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "table plot",
+    "keyed table"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "materialized dataset",
+      "Canvas"
+    ],
+    "owns": [
+      "Table keyed cells and inline charts"
+    ],
+    "idOptions": [
+      "target",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editTablePlot",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "padding",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "materialized dataset",
+      "Canvas"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "columns",
+      "required": false,
+      "type": "readonly TableColumn[] | undefined"
+    },
+    {
+      "name": "sortBy",
+      "required": false,
+      "type": "false | readonly SortKey[] | undefined"
+    },
+    {
+      "name": "rowLimit",
+      "required": false,
+      "type": "number | false | undefined"
+    },
+    {
+      "name": "rowHeight",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "padding",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "header",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "cells",
+      "required": false,
+      "type": "TableCellPaint | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "TableLabelPaint | undefined"
+    },
+    {
+      "name": "headerStyle",
+      "required": false,
+      "type": "TableBandPaint | undefined"
+    },
+    {
+      "name": "footerStyle",
+      "required": false,
+      "type": "TableBandPaint | undefined"
+    },
+    {
+      "name": "bars",
+      "required": false,
+      "type": "TableCellPaint | undefined"
+    },
+    {
+      "name": "sparklines",
+      "required": false,
+      "type": "TableSparklinePaint | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "false | PyramidColor | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editTablePlot({ target?, data?, coordinate?, columns?, sortBy?, rowLimit?, rowHeight?, padding? })"
+  ],
+  "snippet": "program.editTablePlot({ target: \"table\", sortBy: [{ field: \"value\", order: \"descending\" }] })",
+  "errors": [],
+  "route": "/reference/actions/marks/#edittableplot"
+}

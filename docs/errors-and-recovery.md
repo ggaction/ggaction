@@ -29,7 +29,9 @@ identity are preserved, including extension errors that are already frozen.
 The stable `code` values are `invalid-option`, `invalid-value`,
 `missing-resource`, `ambiguous-resource`, `incompatible-resource`,
 `resource-in-use`, `resource-limit`, `unsupported-format`, `action-failed`,
-`duplicate-id`, `ambiguous-identity`, `cyclic-dependency`, and `stale-result`.
+`duplicate-id`, `ambiguous-identity`, `cyclic-dependency`, `stale-result`, and
+`prepared-data-required` (a parameter used by a URL source changed; use
+`prepareDataUpdate` with a `parameter` request).
 Shared input validation and named-resource selectors assign specific codes.
 Wrapped actions attach `action-failed` to other errors without guessing their
 category from English message text. Not every individual domain failure has a
@@ -90,9 +92,12 @@ logs; do not log sensitive row contents by default.
 - **Scale has no consumer:** attach the named scale to a compatible encoding.
 - **Raster allocation rejected:** reduce logical size or `pixelRatio` before
   retrying Canvas or PNG output.
-- **Unsupported static capability:** redesign explicitly. Tooltips, animation,
-  event handling, geographic projection, 3D charts, and JPEG rendering are not
-  silently emulated.
+- **Unsupported static capability:** static renderers do not add tooltips,
+  animation or event handling; use [`ggaction/live`](./api/live.md),
+  [`ggaction/animation`](./api/animation.md) or
+  [`ggaction/interaction`](./api/interaction.md) explicitly. Geographic maps use
+  [Geometry and projections](./api/geometry.md). 3D charts and JPEG rendering are
+  not supported.
 
 ## Diagnosis order
 

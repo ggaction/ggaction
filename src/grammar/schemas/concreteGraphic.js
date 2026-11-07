@@ -1,3 +1,7 @@
+import { validateCircleBatchColumn, validateCircleBatchProperties } from "./circleBatch.js";
+import { validatePathBatchProperties, validatePathBatchValue } from "./pathBatch.js";
+import { pathCommandCapacity, validatePathCapacity } from "../pathTopology.js";
+import { validateWeightedBlendSources } from "./weightedBlend.js";
 import { normalizeMarkShadow } from "../markShadow.js";
 import { normalizeMarkOutline } from "../markOutline.js";
 import { ownRecord } from "../../core/ownData.js";
@@ -31,9 +35,50 @@ const TEXT_ALIGNS = new Set(["left", "right", "center", "start", "end"]);
 const TEXT_BASELINES = new Set([
   "top", "hanging", "middle", "alphabetic", "ideographic", "bottom"
 ]);
-const validatedProperties = new WeakMap();
+// The validated types of an owned properties record live in a private field on
+// the record itself, so no process-wide weak table grows with the graphic count
+// (a large weak table lengthens every collector pause). Records that cannot
+// carry the field are simply validated again.
+class StampTarget { constructor(value) { return value; } }
+class ValidatedTypes extends StampTarget {
+  #types = new Set();
+  static of(value) { return value !== null && typeof value === "object" && #types in value ? value.#types : undefined; }
+  static add(value, type) {
+    if (!(#types in value)) { try { new ValidatedTypes(value); } catch { return; } }
+    value.#types.add(type);
+  }
+}
 
-export function validateConcreteGraphicValue(type, property, value) {
+function validateCircleAppearance(value) {
+  ownRecord(value, "circle-batch.appearance");
+  if (["x", "y", "radius", "length"].some(key => Object.hasOwn(value, key))) {
+    throw new TypeError("circle-batch.appearance cannot contain coordinates or length.");
+  }
+  validateConcreteGraphicProperties("circle", value);
+}
+
+// Path rows share one complete path appearance; geometry lives in the columns.
+function validatePathAppearance(value) {
+  ownRecord(value, "path-batch.appearance");
+  if (["commands", "maxCommands", "length"].some(key => Object.hasOwn(value, key))) {
+    throw new TypeError("path-batch.appearance cannot contain commands, capacity or length.");
+  }
+  validateConcreteGraphicProperties("path", value);
+}
+
+export function validateConcreteGraphicValue(type, property, value, properties) {
+  if (type === "path-batch") {
+    if (property === "appearance") validatePathAppearance(value);
+    else validatePathBatchValue(property, value);
+    return value;
+  }
+  if (type === "circle-batch") {
+    if (property === "appearance") validateCircleAppearance(value);
+    else validateCircleBatchColumn(value, property);
+    return value;
+  }
+  if (property === "maxCommands") validatePathCapacity(value);
+  if (type === "weighted-blend" && property === "sources") validateWeightedBlendSources(value, validateConcreteGraphicProperties);
   if (property === "shadow") {
     if (value === false) throw new TypeError("Concrete shadow must be an object.");
     const normalized = normalizeMarkShadow(value, `${type}.shadow`);
@@ -121,35 +166,36 @@ export function validateConcreteGraphicValue(type, property, value) {
   if (property === "lineJoin") validateLineJoin(value, `${type} graphic`);
   if (property === "miterLimit") validateMiterLimit(value, `${type} graphic`);
   if (type === "path" && property === "commands") {
-    validatePathCommands(value);
+    validatePathCommands(value, properties === undefined ? undefined : pathCommandCapacity(properties));
   }
   return value;
 }
 
 export function validateConcreteGraphicProperties(type, properties) {
-  const validatedTypes = validatedProperties.get(properties);
+  if (type === "path" && isPlainObject(properties)) pathCommandCapacity(properties);
+  const validatedTypes = ValidatedTypes.of(properties);
   if (validatedTypes?.has(type)) return properties;
   if (!isPlainObject(properties)) {
     throw new TypeError(`${type}.properties must be a plain object.`);
   }
+  if (type === "weighted-blend" && !Object.hasOwn(properties, "sources")) throw new TypeError("weighted-blend.properties requires sources.");
   if (type === "text" && typeof properties.fill === "object" && properties.fillBounds === undefined) {
     throw new TypeError("Structured Text fill requires concrete fillBounds.");
   }
   if (type === "image" && ["image", "x", "y", "width", "height"].some(key => !Object.hasOwn(properties, key))) {
     throw new TypeError("image.properties requires image, x, y, width, and height.");
   }
-  for (const [property, value] of Object.entries(properties)) {
+  if (type === "circle-batch") validateCircleBatchProperties(properties, validateCircleAppearance);
+  if (type === "path-batch") validatePathBatchProperties(properties, validatePathAppearance);
+  if (type !== "circle-batch" && type !== "path-batch") for (const [property, value] of Object.entries(properties)) {
     validateGraphicProperty(type, property);
-    validateConcreteGraphicValue(type, property, value);
+    validateConcreteGraphicValue(type, property, value, properties);
   }
   if (type === "text" && properties.font !== undefined &&
       (properties.font.family !== properties.fontFamily || properties.font.style !== (properties.fontStyle ?? "normal") ||
         properties.font.weight !== textMetricFontWeight(properties.fontWeight))) {
     throw new TypeError("Concrete text font must match its exact family, style and weight.");
   }
-  if (isOwned(properties)) {
-    if (validatedTypes) validatedTypes.add(type);
-    else validatedProperties.set(properties, new Set([type]));
-  }
+  if (isOwned(properties)) ValidatedTypes.add(properties, type);
   return properties;
 }

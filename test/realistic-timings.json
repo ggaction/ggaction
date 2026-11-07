@@ -4,6 +4,7 @@
   "environment": "Ubuntu, Node 22",
   "measurement": "Sum of per-test duration_ms from the successful realistic run; scheduling estimates, not per-file elapsed-time guarantees.",
   "durationMs": {
+    "contracts/realistic-animation-timeline.test.js": 2038,
     "contracts/dataset-fixtures.test.js": 22252,
     "contracts/generated-lifecycle-scenarios.test.js": 20882,
     "contracts/generated-scenario-effective-factors.test.js": 2529,
@@ -15,6 +16,7 @@
     "contracts/realistic-cartesian-facade-coverage-recipes.test.js": 134704,
     "contracts/realistic-combined-legend-witness.test.js": 1338,
     "contracts/realistic-complete-chart-facades.test.js": 3510,
+    "contracts/realistic-composition-recipes.test.js": 1584,
     "contracts/realistic-conditional-lifecycle.test.js": 958,
     "contracts/realistic-contours.test.js": 3379,
     "contracts/realistic-data-color-contracts.test.js": 50176,
@@ -26,6 +28,12 @@
     "contracts/realistic-facet-column-factors.test.js": 165289,
     "contracts/realistic-facet-raster-bounds.test.js": 82744,
     "contracts/realistic-flow-layouts.test.js": 1611,
+    "contracts/realistic-geographic-annotations.test.js": 1075,
+    "contracts/realistic-geographic-camera.test.js": 1222,
+    "contracts/realistic-geographic-encodings.test.js": 3039,
+    "contracts/realistic-geographic-join.test.js": 1652,
+    "contracts/realistic-geographic-levels.test.js": 997,
+    "contracts/realistic-geographic-marks.test.js": 1752,
     "contracts/realistic-guide-scale-recipes.test.js": 268329,
     "contracts/realistic-hierarchical-facade-matrix.test.js": 367033,
     "contracts/realistic-hierarchy-lifecycle.test.js": 9912,
@@ -39,8 +47,10 @@
     "contracts/realistic-mark-outlines.test.js": 2594,
     "contracts/realistic-mark-shadows.test.js": 3052,
     "contracts/realistic-observed-graphs.test.js": 197,
+    "contracts/realistic-ohlc-plots.test.js": 4654,
     "contracts/realistic-partition-lifecycle.test.js": 5082,
     "contracts/realistic-projections.test.js": 1055,
+    "contracts/realistic-pyramid-plots.test.js": 1121,
     "contracts/realistic-responsive-layout.test.js": 3484,
     "contracts/realistic-row-selection.test.js": 19760,
     "contracts/realistic-scenario-generation-isolation.test.js": 945678,
@@ -48,13 +58,18 @@
     "contracts/realistic-scenario-runner.test.js": 99611,
     "contracts/realistic-scoped-composition.test.js": 843,
     "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393,
+    "contracts/realistic-stream-baselines.test.js": 3162,
     "contracts/realistic-structured-paints.test.js": 184876,
-    "contracts/realistic-geographic-marks.test.js": 1752,
-    "contracts/realistic-geographic-join.test.js": 1652,
-    "contracts/realistic-geographic-levels.test.js": 997,
-    "contracts/realistic-pyramid-plots.test.js": 1121,
-    "contracts/realistic-ohlc-plots.test.js": 4654,
-    "contracts/realistic-waterfall-plots.test.js": 3002
+    "contracts/realistic-table-plots.test.js": 3204,
+    "contracts/realistic-trail-plots.test.js": 2968,
+    "contracts/realistic-waterfall-plots.test.js": 3002,
+    "contracts/realistic-geographic-transitions.test.js": 1468,
+    "contracts/realistic-polar-transitions.test.js": 1593,
+    "contracts/realistic-guide-transitions.test.js": 11547.75675,
+    "contracts/realistic-graph-drag.test.js": 26125,
+    "contracts/realistic-cartesian-transitions.test.js": 3697,
+    "contracts/realistic-geographic-routes.test.js": 2355,
+    "contracts/realistic-axis-label-reflow.test.js": 2133
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -138,9 +153,25 @@
     "contracts/realistic-waterfall-plots.test.js": {
       "environment": "macOS arm64, Node22.23.1, canonical realistic heap and concurrency",
       "measurement": "Sum of 16 successful canonical realistic per-test durations 3001.387998ms, rounded upward. Source: agent_docs/impl/roadmap9/chart/waterfall-evidence/waterfall-realistic.log.gz. Scheduling estimate only."
+    },
+    "contracts/realistic-axis-label-reflow.test.js": {
+      "environment": "macOS arm64, Node 22.23.1, max-old-space-size=512, test-concurrency=2",
+      "measurement": "Sum of five successful canonical realistic per-test durations 2132.474418 ms, rounded upward. Original first-twelve positive rows and units from five pinned sources, native midpoint layout, independent raw-value positions, strict rebase/offline and SVG integrity. Scheduling estimate only."
     }
   },
   "localMeasurements": {
+    "contracts/realistic-animation-timeline.test.js": {
+      "record": "1793337670561-67567.json",
+      "durationMs": 2037.9862919999998,
+      "maxRssKiB": 209328,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed"
+    },
     "contracts/realistic-combined-legend-witness.test.js": {
       "environment": "Darwin, Node 22",
       "source": "local integration run",
@@ -225,6 +256,96 @@
       "durationMs": 19760,
       "environment": "macOS arm64, Node 23.5.0",
       "source": "Local canonical realistic runner, 2026-10-26; five pinned datasets with row selection and editable persistence"
+    },
+    {
+      "schemaVersion": 1,
+      "file": "contracts/realistic-geographic-annotations.test.js",
+      "durationMs": 1074.9137090000002,
+      "maxRssKiB": 147776,
+      "status": "passed",
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "run": null,
+      "attempt": null
+    },
+    {
+      "schemaVersion": 1,
+      "file": "contracts/realistic-geographic-camera.test.js",
+      "durationMs": 1221.6012079999998,
+      "maxRssKiB": 150128,
+      "status": "passed",
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "run": null,
+      "attempt": null
+    },
+    {
+      "schemaVersion": 1,
+      "file": "contracts/realistic-geographic-encodings.test.js",
+      "durationMs": 3038.8289590000004,
+      "maxRssKiB": 172992,
+      "status": "passed",
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "run": null,
+      "attempt": null
+    },
+    {
+      "schemaVersion": 1,
+      "file": "contracts/realistic-stream-baselines.test.js",
+      "durationMs": 3161.7817090000003,
+      "maxRssKiB": 203152,
+      "status": "passed",
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "run": null,
+      "attempt": null
+    },
+    {
+      "schemaVersion": 1,
+      "file": "contracts/realistic-trail-plots.test.js",
+      "durationMs": 2967.944792,
+      "maxRssKiB": 198464,
+      "status": "passed",
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "run": null,
+      "attempt": null
+    },
+    {
+      "schemaVersion": 1,
+      "file": "contracts/realistic-table-plots.test.js",
+      "durationMs": 3204.287084,
+      "maxRssKiB": 189344,
+      "status": "passed",
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "run": null,
+      "attempt": null
     }
   ],
   "localAdditions": {
@@ -242,6 +363,62 @@
     "contracts/realistic-responsive-layout.test.js": {
       "record": "1793279805187-40300.json",
       "durationMs": 3483.3687919999998,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed"
+    },
+    "contracts/realistic-composition-recipes.test.js": {
+      "record": "1793318509594-54262.json",
+      "durationMs": 1583.912208,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed"
+    },
+    "contracts/realistic-guide-transitions.test.js": {
+      "record": ".artifacts/checks/suite-realistic.json",
+      "durationMs": 11547.75675,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed",
+      "note": "Canonical focused runner; five real sources and fifteen native guide recipes including axis-dependent legend clearance; original rows and units preserved."
+    },
+    "contracts/realistic-geographic-transitions.test.js": {
+      "record": "1793321149548-80963.json",
+      "durationMs": 1467.8640830000002,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed"
+    },
+    "contracts/realistic-polar-transitions.test.js": {
+      "record": "1793321149672-80964.json",
+      "durationMs": 1592.425458,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed"
+    },
+    "contracts/realistic-graph-drag.test.js": {
+      "record": "1793322193413-95600.json",
+      "durationMs": 26124.708666,
       "environment": {
         "node": "v22.23.1",
         "platform": "darwin",

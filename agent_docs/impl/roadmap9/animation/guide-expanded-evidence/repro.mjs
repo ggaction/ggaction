@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {chart} from '../../../../../src/index.js';
+import {planTransition,sampleTransition,serializeAnimation,deserializeAnimation} from '../../../../../src/animation.js';
+const from=chart().createCanvas({width:600,height:400,margin:70}).createData({values:[{a:1,b:10},{a:2,b:20}]}).createParallelCoordinates({id:'lines',dimensions:['a','b'],guides:{legend:false}});
+const to=from.editCanvas({width:800});
+const make=(from,to)=>planTransition({from,to,options:{durationMs:100,easing:'linear'}});
+const frame=sampleTransition(make(from,to),40), next=make(frame,to);
+const live=sampleTransition(next,50), restored=sampleTransition(deserializeAnimation(serializeAnimation(next)).plan,50);
+console.log(JSON.stringify({live:live.decisions.slice(0,3),restored:restored.decisions.slice(0,3),sceneEqual:JSON.stringify(live.scene)===JSON.stringify(restored.scene)},null,2));
+assert.deepEqual(restored, live);

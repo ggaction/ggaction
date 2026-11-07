@@ -61,8 +61,12 @@ global theme or rewrite every axis and legend.
 For exact layout, prepare font resources on the intended immutable program,
 then call `prepareTextMetrics(program, {id, fonts}, host)` and apply its handle
 with `applyTextMetrics({prepared, requestToken})`. A new label that needs a
-missing width fails atomically. Remove the profile, edit the label, and prepare
-again; replacing a bound font prepares its new measurements before committing.
+missing width fails atomically. Remove the profile with `removeTextMetrics()`,
+edit the label, and prepare again. Replace font bytes with `replaceFontResource`;
+replacing a bound font prepares its new measurements before committing.
+`removeResource({ kind: "font", id })` rejects while a metric profile uses the
+font; `cascade: true` removes the profile and restores estimated text first. See
+[Change labels or fonts](./tutorials/font-assets.md#change-labels-or-fonts).
 
 Browser Canvas also requires `prepareFontRendering(program, {register})` and
 `render(program, context, {fonts})`. Release the handle with `fonts.dispose()`

@@ -1,0 +1,161 @@
+[
+  {
+    "input": {
+      "backend": "Canvas",
+      "events": [
+        "down",
+        "move",
+        "move",
+        "move",
+        "Escape",
+        "up"
+      ]
+    },
+    "expected": {
+      "terminalEvents": [
+        "cancel"
+      ],
+      "commitCount": 0,
+      "historyDelta": 0,
+      "baselineChanged": false,
+      "capturedPointersAfter": 0
+    },
+    "actual": {
+      "terminalEvents": [
+        "cancel"
+      ],
+      "commitCount": 0,
+      "historyDelta": 0,
+      "baselineChanged": false,
+      "capturedPointersAfter": 0
+    },
+    "diff": [],
+    "inputHash": "4661a2f1c20f5f2ddb251b5433e2addc5990b6a3026d01d2d8c13d4a2d222407",
+    "expectedHash": "afbcd490d788620e4f53ca3d20b1e42b7634f778270b18ab783b481258295f9c",
+    "actualHash": "afbcd490d788620e4f53ca3d20b1e42b7634f778270b18ab783b481258295f9c"
+  },
+  {
+    "input": {
+      "backend": "SVG",
+      "events": [
+        "down",
+        "move",
+        "move",
+        "move",
+        "Escape",
+        "up"
+      ]
+    },
+    "expected": {
+      "terminalEvents": [
+        "cancel"
+      ],
+      "commitCount": 0,
+      "historyDelta": 0,
+      "baselineChanged": false,
+      "capturedPointersAfter": 0
+    },
+    "actual": {
+      "terminalEvents": [
+        "cancel"
+      ],
+      "commitCount": 0,
+      "historyDelta": 0,
+      "baselineChanged": false,
+      "capturedPointersAfter": 0
+    },
+    "diff": [],
+    "inputHash": "e13c9a8f6b1448c1085c3b24afff0c828e64859945c46dbf52fefce42cfec556",
+    "expectedHash": "afbcd490d788620e4f53ca3d20b1e42b7634f778270b18ab783b481258295f9c",
+    "actualHash": "afbcd490d788620e4f53ca3d20b1e42b7634f778270b18ab783b481258295f9c"
+  },
+  {
+    "input": {
+      "dispatch": [
+        "job1",
+        "job2"
+      ],
+      "completion": [
+        "job2",
+        "job1"
+      ],
+      "baseRevision": 1
+    },
+    "expected": {
+      "applied": [
+        "job2"
+      ],
+      "discarded": [
+        "job1"
+      ],
+      "finalRevision": 2
+    },
+    "actual": {
+      "applied": [
+        "job2"
+      ],
+      "discarded": [
+        "job1"
+      ],
+      "finalRevision": 2
+    },
+    "diff": [],
+    "inputHash": "2dae57a938a39f18f72cf9e0ed44e3a0f1f01f00854884bad502548ae3545054",
+    "expectedHash": "19faf96af5ce01c0e9af165d8abb6853849427619291009d035001ba9331de53",
+    "actualHash": "19faf96af5ce01c0e9af165d8abb6853849427619291009d035001ba9331de53"
+  },
+  {
+    "input": {
+      "dispatch": [
+        "job1@revision1",
+        "job2@revision2"
+      ],
+      "completion": [
+        "job2",
+        "job1"
+      ],
+      "revisionOwner": "parameter:n"
+    },
+    "expected": {
+      "applied": [
+        "job2"
+      ],
+      "discarded": [
+        "job1"
+      ],
+      "finalRevision": 2
+    },
+    "actual": {
+      "applied": [
+        "job2"
+      ],
+      "discarded": [
+        "job1"
+      ],
+      "finalRevision": 2
+    },
+    "diff": [],
+    "inputHash": "b06ce1d4df85cdeea75527ea7a878574077745a63708e774638d49f7c903266f",
+    "expectedHash": "19faf96af5ce01c0e9af165d8abb6853849427619291009d035001ba9331de53",
+    "actualHash": "19faf96af5ce01c0e9af165d8abb6853849427619291009d035001ba9331de53"
+  },
+  {
+    "input": {
+      "cycles": 100,
+      "replacement": "resize-worker-assets",
+      "destroy": "alternating-worker-or-assets"
+    },
+    "expected": {
+      "committed": 50,
+      "discarded": 150
+    },
+    "actual": {
+      "committed": 50,
+      "discarded": 150
+    },
+    "diff": [],
+    "inputHash": "c890b4497fb8141f9c106d1d175f8eddb3a7a8a97437b434834d60e9c6810e62",
+    "expectedHash": "7b8aad686d36d32b85bb79c927c4da5c3c3d5fbb383c030b905962259feddd0a",
+    "actualHash": "7b8aad686d36d32b85bb79c927c4da5c3c3d5fbb383c030b905962259feddd0a"
+  }
+]

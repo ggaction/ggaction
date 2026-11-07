@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {readFile,writeFile,readdir,unlink} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {gzipSync} from 'node:zlib';
+import {execFileSync} from 'node:child_process';
+import {transform} from './loader.mjs';
+const hash=value=>createHash('sha256').update(value).digest('hex'),root=new URL('../../../../../',import.meta.url);
+const sourcePin='e1a4b7517d59ff1fb39a90e5eae167e026a3734c';
+assert.equal(execFileSync('git',['diff','--name-only',sourcePin,'--','src'],{cwd:root,encoding:'utf8'}).trim(),'');
+const files=['animation/sample.js','renderers/canvasScene.js'],source={};for(const file of files){const content=await readFile(new URL('src/'+file,root),'utf8');source['src/'+file]={originalSHA256:hash(content),prototypeBothSHA256:hash(transform(file,content,'both'))};}
+const tests={};for(const file of ['regression-final.log','render-final.log','regression.log','hit.log','render.log']){const text=await readFile(new URL(file,import.meta.url),'utf8');const counts=Object.fromEntries([...text.matchAll(/^# (tests|pass|fail|cancelled|skipped|todo) (\d+)$/gm)].map(match=>[match[1],Number(match[2])]));assert.ok(counts.tests>0,file);assert.equal(counts.fail,0,file);assert.equal(counts.tests,counts.pass,file);tests[file]=counts;}
+const variants={};for(const variant of ['decisions','wrappers','both']){const report=JSON.parse(await readFile(new URL(`product-compare-${variant}-linear.json`,import.meta.url)));assert.equal(report.variant,variant);for(const result of Object.values(report.comparisons)){for(const key of ['mixedGeoFullFrameAndMeaningEqual','fullNativeOfflineMeaningBatchRebaseEqual','timelineAndTimelineRebaseFullMeaningEqual','fallbackFullMeaningEqual','restoreReserializeExact'])assert.equal(result[key],true);assert.equal(result.nativeSHA256[0],result.nativeSHA256[1]);assert.equal(result.rebaseSHA256[0],result.rebaseSHA256[1]);}variants[variant]=report.comparisons['4'].counts.map(({clones,ownedAdds,weakAdds,weakHas})=>({clones,ownedAdds,weakAdds,weakHas}));}
+const boundary=JSON.parse(await readFile(new URL('boundary-lifetime.json',import.meta.url)));for(const result of boundary.results){assert.equal(result.boundary.getterReads,0);assert.ok(Object.values(result.lifetime.oldObjectsAlive).every(value=>!value));}
+for(const file of await readdir(new URL('.',import.meta.url)))if(file.endsWith('.log')){const content=await readFile(new URL(file,import.meta.url));await writeFile(new URL(file+'.gz',import.meta.url),gzipSync(content));await unlink(new URL(file,import.meta.url));}
+const evidence={};for(const file of (await readdir(new URL('.',import.meta.url))).sort())if(file!=='qualification.json')evidence[file]=hash(await readFile(new URL(file,import.meta.url)));
+const report={status:'read-only review; not adopted',sourcePin,node:process.version,source,variants,tests,productSourceChanges:0,original100kRun:false,packageQualification:false,performanceClaim:false,lifetime:{variants:4,oldObjectsPerVariant:8,cycles:5,alive:0,hundredCycleQualification:false},evidence};await writeFile(new URL('./qualification.json',import.meta.url),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({tests,variants,lifetime:report.lifetime}));

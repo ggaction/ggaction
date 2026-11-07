@@ -25,7 +25,7 @@ export function sourceValue(item, source, field) {
   if (item.members.length === 1 && Object.hasOwn(item.members[0], field)) {
     return item.members[0][field];
   }
-  if (source.mark.type === "line" && item.members.length > 0) {
+  if (["line", "trail"].includes(source.mark.type) && item.members.length > 0) {
     const endpoint = item.members.at(-1);
     if (Object.hasOwn(endpoint, field)) return endpoint[field];
   }
@@ -67,6 +67,6 @@ export function resolveTextSourceBindings(program, layer, items, resolvers) {
   const source = layer.source === undefined ? undefined : findLayer(program, layer.source);
   // Path labels use the native series endpoint and raw endpoint fields; the
   // positional predicates belong to vertices, not the whole series item.
-  return source === undefined || ["line", "area"].includes(source.mark.type) ? undefined
+  return source === undefined || ["line", "area", "trail"].includes(source.mark.type) ? undefined
     : resolveItemPositionBindings(program, source, items, resolvers);
 }

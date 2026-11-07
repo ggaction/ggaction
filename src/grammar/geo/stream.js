@@ -1,18 +1,22 @@
+import { normalizePolygonWinding } from "./options.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
-import { MAX_PATH_COMMANDS } from "../pathTopology.js";
+import { MAX_PATH_COMMANDS, MAX_DECLARED_PATH_COMMANDS } from "../pathTopology.js";
+import { buildRingPathCommands } from "../pathCommands.js";
 import { createGeometryBudget, snapshotGeometryJSON } from "./input.js";
 import { normalizeGeometry } from "./geometry.js";
 import { normalizeProjectionOptions, projectionTuple, longitudeDegrees } from "./projectionOptions.js";
-import { buildProjectionMath, streamGeometryMath, sphericalMidpoint } from "./projectionMath.js";
-import { createProjectionKernel } from "./projections.js";
+import { buildProjectionMath, streamGeometryMath, sphericalMidpointInto, orientGeometryRingsMath } from "./projectionMath.js";
+import { createProjectionCalculation } from "./projections.js";
 
 function antipodal(a, b) {
   const rad = Math.PI / 180, p = a[1] * rad, q = b[1] * rad;
   return Math.sin(p) * Math.sin(q) + Math.cos(p) * Math.cos(q) * Math.cos((a[0] - b[0]) * rad) < -1 + 1e-12;
 }
 
+// Midpoint pairs are read before the next one is written.
+const scratchMidpoint = [0, 0];
 function lineCoordinates(points, settings, kernel, budget, count) {
   if (!points.length || settings.coordinateKind === "planar") return points;
   const result = [[...points[0]]];
@@ -29,17 +33,26 @@ function lineCoordinates(points, settings, kernel, budget, count) {
     const start = [longitudeDegrees(a[0]), a[1]];
     let delta = longitudeDegrees(b[0] - a[0]);
     if (delta === -180 && b[0] - a[0] > 0) delta = 180;
-    const stack = [{ a: start, b: [start[0] + delta, b[1]], depth: 0 }];
-    while (stack.length) {
-      const segment = stack.pop(), middle = [(segment.a[0] + segment.b[0]) / 2, (segment.a[1] + segment.b[1]) / 2];
+    // Depth-first halves, last-in first-out as before; most source segments
+    // are accepted whole, so the explicit stack is built only for a split.
+    let segmentA = start, segmentB = [start[0] + delta, b[1]], depth = 0, stack;
+    while (true) {
+      const middleX = (segmentA[0] + segmentB[0]) / 2, middleY = (segmentA[1] + segmentB[1]) / 2;
       budget.charge();
-      const span = Math.max(Math.abs(segment.a[0] - segment.b[0]), Math.abs(segment.a[1] - segment.b[1]));
-      const linear = kernel.forward(middle).point, curved = kernel.forward(sphericalMidpoint(segment.a, segment.b)).point;
+      const span = Math.max(Math.abs(segmentA[0] - segmentB[0]), Math.abs(segmentA[1] - segmentB[1]));
+      const linear = kernel.forwardXY(middleX, middleY), midpoint = sphericalMidpointInto(segmentA[0], segmentA[1], segmentB[0], segmentB[1], scratchMidpoint);
+      const curved = kernel.forwardXY(midpoint[0], midpoint[1]);
       const error = linear && curved ? Math.hypot(linear[0] - curved[0], linear[1] - curved[1]) : 0;
       if (span > 5 || error > kernel.options.precisionPx / 2) {
-        if (segment.depth >= 20) throw new RangeError("Geographic source-segment refinement exceeds its depth limit.");
-        stack.push({ a: middle, b: segment.b, depth: segment.depth + 1 }, { a: segment.a, b: middle, depth: segment.depth + 1 });
-      } else { count(); result.push(segment.b); }
+        if (depth >= 20) throw new RangeError("Geographic source-segment refinement exceeds its depth limit.");
+        const middle = [middleX, middleY];
+        (stack ??= []).push({ a: middle, b: segmentB, depth: depth + 1 });
+        segmentB = middle; depth += 1;
+        continue;
+      }
+      count(); result.push(segmentB);
+      if (!stack?.length) break;
+      ({ a: segmentA, b: segmentB, depth } = stack.pop());
     }
   }
   return result;
@@ -61,13 +74,14 @@ function leaves(geometry) {
 
 export function projectGeometry(geometry, projectionInput, input = {}) {
   ownRecord(input, "Geographic stream options");
-  rejectUnknownProperties(input, ["coordinateKind", "interpolation", "routeHint", "maxPoints"], "geographic stream");
+  rejectUnknownProperties(input, ["coordinateKind", "interpolation", "routeHint", "maxPoints", "polygonWinding"], "geographic stream");
   const options = normalizeProjectionOptions(projectionInput), coordinateKind = input.coordinateKind;
   if (!["geographic", "planar"].includes(coordinateKind) || (coordinateKind === "planar") !== (options.type === "identity")) throw new TypeError("Geometry coordinateKind and projection type are incompatible.");
+  const polygonWinding = normalizePolygonWinding(input);
   const interpolation = Object.hasOwn(input, "interpolation") ? input.interpolation : "source-segment";
   if (!["source-segment", "great-circle"].includes(interpolation) || coordinateKind === "planar" && interpolation !== "source-segment") throw new TypeError("Geometry interpolation is incompatible with its coordinate kind.");
   const maxPoints = Object.hasOwn(input, "maxPoints") ? input.maxPoints : MAX_PATH_COMMANDS;
-  if (!Number.isSafeInteger(maxPoints) || maxPoints < 1 || maxPoints > MAX_PATH_COMMANDS) throw new RangeError("Geographic maxPoints exceeds the path command limit.");
+  if (!Number.isSafeInteger(maxPoints) || maxPoints < 1 || maxPoints > MAX_DECLARED_PATH_COMMANDS) throw new RangeError("Geographic maxPoints exceeds the path command limit.");
   let routeHint;
   if (Object.hasOwn(input, "routeHint")) {
     routeHint = projectionTuple(input.routeHint, [2], "Geographic routeHint");
@@ -75,7 +89,7 @@ export function projectGeometry(geometry, projectionInput, input = {}) {
   }
   const settings = { coordinateKind, interpolation, routeHint }, budget = createGeometryBudget();
   const source = snapshotGeometryJSON(geometry, budget), normalized = normalizeGeometry(source, coordinateKind, budget).geometry;
-  const math = buildProjectionMath(options), kernel = createProjectionKernel(options);
+  const math = buildProjectionMath(options), kernel = createProjectionCalculation(options);
   let preparedPoints = 0, outputPoints = 0, commands = 0, events = 0, bounds = null;
   const parts = [];
   const countPrepared = () => validateGeneratedItemLimit(++preparedPoints, "Geographic refined points", maxPoints);
@@ -85,9 +99,13 @@ export function projectGeometry(geometry, projectionInput, input = {}) {
     if (!Number.isFinite(x) || !Number.isFinite(y)) throw new RangeError("Geographic stream produced non-finite coordinates.");
     return [x, y];
   }
+  function extend(x, y) {
+    if (bounds === null) bounds = [x, y, x, y];
+    else { bounds[0] = Math.min(bounds[0], x); bounds[1] = Math.min(bounds[1], y); bounds[2] = Math.max(bounds[2], x); bounds[3] = Math.max(bounds[3], y); }
+  }
   function appendPart(part, sourcePath, component, index) {
-    const points = part.kind === "point" ? [part.point] : part.commands.filter(c => c.op !== "Z").map(c => [c.x, c.y]);
-    for (const [x, y] of points) bounds = bounds === null ? [x, y, x, y] : [Math.min(bounds[0], x), Math.min(bounds[1], y), Math.max(bounds[2], x), Math.max(bounds[3], y)];
+    if (part.kind === "point") extend(part.point[0], part.point[1]);
+    else for (const command of part.commands) if (command.op !== "Z") extend(command.x, command.y);
     parts.push({ key: [...sourcePath, component, index], sourcePath, component, ...part });
   }
   for (const leaf of leaves(normalized)) {
@@ -96,19 +114,21 @@ export function projectGeometry(geometry, projectionInput, input = {}) {
     if (g.type === "LineString") prepared = { type: g.type, coordinates: lineCoordinates(g.coordinates, settings, kernel, budget, countPrepared) };
     else if (g.type === "Polygon") prepared = { type: g.type, coordinates: g.coordinates.map(points => {
       const ring = lineCoordinates(points, settings, kernel, budget, countPrepared);
-      return coordinateKind === "geographic" ? [...ring].reverse() : ring;
+      return ring;
     }) };
+    if (g.type === "Polygon" && coordinateKind === "geographic") prepared = {
+      ...prepared, coordinates: orientGeometryRingsMath(prepared.coordinates, true, polygonWinding)
+    };
     if (g.type === "Point") {
-      const projected = kernel.forward(g.coordinates.slice(0, 2));
+      const projected = kernel.forwardPoint(g.coordinates.slice(0, 2));
       if (projected.reason === "non-finite-projection") throw new RangeError("Geographic point projection overflows.");
       if (projected.point) appendPart({ kind: "point", point: acceptPoint(...projected.point) }, leaf.sourcePath, projected.component, 0);
       continue;
     }
     for (const component of math.parts) {
       let line, polygon, index = 0;
-      function command(value) {
+      function command() {
         validateGeneratedItemLimit(++commands, "Geographic path commands", maxPoints);
-        polygon.push(value);
       }
       const sink = {
         point(x, y) { line.push(acceptPoint(x, y)); },
@@ -116,14 +136,16 @@ export function projectGeometry(geometry, projectionInput, input = {}) {
         lineEnd() {
           if (line.length < (polygon ? 3 : 2)) return;
           if (polygon) {
-            line.forEach(([x, y], i) => command({ op: i ? "L" : "M", x, y })); command({ op: "Z" });
+            // Count each ring command and its closing Z in emission order.
+            for (let i = 0; i <= line.length; i++) command();
+            polygon.push(line);
           } else {
             validateGeneratedItemLimit(commands += line.length, "Geographic path commands", maxPoints);
-            appendPart({ kind: "line", commands: line.map(([x, y], i) => ({ op: i ? "L" : "M", x, y })) }, leaf.sourcePath, component.id, index++);
+            appendPart({ kind: "line", commands: buildRingPathCommands([line], false) }, leaf.sourcePath, component.id, index++);
           }
         },
         polygonStart() { polygon = []; },
-        polygonEnd() { if (polygon.length) appendPart({ kind: "polygon", commands: polygon, fillRule: "evenodd" }, leaf.sourcePath, component.id, index++); polygon = undefined; }
+        polygonEnd() { if (polygon.length) appendPart({ kind: "polygon", commands: buildRingPathCommands(polygon, true), fillRule: "evenodd" }, leaf.sourcePath, component.id, index++); polygon = undefined; }
       };
       streamGeometryMath(prepared, component.projection, sink);
     }

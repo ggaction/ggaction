@@ -1,0 +1,591 @@
+{
+  "status": "empty-appearance-patch-reuse-verified; full-native-performance-pending",
+  "base": "a37b82e423b8de17270900aad8f732e5d907ecfe",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Reuse one deeply owned empty appearance patch only after authentic plan and progress validation; no API/schema/math/guard/SLO change",
+  "sourceSHA256": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1251,
+    "packedBytes": 1791901,
+    "unpackedBytes": 8087851,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-890f14dd0dfb1a0f14f9860ecf0ff56984891285c6e3201ca7577847ef0b91e1.tgz",
+    "sha256": "890f14dd0dfb1a0f14f9860ecf0ff56984891285c6e3201ca7577847ef0b91e1"
+  },
+  "checks": {
+    "owning.log": 29,
+    "coverage.log": 12,
+    "boundaries.log": 20,
+    "package-contracts.log": 7,
+    "browser.log": 2,
+    "docs.log": 243
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "sha256": "890f14dd0dfb1a0f14f9860ecf0ff56984891285c6e3201ca7577847ef0b91e1",
+      "checks": [
+        {
+          "id": "animation-appearance/offline-four-renderers",
+          "status": "passed",
+          "durationMs": 334.848792
+        },
+        {
+          "id": "animation-appearance/current-frame-interruption",
+          "status": "passed",
+          "durationMs": 46.7249579999999
+        },
+        {
+          "id": "animation-appearance/current-ink-selection",
+          "status": "passed",
+          "durationMs": 29.158083000000033
+        },
+        {
+          "id": "animation-cartesian-completion/native-four-renderers",
+          "status": "passed",
+          "durationMs": 166.58337500000016
+        },
+        {
+          "id": "animation-cartesian-completion/offline-network-free",
+          "status": "passed",
+          "durationMs": 634.585333
+        },
+        {
+          "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+          "status": "passed",
+          "durationMs": 295.2120000000002
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1065,
+          "minifiedBytes": 2740587,
+          "gzipBytes": 786154
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 424647
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 113,
+          "minifiedBytes": 225913,
+          "gzipBytes": 67837
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113132,
+          "gzipBytes": 333794
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135989
+        }
+      ],
+      "types": "passed",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "node": "v22.23.1",
+      "sha256": "890f14dd0dfb1a0f14f9860ecf0ff56984891285c6e3201ca7577847ef0b91e1",
+      "checks": [
+        {
+          "id": "animation-appearance/offline-four-renderers",
+          "status": "passed",
+          "durationMs": 476.0236249999999
+        },
+        {
+          "id": "animation-appearance/current-frame-interruption",
+          "status": "passed",
+          "durationMs": 50.43345799999997
+        },
+        {
+          "id": "animation-appearance/current-ink-selection",
+          "status": "passed",
+          "durationMs": 31.899166999999807
+        },
+        {
+          "id": "animation-cartesian-completion/native-four-renderers",
+          "status": "passed",
+          "durationMs": 166.25529099999994
+        },
+        {
+          "id": "animation-cartesian-completion/offline-network-free",
+          "status": "passed",
+          "durationMs": 773.7032919999999
+        },
+        {
+          "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+          "status": "passed",
+          "durationMs": 235.48416699999962
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1065,
+          "minifiedBytes": 2740587,
+          "gzipBytes": 784772
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 423769
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24779
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 113,
+          "minifiedBytes": 225913,
+          "gzipBytes": 67689
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113132,
+          "gzipBytes": 332662
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135493
+        }
+      ],
+      "types": "passed",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "sha256": "890f14dd0dfb1a0f14f9860ecf0ff56984891285c6e3201ca7577847ef0b91e1",
+      "checks": [
+        {
+          "id": "animation-appearance/offline-four-renderers",
+          "status": "passed",
+          "durationMs": 348.063167
+        },
+        {
+          "id": "animation-appearance/current-frame-interruption",
+          "status": "passed",
+          "durationMs": 31.387708000000202
+        },
+        {
+          "id": "animation-appearance/current-ink-selection",
+          "status": "passed",
+          "durationMs": 21.144457999999986
+        },
+        {
+          "id": "animation-cartesian-completion/native-four-renderers",
+          "status": "passed",
+          "durationMs": 144.53733399999987
+        },
+        {
+          "id": "animation-cartesian-completion/offline-network-free",
+          "status": "passed",
+          "durationMs": 678.1746250000001
+        },
+        {
+          "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+          "status": "passed",
+          "durationMs": 214.31558399999994
+        }
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1065,
+          "minifiedBytes": 2740587,
+          "gzipBytes": 786154
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 424647
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 113,
+          "minifiedBytes": 225913,
+          "gzipBytes": 67837
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1113132,
+          "gzipBytes": 333794
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135989
+        }
+      ],
+      "types": "passed",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    }
+  ],
+  "critical": {
+    "animation/appearance.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100,
+      "actualRootRun": true
+    }
+  },
+  "built": {
+    "pages": 186,
+    "selectiveArtifacts": 1606,
+    "status": "passed"
+  },
+  "allocationAttribution": {
+    "kind": "same-plan-temporary-loader-allocation-attribution-not-performance",
+    "count": 1000,
+    "exactFrameEqual": true,
+    "frameSHA256": "ccc8b213266c8565a5a67cca172cad2c11ea1d2193eb7ea510d7a39862115909",
+    "before": {
+      "calls": 10020,
+      "allocations": 25037,
+      "ownedAdds": 27042
+    },
+    "after": {
+      "calls": 9020,
+      "allocations": 24037,
+      "ownedAdds": 26042
+    },
+    "witness": {
+      "count": 1000,
+      "first": {
+        "x": 27.272727272727273,
+        "fill": "#4c78a8",
+        "y": 369.09090909090907,
+        "radius": 3
+      },
+      "last": {
+        "x": 78.18181818181819,
+        "fill": "#4c78a8",
+        "y": 30.909090909090878,
+        "radius": 3
+      }
+    },
+    "delta": {
+      "calls": -1000,
+      "allocations": -1000,
+      "ownedAdds": -1000
+    }
+  },
+  "limits": {
+    "entries": 1251,
+    "packedBytes": 1795700,
+    "unpackedBytes": 8087900,
+    "FullGzip": 786200,
+    "animationGzip": 333800
+  },
+  "profile": {
+    "count": 1000,
+    "warmup": 5,
+    "samples": 30,
+    "runtime": "Node22 with temporary CPU profiler",
+    "qualification": false,
+    "sourceBase": "a37b82e42",
+    "afterWorkingCopySourceSHA256": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+    "timingComparisonClaimed": false,
+    "reason": "Small attribution runs and concurrent peer functional load do not establish browser P95 or a before/after speedup"
+  },
+  "corrections": [
+    "Initial unit command named a missing sample.test.js; corrected to existing owning files before29passing checks",
+    "Independent program creations yielded different complete frame digests; only the subsequent same-authentic-plan baseline/optimized comparison is exact full-frame evidence",
+    "The after raw CPU report source field names the base revision; after working-copy appearance SHA is pinned separately here"
+  ],
+  "reuse": {
+    "builtBrowser": "Public prose, snippets, CSS and UI unchanged; responsive/accessibility evidence reused; two actual Canvas/SVG animation browser regressions rerun"
+  },
+  "pending": [
+    "Large100k common frame performance and Canvas playback",
+    "Combined native P95/heap/lifecycle qualification",
+    "Sequential STEP057-070 and final required suites"
+  ],
+  "evidenceFiles": {
+    "coverage.log": {
+      "bytes": 3708,
+      "sha256": "650acdb05b58ff81b65517732c866844f04fc6a2eaa6ef6a822267c7823a19e9"
+    },
+    "pack22.json": {
+      "bytes": 378,
+      "sha256": "08b4152a098e379430838d04ef61c7abf5db5e12142ed0d24da26da569c0809f"
+    },
+    "installed-24.json": {
+      "bytes": 2019,
+      "sha256": "2a41af3bf115d18f7d0c756ed66c5222b67db2be17a2b9ca2472641e0cb60904"
+    },
+    "browser.log": {
+      "bytes": 1545,
+      "sha256": "2a381a37106411724c8bf6eb2253872fc93b60616d0ab068ddbb7b1cd83d3082"
+    },
+    "before-sample-1000.json": {
+      "bytes": 7755,
+      "sha256": "f7a2679236f115a5648d6ae03b913a96cd2c33580dc043214de55d6c29b60afd"
+    },
+    "before-sample-1000.cpuprofile": {
+      "bytes": 43065,
+      "sha256": "11187f756ccad7c8902aabca9d6676aca08469abf69f6bb78d5e9f772e3f0f3b"
+    },
+    "before-source.json": {
+      "bytes": 247,
+      "sha256": "10d2eee377615c31c2b0fd8a7396c49cb5a0823f79d8b540b56b4bde8c104001"
+    },
+    "after-allocations.json": {
+      "bytes": 657,
+      "sha256": "56dbd198333c66fa2afcaae15739c2e33091054482da922661ae75334ac03309"
+    },
+    "profile.mjs": {
+      "bytes": 1751,
+      "sha256": "7c7561312553cf160780cee702ef77346d7df693a14f60fdae390f83cbc80e06"
+    },
+    "allocations.mjs": {
+      "bytes": 2487,
+      "sha256": "a7540f7a2fb43f8863b3b705eaa6690b7a3d01b2298fe45d8828625b6f24ec58"
+    },
+    "core-callers.json": {
+      "bytes": 4319,
+      "sha256": "5bc301c8c2dadf43f2db027d8983c467c0bf03f60c58dccd02ea39b85ff3034b"
+    },
+    "before-allocations.log": {
+      "bytes": 514,
+      "sha256": "5a5a35510a626ecfbc8933468152fededf06cced4a5e9b1b124c89d65679bec0"
+    },
+    "frozen.json": {
+      "bytes": 436,
+      "sha256": "1f935e96f7d4917704ec3106a8818db89462ca26809ca74e7e276944ceeced53"
+    },
+    "installed-24.log": {
+      "bytes": 1465,
+      "sha256": "b14d2785d4aff7ab277e0e5954e7bb7f936080188415a6aae03336e8051087ba"
+    },
+    "pack20.log": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "before-profile.log": {
+      "bytes": 2851,
+      "sha256": "7176e037e09a0adea1a58180f0a85e42f84514815d803662a973d8fc46103ba3"
+    },
+    "pack22.log": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "installed-22.json": {
+      "bytes": 2025,
+      "sha256": "0b2046cec9e21a6c8228350f6e2bf9df4b1820c153ae37fbe2d66b4f2e081f3d"
+    },
+    "pack24.json": {
+      "bytes": 378,
+      "sha256": "7cd715d601f2b6444dbd1ed52ac7b1d0a699282c83cec45a13614fd8d5bc9e00"
+    },
+    "installed-22.log": {
+      "bytes": 1471,
+      "sha256": "d5e0307acf3e2b9adaaaf5cce2a30ebe3180b375be20cceb0cf4960655d2a448"
+    },
+    "profile.log": {
+      "bytes": 2851,
+      "sha256": "7176e037e09a0adea1a58180f0a85e42f84514815d803662a973d8fc46103ba3"
+    },
+    "docs.log": {
+      "bytes": 74073,
+      "sha256": "e6f32ca6b09f3c59a9d9981137a99b3102e2a912ca3086df66ed7c201ae536da"
+    },
+    "boundaries.log": {
+      "bytes": 4268,
+      "sha256": "350e8efdf5f9fabff73b30c8a3db63695221d97bef2bc93c448a757033986339"
+    },
+    "installed-20.log": {
+      "bytes": 1455,
+      "sha256": "e61c701b2e9c86ac5b36a3d19ce677bc9c704a1de57c22a8038e6a2fa5084074"
+    },
+    "pack24.log": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "same-plan-allocations.json": {
+      "bytes": 762,
+      "sha256": "99cce94db31f7dea7b8d1467d9745fd1140ade82eb723cfd17b8153ed06c4202"
+    },
+    "owning-first.log": {
+      "bytes": 728,
+      "sha256": "ef9f1bcf79e86a579b4469b12a6e43f94c0e2275ebb6cceed56c3001d2f9903c"
+    },
+    "installed-20.json": {
+      "bytes": 2009,
+      "sha256": "38d2b300279f3e09e9b5e5a92db9754e429b0de54804102e51f76e41fd8409ea"
+    },
+    "package-contracts.log": {
+      "bytes": 1827,
+      "sha256": "fad83a91211ae5e9dd04028220d8dd82e6399895ce837c98eb6c2f0f6822a615"
+    },
+    "same-plan.log": {
+      "bytes": 571,
+      "sha256": "7e8dc563e8a15fa34fda9035d2e0bcd210a0ae9f8a9ce16055947869c8d8b2d9"
+    },
+    "premeasure20.json": {
+      "bytes": 305,
+      "sha256": "c1e53e9510df3dc9ecd194c423f93353a2933914dcdd7f93fc9d8c123821f3c9"
+    },
+    "sample-1000.json": {
+      "bytes": 7758,
+      "sha256": "2c9d40061947c114b0a1960d3d86b756760cad1bc77566fb687595ccffd0d7b6"
+    },
+    "before-core-callers.json": {
+      "bytes": 4319,
+      "sha256": "5bc301c8c2dadf43f2db027d8983c467c0bf03f60c58dccd02ea39b85ff3034b"
+    },
+    "sample-1000.cpuprofile": {
+      "bytes": 43134,
+      "sha256": "c88e01126dd2188f914ecd6991d16939deb3b259aeec1339c51fe9e21d32bca1"
+    },
+    "pack20.json": {
+      "bytes": 378,
+      "sha256": "87f651f4c490742a94322f6b4b96916043e0d56eb5226cf2bdb31310160c4e7c"
+    },
+    "prepack.log": {
+      "bytes": 498,
+      "sha256": "74896020effe41eade169248a396a99ee3ecac695e09e18ef599ded2bad1f7d7"
+    },
+    "same-plan.mjs": {
+      "bytes": 3311,
+      "sha256": "b4af28fcf4d35dcff003b282221a5b81978545c41cc57cfaf2fa787c9d40abc9"
+    },
+    "owning.log": {
+      "bytes": 7372,
+      "sha256": "bb455becf07ce5a590a4311b524a0737b99becc4c9c33e24abd7cefdf9ee337a"
+    },
+    "appearance-before.js.txt": {
+      "bytes": 3620,
+      "sha256": "143f9f9968267ab542bb092262a355e072eb393584917b5a09f3ff12f94db0a9"
+    },
+    "built.log": {
+      "bytes": 102,
+      "sha256": "16305e5926be746711cfe72bc6671fdf6880e924b51217fec344f785e933a341"
+    },
+    "premeasure20.log": {
+      "bytes": 253,
+      "sha256": "33e577a5e0003839035999e746dc727f947c9898217cd27ef8721734e7f519b3"
+    },
+    "after-allocations.log": {
+      "bytes": 512,
+      "sha256": "256189badd931d06cc373175997120175feef79e071f742a9cc02a1d18322a38"
+    },
+    "evidence.py": {
+      "bytes": 4282,
+      "sha256": "fc05bbb47a106eb924e717edb2e0b9323939a8ce5501b30dacbd24567a6b50ea"
+    },
+    "generate.log": {
+      "bytes": 13431,
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5"
+    },
+    "after-profile.log": {
+      "bytes": 2829,
+      "sha256": "5a182295b1f1408d89a4532b01f0a6e71e6a1a3079b9fe0a086663b4918549a7"
+    },
+    "before-allocations.json": {
+      "bytes": 659,
+      "sha256": "afaa6bdbb807aff8318649318fc155433fd493d44c92bcfd9da2438a788f6e58"
+    },
+    "build.log": {
+      "bytes": 420,
+      "sha256": "39e9de02080a1f52bfb24f45923d591441ab448d8db8202c5c8d480a1081cbff"
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "7eeaa33087f3fe71d61800bcbb3126faa2952b0454f8bf181d230385096b8588",
+      "bytes": 1810
+    },
+    "source-pin-pack.json": {
+      "sha256": "71a03a163eb6e5223af251b11d17eb10094788cd637617b55cbd4d9ceb25f33e",
+      "bytes": 383
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "sourceRevision": "53f30545b42d470478f787774ad02c57063b10ab",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

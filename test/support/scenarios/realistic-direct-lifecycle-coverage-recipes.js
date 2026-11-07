@@ -2204,7 +2204,7 @@ function buildMiscellaneousCoverage(factors) {
       x: 0.76,
       y: 0.9,
       fontWeight: 700
-    });
+    }).editAnnotation({target:"directAnnotation",text:"Authentic source projection",x:0.75,y:0.9,dx:3,dy:-3});
 
   panels.push({ id: "bindingPoints", program });
   program = base
@@ -2704,7 +2704,7 @@ const MISCELLANEOUS_RECIPE = makeRecipe({
     "createTimeUnitData", "createIntervalData", "orderCategories",
     "createSummaryData", "createBinData", "createFoldData", "createComputedData",
     "createStackData", "bindMarkData", "removeMarkFilter", "createReferenceLine",
-    "createReferenceBand", "createMarkLabels", "createAnnotation", "createPiePlot",
+    "createReferenceBand", "createMarkLabels", "createAnnotation", "editAnnotation", "createPiePlot",
     "createRosePlot", "createRadialBarPlot", "createDensityPlot", "createHorizonPlot",
     "editViolinPlot", "applyTheme", "removeTheme", "fitCanvas",
     "encodeParallelCoordinates", "createGuides"

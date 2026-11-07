@@ -1,0 +1,133 @@
+{
+  "sha256": "727f9144ffadc6ad6d8d7f359a8e9b4741fc079ab1e6544ccdb3151dca596489",
+  "status": "passed",
+  "measurements": [
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction",
+      "gzipBytes": 786906,
+      "limit": 787000,
+      "status": "passed"
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/basic",
+      "gzipBytes": 424305,
+      "limit": 424400,
+      "status": "passed"
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/svg",
+      "gzipBytes": 24954,
+      "limit": 26000,
+      "status": "passed"
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/graph",
+      "gzipBytes": 68840,
+      "limit": 68900,
+      "status": "passed"
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/animation",
+      "gzipBytes": 333698,
+      "limit": 333700,
+      "status": "passed"
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/interaction",
+      "gzipBytes": 131316,
+      "limit": 131400,
+      "status": "passed"
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction",
+      "gzipBytes": 785573,
+      "limit": 787000,
+      "status": "passed"
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/basic",
+      "gzipBytes": 423440,
+      "limit": 424400,
+      "status": "passed"
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/svg",
+      "gzipBytes": 24779,
+      "limit": 26000,
+      "status": "passed"
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/graph",
+      "gzipBytes": 68679,
+      "limit": 68900,
+      "status": "passed"
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/animation",
+      "gzipBytes": 332580,
+      "limit": 333700,
+      "status": "passed"
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/interaction",
+      "gzipBytes": 130861,
+      "limit": 131400,
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction",
+      "gzipBytes": 786906,
+      "limit": 787000,
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/basic",
+      "gzipBytes": 424305,
+      "limit": 424400,
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/svg",
+      "gzipBytes": 24954,
+      "limit": 26000,
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/graph",
+      "gzipBytes": 68840,
+      "limit": 68900,
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/animation",
+      "gzipBytes": 333698,
+      "limit": 333700,
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/interaction",
+      "gzipBytes": 131316,
+      "limit": 131400,
+      "status": "passed"
+    }
+  ],
+  "scope": "same18 measurements; original receipts retained; no runtime or packed input changed"
+}

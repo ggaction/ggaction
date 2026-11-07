@@ -1,0 +1,42 @@
+[
+  {
+    "version": 1,
+    "capability": "trail",
+    "chart": "trail",
+    "variant": "sample-width",
+    "title": "Changing width along each series",
+    "userFacingCallChain": "chart()\n  .createCanvas({\"width\":420,\"height\":240,\"margin\":40,\"background\":\"#ffffff\"})\n  .createData({\"id\":\"signals\",\"keyField\":\"id\",\"values\":[{\"id\":\"a0\",\"time\":0,\"signal\":7,\"width\":8,\"channel\":\"A\"},{\"id\":\"a1\",\"time\":10,\"signal\":7,\"width\":32,\"channel\":\"A\"},{\"id\":\"b0\",\"time\":0,\"signal\":3,\"width\":28,\"channel\":\"B\"},{\"id\":\"b1\",\"time\":10,\"signal\":3,\"width\":12,\"channel\":\"B\"}]})\n  .createTrailPlot({\"id\":\"trail\",\"x\":{\"field\":\"time\",\"scale\":{\"domain\":[0,10]}},\"y\":{\"field\":\"signal\",\"scale\":{\"domain\":[0,10]}},\"width\":\"width\",\"groupBy\":\"channel\",\"color\":{\"field\":\"channel\",\"scale\":{\"domain\":[\"A\",\"B\"],\"range\":[\"#2563eb\",\"#0d9488\"]}},\"guides\":false});",
+    "files": [
+      {
+        "path": ".artifacts/test/png/charts/trail/trail/sample-width/primitive.png",
+        "sha256": "5f81c9b107ea2e269fcf80919f4cd14e4837fa43ec50a35ae179bb20aac0ec98",
+        "bytes": 3420
+      },
+      {
+        "path": ".artifacts/test/png/charts/trail/trail/sample-width/user-facing.png",
+        "sha256": "5f81c9b107ea2e269fcf80919f4cd14e4837fa43ec50a35ae179bb20aac0ec98",
+        "bytes": 3420
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "capability": "trail",
+    "chart": "trail-constant-width",
+    "variant": "constant-width",
+    "title": "An explicit constant ribbon width",
+    "userFacingCallChain": "chart()\n  .createCanvas({\"width\":420,\"height\":240,\"margin\":40,\"background\":\"#ffffff\"})\n  .createData({\"id\":\"signals\",\"keyField\":\"id\",\"values\":[{\"id\":\"a0\",\"time\":0,\"signal\":7,\"width\":8,\"channel\":\"A\"},{\"id\":\"a1\",\"time\":10,\"signal\":7,\"width\":32,\"channel\":\"A\"},{\"id\":\"b0\",\"time\":0,\"signal\":3,\"width\":28,\"channel\":\"B\"},{\"id\":\"b1\",\"time\":10,\"signal\":3,\"width\":12,\"channel\":\"B\"}]})\n  .createTrailPlot({\"id\":\"trail\",\"x\":{\"field\":\"time\",\"scale\":{\"domain\":[0,10]}},\"y\":{\"field\":\"signal\",\"scale\":{\"domain\":[0,10]}},\"width\":18,\"groupBy\":\"channel\",\"color\":{\"field\":\"channel\",\"scale\":{\"domain\":[\"A\",\"B\"],\"range\":[\"#2563eb\",\"#0d9488\"]}},\"guides\":false});",
+    "files": [
+      {
+        "path": ".artifacts/test/png/charts/trail/trail-constant-width/constant-width/primitive.png",
+        "sha256": "1097dedd491f82817a797b85793fd04cd4689bc084dc2a3035d821a0a9202c83",
+        "bytes": 2577
+      },
+      {
+        "path": ".artifacts/test/png/charts/trail/trail-constant-width/constant-width/user-facing.png",
+        "sha256": "1097dedd491f82817a797b85793fd04cd4689bc084dc2a3035d821a0a9202c83",
+        "bytes": 2577
+      }
+    ]
+  }
+]

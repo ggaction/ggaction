@@ -100,6 +100,11 @@
       "name": "labels",
       "required": false,
       "type": "false | GraphLabelsOptions | undefined"
+    },
+    {
+      "name": "maxItems",
+      "required": false,
+      "type": "number | undefined"
     }
   ],
   "callPatterns": [

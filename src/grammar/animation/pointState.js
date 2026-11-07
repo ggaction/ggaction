@@ -1,0 +1,42 @@
+import { ownRecord } from "../../core/ownData.js";
+import { rejectUnknownProperties } from "../../core/validation.js";
+import { normalizePositionEndpoint } from "./positions.js";
+import { mapContinuousScaleValue } from "../scales/mapping.js";
+
+const reasons = new Set(["anonymous", "semantic-unavailable", "primitive-role", "unsupported-family",
+  "overlay-position", "coordinate-family", "offset-position", "computed-point-position", "incomplete-position",
+  "scale-type", "nonfinite-semantic-value", "unsupported-point-primitive", "edited-position", "sampled-concrete"]);
+
+export function unavailablePointAnimationPosition(reason) {
+  if (!reasons.has(reason)) throw new TypeError("Unknown animation point fallback reason.");
+  return Object.freeze({ reason });
+}
+export const isPointAnimationFallbackReason = reason => reasons.has(reason);
+
+export function pointPositionMatchesNode(position, node) {
+  return ["x", "y"].every(channel => mapContinuousScaleValue(position[channel].value, position[channel].scale) === node.properties[channel]);
+}
+
+// A prepared endpoint's meaning must still produce its concrete native circle.
+// Restore does not evaluate expressions, resolve rows, or infer values from pixels.
+export function validatePointAnimationPosition(position, identity, node) {
+  ownRecord(position, "Prepared animation point");
+  if (Object.hasOwn(position, "reason")) {
+    rejectUnknownProperties(position, ["reason"], "animation point fallback");
+    unavailablePointAnimationPosition(position.reason);
+    if ((identity === undefined) !== (position.reason === "anonymous")) throw new TypeError("Inconsistent animation point fallback identity.");
+    return;
+  }
+  rejectUnknownProperties(position, ["x", "y"], "animation point position");
+  if (identity === undefined || identity.role !== "body" || identity.lineage.kind !== undefined ||
+      identity.lineage.rowKeys.length !== 1 || node.type !== "circle") {
+    throw new TypeError("Semantic point positions require a circle with exact one-row body identity.");
+  }
+  // Keep both endpoint validations and their order without creating a prepared
+  // interpolation plan that this validation-only caller would immediately drop.
+  for (const channel of ["x", "y"]) {
+    normalizePositionEndpoint(position[channel]);
+    normalizePositionEndpoint(position[channel]);
+  }
+  if (!pointPositionMatchesNode(position, node)) throw new TypeError("Prepared animation point meaning differs from its concrete endpoint.");
+}

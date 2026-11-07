@@ -150,7 +150,7 @@ test("stream bounds fit planar, collapsed, point-only and clipped spherical geom
 
 test("stream rejects malformed inputs, incompatible modes and work expansion atomically", () => {
   const source=polygon([square,hole]),before=structuredClone(source);
-  for(const options of [{}, {coordinateKind:'planar'}, {...geographic,interpolation:'unknown'}, {...geographic,routeHint:[0,0]}, {...geographic,interpolation:'great-circle',routeHint:[0,91]}, {...geographic,maxPoints:0}, {...geographic,maxPoints:30001}, {...geographic,other:true}])assert.throws(()=>projectGeometry(source,{type:'equirectangular'},options));
+  for(const options of [{}, {coordinateKind:'planar'}, {...geographic,interpolation:'unknown'}, {...geographic,routeHint:[0,0]}, {...geographic,interpolation:'great-circle',routeHint:[0,91]}, {...geographic,maxPoints:0}, {...geographic,maxPoints:200001}, {...geographic,other:true}])assert.throws(()=>projectGeometry(source,{type:'equirectangular'},options));
   assert.throws(()=>projectGeometry(source,{type:'identity'},{...planar,interpolation:'great-circle'}));
   assert.throws(()=>projectGeometry(polygon([[[0,0],[1,0],[1,1]]]),{type:'identity'},planar),/four|closed/);
   assert.throws(()=>projectGeometry(source,{type:'equirectangular'},{...geographic,maxPoints:3}),/exceed/);

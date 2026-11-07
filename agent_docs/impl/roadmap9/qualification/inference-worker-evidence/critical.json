@@ -1,0 +1,271 @@
+{
+  "owners": [
+    {
+      "file": "actions/graphs/inference.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    },
+    {
+      "file": "grammar/graph/approximate.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 97.25,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    },
+    {
+      "file": "grammar/graph/fields.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    },
+    {
+      "file": "grammar/graph/inferenceBudget.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    },
+    {
+      "file": "grammar/graph/input.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    },
+    {
+      "file": "grammar/graph/model.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "log": "critical-supplement.log.gz"
+    },
+    {
+      "file": "grammar/graph/neighbors.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    },
+    {
+      "file": "grammar/graph/preprocess.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    },
+    {
+      "file": "grammar/graph/search.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 99.15,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    },
+    {
+      "file": "grammar/graph/spanning.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    },
+    {
+      "file": "grammar/graph/structural.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    },
+    {
+      "file": "inspectionDescriptors.js",
+      "floor": {
+        "lines": 90,
+        "branches": 80,
+        "functions": 90
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "log": "inspection-coverage.log.gz"
+    },
+    {
+      "file": "materialization/graph/inferredResource.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 93.75,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    },
+    {
+      "file": "materialization/graph/inferredState.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 94.92,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    },
+    {
+      "file": "grammar/graph/inferenceDefinition.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 97.37,
+        "functions": 100
+      },
+      "log": "critical-supplement.log.gz"
+    },
+    {
+      "file": "grammar/graph/inferenceJob.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 98.11,
+        "functions": 100
+      },
+      "log": "job-coverage-final.log.gz"
+    },
+    {
+      "file": "materialization/graph/inferenceRequest.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 97.62,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    },
+    {
+      "file": "resources/graphInference.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    },
+    {
+      "file": "resources/graphInferenceExecutor.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "lines": 100,
+        "branches": 96.43,
+        "functions": 100
+      },
+      "log": "owning-coverage-first.log.gz"
+    }
+  ],
+  "passed": 19
+}

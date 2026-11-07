@@ -1,0 +1,115 @@
+{
+  "status": "passed; focused STEP056 checkpoint, final STEP074/077 qualification pending",
+  "runtimeDelta": 0,
+  "typeDelta": 0,
+  "publicAPIDelta": 0,
+  "packageEntryDelta": 0,
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "checks": [
+    {
+      "id": "unit",
+      "command": "node scripts/run-tests.js unit unit/composition-recipes.test.js",
+      "tests": 7,
+      "passed": 7,
+      "exit": 0
+    },
+    {
+      "id": "chart-pairs",
+      "command": "node scripts/run-tests.js charts charts/marginal charts/bullet",
+      "tests": 4,
+      "passed": 4,
+      "exit": 0
+    },
+    {
+      "id": "AST-and-vertical-slices",
+      "command": "node scripts/run-tests.js contracts contracts/composition-recipes.test.js contracts/chart-vertical-slices.test.js",
+      "tests": 2,
+      "passed": 2,
+      "exit": 0
+    },
+    {
+      "id": "graphic-hierarchy",
+      "command": "node scripts/run-tests.js contracts contracts/graphic-hierarchy-migration.test.js",
+      "tests": 1,
+      "passed": 1,
+      "exit": 0
+    },
+    {
+      "id": "PNG",
+      "command": "node scripts/run-tests.js render charts/marginal/png.render.js charts/bullet/png.render.js",
+      "tests": 2,
+      "passed": 2,
+      "exit": 0
+    },
+    {
+      "id": "four-format-scene",
+      "command": "node scripts/run-tests.js render charts/marginal/renderer.render.js",
+      "tests": 3,
+      "passed": 3,
+      "exit": 0
+    },
+    {
+      "id": "browser-DPR1-2",
+      "command": "node scripts/run-tests.js browser browser/composition-recipes.browser.js",
+      "tests": 3,
+      "passed": 3,
+      "exit": 0
+    },
+    {
+      "id": "actual-data",
+      "command": "node scripts/run-tests.js realistic contracts/realistic-composition-recipes.test.js",
+      "tests": 5,
+      "passed": 5,
+      "exit": 0
+    }
+  ],
+  "installed": {
+    "artifactSha256": "3364bce3f7fad099c1e7adb25e8a4f0d88dfc8841ed285b0d0c129c8da0e1451",
+    "candidate": "69089faccecc0e2de8429a78c4f85c663b8ab621",
+    "nodeVersions": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "focusedRecipesPerNode": 3,
+    "displayedSnippetsNode22": 3,
+    "scope": "Current integration artifact only; not final STEP077 release qualification"
+  },
+  "docsPrePin": {
+    "passed": 221,
+    "total": 224,
+    "failures": [
+      "uncommitted canonical source link",
+      "search limit two owning checks"
+    ],
+    "searchBytes": 1071900,
+    "previousLimit": 1037700,
+    "newLimit": 1072000
+  },
+  "preservedFailures": [
+    "Initial primitive collection length and fixture expectations",
+    "Browser test-only manifest imported node:test; actual browser now imports canonical public/primitive modules",
+    "Birth day field numeric-string projection now explicit",
+    "24 distinct Combo labels exceeded original 320px plot; explicit 960px plot preserves all original rows and units",
+    "Catalog property/order errors; owning canonical fields and unique order corrected",
+    "Existing docs Canvas attribute mock reused exactly from f14063eab",
+    "Existing interaction fixture manifest order synchronized with same unchanged case AST",
+    "Source-link not yet pinned and measured search limit"
+  ],
+  "sourceCommit": "7830a16a64097fb6e6be8498a63a80da61bb9afc",
+  "documentation": {
+    "sourceTests": 224,
+    "sourcePassed": 224,
+    "buildExit": 0,
+    "builtPages": 185,
+    "builtLLMArtifacts": 1595,
+    "desktopSearch": "passed",
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ],
+    "browserExit": 0,
+    "sourceInputDelta": []
+  }
+}

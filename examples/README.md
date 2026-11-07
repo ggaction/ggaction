@@ -599,7 +599,7 @@ Representative actions: `createLinePlot`, `createYAxis`, `editYAxisTicksAndLabel
 
 A line follows the final endpoints of aggregated bars and retains independent appearance.
 
-Representative actions: `createOverlay editOverlay encodeColor`. [Documentation](https://ggaction.github.io/ggaction/recipes/composition/).
+Representative actions: `createOverlay editOverlay encodeColor`. [Documentation](https://ggaction.github.io/ggaction/recipes/combo/).
 
 ### [Shared-scale adjacent charts](./shared-adjacent/)
 
@@ -888,6 +888,54 @@ Representative actions: `createWaterfallPlot`, `editWaterfallPlot`. [Documentati
 Omit incoming balance connectors explicitly.
 
 Representative actions: `createWaterfallPlot`, `editWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/waterfall/).
+
+### [Labels stay attached to the original stops](./geographic-annotations/)
+
+Attach semantic text to geographic positions and original feature keys.
+
+Representative actions: `createGeoAnnotation`, `editGeoAnnotation`, `createProjection`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
+
+### [Stop area follows visitor counts](./geographic-fields/)
+
+Map geographic feature properties or joined measurements to color and point area.
+
+Representative actions: `createGeoPointMark`, `encodeColor`, `encodeSize`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
+
+### [Changing width along each series](./trail/)
+
+Draw two independent ribbons with a screen width at each source sample.
+
+Representative actions: `createTrailPlot`, `editTrailPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/trail/).
+
+### [An explicit constant ribbon width](./trail-constant-width/)
+
+Preserve both centerlines while setting a constant screen width.
+
+Representative actions: `createTrailPlot`, `editTrailPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/trail/).
+
+### [Moving streamgraph baseline](./streamgraph/)
+
+Choose zero, centered, or moving baselines through the existing Area layout action.
+
+Representative actions: `createAreaPlot`, `layoutSeries`. [Documentation](https://ggaction.github.io/ggaction/tutorials/area-layout/#use-a-moving-streamgraph-baseline).
+
+### [Values and small charts in a keyed table](./table/)
+
+Keep exact values beside bars and shared-scale sparklines.
+
+Representative actions: `createTablePlot`, `editTablePlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/table/).
+
+### [Marginal distributions](./marginal/)
+
+Link scatterplot observations to the exact members of each marginal bin.
+
+Representative actions: `createScatterPlot createBinData createRectMark hconcat vconcat`. [Documentation](https://ggaction.github.io/ggaction/recipes/marginal/).
+
+### [Bullet comparison](./bullet/)
+
+Compare an actual measure with an explicitly authored target and reference ranges.
+
+Representative actions: `createRectMark createBarMark createRuleMark createMarkLabels`. [Documentation](https://ggaction.github.io/ggaction/recipes/bullet/).
 
 ## Development fixtures
 

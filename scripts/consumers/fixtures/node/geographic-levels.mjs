@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { inflateSync } from "node:zlib";
 import { createCanvas } from "@napi-rs/canvas";
 import { chart, render } from "ggaction";
@@ -9,6 +8,7 @@ import { serializeProgram, deserializeProgram } from "ggaction/persistence";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 
 const feature = (id, x, width) => ({ type: "Feature", id, properties: {}, geometry: { type: "Polygon", coordinates: [
   [[x, 20], [x + width, 20], [x + width, 80], [x, 80], [x, 20]]
@@ -44,7 +44,7 @@ export const cases = [
     const script = `import {readFileSync} from 'node:fs';import{deserializeProgram,serializeProgram}from'ggaction/persistence';
       globalThis.fetch=()=>{throw new Error('Unexpected network');};const p=deserializeProgram(readFileSync(0,'utf8'));
       process.stdout.write(serializeProgram(p.editGeoLODData({zoom:3})));`;
-    const q = deserializeProgram(execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: serializeProgram(p), encoding: "utf8", timeout: 30000 }));
+    const q = deserializeProgram(execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: serializeProgram(p), encoding: "utf8", timeout: 30000 }));
     assert.equal(resource(q).options.activeLevel, "state"); assert.equal(resource(q).revision, 1);
     assert.equal(getMarkItems(q).length, 1); assert.equal(getMarkItems(q)[0].representationKeys.length, 3);
   } },

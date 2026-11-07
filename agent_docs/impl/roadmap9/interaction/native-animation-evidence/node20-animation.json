@@ -1,0 +1,175 @@
+{
+  "node": "v20.20.2",
+  "freshProcess": true,
+  "networkCalls": 0,
+  "fromSha256": "7314818d1867c0dd57749b460cb1454888d543a5dc60840f4785a84bc87a1901",
+  "toSha256": "384d1c9d52b4b76e60bdc8b6fd41527ffdf3b2379a782b56912dd5e159a8350f",
+  "animationSha256": "e3f70d4937e7dc4d1a38b26788ea1bc8aa06ec101d4b5618f8113c11f26d2f45",
+  "assets": [
+    {
+      "contentHash": "01b9d0e0e24c368d6d0cc6fc058f4818570971e3c904d74906e35752ee57701b",
+      "mimeType": "image/png",
+      "byteLength": 112,
+      "payloadSha256": "65719fb6f280afee603e8f2a9bf978e73b494145bd00bff2f3f342f42fb95969"
+    },
+    {
+      "contentHash": "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+      "mimeType": "font/ttf",
+      "byteLength": 1180,
+      "payloadSha256": "2d28b279a6bd7ec5ef87053df6da000a95c62af05be4969b37340a5a66ec62f3"
+    }
+  ],
+  "records": [
+    {
+      "timeMs": 0,
+      "sceneHash": "2dc5eb6f6edff877b9cdba2cc694d5c7628b349c43b3d9405d097e0f1bc327de",
+      "graphicHash": "06085f3d67ea3425c117ca5be01d81dbb82067fba7036ae8773628d84fbd3038",
+      "rendered": {
+        "width": 836,
+        "height": 180,
+        "rgba": "fbb24e4aeeab9ffa5ec4b67711c5449336bc93386f331177703874fbdc8863c7",
+        "png": "85dfed2a2c526c1fa045ceea8df3acf8988fd157468d8e4ab696c0dc4696ee9d",
+        "svg": "c63c0e2eaa400919b9610513e2a77eb11950e8c455eb543672716a7983f43d02",
+        "pdfStreams": [
+          "d9f822e8083f2f4d1c91e887454be5f75e8c7144b2853408f361e3c4a7a6b36d",
+          "eedd6debfc298a7bac7ce2ce47f45b8ba8fcd274a4deaa1b6908f686d0d0cceb",
+          "2e0412464020c35bb3b69f89594a86eff5c1573704db4e591b9ab180cecaeb92",
+          "3e051aa61eb631e7a19115030fa9605e73b8eecd273c94548ec2111418daef10",
+          "49f883d0f0846d7e542cd20a6cb3e6b080396b8296fe2f7d27340f4c35ae5034"
+        ]
+      }
+    },
+    {
+      "timeMs": 25,
+      "sceneHash": "1263e9be6dcd2508b2e54a0d9f2a1aa901815ee11441b21bb6815442b7c4806c",
+      "graphicHash": "c8ec27218810a10d98fd80a04a86a1f6ee5da9af313aa8abb2cb53addc951177",
+      "rendered": {
+        "width": 836,
+        "height": 180,
+        "rgba": "510cb4359323590f65ea64cf9556f957e507c849d2015291b9e41b1580af5ab5",
+        "png": "e56e7eb05cf7ddb0d764d2a037dc37b66d1999d9393f46e398a7136ec126a178",
+        "svg": "90d29a5c305d77d5a6387dfff2adf70f9ec642be42c42bdd805a1a79ddd7b1ff",
+        "pdfStreams": [
+          "d9f822e8083f2f4d1c91e887454be5f75e8c7144b2853408f361e3c4a7a6b36d",
+          "4d09d55af573f618f0b827791a89fcf5c5fb7465c19788743decea4144e8ceee",
+          "fab553037add612b22f866c2537fcc1d479c66d0281a3b8caaacd15a8fa0a708",
+          "b845802ccff815239455d933872d17bf410eb2bbb559e019ece192bd8a7b32b0",
+          "8791d4f56c715b3ad72f8f1eb3b8a1a7251ee640ac708aaa283a283444076496",
+          "9b654572a024d5894c91191d482eddab08a8b5dbfceed7f629fcb71596182781",
+          "e9c54423d96afab6cc0b247de995b34a96cb8381421b117ae956a8a47bd31d26",
+          "7cd06f704b6cac6428fdc5bbbd1665c613632138cf0afb1e42fe858ec4568ee1",
+          "aecebd4a453282a43313acd9889da5ee810f8e827c0c3ebf15bfe81ed2e101e4",
+          "7bebcdd70fc9a7f43acb4d43e7c19f6396c9333c093c1d7f695a22506ab28f07",
+          "07af034ac217a08996f5d8035939bf9f7199a990fe63dbe3958d7c1fc1bf0907",
+          "53c3724f2b9024f5504cd4f5909bbf3a46e049a1f4d7f5f08945fdde0f43117a",
+          "c0f60b88f9f8ef35362044c4d971aa2d84931df206991cda209bc0c4e1d9d967",
+          "4a2be1340a74fb2ab93374f6c995e5a64e2a3ddec031a868c36a77c2a5286d76",
+          "df3756ab09d84c06654f490f09171af5df3043e3296568205b8a9fad40ef9700",
+          "457214ad61a60c4c7215d61fdaecbf4b04afdb2e08a5dd3e0e2164bb11ad9b1f",
+          "11f53bfdfcf3413def32b9ce07c9740c9ffcdb8bb48f775bf8edd5abd3309577",
+          "0399ce9d28a8deba8cc36036c890678fb3cebb5ae83f7da2c1e39ee027ae2ee7",
+          "706d8f60d47cb0e249004e160e5680b5832bb5bd2894d6bad2c35f0685c146f4",
+          "ef7dca1a5fa70de5dd9519df1487d9c97e85e53034929c391d7284b80e1cda91",
+          "3e051aa61eb631e7a19115030fa9605e73b8eecd273c94548ec2111418daef10",
+          "49f883d0f0846d7e542cd20a6cb3e6b080396b8296fe2f7d27340f4c35ae5034"
+        ]
+      }
+    },
+    {
+      "timeMs": 50,
+      "sceneHash": "8c9d51bd725d878d31c48b4916433b274d36d1e423937c956d8d0e26617eff55",
+      "graphicHash": "7b0083485436e7e2c82ec1db0fe03397a784f9dec0995f6127b0685e4b4284d7",
+      "rendered": {
+        "width": 836,
+        "height": 180,
+        "rgba": "f34f44bc374173103747b015760e9cbfbf467bcee81592b18e4c3cba8ea9de0f",
+        "png": "425e8aaa11bed98d97682e1b1360ea161b73823b1ff56b24f2bf4a53ea04e287",
+        "svg": "132093adf4f766bd06dafe03a9c8c6ee2a5a0142870ec271dbab38d8ecccd94e",
+        "pdfStreams": [
+          "d9f822e8083f2f4d1c91e887454be5f75e8c7144b2853408f361e3c4a7a6b36d",
+          "9371188485c86a15ffd073d92d73f8ba5d06c41422aff409604730d1e92b7800",
+          "b032d730e8f3f0786851f4dc2804ccf8e69690220ef593d5104255f5f6eda0c5",
+          "e5860c5f5fa8650632fa0422dd122282899adef75e837142e194407ee3b828e3",
+          "ef0ad38a7720cd27cc753b245e8ca37bb1a55c58bf29a442c8a04defd1ad77ee",
+          "3b543ddf7b59ee5fa4a80ebab34d4c9eccb61b1b987227bbf6462d1f583c20ea",
+          "42f66ae1aa5076152c71a7dfef8e444753a351f2fde308dd12cc1f60d4c9b888",
+          "3a2db882cc6ebdd7643e48f4af7445bf7c4fa40d5933dda514b7eee720d19c58",
+          "f38ea3b087d3543cf96a6734a19714117025adba7c64ed93576d2573fc4bae6f",
+          "9c75d74ab0f77b0db4a96b227dd44ffd6ef725ba1c332f2f28845a290ec3ab0c",
+          "f37b3bb78b10b4378f9cb5102ff9b684768654b589b1940cfe8d4e45fde70b19",
+          "53c3724f2b9024f5504cd4f5909bbf3a46e049a1f4d7f5f08945fdde0f43117a",
+          "c0f60b88f9f8ef35362044c4d971aa2d84931df206991cda209bc0c4e1d9d967",
+          "4a2be1340a74fb2ab93374f6c995e5a64e2a3ddec031a868c36a77c2a5286d76",
+          "f6e512147dffd7e1915949533ab2c866c1b76c43ceddaa34d3b2b0cf78a09edc",
+          "457214ad61a60c4c7215d61fdaecbf4b04afdb2e08a5dd3e0e2164bb11ad9b1f",
+          "3b8e1fa0c759b90e2473ca8717594d234b26d28b447b03806ce0f37aed413d37",
+          "0399ce9d28a8deba8cc36036c890678fb3cebb5ae83f7da2c1e39ee027ae2ee7",
+          "706d8f60d47cb0e249004e160e5680b5832bb5bd2894d6bad2c35f0685c146f4",
+          "9ff8068cb1f85d62b239441df4809e8924312ae6d0262a9f7f5490ac8c8c5136",
+          "3e051aa61eb631e7a19115030fa9605e73b8eecd273c94548ec2111418daef10",
+          "49f883d0f0846d7e542cd20a6cb3e6b080396b8296fe2f7d27340f4c35ae5034"
+        ]
+      }
+    },
+    {
+      "timeMs": 75,
+      "sceneHash": "0cc88f1d85d245e6850987e0fa323c1f90f735f31cb532e4ff247e5f5b1dcd7b",
+      "graphicHash": "8162b9132c826d0e0386d3c92404a0c97c57158d060a40a8ccb15849aab7eddb",
+      "rendered": {
+        "width": 836,
+        "height": 180,
+        "rgba": "0a2b029fd358430ee1768f60e15dc9560ade795800fa397cd1edcee6a83f4d63",
+        "png": "ef95918af0de9358eacbfe410bf49015fefdae110f109860252b204dfd182c4b",
+        "svg": "77ab7cc9b74f066267425570f7d23c874d0af67f323f77a66c27dd4a144cacf4",
+        "pdfStreams": [
+          "d9f822e8083f2f4d1c91e887454be5f75e8c7144b2853408f361e3c4a7a6b36d",
+          "262cfa4bad0328b06eeb55d6a4b7889e32ecbe21748070c3d83635358384ade8",
+          "13fbe2c516422811feccc2d90721792b6efff322a802c399177b3808a2376a87",
+          "046b686e84ffe911a882aa52bfe67c90bf0d429f032045917d9594de6d27ea90",
+          "d59d52171eeb837216e62de6292f897e262ede4b416484f177bbe1579fc0cfd9",
+          "c8a669ece10af97903f91abd1ba1d7a144b6c6c7a1d98c5a7fc04b57323460a9",
+          "0419849b8902f13464aebd921884d83b7f86e38dc3224c4ff31228f1a84897dc",
+          "b0a36e893ff3aedfd88700edb789d41915afe62f1286d47f58e73ca52050adab",
+          "4c7615180e9cb9f1ab3b370c7bd26528606ba73c1153ec1d455213eb98d8d74d",
+          "9f53d691a20f42f22aa8ef1b741f017b29ac375ff5ed35ac09539d925275f2de",
+          "58f03868784932f4c31b2fe656a5130f246a274413d8eb0d973c3905e6fed915",
+          "53c3724f2b9024f5504cd4f5909bbf3a46e049a1f4d7f5f08945fdde0f43117a",
+          "c0f60b88f9f8ef35362044c4d971aa2d84931df206991cda209bc0c4e1d9d967",
+          "4a2be1340a74fb2ab93374f6c995e5a64e2a3ddec031a868c36a77c2a5286d76",
+          "b9bf569b7a5254cd4e317de15536af4d607dc06bbae5c29aeaeff81556bf984c",
+          "457214ad61a60c4c7215d61fdaecbf4b04afdb2e08a5dd3e0e2164bb11ad9b1f",
+          "9c37309f1dc8297fa9a00e0ae03e0c70f1fe8ae21a4748e670e515124216c7e8",
+          "0399ce9d28a8deba8cc36036c890678fb3cebb5ae83f7da2c1e39ee027ae2ee7",
+          "706d8f60d47cb0e249004e160e5680b5832bb5bd2894d6bad2c35f0685c146f4",
+          "ef7dca1a5fa70de5dd9519df1487d9c97e85e53034929c391d7284b80e1cda91",
+          "3e051aa61eb631e7a19115030fa9605e73b8eecd273c94548ec2111418daef10",
+          "49f883d0f0846d7e542cd20a6cb3e6b080396b8296fe2f7d27340f4c35ae5034"
+        ]
+      }
+    },
+    {
+      "timeMs": 100,
+      "sceneHash": "28c7699c8c8125d99f356653d1ef959357d321733e4f70aa2f5c7f365911d19c",
+      "graphicHash": "ad92fca005eada990ff1bc51619b8db2b17adcc205949283012e7119c48f5d5c",
+      "rendered": {
+        "width": 836,
+        "height": 180,
+        "rgba": "0a995810da14ef5a6af7357bbb2790ab50ebe4524fa72ff07667b5a2beb8b99e",
+        "png": "caf9f8ff8eb30184a5ef145b5160019f003df4362ed4af806981a71a2fe6cc97",
+        "svg": "de04044e4a66a3e8292435a061d60f7db06faf144c2f31079b59ad0718fb76fc",
+        "pdfStreams": [
+          "d9f822e8083f2f4d1c91e887454be5f75e8c7144b2853408f361e3c4a7a6b36d",
+          "eedd6debfc298a7bac7ce2ce47f45b8ba8fcd274a4deaa1b6908f686d0d0cceb",
+          "aeee3250ad6184ba2b066d65ff999b4991acdee9ff2e9a87de2e8e89c756b85a",
+          "3e051aa61eb631e7a19115030fa9605e73b8eecd273c94548ec2111418daef10",
+          "49f883d0f0846d7e542cd20a6cb3e6b080396b8296fe2f7d27340f4c35ae5034"
+        ]
+      }
+    }
+  ],
+  "authority": {
+    "nativeAccepted": true,
+    "envelopeRejected": true,
+    "history": 0
+  }
+}

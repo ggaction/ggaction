@@ -1,0 +1,228 @@
+import { samplePreparedBatch } from "./batchSample.js";
+import { createBatchSceneBuilder, batchPositionsForScene } from "./batchScene.js";
+import { projectSampledAnimationEndpoint } from "./endpoints.js";
+import { animationResourceLimits } from "./resources.js";
+import { sampleAxisLabelTracks } from "./axisLabelTracks.js";
+import { axisLabelFrameCollector } from "./axisLabelFrames.js";
+import { sampleGeoTextTracks } from "./geoTextTracks.js";
+import { geoTextFrameCollector } from "./geoTextFrames.js";
+import { sampleGuideInterpolation, retainSampledGuideMeaning } from "./guideTracks.js";
+import { sampleAnimationAppearance } from "./appearance.js";
+import { sampleGeoTracks } from "./geoTracks.js";
+import { geoFrameCollector } from "./geoFrames.js";
+import { validateGeneratedItemLimit, validateWorkLimit } from "../core/validation.js";
+import { samplePolarInterpolation } from "../grammar/animation/polarState.js";
+import { sampleCartesianInterpolation } from "../grammar/animation/cartesianState.js";
+import { partitionTrackSamples, samplePartitionTrack, partitionFrameCollector, partitionAnimationPaint } from "./partitionTracks.js";
+import { cloneAndFreeze, freezeOwned, isOwned } from "../core/immutable.js";
+import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
+import { samplePositionInterpolation } from "../grammar/animation/positions.js";
+import { transitionSampleState,interpolateNumber } from "../grammar/animation/values.js";
+import { requireTransitionPlan, transitionResources, transitionEndpointPositions, transitionEndpointFrame, transitionGraphs, transitionCartesian, transitionPartitions, transitionPolars, transitionGeos, transitionGuides, transitionGeoTexts, transitionAxisLabels, transitionTimeline, transitionOwners } from "./planner.js";
+import { sampleTransitionTimeline } from "./timelineSample.js";
+import { registerAnimationFrame, registerAnimationFrameView, animationFrameProvenance, animationPlanProvenance } from "./frameProvenance.js";
+import { blendAnimationNodes,fadeAnimationNode,interpolateNodeFrame } from "./concrete.js";
+
+// With deeply owned endpoints, every value in the sampled node is owned, a
+// primitive, or a numeric vector built here, so it is frozen without copying.
+function ownedEndpointNode(from,to,node,progress){
+  const frame=interpolateNodeFrame(from,to,progress);
+  if(!isOwned(from)||!isOwned(to)||!Object.values(node.properties).every(value=>value===null||typeof value!=="object"||isOwned(value)))return cloneAndFreeze({...node,...frame});
+  return freezeOwned({...node,properties:freezeOwned(node.properties),offset:freezeOwned(frame.offset),clip:freezeOwned(frame.clip),
+    clips:freezeOwned(frame.clips.map(clip=>isOwned(clip)?clip:freezeOwned(clip)))});
+}
+import { captureFrameMeaning } from "./frameEndpoint.js";
+import { canvasSceneProgram } from "../renderers/canvasScene.js";
+
+import { graphTrackSamples, sampleGraphTrack, graphFrameCollector } from "./graphTracks.js";
+
+export function sampleTransition(input,timeMs) {
+  return sampleTransitionWithBudget(input,timeMs);
+}
+
+// Internal batch accounting shares the same sampling path and single-frame
+// ceiling. The public API never accepts a host callback or exposes partial work.
+export function sampleTransitionWithBudget(input,timeMs,accountWork) {
+  const plan=requireTransitionPlan(input),{progress,side}=transitionSampleState(timeMs,plan.durationMs,plan.easing);
+  if(plan.version===6&&side===undefined){const batch=samplePreparedBatch(plan,timeMs,progress);if(batch!==undefined)return batch;}
+  const timeline=sampleTransitionTimeline(transitionTimeline(plan),timeMs,progress),owners=transitionOwners(plan);
+  const decisions=[],geographic=[],axislabels=[];
+  const axisState=transitionAxisLabels(plan);
+  const geoState=transitionGeos(plan);
+  const geoTextState=transitionGeoTexts(plan);
+  const guideState=transitionGuides(plan);
+  const polarState=transitionPolars(plan);
+  const cartesianState=transitionCartesian(plan);
+  const graphState=transitionGraphs(plan),graphSamples=graphTrackSamples(graphState.pairs,progress,timeline.progress),graphFrame=graphFrameCollector();
+  const partitionState=transitionPartitions(plan),partitionSamples=partitionTrackSamples(partitionState,progress,timeline.progress),partitionFrame=partitionFrameCollector();
+  const fromPositions=transitionEndpointPositions(plan,"from"),toPositions=transitionEndpointPositions(plan,"to");
+  const finish=(frame,positions,graphs,cartesian,partitions,polars,geos,guides,geotexts,axisState)=>{
+    if(animationFrameProvenance(frame)!==undefined&&(plan.version!==6||frame.scene.version===3))return frame;
+    let meaning;
+    if(plan.version===6){
+      // Existing family kernels remain concrete single-entry fallbacks. Only
+      // completed compatible point rows share a batch container.
+      if(frame.scene.version===3){
+        const exact=plan[side],legacy={graphicSpec:frame.graphicSpec,scene:exact.scene,progress:frame.progress,decisions:[]};
+        meaning=captureFrameMeaning(legacy,plan,timeMs,geographic,axislabels);
+        positions=batchPositionsForScene(frame.scene,positions.map((value,index)=>value??{reason:meaning.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete"}));
+      }else{
+        meaning=captureFrameMeaning(frame,plan,timeMs,geographic,axislabels);
+        const builder=createBatchSceneBuilder(frame.scene.width,frame.scene.height);
+        frame.scene.nodes.forEach((node,index)=>builder.append(node,side===undefined?frame.decisions[index]:null,positions[index]??{reason:meaning.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete"}));
+        const result=builder.finish();positions=result.positions;
+        frame=freezeOwned({graphicSpec:canvasSceneProgram(result.scene).graphicSpec,scene:result.scene,progress});
+      }
+      meaning={...meaning,endpoint:projectSampledAnimationEndpoint(frame,meaning.endpoint.identities,meaning.endpoint.backgrounds)};
+    }else meaning=captureFrameMeaning(frame,plan,timeMs,geographic,axislabels);
+    return registerAnimationFrame(frame,{plan,timeMs,positions,graphs,cartesian,partitions,polars,geos,guides:retainSampledGuideMeaning(guides,axisState),geotexts,axislabels:axisState,meaning});
+  };
+  const appendGraph=(side,index)=>{const state=graphState[side],item=state.items[index];graphFrame.append(item===null?undefined:state.groups[item.group],item);};
+  const appendPartition=(side,index)=>{const state=partitionState[side],item=state.items[index];partitionFrame.append(item===null?undefined:state.groups[item.group],item);};
+  const meaning=position=>position.reason?null:position;
+  if(side!==undefined){
+    const endpoint=plan[side],frame=transitionEndpointFrame(plan,side)??cloneAndFreeze({graphicSpec:endpoint.graphicSpec,scene:endpoint.scene,progress,decisions});
+    return finish(frame,(progress===0?fromPositions:toPositions).map(meaning),graphState[side],cartesianState[side].map(meaning),partitionState[side],polarState[side].map(meaning),geoState[side],guideState[side],geoTextState[side],axisState[side]);
+  }
+  const width=interpolateNumber(plan.from.scene.width,plan.to.scene.width,progress),height=interpolateNumber(plan.from.scene.height,plan.to.scene.height,progress);
+  const updates=new Map([...plan.tracks,...plan.frameTracks].map(track=>[track.targetIndex,track]));
+  const positions=[],cartesian=[],polars=[],guides=[];
+  let geographicWork=0;const accountGeographicWork=amount=>{validateWorkLimit(geographicWork+=amount,"Animation native sample work");accountWork?.(amount);};
+  const geoFrame=geoFrameCollector(sampleGeoTracks(geoState.state,progress,accountGeographicWork,timeline),geoState.to);
+  const geoTextFrame=geoTextFrameCollector(sampleGeoTextTracks(geoTextState.state,progress,accountGeographicWork,timeline),geoTextState.to);
+  const axisFrame=axisLabelFrameCollector(sampleAxisLabelTracks(axisState.state,progress,accountGeographicWork,timeline),axisState.to,timeline);
+  timeline.axisLabelGroup=axisFrame.current;
+  timeline.accountWork=accountGeographicWork;
+  const nodes=[];
+  const appendGeo=(slot,ownerKey)=>{for(const value of geoFrame.at(slot,nodes.length,ownerKey)){guides.push(null);geographic[nodes.length]={identity:value.identity,origin:value.origin};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(value.item);geoTextFrame.append(null);axisFrame.append(null);}};
+  const appendGeoText=(slot,role,ownerKey)=>{for(const value of geoTextFrame.at(slot,nodes.length,role,ownerKey)){guides.push(null);geographic[nodes.length]={identity:value.identity,origin:value.origin,metrics:value.metrics};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(null);geoTextFrame.append(value.item);axisFrame.append(null);}};
+  let emittedGeographic=0;const emittedRoles=new Set();
+  const appendAxis=(slot,key)=>{for(const value of axisFrame.at(slot,nodes.length,key,emittedGeographic)){guides.push({identity:value.identity,reason:"guide-unavailable"});axislabels[nodes.length]={identity:value.identity,origin:value.origin};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(null);geoTextFrame.append(null);axisFrame.append(value.item);}};
+  const geographicSlots=new Map(),geographicOrder=new Map(geoTextFrame.order.map((entry,index)=>[JSON.stringify(entry),index]));
+  const addGeographicSlot=(slot,role,key)=>{if(!geographicSlots.has(slot))geographicSlots.set(slot,[]);geographicSlots.get(slot).push([role,key]);};
+  for(const [slot,keys]of geoFrame.slots)for(const key of keys)addGeographicSlot(slot,"geo",key);
+  for(const [slot,role,key]of geoTextFrame.slots)addGeographicSlot(slot,role,key);
+  const targetGeographicOrder=new Map(geoTextState.to.order.map((role,index)=>[JSON.stringify(role),index]));
+  const axisOrder=new Map(axisFrame.slots.map(([slot,key,ordinal,before])=>[key,{ordinal,before}]));
+  for(const [slot,key]of axisFrame.slots)addGeographicSlot(slot,"axis-labels",key);
+  const rank=([role,key])=>{if(role==="axis-labels")return axisOrder.get(key).before*2;const target=targetGeographicOrder.get(JSON.stringify([role,key]));if(target!==undefined)return target*2+1;return targetGeographicOrder.get(JSON.stringify(["labels",key]))*2+.5;};
+  for(const values of geographicSlots.values())values.sort((a,b)=>rank(a)-rank(b)||(a[0]==="axis-labels"&&b[0]==="axis-labels"?axisOrder.get(a[1]).ordinal-axisOrder.get(b[1]).ordinal:geographicOrder.get(JSON.stringify(a))-geographicOrder.get(JSON.stringify(b))));
+  const appendGeographic=slot=>{for(const [role,key]of geographicSlots.get(slot)??[]){if(role==="geo")appendGeo(slot,key);else if(role==="axis-labels")appendAxis(slot,key);else appendGeoText(slot,role,key);const token=JSON.stringify([role,key]);if(role!=="axis-labels"&&!emittedRoles.has(token)){emittedRoles.add(token);emittedGeographic++;}}};
+  const sampleNode=(to,targetIndex)=>{
+    const ownerKey=owners.to[targetIndex],progress=timeline.progress(ownerKey);
+    guides.push(guideState.to[targetIndex]);
+    const track=updates.get(targetIndex);
+    if(track===undefined){appendGraph("to",targetIndex);appendPartition("to",targetIndex);decisions.push({kind:"enter",targetIndex,...(ownerKey===undefined?{}:{ownerKey}),...(guideState.ambiguousTo.has(targetIndex)?{reason:"guide-ambiguity"}:{})});positions.push(meaning(toPositions[targetIndex]));cartesian.push(meaning(cartesianState.to[targetIndex]));polars.push(meaning(polarState.to[targetIndex]));return fadeAnimationNode(to,progress);}
+    const from=plan.from.scene.nodes[track.sourceIndex],metadata={sourceIndex:track.sourceIndex,targetIndex,
+      ...(track.guideKey!==undefined?{guideKey:track.guideKey}:track.key===undefined?{owner:track.owner}:{itemKey:track.key}),role:track.role,...(ownerKey===undefined?{}:{ownerKey})};
+    if(track.kind==="exact"){appendGraph("to",targetIndex);appendPartition("to",targetIndex);decisions.push({...metadata,kind:"exact"});positions.push(meaning(toPositions[targetIndex]));cartesian.push(meaning(cartesianState.to[targetIndex]));polars.push(meaning(polarState.to[targetIndex]));return to;}
+    let reason=track.reason;
+    const appearance=()=>sampleAnimationAppearance(track.appearance,progress);
+    if(track.kind==="semantic-guide"){
+      const sampled=sampleGuideInterpolation(track.guide,progress,timeline);
+      if(sampled.kind==="guide"&&sampled.type===to.type){
+        const properties={...to.properties,...appearance(),...sampled.properties};validateConcreteGraphicProperties(to.type,properties);
+        decisions.push({...metadata,kind:"semantic-kernel",kernel:"guide-geometry"});positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);guides[guides.length-1]=sampled.state;
+        return cloneAndFreeze({...to,properties,...interpolateNodeFrame(from,to,progress)});
+      }
+      reason=sampled.reason??"primitive-kind";
+    }
+    if(track.kind==="semantic-polar"){
+      const sampled=samplePolarInterpolation(track.polar,progress);
+      if(sampled.kind==="polar"){
+        const properties={...to.properties,...appearance(),...sampled.properties,...(to.type==="circle"?{radius:interpolateNumber(from.properties.radius,to.properties.radius,progress)}:{})};validateConcreteGraphicProperties(to.type,properties);
+        decisions.push({...metadata,kind:"semantic-kernel",kernel:"polar-geometry"});positions.push(null);cartesian.push(null);polars.push(sampled.state);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);
+        return cloneAndFreeze({...to,properties,...interpolateNodeFrame(from,to,progress)});
+      }
+      reason=sampled.reason;
+    }
+    if(track.kind==="semantic-cartesian"){
+      const sampled=sampleCartesianInterpolation(track.cartesian,progress);
+      if(sampled.kind==="cartesian"&&sampled.type===to.type){
+        const properties={...to.properties,...appearance(),...sampled.properties};validateConcreteGraphicProperties(to.type,properties);
+        decisions.push({...metadata,kind:"semantic-kernel",kernel:"cartesian-geometry"});positions.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);cartesian.push(sampled.state);polars.push(null);
+        return cloneAndFreeze({...to,properties,...interpolateNodeFrame(from,to,progress)});
+      }
+      reason=sampled.reason??"primitive-kind";
+    }
+    if(track.kind==="semantic-partition"){
+      const sampled=partitionSamples(track.pair),item=partitionState.to.items[targetIndex],geometry=samplePartitionTrack(sampled,item);
+      if(geometry.properties){
+        const properties={...partitionAnimationPaint(to.properties),...appearance(),...geometry.properties};validateConcreteGraphicProperties(geometry.type,properties);
+        decisions.push({...metadata,kind:"semantic-kernel",kernel:"partition"});positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(sampled.group,item);
+        return ownedEndpointNode(from,to,{...to,type:geometry.type,properties},progress);
+      }
+      reason=geometry.reason;
+    }
+    if(track.kind==="semantic-graph"){
+      const sampled=graphSamples(track.pair),item=graphState.to.items[targetIndex],geometry=sampleGraphTrack(sampled,item);
+      if(geometry.properties){
+        const properties={...to.properties,...appearance(),...geometry.properties};validateConcreteGraphicProperties(to.type,properties);
+        decisions.push({...metadata,kind:"semantic-kernel",kernel:"completed-graph"});positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(sampled.group,item);partitionFrame.append(undefined,null);
+        return cloneAndFreeze({...to,properties,...interpolateNodeFrame(from,to,progress)});
+      }
+      reason=geometry.reason;
+    }
+    if(track.kind==="semantic-point"){
+      const x=samplePositionInterpolation(track.x,progress),y=samplePositionInterpolation(track.y,progress);
+      if(x.kind==="position"&&y.kind==="position"){
+        const properties={...to.properties,...appearance(),x:x.position,y:y.position,radius:interpolateNumber(from.properties.radius,to.properties.radius,progress)};
+        validateConcreteGraphicProperties("circle",properties);decisions.push({...metadata,kind:"semantic-kernel",kernel:"cartesian-point"});
+        // These records contain only finite sampled values and exact owned scales.
+        positions.push(Object.freeze({x:Object.freeze({value:x.value,scale:x.scale}),y:Object.freeze({value:y.value,scale:y.scale})}));cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);
+        const frame=interpolateNodeFrame(from,to,progress);
+        // Only this call's new tuples are frozen locally; path clips stay owned.
+        Object.freeze(frame.offset);Object.freeze(frame.clip);
+        for(const clip of frame.clips)if(Array.isArray(clip))Object.freeze(clip);
+        Object.freeze(frame.clips);
+        return freezeOwned({...to,properties:freezeOwned(properties),...frame});
+      }
+      reason=x.reason??y.reason;
+    }
+    if(guides[guides.length-1]!==null)guides[guides.length-1]={identity:guides[guides.length-1].identity,reason:"guide-unavailable"};
+    positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);decisions.push({...metadata,kind:"crossfade",reason});return blendAnimationNodes(from,to,progress,width,height);
+  };
+  for(const [targetIndex,to]of plan.to.scene.nodes.entries()){appendGeographic(targetIndex);if(geoState.skipTo.has(targetIndex)||geoTextState.skipTo.has(targetIndex)||axisFrame.skipTo.has(targetIndex))continue;nodes.push(timeline.node(sampleNode(to,targetIndex),targetIndex));geoFrame.append(null);geoTextFrame.append(null);axisFrame.append(null);}
+  appendGeographic(plan.to.scene.nodes.length);
+  const used=new Set(nodes.map(node=>node.key));
+  if(used.size!==nodes.length)throw new TypeError("Animation generated key collides with another scene key.");
+  for(const sourceIndex of plan.exits){if(geoState.skipFrom.has(sourceIndex)||geoTextState.skipFrom.has(sourceIndex)||axisFrame.skipFrom.has(sourceIndex))continue;const from=plan.from.scene.nodes[sourceIndex];let key=from.key;
+    if(used.has(key))key=JSON.stringify(["animation-exit",sourceIndex,key]);
+    if(used.has(key))throw new TypeError("Animation exit key collides with a target scene key.");used.add(key);
+    const ownerKey=owners.from[sourceIndex];
+    guides.push(guideState.from[sourceIndex]);decisions.push({kind:"exit",sourceIndex,...(ownerKey===undefined?{}:{ownerKey}),...(guideState.ambiguousFrom.has(sourceIndex)?{reason:"guide-ambiguity"}:{})});nodes.push(fadeAnimationNode(from,1-timeline.progress(ownerKey),key));
+    positions.push(meaning(fromPositions[sourceIndex]));cartesian.push(meaning(cartesianState.from[sourceIndex]));polars.push(meaning(polarState.from[sourceIndex]));appendGraph("from",sourceIndex);appendPartition("from",sourceIndex);geoFrame.append(null);geoTextFrame.append(null);axisFrame.append(null);
+  }
+  validateGeneratedItemLimit(nodes.length,"Animation sampled nodes",animationResourceLimits(transitionResources(plan))?.maxOutputNodes);
+  // Extra family emissions may still contain mutable local nodes.
+  const scene=cloneAndFreeze({version:2,width,height,nodes:nodes.every(isOwned)?freezeOwned(nodes):nodes});
+  // These completed decisions contain only local primitive fields or owned records.
+  for (const decision of decisions) freezeOwned(decision);
+  freezeOwned(decisions);
+  const geos=geoFrame.finish();
+  return finish(cloneAndFreeze({graphicSpec:canvasSceneProgram(scene).graphicSpec,scene,progress,decisions}),freezeOwned(positions),graphFrame.finish(),cartesian,partitionFrame.finish(),polars,geos,guides,geoTextFrame.finish(geos),axisFrame.finish());
+}
+
+// Offline frame export adds only a time label while retaining authentic meaning.
+export function withSampleTime(frame,timeMs,plan) {
+  const proof=animationFrameProvenance(frame);
+  if(proof===undefined)throw new TypeError("A sampled time view requires an authentic frame.");
+  if(plan!==undefined){
+    requireTransitionPlan(plan);
+    const {side}=transitionSampleState(timeMs,plan.durationMs,plan.easing);
+    if(side!==undefined&&transitionEndpointFrame(plan,side)===frame){
+      if(frame.scene.version===3){
+        const positions=batchPositionsForScene(frame.scene,transitionEndpointPositions(plan,side));
+        const legacy={graphicSpec:frame.graphicSpec,scene:plan[side].scene,progress:frame.progress,decisions:[]};
+        const captured=captureFrameMeaning(legacy,plan,timeMs),meaning={...captured,endpoint:proof.endpoint};
+        return registerAnimationFrame(cloneAndFreeze({...frame,timeMs}),{plan,timeMs,positions,
+          axislabels:transitionAxisLabels(plan)[side],geotexts:transitionGeoTexts(plan)[side],guides:transitionGuides(plan)[side],geos:transitionGeos(plan)[side],graphs:transitionGraphs(plan)[side],partitions:transitionPartitions(plan)[side],polars:transitionPolars(plan)[side].map(position=>position.reason?null:position),cartesian:transitionCartesian(plan)[side].map(position=>position.reason?null:position),meaning});
+      }
+      return registerAnimationFrame(cloneAndFreeze({...frame,timeMs}),{plan,timeMs,
+        axislabels:transitionAxisLabels(plan)[side],geotexts:transitionGeoTexts(plan)[side],guides:transitionGuides(plan)[side],geos:transitionGeos(plan)[side],positions:transitionEndpointPositions(plan,side).map(position=>position.reason?null:position),graphs:transitionGraphs(plan)[side],partitions:transitionPartitions(plan)[side],polars:transitionPolars(plan)[side].map(position=>position.reason?null:position),cartesian:transitionCartesian(plan)[side].map(position=>position.reason?null:position),meaning:captureFrameMeaning(frame,plan,timeMs)});
+    }
+    if(animationPlanProvenance(plan).identity!==proof.planIdentity)throw new TypeError("Sampled time view does not belong to this plan.");
+  }
+  if(proof.timeMs!==timeMs)throw new TypeError("A sampled time view requires its exact authentic sample time.");
+  return registerAnimationFrameView(cloneAndFreeze({...frame,timeMs}),frame,timeMs);
+}

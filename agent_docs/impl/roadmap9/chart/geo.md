@@ -13,7 +13,8 @@
 - [ ] Geo guide·label 공개 연결
 - [x] Typed geometry/table join 및 exact source revision closure
 - [x] Shared-arc/hierarchy LOD resource와 명시적 selection representation
-- [ ] LOD semantic feature/geographic annotation와 interaction availability 연결
+- [x] LOD semantic feature/geographic annotation 공개 연결
+- [ ] Interaction availability의 별도 checkpoint 합산 검증
 - [ ] Camera·route·current frame·네 renderer·타입/docs/실제 데이터
 
 [AUTHORIZATION.json](../AUTHORIZATION.json)의 `remainingApproval`을 재사용한다. 기준은
@@ -547,3 +548,299 @@ field/label/guide 및 camera 소비자는 후행 구현이며 AT31/32 전체 완
 공개 LOD source는 `6ea274544`로 고정했다. 이후 provenance/LLM source pin만 갱신하고
 문서 source 전체 198/198 및 package dry check(1026 entries, 1460317/6659038 bytes)를
 다시 확인했다. Runtime/declaration/packed entry bytes는 설치 검증 tar와 동일하다.
+
+
+## Semantic geographic annotation 계약
+
+기존 전체 승인(`remainingApproval`) 범위에서 `createGeoAnnotation`/`editGeoAnnotation`을
+resource-backed Geo annotation mode로 연결한다. 별도 renderer나 annotation registry는 만들지
+않고 기존 Text primitive·font binder·FillPaint·outline/shadow·selection owner를 사용한다.
+
+공개 anchor는 `{type:"position",position:[x,y]}` 또는
+`{type:"feature",geometry?,key,level?}`이다. Position은 geo coordinate의 geographic degrees 또는
+identity projection의 planar unit을 보존한다. Feature는 explicit typed featureKey가 있는 source나
+join, LOD의 원 level geometry를 식별한다. Geometry는 기존 explicit/current/unique inference를
+재사용하고, LOD level 생략은 현재 activeLevel을 한 번 저장한다. 이후 coarse/fine 전환에서
+그 level/key를 바꾸지 않는다. 원 geometry의 planar 또는 spherical centroid를 공통 math adapter로
+계산하며, null/empty feature는 semantic identity를 보존하고 Text 출력 0개다. 미정의/overflow
+centroid는 실패한다. Source geometry 이동은 해당 centroid를 다시 계산한다.
+
+Text는 명시 string이며 빈 문자열은 출력 0개다. Native Text style을 공유하되 source mark
+appearance가 없는 `inheritColor`는 허용하지 않는다. Default id는 geo-annotation, style은 기존
+Text 기본값이고 clip:false다. `coordinate?`, `anchor?`, `text?`, native style의 edit는 빈 patch를
+거부한다. Geometry ref는 기존 `layer.geoBinding.geometry` 경로 한 곳에 저장하고 anchor에는
+ref를 중복 저장하지 않는다. Position annotation은 geometry를 만들지 않는다. Projection ref는
+기존 geo coordinate가 계속 단일 소유한다.
+
+Feature mapping, projection/geometry revision, null/clipped output, removal, restore, inspection,
+hconcat/vconcat scoped editing, selection/highlight, font/theme 및 네 renderer를 같은 checkpoint의
+소비자로 검증한다. Centroid 수치 kernel은 Point/Line/Polygon/hole/collection/dateline과
+입력 불변·descriptor·finite budget 경계를 독립 literal로 확인한다. 새 visual은 승인된 Text와
+Geo primitive를 재사용하며 명시 planar/orthographic primitive pair로 좌표와 clipping을 비교한다.
+
+
+### Semantic annotation checkpoint 검증
+
+주석 create/edit를 native Text로 연결하고 feature centroid, 명시 geographic/planar 위치,
+LOD 원본 level/key 보존, source/projection 수정, null/clipped/빈 text, 실패 원자성을 검증했다.
+Geometry ref는 기존 binding에만 저장하고 metadata에서는 수치 projection dependency를 가져오지
+않는다. 이로써 Basic import는 기존 경계를 유지하며 Full materializer만 centroid를 계산한다.
+Planar hole의 ring 방향이 달라도 exterior/hole 역할에 따라 contribution을 계산한다.
+
+Geo 관련 139개와 새 7 owner coverage 100/97.48/100, native Text 관련 107개와 추출 owner
+100/100/100을 통과했다. 신규 owner에 기존 95/90/100 floor를 그대로 적용했다. 현재 카탈로그·
+타입·source/package 경계 46개, 실제 5 dataset×3 recipe/증인 16개, 3 variant의 네 renderer와
+PNG 9개, Canvas/SVG DPR1/2 browser 3개가 통과했다. 같은 archive
+`5ea008140f4512cba0e6d3e6c053550bd3acdf82d016c7411ef5aff1adee940f`를 Node20/22/24에
+설치하여 각각 runtime3·strict Full/Basic 타입·문서 snippet·5 browser bundle을 검증했다.
+현재 1033개 packed entry는 배포용 canonical 변환 후 해당 archive와 모두 같다.
+
+첫 inventory와 문서/카드 fixture 실패는 원본과 owning 수리를 구분해
+[annotations/status.json](geo-evidence/annotations/status.json)에 보존한다. Source pin과 built
+문서 최종 검증은 같은 source checkpoint 후속 기록으로 닫는다. 새 전체 normal/global coverage
+통과를 주장하지 않는다. 공통 realistic 생성 3파일은 최종 합산에서 parent가 한 번 검증한다.
+Field encodings·Geo labels/guides·camera와 별도 session availability 합산은 남은 작업이다.
+
+
+주석 source는 `d665f6bbc`로 고정·push했다. 이후 source provenance/LLM pin과 evidence만
+갱신해 문서 source 전체 200/200, 수정된 inventory owning 7/7, package contract 7/7을
+확인했다. Built172페이지/1525 selective artifacts와 전체320/390/768px containment,
+검색·접근성도 통과했다. Source pin만 갱신한 최종 build에서 링크·hash를 다시 확인하며,
+새 runtime이나 타입 변경 없이 동일 qualified tar의1033개 entry byte parity를 유지한다.
+
+## Geo feature appearance와 guide 연결 계약
+
+STEP044/045의 choropleth와 proportional-symbol 소비자를 기존 `encodeColor`/`encodeSize`에
+연결한다. 새 field/scale 문법이나 가짜 dataset은 추가하지 않는다. `layer.encoding`이 field,
+fieldType, scale을 단일 소유하며 geometry ref는 기존 `geoBinding.geometry`만 사용한다.
+Source·join·현재 LOD level의 feature가 단위이고 MultiPoint/여러 path part도 feature당 한 값이다.
+Null/empty geometry는 값 수집과 concrete item 모두에서 제외하지만 기존 source selection과 inspection의 논리 feature는 보존한다. 한 source owner가 전체 features와 drawableFeatures를 결정하며 모든 visual consumer가 후자를 공유한다. Projection clipping은
+presentation이며 domain을 바꾸지 않는다. 최초 feature 순서와 typed logical key를 보존한다.
+
+Color는 shape/point/line의 기존 nominal/ordinal/quantitative/temporal scale을 사용한다.
+Shape/point는 fill, line은 stroke에 적용한다. Aggregate/layout은 적용 불가이며 명시 오류다.
+고정 `{value}` 전환은 기존 removeEncoding과 Geo mark editor를 감싼 자식으로 실행한다.
+Size는 Geo point의 CSS pixel area이며 `sqrt(area/pi)` radius를 쓴다. Geographic `radiusDeg`와
+함께 쓰면 거리/면적 의미가 충돌하므로 먼저 명시 radiusPx로 전환해야 한다. Size의 numeric,
+categorical, transformed/discrete scale과 unknown/empty domain은 기존 owner가 결정한다.
+
+Join 미매칭 feature는 geometry와 identity를 보존한다. Field가 missing이면 명시한 scale.unknown을
+공유 mapper가 적용하고, fallback이 없거나 잘못된 값이면 상태/trace 변경 전에 오류다. 별도
+silent row dropping/default zero는 없다. Ordinary field mapping을 먼저 닫으며 AST conditional
+resource-grain 연결은 뒤따르는 Geo consumer matrix에 명시해 전체 범위에서 삭제하지 않는다.
+
+Consumer matrix: 기존 scale create/edit/remove·automatic domain·categorical/gradient/size legend,
+encoding 제거·상수 전환·공유 scale sibling union·geometry/table/LOD revision·projection/Canvas
+변경·selection/highlight·codec·scoped composition을 검증한다. Source candidate resource와
+모든 scale 후보를 preflight한 뒤 scale→mark→guide union을 한 번 실행한다. Renderer는 기존
+concrete circle/path만 읽는다. 필드 labels와 geographic graticule labels는 다음 의미 개념으로,
+camera046/현재 frame/route와 interaction 연동은 후행 owner 계약으로 계속 추적한다.
+
+
+### Feature appearance checkpoint 검증
+
+Geo source/join/LOD의 ordinary color와 point area를 기존 scale와 legend owner에 연결했다.
+Geometry 후보 전체의 필드와 scale를 preflight하고 공유 native mark까지 단일 plan으로 갱신한다.
+빈 native quantitative color scale가 명시 `emptyDomain`을 선언해도 내부 action의 closed 옵션과
+전달 목록에서 빠졌던 기존 결함을 함께 수리했다. Native Point의 빈 source revision 회귀로
+같은 의미를 검증했으며 Geo만의 예외나 별도 fallback을 만들지 않았다.
+
+최종 Geo·빈 domain 회귀156/156, native scale193/193, 새 혼합 native/Geo7/7, 현재
+카탈로그·타입·package 경계47/47이 통과했다. 새 Geo owner는 lines100, branches96.15 이상,
+functions100이며 기존95/90/100 floor를 유지한다. Native quantitative color owner도
+96.15/95.45/100으로 같은 기준을 통과한다. 실제5 dataset×3 recipes/증인16개, primitive4,
+render8, Canvas/SVG DPR1/2 browser4가 통과했다.
+
+동일 tar `a2cf6a22ef8ec43acbffbbcf8be2b7cdb2f5a1ede7760810d8fc98d1b090536c`를
+Node20/22/24에 설치해 각각 신규runtime3, strict Full/Basic 타입, 문서snippet,5 bundle을
+검증했다. Canonical 변환 후1035개 entry 모두 현재source와 동일하다. 새로운 전체
+normal/global coverage 통과를 주장하지 않는다. Discovery 최초57/58 실패는 신규realistic
+파일의49→50 기대값과 실제포함assertion으로 수리하여47/47 owning검사에 포함했다.
+문서의 최초198/201 실패 중 잘못된 중복링크2건은 수리했고200/201 재검증에서 유일하게
+남은 source pin은 이 source commit 후 metadata-only 갱신으로 닫는다.
+최종 inventory·source/built/browser 문서 결과는 아래 evidence에 구분해 기록한다.
+
+[Feature appearance evidence](geo-evidence/encodings/status.json)
+
+
+Feature appearance source는 `bff4d29eb`로 고정·push했다. 동일 runtime과 타입을 유지한
+후속 source pin 갱신에서 문서201/201, canonical inventory10/10, built172페이지/1525개
+selective artifact 및 전체320/390/768px browser containment·검색·접근성 검증이 통과했다.
+1035개 package input의 canonical byte parity도 다시 확인했다. 최초 실패와 owning 수리는
+위 evidence status와 원본 로그로 분리했다. 이 checkpoint는 ordinary fields와 기존legend
+연결이며 conditional resource-grain, feature/graticule labels, camera046 전체 완료를 뜻하지 않는다.
+
+## Camera 순수 계산 계약
+
+STEP046의 기존 승인과 전체 남은 Gate 승인을 재사용한다. 첫 checkpoint는 공개 action/session
+상태를 추가하지 않는 순수 계산이며, projection의 기존 normalized parameter와 명시 operation을
+받아 새 normalized parameter를 반환한다. `applyGeoCamera`는 pan(deltaPx), zoom(anchorPx,
+factor, 명시 scaleExtent), pinch(이전/현재 두 pointer와 scaleExtent), rotate(절대 rotateDeg),
+fit(geometry/viewport/coordinateKind), reset(명시 initial snapshot), resize(이전/현재 viewport와
+preserve|fit scaling)를 닫힌 입력으로 처리한다. 모든 값은 유한해야 하고 scale·거리·viewport는
+양수다. Invalid/overflow/hidden inverse는 이전 값을 몰래 유지하지 않고 실패한다.
+
+Zoom은 기존 projection inverse로 pointer의 실제 geographic/planar anchor와 composite component를
+검증한다. Bounded scale의 실제 비율로 translation을 보정한 뒤 같은 anchor의 오차가0.25px
+이하인지 확인한다. Pinch는 두 중심의 이동과 거리 비율을 같은 결과에 반영한다. Resize는 이전
+viewport 중심의 projected 위치를 새 중심으로 옮기고, 명시 fit일 때 두 크기 비율의 최솟값으로
+scale도 바꾼다. Projection의 authored clipExtent는 별도 의미라 자동 변경하지 않으며 Geo mark의
+Canvas clip은 기존 materializer가 소유한다. Reset 초기상태는 caller가 명시 공급하고 hidden
+전역 baseline이나 두 번째 persisted camera는 추가하지 않는다.
+
+`interpolateGeoCamera`는 동일 projection/static parameter에서 translation의 유한 선형 보간과
+양수 scale의 log 보간을 공통 `grammar/animation/values.js`에 위임한다. 해당 owner는 root의
+검증된206524886을 좁게 cherry-pick해 재사용한다. Geo는 spherical rotation의 quaternion
+shortest path와 native Euler 변환만 소유한다. Rx(roll)Ry(-latitude)Rz(longitude) 순서를
+projection 수학과 대조하고 독립 혼합축 literal로 검증한다. 시작/끝 snapshot은 정확히 반환한다.
+Projection type 또는 정적 shape/clip이 다르면 reason과 두 endpoint/weights를 가진 명시
+crossfade description을 반환한다. 이 private 결과는 renderer나 player를 실행하지 않는다.
+
+후속 공개 연결에서 native editProjection의 exact revision closure, 명시 초기 snapshot의 수명,
+command/history·pan/rotate gesture 분리·wheel/pinch/keyboard·current-frame hit·abort/offline restore,
+reduced motion과 generic player sampler 연결을 모두 닫아야 한다. Computed agent의 현재
+setViewport는 native editProjection dispatcher이고 별도 camera/reset state가 없음을 확인했다.
+Feature/graticule labels와 conditional resource-grain 소비자는 별도 미완료 Geo 의무로 유지한다.
+
+
+Camera 순수 checkpoint는13 camera +9 공통 animation 시험이 Node20/22/24 각각22/22 통과했다.
+두 Camera owner와 공통값 owner 모두100/100/100이며 기존95/90/100 기준을 유지한다.
+첫 극점 Euler 시험의 asin 정밀도 실패를 atan2 변환으로 수리했고 literal 기대값은 유지했다.
+Source/discovery27, package7도 통과했다. 공개 entry에서 아직 camera를 가져오지 않으므로
+public renderer/type/설치 전체 corpus를 재실행했다고 주장하지 않는다.3Node package dry-run의
+1038 entries/최대1474207 packed/6710451 unpacked를 근거로 ceiling을1038/1475000/6711000으로
+갱신했다. [Kernel evidence](geo-evidence/camera-kernel/status.json)에 원본실패·수리와 공개연결
+미완료 범위를 구분한다.
+
+## Camera 공개 action 계약
+
+전체 STEP077 설계 승인(`AUTHORIZATION.json`)과 위 순수 계산 계약을 재사용한다.
+`navigateProjection({target?,operation})`은 새 camera resource 없이 기존 projection을 한 번
+수정하는 Full domain facade다. target은 기존 projection selector의 explicit/current/unique
+규칙을 따른다. Pan/zoom/pinch/rotate/reset의 operation shape는 순수 계산과 같고 reset의
+initial은 caller가 보존한 명시 parameters다. Fit은 `{type:'fit',fit:{geometry?,width,height,
+padding?,pointScale?}}`로 기존 live geometry fit을 그대로 작성한다. 다른 camera 조작은
+명시 scale/translation 결과를 저장하므로 기존 fit dependency를 분리한다.
+
+Resize는 `{type:'resize',canvas:{width?,height?,plot?:false|{width,height}},scaling:'preserve'|'fit'}`다.
+Canvas option을 새로 해석하지 않고 native editCanvas에 위임한다. 따라서 정확 plot과 바깥
+width/height의 충돌도 동일하게 실패하며, 바깥 크기로 전환하려면 caller가 `plot:false`를
+명시한다. Native responsive guide layout이 정착한 이전/이후 plot bounds로 camera를 계산한다.
+기존 parameter aggregate와 같은 immutable speculative branch에서 전체 native child chain을
+검증하고 같은 입력에서 최종 chain을 작성한다. 실패 시 이전 program/trace는 그대로이며,
+성공 trace에는 navigateProjection 아래 editCanvas(Resize일 때)와 editProjection이 남는다.
+추가 전역 pending state, callback 저장, renderer camera는 없다.
+
+`ggaction/inspection`의 `getProjectionView(program,{target?,childPath?})`는 exact projection ref,
+resolved normalized parameters와 현재 plot viewport를 frozen snapshot으로 반환한다.
+Canvas가 없는 resource-only program은 viewport:null이다. Snapshot의 parameters로 reset하며,
+예전 live fit policy나 revision을 되살리는 권한은 주지 않는다. 저장/restore는 기존 projection
+resource schema만 사용한다. 초기 baseline과 generic player/session gesture는 후행 consumer가
+명시 보존하며 이 facade에 숨겨 저장하지 않는다.
+
+Camera 공개 소스 후보는 Geo 178개, camera 소유 코드 23개와 100/100/100 커버리지,
+source/package/type/card 52개, 실제 5개 데이터 × 3개 recipe와 ledger 16개,
+인벤토리 10개를 통과했다. 기존 95/90/100 기준은 낮추지 않았다. Primitive 5개,
+Canvas/SVG/PNG/PDF 10개, Canvas/SVG DPR 1·2 브라우저 5개도 통과했다.
+고정 archive `63df5876f4ba396a317cd2d5aac13b379355d3097106a4e2cce5bc9c66f8dc54`의
+Node 20·22·24 설치에서 각각 새 runtime 3개·strict types·5개 browser bundle을 확인했다.
+같은 archive의 1039개 파일은 canonical packaging 변환 후 현재 입력과 모두 일치한다.
+원래 실패한 fixture/metadata와 수리 검증, source pin 이후 문서 최종 상태는
+[공개 camera 증거](geo-evidence/camera-public/status.json)에서 구분한다.
+전체 normal/global coverage 및 공통 realistic 3개 파일의 새 합산 결과를 대신 주장하지 않는다.
+
+Source `c59dba999`를 푸시한 뒤 문서 202/202, built 172페이지·1529개 selective LLM
+artifact, desktop 검색과 320·390·768px 모든 페이지 containment를 통과했다. 문서 provenance와
+증거 후속 변경 후에도 고정 archive의 1039개 package 입력 parity는 불일치가 없었다.
+Session/player 및 남은 Geo 소비자 의무는 위 구분대로 계속 유지한다.
+
+## Geo 조건부 field 소비자 계약
+
+기존 전체 승인과 STEP016의 `conditions`/필수 `otherwise` 계약을 Geo의 현재 ordinary
+color(Shape·Point·Line), size(pixel-radius Point)에 연결한다. 별도 AST·선택 문법·dataset을
+만들지 않고 같은 `layer.conditionals`가 유일한 조건부 결정 owner다. Native encoder가 모든
+branch payload를 먼저 검증하며, 첫 true branch를 선택하고 비활성 field/scale/reference도
+검증한다. Geometry 또는 join의 drawable feature 한 개가 평가 grain이고 여러 visible parts는
+같은 값과 identity를 공유한다. Projection clipping은 source feature domain을 바꾸지 않는다.
+
+Transient feature rows와 inferred field schema는 기존 schema owner를 사용한다. Geometry가
+완전히 비어 타입을 추론할 수 없는 field predicate는 기존 typed AST 규칙대로 오류다. Literal·
+parameter·명시 selection predicate는 빈 입력에서도 유효하며 scale의 명시 emptyDomain 정책을
+따른다. Null geometry의 field 값은 시각 domain이나 조건부 평가에 참여하지 않는다.
+
+원래 Geo config의 resolved 기본 style은 ordinary field와 동일하게 encoding 제거 후 fallback을
+맡는다. 조건부 channel이 있는 동안 direct fill/stroke/radius 편집은 거부하고, ordinary encoder
+재호출 또는 removeEncoding으로 결정 owner를 교체한다. Branch별 scale을 기존 dependency
+collector에 유지하며, 동일 binding으로 유일하게 정해지는 경우만 native legend를 파생한다.
+모호한 기존 legend는 먼저 명시 제거해야 하며 재할당 실패는 program/trace를 바꾸지 않는다.
+
+Parameter·selection·geometry/join/LOD·projection·scale 수정, 제거, codec restore, concat/scoped
+edit와 네 renderer를 같은 consumer contract로 검증한다. 선택된 field 조건은 semantic feature
+key를 읽고 실제 hit key를 다른 LOD key로 치환하지 않는다. Feature/graticule labels는 다음
+독립 개념으로 남긴다.
+
+조건부 source 검증은 원본 feature key/실제 joined row 관계를 보존한다. 일반 Point 선택→joined
+Geo 조건부 color/size, atomic encodeChannels, parameter/selection의 exact refs, LOD coarse/fine
+representation 복귀, prepared CSV source 실패 불변성과 mark union 한 번 실행을 회귀로 고정했다.
+Primitive는 기존 field 예제의 세 원 크기를 유지하고 첫 조건의 우선순위로 West 회색/Central 청록/
+East 빨강만 바꾼다. 기존 전체 시각 승인 아래 같은 4backend primitive parity와 browser DPR1/2를
+검증했으며 새 renderer policy는 없다. Source-only schema adapter는 기존 geo critical family의
+95/90/100 하한을 그대로 적용한다. 전체 unit/global coverage를 새로 통과했다고 주장하지 않는다.
+
+조건부 source `cc5e6f752`를 푸시한 뒤 문서203/203, built172페이지·1529개 selective LLM
+artifact, desktop 검색과320·390·768px 모든 페이지 containment를 통과했다. Geo owner190개와
+19개 기존 critical floor95/90/100, native conditional116개, 실제5dataset×3새recipe를 포함한
+32개 realistic, 네 renderer12개 및 browser6개를 확인했다. 고정 archive
+`590ebcff51ae88ce9d029478d42e6a8655383579a8f8357a96f0794ec4a72d68`의 Node20·22·24
+설치에서 각각6개 geographic encoding case, strict types와5개 browser bundle이 통과했고
+1040개 canonical package input parity는 불일치가 없었다. 최초실패와 수리 결과는
+[조건부 증거](geo-evidence/conditional/status.json)에 별도로 보존한다. 전체 unit/global coverage나
+전수 installed 결과를 대신 주장하지 않는다. 다음 feature/graticule labels 및 후행session/player
+연계 의무는 계속 유지한다.
+
+## Feature·graticule 레이블 연결 계약
+
+사용자 전체 승인과 root의 구체 설계 승인에 따라 새 공개 API 없이 기존
+`createMarkLabels({source,field|value,format?,select|selection?,style...,layout?})` 및
+`createTextMark({source}).encodeText(...)`를 Geo shape/point/line/graticule에 연결한다.
+Text의 `source`, `encoding.text`, 기존 mark config와 label layout이 각각 의미·내용·표현·배치를
+단독 소유한다. Dataset이나 별도 Geo label resource를 합성하지 않는다. 고정 단일 anchor인
+기존 Geo annotation은 그대로 유지한다.
+
+원 source의 최종 eligible feature가 레이블 grain이며 multipart도 하나의 label이다. 위치는 기존
+geometry centroid와 projection forward owner로 계산하고 null/비가시 anchor는 제외한다. 원 feature
+key와 실제 joined rows를 source item에서 전달하며 LOD representation aliases는 label namespace로
+변환한다. Graticule은 기존 생성 feature의 axis/value와 typed feature key를 그대로 읽는다. Field와
+constant는 기존 Text formatting을 사용하고 semantic value/category/share는 기존 Bar/Arc 제한을
+유지한다. Center placement와 dx/dy, 기존 collision layout을 재사용하며 새로운 geographic boundary
+inside/outside policy는 만들지 않는다. FillPaint/font/outline/shadow/selection/highlight는 native Text
+owner가 처리한다.
+
+Geometry/join/LOD/projection/source/parameter/selection/Canvas 수정의 후보 검증과 최종 source→Text
+한 번 실행, codec·제거·concat을 검증한다. 레이블에 별도 data/좌표/위치 intent를 넣는 malformed
+snapshot은 거부한다. 대표 primitive·네 renderer·DPR1/2·실데이터와 설치 소비자까지 같은 checkpoint로
+닫으며 source-neutral renderer 경계는 바꾸지 않는다.
+
+레이블 source `369cc8ec6`에서 Geo owner206개와 측정20owner의 기존95/90/100 floor,
+기존 Text71개 및 selection/conditional Text108개, 실제5dataset×3신규recipe를 포함한48개,
+대표 primitive/types9개, PNG8개, 네 renderer8개 및 새 browser2개(DPR1/2)를 확인했다.
+Full/Basic static import graph와 Basic-first fresh process3개는 독립적으로 통과했다.
+행 선택 감사에서 발견한 Geo join의 누락된 transient index는 현재 rowMap으로 보충하되
+persisted sourceRows/shape는 바꾸지 않았으며 원 Geo·label 선택, bringToFront 및 stale row
+revision의 fail-closed 복원을 검증했다. 새 Text validator는 기존 Full projection handler에
+남겨 graph 준비 entry의 번들 경계를 보존한다.
+
+동일 archive `56c5dd691df5b9ffa133e8367ae749a1b13d9365e542779adcc871cc73d98e26`로
+Node20·22·24 각각 새 label 소비자3개, 엄격한 Full/Basic 타입, 문서 예제와5개 browser bundle을
+통과했다. Canonical package1043개 입력 parity는 불일치가 없다. Source pin 이후 문서204/204,
+built172페이지·1529개 selective LLM artifact, desktop 검색과 모든 페이지320·390·768px도
+통과했다. 최초실패와 수리/측정 결과는 [레이블 증거](geo-evidence/labels/status.json)에 보존한다.
+전체 unit/global coverage나 전수 installed를 새로 통과했다고 주장하지 않는다.
+
+Native Geo의 source/projection/stream/join/LOD/annotation/field·guide/camera/conditional/label
+각 checkpoint는 연결되었으나 Roadmap 전체를 완료한 것은 아니다. 원 계약의 실제
+camera drag/wheel/pinch/keyboard, reset/resize의 history command, generic current frame/player 및
+합산 consumer closure는 후행 session/animation owner에 전달했다. `navigateProjection`과
+`getProjectionView`를 재사용하며 수학이나 초기 baseline을 다른 owner에 복제하지 않는다.
+이번 labels는 common lifecycle builder를 바꾸지 않았고 이전 native camera builder의 common3
+최종 합산 실행은 root가 계속 소유한다.

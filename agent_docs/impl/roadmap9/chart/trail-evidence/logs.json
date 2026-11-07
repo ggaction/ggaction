@@ -1,0 +1,184 @@
+[
+  {
+    "file": "trail-public-coverage-final.log.gz",
+    "sha256": "171412998839d7db7d2af6838425c557761a3604582755e80b3ac7a0255ef39b",
+    "bytes": 10690,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-public-coverage-final.log"
+  },
+  {
+    "file": "trail-shared-regression.log.gz",
+    "sha256": "d3e07da807feb951d26ad9cc53a704e0ac471306a03e9b099baf0e50e4d3e92f",
+    "bytes": 18560,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-shared-regression.log"
+  },
+  {
+    "file": "trail-types-render.log.gz",
+    "sha256": "0be101b56377a99d8158692733716aa842b52584baa30d866183d55053f1eaec",
+    "bytes": 1119,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-types-render.log"
+  },
+  {
+    "file": "trail-browser.log.gz",
+    "sha256": "cb1736ee5a025c3995833b8b27c0169b0d56202b46c6a60cf0584d663321824c",
+    "bytes": 575,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-browser.log"
+  },
+  {
+    "file": "trail-realistic.log.gz",
+    "sha256": "c04fedca1afd2265e1c7ba4e2a4e8d51a1daae56961e4d3f32907b867bd6338f",
+    "bytes": 18349,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-realistic.log"
+  },
+  {
+    "file": "trail-realistic-final.log.gz",
+    "sha256": "7b31b52043215925194dfa81ede04e666e8b3d0e10d22b387f140e975bb0a466",
+    "bytes": 4417,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-realistic-final.log"
+  },
+  {
+    "file": "trail-contracts-initial.log.gz",
+    "sha256": "ad8b54389581987d0a0035e7613865cb386f94f1f69192f2ba50d9bc90082ac9",
+    "bytes": 37165,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-contracts-initial.log"
+  },
+  {
+    "file": "trail-boundaries-final.log.gz",
+    "sha256": "0a65d9d7057389373cfa153cb2d8e2a7945695816a7a58c807927f4566e31a8f",
+    "bytes": 10495,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-boundaries-final.log"
+  },
+  {
+    "file": "trail-hierarchy-final.log.gz",
+    "sha256": "ade5479cba498bdd82d7c40e25404686f8f0500af5ea4a3cc5445646e40c3854",
+    "bytes": 705,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-hierarchy-final.log"
+  },
+  {
+    "file": "trail-inventory-final.log.gz",
+    "sha256": "c1aa37cd9ea255f71b0b0fadd212a9196e8c9f8fe5ec534718df7cc0ee4cc798",
+    "bytes": 10073,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-inventory-final.log"
+  },
+  {
+    "file": "trail-inventory-repaired.log.gz",
+    "sha256": "40061f62c52edbd65dcef8fb7c11aa419d6e512d7279434e212b8b69d6c58636",
+    "bytes": 1169,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-inventory-repaired.log"
+  },
+  {
+    "file": "trail-docs-final.log.gz",
+    "sha256": "f35ecb9fbce84fa367d7d26f6544ca4608994cd8aced5a35fdc82929659d1e26",
+    "bytes": 5686549,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-docs-final.log"
+  },
+  {
+    "file": "trail-docs-provenance-owner.log.gz",
+    "sha256": "e69772a35985f8644a87797e1f8483f5e17127e388d8f824f99a0e9aa50fce32",
+    "bytes": 9765,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-docs-provenance-owner.log"
+  },
+  {
+    "file": "trail-docs-final-build.log.gz",
+    "sha256": "3d4283efbba2803dae2eac7da4b4054767211be83558e0f71694c2d3610d6b9a",
+    "bytes": 420,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-docs-final-build.log"
+  },
+  {
+    "file": "trail-docs-final-built.log.gz",
+    "sha256": "cf8509ada4e660303d4bc02229b10793844fe83aadf94220fb9a24997ae372e9",
+    "bytes": 179,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-docs-final-built.log"
+  },
+  {
+    "file": "trail-docs-final-browser.log.gz",
+    "sha256": "5d406fc0202888e36f8e4cca814b9e20859c9ce279fdc6df787d9539e5e87fdc",
+    "bytes": 81,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-docs-final-browser.log"
+  },
+  {
+    "file": "trail-package-final-check.log.gz",
+    "sha256": "0ff7bd4a4333e71da42b73b9cf586d62e7913c378f047f231815af4e56f89593",
+    "bytes": 446,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-package-final-check.log"
+  },
+  {
+    "file": "trail-package-final-measure20.log.gz",
+    "sha256": "20e93b1e6abf9c99150c690841e1156c529f28ee1a0aa5521723a4fd53db3f71",
+    "bytes": 292,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-package-final-measure20.log"
+  },
+  {
+    "file": "trail-package-final-measure22.log.gz",
+    "sha256": "52b3833fb2f9b47670320646edc8ffe1378f4e8c1f2728bf835e7d4289e52837",
+    "bytes": 292,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-package-final-measure22.log"
+  },
+  {
+    "file": "trail-package-final-measure24.log.gz",
+    "sha256": "20e93b1e6abf9c99150c690841e1156c529f28ee1a0aa5521723a4fd53db3f71",
+    "bytes": 292,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-package-final-measure24.log"
+  },
+  {
+    "file": "trail-docs-generate-final.log.gz",
+    "sha256": "18493dd074eb486c84cf68ddd9166d5f2e8834cd3f755a8f46a2c5eb8f49c3a9",
+    "bytes": 12943,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-docs-generate-final.log"
+  },
+  {
+    "file": "trail-inventory-final-owner.log.gz",
+    "sha256": "e957c4ae982273d5234a0064c69d24bce2cb258ee6ae08ed496075c92b3327c4",
+    "bytes": 1036,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-inventory-final-owner.log"
+  },
+  {
+    "file": "trail-inventory-verified.log.gz",
+    "sha256": "7478c498337a1495d55141fac467420857bde440e2ec772a13bb6fab30f7285f",
+    "bytes": 342,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-inventory-verified.log"
+  },
+  {
+    "file": "qualify-trail-package.mjs.gz",
+    "sha256": "9a27e4150e6b98b57b7af6509e352cb836d9620794ae78626f3121a423ccf693",
+    "bytes": 2927,
+    "encoding": "gzip",
+    "source": ".artifacts/qualify-trail-package.mjs"
+  },
+  {
+    "file": "trail-focused-built.mjs.gz",
+    "sha256": "806824ba171ef0314e32b4835f01d9d4a51581df43826ef351476332fe570a8c",
+    "bytes": 28499,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-focused-built.mjs"
+  },
+  {
+    "file": "trail-package-proof.mjs.gz",
+    "sha256": "edac35908c15d8cb5df2f4a87e4b2a2cfdf6bac1a59b9ce6814acc84b862f8e0",
+    "bytes": 10836,
+    "encoding": "gzip",
+    "source": ".artifacts/trail-package-proof.mjs"
+  }
+]

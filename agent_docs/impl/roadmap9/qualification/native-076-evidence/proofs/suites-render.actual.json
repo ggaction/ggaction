@@ -1,0 +1,1246 @@
+{
+  "targets": [
+    {
+      "target": "consumer:compound-path/svg",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/canvas",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/png",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/pdf",
+      "owners": [
+        {
+          "test": "test/charts/compound-path/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/svg",
+      "owners": [
+        {
+          "test": "test/charts/structured-paints/variants/pattern-paints/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/structured-paints/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/canvas",
+      "owners": [
+        {
+          "test": "test/charts/structured-paints/variants/pattern-paints/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/structured-paints/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/png",
+      "owners": [
+        {
+          "test": "test/charts/structured-paints/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/pdf",
+      "owners": [
+        {
+          "test": "test/charts/structured-paints/variants/pattern-paints/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/structured-paints/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/svg",
+      "owners": [
+        {
+          "test": "test/charts/partition-layouts/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/partition-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/canvas",
+      "owners": [
+        {
+          "test": "test/charts/partition-layouts/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/partition-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/png",
+      "owners": [
+        {
+          "test": "test/charts/partition-layouts/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/pdf",
+      "owners": [
+        {
+          "test": "test/charts/partition-layouts/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/partition-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/svg",
+      "owners": [
+        {
+          "test": "test/charts/partition-layouts/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/partition-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/canvas",
+      "owners": [
+        {
+          "test": "test/charts/partition-layouts/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/partition-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/png",
+      "owners": [
+        {
+          "test": "test/charts/partition-layouts/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/pdf",
+      "owners": [
+        {
+          "test": "test/charts/partition-layouts/backends.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/partition-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/svg",
+      "owners": [
+        {
+          "test": "test/charts/tree-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/canvas",
+      "owners": [
+        {
+          "test": "test/charts/tree-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/png",
+      "owners": [
+        {
+          "test": "test/charts/tree-layouts/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/pdf",
+      "owners": [
+        {
+          "test": "test/charts/tree-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/svg",
+      "owners": [
+        {
+          "test": "test/charts/treemap-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/canvas",
+      "owners": [
+        {
+          "test": "test/charts/treemap-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/png",
+      "owners": [
+        {
+          "test": "test/charts/treemap-layouts/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/pdf",
+      "owners": [
+        {
+          "test": "test/charts/treemap-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/png",
+      "owners": [
+        {
+          "test": "test/charts/graph-plots/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/pdf",
+      "owners": [
+        {
+          "test": "test/charts/graph-plots/pdf.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/svg",
+      "owners": [
+        {
+          "test": "test/charts/flow-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/canvas",
+      "owners": [
+        {
+          "test": "test/charts/flow-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/png",
+      "owners": [
+        {
+          "test": "test/charts/flow-layouts/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/pdf",
+      "owners": [
+        {
+          "test": "test/charts/flow-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/svg",
+      "owners": [
+        {
+          "test": "test/charts/flow-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/canvas",
+      "owners": [
+        {
+          "test": "test/charts/flow-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/png",
+      "owners": [
+        {
+          "test": "test/charts/flow-layouts/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/pdf",
+      "owners": [
+        {
+          "test": "test/charts/flow-layouts/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/svg",
+      "owners": [
+        {
+          "test": "test/charts/contours/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/canvas",
+      "owners": [
+        {
+          "test": "test/charts/contours/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/png",
+      "owners": [
+        {
+          "test": "test/charts/contours/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/pdf",
+      "owners": [
+        {
+          "test": "test/charts/contours/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/svg",
+      "owners": [
+        {
+          "test": "test/charts/contours/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/canvas",
+      "owners": [
+        {
+          "test": "test/charts/contours/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/png",
+      "owners": [
+        {
+          "test": "test/charts/contours/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/pdf",
+      "owners": [
+        {
+          "test": "test/charts/contours/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/svg",
+      "owners": [
+        {
+          "test": "test/charts/calendar/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/canvas",
+      "owners": [
+        {
+          "test": "test/charts/calendar/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/png",
+      "owners": [
+        {
+          "test": "test/charts/calendar/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/pdf",
+      "owners": [
+        {
+          "test": "test/charts/calendar/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:table/svg",
+      "owners": [
+        {
+          "test": "test/charts/table/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/canvas",
+      "owners": [
+        {
+          "test": "test/charts/table/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/png",
+      "owners": [
+        {
+          "test": "test/charts/table/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/pdf",
+      "owners": [
+        {
+          "test": "test/charts/table/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/svg",
+      "owners": [
+        {
+          "test": "test/charts/pyramid/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/canvas",
+      "owners": [
+        {
+          "test": "test/charts/pyramid/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/png",
+      "owners": [
+        {
+          "test": "test/charts/pyramid/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/pdf",
+      "owners": [
+        {
+          "test": "test/charts/pyramid/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/svg",
+      "owners": [
+        {
+          "test": "test/charts/ohlc/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/canvas",
+      "owners": [
+        {
+          "test": "test/charts/ohlc/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/png",
+      "owners": [
+        {
+          "test": "test/charts/ohlc/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/pdf",
+      "owners": [
+        {
+          "test": "test/charts/ohlc/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/svg",
+      "owners": [
+        {
+          "test": "test/charts/waterfall/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/canvas",
+      "owners": [
+        {
+          "test": "test/charts/waterfall/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/png",
+      "owners": [
+        {
+          "test": "test/charts/waterfall/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/pdf",
+      "owners": [
+        {
+          "test": "test/charts/waterfall/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/svg",
+      "owners": [
+        {
+          "test": "test/charts/trail/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/canvas",
+      "owners": [
+        {
+          "test": "test/charts/trail/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/png",
+      "owners": [
+        {
+          "test": "test/charts/trail/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/pdf",
+      "owners": [
+        {
+          "test": "test/charts/trail/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/svg",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/png",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/pdf",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/svg",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/png",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/pdf",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/svg",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/png",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/pdf",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/svg",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/png",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/pdf",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/svg",
+      "owners": [
+        {
+          "test": "test/charts/radial-sectors/vector.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/png",
+      "owners": [
+        {
+          "test": "test/charts/radial-sectors/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/pdf",
+      "owners": [
+        {
+          "test": "test/charts/radial-sectors/vector.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/svg",
+      "owners": [
+        {
+          "test": "test/charts/polar-line-radar/vector.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/png",
+      "owners": [
+        {
+          "test": "test/charts/polar-line-radar/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/pdf",
+      "owners": [
+        {
+          "test": "test/charts/polar-line-radar/vector.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/svg",
+      "owners": [
+        {
+          "test": "test/charts/streamgraph/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/centered-area-stream/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/png",
+      "owners": [
+        {
+          "test": "test/charts/streamgraph/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/centered-area-stream/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/pdf",
+      "owners": [
+        {
+          "test": "test/charts/streamgraph/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/centered-area-stream/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/svg",
+      "owners": [
+        {
+          "test": "test/charts/cars-acceleration-violins/vector.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/png",
+      "owners": [
+        {
+          "test": "test/charts/cars-acceleration-violins/png.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/pdf",
+      "owners": [
+        {
+          "test": "test/charts/cars-acceleration-violins/vector.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    }
+  ]
+}

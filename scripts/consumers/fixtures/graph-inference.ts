@@ -1,6 +1,6 @@
 import { chart, type InferredGraphResource, type CreateInferredGraphDataOptions } from "ggaction";
 import { chart as basicChart } from "ggaction/basic";
-const request: CreateInferredGraphDataOptions = { id: "g", nodeKey: "id", ruleId: "nearest", rule: "knn", features: ["x"], metric: "euclidean", options: { k: 2, search: { mode: "approximate", seed: 42 } } };
+const request: CreateInferredGraphDataOptions = { execution: { policy: "bounded-inference@1", maxWork: 100000000, maxBytes: 134217728 }, maxNodes: 1001, maxEdges: 10010, id: "g", nodeKey: "id", ruleId: "nearest", rule: "knn", features: ["x"], metric: "euclidean", options: { k: 2, search: { mode: "approximate", seed: 42 } } };
 const p = chart().createInferredGraphData(request).editInferredGraphData({ target: { childPath: ["left"], id: "g" }, definition: { options: { k: 3 } } });
 p.createInferredGraphData({ id: "mst", nodeKey: "id", ruleId: "backbone", rule: "mst", candidateGraph: "g", options: { forest: true } });
 p.createInferredGraphData({ id: "groups", nodeKey: ["family", "id"], ruleId: "groups", rule: "group", options: { fields: ["group"], mode: "star", hubKey: ["a", 1] } });
@@ -40,3 +40,25 @@ chart().createInferredGraphData({ id: "g", nodeKey: "id", ruleId: "r", rule: "ra
 
 // @ts-expect-error Recompute is a boolean, not a truthy value.
 p.filterMarks({ field: "key", op: "eq", value: "a", recompute: "true" });
+
+// @ts-expect-error Execution policy is closed, not an arbitrary worker name.
+chart().createInferredGraphData({ ...request, execution: { policy: "unbounded", maxWork: 1, maxBytes: 1 } });
+// @ts-expect-error Both execution limits must be explicit.
+chart().createInferredGraphData({ ...request, execution: { policy: "bounded-inference@1", maxWork: 1 } });
+
+import { createGraphInferenceExecutor, prepareInferredGraphData, computeGraphInference, type GraphInferenceJob } from "ggaction/graph";
+const executor = createGraphInferenceExecutor({ createWorker: () => new Worker("inference-worker.js", { type: "module" }) });
+const prepared = await prepareInferredGraphData(p, { kind: "create", ...request }, { executor, requestToken: "run" });
+p.createInferredGraphData({ prepared, requestToken: "run" });
+p.editInferredGraphData({ prepared, requestToken: "run" });
+const completion = computeGraphInference({} as GraphInferenceJob);
+const complete: true = completion.complete;
+executor.dispose();
+// @ts-expect-error Inference requires a real worker factory.
+createGraphInferenceExecutor();
+// @ts-expect-error Preparation never silently uses synchronous inference.
+prepareInferredGraphData(p, { kind: "create", ...request }, { requestToken: "run" });
+// @ts-expect-error Prepared and ordinary inference options are exclusive.
+p.createInferredGraphData({ prepared, requestToken: "run", id: "mixed" });
+// @ts-expect-error Prepared edits cannot carry a target or definition patch.
+p.editInferredGraphData({ prepared, requestToken: "run", target: "mixed" });

@@ -1,0 +1,17 @@
+{
+  "targets": [
+    {
+      "target": "AT-01",
+      "owners": [
+        {
+          "test": "test/contracts/dataset-fixtures.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    }
+  ]
+}

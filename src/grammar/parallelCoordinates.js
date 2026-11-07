@@ -1,3 +1,4 @@
+import { parallelAxisPosition } from "./parallelGuides.js";
 import { requireStringValue as nonEmptyString } from "../core/validation.js";
 import { cloneAndFreeze, isOwned, isPlainObject } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
@@ -197,7 +198,6 @@ export function materializeParallelRows(rows, dimensions, resolvedScales, bounds
     return cached;
   }
   validateParallelRows(rows, dimensions, { key, missing });
-  const step = bounds.width / (dimensions.length - 1);
   const positions = dimensions.map((dimension, index) => {
     const values = [], indices = [];
     rows.forEach((row, rowIndex) => {
@@ -222,7 +222,7 @@ export function materializeParallelRows(rows, dimensions, resolvedScales, bounds
       if (!validDimensionValue(value, dimension.fieldType)) return undefined;
       const mapped = positions[index][sourceRowIndex];
       return Number.isFinite(mapped)
-        ? { x: bounds.x + step * index, y: mapped, value, dimension: dimension.field }
+        ? { x: parallelAxisPosition(bounds, index, dimensions.length), y: mapped, value, dimension: dimension.field }
         : undefined;
     });
     const incomplete = vertices.some(vertex => vertex === undefined);

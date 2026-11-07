@@ -1,0 +1,7 @@
+Preserved tool-output excerpt from the first inference owning run:
+not ok 2 - inference benchmark preserves all original fixed nodes and k10 edges without invented small or sync-large SLOs
+error: Missing expected exception.
+location: test/contracts/native-benchmark-inference.test.js:29:1
+stack assertion: test/contracts/native-benchmark-inference.test.js:45:12
+3 passed / 1 failed.
+Cause: removing highest ID99 from the descending100-node input leaves a valid99-node grid; this was an incorrect negative fixture. The corrected negative removes ID0 while retaining out-of-range ID99. No runtime change.

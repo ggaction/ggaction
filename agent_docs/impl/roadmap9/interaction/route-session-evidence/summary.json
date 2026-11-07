@@ -1,0 +1,172 @@
+{
+  "status": "qualified-test-only-checkpoint",
+  "runtimeSource": "117c64e4d0474a1bf725e11f34302a494f46b9b7",
+  "base": "c6b918ab930d9aafd84ed625f1b3a509c82659be",
+  "authorization": "../AUTHORIZATION.json remainingApproval",
+  "scope": [
+    "Four bundling methods: seek/current interrupt/keyboard/unbundle/source reorder and revision/stale payload/codec",
+    "Separate geographic line: seam identity, clipping, backside, current interruption and explicit interpolation"
+  ],
+  "runtimeChanged": false,
+  "declarationsChanged": false,
+  "packageInputsChanged": false,
+  "archive": {
+    "sha256": "3093eefd9dc4d8d4b6d81437c42ad6e1e6dc3c574a02ec87707a941479e62cda",
+    "entryCount": 1165,
+    "packedBytes": 1664329,
+    "unpackedBytes": 7534634,
+    "reuse": "Exact existing archive, no repack"
+  },
+  "checks": {
+    "source": {
+      "passed": 2,
+      "failed": 0
+    },
+    "packageDiscoverySharding": {
+      "passed": 27,
+      "failed": 0
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "sha256": "3093eefd9dc4d8d4b6d81437c42ad6e1e6dc3c574a02ec87707a941479e62cda",
+        "checks": [
+          {
+            "id": "interaction-animation/four-route-player-lifecycle",
+            "status": "passed",
+            "durationMs": 6207.664333000001
+          },
+          {
+            "id": "interaction-animation/geographic-route-seam-current-hit",
+            "status": "passed",
+            "durationMs": 84.7519169999996
+          }
+        ],
+        "runtimeChanged": false,
+        "status": "passed"
+      },
+      {
+        "node": "v22.23.1",
+        "sha256": "3093eefd9dc4d8d4b6d81437c42ad6e1e6dc3c574a02ec87707a941479e62cda",
+        "checks": [
+          {
+            "id": "interaction-animation/four-route-player-lifecycle",
+            "status": "passed",
+            "durationMs": 5761.941208
+          },
+          {
+            "id": "interaction-animation/geographic-route-seam-current-hit",
+            "status": "passed",
+            "durationMs": 77.07404099999985
+          }
+        ],
+        "runtimeChanged": false,
+        "status": "passed"
+      },
+      {
+        "node": "v24.22.1",
+        "sha256": "3093eefd9dc4d8d4b6d81437c42ad6e1e6dc3c574a02ec87707a941479e62cda",
+        "checks": [
+          {
+            "id": "interaction-animation/four-route-player-lifecycle",
+            "status": "passed",
+            "durationMs": 6864.200541
+          },
+          {
+            "id": "interaction-animation/geographic-route-seam-current-hit",
+            "status": "passed",
+            "durationMs": 87.26279199999954
+          }
+        ],
+        "runtimeChanged": false,
+        "status": "passed"
+      }
+    ]
+  },
+  "expectations": {
+    "graphMethods": [
+      "hierarchical",
+      "force-directed",
+      "density",
+      "edge-path"
+    ],
+    "seekTimesMs": [
+      25,
+      50,
+      75
+    ],
+    "sceneDiff": 0,
+    "interruptedStart": "same frame object",
+    "staleFramePropertyReads": 0,
+    "sourceRevision": 1,
+    "typedEdgeIdentity": "unchanged after source reorder",
+    "selectionHistoryEntries": 1,
+    "datelineHitCounts": {
+      "full": [
+        1,
+        1,
+        0
+      ],
+      "rightClip": [
+        1,
+        0,
+        0
+      ]
+    },
+    "backsideHitCount": 0,
+    "frontHitCount": 1,
+    "interpolationMidpointsRadians": {
+      "source-segment": "pi/4",
+      "great-circle": "atan(sqrt(2))"
+    },
+    "oldNativeMutation": false
+  },
+  "firstFailures": [
+    {
+      "log": "route-session-first.log.gz",
+      "kind": "fixture",
+      "cause": "Accessor command envelope rejected by existing own-data validation before stale test",
+      "resolution": "Data-property frame Proxy measures stale payload reads without changing validation"
+    },
+    {
+      "log": "route-session-final.log.gz",
+      "kind": "fixture",
+      "cause": "Great-circle expectation applied to default source-segment",
+      "resolution": "Explicit interpolation modes each use independent midpoint expectations"
+    },
+    {
+      "logs": [
+        "route-session-installed20.log.gz",
+        "route-session-installed22.log.gz"
+      ],
+      "kind": "qualification harness",
+      "cause": "Canonical fixture top-level optional native Canvas import lacked existing optional-peer setup",
+      "resolution": "Use testOptionalDependencies before importing fixture; same runtime archive passes all three Node versions"
+    }
+  ],
+  "reusedEvidence": {
+    "source": "../edge-presentation-evidence/summary.json",
+    "sourceCoverageTests": 642,
+    "reason": "All six recorded runtime owner hashes unchanged; no source/type/package input changes",
+    "noNewFullCoverage": true,
+    "noNewFullRendererSweep": true,
+    "noNewFullDocumentationSweep": true,
+    "limitations": "Prior initial documentation run was 229/232; repaired owning checks were 31/31. No full green claim."
+  },
+  "hashes": {
+    "scripts/consumers/fixtures/node/interaction-animation.mjs": "746767854bc675cdde6d129c8dac312ebaae7828c8cc38788a2282fc7e33e0ae",
+    "scripts/consumers/fixtures/node/manifest.json": "fba43b06183468aff5ce9f30d8c4b1155886bddf32bc320d5f6ad13a59821934",
+    "test/unit/animation/route-session.test.js": "28a2b935f1bc5218e0e1d2b0bc76dbc4f969379de486752466f0651733f6f973"
+  },
+  "commands": {
+    "source": "node --test test/unit/animation/route-session.test.js",
+    "owning": "node --test test/contracts/package-artifact.test.js test/contracts/test-discovery.test.js test/unit/support/test-sharding.test.js",
+    "installed": "node .artifacts/qualify-route-session.mjs (copy qualify-installed.mjs.txt; retain .artifacts/edge-fixed-archive.json, prepend Node 20/22/24 bin to PATH)"
+  },
+  "remaining": [
+    "Geographic GraphRoute binding is not implemented or inferred from separate GeoLine evidence",
+    "Latest GeoText/guide/timeline shared proof integration remains with parent",
+    "AT82 worker/cache/sizeclass/SLO and combined STEP070/074 qualification remain",
+    "STEP041/062/070/074/077 are not declared complete"
+  ]
+}

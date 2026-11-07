@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { inflateSync } from "node:zlib";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { chart, render } from "ggaction";
@@ -10,6 +9,7 @@ import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 const values = { type: "Feature", id: "region", properties: { name: "District" }, geometry: { type: "Polygon", coordinates: [
   [[20, 20], [180, 20], [180, 160], [20, 160], [20, 20]], [[60, 60], [60, 100], [100, 100], [100, 60], [60, 60]]
 ] } };
@@ -49,7 +49,7 @@ export const cases = [
     const script = `import {readFileSync} from 'node:fs';import {deserializeProgram,serializeProgram} from 'ggaction/persistence';
       globalThis.fetch=()=>{throw new Error('Unexpected network');};
       const p=deserializeProgram(readFileSync(0,'utf8'));process.stdout.write(serializeProgram(p.editProjection({translatePx:[10,20]}).editGeoShapeMark({fill:'orange'})));`;
-    const q = deserializeProgram(execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: before, encoding: "utf8", timeout: 30000 }));
+    const q = deserializeProgram(execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: before, encoding: "utf8", timeout: 30000 }));
     assert.equal(getMarkItems(q, { target: "geo-shape" })[0].key, key);
     assert.deepEqual(q.semanticSpec.coordinates[0].projection, { kind: "projection", id: "map", revision: 1 });
     assert.deepEqual(q.graphicSpec.objects["geo-shape"].items[0].properties.commands[0], { op: "M", x: 30, y: 40 });

@@ -1,0 +1,5 @@
+import fs from 'node:fs';import {spawnSync} from 'node:child_process';
+const tests=fs.readdirSync('test/unit').filter(file=>file.startsWith('interaction-')&&file.endsWith('.test.js')).map(file=>'test/unit/'+file);
+tests.push(...fs.readdirSync('test/unit/animation').filter(file=>file.endsWith('.test.js')).map(file=>'test/unit/animation/'+file));
+const owners=['interaction/session.js','interaction/keyboardFocus.js','interaction/edgePresentation.js','materialization/graph/presentationReader.js','animation/nativeGraphPresentation.js','animation/frameProvenance.js'];
+const result=spawnSync(process.execPath,['--test-concurrency=2','--experimental-test-coverage',...owners.map(file=>'--test-coverage-include=src/'+file),'--test',...tests],{stdio:'inherit'});process.exitCode=result.status??1;

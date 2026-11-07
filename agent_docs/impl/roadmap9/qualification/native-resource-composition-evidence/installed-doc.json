@@ -1,0 +1,11 @@
+[
+  {
+    "name": "recipes-composition--resource-analytical-comparison",
+    "id": "resource-analytical-comparison",
+    "file": "recipes/composition.md",
+    "sha256": "94b21338c5cfd35a3133f1e9151ab6888deb3ff0895f03efd3fd1a76a5fd5103",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 767.6521249999996
+  }
+]

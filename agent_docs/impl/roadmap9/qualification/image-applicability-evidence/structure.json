@@ -1,0 +1,134 @@
+{
+  "status": "applicability-aligned",
+  "baseRevision": "6627fb246aec9b88a6d6998e3930a9543301620c",
+  "approval": {
+    "revision": "990315b7",
+    "record": "agent_docs/impl/roadmap9/PUBLIC_APPROVALS_20261028.json",
+    "scope": "I1-I4 image-owned field/scale/axis-legend binding only"
+  },
+  "scope": {
+    "requirements": 30,
+    "groups": 79,
+    "consumerTargets": 577,
+    "requiredConsumerCells": 574,
+    "notApplicable": [
+      "image/encodings",
+      "image/scales",
+      "image/guides"
+    ]
+  },
+  "qualification": {
+    "status": "pending",
+    "candidate": null,
+    "groups": {
+      "total": 79,
+      "passed": 0,
+      "failed": 0,
+      "pending": 79,
+      "notApplicable": 0
+    },
+    "consumers": {
+      "total": 577,
+      "passed": 0,
+      "failed": 0,
+      "pending": 577,
+      "notApplicable": 0
+    }
+  },
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js contracts contracts/native-capability-completion.test.js",
+      "exitCode": 0,
+      "passed": 18,
+      "failed": 0,
+      "durationMs": 5488.459625,
+      "log": {
+        "path": "agent_docs/impl/roadmap9/qualification/image-applicability-evidence/structure.log.gz",
+        "sha256": "7cf9307158d9cd84a78415cc97c7ee3b303bc0c86d6500cf7e890962ff41383e"
+      }
+    },
+    {
+      "command": "node scripts/run-tests.js unit unit/resources/image-resource-lifecycle.test.js",
+      "exitCode": 0,
+      "passed": 15,
+      "failed": 0,
+      "durationMs": 672.606375,
+      "log": {
+        "path": "agent_docs/impl/roadmap9/qualification/image-applicability-evidence/image-lifecycle.log.gz",
+        "sha256": "8da7c34a889c30864508e071defb4a214102d52e16180fa2ce70073098b11f24"
+      }
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/action-catalog.test.js contracts/documentation-truth.test.js",
+      "exitCode": 0,
+      "passed": 14,
+      "failed": 0,
+      "durationMs": 1928.357167,
+      "log": {
+        "path": "agent_docs/impl/roadmap9/qualification/image-applicability-evidence/contracts.log.gz",
+        "sha256": "21f184e6862ec1defc6d2019095b529f995665b1ff2372b9581a25b23fd88dfc"
+      }
+    }
+  ],
+  "sourceInputs": [
+    {
+      "path": "test/native-capabilities.json",
+      "sha256": "7ff39adba572b5b8c96fa1f055240cdf5f95fefa9217efa812fcdcf1d1922253"
+    },
+    {
+      "path": "test/contracts/native-capability-completion.test.js",
+      "sha256": "dd714587678af8dd8a2a74f0d853767d834b0e43b127d317026934561d078835"
+    },
+    {
+      "path": "scripts/native-capability-completion.js",
+      "sha256": "d375623241da3de4fdb6aa8e95752e6f53ba9ef973dec96ae0977116c2decf51"
+    },
+    {
+      "path": "agent_docs/contract/current/MARKS.md",
+      "sha256": "019170603663a858559c33287ec67ff3b8b87577ef87b82a1aaf089c92401f0d"
+    },
+    {
+      "path": "src/materialization/imageState.js",
+      "sha256": "c0d29b8334108fd362ca50c3fb9449b17d239f24fa5b3d3868bf7c749d796eed"
+    },
+    {
+      "path": "src/actions/marks/image/index.js",
+      "sha256": "a7aad029e8916aa3d692302e828f9371d9d99c30b4ec34b523cea503a247a0a8"
+    },
+    {
+      "path": "src/grammar/imageMark.js",
+      "sha256": "1da1f1def1f895f0492dcc06ddc8b564c44e6bc7fca0ce871913c9029e844d39"
+    },
+    {
+      "path": "test/unit/resources/image-resource-lifecycle.test.js",
+      "sha256": "c6174180448b807269117db806575f680f23ac2891dde505eccd2a473dccad4a"
+    },
+    {
+      "path": "test/contracts/action-catalog.test.js",
+      "sha256": "a8fa198563d688473f5f5dfc738b92d8b01ef862f4b2d44708168f100bb5d930"
+    },
+    {
+      "path": "test/contracts/documentation-truth.test.js",
+      "sha256": "40860ab3d771b3c42f0468ed98c6e286c3435b51fa201fc7c691987b07d10891"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/PUBLIC_APPROVALS_20261028.json",
+      "sha256": "47d5fb6ad4e6f989ed10721b28ddbe305c5300af4dc6ae2ecff696fd22d1e143"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase4/images/PUBLIC_DESIGN.md",
+      "sha256": "5a2d39ac8fb4be8af6fc010b357b2feebacafc7516cdc996daca95f8b1d4b869"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase4/images/PUBLIC_IMPLEMENTATION.md",
+      "sha256": "4ad15b42f0f5e5d67dd9c6d3fad0f3c8024685698a50fbd72888ecf3ff432e21"
+    }
+  ],
+  "notes": [
+    "Only image applicability changed; restoring its prior requiredConsumers/notApplicable makes the manifest exactly equal to the base.",
+    "Other 29 rows, image16 required cells, interaction7, owners and acceptance groups are unchanged.",
+    "These are focused structure/lifecycle checks, not final candidate qualification or AT60.",
+    "No candidate result was created. Canonical N/A does not count as passed or automatically close a result.",
+    "Historical Geo8 and plot85 evidence blobs retain their original classification and hashes."
+  ]
+}

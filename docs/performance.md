@@ -64,13 +64,60 @@ same measurement unless the product question is end-to-end latency.
 ## Generated-work limits
 
 Many expansion operations cap generated items at 10,000 per operation. This
-applies to grid values, symbols, and aggregate layout cells. Paths have a separate
-30,000-command bound, counting interpolation expansion and area closure;
-it is not a universal source-row limit. Work-intensive calculations such as
+applies to grid values, symbols, aggregate layout cells and each concrete mark
+collection. Point layers default to 50,000 items and accept `maxItems` up to
+100,000; graph plots accept `maxItems` up to 100,000. Because the limits apply
+to final graphic items, aggregate before drawing bars, rects or text for very
+large tables. Paths have a separate 30,000-command bound, counting interpolation
+expansion and area closure; it is not a universal source-row limit. Geo shape,
+point, line and graticule marks can raise their own projected-point and
+path-command budgets up to 200,000 with `capacity`; see
+[Projected output limits](./api/geometry.md#projected-output-limits). Work-intensive calculations such as
 label collision planning also have a 10,000,000-work-item budget. The shared
 validator reports `resource-limit` with the named quantity, `limit`, and
 `actual` through `getErrorDetails` from `ggaction/diagnostics`. Reduce the
 expansion (for example, fewer bins or labels) while preserving chart meaning.
+
+## Keep large updates responsive
+
+`reviseDataInSlices` (from `ggaction`) and `loadProgramInSlices` (from
+`ggaction/persistence`) return the same result as `reviseData` and
+`deserializeProgram` but yield to the host between slices. They do not reduce
+total work: a 100,000-row revision still takes about two seconds. A slice ends
+at the first 1,024-row batch boundary after `sliceMs`, so a pause can exceed
+`sliceMs` by one batch plus any garbage-collection pause. For interactive pages,
+prefer `sliceMs` of 10–20 over the default 40. Prepare graph edge routes and
+inferred graphs in a worker through [`ggaction/graph`](./api/edge-routes.md#prepare-in-a-worker).
+
+## Geographic camera cost
+
+Camera frames reproject every source vertex; no vertex is dropped or simplified.
+In the release benchmark (Chromium, one line with the given number of vertices,
+P95 per sampled camera frame) 1,000 vertices take about 2 ms, 10,000 about
+13 ms and 100,000 about 145 ms, roughly three times a 50 ms interactive budget.
+Hit queries on the same 100,000-vertex path stay near 3 ms. Native pan and zoom
+previews also re-run the projection edit, so very large sources respond slowly
+to drags. For smooth navigation, simplify with `createGeoLODData` level
+`tolerance`, or show a coarser level while zoomed out.
+
+## Known limits
+
+This release records these measured limits (Chromium, P95 of 30 runs, device
+pixel ratio 1 / 2):
+
+- **100,000 data rows.** The longest host pause of `loadProgramInSlices` is about
+  55 / 58 ms and of `reviseDataInSlices` about 112 / 78 ms against a 50 ms target,
+  because of browser garbage collection. 1,000 and 10,000 rows stay under about
+  25 ms.
+- **100,000-vertex geographic camera preview.** About 145 / 148 ms per frame
+  against a 50 ms target; see [Geographic camera cost](#geographic-camera-cost).
+- **Edge bundling.** Density bundling takes about 4.5 seconds at 100 edges and
+  exceeds the 30-second deadline at 1,000; force-directed bundling takes about
+  2.5 seconds at 1,000 edges with an explicit work budget and exceeds the deadline
+  at 10,000. Cancellation can take longer than 100 ms for density bundling at 100
+  edges (about 125 ms), force-directed bundling at 1,000 edges (up to about
+  105 ms) and any method at 10,000 edges (several hundred milliseconds). See
+  [Edge routes](./api/edge-routes.md#known-performance-limits).
 
 ## Allocation limits
 

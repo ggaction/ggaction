@@ -1,4 +1,4 @@
-import { applyMaterializationPlan, planLayersDataRematerialization } from "../../materialization/dependencies.js";
+import { applyMaterializationPlanStages, planLayersDataRematerialization } from "../../materialization/dependencies.js";
 import { orderConditionalMarkIds } from "../../materialization/conditionalState.js";
 // Full assembly supplies the domain action that revises data-backed resources.
 // Basic has no extended resource kinds and imports no hierarchy algorithms.
@@ -11,13 +11,14 @@ export function registerDataResourceRevision(ProgramClass, handler) {
   if (handlers.has(ProgramClass)) throw new Error("Data resource revision is already registered.");
   ownRecord(handler, "Data resource revision handler");
   ownArray(handler.kinds, "Data resource revision kinds");
-  if (Object.keys(handler).some(key => !["kinds", "revise", "reviseSource", "project"].includes(key)) || typeof handler.revise !== "function" ||
+  if (Object.keys(handler).some(key => !["kinds", "revise", "reviseSourceStages", "project"].includes(key)) || typeof handler.revise !== "function" ||
       (Object.hasOwn(handler, "project") && typeof handler.project !== "function") ||
-      (Object.hasOwn(handler, "reviseSource") && typeof handler.reviseSource !== "function") || handler.kinds.length === 0 ||
+      (Object.hasOwn(handler, "reviseSourceStages") && typeof handler.reviseSourceStages !== "function") || handler.kinds.length === 0 ||
       handler.kinds.some(kind => !STORED_RESOURCE_KINDS.includes(kind)) || new Set(handler.kinds).size !== handler.kinds.length) {
     throw new TypeError("Data resource revision requires unique stored kinds and one revise function.");
   }
-  handlers.set(ProgramClass, Object.freeze({ kinds: Object.freeze([...handler.kinds]), revise: handler.revise, reviseSource: handler.reviseSource, project: handler.project }));
+  handlers.set(ProgramClass, Object.freeze({ kinds: Object.freeze([...handler.kinds]), revise: handler.revise,
+    reviseSourceStages: handler.reviseSourceStages, project: handler.project }));
 }
 export function reviseDataResources(program, replacements) {
   return handlers.get(program.constructor)?.revise(program, replacements) ?? program;
@@ -29,10 +30,11 @@ export function projectDataResources(program, replacements) {
   return (handler?.project ?? handler?.revise)?.(program, replacements) ?? program;
 }
 
-export function reviseSourceDataResources(program, replacements, marks) {
+// The staged source revision is the synchronous one with yields between rows.
+export function* reviseSourceDataResourcesStages(program, replacements, marks) {
   const handler = handlers.get(program.constructor);
-  if (handler?.reviseSource !== undefined) return handler.reviseSource(program, replacements, marks);
-  return marks.length === 0 ? program : applyMaterializationPlan(program,
+  if (handler?.reviseSourceStages !== undefined) return yield* handler.reviseSourceStages(program, replacements, marks);
+  return marks.length === 0 ? program : yield* applyMaterializationPlanStages(program,
     planLayersDataRematerialization(program, orderConditionalMarkIds(program, marks)));
 }
 

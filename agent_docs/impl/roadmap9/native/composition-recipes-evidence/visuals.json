@@ -1,0 +1,26 @@
+[
+  {
+    "version": 1,
+    "capability": "composition-recipes",
+    "chart": "bullet",
+    "variant": "actual-target",
+    "title": "Reference ranges, actual measure and target",
+    "userFacingCallChain": "chart().createCanvas(canvas)\n    .createData({id:\"reference\",values:ranges,keyField:\"id\"})\n    .createRectMark({id:\"ranges\",data:\"reference\",stroke:false})\n    .encodeXRange({lower:\"lower\",upper:\"upper\",scale:amountScale})\n    .encodeColor(color)\n    .createData({id:\"observed\",values:observations,keyField:\"id\"})\n    .createBarMark({id:\"measure\",data:\"observed\",fill:\"#2563eb\",stroke:false})\n    .encodeY(position).encodeX({field:\"actual\",aggregate:\"sum\",scale:{id:\"amount\"}})\n    .encodeBarWidth({band:0.35})\n    .createRuleMark({id:\"target\",data:\"observed\",stroke:\"#0f172a\",strokeWidth:3})\n    .encodeX({field:\"target\",fieldType:\"quantitative\",scale:{id:\"amount\"}})\n    .createMarkLabels({id:\"measure-label\",source:\"measure\",content:\"value\",fill:\"#ffffff\",placement:{anchor:\"center\"}})\n    .createTitle({text:\"Revenue: actual and target\",titleStyle:{fontSize:14}});",
+    "files": {
+      "primitive.png": "874684320d9c6841408fe170e274a05bdbdfd67426e9cf87be198713216950a9",
+      "user-facing.png": "874684320d9c6841408fe170e274a05bdbdfd67426e9cf87be198713216950a9"
+    }
+  },
+  {
+    "version": 1,
+    "capability": "composition-recipes",
+    "chart": "marginal",
+    "variant": "linked-bins",
+    "title": "Observations with aligned marginal distributions",
+    "userFacingCallChain": "vconcat({ id: \"marginal\", programs: [{ id: \"x\", program: x }, { id: \"lower\", program: lower }], gap: 0, align: \"start\" });",
+    "files": {
+      "primitive.png": "bd7e50594ebd9f3916fbc3a9c27f81bb18dc6187127acfa5732c9b6e5b9f17e4",
+      "user-facing.png": "bd7e50594ebd9f3916fbc3a9c27f81bb18dc6187127acfa5732c9b6e5b9f17e4"
+    }
+  }
+]

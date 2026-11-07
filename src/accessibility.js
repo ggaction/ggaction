@@ -1,4 +1,7 @@
+import { trailSeries } from "./materialization/trail/plot.js";
 import { ChartProgram } from "./core/ChartProgram.js";
+import { ownRecord } from "./core/ownData.js";
+import { accessibleItemViews } from "./accessibilityItems.js";
 import { cloneAndFreeze } from "./core/immutable.js";
 import { validateOptionObject } from "./core/validation.js";
 import { validateUserId } from "./core/identifiers.js";
@@ -28,7 +31,8 @@ function pathRows(program, layer) {
     }));
   }
   let derived;
-  if (layer.mark.type === "line") {
+  if (layer.mark.type === "trail") derived = trailSeries(program, layer, dataset, program.resolvedScales);
+  else if (layer.mark.type === "line") {
     const x = layer.encoding.x;
     derived = deriveLineSeries(rows, layer, {
       scales: program.semanticSpec.scales,
@@ -80,14 +84,14 @@ function finalRows(program, layer) {
         values: { ...channelMapFromRow(point.fields, layer), x: point.channels.x, y: point.channels.y }
       })));
   }
-  if (["ohlc", "pyramid", "waterfall"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({ series: {}, values: item.channels }));
+  if (["table", "ohlc", "pyramid", "waterfall"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({ series: {}, values: item.channels }));
   if (["flow-node", "flow-link", "contour", "calendar", "geo"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({
     series: {}, values: item.fields
   }));
   if (["tree", "treemap", "partition"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({
     series: {}, values: { key: item.key, value: item.fields.value, depth: item.fields.depth, children: item.fields.children, ...(item.visible === undefined ? {} : { visible: item.visible, name: item.fields.name, parent: item.navigation.parent, firstChild: item.navigation.firstChild }) }
   }));
-  if (["line", "area"].includes(layer.mark.type)) return pathRows(program, layer);
+  if (["line", "area", "trail"].includes(layer.mark.type)) return pathRows(program, layer);
   if (!["point", "bar", "arc", "rule", "tick", "rect"].includes(layer.mark.type)) {
     unsupported(layer.id, `unsupported ${layer.mark.type} owner`);
   }
@@ -103,7 +107,7 @@ function finalRows(program, layer) {
 
 function column(layer, key) {
   const dimension = layer.encoding?.parallel?.dimensions.find(item => item.field === key);
-  const encoding = (layer.waterfall && key === "category" ? layer.encoding.x : layer.waterfall && ["value", "start", "end", "runningBefore", "runningAfter"].includes(key) ? layer.encoding.y : layer.waterfall && key === "role" ? { field: layer.waterfall.role } : undefined) ?? (layer.ohlc && ["open", "close"].includes(key) ? { field: layer.ohlc[key] } : layer.ohlc && ["low", "high"].includes(key) ? layer.encoding[key === "low" ? "y" : "y2"] : undefined) ?? (layer.pyramid && ["stage", "value"].includes(key) ? { field: layer.pyramid[key] } : undefined) ?? dimension ?? layer.encoding?.[key] ?? layer.encoding?.[key.replace(/2$/, "")];
+  const encoding = (layer.trail && key === "width" ? { field: layer.trail.width.field ?? "width" } : layer.trail && ["x", "y"].includes(key) ? layer.encoding[key] ?? layer.encoding[key === "x" ? "theta" : "radius"] : undefined) ?? (layer.waterfall && key === "category" ? layer.encoding.x : layer.waterfall && ["value", "start", "end", "runningBefore", "runningAfter"].includes(key) ? layer.encoding.y : layer.waterfall && key === "role" ? { field: layer.waterfall.role } : undefined) ?? (layer.ohlc && ["open", "close"].includes(key) ? { field: layer.ohlc[key] } : layer.ohlc && ["low", "high"].includes(key) ? layer.encoding[key === "low" ? "y" : "y2"] : undefined) ?? (layer.pyramid && ["stage", "value"].includes(key) ? { field: layer.pyramid[key] } : undefined) ?? dimension ?? layer.encoding?.[key] ?? layer.encoding?.[key.replace(/2$/, "")];
   const temporal = encoding?.fieldType === "temporal";
   return {
     key,
@@ -173,9 +177,14 @@ function alternative(program, target) {
 }
 
 export function exportAccessibleData(program, options = {}) {
-  validateOptionObject(options, ["target"], "exportAccessibleData");
+  ownRecord(options, "exportAccessibleData options");
+  validateOptionObject(options, ["target", "format"], "exportAccessibleData");
+  options = Object.assign(Object.create(null), options);
+  if (options.format !== undefined && options.format !== "table" && options.format !== "items") throw new TypeError("Accessible data format must be table or items.");
   if (!(program instanceof ChartProgram)) throw new TypeError("exportAccessibleData requires an editable chart program.");
   if (program.actionStack.length !== 0) throw new Error("exportAccessibleData requires a closed action stack.");
   if (options.target !== undefined) validateUserId(options.target, "Accessible data target");
-  return cloneAndFreeze({ schemaVersion: 1, ...alternative(program, options.target) });
+  return cloneAndFreeze(options.format === "items"
+    ? { schemaVersion: 1, format: "items", ...accessibleItemViews(program, options.target) }
+    : { schemaVersion: 1, ...alternative(program, options.target) });
 }

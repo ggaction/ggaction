@@ -1,6 +1,7 @@
 import { annotateError } from "./diagnostics.js";
-import { cloneAndFreeze, isPlainObject } from "./immutable.js";
+import { cloneAndFreeze, cloneAndFreezeStages, isPlainObject } from "./immutable.js";
 import { validateDataRows, validateWorkLimit } from "./validation.js";
+import { drainStages, STAGE_ROWS } from "./stages.js";
 
 const TYPES = ["boolean", "number", "bigint", "string", "date"];
 const MAX_COMPONENTS = 64;
@@ -13,6 +14,9 @@ function invalid(path, message, code = "invalid-value") {
 }
 
 function dense(array, path, length) {
+  return drainStages(denseStages(array, path, length));
+}
+function* denseStages(array, path, length) {
   if (!Array.isArray(array) || (length !== undefined && array.length !== length) ||
       Reflect.ownKeys(array).length !== array.length + 1) {
     throw invalid(path, `${path} requires a dense array of the expected length.`);
@@ -21,6 +25,7 @@ function dense(array, path, length) {
     if (!Object.hasOwn(Object.getOwnPropertyDescriptor(array, String(i)) ?? {}, "value")) {
       throw invalid(path, `${path} cannot contain holes or accessors.`);
     }
+    if ((i + 1) % STAGE_ROWS === 0) yield;
   }
   return array;
 }
@@ -95,6 +100,34 @@ function unique(keys) {
   if (new Set(keys).size !== keys.length) throw invalid("keys", "Duplicate row identity.", "ambiguous-identity");
   return keys;
 }
+function* uniqueStages(keys) {
+  const seen = new Set();
+  for (let i = 0; i < keys.length; i++) {
+    seen.add(keys[i]);
+    if ((i + 1) % STAGE_ROWS === 0) yield;
+  }
+  if (seen.size !== keys.length) throw invalid("keys", "Duplicate row identity.", "ambiguous-identity");
+  return keys;
+}
+// keyedRows with yields between rows: explicit keys or field tokens.
+function* keyedRowStages(values, spec, keys) {
+  if (spec.mode === "explicit") return yield* uniqueStages((yield* denseStages(keys, "keys", values.length)).map(key => encodeRowKey(key)));
+  return yield* keyedFieldRowStages(values, spec);
+}
+
+// The field and fields key tokens of keyedRows, with the same sparse rows.
+function* keyedFieldRowStages(values, spec) {
+  validateWorkLimit(values.length * (spec.mode === "fields" ? spec.fields.length : 1), "Row key work");
+  const keys = new Array(values.length);
+  for (let i = 0; i < values.length; i++) {
+    if (i in values) {
+      const row = values[i];
+      keys[i] = encodeRowKey(spec.mode === "field" ? fieldValue(row, spec.field) : spec.fields.map(field => fieldValue(row, field)));
+    }
+    if ((i + 1) % STAGE_ROWS === 0) yield;
+  }
+  return yield* uniqueStages(keys);
+}
 
 function keyedRows(values, spec, keys) {
   if (spec.mode === "explicit") return unique(dense(keys, "keys", values.length).map(key => encodeRowKey(key)));
@@ -138,18 +171,26 @@ export function allocateRowKeys(previous, nextGeneratedKey, rowMap, allocationId
 }
 
 // UUID allocation belongs to the calling action; these calculations are pure.
-export function createSourceIdentity(values, options, { logicalId, allocationId }) {
+export function createSourceIdentity(values, options, namespaces) {
+  return drainStages(createSourceIdentityStages(values, options, namespaces));
+}
+
+export function* createSourceIdentityStages(values, options, { logicalId, allocationId }) {
   validateDataRows(values);
   namespace(logicalId, "logicalId");
   namespace(allocationId, "allocationId");
   const spec = keySpec(options);
   const rows = spec.mode === "generated"
     ? allocateRowKeys([], 0, Array(values.length).fill(null), allocationId)
-    : { rowKeys: keyedRows(values, spec, options.keys), nextGeneratedKey: 0 };
-  return cloneAndFreeze({ logicalId, revision: 0, allocationId, keySpec: spec, ...rows });
+    : { rowKeys: yield* keyedRowStages(values, spec, options.keys), nextGeneratedKey: 0 };
+  return yield* cloneAndFreezeStages({ logicalId, revision: 0, allocationId, keySpec: spec, ...rows });
 }
 
 export function reviseSourceIdentity(source, values, options, allocationId) {
+  return drainStages(reviseSourceIdentityStages(source, values, options, allocationId));
+}
+
+export function* reviseSourceIdentityStages(source, values, options, allocationId) {
   validateDataRows(values);
   namespace(allocationId, "allocationId");
   counter(source.revision, "revision");
@@ -165,11 +206,39 @@ export function reviseSourceIdentity(source, values, options, allocationId) {
   const rows = spec.mode === "generated"
     ? allocateRowKeys(source.rowKeys, source.nextGeneratedKey,
       options.rowMap === undefined ? Array(values.length).fill(null) : dense(options.rowMap, "rowMap", values.length), allocationId)
-    : { rowKeys: keyedRows(values, spec, options.keys), nextGeneratedKey: 0 };
-  return cloneAndFreeze({ logicalId: source.logicalId, revision: source.revision + 1, allocationId, keySpec: spec, ...rows });
+    : { rowKeys: yield* keyedRowStages(values, spec, options.keys), nextGeneratedKey: 0 };
+  return yield* cloneAndFreezeStages({ logicalId: source.logicalId, revision: source.revision + 1, allocationId, keySpec: spec, ...rows });
+}
+
+// Canonical typed tokens are shared by source rows and keyed compound columns.
+export function validateTypedRowKeyToken(key) {
+  let decoded;
+  try { decoded = JSON.parse(key); } catch { throw invalid("rowKeys", "Invalid typed row key token."); }
+  return validateDecodedTypedRowKeyToken(key, decoded);
+}
+
+function validateDecodedTypedRowKeyToken(key, decoded) {
+  if (!Array.isArray(decoded) || decoded.length !== 2 || !["scalar", "tuple"].includes(decoded[0]) || !Array.isArray(decoded[1])) {
+    throw invalid("rowKeys", "Invalid typed row key token.");
+  }
+  let parts;
+  try {
+    parts = decoded[1].map(([type, value]) => {
+      const raw = type === "bigint" ? BigInt(value) : type === "date" ? new Date(value) : value;
+      if (JSON.stringify(scalar(raw, "rowKeys")) !== JSON.stringify([type, value])) throw invalid("rowKeys", "Invalid typed row key token.");
+      return raw;
+    });
+    if (decoded[0] === "scalar" && parts.length !== 1) throw invalid("rowKeys", "Invalid scalar row key token.");
+    if (encodeRowKey(decoded[0] === "scalar" ? parts[0] : parts) !== key) throw invalid("rowKeys", "Noncanonical row key token.");
+  } catch { throw invalid("rowKeys", "Invalid typed row key token."); }
+  return key;
 }
 
 export function validateSourceIdentity(dataset) {
+  return drainStages(validateSourceIdentityStages(dataset));
+}
+
+export function* validateSourceIdentityStages(dataset) {
   const { logicalId, revision, allocationId, keySpec: spec, rowKeys, nextGeneratedKey, values } = dataset;
   namespace(logicalId, "logicalId");
   namespace(allocationId, "allocationId");
@@ -183,9 +252,11 @@ export function validateSourceIdentity(dataset) {
       Object.entries(normalized).some(([key, value]) => JSON.stringify(spec[key]) !== JSON.stringify(value))) {
     throw invalid("keySpec", "Invalid key specification.");
   }
-  dense(rowKeys, "rowKeys", values.length);
-  unique(rowKeys);
+  yield* denseStages(rowKeys, "rowKeys", values.length);
+  yield* uniqueStages(rowKeys);
+  let rows = 0;
   for (const key of rowKeys) {
+    if (++rows % STAGE_ROWS === 0) yield;
     let decoded;
     try { decoded = JSON.parse(key); } catch { throw invalid("rowKeys", "Invalid row key token."); }
     if (spec.mode === "generated") {
@@ -195,24 +266,14 @@ export function validateSourceIdentity(dataset) {
         throw invalid("rowKeys", "Invalid generated row key token.");
       }
     } else {
-      if (!Array.isArray(decoded) || decoded.length !== 2 || !["scalar", "tuple"].includes(decoded[0]) || !Array.isArray(decoded[1])) {
-        throw invalid("rowKeys", "Invalid typed row key token.");
-      }
-      let parts;
-      try {
-        parts = decoded[1].map(([type, value]) => {
-          const raw = type === "bigint" ? BigInt(value) : type === "date" ? new Date(value) : value;
-          if (JSON.stringify(scalar(raw, "rowKeys")) !== JSON.stringify([type, value])) throw invalid("rowKeys", "Invalid typed row key token.");
-          return raw;
-        });
-        if (decoded[0] === "scalar" && parts.length !== 1) throw invalid("rowKeys", "Invalid scalar row key token.");
-        if (encodeRowKey(decoded[0] === "scalar" ? parts[0] : parts) !== key) throw invalid("rowKeys", "Noncanonical row key token.");
-      } catch { throw invalid("rowKeys", "Invalid typed row key token."); }
+      // Only strings have no observable coercion to repeat at the public boundary.
+      if (typeof key === "string") validateDecodedTypedRowKeyToken(key, decoded);
+      else validateTypedRowKeyToken(key);
     }
   }
   if (spec.mode !== "generated" && nextGeneratedKey !== 0) throw invalid("nextGeneratedKey", "Keyed sources have no generated counter.");
   if (["field", "fields"].includes(spec.mode)) {
-    const expected = keyedRows(values, spec);
+    const expected = yield* keyedFieldRowStages(values, spec);
     if (expected.some((key, index) => key !== rowKeys[index])) throw invalid("rowKeys", "Stored keys disagree with source fields.");
   }
   return dataset;

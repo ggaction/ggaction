@@ -1,20 +1,18 @@
+import { inferenceDefinitionPolicy as definitionPolicy } from "../../grammar/graph/inferenceDefinition.js";
+import { cloneAndFreeze } from "../../core/immutable.js";
+import { inferenceWorkValidator, validateInferenceBytes } from "../../grammar/graph/inferenceBudget.js";
 import { resolveGraphCandidateModel } from "./candidate.js";
 import { canonicalJSON } from "../../core/contentDigest.js";
 import { encodeValue } from "../../core/valueEncoding.js";
 import { encodeRowKey, compareRowKeys } from "../../core/itemIdentity.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
-import { validateUserId } from "../../core/identifiers.js";
-import { validateWorkLimit } from "../../core/validation.js";
 import { deriveSortedRows, normalizeSortTransform } from "../../grammar/sort.js";
 import { normalizeTemporalValue } from "../../grammar/scales/fields.js";
 import { stableFiniteSum } from "../../grammar/numeric.js";
 import { groupingIdentity } from "../../grammar/rowLineage.js";
-import { indexGraphModel } from "../../grammar/graph/model.js";
-import { normalizeGraphSourceOptions, INFERRED_GRAPH_FIELDS } from "../../grammar/graph/input.js";
-import { graphSourceRows, graphSourceKey, graphAttributes, graphFeatureFields, graphFeatureVector, graphFields, graphKeyField } from "../../grammar/graph/fields.js";
-import { normalizeGraphNeighborOptions } from "../../grammar/graph/neighbors.js";
-import { normalizeGraphStructuralOptions, resolveGraphGroupHubs } from "../../grammar/graph/structural.js";
-import { normalizeGraphSpanningOptions } from "../../grammar/graph/spanning.js";
+import { validateCompletedInferenceModel } from "../../grammar/graph/inferenceJob.js";
+import { graphSourceRows, graphSourceKey, graphAttributes, graphFeatureVector } from "../../grammar/graph/fields.js";
+import { resolveGraphGroupHubs } from "../../grammar/graph/structural.js";
 import { prepareGraphMetricVectors } from "../../grammar/graph/preprocess.js";
 import { normalizeGraphSearch } from "../../grammar/graph/search.js";
 import { inferredGraphEdgeIdentity } from "../../grammar/graph/edgeIdentity.js";
@@ -23,6 +21,7 @@ import { resolveInputReference } from "../../selectors/resources.js";
 import { graphRowReferences } from "./resources.js";
 
 const same = (a, b) => canonicalJSON(encodeValue(a)) === canonicalJSON(encodeValue(b));
+const preparedStoredResources = new WeakSet();
 function exact(value, fields, label) {
   ownRecord(value, label);
   if (Object.keys(value).length !== fields.length || fields.some(field => !Object.hasOwn(value, field))) throw new TypeError(`${label} requires its exact stored fields.`);
@@ -32,7 +31,8 @@ function equal(actual, expected, label) {
 }
 const select = (object, names) => Object.fromEntries(names.filter(key => Object.hasOwn(object, key)).map(key => [key, object[key]]));
 
-function validateSearch(search, policy, preparation, options, keys, pairCount) {
+function validateSearch(search, policy, preparation, options, keys, pairCount, execution) {
+  const validateWorkLimit = inferenceWorkValidator(execution);
   const approximate = policy.mode === "approximate", indexed = policy.algorithm !== "brute-force";
   exact(search, [...Object.keys(policy), "algorithmVersion", "distanceEvaluations", ...(indexed ? ["work"] : []),
     ...(approximate ? ["candidateCount", "candidateCounts", "fallbackQueries", "holdoutCount", "holdoutSourceIndices", "measuredRecall"] : [])], "Graph search diagnostics");
@@ -66,43 +66,9 @@ function validateSearch(search, policy, preparation, options, keys, pairCount) {
       (k === 0 ? recall !== 1 : Math.abs(recalled - Math.round(recalled)) > Number.EPSILON * denominator * 4)) throw new TypeError("Graph search recall is inconsistent with its qualification policy.");
 }
 
-function definitionPolicy(definition, candidate) {
-  const normalized = normalizeGraphSourceOptions(definition, INFERRED_GRAPH_FIELDS);
-  validateUserId(normalized.ruleId, "Graph ruleId");
-  if (!["knn", "radius", "similarity", "mst", "group", "sequence"].includes(normalized.rule)) throw new TypeError("Unsupported graph inference rule.");
-  ownRecord(normalized.options, "Graph inference options");
-  if (Object.values(normalized.options).some(value => value === undefined)) throw new TypeError("Graph inference options cannot contain undefined.");
-  for (const field of ["ruleId", "rule", "metric", "features", "preprocess"]) if (Object.hasOwn(normalized.options, field)) throw new TypeError("Graph inference source fields must belong to the definition.");
-  const structural = ["group", "sequence"].includes(normalized.rule), metric = !candidate && !structural;
-  if (candidate && normalized.rule !== "mst") throw new TypeError("Graph candidates require MST inference.");
-  for (const field of ["features", "metric", "preprocess"]) if (!metric && Object.hasOwn(normalized, field)) throw new TypeError("This graph rule does not use metric features.");
-  let options, preparation;
-  if (metric) {
-    normalized.features = graphFeatureFields(normalized.features, normalized.metric);
-    preparation = prepareGraphMetricVectors([], { ...select(normalized, ["metric", "preprocess"]), ...select(normalized.options, ["missing", "zeroVector"]) });
-  }
-  if (structural) {
-    const sequence = normalized.rule === "sequence";
-    const fields = sequence ? ["groupBy", "orderField"] : ["fields"];
-    if (sequence) {
-      graphFields(normalized.options.groupBy ?? [], "Graph sequence groups", { empty: true });
-      if (Array.isArray(graphKeyField(normalized.options.orderField, "Graph sequence orderField"))) throw new TypeError("Graph sequence orderField requires one field.");
-      normalizeSortTransform({ sortBy: [{ field: "value", ...select(normalized.options, ["temporalUnit"]) }] });
-    } else graphFields(normalized.options.fields, "Graph group fields");
-    options = normalizeGraphStructuralOptions({ ...Object.fromEntries(Object.entries(normalized.options).filter(([key]) => !fields.includes(key))), ruleId: normalized.ruleId }, sequence);
-  } else if (normalized.rule === "mst") {
-    const policy = normalizeGraphSpanningOptions({ ...normalized.options, ruleId: normalized.ruleId,
-      ...(metric ? select(normalized, ["metric", "preprocess"]) : {}) }, metric);
-    options = { ruleId: policy.ruleId, forest: policy.forest };
-  } else {
-    options = normalizeGraphNeighborOptions({ ...normalized.options, ruleId: normalized.ruleId, rule: normalized.rule, ...select(normalized, ["metric", "preprocess"]) });
-    normalizeGraphSearch(normalized.options.search, options, preparation);
-  }
-  if (metric) options = { ...options, ...select(preparation, ["metric", "zeroVector", "preprocess", "missing"]) };
-  return { normalized, options, metric, structural };
-}
 
 function validateStored(resource) {
+  if (preparedStoredResources.has(resource)) return;
   if (resource.provenance.origin !== "inferred" || !same(resource.ownership, { mode: "authored" })) throw new TypeError("Inferred graphs require authored ownership and inferred provenance.");
   exact(resource.options, ["roles", "definition"], "Inferred graph options");
   equal(resource.options.roles, { nodes: 0, edges: 0 }, "source roles");
@@ -110,8 +76,9 @@ function validateStored(resource) {
   const { normalized, options, metric, structural } = definitionPolicy(resource.options.definition, resource.inputs.length === 2);
   equal(normalized, resource.options.definition, "definition defaults");
   exact(resource.result, ["model", "diagnostics"], "Inferred graph result");
-  const { model, diagnostics } = resource.result;
-  indexGraphModel(model, { maxNodes: normalized.maxNodes, maxEdges: normalized.maxEdges });
+  const { model, diagnostics } = resource.result, execution = Object.hasOwn(normalized, "execution") ? normalized.execution : undefined;
+  validateCompletedInferenceModel(model, { maxNodes: normalized.maxNodes, maxEdges: normalized.maxEdges }, execution);
+  validateInferenceBytes(resource.result, execution, "Graph inference result bytes");
   const directed = normalized.rule === "sequence" || options.directed === true;
   if (model.selfLoops || model.directed !== directed || model.edges.some(edge => edge.origin !== "inferred" || edge.ruleId !== normalized.ruleId)) throw new TypeError("Inferred graph topology disagrees with its rule.");
   const fields = structural ? ["sourceIndices", "omitted", "options"] : normalized.rule === "mst"
@@ -136,22 +103,24 @@ function validateStored(resource) {
 
 function validateBindings(program, resource) {
   const definition = resource.options.definition, data = resolveInputReference(program, resource.inputs[0]);
+  const execution = Object.hasOwn(definition, "execution") ? definition.execution : undefined;
   const candidate = resource.inputs.length === 2 ? resolveInputReference(program, resource.inputs[1]) : undefined;
   const candidateModel = resolveGraphCandidateModel(program, data, candidate, definition);
   const { metric, structural } = definitionPolicy(definition, candidate !== undefined);
-  graphSourceRows(data.values, definition.maxNodes, "Graph source rows");
+  validateInferenceBytes({ rows: data.values, definition, ...(candidateModel === undefined ? {} : { candidate: candidateModel, candidateLimits: { maxNodes: candidate.options.definition.maxNodes, maxEdges: candidate.options.definition.maxEdges } }) }, execution, "Graph inference input bytes");
+  graphSourceRows(data.values, definition.maxNodes, "Graph source rows", execution);
   const { model, diagnostics } = resource.result, keys = data.values.map(row => graphSourceKey(row, definition.nodeKey));
   const tokens = keys.map(key => encodeRowKey(key));
   if (new Set(tokens).size !== tokens.length) throw new TypeError("Graph source keys must be unique.");
   let included, preparation;
   if (metric) {
-    preparation = prepareGraphMetricVectors(data.values.map(row => graphFeatureVector(row, definition.features)), {
-      ...select(definition, ["metric", "preprocess"]), ...select(definition.options, ["missing", "zeroVector"]) });
+    preparation = prepareGraphMetricVectors(data.values.map(row => graphFeatureVector(row, definition.features, execution)), {
+      ...select(definition, ["metric", "preprocess"]), ...select(definition.options, ["missing", "zeroVector"]) }, { maxNodes: definition.maxNodes, maxEdges: definition.maxEdges }, execution);
     const { vectors: _vectors, ...retained } = preparation;
     equal(diagnostics.preparation, retained, "feature preparation"); included = preparation.sourceIndices;
     if (diagnostics.search) {
       const search = normalizeGraphSearch(definition.options.search, diagnostics.options, preparation);
-      validateSearch(diagnostics.search, search, preparation, diagnostics.options, keys, diagnostics.pairCount);
+      validateSearch(diagnostics.search, search, preparation, diagnostics.options, keys, diagnostics.pairCount, execution);
     }
   } else if (structural) {
     included = diagnostics.sourceIndices; ownArray(included, "Graph included rows"); ownArray(diagnostics.omitted, "Graph omitted rows");
@@ -193,7 +162,7 @@ function validateBindings(program, resource) {
       groups.get(group).push(index);
     }
     if (definition.rule === "group") {
-      hubs = resolveGraphGroupHubs(diagnostics.options, { tokens, sourceIndices: included, groups, groupKeys, width: fields.length, work: 0 });
+      hubs = resolveGraphGroupHubs(diagnostics.options, { tokens, sourceIndices: included, groups, groupKeys, width: fields.length, work: 0 }, execution);
       let expectedEdges = 0;
       for (const [group, members] of groups) {
         if (diagnostics.options.mode === "star" && members.length > 1 && !hubs.has(group)) throw new TypeError("Graph star requires a hub for each non-singleton group.");
@@ -277,6 +246,17 @@ function validateBindings(program, resource) {
     }
   }
   equal(resource.provenance.sourceRows, graphRowReferences(data, "node"), "row provenance");
+}
+
+// Registration is private to inference preparation and happens only after the
+// complete stored and source-binding checks. Native writes still validate the
+// generic resource envelope, constructor, revisions, row refs and bindings.
+export function validatePreparedInferredResource(program, resource) {
+  const owned = cloneAndFreeze(resource);
+  validateStored(owned);
+  validateBindings(program, owned);
+  preparedStoredResources.add(owned);
+  return owned;
 }
 
 export const inferredGraphResourceHandler = Object.freeze({ validateStored, validateBindings });

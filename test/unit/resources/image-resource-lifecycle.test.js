@@ -7,6 +7,8 @@ import { getMarkItems, comparePrograms, inspectProgram, describeAction } from ".
 import { exportAccessibleData } from "../../../src/accessibility.js";
 import { serializeProgram, deserializeProgram } from "../../../src/persistence.js";
 import { renderToSVG } from "../../../src/renderers/svg.js";
+import { createInteractionSession } from "../../../src/interaction.js";
+import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from "../../../src/animation.js";
 
 const bytes = Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="10"><rect width="20" height="10" fill="red"/></svg>');
 const asset = { uri: "fixture:logo", mimeType: "image/svg+xml", expectedHash: createHash("sha256").update(bytes).digest("hex") };
@@ -135,6 +137,48 @@ test("replacement updates all exact bindings once and preserves selection and im
   assert.equal(p.semanticSpec.resources[0].revision, 0);
   assert.equal(properties(p).image.width, 20);
   assert.equal(renderToSVG(deserializeProgram(serializeProgram(next))), renderToSVG(next));
+});
+
+test("native image inspection respects viewport and extra clip with exact nested resource identity", async () => {
+  const p = (await create()).createImageMark({ fit: "cover", clip: { x: 20, y: 10, width: 40, height: 30 }, alt: "Red logo" });
+  const scene = hconcat({ id: "pair", programs: [{ id: "left", program: p }, { id: "right", program: p }], gap: 16 });
+  const restored = deserializeProgram(serializeProgram(scene)), session = createInteractionSession({ program: restored });
+  const localKey = getMarkItems(p)[0].key, rightKey = getMarkItems(restored, { target: { childPath: ["right"], id: "image" } })[0].key;
+  assert.notEqual(rightKey, localKey);
+  try {
+    for (const [x, y, expected] of [[40, 40, ["left"]], [256, 40, ["right"]], [25, 40, null], [80, 40, null], [40, 65, null]]) {
+      session.dispatch({ type: "inspect", point: { x, y }, slop: 0 });
+      const hit = session.getState().hit.target;
+      assert.deepEqual(hit?.childPath ?? null, expected);
+      if (expected) {
+        assert.equal(hit.ownerId, "image"); assert.deepEqual(hit.rowKeys, []);
+        assert.deepEqual(hit.resourceRefs, [{ kind: "image", id: "logo", revision: 0 }]);
+        if (expected[0] === "right") assert.equal(hit.itemKey, rightKey);
+      }
+    }
+  } finally { session.destroy(); }
+  const invisible = createInteractionSession({ program: p.editImageMark({ opacity: 0 }) });
+  try { invisible.dispatch({ type: "inspect", point: { x: 40, y: 40 }, slop: 0 }); assert.equal(invisible.getState().hit.target, null); }
+  finally { invisible.destroy(); }
+});
+
+test("native image placement uses explicit fallback with authentic rebase and embedded offline bytes", async () => {
+  const from = (await create()).createImageMark({ alt: "Red logo" }), saved = serializeProgram(from);
+  const to = from.editImageMark({ viewport: { x: 20, y: 10, width: 80, height: 80 }, fit: "fill" });
+  const plan = planTransition({ from, to, options: { durationMs: 100, easing: "linear" } });
+  assert.deepEqual(plan.tracks.map(track => [track.kind, track.reason]), [["crossfade", "unsupported-family"]]);
+  assert.deepEqual(plan.enters, []); assert.deepEqual(plan.exits, []);
+  const frame = sampleTransition(plan, 40), blend = frame.scene.nodes.find(node => node.type === "weighted-blend");
+  assert.deepEqual(blend.properties.sources.map(source => source.weight), [.6, .4]);
+  assert.deepEqual(blend.properties.sources.map(source => source.properties.image.payload.data), [bytes.toString("base64"), bytes.toString("base64")]);
+  const serialized = serializeAnimation(plan), restored = deserializeAnimation(serialized).plan;
+  assert.ok(serialized.includes(bytes.toString("base64")));
+  for (const time of [0, 40, 100]) assert.deepEqual(sampleTransition(restored, time), sampleTransition(plan, time));
+  const rebased = planTransition({ from: frame, to: from, options: { durationMs: 60, easing: "linear" } });
+  assert.equal(sampleTransition(rebased, 0), frame);
+  const offline = deserializeAnimation(serializeAnimation(rebased)).plan;
+  for (const time of [0, 30, 60]) assert.deepEqual(sampleTransition(offline, time), sampleTransition(rebased, time));
+  assert.equal(serializeProgram(from), saved);
 });
 
 test("facets and repeated fields retain independent image overlays and native data anchors", async () => {

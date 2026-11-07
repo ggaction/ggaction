@@ -1,1 +1,2 @@
 export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }
+/** A native route update action with its own affected-route resolution. */

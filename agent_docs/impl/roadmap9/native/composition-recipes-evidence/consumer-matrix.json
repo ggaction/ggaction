@@ -1,0 +1,26 @@
+{
+  "scope": "Three public-only composition recipes",
+  "passed": {
+    "meaning-and-geometry": "test/charts/marginal/primitive.test.js; test/charts/bullet/primitive.test.js; existing linked-composition slice",
+    "public-authoring-and-action-trace": "test/contracts/composition-recipes.test.js; chart public.test.js and canonical callChain",
+    "typed-source-and-selection": "test/unit/composition-recipes.test.js: same logical source and bin membership, row reorder and partial-revision rejection",
+    "single-Y-and-order": "Bullet one amount scale; Combo same Y owner; Marginal independent count panels; installed candidate69089 frame validator",
+    "rematerialization": "reviseData and paired editCanvas dimensions; exact label and target positions",
+    "inspection-and-hit": "getMarkItems source refs and actual Bullet hit",
+    "immutable-failure": "old serialized program unchanged; invalid axis/bin, empty schema/aggregate, duplicate source key, duplicate boundaries",
+    "editable-and-graphic-codec": "exact round trips for changed programs",
+    "Canvas-SVG-PNG-PDF-scene": "test/charts/marginal/renderer.render.js and browser/composition-recipes.browser.js",
+    "source-free-installed": "three canonical recipes on exact archive in Node20/22/24",
+    "actual-data": "five source-hashed datasets, 24 original observations each, three recipes each",
+    "documentation": "three canonical recipe pages and exact executable snippet metadata"
+  },
+  "notApplicable": {
+    "new-resource-ref-collector": "No new resource kind or stored binding. Existing dataset/mark/composition refs are retained and exercised.",
+    "new-declarations-and-exports": "No library method or export. Example function names are host modules only.",
+    "new-renderer-primitive": "Existing Rect, Circle, Path, Rule and Text concrete output only.",
+    "Basic-expansion": "Recipes use the Full package. No unsupported Basic data-transform/range action is added.",
+    "new-async-loader": "Recipe construction and scoped updates are synchronous; no host callbacks or async resource lifetime.",
+    "new-work-limit": "No new allocator or kernel; existing action/data/graphic limits remain authoritative. Invalid bin boundaries are exercised."
+  },
+  "deferredIntegration": ["STEP074 full combined acceptance", "STEP077 final artifact and delivery"]
+}

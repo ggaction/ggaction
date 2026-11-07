@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "status": "design audit; no solver completion or performance qualification",
+  "source": "fa943e864982783ae8ae10bc18a4257ea8f0b2bb",
+  "node": "v22.23.1",
+  "fixtureReference": "0bd402486:scripts/benchmarks/routes.browser.js",
+  "force": [
+    {
+      "n": 100,
+      "pairs": 4950,
+      "zero": 1700,
+      "positive": 3250,
+      "compatible": 750,
+      "oracleChecks": 4950,
+      "compatibilityHash": "6483201ae6edfcb8560f902e5fc3af6cbdf2144a85834e31791a1ab0f72bc771",
+      "scheduleWork": 1090500,
+      "peakPointSlots": 7000,
+      "elapsedMs": 7.5646249999999995
+    },
+    {
+      "n": 1000,
+      "pairs": 499500,
+      "zero": 167000,
+      "positive": 332500,
+      "compatible": 80500,
+      "oracleChecks": 499500,
+      "compatibilityHash": "7d3b30bd7938b4177342e3bceec4c8dcebef90e37cf6d59c92d4285fdbdb9d8a",
+      "scheduleWork": 72225000,
+      "peakPointSlots": 70000,
+      "elapsedMs": 74.912417
+    },
+    {
+      "n": 10000,
+      "pairs": 49995000,
+      "zero": 16670000,
+      "positive": 33325000,
+      "compatible": 8145000,
+      "oracleChecks": 49995000,
+      "compatibilityHash": "9433521e2d279863e48a2eb3b3aabdfb4571c0a3e9b342cebb1a79b668f31e1f",
+      "scheduleWork": 6887850000,
+      "peakPointSlots": 700000,
+      "elapsedMs": 6633.367625
+    }
+  ],
+  "density": [
+    {
+      "n": 100,
+      "firstSamples": 22200,
+      "minCount": 222,
+      "maxCount": 222,
+      "existingInitialLiveSlots": 133400,
+      "coordinatePayloadBytes": 355200,
+      "firstSameSizeDoubleCoordinatesBytes": 710400,
+      "streamedSameSizeLiveSlots": 130616,
+      "streamedSameSizeTypedBytes": 1566376,
+      "note": "Streamed counts assume next S equals old S and are allocation model only, not a later-iteration bound or measured heap."
+    },
+    {
+      "n": 1000,
+      "firstSamples": 223000,
+      "minCount": 223,
+      "maxCount": 223,
+      "existingInitialLiveSlots": 1340000,
+      "coordinatePayloadBytes": 3568000,
+      "firstSameSizeDoubleCoordinatesBytes": 7136000,
+      "streamedSameSizeLiveSlots": 534016,
+      "streamedSameSizeTypedBytes": 8027976,
+      "note": "Streamed counts assume next S equals old S and are allocation model only, not a later-iteration bound or measured heap."
+    },
+    {
+      "n": 10000,
+      "firstSamples": 2230000,
+      "minCount": 223,
+      "maxCount": 223,
+      "existingInitialLiveSlots": 13400000,
+      "coordinatePayloadBytes": 35680000,
+      "firstSameSizeDoubleCoordinatesBytes": 71360000,
+      "streamedSameSizeLiveSlots": 4566016,
+      "streamedSameSizeTypedBytes": 72611976,
+      "note": "Streamed counts assume next S equals old S and are allocation model only, not a later-iteration bound or measured heap."
+    }
+  ],
+  "sourceSHA256": {
+    "compatibility.js": "4d9c41a8ae6413b08634f1b7cccedfddae8748e7f605d00c0abfe2c7f5caf727",
+    "forceDirected.js": "f81f4307ba5f27e190b8bbd0bd22541c5b2bbd5ab36fe4a190ef207078a7381e",
+    "density.js": "dc21e5f9d746cb4a553f9e96b3617594a837b80619303d242629b205b3781539",
+    "densityField.js": "9f3921ba9c91989f1014a27adfe76339016d9f92f808c8dd8103a94135e647cf",
+    "budget.js": "f32d00a6b734ffc23bb95f294ea73ac68645fdf25fb4c91045acb60662231568",
+    "resultProvenance.js": "7d3e10ac06153fcd83a3e0cbd46dea2abd306f71bd6e43e6c4c8aab747656b3f"
+  }
+}

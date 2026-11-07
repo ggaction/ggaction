@@ -1,0 +1,60 @@
+{
+  "node": "v20.20.2",
+  "scope": "private title kernel / unchanged public fixed-label path",
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1036,
+      "minifiedBytes": 2704813,
+      "gzipBytes": 775065,
+      "limit": 775100,
+      "passed": true
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 620,
+      "minifiedBytes": 1443790,
+      "gzipBytes": 423325,
+      "limit": 423400,
+      "passed": true
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24954,
+      "limit": 26000,
+      "passed": true
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 85,
+      "minifiedBytes": 147084,
+      "gzipBytes": 44076,
+      "limit": 46000,
+      "passed": true
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 450,
+      "minifiedBytes": 932235,
+      "gzipBytes": 281404,
+      "limit": 281400,
+      "passed": false
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 190,
+      "minifiedBytes": 384137,
+      "gzipBytes": 123515,
+      "limit": 131400,
+      "passed": true
+    }
+  ]
+}

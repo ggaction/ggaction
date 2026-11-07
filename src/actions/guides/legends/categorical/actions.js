@@ -1,5 +1,6 @@
+import { resolveColorSizeLayout } from "../../../../materialization/guides/legendSamples.js";
 import { conditionalLegendLayer } from "../../../../materialization/legendEncodings.js";
-import {resolveColorSizeConfig,createColorSizeLegendFromConfig,materializeColorSizeLegend,resolveColorSizeLayout} from "../colorSize.js";
+import { resolveColorSizeConfig, createColorSizeLegendFromConfig, materializeColorSizeLegend } from "../colorSize.js";
 import {resetLegendClipGraphics,applyLegendClipGraphics,restoreLegendClipContext}from"../../../../materialization/legendClip.js";
 import {validateLegendCombine,resolveSizeShapeCreation} from "../combine.js";
 import { recordLegendOffsetIntent } from "../group.js";
@@ -12,9 +13,11 @@ import { sameGuideValue } from "../../reuse.js";
 import { normalizeLegendOrder } from "../../../../grammar/categoryOrder.js";
 import { action } from "../../../../core/action.js";
 import { validateOptionObject } from "../../../../core/validation.js";
-import { noOptions, resolveLayout, activeConfig } from "./layout.js";
+import { noOptions, resolveLayout } from "./layout.js";
+
 import { normalizeOptions } from "./options.js";
-import { normalizeRecipe, resolveLegendSymbol } from "./recipes.js";
+import { resolveLegendSymbol } from "./recipes.js";
+import { normalizeRecipe } from "../../../../grammar/legendSymbolRecipe.js";
 import { validateLegendChannels } from "../target.js";
 import { createCategoricalLegendFromConfig, reconcileCategoricalSymbols,
   resolveCategoricalLegendRevision, removeLegendKinds } from "../lifecycle.js";
@@ -35,12 +38,10 @@ import {
   resolveTarget,
   sameValues
 } from "./resolve.js";
-import { readLegendSampling } from "../sampling.js";
+import { readLegendSampling } from "../../../../grammar/legendSampling.js";
 import { restoreCreatedLegendChannels } from "../../../../materialization/legendSuppression.js";
-import {
-  reconcileLegendBlockTitleGraphic,
-  resolveEffectiveLegendBlockConfig
-} from "../blocks.js";
+import { reconcileLegendBlockTitleGraphic } from "../blocks.js";
+import { resolveEffectiveLegendBlockConfig } from "../../../../materialization/guides/legendConfig.js";
 
 function finishLegend(program) {
   return Object.values(program.guideConfigs.legend??{}).some(config=>config.clipHeight!==undefined)||hasLegendLane(program) || Object.keys(program.guideConfigs.legendGroups ?? {}).length > 0
@@ -293,12 +294,12 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
   validateOptionObject(args, undefined, "createLegend");
   const candidates = args.target === undefined ? layers : layers.filter(layer => layer.id === args.target);
   const independentMark = candidates.length === 1 &&
-    ["area", "rect", "bar", "arc", "text", "rule", "tick"].includes(candidates[0].mark?.type);
+    ["area", "rect", "bar", "arc", "text", "rule", "tick", "geo"].includes(candidates[0].mark?.type);
   const seriesChannels = candidates.length === 1 && ["line", "point"].includes(candidates[0].mark?.type)
     ? ["color", "stroke", "shape", "strokeDash"].filter(channel => candidates[0].encoding?.[channel]?.scale !== undefined) : [];
   const independentSeries = new Set(seriesChannels.map(channel => candidates[0].encoding[channel].field)).size > 1;
   const inferredChannels = independentSeries ? seriesChannels : independentMark
-    ? ["color", "stroke"].filter(channel => candidates[0].encoding?.[channel]?.scale !== undefined)
+    ? (candidates[0].mark.type === "geo" ? ["color", "size"] : ["color", "stroke"]).filter(channel => candidates[0].encoding?.[channel]?.scale !== undefined)
     : [];
   const channels = args.channels !== undefined ? args.channels
     : inferredChannels.length > 0 ? inferredChannels : undefined;

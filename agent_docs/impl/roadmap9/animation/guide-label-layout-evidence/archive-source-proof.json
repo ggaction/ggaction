@@ -1,0 +1,15 @@
+{
+  "archive": "7b20ca99f15a6bf24a4785584cd69a3e2f3aeaa9199265a3acaf7f2f21b4e88f",
+  "files": [
+    {
+      "file": "src/actions/guides/axes/labels.js",
+      "stagedBytesExact": true,
+      "sha256": "31715372ce9d1b33d56cb8fefc7cca946bcd1a754ef7f0ff8af9882fd4499982"
+    },
+    {
+      "file": "src/materialization/axisLabelLayout.js",
+      "stagedBytesExact": true,
+      "sha256": "63c5e6d588b70551b91b2854863776a07c4f6afe71fd282ef66a375addee2a61"
+    }
+  ]
+}

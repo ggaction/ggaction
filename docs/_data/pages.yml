@@ -71,6 +71,15 @@
   url: /recipes/
   nav_group: start
   nav_order: 6
+- title: Marginal Distribution Recipe
+  url: /recipes/marginal/
+  parent: /recipes/
+- title: Bullet Comparison Recipe
+  url: /recipes/bullet/
+  parent: /recipes/
+- title: Combo Chart Recipe
+  url: /recipes/combo/
+  parent: /recipes/
 - title: Scatterplot Recipe
   url: /recipes/scatterplot/
   parent: /recipes/
@@ -230,7 +239,13 @@
 - title: Rendering
   url: /api/rendering/
   parent: /api/
-- title: Inspect Chart Items
+- title: Animate and Export Chart Frames
+  url: /api/animation/
+  parent: /api/rendering/
+- title: Live Charts
+  url: /api/live/
+  parent: /api/rendering/
+- title: Interaction Sessions
   url: /api/interaction/
   parent: /api/rendering/
 - title: Inspect Overlapping Chart Items
@@ -579,4 +594,18 @@
   parent: /api/
 - title: Show Contributions and Totals
   url: /tutorials/waterfall/
+  parent: /tutorials/
+
+- title: Trail Plots
+  url: /api/trail/
+  parent: /api/
+- title: Show Width Along a Series
+  url: /tutorials/trail/
+  parent: /tutorials/
+
+- title: Table Plots
+  url: /api/table/
+  parent: /api/
+- title: Combine Values and Small Charts in a Table
+  url: /tutorials/table/
   parent: /tutorials/

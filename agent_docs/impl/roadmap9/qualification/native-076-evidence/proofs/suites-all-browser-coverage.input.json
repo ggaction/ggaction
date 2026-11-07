@@ -1,0 +1,764 @@
+{
+  "candidate": "a8af4e5665c17c6769af6118e48a30cd0efc13d3",
+  "targets": [
+    {
+      "target": "AT-21",
+      "tests": [
+        "test/unit/actions/composition/nested-responsive-layout.test.js",
+        "test/browser/nested-responsive.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "AT-23",
+      "tests": [
+        "test/unit/grammar/graph-normalize.test.js",
+        "test/unit/grammar/graph-model.test.js",
+        "test/unit/grammar/graph-layout.test.js",
+        "test/unit/grammar/graph-force.test.js",
+        "test/unit/actions/data/observed-graph.test.js",
+        "test/unit/resources/graph-layouts.test.js",
+        "test/unit/resources/graph-hit.test.js",
+        "test/unit/flow-layouts.test.js",
+        "test/unit/resources/flow-plots.test.js",
+        "test/unit/resources/flow-consumers.test.js",
+        "test/browser/flow-layouts.browser.js",
+        "test/browser/interaction-animation.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md",
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md"
+      ]
+    },
+    {
+      "target": "AT-34",
+      "tests": [
+        "test/unit/hit-frame.test.js",
+        "test/unit/animation/current-hit.test.js",
+        "test/unit/interaction-animation.test.js",
+        "test/browser/interaction-animation.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "AT-35",
+      "tests": [
+        "test/unit/interaction-session.test.js",
+        "test/unit/interaction-pointer-capture.test.js",
+        "test/unit/interaction-keyboard.test.js",
+        "test/unit/interaction-region-gesture.test.js",
+        "test/browser/interaction-session.browser.js",
+        "test/browser/interaction-keyboard.browser.js",
+        "test/browser/interaction-region.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "AT-36",
+      "tests": [
+        "test/unit/interaction-region-gesture.test.js",
+        "test/unit/interaction-angular-selection.test.js",
+        "test/browser/interaction-region.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "AT-38",
+      "tests": [
+        "test/unit/interaction-links.test.js",
+        "test/unit/interaction-linked-filter.test.js",
+        "test/unit/interaction-direct-controls.test.js",
+        "test/unit/interaction-reconciliation.test.js",
+        "test/unit/interaction-native-composition.test.js",
+        "test/unit/interaction-legend-selection.test.js",
+        "test/browser/interaction-session.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "AT-39",
+      "tests": [
+        "test/unit/interaction-region-gesture.test.js",
+        "test/unit/interaction-preview-preparation.test.js",
+        "test/unit/interaction-direct-controls.test.js",
+        "test/unit/interaction-node-move.test.js",
+        "test/unit/interaction-annotation-drag.test.js",
+        "test/unit/interaction-geo-controls.test.js",
+        "test/unit/interaction-edge-presentation.test.js",
+        "test/browser/interaction-region.browser.js",
+        "test/unit/interaction-history.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "AT-45",
+      "tests": [
+        "test/unit/animation/offline.test.js",
+        "test/unit/animation/offline-assets.test.js",
+        "test/unit/animation/native-player.test.js",
+        "test/browser/animation-offline.browser.js",
+        "test/contracts/animation-types.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "AT-53",
+      "tests": [
+        "test/unit/accessibility/data.test.js",
+        "test/unit/accessibility/items.test.js",
+        "test/unit/interaction-keyboard.test.js",
+        "test/browser/accessible-data.browser.js",
+        "test/browser/accessible-controls.browser.js",
+        "test/browser/accessible-tooltip.browser.js",
+        "test/browser/interaction-keyboard.browser.js",
+        "test/unit/animation/native-player.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md",
+        "agent_docs/contract/current/ACCESSIBILITY.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    },
+    {
+      "target": "AT-57",
+      "tests": [
+        "test/contracts/package-boundaries.test.js",
+        "test/contracts/package-artifact.test.js",
+        "test/browser/package-consumer.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/hit",
+      "tests": [
+        "test/unit/resources/graph-hit.test.js",
+        "test/browser/interaction-animation.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/scene-animation",
+      "tests": [
+        "test/unit/animation/graph-tracks.test.js",
+        "test/unit/animation/graph-public.test.js",
+        "test/browser/animation-graph.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md",
+        "agent_docs/contract/current/ANIMATION.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/svg",
+      "tests": [
+        "test/charts/graph-plots/public.test.js",
+        "test/browser/graph-output.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/canvas",
+      "tests": [
+        "test/charts/graph-plots/public.test.js",
+        "test/browser/graph-output.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/encodings",
+      "tests": [
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/browser/edge-route-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/scales",
+      "tests": [
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/browser/edge-route-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/guides",
+      "tests": [
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/browser/edge-route-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/encodings",
+      "tests": [
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/browser/edge-route-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/scales",
+      "tests": [
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/browser/edge-route-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/guides",
+      "tests": [
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/browser/edge-route-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/encodings",
+      "tests": [
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/browser/edge-route-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/scales",
+      "tests": [
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/browser/edge-route-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/guides",
+      "tests": [
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/browser/edge-route-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/encodings",
+      "tests": [
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/browser/edge-route-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/scales",
+      "tests": [
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/browser/edge-route-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/guides",
+      "tests": [
+        "test/unit/resources/edge-route-composition.test.js",
+        "test/browser/edge-route-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/hit",
+      "tests": [
+        "test/unit/resources/flow-consumers.test.js",
+        "test/browser/flow-layouts.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/hit",
+      "tests": [
+        "test/unit/resources/flow-consumers.test.js",
+        "test/browser/flow-layouts.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md",
+        "agent_docs/contract/current/INTERACTION.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/encodings",
+      "tests": [
+        "test/unit/geo/graticule-composition.test.js",
+        "test/browser/graticule-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/scales",
+      "tests": [
+        "test/unit/geo/graticule-composition.test.js",
+        "test/browser/graticule-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/guides",
+      "tests": [
+        "test/unit/geo/graticule-composition.test.js",
+        "test/browser/graticule-composition.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md",
+        "agent_docs/contract/current/COMPOSITION.md"
+      ]
+    },
+    {
+      "target": "consumer:interaction/pointer-keyboard-touch",
+      "tests": [
+        "test/unit/interaction-session.test.js",
+        "test/unit/interaction-pointer-capture.test.js",
+        "test/unit/interaction-keyboard.test.js",
+        "test/unit/interaction-region-gesture.test.js",
+        "test/browser/interaction-session.browser.js",
+        "test/browser/interaction-keyboard.browser.js",
+        "test/browser/interaction-region.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:interaction/preview-commit-cancel",
+      "tests": [
+        "test/unit/interaction-region-gesture.test.js",
+        "test/unit/interaction-preview-preparation.test.js",
+        "test/unit/interaction-direct-controls.test.js",
+        "test/unit/interaction-node-move.test.js",
+        "test/unit/interaction-annotation-drag.test.js",
+        "test/unit/interaction-geo-controls.test.js",
+        "test/unit/interaction-edge-presentation.test.js",
+        "test/browser/interaction-region.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:interaction/undo-redo",
+      "tests": [
+        "test/unit/interaction-history.test.js",
+        "test/unit/interaction-selection.test.js",
+        "test/unit/interaction-viewport.test.js",
+        "test/browser/interaction-keyboard.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:interaction/linked",
+      "tests": [
+        "test/unit/interaction-links.test.js",
+        "test/unit/interaction-linked-filter.test.js",
+        "test/unit/interaction-direct-controls.test.js",
+        "test/unit/interaction-reconciliation.test.js",
+        "test/unit/interaction-native-composition.test.js",
+        "test/unit/interaction-legend-selection.test.js",
+        "test/browser/interaction-session.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md"
+      ]
+    },
+    {
+      "target": "consumer:interaction/current-frame",
+      "tests": [
+        "test/unit/interaction-animation.test.js",
+        "test/unit/animation/current-hit.test.js",
+        "test/unit/animation/route-session.test.js",
+        "test/unit/animation/graph-drag.test.js",
+        "test/unit/animation/partition-session.test.js",
+        "test/browser/interaction-animation.browser.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/INTERACTION.md",
+        "agent_docs/contract/current/MARK_SELECTION.md",
+        "agent_docs/contract/current/ANIMATION.md"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "path": "test/browser/accessible-controls.browser.js",
+      "sha256": "89f7f972975397968892b223afaa9d9c027444c413e986bf11c56a3a1b2e690b"
+    },
+    {
+      "path": "test/browser/accessible-data.browser.js",
+      "sha256": "0f2eddcee1722d39842209d99237be188cef84b81876374c377dd61df50e2859"
+    },
+    {
+      "path": "test/browser/accessible-tooltip.browser.js",
+      "sha256": "628e1c2a6ff51010952a9b3f8cc99813569e520376cce73d1f565e02b74ae0f1"
+    },
+    {
+      "path": "test/browser/animation-graph.browser.js",
+      "sha256": "16a0682a91104f7fe1148f9f65ce210263ee31bca5c0f4975383297588f68773"
+    },
+    {
+      "path": "test/browser/animation-offline.browser.js",
+      "sha256": "d4f209bf75db9ae3902ce91f8758575317151f6c2a3b86f66da3140d480889c3"
+    },
+    {
+      "path": "test/browser/edge-route-composition.browser.js",
+      "sha256": "9c86e7af6d01a6fd3b5c6ef5306fdee067601fa74e04d75980c6a0d941375dda"
+    },
+    {
+      "path": "test/browser/flow-layouts.browser.js",
+      "sha256": "1ea215cc61fe971682f3266117066a04e7e52bc04f70eebcee9b459a84d77fd7"
+    },
+    {
+      "path": "test/browser/graph-output.browser.js",
+      "sha256": "cf9d5c81a651b4373063198395819e843b58f7fe9c6a83818ec27dde4d01fa74"
+    },
+    {
+      "path": "test/browser/graticule-composition.browser.js",
+      "sha256": "21ecdc9caac2f2aeb902dfee9b17d0abd4eb31ca3361a6ed57aedc55b7db9715"
+    },
+    {
+      "path": "test/browser/interaction-animation.browser.js",
+      "sha256": "9e12fabbaa7cea9dfcf50f1db506707524abd04c496146b2bf6ccd6ab507a1b5"
+    },
+    {
+      "path": "test/browser/interaction-keyboard.browser.js",
+      "sha256": "92cde0cbf2f58908c919fd0d4890a4ec468ec08abd74e025b9ba48f349827301"
+    },
+    {
+      "path": "test/browser/interaction-region.browser.js",
+      "sha256": "c3c0bdc5455aff209b367a7402b8d094c97b25f98cba1a083cb7ce4beb1de26c"
+    },
+    {
+      "path": "test/browser/interaction-session.browser.js",
+      "sha256": "f8a490fe81b957b1ba8a47c386c4149c74e5a8ff16b5b6d1041c16ab5ad4a0d5"
+    },
+    {
+      "path": "test/browser/nested-responsive.browser.js",
+      "sha256": "201911d922ea6e44b8b9546cc2e065a5ed496f3717acccc9b4c1a079905dd78e"
+    },
+    {
+      "path": "test/browser/package-consumer.browser.js",
+      "sha256": "c99e120af0ff2ee3556deb2eb78dfa7aaed9068cba6279a145194e81a96b182b"
+    },
+    {
+      "path": "test/charts/graph-plots/public.test.js",
+      "sha256": "b2cc70a9011ea42236e5fec0f4d66ac8d3e3dac54a24f4b73b2936d1ad7c366d"
+    },
+    {
+      "path": "test/contracts/animation-types.test.js",
+      "sha256": "341c175d0dcae79ff3e9de8093c11d18ba228ae819c531c7f7b5f72d93631f81"
+    },
+    {
+      "path": "test/contracts/package-artifact.test.js",
+      "sha256": "fbb634124e71c512de4c905ecbab5c86bbfeed51d4efcdf143f34200abf7ebc4"
+    },
+    {
+      "path": "test/contracts/package-boundaries.test.js",
+      "sha256": "1395d53935d0802821383af036c040355bc855834d4c8648437e29db8926c0dc"
+    },
+    {
+      "path": "test/unit/accessibility/data.test.js",
+      "sha256": "799a68d00fd9d0bace06246626100ac972f6355b73d4510b612ad2d5d17f69e6"
+    },
+    {
+      "path": "test/unit/accessibility/items.test.js",
+      "sha256": "ac35ad449f9f89b4138b888e4edabb408f23c4be4c2ff4c5c01aabfb313e101b"
+    },
+    {
+      "path": "test/unit/actions/composition/nested-responsive-layout.test.js",
+      "sha256": "511e7215dca08bb9e69322e706a45aa94c83e2410923799dccdd30ddd2ca3100"
+    },
+    {
+      "path": "test/unit/actions/data/observed-graph.test.js",
+      "sha256": "7e0eca49470013876a2dd739fd6c09e33f6dd815061773dc44bac76cc35e1dcf"
+    },
+    {
+      "path": "test/unit/animation/current-hit.test.js",
+      "sha256": "76423db18a724858e0e631e897ef2420611c0504f2de678ab6ec1149f1fe525f"
+    },
+    {
+      "path": "test/unit/animation/graph-drag.test.js",
+      "sha256": "0f385f328560e91c20f72cc41657d713dae7d1966612a8fa2573109b1ad3c4a3"
+    },
+    {
+      "path": "test/unit/animation/graph-public.test.js",
+      "sha256": "2284ddeefddc6222fe3250def148f4ed0116dcfac7b2237f9e4511890c97dffd"
+    },
+    {
+      "path": "test/unit/animation/graph-tracks.test.js",
+      "sha256": "2ad673b4fbdd728a82974c73e5e6e930bc5f2708b9e44476066f5e1a4a9b5ce0"
+    },
+    {
+      "path": "test/unit/animation/native-player.test.js",
+      "sha256": "bd0e22fdc7b29572532093a5b0b05b9cd73f57d086ddcc59f9e265a8fcb4f50e"
+    },
+    {
+      "path": "test/unit/animation/offline-assets.test.js",
+      "sha256": "db763c17ee26bce2178ed5a32f752d8c5931d2d96c8d27cda551ab2750baf5bd"
+    },
+    {
+      "path": "test/unit/animation/offline.test.js",
+      "sha256": "d7bc33bf1a858f8e6c18730727cc637cb9508798edac47a66a54ee0d9f52cb8a"
+    },
+    {
+      "path": "test/unit/animation/partition-session.test.js",
+      "sha256": "46f0f926b88417db725cb85b927b2197bb890313aa574b9386548703d018d364"
+    },
+    {
+      "path": "test/unit/animation/route-session.test.js",
+      "sha256": "28a2b935f1bc5218e0e1d2b0bc76dbc4f969379de486752466f0651733f6f973"
+    },
+    {
+      "path": "test/unit/flow-layouts.test.js",
+      "sha256": "d871cdb9d7d58380b4c635cb98eb318195079aa14613bba91c22d8296c16cc1b"
+    },
+    {
+      "path": "test/unit/geo/graticule-composition.test.js",
+      "sha256": "8bba1fb744b08ec53a8d1d5ef062e176b224ebb1ed94794f90af95f4f0d65d26"
+    },
+    {
+      "path": "test/unit/grammar/graph-force.test.js",
+      "sha256": "f260233db69e3bc240b6745e8b5b68f68be85f77f57e9a198fc508e02d738c91"
+    },
+    {
+      "path": "test/unit/grammar/graph-layout.test.js",
+      "sha256": "84787dec2cc40db00eae5e7f3205a4b00e3a5ab074137858194d8dd5b165d911"
+    },
+    {
+      "path": "test/unit/grammar/graph-model.test.js",
+      "sha256": "ecb468b5270d63d1ca65f5ce4e3957f77cd4ce2a07097b50f75036c7cc5d554b"
+    },
+    {
+      "path": "test/unit/grammar/graph-normalize.test.js",
+      "sha256": "f54f6d54db633f878fb619307608121ae1975fd543aa6ea0146ed1b23a5ebb81"
+    },
+    {
+      "path": "test/unit/hit-frame.test.js",
+      "sha256": "ab9f3fc87eb13b953e759588ca6c1cfe1a75981a869a2cd21e8c046027e4f4ac"
+    },
+    {
+      "path": "test/unit/interaction-angular-selection.test.js",
+      "sha256": "2600602583f1d7f91994c1edfb391bce3b33fcca65cb605f4d38673d800c9654"
+    },
+    {
+      "path": "test/unit/interaction-animation.test.js",
+      "sha256": "0b473273fb2006961f75e2fc1883fc8cac4ee675708a29dd2f37be1d7271e772"
+    },
+    {
+      "path": "test/unit/interaction-annotation-drag.test.js",
+      "sha256": "f7a054e3d35573e04a70db09d9020443f4f6e65b8cce1f6c24400f9b79dfec9b"
+    },
+    {
+      "path": "test/unit/interaction-direct-controls.test.js",
+      "sha256": "4ac1cfc56464df08813c12b62f7adbd55d5e3eaa07c5d4cce2fa6dbf89f15def"
+    },
+    {
+      "path": "test/unit/interaction-edge-presentation.test.js",
+      "sha256": "b1437729d568da34ddfd50e3fd5032855eee065e3795ee8d88fe15c543296f07"
+    },
+    {
+      "path": "test/unit/interaction-geo-controls.test.js",
+      "sha256": "97a3622c0fcc369460aa28c2877c2a93880dabf18fa1157ba68b34c4b900522b"
+    },
+    {
+      "path": "test/unit/interaction-history.test.js",
+      "sha256": "4e52cf02391899da46851adb398281cec2d029fa2d499e13dd26fbcf61e5db7f"
+    },
+    {
+      "path": "test/unit/interaction-keyboard.test.js",
+      "sha256": "5dbcef23950117c5cfecb11a63a3b327ee9a5cadbb632bc3ea7efff75f3ef230"
+    },
+    {
+      "path": "test/unit/interaction-legend-selection.test.js",
+      "sha256": "9ef805ec679c9a3fe57875f54a9e8c76ae278c55f23169006a175556ea62ca4a"
+    },
+    {
+      "path": "test/unit/interaction-linked-filter.test.js",
+      "sha256": "ecc27a6e76452abce9e3717e044d977db3cc6cdfbc41739220c9de653085a330"
+    },
+    {
+      "path": "test/unit/interaction-links.test.js",
+      "sha256": "a885c81177caf9035c31190118d13456f2f930fd069ec62d54f3d9b874f75bf9"
+    },
+    {
+      "path": "test/unit/interaction-native-composition.test.js",
+      "sha256": "974bbe1c9ed2defca956fd77da1debcc93c5ed0e37a10123489f8aaa91fbb885"
+    },
+    {
+      "path": "test/unit/interaction-node-move.test.js",
+      "sha256": "35d4546a837c33ecd52f894666c1383ed63ee44eb27dfe27c4497f423a3b3e29"
+    },
+    {
+      "path": "test/unit/interaction-pointer-capture.test.js",
+      "sha256": "bca01ec03f83e512f55fb211e590353579ad50b6078242490bc3fad7cf15f8ee"
+    },
+    {
+      "path": "test/unit/interaction-preview-preparation.test.js",
+      "sha256": "5641dd073d398b501e0d5183c49d454c2fb9717f7873311bd06f9f90c16d12b9"
+    },
+    {
+      "path": "test/unit/interaction-reconciliation.test.js",
+      "sha256": "0ae58562fbf7f869f28ac02e55418c065e0d3b175f44dd41d2cf5e5ecd347088"
+    },
+    {
+      "path": "test/unit/interaction-region-gesture.test.js",
+      "sha256": "f8ab4c7cd8e591d2163c8b671b73d6a42fc5fa6f6c2a5b55e64799eaed80c67a"
+    },
+    {
+      "path": "test/unit/interaction-selection.test.js",
+      "sha256": "e058d494a35ed566c702c0bdc6810ea9ba5a95189dbe74274211fd148a725d12"
+    },
+    {
+      "path": "test/unit/interaction-session.test.js",
+      "sha256": "fbc25b99a9c48dd72656150042b13ac746c7f52074b2e4b07750d791c01ba9cf"
+    },
+    {
+      "path": "test/unit/interaction-viewport.test.js",
+      "sha256": "4f3972059366d93fc7076bd483105c41c96aad2651683788ad81039855179c78"
+    },
+    {
+      "path": "test/unit/resources/edge-route-composition.test.js",
+      "sha256": "08200cd550c0c58231ac8db0fc94fd9c6a81f68054a11c0d827b7ab1c40a5230"
+    },
+    {
+      "path": "test/unit/resources/flow-consumers.test.js",
+      "sha256": "8faa6caae370a5ef2d84df59940dc91d2bbccba9a4495231bb1c0b7275ff7df5"
+    },
+    {
+      "path": "test/unit/resources/flow-plots.test.js",
+      "sha256": "72eb6b22f0601e730d3b55a1bcab259552f9b64e4a4ce0c6edb9bf155ec30777"
+    },
+    {
+      "path": "test/unit/resources/graph-hit.test.js",
+      "sha256": "645fdd9dbf47475f50b186f49d94e9a563c29de82b5e33508a8dfc87820d2a92"
+    },
+    {
+      "path": "test/unit/resources/graph-layouts.test.js",
+      "sha256": "6b10219e0d6e99de9a114db72caee456902534f05a18e9982375298edaa71d22"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "agent_docs/contract/current/ACCESSIBILITY.md",
+      "sha256": "18fda30aced0976a8ee903f99d0dc9ab26eadc9221ad8386bdaca0b85366c387"
+    },
+    {
+      "path": "agent_docs/contract/current/ANIMATION.md",
+      "sha256": "23ef391cda18e3828959a2b0d53674cf12ad646ef280446af96c63b4f9b28857"
+    },
+    {
+      "path": "agent_docs/contract/current/COMPOSITION.md",
+      "sha256": "bbfc8dca1d76861d88c8d16f646f2dcb8064517fd514dc66d54cf482230ed379"
+    },
+    {
+      "path": "agent_docs/contract/current/CORE.md",
+      "sha256": "36aee69d7cd4e3a093e490bcdb8063ff680fd3b1a39e30e0530c3515ba1110ec"
+    },
+    {
+      "path": "agent_docs/contract/current/EDGE_ROUTES.md",
+      "sha256": "1a33fde8219c4969a9a9e3f544a59cd9b4adde6e48633d4230cf6f96eba6e672"
+    },
+    {
+      "path": "agent_docs/contract/current/FLOWS.md",
+      "sha256": "ed3f2db56119ddac2b6081e8f865ec13bd0a19fe5d2dc70f92e02d01d7811f00"
+    },
+    {
+      "path": "agent_docs/contract/current/GEOMETRY.md",
+      "sha256": "15a53a97c81ed32d7bc27ab946d052308ef59c7b94fce7521352a9f933fc0a34"
+    },
+    {
+      "path": "agent_docs/contract/current/GRAPHS.md",
+      "sha256": "63ba6d01a56951bebf46d0168052a1fbe89c59fd9c21e836907310354cc6df2a"
+    },
+    {
+      "path": "agent_docs/contract/current/INTERACTION.md",
+      "sha256": "0cf59ba6fe578cb4dcae952d15580e451baa4130270dbf19d74d8394d73ead75"
+    },
+    {
+      "path": "agent_docs/contract/current/MARK_SELECTION.md",
+      "sha256": "7abe0ed3215552c2a20a735ebc961d0ca29f93e0b313a9c8087e9d1cdf99fbb0"
+    }
+  ]
+}

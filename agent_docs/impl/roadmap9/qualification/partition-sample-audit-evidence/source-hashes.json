@@ -1,0 +1,19 @@
+{
+  "sourceRevision": "4e12210587bbbc846c3dc8b5e8a2d7f694e7f877",
+  "files": {
+    "src/animation/sample.js": "34f72d55de9f6e8da2aa020df68ece29dfabb73fbf0bf5bbac7bb5984c51df08",
+    "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+    "src/grammar/animation/partitionState.js": "eec511a94a0fd019e83c8add344227e67fd66c8ace7e72f2673fce49b51a768f",
+    "src/grammar/hierarchy/partitionInterpolation.js": "9ffb3b8b00b74d005826aebc94c58be586dee1b89feed090cbdb487b76cb8d64",
+    "src/grammar/hierarchy/partitionCell.js": "c2d5de91a1f89ef88381a4dc7072da1c8eb1e3d300fce0257b417145682e1cad",
+    "src/grammar/hierarchy/partitionAdapter.js": "fe04f4e580a5bc445d3975ed8a8076bb0be5a7cc3d2576da70a6b1a9aab95a71",
+    "src/grammar/hierarchy/partitionBend.js": "9f0429c03b309eaeb8e1f25e19a2eb889b15e6ac991b23393f5c168430c7acce",
+    "src/grammar/hierarchy/partitionMapping.js": "ac0c0658a1f3472940ca7cc32fa473e990c721c4ec8094d218d465040c23ae86",
+    "src/materialization/animation/partitionGeometry.js": "48bbdcc4e698152c32c9776602f8a051353724399aed82b4ef3dbc6e0aa76890",
+    "src/core/immutable.js": "1ec67bd4b674532050ef8351474840d7b947418469b79d976395b63c7bf62fc2",
+    "src/core/ownData.js": "fa81e2edca5037e2c1f13a82240e5d70097e292073b05e3bbe682b68358dad7d",
+    "scripts/benchmarks/workloads.browser.js": "2f5fe8833fff37f44528aab47ccdfc494d03f2754d91e336dbfb75fb9344a1fa"
+  },
+  "runtimeChanged": false,
+  "performanceQualified": false
+}

@@ -140,6 +140,27 @@
     "editSource": "docs/recipes/index.md",
     "description": "Use a recipe when you know the chart type and want the shortest supported action flow."
   },
+  "/recipes/marginal/": {
+    "title": "Marginal Distribution Recipe",
+    "source": "docs/recipes/marginal.md",
+    "editSource": "examples/marginal/program.js",
+    "description": "Keep the scatterplot and both marginal distributions on the same observations.",
+    "image": "/assets/images/marginal.png"
+  },
+  "/recipes/bullet/": {
+    "title": "Bullet Comparison Recipe",
+    "source": "docs/recipes/bullet.md",
+    "editSource": "examples/bullet/program.js",
+    "description": "A Bullet comparison places reference ranges, an actual measure and a target on one quantitative scale.",
+    "image": "/assets/images/bullet.png"
+  },
+  "/recipes/combo/": {
+    "title": "Combo Chart Recipe",
+    "source": "docs/recipes/combo.md",
+    "editSource": "examples/linked-overlay/program.js",
+    "description": "Use createOverlay when a line should follow the endpoints of existing bars. The bars and line share the same meaning, scale and final positions.",
+    "image": "/assets/images/linked-overlay.png"
+  },
   "/recipes/scatterplot/": {
     "title": "Scatterplot Recipe",
     "source": "docs/recipes/scatterplot.md",
@@ -484,11 +505,25 @@
     "description": "Render one fully materialized ChartProgram to Browser Canvas, a browser safe SVG string, a Node PNG file, or a single page vector PDF.",
     "image": "/assets/images/cars-scatterplot.png"
   },
+  "/api/animation/": {
+    "title": "Animate and Export Chart Frames",
+    "source": "docs/api/animation.md",
+    "editSource": "docs/api/animation.md",
+    "description": "Prepare a transition between two immutable charts, sample it at an explicit time, and pass the returned frame directly to Canvas, SVG, PNG, or PDF.",
+    "image": "/assets/images/cars-scatterplot.png"
+  },
+  "/api/live/": {
+    "title": "Live Charts",
+    "source": "docs/api/live.md",
+    "editSource": "docs/api/live.md",
+    "description": "ggaction/live is the shortest path to an interactive chart in a browser.",
+    "image": "/assets/images/cars-scatterplot.png"
+  },
   "/api/interaction/": {
-    "title": "Inspect Chart Items",
+    "title": "Interaction Sessions",
     "source": "docs/api/interaction.md",
     "editSource": "docs/api/interaction.md",
-    "description": "Inspect overlapping marks and guides in Canvas or SVG while preserving an immutable chart program.",
+    "description": "Inspect and edit charts through pointer, keyboard and headless commands while preserving an immutable chart program.",
     "image": "/assets/images/inspect-chart.png"
   },
   "/recipes/inspect-chart/": {
@@ -1091,14 +1126,14 @@
     "title": "Flow Data and Sankey Layouts",
     "source": "docs/api/flows.md",
     "editSource": "docs/api/flows.md",
-    "description": "Use explicit node and edge tables to show how quantities move between named entities. Build a flow graph, store a layout, then draw links and nodes as separate marks.",
+    "description": "Store conserved node and edge flows, lay them out as DAG or cyclic Sankey diagrams, and draw nodes and links.",
     "image": "/assets/images/flow-layouts.png"
   },
   "/tutorials/flows/": {
     "title": "Draw Conserved Flows",
     "source": "docs/tutorials/flows.md",
     "editSource": "examples/flow-layouts/program.js",
-    "description": "Start with a node table and an edge table whose values have one shared unit.",
+    "description": "Build a Sankey diagram from explicit node and edge tables, including cyclic feedback.",
     "image": "/assets/images/flow-layouts.png"
   },
   "/api/geometry/": {
@@ -1197,5 +1232,33 @@
     "editSource": "examples/waterfall/program.js",
     "description": "Declare each row's role so its effect on the running balance is explicit.",
     "image": "/assets/images/waterfall.png"
+  },
+  "/api/trail/": {
+    "title": "Trail Plots",
+    "source": "docs/api/trail.md",
+    "editSource": "docs/api/trail.md",
+    "description": "Draw a filled ribbon whose width changes at each sample. A width is measured in logical screen pixels, independently of the position scales.",
+    "image": "/assets/images/trail.png"
+  },
+  "/tutorials/trail/": {
+    "title": "Show Width Along a Series",
+    "source": "docs/tutorials/trail.md",
+    "editSource": "examples/trail/program.js",
+    "description": "Keep position and sample width separate. These two signals have constant vertical positions while the first ribbon widens and the second narrows.",
+    "image": "/assets/images/trail.png"
+  },
+  "/api/table/": {
+    "title": "Table Plots",
+    "source": "docs/api/table.md",
+    "editSource": "docs/api/table.md",
+    "description": "Show keyed rows with formatted values, in cell bars and sparklines. Table plots are available in the Full entry.",
+    "image": "/assets/images/table.png"
+  },
+  "/tutorials/table/": {
+    "title": "Combine Values and Small Charts in a Table",
+    "source": "docs/tutorials/table.md",
+    "editSource": "examples/table/program.js",
+    "description": "Keep a source row's name, value and ordered observations together. The amount uses both an exact number and a bar.",
+    "image": "/assets/images/table.png"
   }
 }

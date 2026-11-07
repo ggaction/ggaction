@@ -11,7 +11,9 @@ export function validateGraphicIdentity(value) {
     throw new TypeError("Graphic identity requires key, topology, role and lineage.");
   }
   const lineage = value.lineage;
-  if (lineage.kind === "resource") {
+  if (lineage.kind === "screen") {
+    if (Object.keys(lineage).length !== 1) throw new TypeError("Screen lineage has no data or resource reference.");
+  } else if (lineage.kind === "resource") {
     if (Object.keys(lineage).length !== 2 || !Object.hasOwn(lineage, "resource")) throw new TypeError("Resource lineage requires its exact resource reference.");
     validateInputReference(lineage.resource);
     if (!BUILTIN_RESOURCE_KINDS.includes(lineage.resource.kind)) throw new TypeError("Resource lineage requires a builtin resource.");
@@ -25,6 +27,9 @@ export function validateGraphicIdentity(value) {
       ![key[1], key[2]].every(part => typeof part === "string" && part) ||
       !Array.isArray(key[3]) || key[3].length !== 2 || !key[3].every(part => typeof part === "string" && part)) {
     throw new TypeError("Graphic item key requires child path, owner, role and final grain.");
+  }
+  if ((lineage.kind === "screen") !== (key[2] === "item" && key[3][0] === "annotation" && key[3][1] === "screen")) {
+    throw new TypeError("Screen lineage requires its exact rowless annotation item key.");
   }
   return value;
 }

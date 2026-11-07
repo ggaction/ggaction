@@ -1,3 +1,4 @@
+import { mapPolarGuideValues } from "../../../../materialization/guides/tickValues.js";
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { action } from "../../../../core/action.js";
 import { validateNonNegativeFinite } from "../../../../core/validation.js";
@@ -7,15 +8,7 @@ import {
 } from "../../../../grammar/polarGuides.js";
 import { resolvePlotGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
-import {
-  mapPolarGuideValues,
-  normalizePolarTickMode,
-  POLAR_AXIS_DEFAULTS,
-  polarGuideNames,
-  resolvePolarFrameForProgram,
-  validatePolarLineStyle,
-  validatePolarTickConfig
-} from "../resolve.js";
+import { normalizePolarTickMode, POLAR_AXIS_DEFAULTS, polarGuideNames, resolvePolarFrameForProgram, validatePolarLineStyle, validatePolarTickConfig } from "../resolve.js";
 import {
   componentResources,
   operations,

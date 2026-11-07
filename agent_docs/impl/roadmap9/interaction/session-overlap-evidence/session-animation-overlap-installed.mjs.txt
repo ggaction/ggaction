@@ -1,0 +1,12 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import path from 'node:path';
+import {preparePackageConsumer} from '../scripts/package-consumer.js';
+import {run,root} from '../scripts/consumers/runtime.js';
+const packageSpec=path.resolve('.artifacts/session-animation-archives/ggaction-ae486a9124187717bb8a3c95e54b14c636e6c924e8c0795288e60f9ab721275f.tgz');
+const hash=createHash('sha256').update(await readFile(packageSpec)).digest('hex');
+const consumer=await preparePackageConsumer({packageSpec});
+try {
+ await run(process.execPath,['scripts/run-tests.js','browser','browser/interaction-animation.browser.js'],root,{stdio:'inherit',env:{...process.env,GGACTION_BROWSER_PACKAGE_DIRECTORY:consumer.directory}});
+ await writeFile('.artifacts/session-animation-overlap-installed.json',JSON.stringify({node:process.version,archiveSha256:hash,owningBrowserCases:8,status:'passed',repositorySourceImports:false},null,2)+'\n');
+} finally {await consumer.cleanup();}

@@ -1,0 +1,401 @@
+{
+  "sourceCommit": "147a49b388eb89ee0c6ffbe1290d0b815927046e",
+  "parent": "e4571d277",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json#remainingApproval",
+  "scope": "Read-only format items adds scoped native final-item identity, stored selection membership and logical visibility. Default table output remains unchanged. No renderer, persisted state, automatic DOM, keyboard focus or animation import is added.",
+  "runtimeAndTypesFingerprint": "a73352994a32944a8901c99aae33f409816afd0c3a2a4b3ba32b0ab889efb4e1",
+  "checks": {
+    "accessibility": 21,
+    "focusedNode20": 11,
+    "focusedNode24": 11,
+    "sourceDiscoveryPackageTypes": 41,
+    "finalDiscoveryPackage": 23,
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipes": 3
+    },
+    "browser": {
+      "tests": 1,
+      "actualChromium": true,
+      "canonicalSnippet": true,
+      "canvasAndSvg": true,
+      "safeHostTable": true,
+      "keyboardHostFilter": true
+    },
+    "critical": {
+      "accessibility.js": {
+        "lines": 98.93,
+        "branches": 94.29,
+        "functions": 100
+      },
+      "accessibilityItems.js": {
+        "lines": 100,
+        "branches": 95.92,
+        "functions": 100
+      }
+    },
+    "docs": 49,
+    "sourcePinnedDocs": 49,
+    "executableSnippet": 1,
+    "built": {
+      "pages": 172,
+      "llmArtifacts": 1535,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "overflow": false,
+      "inspected": [
+        320,
+        1440
+      ]
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "5787d20f4b885ce0e799742ee804e5d2648cdcbb5868bfa8b0df284b4c164b65",
+        "sourceFree": true,
+        "runtime": [
+          "accessible-items/native-grain-and-basic PASS",
+          "accessible-items/nested-scoped-membership PASS",
+          "accessible-items/fresh-process-filter-and-selection PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 973,
+            "minifiedBytes": 2557066,
+            "gzipBytes": 732356
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 567,
+            "minifiedBytes": 1323164,
+            "gzipBytes": 386042
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 191,
+            "minifiedBytes": 376376,
+            "gzipBytes": 120959
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 146971,
+            "gzipBytes": 44045
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "5787d20f4b885ce0e799742ee804e5d2648cdcbb5868bfa8b0df284b4c164b65",
+        "sourceFree": true,
+        "runtime": [
+          "accessible-items/native-grain-and-basic PASS",
+          "accessible-items/nested-scoped-membership PASS",
+          "accessible-items/fresh-process-filter-and-selection PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 973,
+            "minifiedBytes": 2557066,
+            "gzipBytes": 730834
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 567,
+            "minifiedBytes": 1323164,
+            "gzipBytes": 384958
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 191,
+            "minifiedBytes": 376376,
+            "gzipBytes": 120493
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 146971,
+            "gzipBytes": 43886
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "5787d20f4b885ce0e799742ee804e5d2648cdcbb5868bfa8b0df284b4c164b65",
+        "sourceFree": true,
+        "runtime": [
+          "accessible-items/native-grain-and-basic PASS",
+          "accessible-items/nested-scoped-membership PASS",
+          "accessible-items/fresh-process-filter-and-selection PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 973,
+            "minifiedBytes": 2557066,
+            "gzipBytes": 732356
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 567,
+            "minifiedBytes": 1323164,
+            "gzipBytes": 386042
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 191,
+            "minifiedBytes": 376376,
+            "gzipBytes": 120959
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 146971,
+            "gzipBytes": 44045
+          }
+        ]
+      }
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1062,
+    "packedBytes": 1504420,
+    "unpackedBytes": 6853746,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/accessible-items-5787d20f.tgz",
+    "sha1": "8d969f04ddad2bdf311d2753c7d17d423e5992a9",
+    "sha256": "5787d20f4b885ce0e799742ee804e5d2648cdcbb5868bfa8b0df284b4c164b65"
+  },
+  "packageMeasurement": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1062,
+    "packedBytes": 1507408,
+    "unpackedBytes": 6853746
+  },
+  "limits": {
+    "entries": 1062,
+    "packedBytes": 1507500,
+    "unpackedBytes": 6854000,
+    "searchBytes": 1038800
+  },
+  "searchMeasurement": 1038771,
+  "preservedFailures": [
+    "Initial test fixtures used invalid existing scale/layout/filter options and guessed that selection alone creates composite component assignments. Native documented calls and actual stored assignment expectations corrected the fixtures. No runtime repair is claimed from these failures.",
+    "Initial package check failed1062>1061. Canonical staging read-only measurement informed minimal caps1062/1507500/6854000, followed by canonical validation and identical tar three-Node consumers.",
+    "Initial docs checks failed for an unregistered executable snippet and1038771-byte search index above1038300. Added canonical snippet registration, measured cap1038800 and regenerated outputs; owning49 passed.",
+    "Initial docs preflight used system Ruby2.6.10. Retried with documented Ruby3.2.11 PATH and resolved locked bundle; preflight/build/built passed."
+  ],
+  "evidencePolicy": "No whole repository, all renderer or all installed suite repeat is claimed. New mode is read-only and uses existing materialization. Actual keyboard evidence is a host button invoking a native filter, not the still-unimplemented keyboard focus binding.",
+  "remaining": [
+    "STEP068 exact current-frame keyboard focus/restore and native activation",
+    "Accessible hierarchy/graph descriptions and hover/focus tooltip/touch matrix",
+    "Public animation/reduced-motion dependency",
+    "STEP074-077 overall qualification"
+  ],
+  "commands": {
+    "focused": "node --experimental-test-coverage --test-coverage-include=src/accessibility*.js --test test/unit/accessibility/*.test.js",
+    "boundaries": "node --test test/contracts/accessibility-types.test.js test/contracts/source-boundaries.test.js test/contracts/test-discovery.test.js test/contracts/package-boundaries.test.js test/contracts/package-artifact.test.js",
+    "realistic": "Pinned TidyTuesday cache + node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js",
+    "browser": "node --test test/browser/accessible-data.browser.js",
+    "installed": "Node20/22/24 node .artifacts/accessible-items-consumer.mjs, same5787d20f tar",
+    "docs": "docs:generate; snippet registration + owning snippet/search/machine/llms; preflight; owning49; source pin provenance/machine/llms; build/built; four-width browser/Axe; pinned49"
+  },
+  "evidenceFiles": [
+    {
+      "path": "accessible-items-boundaries-final.log.gz",
+      "sha256": "18aa5b483ef08c4995dba21d99a373a16314fd305075817998c4b021653d9154"
+    },
+    {
+      "path": "accessible-items-boundaries.log.gz",
+      "sha256": "94dadcda06b6057469a524c4019cf04ef5dfb6e18fedee2ad889ad9b3343164c"
+    },
+    {
+      "path": "accessible-items-browser.log.gz",
+      "sha256": "7f17d7a239ee88b0aaa40758df4063992156997b6a509b6037c2d3340e790c9f"
+    },
+    {
+      "path": "accessible-items-build.log.gz",
+      "sha256": "3ac51d59ce76f6b24128b3de4b3cef008b9c12725805b209ff61c3b00dc8f1da"
+    },
+    {
+      "path": "accessible-items-built.log.gz",
+      "sha256": "1ec05c4e74288ef806fa965037bd3335acae6f1b91d245a6f566a0dc03be2546"
+    },
+    {
+      "path": "accessible-items-consumer.mjs.gz",
+      "sha256": "76ce68000a0b973175ac16f7686d4f2d3fb7ab204fa2a7111b515629b565fbfd"
+    },
+    {
+      "path": "accessible-items-consumer20.log.gz",
+      "sha256": "1912ea27ad8c1829dba4175a2d287a5be4d5f98af85792957c9e61eccc12814d"
+    },
+    {
+      "path": "accessible-items-consumer22.log.gz",
+      "sha256": "e6152b656f76bbb05a433a2974c132d1dc1b0970629d78653c292ad58283fe36"
+    },
+    {
+      "path": "accessible-items-consumer24.log.gz",
+      "sha256": "e27ba3f96661fafd98a0f81638558e718a3d5c9bc712cd8e6fd7f7614daa3344"
+    },
+    {
+      "path": "accessible-items-coverage-final.log.gz",
+      "sha256": "ef85336b95f5049ef7eeb4da5161caa31170b92ae5a8d74b450cf20253872d24"
+    },
+    {
+      "path": "accessible-items-coverage.log.gz",
+      "sha256": "36fdd848643bf7ea5bd2fe6d3935e009b172f3fe075ef36fd402b221f602f0a0"
+    },
+    {
+      "path": "accessible-items-coverage2.log.gz",
+      "sha256": "e7dceed79a5f9e6bb645fa855154567d10bc75f2b1fa5df1a8944cea661bae13"
+    },
+    {
+      "path": "accessible-items-doc-browser.log.gz",
+      "sha256": "77d2ae7e042e08472553fc32d3331d134217d8987b62beee77c0cc399c323292"
+    },
+    {
+      "path": "accessible-items-doc-browser.mjs.gz",
+      "sha256": "8444966ed4744dd70cee7e1dd925f31ce8ae7d4a978c30e4d18cab594bdfd556"
+    },
+    {
+      "path": "accessible-items-docs-final.log.gz",
+      "sha256": "9537d2266d4600c73f241f02006741ebc9b616368bd5e594d2dd4b3d243a528e"
+    },
+    {
+      "path": "accessible-items-docs.log.gz",
+      "sha256": "8090dcbd845ad9e03409e4abfdccfa6f3d9658482956c99b1387a62fe3d5a262"
+    },
+    {
+      "path": "accessible-items-executable.log.gz",
+      "sha256": "3390f49c8d1de43fec6153e170aea5f1c92cc67b70ff16779de62e7b8f5ece31"
+    },
+    {
+      "path": "accessible-items-final-discovery.log.gz",
+      "sha256": "1206d1d58b87559b41304bdc1becde75166c5c44ec187022858d7b901873d599"
+    },
+    {
+      "path": "accessible-items-first.log.gz",
+      "sha256": "009868ee79bb70df57731d106895d35b473bf26935ee1a6ab49038467b99ac53"
+    },
+    {
+      "path": "accessible-items-fixed.json.gz",
+      "sha256": "688418939667f2c2df6d949a654470d6af42c421d76132abbff3c8f1d61a6b72"
+    },
+    {
+      "path": "accessible-items-generate.log.gz",
+      "sha256": "3dfd263f9035942bff321ee9e378bb6e7c293491412fea4ea54380e730a2993d"
+    },
+    {
+      "path": "accessible-items-measure.mjs.gz",
+      "sha256": "f1477b35fdc5ecc8015f765c4ab35bb8d55a25cf5ce88f50439b8dfe71e5ba85"
+    },
+    {
+      "path": "accessible-items-measure20.json.gz",
+      "sha256": "7d75dbb6b8d9bd6b48a129791c2eafd6ad42f1ccf0291378cda82c81d69b03c7"
+    },
+    {
+      "path": "accessible-items-node20.log.gz",
+      "sha256": "62a307236593f8937821cb90f76d4ebaab2645d62b28710cc6dcded4fafbaf06"
+    },
+    {
+      "path": "accessible-items-node24.log.gz",
+      "sha256": "0e3f42b6f8b52911dbbc363aef3a5dc4d8321f60c1ad53685d0c88f2b40871cf"
+    },
+    {
+      "path": "accessible-items-pin.log.gz",
+      "sha256": "65ee8d076fb83d7cbd4658feee5dfeef3a032e39da464a8e75e804741ee0af4c"
+    },
+    {
+      "path": "accessible-items-preflight-final.log.gz",
+      "sha256": "9d47135d2561c027deaf16e720d64974cf552ac3d951ea969da392572442ebdf"
+    },
+    {
+      "path": "accessible-items-preflight.log.gz",
+      "sha256": "a2ab74e7ef094e0c694be8a7436b8a9b2db11fe9622016dc82cda218eefc5956"
+    },
+    {
+      "path": "accessible-items-qualify.mjs.gz",
+      "sha256": "d8afb64edc15c6d597decf821feb246702d996bd386514bb6fb858bd76efa9da"
+    },
+    {
+      "path": "accessible-items-realistic.log.gz",
+      "sha256": "f2d4aa629f70471f78ad5f9d2f8e7a0c60eda69227770ea8cf4dd89692936dc6"
+    },
+    {
+      "path": "accessible-items-second.log.gz",
+      "sha256": "eb9068a0c1faeb9bff773abbdf0ca9bc28714e86e36c21b734b111fdf48a3892"
+    },
+    {
+      "path": "accessible-items-snippets.log.gz",
+      "sha256": "143042231e9d6748a48868eb87dd47a5b98738fe0156f234cddae1a244e2adab"
+    },
+    {
+      "path": "accessible-items-source-pinned.log.gz",
+      "sha256": "59d718088b7ad16033803bff05e8d50455a5ce37a4093b28e6f49eb01bda990a"
+    },
+    {
+      "path": "api-rendering-1440.png",
+      "sha256": "4f0baee7bbf2851078ca95f7c253793a96c2ffc3e68c38f5661f7ba88b0e3d1a"
+    },
+    {
+      "path": "api-rendering-320.png",
+      "sha256": "48aca9e505f907850d55a49705820920c5883b618b449b3101be3d62da00292b"
+    },
+    {
+      "path": "api-rendering-390.png",
+      "sha256": "0949fe29a6e4503b947efef80bdbb34c8a27bbf69959ccce02b9d092c89d8580"
+    },
+    {
+      "path": "api-rendering-768.png",
+      "sha256": "40a508af41f396cc54a405c94dd3fe062344e69cf89cf2a2c8c49a39884e9373"
+    }
+  ]
+}

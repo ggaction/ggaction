@@ -4,7 +4,7 @@ The long A–C connection follows the existing A–B–C path, with two corner c
 All three original edges remain independently selectable.
 
 This complete ES module uses the same data and action flow as the
-[executable example](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/edge-routes/program.js).
+[executable example](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/edge-routes/program.js).
 
 ```javascript
 import { chart } from 'ggaction';
@@ -15,9 +15,9 @@ const program = chart()
     { id: 'A' }, { id: 'B' }, { id: 'C' }
   ] })
   .createData({ id: 'edges', keyField: 'id', values: [
-    { id: 'AC', source: 'A', target: 'C' },
-    { id: 'AB', source: 'A', target: 'B' },
-    { id: 'BC', source: 'B', target: 'C' }
+    { id: 'AC', source: 'A', target: 'C', amount: 8, category: 'direct', alternative: 'long', rank: 0 },
+    { id: 'AB', source: 'A', target: 'B', amount: 3, category: 'leg', alternative: 'short', rank: 1 },
+    { id: 'BC', source: 'B', target: 'C', amount: 5, category: 'leg', alternative: 'long', rank: 2 }
   ] })
   .createGraphData({ id: 'network', nodes: 'nodes', edges: 'edges',
     nodeKey: 'id', source: 'source', target: 'target', edgeKey: 'id' })
@@ -37,3 +37,44 @@ return to the graph's native paths while retaining node and edge identities.
 
 See [Edge routes](../../../api/edge-routes/) for method options, exact input bindings,
 screen-size invalidation and the explicit worker preparation lifecycle.
+
+## Compare all four methods with source measurements
+
+The same example also accepts `"hierarchical"`, `"force-directed"` and `"density"`.
+Hierarchical routing explicitly prepares a tree, matches its node anchors to the graph
+layout, and applies the plot origin. Force and density routing keep their complete
+fixed schedules and sampled paths.
+
+Use a companion analytical chart to compare edge measurements. Its color scale,
+axis and legend belong to that child; editing them leaves the route child's native
+positions, route references and stroke unchanged. Equal row keys do not create an
+automatic link: revise both source datasets with explicit child targets.
+
+Copy [comparison.js](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/edge-routes/comparison.js),
+[program.js](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/edge-routes/program.js),
+[options.js](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/edge-routes/options.js)
+and [data.js](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/edge-routes/data.js)
+beside this ES module and use `ggaction` for the helpers' public package imports.
+
+```javascript
+import { createEdgeRouteComparison, reviseEdgeRouteComparison } from './comparison.js';
+import { renderToSVG } from 'ggaction/svg';
+
+const comparisons = ['hierarchical', 'force-directed', 'density', 'edge-path']
+  .map(method => createEdgeRouteComparison(method));
+const changed = comparisons[0]
+  .encodeColor({ target: { childPath: ['analysis'], id: 'values' }, field: 'alternative' })
+  .editScale({ target: { childPath: ['analysis'] }, id: 'measure', domain: [0, 20] });
+const revised = reviseEdgeRouteComparison(changed);
+const svg = renderToSVG(revised);
+```
+
+This comparison does not attach Cartesian positional encodings or analytical guides
+to the stored route itself. Route size and work limits still apply to each complete
+calculation; a small example does not establish a large-graph performance guarantee.
+
+Density calculations use the JavaScript engine's floating-point exponentiation.
+Fresh calculations in different engines can differ slightly. Saved routes retain
+their original coordinates and result hash on restore; restoring never reruns
+the solver. The density diagnostic check permits one adjacent binary64 value
+for the exponential bandwidth, while its initial value and clamped floor stay exact.

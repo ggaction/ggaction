@@ -1,0 +1,608 @@
+{
+  "targets": [
+    {
+      "target": "AT-90",
+      "owners": [
+        {
+          "test": "test/docs/documentation-coverage.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/documentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/documentation-truth.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/docs",
+      "owners": [
+        {
+          "test": "test/docs/documentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/compound-path/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/docs",
+      "owners": [
+        {
+          "test": "test/docs/documentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/structured-paints/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:image/docs",
+      "owners": [
+        {
+          "test": "test/charts/image-assets/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md",
+        "agent_docs/contract/current/MARKS.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/docs",
+      "owners": [
+        {
+          "test": "test/docs/documentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/partition-layouts/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/docs",
+      "owners": [
+        {
+          "test": "test/docs/documentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/partition-layouts/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/docs",
+      "owners": [
+        {
+          "test": "test/docs/documentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/tree-layouts/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/docs",
+      "owners": [
+        {
+          "test": "test/docs/documentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/treemap-layouts/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/docs",
+      "owners": [
+        {
+          "test": "test/docs/documentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/graph-plots/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-hierarchical/docs",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-force-directed/docs",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-density/docs",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:edges-edge-path/docs",
+      "owners": [
+        {
+          "test": "test/charts/edge-routes/methods.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/resources/edge-route-composition.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/EDGE_ROUTES.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/docs",
+      "owners": [
+        {
+          "test": "test/docs/documentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/flow-layouts/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/docs",
+      "owners": [
+        {
+          "test": "test/docs/documentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/flow-layouts/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/docs",
+      "owners": [
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/contours/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/docs",
+      "owners": [
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/contours/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/docs",
+      "owners": [
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/calendar/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:table/docs",
+      "owners": [
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/docs",
+      "owners": [
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/docs",
+      "owners": [
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/docs",
+      "owners": [
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/docs",
+      "owners": [
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/docs",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/docs",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/docs",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/docs",
+      "owners": [
+        {
+          "test": "test/charts/geographic-marks/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/docs",
+      "owners": [
+        {
+          "test": "test/docs/documentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/radial-sectors/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/docs",
+      "owners": [
+        {
+          "test": "test/docs/documentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/polar-line-radar/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/docs",
+      "owners": [
+        {
+          "test": "test/docs/documentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/streamgraph/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/centered-area-stream/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/docs",
+      "owners": [
+        {
+          "test": "test/docs/documentation.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/cars-acceleration-violins/public.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/docs/executable-programs.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md"
+      ]
+    }
+  ]
+}

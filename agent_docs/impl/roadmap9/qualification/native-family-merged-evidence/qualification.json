@@ -1,0 +1,55 @@
+{
+  "status": "focused-native-owner-integration-verified; candidate-results-pending",
+  "sourceBase": "06d133b0a620eea40f2575153519a6f8e5bc23c9",
+  "incoming": "cc6dab918bcad9b9dfb80d614068137105ae05f1",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "checks": {
+    "owning.log": 123,
+    "render.log": 28,
+    "browser.log": 3
+  },
+  "manifest": {
+    "addedConsumerOwners": 61,
+    "assignedConsumerOwners": 304,
+    "unassignedRequiredConsumers": 270,
+    "assignedAcceptanceOwners": 55,
+    "pendingAcceptanceOwners": 24,
+    "requirements": 30,
+    "groups": 79,
+    "consumerTargets": 577,
+    "requiredConsumers": 574,
+    "canonicalNotApplicable": 3,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577,
+    "otherRowsAndAllApplicabilityUnchanged": true
+  },
+  "packageReuse": {
+    "sha256": "26ad0f4b6cdc4ddd0c08463da39680cb02113dc05b2128006d7dd77935c48991",
+    "runtimeSource": "0b2c8e41a",
+    "note": "All packaged inputs unchanged; no repack, installed rerun, coverage or P95 claimed."
+  },
+  "evidenceFiles": {
+    "browser.log": {
+      "sha256": "8dd16bcea25237ebc0c3d788e471f1a6d47c6c5a6b7816c8e5fca920865b2ca4",
+      "bytes": 723
+    },
+    "render.log": {
+      "sha256": "8b6f764af28f598b3fef578b14d97e6cd2d31b916981c9668059047c21008d2c",
+      "bytes": 4715
+    },
+    "pending.json": {
+      "sha256": "9e843504c3d97d856509dbb7add80c3f1048f217b35d61e3d404611b54a077e9",
+      "bytes": 35664
+    },
+    "owning.log": {
+      "sha256": "2ee078daed12f50e896c615128cfe00d652ec5fae126d7739c1ed25b0db4dfbc",
+      "bytes": 28387
+    }
+  },
+  "remaining": [
+    "Four regression facade rows and other required consumer gaps",
+    "Pending native target execution and nine final commands",
+    "STEP077 incomplete"
+  ]
+}

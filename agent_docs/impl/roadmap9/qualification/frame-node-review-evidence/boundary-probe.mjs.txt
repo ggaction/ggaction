@@ -1,0 +1,50 @@
+await import('./prototype-hooks.mjs');
+import assert from 'node:assert/strict';
+import {writeFile} from 'node:fs/promises';
+const {chart,hconcat}=await import('../../src/index.js');
+const {planTransition,sampleTransition,serializeAnimation,deserializeAnimation}=await import('../../src/animation.js');
+const {animationFrameProvenance}=await import('../../src/animation/frameProvenance.js');
+const {cloneAndFreeze,isOwned}=await import('../../src/core/immutable.js');
+const options={durationMs:100,easing:'linear'};
+const point=()=>chart().createCanvas({width:300,height:200,margin:20}).createData({id:'rows',keyField:'id',values:[{id:'a',x:2,y:3}]}).createPointMark({id:'points',fill:'black'}).encodeX({field:'x',scale:{id:'x',domain:[0,10],nice:false}}).encodeY({field:'y',scale:{id:'y',domain:[0,10],nice:false}});
+const geo=()=>chart().createCanvas({width:300,height:200,margin:0}).createGeometryData({id:'places',format:'geojson',coordinateKind:'planar',featureKey:'id',values:{type:'FeatureCollection',features:[{type:'Feature',id:'a',properties:{name:'Alpha'},geometry:{type:'Point',coordinates:[40,50]}}]}}).createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'}).createGeoPointMark({id:'places-mark'}).createMarkLabels({field:'name'});
+function immutable(value){if(value===null||typeof value!=='object')return;assert.ok(Object.isFrozen(value));for(const child of Object.values(value))immutable(child);}
+const outcomes=[];
+for(const explicit of[false,true]){
+ const opts={...options,...(explicit?{maxEndpointNodes:100,maxOutputNodes:60}:{})};
+ const p=point(),q=p.editScale({id:'x',domain:[0,20],nice:false});
+ const g=geo(),h=g.editProjection({scalePx:2});
+ for(const mixed of[false,true]){
+  const compose=(a,b)=>mixed?hconcat({id:'mixed',programs:[{id:'point',program:a},{id:'geo',program:b}]}):a;
+  const from=compose(p,g),to=compose(q,h),plan=planTransition({from,to,options:opts});
+  globalThis.__nodeProof=[];const frame=sampleTransition(plan,37),proof=globalThis.__nodeProof;delete globalThis.__nodeProof;
+  assert.equal(proof.at(-1).localNodesComplete,!mixed);immutable(frame);immutable(animationFrameProvenance(frame).positions);
+  const moving=frame.scene.nodes[frame.decisions.findIndex(d=>d.kernel==='cartesian-point')];
+  assert.equal(isOwned(moving),true);assert.ok(isOwned(moving.properties));
+  assert.throws(()=>{moving.offset[0]=999;},TypeError);assert.throws(()=>{moving.properties.x=999;},TypeError);
+  assert.throws(()=>{frame.scene.nodes.push(moving);},TypeError);
+  for(const fake of[Object.freeze({...frame}),cloneAndFreeze(structuredClone(frame))])assert.throws(()=>planTransition({from:fake,to,options:opts}));
+  const text=serializeAnimation(plan),restored=deserializeAnimation(text).plan;assert.equal(serializeAnimation(restored),text);assert.deepEqual(sampleTransition(restored,37),frame);
+  const rebased=planTransition({from:frame,to,options:opts}),saved=serializeAnimation(rebased),offline=deserializeAnimation(saved).plan;assert.deepEqual(sampleTransition(offline,50),sampleTransition(rebased,50));
+  outcomes.push({explicit,mixed,nodeProof:proof,allDescendantsFrozen:true,mutableCloneAuthority:false,offlineAndRebaseExact:true});
+ }
+}
+const callerClip={type:'path',commands:[{op:'M',x:0,y:0},{op:'L',x:300,y:0},{op:'L',x:300,y:200},{op:'Z'}]};
+for(const explicit of[false,true]){
+ const opts={...options,...(explicit?{maxEndpointNodes:40,maxOutputNodes:20}:{})};
+ const p=point(),q=p.editScale({id:'x',domain:[0,20],nice:false});
+ const from=p.editGraphics({target:'points',property:'clip',value:callerClip}),to=q.editGraphics({target:'points',property:'clip',value:callerClip});
+ const ordinary=planTransition({from,to,options:opts}),sampled=sampleTransition(ordinary,50),decision=sampled.decisions.find(d=>d.kernel==='cartesian-point');
+ assert.ok(decision);
+ const plan=planTransition({from,to,options:{...opts,tracks:[{target:{itemKey:decision.itemKey},property:'fill',kernel:'color',keyframes:[{timeMs:0,value:'black'},{timeMs:50,value:'red'},{timeMs:100,value:'black'}]}]}});
+ for(const timeline of[false,true]){
+  const current=timeline?plan:ordinary;globalThis.__nodeProof=[];const frame=sampleTransition(current,37),proof=globalThis.__nodeProof;delete globalThis.__nodeProof;
+  immutable(frame);const node=frame.scene.nodes[frame.decisions.findIndex(d=>d.kernel==='cartesian-point')],clip=node.clips.find(c=>!Array.isArray(c));
+  assert.equal(clip.type,'path');assert.ok(isOwned(clip));assert.throws(()=>{clip.commands[0].x=999;},TypeError);
+  assert.ok(isOwned(node));assert.ok(isOwned(node.properties));
+  const saved=serializeAnimation(current),offline=deserializeAnimation(saved).plan;assert.deepEqual(sampleTransition(offline,37),frame);
+  outcomes.push({explicit,pathClip:true,timeline,nodeProof:proof,allDescendantsFrozen:true,callerClipOwned:isOwned(callerClip),callerClipFrozen:Object.isFrozen(callerClip),offlineExact:true});
+ }
+}
+assert.equal(Object.isFrozen(callerClip),false);callerClip.commands[0].x=17;
+await writeFile(new URL('./boundary-probe.json',import.meta.url),JSON.stringify(outcomes,null,2)+'\n');console.log(JSON.stringify(outcomes));

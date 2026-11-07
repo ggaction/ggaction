@@ -1,0 +1,6 @@
+{
+  "pid": 99179,
+  "observedProcess": "99179 14:01  88.6 1645744",
+  "completedCases": 400,
+  "reason": "Repeated live native samples remain in WeakSet EphemeronHashTable rehash during original100k hit preparation after400 installed cases. Terminate only owned synchronous consumer child to let parent preserve failure and finish other contracts. Not a product success or SLO result."
+}

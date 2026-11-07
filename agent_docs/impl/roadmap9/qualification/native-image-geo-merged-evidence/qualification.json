@@ -1,0 +1,99 @@
+{
+  "status": "native-image-geo-consumers-integrated; final-results-pending",
+  "base": "03d6cdb79ef6ac883bb6e0b2c38480e8700ba64b",
+  "incomingSource": "651a1cc89ed3d3cc7f12b7bd4f180aec23b279ab",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1229,
+    "packedBytes": 1755879,
+    "unpackedBytes": 7927055,
+    "file": "ggaction-0.0.26.tgz",
+    "sha256": "ebfa7ce25443b4fcf56205a5cf8cb241531e8fffe7b217a60fc5e1a5727150f0"
+  },
+  "runtimeTypesAndPackageInputsUnchanged": true,
+  "scope": "Image source revision/hit/scene/docs 4; Geo shape/point/line docs/accessibility 6; Graticule source revision/docs/accessibility 3. Image content byte lifecycle and procedural raw graticule values retain their native meaning.",
+  "checks": {
+    "owning.log": 61,
+    "render.log": 9,
+    "boundaries.log": 34,
+    "docs.log": 239,
+    "node20.log": 28,
+    "node24.log": 28
+  },
+  "manifest": {
+    "requirements": 30,
+    "groups": 79,
+    "targets": 577,
+    "required": 574,
+    "canonicalNotApplicable": 3,
+    "previousAssignedConsumers": 521,
+    "addedAssignedConsumers": 13,
+    "assignedConsumers": 534,
+    "pendingRequiredConsumers": 40,
+    "assignedGroups": 61,
+    "pendingGroups": 18,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577,
+    "otherRowsAndFieldsPreserved": true
+  },
+  "ownerDelta": [
+    "/consumers/2/assignedOwners/hit",
+    "/consumers/2/assignedOwners/docs",
+    "/consumers/2/assignedOwners/scene-animation",
+    "/consumers/2/assignedOwners/source-revise",
+    "/consumers/22/assignedOwners/docs",
+    "/consumers/22/assignedOwners/accessibility",
+    "/consumers/23/assignedOwners/docs",
+    "/consumers/23/assignedOwners/accessibility",
+    "/consumers/24/assignedOwners/docs",
+    "/consumers/24/assignedOwners/accessibility",
+    "/consumers/25/assignedOwners/docs",
+    "/consumers/25/assignedOwners/source-revise",
+    "/consumers/25/assignedOwners/accessibility"
+  ],
+  "remaining": [
+    "R dynamic labels/P axis-dependent inferred clearance",
+    "40 required native consumer owners and 18 acceptance owners; final same-candidate actual evidence",
+    "Route/heap/SLO, nine final commands/review/protected delivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "owning.log": {
+      "sha256": "18ad5611e9d4ac606db18179b62003c982a4f9efc9ce3892eeebb814d8aec0ff",
+      "bytes": 14930,
+      "tests": 61
+    },
+    "render.log": {
+      "sha256": "238c5ea44ccf0dbe347693c71d08f4df520cb74d55a3bb6fff6c9367b2586de5",
+      "bytes": 2175,
+      "tests": 9
+    },
+    "boundaries.log": {
+      "sha256": "02293e294f685d12cd3d7d87f8b88b696d3994103e5ad67fa3f683cf7b1fa4a4",
+      "bytes": 7684,
+      "tests": 34
+    },
+    "docs.log": {
+      "sha256": "599a13cb7599000339962c367f703d53d2bb9164098c76abfb52586683245669",
+      "bytes": 72878,
+      "tests": 239
+    },
+    "node20.log": {
+      "sha256": "06a5b800de3b688d97310501b5b923eea6b648bd682a7249bbe06323424ad92d",
+      "bytes": 6646,
+      "tests": 28
+    },
+    "node24.log": {
+      "sha256": "bf4f268671cc17efa70b4033092fc16fed5960c30bfe02ac40cf9b028e90fd3f",
+      "bytes": 7064,
+      "tests": 28
+    },
+    "pending.json": {
+      "sha256": "9fd9acf8f48bb1fb486306cf24ca070555231f6d9d70eda4f43d5d76fcb01979",
+      "bytes": 26447
+    }
+  }
+}

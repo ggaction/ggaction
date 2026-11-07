@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { inflateSync } from "node:zlib";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { chart, render } from "ggaction";
@@ -10,6 +9,7 @@ import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 
 function computed(factory = chart) {
   return factory().createCanvas({ width: 200, height: 140, margin: 20 })
@@ -48,7 +48,7 @@ export const cases = [
       const revised = edited.reviseData({ source: "rows", id: "rowsV2", values: [{ x: 1, y: 2 }, { x: 3, y: 4 }], rowMap: [0, 1] });
       process.stdout.write(serializeProgram(revised));
     `;
-    const output = execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30_000 });
+    const output = execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30_000 });
     const restored = deserializeProgram(output), dataset = current(restored);
     assert.deepEqual(dataset.values.map(row => row.value), [6, 12]);
     assert.deepEqual(dataset.transform[0].parameterInputs, [{ kind: "parameter", id: "factor", revision: 1 }]);

@@ -17,7 +17,7 @@ function validateStored(resource) {
       !same(resource.provenance, { origin: "authored", sourceRows: [] })) throw new TypeError("Geometry source ownership or options are inconsistent.");
   const { result } = resource;
   exact(result, ["features", "identity", "source", "diagnostics", ...(resource.options.format === "topojson" ? ["topology"] : [])], "Stored geometry result");
-  const { featureKey, ...normalization } = authored;
+  const { featureKey, polygonWinding, ...normalization } = authored;
   const expected = normalizeGeometryData(result.source.values, normalization);
   for (const key of ["features", "source", "diagnostics", ...(expected.topology === undefined ? [] : ["topology"])]) {
     if (!same(result[key], expected[key])) throw new TypeError("Stored geometry disagrees with its retained source.");

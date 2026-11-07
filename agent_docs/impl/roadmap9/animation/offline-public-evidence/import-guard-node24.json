@@ -1,0 +1,10 @@
+{
+  "node": "v24.22.1",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/animation-archives/ggaction-67d01611f7fac2ebdb0a57c70cbdc33cdea4e4f1ae69848101ae6e3dac27224b.tgz",
+  "sha256": "67d01611f7fac2ebdb0a57c70cbdc33cdea4e4f1ae69848101ae6e3dac27224b",
+  "cases": [
+    "animation/offline-fresh-process",
+    "animation/embedded-assets-fresh-process"
+  ],
+  "status": "passed"
+}

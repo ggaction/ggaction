@@ -129,7 +129,7 @@ test("geometry and scheduling failures reject atomically and release preview cap
 test("bindings reject ambiguous axes, unsupported domains and competing edit owners before mounting", () => {
   const p = program();
   for (const extra of [{ axis: "angular" }, { axis: "x", channels: { y: "y" } }, { channels: { x: "y" } }, { mode: "bad" }, { type: "lasso", axis: "x" }]) assert.throws(() => create(p, extra));
-  assert.throws(() => createInteractionSession({ program: p, bindings: [{ type: "brush", target: "points", selection: "picked" }, { type: "select", target: "points", selection: "picked" }] }), /at most/);
+  assert.throws(() => createInteractionSession({ program: p, bindings: [{ type: "brush", target: "points", selection: "picked", priority: 10 }, { type: "select", target: "points", selection: "picked" }] }), /ambiguous priority/);
   assert.throws(() => create(basic().createCanvas()), /selection|owner|Full/i);
   const changed = p.encodeX({ field: "x", scale: { type: "sqrt", domain: [0, 300], range: [0, 300] } });
   assert.throws(() => create(changed), /inversion/);

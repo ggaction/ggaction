@@ -1,5 +1,6 @@
 import { translateFillPaint } from "../grammar/paint.js";
 import { translateGraphicClip } from "../grammar/schemas/graphicClip.js";
+import { translateWeightedBlendSources } from "../grammar/schemas/weightedBlend.js";
 
 function translateCommands(commands, dx, dy) {
   return commands.map(command => {
@@ -21,6 +22,7 @@ function translateCommands(commands, dx, dy) {
 
 export function translatedProperties(type, properties, dx, dy) {
   const next = { ...properties };
+  if (type === "weighted-blend") next.sources = translateWeightedBlendSources(properties.sources, dx, dy);
   if (properties.fill !== undefined) next.fill = translateFillPaint(properties.fill, dx, dy);
   if (properties.fillBounds) next.fillBounds = { left: properties.fillBounds.left + dx, right: properties.fillBounds.right + dx,
     top: properties.fillBounds.top + dy, bottom: properties.fillBounds.bottom + dy };

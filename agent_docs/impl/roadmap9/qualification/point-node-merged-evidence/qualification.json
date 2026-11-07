@@ -1,0 +1,950 @@
+{
+  "status": "point-node-local-freeze-integrated; common50ms-and-final-closeout-pending",
+  "base": "d7e7abe0d",
+  "review": "c0a3755ba7715db22405edde0fd28f2fd94a9d52",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Validated point properties and node retain core ownership; only fresh frame tuples freeze locally. Complete nodes vector receives ownership only when every node is already owned; raw extra emissions take existing deep-clone fallback. No consumer authority/core/renderer/math/work/schema/API changes.",
+  "sourceSHA256": {
+    "src/animation/sample.js": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1259,
+    "packedBytes": 1808620,
+    "unpackedBytes": 8152972,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-8910219c063d78c0ecfd97eedeb3cb322ff4dacbc90efcc3e1215e0ea83c4fb5.tgz",
+    "sha256": "8910219c063d78c0ecfd97eedeb3cb322ff4dacbc90efcc3e1215e0ea83c4fb5"
+  },
+  "checks": {
+    "focused.log": 2,
+    "coverage.log": 761,
+    "boundaries.log": 37,
+    "render.log": 52
+  },
+  "critical": {
+    "animation/sample.js": {
+      "lines": 100.0,
+      "branches": 98.14,
+      "functions": 100.0
+    }
+  },
+  "consumers": [
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1259,
+        "packedBytes": 1808620,
+        "unpackedBytes": 8152972,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-8910219c063d78c0ecfd97eedeb3cb322ff4dacbc90efcc3e1215e0ea83c4fb5.tgz",
+        "sha256": "8910219c063d78c0ecfd97eedeb3cb322ff4dacbc90efcc3e1215e0ea83c4fb5"
+      },
+      "node": "v20.20.2",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 788787,
+          "limit": 788800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 426195,
+          "limit": 426200,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25672,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69506,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 340806,
+          "limit": 340800,
+          "status": "exceeded"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137407,
+          "limit": 137500,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "bundle-limit-failed",
+      "finalBudgetRecheck": {
+        "source": ".artifacts/point-node-merged/installed-20.json",
+        "sha256": "8910219c063d78c0ecfd97eedeb3cb322ff4dacbc90efcc3e1215e0ea83c4fb5",
+        "limits": {
+          "ggaction": 788800,
+          "ggaction/basic": 426200,
+          "ggaction/svg": 26000,
+          "ggaction/graph": 69600,
+          "ggaction/animation": 340900,
+          "ggaction/interaction": 137500
+        },
+        "status": "passed",
+        "runtimeRepeated": false
+      }
+    },
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1259,
+        "packedBytes": 1808620,
+        "unpackedBytes": 8152972,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-8910219c063d78c0ecfd97eedeb3cb322ff4dacbc90efcc3e1215e0ea83c4fb5.tgz",
+        "sha256": "8910219c063d78c0ecfd97eedeb3cb322ff4dacbc90efcc3e1215e0ea83c4fb5"
+      },
+      "node": "v22.23.1",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 787383,
+          "limit": 788800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 425148,
+          "limit": 426200,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25558,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69341,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 339650,
+          "limit": 340900,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 136875,
+          "limit": 137500,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1259,
+        "packedBytes": 1808620,
+        "unpackedBytes": 8152972,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-8910219c063d78c0ecfd97eedeb3cb322ff4dacbc90efcc3e1215e0ea83c4fb5.tgz",
+        "sha256": "8910219c063d78c0ecfd97eedeb3cb322ff4dacbc90efcc3e1215e0ea83c4fb5"
+      },
+      "node": "v24.22.1",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 788787,
+          "limit": 788800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 426195,
+          "limit": 426200,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25672,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69506,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 340806,
+          "limit": 340900,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137407,
+          "limit": 137500,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    }
+  ],
+  "installedBrowser": {
+    "archiveSHA256": "8910219c063d78c0ecfd97eedeb3cb322ff4dacbc90efcc3e1215e0ea83c4fb5",
+    "sourceRootInputs": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "versions": [
+      3,
+      4
+    ],
+    "status": "passed"
+  },
+  "product1000": {
+    "kind": "actual product baseline425d76230 versus actual product point node local freeze; counters are diagnostic, not SLO",
+    "node": "v22.23.1",
+    "rows": 1000,
+    "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+    "savedInputSHA256": "fcdb34f0431bf0f2e772f7fba2d3aab8b83fb793b9c5c3a79e6f62abe7d36c9e",
+    "source": {
+      "src/animation/sample.js": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a"
+    },
+    "comparisons": {
+      "3": {
+        "nativeBytes": [
+          1822845,
+          1822845
+        ],
+        "nativeSHA256": [
+          "5a7589fcc2e18caa2287c404df3daa6cc86107ba98b7ac6addf9f8bfde08e5a9",
+          "5a7589fcc2e18caa2287c404df3daa6cc86107ba98b7ac6addf9f8bfde08e5a9"
+        ],
+        "rebaseBytes": [
+          2381600,
+          2381600
+        ],
+        "rebaseSHA256": [
+          "185a15fe6972e33644d253da9da33bddcb47ed67f43a5071efac69ebb013905d",
+          "185a15fe6972e33644d253da9da33bddcb47ed67f43a5071efac69ebb013905d"
+        ],
+        "counts": [
+          {
+            "clones": 11036,
+            "ownedAdds": 13048,
+            "weakAdds": 24085,
+            "weakHas": 52152,
+            "weakSources": {
+              "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/geoTracks.js": 2,
+              "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+              "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/scales/continuous.js": 4000,
+              "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/sample.js": 10000,
+              "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/sample.js": 2011,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/geoFrames.js": 6,
+              "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/graphTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+              "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+              "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/endpoints.js": 2001,
+              "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/endpoints.js": 5,
+              "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/frameProvenance.js": 6
+            }
+          },
+          {
+            "clones": 6035,
+            "ownedAdds": 10048,
+            "weakAdds": 16084,
+            "weakHas": 39151,
+            "weakSources": {
+              "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/geoTracks.js": 2,
+              "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+              "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/scales/continuous.js": 4000,
+              "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/sample.js": 2000,
+              "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/sample.js": 2010,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/geoFrames.js": 6,
+              "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/graphTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+              "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+              "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/endpoints.js": 2001,
+              "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/endpoints.js": 5,
+              "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/frameProvenance.js": 6
+            }
+          }
+        ],
+        "work": {
+          "Animation preparation work": 771686
+        },
+        "rebaseWork": {
+          "Animation preparation work": 451681
+        },
+        "mixedGeoFullFrameAndMeaningEqual": true,
+        "fullNativeOfflineMeaningBatchRebaseEqual": true,
+        "timelineAndTimelineRebaseFullMeaningEqual": true,
+        "fallbackFullMeaningEqual": true,
+        "restoreReserializeExact": true
+      },
+      "4": {
+        "nativeBytes": [
+          345803,
+          345803
+        ],
+        "nativeSHA256": [
+          "16e9715d7199253fb87570dd1a1f475ab38ec53bf382fabbdd297d1af773f404",
+          "16e9715d7199253fb87570dd1a1f475ab38ec53bf382fabbdd297d1af773f404"
+        ],
+        "rebaseBytes": [
+          422310,
+          422310
+        ],
+        "rebaseSHA256": [
+          "ffe7122a2ec16a8d54f97c56b0591bbfccdeaa4c511e95332e91cdd4b7b34cdc",
+          "ffe7122a2ec16a8d54f97c56b0591bbfccdeaa4c511e95332e91cdd4b7b34cdc"
+        ],
+        "counts": [
+          {
+            "clones": 11036,
+            "ownedAdds": 13048,
+            "weakAdds": 24085,
+            "weakHas": 52152,
+            "weakSources": {
+              "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/geoTracks.js": 2,
+              "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+              "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/scales/continuous.js": 4000,
+              "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/sample.js": 10000,
+              "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/sample.js": 2011,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/geoFrames.js": 6,
+              "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/graphTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+              "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+              "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/endpoints.js": 2001,
+              "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/endpoints.js": 5,
+              "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/frameProvenance.js": 6
+            }
+          },
+          {
+            "clones": 6035,
+            "ownedAdds": 10048,
+            "weakAdds": 16084,
+            "weakHas": 39151,
+            "weakSources": {
+              "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/geoTracks.js": 2,
+              "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/animation/positions.js": 4006,
+              "    at mapLinearValues (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/scales/continuous.js": 4000,
+              "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/sample.js": 2000,
+              "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/sample.js": 2010,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/geoFrames.js": 6,
+              "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/graphTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+              "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/frameEndpoint.js": 6,
+              "    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/endpoints.js": 2001,
+              "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/endpoints.js": 5,
+              "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/animation/frameProvenance.js": 6
+            }
+          }
+        ],
+        "work": {
+          "Animation preparation work": 771686
+        },
+        "rebaseWork": {
+          "Animation preparation work": 451681
+        },
+        "mixedGeoFullFrameAndMeaningEqual": true,
+        "fullNativeOfflineMeaningBatchRebaseEqual": true,
+        "timelineAndTimelineRebaseFullMeaningEqual": true,
+        "fallbackFullMeaningEqual": true,
+        "restoreReserializeExact": true
+      }
+    }
+  },
+  "product100000": {
+    "kind": "Public version4 actual API path, phased plan lifetimes; no instrumentation; not SLO/P95",
+    "node": "v24.22.1",
+    "pid": 34600,
+    "execArgv": [
+      "--expose-gc",
+      "--max-old-space-size=6144"
+    ],
+    "n": 100000,
+    "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+    "phases": {
+      "prepare": {
+        "ms": 24825.688833,
+        "accounting": {
+          "native": true,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 78333686
+          }
+        },
+        "columns": {
+          "logicalValues": 7600057,
+          "descriptorVisits": 7600056,
+          "cellVisits": 7600004,
+          "interningWork": 93556546,
+          "internNodes": 208,
+          "uniqueLowerBound": {
+            "physicalValues": 600110,
+            "encodedValues": 600258,
+            "bytes": 33650049
+          },
+          "physicalValues": 604540,
+          "encodedValues": 608452,
+          "bytes": 33703134,
+          "validatedLogicalValues": 7600057
+        }
+      },
+      "sample": {
+        "ms": 1592.7398749999993
+      },
+      "offline": {
+        "ms": 29679.453332999998,
+        "bytes": 33703073,
+        "sha256": "d69b4c3e31b9eec982a2c8209f9ee80aa84cceacebfac9c3454a75f81e0de946",
+        "accounting": {
+          "native": false,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 97911711
+          }
+        },
+        "decodedPayload": {
+          "physicalValues": 604516,
+          "bytes": 23180528,
+          "estimatedEncodedValues": 608406,
+          "estimatedEncodedBytes": 33702922
+        },
+        "encodedEnvelope": {
+          "physicalValues": 608411,
+          "bytes": 33703073
+        }
+      },
+      "rebase": {
+        "ms": 15342.609125000003,
+        "accounting": {
+          "native": true,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 46333687
+          }
+        },
+        "columns": {
+          "logicalValues": 10100086,
+          "descriptorVisits": 9300070,
+          "cellVisits": 9300023,
+          "interningWork": 119734738,
+          "internNodes": 270,
+          "uniqueLowerBound": {
+            "physicalValues": 800160,
+            "encodedValues": 800371,
+            "bytes": 41146770
+          },
+          "physicalValues": 804781,
+          "encodedValues": 809068,
+          "bytes": 41202411,
+          "validatedLogicalValues": 10100086
+        }
+      },
+      "rebaseOffline": {
+        "ms": 38718.178959,
+        "bytes": 41202280,
+        "sha256": "d0c77207cee46a2d5e379b3d8de0ebc9dc40b1377e1c1d115c0f51a93fde3f42",
+        "accounting": {
+          "native": false,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 133456501
+          }
+        },
+        "decodedPayload": {
+          "physicalValues": 804751,
+          "bytes": 29781479,
+          "estimatedEncodedValues": 809008,
+          "estimatedEncodedBytes": 41202129
+        },
+        "encodedEnvelope": {
+          "physicalValues": 809013,
+          "bytes": 41202280
+        }
+      }
+    },
+    "lifetime": [
+      {
+        "stage": "native-plan-released",
+        "memory": {
+          "rss": 1566130176,
+          "heapTotal": 896696320,
+          "heapUsed": 536617208,
+          "external": 36097327,
+          "arrayBuffers": 148239
+        }
+      },
+      {
+        "stage": "native-offline-plan-released",
+        "memory": {
+          "rss": 2052980736,
+          "heapTotal": 983728128,
+          "heapUsed": 679379296,
+          "external": 36128839,
+          "arrayBuffers": 148239
+        }
+      },
+      {
+        "stage": "rebase-plan-and-source-frame-released",
+        "memory": {
+          "rss": 2276507648,
+          "heapTotal": 1021624320,
+          "heapUsed": 686764696,
+          "external": 43626709,
+          "arrayBuffers": 148239
+        }
+      },
+      {
+        "stage": "all-native-offline-rebase-exact",
+        "memory": {
+          "rss": 2007810048,
+          "heapTotal": 996458496,
+          "heapUsed": 686977256,
+          "external": 43626709,
+          "arrayBuffers": 148239
+        }
+      }
+    ],
+    "allCoordinatesVerified": 100000,
+    "batch50Rejected": true,
+    "stage": "all-native-offline-rebase-exact",
+    "allRebaseCoordinatesVerified": 100000,
+    "rebaseEncoding": {
+      "previousBytes": 41204160,
+      "actualBytes": 41202280,
+      "losslessRepresentationChangeAllowed": true
+    },
+    "sourceSHA256": {
+      "src/animation/columnCodec.js": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+      "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+      "src/animation/planner.js": "0b76bbedc126d10937b5f7a999dd46ef7d554a22466aa9dcdc46de037bb9e576",
+      "src/animation/envelopeCodec.js": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+      "src/animation/sample.js": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+      "src/animation/frameEndpoint.js": "cc76a1d87e181257a5898f4f891ddb7f22b4441def25919036b6e2ee004d0c91",
+      "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+      "src/materialization/animation/point.js": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+      "src/materialization/animation/guides.js": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+      "src/core/validation.js": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+      "src/selectors/graphicCapacity.js": "80301d027d2887c620c83909a5db5aeb0546eac77397c7ba63c618ae139beceb",
+      "src/grammar/animation/positions.js": "746ef92f9c8306b56e0f151e76c0d35d1ad39e9534b496bb0d36c8cb64730211",
+      "src/animation/appearance.js": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+      "types/animation.d.ts": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323"
+    }
+  },
+  "timingBoundary": "The large sample phase includes independent full-coordinate verification and concurrent small checks; diagnostic only, not pure sampler time, P95 or50ms evidence.",
+  "packMeasurements": {
+    "20": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1259,
+      "packedBytes": 1811870,
+      "unpackedBytes": 8152972,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/point-node-merged/pack20/ggaction-0.0.26.tgz",
+      "sha256": "b99bd57d9825f93cb7d7fd8b1bf5da182dfcb35d34755282881a7d4bf41d3e75"
+    },
+    "22": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1259,
+      "packedBytes": 1808620,
+      "unpackedBytes": 8152972,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/point-node-merged/pack22/ggaction-0.0.26.tgz",
+      "sha256": "8910219c063d78c0ecfd97eedeb3cb322ff4dacbc90efcc3e1215e0ea83c4fb5"
+    },
+    "24": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1259,
+      "packedBytes": 1811870,
+      "unpackedBytes": 8152972,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/point-node-merged/pack24/ggaction-0.0.26.tgz",
+      "sha256": "b99bd57d9825f93cb7d7fd8b1bf5da182dfcb35d34755282881a7d4bf41d3e75"
+    }
+  },
+  "artifactPolicy": {
+    "entries": 1259,
+    "packedBytes": 1811900,
+    "unpackedBytes": 8153000,
+    "animationGzip": 340900,
+    "actualUnpacked": 8152972,
+    "actualNode20Packed": 1811870,
+    "actualNode20AnimationGzip": 340806,
+    "runtimeGuardChanges": 0
+  },
+  "recovery": "Subagent usage limit interrupted its uncommitted point-node implementation. Exact source and original failed logs retained; root copied task-owned work, repaired new mixed test margin20\u219240 so axis setup reaches intended assertions, and ran full owning/functional/package evidence. Original worktree preserved.",
+  "initialFailuresRetained": [
+    "Upstream new mixed-case fixture rejected initial axis layout at margin20 before sampling; root margin40 retains all families and assertions.",
+    "Node20 packed1811870 exceeded1811800; minimum ceiling1811900.",
+    "Node20 animation gzip340806 exceeded340800; original receipt retained and new340900 ceiling rechecked without repeating passing runtime."
+  ],
+  "reusedEvidence": [
+    {
+      "path": "../frame-node-review-evidence/qualification.json",
+      "boundary": "Read-only source-root audit and unsafe node-unowned/raw-emission counterexamples retained; product coverage and actual original100k are fresh root evidence."
+    },
+    {
+      "path": "../prepared-scale-merged-evidence/qualification.json",
+      "boundary": "Public docs/types and non-sample owners unchanged; reuse246docs/186built pages. Fresh same-tar strictTS/7animationdocs/minified browser and source-pin nine doc contracts verify current surface."
+    }
+  ],
+  "pending": [
+    "Shared scalar mapper and captureFrameMeaning cost audit",
+    "Common sample50ms/Canvas, partition and Geo camera/hit performance",
+    "Route cursor/bounded execution/native closure and original1k10k solvers",
+    "Long-lived mixed WeakSet attribution/actual retained100cycle",
+    "Final9commands/independent review/STEP057-077 closeout"
+  ],
+  "evidenceFiles": {
+    "boundaries.log": {
+      "sha256": "fa2dd4e04a823631fc3ca528f880e4f0208ca1b04f1f6262da7a326c2c4bc2f3",
+      "bytes": 7268
+    },
+    "browser-installed.json": {
+      "sha256": "b621ade1bd1a2e88d3edd51a34a757a7ec7678f9bce81da92812da5ea8ff6ce8",
+      "bytes": 200
+    },
+    "browser-installed.mjs": {
+      "sha256": "d64f758eba8a34b96eaf7d255b814610e25ef27492c100c0356f103e49882f1a",
+      "bytes": 834
+    },
+    "budget-recheck20.json": {
+      "sha256": "a97ccb856b61df46c9794b8ad7e601ba88025d03c0c663c5fba0263bff5cf6f2",
+      "bytes": 393
+    },
+    "coverage.log": {
+      "sha256": "7b00c60ba175a96c3f3f6988250a5604d959b0e24db132f2b016c52cd62fbb54",
+      "bytes": 182151
+    },
+    "evidence.py": {
+      "sha256": "a60f8f0f2134ab22bc538ebe16dad72719b0ed01af76b8c90fb54aaf03c106ac",
+      "bytes": 5369
+    },
+    "focused.log": {
+      "sha256": "d995873f7abeb7e5d5ed4931b91c69978930249b13c9b689fa96828d12b31989",
+      "bytes": 625
+    },
+    "frozen.json": {
+      "sha256": "bf4d89d809708a68650fef47b0af13ccd1ef673c07ee265c7198640cab1c1e4e",
+      "bytes": 436
+    },
+    "installed-20.json": {
+      "sha256": "7c5bca03fc25ab3a697ae301226fc20b9a9f33dc972152d0a90cfe2bcabfea88",
+      "bytes": 2164
+    },
+    "installed-20.log": {
+      "sha256": "297c5a90641c284772777d88f9881515351011ba17f2814a717eeea074da53ed",
+      "bytes": 2082
+    },
+    "installed-22.json": {
+      "sha256": "87a2a97b184942461695656fed305b3223d520a5946b4e258628ec3c7cf400eb",
+      "bytes": 2149
+    },
+    "installed-22.log": {
+      "sha256": "720dffe5369f5c623cc55c3cfed360956260f888d486422202207aaf76c88c4e",
+      "bytes": 1578
+    },
+    "installed-24.json": {
+      "sha256": "e0d4a7cc512545e4942c86d34df1b964a55c34bcbea9dee469766bc51948ea9c",
+      "bytes": 2149
+    },
+    "installed-24.log": {
+      "sha256": "7229487c18c30182a2932ea178a68e5201f25a51aab9e0284b37b22a57856c41",
+      "bytes": 1578
+    },
+    "installed-browser.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "owning-coverage.mjs": {
+      "sha256": "0e92b2a2a00434ff469ce4b528637645a04d00d0cc2161698b5c9f7ff8c7f899",
+      "bytes": 417
+    },
+    "pack20-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack20-first.log": {
+      "sha256": "9e0ae0a5a3bd7f6b54e13dad5ec642bc9661a85fbfa336e12c698112a82e9f1d",
+      "bytes": 966
+    },
+    "pack20.json": {
+      "sha256": "96fecc9bc282d1d9a3f5e87d46f25974d1a635f83196e4c4caed739b3063b439",
+      "bytes": 382
+    },
+    "pack20.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack22.json": {
+      "sha256": "c348d7fef2b2c004a3cebd56a44a7c22b38575587011e168a09c334e7abf2eff",
+      "bytes": 382
+    },
+    "pack22.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24.json": {
+      "sha256": "1e8f963f9acb3f2b8f1131a5ef5dbbf33b646d17da07b9c4a191ac3cd3288004",
+      "bytes": 382
+    },
+    "pack24.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "product-100000-phased-partial.json": {
+      "sha256": "142e3340d87befb3683da0b8ff0b476dcfbbbccf713c414f3b9fa73b51e789fd",
+      "bytes": 4409
+    },
+    "product-100000-phased.json": {
+      "sha256": "d57468f6929812d08f6f55708450aefb57a35dd3152737182a695752405155f7",
+      "bytes": 6037
+    },
+    "product-100000-phased.log": {
+      "sha256": "7e4bc377d4650f4c2d6d06d482ebed3610c906fc97983e7a3d1f714febc17cdf",
+      "bytes": 4687
+    },
+    "product-100000-phased.mjs": {
+      "sha256": "6879815b7a13d448f1cd8bf59a852f7311dd5d40b526a5e6685d220a47b70589",
+      "bytes": 5965
+    },
+    "product-compare.json": {
+      "sha256": "0160a24580bb6c0261b62791e6b4cc3030e77967d3bbb2d69a51d4229862eb3d",
+      "bytes": 12212
+    },
+    "product-compare.log": {
+      "sha256": "e55562187a22ce30bfd53047f51ce6d1c1d2f5ec53c9e0f5356ff1de326081a9",
+      "bytes": 10479
+    },
+    "product-compare.mjs": {
+      "sha256": "1e56f67eaf5ade28d58e96ed09d32d315a9714c6b1f33d4f62a2f3ca106fdb9c",
+      "bytes": 8717
+    },
+    "product-observer.mjs": {
+      "sha256": "89200fa4e1070b2a304a1fef7c16080e1dd659ba93bfb62e075b852b266236e1",
+      "bytes": 1171
+    },
+    "render.log": {
+      "sha256": "c13bb5a92763e43a25ea9f50cae875f5861200441944513f8d61f45606560f12",
+      "bytes": 12486
+    },
+    "upstream-incomplete-focused.log": {
+      "sha256": "acc98360be1981e67177313304d50a2483c4c0550708316565d16427348f88a8",
+      "bytes": 2435
+    },
+    "upstream-incomplete-owning-coverage.log": {
+      "sha256": "8105d638f78e06c57dcca656f666c8f998396b80b67ab5ae0f6f9e24f1b350f5",
+      "bytes": 183863
+    },
+    "upstream-incomplete-package-first.log": {
+      "sha256": "4d8cb47cca819863dd23d211f292c767547aba5a2add1dec760de55c963eb968",
+      "bytes": 861
+    },
+    "animation-small-installed.mjs": {
+      "sha256": "3617186df30d03ecb9198cf92b7106a01e1aea8eaf62aefc114a92e050646f56",
+      "bytes": 2838
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "65fe675941f74248f9af3a771bd73260575a3cddc731d8a8192072f1322cc0b4",
+      "bytes": 1810
+    },
+    "source-pin-pack.json": {
+      "sha256": "c008562eae5224379ad57b2ed442ad7b7c1b4380a1be592c0b355b94e8f6a323",
+      "bytes": 387
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "sourceRevision": "b3da444d795248370c9c14bc6f158b01f67eff7a",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

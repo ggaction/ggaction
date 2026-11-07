@@ -1,0 +1,60 @@
+{
+  "node": "v20.20.2",
+  "archive": "bb679ffaac3ad9e0b2ae9fe3063333bb201eae44a5a8917d88f7946e695111bd",
+  "bundles": {
+    "ggaction": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1027,
+      "minifiedBytes": 2703121,
+      "gzipBytes": 774456,
+      "limit": 774500
+    },
+    "ggaction/basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 611,
+      "minifiedBytes": 1442099,
+      "gzipBytes": 422479,
+      "limit": 422500
+    },
+    "ggaction/svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24954,
+      "limit": 26000
+    },
+    "ggaction/graph": {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 85,
+      "minifiedBytes": 147084,
+      "gzipBytes": 44076,
+      "limit": 46000
+    },
+    "ggaction/animation": {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 406,
+      "minifiedBytes": 800044,
+      "gzipBytes": 243697,
+      "limit": 243700
+    },
+    "ggaction/interaction": {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 204,
+      "minifiedBytes": 409767,
+      "gzipBytes": 131310,
+      "limit": 131400
+    }
+  },
+  "errors": [],
+  "cases": [
+    "title",
+    "band-boundary",
+    "parallel"
+  ]
+}

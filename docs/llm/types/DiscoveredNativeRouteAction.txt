@@ -1,0 +1,4 @@
+export type DiscoveredNativeRouteAction = Exclude<{ [K in keyof ChartProgram]: ChartProgram[K] extends (options: never) => ChartProgram ? K : never }[keyof ChartProgram] & string,
+  ResolvedNativeRouteAction | "bundleGraphEdges" | "editEdgeRoute" | "applyGraphEdgeRoutesUpdate">;
+declare const preparedGraphEdgeRoutesUpdate: unique symbol;
+/** An authentic native resource update, bound to its exact completed Full receiver. */

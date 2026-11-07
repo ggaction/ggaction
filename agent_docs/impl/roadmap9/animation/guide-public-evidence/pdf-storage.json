@@ -1,0 +1,14 @@
+[
+  {
+    "file": "cartesian.pdf.gz",
+    "decompressedSha256": "19618848d754c71eb3cac95373d85bf61998b58234756ff9147dbf289569acd2",
+    "bytes": 1200,
+    "equalToSourceCommitPDF": true
+  },
+  {
+    "file": "polar.pdf.gz",
+    "decompressedSha256": "b8efae205776b1b9c582fbd6052b4b4e1e004b41cd7744fcc002100275bbf8d4",
+    "bytes": 2507,
+    "equalToSourceCommitPDF": true
+  }
+]

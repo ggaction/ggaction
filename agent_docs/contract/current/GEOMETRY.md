@@ -7,7 +7,7 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
 
 ## `createGeometryData`
 
-- Signature: `createGeometryData({id,format,values,coordinateKind,featureKey?,topoObject?,limits?})`.
+- Signature: `createGeometryData({id,format,values,coordinateKind,featureKey?,topoObject?,limits?,polygonWinding?})`.
 - `id`, `format:geojson|topojson`, source `values`, and `coordinateKind:geographic|planar` are required.
   Geographic x/y means WGS84 longitude/latitude degrees; latitude is[-90,90], longitude remains finite
   and unwrapped. Planar values retain caller units. Additional coordinate dimensions remain in source
@@ -16,6 +16,11 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
   preserved. Null and empty geometries are nondrawable. Nonempty lines require at least2 positions;
   each ring requires at least4, consistent dimensions and exactly equal first/last positions. Rings are
   never closed or reoriented automatically. Polygon first ring is exterior and following rings are holes.
+  Optional geographic-only `polygonWinding:right-hand|left-hand` declares the source convention;
+  omission retains right-hand. Right-hand uses counterclockwise exteriors and clockwise holes,
+  left-hand the reverse. Deliberately opposite rings still select the complementary spherical area.
+  This option changes transient projection/centroid input only: retained values, normalized coordinates,
+  source hashes and feature keys remain unchanged. Planar sources reject an explicit polygonWinding.
   JSON foreign members remain in retained source. Optional bbox must be finite paired coordinates;
   declared bbox does not override actual coordinates. Geometry `crs` members are unsupported.
 - TopoJSON transforms apply delta accumulation to arc x/y before scale/translate. Unquantized arcs
@@ -50,13 +55,19 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
 
 ## `editGeometryData`
 
-- Signature: `editGeometryData({target?,values?,coordinateKind?,topoObject?,limits?})`.
+- Signature: `editGeometryData({target?,values?,coordinateKind?,topoObject?,limits?,polygonWinding?})`.
 - target resolves explicit ID, current eligible geometry source, or one unique eligible source. Contours
   are ineligible. Empty edits, unknown keys and undefined values fail. Format and featureKey policy
   are immutable; create another resource when that policy must change.
 - Revision increments once, including same-value explicit edits. Keyed features retain logical keys
   through reorder/value changes. Generated keys survive options-only edits, while whole values replacement
   or changing the selected TopoJSON object allocates new keys without value-based correspondence.
+- `polygonWinding` edits preserve unspecified convention and refresh all dependent fitted projections,
+  marks, labels and annotations through the same exact-ref revision closure. Joins and active LOD
+  resolve the original source convention; inactive feature anchors retain their selected source's
+  convention. Generated geographic-radius disks use their own circle direction, including radius>90°.
+  Changing coordinateKind to planar drops an omitted previous winding option; an explicit planar
+  winding option still fails. Changing back to geographic uses the declared option or right-hand.
 - Limits patches retain unspecified previous limits. TopoJSON object omission preserves the stored
   object selection even when replacement values introduce other objects. Invalid source, keys, limits,
   target or existing consumer compatibility rejects the entire edit before primitive writes.
@@ -70,7 +81,7 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
 ### Value coverage — `editGeometryData`
 
 - ✅ Covered: retained keyed identity, new generated identity, object selection, immutable failure, removal, inspection, Full/Basic and corrupted offline restore.
-- Evidence: `test/unit/geo/geometry-resources.test.js`.
+- Evidence: `test/unit/geo/geometry-resources.test.js`, `test/unit/geo/polygon-winding.test.js`.
 
 ## `createGeoJoinData`
 
@@ -161,7 +172,7 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
   Exact geometry inputs own source references. Options retain ordered input roles, level intent, zoom
   and the current activeLevel decision. Result contains active features, independent explicit logical
   identity, coordinateKind, optional topology, all-level logical-key representation mapping and diagnostics.
-  At most128 levels,100000 total regions and10000000 units of mapping work are accepted; simplification
+  At most128 levels,100000 total regions and 10000000 units of mapping work are accepted; simplification
   also uses existing geometry budgets. Offline restore validates all retained inputs and bounded results.
 - All Geo mark modes and fitted projections consume the active geometry. Fields and original row references
   come from the active source/join. A subsequent join can replace fields without changing representation.
@@ -285,6 +296,48 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
 - ✅ Covered: exact revision closure, shape edits, explicit transform override, type defaults, fit source rebind, current/unique/ambiguous resolution, removal protection and atomic failure.
 - Evidence: `test/unit/geo/projection-resources.test.js`.
 
+## `navigateProjection`
+
+- Signature: `navigateProjection({target?,operation})`. Full chart authoring; target uses the same
+  explicit/current/unique projection inference as editProjection. Every operation is closed and requires
+  its stated parameters; invalid input, clipped anchors or incompatible consumers fail atomically.
+- `pan`: `{type:"pan",deltaPx:[x,y]}` translates in logical CSS pixels.
+- `zoom`: `{type:"zoom",anchorPx:[x,y],factor,scaleExtent:[minimum,maximum]}` requires a finite positive
+  factor and positive ordered extent. Clamp the resulting scale and preserve the visible inverse anchor
+  to within0.25px, including its composite component. Hidden/non-invertible anchors fail.
+- `pinch`: `{type:"pinch",fromPx:[[x,y],[x,y]],toPx:[[x,y],[x,y]],scaleExtent}` combines the two centers'
+  translation and distance ratio. Coincident pointers fail. `rotate`: `{type:"rotate",rotateDeg:[x,y,z?]}`
+  sets the native absolute spherical rotation; identity and composite projections reject it.
+- `reset`: `{type:"reset",initial:ProjectionParameters}` restores explicitly supplied view parameters.
+  A frozen `getProjectionView` snapshot supplies these parameters; there is no implicit initial baseline.
+  Reset does not restore historical revision numbers or previous live fit policies.
+- `fit`: `{type:"fit",fit:ProjectionFitOptions}` delegates the existing live geometry fit contract.
+  Other operations commit complete resolved parameters and detach a previous fit dependency.
+- `resize`: `{type:"resize",canvas:{width?,height?,plot?},scaling:"preserve"|"fit"}` delegates the nonempty
+  Canvas size patch. Native exact-plot/outer-size conflicts remain errors: use explicit `plot:false`
+  when switching to outer width/height. Scaling preserve keeps pixel scale; fit multiplies it by the
+  smaller settled plot width/height ratio. Both move the previous plot center to the new center.
+  Responsive guides settle through editCanvas first. Authored projection clipExtentPx stays unchanged.
+- Success advances the chosen projection exactly once and updates its coordinates/marks through
+  editProjection. Resize also uses editCanvas and its existing screen-route revision closure.
+  The command is one top-level trace node with meaningful native child actions. No camera state,
+  callback, DOM handler or renderer-global state is persisted. LOD zoom remains an independent decision.
+- `getProjectionView(program,{target?,childPath?})` from `ggaction/inspection` is read-only. It returns
+  frozen `{projection:{kind:"projection",id,revision},parameters,viewport}`. Parameters are normalized
+  and fit-resolved; viewport is the current logical plot rectangle or null before Canvas creation.
+  Child paths address explicit concat children. The query requires a closed program and adds no trace.
+
+### Formal values — `navigateProjection`
+
+- Implemented: `navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram`.
+- Planned: no additional operation values.
+- Proposed (NOT IMPLEMENTED): implicit renderer-owned camera state.
+
+### Value coverage — `navigateProjection`
+
+- ✅ Covered: explicit pan/zoom/pinch/rotate/fit/reset/resize, native Canvas/plot/responsive layout, exact revisions, concat scope, unchanged identity, offline restoration, invalid/unsafe/ambiguous inputs and immutable failure.
+- Evidence: `test/unit/geo/camera-actions.test.js`, `test/unit/geo/camera.test.js`, `test/contracts/geo-camera-types.test.js`.
+
 ## Geographic mark rules
 
 The Full actions below require a Canvas and a Geo coordinate created with
@@ -324,14 +377,86 @@ Remove a mark with removeMark. Live geometry/projection references restrict remo
 cascade; remove consuming marks/coordinates and authored fit projections explicitly first.
 
 Hconcat/vconcat and scoped edits preserve child identities. Implicit row facet/repeat is incompatible with
-resource-owned geometry. Current marks expose native style; table joins, field color/size and geographic
-label anchors are not accepted by these options. These are separate consumer integration obligations.
+resource-owned geometry. Native style is set by these mark options; field mapping uses the existing
+encoding actions described below, and semantic labels use geographic annotation actions.
 Generated features/points share a cumulative10000 item ceiling and stream work is bounded at10000000;
 source normalization retains its separate configured limits.
 
+## Feature color and size
+
+`encodeColor` accepts ordinary or conditional nominal/ordinal/quantitative/temporal fields on Geo shape, point and line.
+It uses the existing field/scale contract: shape/point fill or line stroke, native temporalUnit, continuous
+and discretized scales, explicit unknown and existing range/transform behavior. Aggregate and color
+layout are incompatible. Shape line parts keep fill none. `encodeSize` accepts quantitative, nominal
+or ordinal fields on Geo point only; mapped CSS-pixel area becomes radius `sqrt(area/pi)`. It cannot
+coexist with geographic radiusDeg. First change the mark to radiusPx when switching those units.
+
+Fields read original feature properties, a join's current matching table row, or the active LOD level.
+MultiPoint parts share one feature value and identity. Null/empty geometry is excluded from scale values
+and concrete items; its logical source record remains inspectable. Projection clipping and hidden
+backside geometry do not filter domains. Missing/invalid fields require an explicit scale.unknown;
+otherwise authoring, resource revision and editable restore reject them. No zero is synthesized.
+
+Native scale create/edit/remove and categorical/gradient/interval/size legends are shared. Omitted
+createLegend channels infer existing color and size as separate blocks. A constant `{value}` encoding
+removes its field binding and affected legend, restores the native mark style and preserves other
+channels. Direct mark fill (shape/point), stroke (line), or radius edits conflict with the corresponding
+field mapping; removeEncoding or a constant encoder resolves the conflict explicitly. Removing an
+encoding alone restores the dormant native style.
+
+Conditional color and size use the shared `conditions` array and required `otherwise`; the first matching
+branch wins. Predicates accept the existing typed expression AST and explicit named selections. Every
+branch is validated, including inactive fields, scales and values. Predicate fields read the same
+feature/table/active-level view as ordinary encodings. Each drawable feature is one evaluation item;
+all pieces share its selected value. Size zero is valid. Other conditional channels, graticules and
+annotations are incompatible. Native scales use the full drawable field values of every branch;
+predicate membership and projection clipping do not shrink their domains. A legend requires one
+unique field/scale binding for its channel. Multiple bindings reject an existing or requested legend
+atomically; remove that guide explicitly before changing to an ambiguous conditional mapping.
+
+Parameter and selection revisions update exact branch refs and rematerialize affected consumers.
+Selection membership across different marks follows shared source-row lineage; it does not equate
+unrelated feature IDs. Graphical feedback cycles reject before writes. Empty geometry can use literal,
+parameter or selection predicates, and field mappings retain their explicit native empty-domain policy.
+A field predicate on a completely empty feature view rejects because its field type cannot be inferred.
+
+Source geometry, join table and active LOD changes preflight all affected fields and shared scale
+candidates before primitive writes, then materialize the scale/mark/guide union once. Projection and
+Canvas changes retain pixel-area semantics. Selection channels expose semantic values, including
+normalized temporal values, while fields and original lineage stay intact. Scoped concat edits and
+offline restoration retain the same meaning. Evidence: `test/unit/geo/encodings.test.js`,
+`test/unit/geo/encoding-lifecycle.test.js`, `test/unit/geo/conditional-encodings.test.js`,
+`test/contracts/realistic-geographic-encodings.test.js` (five authentic datasets × three ordinary and three
+conditional recipes), and the geographic field renderer/installed consumers.
+
+### Explicit projected-output capacity
+
+Geo shape, point, line and graticule create/edit options accept `capacity?: { maxProjectedPoints?: number,
+maxPathCommands?: number }`. Each explicit field is an integer from 1 through 200000. Omitted fields
+normalize to 10000 projected points and 30000 path commands; an omitted object on edit retains the
+previous binding. An explicit object replaces the policy, so `{}` resets both values to defaults.
+Only own enumerable data fields are accepted; unknown, inherited, accessor, undefined and null values
+reject. Annotation and source-resource options do not accept this mark execution policy.
+
+The exact native binding stores the normalized policy once. It limits the mark's aggregate projected
+output points and aggregate path commands. Each stream also checks its refined points, output points
+and commands against maxPathCommands before returning complete output. Refinement, clipping, winding,
+projection arithmetic, graphic count 10000 and work 10M are unchanged. Circle/graticule generator
+limits are independent. No vertices are dropped and a path is never split to satisfy a limit.
+Each emitted path copies the explicit maxPathCommands to concrete `properties.maxCommands`; omitted
+capacity preserves the previous graphic shape. Direct edits and editable restore require that declaration
+to match the exact scoped Geo owner. Creation, capacity/source/projection/Canvas edits preflight before
+writes. Standalone concrete paths follow the [primitive capacity contract](PRIMITIVES.md#editgraphics).
+
+This capacity applies to native materialization, concrete scenes, graphic/editable persistence and the
+four renderers. Animation and hit testing do not inherit it automatically: `formatVersion: 5` transition
+plans carry it through typed camera animation, and an explicit `hitPreparation.pathGeometry` on the
+interaction session raises path hit budgets. Evidence:
+`test/unit/geo/capacity.test.js`, `test/contracts/geo-mark-types.test.js`.
+
 ## `createGeoShapeMark`
 
-- Signature: `createGeoShapeMark({id?,coordinate?,geometry?,interpolation?,routeHint?,style?})`; style is the flattened native style options described above.
+- Signature: `createGeoShapeMark({id?,coordinate?,geometry?,interpolation?,routeHint?,capacity?,style?})`; style is the flattened native style options described above.
 - Create mixed feature shapes. Omission uses documented inference and defaults.
 
 ### Formal values — `createGeoShapeMark`
@@ -347,7 +472,7 @@ source normalization retains its separate configured limits.
 
 ## `editGeoShapeMark`
 
-- Signature: `editGeoShapeMark({target?,coordinate?,geometry?,interpolation?,routeHint?,style?})`; style is the flattened native style options described above.
+- Signature: `editGeoShapeMark({target?,coordinate?,geometry?,interpolation?,routeHint?,capacity?,style?})`; style is the flattened native style options described above.
 - Edit mixed feature shapes. An edit keeps all omitted decisions.
 
 ### Formal values — `editGeoShapeMark`
@@ -363,7 +488,7 @@ source normalization retains its separate configured limits.
 
 ## `createGeoPointMark`
 
-- Signature: `createGeoPointMark({id?,coordinate?,geometry?,interpolation?,routeHint?,radiusDeg?,style?})`; style is the flattened native style options described above.
+- Signature: `createGeoPointMark({id?,coordinate?,geometry?,interpolation?,routeHint?,radiusDeg?,capacity?,style?})`; style is the flattened native style options described above.
 - Create point features. Omission uses documented inference and defaults.
 
 ### Formal values — `createGeoPointMark`
@@ -379,7 +504,7 @@ source normalization retains its separate configured limits.
 
 ## `editGeoPointMark`
 
-- Signature: `editGeoPointMark({target?,coordinate?,geometry?,interpolation?,routeHint?,radiusDeg?,style?})`; style is the flattened native style options described above.
+- Signature: `editGeoPointMark({target?,coordinate?,geometry?,interpolation?,routeHint?,radiusDeg?,capacity?,style?})`; style is the flattened native style options described above.
 - Edit point features. An edit keeps all omitted decisions.
 
 ### Formal values — `editGeoPointMark`
@@ -395,7 +520,7 @@ source normalization retains its separate configured limits.
 
 ## `createGeoLineMark`
 
-- Signature: `createGeoLineMark({id?,coordinate?,geometry?,interpolation?,routeHint?,style?})`; style is the flattened native style options described above.
+- Signature: `createGeoLineMark({id?,coordinate?,geometry?,interpolation?,routeHint?,capacity?,style?})`; style is the flattened native style options described above.
 - Create line features. Omission uses documented inference and defaults.
 
 ### Formal values — `createGeoLineMark`
@@ -411,7 +536,7 @@ source normalization retains its separate configured limits.
 
 ## `editGeoLineMark`
 
-- Signature: `editGeoLineMark({target?,coordinate?,geometry?,interpolation?,routeHint?,style?})`; style is the flattened native style options described above.
+- Signature: `editGeoLineMark({target?,coordinate?,geometry?,interpolation?,routeHint?,capacity?,style?})`; style is the flattened native style options described above.
 - Edit line features. An edit keeps all omitted decisions.
 
 ### Formal values — `editGeoLineMark`
@@ -427,9 +552,21 @@ source normalization retains its separate configured limits.
 
 ## `createGraticule`
 
-- Signature: `createGraticule({id?,coordinate?,stepDeg?,extentDeg?,precisionDeg?,style?})`; style is the flattened native style options described above.
+- Signature: `createGraticule({id?,coordinate?,stepDeg?,extentDeg?,precisionDeg?,capacity?,style?})`; style is the flattened native style options described above.
 - Create longitude and latitude lines. Omission uses documented inference and defaults.
 - stepDeg defaults to[10,10], extentDeg to[[-180,-80],[180,80]], precisionDeg to2.5. Steps are(0,180], precision is(0,10], corners are strictly ordered within longitude±180/latitude±90. Lines occur at integer step multiples; the duplicate180 meridian is omitted for a full world. No geometry resource is synthesized.
+
+### Paired analytical consumers
+
+`getMarkItems`의 graticule item은 원 typed `axis`/numeric `value`와 native key를 노출한다.
+이 값을 명시 dataset으로 복사한 analytical child에서 field encoding·scale·axis/legend를
+사용할 수 있다. 해당 guide와 scale은 analytical child 소유이며 graticule의 projection
+geometry에 Cartesian encoding을 추가하지 않는다. Projection edit는 원값/key를 보존하고,
+step edit는 새 원값/item을 만든다. 둘 다 기존 analytical snapshot을 자동 갱신하지 않는다.
+호스트가 새 `getMarkItems` snapshot을 명시 `reviseData`해야 하며 그 dataset row lineage는
+새 분석 dataset의 것이다. 공개 예제 `examples/geographic-marks/comparison.js`와
+`test/unit/geo/graticule-composition.test.js`, `test/browser/graticule-composition.browser.js`가
+값·격리·revision·codec와 실제 Canvas/SVG를 검증한다.
 
 ### Formal values — `createGraticule`
 
@@ -444,7 +581,7 @@ source normalization retains its separate configured limits.
 
 ## `editGraticule`
 
-- Signature: `editGraticule({target?,coordinate?,stepDeg?,extentDeg?,precisionDeg?,style?})`; style is the flattened native style options described above.
+- Signature: `editGraticule({target?,coordinate?,stepDeg?,extentDeg?,precisionDeg?,capacity?,style?})`; style is the flattened native style options described above.
 - Edit longitude and latitude lines. An edit keeps all omitted decisions.
 - stepDeg defaults to[10,10], extentDeg to[[-180,-80],[180,80]], precisionDeg to2.5. Steps are(0,180], precision is(0,10], corners are strictly ordered within longitude±180/latitude±90. Lines occur at integer step multiples; the duplicate180 meridian is omitted for a full world. No geometry resource is synthesized.
 
@@ -458,3 +595,146 @@ source normalization retains its separate configured limits.
 
 - ✅ Covered: default/explicit targeting, compatible geometry, clips/holes/hidden members, style, revisions, atomic errors, immutable restore and scoped composition.
 - Evidence: `test/unit/geo/marks.test.js`, `test/unit/geo/mark-consumers.test.js`, `test/contracts/geo-mark-types.test.js`, `test/contracts/realistic-geographic-marks.test.js` (five authentic datasets × three direct recipes), `test/charts/geographic-marks/public.test.js`, `test/charts/geographic-marks/renderer.render.js`, `test/browser/geographic-marks.browser.js`.
+
+## `createGeoAnnotation`
+
+- Signature: `createGeoAnnotation({id?,coordinate?,anchor,text,...textStyle})`.
+- Full chart authoring. Requires Canvas and a Geo coordinate resolved by explicit ID, current eligible
+  coordinate, then unique eligible coordinate. The deterministic default mark ID is `geo-annotation`;
+  a second annotation requires another explicit ID. Text is a required string; an empty string retains
+  semantic intent and produces no concrete Text. No data/text encodings are accepted.
+- Anchor is exactly `{type:"position",position:[x,y]}` or
+  `{type:"feature",geometry?,key,level?}`. Position uses planar source units for identity, or longitude/
+  latitude degrees for spherical projections. Feature keys use the shared typed row-key grammar;
+  numeric1 and string"1" differ. Feature anchors require a geometry source with explicit `featureKey`.
+  Geometry uses explicit/current/unique eligible source inference. Joins retain their table fields/rows.
+- Feature positions are computed from the original feature: area-weighted polygon centroid (holes
+  subtract), otherwise length-weighted line centroid, otherwise point average. Geographic geometry
+  uses the spherical equivalent. Mixed collections use their highest nonempty dimension. Null/empty
+  geometry produces no Text; an ambiguous or nonfinite centroid fails before writes. A centroid is a
+  semantic center, not a guarantee that the label lies inside a concave polygon.
+- For direct or joined LOD, level is an explicit existing level ID or the active level at creation.
+  That resolved level is stored once. Later display transitions retain the original feature anchor;
+  they do not move a county annotation to its parent centroid. Changing source geometry recomputes
+  the original centroid. Missing keys, stale refs, incompatible coordinate kind or invalid levels fail
+  atomically. A source/projection revision rematerializes each dependent annotation once.
+- Text style shares native Text fill/opacity, fontSize/fontFamily/fontWeight, align/baseline, rotation,
+  dx/dy, lineHeight/blockAlign, lineCap/lineJoin/miterLimit, outline/shadow and blend. Defaults are
+  native Text defaults (fill#334155, opacity1, fontSize12, sans-serif, normal, left/alphabetic,
+  rotation0, dx/dy0), clip:false. Offsets are logical pixels after projection. Native paint/effect/font
+  preparation applies. Theme text/font roles update unoverridden values; explicit default-valued
+  styles remain explicit. `inheritColor`, data/source fields and positional encodings are unsupported.
+- Stored layer mark.type is geo; geoBinding owns mode:annotation, normalized anchor, string text and
+  an exact geometry ref for feature anchors. The coordinate owns the sole projection ref. Native Text
+  output, resource lineage, item selection, highlight, accessibility, scoped concatenation and offline
+  restore use existing owners. Stroke highlight is excluded from Text while fill/opacity apply.
+  Clipped features and empty text keep source identity without placeholder graphics. Removal uses
+  removeMark before referenced geometry/projection resources can be removed.
+
+### Formal values — `createGeoAnnotation`
+
+- Implemented: `createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram`.
+- Planned: no additional values in this signature.
+- Proposed (NOT IMPLEMENTED): automatic collision placement and screen-coordinate anchors.
+
+### Value coverage — `createGeoAnnotation`
+
+- ✅ Covered: explicit/source centroids, spherical/planar/null, typed keys, LOD anchor retention,
+  joined lineage, fonts/themes/effects, selection, immutable errors, composition and offline restore.
+- Evidence: `test/unit/geo/annotation-anchor.test.js`, `test/unit/geo/annotations.test.js`, `test/contracts/geo-mark-types.test.js`.
+
+## `editGeoAnnotation`
+
+- Signature: `editGeoAnnotation({target?,coordinate?,anchor?,text?,...textStyle})`.
+- Target resolves explicit, current eligible annotation, then unique annotation. Requires a nonempty
+  patch. Omitted fields retain previous values; undefined/null values are invalid. A supplied anchor
+  replaces its complete intent. Feature geometry omission retains a previous feature geometry or uses
+  the ordinary eligible-resource inference; omitted LOD level captures the then-active level. Switching
+  to a position removes the geometry binding. Text/style and source changes preflight the final Text,
+  including prepared font queries, before semantic or graphic child writes. Item key remains stable
+  for style/text/projection edits; changing feature key/level changes the annotation's item key.
+
+### Formal values — `editGeoAnnotation`
+
+- Implemented: `editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram`.
+- Planned: no additional values in this signature.
+- Proposed (NOT IMPLEMENTED): automatic feature matching when original keys disappear.
+
+### Value coverage — `editGeoAnnotation`
+
+- ✅ Covered: explicit/current target, partial style edits, original feature anchoring, text omission,
+  font/theme rematerialization, immutable failed edit, resource lifecycle and exact restoration.
+- Evidence: `test/unit/geo/annotations.test.js`, `test/contracts/geo-mark-types.test.js`.
+
+### Attached feature and graticule labels
+
+Full geographic Shape/Point/Line/Graticule marks are eligible existing Text sources. Use the canonical
+[`createMarkLabels`](MARKS.md#createmarklabels) and [`createTextMark`](MARKS.md#createtextmark) contract
+for field/constant content, centroid anchors, native styles, membership, collision layout and removal.
+This source relationship follows geometry/join/LOD/projection revisions without a synthesized dataset.
+Graticules expose `axis` and numeric `value`. Fixed geographic annotations remain single-anchor resources.
+
+## `createGeoRouteData`
+
+- Signature: `createGeoRouteData({id,routes,coordinateKind})`. Full only; all three fields are explicit.
+  Requires a missing geometry ID and an existing retained edge-route resource. `coordinateKind` is
+  `geographic|planar`; unknown options, undefined/null, descriptors and incompatible inputs fail.
+- Every canonical hierarchical/force-directed/density/edge-path result becomes one LineString per
+  original edge in its original order, using every retained sampled M/L command. No route solver,
+  extra smoothing, implicit sampling or edge removal occurs. Repeated zero-length endpoints remain.
+- Geographic interprets **world** route x/y as longitude/latitude degrees. Every sample is finite;
+  latitude must be within −90 to 90. Finite unwrapped longitude follows the existing geometry contract.
+  Screen routes cannot be interpreted as geographic, and pixels are never inverted. Bundling retains
+  its existing planar numerical meaning; this adapter does not compute spherical bundles.
+- Planar consumes world or screen route positions in existing identity projection units. GeoLineMark
+  retains explicit `source-segment|great-circle`, antipodal hint, date-line splitting, projection clip
+  and resampling behavior. Camera changes update projection and marks without recomputing world routes.
+- Stores kind:geometry, algorithmVersion1, authored ownership, options `{method:'geo-routes',coordinateKind}`,
+  one exact edge-route input, and result features/identity/coordinateKind/diagnostics. Features contain
+  `properties.edgeKey` with the opaque typed graph edge token, a LineString, sourcePath and drawable.
+  The token is the explicit geometry feature key; numeric/string/tuple original edge keys stay distinct.
+  Diagnostics use the existing bounded geometry feature/position/work counts. Maximum 100000 features,
+  1000000 positions and 10000000 cumulative work are fixed; no new limit override is introduced.
+- The derived geometry owns a stable logical identity and retains exact route provenance. Source-item
+  fields use native graph edge fields; observed edges expose original edge rows, inferred edges expose
+  both original endpoint rows. Graphic lineage points to the exact geometry revision whose input DAG
+  identifies route, graph, layout, optional hierarchy and source data. No dataset is synthesized.
+- Route, graph, layout, source, hierarchy and screen viewport revision preflight the entire dependent
+  geometry/join/LOD/fit projection union, then rematerialize geographic consumers explicitly once.
+  Invalid geographic samples or incompatible projections fail atomically with old state and trace intact.
+  Native removal checks the retained input DAG. Editable restoration validates features and provenance
+  against retained exact route inputs without rerunning the route solver or performing I/O.
+
+### Formal values — `createGeoRouteData`
+
+- Implemented: `createGeoRouteData(options: TargetedOptions<CreateGeoRouteDataOptions>): ChartProgram`.
+- Planned: no additional values.
+- Proposed (NOT IMPLEMENTED): automatic screen-to-geographic inversion and camera-driven world rebundling.
+
+### Value coverage — `createGeoRouteData`
+
+- ✅ Covered: canonical method membership, original samples and rows, typed identity, empty/inferred sources,
+  Basic rejection, own-data/range guards, native revision closure and corrupted editable restore.
+- Evidence: `test/unit/geo/route-resources.test.js`, `test/contracts/geometry-types.test.js`.
+
+## `editGeoRouteData`
+
+- Signature: `editGeoRouteData({target?,routes?,coordinateKind?})`. Full only. Resolve explicit target,
+  current eligible route geometry, then one unique route geometry; other geometry methods are ineligible.
+- Requires a nonempty patch without undefined values. Omitted route input or coordinate interpretation
+  is preserved. Every successful edit increments revision once, including a same-value edit.
+- Geometry logical identity remains stable; explicit opaque edge keys preserve surviving feature identity.
+  Input replacement uses its exact source graph/rows; unrelated resources do not gain authority from a
+  matching textual ID. Dependent joins/levels/projections/marks follow the same atomic closure as creation.
+
+### Formal values — `editGeoRouteData`
+
+- Implemented: `editGeoRouteData(options: TargetedOptions<EditGeoRouteDataOptions>): ChartProgram`.
+- Planned: no additional values.
+- Proposed (NOT IMPLEMENTED): implicit nearest-resource resolution or geographic source-field inference.
+
+### Value coverage — `editGeoRouteData`
+
+- ✅ Covered: preserved intent, explicit replacement, current/unique/ambiguous targeting, scoped child edits,
+  one revision per dependent, selection identity, immutable errors and exact offline validation.
+- Evidence: `test/unit/geo/route-resources.test.js`, `test/contracts/geometry-types.test.js`.

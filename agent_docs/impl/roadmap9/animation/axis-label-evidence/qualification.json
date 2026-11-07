@@ -1,0 +1,126 @@
+{
+  "source": "0eee2a254",
+  "scope": "fixed native Cartesian axis label layout, not all animation or Roadmap9",
+  "authorization": "../AUTHORIZATION.json#remainingApproval",
+  "guideKernel": "native-guide-values@4",
+  "transitionVersion": 2,
+  "shared4Changes": [],
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1178,
+    "packedBytes": 1682115,
+    "unpackedBytes": 7603323,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "07072975db3a4bc3ff98ddcf788cd6f079e9d34f",
+    "sha256": "ae11f21eb27ab266fd1a0e81414adfb96b6cfffcea4187198734d3bd5d5af3d3"
+  },
+  "checks": {
+    "animation": {
+      "passed": 371
+    },
+    "newAndPeerCritical": {
+      "passed": 26,
+      "lines": 98.97,
+      "branches": 96.72,
+      "functions": 100
+    },
+    "nativeRegression": {
+      "passed": 74
+    },
+    "boundaries": {
+      "passed": 32
+    },
+    "packageAndSharding": {
+      "passed": 10
+    },
+    "finalPackageAndDocs": {
+      "passed": 28
+    },
+    "realistic": {
+      "passed": 5,
+      "recipes": 40,
+      "runtimeRows": "five declared real cohorts, original rows and units unchanged"
+    },
+    "renderAndBrowser": {
+      "passed": 8,
+      "browserDpr": [
+        1,
+        2
+      ],
+      "outputs": [
+        "Canvas",
+        "SVG",
+        "PNG",
+        "PDF"
+      ]
+    },
+    "installed": {
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "runtimeCasesPerNode": 3,
+      "strictTypes": true,
+      "docExample": true,
+      "optionalPeers": true,
+      "bundleEntries": 6,
+      "sameArchive": true,
+      "originalCapFailurePreserved": true,
+      "finalCapValidation": "same exact 18 measurements, external cap only; no changed tar or runtime"
+    }
+  },
+  "limits": {
+    "entries": 1178,
+    "packedBytes": 1684800,
+    "unpackedBytes": 7603400,
+    "animationGzip": 269900
+  },
+  "pending": [
+    "width-based wrapping and responsive selection",
+    "inferred title dependency",
+    "categorical/size/group legend",
+    "combined transition v3 qualification",
+    "whole STEP061/062/063/077"
+  ],
+  "rawLogsSha256": {
+    "axis-label-first.log": "3430c558216f06d5a1d3a528936d2d8634c37b6fdc3d58b12a38cf38c0c4dce0",
+    "axis-label-first-runtime.log": "9c18097081219a87466c75266451eeeb5f95d31bb06a81f7ae0572d2ac5e9d96",
+    "axis-label-owning-first.log": "15a3de86bdcb74fe27e56419f9dbafb120236c8462ebf42e6553d8174a37269d",
+    "axis-label-owning-final.log": "cb01ffe487c8124c43a06eaec41b1f4743980448711abf0a6108d2a5a59e1056",
+    "axis-label-coverage-first.log": "38cbf12ebbd3ce5ec8c72e43d9d4f5743481132d5d4b6d9ddcb0d42f5e6f976f",
+    "axis-label-coverage-final.log": "bbf95c6382ac28a693af15e49515caaca546edfe7fc6007d628c6cff9f71577d",
+    "axis-label-coverage-final2.log": "ad85d206cba948793fe656f1f08c0d6d53405751c019e01511888a0c5c6db62e",
+    "axis-label-animation.log": "789e5f76f5a8b5812f4cdd70bba466ce06c9eea383b7f66ee62fc37b805ebf3c",
+    "axis-label-native-regression.log": "7d00e4b224906dc4b4842fdc68105dbf6089f180ee2ef1079b1679bd799ad5ce",
+    "axis-label-realistic.log": "e232ffbe16951618f63306caf0bd29b22dfdae4eff359617edf79f646e5d9d06",
+    "axis-label-render.log": "f4d8f61269038c6230766300634ff25710a664947969ec4ed38bc3b1a74901a8",
+    "axis-label-boundaries.log": "f850c68d1ea5d43c687d381c8547eeaf3af48a630887596b4dcc9cfa7700b90a",
+    "axis-label-boundary-extra.log": "048d1207b7e1d52c503438b193bdc54beadbbd5c7b29f8b3a34e8aa4976c49a1",
+    "axis-label-package-first.log": "49ea6e83e7132e960a4cb9a773c47e0ed681059057c7ae447c0960745c70aab5",
+    "axis-label-docs-owning.log": "e35e1b18a2ddf279436e3c5d394d8045bbce494c656571cf75fac103c5d7516c",
+    "axis-label-final-contracts.log": "35e0d22eee8cc4cb43cdaf355ea062c253f1c4b079c92f23a21259a0bb15c700"
+  },
+  "inputsSha256": {
+    "src/materialization/animation/axisLabelState.js": "b82a030979c88f205e4980631cdc20abdd32d07540063d0649656e643791502e",
+    "src/materialization/animation/guideMetrics.js": "c501e9021ba9726fe32b0a906544ad284f6d04ed80a9efaebaf9e2d9d0099194",
+    "src/animation/guideTracks.js": "382a81eacf7c8a30dc87bd13d8018dc491f591603dd770969a3acf2e7c587bb3",
+    "src/materialization/animation/guides.js": "6061a59db90321fe48961e3d8a1c1bff0ece5deecf62daae95677c73bfac6609",
+    "test/unit/animation/axis-label-transitions.test.js": "bd29f0ea00e1e8b38ef88353a879e0029f6c80e4c0c60125be71257fbad87303",
+    "scripts/consumers/fixtures/node/animation.mjs": "73656895ee776a5dc822fd1c86a2319479ab00d3141a3df50090e3cd2a3aff5c"
+  },
+  "pinnedDocumentation": {
+    "source": "0eee2a254",
+    "tests": 26,
+    "builtPages": 186,
+    "llmArtifacts": 1598,
+    "status": "passed"
+  },
+  "pinnedDocumentationLogs": {
+    "axis-label-docs-pinned.log": "8ab005c44ab9ecd2e204e38dde3a2c7a3034b15b88ff622ac511210e9da63dd2",
+    "axis-label-docs-build.log": "fb5716de0cf4387de9d33c28057b8e3f19f96d661a4fa05df500bc386e7a0119",
+    "axis-label-docs-built-check.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b"
+  }
+}

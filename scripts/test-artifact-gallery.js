@@ -7,6 +7,14 @@ import { chromium } from "playwright";
 import { artifactScopeConfig, artifactScopeNames } from "../test/support/artifact-schema.js";
 import { PNG_ARTIFACT_ROOT } from "../test/support/artifact-paths.js";
 
+// Chromium cannot capture a page taller than its maximum texture in one image.
+// Large approved galleries keep their layout checks and save the first screen.
+const MAX_FULL_PAGE_SCREENSHOT_HEIGHT = 16384;
+async function captureGallery(page, file) {
+  const height = await page.evaluate(() => document.documentElement.scrollHeight);
+  await page.screenshot({ path: file, fullPage: height <= MAX_FULL_PAGE_SCREENSHOT_HEIGHT });
+}
+
 async function verifyGallery(browser, scope) {
   const { label, root } = artifactScopeConfig(scope);
   const gallery = path.join(root, "index.html");
@@ -49,7 +57,7 @@ async function verifyGallery(browser, scope) {
   if (await desktop.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)) {
     throw new Error("Desktop gallery must not overflow horizontally.");
   }
-  await desktop.screenshot({ path: path.join(screenshots, "desktop.png"), fullPage: true });
+  await captureGallery(desktop, path.join(screenshots, "desktop.png"));
 
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await mobile.goto(pathToFileURL(gallery).href, { waitUntil: "networkidle" });
@@ -62,7 +70,7 @@ async function verifyGallery(browser, scope) {
   if (await mobile.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)) {
     throw new Error("Mobile gallery must not overflow horizontally.");
   }
-  await mobile.screenshot({ path: path.join(screenshots, "mobile.png"), fullPage: true });
+  await captureGallery(mobile, path.join(screenshots, "mobile.png"));
   await desktop.close();
   await mobile.close();
   if (errors.length > 0) throw new Error(errors.join("\n"));

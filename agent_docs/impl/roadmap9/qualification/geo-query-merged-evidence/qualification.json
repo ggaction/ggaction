@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-path-query-integration",
+  "upstream": "76c02ff06",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1268,
+    "packedBytes": 1825842,
+    "unpackedBytes": 8223485,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-e2f80483b9117672da9db8b556284c0135d94c44009a0371749a93480334a2a2.tgz",
+    "sha256": "e2f80483b9117672da9db8b556284c0135d94c44009a0371749a93480334a2a2"
+  },
+  "checks": {
+    "owningTests": 53,
+    "sameArchiveNodeVersions": [
+      20,
+      22,
+      24
+    ],
+    "installedRuntimeAndStrictTypes": true,
+    "browserDPR": [
+      1,
+      2
+    ],
+    "bundles": 6,
+    "boundaries": 27
+  },
+  "sourceHashes": {
+    "src/grammar/pathGeometry.js": "8bc3434123845f1a6089bfd4eb3f3ea0eb53330f46ba3c9ac8caf5022079b0fc"
+  },
+  "evidenceFiles": {
+    "installed.log": {
+      "sha256": "d91786ab67cc5fadb10203f4c7f6cf1bae7afd3441fcb613f211134b4e514a81",
+      "bytes": 3457
+    },
+    "pack.json": {
+      "sha256": "99e1bb9b81df68f9b690210555b995b0613c79d74a1281781a8520009253b0c5",
+      "bytes": 379
+    },
+    "boundaries.log": {
+      "sha256": "d163f6d2e908667987412cd54828c3ace5362393ffc59bf53c54229ab921fcea",
+      "bytes": 5717
+    },
+    "installed.json": {
+      "sha256": "37b0488b1f171a0feec895775e1a60226ea051add15b327a1574378eda7c866f",
+      "bytes": 4860
+    },
+    "prepack24.json": {
+      "sha256": "c6427bea1ca35dc4f0189979fc97b9ed111e84d15e509b9ce3272487bc2f96ac",
+      "bytes": 295
+    },
+    "prepack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "record.py": {
+      "sha256": "e3efcdab6aeab29f891864418a722dd088a93d722505094f66560ff4271ad44d",
+      "bytes": 3628
+    },
+    "pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "owning.log": {
+      "sha256": "a41bbb8a53b5120970fe2a55f76be08bdab8f363eac74ead8296bfcfaaab9e2e",
+      "bytes": 12242
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "91236a652edad82b1626aac5a06a55b30a44a0312c2f04c4e7c064f65b4dc4ba",
+      "bytes": 1807
+    },
+    "source-pin-pack.json": {
+      "sha256": "5959feff5c9e9ff7d8a6dd3ad8b923054e6158d82fefe4be7f424125ed8b4bde",
+      "bytes": 386
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "remaining": [
+    "original100k rebase and offline blocked by owned registry rehash",
+    "isolated canonical P95",
+    "100cycle retained lifetime",
+    "final combined qualification"
+  ],
+  "sourceRevision": "aefcd884e6b83c8c793a7f48947fe101a9af2e67",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

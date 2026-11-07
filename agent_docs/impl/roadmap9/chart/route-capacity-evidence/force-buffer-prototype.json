@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "status": "evidence-only small typed-storage prototype; no product policy or performance qualification",
+  "source": "fa943e864982783ae8ae10bc18a4257ea8f0b2bb",
+  "node": "v22.23.1",
+  "receipts": [
+    {
+      "name": "original-100",
+      "edges": 100,
+      "candidates": 4950,
+      "compatiblePairs": 750,
+      "iterations": 165,
+      "displacementCaps": 81899,
+      "candidatePlusScheduleCharge": 1174650,
+      "managedNeighborBytes": 65154,
+      "bufferReservations": 2,
+      "chunkSize": 32768,
+      "chunks": 1,
+      "coordinateHash": "15eac8bdbb69f022263b3dcde1bc20201e6145ad63121591c76be4bc387b9dcc"
+    },
+    {
+      "name": "chunk-boundaries",
+      "edges": 100,
+      "candidates": 4950,
+      "compatiblePairs": 750,
+      "iterations": 165,
+      "displacementCaps": 81899,
+      "candidatePlusScheduleCharge": 1174650,
+      "managedNeighborBytes": 10749,
+      "bufferReservations": 46,
+      "chunkSize": 17,
+      "chunks": 45,
+      "coordinateHash": "15eac8bdbb69f022263b3dcde1bc20201e6145ad63121591c76be4bc387b9dcc"
+    },
+    {
+      "name": "signed-zero-reverse-and-zero",
+      "edges": 4,
+      "candidates": 3,
+      "compatiblePairs": 3,
+      "iterations": 165,
+      "displacementCaps": 1569,
+      "candidatePlusScheduleCharge": 16728,
+      "managedNeighborBytes": 75,
+      "bufferReservations": 3,
+      "chunkSize": 2,
+      "chunks": 2,
+      "coordinateHash": "0c1f2fdfd7dbaed504832c3fbabe3429034e9f8334bb39b78324f9027bebae4a"
+    },
+    {
+      "name": "directed-opposed-and-threshold",
+      "edges": 4,
+      "candidates": 6,
+      "compatiblePairs": 1,
+      "iterations": 165,
+      "displacementCaps": 0,
+      "candidatePlusScheduleCharge": 19362,
+      "managedNeighborBytes": 49,
+      "bufferReservations": 2,
+      "chunkSize": 1,
+      "chunks": 1,
+      "coordinateHash": "b35ba9e71300dc12c71196f0259d7c16f85f5322835b0374c6a12eae64d22f4e"
+    },
+    {
+      "name": "below-epsilon",
+      "edges": 3,
+      "candidates": 0,
+      "compatiblePairs": 0,
+      "iterations": 165,
+      "displacementCaps": 0,
+      "candidatePlusScheduleCharge": 5289,
+      "managedNeighborBytes": 28,
+      "bufferReservations": 1,
+      "chunkSize": 2,
+      "chunks": 0,
+      "coordinateHash": "043e3037516a40679c9e46b9dde4ff223cb22611f914b77815b0246ba5db694c"
+    }
+  ],
+  "boundaries": [
+    "same complete scalar/current result for every iteration",
+    "same ordered pair values and original edge degrees",
+    "same candidate/schedule work charge",
+    "caller immutable",
+    "signed zero/reverse/coincident/threshold/degenerate cases",
+    "pre-allocation byte rejection",
+    "abort before allocation and partial-allocation cleanup",
+    "overflow matches original rejection"
+  ],
+  "largeStaticModel": {
+    "edges": 10000,
+    "pairs": 8145000,
+    "chunkSize": 32768,
+    "chunks": 249,
+    "managedNeighborBytes": 106150020,
+    "note": "Arithmetic model using prior exact compatibility count only. No large table or solver is allocated. Includes last-chunk padding; no consolidation-copy stage."
+  },
+  "limitations": [
+    "JS array/Map/object overhead, caller inputs, scalar-oracle harness and old/new point buffers are not in this neighbor ledger",
+    "No full solver/public finalization/worker/codec/packet byte benchmark",
+    "No 1k or 10k solver run, SLO or P95 claim",
+    "No bounds or charges reduced"
+  ],
+  "prototypeSHA256": "77e1242c71aff09b53c7835b52aea9aa411c03f444a1def2c5cfb800600f0e5d",
+  "sourceSHA256": {
+    "forceDirected.js": "f81f4307ba5f27e190b8bbd0bd22541c5b2bbd5ab36fe4a190ef207078a7381e",
+    "compatibility.js": "4d9c41a8ae6413b08634f1b7cccedfddae8748e7f605d00c0abfe2c7f5caf727",
+    "polyline.js": "ad2762f7c2ba6f542a5506479dcb2a17c1a058018258a3a692a8395ea82d46be"
+  }
+}

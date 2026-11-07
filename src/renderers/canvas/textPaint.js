@@ -1,7 +1,7 @@
 import { canvasFactory } from "./surfaceFactory.js";
 import { MAX_RASTER_DIMENSION, MAX_RASTER_PIXELS } from "./limits.js";
 import { validatePatternWork } from "../../grammar/patterns.js";
-import { walkGraphicTreeEvents } from "../../grammar/schemas/graphicTree.js";
+import { walkGraphicPaintItems } from "../paintFrames.js";
 import { fillCanvasPath, preflightCanvasFillCapabilities } from "./fill.js";
 
 function dimensions(width, height, pixelRatio) {
@@ -27,29 +27,19 @@ function radialCoverage(target, properties, offset) {
 }
 
 export function prepareTextPaints(target, context, { pixelRatio = 1, createCanvas, objects = Object.values(target.graphicSpec.objects) } = {}) {
-  const plans = new Map(), offsets = [[0, 0]];
+  const plans = new Map();
   let work = 0;
-  function plan(id, item, type) {
+  function plan(id, item, type, frame) {
     const properties = item.properties, fill = properties?.fill;
     if (type !== "text" || !["pattern", "radial-gradient"].includes(fill?.type)) return;
     if (!properties.fillBounds) throw new TypeError("Text paint requires concrete fillBounds.");
     const coverage = fill.type === "pattern" ? { left: 0, top: 0, right: fill.pitch, bottom: fill.pitch }
-      : radialCoverage(target, properties, offsets.at(-1));
+      : radialCoverage(target, properties, frame.offset);
     const size = dimensions(coverage.right - coverage.left, coverage.bottom - coverage.top, pixelRatio);
     work += size.width * size.height; validatePatternWork(work);
     plans.set(id, { ...size, coverage });
   }
-  walkGraphicTreeEvents(target.graphicSpec, {
-    enter({ id, object }) {
-      if (object.type === "canvas") {
-        const previous = offsets.at(-1);
-        offsets.push(id === target.canvasId ? [0, 0] : [previous[0] + object.properties.x, previous[1] + object.properties.y]);
-      }
-      if (!object.items) plan(id, object, object.type);
-    },
-    item({ id, object, owner }) { plan(id, object, object.type ?? owner.type); },
-    exit({ object }) { if (object.type === "canvas") offsets.pop(); }
-  });
+  walkGraphicPaintItems(target, plan);
   if (plans.size === 0) return undefined;
   const surface = canvasFactory(context, createCanvas)(1, 1);
   const source = surface?.getContext?.("2d");

@@ -1,9 +1,11 @@
+import { circleBatchRow } from "./circleBatch.js";
+import { pathBatchRow } from "./pathBatch.js";
 import { shadowBlurSupport } from "../shadow.js";
 import {
   requireFiniteBounds,
   resolveTextBounds
 } from "../../core/textMetrics.js";
-import { resolvePathSubpaths } from "../pathTopology.js";
+import { resolvePathSubpaths, pathCommandCapacity, validatePathCommandCount } from "../pathTopology.js";
 import { resolvePathCommandBounds } from "../pathGeometry.js";
 export { resolvePathCommandBounds } from "../pathGeometry.js";
 import { graphicClipBounds, intersectClipBounds } from "./graphicClip.js";
@@ -275,9 +277,9 @@ function singlePathStrokeBounds(commands, bounds, strokeExtent, details) {
   return expanded;
 }
 
-function pathStrokeBounds(commands, bounds, strokeExtent, details) {
+function pathStrokeBounds(commands, bounds, strokeExtent, details, maxCommands) {
   if (!(strokeExtent > 0)) return bounds;
-  return unionBounds(resolvePathSubpaths(commands).map(({ start, end }) => {
+  return unionBounds(resolvePathSubpaths(commands, maxCommands).map(({ start, end }) => {
     const subpath = commands.slice(start, end + 1);
     return singlePathStrokeBounds(subpath, resolvePathCommandBounds(subpath), strokeExtent, details);
   }));
@@ -289,6 +291,13 @@ function hasActiveStroke(properties) {
 }
 
 export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
+  if (type === "circle-batch" && ![properties.x, properties.y, properties.radius].every(Array.isArray)) return undefined;
+  if (type === "circle-batch") return unionBounds(properties.x.map((_, index) =>
+    resolvePrimitiveGraphicBounds("circle", circleBatchRow(properties, index), profile)));
+  if (type === "path-batch" && ![properties.x, properties.y, properties.starts].every(Array.isArray)) return undefined;
+  if (type === "path-batch") return unionBounds(properties.starts.map((_, index) =>
+    resolvePrimitiveGraphicBounds("path", pathBatchRow(properties, index), profile)));
+  if (type === "weighted-blend") return weightedBounds(properties, profile, false);
   const strokeExtent = properties.outline === undefined
     ? (hasActiveStroke(properties) ? properties.strokeWidth / 2 : 0)
     : properties.outline.width / 2;
@@ -340,13 +349,15 @@ export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
   if (type === "path") {
     const commands = properties.commands;
     if (!Array.isArray(commands)) return undefined;
+    validatePathCommandCount(commands.length, "path.commands length", pathCommandCapacity(properties));
     const bounds = resolvePathCommandBounds(commands);
     if (bounds === undefined) return undefined;
     return pathStrokeBounds(
       commands,
       bounds,
       strokeExtent,
-      resolveStrokeDetails(properties)
+      resolveStrokeDetails(properties),
+      pathCommandCapacity(properties)
     );
   }
   return undefined;
@@ -355,6 +366,13 @@ export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
 // Layout occupancy includes the bounded visual effect. Selection and hit
 // geometry explicitly use the unchanged source primitive bounds below.
 export function resolvePrimitiveOccupiedBounds(type, properties = {}, profile) {
+  if (type === "circle-batch" && ![properties.x, properties.y, properties.radius].every(Array.isArray)) return undefined;
+  if (type === "circle-batch") return unionBounds(properties.x.map((_, index) =>
+    resolvePrimitiveOccupiedBounds("circle", circleBatchRow(properties, index), profile)));
+  if (type === "path-batch" && ![properties.x, properties.y, properties.starts].every(Array.isArray)) return undefined;
+  if (type === "path-batch") return unionBounds(properties.starts.map((_, index) =>
+    resolvePrimitiveOccupiedBounds("path", pathBatchRow(properties, index), profile)));
+  if (type === "weighted-blend") return weightedBounds(properties, profile, true);
   const bounds = resolvePrimitiveGraphicBounds(type, properties, profile), shadow = properties.shadow;
   if (bounds === undefined || shadow === undefined) return bounds;
   const { padding } = shadowBlurSupport(shadow.blurRadius);
@@ -362,6 +380,17 @@ export function resolvePrimitiveOccupiedBounds(type, properties = {}, profile) {
     right: Math.max(bounds.right, bounds.right + shadow.offsetX + padding),
     top: Math.min(bounds.top, bounds.top + shadow.offsetY - padding),
     bottom: Math.max(bounds.bottom, bounds.bottom + shadow.offsetY + padding) });
+}
+
+function weightedBounds(properties, profile, effects) {
+  if (!Array.isArray(properties.sources) || properties.opacity === 0) return undefined;
+  const resolve = effects ? resolvePrimitiveOccupiedBounds : resolvePrimitiveGraphicBounds;
+  return unionBounds(properties.sources.filter(source => source.weight > 0 && source.properties.opacity !== 0).map(source => {
+    let b = translateBounds(resolve(source.type, source.properties, profile), ...source.offset);
+    if (!b) return undefined;
+    for (const clip of [source.clip, ...source.clips]) b = intersectClipBounds(b, graphicClipBounds(clip));
+    return b.right > b.left && b.bottom > b.top ? b : undefined;
+  }));
 }
 
 function translateBounds(bounds, x, y) {
@@ -401,6 +430,32 @@ function intersectVisibleBounds(bounds,clip) {
   const result={left:Math.max(bounds.left,clip.left),right:Math.min(bounds.right,clip.right),
     top:Math.max(bounds.top,clip.top),bottom:Math.min(bounds.bottom,clip.bottom)};
   return result.right<=result.left||result.bottom<=result.top?undefined:result;
+}
+
+// Canonical scene nodes already contain their complete parent offset and clip
+// stack. Reuse the same occupied-ink and visible-bound policies as graphicSpec.
+export function resolveSceneNodeOccupiedBounds(node, profile, accountWork) {
+  if (accountWork !== undefined) {
+    const p = node.properties;
+    let work = 1 + Object.keys(p).length;
+    if (node.type === "text") {
+      work += p.text.length;
+      for (const line of p.lines ?? []) work += 1 + line.text.length;
+      work += (profile?.fonts?.length ?? 0) * Math.max(1, p.lines?.length ?? 0);
+    }
+    for (const command of p.commands ?? []) work += 1 + Object.keys(command).length;
+    for (const clip of [node.clip, ...node.clips]) {
+      work += 1;
+      for (const command of clip?.commands ?? []) work += 1 + Object.keys(command).length;
+    }
+    accountWork(work);
+  }
+  let bounds = translateBounds(resolvePrimitiveOccupiedBounds(node.type, node.properties, profile), ...node.offset);
+  for (const clip of [node.clip, ...node.clips]) {
+    const descriptor = Array.isArray(clip) ? { x: clip[0], y: clip[1], width: clip[2], height: clip[3] } : clip;
+    bounds = intersectVisibleBounds(bounds, graphicClipBounds(descriptor));
+  }
+  return bounds;
 }
 
 function clipAncestorBounds(graphicSpec,id,bounds,includeOwnerClips) {

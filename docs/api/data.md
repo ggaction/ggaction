@@ -16,7 +16,11 @@ operation; marks and renderers never mutate source values.
 | Family | Actions | Use |
 | --- | --- | --- |
 | [Source and derived data](./data/source-and-derived.md) | `createData`, `createDerivedData` | Store source rows or explicit transform provenance |
-| [Prepared sources](./data/source-and-derived.md#prepared-data-updates) | `prepareDataUpdate`, `applyDataUpdate` | Prepare CSV/JSON or named data, then apply an immutable update |
+| [Prepared sources](./data/source-and-derived.md#prepared-data-updates) | `prepareDataUpdate`, `applyDataUpdate` | Prepare CSV/JSON, named, URL or parameter data, then apply an immutable update |
+| [Source revisions](../data-updates.md#revise-a-source-and-its-dependent-chart) | `reviseData`, `reviseDataInSlices` | Replace compatible rows, synchronously or in host-yielding slices |
+| [Parameters](./data/expressions-and-normalization.md#parameters) | `createParameter`, `editParameter`, `removeParameter` | Store scalar inputs that transforms and expressions read |
+| [Pivot](./data/summaries-and-shaping.md#createpivotdata) | `createPivotData` | Group category values into columns |
+| [Sorted rows](./data/source-and-derived.md#create-sorted-data) | `createSortedData` | Materialize an explicit multi-key row order |
 | [Safe resource removal](./data/revisions-and-removal.md#removedata-id) | `removeData` | Delete one named dataset only after all live consumers are gone |
 | [Reusable summaries](./data/summaries-and-shaping.md#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
 | [Reusable bins](./data/summaries-and-shaping.md#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
@@ -29,7 +33,7 @@ operation; marks and renderers never mutate source values.
 | [Missing values](./data/missing-data.md#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap) | `createImputedData` | Fill selected values with an explicit method and ordering policy |
 | [Empirical distributions](../tutorials/ecdf.md#reuse-the-derived-rows) | `createECDFData` | Reduce observations to ordered support, mass, and probability rows |
 | [Stack data](./data/summaries-and-shaping.md#createstackdata-id-source-category-group-value-mode-as) | `createStackData` | Materialize reusable stack endpoints, values, and shares |
-| [Filtering](./data/filtering.md) | `filterData`, `filterMarks`, `removeMarkFilter` | Derive rows or revise and remove one visual-layer filter |
+| [Filtering](./data/filtering.md) | `filterData`, `filterMarks`, `removeMarkFilter`, `setMarkVisibility` | Derive rows, revise and remove one visual-layer filter, or hide legend categories |
 | [Statistical transforms](./data/statistical-transforms.md) | `createRegressionData`, `createIntervalData`, `createDensityData` | Materialize fitted, interval, or density rows |
 | [Time-unit transforms](./data/time-units.md) | `createTimeUnitData` | Add calendar buckets with UTC or an explicit IANA zone and calendar policies |
 | [Window transforms](./data/window.md) | `createWindowData` | Compute ordered values within partitions while preserving source row order |
@@ -53,4 +57,5 @@ creating state, and a failed action leaves the earlier program unchanged.
 ## Related
 
 [Marks](./marks.md) · [ChartProgram and immutability](../concepts/chart-program.md) ·
+[Data updates and snapshots](../data-updates.md) ·
 [Complete action reference](../reference/actions.md)

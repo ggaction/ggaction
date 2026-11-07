@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, mkdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -185,6 +185,8 @@ function assertPanelGeometry(program, definition, factors) {
     ? 1_100
     : expectedWidth - 520;
   const expectedYSpan = definition.recipe === GUIDE_RECIPE ? 650 : 440;
+  const [xScale, yScale] = definition.panel === "xOffset" ? ["barX", "barY"]
+    : definition.panel === "yOffset" ? ["horizontalX", "horizontalY"] : ["x", "y"];
   for (const child of Object.values(program.children)) {
     const canvas = child.graphicSpec.objects.canvas.properties;
     assert.deepEqual(
@@ -193,12 +195,12 @@ function assertPanelGeometry(program, definition, factors) {
       `${definition.id} cell Canvas`
     );
     assert.equal(
-      Math.abs(child.resolvedScales.x.range.at(-1) - child.resolvedScales.x.range[0]),
+      Math.abs(child.resolvedScales[xScale].range.at(-1) - child.resolvedScales[xScale].range[0]),
       expectedXSpan,
       `${definition.id} x plot span`
     );
     assert.equal(
-      Math.abs(child.resolvedScales.y.range.at(-1) - child.resolvedScales.y.range[0]),
+      Math.abs(child.resolvedScales[yScale].range.at(-1) - child.resolvedScales[yScale].range[0]),
       expectedYSpan,
       `${definition.id} y plot span`
     );
@@ -222,13 +224,9 @@ function assertNonBlankCanvas(canvas, definition) {
   assert.ok(colors.size >= 2, `${definition.id} Canvas is blank`);
 }
 
-async function renderCase(definition) {
-  const recipe = recipeFor(definition.recipe);
-  const factors = factorsFor(definition, recipe);
+async function renderFacetProgram(program, definition, factors, metadata) {
   let directory;
   try {
-    const program = recipe.build(factors);
-    const metadata = recipe.describe(factors);
     assertGraphicIntegrity(program, definition.id);
     assertAnalyticLayerIntegrity(program, definition.id);
     assert.equal(program.compositionSpec.type, "facet", definition.id);
@@ -326,11 +324,43 @@ async function renderCase(definition) {
       maxRssKiB: process.resourceUsage().maxRSS
     });
   } finally {
-    recipe.releaseResolution?.(factors);
-    releaseTidyTuesdaySourceCache(definition.dataset);
     if (directory !== undefined) {
       await rm(directory, { recursive: true, force: true });
     }
+    globalThis.gc?.();
+  }
+}
+
+async function renderCase(definition) {
+  const recipe = recipeFor(definition.recipe);
+  const factors = factorsFor(definition, recipe);
+  try {
+    const program = recipe.build(factors);
+    const metadata = recipe.describe(factors);
+    if (definition.recipe !== GUIDE_RECIPE) return await renderFacetProgram(program, definition, factors, metadata);
+    // Distinct measured/count/nominal Y meanings retain their own exact facet panels.
+    // Render every panel at its native dimensions rather than rasterizing a giant concat.
+    assert.deepEqual(Object.keys(program.children), ["measure", "xOffset", "yOffset"]);
+    assertGraphicIntegrity(program, definition.id);
+    assertAnalyticLayerIntegrity(program, definition.id);
+    const combinedSVG = renderToSVG(program, { title: metadata.title, description: metadata.analysisQuestion });
+    assertSvgIntegrity(combinedSVG, definition.id);
+    assert.ok(program.graphicSpec.objects.chartTitle !== undefined, `${definition.id} combined title`);
+    const panels = [];
+    for (const panel of ["measure", "xOffset", "yOffset"]) {
+      panels.push(await renderFacetProgram(program.children[panel],
+        { ...definition, id: `${definition.id}-${panel}`, panel }, factors, metadata));
+    }
+    return { id: definition.id, recipe: definition.recipe, dataset: definition.dataset, panels,
+      combinedSVGBytes: Buffer.byteLength(combinedSVG),
+      pixels: Math.max(...panels.map(panel => panel.pixels)),
+      svgBytes: panels.reduce((sum, panel) => sum + panel.svgBytes, 0),
+      pngBytes: panels.reduce((sum, panel) => sum + panel.pngBytes, 0),
+      pdfBytes: panels.reduce((sum, panel) => sum + panel.pdfBytes, 0),
+      maxRssKiB: process.resourceUsage().maxRSS };
+  } finally {
+    recipe.releaseResolution?.(factors);
+    releaseTidyTuesdaySourceCache(definition.dataset);
     globalThis.gc?.();
   }
 }
@@ -388,7 +418,7 @@ if (childCases !== undefined) {
   for (const index of indexes) summaries.push(await renderCase(RASTER_CASES[index]));
   process.stdout.write(`${JSON.stringify(summaries)}\n`);
 } else {
-  test("renders every formerly oversized realistic facet through SVG, Canvas, PNG, and PDF", () => {
+  test("renders every formerly oversized realistic facet through SVG, Canvas, PNG, and PDF", async () => {
     assert.equal(GUIDE_CASES.length, 25);
     assert.equal(LIFECYCLE_CASES.length, 13);
     assert.equal(new Set(RASTER_CASES.map(value => value.id)).size, 38);
@@ -396,6 +426,9 @@ if (childCases !== undefined) {
     const groups = boundedCaseGroups();
     assert.equal(groups.length, 28);
     const results = groups.flatMap(runBoundedCases);
+    assert.equal(results.flatMap(result => result.panels ?? [result]).length, 88);
+    await mkdir(new URL("../../.artifacts/test/", import.meta.url), { recursive: true });
+    await writeFile(new URL("../../.artifacts/test/realistic-facet-raster-bounds.json", import.meta.url), JSON.stringify(results, null, 2) + "\n");
     assert.ok(results.every(value => value.pixels <= MAX_RASTER_PIXELS));
     assert.ok(results.every(value =>
       value.svgBytes > 0 && value.pngBytes > 0 && value.pdfBytes > 0
@@ -403,7 +436,7 @@ if (childCases !== undefined) {
     assert.equal(
       Math.max(...results.filter(value => value.recipe === GUIDE_RECIPE)
         .map(value => value.pixels)),
-      16_120_420
+      15_351_680
     );
     assert.equal(
       Math.max(...results.filter(value => value.recipe === LIFECYCLE_RECIPE)

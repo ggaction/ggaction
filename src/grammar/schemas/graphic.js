@@ -1,10 +1,13 @@
 const PRIMITIVE_DRAWABLE_TYPES = new Set([
   "circle",
+  "circle-batch",
+  "path-batch",
   "rect",
   "line",
   "text",
   "path",
-  "image"
+  "image",
+  "weighted-blend"
 ]);
 const DRAWABLE_TYPES = new Set([
   ...PRIMITIVE_DRAWABLE_TYPES,
@@ -12,6 +15,7 @@ const DRAWABLE_TYPES = new Set([
 ]);
 const STRUCTURAL_TYPES = new Set(["canvas"]);
 const GRAPHIC_PROPERTIES = Object.freeze({
+  "weighted-blend": new Set(["sources", "opacity", "blend", "length"]),
   canvas: new Set(["x", "y", "width", "height", "background"]),
   collection: new Set([
     "items",
@@ -45,6 +49,8 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "opacity"
   ]),
   image: new Set(["image", "x", "y", "width", "height", "opacity", "shadow", "length"]),
+  "circle-batch": new Set(["x", "y", "radius", "appearance"]),
+  "path-batch": new Set(["x", "y", "starts", "closed", "appearance"]),
   circle: new Set([
     "x",
     "y",
@@ -119,7 +125,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "length"
   ]),
   path: new Set([
-    "commands",
+    "commands", "maxCommands",
     "fillRule",
     "fill",
     "outline",

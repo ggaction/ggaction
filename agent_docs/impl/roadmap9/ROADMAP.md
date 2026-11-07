@@ -1,6 +1,48 @@
 # Roadmap 9 — Native 확장
 
-상태: 활성. **Phase 0–3과 STEP-001–016을 완료**했다. G-CORE D1–D8 및 G-PATH D1–D6 제품 구현과 통합 검증을 완료했으며 STEP-017–077은 후속 범위다. [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 활성 위치를 소유한다.
+**2026-11-04 사용자 재개 지시로 작업을 이어간다.** 실행 순서와 진행 상태는 [재개 실행 계획](qualification/RESUME_PLAN_2026-11-04.md)이 소유한다. 중단 시점 상태는 [중앙 인계](qualification/PAUSE_HANDOFF_2026-11-04.md)에 보존한다.
+
+2026-11-02 사용자의 재개 요청으로 작업을 이어간다. 전용 추론 worker와 Full prepared create/edit을 루트에 통합했고([worker 검증](qualification/inference-worker-merged-evidence/qualification.json)), 정확한 동일 객체의 검증 증명 재사용 및 임시 문자열 바이트 배열 제거를 합쳤다([최신 합산 검증](qualification/inference-validation-merged-evidence/qualification.json)). 원10000노드·100000간선 전체 기능 검산과 동일 archive3Node 설치를 통과했다. 실제 브라우저 단발 prepare8.203초·commit0.447초는 기능 진단이며 최종 AT82의 반복 P95·메모리·수명 자격은 남는다. 순차 완료 번호는 STEP056으로 유지한다. 이전 [중단 기록](qualification/PAUSE_HANDOFF_2026-11-01.md)은 중단 시점의 보존 기록이다.
+
+상태: 2026-11-04 재개, 세 branch 통합 중. 정식 누적 closeout은 **Phase 0–3 / STEP-001–016**까지 기록했다. 이후 개별 구현·검증은 **STEP-056 Marginal·Bullet·Combo recipe**까지 진행했으며 여러 interaction 및 animation 기반을 병렬로 구현하고 있다. 개별 checkpoint와 전체 통합 완료는 구분한다. [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 활성 위치를 소유한다.
+
+공통 sample의 빈 스타일 patch 재사용을 별도 검증했다([allocation·설치·렌더러 기록](qualification/frame-appearance-reuse-evidence/qualification.json)). 동일 원1k plan의 전체 frame을 유지하면서 매 frame의 clone/owned 등록1000개를 줄였다. 작은 비용 귀속을 원100k 또는 browser P95 성능 통과로 세지 않는다. 실시간 개선은 공통 sample과 Canvas 재생에 우선하고 네 renderer의 출력 정확성은 유지한다.
+
+좌표 sample의 exact plan 검증과 새 scale 배열 소유권 재사용도 [원1k 전체 frame·3Node 설치 검증](qualification/position-sampling-reuse-evidence/qualification.json)으로 연결했다. 원1k의 내부 clone 생성10000개와 descriptor 순회2000개를 줄였으나 원100k/50ms 성능 자격은 아직 열려 있다.
+
+명시 session hit preparation을 현재 inference·point·animation 합산 후보에 연결했다([같은 tar의 원100k3Node·DPR 검증](qualification/hit-preparation-merged-evidence/qualification.json)). 전체 원좌표·row lineage·9CSS query를 유지한다. 이 기능 admission을 P95/retained heap 또는 STEP 완료로 세지 않는다.
+
+공개 animation v4와 명시 node capacity를 root의 position/appearance 최적화에 합쳤다([같은 archive의 실제 원100k point·10k partition 및3Node/browser](qualification/animation-v4-merged-evidence/qualification.json)). 원 envelope/work/좌표·재시작·오프라인 전체 frame은 그대로다. 합산 point sample2222.98ms는 단발 기능 진단으로 원50ms 성능 의무는 계속 남아 있다.
+
+간선 계산의 typed neighbor·packed density 저장 표현을 합쳤다([같은 tar3Node·92개 공유 검사](qualification/route-storage-merged-evidence/qualification.json)). 원 수학·순서·work/sample guard·hash는 그대로이며 큰 bounded 실행과 원 solver/P95는 별도 미완료다.
+
+Geo의 명시 native/path 용량 A1을 합쳤다([같은 archive3Node·production 설치본 Chromium 원100k](qualification/geo-a1-merged-evidence/qualification.json)). 원199999 commands와 네 renderer를 유지했다. 명시 format5/numeric columns2와 Geo camera A2도 공개 통합했다([설치본3Node·v3/v4/v5 browser·818 owning](qualification/geo-format5-merged-evidence/qualification.json)). 원100k 전체좌표·offline/rebase·batch4pass/5reject는 upstream source-specific 근거이며 통합본의 새 대규모 실행으로 세지 않는다. 큰 stroke/query A3·실시간/P95는 여전히 미완료다.
+
+공통 SHA scalar block-state를 추출해 전체 입력 길이의 padding 복사를 제거했다([같은 tar3Node 공개12사례](qualification/sha256-merged-evidence/qualification.json)). 기존 hash·sync API·한도는 유지하며 비동기 encoder/100ms·장수명 WeakSet 정체·최종 P95는 별도 미완료다.
+
+Private immutable value cursor를 통합했다([core3owner100%·같은 tar3Node·실제 timer 취소](qualification/strict-cursor-merged-evidence/qualification.json)). 공개 route v2의 native create/edit를 통합했다([합산3Node·실제 worker 검증](qualification/route-v2-merged.md)). 기존 v1의 sync/hash/guard를 유지하며 후행 native continuation과 전체100ms/P95는 열린다. 이 cursor만으로 초기 snapshot·worker 전송·최종 물질화의100ms를 충족했다고 주장하지 않는다.
+
+Point sampler는 prepared scalar·sampled identity projection·local frame record 재사용을 합쳤다([최신 통합1343 owning·같은 tar3Node/browser](qualification/frame-owned-merged-evidence/qualification.json)). 실제1k 전체 frame/meaning/native/offline/rebase/timeline/work/wire 동등성을 유지하면서 반복 clone을6034→2034→31로 줄였고, [완성 compiler container 통합](qualification/compiler-containers-merged.md)으로31→26 및 큰dictionary의 추가 복사를 제거했다. 원100k 기능 검산은 각 source-specific 증거로 보존한다. 준비 뒤GC를 수행한 [별도 원100k 진단](qualification/sampler-cpu-review.md)도 약0.9–1.3초로 공통 sampler50ms와 차이가 크며, 전체 일반 회귀10405개 통과와 별개로 P95·100cycle·구조적 병목 해결이 남아 있다. 순차 완료 번호는 STEP056이다.
+
+Editable load의 일반 cell 복원 비용도 줄였다([같은 archive3Node·59 codec 회귀](qualification/data-decode.md)). Prototype key·특수값·공유 참조·저장 bytes는 유지하며 원100k load/revise·blocking50ms 목표는 계속 미완료다.
+
+명시 Geo path hit index와 projection 중간 객체 개선을 합산했다([443 owning·동일 archive3Node/browser](qualification/geo-a3-merged.md)). 원100k native/current 통과와 재시작 plan의 WeakSet rehash 실패를 구분하며 rebase/offline/P95/100cycle은 열린다.
+
+Path hit 판정의 임시 geometry 복사를 줄였다([53회귀·동일 archive3Node/browser](qualification/geo-query-merged.md)). 공개 flatten과 오류 diagnostics의 owned 경계는 유지하며 재시작/P95/100cycle 의무는 열린다.
+
+Route/source DAG와 Canvas·screen·guide·responsive의 private continuation을 합산했다([1,423회귀·동일 archive3Node/browser](qualification/route-stages-merged.md)). 공개 B update와 전체 union·성능 자격은 후속 의무다.
+
+Geo owned snapshot의 최종 중복 복사를 제거했다([427회귀·합산3Node/browser 및 upstream 원100k rebase/offline 통과](qualification/geo-owned-merged.md)). 원 검증·work·registry 경계는 유지하며 최종 합산 성능/lifetime 자격은 남는다.
+
+Graph/hierarchy native 준비 단계를 합산했다([110회귀·동일 archive3Node/browser](qualification/route-layout-merged.md)). 최종 공개 B apply의 wrapped invocation과 전체 union은 후속 의무다.
+
+Geo sampler의 같은 호출 내부에서 full-admitted geometry 계산을 재사용했다([합산 owning·3Node/browser](qualification/geo-admission-merged.md)). 원 검증·수학·work를 유지하고 최종 합산 성능/lifetime 자격은 남는다.
+
+행 ID 문자열의 중복 파싱을 제거했다([동등성·원1k3Node 설치 검증](qualification/data-key-token.md)). 오류·coercion·trace·저장 bytes를 유지하며 원100k 전체 성능 의무는 남는다.
+
+2026-11-01 현재 개별 차트 구현·집중 검증은 STEP-056까지 진행했다. STEP-057–070의 선택·gesture·연결 제어·transaction/history/event·접근성·offline과 animation은 여러 검증 checkpoint를 갖지만 후행 통합 의무가 남아 있다. Animation은 Cartesian Rule·Rect·Bar·Line·Area와 확장 분포, partition·polar·graph·geographic camera 및 guide 값을 통합했다. 정확한 typed 지원과 fallback은 [Current Animation](../../contract/current/ANIMATION.md)이 소유한다. Timeline3·크기/범주/그룹 범례·GeoText2는 source b9ad2a122까지 합산 검증했다. Native 축 라벨 candidate는0b2c8e41a, exact route 재사용은1115d05c1로 검증·통합했다. 축 제목의 라벨 상대 배치는74f7cfa54로 공개 통합했고 정확한 축 폰트 준비 옵션은bb23315f8로 통합했다. 축이 없는 implicit 범례 lane은guide10, 동적 축 라벨 reflow는guide11로 통합했다([합산 검증](animation/axis-reflow-merged-evidence/qualification.json)). 현재 라벨을 소비하는 축 종속 inferred clearance와 동적 title/lane도guide13으로 통합했다([합산 검증](animation/dynamic-guide-merged-evidence/qualification.json)). 최종 domain matrix와 실제 handle 통합 의무를 유지하며 native consumer owner는574개를 실제 시험에 연결했다(assigned는 candidate pass가 아니다). 동일 canonical package의 실제391개 runtime consumer가 clean90eb 일반 검사에서 통과했다([실행 기록과 별도 CLI 오류 수리](qualification/integration-audit-90eb-evidence/qualification.json)). 당시 전체10139개 중 오류문구 계약1개 실패와 관련45개 수리 증거는 보존한다. 이후 source pin78db의 [새 전체 일반 회귀10405/10405 및 문서 build/browser](qualification/integration-normal-78db.md)는 모두 통과했다. 이 결과를 최종9명령·전수 installed·성능 자격으로 확대하지 않는다. 고정 장비의 browser 성능을 측정하며 budget error를 지원 성능 통과로 세지 않는다. Native point의 명시100k 용량과 좌표 보간의 exact 준비 재사용을 통합했다([point 검증](qualification/point-capacity-merged-evidence/qualification.json)). 저장 region resize·typed category reorder handle도 공개 통합했다([합산 검증](interaction/handles-merged-evidence/qualification.json)). 이 개별 통합은 순차 STEP 완료나 large hit/frame·SLO 완료를 뜻하지 않는다. 최종577consumer·79ATgroup과 전체9명령, 독립 검토 및 보호된 최종 전달은 열려 있다.
+
+실제 데이터 갤러리는 clean source `9bb63c67f5c193e472263add5a612a4e38e96c78`에서 새 타입18종·실데이터26개·전체40개를 제공한다. [Graph 갤러리 검증](qualification/graph-gallery-evidence/qualification.json)은66개 PNG/SVG 해시와 실제1440/390px 공개 접근·검색·확대를 확인한다. 이전25쌍 증거는 [기존 합성 갤러리 기록](qualification/combined-composition-evidence/qualification.json)으로 보존한다. 갤러리와 개별 checkpoint를 STEP-077 완료로 세지 않는다.
 
 [원안](../../../study/coverage-expansion-2026-10-27/roadmap/START_HERE.ko.md)의 범위와 도메인 계약을 보존한다. 상세 구현은 해당 Phase에 필요한 계약만 이곳에서 확정한다. [전체 실행 승인](AUTHORIZATION.json)에 따라 STEP-077까지 계속 진행하며 Gate의 계약·검증 기록은 유지한다.
 
@@ -10,6 +52,6 @@
 - [Phase 3](phase3/GOAL.md): STEP-013–016 완료; 공개 AST/parameter/prepared source, 통계·달력 변환 및 조건부 인코딩 통합. [통계 종료 근거](phase3/STEP8.md), [조건부 종료 근거](phase3/progress/STEP-016.json).
 - [Phase 4](phase4/GOAL.md): STEP-017–019 이미지·페인트·폰트 구현 및 통합 중.
 - [execution-plan.json](execution-plan.json): 원안 카드 링크와 현재 실행 의존성. STEP-056을 STEP-070의 선행 조건에 추가하여 native chart/recipe 작업이 통합·최종 검증에서 누락되지 않게 한다.
-- STEP-001–016은 완료했으며 다음 우선 작업은 STEP-017–019이다. STEP-017–077은 후속 범위다. 이번 Phase 완료가 전체 확장 또는 네 렌더러의 새 기능 지원 완료를 뜻하지 않는다.
+- 현재 우선 작업은 합산 후보의 공유 frame·interaction asset 수명·weighted transition 통합과 전체 검증이다. 각 소유자의 증거는 해당 chart/interaction/animation 기록에 있으며, 최종 qualification이 닫히기 전까지 전체 확장 완료를 선언하지 않는다.
 
 원안의 연구 기록과 제안 상태는 수정하지 않는다. 실행 상태는 이 Roadmap의 progress 기록이 소유한다. 런타임 및 안정 기능 테스트는 구현 계획을 import하지 않는다.

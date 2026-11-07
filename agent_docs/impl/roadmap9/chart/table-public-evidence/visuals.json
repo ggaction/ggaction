@@ -1,0 +1,17 @@
+[
+  {
+    "path": ".artifacts/test/png/charts/table/table/cells/primitive.png",
+    "bytes": 15746,
+    "sha256": "ec42de58422548bd6f5bceefaf0ceed3ac2997811c08224cb14f7b99f4d054b4"
+  },
+  {
+    "path": ".artifacts/test/png/charts/table/table/cells/user-facing.png",
+    "bytes": 15746,
+    "sha256": "ec42de58422548bd6f5bceefaf0ceed3ac2997811c08224cb14f7b99f4d054b4"
+  },
+  {
+    "path": ".artifacts/test/png/charts/table/table/cells/variant.json",
+    "bytes": 912,
+    "sha256": "0f28a4415c6eece13abd47a774f333b5420122020087f2a9e9226d581fe49575"
+  }
+]

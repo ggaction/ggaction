@@ -112,10 +112,33 @@ export function createPreparedDataUpdate(base, request, host, payload) {
   return handle;
 }
 
+// Full binds its prepared native route invocation: inside that exact
+// invocation, its nested original applyDataUpdate acts for the invocation's
+// receiver. Basic binds nothing and every other caller compares its own source.
+const invocationBases = new WeakMap();
+export function registerPreparedDataUpdateBase(ProgramClass, resolve) {
+  if (typeof ProgramClass !== "function" || typeof resolve !== "function" || invocationBases.has(ProgramClass)) throw new TypeError("Prepared data update base requires one exact constructor binding.");
+  invocationBases.set(ProgramClass, resolve);
+}
+
+// Route preparation names the revised source or parameter of an exact prepared
+// update before entering any action; application still reads it above.
+export function preparedDataUpdateTarget(program, prepared, requestToken) {
+  const payload = preparedUpdates.get(prepared);
+  if (payload === undefined) throw new TypeError("Expected an authentic prepared data update.");
+  if (payload.base !== program || payload.requestToken !== requestToken) {
+    throw annotateError(new Error("Prepared data update is stale for the current program or request token."), { code: "stale-result" });
+  }
+  if (payload.request.kind === "revise") return { kind: "data", id: payload.plan.sources[0].old };
+  if (payload.request.kind === "parameter") return { kind: "parameter", id: payload.request.target };
+  return undefined;
+}
+
 export function readPreparedDataUpdate(enteredProgram, prepared, requestToken) {
   const payload = preparedUpdates.get(prepared);
   if (payload === undefined) throw new TypeError("Expected an authentic prepared data update.");
-  if (payload.base !== actionSource(enteredProgram) || payload.requestToken !== requestToken) {
+  const source = actionSource(enteredProgram), base = invocationBases.get(enteredProgram.constructor)?.(source, prepared) ?? source;
+  if (payload.base !== base || payload.requestToken !== requestToken) {
     throw annotateError(new Error("Prepared data update is stale for the current program or request token."), { code: "stale-result" });
   }
   checkDataSourceAbort(payload.signal);

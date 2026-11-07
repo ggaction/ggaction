@@ -1,0 +1,602 @@
+{
+  "sourceCommit": "d2441294413d13de40fc545f070489645c038276",
+  "parent": "5b0c323c4",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json#remainingApproval",
+  "scope": "Explicit native item keyboard targets, exact current-frame paint/clip eligibility, stable scoped focus and native selection/partition activation. Runtime focus only; no persisted schema, renderer, automatic DOM or public animation.",
+  "runtimeAndTypesFingerprint": "1de97951c461f31f5403a0d18ea396b04450f9400e2e968a4e7df9a39add6743",
+  "checks": {
+    "owning": 344,
+    "reader": 12,
+    "focusedNode20": 18,
+    "focusedNode24": 18,
+    "sourceDiscoveryPackageTypesAndDocs": 91,
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipes": 3
+    },
+    "browser": {
+      "tests": 2,
+      "actualChromium": true,
+      "canonicalSnippet": true,
+      "backends": [
+        "Canvas",
+        "SVG"
+      ],
+      "keyboard": [
+        "Tab",
+        "Arrow",
+        "Home",
+        "Enter"
+      ],
+      "nativeSelection": true,
+      "safeHostDescriptions": true,
+      "nestedInputUntouched": true,
+      "filterFallback": true,
+      "teardown": true,
+      "axeViolations": 0
+    },
+    "critical": {
+      "interaction/keyboardFocus.js": {
+        "lines": 100,
+        "branches": 93.62,
+        "functions": 100
+      },
+      "interaction/session.js": {
+        "lines": 100,
+        "branches": 95.59,
+        "functions": 100
+      },
+      "grammar/hitShapes.js": {
+        "lines": 100,
+        "branches": 95.02,
+        "functions": 100
+      },
+      "grammar/hitClipDistance.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "materialization/selection/itemResolver.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      }
+    },
+    "sourcePinnedDocs": 49,
+    "built": {
+      "pages": 172,
+      "llmArtifacts": 1535,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "overflow": false,
+      "inspected": [
+        320,
+        1440
+      ]
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "7cab0f5b1ee890ee76526f0c5e620a6abd75f149ee8a037d30e76411a9a77fad",
+        "sourceFree": true,
+        "runtime": [
+          "keyboard-focus/current-paint-and-basic PASS",
+          "keyboard-focus/nested-native-selection-and-offline-restore PASS",
+          "keyboard-focus/native-hierarchy-paths PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 974,
+            "minifiedBytes": 2557353,
+            "gzipBytes": 732895
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 568,
+            "minifiedBytes": 1323453,
+            "gzipBytes": 385729
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 196,
+            "minifiedBytes": 394866,
+            "gzipBytes": 126826
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 146971,
+            "gzipBytes": 44045
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "7cab0f5b1ee890ee76526f0c5e620a6abd75f149ee8a037d30e76411a9a77fad",
+        "sourceFree": true,
+        "runtime": [
+          "keyboard-focus/current-paint-and-basic PASS",
+          "keyboard-focus/nested-native-selection-and-offline-restore PASS",
+          "keyboard-focus/native-hierarchy-paths PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 974,
+            "minifiedBytes": 2557353,
+            "gzipBytes": 731291
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 568,
+            "minifiedBytes": 1323453,
+            "gzipBytes": 384728
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 196,
+            "minifiedBytes": 394866,
+            "gzipBytes": 126344
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 146971,
+            "gzipBytes": 43886
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "7cab0f5b1ee890ee76526f0c5e620a6abd75f149ee8a037d30e76411a9a77fad",
+        "sourceFree": true,
+        "runtime": [
+          "keyboard-focus/current-paint-and-basic PASS",
+          "keyboard-focus/nested-native-selection-and-offline-restore PASS",
+          "keyboard-focus/native-hierarchy-paths PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 974,
+            "minifiedBytes": 2557353,
+            "gzipBytes": 732895
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 568,
+            "minifiedBytes": 1323453,
+            "gzipBytes": 385729
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 196,
+            "minifiedBytes": 394866,
+            "gzipBytes": 126826
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 146971,
+            "gzipBytes": 44045
+          }
+        ]
+      }
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1064,
+    "packedBytes": 1509459,
+    "unpackedBytes": 6874696,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/keyboard-focus-7cab0f5b.tgz",
+    "sha1": "279b8c7c38237888e5ac0b186297f185e08d8f14",
+    "sha256": "7cab0f5b1ee890ee76526f0c5e620a6abd75f149ee8a037d30e76411a9a77fad"
+  },
+  "packageMeasurement": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1064,
+    "packedBytes": 1512831,
+    "unpackedBytes": 6874696
+  },
+  "limits": {
+    "entries": 1064,
+    "packedBytes": 1512900,
+    "unpackedBytes": 6874700,
+    "searchBytes": 1039400,
+    "bundleGzip": {
+      "full": 732900,
+      "basic": 386100,
+      "svg": 25000,
+      "graph": 44100,
+      "interaction": 126900
+    }
+  },
+  "searchMeasurement": 1039320,
+  "preservedFailures": [
+    "Initial hierarchy fixture supplied unsupported format/id assumptions and moved beyond a hidden synthetic root. Correct native grouping and original group-path expectations fix the fixture.",
+    "Host browser fixture assumed pre-highlight item order and placed a negative nested-input probe over a filter button. Exact active-descendant lookup and removal of the finished probe fixed the test, without claiming runtime bugs.",
+    "Initial canonical package1063>1062 and final reader addition1064 informed bounded measured caps. Raw measurement-only scripts are not counted as package validation.",
+    "Initial docs5 failures were new search bytes and stale provenance/LLM outputs. Canonical regeneration and source-pinned49 checks passed.",
+    "Initial direct native policy import produced214113-byte interaction bundle. Exact-constructor registration-once reader fixed the dependency path; reader errors and subclass noninheritance are covered. Corrected measured interaction126826 and Full732895 informed minimal bounds; identical7cab archive passed all3Node consumers.",
+    "The first new import traversal assertion included the pre-existing guide to theme palette path, which bundling removes. The assertion now checks the new keyboard owner and actual installed bundle measurement/forbidden dependency checks remain independent.",
+    "The initial doc prerequisite said preceding HTML above both paired fences. The final shared prerequisite says use this section HTML and JavaScript together; no executable snippet or runtime changed."
+  ],
+  "evidencePolicy": "Only related owner, native consumer, three-Node focused archive and source/built/browser documentation checks are claimed. Static image inputs and renderers are unchanged; previously qualified static output evidence is retained. No whole repository/all-renderer/all-installed sweep is claimed.",
+  "remaining": [
+    "STEP068 tooltip hover/focus/Escape and touch/control accessibility closure",
+    "Graph/hierarchy descriptions and every actionable control matrix",
+    "Public animation/reduced-motion dependency and AT53 combined acceptance",
+    "STEP074-077 overall qualification"
+  ],
+  "commands": {
+    "owning": "Node22 node .artifacts/keyboard-focused-coverage.mjs; all interaction unit plus grammar hit unit, changed4owners coverage",
+    "reader": "node --experimental-test-coverage --test-coverage-include=src/materialization/selection/itemResolver.js --test test/unit/interaction-keyboard.test.js",
+    "boundaries": "node --test source-boundaries/test-discovery/package-boundaries/package-artifact/interaction-types and owning49docs",
+    "realistic": "Pinned TidyTuesday cache + node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js",
+    "browser": "node --test test/browser/interaction-keyboard.browser.js",
+    "installed": "Node20/22/24 node .artifacts/keyboard-focus-consumer.mjs; same7cab tar,3runtime+strict types+5bundles",
+    "docs": "Target signatures/snippets/metadata/search; provenance→machine→llms; preflight/build/built; source-pinned49;4width browser/Axe"
+  },
+  "evidenceFiles": [
+    {
+      "path": "keyboard-browser-final.log.gz",
+      "sha256": "e25c9e233bba6952869ef869f6954541477ac5599322d9a80be47f392233bf84"
+    },
+    {
+      "path": "keyboard-browser-first.log.gz",
+      "sha256": "0287b218b12b314dc9646018c9fa383b721dac970d9d0fab2c30d3bda5487faa"
+    },
+    {
+      "path": "keyboard-browser-registry.log.gz",
+      "sha256": "afd99ddc45aadf920779d8131dcff1a0e39952937fd32364f4d5a39541b4c951"
+    },
+    {
+      "path": "keyboard-browser-second.log.gz",
+      "sha256": "d31fdf5cdd51480b44fcedbabbbd2a766dfeff0045162f11cf92ed3514f7f203"
+    },
+    {
+      "path": "keyboard-browser-third.log.gz",
+      "sha256": "972162c83240c59b9b0107d38288dfeb40c52000d21b703e7862699513c55983"
+    },
+    {
+      "path": "keyboard-build-final.log.gz",
+      "sha256": "d672fa6ca6a3c5b8a8250502b78d5fd7632d7310cb4df7c7f4f732b16eda7ee8"
+    },
+    {
+      "path": "keyboard-build.log.gz",
+      "sha256": "306f8282833e2bf32b6b9092bc42408c83e121d1e72a5fc61237f0e4fc3993c4"
+    },
+    {
+      "path": "keyboard-built-final.log.gz",
+      "sha256": "1ec05c4e74288ef806fa965037bd3335acae6f1b91d245a6f566a0dc03be2546"
+    },
+    {
+      "path": "keyboard-built.log.gz",
+      "sha256": "1ec05c4e74288ef806fa965037bd3335acae6f1b91d245a6f566a0dc03be2546"
+    },
+    {
+      "path": "keyboard-contracts-docs-final.log.gz",
+      "sha256": "b5bdd10a9b7863a74f7e88cad3eaa3c1a0dfb6f837e2b732b9380df0edfcef48"
+    },
+    {
+      "path": "keyboard-contracts-docs-registry.log.gz",
+      "sha256": "4613fe3a5cae75f3ae79d34eeefb391c08197129ba79d8bc25e0b379b7a66416"
+    },
+    {
+      "path": "keyboard-contracts-first.log.gz",
+      "sha256": "9d5daacb0d215aa21f9324c0abdb66ecf3cb2906c36b48505778ea2adaf3f099"
+    },
+    {
+      "path": "keyboard-coverage-all-owning.log.gz",
+      "sha256": "ac195ff42bb2d5e66f3505d4d05a7c9b8215e46e5c7a46bd443d77d19772c9c8"
+    },
+    {
+      "path": "keyboard-coverage-final.log.gz",
+      "sha256": "7b1997cd3ed86d34898e9ffab1832ed9e09edb7974eb55f321a411dd7064fee9"
+    },
+    {
+      "path": "keyboard-coverage-first.log.gz",
+      "sha256": "62bd06bbe0a95cfd345b93df06bf496de3233b380ef2fc0c116ee00d50f1d978"
+    },
+    {
+      "path": "keyboard-coverage-registry.log.gz",
+      "sha256": "f2ddf9d37f9f111cfe4ea463d80d3d9e73861a63be4da74a8dcf4198e2f14ae9"
+    },
+    {
+      "path": "keyboard-coverage-second.log.gz",
+      "sha256": "c1f6392b3110636a827625ae6d6c911c8e2ff46f7aabcdb83f68f35ec295e16b"
+    },
+    {
+      "path": "keyboard-doc-browser-final.log.gz",
+      "sha256": "68e6f452728d899b6f1086441c65bf07f29924a7b724268fa8b2d900221ba5d9"
+    },
+    {
+      "path": "keyboard-doc-browser.log.gz",
+      "sha256": "68e6f452728d899b6f1086441c65bf07f29924a7b724268fa8b2d900221ba5d9"
+    },
+    {
+      "path": "keyboard-doc-browser.mjs.gz",
+      "sha256": "dcc09fe3b55956e63b85e27c876160ebb69df2557541b909a02072dce56bf9bc"
+    },
+    {
+      "path": "keyboard-doc-label-generation.log.gz",
+      "sha256": "28154b0304c1d610ecbca0b3215856e8d4101a321800dae99d2f06da3ad19f85"
+    },
+    {
+      "path": "keyboard-docs-first.log.gz",
+      "sha256": "b2de94a6c28ce2ac4f3b874a7af92ba387e01c3e1820973136b4b0b1512b30ce"
+    },
+    {
+      "path": "keyboard-docs-pinned-final.log.gz",
+      "sha256": "1920a2014af588c5b4e7683c41a1423bd237fdb296bfabb0f5cc59361c705bd8"
+    },
+    {
+      "path": "keyboard-docs-pinned.log.gz",
+      "sha256": "3216c4ca2e206db3d65dd73d4ab4db988204060d4e6620d69043d26b9b1cacbd"
+    },
+    {
+      "path": "keyboard-docs-preflight.log.gz",
+      "sha256": "9d47135d2561c027deaf16e720d64974cf552ac3d951ea969da392572442ebdf"
+    },
+    {
+      "path": "keyboard-evidence-commit.log.gz",
+      "sha256": "e5ec3fe95ca7687cd57675f4e28e7a4b43a6e26f23cc4cd607c8be98d9845d6c"
+    },
+    {
+      "path": "keyboard-evidence-push.log.gz",
+      "sha256": "12a4a7b3800ad730c102dce6341319bc03b334958c534553bccacd95d266178b"
+    },
+    {
+      "path": "keyboard-existing-first.log.gz",
+      "sha256": "2d5b08506419af348c868ccab0ef20d901528dbe982d467ab5e77f2726e50c56"
+    },
+    {
+      "path": "keyboard-expanded.log.gz",
+      "sha256": "23e0390dc9a555b63680c818f8c052d7668d6c61fba1351784619926ce0f5667"
+    },
+    {
+      "path": "keyboard-focus-consumer.mjs.gz",
+      "sha256": "9ac2e7948e3175c523f4c851594777938af3060ab33daa742042ffd816b7c24f"
+    },
+    {
+      "path": "keyboard-focus-consumer20-final.log.gz",
+      "sha256": "111aa6671b138727001ac6a8dc6d41626cd70d12470560ac86fbd8555dfb7a4f"
+    },
+    {
+      "path": "keyboard-focus-consumer20-registry.log.gz",
+      "sha256": "efaee8464c9828d7d956ed54a3696272d21cfaad70800a797715e949a547f1c1"
+    },
+    {
+      "path": "keyboard-focus-consumer20.log.gz",
+      "sha256": "4c520e33efe1e984e2edfc151f324898510df74bc621e86230d3112baad0766a"
+    },
+    {
+      "path": "keyboard-focus-consumer22-final.log.gz",
+      "sha256": "33a3dceb3638feb31035e6fd400d8a89eac2800c3c54509f140889dcafd2756b"
+    },
+    {
+      "path": "keyboard-focus-consumer24-final.log.gz",
+      "sha256": "8a14eaba3002acfd02621b80494084165b151e8860c5e2c73bc68c19e9976f12"
+    },
+    {
+      "path": "keyboard-focus-fixed.json.gz",
+      "sha256": "d4bfdceee5bd258842f5d7fa7c00cd0c7b0c31f1a17b28d2f4d610e53142c1fc"
+    },
+    {
+      "path": "keyboard-focused-coverage.mjs.gz",
+      "sha256": "363f695effa5fb63a888a9b83de17ee7c02b8e34a9c45373601537323951fca7"
+    },
+    {
+      "path": "keyboard-generate-first.log.gz",
+      "sha256": "4d19f3cc3e71814ecd950e0ec5b1db2808ecb323b76d79885f82eee7a242dd20"
+    },
+    {
+      "path": "keyboard-generate-registry.log.gz",
+      "sha256": "4d19f3cc3e71814ecd950e0ec5b1db2808ecb323b76d79885f82eee7a242dd20"
+    },
+    {
+      "path": "keyboard-generate-second.log.gz",
+      "sha256": "4d19f3cc3e71814ecd950e0ec5b1db2808ecb323b76d79885f82eee7a242dd20"
+    },
+    {
+      "path": "keyboard-generate.mjs.gz",
+      "sha256": "7f0057d8359c8f6fb4a3dc4f0016497b8f2e2ea8e38c9a3caba7072b9a7501a2"
+    },
+    {
+      "path": "keyboard-hit-first.log.gz",
+      "sha256": "2e983da5a0ffcea8fee460625913599d88f87a809d215564c8e43b4aad1a48c5"
+    },
+    {
+      "path": "keyboard-hit-second.log.gz",
+      "sha256": "73f28fef89e6a1631eef163b5c3c9f0572cd724d412cf81874a9fcfe58d9265c"
+    },
+    {
+      "path": "keyboard-host-label-browser.log.gz",
+      "sha256": "68e6f452728d899b6f1086441c65bf07f29924a7b724268fa8b2d900221ba5d9"
+    },
+    {
+      "path": "keyboard-host-label-build.log.gz",
+      "sha256": "f751d02de61f157a347cba2a18d69fb1dc6fb14e6884bcc0205d383da1a71090"
+    },
+    {
+      "path": "keyboard-host-label-built.log.gz",
+      "sha256": "1ec05c4e74288ef806fa965037bd3335acae6f1b91d245a6f566a0dc03be2546"
+    },
+    {
+      "path": "keyboard-host-label-docs.log.gz",
+      "sha256": "285b43a868c08a857ac22fb2b2ed1370cc9a938379fad0baadd9d692eb11f574"
+    },
+    {
+      "path": "keyboard-host-label-generation.log.gz",
+      "sha256": "28154b0304c1d610ecbca0b3215856e8d4101a321800dae99d2f06da3ad19f85"
+    },
+    {
+      "path": "keyboard-measure-final-node20.json.gz",
+      "sha256": "b7be454ef97e0ea96b8cabc69314d8c6d8964a78359a976ccf2a4f77a6c3b305"
+    },
+    {
+      "path": "keyboard-measure-node20.json.gz",
+      "sha256": "5e5e26f3d0953efe25e33296cf81a8970c58565076127ef765d3466f534a5841"
+    },
+    {
+      "path": "keyboard-measure-registry-node20.json.gz",
+      "sha256": "86c97a3439012f8d95cddbe276471259930e169c38ec99e748c93a9f5166886a"
+    },
+    {
+      "path": "keyboard-measure.mjs.gz",
+      "sha256": "5ad645d41bda0f89782741043fe081d963f96f5bb645d72df42d9dbc19a06f12"
+    },
+    {
+      "path": "keyboard-node20-final.log.gz",
+      "sha256": "f607741d32bc62d550c2a2722fee2cee071e1e117c52a8fe63e14fe9da4f09c2"
+    },
+    {
+      "path": "keyboard-node20.log.gz",
+      "sha256": "76c0f26ff576ce28b655e991e2e124640585d12e36eec0a7a038c4e13b4a9531"
+    },
+    {
+      "path": "keyboard-node24-final.log.gz",
+      "sha256": "f155135b5083c8453edd57fb23963e0c6789ac81c1bd02690067a49d35c3d210"
+    },
+    {
+      "path": "keyboard-node24.log.gz",
+      "sha256": "85b846cb2c26fe6cb956a85da2ecce3e120bbebf0971212cb0868fd7c7a95899"
+    },
+    {
+      "path": "keyboard-package-final.json.gz",
+      "sha256": "e578c0a49238f525018e929496bdead6911d3616c2e5481c03051195c350dbda"
+    },
+    {
+      "path": "keyboard-package-final.stderr.gz",
+      "sha256": "c34223c51192ac9a7edf83a448963841ca5764663ae4b6f6b3fd0c225d82f545"
+    },
+    {
+      "path": "keyboard-package-first.log.gz",
+      "sha256": "88072de8f27b5eae7e97611bf5c637331c717a6714f0afc6407c56fe0f0b6fb4"
+    },
+    {
+      "path": "keyboard-package-registry.json.gz",
+      "sha256": "d161b78f4a9e8fc35710eb455a27e09aa4c520dcacc497191372cee273d42d38"
+    },
+    {
+      "path": "keyboard-package-registry.stderr.gz",
+      "sha256": "c34223c51192ac9a7edf83a448963841ca5764663ae4b6f6b3fd0c225d82f545"
+    },
+    {
+      "path": "keyboard-pinned-generation.log.gz",
+      "sha256": "28154b0304c1d610ecbca0b3215856e8d4101a321800dae99d2f06da3ad19f85"
+    },
+    {
+      "path": "keyboard-public-first.log.gz",
+      "sha256": "a93e354b2f66ac88195887ccff0f2acc964857ebf76914eb11e37d248e21b104"
+    },
+    {
+      "path": "keyboard-public-third.log.gz",
+      "sha256": "cd1b3db205904b386182d1b49328480f2e12f22c7c958e6a67073c93fd665cf6"
+    },
+    {
+      "path": "keyboard-qualify.mjs.gz",
+      "sha256": "f3a49af8508667dbc51f46d236a5d4559cea62b202fb89ad1c52c743113c3451"
+    },
+    {
+      "path": "keyboard-reader-coverage.log.gz",
+      "sha256": "4c016b898b1229ab447e4d93d2761707aee188c21553476f27121418878ac824"
+    },
+    {
+      "path": "keyboard-realistic-final.log.gz",
+      "sha256": "511b2b79e0275af4cf657d30c20665acc7d3cfe08f0123d7680eaff19eff3779"
+    },
+    {
+      "path": "keyboard-realistic-registry.log.gz",
+      "sha256": "e9ef36d3453bd64ff0d65004f0c5336f85a1068284745626ec83e6c4e74fc14f"
+    },
+    {
+      "path": "keyboard-realistic.log.gz",
+      "sha256": "6440e520d18bd3d7be15745fd46b05a993ba8b66829441149b3ce12d0fb78ff3"
+    },
+    {
+      "path": "keyboard-registry-boundaries-final.log.gz",
+      "sha256": "d16c6ddf1fe38a1f4962b8fb1cd2419feeaabf48ecb46e80a508124560c49220"
+    },
+    {
+      "path": "keyboard-registry-boundaries.log.gz",
+      "sha256": "336ea79fdae4ff658f113201b83b412aa242d29e666014da44a0557ad7b1d715"
+    },
+    {
+      "path": "keyboard-second.log.gz",
+      "sha256": "4687955e5a9d8514b06326c744af5546d983e00d4b1e4e9b58a7ed2bd013a967"
+    },
+    {
+      "path": "keyboard-source-commit.log.gz",
+      "sha256": "f8f20bb2ecbf7068cb723b35e67904806cdfce0c054522a735e1f7daf3efcaaa"
+    },
+    {
+      "path": "keyboard-source-push.log.gz",
+      "sha256": "af77268f50d0ad17d2e2c8055990b680eac4cc295e31febb6abf3e507d791558"
+    },
+    {
+      "path": "api-interaction-1440.png",
+      "sha256": "015cb20c4a3d08f11488ccd8afe06e9b9f97a494ca1be7359be3133a6008f5d4"
+    },
+    {
+      "path": "api-interaction-320.png",
+      "sha256": "4fa415a97b40006bff3b96e620077a96a4f747724dcf174a4c10ff6dda23c244"
+    },
+    {
+      "path": "api-interaction-390.png",
+      "sha256": "b621a0ec0bd498b9e1f51ea08d30de070e0bb443c93347c35d76188ed5a406be"
+    },
+    {
+      "path": "api-interaction-768.png",
+      "sha256": "95f505ad8a57e2f5a7b6e9dad7340fe7e45c8e8b602cdc36060650b5dc4cbc4e"
+    }
+  ]
+}

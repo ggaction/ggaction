@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { inflateSync } from "node:zlib";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { chart, render } from "ggaction";
@@ -10,6 +9,7 @@ import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
 import { renderToSVG } from "ggaction/svg";
 import { renderToPNGBuffer } from "ggaction/png";
 import { renderToPDFBuffer } from "ggaction/pdf";
+import { execFileWithInput } from "./consumer-input.js";
 
 const values = [{ id: "root", parent: null, value: 10 }, { id: "a", parent: "root", value: 6 }, { id: "b", parent: "root", value: 4 }];
 function program(method = "tree") {
@@ -57,7 +57,7 @@ export const cases = [
       const revised = edited.reviseData({ source:"rows", id:"next", values:[{id:"root",parent:null,value:7},{id:"a",parent:"root",value:7}] });
       process.stdout.write(serializeProgram(revised));
     `;
-    const output = execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30_000 });
+    const output = execFileWithInput(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 30_000 });
     const q = deserializeProgram(output);
     assert.deepEqual(getMarkItems(q, { target: "plot" }).map(item => item.fields.value), [7, 7]);
     assert.equal(q.semanticSpec.resources[0].inputs[0].id, "next");

@@ -1,0 +1,35 @@
+{
+  "label": "table-cell-boundaries",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "scripts/run-tests.js",
+    "contracts",
+    "contracts/source-boundaries.test.js",
+    "contracts/test-discovery.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 3267,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-29T18:50:34.058Z",
+  "finishedAt": "2026-10-29T18:50:37.326Z",
+  "source": {
+    "available": true,
+    "commit": "cf68512b508093851b379251499880a25366d6d2",
+    "clean": false,
+    "statusSha256": "4b1abbab452a52060bc82d53bdbc7a83be3207c4c94719ee3bf7a9271688fd20"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "cf68512b508093851b379251499880a25366d6d2",
+    "clean": false,
+    "statusSha256": "4b1abbab452a52060bc82d53bdbc7a83be3207c4c94719ee3bf7a9271688fd20"
+  },
+  "logSha256": "192e767e96449b533b7c1664753c22aa9b66fb240771c7e79e19a2b87a09ec56",
+  "bytes": 5485,
+  "retainedBytes": 5485,
+  "truncated": false
+}

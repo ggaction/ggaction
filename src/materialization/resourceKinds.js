@@ -15,11 +15,14 @@ export function registerBuiltinResourceKinds(ProgramClass, handlers) {
   for (const [kind, handler] of Object.entries(handlers)) {
     if (!BUILTIN_RESOURCE_KINDS.includes(kind)) throw new TypeError("Unknown builtin resource kind.");
     ownRecord(handler, "Builtin resource handler");
-    if (Object.keys(handler).length !== 2 || !Object.hasOwn(handler, "validateStored") || !Object.hasOwn(handler, "validateBindings") ||
-        typeof handler.validateStored !== "function" || typeof handler.validateBindings !== "function") {
+    // A handler may also stage its binding check; the synchronous form drains it.
+    const staged = Object.hasOwn(handler, "validateBindingsStages");
+    if (Object.keys(handler).length !== (staged ? 3 : 2) || !Object.hasOwn(handler, "validateStored") || !Object.hasOwn(handler, "validateBindings") ||
+        typeof handler.validateStored !== "function" || typeof handler.validateBindings !== "function" || staged && typeof handler.validateBindingsStages !== "function") {
       throw new TypeError("Builtin resource handler requires validateStored and validateBindings.");
     }
-    copied[kind] = Object.freeze({ validateStored: handler.validateStored, validateBindings: handler.validateBindings });
+    copied[kind] = Object.freeze({ validateStored: handler.validateStored, validateBindings: handler.validateBindings,
+      ...(staged ? { validateBindingsStages: handler.validateBindingsStages } : {}) });
   }
   handlersByClass.set(ProgramClass, Object.freeze(copied));
 }

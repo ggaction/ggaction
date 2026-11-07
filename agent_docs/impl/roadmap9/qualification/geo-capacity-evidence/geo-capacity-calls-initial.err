@@ -1,0 +1,14 @@
+(node:68517) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./.artifacts/geo-capacity-loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+Error: Missing diagnostic owner cloneAndFreeze
+    at load (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-hit-capacity/ggactionnewbrand/.artifacts/geo-capacity-loader.mjs:10:131)
+    at async nextLoad (node:internal/modules/esm/hooks:748:22)
+    at async Hooks.load (node:internal/modules/esm/hooks:385:20)
+    at async handleMessage (node:internal/modules/esm/worker:199:18)
+
+Node.js v22.23.1

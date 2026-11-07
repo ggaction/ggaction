@@ -94,7 +94,8 @@ and [action traces](../../concepts/actions-and-trace/).
 
 This walkthrough uses the creation-focused `ggaction/basic` entry. Import from
 `ggaction` instead when the program needs editing, selection, composition,
-Polar or Parallel coordinates, or statistical layers.
+Polar or Parallel coordinates, statistical layers, graphs, hierarchies, maps,
+or specialized plots.
 
 ## 3. Run it
 
@@ -113,13 +114,17 @@ created in `index.html`.
 | `ggaction/basic` | Modern ESM browsers and Node.js 20+ | Smaller creation path for scatter, line, bar, histogram, and heatmap charts |
 | `ggaction/extension` | Modern ESM browsers and Node.js 20+ | Wrapped action registration and public primitive authoring |
 | `ggaction/inspection` | Modern ESM browsers and Node.js 20+ | Dataset schemas, action preflight, immutable diffs, and concrete-result inspection |
-| `ggaction/persistence` | Modern ESM browsers and Node.js 20+ | Editable and render-only snapshot serialization |
+| `ggaction/persistence` | Modern ESM browsers and Node.js 20+ | Editable and render-only snapshot serialization, including time-sliced loading |
 | `ggaction/accessibility` | Modern ESM browsers and Node.js 20+ | Final visual-data export for host accessibility surfaces |
 | `ggaction/diagnostics` | Modern ESM browsers and Node.js 20+ | Structured action error details |
 | `ggaction/png` | Node.js 20+ only | PNG file output through the native Canvas adapter |
 | `ggaction/pdf` | Node.js 20+ only | Single-page vector PDF file output |
 | `ggaction/svg` | Modern ESM browsers and Node.js 20+ | Complete SVG document string output |
 | `ggaction/scene` | Browser or Node.js 20+ | Read transition scenes and draw native Canvas scenes |
+| `ggaction/animation` | Modern ESM browsers and Node.js 20+ | Transition planning, sampling, playback and frame export |
+| `ggaction/interaction` | Modern ESM browsers and Node.js 20+ | Hit testing, selection, navigation and editing sessions; DOM-free until mounted |
+| `ggaction/live` | Browsers | Stateful chart with tooltips, brushing, zoom and animated updates |
+| `ggaction/graph` | Modern ESM browsers and Node.js 20+ | Worker-side graph inference and edge-route preparation |
 
 All entries include TypeScript declarations. The package does not publish
 CommonJS entry points. Import `ggaction/png` and `ggaction/pdf` only from Node
@@ -138,11 +143,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](../../gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next

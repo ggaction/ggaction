@@ -1,67 +1,70 @@
 # Changelog
 
-- Add `createGeoLODData` and `editGeoLODData` with shared topology simplification, detail hysteresis and original selection representation mapping.
-
 All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
-- Added explicit graph node movement and captured pointer dragging with native fixed/force layout edits, typed identities, dormant-coordinate preservation and atomic previews.
 
+## [0.0.27] - 2026-11-06
 
-- Add Full-only `createGeoJoinData` and `editGeoJoinData` for typed one-to-one geometry/table correspondence. Preserve feature order, shared arcs, exact source rows, unmatched diagnostics, and immutable source revisions through geographic marks and offline restoration.
+This release adds 82 actions (380 declared in total, up from 298) and four package entries. Unless noted, new actions are available from `ggaction` and not from `ggaction/basic`.
 
-- Interaction viewport commands reuse named projection edits with absolute transforms and exact feature identity.
-- Interaction hierarchy-focus commands reuse native partition views and host navigation controls.
-- Interaction context requests expose current semantic candidates to host menus; parameter inputs reuse the existing immutable command lifecycle.
+### New package entries
 
-- Add Full-only `setMarkVisibility` and `removeMarkVisibility`, plus categorical legend visibility bindings. Preserve independent user filters, typed categories, explicit domain policies, selections and original row lineage.
-- Add Full-only `createGeoShapeMark`, `editGeoShapeMark`, `createGeoPointMark`, `editGeoPointMark`, `createGeoLineMark`, `editGeoLineMark`, `createGraticule`, and `editGraticule`, with exact Geo coordinate projection bindings, preserved feature identities, bounded spherical disks, split routes, holes, selection and all renderers.
-- Add Full-only `createWaterfallPlot` and `editWaterfallPlot` for ordered contributions, explicit total/subtotal/reset roles, shared cumulative scales and compound stage selection. Preserve source rows, fonts, effects and offline Canvas/SVG/PNG/PDF output through edits and compositions.
+- Add `ggaction/live`: attach a chart to a `<canvas>`, `<svg>` or container with `addCanvas`; every later call redraws immediately. Tooltips, hover, click/brush/lasso selection, zoom and pan, legend toggles, node dragging, data animation, timelines, parameter controls, linked charts, undo/redo, theme, resize, downloads, and save/load each take one call. Browser only.
+- Add `ggaction/interaction`: `createInteractionSession` mounts on Canvas or SVG, or answers headless CSS-point queries. It provides hit testing, keyboard focus, accessible tooltips, click/nearest/legend/brush/lasso selection (including Polar theta brushing), region resize and category reorder handles, linked selections and filters, legend visibility, parameter inputs, map navigation (drag, wheel, pinch, keyboard), partition focus, graph node dragging, annotation editing, and bounded undo/redo/reset.
+- Add `ggaction/animation`: `planTransition`, `sampleTransition`, `createAnimationPlayer`, `exportAnimationFrames`, `serializeAnimation` and `deserializeAnimation` for immutable transitions between programs, including axes, legends, graph plots, partitions, Polar geometry, geographic cameras and text, with offline frame export and batched (`formatVersion: 6`) scenes.
+- Add `ggaction/graph`: worker-side `computeGraphEdgeRoutes`, `computeGraphEdgeRoutesAsync` and `computeGraphInference`, and host-side `prepareGraphEdgeRoutes`, `prepareInferredGraphData`, `createGraphRouteExecutor` and `createGraphInferenceExecutor`, with explicit worker ownership, budgets, deadlines, cancellation and bounded caching.
 
-- Add Full-only `createOHLCPlot` and `editOHLCPlot` for explicit open/high/low/close rows, shared price scales, doji policy and compound row selection. Preserve identities, effects, font preparation and offline Canvas/SVG/PNG/PDF output through source, scale and composition edits.
+### New chart families
 
-- Add Full-only `createPyramidPlot` and `editPyramidPlot` for ordered stages with explicit width or area meaning, four directions and named percent denominators. Preserve row identities through source revisions, selection, Canvas edits, nested composition, color legends and offline Canvas/SVG/PNG/PDF output.
+- Hierarchies: `createHierarchyData`, `editHierarchyData`, `layoutHierarchy`, `editLayout`, `createTreePlot`/`editTreePlot`, `createTreemapPlot`/`editTreemapPlot`, and `createPartitionPlot`/`editPartitionPlot` (icicle and sunburst, with focus and navigation).
+- Graphs: `createGraphData`/`editGraphData`; `createInferredGraphData`/`editInferredGraphData` (nearest-neighbor, radius, similarity, spanning, group and sequence relationships); `layoutGraph` (fixed, circular, seeded force); `createGraphPlot`/`editGraphPlot` with arrows, parallel edges, self-loops and `maxItems` up to 100,000; and `bundleGraphEdges`/`editEdgeRoute` (hierarchical, force-directed, density and edge-path bundling).
+- Bounded edge routes: `options.execution` stores version 2 routes with explicit work, pair, sample, buffer and packet budgets and a required preparation deadline. `applyGraphEdgeRoutesUpdate` applies any prepared native edit that reaches a version 2 route: layout, graph, flow and hierarchy revisions, source data, parameter, Canvas, fit and filter edits, and any other public action, whose affected routes are the ones its execution reaches. Version 2 preparation checks results and plans consumers in steps between host turns.
+- Flows: `createFlowData`/`editFlowData`, `layoutFlow`, `createFlowNodes`/`editFlowNodes` and `createFlowLinks`/`editFlowLinks` for conserved Sankey flows with cyclic feedback.
+- Maps: `createGeometryData`/`editGeometryData` (GeoJSON and TopoJSON, explicit polygon winding), `createProjection`/`editProjection` (15 projection types), `navigateProjection` with `getProjectionView`, `createGeoJoinData`/`editGeoJoinData`, `createGeoLODData`/`editGeoLODData` (shared topology simplification and detail hysteresis), `createGeoRouteData`/`editGeoRouteData`, `createGeoShapeMark`/`editGeoShapeMark`, `createGeoPointMark`/`editGeoPointMark`, `createGeoLineMark`/`editGeoLineMark`, `createGraticule`/`editGraticule` and `createGeoAnnotation`/`editGeoAnnotation`. `encodeColor`, `encodeSize`, `createMarkLabels` and `createTextMark` work on geographic features.
+- Contours: `createContourData`, `createDensityContourData`, `editContourData`, and `createContourMark`/`editContourMark` for scalar grids, histogram/KDE density, contour lines and filled bands.
+- Calendars: `createCalendarLayout` and `createCalendarPlot`/`editCalendarPlot`.
+- Specialized plots: `createPyramidPlot`/`editPyramidPlot`, `createOHLCPlot`/`editOHLCPlot`, `createWaterfallPlot`/`editWaterfallPlot`, `createTrailPlot`/`editTrailPlot` and `createTablePlot`/`editTablePlot` (formatted cells, in-cell bars, sparklines, footers).
+- Images and fonts: `prepareImageResource`, `createImageResource`, `replaceImageResource`, `removeResource`, `createImageMark`/`editImageMark` and `prepareImageRendering`; `prepareFontResource`, `createFontResource`, `replaceFontResource`, `prepareTextMetrics` and `prepareFontRendering`. Embedded bytes survive offline snapshots and every renderer.
 
-- Add Full-only `createProjection` and `editProjection` for 15 geographic/planar projection types, explicit viewport fits and atomic geometry-dependent revision updates. Preserve exact resource references, immutable transforms and offline validation.
+### Data, parameters and expressions
 
-- Add Full-only `createGeometryData` and `editGeometryData` for geographic or planar GeoJSON/TopoJSON sources. Retain shared arcs, immutable feature keys and source provenance through bounded validation, edits, inspection and offline restoration.
+- Add `createParameter`, `editParameter` and `removeParameter` for immutable scalar inputs with atomic dependent updates (`ggaction/basic` supports creation).
+- Add `prepareDataUpdate` and `applyDataUpdate` for host-loaded CSV/JSON, URL, named and inline sources (`ggaction/basic` supports creation).
+- Add `reviseDataInSlices` (`ggaction`) and `loadProgramInSlices` (`ggaction/persistence`) to run revisions and restores in bounded host turns with optional cancellation. Plain data arguments are copied before the call returns.
+- Add `createPivotData` and `editPivotData`.
+- Add version 2 computed expressions with a closed function registry and parameter bindings; list functions with `getExpressionFunctions` from `ggaction/inspection`. Version 1 expressions are unchanged.
+- Add typed row keys and exact contributing-row lineage across every transform.
+- Add local quadratic LOESS with `degree: 2`, and inferred-graph `filterMarks({ recompute: true })`.
 
-- Add Full-only `bundleGraphEdges` and `editEdgeRoute` for hierarchical, force-directed, density and edge-path bundling. Bind original graph edges through `createGraphPlot({ routes })`, preserve exact revisions and offline vectors, and use the browser-safe `ggaction/graph` entry for explicit worker preparation, cancellation and bounded caching.
+### Appearance, selection and layout
 
-- Add Full-only `createCalendarLayout`, `createCalendarPlot`, and `editCalendarPlot` for explicit civil-day aggregation, month boundaries and date labels. Preserve missing-day policy, exact source rows, selection and rendering through source, layout and Canvas revisions.
+- Add conditional appearance encodings: ordered first-match `when` branches over version 2 expressions or named selections, with a required fallback.
+- Add `setMarkVisibility`, `removeMarkVisibility` and `editAnnotation`.
+- Add mark `outline` halos, pattern and structured fills, per-item `blend` (`multiply`, `screen`, `difference`), weighted crossfade graphics, and prepared mark shadows (`prepareShadowRendering`).
+- Add `center` and `wiggle` area stack layouts, fixed-canvas responsive guide layout (`minPlotSize`, wrap/skip/rotate label fallback), and typography theme tokens.
+- Support compound `M/L/C/Z` paths with nonzero/evenodd fills and clip paths, and the `circle-batch` and `path-batch` primitives with `circle-run` and `path-run` scene entries.
 
-- Added explicit inferred-graph `filterMarks({ recompute: true })` with preserved node identity, source revision replay, dependent layout refresh and reversible source restoration.
+### Compatibility notes
 
-- Add Full-only `createContourData`, `createDensityContourData`, `editContourData`, `createContourMark`, and `editContourMark` for explicit scalar grids, histogram/KDE density, contour lines and filled bands. Preserve disconnected regions, holes, exact source lineage, shared scales and selections through revisions and offline snapshots across Canvas, SVG, PNG and PDF.
-- Add `prepareFontResource`, `createFontResource`, `replaceFontResource`, `prepareTextMetrics`, and `prepareFontRendering` for explicit font loading, exact measured layout and immutable resource replacement. Preserve embedded font bytes through offline snapshots and Canvas/SVG/PNG/PDF/scene output; reject missing widths, stale preparation and disposed rendering handles.
-- Add Full-only `createInferredGraphData` and `editInferredGraphData` for nearest-neighbor, radius, similarity, spanning, group and sequence relationships. Preserve typed edge identities, source revisions, preprocessing and search diagnostics through dependent layouts, inspection, accessibility and offline restoration.
+- Editable snapshots are now written as schema 4. Schemas 1–3 still load, but ggaction 0.0.26 and earlier cannot load schema 4. Render-only snapshots are unchanged.
+- `ggaction` now has runtime dependencies, pinned exactly: `d3-array` 3.2.4, `internmap` 2.0.3 and `d3-geo` 3.1.1 (installed as `geographic-math`). Licenses are in `THIRD_PARTY_NOTICES`.
+- Browser gzip budgets grew: `ggaction` 495,000 → 804,801 bytes, `ggaction/basic` 255,000 → 430,484, `ggaction/svg` 25,000 → 27,461. New entries: `ggaction/graph` 78,097, `ggaction/interaction` 144,184, `ggaction/animation` 360,125, `ggaction/live` 1,023,988.
+- Charts with version 2 edge routes reject direct edits that recompute those routes; prepare them with `prepareGraphEdgeRoutes({ kind: "update" })` and apply them with `applyGraphEdgeRoutesUpdate`.
 
-- Add Full-only `createGraphPlot` and `editGraphPlot` for explicit graph layouts, with directed arrows, separate parallel edges, self-loops, typed node styles and labels. Preserve node and edge source rows through selections, graph/layout revisions, scoped composition and offline snapshots across Canvas, SVG, PNG and PDF.
-- Add Full-only `createFlowData`, `editFlowData`, `layoutFlow`, `createFlowNodes`, `editFlowNodes`, `createFlowLinks`, and `editFlowLinks` for conserved Sankey flows and cyclic feedback. Store explicit node/edge identities, common value-to-thickness scales, and all feedback edges; preserve labels, selections and offline snapshots across source and layout revisions.
+### Fixes
 
-- Add Full-only `layoutGraph` for stored fixed, circular, and seeded force layouts. Share `editLayout` with hierarchy layouts and preserve graph bindings, pins, component packing and limits through data revisions and offline restoration.
+- Action trace summaries no longer invoke getters; executable computed-expression properties are rejected before evaluation.
+- `fitCanvas` reports the prepared-route requirement on charts with version 2 routes instead of a misleading overflow.
+- `LiveChart.setData` honors its `easing` option.
 
-- Add Full-only `createGraphData` and `editGraphData` for observed node and edge tables, with typed keys, stable parallel-edge identity, exact source revisions, and validated offline snapshots.
-- Add Full-only `createPartitionPlot` and `editPartitionPlot` for icicle and sunburst views of stored hierarchy intervals. Preserve typed focus, navigation, selections and source revision recovery across Cartesian and polar mappings. Hierarchy and partition body and label fills accept shared structured paints across Canvas, SVG, PNG and PDF.
+### Known limitations
 
-- Add `prepareImageResource`, `createImageResource`, `replaceImageResource`, `removeResource`, `createImageMark`, `editImageMark`, and `prepareImageRendering` for Full image resource preparation, immutable authoring, and image marks with contain/cover/fill, alignment, clipping and alternative text. Preserve embedded bytes through offline snapshots, selection, composition and scenes; prepare browser Canvas explicitly and export the same data through SVG, PNG and PDF.
-- Add Full-only `createHierarchyData`, `editHierarchyData`, `layoutHierarchy`, `editLayout`, `removeResource`, `createTreePlot`, `editTreePlot`, `createTreemapPlot`, and `editTreemapPlot`. Preserve typed node identity, exact source contributions, stored layout geometry, labels and selections through edits, facets and offline restoration. Tree and treemap views use the same concrete graphics across Canvas, SVG, PNG and PDF.
+Measured in Chromium (P95 of 30 runs, device pixel ratio 1 / 2). See the [performance guide](https://ggaction.github.io/ggaction/performance/#known-limits).
 
-- Add `prepareDataUpdate` and `applyDataUpdate` for explicit host-loaded CSV/JSON, named and inline sources. Retain received-data receipts for offline restoration, reject stale preparations, and atomically refresh URL sources with parameter-dependent charts. Full supports source and parameter revisions; Basic supports creation.
-
-- Add `createParameter`, `editParameter`, and `removeParameter` for immutable scalar inputs with exact revision references and atomic dependent-data and chart updates. Full supports the complete lifecycle; Basic supports creation.
-- Support explicit version 2 computed expressions with a closed function registry, distinct missing-value diagnostics, parameter bindings, and saved-program validation. Keep existing v1 expression behavior and expose immutable registry descriptors through `getExpressionFunctions`.
-- Add local quadratic LOESS with `degree: 2` across regression data, plots and editors, preserving the default local-linear result and supporting robust fitting and prediction grids.
-
-- Add Full-only `createPivotData` and `editPivotData` with typed columns, explicit duplicate aggregation, stable schema and lineage, and immutable revision of dependent data and chart consumers.
-
-- Prevent action trace summaries from invoking getters; reject executable computed-expression properties before evaluation while preserving existing formula results.
-
-- Support compound M/L/C/Z paths, nonzero/evenodd fills and path owner clips across SVG, Canvas, PNG, PDF, transition scenes and saved programs. Preserve open strokes with implicitly closed fills and share subpath-aware bounds and adaptive geometry calculations.
-
-- Add typed row keys to source creation and explicit correspondence to source revision. Preserve keyed identity through reordering and edits while isolating new generated rows across immutable branches.
-- Track exact contributing rows across every transform and attach semantic item identity to concrete graphics. Keep line/area series identity separate from ordered path topology across all renderers.
-- Persist selection predicates and row keys as revisioned resources with exact dependency checks. Restore editable snapshots as schema 4 and migrate validated schemas 1–3 without replaying actions or redrawing saved graphics.
+- 100,000-row data: the longest host pause of `loadProgramInSlices` is about 55 / 58 ms and of `reviseDataInSlices` about 112 / 78 ms against a 50 ms target, because of garbage collection. A 100,000-row revise takes about 2.2 s in total. 1,000 and 10,000 rows meet the target.
+- 100,000-vertex geographic camera preview takes about 145 / 148 ms per frame against a 50 ms target; 10,000 vertices take about 13 ms.
+- Edge bundling: density bundling takes about 4.5 s at 100 edges and exceeds the 30 s deadline at 1,000; force-directed bundling takes about 2.5 s at 1,000 edges with an explicit work budget (the default budget rejects it) and exceeds the deadline at 10,000. Cancellation can take longer than 100 ms for density bundling at 100 edges (about 125 ms), force-directed bundling at 1,000 edges (up to about 105 ms) and any method at 10,000 edges (several hundred milliseconds). Hierarchical and edge-path bundling meet their time targets at every tested size.
 
 ## [0.0.26] - 2026-10-27
 

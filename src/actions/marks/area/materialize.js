@@ -12,8 +12,7 @@ import { mapScaleConsumerValues } from
   "../../../materialization/scales/map.js";
 import { buildAreaCurvePathCommands } from
   "../../../grammar/curveCommands.js";
-import { buildLinearPathCommands } from
-  "../../../grammar/pathCommands.js";
+import { buildDensityAreaBoundaryPath } from "../../../grammar/densityAreaPath.js";
 import { buildCategoricalDensityPaths } from
   "../../../grammar/categoricalDensity.js";
 import { derivePathSeriesFieldValues } from "../../../grammar/pathSeries.js";
@@ -67,19 +66,11 @@ function resolveAreaPaths({
         xScale
       );
       const baselines = mapped?.map(value => value.x2) ?? y.map(() => mapContinuousScaleValues([0], densityScale)[0]);
-      const baseline = baselines[0];
-      if (curve === "linear" && baselines.every(value => value === baseline)) {
-        return buildLinearPathCommands([
-          { x: baseline, y: y[0] },
-          ...y.map((value, index) => ({ x: upper[index], y: value })),
-          { x: baseline, y: y.at(-1) }
-        ], { close: true });
-      }
-      return buildAreaCurvePathCommands(
+      return buildDensityAreaBoundaryPath(
         y.map((value, index) => ({ x: baselines[index], y: value })),
         y.map((value, index) => ({ x: upper[index], y: value })),
         curve,
-        { independentAxis: "y" }
+        "y"
       );
     }
     const x = mapped?.map(value => value.x) ?? (["point", "band"].includes(xScale.type) ? mapOrdinalPositionValues : mapContinuousScaleValues)(
@@ -101,15 +92,7 @@ function resolveAreaPaths({
       : series.values.map(value => value.upper);
     const upper = mapped?.map(value => value.y2) ?? mapContinuousScaleValues(upperValues, yScale);
     if (densityTransform !== undefined && layout === "overlay") {
-      const baseline = lower[0];
-      if (curve === "linear" && lower.every(value => value === baseline)) {
-        return buildLinearPathCommands([
-          { x: x[0], y: baseline },
-          ...x.map((value, index) => ({ x: value, y: upper[index] })),
-          { x: x.at(-1), y: baseline }
-        ], { close: true });
-      }
-      return buildAreaCurvePathCommands(
+      return buildDensityAreaBoundaryPath(
         x.map((value, index) => ({ x: value, y: lower[index] })),
         x.map((value, index) => ({ x: value, y: upper[index] })),
         curve

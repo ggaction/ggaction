@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: independent installed cases continue after a failure and retain case identities
+ok 1 - independent installed cases continue after a failure and retain case identities
+  ---
+  duration_ms: 4.638583
+  type: 'test'
+  ...
+# Subtest: installed fixture modules and their case manifest are exhaustive
+ok 2 - installed fixture modules and their case manifest are exhaustive
+  ---
+  duration_ms: 109.932
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 609.993041

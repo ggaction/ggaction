@@ -12,9 +12,9 @@ test("route declarations separate immutable authoring, opaque preparation and ho
   try {
     const file = path.join(directory, "consumer.mts");
     await writeFile(file, `
-import { chart, type EdgeRouteResource } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import { chart, type EdgeRouteResource, type EdgeRouteResourceV2, type EdgeRouteExecution } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import { chart as basicChart } from ${JSON.stringify(path.join(root, "types/basic.js"))};
-import { createGraphRouteExecutor, prepareGraphEdgeRoutes, computeGraphEdgeRoutes, type GraphRouteJob } from ${JSON.stringify(path.join(root, "types/graph.js"))};
+import { createGraphRouteExecutor, prepareGraphEdgeRoutes, computeGraphEdgeRoutes, computeGraphEdgeRoutesAsync, type GraphRouteJobV2, type GraphRouteJob } from ${JSON.stringify(path.join(root, "types/graph.js"))};
 const program = chart().bundleGraphEdges({ id: "routes", method: "edge-path", options: { exponent: 2, maxStretch: 3 } })
   .editEdgeRoute({ options: { exponent: 3 }, target: { childPath: ["child"], id: "routes" } })
   .createGraphPlot({ routes: "routes" }).editGraphPlot({ routes: false });
@@ -28,6 +28,46 @@ program.editEdgeRoute({prepared,requestToken:"generation-1"}); executor.evict(pr
 declare const job: GraphRouteJob;
 const completion = computeGraphEdgeRoutes(job, signal);
 const complete: true = completion.result.complete;
+const execution: EdgeRouteExecution = {policy:"bounded-route@1",maxWork:8000000000,maxCandidatePairs:50000000,maxSamples:16777216,maxBufferBytes:134217728,maxBytes:134217728};
+program.bundleGraphEdges({id:"bounded",method:"density",options:{execution,limits:{maxNodes:1000,maxEdges:10000}}});
+declare const jobV2: GraphRouteJobV2;
+const completedV2 = await computeGraphEdgeRoutesAsync(jobV2, signal);
+const version: 2 = completedV2.schemaVersion;
+const buffers: number = completedV2.result.diagnostics.peakBufferBytes;
+executor.compute(jobV2,{signal,deadlineMs:30000});
+prepareGraphEdgeRoutes(program,{kind:"create",id:"bounded",method:"density",options:{execution}},{requestToken:"bounded",executor,deadlineMs:30000});
+declare const storedV2: EdgeRouteResourceV2;
+const resourceVersion: "2" = storedV2.algorithmVersion;
+const updated = await prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editLayout",args:{target:"layout",node:{key:1,x:20,y:5}}}},{requestToken:"update",executor,deadlineMs:30000});
+program.applyGraphEdgeRoutesUpdate({prepared:updated,requestToken:"update"});
+prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editGraphData",args:{target:"g",definition:{directed:false}}}},{requestToken:"u",executor,deadlineMs:30000});
+prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editFlowData",args:{definition:{balance:"allow"}}}},{requestToken:"u",executor,deadlineMs:30000});
+prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editHierarchyData",args:{valueMode:"leaf-sum"}}},{requestToken:"u",executor,deadlineMs:30000});
+prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editInferredGraphData",args:{definition:{options:{k:2}}}}},{requestToken:"u",executor,deadlineMs:30000});
+// @ts-expect-error native action arguments remain matched to their action
+prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editHierarchyData",args:{node:{key:0,x:1,y:2}}}},{requestToken:"u",executor,deadlineMs:30000});
+// @ts-expect-error native update handles cannot create an edge route
+program.bundleGraphEdges({prepared:updated,requestToken:"update"});
+// @ts-expect-error authoring handles cannot apply a native update
+program.applyGraphEdgeRoutesUpdate({prepared,requestToken:"update"});
+// @ts-expect-error native update requires an explicit worker deadline
+prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"editLayout",args:{options:{}}}},{requestToken:"update",executor});
+// @ts-expect-error native action union is closed
+prepareGraphEdgeRoutes(program,{kind:"update",edit:{action:"arbitrary",args:{}}},{requestToken:"update",executor,deadlineMs:30000});
+// @ts-expect-error Basic cannot apply native graph route updates
+basicChart().applyGraphEdgeRoutesUpdate({prepared:updated,requestToken:"update"});
+// @ts-expect-error bounded policies require every numeric field
+const incomplete: EdgeRouteExecution = {policy:"bounded-route@1",maxWork:1000};
+// @ts-expect-error v2 limits have no second pair/sample authority
+program.bundleGraphEdges({id:"bounded",method:"density",options:{execution,limits:{maxSamples:10}}});
+// @ts-expect-error v2 computation requires the explicit async worker entry
+computeGraphEdgeRoutes(jobV2);
+// @ts-expect-error async worker entry requires a v2 job
+computeGraphEdgeRoutesAsync(job);
+// @ts-expect-error v2 executor admission requires a deadline
+executor.compute(jobV2);
+// @ts-expect-error a deadline host requires an authentic executor
+prepareGraphEdgeRoutes(program,{kind:"create",id:"bounded",method:"density",options:{execution}},{requestToken:"bounded",deadlineMs:30000});
 const route = program.semanticSpec.resources.find((value): value is EdgeRouteResource => value.kind === "edge-route");
 if(route) {
   const x: number = route.result.routes[0].commands[0].x;

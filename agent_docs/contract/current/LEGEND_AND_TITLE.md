@@ -3,6 +3,8 @@
 제목과 범례의 충돌 검사는 단일 text와 줄바꿈 text collection의 실제 occupied bounds를 사용한다.
 같은 edge의 chart title/subtitle, axis component와 legend group 사이 실제 겹침은 작성 순서와 무관하게 거절한다. 서로 다른 edge의 block은 이 검사에서 비교하지 않는다.
 
+Geo shape/point/line field color and Geo point size reuse categorical, continuous, interval and size legend owners. A Geo point with both mappings infers separate color and size blocks. Their feature population and lifecycle are defined by [Geographic mappings](GEOMETRY.md#feature-color-and-size).
+
 ## Shared guide collision contract
 
 - Color/stroke/series/gradient/interval/size/opacity/strokeWidth의 네 edge에 같은 검증을 적용한다. 같은 target의 categorical+size는 하나의 group이며 retained border도 bounds에 포함한다.

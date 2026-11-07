@@ -1,3 +1,4 @@
+import { validateGeoEncodingChannel } from "../../grammar/geo/encoding.js";
 import { validatePointShape } from "../../grammar/pointShapes.js";
 import { APPEARANCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { removeEncoding } from "./remove.js";
@@ -46,6 +47,7 @@ function encodeAppearanceField(program, channel, args, operation) {
     APPEARANCE_MARK_TYPES[operation],
     "point mark"
   );
+  if (layer.mark.type === "geo") validateGeoEncodingChannel(layer, channel);
   const fieldTypes = channel === "shape" ? ["nominal"] : ["quantitative", "nominal", "ordinal"];
   const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
   const fieldType = args.fieldType ?? fieldTypes[0];
@@ -174,6 +176,10 @@ const encodeSize = /* @__PURE__ */ action(
       const { id: target, layer } = resolveTarget(this, args.target, APPEARANCE_MARK_TYPES.encodeSize, "point mark");
       const next = layer.encoding?.size === undefined ? this
         : removeEncoding.call(this, { target, channel: "size" });
+      if (layer.mark.type === "geo") {
+        validateGeoEncodingChannel(layer, "size");
+        return next.editGeoPointMark({ target, radiusPx: Math.sqrt(args.value / Math.PI) });
+      }
       return next.encodeRadius({ target, value: Math.sqrt(args.value / Math.PI) });
     }
     return encodeAppearanceField(this, "size", args, "encodeSize");

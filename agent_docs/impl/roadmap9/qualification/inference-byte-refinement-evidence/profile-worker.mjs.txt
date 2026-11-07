@@ -1,0 +1,7 @@
+import {parentPort,workerData} from 'node:worker_threads';
+import {writeFileSync} from 'node:fs';
+import {computeGraphInference} from '../../src/graph.js';
+parentPort.on('message',({job})=>{
+ globalThis.__inferencePhase='worker';const start=performance.now();const completion=computeGraphInference(job);
+ writeFileSync(workerData.output,JSON.stringify({ms:performance.now()-start,profiles:[...(globalThis.__inferenceProfiles??[])]},null,2));parentPort.postMessage(completion);
+});

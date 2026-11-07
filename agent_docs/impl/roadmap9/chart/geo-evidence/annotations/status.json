@@ -1,0 +1,322 @@
+{
+  "scope": "Semantic geographic annotations with native Text, source-feature centroid and original LOD-level anchors",
+  "base": "430f9df90",
+  "approval": "AUTHORIZATION.json remainingApproval",
+  "checks": {
+    "publicGeoOwnerCoverage": {
+      "tests": 139,
+      "pass": 139,
+      "lines": 100,
+      "branches": 97.48,
+      "functions": 100,
+      "ownerCount": 7
+    },
+    "nativeTextOwnerCoverage": {
+      "tests": 107,
+      "pass": 107,
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "broadGeoThemeTypes": {
+      "tests": 192,
+      "pass": 192,
+      "note": "Precedes metadata-only centroid import split; final Geo owner run verifies that repair."
+    },
+    "sourcePackageTypesCardBoundaries": {
+      "tests": 46,
+      "pass": 46
+    },
+    "actualData": {
+      "tests": 16,
+      "pass": 16,
+      "datasets": 5,
+      "recipesPerDataset": 3
+    },
+    "renderers": {
+      "tests": 9,
+      "pass": 9,
+      "variants": 3,
+      "backends": [
+        "canvas",
+        "svg",
+        "png",
+        "pdf"
+      ]
+    },
+    "browser": {
+      "tests": 3,
+      "pass": 3,
+      "backends": [
+        "canvas",
+        "svg"
+      ],
+      "dpr": [
+        1,
+        2
+      ]
+    },
+    "directLifecycle": {
+      "tests": 3,
+      "pass": 3
+    },
+    "inventory": {
+      "initial": {
+        "tests": 10,
+        "pass": 9,
+        "failure": "Stale ledger expected 37761; canonical requirements count is 37978."
+      },
+      "repair": {
+        "tests": 7,
+        "pass": 7
+      }
+    },
+    "sourceDocs": {
+      "initial": {
+        "tests": 200,
+        "pass": 195,
+        "failures": [
+          "Two search-size assertions",
+          "Uncommitted example source pin",
+          "Wrong Text documentation link and dependent LLM link check"
+        ]
+      },
+      "repair": {
+        "tests": 31,
+        "pass": 29,
+        "remaining": "Generated machine/LLM outputs were stale after card example repair; regenerated before final source-pinned run."
+      },
+      "final": {
+        "tests": 200,
+        "pass": 200,
+        "sourcePinned": true
+      }
+    },
+    "builtDocs": {
+      "pages": 172,
+      "selectiveArtifacts": 1525,
+      "browser": "passed desktop search/accessibility and all pages at 320/390/768px",
+      "final": true,
+      "provenanceFollowup": "Browser inspected unchanged content before source-pin-only generation; final rebuild and link/hash checks validate updated provenance."
+    },
+    "packageContracts": {
+      "tests": 7,
+      "pass": 7
+    }
+  },
+  "package": {
+    "sha256": "5ea008140f4512cba0e6d3e6c053550bd3acdf82d016c7411ef5aff1adee940f",
+    "entries": 1033,
+    "packedBytes": 1465987,
+    "unpackedBytes": 6687460,
+    "limits": {
+      "entries": 1033,
+      "packedBytes": 1470000,
+      "unpackedBytes": 6690000
+    },
+    "inputParity": {
+      "sha256": "5ea008140f4512cba0e6d3e6c053550bd3acdf82d016c7411ef5aff1adee940f",
+      "files": 1033,
+      "canonicalPackageTransforms": true,
+      "mismatches": []
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "sha256": "5ea008140f4512cba0e6d3e6c053550bd3acdf82d016c7411ef5aff1adee940f",
+        "cases": [
+          {
+            "id": "geographic-annotations/feature-anchor-and-atomicity",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-annotations/offline-fresh-process",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-annotations/four-renderer-native-text-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 958,
+            "minifiedBytes": 2529462,
+            "gzipBytes": 725202
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 558,
+            "minifiedBytes": 1312422,
+            "gzipBytes": 382808
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335388,
+            "gzipBytes": 109153
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        },
+        "types": "strict Full/Basic geographic annotation consumer passed",
+        "snippets": [
+          "geographic-annotation"
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "sha256": "5ea008140f4512cba0e6d3e6c053550bd3acdf82d016c7411ef5aff1adee940f",
+        "cases": [
+          {
+            "id": "geographic-annotations/feature-anchor-and-atomicity",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-annotations/offline-fresh-process",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-annotations/four-renderer-native-text-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 958,
+            "minifiedBytes": 2529462,
+            "gzipBytes": 723573
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 558,
+            "minifiedBytes": 1312422,
+            "gzipBytes": 382027
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335388,
+            "gzipBytes": 108524
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43599
+          }
+        },
+        "types": "strict Full/Basic geographic annotation consumer passed",
+        "snippets": [
+          "geographic-annotation"
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "sha256": "5ea008140f4512cba0e6d3e6c053550bd3acdf82d016c7411ef5aff1adee940f",
+        "cases": [
+          {
+            "id": "geographic-annotations/feature-anchor-and-atomicity",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-annotations/offline-fresh-process",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-annotations/four-renderer-native-text-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 958,
+            "minifiedBytes": 2529462,
+            "gzipBytes": 725202
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 558,
+            "minifiedBytes": 1312422,
+            "gzipBytes": 382808
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335388,
+            "gzipBytes": 109153
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        },
+        "types": "strict Full/Basic geographic annotation consumer passed",
+        "snippets": [
+          "geographic-annotation"
+        ]
+      }
+    ]
+  },
+  "repairs": [
+    "Planar feature centroid normalizes ring contribution by exterior/hole role without mutating original source winding.",
+    "Geo annotation metadata no longer imports projection math; only the Full materializer computes centroids. Basic remains free of geographic math.",
+    "Native Text extracted helper gained meaningful absent-content/anchor/multiline boundaries; the same 95/90/100 critical floor remains.",
+    "New fixture adjustments: shadow/fill option shape and multiline expectations. No existing behavior was weakened.",
+    "Generated card annotation example now includes a concrete position anchor and string text.",
+    "Document search ceiling moved to 1020000 after 1018767-byte measured output. Package and Full/Basic bundle ceilings follow three supported Node measurements."
+  ],
+  "limitations": [
+    "No claim of a fresh full normal/global coverage corpus. Affected owners and selected regression checks are recorded separately.",
+    "Field encodings, geographic labels/guides and native camera consumers remain subsequent STEP045/046 scope.",
+    "Interaction original-key availability is implemented independently in 41621fb78 and remains a parent integration obligation.",
+    "Parent will run shared realistic-lifecycle-factor-effects, realistic-scenario-generator and realistic-scenario-generation-isolation once on final integrated sources."
+  ],
+  "sourceCommit": "d665f6bbcdd97ed5e5d22ce63c73d5b3afdbfaa4",
+  "metadataFollowup": "Generated source provenance and LLM pins plus evidence only; packed runtime/declaration bytes remain identical to the qualified artifact."
+}

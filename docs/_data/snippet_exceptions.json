@@ -687,7 +687,7 @@
   },
   {
     "id": "docs/api/data/revisions-and-removal.md#-editsorteddata-target-sortby-dependents-edit-sorted-data-:1",
-    "sha256": "59069dd77d02bcc20c4980ae59a0aa340b3ee78e3c2875730f1e07fcce274562",
+    "sha256": "dbbaaafa7caf4134b4a2708eceb9b602c3377937b54ce34ffdf641ee7de54f1e",
     "mode": "contextual-fragment",
     "owner": "docs/api/data/revisions-and-removal.md",
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`editSortedData({ target, sortBy, dependents? })` {#edit-sorted-data}\" on docs/api/data/revisions-and-removal.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
@@ -722,7 +722,7 @@
   },
   {
     "id": "docs/api/data/source-and-derived.md#-createsorteddata-id-source-sortby-create-sorted-data-:1",
-    "sha256": "0271b038007cebf5bfeaa3afb21712a94b8c0f82e6a22a9a158043949e06bd0b",
+    "sha256": "5e715f042cb82308f2093ecf95d07c588e3dfa675dff6ab6d178bbc1becdc01f",
     "mode": "contextual-fragment",
     "owner": "docs/api/data/source-and-derived.md",
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`createSortedData({ id, source?, sortBy })` {#create-sorted-data}\" on docs/api/data/source-and-derived.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
@@ -1442,7 +1442,7 @@
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`\" on docs/api/marks/line-area.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/marks/point.md#-editpointmark-target-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit-:1",
+    "id": "docs/api/marks/point.md#-editpointmark-target-maxitems-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit-:1",
     "sha256": "8ce349070e5ca728fca6adcad4a8b85c91062df010aee15e458aeb33e26edf7f",
     "mode": "contextual-fragment",
     "owner": "docs/api/marks/point.md",
@@ -2882,5 +2882,75 @@
     "mode": "contextual-fragment",
     "owner": "docs/api/interaction.md",
     "reason": "This browser continuation requires the prepared points program, picked selection and mounted Canvas named in the text. Native browser brush and lasso execution with actual rendering and captured pointers is verified at DPR 1 and 2 in interaction-region.browser.js."
+  },
+  {
+    "id": "docs/api/interaction.md#prepare-assets-before-committing:1",
+    "sha256": "3cf82b6785d31dadcf7855d52345ae805e62a390973325d19cf268bc848ba096",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/interaction.md",
+    "reason": "Requires the retained-image program, Canvas context and explicit interactionBindings supplied in the text. The exact fragment is executed with real browser image bytes for committed commands and pointer previews in test/browser/interaction-session.browser.js. Authentic graph frame preparation and matching preview/frame assets are additionally verified by the public current-graph drag browser and installed consumers."
+  },
+  {
+    "id": "docs/api/interaction.md#prepare-native-work-before-replacing-the-program:1",
+    "sha256": "d2ba963d0e1da08724959b45ef21d2bdb2a21c685e1a8f64307cb695cea5ce1d",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/interaction.md",
+    "reason": "Requires the explicitly named graph, layout and network plot. The exact fragment is executed by the native-update browser regression before real worker supersession and disposal checks."
+  },
+  {
+    "id": "docs/api/interaction.md#observe-the-mounted-surface-size:1",
+    "sha256": "49988ce70c7af967223aa4d7a3464202cece9489de63334112d603fc7599ec99",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/interaction.md",
+    "reason": "Requires a rendered Full program and DOM element. The exact fragment is executed with a native browser ResizeObserver at DPR 2 in interaction-session.browser.js, including accepted Canvas/SVG parity and disconnect cleanup."
+  },
+  {
+    "id": "docs/api/animation.md#render-the-same-frame:1",
+    "sha256": "26a9f09fb97fb8488b209de42d800aa60d449631d334c1eeb6d207517fbbfaf3",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/animation.md",
+    "reason": "This Node continuation uses frames prepared by the first complete example and requires the optional native Canvas backend. The same renderer calls and frames are covered by the animation installed consumer and four-backend tests."
+  },
+  {
+    "id": "docs/api/animation.md#play-with-an-explicit-clock:1",
+    "sha256": "ca79a2c86c14397f823ca1702a66c95996d919157c7e5d3e9aabb0c9350f91bd",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/animation.md",
+    "reason": "This browser continuation uses restored from the first complete example and a host Canvas element. The host explicitly supplies requestAnimationFrame and performance.now; controller behavior is verified by the public player tests."
+  },
+  {
+    "id": "docs/api/edge-routes.md#explicit-bounded-execution:1",
+    "sha256": "d85555f9cf121e477af3b9829296037226c8cc51b02fb9374f770de6a3120760",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/edge-routes.md",
+    "reason": "The host fragment needs the caller-owned graph g and layout l plus the separately served ES module worker. Its exact code is checked in the installed bounded-route browser qualification."
+  },
+  {
+    "id": "docs/api/edge-routes.md#explicit-bounded-execution:2",
+    "sha256": "6ee07b3b6e36d419a09aca519c1af4275b08366844e0bb814c683e343b3f0a38",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/edge-routes.md",
+    "reason": "This complete worker module runs in a separate Worker global and produces a completion packet rather than a ChartProgram. Its exact code is checked with the accompanying installed host fragment in browser qualification."
+  },
+  {
+    "id": "docs/api/edge-routes.md#-applygraphedgeroutesupdate-:1",
+    "sha256": "83606946cf46a38db488fe24d77edb15f749c2db8f9a71de11dc019ee70052ae",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/edge-routes.md",
+    "reason": "The fragment needs a completed Full program with version 2 routes, the caller-owned layout l and a served route executor worker. Its exact code is executed from this heading in the installed native-route browser qualification."
+  },
+  {
+    "id": "docs/api/live.md#build-an-interactive-chart:1",
+    "sha256": "2bd55af7af0aa520d6538996f8af62949422f54794e2fe1402cfb5c80ee8a84f",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/live.md",
+    "reason": "Browser-only live chart fragment. It needs a DOM canvas element and pointer events, which Node cannot provide; the same chain, tooltip, hover and brush behavior is executed against a recorded document surface in test/unit/live/live-chart.test.js."
+  },
+  {
+    "id": "docs/api/live.md#data-and-change:1",
+    "sha256": "7968785ae851eb84a93d4b7d6de314779251f1d8f46183ac2e72c69306d44a86",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/live.md",
+    "reason": "Contextual continuation of the live scatter example. It needs that attached live chart, a second live chart named other, and browser animation frames; setData, animateTo, linkTo and save are executed in test/unit/live/live-chart.test.js."
   }
 ]

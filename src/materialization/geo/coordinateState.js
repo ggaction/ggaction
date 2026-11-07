@@ -1,3 +1,4 @@
+import { geoLabelSource } from "./labels.js";
 import { validateInputReference } from "../../core/resourceReference.js";
 import { requireStoredResource } from "../../selectors/resources.js";
 import { findCoordinate } from "../../selectors/coordinates.js";
@@ -15,7 +16,7 @@ export function validateGeoCoordinateValue(program, parsed, value) {
     if (value.kind !== "projection") throw new TypeError("Geo coordinates require projection references.");
     requireStoredResource(program, value);
   }
-  if (findLayerMatching(program, layer => layer.coordinate === parsed.id && layer.mark?.type !== "geo") !== undefined) {
+  if (findLayerMatching(program, layer => layer.coordinate === parsed.id && layer.mark?.type !== "geo" && geoLabelSource(program, layer) === undefined) !== undefined) {
     throw new TypeError("Geo coordinates require geographic marks.");
   }
 }

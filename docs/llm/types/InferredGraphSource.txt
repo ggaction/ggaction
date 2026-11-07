@@ -1,4 +1,5 @@
 export interface InferredGraphSource {
   readonly nodeKey: GraphKeyField; readonly ruleId: string; readonly attributes?: readonly string[];
   readonly maxNodes?: number; readonly maxEdges?: number;
+  readonly execution?: GraphInferenceExecution;
 }

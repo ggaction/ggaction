@@ -213,3 +213,8 @@ typed-key style은 보존하고, theme 제거·codec·named highlight·글꼴 �
 The existing body and label style records accept optional `outline:MarkOutline|false` and `shadow:MarkShadow|false`, including keyed overrides. Reuse the closed values, defaults, glyph order, preparation, source-geometry hit boundary and backend behavior in [MARKS.md](MARKS.md#prepared-per-item-shadows). Create omission has no effect; edit omission preserves; false removes or suppresses inherited effect. Same-patch outline and stroke reject. Stored ordinary stroke remains available beneath an outline. Effects stay in the existing role appearance configuration; false is removed when constructing concrete graphics. Stored shadows require resolved offsets and blur radius. Per-item style changes retain layout resource identity, original source rows, selection keys and glyph roles. Tree links and graph edge/arrow components accept shadow; ordinary stroke owns their contour, with no outline option. Flow ribbons are filled bodies and support both effects.
 
 Evidence: `test/unit/resources/resource-plot-effects.test.js`, `test/unit/resources/font-resource-labels.test.js`.
+
+
+## Bounded route updates
+
+Explicit v2 route를 소비하는 flow 자원의 native edit는 [prepared native update](EDGE_ROUTES.md#applygraphedgeroutesupdate)를 사용한다. 원 action의 입력/오류/closure 계약은 유지하며, 전체 source dataset/fit/composition 갱신 지원을 뜻하지 않는다.

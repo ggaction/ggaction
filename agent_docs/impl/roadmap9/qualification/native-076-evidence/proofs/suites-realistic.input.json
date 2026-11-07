@@ -1,0 +1,26 @@
+{
+  "candidate": "a8af4e5665c17c6769af6118e48a30cd0efc13d3",
+  "targets": [
+    {
+      "target": "AT-01",
+      "tests": [
+        "test/contracts/dataset-fixtures.test.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CORE.md"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "path": "test/contracts/dataset-fixtures.test.js",
+      "sha256": "07ab8f92518000d125f357d361f01ca6890357175c63b2e18a543386302d608d"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "agent_docs/contract/current/CORE.md",
+      "sha256": "36aee69d7cd4e3a093e490bcdb8063ff680fd3b1a39e30e0530c3515ba1110ec"
+    }
+  ]
+}

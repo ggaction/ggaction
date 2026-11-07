@@ -2,7 +2,7 @@ import { ownArray, ownRecord } from "../core/ownData.js";
 import { canonicalJSON, contentDigest } from "../core/contentDigest.js";
 import { assetError, assertAssetActive } from "../core/assetHost.js";
 import { validateWorkLimit } from "../core/validation.js";
-import { walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
+import { walkGraphicSources } from "../grammar/schemas/graphicSources.js";
 import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 
 const preparedShadows = new WeakMap();
@@ -35,10 +35,7 @@ export function shadowGraphicItems(graphicSpec) {
     validateConcreteGraphicProperties(type, object.properties);
     items.set(id, { object, type });
   };
-  walkGraphicTreeEvents(graphicSpec, {
-    enter({ id, object }) { if (!Array.isArray(object.items)) add(id, object, object.type); },
-    item({ id, object, owner }) { add(id, object, object.type ?? owner.type); }
-  });
+  walkGraphicSources(graphicSpec, add);
   return items;
 }
 

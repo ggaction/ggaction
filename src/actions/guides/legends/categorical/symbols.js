@@ -3,17 +3,9 @@ import { findLayer } from "../../../../selectors/layers.js";
 import{hasLegendClipGraphics,applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { action } from "../../../../core/action.js";
-import {
-  activeConfig,
-  categoricalLegendView,
-  graphic,
-  layerFor,
-  noOptions,
-  resolveAppearance,
-  resolveSymbolLayout as resolveLayout,
-  symbolGraphic,
-  symbolWidth
-} from "./layout.js";
+import { resolveCategoricalLegendConfig as activeConfig } from "../../../../materialization/guides/legendConfig.js";
+import { categoricalLegendView } from "../../../../grammar/legendOverflow.js";
+import { graphic, layerFor, noOptions, resolveAppearance, resolveSymbolLayout as resolveLayout, symbolGraphic, symbolWidth } from "./layout.js";
 import { resolveCategoricalLegendPlacement } from "../lifecycle.js";
 import { createPointShapeGraphic } from "../../../../grammar/pointShapes.js";
 import {

@@ -1,8 +1,10 @@
+import { inferenceWorkValidator, checkInferenceSignal } from "./inferenceBudget.js";
+import { graphLimits } from "./model.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { encodeRowKey, compareRowKeys } from "../../core/itemIdentity.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
+import { rejectUnknownProperties, validateGeneratedItemLimit } from "../../core/validation.js";
 import { groupingIdentity } from "../rowLineage.js";
 import { deriveSortedRows, normalizeSortTransform } from "../sort.js";
 import { normalizeTemporalValue } from "../scales/fields.js";
@@ -28,10 +30,11 @@ export function normalizeGraphStructuralOptions(input, sequence) {
   return { ruleId, missing, mode, ...(hasKey ? { hubKey: options.hubKey } : {}), ...(hasHubs ? { hubs: options.hubs } : {}) };
 }
 
-function prepare(keys, tuples, missing) {
-  if (Array.isArray(keys)) validateGeneratedItemLimit(keys.length, "Graph structural nodes");
+function prepare(keys, tuples, missing, limits, execution, signal) {
+  if (Array.isArray(keys)) validateGeneratedItemLimit(keys.length, "Graph structural nodes", limits.maxNodes);
   ownArray(keys, "Graph structural keys"); ownArray(tuples, "Graph grouping tuples");
   if (keys.length !== tuples.length) throw new Error("Graph keys and grouping tuples must have equal length.");
+  const validateWorkLimit = inferenceWorkValidator(execution, signal);
   let work = keys.length * (64 + 8 * Math.ceil(Math.log2(Math.max(2, keys.length))));
   const charge = value => {
     if (typeof value === "string") work += value.length * 8;
@@ -70,21 +73,22 @@ function finish(keys, edges, preparation, options) {
   return cloneAndFreeze({ edges, sourceIndices: preparation.sourceIndices, omitted: preparation.omitted, options });
 }
 
-function chargeValues(preparation, values) {
+function chargeValues(preparation, values, validateWorkLimit) {
   ownArray(values, "Graph structural values");
   for (const value of values) preparation.work += typeof value === "string" ? value.length * 8 : 8;
   validateWorkLimit(preparation.work, "Graph structural work");
 }
 
-function chargeKey(preparation, key) {
+function chargeKey(preparation, key, validateWorkLimit) {
   if (Array.isArray(key) && key.length > 64) throw new RangeError("Graph hub key tuple is too wide.");
-  chargeValues(preparation, Array.isArray(key) ? key : [key]);
+  chargeValues(preparation, Array.isArray(key) ? key : [key], validateWorkLimit);
 }
 
-export function resolveGraphGroupHubs(options, preparation) {
+export function resolveGraphGroupHubs(options, preparation, execution, signal) {
+  const validateWorkLimit = inferenceWorkValidator(execution, signal);
   const hubs = new Map(), indexes = new Map(preparation.tokens.map((key, index) => [key, index]));
   if (Object.hasOwn(options, "hubKey")) {
-    chargeKey(preparation, options.hubKey);
+    chargeKey(preparation, options.hubKey, validateWorkLimit);
     const index = indexes.get(encodeRowKey(options.hubKey));
     if (index === undefined || !preparation.sourceIndices.includes(index)) throw new Error("Graph hub must be an included node.");
     hubs.set(preparation.groupKeys[index], index);
@@ -98,8 +102,8 @@ export function resolveGraphGroupHubs(options, preparation) {
       if (!["group", "key"].every(key => Object.hasOwn(entry, key))) throw new TypeError("Graph group hubs require own group and key.");
       if (!Array.isArray(entry.group) || entry.group.length !== preparation.width) throw new Error("Graph hub grouping tuple has invalid length.");
       ownArray(entry.group, "Graph hub group");
-      chargeValues(preparation, entry.group);
-      chargeKey(preparation, entry.key);
+      chargeValues(preparation, entry.group, validateWorkLimit);
+      chargeKey(preparation, entry.key, validateWorkLimit);
       const group = groupingIdentity(entry.group), index = indexes.get(encodeRowKey(entry.key));
       if (!preparation.groups.has(group) || hubs.has(group) || !preparation.groups.get(group).includes(index)) throw new Error("Graph hubs must uniquely select a member of each named group.");
       hubs.set(group, index);
@@ -108,11 +112,14 @@ export function resolveGraphGroupHubs(options, preparation) {
   return hubs;
 }
 
-export function inferGraphGroups(keys, tuples, input) {
-  const options = normalizeGraphStructuralOptions(input, false), preparation = prepare(keys, tuples, options.missing);
-  const hubs = resolveGraphGroupHubs(options, preparation);
+export function inferGraphGroups(keys, tuples, input, limits = {}, execution, signal) {
+  const validateWorkLimit = inferenceWorkValidator(execution, signal);
+  limits = graphLimits(limits);
+  const options = normalizeGraphStructuralOptions(input, false), preparation = prepare(keys, tuples, options.missing, limits, execution, signal);
+  const hubs = resolveGraphGroupHubs(options, preparation, execution, signal);
   let count = 0, identityWork = 0;
   for (const [group, members] of preparation.groups) {
+    checkInferenceSignal(signal);
     if (options.mode === "star" && members.length > 1 && !hubs.has(group)) throw new Error("Graph star requires an explicit hub for every non-singleton group.");
     count += options.mode === "clique" ? members.length * (members.length - 1) / 2 : Math.max(0, members.length - 1);
     for (const index of members) {
@@ -120,10 +127,11 @@ export function inferGraphGroups(keys, tuples, input) {
       identityWork += preparation.tokens[index].length * degree * 8;
     }
   }
-  validateGeneratedItemLimit(count, "Graph group edges");
+  validateGeneratedItemLimit(count, "Graph group edges", limits.maxEdges);
   validateWorkLimit(preparation.work + identityWork + count * (64 + options.ruleId.length * 8 + 16 * Math.ceil(Math.log2(Math.max(2, count)))), "Graph group work");
   const edges = [];
   for (const [group, members] of preparation.groups) {
+    checkInferenceSignal(signal);
     if (options.mode === "clique") {
       for (let a = 0; a < members.length; a++) for (let b = a + 1; b < members.length; b++) edges.push(edge(keys, members[a], members[b], options.ruleId, false));
     } else for (const index of members) if (hubs.has(group) && index !== hubs.get(group)) edges.push(edge(keys, hubs.get(group), index, options.ruleId, false));
@@ -131,11 +139,13 @@ export function inferGraphGroups(keys, tuples, input) {
   return finish(keys, edges, preparation, options);
 }
 
-export function inferGraphSequence(keys, tuples, orderValues, input) {
-  const options = normalizeGraphStructuralOptions(input, true), preparation = prepare(keys, tuples, options.missing);
+export function inferGraphSequence(keys, tuples, orderValues, input, limits = {}, execution, signal) {
+  const validateWorkLimit = inferenceWorkValidator(execution, signal);
+  limits = graphLimits(limits);
+  const options = normalizeGraphStructuralOptions(input, true), preparation = prepare(keys, tuples, options.missing, limits, execution, signal);
   ownArray(orderValues, "Graph sequence order");
   if (orderValues.length !== keys.length) throw new Error("Graph sequence order and keys must have equal length.");
-  chargeValues(preparation, orderValues);
+  chargeValues(preparation, orderValues, validateWorkLimit);
   const sort = normalizeSortTransform({ sortBy: [{ field: "value", ...(Object.hasOwn(options, "temporalUnit") ? { temporalUnit: options.temporalUnit } : {}) }] });
   const present = [], included = new Set(preparation.sourceIndices);
   orderValues.forEach((value, index) => {
@@ -165,7 +175,7 @@ export function inferGraphSequence(keys, tuples, orderValues, input) {
     for (let offset = 0; offset + options.lag < members.length; offset++) identityWork +=
       (preparation.tokens[members[offset]].length + preparation.tokens[members[offset + options.lag]].length) * 8;
   }
-  validateGeneratedItemLimit(count, "Graph sequence edges");
+  validateGeneratedItemLimit(count, "Graph sequence edges", limits.maxEdges);
   validateWorkLimit(preparation.work + identityWork + count * (128 + options.ruleId.length * 8), "Graph sequence work");
   const edges = [];
   for (const members of groups.values()) for (let offset = 0; offset + options.lag < members.length; offset++) {

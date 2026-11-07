@@ -3,6 +3,8 @@ import test from "node:test";
 import { createPartitionFramePlan, samplePartitionFrame, hitPartitionFrame } from "../../../src/materialization/hierarchy/partitionFrames.js";
 import { partitionFrameEndpoints } from "../../support/partition-frames.js";
 import { expectedBendPoint } from "../../charts/partition-layouts/reference.js";
+import { chart } from "../../../src/index.js";
+import { rows } from "../../../examples/partition-layouts/fixture.js";
 import { serializeProgram } from "../../../src/persistence.js";
 const resolved=p=>({graphics:p.graphicSpec.objects.partitionPlot.items});
 const plan=(a,b)=>createPartitionFramePlan(a,b,{target:"partitionPlot"});
@@ -46,7 +48,7 @@ test("incompatible topology, appearance and handedness carry explicit crossfade 
  const {before,after}=partitionFrameEndpoints();
  for(const [next,reason] of [
   [after.editPartitionPlot({direction:"clockwise"}),"handedness"],
-  [after.editPartitionPlot({focus:{key:"A"}}),"topology"],
+  [after.editPartitionPlot({focus:{key:"A"}}),"visibility"],
   [after.editPartitionPlot({radiusPolicy:"equal-depth-area"}),"radius-policy"],
   [after.editPartitionPlot({clip:true}),"clip"],
   [after.editPartitionPlot({cells:{opacity:.5}}),"appearance"],
@@ -101,4 +103,43 @@ test("native endpoints preserve displayed highlights and explicit graphic edits"
  assert.deepEqual(samplePartitionFrame(plan(edited,after),0).groups[0].graphics,edited.graphicSpec.objects.partitionPlot.items);
  const missing=before._clone({graphicSpec:{objects:{...before.graphicSpec.objects,partitionPlot:undefined}}});
  assert.throws(()=>plan(missing,after),/materialized/);
+});
+
+
+test("native frame preparation distinguishes a changed parent from hidden descendants",()=>{
+ const {before,after}=partitionFrameEndpoints(),saved=[serializeProgram(before),serializeProgram(after)];
+ const changed=after.reviseData({source:"d",id:"reparented",values:rows.map(row=>({...row,...(row.key==="A2"?{parentKey:"B"}:{})}))});
+ const keys=p=>p.graphicSpec.objects.partitionPlot.items.filter(g=>g.identity.role==="body").map(g=>g.identity.key).sort();
+ assert.deepEqual(keys(before),keys(changed),"The same real node identities remain visible");
+ assert.equal(plan(before,changed).reason,"topology");
+ assert.deepEqual([serializeProgram(before),serializeProgram(after)],saved);
+});
+
+test("native middle-frame paths apply interpolated CSS gaps after bending raw intervals",()=>{
+ const {before,after}=partitionFrameEndpoints({padding:[2,4]}),to=after.editPartitionPlot({padding:[10,16]});
+ const prepared=plan(before,to),frame=samplePartitionFrame(prepared,.5),graphics=body(frame);
+ assert.equal(prepared.mode,"bend");
+ assert.deepEqual(samplePartitionFrame(prepared,0).groups[0].graphics,resolved(before).graphics);
+ assert.deepEqual(samplePartitionFrame(prepared,1).groups[0].graphics,resolved(to).graphics);
+ // A occupies u=[0,.6], depth=[1/3,2/3]. At b=.5 radial depth is
+ // 10+90*v and tangent length is 150+pi*55. Half current gaps are 3/5px.
+ const first=graphics[1].properties.commands[0],expected=expectedBendPoint(3/(150+Math.PI*55),1/3+5/90,.5);
+ assert.ok(Math.abs(first.x-expected.x)<1e-10);assert.ok(Math.abs(first.y-(expected.y+25))<1e-10);
+ const inside=expectedBendPoint(.3,.5,.5);
+ assert.equal(hitPartitionFrame(frame,{x:inside.x,y:inside.y+25}).key,graphics[1].identity.key);
+ const gap=expectedBendPoint(.3,1/3,.5);
+ assert.notEqual(hitPartitionFrame(frame,{x:gap.x,y:gap.y+25})?.key,graphics[1].identity.key);
+});
+
+
+test("a CSS gap that consumes an intermediate cell removes its body and label together",()=>{
+ const before=chart().createCanvas({plot:{width:300,height:3},margin:0,plotBorder:false})
+  .createData({id:"one",values:[{id:"root",parent:null,value:1}]}).createHierarchyData({id:"h",key:"id",parent:"parent",value:"value"})
+  .layoutHierarchy({id:"l",method:"partition"}).createPartitionPlot({padding:[270,0],labels:{content:"value"}});
+ const after=before.createCoordinate({id:"polar",type:"polar"})
+  .editCoordinate({target:"polar",polarFrame:{center:{x:.5,y:.5},radius:{unit:"px",value:100},overflow:"allow"}})
+  .editPartitionPlot({coordinate:"polar",innerRadius:20,outerRadius:100,direction:"counterclockwise"});
+ const prepared=plan(before,after);assert.equal(prepared.mode,"bend");
+ assert.equal(body(samplePartitionFrame(prepared,0)).length,1);assert.equal(body(samplePartitionFrame(prepared,1)).length,1);
+ const middle=samplePartitionFrame(prepared,.5);assert.deepEqual(middle.groups[0].graphics,[]);assert.equal(hitPartitionFrame(middle,{x:150,y:1.5}),null);
 });

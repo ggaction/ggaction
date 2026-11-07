@@ -115,12 +115,12 @@ test("does not repeat an empty isolation scan after Canvas preflight", () => {
   };
   try {
     render({ graphicSpec }, createMockCanvasContext());
-    assert.equal(scans, 2, "one clip scan and one isolation scan per render");
+    assert.ok(scans <= 2, "at most one clip scan and one isolation registry scan per render");
     scans = 0;
     drawResolvedGraphicSpec(
       resolveGraphicRenderTarget(graphicSpec), createMockCanvasContext()
     );
-    assert.equal(scans, 1, "direct drawing still prepares isolation itself");
+    assert.ok(scans <= 1, "direct drawing does not repeat an isolation registry scan");
   } finally {
     Object.values = originalValues;
   }

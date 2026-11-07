@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-04",
+  "kind": "exact pin of the audited geometry dependency closure; combined candidate browser/installed/normal",
+  "finding": {
+    "external": "d3-array 3.2.5 was published 2026-11-03 by its maintainers through trusted publishing with SLSA provenance. It ships dist/ only (no src/).",
+    "impact": "d3-geo declares d3-array '2.5.0 - 3', so new installs of ggaction resolved the unaudited 3.2.5. The installed browser import map (node_modules/d3-array/src/index.js) returned 404 and every installed browser page failed to load; THIRD_PARTY_NOTICES and the source-signature manifest describe 3.2.4.",
+    "before": {
+      "commit": "ba9659f86",
+      "browser": {
+        "tests": 410,
+        "pass": 378,
+        "fail": 32
+      },
+      "log": "browser-before-pin.log.gz"
+    }
+  },
+  "decision": "Declare the whole manifest closure as exact direct dependencies (d3-array 3.2.4, internmap 2.0.3, geographic-math npm:d3-geo@3.1.1). npm does not apply overrides for consumers, so only direct exact dependencies pin installed applications. Covered by remainingApproval; the native policy of no external chart engine and one audited geometry closure is kept and tightened.",
+  "contracts": [
+    "native-api-policy: dependency keys equal the closure",
+    "geographic-math: every transitive manifest package pinned exactly in package.json and lock root; dependency keys equal manifest install keys"
+  ],
+  "lockEdit": "Only the root dependency entry was edited; npm 10.9.8 --package-lock-only also removed unrelated libc fields, which was reverted.",
+  "archive": {
+    "sha256": "3353bccac8ba13e8b4f3f2ea8e0a20410c5d4510facc9c3771159745b3a57555",
+    "entryCount": 1276,
+    "packedBytes": 1850844,
+    "unpackedBytes": 8321729
+  },
+  "ceilings": {
+    "packedBytes": 1854163,
+    "unpackedBytes": 8321729
+  },
+  "checks": {
+    "browser": {
+      "command": "npm run test:browser",
+      "tests": 529,
+      "pass": 529
+    },
+    "installedConsumers": {
+      "archive": "3353bccac8ba13e8b4f3f2ea8e0a20410c5d4510facc9c3771159745b3a57555",
+      "nodes": [
+        "v20.20.2",
+        "v22.23.1",
+        "v24.22.1"
+      ],
+      "result": "passed"
+    },
+    "normal": {
+      "tests": 10523,
+      "pass": 10523
+    },
+    "dependencyContracts": {
+      "tests": 7,
+      "pass": 7
+    }
+  },
+  "residualRisk": "If an application already hoists a different d3-array at its top level, npm nests the pinned copy under ggaction and the browser import map path may resolve the application's copy; Node resolution is unaffected."
+}

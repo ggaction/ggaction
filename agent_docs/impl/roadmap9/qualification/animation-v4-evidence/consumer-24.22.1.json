@@ -1,0 +1,61 @@
+{
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1246,
+    "packedBytes": 1794079,
+    "unpackedBytes": 8089773,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-animation-codec/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "ca7c8f57dab1be75806b587265df4510b1a64133",
+    "sha256": "be5e5ff8b92e547823952763604213794874ba86422fb1a4f8dfbfe55fef4dd0"
+  },
+  "node": "v24.22.1",
+  "directory": "/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-eQKR1R",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed"
+    },
+    {
+      "id": "public-v3-v4-native-offline-rebase",
+      "status": "passed"
+    },
+    {
+      "id": "types",
+      "status": "passed"
+    }
+  ],
+  "bundles": {
+    "ggaction": {
+      "gzipBytes": 784381,
+      "limit": 784400,
+      "status": "passed"
+    },
+    "ggaction/basic": {
+      "gzipBytes": 424715,
+      "limit": 424800,
+      "status": "passed"
+    },
+    "ggaction/svg": {
+      "gzipBytes": 24954,
+      "limit": 26000,
+      "status": "passed"
+    },
+    "ggaction/graph": {
+      "gzipBytes": 44851,
+      "limit": 46000,
+      "status": "passed"
+    },
+    "ggaction/animation": {
+      "gzipBytes": 339210,
+      "limit": 339300,
+      "status": "passed"
+    },
+    "ggaction/interaction": {
+      "gzipBytes": 135989,
+      "limit": 136000,
+      "status": "passed"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { mkdtemp, readFile, rm, readdir } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, readdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { copyDocumentationSupportFiles } from "../../../scripts/doc-snippets.js";
@@ -11,6 +11,11 @@ test("documentation support maps the canonical public entry while preserving exa
     await copyDocumentationSupportFiles({ supportFiles: { "program.js": "examples/font-assets/program.js", "fonts/korean.otf": "examples/font-assets/fonts/korean.otf" } }, directory);
     assert.equal(await readFile(path.join(directory, "program.js"), "utf8"), (await readFile(new URL("../../../examples/font-assets/program.js", import.meta.url), "utf8")).replace('from "../../src/index.js"', 'from "ggaction"'));
     assert.deepEqual(await readFile(path.join(directory, "fonts/korean.otf")), await readFile(new URL("../../../examples/font-assets/fonts/korean.otf", import.meta.url)));
+    await copyDocumentationSupportFiles({ supportFiles: { "comparison.js": "examples/geographic-marks/comparison.js" } }, directory);
+    assert.equal(await readFile(path.join(directory, "comparison.js"), "utf8"),
+      (await readFile(new URL("../../../examples/geographic-marks/comparison.js", import.meta.url), "utf8"))
+        .replace('from "../../src/index.js"', 'from "ggaction"')
+        .replace('from "../../src/inspection.js"', 'from "ggaction/inspection"'));
     await assert.rejects(copyDocumentationSupportFiles({ supportFiles: { "private.js": "examples/getting-started/program.js" } }, directory), /public installed package/);
   } finally { await rm(directory, { recursive: true, force: true }); }
 });
@@ -24,5 +29,51 @@ test("documentation support rejects path escapes before copying any support file
     }
     await copyDocumentationSupportFiles({}, directory);
     assert.deepEqual(await readdir(directory), []);
+  } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
+test("paired documentation HTML is explicit, same-section, bounded and hashed independently", async () => {
+  const { documentationCodeBlocks, documentationHtmlHost } = await import("../../../scripts/doc-snippets.js");
+  const options = { host: "paired-html", environment: "browser-module", rendering: "renders-canvas", mode: "complete" };
+  const blocks = documentationCodeBlocks('## Example\n```html\n<canvas id="real-host"></canvas>\n```\n```js\nconst program = chart();\n```');
+  const [html, script] = blocks;
+  const result = documentationHtmlHost(blocks, script, options);
+  assert.equal(result.html, '<canvas id="real-host"></canvas>');
+  assert.equal(result.htmlSha256, 'f167fc8ba6480bfc6525f2923d040fc873683ce9c7344efee26d55308e411ae4');
+  assert.deepEqual(documentationHtmlHost(blocks, script, {}), {});
+  for (const invalid of [{ ...options, host: "anything" }, { ...options, environment: "node-esm" },
+    { ...options, rendering: "authoring-only" }, { ...options, mode: "continuation" }]) {
+    assert.throws(() => documentationHtmlHost(blocks, script, invalid), /complete rendering browser/);
+  }
+  for (const invalid of [[], [script], [{ ...html, heading: "Other" }, script], [{ ...html, line: script.line + 1 }, script],
+    [html, { ...html }, script], [{ ...html, code: '<script>alert(1)</script>' }, script],
+    [{ ...html, code: 'x'.repeat(131073) }, script]]) {
+    assert.throws(() => documentationHtmlHost(invalid, script, options), /one bounded preceding HTML block/);
+  }
+  assert.notEqual(documentationHtmlHost([{ ...html, code: html.code + '\n' }, script], script, options).htmlSha256, result.htmlSha256);
+});
+
+test("Node documentation hosts execute their original worker example and validate semantic output", async () => {
+  const { documentationPrograms, documentationHtmlHost } = await import("../../../scripts/doc-snippets.js");
+  const { prepareTutorials, testTutorialConsumers } = await import("../../../scripts/tutorial-consumer.js");
+  const parent = new URL("../../../.artifacts/test/doc-host/", import.meta.url);
+  await mkdir(parent, { recursive: true });
+  const directory = await mkdtemp(new URL("node-", parent));
+  try {
+    const example = (await documentationPrograms()).find(value => value.id === "graph-inference-worker");
+    assert.equal(example.host, "node");
+    const prepared = await prepareTutorials(directory, { examples: [example] });
+    assert.deepEqual(prepared.inputs, {});
+    assert.equal(prepared.consumers.length, 1);
+    assert.equal(prepared.consumers[0].host, "node");
+    const evidenceFile = path.join(directory, "receipts.json");
+    await testTutorialConsumers(directory, { examples: [example], evidenceFile });
+    assert.equal(JSON.parse(await readFile(evidenceFile, "utf8"))[0].status, "passed");
+    const empty = { ...example, id: "empty-semantic-result", supportFiles: {}, code: "const program = { semanticSpec: { resources: [] }, graphicSpec: { objects: {} } };" };
+    await assert.rejects(testTutorialConsumers(directory, { examples: [empty], evidenceFile }), /Documentation consumers failed/);
+    assert.equal(JSON.parse(await readFile(evidenceFile, "utf8"))[0].status, "failed");
+    for (const invalid of [{ ...example, environment: "browser-module" }, { ...example, rendering: "renders-canvas" }, { ...example, resultKind: undefined }]) {
+      assert.throws(() => documentationHtmlHost([], {}, invalid), /semantic authoring Node/);
+    }
   } finally { await rm(directory, { recursive: true, force: true }); }
 });

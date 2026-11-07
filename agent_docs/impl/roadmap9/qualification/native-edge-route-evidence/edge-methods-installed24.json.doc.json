@@ -1,0 +1,11 @@
+[
+  {
+    "name": "tutorials-edge-routes--edge-route-analytical-comparison",
+    "id": "edge-route-analytical-comparison",
+    "file": "tutorials/edge-routes.md",
+    "sha256": "37511e8bdd17a1c88e7d6bcb6f776037421ca49c0da7d90134ae0d493be2ed31",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 739.2010420000006
+  }
+]

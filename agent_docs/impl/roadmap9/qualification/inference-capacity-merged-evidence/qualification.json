@@ -1,0 +1,184 @@
+{
+  "status": "existing-inference-capacity-forwarding-integrated; large-work-and-worker-pending",
+  "base": "2ab9e9f64",
+  "sourceRevision": "652b28df9248061a916a0297450746ff24bd2f70",
+  "incomingSource": "c48f89e9d",
+  "upstreamPin": "c9389b765324157bb1348d36f4e7dbd7fc38768b",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1239,
+    "packedBytes": 1777751,
+    "unpackedBytes": 8022770,
+    "file": "ggaction-4d722cae212b0a2cb7a304077bbb074e30c7ba4b6290ff7fad33bfd0ce554639.tgz",
+    "sha256": "4d722cae212b0a2cb7a304077bbb074e30c7ba4b6290ff7fad33bfd0ce554639"
+  },
+  "sourceInputEquality": {
+    "base": "90eb027cca2363514d1e78588b09c769cc811a59",
+    "incoming": "c9389b765",
+    "files": [
+      "src/grammar/graph/candidateSubset.js",
+      "src/grammar/graph/input.js",
+      "src/grammar/graph/neighbors.js",
+      "src/grammar/graph/preprocess.js",
+      "src/grammar/graph/search.js",
+      "src/grammar/graph/spanning.js",
+      "src/grammar/graph/structural.js",
+      "src/materialization/graph/candidate.js",
+      "src/materialization/graph/inferredResource.js",
+      "src/materialization/graph/inferredState.js"
+    ],
+    "different": []
+  },
+  "checks": {
+    "owning.log": 200,
+    "observed.log": 11,
+    "contracts.log": 48,
+    "docs.log": 241
+  },
+  "installedReuse": {
+    "reason": "Root canonical Node22 archive is byte-identical4d722cae to upstream. All10changed runtime modules, actual fixture2, stricttypefixture and executed publicsnippet match upstream inputs; repeat installation not claimed.",
+    "record": "../inference-capacity-evidence/installed-assessment.json",
+    "nodes": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "runtimeEach": 2,
+    "strictTypesEach": 1,
+    "docEach": 1,
+    "bundlesEach": 6,
+    "node20": "Actualruntime/types/docpassed; firstoldFullcapfailure preserved. Same6measurements reevaluated under minimal784100 cap; no new runtime execution claimed."
+  },
+  "coverageReuse": {
+    "record": "../inference-capacity-evidence/coverage.json",
+    "owners": 10,
+    "reason": "Exactsame changedsourcebytes; allcanonicalfloorspassed. Root actual200graph/route/inferred+11observed regressions passed."
+  },
+  "builtDocReuse": {
+    "record": "../inference-capacity-evidence/summary.json#docs",
+    "pages": 186,
+    "llmArtifacts": 1603,
+    "reason": "Same prose-only publiccapacity note and unchangedsiteUI; root all241docs regenerated andpassed. No newvisual supportclaim."
+  },
+  "initialFailure": {
+    "file": "pack20-initial.stderr",
+    "reason": "ActualNode20packed1780762 exceeded1780500; minimum1780800. Node24same1780762. Unpacked8022770cap8022800. CanonicalNode22archiveSHAunchanged."
+  },
+  "remaining": [
+    "Original10000nodes/k10/100000edges exactwork bound and dedicatedpublicworker",
+    "Point100k explicitcapacity and100k scene/animation admission, handle integration, originalall-sizeSLO/full100lifecycle",
+    "Actual577consumer/79groups, ninefinalcommands, independentreview andprotectedexactdelivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "contracts.log": {
+      "sha256": "932699007347bacb309593462007a01fdf0aad448edbd82ed2b0bfe897d54b6e",
+      "bytes": 9997
+    },
+    "docs.log": {
+      "sha256": "dcdc6462079036d412064d6c8e870007e4bdedd0615c2acd6a9981a9d1659360",
+      "bytes": 73423
+    },
+    "frozen.json": {
+      "sha256": "44d37b6c2067f8010c77f9d41c13cef45a2183c662afa286eae0332603e135f5",
+      "bytes": 436
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "observed.log": {
+      "sha256": "f1af0da00e38d151b7a2761201e1a5faf865c9cab3439e47c7ebbc9eb74756e0",
+      "bytes": 2803
+    },
+    "owning.log": {
+      "sha256": "6846b101e9bf52a251421fd6e0dc4f6823a42230aa7bcb8500cc40aee2c7caa0",
+      "bytes": 48966
+    },
+    "pack20-initial.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack20-initial.stderr": {
+      "sha256": "69598f711202adf091ba4a9dd3cfd9681d75951a9a5f66dff336ab86758dd142",
+      "bytes": 966
+    },
+    "pack20.json": {
+      "sha256": "7be1a072630b168765275de3b61949be42442d615a26836a4966556de98a055a",
+      "bytes": 390
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack22.json": {
+      "sha256": "997f63d822ea66dd3de789c2725e04aace30d1a73c5f5ea3aceef1dcb6e0d1e0",
+      "bytes": 390
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24.json": {
+      "sha256": "6b754a55cae61684a09cf24c758679e411056522e77df4aca8cddfe11a1ec019",
+      "bytes": 390
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "search.log": {
+      "sha256": "6eadafbe91cb6766c787ba78a1958acfdbccf42241bd1e1ee05a61bc12773574",
+      "bytes": 121
+    },
+    "source-files.json": {
+      "sha256": "f9b4c9eb733d04c97e86cecd0647175c47981efd3863f86a91f599a2b0ad9324",
+      "bytes": 535
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "4a1f9a6e24160c1e5a0c7582fc04afb82e96a215525ed31ec17f038fa2a1d3ae",
+      "bytes": 1813
+    },
+    "source-pin-pack.json": {
+      "sha256": "555898fb083617a49ce69011a7d1461cb9bdbc0159867ce739ca0c983de532b4",
+      "bytes": 395
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

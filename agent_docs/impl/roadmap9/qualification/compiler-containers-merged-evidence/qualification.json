@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-identical-source-and-archive-merge",
+  "base": "a3f385c69",
+  "upstreamSource": "ab8cb89b2a753fda5e819983db47d7376a97f39e",
+  "upstreamPin": "aa18606de9146c8cf508cf789948125011ea6ab0",
+  "upstreamQualification": "../compiler-containers-evidence/qualification.json",
+  "inputEquality": {
+    "against": "aa18606de9146c8cf508cf789948125011ea6ab0",
+    "paths": [
+      "src",
+      "types",
+      "knowledge",
+      "README.md",
+      "CHANGELOG.md",
+      "LICENSE",
+      "package.json",
+      "scripts",
+      "test",
+      "docs"
+    ],
+    "differentFiles": 0,
+    "rawEvidenceHashesVerified": 48,
+    "timing": "before root source pin regeneration"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1261,
+    "packedBytes": 1815075,
+    "unpackedBytes": 8176200,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71.tgz",
+    "sha256": "eb859122a14147185340769e3f9871a710d2de5066085f5d9a9efd694ec19d71"
+  },
+  "rootChecks": {
+    "compiler": 7,
+    "boundaries": 20,
+    "strictPackExactArchive": true
+  },
+  "reusedExactUpstream": {
+    "owning": 1344,
+    "render": 52,
+    "boundary": 13,
+    "docs": 18,
+    "installedNodes": [
+      20,
+      22,
+      24
+    ],
+    "browserDPR": [
+      1,
+      2
+    ],
+    "original100k": "source functional native/offline/rebase/work/wire; 19 source/declaration files canonically match archive; not a new installed100k execution",
+    "sampleMs": 872.561,
+    "performanceQualified": false,
+    "hundredCycleQualified": false
+  },
+  "evidence": {
+    "pack.json": {
+      "bytes": 389,
+      "sha256": "e5f6ef761d9820cd83e2c1fa57b5a155b65b4291253ff7818b1b3bb25540e79b"
+    },
+    "pack.stderr": {
+      "bytes": 208,
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    "boundaries.log": {
+      "bytes": 4115,
+      "sha256": "3fbd7b2b9bdb3d09836ea60677f06a15e24690bd6b687586335c85fec19416a7"
+    },
+    "compiler.log": {
+      "bytes": 1872,
+      "sha256": "55bf451fed7eb189673be59c369581dd02c462c452aaf65ffcd706e501a60bcd"
+    }
+  },
+  "sourceRevision": "b2d04857afcced31445d31192b0158226fa538be",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  },
+  "evidenceFiles": {
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "af5daf0f41ca66763dac96f939e6c9b4ba1c313a8ca68cbd93cd614648fc4416",
+      "bytes": 1815
+    },
+    "source-pin-pack.json": {
+      "sha256": "1b5b3ad33f22c538fa910405da071a86512cb6cb664497ab927ae99e1b8fc7ac",
+      "bytes": 396
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  }
+}

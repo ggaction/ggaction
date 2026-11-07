@@ -11,6 +11,7 @@ import { prepareProgramHitFrame, programHitOwnerPlacement } from "../../src/inte
 import { prepareConcreteHitShape } from "../../src/interaction/hitConcrete.js";
 import { createHitFrameBridge } from "../../src/interaction/hitFrame.js";
 import { hitShape } from "../../src/grammar/hitShapes.js";
+import { createInteractionSession } from "../../src/interaction.js";
 
 const pointProgram = (factory = chart) => factory().createCanvas({ width: 300, height: 200 })
   .createData({ id: "source", values: [{ id: "a", x: 1, y: 2 }, { id: "b", x: 2, y: 3 }], keyField: "id" })
@@ -32,6 +33,36 @@ test("actual Full and Basic points share scene identity and preserve exact final
     assert.equal(serializeProgram(p), before); assert.equal(p.trace.children.at(-1).op, "encodeY");
     assert.ok(Object.isFrozen(frame)); assert.ok(Object.isFrozen(frame.entries[0]));
   }
+});
+
+test("ten thousand native points retain every item and exact CSS hits within the original index budget", () => {
+  const count = 10000, side = 100;
+  const rows = Array.from({ length: count }, (_, id) => ({ id, x: (id % side + 1) / (side + 1), y: (Math.floor(id / side) + 1) / (side + 1) }));
+  const program = chart().createCanvas({ width: 400, height: 400, margin: 20, plotBorder: false })
+    .createData({ id: "rows", keyField: "id", values: rows }).createPointMark({ id: "points" })
+    .encodeX({ field: "x", scale: { id: "x", domain: [0, 1], nice: false } })
+    .encodeY({ field: "y", scale: { id: "y", domain: [0, 1], nice: false } });
+  const source = serializeProgram(program), input = JSON.stringify(rows), session = createInteractionSession({ program, bindings: [] });
+  const host = { addEventListener() {}, removeEventListener() {}, getBoundingClientRect: () => ({ left: 0, top: 0 }) };
+  try {
+    session.mount(host, { rootTransform: [1.5, 0, 0, 1.5, 7, 11] });
+    const nodes = session.getState().scene.nodes.filter(node => node.type === "circle");
+    assert.equal(nodes.length, count); assert.equal(session.getState().scene.nodes.length, count + 1);
+    nodes.forEach((node, i) => {
+      assert.ok(Math.abs(node.properties.x - (20 + 360 * rows[i].x)) < 1e-10);
+      assert.ok(Math.abs(node.properties.y - (380 - 360 * rows[i].y)) < 1e-10);
+      assert.equal(node.properties.radius, 3);
+    });
+    for (const id of [0, 5000, 9999]) {
+      const x = 20 + 360 * rows[id].x, y = 380 - 360 * rows[id].y;
+      session.dispatch({ type: "inspect", point: { x: x * 1.5 + 7, y: y * 1.5 + 11 }, slop: 0 });
+      const actual = session.getState().hit.candidates;
+      const expected = rows.flatMap((row, i) => Math.hypot(20 + 360 * row.x - x, 380 - 360 * row.y - y) <= 3 ? [i] : []).reverse();
+      assert.deepEqual(actual.map(item => item.rowKeys), expected.map(i => [program.semanticSpec.datasets[0].rowKeys[i]]));
+      assert.ok(actual.every(item => item.ownerId === "points" && item.role === "point"));
+    }
+    assert.equal(serializeProgram(program), source); assert.equal(JSON.stringify(rows), input);
+  } finally { session.destroy(); }
 });
 
 test("nested composition uses exact child path and local coordinates without double translation", () => {

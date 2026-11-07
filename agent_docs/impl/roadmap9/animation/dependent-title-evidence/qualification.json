@@ -1,0 +1,108 @@
+{
+  "sourceParent": "7f813a1ee",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Private fixed-label dependent title kernel; no public projection or new animation admission",
+  "shared4Changes": [],
+  "checks": {
+    "newTests": 8,
+    "focusedTests": 28,
+    "node20Tests": 18,
+    "node24Tests": 18,
+    "titleCoverage": {
+      "lines": 100,
+      "branches": 92.57,
+      "functions": 100
+    },
+    "labelCoverage": {
+      "lines": 98.51,
+      "branches": 95.06,
+      "functions": 100
+    },
+    "boundariesPolicyDocumentation": 16,
+    "finalPackageDocumentation": 10,
+    "node20Installed": {
+      "archive": "8f8599c40ceac3dc39e96fb8c880dd3f5833f6368f113f22100af5e1b59fe423",
+      "ids": [
+        "animation/axis-label-layout-offline-native",
+        "animation/guide-anchors-offline-native",
+        "animation/guides-offline-native"
+      ],
+      "status": "passed before bundle ceiling assertion",
+      "privateTitleModuleIsNotPublicConsumerEvidence": true,
+      "bundleEntries": 6,
+      "sameMeasurementsRechecked": true
+    },
+    "sourcePinnedDocumentation": 29,
+    "builtDocumentation": {
+      "pages": 186,
+      "llm": 1598
+    },
+    "browserReuse": {
+      "source": "7f813a1ee",
+      "reason": "Private calculation only; public guide browser inputs unchanged. Native title public output parity was verified at the pure clearance checkpoint."
+    }
+  },
+  "package": {
+    "entries": 1187,
+    "unpacked": 7686973,
+    "node20And24Packed": 1703774,
+    "node22Packed": 1699427,
+    "limits": {
+      "entries": 1187,
+      "packed": 1703800,
+      "unpacked": 7687000
+    }
+  },
+  "animationBundle": {
+    "node20Gzip": 281404,
+    "oldLimit": 281400,
+    "newLimit": 281500
+  },
+  "failuresPreserved": [
+    "First native fixture used applyTheme({name}) instead of theme; corrected public call.",
+    "First rotated policy fixture retained flush:true, forbidden by native contract; explicitly disabled flush.",
+    "Initial package ceiling lacked the one private owner. Node20/24 gzip differs from Node22; minimum maximum-based cap measured.",
+    "First installed harness omitted optional peer setup; reused canonical optional-peers helper.",
+    "Animation bundle exceeded old cap by4bytes; same six measurements rechecked with281500 cap."
+  ],
+  "sourceHashes": {
+    "src/materialization/animation/axisTitleState.js": "fd6e5d59c3bffdc428f4108b3a7dd9795406080f4eec4bddb69e72e2b4d6e336",
+    "src/materialization/animation/axisLabelState.js": "29ce2c94757d2682310eb5e68a2e6fe315ae2d9a5f50194d85da7c51af804e57",
+    "test/unit/animation/axis-title-layout-state.test.js": "ac4e201827563e75280bbc2f9c0af6cb02d9f68bbf52b688c5f8af24605ac8ec"
+  },
+  "rawLogsSha256": {
+    "dependent-title-all-bundles-final.log": "2a375794f70d7d5cae3eaea60dba3967092a1951c20379c72576d2519a857358",
+    "dependent-title-all-bundles-repair.log": "e2b1fc769b53ff456869908d38e0a095681983b10ad01b085a18a965c7d9c379",
+    "dependent-title-all-bundles.log": "0f37d62b1e826ffd9c9402a2f4604407144224b67ff4b27b8e04d362b40d73fa",
+    "dependent-title-boundaries.log": "50b296fcad317a2e815d914ef7b824e1eb90c3f21e08424b223ec98dbb78f3c9",
+    "dependent-title-bundle.log": "355db5daa179441ffd51aeb6d17b19917c05c743f63f54489a8a381559ee3576",
+    "dependent-title-cap-recheck.log": "d1b3f568ab64d059e3aab0b48265161e6e4e646fc51ef4fd11ddbb3f1c71fb1b",
+    "dependent-title-coverage-final.log": "c153439c99899b757b5398ad14475ca8d338148621d9d3b9dd4e1dc48f477183",
+    "dependent-title-coverage-first.log": "4a748d55b9525540642e7d3ccb579b77bd945b12f128b73e58a7153323edda64",
+    "dependent-title-coverage-second.log": "b986a3d25903bcbba782ac69af8c5c07fcbb9f496f383943f679e9bbb07942ff",
+    "dependent-title-final-contracts.log": "e87d94e65a5c4aba5d05a6e618be684541df6cdd24a29f555011c99b2caa3bfd",
+    "dependent-title-first.log": "cad3c83f1dc8b0527f6a322ef54be0a4221417fc6c1785dc6eef3d7e9e1bce88",
+    "dependent-title-node20.log": "b6879c94e10b21204a4a0f191211e2235f7682632f281abafe6d56b342c3f906",
+    "dependent-title-node24.log": "b4567f7fdc9af32b54b9c3e89a0fcdd164ad529d3517cfc1a6030c7c215734db",
+    "dependent-title-package-contracts.log": "3aa518120d04ded9f9c1fdfe5a3e1452d4ba0bc339bbc814562d1f01b512e82c",
+    "dependent-title-package-final.log": "99013fc47c299992ae888be6ef8d16cd3f8cb317b3f7b906177e2e7fe81b49a0",
+    "dependent-title-package-first.log": "e0fc867440ae31075c8e85ec7708e8bbec5f02241f25050f007affbc33db3855",
+    "dependent-title-package-measure.log": "21d28fedf43cfd30d6e5f9d46662197c9cba702e5b2890853530eaf1d641664d",
+    "dependent-title-package-node20.log": "874ae39ac1a114db88d62b7c18f47432ac94244c14203690cb4736144d3eb59d",
+    "dependent-title-package-node22.log": "c490779fd025ac75a4c9d8e493bfeb556a58365859dba25feba9a91a2c115e9c",
+    "dependent-title-package-node24.log": "874ae39ac1a114db88d62b7c18f47432ac94244c14203690cb4736144d3eb59d",
+    "dependent-title-pin.log": "b49fccc0e8217de9ba95b3f8062882e74b9c8dc530366c557e4b4bf9ae94fd84",
+    "dependent-title-pinned-docs.log": "51e73700d235f85fba680ecfa2a05a338c82c66ef09ecb48fddd178e9ae9cbaa",
+    "dependent-title-pinned-build.log": "7acce9b325c599e873f31e1867649b64cadc62dc11cef247c2f49fcc90fcc06d",
+    "dependent-title-built-check.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b"
+  },
+  "pending": [
+    "Public native title projection and shared guide wrapper wiring",
+    "Theme preferred-offset read-only projection",
+    "Dynamic label group integration with peer @8",
+    "Public plan/rebase/offline four-renderer and3Node installation of dependent titles",
+    "Inferred legend clearance and implicit lanes",
+    "Final combined timeline3 and STEP077 qualification"
+  ],
+  "sourceCommit": "0d91cfeb7"
+}

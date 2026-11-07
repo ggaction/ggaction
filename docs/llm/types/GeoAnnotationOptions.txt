@@ -1,0 +1,3 @@
+export interface GeoAnnotationOptions extends Omit<TextMarkOptions, "data" | "source" | "missing" | "text" | "inheritColor"> {
+  readonly coordinate?: string; readonly anchor: GeoAnnotationAnchor; readonly text: string;
+}

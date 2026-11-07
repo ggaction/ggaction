@@ -1,0 +1,976 @@
+{
+  "kind": "explicit animation format5 and native geographic capacity functional qualification",
+  "sourceRevision": "3be517aefed9019eda28d323c158bf699340bdc8",
+  "sourceState": "committed source; metadata-only pin verifies identical archive",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1260,
+    "packedBytes": 1811425,
+    "unpackedBytes": 8163107,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-format5/ggactionnewbrand/.artifacts/format5-resume/archive/ggaction-0.0.26.tgz",
+    "sha256": "762a402903f0cd58172683aa916b3af7b645f7327fb9ab41a35f3b0e5e3fd64c"
+  },
+  "sourceInputs": {
+    "src/animation/planner.js": "e240a9aa415ae79def9716f8ad1f58792a20fd56575a30dcd36fdef97b2a46ac",
+    "src/animation/geoTracks.js": "1953480c098e824a4521637668583d7a8211e6036359a358e4a84c34106e1591",
+    "src/grammar/animation/geoState.js": "921dad0fc1fa84a41f6c2a8877c0719bddc2525a9bd81220e4ae3bd023278570",
+    "src/materialization/animation/geoPresentation.js": "5ef1c5afa4cf39b87b116541b0a78922b9d2911b8033a82a94aa14d1dcfb8ea8",
+    "src/animation/columnCodec.js": "968674bb4fb632026de774dc07dc2797f2c99454de4bb731fe404f60e1c2508b",
+    "src/animation/numericColumns.js": "6db7cff74e73bd6b2a96aa08207d314f4896bce886ea1787935156d302dfcd5d",
+    "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+    "src/animation/frames.js": "d67006ab0deaaa48d43dc7f10d9b9eb59891cc094826886423e0b20a998f8cf7",
+    "src/animation/sample.js": "ec79aeac46d5ed7a787c89df28972acb1462e7546822d55d1ba5255941f8fa8a",
+    "src/grammar/geo/stream.js": "da1307c795183bf752c0ac5c2065aeee41986f677361ca6e7a8738ccbb8a331a",
+    "src/grammar/geo/capacity.js": "f9dea6d520ffdf9982c903b56299a2952802ec1baf79663ac730dfb2c2476b6f",
+    "src/grammar/geo/markGeometry.js": "2755410c1ce2e611ee810ebb468470b298b4ba91df23c55259715fe1c361952e",
+    "types/animation.d.ts": "264f37f74af70f162fce1486d18a4b95cae19d1f0337c360b9936c2955a90e98"
+  },
+  "originalFixtures": {
+    "node": "v24.22.1",
+    "pid": 47789,
+    "archive": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1260,
+      "packedBytes": 1811425,
+      "unpackedBytes": 8163107,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-format5/ggactionnewbrand/.artifacts/format5-resume/archive/ggaction-0.0.26.tgz",
+      "sha256": "762a402903f0cd58172683aa916b3af7b645f7327fb9ab41a35f3b0e5e3fd64c"
+    },
+    "kind": "original functional diagnostic, no P95 claim",
+    "cases": [
+      {
+        "count": 1000,
+        "start": "2026-11-02T10:01:00.075Z",
+        "phases": [
+          {
+            "id": "prepare",
+            "version": 5
+          },
+          {
+            "id": "native-coordinate",
+            "t": 0,
+            "commands": 1999,
+            "maxError": 1.7053025658242404e-13,
+            "hash": "2a723fb43565281fc12937139b5663d253e4d905b53caddb71d62f404c2f8e75"
+          },
+          {
+            "id": "native-coordinate",
+            "t": 50,
+            "commands": 1999,
+            "maxError": 2.8421709430404007e-13,
+            "hash": "1ed2a72f9a573542835851a79b54ee27011369cce9feea515fd90b1d3aab20c5"
+          },
+          {
+            "id": "native-coordinate",
+            "t": 100,
+            "commands": 1999,
+            "maxError": 3.410605131648481e-13,
+            "hash": "4b4067edbf8e5c3f3412e550fc5c1fa8fad43fb1c351337b96513bc2b43b9707"
+          },
+          {
+            "id": "offline-native",
+            "wholeFrames": true
+          },
+          {
+            "id": "rebase-coordinates",
+            "commands": 1999,
+            "maxError": 3.410605131648481e-13,
+            "hash": "4496593ce81ee8f951ea185b33fa3703ef3441e9ebee5c965ac2e002e0f1fd9e"
+          },
+          {
+            "id": "offline-rebase",
+            "wholeFrames": true
+          },
+          {
+            "id": "batch-four",
+            "frames": 4
+          }
+        ],
+        "rawHash": "8028f2da2e9bbbcd45e287854f20e66f240d98da6dd30f88cc3a9d0bc2898fe6",
+        "resources": {
+          "native": true,
+          "limits": {
+            "maxEndpointNodes": 10000,
+            "maxOutputNodes": 10000
+          },
+          "maximumWork": {
+            "Animation preparation work": 51054
+          }
+        },
+        "columns": {
+          "logicalValues": 22254,
+          "descriptorVisits": 22253,
+          "cellVisits": 22010,
+          "storageCells": 9998,
+          "interningWork": 72164,
+          "internNodes": 92,
+          "uniqueLowerBound": {
+            "physicalValues": 74,
+            "encodedValues": 202,
+            "bytes": 107635
+          },
+          "physicalValues": 1090,
+          "encodedValues": 2940,
+          "bytes": 122398,
+          "validatedLogicalValues": 22254
+        },
+        "singleSampleWork": 18916,
+        "nativeBytes": 122334,
+        "rebaseBytes": 126110,
+        "status": "passed"
+      },
+      {
+        "count": 10000,
+        "start": "2026-11-02T10:01:01.420Z",
+        "phases": [
+          {
+            "id": "prepare",
+            "version": 5
+          },
+          {
+            "id": "native-coordinate",
+            "t": 0,
+            "commands": 19999,
+            "maxError": 1.4210854715202004e-13,
+            "hash": "de588f3b1b32c7f3adb9a7d3f00102a145761fdfda940295216fd273276b5737"
+          },
+          {
+            "id": "native-coordinate",
+            "t": 50,
+            "commands": 19999,
+            "maxError": 2.2737367544323206e-13,
+            "hash": "de22bcea16d8d8abdac94dee24dd2ce98ac7c3019d7d69e87d461b3dd1d31952"
+          },
+          {
+            "id": "native-coordinate",
+            "t": 100,
+            "commands": 19999,
+            "maxError": 2.8421709430404007e-13,
+            "hash": "ec5dc74b17eb2ca9c401141f7c24fff4968a9d424171209a84110409182b7931"
+          },
+          {
+            "id": "offline-native",
+            "wholeFrames": true
+          },
+          {
+            "id": "rebase-coordinates",
+            "commands": 19999,
+            "maxError": 2.2737367544323206e-13,
+            "hash": "0484139b021ec2d87317f54b20d6674655bc22da831ee34f003d3cf73979e1e1"
+          },
+          {
+            "id": "offline-rebase",
+            "wholeFrames": true
+          },
+          {
+            "id": "batch-four",
+            "frames": 4
+          }
+        ],
+        "rawHash": "eedbb01f96fbfa4448a4ebf9bf5398a660b990c042e05ebfea957b07b3a986cc",
+        "resources": {
+          "native": true,
+          "limits": {
+            "maxEndpointNodes": 10000,
+            "maxOutputNodes": 10000
+          },
+          "maximumWork": {
+            "Animation preparation work": 539052
+          }
+        },
+        "columns": {
+          "logicalValues": 220254,
+          "descriptorVisits": 220253,
+          "cellVisits": 220010,
+          "storageCells": 99998,
+          "interningWork": 720164,
+          "internNodes": 92,
+          "uniqueLowerBound": {
+            "physicalValues": 74,
+            "encodedValues": 202,
+            "bytes": 1067641
+          },
+          "physicalValues": 1090,
+          "encodedValues": 2940,
+          "bytes": 1082410,
+          "validatedLogicalValues": 220254
+        },
+        "singleSampleWork": 198916,
+        "nativeBytes": 1082346,
+        "rebaseBytes": 1086122,
+        "status": "passed"
+      },
+      {
+        "count": 100000,
+        "start": "2026-11-02T10:01:14.326Z",
+        "phases": [
+          {
+            "id": "prepare",
+            "version": 5
+          },
+          {
+            "id": "native-coordinate",
+            "t": 0,
+            "commands": 199999,
+            "maxError": 1.9895196601282805e-13,
+            "hash": "24153eb87f7c2ef17e06f95497ce4519ea67c8ff2e240bfc6f4b21c5d675620c"
+          },
+          {
+            "id": "native-coordinate",
+            "t": 50,
+            "commands": 199999,
+            "maxError": 3.410605131648481e-13,
+            "hash": "20c52d3ececdc9b884b0c1a78fa7b1d95b698f24bfeec060f36d7c2f589f68c4"
+          },
+          {
+            "id": "native-coordinate",
+            "t": 100,
+            "commands": 199999,
+            "maxError": 3.979039320256561e-13,
+            "hash": "c221021bb74a8a273b7bf304ebfc1b1a51322024d7e672878a7987f977b0af42"
+          },
+          {
+            "id": "offline-native",
+            "wholeFrames": true
+          },
+          {
+            "id": "rebase-coordinates",
+            "commands": 199999,
+            "maxError": 3.410605131648481e-13,
+            "hash": "67d78fe6987c9337196b06774a3234aa2a4f2338802f28f521877d97e21a7f09"
+          },
+          {
+            "id": "offline-rebase",
+            "wholeFrames": true
+          },
+          {
+            "id": "batch-four",
+            "frames": 4
+          },
+          {
+            "id": "batch-five-original-limit",
+            "rejected": true
+          }
+        ],
+        "rawHash": "3abb4487631f9099de7725acc9bf1fec159d3c6807f5abeba6e583ef3d5d5079",
+        "resources": {
+          "native": true,
+          "limits": {
+            "maxEndpointNodes": 10000,
+            "maxOutputNodes": 10000
+          },
+          "maximumWork": {
+            "Animation preparation work": 5779050
+          }
+        },
+        "columns": {
+          "logicalValues": 2200254,
+          "descriptorVisits": 2200253,
+          "cellVisits": 2200010,
+          "storageCells": 999998,
+          "interningWork": 7200164,
+          "internNodes": 92,
+          "uniqueLowerBound": {
+            "physicalValues": 74,
+            "encodedValues": 202,
+            "bytes": 10667647
+          },
+          "physicalValues": 1090,
+          "encodedValues": 2940,
+          "bytes": 10682422,
+          "validatedLogicalValues": 2200254
+        },
+        "singleSampleWork": 2088916,
+        "nativeBytes": 10682358,
+        "rebaseBytes": 10686134,
+        "status": "passed"
+      }
+    ]
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "status": "passed",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-numeric-format",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 788787,
+          "limit": 788800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 426195,
+          "limit": 426200,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25672,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69506,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 342693,
+          "limit": 342800,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137407,
+          "limit": 137500,
+          "status": "passed"
+        }
+      }
+    },
+    "22": {
+      "node": "v22.23.1",
+      "status": "passed",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-numeric-format",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 787383,
+          "limit": 788800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 425148,
+          "limit": 426200,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25558,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69341,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 341498,
+          "limit": 342800,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 136875,
+          "limit": 137500,
+          "status": "passed"
+        }
+      }
+    },
+    "24": {
+      "node": "v24.22.1",
+      "status": "passed",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-numeric-format",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 788787,
+          "limit": 788800,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 426195,
+          "limit": 426200,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25672,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69506,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 342693,
+          "limit": 342800,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137407,
+          "limit": 137500,
+          "status": "passed"
+        }
+      }
+    }
+  },
+  "browser": {
+    "archiveSHA256": "762a402903f0cd58172683aa916b3af7b645f7327fb9ab41a35f3b0e5e3fd64c",
+    "sourceRootInputs": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "versions": [
+      3,
+      4,
+      5
+    ],
+    "status": "passed"
+  },
+  "checks": {
+    "owning-final.log": 810,
+    "multiple-groups.log": 1,
+    "contracts-first.log": 37,
+    "artifact-contracts.log": 10,
+    "manifest-final.log": 1,
+    "docs-fixed.log": 247,
+    "render.log": 52,
+    "docs-final-contracts.log": 9,
+    "budget-documentation.log": 3
+  },
+  "critical": {
+    "planner.js": [
+      100,
+      94.47,
+      100
+    ],
+    "geoTracks.js": [
+      100,
+      100,
+      100
+    ],
+    "geoState.js": [
+      100,
+      97.96,
+      100
+    ],
+    "geoPresentation.js": [
+      100,
+      95.29,
+      100
+    ]
+  },
+  "package": {
+    "20": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1260,
+      "packedBytes": 1814701,
+      "unpackedBytes": 8163107,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-format5/ggactionnewbrand/.artifacts/format5-resume/pack20/ggaction-0.0.26.tgz",
+      "sha256": "ca95cbe9983ba81b700a98e338768e33646c837ec4ad086e15dda5cf56f87d82"
+    },
+    "24": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1260,
+      "packedBytes": 1814701,
+      "unpackedBytes": 8163107,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-geo-animation-format5/ggactionnewbrand/.artifacts/format5-resume/pack24/ggaction-0.0.26.tgz",
+      "sha256": "ca95cbe9983ba81b700a98e338768e33646c837ec4ad086e15dda5cf56f87d82"
+    }
+  },
+  "caps": {
+    "entries": 1260,
+    "packedBytes": 1814800,
+    "unpackedBytes": 8163200,
+    "animationGzip": 342700,
+    "searchBytes": 1096500
+  },
+  "remaining": [
+    "Common sampler Canvas 50ms/P95 and retained 100-cycle final qualification",
+    "Geo hit/query capacity remains separate",
+    "Final roadmap integration and protected release are not closed"
+  ],
+  "evidenceFiles": {
+    "artifact-contracts.log": {
+      "sha256": "7f140b762719fddc9a26d2feb8d5c097a0988f796344ee4404bde88d5bd924e1",
+      "bytes": 2357
+    },
+    "capacity-boundaries-first.log": {
+      "sha256": "83ef349ebde6cea4449cae3d34d96a1089ddeeed674e287024dd31b806267faa",
+      "bytes": 3484678
+    },
+    "docs-built.log": {
+      "sha256": "870bce70acc90ff20afe8b62fe05fe460070fbe831ed46e0745147e8047a92a8",
+      "bytes": 102
+    },
+    "archive.json": {
+      "sha256": "437d8ed0a983a084adfe0c38a2bb4d99480e5ad924d467af514536b8d6fc0bfd",
+      "bytes": 390
+    },
+    "large.log": {
+      "sha256": "9e392e6401c1601071f0156f65957785c02a72ec6cf6ea23ef809c10db56a0ac",
+      "bytes": 3082
+    },
+    "capacity-boundaries-fixed.log": {
+      "sha256": "d60ff45c37ffec131f984bc91977110ede82827f21312cc8df23efece845e176",
+      "bytes": 1157
+    },
+    "browser-source.log": {
+      "sha256": "200144d9b6436f74021936529e388f086de953d4b1baf28f87e507f6296df7f1",
+      "bytes": 364
+    },
+    "docs-final-contracts.log": {
+      "sha256": "0651e38bec169070e3000d7f4851b590358b533045d4a92e5fef2a41bbeed055",
+      "bytes": 1813
+    },
+    "render.log": {
+      "sha256": "d36f5aa764a7a77cdb8c39e393d6d269e44d68174671d9715523ffde59081091",
+      "bytes": 12474
+    },
+    "followup-installed-missing-peers.json": {
+      "sha256": "27940b098f945994037c99b2ab641613779351ac4badb9b010d926863ae48e13",
+      "bytes": 269
+    },
+    "large.json": {
+      "sha256": "6a4ebd2f033e22f0eb95f0e434a1b58a09ba5cf97d237e3cc3e7c946924fccb0",
+      "bytes": 7435
+    },
+    "installed20-final.log": {
+      "sha256": "cf0dbff53d2b688153b96426c3e6cea40456a704dada559e4725c41a776f40c8",
+      "bytes": 1588
+    },
+    "docs-final-generation.log": {
+      "sha256": "4b6bcf79b8d7c80c0d7976c40af2ecc0457b5792bd114ba0e84d609c15ec6eea",
+      "bytes": 73
+    },
+    "docs-build-final.log": {
+      "sha256": "46877154cce16b822c425d27b0c5abf394630672d4842d159455e9dc8f606b0e",
+      "bytes": 420
+    },
+    "pack20-final.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "docs-build.log": {
+      "sha256": "5aac8b832c0dc99357a1820af7e93475c0b812ed972e7bdb27d58f0835ed4efa",
+      "bytes": 420
+    },
+    "docs-generation-fixed.log": {
+      "sha256": "4b6bcf79b8d7c80c0d7976c40af2ecc0457b5792bd114ba0e84d609c15ec6eea",
+      "bytes": 73
+    },
+    "archive-final.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "numeric-final.log": {
+      "sha256": "44bdad842de1669faecef6a9f6d85ae5bf5f857c255c47d9abdfea00ddfde3ee",
+      "bytes": 1379
+    },
+    "pack20.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24-one-byte-first.log": {
+      "sha256": "568a8b74616fdf528c4cb05868c8848910e1752da47713e18340b592a1f008b4",
+      "bytes": 1006
+    },
+    "large-final.log": {
+      "sha256": "af181683d788daaadf681624b5020b530f1ecba367a40db6c7f6b1bcc961d6cb",
+      "bytes": 4429
+    },
+    "installed20.json": {
+      "sha256": "a43c47a3767c72a36321a8812f24a621808dbc3a63840c17ce7db32b93fac4e7",
+      "bytes": 2185
+    },
+    "followup-installed.json": {
+      "sha256": "69869c36879f62f97097b7ca5033fc0c61b14d06cbebd8233e9b7dad0b2c7cff",
+      "bytes": 1027
+    },
+    "browser-installed.json": {
+      "sha256": "f1ac14b21ddf0ed64fb3547fb4002d8f238449503a9bdbcb3eb59c8bbe472e87",
+      "bytes": 207
+    },
+    "first-legacy.log": {
+      "sha256": "29fd9d30d153c74b974091ba67e8271270e0843d781c190684c396ecd4263fd4",
+      "bytes": 14081
+    },
+    "large.mjs": {
+      "sha256": "bbffe2aefc53198d6d3c4bad68a7d1bdc1f5b47835a89109b34fc560e44d5fae",
+      "bytes": 5069
+    },
+    "pack24.json": {
+      "sha256": "224c3b154d081970362bd4f023ed0d0d0c2ac869926e4e0786a01bea8abec039",
+      "bytes": 389
+    },
+    "docs-generation.log": {
+      "sha256": "4b6bcf79b8d7c80c0d7976c40af2ecc0457b5792bd114ba0e84d609c15ec6eea",
+      "bytes": 73
+    },
+    "edit.py": {
+      "sha256": "d7bf89e58c7ee0f397533daf0c0f359bbd4d03d12a42be13cdfb95f6832b372c",
+      "bytes": 9193
+    },
+    "multiple-groups.log": {
+      "sha256": "b1482034e06824b6e09147cc6ebbaea61aa4cea80c97e9efbd5dafbf354ae050",
+      "bytes": 380
+    },
+    "docs.log": {
+      "sha256": "1163e8cdf0853dcac3e49c64d90bcea7e95dcac0a1008adffd51c7a52041afa0",
+      "bytes": 78374
+    },
+    "owning-final.log": {
+      "sha256": "c12d309b10ff79abc7092429b87e934e4827283c02fd4e5da8859b4a5f8b3d78",
+      "bytes": 194837
+    },
+    "pack24.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24-final.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "budget-documentation.log": {
+      "sha256": "21898b2c4ada07f8876b88a16f3362498f2ab890587c8805557ed3aa06f13f52",
+      "bytes": 758
+    },
+    "owning-coverage-fixed.log": {
+      "sha256": "819c0cc656fdc7c4e2d9d9537bc73aae36966aff766d8e4e438ad40da5b68b43",
+      "bytes": 187243
+    },
+    "installed22.json": {
+      "sha256": "c9bcc3a4a31d325418117bb924cb6ba5b0eacba1daa51f9a064007f19be1c648",
+      "bytes": 2185
+    },
+    "owning-coverage-first.log": {
+      "sha256": "1204fecaa94514985205f317a5aed3c017c6a9e0fd3374011e43a0c2b3990dba",
+      "bytes": 3670810
+    },
+    "followup-installed.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "prepack.mjs": {
+      "sha256": "a54af6555037cc72ea27bbd6d5387de3630bc844c24b8fe5d3cfbbec3742c412",
+      "bytes": 1189
+    },
+    "installed22-final.log": {
+      "sha256": "1e8543319596ea074a2384b4d529101784d10b33c77920561ca9d7d5fc5f2101",
+      "bytes": 1588
+    },
+    "browser-installed.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "private-boundaries.log": {
+      "sha256": "dcf2215591a59ca4525687e3ca6be08bca36b726bdcf0c10adb7764ef10f6298",
+      "bytes": 4558
+    },
+    "record.py": {
+      "sha256": "e8884de25f0f5c21b8283dc08041fe1c4a42e419d3e7b3b6e77a580cfd1ecffb",
+      "bytes": 4073
+    },
+    "manifest.log": {
+      "sha256": "6ffaed81335da008e6c6d7b0a79da0d296902e0bba44d9619860880db06f8165",
+      "bytes": 320
+    },
+    "installed24-final.log": {
+      "sha256": "c7dc91822a003b6b8e1e9f675bc3a551271f868a5cf43528d8f5ca739ed33963",
+      "bytes": 1588
+    },
+    "private-owning.log": {
+      "sha256": "48b7fa29c97b3aa2826c442e55cd2d5cb2f2ab86518fa89b2eb0e9de73e3273a",
+      "bytes": 13783
+    },
+    "families.log": {
+      "sha256": "8fc37a19b22e7d8ca2f7160f0e99db8a20aa98aca20610a015ff8a751194b451",
+      "bytes": 8536
+    },
+    "pack20.json": {
+      "sha256": "94f2aa92b2c672763bf9957d4b7008b1e8406fe7e469332344567d9894b0efbe",
+      "bytes": 389
+    },
+    "format-fixed.log": {
+      "sha256": "45778336ddd49eaa5e06dba0a53cac7c5217b24752921db1f2ab6cbd1c18cb1b",
+      "bytes": 893
+    },
+    "installed22.log": {
+      "sha256": "00cedfca03ee6de0719a2c2c4f134713fc7c198e2d549c199897afa20119c952",
+      "bytes": 1532
+    },
+    "prepack.log": {
+      "sha256": "8942fcef9181184c4e4ebb215849a04dd3451b322ef1193335fad350fd1643bc",
+      "bytes": 509
+    },
+    "format-first.log": {
+      "sha256": "aa2160e25427c690186545aa10a129b1877dbe5a3f5cdd5f998f1f9773a910da",
+      "bytes": 1581
+    },
+    "docs-built-final.log": {
+      "sha256": "870bce70acc90ff20afe8b62fe05fe460070fbe831ed46e0745147e8047a92a8",
+      "bytes": 102
+    },
+    "followup-installed-missing-peers.log": {
+      "sha256": "50d0d356efc0fd407d6e0494b6e68e9e8feed73705f222baa2099737775df9ce",
+      "bytes": 3928
+    },
+    "legacy-fixed.log": {
+      "sha256": "e7f78672283f51ea1fa92d5b7912cf7513f2cc231cabbd933acb49f0ff097003",
+      "bytes": 3561
+    },
+    "prepack-final.log": {
+      "sha256": "fccde21fcbf96f89ed66f3bdbd0344b38d31d29cf09eb79865116c92ce8b40ae",
+      "bytes": 515
+    },
+    "contracts-first.log": {
+      "sha256": "90f5ef70fee6abb73460ff845382a7a59d79bf2eeed2f9a35894e9f4f3265c6c",
+      "bytes": 7261
+    },
+    "pack20-first.log": {
+      "sha256": "ed66e2057258bb8607504f95a1eafe718788a1612098f67577cfc573967e1064",
+      "bytes": 1006
+    },
+    "installed24.json": {
+      "sha256": "ae271fc685c0ace6316b6f010edb00313c9209bbd00d3fec7cd59f72069319f0",
+      "bytes": 2185
+    },
+    "installed20.log": {
+      "sha256": "af5f14e00bedd5c2c26bcd749703ec546526d71ef08a70cceb7e3da79ddc63ef",
+      "bytes": 2038
+    },
+    "browser-installed-final.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "installed24.log": {
+      "sha256": "c9a6334b8b8809ef2357b6ff58f6cc08dae7583c11a9ff61b2a28333c05607cd",
+      "bytes": 1532
+    },
+    "pack20-one-byte-first.log": {
+      "sha256": "329cb599365f0f3c14b079d88980cdba6fb3a82eafb6402c7e7a437f9b19272f",
+      "bytes": 1006
+    },
+    "docs-fixed.log": {
+      "sha256": "f77ada6e4d604e99937ed72f43c225d5f882f6640114da3ab5b186660cd25020",
+      "bytes": 75041
+    },
+    "manifest-final.log": {
+      "sha256": "2dc00b5a088753acd82de0f8bca618be6aa8ecb855f44df1af13ea39cbf22d17",
+      "bytes": 319
+    },
+    "archive.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "browser-installed.mjs": {
+      "sha256": "9b7913150017a687aeb03b5cf073135c3407f5da6f9ad871e43b95c04d3b1a92",
+      "bytes": 831
+    },
+    "first-pass/archive.json": {
+      "sha256": "c3f9e7036efd32cf2dbc878052f958eca52ff6284875ef4984d784d2fbec349f",
+      "bytes": 390
+    },
+    "first-pass/large.log": {
+      "sha256": "9e392e6401c1601071f0156f65957785c02a72ec6cf6ea23ef809c10db56a0ac",
+      "bytes": 3082
+    },
+    "first-pass/large.json": {
+      "sha256": "a34e2f0815ba4783aa9ed51a243d9385bd94e98fdd87fd19807e6e655737ed1a",
+      "bytes": 5281
+    },
+    "first-pass/installed20.json": {
+      "sha256": "1bdb4c19d92ff6c2d77d9d92157aacccf8a9b742fc0e57ba3e44dbe100bd0429",
+      "bytes": 2118
+    },
+    "first-pass/followup-installed.json": {
+      "sha256": "69869c36879f62f97097b7ca5033fc0c61b14d06cbebd8233e9b7dad0b2c7cff",
+      "bytes": 1027
+    },
+    "first-pass/browser-installed.json": {
+      "sha256": "aa8b4f4ac94da6ba53e2df6982436f04664b8a3dc391db808ff43d8a23d3a252",
+      "bytes": 207
+    },
+    "first-pass/installed22.json": {
+      "sha256": "034e6abd92f0eb688b3dade83faab80184e30078032978eb528427d1f83d0d19",
+      "bytes": 2103
+    },
+    "first-pass/installed24.json": {
+      "sha256": "8111b863f6ce42c7593ef76005a7f8a1ea61ffdd0fa7ac5602e68dfa60ecafbb",
+      "bytes": 2103
+    },
+    "format5-installed.mjs": {
+      "sha256": "8282d5a9f3788267b1bcf9bc57896817c7ddd21afb0b961f9f445eb6e8b8bd38",
+      "bytes": 2878
+    },
+    "format5-followup-installed.mjs": {
+      "sha256": "5825a0260e5710f0469f33589b92be9bbb33dcc038eb02b2a3593dc70db88303",
+      "bytes": 1678
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "3982205df65f821b10cb746dc7b80e3cba0fb24a16a9402c62bc9529e8e2c253",
+      "bytes": 1808
+    },
+    "source-pin-pack.json": {
+      "sha256": "388a3cfae8e1aa0bc81dcc32bd8f5262a0a6b1291315d27d457aa3cfbe6285ff",
+      "bytes": 394
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

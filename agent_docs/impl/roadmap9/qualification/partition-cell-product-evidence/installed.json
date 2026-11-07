@@ -1,0 +1,203 @@
+{
+  "archiveSHA256": "bb78b18bdda0f13451c84e469b6c42609a27898c6f297194427c4f1b853fab48",
+  "directory": "/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-bSUKjB",
+  "records": [
+    {
+      "binary": "/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node",
+      "file": "runtime.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node",
+      "file": "bundles.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node",
+      "file": "animation.mts",
+      "status": "passed"
+    },
+    {
+      "binary": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+      "file": "runtime.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+      "file": "bundles.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+      "file": "animation.mts",
+      "status": "passed"
+    },
+    {
+      "binary": "/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "file": "runtime.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "file": "bundles.mjs",
+      "status": "passed"
+    },
+    {
+      "binary": "/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "file": "animation.mts",
+      "status": "passed"
+    },
+    {
+      "file": "tutorials/partition.md",
+      "status": "passed"
+    },
+    {
+      "browser": "source-free installed artifact Canvas/SVG",
+      "dpr": [
+        1,
+        2
+      ],
+      "currentAndRebased": true,
+      "status": "passed",
+      "execution": "separate command after realpath and virtual stdin provenance harness repair"
+    },
+    {
+      "file": "retention.mjs",
+      "status": "passed",
+      "execution": "separate command, same installed archive"
+    }
+  ],
+  "bundles20": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1074,
+      "minifiedBytes": 2764176,
+      "gzipBytes": 793317
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 627,
+      "minifiedBytes": 1453146,
+      "gzipBytes": 426399
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 45,
+      "minifiedBytes": 76627,
+      "gzipBytes": 25672
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 216,
+      "minifiedBytes": 437504,
+      "gzipBytes": 140166
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 123,
+      "minifiedBytes": 248196,
+      "gzipBytes": 74464
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 514,
+      "minifiedBytes": 1146979,
+      "gzipBytes": 343976
+    }
+  ],
+  "bundles22": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1074,
+      "minifiedBytes": 2764176,
+      "gzipBytes": 792007
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 627,
+      "minifiedBytes": 1453146,
+      "gzipBytes": 425368
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 45,
+      "minifiedBytes": 76627,
+      "gzipBytes": 25558
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 216,
+      "minifiedBytes": 437504,
+      "gzipBytes": 139505
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 123,
+      "minifiedBytes": 248196,
+      "gzipBytes": 74218
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 514,
+      "minifiedBytes": 1146979,
+      "gzipBytes": 342776
+    }
+  ],
+  "bundles24": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1074,
+      "minifiedBytes": 2764176,
+      "gzipBytes": 793317
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 627,
+      "minifiedBytes": 1453146,
+      "gzipBytes": 426399
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 45,
+      "minifiedBytes": 76627,
+      "gzipBytes": 25672
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 216,
+      "minifiedBytes": 437504,
+      "gzipBytes": 140166
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 123,
+      "minifiedBytes": 248196,
+      "gzipBytes": 74464
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 514,
+      "minifiedBytes": 1146979,
+      "gzipBytes": 343976
+    }
+  ],
+  "status": "passed"
+}

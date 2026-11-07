@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "packageVersion": "0.0.26",
+  "packageVersion": "0.0.27",
   "constraints": [
     {
       "id": "program.canvas",
@@ -899,7 +899,7 @@
         "geo projection",
         "choropleth"
       ],
-      "unsupported": "Geographic projections and map marks are outside the current ggaction contract."
+      "unsupported": "The task resolver does not plan geographic maps. Build them with createGeometryData, createProjection and the Geo marks; see /api/geometry/."
     },
     {
       "id": "unsupported.animation",
@@ -911,7 +911,7 @@
         "animation",
         "transitions"
       ],
-      "unsupported": "Animation is outside the current static-chart contract."
+      "unsupported": "The task resolver does not plan animation. Animate between programs with ggaction/animation or ggaction/live; see /api/animation/."
     },
     {
       "id": "unsupported.interaction",
@@ -929,7 +929,7 @@
         "interactive chart",
         "event handling"
       ],
-      "unsupported": "Interactive runtime behaviors are outside the current static-chart contract."
+      "unsupported": "The task resolver does not plan interactive behavior. Use ggaction/live or ggaction/interaction; see /api/live/ and /api/interaction/."
     },
     {
       "id": "unsupported.3d",

@@ -1,0 +1,111 @@
+{
+  "node": "v22.23.1",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/animation-archives/ggaction-implicit-lane-eeba10c7b58f9b4c7ec96f37c3503208e4ae1d58235c43b3897c393f857ad0f4.tgz",
+  "sha256": "eeba10c7b58f9b4c7ec96f37c3503208e4ae1d58235c43b3897c393f857ad0f4",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2511.1602919999996
+    },
+    {
+      "id": "six-native-lane-guide-cases",
+      "status": "passed",
+      "durationMs": 7070.774958
+    },
+    {
+      "id": "animation-strict-types",
+      "status": "passed",
+      "durationMs": 186.1052090000012
+    },
+    {
+      "id": "native-guide-doc-example",
+      "status": "passed",
+      "durationMs": 408.14729200000147
+    },
+    {
+      "id": "ggaction",
+      "status": "passed",
+      "durationMs": 2350.846707999999,
+      "value": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 1036,
+        "minifiedBytes": 2704908,
+        "gzipBytes": 773497
+      }
+    },
+    {
+      "id": "ggaction/basic",
+      "status": "passed",
+      "durationMs": 1246.2735420000008,
+      "value": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 620,
+        "minifiedBytes": 1443885,
+        "gzipBytes": 422462
+      }
+    },
+    {
+      "id": "ggaction/svg",
+      "status": "passed",
+      "durationMs": 67.1182919999992,
+      "value": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 44,
+        "minifiedBytes": 73991,
+        "gzipBytes": 24779
+      }
+    },
+    {
+      "id": "ggaction/graph",
+      "status": "passed",
+      "durationMs": 185.67408299999988,
+      "value": {
+        "specifier": "ggaction/graph",
+        "chunks": 1,
+        "modules": 85,
+        "minifiedBytes": 147084,
+        "gzipBytes": 43923
+      }
+    },
+    {
+      "id": "ggaction/animation",
+      "status": "passed",
+      "durationMs": 866.3629999999994,
+      "value": {
+        "specifier": "ggaction/animation",
+        "chunks": 1,
+        "modules": 458,
+        "minifiedBytes": 973326,
+        "gzipBytes": 291923
+      }
+    },
+    {
+      "id": "ggaction/interaction",
+      "status": "passed",
+      "durationMs": 417.3624999999993,
+      "value": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 190,
+        "minifiedBytes": 384230,
+        "gzipBytes": 123066
+      }
+    }
+  ],
+  "limitFailures": [
+    {
+      "specifier": "ggaction/animation",
+      "actual": 291923,
+      "limit": 285800
+    }
+  ],
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "status": "bundle-limit-failed"
+}

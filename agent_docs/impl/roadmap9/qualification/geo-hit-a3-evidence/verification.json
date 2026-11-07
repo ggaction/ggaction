@@ -1,0 +1,59 @@
+{
+  "status": "verified-product-checkpoint; original-large-rebase-and-performance-open",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1262,
+    "packedBytes": 1822232,
+    "unpackedBytes": 8190547,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-geo-hit-a3/ggactionnewbrand/.artifacts/geo-hit-a3/archive-raw/ggaction-0.0.26.tgz",
+    "sha256": "bbb592a75661d3b9cdc09440ab4da304600933ca347e37fe03746b717b8f9680"
+  },
+  "sourceSHA256": {
+    "src/grammar/hitPolicy.js": "be7191005fee303d0b5ef30a4b63b84690e40f0eee71f5fb860111aff6f3f77e",
+    "src/grammar/hitStroke.js": "f794d38334f679c363623f37e7b939ff5da189a8db4365cec1427fd6349e2c31",
+    "src/grammar/hitShapes.js": "a331472afd0f034648cc1017eb4dd4be9a30b6db6386f3eb0a221caf0d427803",
+    "src/grammar/hitPartIndex.js": "fb8deea7a446adea041d97c88d2a619506e00626db0c50120b723fd4937e497f",
+    "src/grammar/hitClipDistance.js": "3f1b45e40b0c3c7e67fd20100ae3825b83e443e94088afd931a86ef05487fc91",
+    "src/grammar/hitIndex.js": "c00cd8d4c938882ea84dcc1cea856d864dd9eacb0a190dc7e866b1e4752d610b",
+    "src/interaction/hitConcrete.js": "438bb42e67ef7554e102cc0b2e9afb5f3438d75256b22a70791d33f4e467e87d",
+    "src/interaction/hitProgram.js": "bea0a39cb02e2a59edbdda14b5266112427859605c6225c23c0362d1ffcbf005",
+    "scripts/benchmarks/workloads.browser.js": "37fbaf0038290cc57807810d881949db6ca725fa3eb57329c911d5f2dca5c5c6",
+    "types/interaction.d.ts": "999bb132e0f3c28cdf45245775536ce6862926621231decefa28c1e4f67c0d70"
+  },
+  "checks": {
+    "owningTests": 500,
+    "owningFailures": 0,
+    "sourceDocs": 248,
+    "packageDiscovery": 24,
+    "nodeMajors": [
+      20,
+      22,
+      24
+    ],
+    "browserDPR": [
+      1,
+      2
+    ],
+    "smallRetention": {
+      "cycles": 100,
+      "vertices": 20,
+      "alive": 0
+    },
+    "canonicalGeo": "all6cells/all12stages5warmup30measured completed; allP95failed"
+  },
+  "originalScale": {
+    "source10k": "passed before raw optimization; unchanged footprint owner",
+    "installed100k": "native/full-footprint/full-scalar-oracle/current-all-coordinates passed; subsequent rebase plan interrupted on WeakSet rehash",
+    "fresh100kRebase": "initial plan interrupted on WeakSet rehash",
+    "diagnostic100k": "ownedValues attribution only; interrupted during rebase plan; not a qualifying performance result"
+  },
+  "open": [
+    "original100k rebase/offline in final installed artifact",
+    "canonical camera/hit SLO attainment (all original cells measured and failed)",
+    "original100cycle retention/lifetime"
+  ],
+  "guards": "default parts30000 / geometry1000000 / stroke1000000 / query2000000 / weighted union1000000 preserved",
+  "sourceCommit": "dd1837f399fed9e6afc78f0878a796cb576b2527"
+}

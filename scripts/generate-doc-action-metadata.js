@@ -18,6 +18,7 @@ function operation(name) {
   if (["layoutHierarchy", "layoutGraph", "layoutFlow", "bundleGraphEdges"].includes(name)) return "create";
   if (
     name === "setMarkVisibility" ||
+    name === "navigateProjection" ||
     name === "reviseData" ||
     name === "bindMarkData" ||
     name === "jitterPoints" ||

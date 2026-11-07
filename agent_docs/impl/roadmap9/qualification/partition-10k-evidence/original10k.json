@@ -1,0 +1,51 @@
+{
+  "kind": "Original 10000 node class functional verification; no timed P95 or explicit GC",
+  "pid": 88405,
+  "node": "v22.23.1",
+  "start": "2026-11-04T15:52:21.742Z",
+  "archiveSHA256": "787e6d786f1df9be0ce2103f47c562fbd99ac7aac63e59d96e694c487d3156e5",
+  "archiveEntries": 1276,
+  "inputSHA256": "e204dd2c1ab81f7c75b8d32aa006841fcda7e1e140ffd6a983dc1d5b448e1a1e",
+  "nodes": 10000,
+  "cases": [
+    {
+      "label": "current",
+      "verifiedCells": 10000,
+      "commands": 50000,
+      "sceneSHA256": "f13a08f69c08b871e5f77dc414c4a4e02ad9df1ef23a0fddd63847483e208f5e",
+      "frameSHA256": "568ba464bdd0b453a9da3df0ad6d4845b57d8a336dfb385ad750ebdb948693d9"
+    },
+    {
+      "label": "rebase",
+      "verifiedCells": 10000,
+      "commands": 50000,
+      "sceneSHA256": "a765cba89b59595852a5641cd5ea75790a7fb3f4d1d2e4935cb953e449e61529",
+      "frameSHA256": "e0a6140ec68ada5fd4d52a5fd638ca7047efe739d2171fb5b0c476f38071493e"
+    },
+    {
+      "label": "offline",
+      "verifiedCells": 10000,
+      "commands": 50000,
+      "sceneSHA256": "f13a08f69c08b871e5f77dc414c4a4e02ad9df1ef23a0fddd63847483e208f5e",
+      "frameSHA256": "568ba464bdd0b453a9da3df0ad6d4845b57d8a336dfb385ad750ebdb948693d9"
+    },
+    {
+      "label": "offline-rebase",
+      "verifiedCells": 10000,
+      "commands": 50000,
+      "sceneSHA256": "a765cba89b59595852a5641cd5ea75790a7fb3f4d1d2e4935cb953e449e61529",
+      "frameSHA256": "e0a6140ec68ada5fd4d52a5fd638ca7047efe739d2171fb5b0c476f38071493e"
+    }
+  ],
+  "layoutVerified": 10000,
+  "nativeEndpoints": true,
+  "status": "passed",
+  "memory": {
+    "rss": 1041432576,
+    "heapTotal": 907198464,
+    "heapUsed": 874077064,
+    "external": 22097164,
+    "arrayBuffers": 19954423
+  },
+  "end": "2026-11-04T15:52:37.055Z"
+}

@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "status": "private-authentic-frame-rebase-checkpoint",
+  "sourceCommit": "69cb70d0c9d5b289569d7228773f71ef5cc1673d",
+  "sourceInputs": [
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "sha256": "a516d62cd2b244c921a4d0cea1a73766083a1ba6b7aebcaea28aeb83e07d075e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner.md",
+      "sha256": "0f2460943e46e476791605be5767b135c317d646675bab076284766b19ddd519"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "5360de6e4882b4ffead391547607f27eb5d68f4b9c01660d4fe6468c0de9f593"
+    },
+    {
+      "path": "src/animation/concrete.js",
+      "sha256": "4d4355aeb6c105be14d6faf730713d581e63adbcba2cb4a4784d01b2d610def7"
+    },
+    {
+      "path": "src/animation/endpoints.js",
+      "sha256": "e37c3a3089527807e13d0b0b101c2946211259c8cb7415f00c135cccc08404b4"
+    },
+    {
+      "path": "src/animation/frameEndpoint.js",
+      "sha256": "a7d0f3eb81deb5de287d2b26db9037e4d87affa726205b52ce3e0f298dfe0172"
+    },
+    {
+      "path": "src/animation/frameProvenance.js",
+      "sha256": "cadfcd20b0ea12909a1fc26b9b57dc241bc14e08e2aec6159ae19be6f66fe085"
+    },
+    {
+      "path": "src/animation/planner.js",
+      "sha256": "893ad1614e32f8a627f930e5d0e14e37bb93d89e629e320750dbc90562d5e5d2"
+    },
+    {
+      "path": "src/animation/sample.js",
+      "sha256": "ac13b0fc4017124b18bf0ad13d0b1991e3580df712ab5251d96b8ece3a24fdd7"
+    },
+    {
+      "path": "src/grammar/animation/pointState.js",
+      "sha256": "e15d4c1f0677b09ac1decd32611fbb2be31390ddc95b27a5d354913f607fb673"
+    },
+    {
+      "path": "test/browser/animation-sampling.browser.js",
+      "sha256": "dac1c22752935e94c54d00be439962c4fbad8b01048f3798f0fd39cf233dd81a"
+    },
+    {
+      "path": "test/charts/cross-feature-integration/variants/animation/backends.render.js",
+      "sha256": "36715311ff80b7bef232149cb04e38722e87ddaabe65f62878716bca6ce9d2ad"
+    },
+    {
+      "path": "test/support/animation-point-frame.js",
+      "sha256": "5d75e5c9f8f27803f68501cb15ed462cad3ac4c53662113bc82a8bb199adfc0c"
+    },
+    {
+      "path": "test/unit/animation/frame-provenance.test.js",
+      "sha256": "a26ef0bb783c39f66ade6f0660c4d13e816604b51afd48ccbe98cac52836bf91"
+    },
+    {
+      "path": "test/unit/animation/rebase.test.js",
+      "sha256": "8e0e3536b62e7f18a958e7f58e85808fc98788c7d5a0b15750a9e68a3301cddc"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-rebase-evidence/rebase-canonical.log.gz",
+      "sha256": "7872a63abd8dad802c3d98f0d2e9e5203eadbb9478489c5645b9ea5a8fb4b9bc"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-rebase-evidence/rebase-final-owning.log.gz",
+      "sha256": "b57dabc57f6f42bc3210318a8ed9db4f285d69a913af8922bb2be0e70f1cad6d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-rebase-evidence/rebase-coverage-final.log.gz",
+      "sha256": "f8829d87e3a77091f163b26483644cb3a8454c794c67605c0959259c6a04b7d2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-rebase-evidence/rebase-boundaries.log.gz",
+      "sha256": "6d8acf9bb607eec6f022cb266d758f8fb8c564bf99b4d7f1521d7f2ba807739f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-rebase-evidence/rebase-package-final.log.gz",
+      "sha256": "f9de38f0d0f9089c41db44c3b99a1aebaafa2b3603c7b5e85fe57c8780330287"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-rebase-evidence/rebase-node20.log.gz",
+      "sha256": "39e288f3c91406285d1d0512c04028b5d4246c2eb83a7206e4d9317b99402bb8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-rebase-evidence/rebase-node24.log.gz",
+      "sha256": "e49226fce79b337ee92f8afacf9f0c179678a7394c6e427bb586d7b29ecc675a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-rebase-evidence/rebase-node20-final-owning.log.gz",
+      "sha256": "03a6a28dedf550d03f377ab2851829d07989a185d83284a93430d2787483de6a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-rebase-evidence/rebase-node24-final-owning.log.gz",
+      "sha256": "0a2d1e46e9605e112158445c307071e5934c637b7747956285e5bad541ce00f5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-rebase-evidence/rebase-backends.log.gz",
+      "sha256": "341907b891ce5d770fb4478ebba4f1a35ea7e5d338a527902de2239de8820bb2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-rebase-evidence/package-size-20.json.gz",
+      "sha256": "b174f56aa7392ecc36135e53d53d5d15bd23b17caf113c0f65433796feef1f33"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-rebase-evidence/package-size-22.json.gz",
+      "sha256": "ed6670e9a9ea8b8b35cd36054437ea03f9c092ba65ab68b98e079f09b6b01d77"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-rebase-evidence/package-size-24.json.gz",
+      "sha256": "a6d56b06df3edc0217eb971b2035b2a50033f5622766bcb50730cd00a515b0f3"
+    }
+  ],
+  "checks": {
+    "canonicalBeforeFinalViewGuards": 119,
+    "finalOwning": 5,
+    "finalCoverage": {
+      "tests": 99,
+      "lines": 100,
+      "branches": 97.01,
+      "functions": 100
+    },
+    "node20": {
+      "initial": 99,
+      "finalOwning": 5
+    },
+    "node24": {
+      "initial": 99,
+      "finalOwning": 5
+    },
+    "boundaries": 33,
+    "package": 7,
+    "renderAndBrowser": 3
+  },
+  "evidenceScope": "Canonical119 and Node20/24 initial99 preceded two final sampled-view guards; final owning5 and Node22 coverage99 exercise those guards. Four backend/browser inputs unchanged by restore-only guards. Source byte hashes are pinned. No full-suite or installed-package claim.",
+  "openObligations": [
+    "public entry/types/docs/installed consumer with offline owner",
+    "root player/session integration",
+    "offline hit addresses",
+    "runtime prior-plan retention audit",
+    "compatible geometry families",
+    "final integration qualification"
+  ]
+}

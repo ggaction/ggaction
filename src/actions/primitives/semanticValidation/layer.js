@@ -1,10 +1,13 @@
 import { normalizePlotSnapshot, normalizePlotAnchor } from "../../../grammar/plotPosition.js";
+import { validateScreenAnnotationLayer } from "../../../grammar/screenAnnotation.js";
+import { isGeoLabelSource } from "../../../grammar/geo/mark.js";
 import { validateInputReference } from "../../../core/resourceReference.js";
 import { requireStoredResource } from "../../../selectors/resources.js";
 import { validateStoredConditional } from "../../../grammar/conditionalState.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
   COLOR_LAYOUTS,
+  TEXT_SOURCE_MARK_TYPES,
   MARK_TYPES,
   STACK_MODES
 } from "../../../core/vocabulary.js";
@@ -39,6 +42,9 @@ function validateLayerSource(program, parsed, value, sourceMarkTypes) {
   if (source === undefined) {
     throw new Error(`Unknown source layer "${value}".`);
   }
+  if (source.mark?.type === "geo" && (!isGeoLabelSource(source) || findLayer(program, parsed.id)?.mark?.type !== "text")) {
+    throw new TypeError("Geographic label sources require feature or graticule Text consumers.");
+  }
   if (!sourceMarkTypes.includes(source.mark?.type)) {
     const sourceLabel = sourceMarkTypes.length === 1
       ? sourceMarkTypes[0]
@@ -54,12 +60,19 @@ export function validateLayerSemanticValue(
   parsed,
   value,
   {
-    sourceMarkTypes = ["point", "bar", "line", "rule", "rect", "arc"],
+    sourceMarkTypes = TEXT_SOURCE_MARK_TYPES,
     validateParallel
   } = {}
 ) {
   const property = parsed.path.join(".");
   const layer = findLayer(program, parsed.id);
+  if (property === "annotationAnchor") validateScreenAnnotationLayer({ ...layer, annotationAnchor: value });
+  if (layer?.annotationAnchor !== undefined && (
+    ["data", "source", "coordinate", "transform", "mark.missing"].includes(property) ||
+    property === "mark.type" && value !== "text" || property.startsWith("conditionals.") ||
+    property.startsWith("encoding.") && !["encoding.text.datum", "encoding.text.format"].includes(property))) {
+    throw new TypeError("Screen annotation accepts only constant Text content and native style.");
+  }
   if (property === "image") {
     validateInputReference(value);
     if (layer?.mark?.type !== "image" || value.kind !== "image") throw new TypeError("Image binding requires an image mark and resource.");

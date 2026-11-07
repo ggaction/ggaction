@@ -25,7 +25,7 @@ function chain(length) {
         : { selection }, value: { value: 0 } }], otherwise: { value: 1 }, parameterInputs: [], selectionInputs: last ? [] : [input] } } });
   }
   return { semanticSpec: { ...source.semanticSpec, layers, resources },
-    materializationConfigs: { selections }, markConfigs: {}, trace: source.trace };
+    materializationConfigs: { marks: {}, selections }, markConfigs: {}, trace: source.trace };
 }
 
 test("conditional dependency chains are bounded before recursive materialization", () => {

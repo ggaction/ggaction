@@ -58,6 +58,7 @@ interface ChartProgramActions {
   editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
   bundleGraphEdges(options: TargetedOptions<BundleGraphEdgesOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
   editEdgeRoute(options: TargetedOptions<EditEdgeRouteOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
+  applyGraphEdgeRoutesUpdate(options: ApplyGraphEdgeRoutesUpdateOptions): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
   createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
   editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
@@ -65,6 +66,10 @@ interface ChartProgramActions {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createTablePlot(options: TargetedOptions<CreateTablePlotOptions>): ChartProgram;
+  editTablePlot(options: TargetedOptions<EditTablePlotOptions>): ChartProgram;
+  createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;
+  editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;
   createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
   editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
   createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
@@ -76,9 +81,12 @@ interface ChartProgramActions {
   createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
   createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
   editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+  navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram;
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
   editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
+  createGeoRouteData(options: TargetedOptions<CreateGeoRouteDataOptions>): ChartProgram;
+  editGeoRouteData(options: TargetedOptions<EditGeoRouteDataOptions>): ChartProgram;
   createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
   editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
@@ -92,6 +100,8 @@ interface ChartProgramActions {
   editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
   createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
   editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
+  createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram;
+  editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram;
   createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
   editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
   createFlowData(options: CreateFlowDataOptions): ChartProgram;
@@ -102,8 +112,8 @@ interface ChartProgramActions {
   createFlowLinks(options?: TargetedOptions<FlowLinksOptions>): ChartProgram;
   editFlowLinks(options: TargetedOptions<EditFlowLinksOptions>): ChartProgram;
   createGraphData(options: CreateGraphDataOptions): ChartProgram;
-  createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
-  editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
+  createInferredGraphData(options: CreateInferredGraphDataOptions | ApplyInferredGraphOptions): ChartProgram;
+  editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions> | ApplyInferredGraphOptions): ChartProgram;
   editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
   layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
@@ -143,8 +153,8 @@ interface ChartProgramActions {
   editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;
   editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
   editBin2DData(options: TargetedOptions<EditBin2DDataOptions>): ChartProgram;
-  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { maxItems?: number | undefined; blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editPointMark(options: TargetedOptions<StrokeStyleDetails & { maxItems?: number | undefined; blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   createTickMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   editTickMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   jitterPoints(options: TargetedOptions<JitterPointsOptions>): ChartProgram;
@@ -169,6 +179,7 @@ interface ChartProgramActions {
   editMarkLabelPlacement(options: TargetedOptions<EditMarkLabelPlacementOptions>): ChartProgram;
   removeMarkLabels(options: TargetedOptions<RemoveMarkLabelsOptions>): ChartProgram;
   createAnnotation(options: TargetedOptions<CreateAnnotationOptions>): ChartProgram;
+  editAnnotation(options: TargetedOptions<EditAnnotationOptions>): ChartProgram;
   createStatisticalReference(options: TargetedOptions<CreateStatisticalReferenceOptions>): ChartProgram;
   createOverlay(options?: TargetedOptions<CreateOverlayOptions>): ChartProgram;
   createLayerPlot(options: TargetedOptions<CreateLayerPlotOptions>): ChartProgram;
@@ -481,8 +492,12 @@ export type AngleEncodingOptions =
 
 ```typescript
 type AnnotationAnchor =
+  | { anchor?: never; space: "screen"; x: number; y: number; source?: never; data?: never;
+      coordinate?: never; select?: never; selection?: never; }
   | {
       anchor: "plot-center";
+      select?: never;
+      selection?: never;
       x?: never;
       y?: never;
       space?: never;
@@ -492,7 +507,7 @@ type AnnotationAnchor =
       data?: string;
       coordinate?: string;
     }
-  | {
+  | ({
       anchor?: never;
       x?: never;
       y?: never;
@@ -500,9 +515,11 @@ type AnnotationAnchor =
       source?: string;
       data?: never;
       coordinate?: never;
-    }
+    } & MarkLabelSelectionOptions)
   | {
       anchor?: never;
+      select?: never;
+      selection?: never;
       x: unknown;
       y: unknown;
       space?: "data";
@@ -514,12 +531,16 @@ type AnnotationAnchor =
       anchor?: never;
       x: number;
       y: number;
+      select?: never;
+      selection?: never;
       space: "plot";
       source?: never;
       data?: string;
       coordinate?: string;
     };
 ```
+
+Related types: [`MarkLabelSelectionOptions`](../../../reference/types/#type-marklabelselectionoptions).
 
 ### `AnnotationBaseOptions` {#type-annotationbaseoptions}
 
@@ -566,9 +587,20 @@ Related types: [`PreparedFontResource`](../../../reference/types/#type-preparedf
 
 ```typescript
 export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }
+/** A native route update action with its own affected-route resolution. */
 ```
 
 Related types: [`PreparedGraphEdgeRoutes`](../../../reference/types/#type-preparedgraphedgeroutes).
+
+### `ApplyGraphEdgeRoutesUpdateOptions` {#type-applygraphedgeroutesupdateoptions}
+
+ Expand ApplyGraphEdgeRoutesUpdateOptions
+
+```typescript
+export interface ApplyGraphEdgeRoutesUpdateOptions { readonly prepared: PreparedGraphEdgeRoutesUpdate; readonly requestToken: string; }
+```
+
+Related types: [`PreparedGraphEdgeRoutesUpdate`](../../../reference/types/#type-preparedgraphedgeroutesupdate).
 
 ### `ApplyImageResourceOptions` {#type-applyimageresourceoptions}
 
@@ -581,6 +613,18 @@ export interface ApplyImageResourceOptions<Kind extends "create" | "replace"> {
 ```
 
 Related types: [`PreparedImageResource`](../../../reference/types/#type-preparedimageresource).
+
+### `ApplyInferredGraphOptions` {#type-applyinferredgraphoptions}
+
+ Expand ApplyInferredGraphOptions
+
+```typescript
+export type ApplyInferredGraphOptions = { readonly prepared: PreparedInferredGraphData; readonly requestToken: string } & {
+  readonly [K in "id" | "data" | "candidateGraph" | "nodeKey" | "ruleId" | "rule" | "features" | "metric" | "preprocess" | "attributes" | "options" | "maxNodes" | "maxEdges" | "execution" | "target" | "definition"]?: never;
+};
+```
+
+Related types: [`PreparedInferredGraphData`](../../../reference/types/#type-preparedinferredgraphdata).
 
 ### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
 
@@ -879,7 +923,7 @@ type BarCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };
 ```
 
@@ -1568,6 +1612,8 @@ Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`Mark
 
 ```typescript
 export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
+/** A filled ribbon whose width is measured in logical screen pixels per source sample. */
+/** A Table preserves source rows; sorting and rowLimit affect only cell presentation. */
 ```
 
 ### `CalendarLayoutPatch` {#type-calendarlayoutpatch}
@@ -2069,7 +2115,8 @@ export type ColorLayout =
   | "group"
   | "overlay"
   | "diverging"
-  | "center";
+  | "center"
+  | "wiggle";
 ```
 
 ### `ColorMappedPointGuideOptions` {#type-colormappedpointguideoptions}
@@ -2550,6 +2597,8 @@ Related types: [`AdjacentPlotSpecification`](../../../reference/types/#type-adja
 
 ```typescript
 export type CreateAnnotationOptions = AnnotationBaseOptions & AnnotationAnchor;
+
+/** Existing Text or attached labels; preserves stored anchor bindings. Full-only. */
 ```
 
 Related types: [`AnnotationBaseOptions`](../../../reference/types/#type-annotationbaseoptions) · [`AnnotationAnchor`](../../../reference/types/#type-annotationanchor).
@@ -2562,19 +2611,28 @@ Related types: [`AnnotationBaseOptions`](../../../reference/types/#type-annotati
 export type CreateAreaPlotOptions = {
   id?: string; data?: string; coordinate?: string;
   groupBy?: string | readonly [string, ...string[]];
-  layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
+  missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
   area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
-} & (
+} & (({ layout?: Exclude<ColorLayout, "group" | "wiggle"> } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
   | { valueChannel: "x"; x: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: number }
   | { valueChannel: "x"; x: Extract<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: never }
-);
+)) | {
+  layout: "wiggle"; valueChannel?: "y";
+  x: Exclude<AreaPlotIndependentChannel, { fieldType: "nominal" | "ordinal" }>;
+  y: string | { field: string; scale?: NonPointZeroSupportingPositionScaleOptions }
+    | ({ scale?: NonPointZeroSupportingPositionScaleOptions } & (
+      | { lower: string; upper: { datum: 0 } }
+      | { lower: { datum: 0 }; upper: string }
+    ));
+  baseline?: 0;
+});
 ```
 
-Related types: [`ColorLayout`](../../../reference/types/#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](../../../reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](../../../reference/types/#type-palette) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`FillPaint`](../../../reference/types/#type-fillpaint) · [`CurveInterpolation`](../../../reference/types/#type-curveinterpolation) · [`DensityPlotGuideOptions`](../../../reference/types/#type-densityplotguideoptions) · [`CartesianGridOptions`](../../../reference/types/#type-cartesiangridoptions) · [`AreaPlotIndependentChannel`](../../../reference/types/#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](../../../reference/types/#type-areaplotmeasurechannel).
+Related types: [`NonPointCategoricalColorScaleOptions`](../../../reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](../../../reference/types/#type-palette) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`FillPaint`](../../../reference/types/#type-fillpaint) · [`CurveInterpolation`](../../../reference/types/#type-curveinterpolation) · [`DensityPlotGuideOptions`](../../../reference/types/#type-densityplotguideoptions) · [`CartesianGridOptions`](../../../reference/types/#type-cartesiangridoptions) · [`ColorLayout`](../../../reference/types/#type-colorlayout) · [`AreaPlotIndependentChannel`](../../../reference/types/#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](../../../reference/types/#type-areaplotmeasurechannel) · [`NonPointZeroSupportingPositionScaleOptions`](../../../reference/types/#type-nonpointzerosupportingpositionscaleoptions).
 
 ### `CreateAxesOptions` {#type-createaxesoptions}
 
@@ -2640,6 +2698,7 @@ export type CreateBeeswarmPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    maxItems?: number;
     clip?: boolean;
     radius?: number;
     shape?: PointShape;
@@ -2863,16 +2922,34 @@ export interface CreateGeoLODDataOptions { readonly id: string; readonly levels:
 
 Related types: [`GeoLODLevels`](../../../reference/types/#type-geolodlevels).
 
+### `CreateGeoRouteDataOptions` {#type-creategeoroutedataoptions}
+
+ Expand CreateGeoRouteDataOptions
+
+```typescript
+export interface CreateGeoRouteDataOptions {
+  readonly id: string;
+  /** Exact retained edge-route resource; no route or dataset inference. */
+  readonly routes: string;
+  /** Geographic requires world route anchors; planar uses identity projection coordinates. */
+  readonly coordinateKind: "geographic" | "planar";
+}
+```
+
 ### `CreateGeometryDataOptions` {#type-creategeometrydataoptions}
 
  Expand CreateGeometryDataOptions
 
 ```typescript
 export type CreateGeometryDataOptions = {
-  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  readonly id: string;
   /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
   readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
-} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+} & ({ readonly coordinateKind: "geographic";
+  /** Source ring convention. Omission preserves right-hand; retained coordinates are never reversed. */
+  readonly polygonWinding?: "right-hand" | "left-hand" }
+  | { readonly coordinateKind: "planar"; readonly polygonWinding?: never })
+  & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
   | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });
 ```
 
@@ -3012,7 +3089,7 @@ Related types: [`ImageMarkOptions`](../../../reference/types/#type-imagemarkopti
 ```typescript
 export type CreateInferredGraphDataOptions = { readonly id: string; readonly data?: string } & (
   (GraphNeighborDefinition | GraphMetricMstDefinition | GraphStructuralDefinition) & { readonly candidateGraph?: never } |
-  GraphCandidateMstDefinition & { readonly candidateGraph: string });
+  GraphCandidateMstDefinition & { readonly candidateGraph: string }) & { readonly prepared?: never; readonly requestToken?: never };
 ```
 
 Related types: [`GraphNeighborDefinition`](../../../reference/types/#type-graphneighbordefinition) · [`GraphMetricMstDefinition`](../../../reference/types/#type-graphmetricmstdefinition) · [`GraphStructuralDefinition`](../../../reference/types/#type-graphstructuraldefinition) · [`GraphCandidateMstDefinition`](../../../reference/types/#type-graphcandidatemstdefinition).
@@ -3542,6 +3619,8 @@ export interface CreateScatterPlotOptions {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    /** Point raw and concrete item capacity; default 50000, maximum 100000. */
+    maxItems?: number;
     clip?: boolean;
     radius?: number;
     shape?: PointShape;
@@ -3585,6 +3664,7 @@ export type CreateStripPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    maxItems?: number;
     clip?: boolean;
     radius?: number;
     shape?: PointShape;
@@ -3602,6 +3682,22 @@ export type CreateStripPlotOptions = {
 ```
 
 Related types: [`BasicColorChannel`](../../../reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](../../../reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](../../../reference/types/#type-basicshapechannel) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`PointShape`](../../../reference/types/#type-pointshape) · [`FilledMarkStroke`](../../../reference/types/#type-filledmarkstroke) · [`ColorMappedPointGuideOptions`](../../../reference/types/#type-colormappedpointguideoptions) · [`RugMeasureChannel`](../../../reference/types/#type-rugmeasurechannel) · [`StripPixelJitterOptions`](../../../reference/types/#type-strippixeljitteroptions) · [`StripCategoryChannel`](../../../reference/types/#type-stripcategorychannel) · [`StripBandJitterOptions`](../../../reference/types/#type-stripbandjitteroptions).
+
+### `CreateTablePlotOptions` {#type-createtableplotoptions}
+
+ Expand CreateTablePlotOptions
+
+```typescript
+export interface CreateTablePlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly columns: readonly TableColumn[];
+  readonly sortBy?: readonly SortKey[] | false; readonly rowLimit?: number | false;
+  readonly rowHeight?: number; readonly padding?: number; readonly header?: boolean; readonly clip?: boolean;
+  readonly cells?: TableCellPaint; readonly labels?: TableLabelPaint; readonly headerStyle?: TableBandPaint; readonly footerStyle?: TableBandPaint;
+  readonly bars?: TableCellPaint; readonly sparklines?: TableSparklinePaint; readonly color?: false | PyramidColor;
+}
+```
+
+Related types: [`TableColumn`](../../../reference/types/#type-tablecolumn) · [`SortKey`](../../../reference/types/#type-sortkey) · [`TableCellPaint`](../../../reference/types/#type-tablecellpaint) · [`TableLabelPaint`](../../../reference/types/#type-tablelabelpaint) · [`TableBandPaint`](../../../reference/types/#type-tablebandpaint) · [`TableSparklinePaint`](../../../reference/types/#type-tablesparklinepaint) · [`PyramidColor`](../../../reference/types/#type-pyramidcolor).
 
 ### `CreateTextPlotOptions` {#type-createtextplotoptions}
 
@@ -3667,6 +3763,22 @@ export type CreateThetaAxisTitleOptions = PolarTitleOptions &
 ```
 
 Related types: [`PolarTitleOptions`](../../../reference/types/#type-polartitleoptions) · [`PolarGuideResourceOptions`](../../../reference/types/#type-polarguideresourceoptions).
+
+### `CreateTrailPlotOptions` {#type-createtrailplotoptions}
+
+ Expand CreateTrailPlotOptions
+
+```typescript
+export type CreateTrailPlotOptions = TrailPlotOptions & (
+  | { readonly x: TrailPosition; readonly y: TrailPosition; readonly theta?: never; readonly radius?: never;
+      readonly order?: string | { readonly field: string; readonly order?: "ascending" | "descending" } | false;
+      readonly curve?: CurveInterpolation; readonly tension?: number; readonly guides?: false | ColorGuides }
+  | { readonly theta: PolarThetaChannel; readonly radius: PolarRadiusChannel; readonly x?: never; readonly y?: never;
+      readonly order?: never; readonly curve?: "linear"; readonly tension?: never; readonly guides?: false | PolarPathGuideOptions }
+);
+```
+
+Related types: [`TrailPlotOptions`](../../../reference/types/#type-trailplotoptions) · [`TrailPosition`](../../../reference/types/#type-trailposition) · [`CurveInterpolation`](../../../reference/types/#type-curveinterpolation) · [`ColorGuides`](../../../reference/types/#type-colorguides) · [`PolarThetaChannel`](../../../reference/types/#type-polarthetachannel) · [`PolarRadiusChannel`](../../../reference/types/#type-polarradiuschannel) · [`PolarPathGuideOptions`](../../../reference/types/#type-polarpathguideoptions).
 
 ### `CreateWaterfallPlotOptions` {#type-createwaterfallplotoptions}
 
@@ -4808,6 +4920,19 @@ export type DensityWidthResolution = "shared" | "independent";
 export type DerivedDataDependents = "reject" | "recompute";
 ```
 
+### `DiscoveredNativeRouteAction` {#type-discoverednativerouteaction}
+
+ Expand DiscoveredNativeRouteAction
+
+```typescript
+export type DiscoveredNativeRouteAction = Exclude<{ [K in keyof ChartProgram]: ChartProgram[K] extends (options: never) => ChartProgram ? K : never }[keyof ChartProgram] & string,
+  ResolvedNativeRouteAction | "bundleGraphEdges" | "editEdgeRoute" | "applyGraphEdgeRoutesUpdate">;
+declare const preparedGraphEdgeRoutesUpdate: unique symbol;
+/** An authentic native resource update, bound to its exact completed Full receiver. */
+```
+
+Related types: [`ResolvedNativeRouteAction`](../../../reference/types/#type-resolvednativerouteaction).
+
 ### `DiscretizedColorScaleOptions` {#type-discretizedcolorscaleoptions}
 
  Expand DiscretizedColorScaleOptions
@@ -4945,7 +5070,7 @@ export interface ECDFOutputFields {
  Expand EdgePathRouteOptions
 
 ```typescript
-export interface EdgePathRouteOptions extends EdgeRouteCommonOptions { readonly exponent?: number; readonly maxStretch?: number; }
+export type EdgePathRouteOptions = EdgeRouteCommonOptions & { readonly exponent?: number; readonly maxStretch?: number; };
 ```
 
 Related types: [`EdgeRouteCommonOptions`](../../../reference/types/#type-edgeroutecommonoptions).
@@ -4955,10 +5080,13 @@ Related types: [`EdgeRouteCommonOptions`](../../../reference/types/#type-edgerou
  Expand EdgeRouteCommonOptions
 
 ```typescript
-export interface EdgeRouteCommonOptions { readonly zeroLength?: "point"; readonly limits?: EdgeRouteLimits; }
+export type EdgeRouteCommonOptions = { readonly zeroLength?: "point" } & (
+  { readonly execution?: never; readonly limits?: EdgeRouteLimits }
+  | { readonly execution: EdgeRouteExecution; readonly limits?: Pick<EdgeRouteLimits, "maxNodes" | "maxEdges"> }
+);
 ```
 
-Related types: [`EdgeRouteLimits`](../../../reference/types/#type-edgeroutelimits).
+Related types: [`EdgeRouteLimits`](../../../reference/types/#type-edgeroutelimits) · [`EdgeRouteExecution`](../../../reference/types/#type-edgerouteexecution).
 
 ### `EdgeRouteDefinition` {#type-edgeroutedefinition}
 
@@ -4973,6 +5101,18 @@ export type EdgeRouteDefinition =
 ```
 
 Related types: [`HierarchicalEdgeRouteOptions`](../../../reference/types/#type-hierarchicaledgerouteoptions) · [`ForceDirectedEdgeRouteOptions`](../../../reference/types/#type-forcedirectededgerouteoptions) · [`EdgeRouteCommonOptions`](../../../reference/types/#type-edgeroutecommonoptions) · [`EdgePathRouteOptions`](../../../reference/types/#type-edgepathrouteoptions).
+
+### `EdgeRouteExecution` {#type-edgerouteexecution}
+
+ Expand EdgeRouteExecution
+
+```typescript
+export interface EdgeRouteExecution {
+  readonly policy: "bounded-route@1";
+  readonly maxWork: number; readonly maxCandidatePairs: number; readonly maxSamples: number;
+  readonly maxBufferBytes: number; readonly maxBytes: number;
+}
+```
 
 ### `EdgeRouteLimits` {#type-edgeroutelimits}
 
@@ -4991,6 +5131,26 @@ export interface EdgeRouteLimits {
 ```typescript
 export type EdgeRouteMethod = "hierarchical" | "force-directed" | "density" | "edge-path";
 ```
+
+### `EditAnnotationOptions` {#type-editannotationoptions}
+
+ Expand EditAnnotationOptions
+
+```typescript
+export type EditAnnotationOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "missing"> & {
+  target?: string;
+  text?: unknown;
+  /** Without text, reformat the current constant content. */
+  format?: TextFormat;
+  /** Replace one existing independent Cartesian datum using its current scale and field type. */
+  x?: unknown;
+  y?: unknown;
+  placement?: MarkLabelPlacement | "auto";
+  layout?: false | Omit<LabelLayoutOptions, "target">;
+} & ((MarkLabelSelectionOptions & { all?: never }) | { all: true; select?: never; selection?: never });
+```
+
+Related types: [`TextMarkOptions`](../../../reference/types/#type-textmarkoptions) · [`TextFormat`](../../../reference/types/#type-textformat) · [`MarkLabelPlacement`](../../../reference/types/#type-marklabelplacement) · [`LabelLayoutOptions`](../../../reference/types/#type-labellayoutoptions) · [`MarkLabelSelectionOptions`](../../../reference/types/#type-marklabelselectionoptions).
 
 ### `EditAxesOptions` {#type-editaxesoptions}
 
@@ -5520,6 +5680,16 @@ export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](../../../reference/types/#type-focusedderiveddataedit) · [`FoldDataOptions`](../../../reference/types/#type-folddataoptions).
 
+### `EditGeoAnnotationOptions` {#type-editgeoannotationoptions}
+
+ Expand EditGeoAnnotationOptions
+
+```typescript
+export type EditGeoAnnotationOptions = Partial<Omit<GeoAnnotationOptions, "id">> & { readonly target?: string };
+```
+
+Related types: [`GeoAnnotationOptions`](../../../reference/types/#type-geoannotationoptions).
+
 ### `EditGeoJoinDataOptions` {#type-editgeojoindataoptions}
 
  Expand EditGeoJoinDataOptions
@@ -5562,6 +5732,16 @@ export type EditGeoPointMarkOptions = GeoEditOptions<GeoPointMarkOptions>;
 
 Related types: [`GeoEditOptions`](../../../reference/types/#type-geoeditoptions) · [`GeoPointMarkOptions`](../../../reference/types/#type-geopointmarkoptions).
 
+### `EditGeoRouteDataOptions` {#type-editgeoroutedataoptions}
+
+ Expand EditGeoRouteDataOptions
+
+```typescript
+export interface EditGeoRouteDataOptions {
+  readonly target?: string; readonly routes?: string; readonly coordinateKind?: "geographic" | "planar";
+}
+```
+
 ### `EditGeoShapeMarkOptions` {#type-editgeoshapemarkoptions}
 
  Expand EditGeoShapeMarkOptions
@@ -5580,6 +5760,8 @@ Related types: [`GeoShapeMarkOptions`](../../../reference/types/#type-geoshapema
 export interface EditGeometryDataOptions {
   readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
   readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+  /** Geographic sources only; edits preserve unspecified source convention. */
+  readonly polygonWinding?: "right-hand" | "left-hand";
 }
 ```
 
@@ -5735,9 +5917,12 @@ Related types: [`FocusedDerivedDataEdit`](../../../reference/types/#type-focused
 
 ```typescript
 export interface EditInferredGraphDataOptions {
+  readonly prepared?: never; readonly requestToken?: never;
   readonly target?: string; readonly data?: string; readonly candidateGraph?: string | null;
   readonly definition?: Partial<InferredGraphDefinition>;
 }
+declare const preparedInferredGraph: unique symbol;
+/** Opaque result bound to the exact Full receiver, action kind and request token. */
 ```
 
 Related types: [`InferredGraphDefinition`](../../../reference/types/#type-inferredgraphdefinition).
@@ -6396,6 +6581,16 @@ export type EditSummaryDataOptions = FocusedWeightedDerivedDataEdit<
 
 Related types: [`FocusedWeightedDerivedDataEdit`](../../../reference/types/#type-focusedweightedderiveddataedit) · [`SummaryDataOptions`](../../../reference/types/#type-summarydataoptions) · [`StatisticalWeight`](../../../reference/types/#type-statisticalweight).
 
+### `EditTablePlotOptions` {#type-edittableplotoptions}
+
+ Expand EditTablePlotOptions
+
+```typescript
+export type EditTablePlotOptions = { readonly target?: string } & Partial<Omit<CreateTablePlotOptions, "id">>;
+```
+
+Related types: [`CreateTablePlotOptions`](../../../reference/types/#type-createtableplotoptions).
+
 ### `EditTextMarkOptions` {#type-edittextmarkoptions}
 
  Expand EditTextMarkOptions
@@ -6457,6 +6652,16 @@ export interface EditTitleOptions
 ```
 
 Related types: [`TitleOptions`](../../../reference/types/#type-titleoptions).
+
+### `EditTrailPlotOptions` {#type-edittrailplotoptions}
+
+ Expand EditTrailPlotOptions
+
+```typescript
+export type EditTrailPlotOptions = { readonly target?: string } & TrailPatch<CreateTrailPlotOptions>;
+```
+
+Related types: [`TrailPatch`](../../../reference/types/#type-trailpatch) · [`CreateTrailPlotOptions`](../../../reference/types/#type-createtrailplotoptions).
 
 ### `EditTreePlotOptions` {#type-edittreeplotoptions}
 
@@ -7520,10 +7725,51 @@ export interface FoldDataOutputFields {
  Expand ForceDirectedEdgeRouteOptions
 
 ```typescript
-export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { readonly compatibilityThreshold?: number; }
+export type ForceDirectedEdgeRouteOptions = EdgeRouteCommonOptions & { readonly compatibilityThreshold?: number; };
 ```
 
 Related types: [`EdgeRouteCommonOptions`](../../../reference/types/#type-edgeroutecommonoptions).
+
+### `GeoAnnotationAnchor` {#type-geoannotationanchor}
+
+ Expand GeoAnnotationAnchor
+
+```typescript
+export type GeoAnnotationAnchor = { readonly type: "position"; readonly position: readonly [number, number] }
+  | { readonly type: "feature"; readonly geometry?: string; readonly key: RowKey; readonly level?: string };
+```
+
+Related types: [`RowKey`](../../../reference/types/#type-rowkey).
+
+### `GeoAnnotationOptions` {#type-geoannotationoptions}
+
+ Expand GeoAnnotationOptions
+
+```typescript
+export interface GeoAnnotationOptions extends Omit<TextMarkOptions, "data" | "source" | "missing" | "text" | "inheritColor"> {
+  readonly coordinate?: string; readonly anchor: GeoAnnotationAnchor; readonly text: string;
+}
+```
+
+Related types: [`TextMarkOptions`](../../../reference/types/#type-textmarkoptions) · [`GeoAnnotationAnchor`](../../../reference/types/#type-geoannotationanchor).
+
+### `GeoCameraOperation` {#type-geocameraoperation}
+
+ Expand GeoCameraOperation
+
+```typescript
+export type GeoCameraOperation =
+  | { readonly type: "pan"; readonly deltaPx: readonly [number, number] }
+  | { readonly type: "zoom"; readonly anchorPx: readonly [number, number]; readonly factor: number; readonly scaleExtent: readonly [number, number] }
+  | { readonly type: "pinch"; readonly fromPx: readonly [readonly [number, number], readonly [number, number]]; readonly toPx: readonly [readonly [number, number], readonly [number, number]]; readonly scaleExtent: readonly [number, number] }
+  | { readonly type: "rotate"; readonly rotateDeg: readonly [number, number] | readonly [number, number, number] }
+  | { readonly type: "reset"; readonly initial: ProjectionParameters }
+  | { readonly type: "fit"; readonly fit: ProjectionFitOptions }
+  | { readonly type: "resize"; readonly canvas: { readonly width?: number; readonly height?: number; readonly plot?: false | { readonly width: number; readonly height: number } }; readonly scaling: "preserve" | "fit" };
+/** Native projection edits; reset restores explicit view parameters, without restoring a prior fit policy. */
+```
+
+Related types: [`ProjectionParameters`](../../../reference/types/#type-projectionparameters) · [`ProjectionFitOptions`](../../../reference/types/#type-projectionfitoptions).
 
 ### `GeoEditOptions` {#type-geoeditoptions}
 
@@ -7604,6 +7850,17 @@ export interface GeoLineMarkOptions extends Omit<GeoSourceMarkOptions, "fill"> {
 
 Related types: [`GeoSourceMarkOptions`](../../../reference/types/#type-geosourcemarkoptions).
 
+### `GeoMarkCapacity` {#type-geomarkcapacity}
+
+ Expand GeoMarkCapacity
+
+```typescript
+export interface GeoMarkCapacity {
+  readonly maxProjectedPoints?: number;
+  readonly maxPathCommands?: number;
+}
+```
+
 ### `GeoMarkStyleOptions` {#type-geomarkstyleoptions}
 
  Expand GeoMarkStyleOptions
@@ -7614,6 +7871,8 @@ export interface GeoMarkStyleOptions {
   readonly clip?: boolean; readonly lineCap?: "butt" | "round" | "square"; readonly lineJoin?: "miter" | "round" | "bevel";
   readonly miterLimit?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false; readonly blend?: BlendMode;
 }
+/** Per-mark projected output budget. Each explicit value is an integer from 1 through 200000.
+ * Omitted fields use 10000 projected points and 30000 commands; omission on edit retains the binding. */
 ```
 
 Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`MarkOutline`](../../../reference/types/#type-markoutline) · [`MarkShadow`](../../../reference/types/#type-markshadow) · [`BlendMode`](../../../reference/types/#type-blendmode).
@@ -7647,6 +7906,7 @@ Related types: [`GeoSourceMarkOptions`](../../../reference/types/#type-geosource
 
 ```typescript
 export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
+  readonly capacity?: GeoMarkCapacity;
   readonly id?: string; readonly coordinate?: string; readonly geometry?: string;
   readonly interpolation?: "source-segment" | "great-circle";
   /** Explicit false removes a previous hint. */
@@ -7654,7 +7914,7 @@ export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
 }
 ```
 
-Related types: [`GeoMarkStyleOptions`](../../../reference/types/#type-geomarkstyleoptions).
+Related types: [`GeoMarkStyleOptions`](../../../reference/types/#type-geomarkstyleoptions) · [`GeoMarkCapacity`](../../../reference/types/#type-geomarkcapacity).
 
 ### `GeographicGeometry` {#type-geographicgeometry}
 
@@ -7879,6 +8139,18 @@ export interface GraphForceOptions extends GraphLayoutLimits {
 
 Related types: [`GraphLayoutLimits`](../../../reference/types/#type-graphlayoutlimits) · [`GraphPosition`](../../../reference/types/#type-graphposition) · [`GraphPin`](../../../reference/types/#type-graphpin).
 
+### `GraphInferenceExecution` {#type-graphinferenceexecution}
+
+ Expand GraphInferenceExecution
+
+```typescript
+export interface GraphInferenceExecution {
+  readonly policy: "bounded-inference@1";
+  readonly maxWork: number;
+  readonly maxBytes: number;
+}
+```
+
 ### `GraphKeyField` {#type-graphkeyfield}
 
  Expand GraphKeyField
@@ -7981,6 +8253,8 @@ export interface GraphPlotOptions {
   id?: string; layout?: string; routes?: string | false; origin?: "auto" | readonly [number, number]; clip?: boolean;
   nodes?: GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey })[] };
   edges?: GraphEdgePaint; labels?: false | GraphLabelsOptions;
+  /** Explicit concrete graphic capacity from 1 to 100,000; omitted keeps the default 10,000. */
+  maxItems?: number;
 }
 ```
 
@@ -8026,6 +8300,8 @@ Related types: [`InferredGraphSource`](../../../reference/types/#type-inferredgr
 
 ```typescript
 export type GraphicClip = GraphicClipRect | GraphicClipPath;
+
+/** One fully materialized primitive in a flat linear-light weighted blend. */
 ```
 
 Related types: [`GraphicClipRect`](../../../reference/types/#type-graphiccliprect) · [`GraphicClipPath`](../../../reference/types/#type-graphicclippath).
@@ -8063,11 +8339,14 @@ export type GraphicType =
   | "canvas"
   | "collection"
   | "circle"
+  | "circle-batch"
+  | "path-batch"
   | "rect"
   | "line"
   | "text"
   | "path"
-  | "image";
+  | "image"
+  | "weighted-blend";
 ```
 
 ### `GraticuleOptions` {#type-graticuleoptions}
@@ -8076,6 +8355,7 @@ export type GraphicType =
 
 ```typescript
 export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
+  readonly capacity?: GeoMarkCapacity;
   readonly id?: string; readonly coordinate?: string; readonly fill?: "none";
   readonly stepDeg?: readonly [number, number];
   readonly extentDeg?: readonly [readonly [number, number], readonly [number, number]];
@@ -8083,7 +8363,7 @@ export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
 }
 ```
 
-Related types: [`GeoMarkStyleOptions`](../../../reference/types/#type-geomarkstyleoptions).
+Related types: [`GeoMarkStyleOptions`](../../../reference/types/#type-geomarkstyleoptions) · [`GeoMarkCapacity`](../../../reference/types/#type-geomarkcapacity).
 
 ### `GridDirectionOptions` {#type-griddirectionoptions}
 
@@ -8186,7 +8466,7 @@ Related types: [`NonPointBandPositionScaleOptions`](../../../reference/types/#ty
  Expand HierarchicalEdgeRouteOptions
 
 ```typescript
-export interface HierarchicalEdgeRouteOptions extends EdgeRouteCommonOptions {
+export type HierarchicalEdgeRouteOptions = EdgeRouteCommonOptions & {
   readonly hierarchy?: string; readonly hierarchyLayout?: string;
   readonly mapping: readonly { readonly nodeKey: RowKey; readonly hierarchyKey: RowKeyScalar }[];
   readonly strength?: number; readonly tolerance?: number; readonly maxSubdivisions?: number;
@@ -8335,7 +8615,7 @@ type HistogramCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };
 ```
 
@@ -8588,10 +8868,11 @@ Related types: [`GraphNeighborDefinition`](../../../reference/types/#type-graphn
 export interface InferredGraphSource {
   readonly nodeKey: GraphKeyField; readonly ruleId: string; readonly attributes?: readonly string[];
   readonly maxNodes?: number; readonly maxEdges?: number;
+  readonly execution?: GraphInferenceExecution;
 }
 ```
 
-Related types: [`GraphKeyField`](../../../reference/types/#type-graphkeyfield).
+Related types: [`GraphKeyField`](../../../reference/types/#type-graphkeyfield) · [`GraphInferenceExecution`](../../../reference/types/#type-graphinferenceexecution).
 
 ### `InferredRuleDatumPositionEncodingOptions` {#type-inferredruledatumpositionencodingoptions}
 
@@ -9472,6 +9753,16 @@ export type NamedCompleteAxis<P extends string> = CompleteAxisOptions<P> & { id:
 ```
 
 Related types: [`CompleteAxisOptions`](../../../reference/types/#type-completeaxisoptions).
+
+### `NavigateProjectionOptions` {#type-navigateprojectionoptions}
+
+ Expand NavigateProjectionOptions
+
+```typescript
+export interface NavigateProjectionOptions { readonly target?: string; readonly operation: GeoCameraOperation; }
+```
+
+Related types: [`GeoCameraOperation`](../../../reference/types/#type-geocameraoperation).
 
 ### `NonCartesianStrokeDashChannel` {#type-noncartesianstrokedashchannel}
 
@@ -10872,6 +11163,20 @@ export interface PreparedGraphEdgeRoutes {
 }
 ```
 
+### `PreparedGraphEdgeRoutesUpdate` {#type-preparedgraphedgeroutesupdate}
+
+ Expand PreparedGraphEdgeRoutesUpdate
+
+```typescript
+export interface PreparedGraphEdgeRoutesUpdate {
+  readonly [preparedGraphEdgeRoutesUpdate]: true; readonly kind: "edge-route-preparation";
+  readonly request: { readonly kind: "update"; readonly action: ResolvedNativeRouteAction | DiscoveredNativeRouteAction; readonly args: Readonly<Record<string, unknown>> };
+  readonly inputHashes: readonly string[];
+}
+```
+
+Related types: [`ResolvedNativeRouteAction`](../../../reference/types/#type-resolvednativerouteaction) · [`DiscoveredNativeRouteAction`](../../../reference/types/#type-discoverednativerouteaction).
+
 ### `PreparedImageResource` {#type-preparedimageresource}
 
  Expand PreparedImageResource
@@ -10881,6 +11186,17 @@ export interface PreparedImageResource<Kind extends "create" | "replace" = "crea
   readonly [preparedImageResourceBrand]: Kind;
   readonly kind: "image-resource";
   readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+```
+
+### `PreparedInferredGraphData` {#type-preparedinferredgraphdata}
+
+ Expand PreparedInferredGraphData
+
+```typescript
+export interface PreparedInferredGraphData {
+  readonly [preparedInferredGraph]: true; readonly kind: "graph-inference-preparation";
+  readonly request: { readonly kind: "create" | "edit"; readonly id: string }; readonly inputHash: string;
 }
 ```
 
@@ -11956,6 +12272,15 @@ Related types: [`RequestedTransform`](../../../reference/types/#type-requestedtr
 type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
 ```
 
+### `ResolvedNativeRouteAction` {#type-resolvednativerouteaction}
+
+ Expand ResolvedNativeRouteAction
+
+```typescript
+export type ResolvedNativeRouteAction = "editLayout" | "editGraphData" | "editFlowData" | "editHierarchyData" | "editInferredGraphData" | "reviseData" | "editDerivedData" | "editParameter" | "editCanvas" | "fitCanvas" | "navigateProjection" | "applyDataUpdate" | "filterMarks" | "removeMarkFilter" | "editComputedData" | "editFilteredData" | "editFlattenData" | "editLookupData" | "editFoldData" | "editSummaryData" | "editBinData" | "editTimeUnitData" | "editWindowData" | "editDensityData" | "editStackData" | "editRegressionData" | "editSortedData" | "editIntervalData" | "editECDFData" | "editNormalizedData" | "editCompleteData" | "editPivotData" | "editImputedData" | "editBin2DData" | "editRegressionStatisticsData";
+/** Any other public action: it is replayed, and its routes are the bounded routes its jobs reach. */
+```
+
 ### `ResponsiveCanvasOptions` {#type-responsivecanvasoptions}
 
  Expand ResponsiveCanvasOptions
@@ -12811,6 +13136,96 @@ export interface SummaryDataOptions {
 
 Related types: [`SummaryAggregateOptions`](../../../reference/types/#type-summaryaggregateoptions) · [`StatisticalWeight`](../../../reference/types/#type-statisticalweight).
 
+### `TableBandPaint` {#type-tablebandpaint}
+
+ Expand TableBandPaint
+
+```typescript
+export interface TableBandPaint { readonly fill?: FillPaint; readonly color?: FillPaint; readonly fontWeight?: string | number; }
+```
+
+Related types: [`FillPaint`](../../../reference/types/#type-fillpaint).
+
+### `TableCellPaint` {#type-tablecellpaint}
+
+ Expand TableCellPaint
+
+```typescript
+export interface TableCellPaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`MarkOutline`](../../../reference/types/#type-markoutline) · [`MarkShadow`](../../../reference/types/#type-markshadow).
+
+### `TableColumn` {#type-tablecolumn}
+
+ Expand TableColumn
+
+```typescript
+export type TableColumn = string | {
+  readonly key?: RowKey; readonly field: string; readonly label?: string; readonly format?: string; readonly missingText?: string;
+  readonly width?: number | "auto"; readonly align?: "left" | "center" | "right"; readonly wrap?: false | "word" | "character";
+} & ({ readonly cell?: "text" | "bar" | { readonly type: "text" } | { readonly type: "bar"; readonly domain?: readonly [number, number] };
+       readonly footer?: false | ScalarAggregateOperation | TableFooterOptions } |
+     { readonly cell: TableSparklineCell; readonly footer?: false | "count" | (Omit<TableFooterOptions, "op"> & { readonly op: "count" }) });
+```
+
+Related types: [`RowKey`](../../../reference/types/#type-rowkey) · [`ScalarAggregateOperation`](../../../reference/types/#type-scalaraggregateoperation) · [`TableFooterOptions`](../../../reference/types/#type-tablefooteroptions) · [`TableSparklineCell`](../../../reference/types/#type-tablesparklinecell).
+
+### `TableFooterOptions` {#type-tablefooteroptions}
+
+ Expand TableFooterOptions
+
+```typescript
+export interface TableFooterOptions {
+  readonly op: ScalarAggregateOperation; readonly missing?: "drop" | "error"; readonly empty?: "null" | "identity"; readonly format?: string;
+}
+```
+
+Related types: [`ScalarAggregateOperation`](../../../reference/types/#type-scalaraggregateoperation).
+
+### `TableLabelPaint` {#type-tablelabelpaint}
+
+ Expand TableLabelPaint
+
+```typescript
+export interface TableLabelPaint {
+  readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`MarkOutline`](../../../reference/types/#type-markoutline) · [`MarkShadow`](../../../reference/types/#type-markshadow).
+
+### `TableSparklineCell` {#type-tablesparklinecell}
+
+ Expand TableSparklineCell
+
+```typescript
+export type TableSparklineCell = {
+  readonly type: "sparkline"; readonly x: string; readonly y: string;
+  readonly xDomain?: readonly [number, number]; readonly curve?: CurveInterpolation;
+  readonly tension?: number; readonly missing?: "error" | "break";
+} & ({ readonly xType?: "quantitative"; readonly temporalUnit?: never } |
+  { readonly xType: "temporal"; readonly temporalUnit?: "year" | "timestamp" }) &
+  ({ readonly resolveY?: "shared"; readonly yDomain?: readonly [number, number] } |
+   { readonly resolveY: "independent"; readonly yDomain?: never });
+```
+
+Related types: [`CurveInterpolation`](../../../reference/types/#type-curveinterpolation).
+
+### `TableSparklinePaint` {#type-tablesparklinepaint}
+
+ Expand TableSparklinePaint
+
+```typescript
+export type TableSparklinePaint = Pick<TableCellPaint, "stroke" | "strokeWidth" | "opacity" | "outline" | "shadow">;
+```
+
+Related types: [`TableCellPaint`](../../../reference/types/#type-tablecellpaint).
+
 ### `TargetedOptions` {#type-targetedoptions}
 
  Expand TargetedOptions
@@ -12878,6 +13293,9 @@ Related types: [`TextFormat`](../../../reference/types/#type-textformat).
 
 ```typescript
 export type TextFormat = ValueFormat;
+
+/** Source-owned Text also accepts Full geographic feature/graticule marks without a dataset.
+ * Geographic anchors use the source centroid; field/value text, native styles and label layout retain their existing contracts. */
 ```
 
 Related types: [`ValueFormat`](../../../reference/types/#type-valueformat).
@@ -13284,6 +13702,61 @@ export type TopologyGeometry = Readonly<Record<string, unknown>> & ({ readonly i
 ```
 
 Related types: [`GeometryJSONValue`](../../../reference/types/#type-geometryjsonvalue) · [`GeometryPosition`](../../../reference/types/#type-geometryposition).
+
+### `TrailBodyPaint` {#type-trailbodypaint}
+
+ Expand TrailBodyPaint
+
+```typescript
+export interface TrailBodyPaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number;
+  readonly opacity?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`MarkOutline`](../../../reference/types/#type-markoutline) · [`MarkShadow`](../../../reference/types/#type-markshadow).
+
+### `TrailPatch` {#type-trailpatch}
+
+ Expand TrailPatch
+
+```typescript
+type TrailPatch<T> = T extends unknown ? Partial<Omit<T, "id">> : never;
+```
+
+### `TrailPlotOptions` {#type-trailplotoptions}
+
+ Expand TrailPlotOptions
+
+```typescript
+export interface TrailPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string;
+  /** A nonnegative finite pixel width or the name of a field containing one width per sample. */
+  readonly width: number | string;
+  readonly groupBy?: string | readonly string[] | false;
+  readonly missing?: "error" | "break";
+  readonly closed?: boolean; readonly lineJoin?: "miter" | "bevel" | "round";
+  readonly lineCap?: "butt" | "square" | "round"; readonly miterLimit?: number;
+  readonly fillRule?: "nonzero" | "evenodd"; readonly body?: TrailBodyPaint;
+  readonly color?: false | OHLCColor; readonly clip?: boolean; readonly blend?: BlendMode;
+}
+```
+
+Related types: [`TrailBodyPaint`](../../../reference/types/#type-trailbodypaint) · [`OHLCColor`](../../../reference/types/#type-ohlccolor) · [`BlendMode`](../../../reference/types/#type-blendmode).
+
+### `TrailPosition` {#type-trailposition}
+
+ Expand TrailPosition
+
+```typescript
+export type TrailPosition = string | ({ readonly field: string } & (
+  | { readonly fieldType?: "quantitative"; readonly scale?: NonPointQuantitativePositionScaleOptions; readonly temporalUnit?: never }
+  | { readonly fieldType: "temporal"; readonly scale?: NonPointTemporalPositionScaleOptions; readonly temporalUnit?: TemporalInputUnit }
+  | { readonly fieldType: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions; readonly temporalUnit?: never }
+));
+```
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](../../../reference/types/#type-nonpointquantitativepositionscaleoptions) · [`NonPointTemporalPositionScaleOptions`](../../../reference/types/#type-nonpointtemporalpositionscaleoptions) · [`TemporalInputUnit`](../../../reference/types/#type-temporalinputunit) · [`NonPointCategoricalPositionScaleOptions`](../../../reference/types/#type-nonpointcategoricalpositionscaleoptions).
 
 ### `TreePlotOptions` {#type-treeplotoptions}
 

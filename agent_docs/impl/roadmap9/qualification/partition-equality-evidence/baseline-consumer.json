@@ -1,0 +1,22 @@
+{
+  "consumer": {
+    "node": "v22.23.1",
+    "n": 1000,
+    "verified": 4000,
+    "rebaseVerified": 9000,
+    "wireBytes": 2131841,
+    "wireSHA256": "fe00fae84c405a0e75c48c737cfb755dcd6ab654811bed9b016aea59f25d9342",
+    "default10000Rejected": true
+  },
+  "artifact": {
+    "external": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/point-capacity-merged/pinned-pack/ggaction-0.0.26.tgz"
+  },
+  "archiveSHA256": "0f38bed7adfe2e13f08a86af21214e6696d9e2e5e0d99c3682c6b15a965f48c8",
+  "animation": {
+    "specifier": "ggaction/animation",
+    "chunks": 1,
+    "modules": 509,
+    "minifiedBytes": 1112941,
+    "gzipBytes": 332599
+  }
+}

@@ -5,7 +5,7 @@ import { findStoredResource, requireStoredResource, resolveInputReference, dataI
 import { validateResourceGraph, validateStoredResource, resourceDependencies, orderResourceDependencies, planStoredResourceRemoval, collectParameterInputReferences } from "../../materialization/resourceState.js";
 import { dataSourceValueHash } from "../../grammar/dataSourcePayload.js";
 import { dataSourcesForDataset, validateDataSourceState } from "../../materialization/dataSourceState.js";
-import { preparedResourceResults, preparedResourceDataReplacements, preparedResourceDataRooted, preparedResourceDataProjection, preparedResourceScreenRooted } from "./preparedResourceContext.js";
+import { preparedResourceRouteScope, preparedResourceResults, preparedResourceDataReplacements, preparedResourceDataRooted, preparedResourceDataProjection, preparedResourceScreenRooted } from "./preparedResourceContext.js";
 import { mapLayerResourceBindings, mapCoordinateResourceBindings } from "../../core/resourceReferences.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 
@@ -49,7 +49,8 @@ export function replaceStoredResource(program, parsed, value, args) {
   for (const candidate of orderResourceDependencies(program.semanticSpec.resources)) {
     if (screenRooted && candidate.kind === "edge-route" && candidate.options.coordinateSpace === "screen" &&
         dataSourceValueHash(candidate.result.viewport) !== dataSourceValueHash(value.result.viewport)) {
-      allowed.add(JSON.stringify([candidate.kind, candidate.id]));
+      const routeKey = JSON.stringify([candidate.kind, candidate.id]);
+      allowed.add(routeKey); affected.add(routeKey);
       continue;
     }
     const owns = dataRooted ? ["hierarchy", "graph", "geometry", "layout", "edge-route", "projection"].includes(candidate.kind)
@@ -57,8 +58,9 @@ export function replaceStoredResource(program, parsed, value, args) {
         candidate.kind === "layout" && ["hierarchy", "graph"].includes(value.kind) ||
         candidate.kind === "graph" && candidate.provenance.origin === "inferred" && value.kind === "graph" ||
         candidate.kind === "edge-route" && ["graph", "hierarchy", "layout"].includes(value.kind) ||
-        candidate.kind === "projection" && value.kind === "geometry" ||
-        candidate.kind === "geometry" && ["geo-join", "geo-lod"].includes(candidate.options.method) && value.kind === "geometry";
+        candidate.kind === "projection" && ["geometry", "edge-route", "graph", "hierarchy", "layout"].includes(value.kind) ||
+        candidate.kind === "geometry" && ["geo-routes", "geo-join", "geo-lod"].includes(candidate.options.method) &&
+          ["geometry", "edge-route", "graph", "hierarchy", "layout"].includes(value.kind);
     if (owns && candidate.inputs.some(ref => affected.has(JSON.stringify([ref.kind, ref.id])) ||
         dataRooted && ref.kind === "data" && dataReplacements.has(ref.id))) {
       const key = JSON.stringify([candidate.kind, candidate.id]); affected.add(key); allowed.add(key);
@@ -135,7 +137,7 @@ export function replaceStoredResource(program, parsed, value, args) {
   const layers = mapLayerResourceBindings(program.semanticSpec.layers, rebindConsumer);
   const coordinates = mapCoordinateResourceBindings(program.semanticSpec.coordinates, rebindConsumer);
   const semanticSpec = { ...program.semanticSpec, resources: cloneAndFreeze(resources), layers: cloneAndFreeze(layers), coordinates: cloneAndFreeze(coordinates) };
-  validateResourceGraph({ ...program, semanticSpec }, program.constructor);
+  validateResourceGraph({ ...program, semanticSpec }, program.constructor, preparedResourceRouteScope(args, program));
   const selections = program.materializationConfigs.selections;
   const rebound = selections === undefined ? undefined : Object.fromEntries(Object.entries(selections).map(([id, definition]) => {
     const revision = revisions.get(JSON.stringify([definition.resource?.kind, definition.resource?.id]));

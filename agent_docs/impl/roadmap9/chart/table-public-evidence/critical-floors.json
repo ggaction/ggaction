@@ -1,0 +1,101 @@
+{
+  "floors": {
+    "actions/charts/table.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "actions/marks/table/index.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/cells.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/tableData.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/tablePlot.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/selection/policies/table.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/table/layout.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/table/plot.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/table/text.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  },
+  "coverage": {
+    "actions/charts/table.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "actions/marks/table/index.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/cells.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/tableData.js": {
+      "lines": 100,
+      "branches": 94.44,
+      "functions": 100
+    },
+    "grammar/tablePlot.js": {
+      "lines": 100,
+      "branches": 97.92,
+      "functions": 100
+    },
+    "materialization/selection/policies/table.js": {
+      "lines": 100,
+      "branches": 96.3,
+      "functions": 100
+    },
+    "materialization/table/layout.js": {
+      "lines": 100,
+      "branches": 98.48,
+      "functions": 100
+    },
+    "materialization/table/plot.js": {
+      "lines": 100,
+      "branches": 95.83,
+      "functions": 100
+    },
+    "materialization/table/text.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 100,
+      "branches": 98.03,
+      "functions": 100
+    }
+  }
+}

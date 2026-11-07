@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "status": "private-route-interpolation-verified",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "publicPlannerComplete": false,
+  "kernelVersion": "anchored-arc-length-route@1",
+  "tests": {
+    "node20": 24,
+    "node22": 24,
+    "node24": 24,
+    "discovery": 16
+  },
+  "coverage": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "packageMeasure": {
+    "entries": 1062,
+    "packedBytes": 1512054,
+    "unpackedBytes": 6897208
+  },
+  "logs": [
+    {
+      "file": "animation-routes-final-coverage.log.gz",
+      "sha256": "702c739ff81f8b65b2e09e5ec722ba155f280f6f311e927c15ea01a2b9af2505",
+      "status": "passed"
+    },
+    {
+      "file": "animation-routes-final-node20.log.gz",
+      "sha256": "07f1c58006692b0c84c7ed2b275a59a7bd74cad90313b0bfb8706a68735bd7de",
+      "status": "passed"
+    },
+    {
+      "file": "animation-routes-final-node24.log.gz",
+      "sha256": "28f1f206b3c3a262862bafd7ba4194f3b1b266ce8ccd21059027a66413f1e8c3",
+      "status": "passed"
+    },
+    {
+      "file": "animation-routes-final-discovery.log.gz",
+      "sha256": "df917a220f922e3a4f2688b650aa93f5c95f913bb168df9b652d7464a887f0f7",
+      "status": "passed"
+    },
+    {
+      "file": "animation-routes-package-contract.log.gz",
+      "sha256": "92c5e903299a8ddc25e7bfc3b016f0bc09489c3add7c5074ee2dd629ffc1fbc8",
+      "status": "passed"
+    },
+    {
+      "file": "animation-routes-final-docs.log.gz",
+      "sha256": "0caf8ec76296180a85a798055c3b964a7d6026cb85ea650e7ab5b2498dcca8f5",
+      "status": "passed"
+    }
+  ],
+  "sourceCommit": "f90191219"
+}

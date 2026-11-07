@@ -1,0 +1,21 @@
+{
+  "node": "22.23.1",
+  "sha": "3364bce3f7fad099c1e7adb25e8a4f0d88dfc8841ed285b0d0c129c8da0e1451",
+  "records": [
+    {
+      "file": "recipes/marginal.md",
+      "sha256": "1ccba43402099d7396a8a671a8ef02869c06b0c81c5b4143a135df464809557b",
+      "status": "passed"
+    },
+    {
+      "file": "recipes/bullet.md",
+      "sha256": "40dc19f5ba47c022f769a580a78335a195c0e8aabea0985f777ad78ea48091db",
+      "status": "passed"
+    },
+    {
+      "file": "recipes/combo.md",
+      "sha256": "ca9ef46f843410f6b993e4c661df7b60f774b99afae6e3fa78c6ce80b960354b",
+      "status": "passed"
+    }
+  ]
+}

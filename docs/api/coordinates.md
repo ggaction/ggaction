@@ -215,9 +215,10 @@ A layer cannot be silently moved from one coordinate to another, and Cartesian
 x/y cannot be mixed with Polar theta/radius. Polar point, open-line, closed
 radar, donut, rose, and radial-bar charts support theta/radius axes and grids.
 Parallel coordinates support dimension axes but do not create a Cartesian or
-Polar grid.
+Polar grid. Geo coordinates bind a projection (Full only); Cartesian, Polar and
+Parallel encodings and guides cannot attach to a Geo coordinate.
 
 ## Related
 
 [Position encodings](./position-encodings.md) · [Axes](./axes.md) ·
-[Grids](./grids.md)
+[Grids](./grids.md) · [Geometry and projections](./geometry.md)

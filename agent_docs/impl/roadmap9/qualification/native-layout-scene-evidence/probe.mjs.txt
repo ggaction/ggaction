@@ -1,0 +1,13 @@
+import { chart } from '../../src/index.js';
+import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from '../../src/animation.js';
+import { createFlowInspection } from '../../test/support/flow-inspection.js';
+import assert from 'node:assert/strict';
+const rows=[{id:'root',parent:null,v:4},{id:1,parent:'root',v:3},{id:'1',parent:'root',v:1}];
+for(const family of ['tree','treemap','dag','cyclic']){
+ const from=family==='dag'||family==='cyclic'?createFlowInspection(family):chart().createCanvas({width:320,height:240,margin:20}).createData({id:'d',keyField:'id',values:rows}).createHierarchyData({id:'h',key:'id',parent:'parent',value:'v'}).layoutHierarchy({id:'l',method:family,options:family==='tree'?{nodeSize:[10,10],siblingGap:30,depthGap:40,orientation:'vertical'}:{size:[200,150],padding:5,method:'slice-dice'}})[family==='tree'?'createTreePlot':'createTreemapPlot']({id:'plot',labels:false});
+ const to=from.editLayout({options:family==='tree'?{depthGap:80,siblingGap:70}:family==='treemap'?{size:[240,180]}:{nodeWidth:30,nodePadding:20}});
+ const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),frame=sampleTransition(plan,40);
+ const result={family,tracks:plan.tracks.map(t=>[t.kind,t.reason]),types:frame.scene.nodes.map(n=>n.type)};
+ for(const key of ['original','rebase'])try{const p=key==='original'?plan:planTransition({from:frame,to:from,options:{durationMs:60,easing:'linear'}});const restored=deserializeAnimation(serializeAnimation(p)).plan;for(const time of [0,20,60])assert.deepEqual(sampleTransition(restored,time),sampleTransition(p,time));result[key]='pass';}catch(e){result[key]=e.stack;}
+ console.log(JSON.stringify(result));
+}

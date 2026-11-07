@@ -1,7 +1,8 @@
+import { isScreenAnnotation, validateScreenAnnotationLayer, screenAnnotationKey } from "../../../grammar/screenAnnotation.js";
 import { selectProgramItemKeys } from "../expression.js";
 import { memberRowReferences } from "../rows.js";
 import { normalizeTemporalValue } from "../../../grammar/scales/fields.js";
-import { cloneAndFreeze, isPlainObject } from "../../../core/immutable.js";
+import { cloneAndFreeze, isPlainObject, ownWhenMembersOwned } from "../../../core/immutable.js";
 import {
   MARK_GRAPHIC_PROPERTIES
 } from "../../../grammar/markSelection.js";
@@ -12,6 +13,7 @@ import { selectionPredicate } from "../predicate.js";
 import { requireDataset } from "../../../selectors/datasets.js";
 import { canonicalJSON, contentDigest } from "../../../core/contentDigest.js";
 import { encodeValue } from "../../../core/valueEncoding.js";
+import { drainStages, mapStages } from "../../../core/stages.js";
 
 const rowKeySets = new WeakMap();
 function itemNamespace(program, dataset, keys) {
@@ -27,17 +29,26 @@ function itemNamespace(program, dataset, keys) {
 }
 
 export function identifyItems(program, layer, grain, definitions) {
+  return drainStages(identifyItemsStages(program, layer, grain, definitions));
+}
+
+export function* identifyItemsStages(program, layer, grain, definitions) {
+  if (isScreenAnnotation(layer)) {
+    validateScreenAnnotationLayer(layer);
+    if (grain !== "text" || definitions.length > 1 || definitions.some(item => item.members.length)) throw new TypeError("Screen annotation has one rowless Text item.");
+    return definitions.map(item => ({ ...item, key: screenAnnotationKey(layer.id), memberKeys: [], topology: "" }));
+  }
   const dataset = requireDataset(program, layer.data);
   const keysByRow = new Map();
-  dataset.values.forEach((row, index) => keysByRow.set(row, [...(keysByRow.get(row) ?? []), dataset.rowKeys[index]]));
-  return definitions.map(definition => {
+  yield* mapStages(dataset.values, (row, index) => { keysByRow.set(row, [...(keysByRow.get(row) ?? []), dataset.rowKeys[index]]); });
+  return yield* mapStages(definitions, definition => {
     const memberKeys = definition.memberKeys ?? (definition.rowKey ? [definition.rowKey]
       : [...new Set(definition.members.flatMap(row => keysByRow.get(row) ?? []))]);
     const identity = definition.semanticIdentity ?? (definition.rowKey === undefined
       ? ["members", [...memberKeys].sort()] : ["row", definition.rowKey]);
     const key = JSON.stringify([[], layer.id, grain, [itemNamespace(program, dataset, memberKeys), canonicalJSON(encodeValue(identity))]]);
     return { ...definition, key, memberKeys,
-      topology: ["line", "area"].includes(layer.mark.type) ? contentDigest(JSON.stringify(definition.topologyKeys ?? memberKeys)) : "" };
+      topology: ["line", "area", "trail"].includes(layer.mark.type) ? contentDigest(JSON.stringify(definition.topologyKeys ?? memberKeys)) : "" };
   });
 }
 
@@ -137,8 +148,12 @@ function collectionBounds(program, items) {
   return { x: left, y: top, width: right - left, height: bottom - top };
 }
 
-export function finalizeItems(program, layer, grain, definitions, graphicType, { reorder = true, selectionResolvers } = {}) {
-  if (selectionResolvers?.sourceOnly) return identifyItems(program, layer, grain, definitions);
+export function finalizeItems(program, layer, grain, definitions, graphicType, options) {
+  return drainStages(finalizeItemsStages(program, layer, grain, definitions, graphicType, options));
+}
+
+export function* finalizeItemsStages(program, layer, grain, definitions, graphicType, { reorder = true, selectionResolvers, resourceBacked = false } = {}) {
+  if (selectionResolvers?.sourceOnly) return resourceBacked ? definitions : yield* identifyItemsStages(program, layer, grain, definitions);
   const graphic = requireResolvedGraphic(program, layer, graphicType);
   const referenced = definitions.flatMap((definition, index) =>
     definition.graphicIndices ?? [index]
@@ -152,7 +167,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
       `Mark "${layer.id}" item count does not match its materialized graphics.`
     );
   }
-  definitions = identifyItems(program, layer, grain, definitions);
+  if (!resourceBacked) definitions = yield* identifyItemsStages(program, layer, grain, definitions);
   if (reorder) {
     definitions = reorderHighlightedItems(program, layer, definitions, {}, selectionResolvers);
     if (definitions.some(definition => definition.graphicIndices !== undefined)) {
@@ -165,18 +180,18 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
       });
     }
   }
-  const positions = selectionResolvers?.identityOnly
-    ? new Map(requireDataset(program, layer.data).rowKeys.map((key, index) => [key, index]))
+  const positions = selectionResolvers?.identityOnly && !resourceBacked
+    ? new Map((isScreenAnnotation(layer) ? [] : requireDataset(program, layer.data).rowKeys).map((key, index) => [key, index]))
     : undefined;
-  return Object.freeze(definitions.map((definition, index) => {
+  return Object.freeze(yield* mapStages(definitions, (definition, index) => {
     const indices = definition.graphicIndices ?? [index];
     const items = indices.map(childIndex => graphic.items[childIndex]);
     if (positions !== undefined) return Object.freeze({
       key: definition.key,
       topology: definition.topology,
-      graphicRoles: Object.freeze(definition.graphicRoles ?? ["body"]),
-      rowKeys: Object.freeze([...new Set(definition.memberKeys)].sort((a, b) => positions.get(a) - positions.get(b))),
-      graphicIds: Object.freeze(items.map((child, offset) => child.id ?? graphicId(layer, indices[offset])))
+      graphicRoles: ownWhenMembersOwned(definition.graphicRoles ?? ["body"]),
+      rowKeys: ownWhenMembersOwned([...new Set(definition.memberKeys)].sort((a, b) => positions.get(a) - positions.get(b))),
+      graphicIds: ownWhenMembersOwned(items.map((child, offset) => child.id ?? graphicId(layer, indices[offset])))
     });
     const properties = definition.properties === undefined ? (
       items.length === 1
@@ -192,6 +207,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
     return Object.freeze({
       key: definition.key,
       topology: definition.topology,
+      ...(resourceBacked ? { lineage: definition.lineage, rowKeys: [], ...(definition.representationKeys === undefined ? {} : { representationKeys: definition.representationKeys }) } : {}),
       graphicRoles: Object.freeze(definition.graphicRoles ?? ["body"]),
       layer: layer.id,
       markType: layer.mark.type,
@@ -202,7 +218,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
         ? {}
         : { geometry: cloneAndFreeze(definition.geometry) }),
       members: Object.freeze([...definition.members]),
-      rows: Object.freeze(memberRowReferences(program, definition.members, layer.data, definition.memberKeys)),
+      rows: Object.freeze(resourceBacked ? [...definition.rows] : memberRowReferences(program, definition.members, layer.data, definition.memberKeys)),
       graphicIds: Object.freeze(items.map((child, childOffset) =>
         child.id ?? graphicId(layer, indices[childOffset])
       ))
@@ -220,7 +236,7 @@ export function reorderHighlightedItems(program, layer, definitions, groups = {}
     if (selection?.target !== layer.id) continue;
     const predicate = selectionPredicate(program, selection, selectionResolvers);
     const grouped = groups[predicate.grain];
-    const candidates = (grouped ?? ordered).map(item => ({ ...item, properties: item.properties ?? {}, ...(predicate.rows ? { rows: memberRowReferences(program, item.members, layer.data, item.memberKeys) } : {}) }));
+    const candidates = (grouped ?? ordered).map(item => ({ ...item, properties: item.properties ?? {}, ...(predicate.rows ? { rows: item.rows ?? memberRowReferences(program, item.members, layer.data, item.memberKeys) } : {}) }));
     let selected = new Set(selectProgramItemKeys(program, candidates, predicate));
     if (grouped) {
       const members = new Set(grouped.filter(item => selected.has(item.key)).flatMap(item => item.members));

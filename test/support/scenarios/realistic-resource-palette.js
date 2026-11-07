@@ -39,6 +39,7 @@ export function* realisticResourcePalettePrograms(dataset, ordinal) {
     intervalRoles: {low: "0.88*positiveValue", open: "low", high: "1.12*positiveValue", close: "high"},
     contourX: {field: "sourceRowIndex", min: minIndex, max: maxIndex},
     contourY: {field: "value", min: minValue, max: maxValue},
+    trail: {x: "paletteX", y: "paletteY", groupBy: "category", width: 8},
     waterfall: {stage: "sourceRowIndex", role: "delta", value: "positiveValue"},
     purpose: "generic palette API coverage; not financial-source evidence"
   }]);
@@ -103,6 +104,22 @@ export function* realisticResourcePalettePrograms(dataset, ordinal) {
     program: base().createWaterfallPlot({id: "steps", data: "analysisRows",
       x: "paletteStage", role: "paletteRole", value: "paletteValue", guides: false, color: continuous})
       .editWaterfallPlot({target: "steps", color: continuous})
+  };
+
+  yield {
+    kind: "trail", provenance,
+    program: base().createTrailPlot({id: "ribbons", data: "analysisRows",
+      x: "paletteX", y: "paletteY", width: 8, groupBy: "category", guides: false,
+      color: categorical})
+      .editTrailPlot({target: "ribbons", color: categorical})
+  };
+
+  yield {
+    kind: "table", provenance,
+    program: base().createTablePlot({id: "records", data: "analysisRows", rowHeight: 20,
+      columns: [{field: "category", width: 300}, {field: "value", width: 300, cell: "bar"}],
+      color: categorical})
+      .editTablePlot({target: "records", color: categorical})
   };
 
   const conditional = {

@@ -15,11 +15,112 @@ import { chart } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import { chart as basic } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 import { createInteractionSession, type InteractionCommand } from ${JSON.stringify(path.join(root, "types/interaction.js"))};
 import { createTransitionScene } from ${JSON.stringify(path.join(root, "types/scene.js"))};
+import { planTransition, sampleTransition, type AnyTransitionFrame } from ${JSON.stringify(path.join(root, "types/animation.js"))};
 chart().editLayout({target:'layout',node:{key:[1,'a'],x:1,y:2}});
 // @ts-expect-error a single-node patch cannot also replace layout options
 chart().editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
-const program = chart(); const session = createInteractionSession({ program });
+createInteractionSession({program:basic(),bindings:[{type:'keyboard',targets:[{target:'points'}]}]});
+createInteractionSession({program:chart(),bindings:[{type:'keyboard',targets:[{target:{childPath:['a'],id:'points'},activation:{type:'select',selection:'picked',mode:'toggle'}},{target:'partition',activation:{type:'focusHierarchy'}}]}]});
+createInteractionSession({program:chart(),hitPreparation:{maxSceneNodes:100001,maxWork:128000000}});
+createInteractionSession({program:chart(),hitPreparation:{}});
+// @ts-expect-error preparation is a closed option record
+createInteractionSession({program:chart(),hitPreparation:{maxItems:100000}});
+// @ts-expect-error limits require numeric values
+createInteractionSession({program:chart(),hitPreparation:{maxWork:'128000000'}});
+const program = chart(); const session = createInteractionSession({ program, historyLimit: 50 });
+session.dispatch({type:'undo',origin:'user',transactionId:'back'});
+session.dispatch({type:'focus',move:'nextCandidate'});session.dispatch({type:'focus',move:'previousCandidate'});
+session.dispatch({type:'unbundleEdge',target:{childPath:['left'],id:'network'},itemKey:'opaque-key'});
+session.dispatch({type:'unbundleEdge',target:'network',itemKey:null});
+session.subscribe(event=>{if(event.type==='unbundleEdge'){const key:string|null=event.itemKey;const owner:string=event.target.id;}});
+// @ts-expect-error edge presentation requires an explicit owner
+session.dispatch({type:'unbundleEdge',itemKey:'key'});
+// @ts-expect-error temporary presentation does not accept a native edit payload
+session.dispatch({type:'unbundleEdge',target:'network',itemKey:'key',payload:{}});
+session.dispatch({type:'focus',move:'firstChild'});session.dispatch({type:'focus',target:'points',itemKey:null});session.dispatch({type:'activate'});
+const currentItem:string|null|undefined=session.getState().focus?.currentItemKey;
+const previewFrame:AnyTransitionFrame|null=session.getState().previewFrame;
+const acceptedScene=session.getState().scene;
+if(acceptedScene.version===3){const entries=acceptedScene.entries;
+// @ts-expect-error version3 has no scalar nodes
+acceptedScene.nodes;}else{const nodes=acceptedScene.nodes;
+// @ts-expect-error version2 has no batch entries
+acceptedScene.entries;}
+
+// @ts-expect-error the preview is an immutable session-owned view
+session.getState().previewFrame=null;
+// @ts-expect-error focus moves and explicit target keys are exclusive
+session.dispatch({type:'focus',move:'first',target:'points',itemKey:'key'});
+// @ts-expect-error no inferred nearest focus
+session.dispatch({type:'focus',move:'nearest'});
+// @ts-expect-error native activation has no arbitrary target override
+session.dispatch({type:'activate',target:'points'});
+// @ts-expect-error focus is immutable
+session.getState().focus!.itemKey='bad';
+session.dispatch({type:'redo'}); session.dispatch({type:'reset'});
+session.updateProgram(program,{history:'record',origin:'replay'});
+session.mount(document.createElement('div'),{observeResize:true});
+session.subscribe(event=>{if(event.type==='resize'){const width:number=event.size.width;const height:number=event.size.height;}});
+// @ts-expect-error resize observation is an explicit boolean, not an implicit viewport policy
+session.mount(document.createElement('div'),{observeResize:'auto'});
+const undoCount:number=session.getState().history.undoCount;
+const asyncSession=createInteractionSession({program,async assetResolver(request){
+  const signal:AbortSignal=request.signal;const revision:number=request.baseRevision;
+  const sample:AnyTransitionFrame|undefined=request.frame;const frameVersion:number|undefined=request.frameVersion;
+  const path:readonly string[]|undefined=request.resourceRevisionVector[0]?.childPath;
+  return {dispose(){}};
+}});
+session.updateProgram(async request=>{const signal:AbortSignal=request.signal;const id:string=request.transactionId;return request.program;},{history:'record',transactionId:'job',origin:'linked',causeTransactionId:'cause'});
+session.subscribe(event=>{if(event.type==='update'){const status:'settled'|'cancelled'|'error'=event.status;const id:string=event.transactionId;}});
+// @ts-expect-error native preparation must return a program
+session.updateProgram(async()=>({}));
+// @ts-expect-error explicit IDs belong to callback preparation, not ordinary replacement
+session.updateProgram(program,{transactionId:'ordinary'});
+const ready:Promise<import(${JSON.stringify(path.join(root, "types/interaction.js"))}).InteractionSettlement>=asyncSession.whenSettled();
+const previewImages = session.getState().previewAssets?.images;
+// @ts-expect-error preview handles are read-only
+session.getState().previewAssets = null;
+// @ts-expect-error asset preparation must return a disposable lease
+createInteractionSession({program,assetResolver:()=>({})});
+// @ts-expect-error asset results use authentic prepared handles
+createInteractionSession({program,assetResolver:()=>({images:{},dispose(){}})});
+// @ts-expect-error dependency vectors are readonly
+asyncSession.getState().preparation?.resourceRevisionVector.push({kind:'parameter',id:'n',revision:0,childPath:[]});
+
+// @ts-expect-error whole-session history has no owner or payload
+session.dispatch({type:'undo',target:'points',payload:{}});
+// @ts-expect-error only record/reset are supported for external updates
+session.updateProgram(program,{history:'append'});
+// @ts-expect-error history counts are immutable
+session.getState().history.undoCount=5;
+chart().editAnnotation({target:'note',text:'New',x:2,dy:-8,placement:'auto',layout:false});
+session.dispatch({type:'annotate',target:{childPath:['left'],id:'note'},payload:{text:'New',fill:'red'}});
+session.dispatch({type:'annotate',target:'map-note',payload:{anchor:{type:'feature',geometry:'regions',key:1,level:'county'},dx:8}});
+session.dispatch({type:'annotate',target:'note',payload:{select:{items:['logical-item']}}});
+chart().createAnnotation({text:'Chosen',source:'bars',selection:'picked'}).editAnnotation({all:true});
+chart().createCanvas().createAnnotation({space:"screen",x:12,y:24,text:"Screen"}).editAnnotation({x:30});
+// @ts-expect-error screen annotations cannot bind a dataset
+chart().createCanvas().createAnnotation({space:"screen",x:12,y:24,text:"Screen",data:"rows"});
+// @ts-expect-error coordinate annotations cannot own item membership
+chart().createAnnotation({text:'Bad',x:1,y:2,select:{items:[]}});
+// @ts-expect-error membership replacement chooses exactly one native mode
+chart().editAnnotation({select:{items:[]},all:true});
+// @ts-expect-error annotation patches do not rebind or create sources
+chart().editAnnotation({target:'note',source:'points'});
+// @ts-expect-error annotation command target cannot be redirected in its payload
+session.dispatch({type:'annotate',target:'note',payload:{target:'other',text:'New'}});
+// @ts-expect-error Text annotation authoring is Full-only
+basic().editAnnotation({target:'note',text:'New'});
+createInteractionSession({program,bindings:[{type:'annotate',target:{childPath:['left'],id:'note'}}]});
+// @ts-expect-error annotation dragging does not own encoded selection or implicit anchors
+createInteractionSession({program,bindings:[{type:'annotate',target:'note',selection:'picked'}]});
 createInteractionSession({program,bindings:[{type:'moveNode',target:'network'}]});
+createInteractionSession({program,bindings:[{type:'moveNode',target:'network',priority:30,modifiers:{shift:false}},{type:'annotate',target:'note',modifiers:{shift:true}}]});
+// @ts-expect-error modifier flags are explicit booleans
+createInteractionSession({program,bindings:[{type:'moveNode',target:'network',modifiers:{shift:1}}]});
+// @ts-expect-error only editing bindings have priority
+createInteractionSession({program,bindings:[{type:'inspect',priority:10}]});
+
 session.dispatch({type:'moveNode',target:'layout',payload:{key:[1,'a'],x:1,y:2}});
 // @ts-expect-error node movement has no implicit key or position
 session.dispatch({type:'moveNode',target:'layout',payload:{x:1,y:2}});
@@ -66,6 +167,22 @@ session.dispatch({type:'setViewport',target:{childPath:['left'],id:'map'},payloa
 session.dispatch({type:'setViewport',target:'map',payload:{type:'mercator'}});
 // @ts-expect-error zoom is not an implicit scale ratio
 session.dispatch({type:'setViewport',target:'map',payload:{zoom:2}});
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'pan',deltaPx:[10,-5]}}});
+createInteractionSession({program,bindings:[{type:'navigate',target:'map',mode:'pan',initial:{type:'identity'},scaleExtent:[0.5,8]}]});
+createInteractionSession({program,bindings:[{type:'navigate',target:'map',mode:'rotate',rotationStepDeg:0.5,initial:{type:'orthographic'},scaleExtent:[1,1000]}]});
+// @ts-expect-error navigation requires an explicit reset baseline
+createInteractionSession({program,bindings:[{type:'navigate',target:'map',mode:'pan',scaleExtent:[1,8]}]});
+// @ts-expect-error rotation requires an explicit degree step
+createInteractionSession({program,bindings:[{type:'navigate',target:'map',mode:'rotate',initial:{type:'orthographic'},scaleExtent:[1,8]}]});
+// @ts-expect-error pan does not accept a rotation step
+createInteractionSession({program,bindings:[{type:'navigate',target:'map',mode:'pan',rotationStepDeg:1,initial:{type:'identity'},scaleExtent:[1,8]}]});
+session.dispatch({type:'setViewport',target:{childPath:['left'],id:'map'},payload:{operation:{type:'zoom',anchorPx:[100,100],factor:2,scaleExtent:[0.5,4]}}});
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'resize',canvas:{width:400,height:300},scaling:'preserve'}}});
+// @ts-expect-error absolute transform and native operation are mutually exclusive
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'pan',deltaPx:[1,2]},scalePx:2}});
+// @ts-expect-error anchored zoom requires an explicit scale extent
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'zoom',anchorPx:[1,2],factor:2}}});
+
 // @ts-expect-error an absolute translation requires two coordinates
 session.dispatch({type:'setViewport',target:'map',payload:{translatePx:[1]}});
 // @ts-expect-error focus is explicit and cannot be omitted
@@ -84,6 +201,21 @@ session.dispatch({type:'setVisibility',target:'points',payload:{clear:true,chann
 createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'xy',mode:'intersect'}]});
 createInteractionSession({program,bindings:[{type:'brush',target:'bars',selection:'picked',axis:'y',channels:{y:'y2'}}]});
 createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',mode:'add'}]});
+createInteractionSession({program,bindings:[{type:'resize',target:{childPath:['left'],id:'points'},selection:'picked',axis:'xy',slop:4}]});
+createInteractionSession({program,bindings:[{type:'resize',target:'points',selection:'picked',axis:'theta',channels:{theta:'theta'}}]});
+createInteractionSession({program,bindings:[{type:'reorder',target:'bars',channel:'x',modifiers:{shift:true}}]});
+const handles=session.getSelectionHandles(); const handleVersion:number=handles.frameVersion;
+for(const handle of handles.handles){const x:number=handle.point.x;const id:string=handle.target.id;if(handle.axis==='theta'){const direction:'theta-start'|'theta-end'=handle.handle;}}
+// @ts-expect-error a resize binding needs an explicit axis
+createInteractionSession({program,bindings:[{type:'resize',target:'points',selection:'picked'}]});
+// @ts-expect-error region resize replaces its authored predicate
+createInteractionSession({program,bindings:[{type:'resize',target:'points',selection:'picked',axis:'x',mode:'toggle'}]});
+// @ts-expect-error only category position axes can be reordered
+createInteractionSession({program,bindings:[{type:'reorder',target:'bars',channel:'color'}]});
+// @ts-expect-error handles are readonly derived values
+handles.handles[0].point.x=3;
+// @ts-expect-error no caller-authored handle identity
+session.getSelectionHandles({handle:'x-min'});
 session.subscribe(event=>{if('phase' in event&&event.phase==='preview'){const preview=event.state.previewProgram;}});
 // @ts-expect-error one-axis brush cannot select the other axis
 createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'x',channels:{y:'y'}}]});
@@ -117,6 +249,16 @@ const unmount = session.mount(element,{rootTransform:[1,0,0,1,0,0]});
 session.dispatch({type:'inspect',point:{x:1,y:2},pointerType:'touch'});
 session.dispatch({type:'leave'});
 session.dispatch({type:'frame',scene:createTransitionScene(program,{format:'canvas'}),generation:0,version:1});
+const sample=sampleTransition(planTransition({from:program,to:program,options:{durationMs:100,easing:'linear'}}),50);
+session.dispatch({type:'frame',frame:sample,generation:0,version:2});
+const accepted:AnyTransitionFrame|null=session.getState().animationFrame;
+const frameImages=session.getState().frameAssets?.images;
+// @ts-expect-error authentic frame and arbitrary scene are exclusive
+session.dispatch({type:'frame',frame:sample,scene:sample.scene,generation:0,version:3});
+// @ts-expect-error accepted frame identity is read-only
+session.getState().animationFrame=sample;
+// @ts-expect-error a plain scene has no authentic animation frame identity
+session.dispatch({type:'frame',frame:sample.scene,generation:0,version:3});
 session.updateProgram(program);session.subscribe(event=>{const key:string|undefined=event.state.hit?.target?.itemKey;});
 session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[],empty:'none'}}});
 session.dispatch({type:'select',target:{childPath:['left'],id:'points'},payload:{id:'picked',select:{field:'x',op:'range',min:2,minInclusive:false},mode:'toggle'},origin:'user'});

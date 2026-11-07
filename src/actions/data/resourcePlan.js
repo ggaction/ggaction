@@ -1,3 +1,5 @@
+import { createGeoRouteResource } from "../../materialization/geo/routeResource.js";
+import { preflightGeoConsumers } from "../geo/closure.js";
 import { validateSelectionExpressionTargets } from "../../materialization/selection/expression.js";
 import { requireLayer } from "../../selectors/layers.js";
 import { layerResourceBindings, mapLayerResourceBindings, mapCoordinateResourceBindings } from "../../core/resourceReferences.js";
@@ -14,7 +16,7 @@ import { createGeoJoinResource } from "../../materialization/geo/joinResource.js
 import { createProjectionResource } from "../../materialization/geo/projectionResource.js";
 import { createCalendarResource } from "../../materialization/calendar/resources.js";
 import { resolveHierarchyPlot } from "../../materialization/hierarchy/plot.js";
-import { applyMaterializationPlan, planLayersDataRematerialization } from "../../materialization/dependencies.js";
+import { applyMaterializationPlanStages, planLayersDataRematerialization } from "../../materialization/dependencies.js";
 import { orderConditionalMarkIds } from "../../materialization/conditionalState.js";
 import { requireMaterializedDataset, requireDataset } from "../../selectors/datasets.js";
 import { dataInputReference, resolveInputReference } from "../../selectors/resources.js";
@@ -25,13 +27,18 @@ import { previewGraphLayouts } from "../graphs/layouts.js";
 import { preflightContourConsumers } from "../contours/closure.js";
 import { preflightCalendarConsumers } from "../calendar/closure.js";
 import { withPreparedDataResourceResults } from "../primitives/preparedResourceContext.js";
-import { reviseEdgeRouteResource, needsScreenRouteRevision } from "../graphs/routeClosure.js";
+import { reviseEdgeRouteResourceStages, needsScreenRouteRevision } from "../graphs/routeClosure.js";
+import { finishRouteStages } from "../../grammar/graph/routes/valueHash.js";
 
 const key = ref => JSON.stringify([ref.kind, ref.id]);
 
 // Full-only orchestration. Numeric factories retain their own validation and
 // budgets; this owner determines only dependency order and the final union.
 export function planSourceResourceRevision(program, dataReplacements) {
+  return finishRouteStages(planSourceResourceRevisionStages(program, dataReplacements));
+}
+
+export function* planSourceResourceRevisionStages(program, dataReplacements, scope) {
   const revised = new Map(), entries = [];
   const source = ref => dataReplacements.has(ref.id)
     ? requireMaterializedDataset(program, dataReplacements.get(ref.id)) : resolveInputReference(program, ref);
@@ -43,7 +50,7 @@ export function planSourceResourceRevision(program, dataReplacements) {
     const identity = { id: previous.id, revision: previous.revision + 1 };
     let resource;
     if (previous.kind === "edge-route") {
-      resource = reviseEdgeRouteResource(program, previous, previous.inputs.map(resourceInput));
+      resource = yield* reviseEdgeRouteResourceStages(program, previous, previous.inputs.map(resourceInput), scope);
     } else if (previous.kind === "hierarchy") {
       resource = createHierarchyResource({ ...identity, dataset: source(previous.inputs[0]), options: previous.options });
     } else if (previous.kind === "graph") {
@@ -61,7 +68,10 @@ export function planSourceResourceRevision(program, dataReplacements) {
           : createFlowResource({ ...inputs, definition: flowSourceDefinition(previous) });
       }
     } else if (previous.kind === "projection") {
-      resource = createProjectionResource({ ...identity, options: previous.options, geometry: resourceInput(previous.inputs[0]) });
+      resource = createProjectionResource({ ...identity, options: previous.options, geometry: resourceInput(previous.inputs[0]), input: resourceInput });
+    } else if (previous.kind === "geometry" && previous.options.method === "geo-routes") {
+      resource = createGeoRouteResource({ ...identity, definition: { coordinateKind: previous.options.coordinateKind },
+        routes: resourceInput(previous.inputs[0]), logicalId: previous.result.identity.logicalId, allocationId: previous.result.identity.allocationId });
     } else if (previous.kind === "geometry" && previous.options.method === "geo-join") {
       const { method, ...definition } = previous.options;
       resource = createGeoJoinResource({ ...identity, geometry: resourceInput(previous.inputs[0]), dataset: source(previous.inputs[1]), definition });
@@ -96,16 +106,17 @@ export function planSourceResourceRevision(program, dataReplacements) {
   const coordinates = mapCoordinateResourceBindings(program.semanticSpec.coordinates, ref => revised.has(key(ref))
     ? { ...ref, revision: revised.get(key(ref)).revision } : ref);
   const preview = { ...program, markConfigs: program.markConfigs, semanticSpec: { ...program.semanticSpec, resources, layers, coordinates } };
-  validateResourceGraph(preview, program.constructor);
+  validateResourceGraph(preview, program.constructor, scope);
   previewGraphLayouts(preview, resources, layouts);
   preflightContourConsumers(preview, entries.map(entry => entry.resource).filter(resource => resource.kind === "geometry"));
   preflightCalendarConsumers(preview, layouts.filter(resource => resource.options.method === "calendar"));
   const coordinateIds = new Set(coordinates.filter(coordinate => coordinate.type === "geo" && revised.has(key(coordinate.projection))).map(coordinate => coordinate.id));
   const marks = layers.filter(layer => layerResourceBindings(layer).some(({ ref }) => revised.has(key(ref))) || coordinateIds.has(layer.coordinate)).map(layer => layer.id);
+  preflightGeoConsumers(preview, marks);
   return { entries, views, marks };
 }
 
-export function reviseSourceResourceInputs(program, replacements, nativeMarks) {
+export function* reviseSourceResourceInputsStages(program, replacements, nativeMarks) {
   const plan = planSourceResourceRevision(program, replacements);
   let next = applyPartitionViews(program, plan.views);
   if (plan.entries.length > 0) {
@@ -118,7 +129,7 @@ export function reviseSourceResourceInputs(program, replacements, nativeMarks) {
       { property: `resource[${first.resource.kind}:${first.resource.id}]`, value: first.resource }, dependent,
       args => entered.editSemantic(args), dataReplacements);
   }
-  next = applyMaterializationPlan(next, planLayersDataRematerialization(next,
+  next = yield* applyMaterializationPlanStages(next, planLayersDataRematerialization(next,
     orderConditionalMarkIds(next, [...nativeMarks, ...plan.marks])));
   for (const id of plan.marks) {
     const layer = requireLayer(next, id);

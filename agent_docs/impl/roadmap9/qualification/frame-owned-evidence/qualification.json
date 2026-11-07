@@ -1,0 +1,1390 @@
+{
+  "status": "owned-frame-records-verified; original50ms-and-final-closeout-pending",
+  "base": "af936021b62dd04921759b276afd6e2dbc4efac4",
+  "reviewRevision": "ffabbe2f00f273187edb6640811cdc4693dbc1a6",
+  "approval": "../frame-owned-prototype.md#root-채택",
+  "sourceSHA256": {
+    "src/animation/sample.js": "34f72d55de9f6e8da2aa020df68ece29dfabb73fbf0bf5bbac7bb5984c51df08",
+    "src/renderers/canvasScene.js": "aabcd332bafa87ce6c900db1ce9c680dee8f57ff731473ca288750b91ea7e786"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1260,
+    "packedBytes": 1812185,
+    "unpackedBytes": 8165542,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/.artifacts/frame-owned-product/archives/ggaction-d4f2db48cb4d1ed0adaf959e6ce355273324f6df6b806f2b2339424eeaff2251.tgz",
+    "sha1": "ff70923ced58490bc5ce0a67567ad4f78f6969da",
+    "sha256": "d4f2db48cb4d1ed0adaf959e6ce355273324f6df6b806f2b2339424eeaff2251"
+  },
+  "archiveSources": {
+    "src/animation/columnCodec.js": {
+      "sourceSHA256": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+      "packageSHA256": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+      "canonicalCompaction": false
+    },
+    "src/animation/resources.js": {
+      "sourceSHA256": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+      "packageSHA256": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+      "canonicalCompaction": false
+    },
+    "src/animation/planner.js": {
+      "sourceSHA256": "0b76bbedc126d10937b5f7a999dd46ef7d554a22466aa9dcdc46de037bb9e576",
+      "packageSHA256": "0b76bbedc126d10937b5f7a999dd46ef7d554a22466aa9dcdc46de037bb9e576",
+      "canonicalCompaction": false
+    },
+    "src/animation/envelopeCodec.js": {
+      "sourceSHA256": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+      "packageSHA256": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+      "canonicalCompaction": false
+    },
+    "src/animation/sample.js": {
+      "sourceSHA256": "34f72d55de9f6e8da2aa020df68ece29dfabb73fbf0bf5bbac7bb5984c51df08",
+      "packageSHA256": "34f72d55de9f6e8da2aa020df68ece29dfabb73fbf0bf5bbac7bb5984c51df08",
+      "canonicalCompaction": false
+    },
+    "src/animation/frameEndpoint.js": {
+      "sourceSHA256": "618634cbbdc930d986fae7a9a129d54f106e338ca9094e57f71decad51f94b3d",
+      "packageSHA256": "618634cbbdc930d986fae7a9a129d54f106e338ca9094e57f71decad51f94b3d",
+      "canonicalCompaction": false
+    },
+    "src/animation/partitionTracks.js": {
+      "sourceSHA256": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+      "packageSHA256": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+      "canonicalCompaction": false
+    },
+    "src/materialization/animation/point.js": {
+      "sourceSHA256": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+      "packageSHA256": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+      "canonicalCompaction": false
+    },
+    "src/materialization/animation/guides.js": {
+      "sourceSHA256": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+      "packageSHA256": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+      "canonicalCompaction": false
+    },
+    "src/core/validation.js": {
+      "sourceSHA256": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+      "packageSHA256": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+      "canonicalCompaction": false
+    },
+    "src/selectors/graphicCapacity.js": {
+      "sourceSHA256": "80301d027d2887c620c83909a5db5aeb0546eac77397c7ba63c618ae139beceb",
+      "packageSHA256": "80301d027d2887c620c83909a5db5aeb0546eac77397c7ba63c618ae139beceb",
+      "canonicalCompaction": false
+    },
+    "src/grammar/animation/positions.js": {
+      "sourceSHA256": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+      "packageSHA256": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+      "canonicalCompaction": false
+    },
+    "src/grammar/scales/continuous.js": {
+      "sourceSHA256": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+      "packageSHA256": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+      "canonicalCompaction": false
+    },
+    "src/grammar/scales/transformed.js": {
+      "sourceSHA256": "608c235d7a236f86d536eb555c1405db8e814759ef6a1bcd0f5d7c037fb31312",
+      "packageSHA256": "b81967a641fc200f9534bf78d700edee80ab8aa4659dac383b40246ce64adbf4",
+      "canonicalCompaction": true
+    },
+    "src/grammar/scales/mapping.js": {
+      "sourceSHA256": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+      "packageSHA256": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+      "canonicalCompaction": false
+    },
+    "src/animation/appearance.js": {
+      "sourceSHA256": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+      "packageSHA256": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+      "canonicalCompaction": false
+    },
+    "src/renderers/canvasScene.js": {
+      "sourceSHA256": "aabcd332bafa87ce6c900db1ce9c680dee8f57ff731473ca288750b91ea7e786",
+      "packageSHA256": "aabcd332bafa87ce6c900db1ce9c680dee8f57ff731473ca288750b91ea7e786",
+      "canonicalCompaction": false
+    },
+    "src/animation/endpoints.js": {
+      "sourceSHA256": "4152afb99633d3fe3e3f7cd65c6a5b9b02dfdd0e036a7b10c2dad40c1b2236b2",
+      "packageSHA256": "4152afb99633d3fe3e3f7cd65c6a5b9b02dfdd0e036a7b10c2dad40c1b2236b2",
+      "canonicalCompaction": false
+    },
+    "types/animation.d.ts": {
+      "sourceSHA256": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323",
+      "packageSHA256": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323",
+      "canonicalCompaction": false
+    }
+  },
+  "checks": {
+    "coverage": 1294,
+    "boundaries-final": 13,
+    "render": 52
+  },
+  "critical": {
+    "animation/sample.js": {
+      "actual": {
+        "lines": 100,
+        "branches": 98.16,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "renderers/canvasScene.js": {
+      "actual": {
+        "lines": 98.99,
+        "branches": 97.5,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    }
+  },
+  "comparison": {
+    "kind": "actual product af936021b versus adopted owned decision and compiler wrapper product; counters are diagnostic, not SLO",
+    "node": "v22.23.1",
+    "variant": "product",
+    "scaleType": "linear",
+    "rows": 1000,
+    "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+    "savedInputSHA256": "534a5401de57ea6cc793c9ec11f54ad09eb7d1927aa7cc32c8fc3ab9e98bc7cc",
+    "source": {
+      "src/animation/sample.js": "34f72d55de9f6e8da2aa020df68ece29dfabb73fbf0bf5bbac7bb5984c51df08",
+      "src/renderers/canvasScene.js": "aabcd332bafa87ce6c900db1ce9c680dee8f57ff731473ca288750b91ea7e786"
+    },
+    "comparisons": {
+      "3": {
+        "nativeBytes": [
+          1822845,
+          1822845
+        ],
+        "nativeSHA256": [
+          "0c1c132f51c3ee667ffaf7c518810259f673f78176c66f0fa3bc7aa2b154b1d1",
+          "0c1c132f51c3ee667ffaf7c518810259f673f78176c66f0fa3bc7aa2b154b1d1"
+        ],
+        "rebaseBytes": [
+          2381600,
+          2381600
+        ],
+        "rebaseSHA256": [
+          "95245acec4ba8310b765be6112604a720ff8428603f0ecbce1d8a8c6e1016803",
+          "95245acec4ba8310b765be6112604a720ff8428603f0ecbce1d8a8c6e1016803"
+        ],
+        "counts": [
+          {
+            "clones": 2034,
+            "ownedAdds": 6044,
+            "weakAdds": 8079,
+            "weakHas": 20149,
+            "weakSources": {
+              "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/geoTracks.js": 2,
+              "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+              "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/sample.js": 2000,
+              "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/sample.js": 2010,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/geoFrames.js": 6,
+              "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/graphTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+              "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/frameEndpoint.js": 4,
+              "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/endpoints.js": 3,
+              "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/frameProvenance.js": 6
+            }
+          },
+          {
+            "clones": 31,
+            "ownedAdds": 6044,
+            "weakAdds": 6076,
+            "weakHas": 17145,
+            "weakSources": {
+              "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/geoTracks.js": 2,
+              "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+              "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/sample.js": 2000,
+              "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/sample.js": 1008,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/geoFrames.js": 6,
+              "    at compile (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/renderers/canvasScene.js": 1001,
+              "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/renderers/canvasScene.js": 14,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/graphTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+              "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/frameEndpoint.js": 4,
+              "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/endpoints.js": 3,
+              "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/frameProvenance.js": 6
+            }
+          }
+        ],
+        "work": {
+          "Animation preparation work": 771686
+        },
+        "rebaseWork": {
+          "Animation preparation work": 451681
+        },
+        "mixedGeoFullFrameAndMeaningEqual": true,
+        "fullNativeOfflineMeaningBatchRebaseEqual": true,
+        "timelineAndTimelineRebaseFullMeaningEqual": true,
+        "fallbackFullMeaningEqual": true,
+        "restoreReserializeExact": true
+      },
+      "4": {
+        "nativeBytes": [
+          345803,
+          345803
+        ],
+        "nativeSHA256": [
+          "7b6b6524f3fc4eb150fea0e92d47eea49ce3c891f60432082930ea824b70c049",
+          "7b6b6524f3fc4eb150fea0e92d47eea49ce3c891f60432082930ea824b70c049"
+        ],
+        "rebaseBytes": [
+          422310,
+          422310
+        ],
+        "rebaseSHA256": [
+          "8f3771081d42399dcd190917e92dfcd87a3655d3cba7456f2328d219c6fc50f0",
+          "8f3771081d42399dcd190917e92dfcd87a3655d3cba7456f2328d219c6fc50f0"
+        ],
+        "counts": [
+          {
+            "clones": 2034,
+            "ownedAdds": 6044,
+            "weakAdds": 8079,
+            "weakHas": 20149,
+            "weakSources": {
+              "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/geoTracks.js": 2,
+              "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+              "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/sample.js": 2000,
+              "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/sample.js": 2010,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/geoFrames.js": 6,
+              "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/renderers/canvasScene.js": 2016,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/graphTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+              "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/frameEndpoint.js": 4,
+              "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/endpoints.js": 3,
+              "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/frameProvenance.js": 6
+            }
+          },
+          {
+            "clones": 31,
+            "ownedAdds": 6044,
+            "weakAdds": 6076,
+            "weakHas": 17145,
+            "weakSources": {
+              "    at sampleGeoTracks (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/geoTracks.js": 2,
+              "    at samplePositionInterpolation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/grammar/animation/positions.js": 2006,
+              "    at sampleNode (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/sample.js": 2000,
+              "    at sampleTransitionWithBudget (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/sample.js": 1008,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/geoFrames.js": 6,
+              "    at compile (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/renderers/canvasScene.js": 1001,
+              "    at canvasSceneProgram (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/renderers/canvasScene.js": 14,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/graphTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/partitionTracks.js": 6,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/geoTextFrames.js": 8,
+              "    at Object.finish (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/axisLabelFrames.js": 6,
+              "    at captureFrameMeaning (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/frameEndpoint.js": 4,
+              "    at projectSampledAnimationEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/endpoints.js": 3,
+              "    at registerAnimationFrame (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/frameProvenance.js": 6
+            }
+          }
+        ],
+        "work": {
+          "Animation preparation work": 771686
+        },
+        "rebaseWork": {
+          "Animation preparation work": 451681
+        },
+        "mixedGeoFullFrameAndMeaningEqual": true,
+        "fullNativeOfflineMeaningBatchRebaseEqual": true,
+        "timelineAndTimelineRebaseFullMeaningEqual": true,
+        "fallbackFullMeaningEqual": true,
+        "restoreReserializeExact": true
+      }
+    }
+  },
+  "large": {
+    "kind": "Public version4 actual API path, phased plan lifetimes; no instrumentation; not SLO/P95",
+    "node": "v24.22.1",
+    "pid": 54518,
+    "execArgv": [
+      "--expose-gc",
+      "--max-old-space-size=6144"
+    ],
+    "n": 100000,
+    "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+    "phases": {
+      "prepare": {
+        "ms": 55418.939166,
+        "accounting": {
+          "native": true,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 78333686
+          }
+        },
+        "columns": {
+          "logicalValues": 7600057,
+          "descriptorVisits": 7600056,
+          "cellVisits": 7600004,
+          "interningWork": 93556546,
+          "internNodes": 208,
+          "uniqueLowerBound": {
+            "physicalValues": 600110,
+            "encodedValues": 600258,
+            "bytes": 33650049
+          },
+          "physicalValues": 604540,
+          "encodedValues": 608452,
+          "bytes": 33703134,
+          "validatedLogicalValues": 7600057
+        }
+      },
+      "sample": {
+        "ms": 7063.975499999986,
+        "timing": "pure sample without post-prepare GC; not P95/SLO",
+        "coordinateOracleMs": 178.8011659999902
+      },
+      "offline": {
+        "ms": 105701.48045799999,
+        "bytes": 33703073,
+        "sha256": "5d115cc4bec7bfc1f0a8210ef3b4c5a746c4460532b2e3fb29b2f330b16cde7d",
+        "accounting": {
+          "native": false,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 97911711
+          }
+        },
+        "decodedPayload": {
+          "physicalValues": 604516,
+          "bytes": 23180528,
+          "estimatedEncodedValues": 608406,
+          "estimatedEncodedBytes": 33702922
+        },
+        "encodedEnvelope": {
+          "physicalValues": 608411,
+          "bytes": 33703073
+        }
+      },
+      "rebase": {
+        "ms": 21317.273333999998,
+        "accounting": {
+          "native": true,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 46333687
+          }
+        },
+        "columns": {
+          "logicalValues": 10100086,
+          "descriptorVisits": 9300070,
+          "cellVisits": 9300023,
+          "interningWork": 119734738,
+          "internNodes": 270,
+          "uniqueLowerBound": {
+            "physicalValues": 800160,
+            "encodedValues": 800371,
+            "bytes": 41146770
+          },
+          "physicalValues": 804781,
+          "encodedValues": 809068,
+          "bytes": 41202411,
+          "validatedLogicalValues": 10100086
+        }
+      },
+      "rebaseOffline": {
+        "ms": 42082.12504199997,
+        "bytes": 41202280,
+        "sha256": "0ccec1c96b1c8e2b3ac6506c273f426cd0265821614602e6f0bad7374cec4109",
+        "accounting": {
+          "native": false,
+          "limits": {
+            "maxEndpointNodes": 200002,
+            "maxOutputNodes": 100001
+          },
+          "maximumWork": {
+            "Animation preparation work": 133456501
+          }
+        },
+        "decodedPayload": {
+          "physicalValues": 804751,
+          "bytes": 29781479,
+          "estimatedEncodedValues": 809008,
+          "estimatedEncodedBytes": 41202129
+        },
+        "encodedEnvelope": {
+          "physicalValues": 809013,
+          "bytes": 41202280
+        }
+      }
+    },
+    "lifetime": [
+      {
+        "stage": "native-plan-released",
+        "memory": {
+          "rss": 597442560,
+          "heapTotal": 905461760,
+          "heapUsed": 536039456,
+          "external": 36097327,
+          "arrayBuffers": 148239
+        }
+      },
+      {
+        "stage": "native-offline-plan-released",
+        "memory": {
+          "rss": 1782251520,
+          "heapTotal": 979648512,
+          "heapUsed": 678812496,
+          "external": 36128839,
+          "arrayBuffers": 148239
+        }
+      },
+      {
+        "stage": "rebase-plan-and-source-frame-released",
+        "memory": {
+          "rss": 2584428544,
+          "heapTotal": 989233152,
+          "heapUsed": 686217592,
+          "external": 43626709,
+          "arrayBuffers": 148239
+        }
+      },
+      {
+        "stage": "all-native-offline-rebase-exact",
+        "memory": {
+          "rss": 2123055104,
+          "heapTotal": 987136000,
+          "heapUsed": 686394528,
+          "external": 84829158,
+          "arrayBuffers": 148239
+        }
+      }
+    ],
+    "allCoordinatesVerified": 100000,
+    "batch50Rejected": true,
+    "stage": "all-native-offline-rebase-exact",
+    "allRebaseCoordinatesVerified": 100000,
+    "rebaseEncoding": {
+      "previousBytes": 41204160,
+      "actualBytes": 41202280,
+      "losslessRepresentationChangeAllowed": true
+    },
+    "sourceSHA256": {
+      "src/animation/columnCodec.js": "c7eabdbd405b7ec900b30acd87b756401aa693a4ce4235d9415cdbfaef27100a",
+      "src/animation/resources.js": "6bb740bdb795976e159957f2181de9dc11ceba5f6c27c7f9a267bf08ef30dc03",
+      "src/animation/planner.js": "0b76bbedc126d10937b5f7a999dd46ef7d554a22466aa9dcdc46de037bb9e576",
+      "src/animation/envelopeCodec.js": "6120bc717fe626c0008c215e37dd9db89d7c95d436022e8a2de463beac08ec82",
+      "src/animation/sample.js": "34f72d55de9f6e8da2aa020df68ece29dfabb73fbf0bf5bbac7bb5984c51df08",
+      "src/animation/frameEndpoint.js": "618634cbbdc930d986fae7a9a129d54f106e338ca9094e57f71decad51f94b3d",
+      "src/animation/partitionTracks.js": "18f9d9c44f65c33abb23aae3a8e3716a3a9dded82b7819f3d23a0901adc4f4dc",
+      "src/materialization/animation/point.js": "f9e69e9f11dca3aa1531b0db8e6e2bbd68273ed350df511643638ec397d5eb5e",
+      "src/materialization/animation/guides.js": "a8d789cb750d1a8f56dbd5309bd63ee12601a2c496859e2865ca7a183c99f4b2",
+      "src/core/validation.js": "8e74bbb11a8371183823b8ace205fe8575a4bff124afeef616217312c1b5b110",
+      "src/selectors/graphicCapacity.js": "80301d027d2887c620c83909a5db5aeb0546eac77397c7ba63c618ae139beceb",
+      "src/grammar/animation/positions.js": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+      "src/grammar/scales/continuous.js": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+      "src/grammar/scales/transformed.js": "608c235d7a236f86d536eb555c1405db8e814759ef6a1bcd0f5d7c037fb31312",
+      "src/grammar/scales/mapping.js": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+      "src/animation/appearance.js": "1de2d48c69c0e0b5868b03ae4fe10129a5ecab6a78392d332bfbdf7ab608ac28",
+      "src/renderers/canvasScene.js": "aabcd332bafa87ce6c900db1ce9c680dee8f57ff731473ca288750b91ea7e786",
+      "src/animation/endpoints.js": "4152afb99633d3fe3e3f7cd65c6a5b9b02dfdd0e036a7b10c2dad40c1b2236b2",
+      "types/animation.d.ts": "7179ead621d6e87b768d7cf9a12e2f4e72a6754ab038422849ed1032d2f78323"
+    }
+  },
+  "boundary": {
+    "node": "v22.23.1",
+    "results": [
+      {
+        "variant": "baseline",
+        "boundary": {
+          "allSevenCompilerTypes": true,
+          "mutableUpdateInvalidates": true,
+          "callerUnownedUnfrozen": true,
+          "ownedExactPropertiesReuse": true,
+          "translatedPropertiesCopied": true,
+          "allOutputDescendantsOwned": true,
+          "getterReads": 0,
+          "errors": {
+            "getter": {
+              "name": "TypeError",
+              "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+            },
+            "duplicate": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "badClip": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "badOffset": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "functionThenBadNode": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "functionOnly": {
+              "name": "TypeError",
+              "message": "Cannot store a function at state.graphicSpec.objects.node-1.properties.extra in a ChartProgram."
+            },
+            "cycle": {
+              "name": "TypeError",
+              "message": "Converting circular structure to JSON\n    --> starting at object with constructor 'Object'\n    --- property 'self' closes the circle"
+            },
+            "badVersion": {
+              "name": "TypeError",
+              "message": "renderTransitionScene requires a version 2 Canvas scene."
+            },
+            "shallowFrozenGetter": {
+              "name": "TypeError",
+              "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+            }
+          },
+          "mutableJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+          "ownedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+          "translatedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":2,\"y\":3,\"width\":90,\"height\":70},\"children\":[\"clip-1\"]},\"clip-1\":{\"type\":\"canvas\",\"properties\":{\"x\":3,\"y\":4,\"width\":80,\"height\":60},\"children\":[\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\",\"node-8\"]},\"node-2\":{\"type\":\"circle\",\"properties\":{\"x\":5,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-3\":{\"type\":\"rect\",\"properties\":{\"x\":6,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-4\":{\"type\":\"line\",\"properties\":{\"x\":7,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-5\":{\"type\":\"path\",\"properties\":{\"x\":8,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-6\":{\"type\":\"text\",\"properties\":{\"x\":9,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-7\":{\"type\":\"image\",\"properties\":{\"x\":10,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-8\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":11,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}}},\"order\":[\"canvas\"]}}",
+          "partialJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}"
+        },
+        "lifetime": {
+          "cycles": 5,
+          "retained": "plan and current frame",
+          "oldObjectsAlive": {
+            "frame": false,
+            "scene": false,
+            "graphicSpec": false,
+            "decisions": false,
+            "decision": false,
+            "node": false,
+            "properties": false,
+            "wrapper": false
+          },
+          "notHundredCycleQualification": true
+        }
+      },
+      {
+        "variant": "product",
+        "boundary": {
+          "allSevenCompilerTypes": true,
+          "mutableUpdateInvalidates": true,
+          "callerUnownedUnfrozen": true,
+          "ownedExactPropertiesReuse": true,
+          "translatedPropertiesCopied": true,
+          "allOutputDescendantsOwned": true,
+          "getterReads": 0,
+          "errors": {
+            "getter": {
+              "name": "TypeError",
+              "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+            },
+            "duplicate": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "badClip": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "badOffset": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "functionThenBadNode": {
+              "name": "TypeError",
+              "message": "Canvas scene nodes require unique keys, concrete properties, offsets and clips."
+            },
+            "functionOnly": {
+              "name": "TypeError",
+              "message": "Cannot store a function at state.graphicSpec.objects.node-1.properties.extra in a ChartProgram."
+            },
+            "cycle": {
+              "name": "TypeError",
+              "message": "Converting circular structure to JSON\n    --> starting at object with constructor 'Object'\n    --- property 'self' closes the circle"
+            },
+            "badVersion": {
+              "name": "TypeError",
+              "message": "renderTransitionScene requires a version 2 Canvas scene."
+            },
+            "shallowFrozenGetter": {
+              "name": "TypeError",
+              "message": "Canvas scene requires enumerable own data properties; accessors are not supported."
+            }
+          },
+          "mutableJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+          "ownedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}",
+          "translatedJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":2,\"y\":3,\"width\":90,\"height\":70},\"children\":[\"clip-1\"]},\"clip-1\":{\"type\":\"canvas\",\"properties\":{\"x\":3,\"y\":4,\"width\":80,\"height\":60},\"children\":[\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\",\"node-8\"]},\"node-2\":{\"type\":\"circle\",\"properties\":{\"x\":5,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-3\":{\"type\":\"rect\",\"properties\":{\"x\":6,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-4\":{\"type\":\"line\",\"properties\":{\"x\":7,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-5\":{\"type\":\"path\",\"properties\":{\"x\":8,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-6\":{\"type\":\"text\",\"properties\":{\"x\":9,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-7\":{\"type\":\"image\",\"properties\":{\"x\":10,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}},\"node-8\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":11,\"y\":18,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":5,\"y\":13},{\"op\":\"L\",\"x\":6,\"y\":14}]}}},\"order\":[\"canvas\"]}}",
+          "partialJSON": "{\"graphicSpec\":{\"objects\":{\"canvas\":{\"type\":\"canvas\",\"properties\":{\"width\":100,\"height\":80},\"children\":[\"clip-0\"]},\"clip-0\":{\"type\":\"canvas\",\"properties\":{\"x\":0,\"y\":0,\"width\":100,\"height\":80},\"children\":[\"node-1\",\"node-2\",\"node-3\",\"node-4\",\"node-5\",\"node-6\",\"node-7\"]},\"node-1\":{\"type\":\"circle\",\"properties\":{\"x\":0,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-2\":{\"type\":\"rect\",\"properties\":{\"x\":1,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-3\":{\"type\":\"line\",\"properties\":{\"x\":2,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-4\":{\"type\":\"path\",\"properties\":{\"x\":3,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-5\":{\"type\":\"text\",\"properties\":{\"x\":4,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-6\":{\"type\":\"image\",\"properties\":{\"x\":5,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}},\"node-7\":{\"type\":\"weighted-blend\",\"properties\":{\"x\":6,\"y\":5,\"width\":20,\"height\":10,\"fill\":\"black\",\"commands\":[{\"op\":\"M\",\"x\":0,\"y\":0},{\"op\":\"L\",\"x\":1,\"y\":1}]}}},\"order\":[\"canvas\"]}}"
+        },
+        "lifetime": {
+          "cycles": 5,
+          "retained": "plan and current frame",
+          "oldObjectsAlive": {
+            "frame": false,
+            "scene": false,
+            "graphicSpec": false,
+            "decisions": false,
+            "decision": false,
+            "node": false,
+            "properties": false,
+            "wrapper": false
+          },
+          "notHundredCycleQualification": true
+        }
+      }
+    ]
+  },
+  "profile": {
+    "kind": "Uninstrumented public sampler timing then V8 CPU attribution; 1000 points, post-prepare GC, separate small diagnostic; not SLO or P95",
+    "node": "v22.23.1",
+    "pid": 55766,
+    "execArgv": [
+      "--expose-gc"
+    ],
+    "n": 1000,
+    "inputSHA256": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+    "sourceRevision": "af936021b62dd04921759b276afd6e2dbc4efac4",
+    "measurements": [
+      {
+        "kind": "uninstrumented-first-sample",
+        "samplerMs": 96.21279199999981,
+        "oracleMs": 1.8546670000000631,
+        "verifiedCoordinates": 1000,
+        "memory": {
+          "rss": 141230080,
+          "heapTotal": 71647232,
+          "heapUsed": 43992720,
+          "external": 2228266,
+          "arrayBuffers": 29823
+        }
+      },
+      {
+        "kind": "profiled-second-sample",
+        "samplerMs": 31.475792000000183,
+        "oracleMs": 2.462999999999738,
+        "verifiedCoordinates": 1000,
+        "memory": {
+          "rss": 143425536,
+          "heapTotal": 72695808,
+          "heapUsed": 42499104,
+          "external": 2228306,
+          "arrayBuffers": 29823
+        }
+      }
+    ],
+    "stage": "complete",
+    "profileSHA256": "c5852d2320dc4b0e0208fd9a55ca68b9444db9c40e0e0fb2c9898440850373d8",
+    "sourceSHA256": {
+      "src/animation/sample.js": "34f72d55de9f6e8da2aa020df68ece29dfabb73fbf0bf5bbac7bb5984c51df08",
+      "src/animation/frameEndpoint.js": "618634cbbdc930d986fae7a9a129d54f106e338ca9094e57f71decad51f94b3d",
+      "src/grammar/animation/positions.js": "3b0e8c2730a0b7a98b9b17dbc8462fd7001dee65809d8dd8f556a9530976f1d7",
+      "src/grammar/scales/mapping.js": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+      "src/grammar/scales/continuous.js": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+      "src/core/immutable.js": "1ec67bd4b674532050ef8351474840d7b947418469b79d976395b63c7bf62fc2",
+      "src/renderers/canvasScene.js": "aabcd332bafa87ce6c900db1ce9c680dee8f57ff731473ca288750b91ea7e786",
+      "src/animation/endpoints.js": "4152afb99633d3fe3e3f7cd65c6a5b9b02dfdd0e036a7b10c2dad40c1b2236b2"
+    }
+  },
+  "profileSummary": {
+    "samples": 12,
+    "intervalMicroseconds": 1000,
+    "warning": "Small concurrent diagnostic. Includes profiler overhead outside sample; not comparable with original100k, SLO or P95.",
+    "functions": [
+      {
+        "name": "captureFrameMeaning",
+        "file": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/frameEndpoint.js",
+        "line": 32,
+        "selfMs": 18.708,
+        "inclusiveMs": 21.042
+      },
+      {
+        "name": "sampleNode",
+        "file": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/sample.js",
+        "line": 78,
+        "selfMs": 2.708,
+        "inclusiveMs": 5
+      },
+      {
+        "name": "sampleTransitionWithBudget",
+        "file": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/sample.js",
+        "line": 33,
+        "selfMs": 1.5,
+        "inclusiveMs": 31.25
+      },
+      {
+        "name": "",
+        "file": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/frameEndpoint.js",
+        "line": 39,
+        "selfMs": 1.292,
+        "inclusiveMs": 1.292
+      },
+      {
+        "name": "compile",
+        "file": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/renderers/canvasScene.js",
+        "line": 23,
+        "selfMs": 1.25,
+        "inclusiveMs": 2.5
+      },
+      {
+        "name": "freezeOwned",
+        "file": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/core/immutable.js",
+        "line": 12,
+        "selfMs": 1.25,
+        "inclusiveMs": 1.25
+      },
+      {
+        "name": "interpolateNodeFrame",
+        "file": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/concrete.js",
+        "line": 49,
+        "selfMs": 1.209,
+        "inclusiveMs": 1.209
+      },
+      {
+        "name": "isOwned",
+        "file": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/core/immutable.js",
+        "line": 22,
+        "selfMs": 1.208,
+        "inclusiveMs": 1.208
+      },
+      {
+        "name": "samplePositionInterpolation",
+        "file": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/grammar/animation/positions.js",
+        "line": 115,
+        "selfMs": 1.083,
+        "inclusiveMs": 1.083
+      },
+      {
+        "name": "",
+        "file": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/frameEndpoint.js",
+        "line": 59,
+        "selfMs": 1.042,
+        "inclusiveMs": 1.042
+      },
+      {
+        "name": "sampleTransition",
+        "file": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/sample.js",
+        "line": 27,
+        "selfMs": 0,
+        "inclusiveMs": 31.25
+      },
+      {
+        "name": "canvasSceneProgram",
+        "file": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/renderers/canvasScene.js",
+        "line": 92,
+        "selfMs": 0,
+        "inclusiveMs": 2.5
+      },
+      {
+        "name": "finish",
+        "file": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/src/animation/sample.js",
+        "line": 46,
+        "selfMs": 0,
+        "inclusiveMs": 21.042
+      }
+    ]
+  },
+  "consumers": [
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1260,
+        "packedBytes": 1812185,
+        "unpackedBytes": 8165542,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/.artifacts/frame-owned-product/archives/ggaction-d4f2db48cb4d1ed0adaf959e6ce355273324f6df6b806f2b2339424eeaff2251.tgz",
+        "sha1": "ff70923ced58490bc5ce0a67567ad4f78f6969da",
+        "sha256": "d4f2db48cb4d1ed0adaf959e6ce355273324f6df6b806f2b2339424eeaff2251"
+      },
+      "node": "v20.20.2",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 788878,
+          "limit": 788900,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 426250,
+          "limit": 426300,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25672,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69522,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 341603,
+          "limit": 341700,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137548,
+          "limit": 137600,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1260,
+        "packedBytes": 1812185,
+        "unpackedBytes": 8165542,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/.artifacts/frame-owned-product/archives/ggaction-d4f2db48cb4d1ed0adaf959e6ce355273324f6df6b806f2b2339424eeaff2251.tgz",
+        "sha1": "ff70923ced58490bc5ce0a67567ad4f78f6969da",
+        "sha256": "d4f2db48cb4d1ed0adaf959e6ce355273324f6df6b806f2b2339424eeaff2251"
+      },
+      "node": "v22.23.1",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 787457,
+          "limit": 788900,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 425209,
+          "limit": 426300,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25558,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69356,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 340437,
+          "limit": 341700,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137033,
+          "limit": 137600,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "artifact": {
+        "name": "ggaction",
+        "version": "0.0.26",
+        "filename": "ggaction-0.0.26.tgz",
+        "entryCount": 1260,
+        "packedBytes": 1812185,
+        "unpackedBytes": 8165542,
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/.artifacts/frame-owned-product/archives/ggaction-d4f2db48cb4d1ed0adaf959e6ce355273324f6df6b806f2b2339424eeaff2251.tgz",
+        "sha1": "ff70923ced58490bc5ce0a67567ad4f78f6969da",
+        "sha256": "d4f2db48cb4d1ed0adaf959e6ce355273324f6df6b806f2b2339424eeaff2251"
+      },
+      "node": "v24.22.1",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed"
+        },
+        {
+          "id": "public-prepared-scales-and-animation",
+          "status": "passed"
+        },
+        {
+          "id": "strict-types",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-offline",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-capacity",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-guides",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-gradient-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-size-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-categorical-legend",
+          "status": "passed"
+        },
+        {
+          "id": "doc:animation-grouped-legend",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "gzipBytes": 788878,
+          "limit": 788900,
+          "status": "passed"
+        },
+        "ggaction/basic": {
+          "gzipBytes": 426250,
+          "limit": 426300,
+          "status": "passed"
+        },
+        "ggaction/svg": {
+          "gzipBytes": 25672,
+          "limit": 26000,
+          "status": "passed"
+        },
+        "ggaction/graph": {
+          "gzipBytes": 69522,
+          "limit": 69600,
+          "status": "passed"
+        },
+        "ggaction/animation": {
+          "gzipBytes": 341603,
+          "limit": 341700,
+          "status": "passed"
+        },
+        "ggaction/interaction": {
+          "gzipBytes": 137548,
+          "limit": 137600,
+          "status": "passed"
+        }
+      },
+      "kind": "same source-free archive; small public runtime/types/docs/peers/bundles only",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    }
+  ],
+  "browser": {
+    "archiveSHA256": "d4f2db48cb4d1ed0adaf959e6ce355273324f6df6b806f2b2339424eeaff2251",
+    "sourceRootInputs": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "versions": [
+      3,
+      4
+    ],
+    "status": "passed"
+  },
+  "packs": [
+    {
+      "node": 20,
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1260,
+      "packedBytes": 1815549,
+      "unpackedBytes": 8165542,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+      "sha1": "2732555fc6e686dfd51f8bfa73e218eabfadc61b",
+      "sha256": "cec373e7c74e29272ee018a04e1b5c838a8f8eeb32b87c428a8d18c18c2bcd2a"
+    },
+    {
+      "node": 22,
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1260,
+      "packedBytes": 1812185,
+      "unpackedBytes": 8165542,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+      "sha1": "ff70923ced58490bc5ce0a67567ad4f78f6969da",
+      "sha256": "d4f2db48cb4d1ed0adaf959e6ce355273324f6df6b806f2b2339424eeaff2251"
+    },
+    {
+      "node": 24,
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1260,
+      "packedBytes": 1815549,
+      "unpackedBytes": 8165542,
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-frame-owned-product/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+      "sha1": "2732555fc6e686dfd51f8bfa73e218eabfadc61b",
+      "sha256": "cec373e7c74e29272ee018a04e1b5c838a8f8eeb32b87c428a8d18c18c2bcd2a"
+    }
+  ],
+  "failuresPreserved": [
+    {
+      "file": "pack-first.stderr",
+      "reason": "Unpacked8165542 exceeds8165300; measured minimum8165600"
+    },
+    {
+      "file": "pack20-runtime.stderr",
+      "reason": "Node20 packed1815549 exceeds1815500; measured minimum1815600"
+    },
+    {
+      "file": "consumer20-first.json",
+      "reason": "Runtime/types/docs/peers pass; only animation gzip341603 exceeds341600 by3 bytes; synchronized minimum341700"
+    },
+    {
+      "file": "boundaries-selector-failure.log",
+      "reason": "Missing contracts/ selector prefix; corrected and13tests passed"
+    }
+  ],
+  "limitations": [
+    "Original100k functional run lacks post-prepare GC and shares CPU with small checks; not speedup/P95/SLO",
+    "1k post-prepare GC profile is coarse and concurrent; not directly comparable with original100k1120ms",
+    "8 old references per variant gone after5GC is small retention evidence, not100cycle qualification",
+    "Public API/types/schema/cache/authority unchanged; final root Geo integration not included"
+  ],
+  "evidenceFiles": {
+    "boundaries-final.log": {
+      "sha256": "55668dfc98d7faca72b5bbb1e696e7332c33144977792aa804de1b56362a32fe",
+      "bytes": 2771
+    },
+    "boundaries-selector-failure.log": {
+      "sha256": "702831f01d8d4aad8ebb77a3b7517cf1a42e39a421ff499cc894d8f8575a4486",
+      "bytes": 608
+    },
+    "boundaries.log": {
+      "sha256": "5e0c0569d2f7e127b87895dfce149701adbf7f1e20cf1f4303c502693fdfa3f2",
+      "bytes": 2773
+    },
+    "boundary-lifetime.json": {
+      "sha256": "66856b45f34e6e11c53808d6cadb84802c0fa42fce426653113a7c762e8fa101",
+      "bytes": 18757
+    },
+    "boundary-lifetime.log": {
+      "sha256": "6551a47a6926adca0ea51c79606abcf28658aeba5544b2bf2e6f5429be53a7bc",
+      "bytes": 17153
+    },
+    "boundary-lifetime.mjs": {
+      "sha256": "9e04705943740419dfa8066a1292d3a3e7d69609a18d5531020aff694ce89ccb",
+      "bytes": 6256
+    },
+    "browser-installed.json": {
+      "sha256": "6398e42dd5dadf521961e84fd485d3781b8aa6106964834a61a541d56ea32cf4",
+      "bytes": 200
+    },
+    "browser-installed.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "browser-installed.mjs": {
+      "sha256": "d87455b2d6aa3b704cb65d237d344bf01ca228e0ad8555bd99b48b7d35f00fc7",
+      "bytes": 838
+    },
+    "consumer20-first.json": {
+      "sha256": "4222376ef0be2211a9853af4c91e147570152eaafa3a32bc28a48feeaf58eb18",
+      "bytes": 2236
+    },
+    "consumer20-first.log": {
+      "sha256": "c9f35997c01ccbf8ee544e8cd94997a209fcc90d2e3df8d89232ef99a8004513",
+      "bytes": 2156
+    },
+    "consumer20.json": {
+      "sha256": "ecaa7f83c82dd00b6408b26ea7008ff3c8bbd443cbc31db64f191845c930ebd5",
+      "bytes": 2221
+    },
+    "consumer20.log": {
+      "sha256": "a4a907d8f980b81b81b641611e10d6c00cfc1f9dc1c572eadaa08750a1d5e2d1",
+      "bytes": 1644
+    },
+    "consumer22.json": {
+      "sha256": "c859cb561e81dfd4fd5ec7559de951585753fa3e9fc35a83b74372d96fc7100f",
+      "bytes": 2221
+    },
+    "consumer22.log": {
+      "sha256": "a23602abbb3555095fb8fc5591b6fcd0a8c3a30904c71380630432c19d9f148c",
+      "bytes": 1644
+    },
+    "consumer24.json": {
+      "sha256": "230399d83d5c9a666763b0f8b4cde41e66d2b6534e05c6e0ac502fe8b42c90b9",
+      "bytes": 2221
+    },
+    "consumer24.log": {
+      "sha256": "ca4d07171b06610876d79dd9985fd6ee8230feb1c77f28dcdf88c44e5f96f65a",
+      "bytes": 1644
+    },
+    "coverage.log": {
+      "sha256": "059e190cb601ba8f34a7dcba78a9d22d9fa3bfc21616eeab6a457093a294e446",
+      "bytes": 308300
+    },
+    "final-pack20.json": {
+      "sha256": "c4723b14ebc1ec00d2110ba005201c309649f9696d35536ba3c4064d5fdad652",
+      "bytes": 427
+    },
+    "final-pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "final-pack22.json": {
+      "sha256": "e8dff68231700f14d6d0a7c78cc33fc3a2278f757f7d5fea03058fb952b6ebb6",
+      "bytes": 427
+    },
+    "final-pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "final-pack24.json": {
+      "sha256": "c4723b14ebc1ec00d2110ba005201c309649f9696d35536ba3c4064d5fdad652",
+      "bytes": 427
+    },
+    "final-pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "frozen.json": {
+      "sha256": "75b5cbca79e1c0abc90088658174a073020e3fe26a4836201a290aa2c4eb63b1",
+      "bytes": 506
+    },
+    "owning-coverage.mjs": {
+      "sha256": "303961b8624b0e608f0b68efee4876eb722fbb9d457a36e06e8a8a9ec2a88027",
+      "bytes": 563
+    },
+    "pack-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack-first.stderr": {
+      "sha256": "78a0a314fbc4d6c855736f718278809910f73a4f60ee4667489109b19e965177",
+      "bytes": 873
+    },
+    "pack20-first.json": {
+      "sha256": "e8dff68231700f14d6d0a7c78cc33fc3a2278f757f7d5fea03058fb952b6ebb6",
+      "bytes": 427
+    },
+    "pack20-first.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack20-runtime.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack20-runtime.stderr": {
+      "sha256": "ab9b79ff36672e00fb3e92fd48567edcb3c064a21786f44755f302b1b235b246",
+      "bytes": 948
+    },
+    "pack22.json": {
+      "sha256": "e8dff68231700f14d6d0a7c78cc33fc3a2278f757f7d5fea03058fb952b6ebb6",
+      "bytes": 427
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "product-100000-phased.json": {
+      "sha256": "4f01b8cc6ab4bc51ed560e38a1f90d8d8933c72b9af988b7771205694b33466b",
+      "bytes": 6682
+    },
+    "product-100000-phased.log": {
+      "sha256": "de5a2e2f995847b2836a657407c8822ff155b9aa2610c31035f1f89c0d8190d5",
+      "bytes": 5286
+    },
+    "product-100000-phased.mjs": {
+      "sha256": "d36c8a104b265b9d70d69f85f0a0fe8da31c591b4800b809a62328d4e6b9cf2a",
+      "bytes": 6294
+    },
+    "product-compare-product-linear.json": {
+      "sha256": "8eddd21406adc533eae27f954db1a7d4603e0242d677e30d860f295adbfc6d78",
+      "bytes": 11908
+    },
+    "product-compare.mjs": {
+      "sha256": "d29c8871628f578c13c7f0746a1350cfe7657a8d9ea488bfa71a165e27a57acf",
+      "bytes": 9348
+    },
+    "product-linear.log": {
+      "sha256": "66424169d8369b4fb627f3333c0d8c9c74ba16594b9c3710bbd9a771d4ec834e",
+      "bytes": 10245
+    },
+    "product-observer.mjs": {
+      "sha256": "1a383d88296f2c6f3f86285ea79fe91a2ac96f9195b85074215be52e07e241c2",
+      "bytes": 1366
+    },
+    "profile-small.log": {
+      "sha256": "d003ce7652e0e50fba803adf1a88fd8374e428d6e8b04e826e5c00ecc05299fd",
+      "bytes": 1815
+    },
+    "profile-small.mjs": {
+      "sha256": "3ebeb52988c88aed342a4b0bf7797139f0e7d3dfe7f438eb1ca123297a6adf26",
+      "bytes": 3950
+    },
+    "record.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "record.mjs": {
+      "sha256": "8a5390827b03410605ea2d09861098b9ec67129bbb9510d5742f5756c1961913",
+      "bytes": 6596
+    },
+    "render.log": {
+      "sha256": "e12fa420e9137b2324464355b93b2ecc5ddbc12a253a4faac7719a59b1a21def",
+      "bytes": 12499
+    },
+    "profile-small/receipt.json": {
+      "sha256": "8da9673f4c3b9f2bdb3f11796e515c7b19b881895cc5c199a3e624a5b350258d",
+      "bytes": 2055
+    },
+    "profile-small/summary.json": {
+      "sha256": "afa60e65208bb0569e0a8fc1e7387840e4db8bebeb8291e4f7c612d3688b2c56",
+      "bytes": 3344
+    },
+    "profile-small/sample.cpuprofile": {
+      "sha256": "c5852d2320dc4b0e0208fd9a55ca68b9444db9c40e0e0fb2c9898440850373d8",
+      "bytes": 4920
+    },
+    "source-pin-provenance.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "source-pin-machine.log": {
+      "sha256": "9d5f37929938983723667923bfd7c6f1802a50c4a0eddfbfd32ef30557b54d25",
+      "bytes": 45
+    },
+    "source-pin-llms.log": {
+      "sha256": "4b6bcf79b8d7c80c0d7976c40af2ecc0457b5792bd114ba0e84d609c15ec6eea",
+      "bytes": 73
+    },
+    "source-pin-docs.log": {
+      "sha256": "0f58b2ba596fe6ed8f9367bb83ff1f3a61b87e195379d9a884678ed21ba71e76",
+      "bytes": 4234
+    },
+    "source-pin-pack.json": {
+      "sha256": "e8dff68231700f14d6d0a7c78cc33fc3a2278f757f7d5fea03058fb952b6ebb6",
+      "bytes": 427
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "sourceRevision": "b79f632130fbd2462d862e994c7ff1c670e4c7aa",
+  "sourcePin": {
+    "sourceCommit": "b79f632130fbd2462d862e994c7ff1c670e4c7aa",
+    "contractId": "sha256:63f0259acc25e1946fc055f2796ed5ba55fe9ca0ddddc9558f30928ee27b052d",
+    "docsTests": 18,
+    "archiveSHA256Unchanged": "d4f2db48cb4d1ed0adaf959e6ce355273324f6df6b806f2b2339424eeaff2251"
+  }
+}

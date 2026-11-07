@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-geo-hit-and-projection-integration",
+  "upstream": "ccd1b2336",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1268,
+    "packedBytes": 1825835,
+    "unpackedBytes": 8223452,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-13346f4a117b009327f9d7a85f36bef9362814c23e91e910205a27079d30c392.tgz",
+    "sha256": "13346f4a117b009327f9d7a85f36bef9362814c23e91e910205a27079d30c392"
+  },
+  "checks": {
+    "owningTests": 443,
+    "docsAndBoundaries": 279,
+    "sameArchiveNodeVersions": [
+      20,
+      22,
+      24
+    ],
+    "installedRuntimeAndStrictTypes": true,
+    "documentationExample": true,
+    "browserDPR": [
+      1,
+      2
+    ],
+    "bundles": 6
+  },
+  "sourceHashes": {
+    "src/grammar/hitPolicy.js": "be7191005fee303d0b5ef30a4b63b84690e40f0eee71f5fb860111aff6f3f77e",
+    "src/grammar/hitStroke.js": "f794d38334f679c363623f37e7b939ff5da189a8db4365cec1427fd6349e2c31",
+    "src/grammar/hitShapes.js": "a331472afd0f034648cc1017eb4dd4be9a30b6db6386f3eb0a221caf0d427803",
+    "src/grammar/hitPartIndex.js": "fb8deea7a446adea041d97c88d2a619506e00626db0c50120b723fd4937e497f",
+    "src/grammar/hitClipDistance.js": "3f1b45e40b0c3c7e67fd20100ae3825b83e443e94088afd931a86ef05487fc91",
+    "src/grammar/hitIndex.js": "c00cd8d4c938882ea84dcc1cea856d864dd9eacb0a190dc7e866b1e4752d610b",
+    "src/interaction/hitConcrete.js": "438bb42e67ef7554e102cc0b2e9afb5f3438d75256b22a70791d33f4e467e87d",
+    "src/interaction/hitProgram.js": "bea0a39cb02e2a59edbdda14b5266112427859605c6225c23c0362d1ffcbf005",
+    "scripts/benchmarks/workloads.browser.js": "2f5fe8833fff37f44528aab47ccdfc494d03f2754d91e336dbfb75fb9344a1fa",
+    "types/interaction.d.ts": "999bb132e0f3c28cdf45245775536ce6862926621231decefa28c1e4f67c0d70",
+    "src/grammar/geo/projections.js": "3c61b7d7da668cfae9df0f90c109e446f8250457ed166802ed57e72535a17335",
+    "src/grammar/geo/stream.js": "1049c25e20d60e5fb45426cc8a25abf1ed636b8ec6691c4cedb47b9352b67576"
+  },
+  "evidenceFiles": {
+    "installed.log": {
+      "sha256": "25511d2977c860f3603c890114fe4a6f0a6813441d9fea48b2f5768d80365af2",
+      "bytes": 3457
+    },
+    "pack.json": {
+      "sha256": "07d2b00803a1d8b4e86d7dda8128f8616d99805e87189bc67e4407036d662678",
+      "bytes": 376
+    },
+    "docs.log": {
+      "sha256": "ce57867142acdd240d85cb46ee7ce76a5877b1aea5ecaaa6eef2127400cda01c",
+      "bytes": 81923
+    },
+    "prepack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "installed.json": {
+      "sha256": "5625ed6f1c8db22e568fd92953ebab4015fa46e076b6989067ca22e7d28238c9",
+      "bytes": 4860
+    },
+    "prepack24.json": {
+      "sha256": "219d9709949b276696c3c401055eeb9a1364518e9c6f7a38a79461ae4afa74d4",
+      "bytes": 292
+    },
+    "prepack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "record.py": {
+      "sha256": "73ae1fc0138ebb1f6ec0bcb4715962fc7187147ed9e4cbc51419515b73eb5a3d",
+      "bytes": 4295
+    },
+    "prepack.json": {
+      "sha256": "e1f3e1ecb2ddb22cadf83c5d6b49a79e283563c2dbc64e2ea0c92f0949b46d3d",
+      "bytes": 290
+    },
+    "pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "owning.log": {
+      "sha256": "ca01bf4ded09de3fd086e5d10418d3c794393911e5b79b612e5fb26e08ab66be",
+      "bytes": 107187
+    },
+    "generate.log": {
+      "sha256": "1f236cb22b1848a0ee5a92ede2f35d11210046848b5131b5015c8252b47208d5",
+      "bytes": 456
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "cec105b5af08cf7872706504ed948fe775069447bba256faedc656bd8554943d",
+      "bytes": 1815
+    },
+    "source-pin-pack.json": {
+      "sha256": "e6b0412368d2fa06fc4ee468258209d460a831754bfacf3877ad48b8b9f25c7c",
+      "bytes": 383
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "remaining": [
+    "original100k sequential and fresh rebase WeakSet rehash",
+    "large offline roundtrip",
+    "canonical original P95",
+    "100cycle large retained lifetime",
+    "final combined qualification"
+  ],
+  "sourceRevision": "4d4e19b64092ab4e4f986b8209d8ad11b32c1d48",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

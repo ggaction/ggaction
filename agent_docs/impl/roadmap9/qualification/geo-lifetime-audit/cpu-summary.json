@@ -1,0 +1,219 @@
+{
+  "kind": "small source Node inspector attribution; not canonical timing; concurrent environment",
+  "vertices": 1000,
+  "warmups": 5,
+  "profiledSamples": 10,
+  "profileSamples": 1890,
+  "commands": 1999,
+  "maxError": 2.7000623958883807e-13,
+  "topSelf": [
+    {
+      "frame": "file://src/core/ownData.js:5:ownDataProperties",
+      "selfUs": 93658,
+      "inclusiveUs": 93658
+    },
+    {
+      "frame": "node:inspector:118:post",
+      "selfUs": 53042,
+      "inclusiveUs": 53042
+    },
+    {
+      "frame": "file://src/grammar/geo/input.js:27:snapshotGeometryJSON",
+      "selfUs": 36461,
+      "inclusiveUs": 115006
+    },
+    {
+      "frame": "file://src/core/ownData.js:23:ownArray",
+      "selfUs": 29296,
+      "inclusiveUs": 121997
+    },
+    {
+      "frame": ":0:(garbage collector)",
+      "selfUs": 17088,
+      "inclusiveUs": 17088
+    },
+    {
+      "frame": "file://src/core/contentDigest.js:33:canonicalJSON",
+      "selfUs": 13998,
+      "inclusiveUs": 13998
+    },
+    {
+      "frame": "file://src/grammar/geo/input.js:31:enter",
+      "selfUs": 12961,
+      "inclusiveUs": 71003
+    },
+    {
+      "frame": "file://src/grammar/geo/input.js:17:count",
+      "selfUs": 8539,
+      "inclusiveUs": 8539
+    },
+    {
+      "frame": "file://src/core/immutable.js:28:copy",
+      "selfUs": 6543,
+      "inclusiveUs": 7168
+    },
+    {
+      "frame": "file://src/core/immutable.js:12:freezeOwned",
+      "selfUs": 6458,
+      "inclusiveUs": 6458
+    },
+    {
+      "frame": "file://src/grammar/geo/projections.js:18:streamedPoint",
+      "selfUs": 4789,
+      "inclusiveUs": 7206
+    },
+    {
+      "frame": "file://src/core/immutable.js:26:cloneAndFreeze",
+      "selfUs": 4542,
+      "inclusiveUs": 18168
+    },
+    {
+      "frame": "file://src/grammar/animation/geoState.js:31:normalizeAnimationGeoGroup",
+      "selfUs": 3623,
+      "inclusiveUs": 101373
+    },
+    {
+      "frame": "file://src/grammar/pathTopology.js:81:commandShape",
+      "selfUs": 3378,
+      "inclusiveUs": 6375
+    },
+    {
+      "frame": "file://src/grammar/geo/geometry.js:11:geometryPosition",
+      "selfUs": 3377,
+      "inclusiveUs": 30127
+    },
+    {
+      "frame": "file://src/grammar/geo/projections.js:30:forward",
+      "selfUs": 2835,
+      "inclusiveUs": 57748
+    },
+    {
+      "frame": "file://src/core/sha256.js:94:compress",
+      "selfUs": 2291,
+      "inclusiveUs": 2291
+    },
+    {
+      "frame": "file://src/grammar/geo/stream.js:63:projectGeometry",
+      "selfUs": 2082,
+      "inclusiveUs": 108038
+    },
+    {
+      "frame": "file://src/grammar/geo/projectionOptions.js:29:projectionTuple",
+      "selfUs": 2002,
+      "inclusiveUs": 43500
+    },
+    {
+      "frame": "file://src/materialization/animation/geoPresentation.js:63:normalizeGeoAnimationPresentation",
+      "selfUs": 1875,
+      "inclusiveUs": 115209
+    },
+    {
+      "frame": "file://src/grammar/pathTopology.js:38:validatePathCommand",
+      "selfUs": 1830,
+      "inclusiveUs": 2122
+    },
+    {
+      "frame": "file://src/grammar/pathTopology.js:67:dense",
+      "selfUs": 1789,
+      "inclusiveUs": 1789
+    },
+    {
+      "frame": "file://src/grammar/geo/stream.js:17:lineCoordinates",
+      "selfUs": 1750,
+      "inclusiveUs": 62705
+    },
+    {
+      "frame": "file://src/grammar/geo/projections.js:10:sourcePoint",
+      "selfUs": 1666,
+      "inclusiveUs": 44875
+    },
+    {
+      "frame": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/.artifacts/geo/math-dependencies/node_modules/geographic-math/src/projection/equirectangular.js:3:equirectangularRaw",
+      "selfUs": 1458,
+      "inclusiveUs": 1458
+    },
+    {
+      "frame": "file:///Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/.artifacts/geo/math-dependencies/node_modules/geographic-math/src/stream.js:49:streamLine",
+      "selfUs": 1457,
+      "inclusiveUs": 5332
+    },
+    {
+      "frame": "file://src/grammar/geo/projectionMath.js:75:sphericalMidpoint",
+      "selfUs": 1457,
+      "inclusiveUs": 2915
+    },
+    {
+      "frame": "file://src/core/immutable.js:22:isOwned",
+      "selfUs": 1377,
+      "inclusiveUs": 1377
+    },
+    {
+      "frame": "file://src/grammar/geo/geometry.js:26:",
+      "selfUs": 1249,
+      "inclusiveUs": 31376
+    },
+    {
+      "frame": "file://src/grammar/geo/geometry.js:23:line",
+      "selfUs": 1167,
+      "inclusiveUs": 38666
+    }
+  ],
+  "stages": [
+    {
+      "frame": "file://src/animation/geoTracks.js:72:sampleGeoTracks",
+      "selfUs": 292,
+      "inclusiveUs": 272537
+    },
+    {
+      "frame": "file://src/materialization/animation/geoPresentation.js:81:resolveGeoAnimationPresentation",
+      "selfUs": 0,
+      "inclusiveUs": 209493
+    },
+    {
+      "frame": "file://src/materialization/animation/geoPresentation.js:63:normalizeGeoAnimationPresentation",
+      "selfUs": 1875,
+      "inclusiveUs": 115209
+    },
+    {
+      "frame": "file://src/grammar/geo/input.js:27:snapshotGeometryJSON",
+      "selfUs": 36461,
+      "inclusiveUs": 115006
+    },
+    {
+      "frame": "file://src/grammar/geo/stream.js:63:projectGeometry",
+      "selfUs": 2082,
+      "inclusiveUs": 108038
+    },
+    {
+      "frame": "file://src/grammar/animation/geoState.js:31:normalizeAnimationGeoGroup",
+      "selfUs": 3623,
+      "inclusiveUs": 101373
+    },
+    {
+      "frame": "file://src/core/immutable.js:26:cloneAndFreeze",
+      "selfUs": 4542,
+      "inclusiveUs": 18168
+    },
+    {
+      "frame": "file://src/core/contentDigest.js:33:canonicalJSON",
+      "selfUs": 13998,
+      "inclusiveUs": 13998
+    },
+    {
+      "frame": "file://src/grammar/schemas/concreteGraphic.js:133:validateConcreteGraphicProperties",
+      "selfUs": 0,
+      "inclusiveUs": 10040
+    },
+    {
+      "frame": "file://src/animation/frameEndpoint.js:32:captureFrameMeaning",
+      "selfUs": 0,
+      "inclusiveUs": 417
+    },
+    {
+      "frame": "file://src/renderers/canvasScene.js:92:canvasSceneProgram",
+      "selfUs": 167,
+      "inclusiveUs": 167
+    }
+  ],
+  "samplerInclusiveUs": 275703
+}

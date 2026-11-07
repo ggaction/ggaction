@@ -1,0 +1,129 @@
+{
+  "status": "qualified-public-session-frame-checkpoint",
+  "sourceCommit": "8cd965393e05f10e13931675fd87a12fa2f66e1f",
+  "archiveSha256": "ae486a9124187717bb8a3c95e54b14c636e6c924e8c0795288e60f9ab721275f",
+  "sourceSha256": {
+    "src/grammar/hitShapes.js": "92b6e2eeee3dc104861e0d5bae0919fd127ef309edb00c7586d5e3cddb618c40",
+    "src/interaction/session.js": "e232e689108a38a0da4029db7e905bee69a850ae7155b684eba4684b219abd75",
+    "src/interaction/regionSelection.js": "b443fa13c85faa318e419330aa2fd9b0418ff33bd25bd46f1c417605a2fc8bdc",
+    "types/interaction.d.ts": "0ea9ce68b8d222f03be04ecbe7d4327cb2ff82ca98e2f9f426bfe2dea91f02cc"
+  },
+  "checks": {
+    "relatedCoverageTests": 359,
+    "laterBasicOwnerTests": 14,
+    "laterBasicNote": "One explicit Basic test was added after coverage; no runtime change. These counts overlap and are not added together.",
+    "contracts": 43,
+    "node20Focused": 19,
+    "node24Focused": 19,
+    "sourceBrowser": 4,
+    "installedSameBrowser": 4,
+    "pinnedDocumentation": 58,
+    "builtPages": 186,
+    "builtLLMArtifacts": 1598,
+    "builtInteractionWidths": [
+      320,
+      390,
+      768,
+      1280
+    ],
+    "builtInteractionAxeViolations": 0,
+    "fullRepositorySuiteRerun": false,
+    "finalRecordPaths": 1
+  },
+  "coverage": {
+    "hitShapes": [
+      100,
+      94.22,
+      100
+    ],
+    "regionSelection": [
+      100,
+      95.04,
+      100
+    ],
+    "session": [
+      100,
+      95.39,
+      100
+    ]
+  },
+  "installed": {
+    "sameArchive": true,
+    "nodes": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "eachRuntimeCases": 3,
+    "strictInteractionTypes": true,
+    "sixBrowserEntries": true,
+    "optionalPeers": true,
+    "node20": "Runtime and strict types passed before Full bundle cap failure; exact-archive final bundle-only supplement passed. The first process is not reported as all-green.",
+    "node22": "All cases, types, six bundles and exact owning installed-browser four cases passed.",
+    "node24": "All cases, types and six bundles passed.",
+    "rendererAssertions": "Canvas and PNG literal pixels, SVG concrete circle, PDF header; PDF pixel equality is not claimed.",
+    "freshProcess": "fetch/http/https/net/tls guards are installed before dynamic public module import; zero requests. Offline restored frames explicitly lack native session authority."
+  },
+  "package": {
+    "entries": 1132,
+    "packedBytes": 1611830,
+    "unpackedBytes": 7322421,
+    "caps": [
+      1132,
+      1612000,
+      7323000
+    ]
+  },
+  "bundleGzipBytes": {
+    "20": {
+      "ggaction": 773950,
+      "ggaction/basic": 422008,
+      "ggaction/svg": 24954,
+      "ggaction/graph": 44076,
+      "ggaction/animation": 186027,
+      "ggaction/interaction": 129659
+    },
+    "22": {
+      "ggaction": 772328,
+      "ggaction/basic": 421122,
+      "ggaction/svg": 24779,
+      "ggaction/graph": 43923,
+      "ggaction/animation": 185619,
+      "ggaction/interaction": 129216
+    },
+    "24": {
+      "ggaction": 773950,
+      "ggaction/basic": 422008,
+      "ggaction/svg": 24954,
+      "ggaction/graph": 44076,
+      "ggaction/animation": 186027,
+      "ggaction/interaction": 129659
+    }
+  },
+  "bundleCaps": {
+    "ggaction": 774000,
+    "ggaction/basic": 422100,
+    "ggaction/svg": 26000,
+    "ggaction/graph": 46000,
+    "ggaction/animation": 186100,
+    "ggaction/interaction": 129700
+  },
+  "failuresPreserved": [
+    "Actual weighted union keyboard anchor assumed a fill array: state.fill is not iterable. Corrected within the existing hit grammar and covered with clip/opacity/singular/ordering/work literals.",
+    "Interrupt and browser host fixtures reused accepted frameVersion while a request was pending or mount had advanced it. Fixed monotonically increasing host counters, not session stale validation.",
+    "The image literal fixture initially sampled a weighted midpoint but expected full endpoint alpha; endpoint sampling now tests the exact native green payload.",
+    "Lasso fixture initially read a nonexistent selector items alias; it now reads the canonical resolved selection keys.",
+    "First owning coverage passed all 359 assertions but missed an existing weighted miss callback. Independent overlap and miss queries close the 100% function floor.",
+    "First packed limit 1611000 was below measured 1611830 bytes; canonical pack passes with measured bounded 1612000.",
+    "First installed Node20 fixture passed PNG result object instead of its public .buffer to loadImage; test-only fix reuses the exact archive.",
+    "Node20 Full gzip 773950 exceeded prior Node22-derived cap772400. All six measured and bounded caps record Node20/24 maxima; same archive supplement passed.",
+    "Built-page probe initially requested an html route instead of the canonical pretty permalink; corrected route only and retained the first HTTP failure."
+  ],
+  "remaining": [
+    "STEP070 complete AT34/65/80/81/82 matrix across typed partition/routes/Geo/LOD/worker families",
+    "Offline native program binding for restored animation frames",
+    "Typed-animation node/annotation drag and inverse-scale brush current geometry",
+    "Roadmap9 STEP077 overall completion"
+  ],
+  "metadataOnlyFollowup": "Documentation provenance/images/LLM generation pins this source. No runtime/type/package inputs changed after its archive qualification."
+}

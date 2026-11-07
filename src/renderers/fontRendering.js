@@ -71,7 +71,7 @@ export async function prepareFontRendering(program, options) {
   const { register, signal } = options;
   if (typeof register !== "function") throw new TypeError("Font rendering requires an explicit register callback.");
   assertAssetActive(signal, "Font");
-  const scene = program?.version === 2 && Array.isArray(program.nodes) ? program : undefined;
+  const scene = (program?.version === 2 && Array.isArray(program.nodes) || program?.version === 3 && Array.isArray(program.entries)) ? program : undefined;
   const graphicSpec = graphicInput(scene === undefined ? program : canvasSceneProgram(scene));
   const digest = graphicDigest(graphicSpec), values = concreteFonts(graphicSpec);
   const registrations = [], aliases = new Map();

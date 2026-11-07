@@ -1,3 +1,4 @@
+import { drainStages } from "../../core/stages.js";
 import { resolveEffectiveThemeTokens } from "../theme/state.js";
 import { positionBindings } from "../../core/encodingBindings.js";
 import { visibilityScaleInput } from "../../materialization/markVisibility.js";
@@ -22,7 +23,8 @@ import {
 import { findScale, findScaleConsumers, resolveConsumerCategoryOrder,
   resolveConsumerValues, resolveSeriesLayoutScaleValues } from "../../materialization/scales/consumers/index.js";
 
-function resolveScalePreviewAtBounds(program, id, bounds) {
+// Consumer values and the resolved scale are separate stages.
+function* resolveScalePreviewAtBoundsStages(program, id, bounds) {
   const stored = findScale(program, id);
   const facet = program.context?.facetMaterialization;
   const domain = Object.hasOwn(facet?.domains ?? {}, id) ? facet.domains[id] : undefined;
@@ -71,6 +73,7 @@ function resolveScalePreviewAtBounds(program, id, bounds) {
       categoryOrder: domain === undefined ? resolveConsumerCategoryOrder(input.program, input.consumer) : undefined,
       seriesLayout: resolveSeriesLayoutScaleValues(input.program, input.consumer) };
   });
+  yield;
   const polarFrame = channel === "radius"
     ? resolveSharedRadiusFrame(program, consumers, bounds)
     : undefined;
@@ -118,12 +121,16 @@ function dataAspectScaleIds(program) {
 }
 
 export function resolveScalePreview(program, id) {
+  return drainStages(resolveScalePreviewStages(program, id));
+}
+
+export function* resolveScalePreviewStages(program, id) {
   const requestedConsumers = findScaleConsumers(program, id);
   const axes = axisScaleBindings(program, id);
   if (requestedConsumers.length === 0 && axes.length > 0) {
     const coordinate = requireCoordinate(program, axes[0].coordinate);
     if (coordinate.type !== "cartesian") throw new Error("Standalone axes require a Cartesian coordinate.");
-    return resolveScalePreviewAtBounds(program, id, resolveCoordinateBounds(program, coordinate.id));
+    return yield* resolveScalePreviewAtBoundsStages(program, id, resolveCoordinateBounds(program, coordinate.id));
   }
   const positionChannels = new Set([
     "x", "y", "x2", "y2", "theta", "radius"
@@ -133,7 +140,8 @@ export function resolveScalePreview(program, id) {
     positionChannels.has(consumer.channel)
   );
   const allocated = positional ? resolveGraphicBounds(program) : undefined;
-  const provisional = resolveScalePreviewAtBounds(program, id, allocated);
+  const provisional = yield* resolveScalePreviewAtBoundsStages(program, id, allocated);
+  yield;
   if (!positional) return provisional;
   const resolvedScales = {
     ...program.resolvedScales,
@@ -141,11 +149,11 @@ export function resolveScalePreview(program, id) {
   };
   for (const scaleId of dataAspectScaleIds(program)) {
     if (scaleId === id) continue;
-    resolvedScales[scaleId] = resolveScalePreviewAtBounds(
+    resolvedScales[scaleId] = (yield* resolveScalePreviewAtBoundsStages(
       program,
       scaleId,
       allocated
-    ).resolvedScale;
+    )).resolvedScale;
   }
   const bounds = resolveScaleConsumerBounds(
     program,
@@ -158,7 +166,8 @@ export function resolveScalePreview(program, id) {
       throw new Error("Axis and mark scale consumers require matching coordinate bounds.");
     }
   }
-  return resolveScalePreviewAtBounds(program, id, bounds);
+  yield;
+  return yield* resolveScalePreviewAtBoundsStages(program, id, bounds);
 }
 
 export function restoreResolvedScaleBindings(program) {

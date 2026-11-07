@@ -9,7 +9,44 @@ export const cities = { type: "FeatureCollection", features: [[120, 130], [400, 
 export const routes = { type: "Feature", id: "service", properties: { name: "Service route" }, geometry: { type: "LineString", coordinates: cities.features.map(feature => feature.geometry.coordinates) } };
 export const projection = { id: "map", type: "equirectangular", scalePx: 180 / Math.PI * 4, translatePx: [320, 240] };
 export const grid = { stepDeg: [40, 20], extentDeg: [[-40, -20], [40, 20]], precisionDeg: 5, stroke: "#475569", strokeWidth: 2 };
+export const annotations = [
+  { id: "west-label", anchor: { type: "feature", geometry: "stops", key: 0 }, text: "West", dy: -16, align: "center", fontSize: 18, fill: "#0f172a" },
+  { id: "central-label", anchor: { type: "feature", geometry: "stops", key: 1 }, text: "Central", dy: -16, align: "center", fontSize: 18, fill: "#0f172a" },
+  { id: "east-label", anchor: { type: "feature", geometry: "stops", key: 2 }, text: "East", dy: -16, align: "center", fontSize: 18, fill: "#0f172a" }
+];
+export const measuredCities = { ...cities, features: cities.features.map((feature, index) => ({ ...feature,
+  properties: { ...feature.properties, visitors: [1, 4, 9][index] } })) };
+export const fieldMappings = [
+  ["encodeColor", { target: "geo-shape", field: "name", scale: { id: "district-color", range: ["#bfdbfe"] } }],
+  ["encodeColor", { target: "geo-line", field: "name", scale: { id: "route-color", range: ["#7c3aed"] } }],
+  ["encodeColor", { target: "geo-point", field: "name", scale: { id: "stop-color", range: ["#2563eb", "#0d9488", "#dc2626"] } }],
+  ["encodeSize", { target: "geo-point", field: "visitors", scale: { id: "stop-size", domain: [1, 9], range: [64 * Math.PI, 576 * Math.PI] } }]
+];
+const visitorsAtLeast = value => ({ version: 2, registry: "standard@1", root: {
+  type: "binary", op: "gte", left: { type: "field", name: "visitors" }, right: { type: "literal", value }
+} });
+export const conditionalMappings = [
+  ["encodeColor", { target: "geo-point", conditions: [
+    { when: visitorsAtLeast(8), value: { value: "#dc2626" } },
+    { when: visitorsAtLeast(4), value: { field: "name", scale: fieldMappings[2][1].scale } }
+  ], otherwise: { value: "#64748b" } }],
+  ["encodeSize", { target: "geo-point", conditions: [
+    { when: visitorsAtLeast(4), value: { field: "visitors", scale: fieldMappings[3][1].scale } }
+  ], otherwise: { value: 64 * Math.PI } }]
+];
+export const cameraOperations = [
+  { type: "zoom", anchorPx: [320, 240], factor: .75, scaleExtent: [.5, 4] },
+  { type: "pan", deltaPx: [15, -10] }
+];
+export const featureLabels = { source: "geo-point", field: "name", dy: -16, baseline: "alphabetic", fontSize: 18, fill: "#0f172a" };
+export const gridLabels = { source: "graticule", field: "value", format: ".0f", select: { field: "axis", op: "eq", value: "longitude" }, dy: -14, fontSize: 18, fill: "#0f172a" };
 export const variants = [
+  { id: "labels", chart: "geographic-annotations", title: "Feature names share one label layer" },
+  { id: "grid-labels", chart: "geographic-grid", title: "Longitude labels follow generated graticules" },
+  { id: "conditional", chart: "geographic-fields", title: "Conditions emphasize the busiest stops" },
+  { id: "camera", chart: "geographic-marks", title: "A centered zoom preserves stop size" },
+  { id: "fields", chart: "geographic-fields", title: "Stop area follows visitor counts" },
+  { id: "annotations", chart: "geographic-annotations", title: "Labels stay attached to the original stops" },
   { id: "planar", chart: "geographic-marks", title: "A district, stops and service route" },
   { id: "graticule", chart: "geographic-grid", title: "Longitude and latitude on one projection" }
 ];

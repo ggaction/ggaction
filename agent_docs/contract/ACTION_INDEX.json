@@ -1197,7 +1197,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editPointMark` and encoding actions; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
+      "update": "`editPointMark` and encoding actions; explicit bounded point maxItems preserves the default capacity and is editable/removable; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1287,7 +1287,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "`editMarkLabelSelection`, `editMarkLabelPlacement`, `encodeText`, `editTextMark`, `layoutLabels`, `removeLabelLayout`; source-owner removal cleans up labels",
+      "update": "`editMarkLabelSelection`, `editMarkLabelPlacement`, `encodeText`, `editTextMark`, `layoutLabels`, `removeLabelLayout`; source-owner removal cleans up labels; Full Geo feature/graticule sources share native Text content, placement, resource identity and source revisions",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -1359,7 +1359,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "`encodeText`, `encodeX/Y`, `editTextMark`, `layoutLabels`, `removeLabelLayout`, `editScale`, and `removeMark`",
+      "update": "`editAnnotation` and native Text/encoding/label actions; screen anchors remain data-less local Canvas pixels; source-owned labels retain source removal lifecycle",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -1369,6 +1369,24 @@
       "contract": {
         "file": "agent_docs/contract/current/MARKS.md",
         "anchor": "createannotation"
+      }
+    },
+    {
+      "name": "editAnnotation",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Atomically edits an existing Text datum or screen anchor, constant content, native style, source-item membership, placement or collision policy; preserves native owner lifecycle",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "editannotation"
       }
     },
     {
@@ -1449,7 +1467,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits constant point shape and appearance; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
+      "update": "Edits constant point shape, appearance, and bounded maxItems capacity; explicit undefined restores the default capacity; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -6286,6 +6304,24 @@
       }
     },
     {
+      "name": "applyGraphEdgeRoutesUpdate",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Prepare another exact native layout revision",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/EDGE_ROUTES.md",
+        "anchor": "applygraphedgeroutesupdate"
+      }
+    },
+    {
       "name": "createGeometryData",
       "layer": "user-facing",
       "domain": "core",
@@ -6358,6 +6394,42 @@
       }
     },
     {
+      "name": "createGeoRouteData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editGeoRouteData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "creategeoroutedata"
+      }
+    },
+    {
+      "name": "editGeoRouteData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editGeoRouteData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "editgeoroutedata"
+      }
+    },
+    {
       "name": "createGeoLODData",
       "layer": "user-facing",
       "domain": "core",
@@ -6427,6 +6499,24 @@
       "contract": {
         "file": "agent_docs/contract/current/GEOMETRY.md",
         "anchor": "editprojection"
+      }
+    },
+    {
+      "name": "navigateProjection",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editProjection`, `navigateProjection`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "navigateprojection"
       }
     },
     {
@@ -6535,6 +6625,42 @@
       "contract": {
         "file": "agent_docs/contract/current/GEOMETRY.md",
         "anchor": "editgeolinemark"
+      }
+    },
+    {
+      "name": "createGeoAnnotation",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editGeoAnnotation`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "creategeoannotation"
+      }
+    },
+    {
+      "name": "editGeoAnnotation",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editGeoAnnotation`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "editgeoannotation"
       }
     },
     {
@@ -6680,6 +6806,78 @@
         "file": "agent_docs/contract/current/WATERFALL.md",
         "anchor": "editwaterfallplot"
       }
+    },
+    {
+      "name": "createTrailPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTrailPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/TRAIL.md",
+        "anchor": "createtrailplot"
+      }
+    },
+    {
+      "name": "editTrailPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTrailPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/TRAIL.md",
+        "anchor": "edittrailplot"
+      }
+    },
+    {
+      "name": "createTablePlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTablePlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/TABLE.md",
+        "anchor": "createtableplot"
+      }
+    },
+    {
+      "name": "editTablePlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTablePlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/TABLE.md",
+        "anchor": "edittableplot"
+      }
     }
   ],
   "plannedActions": [],
@@ -6779,7 +6977,9 @@
       "materializeGeoMark",
       "materializePyramidPlot",
       "materializeOHLCPlot",
-      "materializeWaterfallPlot"
+      "materializeWaterfallPlot",
+      "materializeTrailPlot",
+      "materializeTablePlot"
     ],
     "guideComponents": [
       "createLegendBackground",
@@ -6821,7 +7021,9 @@
       "refreshScreenEdgeRoutes",
       "applyPyramidMark",
       "applyOHLCMark",
-      "applyWaterfallMark"
+      "applyWaterfallMark",
+      "applyTrailMark",
+      "applyTableMark"
     ],
     "aggregateComponents": [
       "createBoxMedian",

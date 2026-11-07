@@ -6,7 +6,7 @@ test("records series policy state without compiling or changing graphics", () =>
   const base = chart().createCanvas().createData({ values: [{ x: 0, y: 2 }] })
     .createAreaMark({ id: "area" });
   const before = JSON.stringify(base);
-  for (const mode of ["group", "stack", "fill", "overlay", "diverging", "center"]) {
+  for (const mode of ["group", "stack", "fill", "overlay", "diverging", "center", "wiggle"]) {
     const next = base.editSemantic({ property: "layer[area].layout.mode", value: mode });
     assert.deepEqual(next.semanticSpec.layers[0].layout, { mode });
     assert.equal(next.graphicSpec, base.graphicSpec);

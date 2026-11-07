@@ -1,0 +1,220 @@
+{
+  "sourceCommit": "27ce21d20606e93d8adb487bc6f8536a2b10b1d0",
+  "runtimeCommit": "d2441294413d13de40fc545f070489645c038276",
+  "parent": "666b7ba55ed4443144c1b570b7ce5599a35651f7",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json#remainingApproval",
+  "scope": "Canonical host tooltip with native keyboard focus and touch activation; no new runtime, public API, types, persisted schema or renderer.",
+  "runtimeAndTypesFingerprint": "1de97951c461f31f5403a0d18ea396b04450f9400e2e968a4e7df9a39add6743",
+  "checks": {
+    "browser": {
+      "tests": 6,
+      "newTooltipTests": 4,
+      "priorKeyboardTests": 2,
+      "backends": [
+        "Canvas",
+        "SVG"
+      ],
+      "actualChromium": true,
+      "canonicalSnippet": true,
+      "hoverable": true,
+      "escape": true,
+      "safeText": true,
+      "touch": true,
+      "hiddenAndRemovedOwnerFallback": true,
+      "nativeSelection": true,
+      "explicitTeardown": true,
+      "axeViolations": 0
+    },
+    "nativeItemsAndDiscovery": 26,
+    "docs": 49,
+    "built": {
+      "pages": 172,
+      "llmArtifacts": 1535,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "overflow": false,
+      "inspected": [
+        320,
+        1440
+      ]
+    },
+    "installed": {
+      "node": "v22.23.1",
+      "sourceFree": true,
+      "artifact": "7cab0f5b1ee890ee76526f0c5e620a6abd75f149ee8a037d30e76411a9a77fad",
+      "installedManifest": "0.0.26",
+      "modules": 1016,
+      "chunkCount": 1,
+      "keyboard": true,
+      "touch": true,
+      "nativeSelection": true,
+      "filterFocusFallback": true,
+      "explicitTeardown": true,
+      "axeViolations": 0
+    }
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1064,
+    "packedBytes": 1509459,
+    "unpackedBytes": 6874696,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/keyboard-focus-7cab0f5b.tgz",
+    "sha1": "279b8c7c38237888e5ac0b186297f185e08d8f14",
+    "sha256": "7cab0f5b1ee890ee76526f0c5e620a6abd75f149ee8a037d30e76411a9a77fad"
+  },
+  "search": {
+    "bytes": 1039911,
+    "limit": 1040000
+  },
+  "reusedEvidence": {
+    "path": "../keyboard-focus-evidence/qualification.json",
+    "reason": "Exact src/types fingerprint and identical 7cab archive. Existing three-Node native runtime/types/bundle checks and critical floors remain applicable. Only latest host snippet is rerun from the fixed artifact in Node22/Vite/Chromium."
+  },
+  "preservedFailures": [
+    "Initial four browser cases exposed host layout shift when a tooltip disappeared and moved its action buttons. A fixed-height tooltip container resolves the real host defect.",
+    "Initial owning docs47/49 failed only the changed search payload bound; measured1039911 bytes informs1040000.",
+    "First source-free Vite host used a macOS temporary path without realpath, producing an absolute output filename. Harness realpath correction resolved it.",
+    "Next source-free host passed all native commands but whole-page Axe found missing h1 in its temporary host. Adding h1 resolves the fixture; no runtime changed."
+  ],
+  "evidencePolicy": "Related tests, the actual canonical host example and source/built/browser documentation only. No full suite/all renderer/all installed sweep is claimed. Repository dependency options are supplied for the root combined loader, but this old branch loader ignores them; root owns that combined check.",
+  "remaining": [
+    "C2 all actionable native controls keyboard/touch owner matrix",
+    "Public animation/reduced-motion dependency and AT53 combined acceptance",
+    "STEP074-077 overall qualification"
+  ],
+  "commands": {
+    "browser": "Node22 node --test test/browser/interaction-keyboard.browser.js test/browser/accessible-tooltip.browser.js",
+    "owning": "node --test test/unit/accessibility/items.test.js test/contracts/test-discovery.test.js",
+    "docs": "Target signatures/snippets/metadata/search/machine/llms; node --test test/docs/action-reference.test.js test/docs/documentation.test.js test/docs/documentation-coverage.test.js; npm run docs:preflight; npm run docs:build; npm run test:docs:built; node .artifacts/tooltip-doc-browser.mjs",
+    "installed": "Node22 node .artifacts/tooltip-consumer.mjs; same7cab artifact"
+  },
+  "evidenceFiles": [
+    {
+      "path": "tooltip-browser-dependencies.log.gz",
+      "sha256": "14ade1ab12d5602826a61789007c6844a683f00c2a2ddf245318b06c4011b005"
+    },
+    {
+      "path": "tooltip-browser-final.log.gz",
+      "sha256": "acc8175a0254eae6841cd194eb95ac1703b039fda6f8861bdba0145713ceaede"
+    },
+    {
+      "path": "tooltip-browser-first.log.gz",
+      "sha256": "3d98affb09589d4357303a482e01b4158f76c9404e122e00274b34fcd7cdbdc4"
+    },
+    {
+      "path": "tooltip-browser-second.log.gz",
+      "sha256": "b118a8e1d0021c7f47343145299ea8c2f4dac887ba92a48ea8db3919eaea5343"
+    },
+    {
+      "path": "tooltip-build-final.log.gz",
+      "sha256": "5527170d2fa13833ef236497750d423011a7dcf235dbbdf480d8daa250069bd0"
+    },
+    {
+      "path": "tooltip-build.log.gz",
+      "sha256": "dca1da4e19124c7c0df3695736f62d0f52f555f2e0d39d3de385da5255954c7d"
+    },
+    {
+      "path": "tooltip-built-final.log.gz",
+      "sha256": "1ec05c4e74288ef806fa965037bd3335acae6f1b91d245a6f566a0dc03be2546"
+    },
+    {
+      "path": "tooltip-built.log.gz",
+      "sha256": "1ec05c4e74288ef806fa965037bd3335acae6f1b91d245a6f566a0dc03be2546"
+    },
+    {
+      "path": "tooltip-consumer-current.log.gz",
+      "sha256": "2af4d6f668cf8aa09f326f357f1ebf497b2108808a09714996f8cde36b186bd3"
+    },
+    {
+      "path": "tooltip-consumer-final.log.gz",
+      "sha256": "6455844db19acc5c124cd979db84d92ff24b3e728ad109a9fac32955162e7250"
+    },
+    {
+      "path": "tooltip-consumer-qualified.log.gz",
+      "sha256": "2af4d6f668cf8aa09f326f357f1ebf497b2108808a09714996f8cde36b186bd3"
+    },
+    {
+      "path": "tooltip-consumer.log.gz",
+      "sha256": "d4ec9f56c0ccffcb1908cefd4a231e0d172159d7082e743362eb3d9aa73a96c2"
+    },
+    {
+      "path": "tooltip-consumer.mjs.gz",
+      "sha256": "c5b4c0d35d2b8e6c3012eec108fcae7f2951617dd4f4a892c6b196609880a891"
+    },
+    {
+      "path": "tooltip-doc-browser-final.log.gz",
+      "sha256": "68e6f452728d899b6f1086441c65bf07f29924a7b724268fa8b2d900221ba5d9"
+    },
+    {
+      "path": "tooltip-doc-browser.log.gz",
+      "sha256": "68e6f452728d899b6f1086441c65bf07f29924a7b724268fa8b2d900221ba5d9"
+    },
+    {
+      "path": "tooltip-doc-browser.mjs.gz",
+      "sha256": "95866530ab8783af7da7e9a244ff03c3c286b1b6e90c7588d6936d58881bc159"
+    },
+    {
+      "path": "tooltip-docs-coverage-current.log.gz",
+      "sha256": "c1b7a32797035b3866e2d1a7bd5af41d3f4536fe91fad0f95af066f34bd3e0ae"
+    },
+    {
+      "path": "tooltip-docs-current.log.gz",
+      "sha256": "9315ba29bd2fd92e82977584b851c0ec8a691f395bd61675ca658ab7d99a050b"
+    },
+    {
+      "path": "tooltip-docs-final.log.gz",
+      "sha256": "1e8587e521e26c2021e9f8a62ac6af0ca22dbb100498c5cd37cd30e49c9a05b6"
+    },
+    {
+      "path": "tooltip-docs-first.log.gz",
+      "sha256": "dbe9b84a1db64d0f10cc8222fe64775f9f4b1ef0b996cba02dbfdcb44b62374f"
+    },
+    {
+      "path": "tooltip-generation-final.log.gz",
+      "sha256": "4d19f3cc3e71814ecd950e0ec5b1db2808ecb323b76d79885f82eee7a242dd20"
+    },
+    {
+      "path": "tooltip-generation.log.gz",
+      "sha256": "4d19f3cc3e71814ecd950e0ec5b1db2808ecb323b76d79885f82eee7a242dd20"
+    },
+    {
+      "path": "tooltip-owning.log.gz",
+      "sha256": "6fa31dc0b5184d122bc93a4b67ee2a4febe6515c24ebd221ec23f13100e38b27"
+    },
+    {
+      "path": "tooltip-preflight-final.log.gz",
+      "sha256": "9d47135d2561c027deaf16e720d64974cf552ac3d951ea969da392572442ebdf"
+    },
+    {
+      "path": "tooltip-qualify.mjs.gz",
+      "sha256": "b1da3f5a776ffd8832e5d9bed1a59c5cda80b4e9ac27fe635d8de3f2d763c524"
+    },
+    {
+      "path": "tooltip-search.log.gz",
+      "sha256": "3e4a75260f67dd34fa7901398eda91d0e4a110c440012ba9a3f5b9f150cf9742"
+    },
+    {
+      "path": "api-interaction-1440.png",
+      "sha256": "ebf56b2ba530ccad9bb0cd738935832385304cc0ae91a3ce3e7a99e1a91a5d64"
+    },
+    {
+      "path": "api-interaction-320.png",
+      "sha256": "ec24107da703efe3da9bd8672a71c85dcd71152940390458c5bc6b708c8029aa"
+    },
+    {
+      "path": "api-interaction-390.png",
+      "sha256": "99e888156e2bf49cecdb24b987d64ccf534b336b54e51a3c4dc39943f32e3264"
+    },
+    {
+      "path": "api-interaction-768.png",
+      "sha256": "b886cbf6774e486d031ee7b0a1f7bb4ed5c1838dc568f67f0076e0d1921d9b2f"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "scope": "metadata-only owner audit",
+  "baseCommit": "8ca777e65",
+  "changedOwnerObjects": [
+    "AT-23",
+    "AT-27",
+    "AT-28"
+  ],
+  "otherManifestValuesEqual": true,
+  "requirements": 30,
+  "groups": 79,
+  "consumerCells": 577,
+  "assignedGroupsBefore": 44,
+  "assignedGroupsAfter": 46,
+  "candidate": null,
+  "executedAcceptanceGroups": [],
+  "status": "structure-only; final qualification pending"
+}

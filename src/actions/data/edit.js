@@ -1,4 +1,5 @@
-import { reviseSourceDataResources } from "./resourceRevision.js";
+import { reviseSourceDataResourcesStages } from "./resourceRevision.js";
+import { drainStages } from "../../core/stages.js";
 import { bindFilterTransform } from "./filterBinding.js";
 import { ownRecord } from "../../core/ownData.js";
 import {resolveDatasetTransformInputs} from "./shared.js";
@@ -18,7 +19,7 @@ import {
   findDataset,
   hasDataset
 } from "../../selectors/datasets.js";
-import { withLogicalDataReplacements } from
+import { withLogicalDataReplacements, withLogicalDataReplacementsStages } from
   "../../materialization/revisionIdentity.js";
 import { derivedIdentityBase } from "../../grammar/rowLineage.js";
 import { withPreparedDatasetIdentity } from "../primitives/datasetIdentity.js";
@@ -289,10 +290,15 @@ function directLayerConsumers(program, data) {
 
 export function applyRevisionPlan(program, resolved, plan, { retain = new Set(), parameterBudget = false } = {}) {
   return withLogicalDataReplacements(plan.replacements, () =>
-    applyRevisionPlanWithIdentity(program, resolved, plan, { retain, parameterBudget }));
+    drainStages(applyRevisionPlanWithIdentityStages(program, resolved, plan, { retain, parameterBudget })));
 }
 
-function applyRevisionPlanWithIdentity(program, resolved, plan, { retain, parameterBudget }) {
+export function* applyRevisionPlanStages(program, resolved, plan, { retain = new Set(), parameterBudget = false } = {}) {
+  return yield* withLogicalDataReplacementsStages(plan.replacements, () =>
+    applyRevisionPlanWithIdentityStages(program, resolved, plan, { retain, parameterBudget }));
+}
+
+function* applyRevisionPlanWithIdentityStages(program, resolved, plan, { retain, parameterBudget }) {
   const root = plan.revisions[0];
   const changes = resolved === undefined ? new Map() : outputFieldChanges(
     resolved.dataset.transform[0],
@@ -350,7 +356,7 @@ function applyRevisionPlanWithIdentity(program, resolved, plan, { retain, parame
       );
     }
   }
-  next = reviseSourceDataResources(next, plan.replacements, consumers.map(consumer => consumer.id));
+  next = yield* reviseSourceDataResourcesStages(next, plan.replacements, consumers.map(consumer => consumer.id));
   for (const revision of [...plan.revisions].reverse()) {
     if (retain.has(revision.old)) continue;
     next = next.releaseDerivedData({ id: revision.old });

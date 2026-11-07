@@ -13,7 +13,7 @@ export function validateLegendChannels(channels, operation) {
   }
 }
 
-const CATEGORICAL_KINDS = Object.freeze(["series", "color", "stroke"]);
+export const CATEGORICAL_LEGEND_KINDS = Object.freeze(["series", "color", "stroke"]);
 const SINGLE_CHANNELS = Object.freeze({
   size: "size",
   opacity: "opacity",
@@ -27,7 +27,7 @@ const SINGLE_CHANNELS = Object.freeze({
 const asciiCompare = (left, right) => left < right ? -1 : left > right ? 1 : 0;
 
 export function legendBlockChannels(kind, config) {
-  const channels = kind === "colorSize" ? colorSizeChannels(config) : CATEGORICAL_KINDS.includes(kind)
+  const channels = kind === "colorSize" ? colorSizeChannels(config) : CATEGORICAL_LEGEND_KINDS.includes(kind)
     ? config?.channels
     : SINGLE_CHANNELS[kind] === undefined
       ? undefined
@@ -51,14 +51,14 @@ export function describeLegendBlock(program, kind, config) {
     throw new Error(`Unknown legend block kind "${kind}".`);
   }
   const channels = legendBlockChannels(kind, config);
-  const scaleIds = kind === "colorSize" ? colorSizeScaleIds(config) : CATEGORICAL_KINDS.includes(kind)
+  const scaleIds = kind === "colorSize" ? colorSizeScaleIds(config) : CATEGORICAL_LEGEND_KINDS.includes(kind)
     ? config?.scales
     : [config?.scale];
   if (!Array.isArray(scaleIds) || scaleIds.length === 0 ||
     scaleIds.some(id => typeof id !== "string" || program.resolvedScales[id] === undefined)) {
     throw new Error(`Legend block ${kind} requires resolved scales.`);
   }
-  const family = CATEGORICAL_KINDS.includes(kind)
+  const family = CATEGORICAL_LEGEND_KINDS.includes(kind)
     ? "categorical"
     : kind === "colorSize" ? "sampled" : kind === "size"
       ? isEnumeratedSizeScaleType(program.resolvedScales[scaleIds[0]].type)

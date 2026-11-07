@@ -1,0 +1,33 @@
+{
+  "node": "v20.20.2",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+  "sha256": "94ece5b2b35ce3b5ccc9bac550f4c75eea61c8898c9e1fc01427d0aacee68a7a",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 3261.081875
+    },
+    {
+      "id": "animation-six-public-cases",
+      "status": "passed",
+      "durationMs": 1509.8194589999994
+    },
+    {
+      "id": "animation-strict-types",
+      "status": "passed",
+      "durationMs": 189.31562500000018
+    },
+    {
+      "id": "snippet:api/animation.md",
+      "status": "passed",
+      "durationMs": 306.68466700000045
+    },
+    {
+      "id": "ggaction/animation",
+      "status": "failed",
+      "durationMs": 919.7874580000007,
+      "error": "AssertionError [ERR_ASSERTION]: {\"specifier\":\"ggaction/animation\",\"chunks\":1,\"modules\":307,\"minifiedBytes\":614030,\"gzipBytes\":186027}\n    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-retention.mjs:35:115\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async check (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-retention.mjs:19:75)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-retention.mjs:34:72"
+    }
+  ]
+}

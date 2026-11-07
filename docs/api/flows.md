@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Flow Data and Sankey Layouts
+description: Store conserved node and edge flows, lay them out as DAG or cyclic Sankey diagrams, and draw nodes and links.
 ---
 
 # Flow data and Sankey layouts
@@ -82,7 +83,7 @@ General graph layouts use the separate `layoutGraph` action.
 | Option | Default | Meaning |
 | --- | --- | --- |
 | `width`, `height` | `600`, `400` | Positive finite layout dimensions |
-| `nodeWidth` | `16` | Positive node extent along the flow direction |
+| `nodeWidth` | `16` | Positive node extent along the flow direction, at most the layout width (or height when vertical) |
 | `nodePadding` | `8` | Nonnegative gap between nodes in a column |
 | `align` | `"justify"` | `"left"`, `"right"`, `"center"`, or `"justify"` |
 | `order` | `"input"` | Input order, `"barycentric"`, or an explicit complete typed-key array |
@@ -184,6 +185,9 @@ result. Invalid edits preserve the earlier program.
 Flow marks support item inspection, source-row lineage, selection/highlighting,
 Canvas and coordinate rematerialization, snapshots, and composition with other
 charts through `hconcat` and `vconcat`, including exact child-target edits.
+When a version 2 [edge route](edge-routes.md#explicit-bounded-execution) depends on a flow
+resource, call `editFlowData` through `prepareGraphEdgeRoutes({kind:"update", edit:{action, args}})`
+and [`applyGraphEdgeRoutesUpdate`](edge-routes.md#applygraphedgeroutesupdate); a direct call fails.
 Automatic `facet` and `repeatCharts` partitioning is incompatible with flow marks:
 the node and edge tables require coordinated partition rules, so these actions
 reject the input without changing it. Node items expose `key`, `value`, `incoming`, `outgoing` and `imbalance`;

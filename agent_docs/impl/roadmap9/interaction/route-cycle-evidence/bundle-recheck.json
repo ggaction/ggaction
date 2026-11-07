@@ -1,0 +1,113 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "node": 20,
+      "specifier": "ggaction",
+      "bytes": 782010,
+      "cap": 782100
+    },
+    {
+      "node": 20,
+      "specifier": "ggaction/basic",
+      "bytes": 422951,
+      "cap": 423000
+    },
+    {
+      "node": 20,
+      "specifier": "ggaction/svg",
+      "bytes": 24954,
+      "cap": 26000
+    },
+    {
+      "node": 20,
+      "specifier": "ggaction/graph",
+      "bytes": 44614,
+      "cap": 46000
+    },
+    {
+      "node": 20,
+      "specifier": "ggaction/animation",
+      "bytes": 233459,
+      "cap": 233500
+    },
+    {
+      "node": 20,
+      "specifier": "ggaction/interaction",
+      "bytes": 137439,
+      "cap": 137500
+    },
+    {
+      "node": 22,
+      "specifier": "ggaction",
+      "bytes": 780604,
+      "cap": 782100
+    },
+    {
+      "node": 22,
+      "specifier": "ggaction/basic",
+      "bytes": 422085,
+      "cap": 423000
+    },
+    {
+      "node": 22,
+      "specifier": "ggaction/svg",
+      "bytes": 24779,
+      "cap": 26000
+    },
+    {
+      "node": 22,
+      "specifier": "ggaction/graph",
+      "bytes": 44460,
+      "cap": 46000
+    },
+    {
+      "node": 22,
+      "specifier": "ggaction/animation",
+      "bytes": 232682,
+      "cap": 233500
+    },
+    {
+      "node": 22,
+      "specifier": "ggaction/interaction",
+      "bytes": 137002,
+      "cap": 137500
+    },
+    {
+      "node": 24,
+      "specifier": "ggaction",
+      "bytes": 782010,
+      "cap": 782100
+    },
+    {
+      "node": 24,
+      "specifier": "ggaction/basic",
+      "bytes": 422951,
+      "cap": 423000
+    },
+    {
+      "node": 24,
+      "specifier": "ggaction/svg",
+      "bytes": 24954,
+      "cap": 26000
+    },
+    {
+      "node": 24,
+      "specifier": "ggaction/graph",
+      "bytes": 44614,
+      "cap": 46000
+    },
+    {
+      "node": 24,
+      "specifier": "ggaction/animation",
+      "bytes": 233459,
+      "cap": 233500
+    },
+    {
+      "node": 24,
+      "specifier": "ggaction/interaction",
+      "bytes": 137439,
+      "cap": 137500
+    }
+  ]
+}

@@ -3,15 +3,28 @@ import { annotateError } from "./diagnostics.js";
 import { freezeOwned, isOwned, isPlainObject } from "./immutable.js";
 
 import { ownDataProperties } from "./ownData.js";
+import { drainStages } from "./stages.js";
 
 const metadataByWrappedAction = new WeakMap();
 const implementationByWrappedAction = new WeakMap();
 const sourceByEnteredAction = new WeakMap();
+const invocationScopes = new WeakMap();
 const summariesByArguments = new WeakMap();
+const invocationRuns = new WeakMap();
+const stagedImplementations = new WeakMap();
 let actionCompletionHook;
 const targetDispatchers = new WeakMap();
 const resultValidators = new WeakMap();
 const UNSCOPED_PRIMITIVES = new Set(["createGraphics", "editGraphics", "editSemantic", "createData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "createGraphData", "createInferredGraphData", "createFlowData"]);
+
+// Private built-in wiring only. The original wrapper still owns the complete
+// invocation and its return value; the owner grants no action/result authority.
+export function bindActionInvocationScope(wrapped, enter) {
+  if (!metadataByWrappedAction.has(wrapped) || typeof enter !== "function") throw new TypeError("Expected a wrapped action and invocation owner.");
+  if (invocationScopes.has(wrapped)) throw new TypeError("Invocation owner is already bound.");
+  invocationScopes.set(wrapped, enter);
+  return wrapped;
+}
 
 // Prepared updates must compare their base with the caller's receiver, before
 // _enterAction creates the immutable trace branch. This evidence is valid only
@@ -74,6 +87,8 @@ export function getWrappedActionMetadata(value) {
 }
 
 export function invokeWrappedActionImplementation(value, program, args = {}) {
+  const stages = stagedImplementations.get(value);
+  if (stages !== undefined) return drainStages(stages.call(program, args));
   const implementation = implementationByWrappedAction.get(value);
   if (implementation === undefined) {
     throw new TypeError("Expected an action created by action().");
@@ -244,6 +259,12 @@ export function appendActionNodeAtPath(root, parentPath, actionNode) {
 }
 
 export function action(metadata, implementation) {
+  return defineAction(metadata, implementation);
+}
+
+// A private staged definition has only its generator implementation: the
+// synchronous method and staged callers both run that generator.
+function defineAction(metadata, implementation, stages) {
   if (!isPlainObject(metadata)) {
     throw new TypeError("Action metadata must be a plain object.");
   }
@@ -259,7 +280,7 @@ export function action(metadata, implementation) {
     throw new TypeError("Action metadata requires a non-empty description.");
   }
 
-  if (typeof implementation !== "function") {
+  if (typeof (stages ?? implementation) !== "function") {
     throw new TypeError("Action implementation must be a function.");
   }
 
@@ -275,7 +296,9 @@ export function action(metadata, implementation) {
     ...(Array.isArray(metadata.options) ? { options: [...metadata.options] } : {})
   });
 
-  const wrappedAction = function wrappedAction(args = {}) {
+  // One invocation generator serves the synchronous wrapper and staged callers;
+  // only a private staged implementation ever yields between row batches.
+  function* run(self, args = {}) {
     try {
       if (!isPlainObject(args)) {
         throw new TypeError("Action arguments must be a plain object.");
@@ -283,47 +306,90 @@ export function action(metadata, implementation) {
   
       ownDataProperties(args, "Action arguments");
       const scoped = isPlainObject(args.target) || Array.isArray(args.target);
-      const dispatch = scoped && !UNSCOPED_PRIMITIVES.has(ownedMetadata.op) ? targetDispatcher(this.constructor) : undefined;
-      if (!dispatch && scope === "unit") this._assertUnitProgram(ownedMetadata.op);
-      if (!dispatch && scope === "composition") this._assertCompositionProgram(ownedMetadata.op);
+      const dispatch = scoped && !UNSCOPED_PRIMITIVES.has(ownedMetadata.op) ? targetDispatcher(self.constructor) : undefined;
+      if (!dispatch && scope === "unit") self._assertUnitProgram(ownedMetadata.op);
+      if (!dispatch && scope === "composition") self._assertCompositionProgram(ownedMetadata.op);
   
       const summarizedArgs = summariesByArguments.get(args) ?? summarizeArgs(args);
-      const entered = this._enterAction({
-        ...ownedMetadata,
-        args: summarizedArgs
-      });
-      sourceByEnteredAction.set(entered, this);
-      try {
-        let result = dispatch ? dispatch(entered, wrappedAction, args) : implementation.call(entered, args);
+      const staged = dispatch ? undefined : stages;
+      const invoke = function* () {
+        const entered = self._enterAction({
+          ...ownedMetadata,
+          args: summarizedArgs
+        });
+        sourceByEnteredAction.set(entered, self);
+        try {
+          let result = dispatch ? dispatch(entered, wrappedAction, args)
+            : staged ? yield* staged.call(entered, args) : implementation.call(entered, args);
   
-        if (!(result instanceof this.constructor)) {
-          throw new TypeError(`${ownedMetadata.op} must return a ChartProgram.`);
-        }
-
-        if (this.actionStack.length === 0 && actionCompletionHook !== undefined) {
-          result = actionCompletionHook(result, {
-            source: this,
-            metadata: ownedMetadata,
-            args: summarizedArgs
-          });
-          if (!(result instanceof this.constructor)) {
-            throw new TypeError("Action completion hook must return a ChartProgram.");
+          if (!(result instanceof self.constructor)) {
+            throw new TypeError(`${ownedMetadata.op} must return a ChartProgram.`);
           }
-        }
 
-        if (this.actionStack.length === 0) validateActionResult(this.constructor, result);
-        return result._exitAction();
-      } finally {
-        sourceByEnteredAction.delete(entered);
+          if (self.actionStack.length === 0 && actionCompletionHook !== undefined) {
+            result = actionCompletionHook(result, {
+              source: self,
+              metadata: ownedMetadata,
+              args: summarizedArgs
+            });
+            if (!(result instanceof self.constructor)) {
+              throw new TypeError("Action completion hook must return a ChartProgram.");
+            }
+          }
+
+          if (self.actionStack.length === 0) validateActionResult(self.constructor, result);
+          return result._exitAction();
+        } finally {
+          sourceByEnteredAction.delete(entered);
+        }
+      };
+      const enterScope = invocationScopes.get(wrappedAction);
+      if (enterScope === undefined) return yield* invoke();
+      // A bound invocation scope is process-wide while open, so it never spans a yield.
+      const closeScope = enterScope(self, args);
+      if (typeof closeScope !== "function") throw new TypeError("Invocation scope must return a synchronous closer.");
+      let result, succeeded = false;
+      try { result = drainStages(invoke()); succeeded = true; return result; }
+      finally {
+        if (succeeded) closeScope({ result });
+        // A cleanup failure cannot replace the original native/validation error.
+        else { try { closeScope(); } catch { /* The invocation error wins. */ } }
       }
     } catch (error) {
       throw annotateError(error, { code: "action-failed", operation: ownedMetadata.op });
     }
-  };
+  }
+  const wrappedAction = function wrappedAction(args) { return drainStages(run(this, args)); };
+  invocationRuns.set(wrappedAction, run);
 
   metadataByWrappedAction.set(wrappedAction, ownedMetadata);
-  implementationByWrappedAction.set(wrappedAction, implementation);
+  if (stages === undefined) implementationByWrappedAction.set(wrappedAction, implementation);
+  else stagedImplementations.set(wrappedAction, stages);
   return wrappedAction;
+}
+
+// Invoke a wrapped action as resumable stages: the same validation, trace,
+// completion hook and result checks as the synchronous call, yielding only
+// inside a private staged implementation.
+export function* invokeActionStages(program, wrapped, args) {
+  const run = invocationRuns.get(wrapped);
+  // A plain program method keeps its exact synchronous call shape.
+  if (run === undefined) return args === undefined ? wrapped.call(program) : wrapped.call(program, args);
+  return yield* run(program, args);
+}
+
+// Private built-in staged action with an open option set, as action().
+export function stagedAction(metadata, stages) {
+  return defineAction(metadata, undefined, stages);
+}
+
+// Private built-in staged action: the synchronous method drains the same
+// generator implementation that staged callers resume between row batches.
+export function stagedClosedAction(metadata, options, stages) {
+  return defineAction({ ...metadata, options }, undefined, function* (args = {}) {
+    if (options !== undefined) validateKeys(args, options, metadata.op);
+    return yield* stages.call(this, args);
+  });
 }
 
 // Private built-in convenience: action() owns the object boundary and trace,

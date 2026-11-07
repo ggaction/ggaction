@@ -1,16 +1,18 @@
+import { validateGeoGraphicCapacity } from "../../grammar/geo/capacity.js";
 import { validateGraphicIdentity, graphicIdentityId } from "../../grammar/schemas/graphicIdentity.js";
 import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { validateGraphicItemLimit } from "../../core/validation.js";
-import { closedAction } from "../../core/action.js";
+import { stagedClosedAction } from "../../core/action.js";
+import { mapStages, STAGE_ROWS } from "../../core/stages.js";
 import { cloneAndFreeze, freezeOwned, isPlainObject } from "../../core/immutable.js";
-import { resolveGraphicItemCapacity } from "../../selectors/graphicCapacity.js";
+import { resolveGraphicItemCapacity, resolveGraphicGeoBinding } from "../../selectors/graphicCapacity.js";
 import {
   isPrimitiveDrawableGraphicType,
   isStructuralGraphicType,
   validateGraphicProperty,
   validateGraphicType
 } from "../../grammar/schemas/graphic.js";
-import { validateConcreteGraphicValue } from
+import { validateConcreteGraphicValue, validateConcreteGraphicProperties } from
   "../../grammar/schemas/concreteGraphic.js";
 import {
   collectGraphicSubtreeIds,
@@ -35,34 +37,45 @@ function validateCollectionItem(item, ownerId, index) {
   if (!isPlainObject(item.properties)) {
     throw new TypeError(`Collection item "${ownerId}:${index}" requires plain properties.`);
   }
-  for (const [property, value] of Object.entries(item.properties)) {
+  if (type === "path" || type === "circle-batch" || type === "path-batch") validateConcreteGraphicProperties(type, item.properties);
+  else for (const [property, value] of Object.entries(item.properties)) {
     validateGraphicProperty(type, property);
     validateConcreteGraphicValue(type, property, value);
   }
-  return freezeOwned({
+  // Unregistered until its final owner shape is known; callers freeze it once.
+  return {
     id: item.identity === undefined ? `${ownerId}:${index}` : graphicIdentityId(ownerId, validateGraphicIdentity(item.identity)),
     ...(item.identity === undefined ? {} : { identity: cloneAndFreeze(item.identity) }),
     type,
     properties: cloneAndFreeze(item.properties)
-  });
+  };
 }
 
-function replaceCollectionItems(value, id, program) {
+function* validatedCollectionItemsStages(value, id, program) {
   if (!Array.isArray(value)) throw new TypeError("collection.items must be an array.");
   validateGraphicItemLimit(value.length, resolveGraphicItemCapacity(program, { id, label: "collection.items length" }));
-  const items = value.map((item, index) => validateCollectionItem(item, id, index));
-  if (new Set(items.map(item => item.id)).size !== items.length) throw new Error("Duplicate concrete item identity.");
-  return freezeOwned(items);
+  const items = yield* mapStages(value, (item, index) => validateCollectionItem(item, id, index));
+  const ids = new Set();
+  for (let index = 0; index < items.length; index++) {
+    ids.add(items[index].id);
+    if ((index + 1) % STAGE_ROWS === 0) yield;
+  }
+  if (ids.size !== items.length) throw new Error("Duplicate concrete item identity.");
+  return items;
 }
 
-function replaceDrawableItems(value, id, type, program) {
-  const items = replaceCollectionItems(value, id, program);
+function* replaceCollectionItemsStages(value, id, program) {
+  return freezeOwned(yield* mapStages(yield* validatedCollectionItemsStages(value, id, program), freezeOwned));
+}
+
+function* replaceDrawableItemsStages(value, id, type, program) {
+  const items = yield* validatedCollectionItemsStages(value, id, program);
   if (!items.every(item => item.type === type)) {
-    return freezeOwned({ type: "collection", items });
+    return freezeOwned({ type: "collection", items: freezeOwned(yield* mapStages(items, freezeOwned)) });
   }
   return freezeOwned({
     type,
-    items: freezeOwned(items.map(item => freezeOwned({
+    items: freezeOwned(yield* mapStages(items, item => freezeOwned({
       id: item.id,
       ...(item.identity === undefined ? {} : { identity: item.identity }),
       properties: item.properties
@@ -97,12 +110,17 @@ export function replaceGraphicItems(program, target, baseType, items) {
   });
 }
 
+function validatePropertyEdit(type, properties, property, value) {
+  if (type === "path") validateConcreteGraphicProperties(type, { ...properties, [property]: value });
+  else validateConcreteGraphicValue(type, property, value);
+}
+
 function editGeneratedItem(owner, itemIndex, property, value) {
   const items = [...owner.items];
   const item = items[itemIndex];
   const type = item.type ?? owner.type;
   validateGraphicProperty(type, property);
-  validateConcreteGraphicValue(type, property, value);
+  validatePropertyEdit(type, item.properties, property, value);
   if (Object.is(item.properties[property], value)) return owner;
   items[itemIndex] = freezeOwned({
     ...item,
@@ -111,9 +129,9 @@ function editGeneratedItem(owner, itemIndex, property, value) {
   return freezeOwned({ ...owner, items: freezeOwned(items) });
 }
 
-function editItems(owner, property, value, id, program) {
+function* editItemsStages(owner, property, value, id, program) {
   if (owner.type === "collection" && property === "items") {
-    return freezeOwned({ ...owner, items: replaceCollectionItems(value, id, program) });
+    return freezeOwned({ ...owner, items: yield* replaceCollectionItemsStages(value, id, program) });
   }
   if (property === "length") {
     if (!Number.isInteger(value) || value < 0) {
@@ -135,11 +153,11 @@ function editItems(owner, property, value, id, program) {
     );
   }
   let changed = false;
-  const items = owner.items.map((item, index) => {
+  const items = yield* mapStages(owner.items, (item, index) => {
     const itemValue = Array.isArray(value) ? value[index] : value;
     const type = item.type ?? owner.type;
     validateGraphicProperty(type, property);
-    validateConcreteGraphicValue(type, property, itemValue);
+    validatePropertyEdit(type, item.properties, property, itemValue);
     if (Object.is(item.properties[property], itemValue)) return item;
     changed = true;
     return freezeOwned({
@@ -171,13 +189,13 @@ function removeGraphicTrees(graphicSpec, targets) {
   return freezeOwned({ objects: freezeOwned(objects), order: freezeOwned(graphicSpec.order.filter(id => !removedIds.has(id))) });
 }
 
-const editGraphics = /* @__PURE__ */ closedAction(
+const editGraphics = /* @__PURE__ */ stagedClosedAction(
   {
     op: "editGraphics",
     description: "Replace or remove concrete graphic state.",
     scope: "any"
   }, ["target", "property", "value", "remove"],
-  function (args = {}) {
+  function* (args = {}) {
     const { target, property, value, remove = false } = args;
     const targets = Array.isArray(target) ? target : [target];
     if (!targets.length || targets.some(id => typeof id !== "string" || id.length === 0) || Array.isArray(target) && !remove) {
@@ -225,7 +243,7 @@ const editGraphics = /* @__PURE__ */ closedAction(
           : owner.type, property);
     let updated;
     if (replacesDrawableItems) {
-      updated = freezeOwned({...replaceDrawableItems(value, ownerId, owner.type, this),
+      updated = freezeOwned({...(yield* replaceDrawableItemsStages(value, ownerId, owner.type, this)),
         ...(owner.clip === undefined ? {} : {clip: owner.clip})});
     } else if (found.kind === "item") {
       if (validatedProperty === "length" || validatedProperty === "items") {
@@ -233,13 +251,13 @@ const editGraphics = /* @__PURE__ */ closedAction(
       }
       updated = editGeneratedItem(owner, found.itemIndex, validatedProperty, value);
     } else if (isStructuralGraphicType(owner.type)) {
-      validateConcreteGraphicValue(owner.type, validatedProperty, value);
+      validatePropertyEdit(owner.type, owner.properties, validatedProperty, value);
       updated = freezeOwned({
         ...owner,
         properties: setGraphicProperty(owner.properties, validatedProperty, value)
       });
     } else if (owner.items !== undefined) {
-      updated = editItems(owner, validatedProperty, value, ownerId, this);
+      updated = yield* editItemsStages(owner, validatedProperty, value, ownerId, this);
     } else if (validatedProperty === "length") {
       if (!Number.isInteger(value) || value < 0) {
         throw new TypeError("Graphic collection length must be a non-negative integer.");
@@ -254,12 +272,13 @@ const editGraphics = /* @__PURE__ */ closedAction(
         })))
       });
     } else {
-      validateConcreteGraphicValue(owner.type, validatedProperty, value);
+      validatePropertyEdit(owner.type, owner.properties, validatedProperty, value);
       updated = freezeOwned({
         ...owner,
         properties: setGraphicProperty(owner.properties, validatedProperty, value)
       });
     }
+    validateGeoGraphicCapacity(resolveGraphicGeoBinding(this, ownerId), updated);
     if (updated === owner) return this;
     return this._clone({
       graphicSpec: freezeOwned({

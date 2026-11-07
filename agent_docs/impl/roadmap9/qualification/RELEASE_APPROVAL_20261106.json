@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "state": "approved",
+  "date": "2026-11-06",
+  "source": "Explicit user reply in the current task",
+  "reply": "알려진 한계로 기록하고 배포. 그전에, 새로운 기능들이 많이 생겪는데 docs가 최신을 잘 반영하는지 총체 점검 후 수정 후 반영",
+  "approved": [
+    { "id": "KNOWN-LIMITS", "decision": "Release with the unmet performance thresholds (AT-56, AT-82) recorded as known limits; thresholds, data, seeds and guards stay unchanged." },
+    { "id": "G-RELEASE", "decision": "Proceed with STEP-076/077 publication: version, CHANGELOG, annotated tag, the protected release workflow, npm publish, docs deployment and the pull request." }
+  ],
+  "precondition": "First audit the public documentation against the current contracts, types and behavior of every feature added since v0.0.26, fix it, and re-verify before the release candidate is fixed.",
+  "remainingObligations": ["The release candidate is re-qualified after the documentation changes; approval does not imply completion."]
+}

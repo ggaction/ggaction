@@ -1,0 +1,49 @@
+{
+  "tests": 117,
+  "pass": 117,
+  "fail": 0,
+  "floors": {
+    "grammar/hierarchy/partitionMapping.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/hierarchy/partitionBend.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/hierarchy/partitionAdapter.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/hierarchy/partitionCell.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  },
+  "metrics": {
+    "grammar/hierarchy/partitionAdapter.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/hierarchy/partitionBend.js": {
+      "lines": 98.78,
+      "branches": 97.26,
+      "functions": 100
+    },
+    "grammar/hierarchy/partitionCell.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/hierarchy/partitionMapping.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  }
+}

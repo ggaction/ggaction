@@ -1,0 +1,4 @@
+export type GeoAnnotationBinding = { readonly mode: "annotation"; readonly text: string } & (
+  | { readonly anchor: { readonly type: "position"; readonly position: readonly [number, number] }; readonly geometry?: never }
+  | { readonly anchor: { readonly type: "feature"; readonly key: RowKey; readonly level?: string };
+      readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number } });

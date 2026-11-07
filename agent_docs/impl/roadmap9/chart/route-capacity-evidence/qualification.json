@@ -1,0 +1,36 @@
+{
+  "status": "design-and-read-only-audit checkpoint; no product policy implementation or SLO pass",
+  "authorization": "../../AUTHORIZATION.json",
+  "baseline": "fa943e864982783ae8ae10bc18a4257ea8f0b2bb",
+  "checks": [
+    "audit.mjs syntax",
+    "force-repeat-audit.mjs syntax",
+    "local links in three design documents",
+    "44d400b96 historical design and six evidence files byte-identical; gzip streams valid",
+    "pair nC2/all-oracle/zero+positive counts and source SHA256",
+    "static managed-buffer formulas",
+    "original 100 schedule scalar/symmetric full-result equality for every iteration",
+    "git diff --check"
+  ],
+  "noProductChanges": [
+    "src",
+    "types",
+    "public docs",
+    "scripts/benchmark-native.js",
+    "scripts/benchmarks",
+    "shared animation owners"
+  ],
+  "limits": [
+    "No full 10k solver completed",
+    "No large performance/P95/heap qualification",
+    "No final density20 iteration sample/packet ledger",
+    "No numeric policy caps or public native update union adopted"
+  ],
+  "files": {
+    "agent_docs/impl/roadmap9/chart/route-capacity-evidence/audit.json": "c545b99cbcfe5d9859cde2ba944363776b7ee7a14aed569db89cc6b660a7c1f8",
+    "agent_docs/impl/roadmap9/chart/route-capacity-evidence/audit.mjs": "696871a7aafcab784b6ce581470924d502b2194c61f20762bcc66bc5bed3c641",
+    "agent_docs/impl/roadmap9/chart/route-capacity-evidence/buffer-ledger.json": "6e398dacf0ac76c5a07259ea7106090f74a9ab115fa95ab0605334faf894c5a6",
+    "agent_docs/impl/roadmap9/chart/route-capacity-evidence/force-repeat-audit.json": "67a3d3df952bedc802890bd5583cf987ca1d60b4ed9df76f86055e469417c8af",
+    "agent_docs/impl/roadmap9/chart/route-capacity-evidence/force-repeat-audit.mjs": "5d10ca46d29dce5e930d5890e2572849156f49cc98300a6d47de728ac602c191"
+  }
+}

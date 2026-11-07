@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "authorization": "../AUTHORIZATION.json",
+  "baseline": "d2bbf53c8",
+  "merge": "b9707e6d1",
+  "scope": [
+    "table",
+    "pyramid",
+    "ohlc",
+    "waterfall",
+    "trail"
+  ],
+  "changes": "Tests and five scene-animation assignments; source, types and package inputs are byte-identical to the integration baseline.",
+  "checks": {
+    "owning": {
+      "passed": 115
+    },
+    "node20": {
+      "passed": 5
+    },
+    "node22": {
+      "passed": 5
+    },
+    "node24": {
+      "passed": 5
+    },
+    "docs": {
+      "passed": 47
+    }
+  },
+  "failures": [
+    "Initial fixture incorrectly read scene node.identity instead of decision.itemKey.",
+    "Initial fixture equated reprojected snapshot keys/topology with retained animation matching keys/topology; rendering content is compared independently and all offline frames remain exact.",
+    "Merged search index measured 1089169 bytes after paired recipe +692 bytes; prior cap1088500 failed, minimum cap1089200 applied and docs47 passed."
+  ],
+  "remaining": "No new typed kernel; all five native edits use explicit Current fallback. Large route performance and remaining consumer cells are separate."
+}

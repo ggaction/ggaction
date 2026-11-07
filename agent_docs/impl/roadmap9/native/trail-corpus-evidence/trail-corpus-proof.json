@@ -1,0 +1,66 @@
+{
+  "baseline": "c749a4f40",
+  "runtimeDelta": 0,
+  "records": [
+    {
+      "dataset": "tt-new-zealand-names",
+      "factors": {
+        "dataset": "tt-new-zealand-names",
+        "width": 1040,
+        "background": "#f8fafc",
+        "bandwidth": 0.7,
+        "steps": 48,
+        "bins": 5,
+        "includeEmpty": true
+      },
+      "sourceRows": 160,
+      "sourceValuesSha256": "cca7933ca3fce9eb1de494a51cb9201abd6fb28374fffa809ee09d5aa6448e99",
+      "graphicSha256": "6b1d0c696406f35903692a5e8f5e85a0056e8fb71c585a13e5dc32b75389ecd8",
+      "trailItems": 2,
+      "strokeWidths": [
+        0
+      ],
+      "previousIssues": [
+        "program.children.trail.semanticSpec.layers[0] graphic owner \"directTrail\" has no finite, non-zero geometry."
+      ],
+      "currentIssues": [],
+      "metrics": {
+        "leafProgramCount": 10,
+        "layerCount": 32,
+        "itemCount": 1997,
+        "nonDegenerateItemCount": 1837
+      },
+      "sourceAndGeometryMutated": false
+    },
+    {
+      "dataset": "tt-global-temperatures",
+      "factors": {
+        "dataset": "tt-global-temperatures",
+        "width": 920,
+        "background": "#ffffff",
+        "bandwidth": 0.35,
+        "steps": 24,
+        "bins": 3,
+        "includeEmpty": false
+      },
+      "sourceRows": 8,
+      "sourceValuesSha256": "91da012fbbfa7b5c6717031844db8d9d1b1ef97f6a96645383322634a35c4219",
+      "graphicSha256": "914e7844726ac3284cea66d0e57e152255eff8ad8e961c19efb7e4c54b49261f",
+      "trailItems": 8,
+      "strokeWidths": [
+        0
+      ],
+      "previousIssues": [
+        "program.children.trail.semanticSpec.layers[0] graphic owner \"directTrail\" has no finite, non-zero geometry."
+      ],
+      "currentIssues": [],
+      "metrics": {
+        "leafProgramCount": 10,
+        "layerCount": 32,
+        "itemCount": 269,
+        "nonDegenerateItemCount": 261
+      },
+      "sourceAndGeometryMutated": false
+    }
+  ]
+}

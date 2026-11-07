@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict';
+import {documentationPrograms} from '../scripts/doc-snippets.js';
+import {readFile,writeFile,mkdir,copyFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import path from 'node:path';
+import {preparePackageConsumer} from '../scripts/package-consumer.js';
+import {testOptionalDependencies} from '../scripts/consumers/optional-peers.js';
+import {root,run,tscCommand} from '../scripts/consumers/runtime.js';
+import {measureMinimalBrowserBundle,BROWSER_BUNDLE_GZIP_LIMITS} from '../scripts/browser-bundle-size.js';
+const packageSpec=path.resolve(process.env.ANIMATION_PACKAGE_SPEC ?? '.artifacts/release/ggaction-0.0.26.tgz');
+const measurementOnly=process.env.ANIMATION_MEASURE_BUNDLES==='1';
+const bundleOnly=process.env.ANIMATION_BUNDLE_ONLY==='1';
+const tag=process.versions.node.split('.')[0]+(bundleOnly?'-bundle-final':measurementOnly?'-measure':''),directory=path.resolve('.artifacts/animation-installed/node'+tag);
+await mkdir(directory,{recursive:true});
+const artifact=await readFile(packageSpec),sha256=createHash('sha256').update(artifact).digest('hex');
+const receipt={node:process.version,archive:packageSpec,sha256,records:[]};
+const save=()=>writeFile(path.join(directory,'receipt.json'),JSON.stringify(receipt,null,2)+'\n');
+const consumer=await preparePackageConsumer({packageSpec});
+async function check(id,fn){const start=performance.now();try{const value=await fn();receipt.records.push({id,status:'passed',durationMs:performance.now()-start,value});}catch(error){receipt.records.push({id,status:'failed',durationMs:performance.now()-start,error:error.stack});throw error;}finally{await save();}}
+try{
+ await check('optional-peers',()=>testOptionalDependencies(consumer));
+ if(!measurementOnly&&!bundleOnly) {
+ await copyFile(path.join(root,'scripts/consumers/fixtures/node/animation.mjs'),path.join(consumer.directory,'animation.mjs'));
+ await writeFile(path.join(consumer.directory,'animation-run.mjs'),`import {cases} from './animation.mjs';for(const entry of cases){await entry.run();console.log(entry.id+' passed');}`);
+ await check('animation-five-public-cases',()=>run(process.execPath,['animation-run.mjs'],consumer.directory,{stdio:'inherit'}));
+ await copyFile(path.join(root,'scripts/consumers/fixtures/animation.ts'),path.join(consumer.directory,'animation.mts'));
+ await check('animation-strict-types',()=>run(process.execPath,[tscCommand,'--noEmit','--strict','--exactOptionalPropertyTypes','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext','animation.mts'],consumer.directory));
+ for(const example of (await documentationPrograms()).filter(item=>item.file==='api/animation.md')) {
+  const name='animation-doc-'+(example.id??'tutorial')+'.mjs';
+  await writeFile(path.join(consumer.directory,name),example.code+'\nif(frames.length!==3 || !renderToSVG(frames[1]).startsWith("<svg")) throw Error("Missing animation frames");');
+  await check('snippet:'+example.file,()=>run(process.execPath,[name],consumer.directory));
+ }
+ }
+ for(const specifier of ['ggaction/animation']) await check(specifier,async()=>{
+   const measurement=await measureMinimalBrowserBundle(consumer.directory,{specifier});if(!measurementOnly)assert.ok(measurement.gzipBytes<=BROWSER_BUNDLE_GZIP_LIMITS[specifier],JSON.stringify(measurement));return measurement;
+ });
+ receipt.status=measurementOnly?'measured':'passed';receipt.peers=consumer.resolvedPeers;await save();console.log(JSON.stringify(receipt,null,2));
+}finally{await consumer.cleanup();}

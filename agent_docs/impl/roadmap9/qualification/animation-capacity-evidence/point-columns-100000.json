@@ -1,0 +1,29 @@
+{
+  "scope": "Candidate lossless columnar transport feasibility only. Existing encode/decodeAnimationEnvelope64MiB/1M-value guards unchanged. Candidate version4 is not supported by product restoreTransitionPlan; no product source modified.",
+  "n": 100000,
+  "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+  "vectorCount": 8,
+  "vectorLengths": [
+    100000,
+    100000,
+    100000,
+    100000,
+    100000,
+    100000,
+    100000,
+    100000
+  ],
+  "rawPayloadBytes": 37398625,
+  "envelopeBytes": 37399666,
+  "decodedValues": 800158,
+  "encodedValues": 800510,
+  "allSourceAndTargetGraphicsVerified": 200000,
+  "allRawForwardMappingsVerified": 400000,
+  "memory": {
+    "rss": 1200193536,
+    "heapTotal": 865959936,
+    "heapUsed": 804447856,
+    "external": 76763417,
+    "arrayBuffers": 74828742
+  }
+}

@@ -1,0 +1,16 @@
+TAP version 13
+# Subtest: offline animation frames share embedded assets in browser Canvas and SVG at both DPRs
+ok 1 - offline animation frames share embedded assets in browser Canvas and SVG at both DPRs
+  ---
+  duration_ms: 3455.504416
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3752.370209

@@ -221,8 +221,8 @@ function steffenTangents(points) {
   return tangents;
 }
 
-function buildSteffenCommands(points) {
-  const distinct = points.filter((point, i) => i === 0 ||
+function buildSteffenCommands(points, preserveCoincidentPoints = false) {
+  const distinct = preserveCoincidentPoints ? points : points.filter((point, i) => i === 0 ||
     point.x !== points[i - 1].x || point.y !== points[i - 1].y);
   if (distinct.length === 1) return ownCommands([{ op: "M", ...distinct[0] }]);
   if (distinct.length === 2) return buildLinearPathCommands(distinct);
@@ -305,8 +305,8 @@ function buildNaturalCommands(points) {
   return ownCommands(commands);
 }
 
-function buildValidatedCurvePathCommands(points, curve, tension) {
-  if (curve === "monotone-steffen") return buildSteffenCommands(points);
+function buildValidatedCurvePathCommands(points, curve, tension, preserveCoincidentPoints) {
+  if (curve === "monotone-steffen") return buildSteffenCommands(points, preserveCoincidentPoints);
   if (curve === "linear" ||
       (SMOOTH_CURVES.has(curve) &&
         curve !== "monotone" &&
@@ -342,7 +342,7 @@ function curveCommandCount(pointCount, curve) {
     : pointCount;
 }
 
-export function buildCurvePathCommands(points, curve = "linear", tension) {
+function buildCurveCommands(points, curve, tension, preserveCoincidentPoints = false) {
   validateCardinalTension(tension, curve);
   const validatedPoints = validatePoints(points);
   const validatedCurve = validateCurveInterpolation(curve);
@@ -352,7 +352,7 @@ export function buildCurvePathCommands(points, curve = "linear", tension) {
   );
   const direct = buildValidatedCurvePathCommands(
     validatedPoints,
-    validatedCurve, tension
+    validatedCurve, tension, preserveCoincidentPoints
   );
   validatePathCommandCount(direct.length, "Curve path command count");
   if (finiteCommands(direct)) return direct;
@@ -370,7 +370,7 @@ export function buildCurvePathCommands(points, curve = "linear", tension) {
       x: point.x / xScale,
       y: point.y / yScale
     })),
-    validatedCurve, tension
+    validatedCurve, tension, preserveCoincidentPoints
   );
   const restored = normalized.map(command => {
     const copy = {};
@@ -386,6 +386,28 @@ export function buildCurvePathCommands(points, curve = "linear", tension) {
   }
   validatePathCommandCount(restored.length, "Curve path command count");
   return ownCommands(restored);
+}
+
+export function buildCurvePathCommands(points, curve = "linear", tension) {
+  return buildCurveCommands(points, curve, tension);
+}
+
+// A scalar attached to each centerline knot must use exactly the same retained
+// knots and command topology. Steffen's coincident-point removal belongs to the
+// geometric path, never independently to the companion scalar values.
+export function buildPairedCurvePathCommands(points, values, curve = "linear", tension) {
+  const validated = validatePoints(points);
+  if (!Array.isArray(values) || values.length !== validated.length || values.some(value => !Number.isFinite(value))) {
+    throw new TypeError("Paired curve values require one finite value per point.");
+  }
+  const indices = validated.map((_, index) => index).filter(index => curve !== "monotone-steffen" || index === 0 ||
+    validated[index].x !== validated[index - 1].x || validated[index].y !== validated[index - 1].y);
+  if (indices.length === 1) return freezeOwned({ commands: ownCommands([{ op: "M", ...validated[0] }]),
+    valueCommands: ownCommands([{ op: "M", x: validated[0].x, y: values[0] }]) });
+  return freezeOwned({
+    commands: buildCurveCommands(indices.map(index => validated[index]), curve, tension),
+    valueCommands: buildCurveCommands(indices.map(index => ({ x: validated[index].x, y: values[index] })), curve, tension, true)
+  });
 }
 
 function reverseOpenPathCommands(commands) {

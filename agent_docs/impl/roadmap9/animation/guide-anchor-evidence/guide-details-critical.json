@@ -1,0 +1,36 @@
+{
+  "floors": {
+    "grammar/parallelGuides.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/gridGeometry.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "actual": {
+    "grammar/axisGeometry.js": {
+      "lines": 100,
+      "branches": 86.21,
+      "functions": 100
+    },
+    "grammar/gridGeometry.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/parallelGuides.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 100,
+      "branches": 92.31,
+      "functions": 100
+    }
+  }
+}

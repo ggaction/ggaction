@@ -4,11 +4,15 @@ import { statisticalReferenceContributions, statisticalRows } from "./materializ
 import { validateLegacyValues } from "./persistence/legacyValues.js";
 import { ChartProgram } from "./ChartProgram.js";
 import { BasicChartProgram } from "./BasicChartProgram.js";
-import { cloneAndFreeze, freezeOwned } from "./core/immutable.js";
+import { cloneAndFreeze, freezeOwned, isOwned, isPlainObject } from "./core/immutable.js";
 import { hasRegisteredExtension, isBuiltinProgramClass } from "./core/extensionRegistry.js";
 import { packageVersion } from "./version.js";
-import { decodeValue, encodeValue, encodeSharedValue, invalidSnapshot } from "./persistence/codec.js";
-import { exactKeys, requireObject, STATE_KEYS, validateGraphic, validateProgramState, validateTrace } from "./persistence/validation.js";
+import { decodeValueStages, encodeValue, encodeSharedValue, invalidSnapshot } from "./persistence/codec.js";
+import { exactKeys, requireObject, STATE_KEYS, validateGraphic, validateProgramState, validateProgramStateStages, validateTrace } from "./persistence/validation.js";
+import { drainStages, STAGE_ROWS } from "./core/stages.js";
+import { normalizeSliceOptions } from "./core/sliceOptions.js";
+import { parseJSONStages } from "./core/jsonSlices.js";
+import { drainTimeSlicedStages } from "./resources/routeStages.js";
 import {
   deriveTransformSchema,
   datasetSchemaContext,
@@ -38,9 +42,13 @@ function envelope(kind, payload, extensions = []) {
 }
 
 function readEnvelope(text, kind) {
+  return drainStages(readEnvelopeStages(text, kind, function* () { return JSON.parse(text); }));
+}
+
+function* readEnvelopeStages(text, kind, parse) {
   if (typeof text !== "string") throw invalidSnapshot("Snapshot must be a JSON string.", "snapshot");
   let value;
-  try { value = JSON.parse(text); } catch { throw invalidSnapshot("Snapshot must be valid JSON.", "snapshot"); }
+  try { value = yield* parse(); } catch { throw invalidSnapshot("Snapshot must be valid JSON.", "snapshot"); }
   exactKeys(value, ["schemaVersion", "kind", "packageVersion", "extensions", "payload"], "snapshot");
   const versions = kind === "editable" ? [1, 2, 3, 4] : [1];
   if (!versions.includes(value.schemaVersion) || value.kind !== kind) {
@@ -58,22 +66,21 @@ function readEnvelope(text, kind) {
     throw invalidSnapshot("Shared array payloads require editable snapshot version 3.", "snapshot.payload");
   }
   return { ...value, ...(kind === "editable" && value.schemaVersion < 4
-    ? { migrationNamespace: contentDigest(canonicalJSON(value)) } : {}), payload: decodeValue(value.payload) };
+    ? { migrationNamespace: contentDigest(canonicalJSON(value)) } : {}), payload: yield* decodeValueStages(value.payload) };
 }
 
-function restoreState(state, extensions, path = "payload", { requireSchemas = false, legacy = false } = {}) {
+function* restoreStateStages(state, extensions, path = "payload", { requireSchemas = false, legacy = false } = {}) {
   exactKeys(state, STATE_KEYS, path);
   if (!Array.isArray(state.actionStack) || state.actionStack.length) throw invalidSnapshot("Snapshot actionStack must be empty.", `${path}.actionStack`);
   requireObject(state.children, `${path}.children`);
   validateTrace(state.trace, ChartProgram, extensions, `${path}.trace`);
-  const children = Object.fromEntries(Object.entries(state.children).map(([id, child]) => [id, restoreState(
-    child,
-    extensions,
-    `${path}.children.${id}`,
-    { requireSchemas, legacy }
-  )]));
+  const restored = [];
+  for (const [id, child] of Object.entries(state.children)) {
+    restored.push([id, yield* restoreStateStages(child, extensions, `${path}.children.${id}`, { requireSchemas, legacy })]);
+  }
+  const children = Object.fromEntries(restored);
   const program = new ChartProgram({ ...state, children });
-  validateProgramState(program, path, { allowMissingLookupSchemas: !requireSchemas, legacy });
+  yield* validateProgramStateStages(program, path, { allowMissingLookupSchemas: !requireSchemas, legacy });
   if (requireSchemas) {
     for (const dataset of program.semanticSpec.datasets) {
       if (dataset.schema === undefined) {
@@ -212,30 +219,57 @@ function migrateSelectionState(migratedState, oldSelections, { partial = false }
 
 // Decoding creates fresh plain containers. Own them once across the whole graph
 // so child constructors retain shared immutable data instead of copying each pool.
-function ownDecodedState(value, seen = new WeakSet()) {
-  if (value === null || typeof value !== "object" || seen.has(value)) return;
-  seen.add(value);
-  for (const child of Object.values(value)) ownDecodedState(child, seen);
-  freezeOwned(value);
+// Depth-first with explicit frames: each container is owned after its children.
+// A decoded tree is acyclic and fresh, so a completed (owned) container is the
+// only kind ever reached twice; ownership itself records the visit.
+function* ownDecodedStateStages(root) {
+  const stack = [];
+  const enter = value => {
+    if (value === null || typeof value !== "object" || isOwned(value)) return;
+    stack.push({ value, children: Object.values(value), index: 0 });
+  };
+  let visited = 0;
+  enter(root);
+  while (stack.length) {
+    if (++visited % STAGE_ROWS === 0) yield;
+    const frame = stack.at(-1);
+    if (frame.index < frame.children.length) enter(frame.children[frame.index++]);
+    else { stack.pop(); freezeOwned(frame.value); }
+  }
 }
 
 export function deserializeProgram(text) {
-  const stored = readEnvelope(text, "editable");
+  return drainStages(deserializeProgramStages(text, function* () { return JSON.parse(text); }));
+}
+
+// The sliced loader parses the same JSON text in resumable pieces; every
+// later decode, ownership and validation stage is the synchronous loader's own.
+function* deserializeProgramStages(text, parse) {
+  const stored = yield* readEnvelopeStages(text, "editable", parse);
   const extensions = new Set();
   let payload = stored.payload;
   if (stored.schemaVersion < 4) {
     // Validate the historical state before adding any inferred metadata. Migration
     // must never repair an invalid reference graph or malformed payload.
-    restoreState(payload, new Set(), "payload", { requireSchemas: stored.schemaVersion >= 2, legacy: true });
+    yield* restoreStateStages(payload, new Set(), "payload", { requireSchemas: stored.schemaVersion >= 2, legacy: true });
     if (stored.schemaVersion === 1) payload = migrateStateSchemas(payload);
     payload = migrateStateIdentities(payload, stored.migrationNamespace);
   }
-  ownDecodedState(payload);
-  const program = restoreState(payload, extensions, "payload", { requireSchemas: true });
+  yield* ownDecodedStateStages(payload);
+  const program = yield* restoreStateStages(payload, extensions, "payload", { requireSchemas: true });
   if (extensions.size !== stored.extensions.length || stored.extensions.some(name => !extensions.has(name))) {
     throw invalidSnapshot("Snapshot extensions must exactly match its action traces.", "snapshot.extensions");
   }
   return program;
+}
+
+
+// The same editable snapshot load as deserializeProgram, run in host turns no
+// longer than one row batch past `sliceMs`. Cancellation rejects before a
+// program is returned.
+export async function loadProgramInSlices(text, options) {
+  const { sliceMs, signal } = normalizeSliceOptions(options, "loadProgramInSlices");
+  return drainTimeSlicedStages(deserializeProgramStages(text, () => parseJSONStages(text)), sliceMs, signal);
 }
 
 export function serializeGraphic(program) {

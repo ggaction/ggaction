@@ -1,0 +1,18 @@
+{
+  "node": "v24.22.1",
+  "archive": {
+    "file": "/private/tmp/claude-501/-Users-hyeonjeon-Documents-Codex-2026-11-04-new-chat/31cec956-b25e-50fd-b1ab-e9063388439a/scratchpad/caps-revise/24/ggaction-0.0.26.tgz",
+    "sha256": "9df2288dd20c735b88af6784791af97f5d66534bbd84f6d81cba14e7ed386b12",
+    "entryCount": 1277,
+    "packedBytes": 1862545,
+    "unpackedBytes": 8353179
+  },
+  "bundles": {
+    "ggaction": 798974,
+    "ggaction/basic": 428150,
+    "ggaction/svg": 26731,
+    "ggaction/graph": 76710,
+    "ggaction/animation": 356096,
+    "ggaction/interaction": 143198
+  }
+}

@@ -1,0 +1,617 @@
+{
+  "status": "read-only-prototype; no-product-adoption;50ms-and-same-process-restore-unresolved",
+  "baseline": "9cc6e89c3",
+  "metadata": "c12f89030",
+  "effectiveSource": {
+    "src/grammar/schemas/circleBatch.js": "87d56da0b5a6ba5d62a236bb8c27d93437347e2135c8e3061aa879947e02ba7e",
+    "src/grammar/animation/positions.js": "e2f1c2551dafc9486b6422189c9f622659511eed775f4c9494c2260fa619f2f1",
+    "src/animation/batchSample.js": "b58a902fb777ac08b115aa34e851abf6def0aaa3f29981973a7b82197fe4fce9"
+  },
+  "profileEffectiveSource": {
+    "src/grammar/schemas/circleBatch.js": "d567af3e3d5213bd2dab74e7d0c663b7fb579bf269aa9e668b1b47c48145a08d",
+    "src/grammar/animation/positions.js": "e2f1c2551dafc9486b6422189c9f622659511eed775f4c9494c2260fa619f2f1",
+    "src/animation/batchSample.js": "b58a902fb777ac08b115aa34e851abf6def0aaa3f29981973a7b82197fe4fce9"
+  },
+  "profileScope": "Before final null-prototype array-like hardening; final1k/focused/lifetime rerun; final100k not rerun",
+  "comparison": {
+    "oneKVariants": 9,
+    "wholeFramePositionsWireExact": true,
+    "negativeCases": 10,
+    "getterReads": 0,
+    "creator": {
+      "inheritedIteratorCannotChangeLength": true,
+      "inheritedSetterCannotInterceptOwnWrites": true,
+      "callbackFailureUnpublished": true,
+      "primitiveNumericOnly": true,
+      "callerArrayUnmodified": true,
+      "outputDeepOwned": true
+    }
+  },
+  "focusedTests": 30,
+  "lifetime": {
+    "node": "v22.23.1",
+    "rows": 1000,
+    "sampleCycles": 100,
+    "rebaseCycles": 10,
+    "gcPasses": 5,
+    "oldObjectsAlive": [],
+    "oldPlanAlive": false,
+    "rebaseObjectsAlive": [],
+    "currentFullyOwned": true,
+    "notOriginalHundredThousandRowHeapQualification": true
+  },
+  "columnLifetime": {
+    "cycles": 100,
+    "gcPasses": 5,
+    "alive": []
+  },
+  "baselineProfile": {
+    "kind": "Uninstrumented public sampler timing then V8 CPU attribution; original 100000 points; not SLO or P95",
+    "node": "v22.23.1",
+    "pid": 62740,
+    "execArgv": [
+      "--expose-gc",
+      "--max-old-space-size=8192"
+    ],
+    "n": 100000,
+    "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+    "sourceRevision": "9cc6e89c36babbe58b3e3683ced81bc862f585b3",
+    "measurements": [
+      {
+        "kind": "uninstrumented-first-sample",
+        "samplerMs": 132.58354199999303,
+        "oracleMs": 5.179250000001048,
+        "verifiedCoordinates": 100000,
+        "memory": {
+          "rss": 1599700992,
+          "heapTotal": 852836352,
+          "heapUsed": 715246624,
+          "external": 2221047,
+          "arrayBuffers": 29679
+        }
+      },
+      {
+        "kind": "profiled-second-sample",
+        "samplerMs": 110.4527919999964,
+        "oracleMs": 1.962958999996772,
+        "verifiedCoordinates": 100000,
+        "memory": {
+          "rss": 1605124096,
+          "heapTotal": 825950208,
+          "heapUsed": 707059920,
+          "external": 2221087,
+          "arrayBuffers": 29679
+        }
+      }
+    ],
+    "stage": "complete",
+    "profileSHA256": "991ddff3c453813bbe7a2084920340ba9c60f6b862fb1b5e7fbaf1324ab7ce2d",
+    "sourceSHA256": {
+      "src/animation/batchSample.js": "5c1dabc32e41ead7005f8ad9901889ecf8da70c4b0f44f48d95e66069350898a",
+      "src/grammar/schemas/circleBatch.js": "a805e9ecaac78074c20d91ffd0f6d0f3ddb99e2f776308d31cc57a5008bba343",
+      "src/grammar/schemas/concreteGraphic.js": "01565af5da9b62fa5faebcbe535e9b69cec28eff5c2c4a16c3f1fbd9a219e245",
+      "src/core/ownData.js": "fa81e2edca5037e2c1f13a82240e5d70097e292073b05e3bbe682b68358dad7d",
+      "src/renderers/canvasScene.js": "565381087e301b199dc756078c069022d0a292ad87e280fabf51134ad5ec0989",
+      "src/grammar/animation/pointState.js": "0e9911898522ceac164ccca51ef5aba41df8f857eda239ecee6845a216528129",
+      "src/animation/sample.js": "aa38048a07440a77d39d999852cb2fbff0a3f403284e4dbd9813863f1082e2d0",
+      "src/animation/frameEndpoint.js": "9ab8c90eb93f4c93d42835955f983fe422fb882fef3290719801be6450ae0075",
+      "src/grammar/animation/positions.js": "a42ac803f8e6a04fff1c3736d9383053288da0b5e53de5ae2d39bac5d7f1701c",
+      "src/grammar/scales/mapping.js": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+      "src/grammar/scales/continuous.js": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+      "src/core/immutable.js": "1ec67bd4b674532050ef8351474840d7b947418469b79d976395b63c7bf62fc2"
+    }
+  },
+  "candidateProfile": {
+    "kind": "Uninstrumented public sampler timing then V8 CPU attribution; original 100000 points; not SLO or P95",
+    "node": "v22.23.1",
+    "pid": 63102,
+    "execArgv": [
+      "--expose-gc",
+      "--max-old-space-size=8192",
+      "--experimental-loader",
+      "./.artifacts/column-proof-review/loader.mjs"
+    ],
+    "n": 100000,
+    "inputSHA256": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+    "sourceRevision": "c12f8903091db20bd1ce27e7575669f0d4701778",
+    "measurements": [
+      {
+        "kind": "uninstrumented-first-sample",
+        "samplerMs": 93.91879099998914,
+        "oracleMs": 4.63804100001289,
+        "verifiedCoordinates": 100000,
+        "memory": {
+          "rss": 1558036480,
+          "heapTotal": 891109376,
+          "heapUsed": 709595824,
+          "external": 2231972,
+          "arrayBuffers": 21491
+        }
+      },
+      {
+        "kind": "profiled-second-sample",
+        "samplerMs": 74.6760409999988,
+        "oracleMs": 5.53041699998721,
+        "verifiedCoordinates": 100000,
+        "memory": {
+          "rss": 1563099136,
+          "heapTotal": 813514752,
+          "heapUsed": 705987752,
+          "external": 2232012,
+          "arrayBuffers": 21491
+        }
+      }
+    ],
+    "stage": "complete",
+    "profileSHA256": "b55de5586f27cebaeacc9d3069522f851af6393306cb97e4688a2d709ebd0b39",
+    "sourceSHA256": {
+      "src/animation/batchSample.js": "5c1dabc32e41ead7005f8ad9901889ecf8da70c4b0f44f48d95e66069350898a",
+      "src/grammar/schemas/circleBatch.js": "a805e9ecaac78074c20d91ffd0f6d0f3ddb99e2f776308d31cc57a5008bba343",
+      "src/grammar/schemas/concreteGraphic.js": "01565af5da9b62fa5faebcbe535e9b69cec28eff5c2c4a16c3f1fbd9a219e245",
+      "src/core/ownData.js": "fa81e2edca5037e2c1f13a82240e5d70097e292073b05e3bbe682b68358dad7d",
+      "src/renderers/canvasScene.js": "565381087e301b199dc756078c069022d0a292ad87e280fabf51134ad5ec0989",
+      "src/grammar/animation/pointState.js": "0e9911898522ceac164ccca51ef5aba41df8f857eda239ecee6845a216528129",
+      "src/animation/sample.js": "aa38048a07440a77d39d999852cb2fbff0a3f403284e4dbd9813863f1082e2d0",
+      "src/animation/frameEndpoint.js": "9ab8c90eb93f4c93d42835955f983fe422fb882fef3290719801be6450ae0075",
+      "src/grammar/animation/positions.js": "a42ac803f8e6a04fff1c3736d9383053288da0b5e53de5ae2d39bac5d7f1701c",
+      "src/grammar/scales/mapping.js": "ab29bbfe785429234c4cb7fa621d47393abde3848638d9f76d0e2c90e8ef650f",
+      "src/grammar/scales/continuous.js": "05dc0383544135c71109fb2018d6a9508f097ae58f75145c01de0f7ba8381e9c",
+      "src/core/immutable.js": "1ec67bd4b674532050ef8351474840d7b947418469b79d976395b63c7bf62fc2"
+    }
+  },
+  "baselineAttribution": {
+    "totalCapturedMs": 341.6659999999997,
+    "sampleTransitionInclusiveMs": 101.5,
+    "outsideSamplerMs": 240.166,
+    "exclusion": "All samples without sampleTransition ancestry (includes Inspector post/stop) excluded from attribution",
+    "self": [
+      {
+        "name": "ownDataProperties src/core/ownData.js:5",
+        "ms": 57.12500000000001
+      },
+      {
+        "name": "concreteEntries src/renderers/canvasScene.js:24",
+        "ms": 11.958
+      },
+      {
+        "name": "samplePreparedBatch src/animation/batchSample.js:76",
+        "ms": 6.917
+      },
+      {
+        "name": "projectBatchEndpoint src/animation/endpoints.js:104",
+        "ms": 5.458
+      },
+      {
+        "name": "sampleTransitionWithBudget src/animation/sample.js:36",
+        "ms": 4.542
+      },
+      {
+        "name": "samplePositionBatch src/grammar/animation/positions.js:172",
+        "ms": 4.542
+      },
+      {
+        "name": "freezeOwned src/core/immutable.js:12",
+        "ms": 3
+      },
+      {
+        "name": "validateCircleBatchColumn src/grammar/schemas/circleBatch.js:6",
+        "ms": 3
+      },
+      {
+        "name": "mapPreparedContinuousScaleValue src/grammar/scales/mapping.js:61",
+        "ms": 1.958
+      },
+      {
+        "name": "isOwned src/core/immutable.js:22",
+        "ms": 1.5
+      },
+      {
+        "name": "ownArray src/core/ownData.js:23",
+        "ms": 1.5
+      }
+    ],
+    "inclusive": [
+      {
+        "name": "sampleTransitionWithBudget src/animation/sample.js:36",
+        "ms": 101.5
+      },
+      {
+        "name": "sampleTransition src/animation/sample.js:30",
+        "ms": 101.5
+      },
+      {
+        "name": "(anonymous) .artifacts/format6-sampler-profile/run.mjs:0",
+        "ms": 101.5
+      },
+      {
+        "name": "(root) :0",
+        "ms": 101.5
+      },
+      {
+        "name": "samplePreparedBatch src/animation/batchSample.js:76",
+        "ms": 96.958
+      },
+      {
+        "name": "ownArray src/core/ownData.js:23",
+        "ms": 58.62500000000001
+      },
+      {
+        "name": "ownDataProperties src/core/ownData.js:5",
+        "ms": 57.12500000000001
+      },
+      {
+        "name": "validateCircleBatchProperties src/grammar/schemas/circleBatch.js:17",
+        "ms": 49.37500000000001
+      },
+      {
+        "name": "validateConcreteGraphicProperties src/grammar/schemas/concreteGraphic.js:147",
+        "ms": 49.37500000000001
+      },
+      {
+        "name": "validateCircleBatchColumn src/grammar/schemas/circleBatch.js:6",
+        "ms": 47.87500000000001
+      },
+      {
+        "name": "compile src/renderers/canvasScene.js:50",
+        "ms": 27.208000000000002
+      },
+      {
+        "name": "canvasSceneProgram src/renderers/canvasScene.js:131",
+        "ms": 27.208000000000002
+      },
+      {
+        "name": "concreteEntries src/renderers/canvasScene.js:24",
+        "ms": 25.708000000000002
+      },
+      {
+        "name": "samplePositionBatch src/grammar/animation/positions.js:172",
+        "ms": 8
+      },
+      {
+        "name": "projectBatchEndpoint src/animation/endpoints.js:104",
+        "ms": 5.458
+      },
+      {
+        "name": "projectSampledAnimationEndpoint src/animation/endpoints.js:56",
+        "ms": 5.458
+      },
+      {
+        "name": "freezeOwned src/core/immutable.js:12",
+        "ms": 3
+      },
+      {
+        "name": "mapPreparedContinuousScaleValue src/grammar/scales/mapping.js:61",
+        "ms": 1.958
+      },
+      {
+        "name": "isOwned src/core/immutable.js:22",
+        "ms": 1.5
+      },
+      {
+        "name": "validateCircleAppearance src/grammar/schemas/concreteGraphic.js:39",
+        "ms": 1.5
+      }
+    ]
+  },
+  "candidateAttribution": {
+    "totalCapturedMs": 299.4589999999999,
+    "sampleTransitionInclusiveMs": 67.125,
+    "outsideSamplerMs": 232.334,
+    "exclusion": "All samples without sampleTransition ancestry (includes Inspector post/stop) excluded from attribution",
+    "self": [
+      {
+        "name": "concreteEntries src/renderers/canvasScene.js:24",
+        "ms": 15.125
+      },
+      {
+        "name": "createCircleBatchColumn src/grammar/schemas/circleBatch.js:9",
+        "ms": 13.5
+      },
+      {
+        "name": "ownDataProperties src/core/ownData.js:5",
+        "ms": 13.5
+      },
+      {
+        "name": "projectBatchEndpoint src/animation/endpoints.js:104",
+        "ms": 5.459
+      },
+      {
+        "name": "(anonymous) src/animation/batchSample.js:91",
+        "ms": 4.458
+      },
+      {
+        "name": "freezeOwned src/core/immutable.js:12",
+        "ms": 3.083
+      },
+      {
+        "name": "(anonymous) src/grammar/schemas/circleBatch.js:11",
+        "ms": 3
+      },
+      {
+        "name": "(anonymous) src/grammar/animation/positions.js:181",
+        "ms": 3
+      },
+      {
+        "name": "ownArray src/core/ownData.js:23",
+        "ms": 1.584
+      },
+      {
+        "name": "samplePreparedBatch src/animation/batchSample.js:77",
+        "ms": 1.5
+      },
+      {
+        "name": "validateCircleBatchColumn src/grammar/schemas/circleBatch.js:19",
+        "ms": 1.5
+      },
+      {
+        "name": "isOwned src/core/immutable.js:22",
+        "ms": 1.416
+      }
+    ],
+    "inclusive": [
+      {
+        "name": "samplePreparedBatch src/animation/batchSample.js:77",
+        "ms": 67.125
+      },
+      {
+        "name": "sampleTransitionWithBudget src/animation/sample.js:36",
+        "ms": 67.125
+      },
+      {
+        "name": "sampleTransition src/animation/sample.js:30",
+        "ms": 67.125
+      },
+      {
+        "name": "(anonymous) .artifacts/column-proof-review/profile-run.mjs:0",
+        "ms": 67.125
+      },
+      {
+        "name": "(root) :0",
+        "ms": 67.125
+      },
+      {
+        "name": "compile src/renderers/canvasScene.js:50",
+        "ms": 31.625000000000004
+      },
+      {
+        "name": "canvasSceneProgram src/renderers/canvasScene.js:131",
+        "ms": 31.625000000000004
+      },
+      {
+        "name": "concreteEntries src/renderers/canvasScene.js:24",
+        "ms": 30.209000000000003
+      },
+      {
+        "name": "createCircleBatchColumn src/grammar/schemas/circleBatch.js:9",
+        "ms": 23.958000000000006
+      },
+      {
+        "name": "ownArray src/core/ownData.js:23",
+        "ms": 15.084
+      },
+      {
+        "name": "samplePositionBatch src/grammar/animation/positions.js:173",
+        "ms": 13.625
+      },
+      {
+        "name": "ownDataProperties src/core/ownData.js:5",
+        "ms": 13.5
+      },
+      {
+        "name": "(anonymous) src/grammar/schemas/circleBatch.js:11",
+        "ms": 10.458
+      },
+      {
+        "name": "projectBatchEndpoint src/animation/endpoints.js:104",
+        "ms": 5.459
+      },
+      {
+        "name": "projectSampledAnimationEndpoint src/animation/endpoints.js:56",
+        "ms": 5.459
+      },
+      {
+        "name": "(anonymous) src/animation/batchSample.js:91",
+        "ms": 4.458
+      },
+      {
+        "name": "freezeOwned src/core/immutable.js:12",
+        "ms": 3.083
+      },
+      {
+        "name": "(anonymous) src/grammar/animation/positions.js:181",
+        "ms": 3
+      },
+      {
+        "name": "validateCircleBatchColumn src/grammar/schemas/circleBatch.js:19",
+        "ms": 1.5
+      },
+      {
+        "name": "validateCircleBatchProperties src/grammar/schemas/circleBatch.js:30",
+        "ms": 1.5
+      },
+      {
+        "name": "validateConcreteGraphicProperties src/grammar/schemas/concreteGraphic.js:147",
+        "ms": 1.5
+      },
+      {
+        "name": "samplePositionInterpolation src/grammar/animation/positions.js:116",
+        "ms": 1.5
+      },
+      {
+        "name": "isOwned src/core/immutable.js:22",
+        "ms": 1.416
+      }
+    ]
+  },
+  "rejectedFirstPrototype": "Assignment-based density proof fails inherited numeric setter; preserved timing is not final candidate",
+  "evidenceFiles": {
+    "column-lifetime.json": {
+      "bytes": 52,
+      "sha256": "10806af43d52585ade74fb881ea2dee69157973072c4a8f2b3bb83aa42c31cc5"
+    },
+    "column-lifetime.log": {
+      "bytes": 378,
+      "sha256": "137c691d5e1d0e1b4bfd8bc43d73b8caafe3ada8b872d5d2cc9fc78407b9bf3d"
+    },
+    "column-lifetime.mjs": {
+      "bytes": 762,
+      "sha256": "9a78ac50fd7796ed9df7d3b62c5424e2f828690e3399c873e013cafbd6f3d3a8"
+    },
+    "comparison.json": {
+      "bytes": 366,
+      "sha256": "c9caaeb56979331163402ef056a6d441824d70b5f73b50f4fe116d9d7ce9386d"
+    },
+    "effective/src/animation/batchSample.js": {
+      "bytes": 9295,
+      "sha256": "b58a902fb777ac08b115aa34e851abf6def0aaa3f29981973a7b82197fe4fce9"
+    },
+    "effective/src/grammar/animation/positions.js": {
+      "bytes": 10808,
+      "sha256": "e2f1c2551dafc9486b6422189c9f622659511eed775f4c9494c2260fa619f2f1"
+    },
+    "effective/src/grammar/schemas/circleBatch.js": {
+      "bytes": 2835,
+      "sha256": "87d56da0b5a6ba5d62a236bb8c27d93437347e2135c8e3061aa879947e02ba7e"
+    },
+    "effective-source.json": {
+      "bytes": 321,
+      "sha256": "7bf55689bf9c7ebb0f616df9594ab8012e596ab79c9bfd2b03bb92c52e3c03a7"
+    },
+    "first-assignment-loader.mjs": {
+      "bytes": 3556,
+      "sha256": "515b116284d8dfc095f9a848574c11d3563da2c1a03e61195535d9bcb4efffb6"
+    },
+    "first-assignment-profile.json": {
+      "bytes": 2578,
+      "sha256": "88a3fb2fb99def2bea4a44cb0b600bfd1a5bdf8e34c382aa7d5780229154212f"
+    },
+    "first-assignment.cpuprofile": {
+      "bytes": 8366,
+      "sha256": "3a3bfe590090ec1d4dcc11cb7e099e997f24122e4046d076e69a0b1ace8a1041"
+    },
+    "focused-complete.log": {
+      "bytes": 9263,
+      "sha256": "941615eba12a9b179144429409786dbbd7d3c8c3ee9772fa59a4f93de2b74657"
+    },
+    "focused.log": {
+      "bytes": 2356,
+      "sha256": "7ff3b4702e217759006d2e49dfb65ef219d8827623dd3791f306b728f9f512d4"
+    },
+    "lifetime.json": {
+      "bytes": 268,
+      "sha256": "b49438c87746ef5e8c5c7032ee3a741d1785fc79ab6a1e21d968d27a75908be2"
+    },
+    "lifetime.log": {
+      "bytes": 605,
+      "sha256": "9e34c89ea5dc3309273be8554db0315203a2f1229b8359522707300a4e4b53e0"
+    },
+    "lifetime.mjs": {
+      "bytes": 3025,
+      "sha256": "f3ac56bc9d34c728bd7d4070e84613872d908abcbf2ef93730245356a6105496"
+    },
+    "loader.mjs": {
+      "bytes": 3537,
+      "sha256": "1f4a828e5f4bd9b5d03103f89f558c01972f3c6c680cc25510c0ff43d6f8d1fe"
+    },
+    "navigation.log": {
+      "bytes": 1492,
+      "sha256": "c9f910f0b7a8686f2a8a2ffdb94730b443859faa101eceabe669ce025da1b7c8"
+    },
+    "one-k-candidate.json": {
+      "bytes": 13319,
+      "sha256": "69dd934db393be2393d896278f6c8f8cbf73512f9fb19cda8adf328fa75c611c"
+    },
+    "one-k-candidate.log": {
+      "bytes": 12195,
+      "sha256": "f2f083d56f5c48da3c5016c59b1e63040f4af0424f6c7642542c5239fecdec50"
+    },
+    "one-k-control.json": {
+      "bytes": 13319,
+      "sha256": "69dd934db393be2393d896278f6c8f8cbf73512f9fb19cda8adf328fa75c611c"
+    },
+    "one-k-control.log": {
+      "bytes": 11817,
+      "sha256": "a9ad531bbebe5347245ee56cee997fc03c2fbaa8016b697088904071348fd81b"
+    },
+    "one-k.mjs": {
+      "bytes": 5521,
+      "sha256": "eaecfc5662ec241746c33bcb2c1595c2f871c9aee68146aedd528da970986df4"
+    },
+    "oracle-candidate.json": {
+      "bytes": 1262,
+      "sha256": "d743fd984b6069ff714de7c39667bb2ff8f917488b9fb2185628638004cd14a1"
+    },
+    "oracle-control.json": {
+      "bytes": 1003,
+      "sha256": "b193b75c6c335ca6ebb7720c389efd6f094475430cdb2ce65f366ae8acf52a4d"
+    },
+    "oracle-final.log": {
+      "bytes": 378,
+      "sha256": "6e6bc6f20b9f2b6ab89b3ef174d2a63c761501358382d01ef09b045a4ef3a836"
+    },
+    "oracle.mjs": {
+      "bytes": 3661,
+      "sha256": "a4268f3ae871014560715abf9ca05e8dd5b993126bebc9ed7910849b4c3b6126"
+    },
+    "profile/receipt.json": {
+      "bytes": 2574,
+      "sha256": "4c07560a89ecbedc753a6845ad862c79dc37a91c0b0fe90ed0261e018f4c1934"
+    },
+    "profile/sample.cpuprofile": {
+      "bytes": 8441,
+      "sha256": "b55de5586f27cebaeacc9d3069522f851af6393306cb97e4688a2d709ebd0b39"
+    },
+    "profile/summary.json": {
+      "bytes": 3709,
+      "sha256": "816b4ca177412bd9d350a5286a7c3771b280f00aa1b3a32bc0ad477e5cd7a76e"
+    },
+    "profile-effective-source.json": {
+      "bytes": 321,
+      "sha256": "50111281bac6dbb9849458297ea6fcb2825c73a677348514bbdbc996b39da9aa"
+    },
+    "profile-run.mjs": {
+      "bytes": 4190,
+      "sha256": "5397e71a41a0863492c431eb3f1156304e00621eb2d5f9e9ed0d96b9cf597833"
+    },
+    "profile.log": {
+      "bytes": 2673,
+      "sha256": "1e7b704056edc0a4654c945b64073a3986b5495704db1e252af37e9ce94d3e4c"
+    },
+    "proposal.patch": {
+      "bytes": 6819,
+      "sha256": "52e59263e44cf43751fb41d35ee67359d9f99cfcc5c343e166ac0c6538221732"
+    },
+    "record.mjs": {
+      "bytes": 2553,
+      "sha256": "cc019bd37acd8f2bd687f37a8f0612c827f4cbe9f1b0613c24d2ffb9f3790404"
+    },
+    "summarize.mjs": {
+      "bytes": 1536,
+      "sha256": "e6a46045b94632471d00dfebfd64a185c2b3623d14c665491196c438be820e7c"
+    },
+    "baseline-profile/receipt.json": {
+      "bytes": 2498,
+      "sha256": "fba4b8c1ff42fce3c18fec24577b4b62858baf1d6eb255b42d9b8db01b927045"
+    },
+    "baseline-profile/run.log": {
+      "bytes": 2229,
+      "sha256": "ed2766fbe682b4cd089ba287e11d27918b0830484b7c4fb9bf528498ae9851e5"
+    },
+    "baseline-profile/run.mjs": {
+      "bytes": 4186,
+      "sha256": "2a9403985eab07dd0ab3d0b0d739c3e381ac745fbbc1ae19c88c8c7cad6ec6b2"
+    },
+    "baseline-profile/sample.cpuprofile": {
+      "bytes": 8180,
+      "sha256": "991ddff3c453813bbe7a2084920340ba9c60f6b862fb1b5e7fbaf1324ab7ce2d"
+    },
+    "baseline-profile/summarize.mjs": {
+      "bytes": 1532,
+      "sha256": "3c9e68d37c5e441632a293ddf32524e538c6386ef1183099ef3b2c38ea34ad6e"
+    },
+    "baseline-profile/summary.json": {
+      "bytes": 3396,
+      "sha256": "1bbfb15bfeb3c70f79edc7fbf359bf2153678825d77fe98659cb4d44833bd6ea"
+    }
+  }
+}

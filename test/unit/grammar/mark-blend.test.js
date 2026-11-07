@@ -3,7 +3,7 @@ import test from "node:test";
 import { MARK_BLEND_TYPES, validateMarkBlend, validateRequestedMarkBlend } from "../../../src/grammar/markBlend.js";
 import { compositeRGBA, readBlendMode } from "../../../src/grammar/compositing.js";
 test("mark blend policy is closed and accepts only own option values", () => {
-  assert.deepEqual(MARK_BLEND_TYPES, ["point", "bar", "rect", "area", "arc", "text", "line", "rule", "tick"]);
+  assert.deepEqual(MARK_BLEND_TYPES, ["point", "bar", "rect", "area", "arc", "text", "line", "rule", "tick", "trail"]);
   assert.ok(Object.isFrozen(MARK_BLEND_TYPES));
   for (const type of MARK_BLEND_TYPES) for (const mode of ["normal", "multiply", "screen", "difference"]) {
     assert.equal(validateMarkBlend(mode, type), mode);

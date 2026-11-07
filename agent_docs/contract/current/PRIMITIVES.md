@@ -28,7 +28,7 @@ Evidence: `test/unit/core/action.test.js`, `test/unit/grammar/expression-validat
   semantic references를 검사하고 resolvedScales/currentScale을 정리한다. Coordinate/currentData pointer도 삭제된 실제
   ID를 가리키면 unset한다. Facet parent는 title과 전체 참조 검사에 통과한 named-resource removal만 허용한다.
   그래픽은 변경하지 않는다. Basic 내부 primitive에는 Full resource-removal policy dependency를 포함하지 않는다.
-- Series policy leaves: `layer[id].layout.mode`는 group/stack/fill/overlay/diverging/center,
+- Series policy leaves: `layer[id].layout.mode`는 group/stack/fill/overlay/diverging/center/wiggle,
   `layer[id].mark.missing`은 error/break, `layer[id].encoding.group.inferredFrom`은 color/offset이다.
   `layer[id].layout` container 제거를 지원한다. 이 primitive 저장은 layout·path segmentation을 실행하지 않는다.
 - Measured radial primitive leaves: `scale[id].radialMapping`은 `area | radius-length`,
@@ -89,9 +89,10 @@ revision ref를 같은 transaction에서 갱신한다. remove는 live consumer�
 - Signature: `createGraphics({ id, type, length?, parent?, before?, after? })`.
 - `id`: 필수 global graphic ID. tree depth와 무관하게 unique하며 equivalent repeated definition과
   attachment는 idempotent하다.
-- `type`: `"canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path"`.
+- `type`: `"canvas" | "collection" | "circle" | "circle-batch" | "path-batch" | "rect" | "line" | "text" | "path" | "image" | "weighted-blend"`.
 - `length`: 일반 graphic은 `0..10,000` integer. semantic point layer와 selected materialized
-  dataset 및 graphic ID/type의 소유권이 증명된 circle/rect/path/collection만 50,000 inclusive다.
+  dataset 및 graphic ID/type의 소유권이 증명된 circle/rect/path/collection은 owner의 [Point capacity](MARKS.md#createpointmark)를
+  따른다(기본50,000, 명시 maxItems의 상한100,000; raw/output 모두 검산).
   retained child의 namespace도 실제 child owner까지 추적한다. 우회 flag나 trace 문자열은 사용하지 않는다.
   homogeneous drawable type에 지정하면 generated `items`를 만들며
   생략 시 single graphic, `0`이면 empty collection이다. heterogeneous `collection`은 `items` edit로 채운다.
@@ -109,7 +110,7 @@ revision ref를 같은 transaction에서 갱신한다. remove는 live consumer�
 
 ### Formal values — `createGraphics`
 
-- Implemented: `createGraphics({ id: UserId; type: "canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path"; length?: NonNegativeInteger; parent?: UserId; before?: UserId; after?: UserId })`; `before | after` 중 최대 하나이며 anchor는 같은 parent의 direct sibling이다.
+- Implemented: `createGraphics({ id: UserId; type: "canvas" | "collection" | "circle" | "circle-batch" | "path-batch" | "rect" | "line" | "text" | "path" | "image" | "weighted-blend"; length?: NonNegativeInteger; parent?: UserId; before?: UserId; after?: UserId })`; `before | after` 중 최대 하나이며 anchor는 같은 parent의 direct sibling이다.
 - Proposed (NOT IMPLEMENTED): —
 - Maybe Future (NOT IMPLEMENTED): renderer-specific `svg | g` graphic types.
 
@@ -117,7 +118,7 @@ revision ref를 같은 transaction에서 갱신한다. remove는 live consumer�
 
 - `id`: ✅ Covered valid/invalid IDs, equivalent idempotence and conflicts.
 - `type`
-  - ✅ Covered: `"canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path"` creation paths.
+  - ✅ Covered: `"canvas" | "collection" | "circle" | "circle-batch" | "path-batch" | "rect" | "line" | "text" | "path" | "image" | "weighted-blend"` creation paths.
   - ✅ Covered: unknown type rejection.
   - Maybe Future: renderer-specific `svg/g`; current contract adds only backend-neutral primitives needed by multiple actions.
 - `length`
@@ -153,7 +154,7 @@ Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. 
   - collection + outer array: item count와 길이가 같으면 index별 distribute. path `commands`처럼 property
     자체가 nested array인 경우 한 item value 단위를 보존한다.
   - `items`: heterogeneous collection의 typed concrete item array를 원자적으로 교체하며 최대 길이는
-    일반 graphic은 `10,000`, 위에서 정의한 point-owned collection만 `50,000`이다.
+    일반 graphic은 `10,000`, 위에서 정의한 point-owned collection은 owner capacity(기본 `50,000`, 명시 최대 `100,000`)다.
 - `children`: named Canvas/collection의 기존 직접 자식 ID의 정확한 순열을 편집한다. 기존 ID·parent·property·items·clip·object 선언 순서와 root order는 유지한다. 누락/추가/중복/다른 parent/비문자열과 generated item/drawable owner는 거부한다. 빈 container의 `[]`와 동일 순열도 허용한다. Caller array와 이전 상태는 불변이다. 실제 `children` field를 편집하며 property bag에 저장하지 않는다. Evidence: `test/unit/actions/primitives/graphic-child-order.test.js`.
 - `clip`: named non-Canvas owner의 node-level rectangle 또는 compound path를 편집한다. `value: {type:"path",commands,fillRule?}`는 아래 path grammar를 공유하며 fill 영역으로만 clip한다. `value: {x,y,width,height}`는 finite x/y와 nonnegative finite width/height를 요구하며 끝점도 finite여야 한다. 같은 parent frame에서 전체 items/subtree를 자르고 item properties/좌표/ID를 바꾸지 않는다. `false`는 optional field를 제거한다. Generated/inline item과 Canvas에는 지원하지 않는다. `items`/`length` 변경, renderer와 persistence가 같은 owner clip을 보존한다. Evidence: `test/unit/renderers/graphic-owner-clipping.test.js`.
 - `remove`: `true`일 때 property/value 없이 named graphic과 owned named subtree를 삭제하고 parent의
@@ -182,7 +183,14 @@ Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. 
   - ✅ Covered: type-specific canvas/circle/rect/line/text/path properties, `length`, heterogeneous `items`.
   - ✅ Covered: the shared concrete-property schema is table-tested by type and `editGraphics` exercises single,
     broadcast, distributed and heterogeneous application paths.
-  - ✅ Covered: finite `M | L | C | Z` path command arrays, maximum 30,000 commands, and command-order validation.
+  - ✅ Covered: finite `M | L | C | Z` path command arrays, default maximum 30,000 commands, and command-order validation.
+    Path-only `maxCommands` is an own enumerable integer declaration from 1 through 200000. Explicit undefined,
+    null, accessors, inherited values and out-of-range values reject. Lowering it below existing commands fails
+    atomically. Validate current capacity before cached command/topology reuse; an earlier larger declaration
+    grants no authority to a smaller one. Concrete scene, weighted source, bounds, flatten and graphic codec
+    preserve the declaration. A native Geo path must match its exact scoped binding policy. Clip paths and
+    existing path generators retain their independent defaults. This does not raise hit stroke/query limits.
+    Evidence: `test/unit/geo/capacity.test.js`.
     각 `M`이 새 subpath를 시작한다. `L/C`는 열린 subpath에서만 허용하고 `Z`는 그 subpath를 닫는다.
     `Z` 뒤에는 `M`만 허용한다. `M`, `M Z`, 연속 `M`은 zero-area position-only subpath로 유효하다.
     모든 command는 exact own data fields와 finite 좌표만 받으며 배열은 dense하다.
@@ -267,3 +275,74 @@ editable/graphic codec에서 같은 schema로 검증된다. Shape geometry나 ro
 Circle, Rect, Path and Text concrete properties accept the immutable closed `outline:{color,width}` defined in [Marks](MARKS.md#pre-fill-outlines-and-halos). Collections may supply it to compatible children. Concrete false is invalid; removal deletes the property. The outline owns the rendered edge while retaining ordinary stroke properties for restoration. Shared bounds include half the width and existing cap/join/miter rules; renderer opacity applies to the complete glyph once. Text permits the same lineCap/lineJoin/miterLimit details. Line primitives reject outline.
 
 Image concrete properties also accept the same fully resolved `shadow` object as other drawable primitives. Its source mask is decoded pixel alpha; synchronous output requires exact prepared shadow/image handles. Concrete `shadow:false` remains invalid.
+
+
+### Concrete weighted blend
+
+`weighted-blend`는 fully materialized primitive sources를 한 논리 item으로 합성하는 concrete type이다.
+새 semantic mark/action은 없으며 `createGraphics`/`editGraphics` 및 heterogeneous collection items로 작성한다.
+Properties는 필수 `sources`와 선택적 `opacity`, `blend`이다. Source는 정확히
+`{weight,type,properties,offset,clip,clips}`이며 type은 기존 circle/rect/line/text/path/image만 허용한다.
+기존 primitive의 완성된 concrete properties와 retained image/font payload를 그대로 보존한다.
+`offset:[x,y]`는 source primitive에 적용하고, 필수 rect `clip`과 추가 rect/path `clips`는 그룹 local 좌표다.
+외부 named owner clip/Canvas offset은 그룹 전체에 적용한다.
+
+Sources는 2..64개, weight는 유한 0..1이며 합은1(누산오차1e-12 허용)이다. 추가 clips는 source당64,
+그룹당1024 이하다. 중첩 weighted-blend, sparse/accessor/cycle/unknown keys, 미완성 primitive,
+invalid source는 weight0이어도 거부한다. 빈 배열은 오류, zero area/empty Text/완전 clip은 정상 투명 출력이다.
+Source blend는 생략 또는 normal만 허용하며 공통 backdrop mode는 그룹 blend 한 곳이 소유한다.
+서로 다른 backdrop mode의 전환 의미를 이 type으로 추론하지 않는다.
+
+각 source의 clip/opacity/outline/shadow를 완성한 RGBA를 linear sRGB로 변환하고 premultiply하여
+가중합한 뒤 unpremultiply와 sRGB encoding을 적용한다. 그룹 opacity/blend는 그 결과에 한 번 적용한다.
+Weight1 endpoint는 원 primitive를 직접 출력하여 색 재양자화를 피한다. 일반 hit는 현재 source의
+가중치와 opacity가 양수인 painted geometry 합집합이며 그룹은 동일한 item 후보 하나를 유지한다.
+그림자는 기존처럼 hit 영역을 늘리지 않는다.
+
+Canvas/PNG는 항목별 offscreen만 사용한다. 항목1,048,576 pixels, 장면 결과16,777,216 pixels,
+source-pixel work67,108,864를 넘으면 대상 Canvas resize/clear 이전에 거부한다. Text는 실제 ink를 측정한다.
+SVG는 기존 source 직렬화와 native linearRGB arithmetic filter를 사용하며 Text의 명시 source clip으로
+filter extent를 제한한다. PDF는 중간 weighted item만 논리1px raster로 낮추고 ordinary endpoint는 벡터로 유지한다.
+기존 image/font/shadow 준비, stale/abort/dispose 규칙, native 좌표/자산 한도는 그대로 적용한다.
+전체 chart screenshot, renderer 결과 재입력, callback/renderer object의 저장은 없다.
+
+Evidence: `test/unit/weighted-blend.test.js`, `test/unit/renderers/weighted-blend.test.js`,
+`test/unit/renderers/weighted-blend-assets.test.js`, `test/browser/weighted-blends.browser.js`,
+`test/charts/cross-feature-integration/variants/weighted-blends/backends.render.js`, `test/contracts/weighted-blend-types.test.js`.
+
+## Concrete circle batches
+
+`circle-batch`는 순서대로 완성된 circle들을 공유 appearance와 숫자 column으로 저장한다.
+properties는 정확히 `{x,y,radius,appearance}`다. x/y/radius는 동일 길이1..10000의
+own dense ordinary number array이며 finite이고 radius는 음수가 아니다. appearance는
+circle의 기존 concrete fill/outline/stroke/strokeWidth/lineCap/lineJoin/miterLimit/opacity/blend/shadow만
+받는다. 좌표·length·items·children·새 opaque style은 받지 않는다. 실제 fill/paint validation은
+기존 circle owner를 공유한다. `createGraphics`의 length와 batch의 items/children은 거부한다.
+
+개별 `editGraphics`는 기존 primitive처럼 미완성 속성 작성이 가능하고, 렌더링 및 persistence는
+완성된 네 필드와 column 길이를 함께 검사한다. Heterogeneous collection item 교체는 완성된
+batch properties를 요구한다. 동일 appearance여도 각 row를 별도 circle로 순서대로 그리며
+겹친 opacity·outline·shadow·blend의 합성 단위나 pattern work/magnitude 한계를 합치지 않는다.
+공통 bounds는 row별 circle bounds의 union이다. 그림자 준비도 row마다 glyph를 만든다.
+
+Graphic envelope1/editable4는 additive concrete type을 보존하며 container version은 바꾸지 않는다.
+기존 reader는 모르는 type을 거부하며 자동 downgrade는 없다. Caller-authored batch는 native
+semantic authority를 만들지 않는다. Weighted-blend sources는 기존 여섯 primitive만 지원한다.
+[Test](../../../test/unit/renderers/circle-batch.test.js)는 author/edit 불변성, malformed column,
+저장/복원과 DPR1/2 Canvas·SVG·PNG·PDF의 기존 circle 동등성을 검증한다.
+
+## Concrete path batches
+
+`path-batch`는 같은 appearance를 공유하는 완성된 path 행들을 좌표 column으로 저장한다.
+properties는 정확히 `{x,y,starts,closed,appearance}`다. x/y는 동일 길이 1..1,000,000의 own dense
+finite number array다. starts는 1..10,000행의 첫 점 index이며 0에서 시작해 증가한다. 각 행은
+`[starts[i], starts[i+1])`(마지막 행은 끝까지)의 점이며 최소 두 점이고, 닫는 명령을 포함한 명령 수는
+기본 path 상한 30,000 이하다. 행은 M 한 번 뒤 L로 이어지고 closed면 Z로 닫는다. appearance는
+path의 기존 concrete paint(fill/fillRule/outline/stroke/strokeWidth/strokeDash/lineCap/lineJoin/
+miterLimit/opacity/blend/shadow)만 받고 commands·maxCommands·length는 거부한다.
+
+모든 소비자는 같은 행 전개(`batchGraphicRow`)로 각 행을 개별 path로 순서대로 그린다. bounds는 행별
+path bounds의 union이고 그림자 glyph도 행마다 만든다. `createGraphics` length와 items/children은
+거부한다. 저장·복원은 circle-batch와 같은 additive concrete type 규칙을 따른다.
+[Test](../../../test/unit/renderers/path-batch.test.js)는 column/행/appearance 거부, 저장/복원,
+DPR1/2 Canvas·SVG·PNG·PDF의 개별 path 동등성, 그림자, bounds, scene 배치를 검증한다.

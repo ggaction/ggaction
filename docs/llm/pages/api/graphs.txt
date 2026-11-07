@@ -24,6 +24,8 @@ Nodes accept `radius`, `fill`, `stroke`, `strokeWidth`, `opacity`, and `override
 
 Edges accept `stroke`, `strokeWidth`, `opacity`, `parallelGap`, `loopRadius`, `arrowSize`, and `arrows`. Defaults are #94a3b8, 1.5, 1, 16, 20, 8 and `"auto"`. Auto arrows follow graph direction; true forces arrows and false hides them. Dimensions are nonnegative finite pixel values. Opacity is in [0,1]. Parallel edges retain separate curved routes in source order; self-loops remain visible. A directed edge and its arrow share one logical identity.
 
+A plot admits up to 10,000 concrete graphics by default, counting each node body, each label and two per edge. Set `maxItems` to an integer from 1 to 100,000 to state a larger or smaller capacity explicitly; editing and saved charts keep it, and graph animation keeps the default limit.
+
 ## editGraphPlot
 
 ```typescript
@@ -34,7 +36,9 @@ Chart authoring. Apply a nonempty patch to layout binding, placement, node/edge 
 
 ## Stored edge routes
 
-Set `routes` to an [edge route resource](../../../api/edge-routes/) from the same graph and layout. Omission preserves an edited plot’s binding; `routes:false` restores native curves. Bundled paths retain original edge identities and row membership. Native `parallelGap` and `loopRadius` apply after routes are detached.
+Set `routes` to an [edge route resource](../../../api/edge-routes/) from the same graph and layout. Omission preserves an edited plot’s binding; `routes:false` restores native curves. Bundled paths retain original edge identities and row membership. [Explicit bounded execution](../../../api/edge-routes/#explicit-bounded-execution) prepares version 2 routes with required worker budgets and deadlines. Native `parallelGap` and `loopRadius` apply after routes are detached.
+
+When a version 2 route depends on the graph or its layout, call `editGraphData`, `editInferredGraphData` or `editLayout` through `prepareGraphEdgeRoutes({kind:"update", edit:{action, args}})` and [`applyGraphEdgeRoutesUpdate`](../../../api/edge-routes/#applygraphedgeroutesupdate); a direct call fails with "Bounded routes require prepareGraphEdgeRoutes and authentic prepared application." To draw world-space routes on a map, convert them with [`createGeoRouteData`](../../../api/geometry/#creategeoroutedata).
 
 ## Labels and identity
 
@@ -127,10 +131,112 @@ refresh dependent inferred graphs; layout, canvas, and paint edits preserve the
 topology. `candidateGraph: null` removes a candidate input, so provide metric
 features in the same edit when switching to a complete metric MST.
 
+`maxNodes` and `maxEdges` each default to 10,000. Explicit values apply to source
+preparation, generated relationships, revisions, and restore. An MST candidate
+uses its own stored capacity; the inferred output uses its own edge limit.
+These capacities do not increase the computation work budget or graphical item
+limits. A request that exceeds either applicable limit fails without changing
+the previous program.
+
+For an explicitly larger inference workload, set
+`execution: { policy: "bounded-inference@1", maxWork: 100000000, maxBytes: 134217728 }`.
+Both limits must be positive safe integers, at most the values shown. `maxWork`
+uses the existing work units within each inference operation; it is not a count
+of CPU instructions or a time guarantee. Omitting `execution` retains the
+original 10-million-unit limit. The definition, edits, source revisions, and
+restore preserve the explicit policy. A candidate graph is validated with its
+own stored policy.
+
+`maxBytes` bounds the encoded input and normalized result separately, including
+typed values and diagnostics. It does not bound total JavaScript heap use.
+Graphical item limits and layout or route computation limits remain separate.
+Large inference results do not imply support for rendering the entire graph or
+meeting a latency target. Ordinary inference action calls remain synchronous.
+
 Inference supports the Full entry point. Resource-backed graph plots currently
 reject automatic facet partitioning. Mark filtering keeps the inferred topology;
 create an explicitly filtered dataset and a separate inferred graph when you need
 recomputation.
+
+## Prepare inference in a worker
+
+`ggaction/graph` exports three inference helpers (route helpers are described in [Edge routes](../../../api/edge-routes/#prepare-in-a-worker)):
+`createGraphInferenceExecutor({ createWorker })`, `computeGraphInference(job, signal?)`,
+and `prepareInferredGraphData(program, request, { executor, requestToken, signal? })`.
+The request is `{ kind: 'create', ...createOptions }` or `{ kind: 'edit', ...editOptions }`.
+Only a settled Full program can prepare inference. The ordinary create/edit methods
+remain synchronous.
+
+A worker factory is required. Each request owns one fresh worker, and an executor
+accepts one pending request; another request fails instead of joining a queue.
+There is no result cache. The worker must call `computeGraphInference` with the
+unchanged job and return its completion. The host supplies this trusted computation
+provider; consistency hashes do not certify a provider's mathematical honesty.
+The library validates the complete model, source binding, metric weights and
+saved diagnostics before exposing a prepared handle.
+
+This complete Node ES-module example uses the adjacent
+[`inference-worker.mjs`](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/graph-inference/worker.mjs) file. Save that
+worker beside the host module. In a browser, use a module `Worker` directly as the
+factory result and have its message handler call the same `computeGraphInference`;
+Node-specific worker adapters are not needed in the browser.
+
+> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { Worker } from 'node:worker_threads';
+import { chart } from 'ggaction';
+import { createGraphInferenceExecutor, prepareInferredGraphData } from 'ggaction/graph';
+
+const base = chart().createData({ id: 'points', keyField: 'id', values: [
+  { id: 'a', x: 0 }, { id: 'b', x: 1 }, { id: 'c', x: 4 }
+] });
+const executor = createGraphInferenceExecutor({ createWorker() {
+  const worker = new Worker(new URL('./inference-worker.mjs', import.meta.url));
+  const listeners = new Map();
+  return {
+    postMessage(message) { worker.postMessage(message); },
+    addEventListener(type, listener) {
+      const wrapped = value => listener(type === 'message' ? { data: value } : { error: value });
+      listeners.set(listener, wrapped); worker.on(type, wrapped);
+    },
+    removeEventListener(type, listener) {
+      worker.off(type, listeners.get(listener)); listeners.delete(listener);
+    },
+    terminate() { void worker.terminate(); }
+  };
+} });
+let program;
+try {
+  const prepared = await prepareInferredGraphData(base, {
+    kind: 'create', id: 'neighbors', nodeKey: 'id', ruleId: 'nearest',
+    rule: 'knn', features: ['x'], metric: 'manhattan', options: { k: 1 }
+  }, { executor, requestToken: 'neighbors-1' });
+  program = base.createInferredGraphData({ prepared, requestToken: 'neighbors-1' });
+} finally {
+  executor.dispose();
+}
+```
+
+Preparation does not change the program or its trace. Apply the authentic handle
+with the exact original receiver, action kind and request token. Prepared application
+accepts only `prepared` and `requestToken`; it cannot be mixed with ordinary source
+or edit fields. A changed or restored program, another token, or a cloned handle
+fails. Prepared edits run the existing dependency refresh and remain atomic on failure.
+Stored resources contain no worker, promise, request token or handle.
+
+Pass an `AbortSignal` to cancel preparation. Cancellation and `dispose()` terminate
+the request's worker and remove its listeners once; late messages cannot publish
+results. Disposing twice is harmless, and a disposed executor rejects new work.
+An aborted signal takes precedence over inspecting job input. A prepared handle
+remains revocable by its original signal until application.
+
+Each encoded job and completion is limited to 128 MiB, or the smaller explicit
+`execution.maxBytes`. The existing inference work and capacity policies still apply.
+These are admission bounds, not total heap or latency guarantees. Worker startup,
+message copying, main-thread input preparation, result validation and the explicit
+commit remain real costs. Source revisions still use their existing synchronous
+resource closure; preparation does not silently turn it into an asynchronous update.
 
 ## Outlines and shadows
 

@@ -179,9 +179,10 @@ viewport 준비와 실제 rematerialization은 이 후보와 기존 의존 계�
 ## `applyTextMetrics`
 
 - Signature: `applyTextMetrics({ profile })` 또는 `applyTextMetrics({ prepared, requestToken })`.
-- Exact font overload: `await prepareTextMetrics(program,{id,fonts},host)`의 authentic handle을 동일한 원 receiver와 현재 token에 적용한다. Full의 명시 font resource IDs만 해석하며 같은 family/style/weight 두 개는 ambiguous로 거부한다. Host는 `{requestToken,decode,measure,signal?}`이며 저장된 bytes만 decode/measure한다. 기존 schema 1의 입력과 estimate 의미는 아래와 같이 보존한다.
+- Exact font overload: `await prepareTextMetrics(program,{id,fonts,axisLabelReflow?},host)`의 authentic handle을 동일한 원 receiver와 현재 token에 적용한다. Full의 명시 font resource IDs만 해석하며 같은 family/style/weight 두 개는 ambiguous로 거부한다. Host는 `{requestToken,decode,measure,signal?}`이며 저장된 bytes만 decode/measure한다. 기존 schema 1의 입력과 estimate 의미는 아래와 같이 보존한다.
 - Schema 2: `{schemaVersion:2,id,fonts:[{resource:{kind:"font",id,revision},identity:{contentHash,family,style,weight,metricsProviderVersion}}],measurements:[{text,fontFamily,fontSize,fontWeight,fontStyle,width}]}`. 새 authoring object 입력이 아니라 준비 결과의 저장형식이다. 모든 query의 exact binding이 필요하고 누락 시 `metrics-required`, 미등록 tuple은 `unresolved-font`로 실패한다. 추정값으로 통과하지 않는다. `profile`와 `prepared/requestToken` 혼합 및 prepared overload의 scoped target은 거부한다.
 - Closure: 기존 explicit typography rematerializer를 private candidate에서 반복 실행하여 실제 요구 query만 준비한다. 128 UTF-16 units 이하의 missing text는 grapheme prefix도 batch로 측정한다. 고정 상한은 64 bindings, unique 64MiB, 10,000 query, 합계 1,048,576 UTF-16 units, 256 passes다. 상한 전에 callback을 차단하며 지연·abort·mismatched provider/bytes 오류는 원래 state/trace를 보존한다. 새 label query가 필요한 편집은 원자적으로 실패한다. `removeTextMetrics()` → 편집 → 새 exact receiver 준비/적용으로 갱신한다.
+- Axis reflow opt-in: `axisLabelReflow:true`만 현재 Cartesian axis labels의 `maxWidth` 또는 `responsive` 정책에 필요한 유한 wrap query closure를 추가한다. 원 raw tick의 현재 표시 문자열에서 native hard-line/word/grapheme tokenizer를 공유하며, native 공백 정규화 후 연속 grapheme 구간을 보수적으로 준비한다. 중첩 scope의 exact font/text/size tuple을 deduplicate하고 host decode/measure 전에 기존 query/UTF-16 cap 및 10M work를 검산한다. 생략/false는 기존 query 경로 그대로이며 명시 undefined와 nonboolean은 거부한다. 요청 flag·callback은 profile에 저장하지 않고 측정값만 저장한다. 글자·font tuple·bound font 교체 후에는 새 exact receiver에서 opt-in을 다시 준비한다. 이 옵션은 자동 format의 새 중간 문자열이나 모든 animation reflow 지원을 보장하지 않으며 missing query는 계속 `metrics-required`다.
 - Schema 2의 domain text는 실제 선택한 self-contained font bytes를 concrete text에 저장한다. Composition은 parent font resources를 정확히 채택하며 child의 동명 상이 자원을 덮지 않는다. Offline 복원은 resource revision/identity 및 일치하는 concrete font의 byte/provider identity를 검사한다. 독립 primitive text의 다른 font tuple은 extension 소유로 유지한다.
 - 목적과 필수 state: Full unit/composition에서 host가 측정한 text width를 저작용 배치에 적용한다. Canvas 이전에도 적용할 수 있다. Renderer는 기존 concrete text만 그린다.
 - Profile: `{ schemaVersion: 1, id: NonEmptyUserId, measurements: TextMeasurement[] }`. 각 measurement는 정확한 `{ text: string, fontFamily: NonEmptyString, fontSize: PositiveFinite, fontWeight: 100|200|300|400|500|600|700|800|900, fontStyle?: "normal"|"italic", width: NonNegativeFinite }`다. 빈 문자열/빈 measurement 배열/0 width는 유효하다. Root/measurement key는 closed이며 tuple 조합의 중복, 희소 배열, 잘못된 값은 거부한다.
@@ -407,6 +408,12 @@ resolved boundaries, and statistical outputs use group/output role/sample positi
 Window, normalization and imputation record the rows actually used in their calculations. Unsupported lineage is rejected.
 
 Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data/row-lineage.test.js`, `test/unit/core/item-identity.test.js`.
+
+Screen-anchored Text has no data or named resource lineage. Its concrete identity uses the closed
+`{kind:"screen"}` variant and `[childNamespaces,owner,"item",["annotation","screen"]]` key. The editable
+codec resolves the exact local Text owner and requires its explicit screen anchor; rows and hit resourceRefs
+remain empty. It never synthesizes a dataset revision. Other marks retain their current data/resource validation.
+See [Text annotation](MARKS.md#createannotation) and `test/unit/annotation-screen.test.js`.
 
 ### Formal values — `createData`
 
@@ -2685,3 +2692,24 @@ Browser-safe `ggaction/persistence`의 네 함수는 action replay 없이 canoni
 
 - ✅ Covered: image restrict/cascade, hierarchy/layout dependency restrictions, complete mark/config/clip/selection cleanup, unrelated resource retention and immutable failure.
 - Evidence: `test/unit/resources/image-resource-lifecycle.test.js`, `test/unit/resources/hierarchy-resources.test.js`, `test/unit/resources/hierarchy-consumers.test.js`, `test/unit/core/builtin-resource-kinds.test.js`.
+
+## Sliced editable load
+
+`ggaction/persistence`의 `loadProgramInSlices(text, { sliceMs?, signal? })`는 `deserializeProgram(text)`와 같은 program 또는 같은 오류를 비동기로 돌려준다.
+
+- 같은 단계: envelope 읽기, tagged decode, 소유 표시, 상태 복원·검증은 동기 load와 같은 stage iterator(`core/stages.js`)다. 동기 API는 그 iterator를 한 번에 끝까지 돌린다. 행 묶음(1,024) 사이에서만 양보하며 검사 항목·순서·한도는 그대로다.
+- JSON: 분할 경로만 `parseJSONStages`를 쓴다. 64K 문자 이하의 값·모든 문자열·원시 token은 host `JSON.parse`가 읽고, 더 큰 배열·객체의 구분자만 JSON 공백·문장부호 규칙으로 읽는다. 수락/거부와 값·키 순서·`__proto__` own member는 `JSON.parse(text)`와 같다.
+- 시간: sliceMs(1..1000 정수, 기본 40)가 지나면 host turn 하나를 양보한다. 한 단계는 행 묶음 하나라서 동기 구간은 sliceMs에 그 한 묶음 시간만큼만 더 길어질 수 있다. host GC 정지는 측정에 포함된다.
+- 취소: 시작 전·각 slice 전후에 signal을 검사하고 그 reason으로 거부한다. 반환된 program은 없다.
+- Evidence: `test/unit/persistence/sliced-load.test.js`(전 action corpus·legacy fixture 동일 결과, 오류 동일, host turn·취소·옵션, JSON 분할 동치).
+
+## Sliced data revision
+
+`ggaction`의 `reviseDataInSlices(program, options, { sliceMs?, signal? })`는 `program.reviseData(options)`와 같은 revision 또는 같은 오류를 비동기로 돌려준다.
+
+- Action 실행기: 동기 wrapper와 분할 호출(`invokeActionStages`)이 같은 invocation generator를 공유한다. 인자 검사·trace enter/exit·completion hook·결과 검증이 같다. private `stagedAction`/`stagedClosedAction` 구현만 행 묶음 사이에서 양보하고, 다른 action은 한 단계로 돈다. 묶인 invocation scope(`applyGraphEdgeRoutesUpdate`)는 양보 없이 끝까지 돈다.
+- 분할 범위: unit chart의 `reviseData` preview·actual 두 pass, `createData`·`editSemantic` 값 기록과 source identity, 재물질화 plan의 각 step, `rematerializeScale`, point 재물질화, mark output, `editGraphics` item 반복. facet revision과 다른 mark family는 한 단계다.
+- 동적 문맥: `withLogicalDataReplacementsStages`는 대체 문맥을 양보 전에 닫고 재개 때 다시 연다. dataset identity 준비는 정확한 인자 객체에 묶여 양보를 넘어도 다른 호출에 닿지 않는다.
+- 결과 동일성: 같은 namespace 순서에서 동기 revision과 저장 bytes가 같다. 원 program은 바뀌지 않는다. plain data 인자(행 배열 포함)는 첫 slice에서 host turn 전에 복사·동결하므로 반환 뒤 호출자 변경은 진행 중 개정에 닿지 않는다. 복사 비용은 첫 slice에 포함된다. Accessor 등 plain data가 아닌 인자는 그대로 action에 넘겨 원 검사가 거부한다.
+- 같은 결과의 반복 계산 제거: 소유 표시된 행 배열의 숫자 열 읽기(`readQuantitativeField`)는 그 배열의 private field에 기억한다. 모든 행이 소유 표시된 경우만 기억한다.
+- Evidence: `test/unit/actions/data/sliced-revise.test.js`.

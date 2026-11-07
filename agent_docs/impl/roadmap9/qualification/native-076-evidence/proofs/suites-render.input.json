@@ -1,0 +1,1071 @@
+{
+  "candidate": "a8af4e5665c17c6769af6118e48a30cd0efc13d3",
+  "targets": [
+    {
+      "target": "consumer:compound-path/svg",
+      "tests": [
+        "test/charts/compound-path/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/canvas",
+      "tests": [
+        "test/charts/compound-path/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/png",
+      "tests": [
+        "test/charts/compound-path/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:compound-path/pdf",
+      "tests": [
+        "test/charts/compound-path/backends.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/svg",
+      "tests": [
+        "test/charts/structured-paints/variants/pattern-paints/backends.render.js",
+        "test/charts/structured-paints/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/canvas",
+      "tests": [
+        "test/charts/structured-paints/variants/pattern-paints/backends.render.js",
+        "test/charts/structured-paints/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/png",
+      "tests": [
+        "test/charts/structured-paints/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:pattern/pdf",
+      "tests": [
+        "test/charts/structured-paints/variants/pattern-paints/backends.render.js",
+        "test/charts/structured-paints/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/svg",
+      "tests": [
+        "test/charts/partition-layouts/backends.render.js",
+        "test/charts/partition-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/canvas",
+      "tests": [
+        "test/charts/partition-layouts/backends.render.js",
+        "test/charts/partition-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/png",
+      "tests": [
+        "test/charts/partition-layouts/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-cartesian/pdf",
+      "tests": [
+        "test/charts/partition-layouts/backends.render.js",
+        "test/charts/partition-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/svg",
+      "tests": [
+        "test/charts/partition-layouts/backends.render.js",
+        "test/charts/partition-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/canvas",
+      "tests": [
+        "test/charts/partition-layouts/backends.render.js",
+        "test/charts/partition-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/png",
+      "tests": [
+        "test/charts/partition-layouts/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:partition-polar/pdf",
+      "tests": [
+        "test/charts/partition-layouts/backends.render.js",
+        "test/charts/partition-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PARTITION.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/svg",
+      "tests": [
+        "test/charts/tree-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/canvas",
+      "tests": [
+        "test/charts/tree-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/png",
+      "tests": [
+        "test/charts/tree-layouts/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:tree/pdf",
+      "tests": [
+        "test/charts/tree-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/svg",
+      "tests": [
+        "test/charts/treemap-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/canvas",
+      "tests": [
+        "test/charts/treemap-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/png",
+      "tests": [
+        "test/charts/treemap-layouts/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:treemap/pdf",
+      "tests": [
+        "test/charts/treemap-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/HIERARCHY.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/png",
+      "tests": [
+        "test/charts/graph-plots/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:graph-nodes/pdf",
+      "tests": [
+        "test/charts/graph-plots/pdf.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GRAPHS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/svg",
+      "tests": [
+        "test/charts/flow-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/canvas",
+      "tests": [
+        "test/charts/flow-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/png",
+      "tests": [
+        "test/charts/flow-layouts/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-dag/pdf",
+      "tests": [
+        "test/charts/flow-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/svg",
+      "tests": [
+        "test/charts/flow-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/canvas",
+      "tests": [
+        "test/charts/flow-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/png",
+      "tests": [
+        "test/charts/flow-layouts/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:sankey-cyclic/pdf",
+      "tests": [
+        "test/charts/flow-layouts/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/FLOWS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/svg",
+      "tests": [
+        "test/charts/contours/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/canvas",
+      "tests": [
+        "test/charts/contours/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/png",
+      "tests": [
+        "test/charts/contours/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-line/pdf",
+      "tests": [
+        "test/charts/contours/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/svg",
+      "tests": [
+        "test/charts/contours/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/canvas",
+      "tests": [
+        "test/charts/contours/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/png",
+      "tests": [
+        "test/charts/contours/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:contour-filled/pdf",
+      "tests": [
+        "test/charts/contours/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CONTOURS.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/svg",
+      "tests": [
+        "test/charts/calendar/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/canvas",
+      "tests": [
+        "test/charts/calendar/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/png",
+      "tests": [
+        "test/charts/calendar/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:calendar/pdf",
+      "tests": [
+        "test/charts/calendar/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/CALENDAR.md"
+      ]
+    },
+    {
+      "target": "consumer:table/svg",
+      "tests": [
+        "test/charts/table/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/canvas",
+      "tests": [
+        "test/charts/table/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/png",
+      "tests": [
+        "test/charts/table/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:table/pdf",
+      "tests": [
+        "test/charts/table/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TABLE.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/svg",
+      "tests": [
+        "test/charts/pyramid/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/canvas",
+      "tests": [
+        "test/charts/pyramid/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/png",
+      "tests": [
+        "test/charts/pyramid/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:pyramid/pdf",
+      "tests": [
+        "test/charts/pyramid/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/PYRAMID.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/svg",
+      "tests": [
+        "test/charts/ohlc/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/canvas",
+      "tests": [
+        "test/charts/ohlc/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/png",
+      "tests": [
+        "test/charts/ohlc/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:ohlc/pdf",
+      "tests": [
+        "test/charts/ohlc/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/OHLC.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/svg",
+      "tests": [
+        "test/charts/waterfall/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/canvas",
+      "tests": [
+        "test/charts/waterfall/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/png",
+      "tests": [
+        "test/charts/waterfall/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:waterfall/pdf",
+      "tests": [
+        "test/charts/waterfall/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/WATERFALL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/svg",
+      "tests": [
+        "test/charts/trail/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/canvas",
+      "tests": [
+        "test/charts/trail/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/png",
+      "tests": [
+        "test/charts/trail/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:trail/pdf",
+      "tests": [
+        "test/charts/trail/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/TRAIL.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/svg",
+      "tests": [
+        "test/charts/geographic-marks/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/png",
+      "tests": [
+        "test/charts/geographic-marks/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-shape/pdf",
+      "tests": [
+        "test/charts/geographic-marks/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/svg",
+      "tests": [
+        "test/charts/geographic-marks/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/png",
+      "tests": [
+        "test/charts/geographic-marks/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-point/pdf",
+      "tests": [
+        "test/charts/geographic-marks/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/svg",
+      "tests": [
+        "test/charts/geographic-marks/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/png",
+      "tests": [
+        "test/charts/geographic-marks/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:geo-line/pdf",
+      "tests": [
+        "test/charts/geographic-marks/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/svg",
+      "tests": [
+        "test/charts/geographic-marks/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/png",
+      "tests": [
+        "test/charts/geographic-marks/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:graticule/pdf",
+      "tests": [
+        "test/charts/geographic-marks/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/GEOMETRY.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/svg",
+      "tests": [
+        "test/charts/radial-sectors/vector.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/png",
+      "tests": [
+        "test/charts/radial-sectors/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:rose-regression/pdf",
+      "tests": [
+        "test/charts/radial-sectors/vector.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/svg",
+      "tests": [
+        "test/charts/polar-line-radar/vector.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/png",
+      "tests": [
+        "test/charts/polar-line-radar/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:radar-regression/pdf",
+      "tests": [
+        "test/charts/polar-line-radar/vector.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/svg",
+      "tests": [
+        "test/charts/streamgraph/renderer.render.js",
+        "test/charts/centered-area-stream/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/png",
+      "tests": [
+        "test/charts/streamgraph/png.render.js",
+        "test/charts/centered-area-stream/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:streamgraph-regression/pdf",
+      "tests": [
+        "test/charts/streamgraph/renderer.render.js",
+        "test/charts/centered-area-stream/renderer.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/svg",
+      "tests": [
+        "test/charts/cars-acceleration-violins/vector.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/png",
+      "tests": [
+        "test/charts/cars-acceleration-violins/png.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    },
+    {
+      "target": "consumer:violin-regression/pdf",
+      "tests": [
+        "test/charts/cars-acceleration-violins/vector.render.js"
+      ],
+      "contracts": [
+        "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "agent_docs/contract/current/PRIMITIVES.md"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "path": "test/charts/calendar/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/calendar/renderer.render.js",
+      "sha256": "d99128f33a737fa949cf2491938b9ec9267070f954d2c2a700004e7024cb4405"
+    },
+    {
+      "path": "test/charts/cars-acceleration-violins/png.render.js",
+      "sha256": "d49741a74d0bb7c87f6284d2aa6c7ad399b1e8a4668cfd72ec27301c1b5d5045"
+    },
+    {
+      "path": "test/charts/cars-acceleration-violins/vector.render.js",
+      "sha256": "3bbca962aaae14762dd6abac6d4766e7027e01715ffc33661ee81bae723d23c7"
+    },
+    {
+      "path": "test/charts/centered-area-stream/png.render.js",
+      "sha256": "34ae54a4fccc308389fa6b6c7462a77d70f4f823d47a199573bc5d9f83cfd1da"
+    },
+    {
+      "path": "test/charts/centered-area-stream/renderer.render.js",
+      "sha256": "754f6d5bbd9c50b67f124a3441dc9c9b4b7a01b19c92fb0c4cb3ebad3d24b11d"
+    },
+    {
+      "path": "test/charts/compound-path/backends.render.js",
+      "sha256": "a8f4576005b083d2e6dafb25febe6e40d39908d61c822e1236483417b854445d"
+    },
+    {
+      "path": "test/charts/compound-path/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/contours/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/contours/renderer.render.js",
+      "sha256": "b7e3406587a688a253da32a7f685c7e84408b9d2efc32780daf142c9b4e1fd5c"
+    },
+    {
+      "path": "test/charts/flow-layouts/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/flow-layouts/renderer.render.js",
+      "sha256": "97ad627d92383a4b524d764285c761d4a42ed9836831b2cfa65c98ab7f6bba99"
+    },
+    {
+      "path": "test/charts/geographic-marks/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/geographic-marks/renderer.render.js",
+      "sha256": "219ba0dfa688ef98a94c53452321d92c6b402909e929bae317b97a2a28b46f25"
+    },
+    {
+      "path": "test/charts/graph-plots/pdf.render.js",
+      "sha256": "a56c3e35e9c4080032352935d90a309e5ba5d9b2dfa6f593b31f5ad0b1bc23b7"
+    },
+    {
+      "path": "test/charts/graph-plots/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/ohlc/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/ohlc/renderer.render.js",
+      "sha256": "fef195332f8e70488f0d34c0087e794fdfb7ea4fc1fad0fbabe495c9968b6323"
+    },
+    {
+      "path": "test/charts/partition-layouts/backends.render.js",
+      "sha256": "06a9770520df48d65f4f6d82516498d0de7e8c62763b84f7be6374514da59c62"
+    },
+    {
+      "path": "test/charts/partition-layouts/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/partition-layouts/renderer.render.js",
+      "sha256": "8605a1b338471333e298c6be2094714c072417462499e971c5bd2571a4335143"
+    },
+    {
+      "path": "test/charts/polar-line-radar/png.render.js",
+      "sha256": "34ae54a4fccc308389fa6b6c7462a77d70f4f823d47a199573bc5d9f83cfd1da"
+    },
+    {
+      "path": "test/charts/polar-line-radar/vector.render.js",
+      "sha256": "79dacd7a218244e58629ba5657a8f1ad9baab3b30abe8232e9399a8ea3989435"
+    },
+    {
+      "path": "test/charts/pyramid/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/pyramid/renderer.render.js",
+      "sha256": "06989aec9a6384e13f783a465f01db56f1453c9f05c92fb43d9b68a3566a783f"
+    },
+    {
+      "path": "test/charts/radial-sectors/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/radial-sectors/vector.render.js",
+      "sha256": "a5f734f3f773d68201cdf7812952b85a024756805368448469e257b33b49009b"
+    },
+    {
+      "path": "test/charts/streamgraph/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/streamgraph/renderer.render.js",
+      "sha256": "842e97fec6b1e3fcf5e1f38f970e8e83fc05c30354893c2281697c3cee20cdf3"
+    },
+    {
+      "path": "test/charts/structured-paints/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/structured-paints/renderer.render.js",
+      "sha256": "54d79e7a8d27d4e859a26e020f274d2c98100013b968daff79b139817b270fdc"
+    },
+    {
+      "path": "test/charts/structured-paints/variants/pattern-paints/backends.render.js",
+      "sha256": "c9ceb87650a9deac197b99854389d1faaee679ae4f6565152743540976f77923"
+    },
+    {
+      "path": "test/charts/table/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/table/renderer.render.js",
+      "sha256": "109f4fa149828d93ae7381ec2ab299172d015eef67ee828f65c1823ad535009d"
+    },
+    {
+      "path": "test/charts/trail/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/trail/renderer.render.js",
+      "sha256": "8cd06b9149eb2dc8d33dce498347804f3e9dffefbefd80b61c7ed9b45000ed13"
+    },
+    {
+      "path": "test/charts/tree-layouts/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/tree-layouts/renderer.render.js",
+      "sha256": "f2884149c40ac500b725d414822d68b0b0fff236137d36e27c38bd8defb40cb8"
+    },
+    {
+      "path": "test/charts/treemap-layouts/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/treemap-layouts/renderer.render.js",
+      "sha256": "6f9c99f655dc64104739be279b8857fa609be6a1c68c8a4d7cf64daaf22ca959"
+    },
+    {
+      "path": "test/charts/waterfall/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/waterfall/renderer.render.js",
+      "sha256": "90faa17a5b15db04531552ac8fec978ecff1ae0dce913368475615cd4cb5082b"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "agent_docs/contract/current/CALENDAR.md",
+      "sha256": "f33fc4ec437ba6cf9e3091651962f35e37523666fc093ff103e750dd8110f502"
+    },
+    {
+      "path": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+      "sha256": "2374fdd4852a0c60bb3e4cdd9011e740fc0e356cfc5ec668113918e66d6ad49b"
+    },
+    {
+      "path": "agent_docs/contract/current/CONTOURS.md",
+      "sha256": "c35a35bafb8d866596c6d471678a64c8a732d697680da38f75d168015db90623"
+    },
+    {
+      "path": "agent_docs/contract/current/FLOWS.md",
+      "sha256": "ed3f2db56119ddac2b6081e8f865ec13bd0a19fe5d2dc70f92e02d01d7811f00"
+    },
+    {
+      "path": "agent_docs/contract/current/GEOMETRY.md",
+      "sha256": "15a53a97c81ed32d7bc27ab946d052308ef59c7b94fce7521352a9f933fc0a34"
+    },
+    {
+      "path": "agent_docs/contract/current/GRAPHS.md",
+      "sha256": "63ba6d01a56951bebf46d0168052a1fbe89c59fd9c21e836907310354cc6df2a"
+    },
+    {
+      "path": "agent_docs/contract/current/HIERARCHY.md",
+      "sha256": "869125cc63a1af442151e008d7f9d659cedae91ae875ec777846d068f7e94832"
+    },
+    {
+      "path": "agent_docs/contract/current/OHLC.md",
+      "sha256": "883decdde31c97472d359ca4fe83e7b841a3f001789808e0e19653201b5e633a"
+    },
+    {
+      "path": "agent_docs/contract/current/PARTITION.md",
+      "sha256": "85663724b6039846e89c80adfe72921a29c3e62cb78058e38bee1c30ccfe330b"
+    },
+    {
+      "path": "agent_docs/contract/current/PRIMITIVES.md",
+      "sha256": "7dc1432bb099d4c61fb90b26080da663ed78f9936baed6aab2b9770854cf9046"
+    },
+    {
+      "path": "agent_docs/contract/current/PYRAMID.md",
+      "sha256": "b5dd6cf2c816d5f0a4fb3deb1f75a99aea8e2c204702f7e9938ea026b71c2581"
+    },
+    {
+      "path": "agent_docs/contract/current/TABLE.md",
+      "sha256": "f7d21d5a82796c4adc16481f199659dc78301c19822e40e7bb0634ea1a0fadc7"
+    },
+    {
+      "path": "agent_docs/contract/current/TRAIL.md",
+      "sha256": "f64f669feaea9e0cff1af4356d2e738c8ad449abe05eefa1b0324686bd8bc234"
+    },
+    {
+      "path": "agent_docs/contract/current/VIOLIN_PLOTS.md",
+      "sha256": "931149ecdb868cbc384d84c1ab8d7890b3cfe8b87ecb9d5a8a824d265d7fe5e2"
+    },
+    {
+      "path": "agent_docs/contract/current/WATERFALL.md",
+      "sha256": "6a54239bb669386cd14a9f6c05dd3b0f993524633f74c2583a0efd277d9a2d98"
+    }
+  ]
+}

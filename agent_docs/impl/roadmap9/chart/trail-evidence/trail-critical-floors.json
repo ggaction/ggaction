@@ -1,0 +1,91 @@
+{
+  "floors": {
+    "actions/charts/trail.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "actions/marks/trail/index.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/trail.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/trailCurve.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/trailPlot.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/trailSeries.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/selection/policies/trail.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/trail/plot.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  },
+  "actual": {
+    "actions/charts/trail.js": {
+      "lines": 100,
+      "branches": 97.66,
+      "functions": 100
+    },
+    "actions/marks/trail/index.js": {
+      "lines": 100,
+      "branches": 93.33,
+      "functions": 100
+    },
+    "grammar/trail.js": {
+      "lines": 100,
+      "branches": 99.1,
+      "functions": 100
+    },
+    "grammar/trailCurve.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/trailPlot.js": {
+      "lines": 100,
+      "branches": 98.55,
+      "functions": 100
+    },
+    "grammar/trailSeries.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "materialization/selection/policies/trail.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "materialization/trail/plot.js": {
+      "lines": 100,
+      "branches": 93.33,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 100,
+      "branches": 97.89,
+      "functions": 100
+    }
+  }
+}

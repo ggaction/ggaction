@@ -1,0 +1,75 @@
+{
+  "node": "v22.23.1",
+  "sha256": "4159c10d76121eae2e2a775424c15529980476c65dc6ce30b27cbe8a25437f64",
+  "checks": [
+    {
+      "id": "data/inferred-graph-lifecycle",
+      "status": "passed",
+      "durationMs": 133.61870800000003
+    },
+    {
+      "id": "data/inferred-graph-explicit-capacity",
+      "status": "passed",
+      "durationMs": 1876.599041
+    },
+    {
+      "id": "data/inferred-graph-bounded-execution",
+      "status": "passed",
+      "durationMs": 22437.640375
+    }
+  ],
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1060,
+      "minifiedBytes": 2737768,
+      "gzipBytes": 783831
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 625,
+      "minifiedBytes": 1446516,
+      "gzipBytes": 423440
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24779
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 84,
+      "minifiedBytes": 149716,
+      "gzipBytes": 44742
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 509,
+      "minifiedBytes": 1112884,
+      "gzipBytes": 332580
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 205,
+      "minifiedBytes": 410499,
+      "gzipBytes": 130861
+    }
+  ],
+  "types": "passed",
+  "snippet": {
+    "status": "passed",
+    "sha256": "763a08ab408e0e4ebc51c3c1aee83c4c9e841ff22d1ab03e1017dbf6617a2726"
+  },
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "status": "passed"
+}

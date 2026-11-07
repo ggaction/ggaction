@@ -1,0 +1,18 @@
+# tests 10617
+# pass 10617
+# fail 0
+npmtest=done
+coverage-exit=0
+Coverage: 97.45% lines, 95.61% branches, 99.32% functions; 789 critical floors passed.
+browser-exit=0
+# tests 531
+# pass 531
+# fail 0
+render-exit=0
+# tests 513
+# pass 513
+# fail 0
+consumer node20 exit=0
+consumer node22 exit=0
+consumer node24 exit=0
+chain=done

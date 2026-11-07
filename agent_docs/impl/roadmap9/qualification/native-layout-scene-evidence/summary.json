@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-test-only-checkpoint",
+  "authorization": "../../AUTHORIZATION.json",
+  "base": "49f7190ec74133c6d1d28ac891d63bf099037a71",
+  "scope": [
+    "tree:scene-animation",
+    "treemap:scene-animation",
+    "sankey-dag:scene-animation",
+    "sankey-cyclic:scene-animation"
+  ],
+  "runtimeChanged": false,
+  "typesChanged": false,
+  "sharedAnimationOwnersChanged": false,
+  "candidateQualification": false,
+  "mapping": {
+    "rows": [
+      {
+        "id": "tree",
+        "before": 14,
+        "after": 15,
+        "pending": [
+          "encodings",
+          "scales",
+          "guides",
+          "package"
+        ]
+      },
+      {
+        "id": "treemap",
+        "before": 14,
+        "after": 15,
+        "pending": [
+          "encodings",
+          "scales",
+          "guides",
+          "package"
+        ]
+      },
+      {
+        "id": "sankey-dag",
+        "before": 14,
+        "after": 15,
+        "pending": [
+          "encodings",
+          "scales",
+          "guides",
+          "package"
+        ]
+      },
+      {
+        "id": "sankey-cyclic",
+        "before": 14,
+        "after": 15,
+        "pending": [
+          "encodings",
+          "scales",
+          "guides",
+          "package"
+        ]
+      }
+    ],
+    "otherRowsAndFieldsDeepEqual": true,
+    "existingOwnersPreserved": true
+  },
+  "checks": [
+    {
+      "command": "node --test test/unit/animation/resource-layout-fallbacks.test.js test/unit/resources/hierarchy-consumers.test.js test/unit/resources/flow-consumers.test.js test/unit/resources/hierarchy-plots.test.js test/unit/resources/flow-plots.test.js test/contracts/native-capability-completion.test.js test/contracts/test-discovery.test.js",
+      "node": "v22.23.1",
+      "passed": 75,
+      "failed": 0,
+      "log": "owning.log.gz"
+    },
+    {
+      "command": "node --test test/unit/animation/resource-layout-fallbacks.test.js",
+      "node": "v22.23.1",
+      "passed": 4,
+      "failed": 0,
+      "log": "scene.log.gz"
+    },
+    {
+      "command": "node --test test/unit/animation/resource-layout-fallbacks.test.js",
+      "node": "v20.20.2",
+      "passed": 4,
+      "failed": 0,
+      "log": "node20.log.gz"
+    },
+    {
+      "command": "node --test test/unit/animation/resource-layout-fallbacks.test.js",
+      "node": "v24.22.1",
+      "passed": 4,
+      "failed": 0,
+      "log": "node24.log.gz"
+    },
+    {
+      "command": "node --test --test-name-pattern='documented tutorials/(hierarchical-authoring|flows)|documented api/animation' test/docs/executable-programs.test.js",
+      "node": "v22.23.1",
+      "passed": 3,
+      "failed": 0,
+      "log": "docs.log.gz"
+    }
+  ],
+  "semantics": [
+    "Actual native layout revision preserves typed logical keys and source rows.",
+    "Explicit fallback reasons; no new typed layout interpolation.",
+    "Current frame .6/.4 weighted sources; native endpoint graphic object identity.",
+    "Original full frames at 0/20/40/100 and authentic rebase/reverse at 0/30/60 survive offline restore."
+  ],
+  "remaining": [
+    "21 encoding/scale/guide cells remain pending; rejection alone is not positive acceptance.",
+    "Package owners, final native qualification and STEP077 remain incomplete.",
+    "No newly packed archive, performance measurement or broad sweep is claimed."
+  ],
+  "files": {
+    "channels-probe.log.gz": {
+      "rawSha256": "0ac413b4df518d68b4a95c0f4defd0303921bbed5dbbcedb91f0978a1f2b3887",
+      "bytes": 1777
+    },
+    "docs.log.gz": {
+      "rawSha256": "132b1a483cb1b5277af3e75729fb347a413141ad5137680c9e5c617e6e8a8282",
+      "bytes": 1103
+    },
+    "manifest-before.json.gz": {
+      "rawSha256": "bc275775c8fe81d5f310519d172c9084b4f7e6acf9ca1b070152af23a2ebafa6",
+      "bytes": 162771
+    },
+    "native-pending.json.gz": {
+      "rawSha256": "3ebe37dc5fef7bdb887063ac3180d8b5a56f1d1348b3d8cb94d2fd9292fede25",
+      "bytes": 34485
+    },
+    "node20.log.gz": {
+      "rawSha256": "7e814d73daf1854ef98635b0f880bf8af55c5a7e01185857dda9503ceb279a62",
+      "bytes": 1057
+    },
+    "node24.log.gz": {
+      "rawSha256": "4171aa0762651ebb11e83e437e59360626054a691cd9f1b4a40377197d7e9db1",
+      "bytes": 550
+    },
+    "owning.log.gz": {
+      "rawSha256": "fc6119d2339db8750b724d976c9843f7bc906b417dfaccf4acaf47dbf33dd3a2",
+      "bytes": 17558
+    },
+    "probe.log.gz": {
+      "rawSha256": "193290dc477fb2e408ca6974be57749c90317259dbf332c628e219b2e860850e",
+      "bytes": 1304
+    },
+    "scene.log.gz": {
+      "rawSha256": "62746298228e12713d7e525a88eeb3c87373a6ccffa1232403c1352ee5a59857",
+      "bytes": 1127
+    }
+  }
+}

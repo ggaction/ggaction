@@ -35,8 +35,12 @@ ordered font-family list. SVG uses the browser's font resolution.
 Rendering consumes a completed program's `graphicSpec`. It does not read
 datasets, semantic encodings, context, or trace to infer missing output.
 
-For pointer inspection of the rendered Canvas or SVG, use an explicit
-[interaction session](interaction.md).
+For time-based chart transitions and offline frame export, use [animation](animation.md).
+Sampled frames are accepted directly by these four rendering targets.
+
+For pointer inspection and editing of the rendered Canvas or SVG, use an explicit
+[interaction session](interaction.md). For a stateful browser chart with
+tooltips, brushing and animated updates, use [live charts](live.md).
 
 ## First render
 
@@ -280,8 +284,8 @@ rasterize the complete chart or accept `pixelRatio`. Nested Canvas translations 
 text as well as shapes, so concat children with different plot margins retain
 their distinct title and axis-label origins in PDF output.
 
-The current renderers support concrete canvas, collection, circle, rect, line,
-text, and `M/L/C/Z` command-path graphics. Path and line strokes may use concrete
+The current renderers support concrete canvas, collection, circle, circle-batch,
+rect, line, text, image, `M/L/C/Z` command-path, path-batch and weighted-blend graphics. Path and line strokes may use concrete
 dash arrays. They validate values with the same concrete property contract used
 by `editGraphics`. The paint string `"none"` draws no fill or stroke in every backend,
 including text fill and Canvas backgrounds. It never reuses an earlier drawing color.
@@ -334,10 +338,10 @@ remain unchanged.
 
 ## Accessible data alternatives
 
-`exportAccessibleData(program, { target? })` from `ggaction/accessibility` works in
+`exportAccessibleData(program, { format?, target? })` from `ggaction/accessibility` works in
 Browser and Node with Full or Basic editable programs. It returns a deeply frozen
 `{ schemaVersion: 1, title, views }` without changing the program or its trace.
-`title` is the semantic title string or `null`.
+`title` is the semantic title string or `null`. Omit `format` or use `format: "table"` for this table schema.
 
 <!-- snippet-context:start -->
 
@@ -375,7 +379,7 @@ guessed. Area layouts can also supply `lower` and `upper` endpoint roles. Parall
 coordinate dimensions use their field names as column roles.
 
 Omitting `target` exports every stable chart owner in semantic order. An explicit
-target must name a stable owner; requesting an owned component reports its owner.
+target must name a stable owner; requesting an owned component fails with an error naming its owner.
 A composition returns child views in composition order, each with `ownerId`,
 `kind: "composition-child"`, `title`, and nested `views`. Facet children also have
 a `facet` field/value record. Grid facets contain both row and column fields;
@@ -383,8 +387,9 @@ repeats contain `repeatField` and `channel`. To select a mark within a compositi
 pass the explicit child program to this function. A composition-level target is
 rejected instead of choosing among repeated IDs.
 
-Point, bar, histogram, line, area, arc, rule, tick, rect, and their supported
-composite owners use final materialized data. This includes aggregate cells, bin
+Point, bar, histogram, line, area, arc, rule, tick, rect, calendar, contour,
+OHLC, pyramid, table, trail and waterfall owners, and their supported composite
+owners, use final materialized data. This includes aggregate cells, bin
 endpoints, ordered path points, stack endpoints, error intervals, and final mark
 filters. Attached text labels repeat owner data and do not create additional views.
 Standalone text marks and custom unsupported owners raise an error identifying
@@ -398,6 +403,60 @@ The host supplies meaningful captions, HTML tables, and ARIA relationships. Use
 DOM `textContent` for user-controlled titles, column labels, and values; do not
 insert them as HTML. Keep the alternative synchronized by exporting the updated
 program after an edit.
+
+### Native item alternatives
+
+Use `format: "items"` for stable logical identities and current selection state.
+The result is `{schemaVersion:1,format:"items",title,views}`. Each view is
+`{kind:"items",ownerId,markType,childPath,items}`. Unlike table mode, these views
+are flat: composition child order first, then each leaf's semantic owner order.
+An empty `childPath` identifies the root. Repeated mark and selection names remain
+local to their exact child path.
+
+Each item contains its opaque `key`, `component`, `markType`, optional native
+`role`, final `fields` and `channels`, `selectedBy` selection IDs, and logical
+`visible` flag. Composite components share their stable owner view. Attached and
+standalone Text use the existing native Text items in this mode. A path remains
+one native series item rather than becoming a row per source observation.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Use an ES module. The example prints native aggregate values and their named selection membership.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+import { exportAccessibleData } from "ggaction/accessibility";
+
+const program = chart().createCanvas().createData({ values: [
+  { group: "A", value: 2 }, { group: "A", value: 4 }, { group: "B", value: 6 }
+] }).createBarPlot({ id: "bars", x: "group",
+  y: { field: "value", aggregate: "mean" }, guides: false })
+  .selectMarks({ id: "chosen", target: "bars", field: "group", op: "eq", value: "A" });
+const alternative = exportAccessibleData(program, { format: "items", target: "bars" });
+console.log(alternative.views[0].items.map(item => ({
+  group: item.channels.x, value: item.channels.y2, selectedBy: item.selectedBy
+})));
+// [{group:"A",value:3,selectedBy:["chosen"]},{group:"B",value:6,selectedBy:[]}]
+```
+
+`selectedBy` uses the native stored selection results. Linked composite assignments
+report the original authored selection ID. The exporter does not infer an absent
+assignment from another component. Optional `representationKeys` retain scoped
+logical aliases, for example when a geographic level represents finer features.
+Optional hierarchy `navigation` contains native node keys for `key`, `parent`,
+`firstChild`, `previousSibling`, `nextSibling` and `root`, with null for absent
+links. These keys are local to the view's child path and component; they are not
+graphic item keys.
+
+Native filters remove items. Hierarchy focus can retain hidden logical nodes with
+`visible:false`. This flag describes native logical eligibility and does not
+measure clipping, opacity or the current animation frame. Use exact current-frame
+interaction results when deciding which rendered targets can receive focus.
+Item mode rejects exports exceeding 100,000 items or 10,000,000 cumulative work
+units; it never returns partial output. Both formats reject accessor options.
+Re-export after edits and selection changes, and use DOM `textContent` for values.
 
 ## Explicit whole-glyph opacity
 
@@ -440,8 +499,8 @@ const program = chart().createCanvas({ width: 600, height: 400 })
 const scene = createTransitionScene(program);
 ```
 
-The optional `@ggaction/transition` package owns browser playback, timing,
-interruption and reduced-motion behavior. Creating a scene does not append an
+Use [`ggaction/animation`](animation.md) for playback, timing, interruption and
+reduced-motion behavior (`createAnimationPlayer`). Creating a scene does not append an
 action or modify a program. Scene extraction shares an ordered concrete traversal; version 1 additionally serializes SVG.
 Point/member correspondence survives filters, reordered rows and facet placement;
 identical records receive occurrence keys. Selection resolvers supply membership
@@ -470,7 +529,9 @@ its single `clip` rectangle is used. Retain the supplied frames when animating
 an unchanged clipping hierarchy.
 
 `renderTransitionScene(scene, context, { pixelRatio = 1 } = {})` paints version-2
-scenes with the ordinary Canvas renderer. It uses the same primitive validation,
+scenes with the ordinary Canvas renderer. It also paints version-3 batched scenes
+from [`formatVersion: 6` sampling](animation.md#sample-materialized-batches), whose
+`circle-run` and `path-run` entries are drawn row by row with the same paint order. It uses the same primitive validation,
 paint order, nested clipping and isolated blending as `render`. It sizes and clears
 the target Canvas, keeping logical dimensions independent of output density.
 Invalid scene versions, duplicate keys and invalid geometry are rejected.
@@ -595,6 +656,15 @@ and change it when a request is superseded. `createImageMark` and `editImageMark
 place one named image; [the image example](../tutorials/image-assets.md) shows
 contain, cover, fill, alignment and clipping from one retained source.
 
+The request is `{kind:"create", id}` or `{kind:"replace", target}` plus `uri`, a lowercase
+SHA-256 `expectedHash`, `mimeType` (`image/png`, `image/jpeg`, `image/webp` or
+`image/svg+xml`), and optional `maxBytes` (default and maximum 16 MiB), `license` and
+`attribution`. The host supplies `{requestToken, load, decode, signal?}`: `load` returns
+`{bytes, mimeType}`, and `decode` returns `{width, height, originClean: true}` for at most
+64 MiPixels. `removeResource({ kind: "image", id })` rejects while an image mark uses the
+resource; `cascade: true` first removes those marks, then the resource. Image marks are
+described in [Marks](marks.md#image-marks).
+
 For browser Canvas, prepare embedded bytes with an application-owned decoder:
 
 <!-- snippet-context:start -->
@@ -671,6 +741,18 @@ The helper prepares the queries required by existing text layout, including
 bounded grapheme prefixes for wrapping. It never treats a missing width as zero
 or an estimate. Preparation allows 64 font bindings, 64 MiB of unique bytes,
 10,000 queries, 1,048,576 total UTF-16 units, and 256 layout passes.
+
+For Cartesian axis labels with `maxWidth` or `responsive`, explicitly pass
+`axisLabelReflow: true` in the request to prepare wrapping at additional widths.
+This prepares a conservative set of contiguous grapheme strings from the current
+labels, using the native hard-line and word tokenizer. It deduplicates exact
+font/text/size queries across nested charts and checks the query, text and
+10-million-work limits before decoding or measuring. Omission or `false` retains
+the existing preparation path. No caller-provided query list is accepted.
+The flag is not stored in the profile; its measured widths are. Prepare this
+option again after changing label text, font styles, or a bound font resource.
+It does not supply new automatically formatted text or enable unsupported
+animation layout; missing exact queries still fail.
 
 An exact profile requires a unique resource for each family/style/weight tuple.
 New labels or typography may require new measurements. Such edits fail atomically;
@@ -775,6 +857,30 @@ Each glyph permits at most 4096 pixels on either axis, 1,048,576 pixels and 8 Mi
 The complete scene permits 16,777,216 output pixels, 64 MiB RGBA and 10,000,000 units of convolution/compositing work.
 All glyph frames are checked before large raster allocations. Text may first allocate a 1×1 measuring surface.
 
+
+## Weighted concrete blends
+
+The extension `weighted-blend` primitive combines each item's complete source
+pixels in premultiplied linear-light sRGB. Canvas and PNG use bounded offscreen
+surfaces per item. SVG retains native source elements and applies a `linearRGB`
+arithmetic filter. PDF retains vector endpoints and embeds only each intermediate
+weighted item as a raster at one pixel per logical unit. No backend captures the
+whole chart to implement the blend.
+
+Canvas/PNG limits are 1,048,576 pixels per item, 16,777,216 retained result pixels
+per scene, and 67,108,864 source-pixel operations. Density counts toward these
+limits. SVG applies the same logical pixel budgets to its filter regions; native
+Text retains its explicit source viewport so glyph overhangs are not cut to an
+estimated text box. Oversized requests fail explicitly. Canvas checks and prepares
+all weighted results before resizing or clearing the destination.
+
+Prepare embedded images, fonts, and shadows through the existing preparation
+functions for the exact program or scene. Inactive sources are also validated.
+A single weight-one endpoint draws its original primitive directly; empty Text,
+zero-area shapes and fully clipped sources remain transparent. Current-frame hit
+geometry follows the visible source footprints while retaining one logical item.
+See [the concrete source contract](../extension/primitives.md#blend-concrete-sources-for-one-item)
+for the extension syntax.
 
 ## Related
 

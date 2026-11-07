@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "state": "approved",
+  "date": "2026-11-05",
+  "source": "Explicit user reply in the current task",
+  "designReply": "1,2,3 승인",
+  "approvedDesigns": [
+    { "id": "PATH-RUN", "document": "PATH_RUN_PROPOSAL.md" },
+    { "id": "DATA-SLICED", "document": "DATA_SLICED_PROPOSAL.md" },
+    { "id": "GRAPH-PLOT-CAPACITY", "document": "GRAPH_PLOT_CAPACITY_PROPOSAL.md" }
+  ],
+  "deferred": ["Geo 100k camera dedicated projection kernel"],
+  "scope": "Opt-in format6 path-run batching for partition cells; sliced asynchronous load and revise APIs with results identical to the synchronous ones; an explicit graph plot maxItems capacity up to 100000 with the default unchanged.",
+  "remainingObligations": ["Implement and verify each as its own checkpoint; approval does not imply completion."]
+}

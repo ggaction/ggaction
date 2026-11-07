@@ -1,4 +1,5 @@
-import type { ChartProgram, GraphicObject, GraphicClipPath, CanvasRenderOptions, PreparedShadowRendering } from './program.js';
+import type { TransitionDecision } from './animation.js';
+import type { ChartProgram, GraphicObject, GraphicClipPath, GraphicCircleBatchProperties, GraphicPathBatchProperties, CanvasRenderOptions, PreparedShadowRendering } from './program.js';
 export interface TransitionNode {
   readonly key: string;
   readonly type: string;
@@ -16,7 +17,7 @@ export interface TransitionScene {
 }
 export interface CanvasTransitionNode {
   readonly key: string;
-  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image';
+  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image' | 'weighted-blend';
   readonly topology: string;
   readonly properties: Readonly<NonNullable<GraphicObject['properties']>>;
   /** Explicit outer-to-inner global clip frames; the root physical viewport is implicit. */
@@ -32,4 +33,22 @@ export interface CanvasTransitionScene {
 }
 export declare function createTransitionScene(program: ChartProgram, options?: {format?: 'svg'; shadows?: PreparedShadowRendering}): TransitionScene;
 export declare function createTransitionScene(program: ChartProgram, options: {format: 'canvas'}): CanvasTransitionScene;
-export declare function renderTransitionScene(scene: CanvasTransitionScene, context: CanvasRenderingContext2D, options?: CanvasRenderOptions): void;
+export declare function renderTransitionScene(scene: AnyCanvasTransitionScene, context: CanvasRenderingContext2D, options?: CanvasRenderOptions): void;
+
+/** Materialized numeric columns, in adjacent drawing order. */
+export type SampleEntry =
+  | { readonly kind: 'single'; readonly node: CanvasTransitionNode; readonly decision: TransitionDecision | null }
+  | { readonly kind: 'circle-run'; readonly keys: readonly string[]; readonly topology: string;
+      readonly offset: readonly [number, number]; readonly clip: readonly [number, number, number, number];
+      readonly clips: readonly (readonly [number, number, number, number] | GraphicClipPath)[];
+      readonly properties: GraphicCircleBatchProperties;
+      readonly decisions: null | { readonly kind: 'semantic-kernel'; readonly kernel: 'cartesian-point'; readonly ownerKey: string; readonly role: string;
+        readonly sourceIndices: readonly number[]; readonly targetIndices: readonly number[]; readonly itemKeys: readonly string[] } }
+  | { readonly kind: 'path-run'; readonly keys: readonly string[]; readonly topology: string;
+      readonly offset: readonly [number, number]; readonly clip: readonly [number, number, number, number];
+      readonly clips: readonly (readonly [number, number, number, number] | GraphicClipPath)[];
+      readonly properties: GraphicPathBatchProperties;
+      readonly decisions: null | { readonly kind: 'semantic-kernel'; readonly kernel: 'partition'; readonly ownerKey: string; readonly role: string;
+        readonly sourceIndices: readonly number[]; readonly targetIndices: readonly number[]; readonly itemKeys: readonly string[] } };
+export interface BatchedTransitionScene { readonly version: 3; readonly width: number; readonly height: number; readonly entries: readonly SampleEntry[]; }
+export type AnyCanvasTransitionScene = CanvasTransitionScene | BatchedTransitionScene;

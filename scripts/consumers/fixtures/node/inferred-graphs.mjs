@@ -57,4 +57,49 @@ export const cases = [{ id: "data/inferred-graph-lifecycle", run() {
   }
   assert.equal(typeof basicChart().createInferredGraphData, "undefined");
   assert.equal(typeof basicChart().editInferredGraphData, "undefined");
+} }, { id: "data/inferred-graph-explicit-capacity", run() {
+  const rows = Array.from({length:1001}, (_,id) => ({id,x:id}));
+  const before = chart().createData({id:"points",keyField:"id",values:rows});
+  const definition = {id:"network",nodeKey:"id",ruleId:"nearest",rule:"knn",features:["x"],metric:"manhattan",options:{k:10,search:{algorithm:"kd-tree"}}};
+  assert.throws(()=>before.createInferredGraphData(definition),/Graph neighbor edges must not exceed 10000/);
+  const source = before.createInferredGraphData({...definition,maxEdges:10010});
+  const edges = graph(source).result.model.edges;
+  assert.equal(edges.length,10010);
+  for (let i=0;i<rows.length;i++) {
+    const wanted = rows.map((_,j)=>j).filter(j=>j!==i).sort((a,b)=>Math.abs(a-i)-Math.abs(b-i)||a-b).slice(0,10).sort((a,b)=>a-b);
+    assert.deepEqual(edges.slice(i*10,(i+1)*10).map(edge=>[edge.sourceRows,edge.weight]),wanted.map(j=>[[i,j],Math.abs(i-j)]));
+  }
+  const revised = source.reviseData({source:"points",id:"next",values:rows.map(row=>({...row,x:row.x+5}))});
+  assert.equal(graph(revised).revision,1);
+  assert.deepEqual(graph(revised).result.model,graph(source).result.model);
+  const saved = serializeProgram(revised);
+  assert.equal(serializeProgram(deserializeProgram(saved)),saved);
+  assert.equal(source.graphicSpec,before.graphicSpec);
+  assert.throws(()=>source.editInferredGraphData({definition:{maxEdges:10009}}),/Graph neighbor edges must not exceed 10009/);
+  assert.equal(typeof basicChart().createInferredGraphData,"undefined");
+} }, { id: "data/inferred-graph-bounded-execution", run() {
+  const rows=Array.from({length:10000},(_,i)=>{const id=9999-i;return{id,x:id%100,y:Math.floor(id/100)};});
+  const execution={policy:"bounded-inference@1",maxWork:100000000,maxBytes:134217728};
+  const before=chart().createData({id:"points",keyField:"id",values:rows});
+  const options={id:"network",nodeKey:"id",ruleId:"nearest",rule:"knn",features:["x","y"],metric:"manhattan",options:{k:10,search:{algorithm:"kd-tree"}},maxEdges:100000};
+  assert.throws(()=>before.createInferredGraphData(options),/Graph exact search work must not exceed 10000000/);
+  const source=before.createInferredGraphData({...options,execution}),resource=graph(source),model=resource.result.model;
+  assert.equal(model.nodes.length,10000);assert.equal(model.edges.length,100000);
+  for(let id=0;id<10000;id++){
+    const x=id%100,y=Math.floor(id/100),candidates=[];
+    for(let radius=1;candidates.length<10;radius++)for(let dx=-radius;dx<=radius;dx++){
+      const dy=radius-Math.abs(dx);
+      for(const oy of dy===0?[0]:[-dy,dy])if(x+dx>=0&&x+dx<100&&y+oy>=0&&y+oy<100)candidates.push({id:(y+oy)*100+x+dx,weight:radius});
+    }
+    const wanted=candidates.sort((a,b)=>a.weight-b.weight||a.id-b.id).slice(0,10).sort((a,b)=>a.id-b.id);
+    model.edges.slice(id*10,(id+1)*10).forEach((edge,j)=>{
+      assert.deepEqual(edge.sourceRows,[9999-id,9999-wanted[j].id]);assert.equal(edge.weight,wanted[j].weight);
+      assert.equal(edge.sourceKey,model.nodes[9999-id].key);assert.equal(edge.targetKey,model.nodes[9999-wanted[j].id].key);assert.equal(edge.directed,true);
+    });
+  }
+  assert.equal(resource.result.diagnostics.search.work,31318394);assert.equal(resource.algorithmVersion,"1");
+  assert.equal(source.graphicSpec,before.graphicSpec);assert.equal(before.semanticSpec.resources?.length??0,0);
+  const saved=serializeProgram(source),restored=deserializeProgram(saved);
+  assert.equal(serializeProgram(restored),saved);assert.deepEqual(graph(restored).options.definition.execution,execution);
+  assert.equal(typeof basicChart().createInferredGraphData,"undefined");
 } }];

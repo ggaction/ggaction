@@ -1,0 +1,118 @@
+import { chart, render } from 'ggaction';
+import { renderToSVG } from 'ggaction/svg';
+import { createGraphRouteExecutor, prepareGraphEdgeRoutes } from 'ggaction/graph';
+import { createInteractionSession } from 'ggaction/interaction';
+const workerText = await (await fetch('./worker.js')).text();
+const workerUrl = URL.createObjectURL(new Blob([workerText], { type: 'text/javascript' }));
+const counters = { workers: 0, workerListeners: 0, listeners: 0, timers: 0, captures: 0, callbacksAfterDestroy: 0 };
+const pendingTimers = new Set(), pendingFrames = new Set(), captures = new Map();
+const timeout = window.setTimeout.bind(window), clearTimeout = window.clearTimeout.bind(window);
+window.setTimeout = (callback, delay, ...args) => {
+  const id = timeout(() => { pendingTimers.delete(id); counters.timers = pendingTimers.size + pendingFrames.size; callback(...args); }, delay);
+  pendingTimers.add(id); counters.timers = pendingTimers.size + pendingFrames.size; return id;
+};
+window.clearTimeout = id => { pendingTimers.delete(id); counters.timers = pendingTimers.size + pendingFrames.size; clearTimeout(id); };
+const raf = window.requestAnimationFrame.bind(window), cancelRaf = window.cancelAnimationFrame.bind(window);
+window.requestAnimationFrame = callback => { const id = raf(time => { pendingFrames.delete(id); counters.timers = pendingTimers.size + pendingFrames.size; callback(time); }); pendingFrames.add(id); counters.timers = pendingTimers.size + pendingFrames.size; return id; };
+window.cancelAnimationFrame = id => { pendingFrames.delete(id); counters.timers = pendingTimers.size + pendingFrames.size; cancelRaf(id); };
+const setCapture = Element.prototype.setPointerCapture, releaseCapture = Element.prototype.releasePointerCapture;
+Element.prototype.setPointerCapture = function(id) { setCapture.call(this, id); if (!captures.has(this)) captures.set(this, new Set()); captures.get(this).add(id); counters.captures = [...captures.values()].reduce((sum, set) => sum + set.size, 0); };
+Element.prototype.releasePointerCapture = function(id) { releaseCapture.call(this, id); const set = captures.get(this); set?.delete(id); if (set?.size === 0) captures.delete(this); counters.captures = [...captures.values()].reduce((sum, value) => sum + value.size, 0); };
+function executor(metrics, posted) {
+  return createGraphRouteExecutor({ createWorker() {
+    const worker = new Worker(workerUrl, { type: 'module' }), listeners = new Map();
+    counters.workers++; let terminated = false;
+    return {
+      postMessage(value) { worker.postMessage(value); posted?.(); },
+      addEventListener(type, listener) {
+        const adapted = type === 'message' ? event => {
+          const envelope = event.data; metrics.computeMs = envelope.computeMs;
+          if (envelope.failure) {
+            const error = new Error(envelope.failure.message); error.name = envelope.failure.name;
+            for (const entry of listeners.values()) if (entry.type === 'error') entry.listener({ error });
+          } else listener({ data: envelope.result });
+        } : listener;
+        listeners.set(listener, { type, adapted, listener }); counters.workerListeners++;
+        worker.addEventListener(type, adapted);
+      },
+      removeEventListener(type, listener) { const entry = listeners.get(listener); if (entry) { worker.removeEventListener(type, entry.adapted); listeners.delete(listener); counters.workerListeners--; } },
+      terminate() { if (!terminated) { terminated = true; worker.terminate(); counters.workers--; } }
+    };
+  } });
+}
+function fixture(edgeCount, method) {
+  const count = method === 'hierarchical' ? Math.min(edgeCount, 9999) : edgeCount;
+  const nodes = Array.from({ length: count }, (_, id) => ({ id }));
+  const edges = Array.from({ length: edgeCount }, (_, id) => ({ id, source: id % count, target: (id + Math.floor(count / 3)) % count }));
+  let p = chart().createCanvas({ width: 400, height: 400, margin: 0, background: 'white' }), positions, options;
+  if (method === 'hierarchical') {
+    p = p.createData({ id: 'tree', values: [{ key: 'root', parent: null, value: 0 }, ...nodes.map(({ id }) => ({ key: id, parent: 'root', value: 1 }))] })
+      .createHierarchyData({ id: 'hierarchy', data: 'tree', key: 'key', parent: 'parent', value: 'value' })
+      .layoutHierarchy({ id: 'tree-layout', method: 'tree', options: { nodeSize: [1, 1], siblingGap: 1, depthGap: 100, orientation: 'vertical' } });
+    const hierarchy = p.semanticSpec.resources.find(r => r.kind === 'hierarchy');
+    const anchors = new Map(p.semanticSpec.resources.find(r => r.kind === 'layout').result.nodes.map(node => [node.key, node]));
+    positions = hierarchy.result.nodes.filter(node => node.depth === 1).map(node => ({ key: nodes[node.sourceRows[0] - 1].id, x: anchors.get(node.key).x, y: anchors.get(node.key).y }));
+    options = { hierarchy: 'hierarchy', hierarchyLayout: 'tree-layout', mapping: nodes.map(({ id }) => ({ nodeKey: id, hierarchyKey: id })) };
+  } else positions = nodes.map(({ id }) => ({ key: id, x: 200 + 150 * Math.cos(2 * Math.PI * id / count), y: 200 + 150 * Math.sin(2 * Math.PI * id / count) }));
+  p = p.createData({ id: 'nodes', values: nodes, keyField: 'id' }).createData({ id: 'edges', values: edges, keyField: 'id' })
+    .createGraphData({ id: 'graph', nodes: 'nodes', edges: 'edges', nodeKey: 'id', edgeKey: 'id', source: 'source', target: 'target' })
+    .layoutGraph({ id: 'layout', method: 'fixed', options: { positions } });
+  return { program: p, request: { kind: 'create', id: 'routes', graph: 'graph', layout: 'layout', method, ...(options ? { options } : {}) }, nodes: count };
+}
+const percentile = values => values.slice().sort((a, b) => a - b)[Math.ceil(values.length * 0.95) - 1];
+async function iteration(input, ratio) {
+  const metrics = {}, e = executor(metrics), started = performance.now();
+  try {
+    const prepared = await prepareGraphEdgeRoutes(input.program, input.request, { requestToken: 'benchmark', executor: e });
+    metrics.prepareComputeValidateMs = performance.now() - started;
+    let now = performance.now();
+    const routed = input.program.bundleGraphEdges({ prepared, requestToken: 'benchmark' });
+    metrics.applyMs = performance.now() - now;
+    metrics.bundlingMs = metrics.prepareComputeValidateMs + metrics.applyMs;
+    now = performance.now();
+    const plotted = routed.createGraphPlot({ id: 'network', layout: 'layout', routes: 'routes', nodes: { radius: 2 }, edges: { arrows: false, stroke: '#2563eb' } });
+    metrics.materializeMs = performance.now() - now;
+    const canvas = document.querySelector('canvas'); now = performance.now();
+    render(plotted, canvas.getContext('2d'), { pixelRatio: ratio }); metrics.canvasRenderMs = performance.now() - now;
+    now = performance.now(); document.querySelector('#svg').innerHTML = renderToSVG(plotted); metrics.svgSerializeDomMs = performance.now() - now;
+    const result = routed.semanticSpec.resources.find(r => r.kind === 'edge-route').result;
+    if (result.routes.length !== input.requestedEdges) throw new Error('Route membership changed');
+    return { status: 'complete', metrics, diagnostics: result.diagnostics, routeCount: result.routes.length };
+  } catch (error) { return { status: 'error', elapsedMs: performance.now() - started, metrics, name: error.name, message: error.message }; }
+  finally { e.dispose(); document.querySelector('#svg').replaceChildren(); }
+}
+async function benchmarkCase(edgeCount, method, ratio, measured = 30, warmups = 5) {
+  const start = performance.now(), input = fixture(edgeCount, method); input.requestedEdges = edgeCount;
+  const sourcePreparationMs = performance.now() - start, first = await iteration(input, ratio);
+  if (first.status !== 'complete' && !/Route (?:work|candidate pairs|active samples) must not exceed/.test(first.message)) throw new Error(JSON.stringify(first));
+  if (first.status !== 'complete') return { edgeCount, nodes: input.nodes, method, ratio, status: 'explicit-error', sourcePreparationMs, first, warmups: 0, measured: 0, successSLO: 'not-measured', counters: { ...counters } };
+  for (let i = 0; i < warmups; i++) { const result = await iteration(input, ratio); if (result.status !== 'complete') throw new Error(JSON.stringify(result)); }
+  const samples = [];
+  for (let i = 0; i < measured; i++) { const result = await iteration(input, ratio); if (result.status !== 'complete') throw new Error(JSON.stringify(result)); samples.push(result.metrics); }
+  const p95 = Object.fromEntries(Object.keys(samples[0]).map(key => [key, percentile(samples.map(value => value[key]))]));
+  const thresholdMs = edgeCount === 100 ? 500 : edgeCount === 1000 ? 5000 : 30000;
+  return { edgeCount, nodes: input.nodes, method, ratio, status: 'measured', sourcePreparationMs, warmups, measured, samples, p95, thresholdMs, successSLO: p95.bundlingMs <= thresholdMs ? 'passed-this-fixture' : 'failed-this-fixture', diagnostics: first.diagnostics, counters: { ...counters } };
+}
+let lifecycleBase;
+function resetLifecycle() { lifecycleBase = fixture(20, 'edge-path'); }
+async function lifecycle(index, ratio) {
+  const host = document.createElement('div'), canvas = document.createElement('canvas'); host.append(canvas); document.body.append(host);
+  const originalAdd = host.addEventListener.bind(host), originalRemove = host.removeEventListener.bind(host), listeners = new Set();
+  host.addEventListener = (type, listener, options) => { listeners.add(listener); counters.listeners++; originalAdd(type, listener, options); };
+  host.removeEventListener = (type, listener, options) => { if (listeners.delete(listener)) counters.listeners--; originalRemove(type, listener, options); };
+  const metrics = {}, controller = new AbortController(); let abortStart, destroyed = false;
+  const e = executor(metrics, () => { if (index % 2) { abortStart = performance.now(); controller.abort(); } });
+  const session = createInteractionSession({ program: lifecycleBase.program, bindings: [{ type: 'inspect' }] });
+  session.subscribe(() => { if (destroyed) counters.callbacksAfterDestroy++; });
+  session.mount(host); host.dispatchEvent(new PointerEvent('pointermove', { clientX: 20, clientY: 20, pointerType: 'mouse' }));
+  let status, abortAcknowledgementMs = null;
+  try {
+    const prepared = await prepareGraphEdgeRoutes(lifecycleBase.program, lifecycleBase.request, { requestToken: 'lifetime', executor: e, signal: controller.signal });
+    const program = lifecycleBase.program.bundleGraphEdges({ prepared, requestToken: 'lifetime' }).createGraphPlot({ id: 'network', routes: 'routes' });
+    session.updateProgram(program); render(session.getState().program, canvas.getContext('2d'), { pixelRatio: ratio }); status = 'completed';
+  } catch (error) { if (error.name !== 'AbortError') throw error; status = 'aborted'; abortAcknowledgementMs = performance.now() - abortStart; }
+  finally { session.destroy(); destroyed = true; e.dispose(); host.dispatchEvent(new PointerEvent('pointermove', { clientX: 20, clientY: 20 })); host.remove(); }
+  return { status, abortAcknowledgementMs, counters: { ...counters } };
+}
+globalThis.routeBenchmark = { benchmarkCase, resetLifecycle, lifecycle, counters };
+document.querySelector('#status').textContent = 'Ready';

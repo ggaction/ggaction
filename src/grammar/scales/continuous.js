@@ -12,6 +12,7 @@ import {
 import { resolvePolarScaleRange } from "../polar.js";
 import { niceTimeDomain } from "./temporal.js";
 import {
+  readFinitePair,
   validatePair,
   validatePositionChannel,
   validateScaleDomain,
@@ -173,6 +174,28 @@ export function resolveScaleRange(range, channel, bounds, polarFrame) {
   return cloneAndFreeze(resolved);
 }
 
+function mapLinearValue(value, domainStart, domainEnd, rangeStart, rangeEnd, domainSpan, rangeSpan, clamp) {
+  if (value === domainStart) return rangeStart;
+  if (value === domainEnd) return rangeEnd;
+  const directProportion = (value - domainStart) / domainSpan;
+  const directResolved = clamp
+    ? Math.max(0, Math.min(1, directProportion))
+    : directProportion;
+  if (Number.isFinite(domainSpan) && directResolved === 0) return rangeStart;
+  if (Number.isFinite(domainSpan) && directResolved === 1) return rangeEnd;
+  const directValue = rangeStart + directResolved * rangeSpan;
+  if (
+    Number.isFinite(domainSpan) &&
+    Number.isFinite(rangeSpan) &&
+    Number.isFinite(directValue)
+  ) {
+    return directValue;
+  }
+  const proportion = inverseLerp(value, domainStart, domainEnd);
+  const resolved = clamp ? Math.max(0, Math.min(1, proportion)) : proportion;
+  return interpolateNumber(rangeStart, rangeEnd, resolved);
+}
+
 export function mapLinearValues(values, domain, range, options = {}) {
   const { clamp = false } = options;
   const hasUnknown = Object.hasOwn(options, "unknown");
@@ -197,24 +220,39 @@ export function mapLinearValues(values, domain, range, options = {}) {
       if (hasUnknown) return options.unknown;
       throw new TypeError("Linear scale values must be finite numbers.");
     }
-    if (value === domainStart) return rangeStart;
-    if (value === domainEnd) return rangeEnd;
-    const directProportion = (value - domainStart) / domainSpan;
-    const directResolved = clamp
-      ? Math.max(0, Math.min(1, directProportion))
-      : directProportion;
-    if (Number.isFinite(domainSpan) && directResolved === 0) return rangeStart;
-    if (Number.isFinite(domainSpan) && directResolved === 1) return rangeEnd;
-    const directValue = rangeStart + directResolved * rangeSpan;
-    if (
-      Number.isFinite(domainSpan) &&
-      Number.isFinite(rangeSpan) &&
-      Number.isFinite(directValue)
-    ) {
-      return directValue;
-    }
-    const proportion = inverseLerp(value, domainStart, domainEnd);
-    const resolved = clamp ? Math.max(0, Math.min(1, proportion)) : proportion;
-    return interpolateNumber(rangeStart, rangeEnd, resolved);
+    return mapLinearValue(value, domainStart, domainEnd, rangeStart, rangeEnd, domainSpan, rangeSpan, clamp);
   }));
+}
+
+// This private constructor retains only validated primitive endpoints and spans.
+// Ordinary vector callers keep their own validation and unknown-value ordering.
+// One value with mapLinearValues' validation order, errors and arithmetic,
+// without owned intermediate arrays.
+export function mapLinearScalar(value, domain, range, options = {}) {
+  const { clamp = false } = options;
+  const hasUnknown = Object.hasOwn(options, "unknown");
+  const [domainStart, domainEnd] = readFinitePair(domain, "Resolved domain");
+  const [rangeStart, rangeEnd] = readFinitePair(range, "Resolved range");
+  if (typeof clamp !== "boolean") {
+    throw new TypeError("Linear scale clamp must be a boolean.");
+  }
+  if (!Number.isFinite(value)) {
+    if (hasUnknown) return options.unknown;
+    throw new TypeError("Linear scale values must be finite numbers.");
+  }
+  if (domainStart === domainEnd) return interpolateNumber(rangeStart, rangeEnd, 0.5);
+  return mapLinearValue(value, domainStart, domainEnd, rangeStart, rangeEnd, domainEnd - domainStart, rangeEnd - rangeStart, clamp);
+}
+
+export function prepareLinearScalar(domain, range, clamp = false) {
+  const [domainStart, domainEnd] = validatePair(domain, "Resolved domain");
+  const [rangeStart, rangeEnd] = validatePair(range, "Resolved range");
+  if (typeof clamp !== "boolean") throw new TypeError("Linear scale clamp must be a boolean.");
+  const midpoint = domainStart === domainEnd ? interpolateNumber(rangeStart, rangeEnd, 0.5) : undefined;
+  const domainSpan = domainEnd - domainStart, rangeSpan = rangeEnd - rangeStart;
+  return value => {
+    if (!Number.isFinite(value)) throw new TypeError("Linear scale values must be finite numbers.");
+    return domainStart === domainEnd ? midpoint
+      : mapLinearValue(value, domainStart, domainEnd, rangeStart, rangeEnd, domainSpan, rangeSpan, clamp);
+  };
 }

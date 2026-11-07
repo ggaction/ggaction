@@ -77,6 +77,12 @@ test("every registered transform emits unique row keys and exact resolvable line
             assert.equal(resource.id, identity.lineage.resource.id);
             assert.equal(resource.revision, identity.lineage.resource.revision);
             assert.ok(item.rows.every(ref => data(program, ref.data).rowKeys.includes(ref.rowKey)));
+          } else if (identity.lineage.kind === "screen") {
+            assert.deepEqual(identity.lineage, { kind: "screen" });
+            assert.deepEqual(item.rows, []);
+            assert.equal(layer.data, undefined);
+            assert.equal(layer.mark.type, "text");
+            assert.equal(layer.annotationAnchor.space, "screen");
           } else assert.deepEqual(identity.lineage.rowKeys, rowKeys);
         }
       }

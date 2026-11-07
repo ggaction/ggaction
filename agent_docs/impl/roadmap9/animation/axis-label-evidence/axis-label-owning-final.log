@@ -1,0 +1,284 @@
+TAP version 13
+# Subtest: prepared axis flush replays raw mapping and measured widths instead of endpoint pixel interpolation
+ok 1 - prepared axis flush replays raw mapping and measured widths instead of endpoint pixel interpolation
+  ---
+  duration_ms: 5.979042
+  type: 'test'
+  ...
+# Subtest: public flush labels preserve raw keys, current-frame meaning and strict offline equality
+ok 2 - public flush labels preserve raw keys, current-frame meaning and strict offline equality
+  ---
+  duration_ms: 214.782916
+  type: 'test'
+  ...
+# Subtest: fixed rotations and edge-aligned frames retain native text placement on all four sides
+not ok 3 - fixed rotations and edge-aligned frames retain native text placement on all four sides
+  ---
+  duration_ms: 15.283584
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/axis-label-transitions.test.js:55:1'
+  failureType: 'testCodeFailure'
+  error: 'createXAxisLabels rotation must be a finite legacy number or { value, unit: "radians" | "degrees" }.'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    resolveRotation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/grammar/rotation.js:26:9)
+    normalizeLabelLayout (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/guides/axes/labels.js:78:7)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/guides/axes/labels.js:416:18)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:71
+    withGuideLayoutTransaction (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:65:67)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:12)
+    ChartProgram.wrappedAction [as createXAxisLabels] (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/core/action.js:297:89)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/guides/axes/tickGroups.js:135:75)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:71
+    withGuideLayoutTransaction (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:65:67)
+  ...
+# Subtest: hard-break and hidden labels retain semantic line identity in scoped layouts
+ok 4 - hard-break and hidden labels retain semantic line identity in scoped layouts
+  ---
+  duration_ms: 87.1315
+  type: 'test'
+  ...
+# Subtest: layout changes retain explicit fade policy while unresolved wrapping remains unsupported
+ok 5 - layout changes retain explicit fade policy while unresolved wrapping remains unsupported
+  ---
+  duration_ms: 88.996208
+  type: 'test'
+  ...
+# Subtest: strict axis state rejects corrupted geometry, nonown policy and extra metric queries without execution
+ok 6 - strict axis state rejects corrupted geometry, nonown policy and extra metric queries without execution
+  ---
+  duration_ms: 14.404292
+  type: 'test'
+  ...
+# Subtest: exact font bindings remain attached to prepared layout and missing metrics cannot be guessed
+ok 7 - exact font bindings remain attached to prepared layout and missing metrics cannot be guessed
+  ---
+  duration_ms: 0.929
+  type: 'test'
+  ...
+# Subtest: public titles map the interpolated semantic value through the native scale
+ok 8 - public titles map the interpolated semantic value through the native scale
+  ---
+  duration_ms: 92.205666
+  type: 'test'
+  ...
+# Subtest: title strings, font and inferred clearance preserve explicit appearance or layout fades
+ok 9 - title strings, font and inferred clearance preserve explicit appearance or layout fades
+  ---
+  duration_ms: 223.526791
+  type: 'test'
+  ...
+# Subtest: polar titles use shortest angular meaning and native inside outside placement
+ok 10 - polar titles use shortest angular meaning and native inside outside placement
+  ---
+  duration_ms: 24.002958
+  type: 'test'
+  ...
+# Subtest: band edge membership uses typed values and supports Basic resize, subsets and nested namespaces
+ok 11 - band edge membership uses typed values and supports Basic resize, subsets and nested namespaces
+  ---
+  duration_ms: 166.330125
+  type: 'test'
+  ...
+# Subtest: Parallel fields retain correspondence across reordered field slots and removed dimensions
+ok 12 - Parallel fields retain correspondence across reordered field slots and removed dimensions
+  ---
+  duration_ms: 227.589833
+  type: 'test'
+  ...
+# Subtest: guide anchor meaning stays flat through repeated sampled-frame rebase and labelled frame export
+ok 13 - guide anchor meaning stays flat through repeated sampled-frame rebase and labelled frame export
+  ---
+  duration_ms: 929.584
+  type: 'test'
+  ...
+# Subtest: guide anchor strict restore rejects versions and forged field membership or geometry before sampling
+ok 14 - guide anchor strict restore rejects versions and forged field membership or geometry before sampling
+  ---
+  duration_ms: 99.592583
+  type: 'test'
+  ...
+# Subtest: guide anchor identity normalization is closed, typed, descriptor-safe and canonical
+ok 15 - guide anchor identity normalization is closed, typed, descriptor-safe and canonical
+  ---
+  duration_ms: 10.155125
+  type: 'test'
+  ...
+# Subtest: Basic native guides use the same typed transition and offline owner
+ok 16 - Basic native guides use the same typed transition and offline owner
+  ---
+  duration_ms: 56.403625
+  type: 'test'
+  ...
+# Subtest: public guide samples interpolate semantic scale before forward mapping and preserve endpoints
+ok 17 - public guide samples interpolate semantic scale before forward mapping and preserve endpoints
+  ---
+  duration_ms: 100.231125
+  type: 'test'
+  ...
+# Subtest: new raw tick values enter while same-value label spelling crossfades under one guide key
+ok 18 - new raw tick values enter while same-value label spelling crossfades under one guide key
+  ---
+  duration_ms: 19.112125
+  type: 'test'
+  ...
+# Subtest: duplicate raw guide values keep separate enters and exits with explicit ambiguity
+ok 19 - duplicate raw guide values keep separate enters and exits with explicit ambiguity
+  ---
+  duration_ms: 27.702042
+  type: 'test'
+  ...
+# Subtest: guide meaning survives sampled endpoints, labelled views, repeated rebases and offline restore
+ok 20 - guide meaning survives sampled endpoints, labelled views, repeated rebases and offline restore
+  ---
+  duration_ms: 182.883875
+  type: 'test'
+  ...
+# Subtest: scoped guides use explicit child namespaces while reordered panels retain each owner
+ok 21 - scoped guides use explicit child namespaces while reordered panels retain each owner
+  ---
+  duration_ms: 21.256041
+  type: 'test'
+  ...
+# Subtest: polar rules and circles replay native guide values across Canvas resize
+ok 22 - polar rules and circles replay native guide values across Canvas resize
+  ---
+  duration_ms: 66.205791
+  type: 'test'
+  ...
+# Subtest: unsupported label policy and edited guide geometry keep explicit fallback through restore
+ok 23 - unsupported label policy and edited guide geometry keep explicit fallback through restore
+  ---
+  duration_ms: 31.856458
+  type: 'test'
+  ...
+# Subtest: strict guide restore rejects unknown versions, wrong cardinality and forged forward mapping
+ok 24 - strict guide restore rejects unknown versions, wrong cardinality and forged forward mapping
+  ---
+  duration_ms: 20.234625
+  type: 'test'
+  ...
+# Subtest: guide color, opacity and stroke width use the shared appearance kernel alongside value mapping
+ok 25 - guide color, opacity and stroke width use the shared appearance kernel alongside value mapping
+  ---
+  duration_ms: 18.852833
+  type: 'test'
+  ...
+# Subtest: sampled guide decisions cannot impersonate anonymous canvas backgrounds or a different raw value
+ok 26 - sampled guide decisions cannot impersonate anonymous canvas backgrounds or a different raw value
+  ---
+  duration_ms: 20.235708
+  type: 'test'
+  ...
+# Subtest: native exact gradient values use shared log scale meaning and single-block placement
+ok 27 - native exact gradient values use shared log scale meaning and single-block placement
+  ---
+  duration_ms: 741.000333
+  type: 'test'
+  ...
+# Subtest: native legend forward proof retains all four edges, bottom titles and explicit text alignment
+ok 28 - native legend forward proof retains all four edges, bottom titles and explicit text alignment
+  ---
+  duration_ms: 343.971667
+  type: 'test'
+  ...
+# Subtest: legend colors reuse appearance interpolation and rebase retains exact prepared native meaning
+ok 29 - legend colors reuse appearance interpolation and rebase retains exact prepared native meaning
+  ---
+  duration_ms: 511.288
+  type: 'test'
+  ...
+# Subtest: legend semantic sample insertion preserves raw correspondence and scoped owners
+ok 30 - legend semantic sample insertion preserves raw correspondence and scoped owners
+  ---
+  duration_ms: 927.695375
+  type: 'test'
+  ...
+# Subtest: unknown or dependent native layout policies preserve explicit identity and safe fades
+ok 31 - unknown or dependent native layout policies preserve explicit identity and safe fades
+  ---
+  duration_ms: 392.704458
+  type: 'test'
+  ...
+# Subtest: strict offline legend state rejects changed proof, unknown kernels and nonown layout values
+ok 32 - strict offline legend state rejects changed proof, unknown kernels and nonown layout values
+  ---
+  duration_ms: 57.944791
+  type: 'test'
+  ...
+# Subtest: stroke gradients preserve native width bounds without reading final pixels as scale values
+ok 33 - stroke gradients preserve native width bounds without reading final pixels as scale values
+  ---
+  duration_ms: 472.593334
+  type: 'test'
+  ...
+# Subtest: prepared legend ink retains exact font bindings and only the queries used by native layout
+ok 34 - prepared legend ink retains exact font bindings and only the queries used by native layout
+  ---
+  duration_ms: 17.1685
+  type: 'test'
+  ...
+# Subtest: prepared legend closure rejects policy forgery and out-of-domain semantic identities
+ok 35 - prepared legend closure rejects policy forgery and out-of-domain semantic identities
+  ---
+  duration_ms: 19.784875
+  type: 'test'
+  ...
+# Subtest: legend sample normalization does not cache mutable caller layout values
+ok 36 - legend sample normalization does not cache mutable caller layout values
+  ---
+  duration_ms: 20.697792
+  type: 'test'
+  ...
+# Subtest: temporal gradient legends retain exact epoch values and native formatted labels
+ok 37 - temporal gradient legends retain exact epoch values and native formatted labels
+  ---
+  duration_ms: 498.401333
+  type: 'test'
+  ...
+# Subtest: native Cartesian guides retain exact typed value correspondence and geometry without trace writes
+ok 38 - native Cartesian guides retain exact typed value correspondence and geometry without trace writes
+  ---
+  duration_ms: 77.917459
+  type: 'test'
+  ...
+# Subtest: raw guide values match across tick insertions and label spelling does not alter identity
+ok 39 - raw guide values match across tick insertions and label spelling does not alter identity
+  ---
+  duration_ms: 19.054708
+  type: 'test'
+  ...
+# Subtest: wrapped Cartesian guide labels preserve line roles and suppressed labels stay absent
+ok 40 - wrapped Cartesian guide labels preserve line roles and suppressed labels stay absent
+  ---
+  duration_ms: 60.481292
+  type: 'test'
+  ...
+# Subtest: polar axis and grid projection reuse native circles, radius-zero omission and explicit angle
+ok 41 - polar axis and grid projection reuse native circles, radius-zero omission and explicit angle
+  ---
+  duration_ms: 38.63625
+  type: 'test'
+  ...
+# Subtest: nested composition keeps same guide values distinct in exact child namespaces
+ok 42 - nested composition keeps same guide values distinct in exact child namespaces
+  ---
+  duration_ms: 14.770958
+  type: 'test'
+  ...
+# Subtest: edited guide geometry and unsupported text layout remain explicit fallbacks
+ok 43 - edited guide geometry and unsupported text layout remain explicit fallbacks
+  ---
+  duration_ms: 16.582458
+  type: 'test'
+  ...
+1..43
+# tests 43
+# suites 0
+# pass 42
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4626.969833

@@ -1,0 +1,190 @@
+diff --git a/src/grammar/hierarchy/partitionMapping.js b/src/grammar/hierarchy/partitionMapping.js
+--- a/src/grammar/hierarchy/partitionMapping.js
++++ b/src/grammar/hierarchy/partitionMapping.js
+@@ -24,9 +24,17 @@ function radius(v,{inner,outer,policy}){
+  const ratio=inner/outer,squared=ratio*ratio;
+  return outer*Math.sqrt(squared+(1-squared)*v);
+ }
+-export function partitionRadius(v,options){
++function admitRadius(v,options){
+  unit(v,"Partition radial proportion");ownRecord(options,"Partition radius options");rejectUnknownProperties(options,["innerRadius","outerRadius","radiusPolicy"],"partition radius");
+- return radius(v,radiusOptions(options));
++ return radiusOptions(options);
++}
++export function partitionRadius(v,options){
++ return radius(v,admitRadius(v,options));
++}
++// Internal calculation captures only the fully admitted numeric radial policy.
++export function preparePartitionRadius(v,options){
++ const radial=admitRadius(v,options);
++ return value=>{unit(value,"Partition radial proportion");return radius(value,radial);};
+ }
+ export function mapPartitionRectangle(cell,options){
+  validatePartitionInterval(cell);ownRecord(options,"Partition rectangle options");rejectUnknownProperties(options,["x","y","width","height","orientation","reverseU","reverseV","gapX","gapY"],"partition rectangle");
+diff --git a/src/grammar/hierarchy/partitionBend.js b/src/grammar/hierarchy/partitionBend.js
+--- a/src/grammar/hierarchy/partitionBend.js
++++ b/src/grammar/hierarchy/partitionBend.js
+@@ -2,20 +2,24 @@ import {cloneAndFreeze} from "../../core/immutable.js";
+ import {ownArray,ownRecord} from "../../core/ownData.js";
+ import {rejectUnknownProperties,validateNonNegativeFinite} from "../../core/validation.js";
+ import {finiteMidpoint,interpolateNumber} from "../numeric.js";
+-import {partitionRadius,validatePartitionInterval} from "./partitionMapping.js";
++import {partitionRadius,preparePartitionRadius,validatePartitionInterval} from "./partitionMapping.js";
+ 
+ // Canonical mathematical coordinates, before one screen/rotation adapter.
+-export function bendPartitionPoint(point,options){
++function validateBendPoint(point){
+  ownRecord(point,"Partition bend point");rejectUnknownProperties(point,["u","v","bend"],"partition bend point");
+  for(const key of["u","v","bend"])if(!Number.isFinite(point[key])||point[key]<0||point[key]>1)throw new RangeError(`Partition bend ${key} must lie from zero through one.`);
++}
++function admitBendOptions(options){
+  ownRecord(options,"Partition bend options");rejectUnknownProperties(options,["width","height","innerRadius","outerRadius","radiusPolicy","sweep"],"partition bend");
+  const{width,height}=options,sweep=options.sweep??Math.PI*2;
+  if(!Number.isFinite(width)||width<=0||!Number.isFinite(height)||height<0)throw new RangeError("Partition bend requires positive finite width and nonnegative finite height.");
+  if(!Number.isFinite(sweep)||sweep<=0||sweep>Math.PI*2)throw new RangeError("Partition bend sweep must be positive and at most two pi.");
+- const r=partitionRadius(point.v,{innerRadius:options.innerRadius,outerRadius:options.outerRadius,radiusPolicy:options.radiusPolicy});
+- const{u,v,bend:b}=point,q=u-.5,theta=sweep*b*q;
+- if(b===0)return cloneAndFreeze({x:width*q,y:height*v});
+- if(b===1)return cloneAndFreeze({x:r*Math.sin(theta),y:r*Math.cos(theta)});
++ return {width,height,sweep};
++}
++function bendCoordinates(point,width,height,sweep,r){
++const{u,v,bend:b}=point,q=u-.5,theta=sweep*b*q;
++ if(b===0)return {x:width*q,y:height*v};
++ if(b===1)return {x:r*Math.sin(theta),y:r*Math.cos(theta)};
+  const y=interpolateNumber(height*v,r,b);
+  // R never needs to be formed: 2R*sin(theta/2)^2 can overflow as b tends
+  // toward zero even though its product has a finite, vanishing limit.
+@@ -24,15 +28,38 @@ export function bendPartitionPoint(point,options){
+  const drop=(1-b)*width*q*(sweep*b*q/2)*sincHalf*sincHalf;
+  const x=(1-b)*width*q*sinc+y*Math.sin(theta),vertical=y*Math.cos(theta)-drop;
+  if(!Number.isFinite(x)||!Number.isFinite(vertical))throw new RangeError("Partition bend output exceeds finite coordinates.");
+- return cloneAndFreeze({x,y:vertical});
++ return {x,y:vertical};
++}
++
++export function bendPartitionPoint(point,options){
++ validateBendPoint(point);const{width,height,sweep}=admitBendOptions(options);
++ const r=partitionRadius(point.v,{innerRadius:options.innerRadius,outerRadius:options.outerRadius,radiusPolicy:options.radiusPolicy});
++ return cloneAndFreeze(bendCoordinates(point,width,height,sweep,r));
++}
++// Full admission precedes the ephemeral calculation. No raw caller can supply
++// an already-validated token, and every later point retains its range checks.
++export function preparePartitionBendCalculation(point,options){
++ validateBendPoint(point);const{width,height,sweep}=admitBendOptions(options);
++ const radial=preparePartitionRadius(point.v,{innerRadius:options.innerRadius,outerRadius:options.outerRadius,radiusPolicy:options.radiusPolicy});
++ const bend=point.bend,tangentKernel={width:options.width,sweep:options.sweep};
++ const calculate=input=>{validateBendPoint(input);return bendCoordinates(input,width,height,sweep,radial(input.v));};
++ return {point:calculate,inset(cell,gap){
++  validateCellGap(cell,gap);
++  return insetCoordinates(cell,tangentKernel,bend,gap,v=>calculate({u:.5,v,bend}).y);
++ }};
+ }
+ 
+ // Insets use current CSS distances after bending, never endpoint pixel geometry.
+-export function insetPartitionBendCell(cell,kernel,bend,gap){
++function validateCellGap(cell,gap){
+  validatePartitionInterval(cell);ownArray(gap,"Partition bend gaps");
+  if(gap.length!==2)throw new TypeError("Partition bend gaps require two distances.");
+  gap.forEach(value=>validateNonNegativeFinite(value,"Partition bend gap"));
+- const depth=v=>bendPartitionPoint({u:.5,v,bend},kernel).y;
++}
++export function insetPartitionBendCell(cell,kernel,bend,gap){
++ validateCellGap(cell,gap);
++ return cloneAndFreeze(insetCoordinates(cell,kernel,bend,gap,v=>bendPartitionPoint({u:.5,v,bend},kernel).y));
++}
++function insetCoordinates(cell,kernel,bend,gap,depth){
+  const low=depth(cell.v0),high=depth(cell.v1),middle=finiteMidpoint(low,high);
+  const tangent=(1-bend)*kernel.width+kernel.sweep*bend*middle;
+  if(!Number.isFinite(tangent))throw new RangeError("Partition bend tangent exceeds finite coordinates.");
+@@ -48,8 +75,8 @@ export function insetPartitionBendCell(cell,kernel,bend,gap){
+  };
+  const width=cell.u1-cell.u0;
+  const visible=width>0&&high>low&&tangent>0&&gap[0]/tangent<width&&gap[1]<high-low;
+- if(!visible){const u=finiteMidpoint(cell.u0,cell.u1),anchorV=inverse(middle);return cloneAndFreeze({u0:u,u1:u,v0:anchorV,v1:anchorV,anchorV,visible:false});}
++ if(!visible){const u=finiteMidpoint(cell.u0,cell.u1),anchorV=inverse(middle);return {u0:u,u1:u,v0:anchorV,v1:anchorV,anchorV,visible:false};}
+  const inset=gap[0]/tangent/2;
+  const v0=gap[1]===0?cell.v0:inverse(low+gap[1]/2),v1=gap[1]===0?cell.v1:inverse(high-gap[1]/2);
+- return cloneAndFreeze({u0:cell.u0+inset,u1:cell.u1-inset,v0,v1,anchorV:inverse(finiteMidpoint(depth(v0),depth(v1))),visible:true});
++ return {u0:cell.u0+inset,u1:cell.u1-inset,v0,v1,anchorV:inverse(finiteMidpoint(depth(v0),depth(v1))),visible:true};
+ }
+diff --git a/src/grammar/hierarchy/partitionAdapter.js b/src/grammar/hierarchy/partitionAdapter.js
+--- a/src/grammar/hierarchy/partitionAdapter.js
++++ b/src/grammar/hierarchy/partitionAdapter.js
+@@ -3,7 +3,7 @@ import { ownArray, ownRecord } from "../../core/ownData.js";
+ import { rejectUnknownProperties } from "../../core/validation.js";
+ import { interpolateNumber } from "../numeric.js";
+ import { partitionRadius } from "./partitionMapping.js";
+-import { bendPartitionPoint } from "./partitionBend.js";
++import { bendPartitionPoint, preparePartitionBendCalculation } from "./partitionBend.js";
+ 
+ const RECTANGLE = ["x", "y", "width", "height", "orientation", "reverseU", "reverseV"];
+ const POLAR = ["centerX", "centerY", "innerRadius", "outerRadius", "startAngle", "sweep", "direction", "reverseU", "reverseV", "radiusPolicy"];
+@@ -47,15 +47,32 @@ export function samplePartitionBendPoint(adapter, point) {
+     origin: adapter.origin.map((value, index) => interpolateNumber(value, adapter.center[index], b)) }, point);
+ }
+ 
+-export function mapPartitionBendPoint(frame, point) {
++function validateBendFrame(frame) {
+   record(frame, ["kernel", "handedness", "angle", "origin"], "Partition bend frame");
+   ownArray(frame.origin, "Partition frame origin");
+   if (frame.origin.length !== 2 || !frame.origin.every(Number.isFinite) || !Number.isFinite(frame.angle) || ![1, -1].includes(frame.handedness)) throw new TypeError("Partition bend frame requires finite origin, angle and handedness.");
+-  const canonical = bendPartitionPoint(point, frame.kernel), x = Math.cos(frame.angle), y = Math.sin(frame.angle);
++}
++
++export function mapPartitionBendPoint(frame, point) {
++  validateBendFrame(frame);
++  return cloneAndFreeze(screenCoordinates(frame, bendPartitionPoint(point, frame.kernel)));
++}
++
++// A single cell consumes this local calculation; only admitted scalar frame
++// fields are captured, and the generic wrapper above retains full admission.
++export function preparePartitionBendMapping(frame, point) {
++  validateBendFrame(frame);
++  const calculation = preparePartitionBendCalculation(point, frame.kernel);
++  const basis = { origin: [frame.origin[0], frame.origin[1]], angle: frame.angle, handedness: frame.handedness };
++  return { map: input => screenCoordinates(basis, calculation.point(input)), inset: calculation.inset };
++}
++
++function screenCoordinates(frame, canonical) {
++  const x = Math.cos(frame.angle), y = Math.sin(frame.angle);
+   const result = { x: frame.origin[0] + x * canonical.x - frame.handedness * y * canonical.y,
+     y: frame.origin[1] + y * canonical.x + frame.handedness * x * canonical.y };
+   if (!Object.values(result).every(Number.isFinite)) throw new RangeError("Partition screen coordinates exceed finite values.");
+-  return cloneAndFreeze(result);
++  return result;
+ }
+ 
+ // One conservative chord count for the entire frame. The bound evaluates R*theta²
+diff --git a/src/grammar/hierarchy/partitionCell.js b/src/grammar/hierarchy/partitionCell.js
+--- a/src/grammar/hierarchy/partitionCell.js
++++ b/src/grammar/hierarchy/partitionCell.js
+@@ -2,8 +2,7 @@ import { cloneAndFreeze } from "../../core/immutable.js";
+ import { ownRecord } from "../../core/ownData.js";
+ import { rejectUnknownProperties } from "../../core/validation.js";
+ import { interpolateNumber } from "../numeric.js";
+-import { mapPartitionBendPoint, partitionBendSegments } from "./partitionAdapter.js";
+-import { insetPartitionBendCell } from "./partitionBend.js";
++import { preparePartitionBendMapping, partitionBendSegments } from "./partitionAdapter.js";
+ 
+ // The shared cell builder consumes normalized intervals and current CSS gaps.
+ // Native private frames and public transition frames use the same tessellation.
+@@ -13,12 +12,13 @@ export function partitionBendCellGeometry(cell, frame, bend, segmentCount) {
+   const segments = segmentCount === undefined ? partitionBendSegments({ compatible: true, kernel: frame.kernel }, bend) : segmentCount;
+   if (!Number.isSafeInteger(segments) || segments < 1 || segments > 4096) throw new RangeError("Partition cell segment count must lie from 1 through 4096.");
+   const { gap, ...basis } = frame;
+-  mapPartitionBendPoint(basis, { u: .5, v: .5, bend });
+-  const interval = insetPartitionBendCell(cell, basis.kernel, bend, gap);
++  const mapping = preparePartitionBendMapping(basis, { u: .5, v: .5, bend });
++  mapping.map({ u: .5, v: .5, bend });
++  const interval = mapping.inset(cell, gap);
+   if (!interval.visible) return null;
+   const count = Math.max(1, Math.ceil((interval.u1 - interval.u0) * segments)), points = [];
+-  for (let i = 0; i <= count; i++) points.push(mapPartitionBendPoint(basis, { u: interpolateNumber(interval.u0, interval.u1, i / count), v: interval.v0, bend }));
+-  for (let i = count; i >= 0; i--) points.push(mapPartitionBendPoint(basis, { u: interpolateNumber(interval.u0, interval.u1, i / count), v: interval.v1, bend }));
+-  const anchor = mapPartitionBendPoint(basis, { u: (interval.u0 + interval.u1) / 2, v: interval.anchorV, bend });
++  for (let i = 0; i <= count; i++) points.push(mapping.map({ u: interpolateNumber(interval.u0, interval.u1, i / count), v: interval.v0, bend }));
++  for (let i = count; i >= 0; i--) points.push(mapping.map({ u: interpolateNumber(interval.u0, interval.u1, i / count), v: interval.v1, bend }));
++  const anchor = mapping.map({ u: (interval.u0 + interval.u1) / 2, v: interval.anchorV, bend });
+   return cloneAndFreeze({ commands: points.map((point, index) => ({ op: index ? "L" : "M", ...point })).concat({ op: "Z" }), anchor, interval });
+ }

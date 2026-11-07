@@ -1,0 +1,2 @@
+export interface ProjectionViewport { readonly x: number; readonly y: number; readonly width: number; readonly height: number; }
+/** Logical CSS pixels; zoom and pinch require an explicit positive scale interval. */

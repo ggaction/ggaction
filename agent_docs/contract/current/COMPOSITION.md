@@ -692,6 +692,38 @@ state. A failure returns no partially edited program. Duplicate targets, unknown
 ambiguous native targets reject. Facet source edits use `editFacetSource`, or `facetSource: true` on an explicit facet-view selector. That selector routes the same requested native action through the retained facet source and regenerates cells; it can be mixed atomically with ordinary-view selectors. The flag rejects on nonfacet views and accepts only literal true. Inspection resolves the same retained source. Paths through generated facet cells are rejected to avoid losing edits on source replay. Parent/source overlapping target lists must be structurally valid.
 The outer trace records one requested function; retained child traces contain the native edits.
 
+### Resource views paired with analytical marks
+
+A Tree, Treemap, Cartesian/Polar Partition, GraphPlot or DAG/cyclic Flow view can
+be a named concat sibling of an ordinary analytical mark built from the same
+typed source values. Each child retains its own dataset identity, resources,
+marks, scales and guides. Equal typed row keys do not create an implicit link.
+`encodeColor({ target: { childPath: ["analysis"], id: "values" }, field })`
+changes that analytical mark and its legend. An `editScale` scoped to the
+analytical view keeps the native `id` option; the scope selector omits `id`,
+because a selector ID means the action's native `target`.
+
+Analytical axes and legends explain only the analytical child's mappings.
+Changing its field or scale preserves the resource sibling's exact program,
+graphic and resource references. This compositional consumer path does not add
+field encodings, scale-driven layout, value-to-color mappings or legends to the
+resource facade. Native layout positions, Flow thickness, explicit resource
+styles and labels retain their owning domain contracts.
+
+To refresh both views, pass both explicit view selectors to one `reviseData`
+call. Each native data action validates its own source and rematerializes its
+dependent resources; the parent publishes the final combined snapshot only
+after every child succeeds. Child-local logical dataset IDs and typed row keys
+survive revision; corresponding rows can have equal keys without equal dataset
+IDs. Revising only one child intentionally leaves its sibling unchanged.
+Program persistence preserves the two data scopes and concrete guide ownership.
+
+Evidence: `examples/program-composition/resource-comparison.js`,
+`test/unit/resources/resource-composition.test.js` and
+`test/browser/resource-composition.browser.js` cover all seven native families,
+typed number/string keys, field/scale/guide edits, exact sibling isolation,
+two-source revision, atomic failure, Browser Canvas/SVG and codec replay.
+
 
 ## Concat parent titles, shared color guide, and uniform surfaces
 

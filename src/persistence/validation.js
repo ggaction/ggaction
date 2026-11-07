@@ -1,4 +1,10 @@
+import { validateGeoGraphicCapacity } from "../grammar/geo/capacity.js";
 import { assertProgramSingleY } from "../materialization/frameState.js";
+import { validateTableBinding } from "../grammar/tablePlot.js";
+import { deriveTableData } from "../grammar/tableData.js";
+import { validateTrailBinding } from "../grammar/trailPlot.js";
+import { deriveTrailSeries } from "../grammar/trailSeries.js";
+import { validateScreenAnnotationLayer } from "../grammar/screenAnnotation.js";
 import { validateResponsiveCanvasState } from "../grammar/responsiveCanvas.js";
 import { validateResponsiveLabelState } from "../grammar/responsiveLabels.js";
 import { normalizeMarkShadow, MARK_SHADOW_TYPES } from "../grammar/markShadow.js";
@@ -44,7 +50,7 @@ import { isSizeShapeChannels, resolveSizeShapeMapping } from "../grammar/legendC
 import { describeLegendBlock, validateLegendChannels } from "../grammar/legendBlocks.js";
 import { localLegendPosition } from "../grammar/legendGroups.js";
 import { normalizeLegendBorderDash } from "../grammar/legendBorder.js";
-import { validateGraphicItemLimit } from "../core/validation.js";
+import { validateGraphicItemLimit, validatePointItemCapacity } from "../core/validation.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
 import { validateAxisLabelFlushThreshold, validateAxisTextPlacement,
@@ -53,7 +59,7 @@ import { validateTickSelectionRounding, axisTickSelection } from "../grammar/tic
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { validateRegressionFitStatistics, requireRegressionStatisticsSource, regressionStatisticsRows } from "../grammar/regression/statistics.js";
-import { resolveGraphicItemCapacity } from "../selectors/graphicCapacity.js";
+import { resolveGraphicItemCapacity, resolveGraphicGeoBinding } from "../selectors/graphicCapacity.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
 import { validateTickColorChannels } from "../grammar/scales/colorConsumers.js";
 import { normalizeColorInterpolationOptions } from "../grammar/scales/color.js";
@@ -77,7 +83,8 @@ import { validateGraphicType, isGraphicContainerType } from "../grammar/schemas/
 import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 import { walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
 import { invalidSnapshot } from "./codec.js";
-import { DATA_IDENTITY_FIELDS, validateSourceIdentity } from "../core/itemIdentity.js";
+import { DATA_IDENTITY_FIELDS, validateSourceIdentityStages } from "../core/itemIdentity.js";
+import { drainStages, STAGE_ROWS } from "../core/stages.js";
 import { validateDatasetLineage } from "../grammar/rowLineage.js";
 import { validateResourceGraph } from "../materialization/resourceState.js";
 import { validateDataSourceState } from "../materialization/dataSourceState.js";
@@ -123,9 +130,14 @@ function requireArray(value, path) {
   }
 }
 
-export function validateGraphic(graphic, path = "payload.graphicSpec", { legacy = false } = {}) {
+export function validateGraphic(graphic, path = "payload.graphicSpec", options = {}) {
+  return drainStages(validateGraphicStages(graphic, path, options));
+}
+
+export function* validateGraphicStages(graphic, path = "payload.graphicSpec", { legacy = false } = {}) {
   const validateProperties = (type, properties) => {
     validateConcreteGraphicProperties(type, properties);
+    if (legacy && Object.hasOwn(properties, "maxCommands")) throw invalidSnapshot("Path maxCommands requires editable snapshot version 4.", path);
     if (legacy && Object.hasOwn(properties, "fillRule")) throw invalidSnapshot("Path fillRule requires editable snapshot version 4.", path);
     if (legacy && properties.commands !== undefined) validateLegacyPathCommands(properties.commands);
   };
@@ -151,9 +163,11 @@ export function validateGraphic(graphic, path = "payload.graphicSpec", { legacy 
     }
     if (object.properties !== undefined) validateProperties(object.type, object.properties);
     if (object.items !== undefined) {
-      if (object.type === "canvas" || object.properties !== undefined) throw invalidSnapshot(`Invalid item owner "${id}".`, path);
+      if (object.type === "canvas" || object.type === "circle-batch" || object.type === "path-batch" || object.properties !== undefined) throw invalidSnapshot(`Invalid item owner "${id}".`, path);
       requireArray(object.items, `${path}.objects.${id}.items`);
+      let rows = 0;
       for (const item of object.items) {
+        if (++rows % STAGE_ROWS === 0) yield;
         exactKeys(item, [...(object.type === "collection" ? ["id", "type", "properties"] : ["id", "properties"]), ...(item.identity === undefined ? [] : ["identity"])], path);
         if (item.identity !== undefined) validateGraphicIdentity(item.identity);
         if (typeof item.id !== "string" || !item.id.length || ids.has(item.id)) throw invalidSnapshot(`Duplicate or invalid graphic item ID "${item.id}".`, path);
@@ -211,7 +225,11 @@ function validateSemanticProperties(program, value, property) {
   validateStoredSemanticValue(program, parsed, value);
 }
 
-export function validateProgramState(program, path, { allowMissingLookupSchemas = false, legacy = false } = {}) {
+export function validateProgramState(program, path, options = {}) {
+  return drainStages(validateProgramStateStages(program, path, options));
+}
+
+export function* validateProgramStateStages(program, path, { allowMissingLookupSchemas = false, legacy = false } = {}) {
   const semantic = program.semanticSpec;
   exactKeys(semantic, ["datasets", "layers", "scales", "coordinates", "guides", "title", ...(legacy ? [] : ["resources"])], `${path}.semanticSpec`);
   if (!legacy) validateDatasetLineage(semantic.datasets);
@@ -266,9 +284,21 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     resources.set(referenceKind, entries);
     for (const resource of entries.values()) {
       if (kind === "dataset" && !legacy && resource.source === undefined && Array.isArray(resource.values)) {
-        validateSourceIdentity(resource);
+        yield* validateSourceIdentityStages(resource);
       }
-      if (kind === "layer") { validateTickColorChannels(resource); validateImageBinding(program, resource);
+      if (kind === "layer") { validateTickColorChannels(resource); validateImageBinding(program, resource); if (resource.annotationAnchor !== undefined) validateScreenAnnotationLayer(resource);
+        if (resource.mark?.type === "table") {
+          validateTableBinding(resource, program.markConfigs[resource.id]?.tablePlot);
+          const dataset = findDataset(program, resource.data);
+          if (dataset === undefined) throw new TypeError("Table requires an existing dataset.");
+          deriveTableData(dataset.values, dataset.rowKeys, resource.table);
+        }
+        if (resource.mark?.type === "trail") {
+          validateTrailBinding(resource, program.markConfigs[resource.id]?.trailPlot);
+          const dataset = findDataset(program, resource.data);
+          if (dataset === undefined) throw new TypeError("Trail requires an existing dataset.");
+          deriveTrailSeries(dataset.values, resource, { scales: semantic.scales });
+        }
         if (resource.mark?.type === "waterfall") {
           validateWaterfallBinding(resource, program.markConfigs[resource.id]?.waterfallPlot);
           const dataset = findDataset(program, resource.data);
@@ -674,6 +704,12 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     const markConfig = program.markConfigs[id];
     const markType = resources.get("mark").get(id).mark.type;
+    if (Object.hasOwn(markConfig, "maxItems")) {
+      if (markType !== "point" || markConfig.maxItems === undefined) {
+        throw invalidSnapshot(`Mark config "${id}" maxItems requires an explicit point capacity.`, path);
+      }
+      validatePointItemCapacity(markConfig.maxItems);
+    }
     if (markConfig.outline !== undefined && (!MARK_OUTLINE_TYPES.includes(markType) || markType === "bar") ||
         markConfig.barAppearance?.outline !== undefined && markType !== "bar") {
       throw invalidSnapshot(`Mark config "${id}" has an unsupported outline owner.`, path);
@@ -710,11 +746,14 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     for (const resource of resources.get(kind).values()) visit(resource);
   }
-  validateGraphic(program.graphicSpec, `${path}.graphicSpec`, { legacy });
+  yield* validateGraphicStages(program.graphicSpec, `${path}.graphicSpec`, { legacy });
   assertProgramSingleY(program, { materialized: true });
   validateConcreteFontBindings(program);
   for (const [id, graphic] of Object.entries(program.graphicSpec.objects)) {
+    validateGeoGraphicCapacity(resolveGraphicGeoBinding(program, id), graphic);
+    let rows = 0;
     if (!legacy) for (const item of graphic.items ?? []) {
+      if (++rows % STAGE_ROWS === 0) yield;
       if (item.identity !== undefined) resolveGraphicLineage(program, item.identity);
     }
     if (graphic.items !== undefined) validateGraphicItemLimit(graphic.items.length, resolveGraphicItemCapacity(program, {

@@ -1,0 +1,334 @@
+{
+  "schemaVersion": 1,
+  "status": "private-completed-graph-checkpoint",
+  "sourceCommit": "1551c22a9ce3c9c85cf69a7c6c1836a8c69b3a47",
+  "approval": "agent_docs/impl/roadmap9/AUTHORIZATION.json#remainingApproval",
+  "sourceInputs": [
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "sha256": "7b826e2b50bb73b109e799826ff6e8718ae079a17e07d7dc70e42061c11dc0e3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph.md",
+      "sha256": "17121ab3b27b258f244d0b484dbb7bb2e8c2a2096513f0650d7f6c3262e1916f"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "b7bfcbf4f4d8d393373a27aa9baf39a1324f4758eb83fe63900af788c23d0555"
+    },
+    {
+      "path": "src/animation/concrete.js",
+      "sha256": "7e889c25f7c4b569628c278aec92df8fa9f7ee7d691eac9b29caad746330170c"
+    },
+    {
+      "path": "src/animation/frameEndpoint.js",
+      "sha256": "e8015bdee4e8b93e526d7738ddabeccacde300fa00d0608ccc207f4175ddec33"
+    },
+    {
+      "path": "src/animation/frameProvenance.js",
+      "sha256": "798c683be1907630d0244491f55717c88cf66cfe4863c73ea8374622d9319f35"
+    },
+    {
+      "path": "src/animation/graphTracks.js",
+      "sha256": "33c5a805c008488afcdf81a2ce56a6c848c2780c52de7c49c522e2ec8f925a76"
+    },
+    {
+      "path": "src/animation/planner.js",
+      "sha256": "92afdd375ba94e6bfe342981bef3f8b8ff51c925a26dc834c41dbd604340d0d8"
+    },
+    {
+      "path": "src/animation/sample.js",
+      "sha256": "49b8153be70c52792b33310689f922c0dd3543205afa833e8a208766370b595d"
+    },
+    {
+      "path": "src/grammar/animation/graphState.js",
+      "sha256": "2f9bf922eaf6334fd7effde5fb2d8bff88c08249d15622ca5541b9f3304d87ff"
+    },
+    {
+      "path": "src/grammar/animation/routes.js",
+      "sha256": "555ca4a5e469cfda1b7596a4ea9279999160f78b53f1d50ca8ab878388206e27"
+    },
+    {
+      "path": "src/materialization/animation/graph.js",
+      "sha256": "2aa9ebc86a68e7a09e0d156a6f59a6e5cdff1753aae2b1949c7bc0667c309c0c"
+    },
+    {
+      "path": "src/materialization/graph/plot.js",
+      "sha256": "c32520b512bc9d7c96104bfc9d66d2267281ed6bf472433e934237aaa4a86e06"
+    },
+    {
+      "path": "test/browser/animation-graph.browser.js",
+      "sha256": "16a0682a91104f7fe1148f9f65ce210263ee31bca5c0f4975383297588f68773"
+    },
+    {
+      "path": "test/charts/cross-feature-integration/variants/animation/graph.render.js",
+      "sha256": "c1c353da7af57a39fe3974970bddc9cf53e45b79ec5af8468837fea3396ce173"
+    },
+    {
+      "path": "test/support/animation-graph-frame.js",
+      "sha256": "3dcf042b0b3f10f05935aff21f5fbb82cb71bf9227eeb8fc889384efb91f1569"
+    },
+    {
+      "path": "test/unit/animation/frame-provenance.test.js",
+      "sha256": "b06408f75fc7acb21274677f0023c04c33ede1bc4db437a58072e37d03c13cde"
+    },
+    {
+      "path": "test/unit/animation/graph-projection.test.js",
+      "sha256": "72539bf5f49a065784ebce408a1aefc98f934b23d68c302504161abd9bade867"
+    },
+    {
+      "path": "test/unit/animation/graph-tracks.test.js",
+      "sha256": "b77d5f481937a70a10f329df963abbedc8d89a8dc5d5d1af54294b0b63c4eee9"
+    },
+    {
+      "path": "test/unit/animation/graph-values.test.js",
+      "sha256": "37cb7bd292cc4c4c1056c3b75035550402775bb176503d6d8bc491494ba4d4e6"
+    },
+    {
+      "path": "test/unit/animation/routes.test.js",
+      "sha256": "f9b0004a03738213db3d722ed03c8689c92ef38d7a94b332946b2aafa0455f77"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-clean-canonical.log.gz",
+      "sha256": "f5cd9f4168e2e1cdf89e636f237dc3a23ed15432808fa9a0418eeeb8fa65f80c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-clean-unit-receipt.json.gz",
+      "sha256": "b3fac3b5835556385f00c1c703e71864958f3766b32ae66eae0125af032c1997"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-clean-unit-receipt.log.gz",
+      "sha256": "f5cd9f4168e2e1cdf89e636f237dc3a23ed15432808fa9a0418eeeb8fa65f80c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-coverage-frozen.log.gz",
+      "sha256": "f217ca421f0b1cf6366afde3111047d2dfda340efde680929cd3d8d235173ccb"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-node20-frozen.log.gz",
+      "sha256": "12e447fdf7d75047354a89ed7f6a62e5deb6b209bf61c3028dedbd89641d0d2a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-node24-frozen.log.gz",
+      "sha256": "89071fe8a0330b99d1c68aed156b8f7009e094cd32787f7e074333c3bb940e8b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-clean-render.log.gz",
+      "sha256": "4058488787714c9bd5c10316f27faaf00544c5416d6e98442ff3143f59966ccf"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-clean-browser.log.gz",
+      "sha256": "0894456b387c137a5261837d1c1d85c3706325905ed787226ef6bd7dd546ba31"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-clean-boundaries-package.log.gz",
+      "sha256": "318bb9b31d1eb2e0970188831e69e58a6f93c4cd49cf8e169c552cc677433acf"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-stationary.log.gz",
+      "sha256": "5c1196286732051b802c56f428a47ce9e074d1a8550094d384c8b9c4386efeed"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-coverage-repaired.log.gz",
+      "sha256": "d666fc05d4c5accab9e9c3d3d77db228cd5a641f69708df6c16df1bb8abb27b3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-renderers-1.log.gz",
+      "sha256": "ddfa0f05dc63dde1325dfda378b6544928ac6bb54a3234629af78061e6965d1a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-package-frozen-20.log.gz",
+      "sha256": "fcff2370c24fd8981452043cca1a89d2c51974affe9a7d38f20ce9cb0a17dd5c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-package-frozen-22.log.gz",
+      "sha256": "fccd12758f92771c6b49d1549503ecd2b8b8ef9cb90bdbba361cf0b3d9d3e723"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/graph-package-frozen-24.log.gz",
+      "sha256": "98892694b05ce360fd95a1e5ea9b84a6bf1577863ca7164ac7eff7aeff93c9c2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/package-size-20.json.gz",
+      "sha256": "6de7fc84057fbcd76450adb96813c221a28a33c188c7eb74beaa68dac834f5b9"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/package-size-22.json.gz",
+      "sha256": "6fe285b4427344e1258a41fa1f8ebec13899c81a24351d76d05e438ec8bddb25"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/package-size-24.json.gz",
+      "sha256": "01531439c9f590be1d1dc717f99d980483297d514068a046bc931380074dfa7d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/measure-package.mjs.gz",
+      "sha256": "2c464b3f76b67de2a7c563879aea2a6217bb396c226a764bb51468e20e806188"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/clean-render-receipt.json.gz",
+      "sha256": "bc979c43c4221db5ef8852ba58e3f48b3a5d3caf6ccb4ef44dda75dcb0814f85"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/clean-render-receipt.log.gz",
+      "sha256": "4058488787714c9bd5c10316f27faaf00544c5416d6e98442ff3143f59966ccf"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/clean-browser-receipt.json.gz",
+      "sha256": "74ce01aeff9c5d54e382595c8f7d88feaf8ceac4c56f48f3face868c76113287"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/clean-browser-receipt.log.gz",
+      "sha256": "0894456b387c137a5261837d1c1d85c3706325905ed787226ef6bd7dd546ba31"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/native-native-graph-middle-pdf.png.gz",
+      "sha256": "b40e6aaf8d5d5f19ae64e2713f1ae95a4dd6a7216e0d7b903b4b1476e5df0dd4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/native-native-graph-middle.json.gz",
+      "sha256": "e58549ccf9bb98cfad0981467ab30c01161328f218214afc59c0580aebc16caa"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/native-native-graph-middle.pdf.gz",
+      "sha256": "805521d6cf4a86fb546f7c6c2944296a2e770fc12cd37efadff699066246a0be"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/native-native-graph-middle.png.gz",
+      "sha256": "1d79abc13c72ce6e86c9ec4e57b31eb2accdd5ec2698e4a7cf7f514d5d02d5e7"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/native-native-graph-middle.svg.gz",
+      "sha256": "05f6cba8636d91d67339f6a4def907195b17e2a92669cc0c28983d402eeed72f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/native-rebased-graph-middle-pdf.png.gz",
+      "sha256": "22dfb66bf99e981c05ee9bf78e4054038413636d99debe643a8101cc0c93e314"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/native-rebased-graph-middle.json.gz",
+      "sha256": "e58549ccf9bb98cfad0981467ab30c01161328f218214afc59c0580aebc16caa"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/native-rebased-graph-middle.pdf.gz",
+      "sha256": "253518bf9e40bd98b321aa87aef166a7613025d06cc8d2d7856d49eaf5a268d2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/native-rebased-graph-middle.png.gz",
+      "sha256": "9176887b53cfd37f8b658482e9f54c41562eb63f6aef703ac5fa95e8633d19b8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/native-rebased-graph-middle.svg.gz",
+      "sha256": "0ed594731e8612e868600ee00c94d81bcf725e8d90d08ded6996669cd156c290"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/routed-native-graph-middle-pdf.png.gz",
+      "sha256": "b40e6aaf8d5d5f19ae64e2713f1ae95a4dd6a7216e0d7b903b4b1476e5df0dd4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/routed-native-graph-middle.json.gz",
+      "sha256": "e58549ccf9bb98cfad0981467ab30c01161328f218214afc59c0580aebc16caa"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/routed-native-graph-middle.pdf.gz",
+      "sha256": "d793cf0f9bb069be9ef13c40397e208293c6a38ae2dd9222184e6b940069f411"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/routed-native-graph-middle.png.gz",
+      "sha256": "1d79abc13c72ce6e86c9ec4e57b31eb2accdd5ec2698e4a7cf7f514d5d02d5e7"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/routed-native-graph-middle.svg.gz",
+      "sha256": "964eb4bd4c7665e5a9d5a8cada8ecc876728a858e9caf5a3e7b2f37dd79a3c98"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/routed-rebased-graph-middle-pdf.png.gz",
+      "sha256": "22dfb66bf99e981c05ee9bf78e4054038413636d99debe643a8101cc0c93e314"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/routed-rebased-graph-middle.json.gz",
+      "sha256": "e58549ccf9bb98cfad0981467ab30c01161328f218214afc59c0580aebc16caa"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/routed-rebased-graph-middle.pdf.gz",
+      "sha256": "86667872147a368851898aa14999417159e10ad688f113ab7f7114cdfcc0ff5a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/routed-rebased-graph-middle.png.gz",
+      "sha256": "9176887b53cfd37f8b658482e9f54c41562eb63f6aef703ac5fa95e8633d19b8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-graph-evidence/routed-rebased-graph-middle.svg.gz",
+      "sha256": "4847a1c67d49240f91f455ae7c9e1db1569a7c0ec39c73850a0dff5ebfa5b170"
+    }
+  ],
+  "checks": {
+    "canonicalCumulative": 172,
+    "animationCoverage": {
+      "tests": 122,
+      "lines": 100,
+      "branches": 97.26,
+      "functions": 100,
+      "floors": "existing 95/90/100 unchanged; every affected owner passes"
+    },
+    "sourceNode20": 122,
+    "sourceNode24": 122,
+    "boundariesAndPackage": 40,
+    "nodePNGAndPDF": 4,
+    "browserCanvasSVG": 1,
+    "browserPixelRatios": [
+      1,
+      2
+    ],
+    "exactEndpoints": true,
+    "authenticRebaseBothDirections": true,
+    "strictOfflinePlanRestore": true,
+    "concreteCurrentHit": true
+  },
+  "measurements": [
+    {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 1124,
+      "packedBytes": 1608202,
+      "unpackedBytes": 7289382
+    },
+    {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 1124,
+      "packedBytes": 1604256,
+      "unpackedBytes": 7289382
+    },
+    {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 1124,
+      "packedBytes": 1608202,
+      "unpackedBytes": 7289382
+    }
+  ],
+  "evidenceScope": "Clean canonical unit/render/browser receipts identify sourceCommit and unchanged input hashes. Focused coverage and Node20/24 source tests used the identical runtime/test bytes before commit. Source import tests are not installed-package tests. No full-suite or release claim.",
+  "originalFailures": [
+    {
+      "artifact": "graph-stationary.log.gz",
+      "cause": "An identical collapsed self-loop still became weighted crossfade. The exact branch now requires both retained graph meaning and concrete equality."
+    },
+    {
+      "artifact": "graph-coverage-repaired.log.gz",
+      "cause": "Two new fixture expectations omitted the Canvas background decision and resolved Canvas margin. Both were corrected; final coverage is 122/122."
+    },
+    {
+      "artifact": "graph-renderers-1.log.gz",
+      "cause": "The new animation projection read config.labels.offset when labels were disabled. Optional labels now resolve the established zero offset."
+    }
+  ],
+  "openObligations": [
+    "Merge public animation entry/current contracts/offline envelope and run same-tar Node20/22/24 graph consumers",
+    "Merge flat frame provenance without duplicating current graphs vector",
+    "Public session graph hit and offline scoped hit metadata",
+    "Remaining compatible typed partition/geo/Cartesian/polar/guide families",
+    "Final combined corpus and release qualification"
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "status": "focused-verified",
+  "sourceRevision": "e6a47675f",
+  "mergedRevision": "666b7ba55ed4443144c1b570b7ce5599a35651f7",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "checks": {
+    "interactionUnit": 302,
+    "boundaries": 14,
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "archive": "ecbd493db25236a7410057f261a8a8a9516bcb74930f5e907ec179a638803629",
+        "cases": [
+          "keyboard-focus/current-paint-and-basic",
+          "keyboard-focus/nested-native-selection-and-offline-restore",
+          "keyboard-focus/native-hierarchy-paths"
+        ],
+        "types": "passed"
+      },
+      {
+        "node": "v22.23.1",
+        "archive": "ecbd493db25236a7410057f261a8a8a9516bcb74930f5e907ec179a638803629",
+        "cases": [
+          "keyboard-focus/current-paint-and-basic",
+          "keyboard-focus/nested-native-selection-and-offline-restore",
+          "keyboard-focus/native-hierarchy-paths"
+        ],
+        "types": "passed"
+      },
+      {
+        "node": "v24.22.1",
+        "archive": "ecbd493db25236a7410057f261a8a8a9516bcb74930f5e907ec179a638803629",
+        "cases": [
+          "keyboard-focus/current-paint-and-basic",
+          "keyboard-focus/nested-native-selection-and-offline-restore",
+          "keyboard-focus/native-hierarchy-paths"
+        ],
+        "types": "passed"
+      }
+    ],
+    "docsFirst": {
+      "total": 228,
+      "passed": 225,
+      "failed": 3
+    },
+    "docsRepaired": 229,
+    "actualCanvasSvgKeyboardTouchBrowser": 6,
+    "sameArchiveHtmlHostConsumers": [
+      {
+        "name": "api-interaction--interaction-keyboard",
+        "id": "interaction-keyboard",
+        "file": "api/interaction.md",
+        "sha256": "e8023f8f5184e2dc050252e75cab538932e48ea8326710e1822d028b0c52f10d",
+        "htmlSha256": "47a3c10ee52191151dc7633d054e5c7c7db3b85e919f1656a11175fb1e4bac9d",
+        "rendering": "renders-canvas",
+        "status": "passed",
+        "durationMs": 708.5342499999997
+      },
+      {
+        "name": "api-interaction--interaction-accessible-tooltip",
+        "id": "interaction-accessible-tooltip",
+        "file": "api/interaction.md",
+        "sha256": "c5147eb184d5bfbfd1f377f06f875c203d95aad613001dcfc5f0fbf92eb9d8ee",
+        "htmlSha256": "6bc24b86e914dbb7823f2ff0c8b56c64d3b7d9778f4b7920baa1b8c1674f35c5",
+        "rendering": "renders-canvas",
+        "status": "passed",
+        "durationMs": 659.1842499999993
+      }
+    ],
+    "builtDocs": {
+      "pages": 185,
+      "selectiveLlmArtifacts": 1597,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ]
+    }
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1117,
+    "packedBytes": 1594582,
+    "unpackedBytes": 7254528,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "5449a586e4f1153a02bc71a37cb2f77e8030a030",
+    "sha256": "ecbd493db25236a7410057f261a8a8a9516bcb74930f5e907ec179a638803629"
+  },
+  "browserBundles": {
+    "node": "v22.23.1",
+    "archive": "ecbd493db25236a7410057f261a8a8a9516bcb74930f5e907ec179a638803629",
+    "bundles": {
+      "ggaction": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 1024,
+        "minifiedBytes": 2701441,
+        "gzipBytes": 772312
+      },
+      "ggaction/basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 608,
+        "minifiedBytes": 1440875,
+        "gzipBytes": 421106
+      },
+      "ggaction/svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 44,
+        "minifiedBytes": 73895,
+        "gzipBytes": 24765
+      },
+      "ggaction/graph": {
+        "specifier": "ggaction/graph",
+        "chunks": 1,
+        "modules": 85,
+        "minifiedBytes": 147084,
+        "gzipBytes": 43923
+      },
+      "ggaction/interaction": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 199,
+        "minifiedBytes": 400354,
+        "gzipBytes": 127988
+      }
+    }
+  },
+  "remaining": [
+    "All-control host evidence and public animation/reduced-motion integration",
+    "Offline current-frame native metadata and final STEP077 complete qualification"
+  ],
+  "documentationSourceRevision": "236cf16ef",
+  "search": {
+    "firstBytes": 1075243,
+    "finalBytes": 1075834,
+    "previousCeiling": 1074700,
+    "ceiling": 1075900
+  },
+  "preservedFailures": [
+    "B full docs228:225 passed/3 failed, two search size assertions and Canvas-only mock rejecting #item-focus.",
+    "C1/paired-host repair full docs229:227 passed/2 search-size failures.",
+    "Paired HTML execution now shares the actual Chromium/Vite owner between normal docs and installed tutorial consumers. DOM mocks remain strict."
+  ]
+}

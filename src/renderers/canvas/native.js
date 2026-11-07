@@ -1,3 +1,5 @@
+import { visitGraphicSources } from "../../grammar/schemas/graphicSources.js";
+import { isBatchGraphicType } from "../../grammar/schemas/batchGraphic.js";
 import { patternFillGeometry, validatePatternWork } from "../../grammar/patterns.js";
 import { resolveLinearGradientCoordinates } from "../../grammar/paint.js";
 import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
@@ -151,8 +153,25 @@ function preflightGraphic(id, graphic, scale, type, offset) {
 export function preflightCanvasGraphicSpec(target, scale = 1) {
   const offsets = [];
   let paintWork = 0;
-  const preflight = (...args) => {
-    paintWork += preflightGraphic(...args);
+  const preflight = (id, object, density, type, offset) => {
+    if (isBatchGraphicType(type)) {
+      visitGraphicSources(id, object, type, (rowId, row, rowType) => {
+        paintWork += preflightGraphic(rowId, row, density, rowType, offset);
+        validatePatternWork(paintWork);
+      });
+    } else if (type === "weighted-blend") {
+      validateConcreteGraphicProperties(type, object.properties);
+      for (const source of object.properties.sources) {
+        const moved = [source.offset[0] + (offset?.[0] ?? 0), source.offset[1] + (offset?.[1] ?? 0)];
+        requireValues(moved, "Weighted blend source offset", density);
+        for (const clip of [source.clip, ...source.clips]) {
+          if (clip.type === "path") for (const command of clip.commands) requireProperties(command, COMMAND_PROPERTIES, "Weighted blend clip", density, offset);
+          else requireProperties(clip, ["x", "y", "width", "height"], "Weighted blend clip", density, offset);
+        }
+        paintWork += preflightGraphic(source, source, density, source.type, moved);
+        validatePatternWork(paintWork);
+      }
+    } else paintWork += preflightGraphic(id, object, density, type, offset);
     validatePatternWork(paintWork);
   };
   walkGraphicTreeEvents(target.graphicSpec, {

@@ -4,12 +4,142 @@
       {
         "type": "prefix",
         "path": "unit/accessibility/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/accessibility-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/accessible-data.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-keyboard.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-focus.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/interaction-keyboard.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/accessible-tooltip.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/accessible-controls.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/accessible-controls.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-animation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/interaction-animation.browser.js"
       }
     ],
     "actions": [
       {
         "type": "prefix",
         "path": "unit/actions/"
+      },
+      {
+        "type": "file",
+        "path": "unit/profile-facade-consumers.test.js"
+      }
+    ],
+    "animation": [
+      {
+        "type": "prefix",
+        "path": "unit/animation/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/animation-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-offline.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/cross-feature-integration/variants/animation/"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-polar.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-polar-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-geo.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-geographic-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-guide-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-animation-timeline.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-guides.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-timeline.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-graph-drag.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-geo-text.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-cartesian-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-cartesian-completion.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-geotext-expressions.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-axis-reflow.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-axis-label-reflow.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-batched.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/circle-batch.browser.js"
       }
     ],
     "architecture": [
@@ -44,8 +174,24 @@
     ],
     "area-layout": [
       {
+        "type": "file",
+        "path": "unit/actions/charts/area-facade-policy.test.js"
+      },
+      {
         "type": "prefix",
         "path": "charts/area-layout/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/streamgraph/"
+      },
+      {
+        "type": "file",
+        "path": "unit/wiggle-area.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/stream-baseline.test.js"
       }
     ],
     "artifacts": [
@@ -172,6 +318,10 @@
       {
         "type": "file",
         "path": "unit/resources/source-resource-plan.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/animation/resource-mark-fallbacks.test.js"
       }
     ],
     "center-stack": [
@@ -184,6 +334,40 @@
       {
         "type": "prefix",
         "path": "charts/"
+      }
+    ],
+    "composition-recipes": [
+      {
+        "type": "file",
+        "path": "unit/composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/composition-recipes.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/marginal/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/bullet/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/resource-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/resource-composition.browser.js"
       }
     ],
     "contour": [
@@ -214,6 +398,10 @@
       {
         "type": "file",
         "path": "unit/resources/contour-resources.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/animation/resource-mark-fallbacks.test.js"
       }
     ],
     "data": [
@@ -273,6 +461,18 @@
     "edge-routes": [
       {
         "type": "file",
+        "path": "contracts/graph-route-package.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-route-native-stages.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-route-bounded.test.js"
+      },
+      {
+        "type": "file",
         "path": "browser/edge-routes.browser.js"
       },
       {
@@ -301,11 +501,35 @@
       },
       {
         "type": "file",
+        "path": "unit/resources/graph-route-own-request.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/resources/graph-route-lifecycle.test.js"
       },
       {
         "type": "file",
         "path": "unit/resources/graph-routes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/edge-route-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/edge-route-composition.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-route-native-update.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-route-request-ledger.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-native-route-update.test.js"
       }
     ],
     "expressions": [
@@ -412,9 +636,25 @@
       {
         "type": "file",
         "path": "unit/resources/flow-state.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/animation/resource-layout-fallbacks.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/resource-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/resource-composition.browser.js"
       }
     ],
     "font-assets": [
+      {
+        "type": "file",
+        "path": "unit/resources/font-axis-reflow.test.js"
+      },
       {
         "type": "prefix",
         "path": "charts/font-assets/"
@@ -496,6 +736,30 @@
       {
         "type": "file",
         "path": "browser/geographic-marks.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/geo-winding.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-geographic-annotations.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-geographic-encodings.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-geographic-camera.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/graticule-composition.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/geographic-capacity.browser.js"
       }
     ],
     "grammar": [
@@ -528,6 +792,14 @@
       {
         "type": "file",
         "path": "contracts/realistic-observed-graphs.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/inferred-graph-execution.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/inferred-graph-limits.test.js"
       },
       {
         "type": "file",
@@ -580,6 +852,26 @@
       {
         "type": "file",
         "path": "unit/resources/graph-recompute.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/graph-presentation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/resource-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/resource-composition.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/graph-inference.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-inference-host.test.js"
       }
     ],
     "guides": [
@@ -680,6 +972,18 @@
       {
         "type": "file",
         "path": "unit/resources/hierarchy-validation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/animation/resource-layout-fallbacks.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/resource-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/resource-composition.browser.js"
       }
     ],
     "hit-testing": [
@@ -722,6 +1026,10 @@
       {
         "type": "file",
         "path": "unit/grammar/hit-index.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-index-proof.test.js"
       },
       {
         "type": "file",
@@ -818,6 +1126,42 @@
       {
         "type": "file",
         "path": "unit/grammar/mark-visibility.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-handles.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/selection-handles.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/interaction-handles.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-policy.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-hit-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-geographic-hit-capacity.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/interaction-path-capacity.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/hit-preparation.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "charts/cross-feature-integration/variants/capacity/hit.render.js"
       }
     ],
     "horizon": [
@@ -892,6 +1236,10 @@
       {
         "type": "file",
         "path": "unit/interaction-native-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-edge-presentation.test.js"
       }
     ],
     "label-layout": [
@@ -948,6 +1296,16 @@
       {
         "type": "file",
         "path": "unit/layout/legend-policy.test.js"
+      }
+    ],
+    "live": [
+      {
+        "type": "prefix",
+        "path": "unit/live/"
+      },
+      {
+        "type": "file",
+        "path": "browser/live-chart.browser.js"
       }
     ],
     "loess": [
@@ -1126,6 +1484,10 @@
     ],
     "partition": [
       {
+        "type": "file",
+        "path": "unit/grammar/partition-cell-calculation.test.js"
+      },
+      {
         "type": "prefix",
         "path": "charts/partition-layouts/"
       },
@@ -1144,6 +1506,26 @@
       {
         "type": "file",
         "path": "unit/grammar/hierarchy-partition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/animation/partition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition-adapter.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/partition-frames.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/resource-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/resource-composition.browser.js"
       }
     ],
     "pattern-paints": [
@@ -1267,6 +1649,10 @@
     "realistic": [
       {
         "type": "file",
+        "path": "contracts/realistic-animation-timeline.test.js"
+      },
+      {
+        "type": "file",
         "path": "contracts/dataset-fixtures.test.js"
       },
       {
@@ -1308,6 +1694,34 @@
       {
         "type": "file",
         "path": "contracts/realistic-waterfall-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-trail-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-stream-baselines.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-table-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-graph-drag.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-cartesian-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-axis-label-reflow.test.js"
       }
     ],
     "rendering": [
@@ -1407,11 +1821,51 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-navigation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-preview-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-gesture-arbitration.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/interaction-node-move.test.js"
       },
       {
         "type": "file",
         "path": "unit/interaction-geo-representation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-annotation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/annotation-screen.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-annotation-drag.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-history.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-update.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-resize.test.js"
       }
     ],
     "selectors": [
@@ -1716,6 +2170,48 @@
         "path": "unit/support/"
       }
     ],
+    "table": [
+      {
+        "type": "file",
+        "path": "unit/grammar/table-cells.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/table-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/materialization/table-content.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/table-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/table-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-table-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/table.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/table/"
+      },
+      {
+        "type": "file",
+        "path": "unit/table-consumers.test.js"
+      }
+    ],
     "text-metrics": [
       {
         "type": "file",
@@ -1788,6 +2284,44 @@
         "path": "unit/theme/"
       }
     ],
+    "trail": [
+      {
+        "type": "file",
+        "path": "unit/grammar/trail-curve.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/trail-series.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/trail.test.js"
+      },
+      {
+        "path": "charts/trail/",
+        "type": "prefix"
+      },
+      {
+        "path": "browser/trail.browser.js",
+        "type": "file"
+      },
+      {
+        "path": "unit/trail-plot.test.js",
+        "type": "file"
+      },
+      {
+        "path": "contracts/trail-types.test.js",
+        "type": "file"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/trail-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-trail-plots.test.js"
+      }
+    ],
     "waterfall": [
       {
         "type": "prefix",
@@ -1816,6 +2350,32 @@
       {
         "type": "file",
         "path": "contracts/realistic-waterfall-plots.test.js"
+      }
+    ],
+    "weighted-blends": [
+      {
+        "type": "file",
+        "path": "unit/weighted-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/weighted-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/weighted-blend-assets.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/weighted-blend-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/weighted-blends.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/cross-feature-integration/variants/weighted-blends/"
       }
     ]
   },

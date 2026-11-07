@@ -73,6 +73,7 @@ const allowed = Object.freeze({
   actions: new Set([
     "actions", "core", "grammar", "layout", "materialization", "selectors", "theme"
   ]),
+  animation: new Set(["animation", "core", "grammar", "materialization", "persistence"]),
   interaction: new Set(["interaction", "core", "grammar", "materialization", "selectors"]),
   core: new Set(["core"]),
   persistence: new Set(["persistence", "core", "grammar", "selectors"]),
@@ -87,6 +88,29 @@ const allowed = Object.freeze({
   theme: new Set(["theme"])
 });
 
+test("the frame association shared by interaction reaches only its lightweight core owners", () => {
+  const association = path.join(root, "animation", "frameProvenance.js"), pending = [association], seen = new Set();
+  while (pending.length) {
+    const file = pending.pop();
+    if (seen.has(file)) continue;
+    seen.add(file);
+    assert.ok(file === association || layer(file) === "core", path.relative(root, file));
+    pending.push(...localImports(file));
+  }
+});
+
+test("current graph presentation has no action assembly or host dependency in its import closure", () => {
+  const pending = [path.join(root, "animation", "graphPresentation.js")], seen = new Set();
+  while (pending.length) {
+    const file = pending.pop(); if (seen.has(file)) continue; seen.add(file);
+    const relative = path.relative(root, file);
+    assert.ok(!["actions", "entrypoints", "resources"].includes(layer(file)), relative);
+    assert.ok(relative !== "index.js" && relative !== "basic.js", relative);
+    for (const { specifier } of moduleSpecifiers(readFileSync(file, "utf8"))) assert.ok(specifier?.startsWith("."), `${relative}: ${specifier}`);
+    pending.push(...localImports(file));
+  }
+});
+
 test("keeps source imports inside their architectural boundaries", () => {
   for (const file of sourceFiles()) {
     const owner = layer(file);
@@ -94,11 +118,14 @@ test("keeps source imports inside their architectural boundaries", () => {
     for (const dependency of localImports(file)) {
       assert.equal(
         allowed[owner].has(layer(dependency)) || (
+          (owner === "animation" && ["sceneSnapshot.js", "version.js", path.join("renderers", "canvasScene.js")].includes(path.relative(root, dependency))) ||
+          (path.relative(root, file) === path.join("animation", "resources.js") && path.relative(root, dependency) === path.join("selectors", "graphicCapacity.js")) ||
           (path.relative(root, file) === path.join("interaction", "hitProgram.js") && path.relative(root, dependency) === "sceneSnapshot.js") ||
+          (path.relative(root, file) === path.join("interaction", "hitProgram.js") && path.relative(root, dependency) === path.join("animation", "frameProvenance.js")) ||
+          (["nodeMovement.js", "edgePresentation.js"].some(name => path.relative(root, file) === path.join("interaction", name)) && path.relative(root, dependency) === path.join("animation", "graphPresentation.js")) ||
           (path.relative(root, file) === path.join("interaction", "sceneFrame.js") && path.relative(root, dependency) === path.join("renderers", "canvasScene.js")) ||
           (["hitGuides.js", "hitLegends.js"].some(name => path.relative(root, file) === path.join("interaction", name)) && [
-            "tickValues.js", "polar/resolve.js", "axes/parallel/resolve.js", "legends/blocks.js", "legends/categorical/layout.js",
-            "legends/sampling.js", "legends/size.js", "legends/colorSize.js", "legends/continuous/gradient.js"
+            "tickValues.js", "polar/resolve.js", "axes/parallel/resolve.js"
           ].some(name => path.relative(root, dependency) === path.join("actions", "guides", name))) ||
           (owner === "persistence" && [path.join("actions", "primitives", "semantic.js"), path.join("materialization", "resourceState.js"), path.join("materialization", "expressionInputs.js"), path.join("materialization", "dataSourceState.js"), path.join("materialization", "frameState.js"), path.join("materialization", "imageState.js"), path.join("materialization", "fontState.js")].includes(path.relative(root, dependency))) ||
           ([path.join("actions", "data", "sourceCreate.js"), path.join("actions", "data", "sourceEdit.js")].includes(path.relative(root, file)) &&
@@ -109,7 +136,13 @@ test("keeps source imports inside their architectural boundaries", () => {
             path.relative(root, dependency) === path.join("actions", "data", "sourcePlan.js")) ||
           (path.relative(root, file) === path.join("actions", "images", "index.js") && path.relative(root, dependency) === path.join("resources", "imageResource.js")) ||
           (path.relative(root, file) === path.join("actions", "fonts", "index.js") && path.relative(root, dependency) === path.join("resources", "fontResource.js")) ||
-          (path.relative(root, file) === path.join("actions", "graphs", "edgeRoutes.js") && path.relative(root, dependency) === path.join("resources", "graphRoutes.js")) ||
+          ([path.join("actions", "graphs", "edgeRoutes.js"), path.join("actions", "graphs", "resources.js"), path.join("actions", "graphs", "inference.js"),
+            path.join("actions", "flow", "resources.js"), path.join("actions", "hierarchy", "resources.js"), path.join("actions", "layouts", "index.js")].includes(path.relative(root, file)) &&
+            path.relative(root, dependency) === path.join("resources", "graphRoutes.js")) ||
+          (path.relative(root, file) === path.join("actions", "graphs", "inference.js") && path.relative(root, dependency) === path.join("resources", "graphInference.js")) ||
+          // Native route updates name and bind the original prepared data update owner.
+          ([path.join("actions", "graphs", "edgeRoutes.js"), path.join("actions", "graphs", "nativeUpdate.js")].includes(path.relative(root, file)) &&
+            path.relative(root, dependency) === path.join("resources", "dataUpdate.js")) ||
           (path.relative(root, file) === path.join("actions", "textMetrics", "index.js") && path.relative(root, dependency) === path.join("resources", "textMetrics.js")) ||
           (path.relative(root, file) === path.join("resources", "textMetricsFull.js") && path.relative(root, dependency) === path.join("actions", "textMetrics", "index.js")) ||
           (owner === "renderers" && path.relative(root, dependency) === path.join("core", "immutable.js")) ||
@@ -121,6 +154,8 @@ test("keeps source imports inside their architectural boundaries", () => {
             ["assetHost.js", "ownData.js", "contentDigest.js", "pngEncoding.js", "validation.js"].some(name => path.relative(root, dependency) === path.join("core", name))) ||
           (["renderers", "theme"].includes(owner) && path.relative(root, dependency) === path.join("core", "font.js")) ||
           (owner === "theme" && path.relative(root, dependency) === path.join("core", "ownData.js")) ||
+          (path.relative(root, file) === path.join("theme", "definition.js") &&
+            [path.join("grammar", "paint.js"), path.join("core", "validation.js")].includes(path.relative(root, dependency))) ||
           (["renderers", "selectors"].includes(owner) && path.relative(root, dependency) === path.join("core", "diagnostics.js"))
         ),
         true,
@@ -146,7 +181,8 @@ test("Basic source preparation excludes Full revision and facet orchestration", 
   }
   assert.ok(visited.has(path.join(root, "resources", "dataUpdate.js")));
   for (const file of ["resources/dataUpdateFull.js", "actions/data/sourceEdit.js", "actions/data/sourcePlan.js", "actions/parameters/edit.js",
-    "resources/fontResource.js", "resources/textMetricsFull.js", "actions/fonts/index.js", "resources/graphRoutes.js", "resources/graphRouteExecutor.js", "actions/graphs/edgeRoutes.js"]) {
+    "resources/fontResource.js", "resources/textMetricsFull.js", "actions/fonts/index.js", "resources/graphRoutes.js", "resources/graphRouteExecutor.js", "actions/graphs/edgeRoutes.js", "actions/graphs/screenRoutes.js",
+    "grammar/graph/routes/job.js", "resources/routeStages.js", "materialization/graph/routeResource.js"]) {
     assert.equal(visited.has(path.join(root, file)), false, file);
   }
 });
@@ -284,4 +320,11 @@ test("architectural syntax checks ignore comments and recognize direct bracket a
   "p.semanticSpec.layers.some(x => x.visible)"
  ]) assert.equal(directSemanticLookup(source), false, source);
  // This syntactic rule intentionally does not perform interprocedural alias analysis.
+});
+
+test('keyboard focus uses native item readers without importing the complete mark policy graph',()=>{
+ const pending=[path.join(root,'interaction','keyboardFocus.js')],visited=new Set();
+ while(pending.length){const file=pending.pop();if(visited.has(file))continue;visited.add(file);pending.push(...localImports(file));}
+ assert.ok(visited.has(path.join(root,'materialization','selection','itemResolver.js')));
+ assert.equal(visited.has(path.join(root,'materialization','selection','policies','index.js')),false);
 });

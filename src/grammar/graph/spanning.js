@@ -1,8 +1,10 @@
+import { inferenceWorkValidator, checkInferenceSignal } from "./inferenceBudget.js";
+import { graphLimits } from "./model.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { encodeRowKey, compareRowKeys } from "../../core/itemIdentity.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
+import { rejectUnknownProperties, validateGeneratedItemLimit } from "../../core/validation.js";
 import { stableFiniteSum } from "../numeric.js";
 import { prepareGraphMetricVectors } from "./preprocess.js";
 import { graphMetricPair } from "./metrics.js";
@@ -18,8 +20,8 @@ export function normalizeGraphSpanningOptions(input, metric) {
   return { options, ruleId, forest };
 }
 
-function nodeRanks(keys) {
-  if (Array.isArray(keys)) validateGeneratedItemLimit(keys.length, "Graph spanning nodes");
+function nodeRanks(keys, limits) {
+  if (Array.isArray(keys)) validateGeneratedItemLimit(keys.length, "Graph spanning nodes", limits.maxNodes);
   ownArray(keys, "Graph spanning keys");
   const tokens = keys.map(key => encodeRowKey(key));
   if (new Set(tokens).size !== keys.length) throw new Error("Graph spanning node keys must be unique.");
@@ -29,12 +31,13 @@ function nodeRanks(keys) {
   return { ranks, ordered };
 }
 
-function candidateWork(nodes, candidates, prior = 0) {
+function candidateWork(nodes, candidates, prior = 0, execution, signal) {
+  const validateWorkLimit = inferenceWorkValidator(execution, signal);
   const log = Math.ceil(Math.log2(Math.max(candidates, 2)));
   validateWorkLimit(prior + nodes * 32 + candidates * (24 + log), "Graph spanning work");
 }
 
-function select(keys, candidates, order, configuration) {
+function select(keys, candidates, order, configuration, limits, signal) {
   const { ranks, ordered } = order;
   const parent = keys.map((_, i) => i), sizes = keys.map(() => 1);
   function root(i) {
@@ -48,10 +51,12 @@ function select(keys, candidates, order, configuration) {
   const selected = [];
   let components = keys.length;
   for (const edge of canonical) {
+    checkInferenceSignal(signal);
     let a = root(edge.sourceIndex), b = root(edge.targetIndex);
     if (a === b) continue;
     if (sizes[a] < sizes[b]) [a, b] = [b, a];
     parent[b] = a; sizes[a] += sizes[b]; components--;
+    validateGeneratedItemLimit(selected.length + 1, "Graph spanning edges", limits.maxEdges);
     selected.push(edge);
   }
   if (components > 1 && !configuration.forest) throw new Error("Graph candidates are disconnected; forest:true is required.");
@@ -70,9 +75,10 @@ function select(keys, candidates, order, configuration) {
 
 // Explicit weighted candidates may contain parallel connections or self loops.
 // Kruskal selects only non-self connections; the domain adapter supplies lineage.
-export function selectGraphSpanningForest(keys, candidates, options) {
-  const configuration = normalizeGraphSpanningOptions(options, false), order = nodeRanks(keys);
-  if (Array.isArray(candidates)) candidateWork(keys.length, candidates.length);
+export function selectGraphSpanningForest(keys, candidates, options, limits = {}, execution, signal) {
+  limits = graphLimits(limits);
+  const configuration = normalizeGraphSpanningOptions(options, false), order = nodeRanks(keys, limits);
+  if (Array.isArray(candidates)) candidateWork(keys.length, candidates.length, 0, execution, signal);
   ownArray(candidates, "Graph spanning candidates");
   const validated = candidates.map(input => {
     ownRecord(input, "Graph spanning candidate");
@@ -84,36 +90,38 @@ export function selectGraphSpanningForest(keys, candidates, options) {
     if (!Number.isFinite(weight) || weight < 0) throw new RangeError("Graph candidate weight must be finite and nonnegative.");
     return { sourceIndex, targetIndex, weight: weight === 0 ? 0 : weight };
   });
-  return cloneAndFreeze({ ...select(keys, validated, order, configuration),
+  return cloneAndFreeze({ ...select(keys, validated, order, configuration, limits, signal),
     options: { ruleId: configuration.ruleId, forest: configuration.forest } });
 }
 
 // Complete metric graphs share the feature policy with neighbor inference.
 // Source indexes are restored only after selecting included nodes.
-export function inferGraphMst(keys, vectors, input) {
+export function inferGraphMst(keys, vectors, input, limits = {}, execution, signal) {
+  limits = graphLimits(limits);
   const configuration = normalizeGraphSpanningOptions(input, true), { options } = configuration;
-  nodeRanks(keys);
-  if (Array.isArray(vectors)) validateGeneratedItemLimit(vectors.length, "Graph feature nodes");
+  nodeRanks(keys, limits);
+  if (Array.isArray(vectors)) validateGeneratedItemLimit(vectors.length, "Graph feature nodes", limits.maxNodes);
   ownArray(vectors, "Graph spanning vectors");
   if (keys.length !== vectors.length) throw new Error("Graph keys and vectors must have equal length.");
   const preparation = prepareGraphMetricVectors(vectors, Object.fromEntries(["metric", "preprocess", "missing", "zeroVector"]
-    .filter(key => Object.hasOwn(options, key)).map(key => [key, options[key]])));
+    .filter(key => Object.hasOwn(options, key)).map(key => [key, options[key]])), limits, execution, signal);
   const indexes = preparation.sourceIndices, n = indexes.length;
-  const includedKeys = indexes.map(i => keys[i]), order = nodeRanks(includedKeys);
+  const includedKeys = indexes.map(i => keys[i]), order = nodeRanks(includedKeys, limits);
   const pairCount = n < 2 ? 0 : n * (n - 1) / 2;
   const dimension = preparation.vectors.reduce((max, vector) => Math.max(max, vector.length), 0);
   const featureWork = vectors.reduce((total, vector) => total + vector.length * 8, 0);
   const metricWork = pairCount * Math.max(1, dimension) * (preparation.metric === "jaccard"
     ? 24 + Math.ceil(Math.log2(Math.max(dimension, 2))) : 24);
-  candidateWork(n, pairCount, featureWork + metricWork);
+  candidateWork(n, pairCount, featureWork + metricWork, execution, signal);
   const metricOptions = { metric: preparation.metric,
     ...(Object.hasOwn(preparation, "zeroVector") ? { zeroVector: preparation.zeroVector } : {}) };
   const candidates = [];
   for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) {
+    checkInferenceSignal(signal);
     candidates.push({ sourceIndex: a, targetIndex: b,
       weight: graphMetricPair(preparation.vectors[a], preparation.vectors[b], metricOptions).distance });
   }
-  const result = select(includedKeys, candidates, order, configuration);
+  const result = select(includedKeys, candidates, order, configuration, limits, signal);
   return cloneAndFreeze({ ...result,
     edges: result.edges.map(edge => ({ ...edge, sourceIndex: indexes[edge.sourceIndex], targetIndex: indexes[edge.targetIndex] })),
     componentNodes: result.componentNodes.map(group => group.map(index => indexes[index])),

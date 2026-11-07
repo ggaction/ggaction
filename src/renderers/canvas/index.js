@@ -1,3 +1,7 @@
+import { visitGraphicSources } from "../../grammar/schemas/graphicSources.js";
+import { isBatchGraphicType } from "../../grammar/schemas/batchGraphic.js";
+import { walkGraphicSources } from "../../grammar/schemas/graphicSources.js";
+import { prepareWeightedBlends, drawWeightedBlend } from "./weightedBlend.js";
 import { preflightCanvasBlendModes } from "./isolated.js";
 import { readPreparedShadows } from "../shadowState.js";
 import { preflightCanvasOutlineCapabilities } from "./outline.js";
@@ -38,14 +42,19 @@ const DRAWERS = Object.freeze({
 // Keep preparation local to one render, including completed empty plans. Direct
 // drawing runs the same preflight; rendering reuses it after canvas resizing.
 function prepareCanvasPainting(target, context, options) {
-  const objects = Object.values(target.graphicSpec.objects);
+  const objects = [];
+  walkGraphicSources(target.graphicSpec, (_id, object, type) => objects.push(
+    object.type === type ? object : { ...object, type }
+  ));
   preflightCanvasFillCapabilities(objects, context);
   preflightCanvasOutlineCapabilities(objects, context);
   const preparation = { ...options, objects };
-  return {
-    isolated: prepareIsolatedGlyphs(target, context, preparation),
-    textPaint: prepareTextPaints(target, context, preparation)
-  };
+  const isolated = prepareIsolatedGlyphs(target, context, preparation);
+  const textPaint = prepareTextPaints(target, context, preparation);
+  const drawing = { ...options, textPaint };
+  const weighted = prepareWeightedBlends(target, context, drawing,
+    (targetContext, id, graphic) => drawConcreteGraphic(targetContext, id, graphic, isolated, drawing));
+  return { isolated, textPaint, weighted };
 }
 
 const DRAWING_CONTEXT_METHODS = Object.freeze([
@@ -171,8 +180,8 @@ export function drawResolvedGraphicSpec(target, context, options = {}) {
   requireDrawingContext(context);
   const { graphicSpec, canvasId, canvas, width, height } = target;
   if (options.images?.size > 0) requireContextMethod(context, "drawImage", "Image graphic");
-  const { isolated, textPaint } = options.painting ?? prepareCanvasPainting(target, context, options);
-  options = { ...options, textPaint };
+  const { isolated, textPaint, weighted } = options.painting ?? prepareCanvasPainting(target, context, options);
+  options = { ...options, textPaint, weighted };
 
   fillCanvasBackground(context, canvasId, canvas, width, height);
 
@@ -207,10 +216,9 @@ export function drawResolvedGraphicSpec(target, context, options = {}) {
       }
     },
     item({ id, object, owner }) {
-      drawConcreteGraphic(context, id, {
-        ...object,
-        type: object.type ?? owner.type
-      }, isolated, options);
+      drawConcreteGraphic(context, id, object.type === undefined ? {
+        ...object, type: owner.type
+      } : object, isolated, options);
     },
     exit({ id, object }) {
       if (
@@ -277,7 +285,7 @@ export function renderCanvasProgram(program, context, { pixelRatio = 1, images, 
     requireContextMethod(context, "rect", "Graphic clip");
     requireContextMethod(context, "clip", "Graphic clip");
   }
-  const painting = prepareCanvasPainting(target, context, {pixelRatio, createCanvas});
+  const painting = prepareCanvasPainting(target, context, { ...drawingOptions, pixelRatio, createCanvas, fontAliases, shadows: shadowGlyphs, images: decodedImages });
 
   context.canvas.width = physicalWidth;
   context.canvas.height = physicalHeight;
@@ -306,6 +314,15 @@ export function render(program, context, options) {
 }
 
 function drawConcreteGraphic(context, id, graphic, isolated, options) {
+  if (isBatchGraphicType(graphic.type)) {
+    visitGraphicSources(id, graphic, graphic.type, (rowId, row) => drawConcreteGraphic(context, rowId, row, isolated, options));
+    return;
+  }
+  if (graphic.type === "weighted-blend") {
+    drawWeightedBlend(context, id, graphic, options.weighted,
+      (targetContext, sourceId, source) => drawConcreteGraphic(targetContext, sourceId, source, isolated, options));
+    return;
+  }
   if (graphic.type === "collection") {
     for (const item of graphic.items ?? []) {
       drawConcreteGraphic(context, item.id ?? id, item, isolated, options);

@@ -1,0 +1,69 @@
+{
+  "status": "focused-verified",
+  "sourceRevision": "757a4456e",
+  "runtimeRevision": "0d72f2c7001ad591df2b0f377221ed5afd53f194",
+  "recipeSourceRevision": "7830a16a6",
+  "recipeQualificationRevision": "c749a4f40",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "checks": {
+    "owning": 31,
+    "discovery": 16,
+    "renderers": 3,
+    "realisticSources": 5,
+    "docs": 226,
+    "globalContractsInitial": {
+      "tests": 783,
+      "passed": 782,
+      "failed": 1,
+      "failedOwner": "test/contracts/compact-action-cards.test.js",
+      "measuredCardMedianBytes": 2073,
+      "previousMedianCeilingBytes": 2070,
+      "repairedCeilingBytes": 2080,
+      "repairedOwnerPassed": 12
+    },
+    "commonCorpusRepaired": {
+      "sourceRevision": "729a663240c73d61aaa8e6f94cdbef49fa518ff8",
+      "tests": 10,
+      "passed": 10,
+      "failed": 0,
+      "wallMs": 938639.126791,
+      "isolation": [
+        {
+          "limit": 216,
+          "complete": true,
+          "maximumChildRssBytes": 224804864,
+          "maximumCombinedRssBytes": 293683200,
+          "isolatedAndReferenceMatch": true
+        },
+        {
+          "limit": 360,
+          "complete": true,
+          "maximumChildRssBytes": 298221568,
+          "maximumCombinedRssBytes": 382664704,
+          "isolatedAndReferenceMatch": true
+        }
+      ]
+    }
+  },
+  "packageSha256": "6c3d3fb3bc405586b6ee282ad2d344443e68f4f99b3c2246c02b40cea8e085f2",
+  "packageDelta": 0,
+  "pending": [
+    "Final STEP077 clean-source archive and complete acceptance/consumer matrix"
+  ],
+  "gallery": {
+    "sourceRevision": "7b6e7ae9906c780fdd374a76073c9e1fb8a7d4eb",
+    "url": "https://hyeons-mac-mini.tailb43078.ts.net/ggaction-charts/",
+    "charts": 39,
+    "newRealData": 17,
+    "realData": 25,
+    "svgPreviews": 25,
+    "httpsVerifiedFiles": 65,
+    "widths": [
+      1440,
+      768,
+      390
+    ],
+    "axeViolations": 0,
+    "consoleErrors": 0
+  }
+}

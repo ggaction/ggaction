@@ -17,8 +17,8 @@ export function preparedResourceResults(args, enteredProgram) {
 
 // Bind precomputed dependent results only to the exact resource primitive argument.
 // Nested callers restore their prior binding and every exit removes authority.
-export function withPreparedResourceResults(program, args, replacements, operation, dataReplacements = []) {
-  return bindPreparedResources(program, args, replacements, operation, dataReplacements, false);
+export function withPreparedResourceResults(program, args, replacements, operation, dataReplacements = [], routeScope) {
+  return bindPreparedResources(program, args, replacements, operation, dataReplacements, false, { routeScope });
 }
 
 // Source revisions may update independent resources rooted in the same exact
@@ -29,17 +29,17 @@ export function withPreparedDataResourceResults(program, args, replacements, ope
 
 // Facet projections create a new dataset identity, not a later source revision.
 // This separate private authority still binds exact refs and a complete result DAG.
-export function withPreparedProjectedResourceResults(program, args, replacements, operation, dataReplacements) {
-  return bindPreparedResources(program, args, replacements, operation, dataReplacements, false, { projected: true });
+export function withPreparedProjectedResourceResults(program, args, replacements, operation, dataReplacements, routeScope) {
+  return bindPreparedResources(program, args, replacements, operation, dataReplacements, false, { projected: true, routeScope });
 }
 
 // Canvas revisions may invalidate several independent screen-space routes.
 // This private authority permits only their next viewport-bound results.
-export function withPreparedScreenRouteResults(program, args, replacements, operation) {
-  return bindPreparedResources(program, args, replacements, operation, [], false, { screenRooted: true });
+export function withPreparedScreenRouteResults(program, args, replacements, operation, routeScope) {
+  return bindPreparedResources(program, args, replacements, operation, [], false, { screenRooted: true, routeScope });
 }
 
-function bindPreparedResources(program, args, replacements, operation, dataReplacements, dataRooted, { projected = false, screenRooted = false } = {}) {
+function bindPreparedResources(program, args, replacements, operation, dataReplacements, dataRooted, { projected = false, screenRooted = false, routeScope } = {}) {
   ownRecord(args, "Prepared resource arguments");
   ownArray(replacements, "Prepared resource replacements");
   const identities = new Set();
@@ -50,7 +50,9 @@ function bindPreparedResources(program, args, replacements, operation, dataRepla
     validateInputReference(replacement.previous);
     validateStoredResource(replacement.resource, program.constructor);
     const { previous, resource } = replacement;
-    if (screenRooted && (previous.kind !== "edge-route" || resource.options.coordinateSpace !== "screen")) throw new TypeError("Prepared screen replacements require screen edge routes.");
+    if (screenRooted && !(previous.kind === "edge-route" && resource.options.coordinateSpace === "screen" ||
+        previous.kind === "geometry" && ["geo-routes", "geo-join", "geo-lod"].includes(resource.options.method) ||
+        previous.kind === "projection")) throw new TypeError("Prepared screen replacements require screen edge routes or their geographic dependents.");
     if (!(dataRooted ? ["hierarchy", "graph", "geometry", "layout", "edge-route", "projection"] : ["data-source", "graph", "layout", "edge-route", "projection", "geometry"]).includes(previous.kind) || resource.kind !== previous.kind || previous.id !== resource.id ||
         resource.revision !== previous.revision + 1 || identities.has(JSON.stringify([previous.kind, previous.id]))) {
       throw new TypeError("Prepared resource replacements require unique next revisions.");
@@ -74,7 +76,7 @@ function bindPreparedResources(program, args, replacements, operation, dataRepla
     dataIds.add(entry.previous.id);
   }
   const hadPrevious = prepared.has(args), previous = prepared.get(args);
-  prepared.set(args, { program, replacements: cloneAndFreeze(replacements), dataReplacements: cloneAndFreeze(dataReplacements), dataRooted, projected, screenRooted });
+  prepared.set(args, { program, replacements: cloneAndFreeze(replacements), dataReplacements: cloneAndFreeze(dataReplacements), dataRooted, projected, screenRooted, routeScope });
   try { return operation(args); }
   finally { if (hadPrevious) prepared.set(args, previous); else prepared.delete(args); }
 }
@@ -97,4 +99,10 @@ export function preparedResourceDataProjection(args, enteredProgram) {
 export function preparedResourceScreenRooted(args, enteredProgram) {
   preparedResourceResults(args, enteredProgram);
   return prepared.get(args)?.screenRooted === true;
+}
+
+// Resource validation uses the same native request counters, never new proof.
+export function preparedResourceRouteScope(args, enteredProgram) {
+  preparedResourceResults(args, enteredProgram);
+  return prepared.get(args)?.routeScope;
 }

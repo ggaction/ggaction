@@ -7,7 +7,7 @@ import { prepareRouteInput, finalizeRouteResult } from "./common.js";
 import { normalizeSplineOptions, sampleClampedSpline } from "./spline.js";
 
 export function normalizeHierarchicalRouteOptions(input = {}) {
-  ownRecord(input, "Hierarchical route options");
+  input = Object.assign(Object.create(null), ownRecord(input, "Hierarchical route options"));
   rejectUnknownProperties(input, ["strength", "tolerance", "maxSubdivisions", "zeroLength"], "hierarchical route options");
   const strength = input.strength === undefined ? 0.85 : input.strength;
   const zeroLength = input.zeroLength === undefined ? "point" : input.zeroLength;
@@ -63,9 +63,9 @@ function ancestorPath(source, target, hierarchy, budget) {
   return [...left, a, ...right.reverse()];
 }
 
-export function bundleHierarchicalRoutes(routeInput, input, optionsInput = {}, signal) {
+export function bundleHierarchicalRoutes(routeInput, input, optionsInput = {}, signal, scope) {
   const options = normalizeHierarchicalRouteOptions(optionsInput);
-  const context = prepareRouteInput(routeInput, signal), hierarchy = validateRouteHierarchy(input, context);
+  const context = prepareRouteInput(routeInput, signal, scope), hierarchy = validateRouteHierarchy(input, context);
   const routes = [], details = new Map();
   let heldSamples = context.edges.length * 2;
   for (const edge of context.edges) {

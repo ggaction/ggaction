@@ -1,0 +1,93 @@
+{
+  "node": "v24.22.1",
+  "sha256": "5926cc74cffb5a5d9751e6f2f9e12fd4fed02d527824ef15544920973be17430",
+  "checks": [
+    {
+      "id": "data/inferred-graph-lifecycle",
+      "status": "passed",
+      "durationMs": 93.50633299999998
+    },
+    {
+      "id": "data/inferred-graph-explicit-capacity",
+      "status": "passed",
+      "durationMs": 1428.641583
+    },
+    {
+      "id": "data/inferred-graph-bounded-execution",
+      "status": "passed",
+      "durationMs": 13590.051334
+    },
+    {
+      "id": "data/inferred-graph-worker-lifecycle",
+      "status": "passed",
+      "durationMs": 176.8956249999992
+    },
+    {
+      "id": "data/inferred-graph-worker-complete-grid",
+      "status": "passed",
+      "durationMs": 13147.867833
+    }
+  ],
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1063,
+      "minifiedBytes": 2739118,
+      "gzipBytes": 785630
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 625,
+      "minifiedBytes": 1446516,
+      "gzipBytes": 424305
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24954
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 113,
+      "minifiedBytes": 225319,
+      "gzipBytes": 67610
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 509,
+      "minifiedBytes": 1112884,
+      "gzipBytes": 333698
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 205,
+      "minifiedBytes": 410499,
+      "gzipBytes": 131316
+    }
+  ],
+  "types": "passed",
+  "snippets": [
+    {
+      "id": "graph-inference",
+      "status": "passed",
+      "sha256": "763a08ab408e0e4ebc51c3c1aee83c4c9e841ff22d1ab03e1017dbf6617a2726"
+    },
+    {
+      "id": "graph-inference-worker",
+      "status": "passed",
+      "sha256": "2dc2d94e53c93d1b8c754336235f3fbe50c0029a58677bfda99139ad5113e831"
+    }
+  ],
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "status": "bundle-limit-failed"
+}

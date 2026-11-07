@@ -1,0 +1,26 @@
+{
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1246,
+    "packedBytes": 1793821,
+    "unpackedBytes": 8088083,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-animation-codec/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "36c39d065ad29a61422111794d17beb19febae56",
+    "sha256": "5e8dbb519c528535b6767e49e956f37daa706d402ea43410f2f983ad7a4aaa6c"
+  },
+  "node": "v20.20.2",
+  "directory": "/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-jz7drd",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed"
+    },
+    {
+      "id": "public-v3-v4-native-offline-rebase",
+      "status": "passed"
+    }
+  ],
+  "bundles": {}
+}

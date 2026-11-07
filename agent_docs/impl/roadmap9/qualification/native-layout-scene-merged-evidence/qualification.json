@@ -1,0 +1,67 @@
+{
+  "status": "four-native-layout-animation-owners-integrated; final-results-pending",
+  "base": "a84142828",
+  "incoming": "71c0ceddd",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "runtimeTypesAndPackageInputsUnchanged": true,
+  "shared5Unchanged": true,
+  "archiveReuse": {
+    "sha256": "ebfa7ce25443b4fcf56205a5cf8cb241531e8fffe7b217a60fc5e1a5727150f0",
+    "reason": "Unchanged runtime/package inputs; frozen lane10 archive reused. No new package/render/browser execution claimed."
+  },
+  "scope": [
+    "tree/scene-animation",
+    "treemap/scene-animation",
+    "sankey-dag/scene-animation",
+    "sankey-cyclic/scene-animation"
+  ],
+  "behavior": "Explicit unsupported-family/primitive-role fallback, native keys/rows, .6/.4 middle geometry, endpoint identity, authentic forward/reverse rebase and fullframe offline replay. No geometry morph claim.",
+  "checks": {
+    "docs.log": 238,
+    "owning.log": 77,
+    "node20.log": 4,
+    "node24.log": 4
+  },
+  "manifest": {
+    "requirements": 30,
+    "groups": 79,
+    "targets": 577,
+    "required": 574,
+    "canonicalNotApplicable": 3,
+    "assignedConsumers": 493,
+    "pendingRequiredConsumers": 81,
+    "assignedAcceptanceGroups": 55,
+    "pendingAcceptanceGroups": 24,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577,
+    "allOtherRowsAndFieldsPreserved": true
+  },
+  "remaining": [
+    "Dynamic axis labels and inferred lane clearance",
+    "81 consumer/24 acceptance owners and actual final candidate receipts",
+    "Route SLO, final nine commands/review/delivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "docs.log": {
+      "sha256": "9b10b65df887aa35ffecfe7475d49e0946b7af44a3cfa0999f529b0ef428c0e7",
+      "bytes": 72585
+    },
+    "pending.json": {
+      "sha256": "81300d7e49705cfb9294383f27d9fa7aee9fe79abc8eb215bc5dd8b366d8ba5f",
+      "bytes": 28030
+    },
+    "owning.log": {
+      "sha256": "95e92113fb271f363bbe440e0596484a88ba66e8ef648a9efad764f9a6e4ccc4",
+      "bytes": 18015
+    },
+    "node20.log": {
+      "sha256": "be07a73bdb0c745acf016185c9be2418e8c7728da145166005a6ced59277a1c9",
+      "bytes": 1067
+    },
+    "node24.log": {
+      "sha256": "0f1e02312dde741426a03ddb8c8a2b15e7e792cc469e06ae0afc60554c962ce6",
+      "bytes": 551
+    }
+  }
+}

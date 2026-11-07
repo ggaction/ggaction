@@ -1,0 +1,115 @@
+{
+  "status": "passed",
+  "sha256": "1a304ca56f6233164ec54492a308101e0bcc885f31a15d35d73f4597215c18e8",
+  "measurements": [
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction",
+      "gzipBytes": 786443,
+      "limit": 786500
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/basic",
+      "gzipBytes": 424305,
+      "limit": 424400
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/svg",
+      "gzipBytes": 24954,
+      "limit": 26000
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/graph",
+      "gzipBytes": 68376,
+      "limit": 68400
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/animation",
+      "gzipBytes": 333698,
+      "limit": 333700
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/interaction",
+      "gzipBytes": 131316,
+      "limit": 131400
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction",
+      "gzipBytes": 785092,
+      "limit": 786500
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/basic",
+      "gzipBytes": 423440,
+      "limit": 424400
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/svg",
+      "gzipBytes": 24779,
+      "limit": 26000
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/graph",
+      "gzipBytes": 68212,
+      "limit": 68400
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/animation",
+      "gzipBytes": 332580,
+      "limit": 333700
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/interaction",
+      "gzipBytes": 130861,
+      "limit": 131400
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction",
+      "gzipBytes": 786443,
+      "limit": 786500
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/basic",
+      "gzipBytes": 424305,
+      "limit": 424400
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/svg",
+      "gzipBytes": 24954,
+      "limit": 26000
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/graph",
+      "gzipBytes": 68376,
+      "limit": 68400
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/animation",
+      "gzipBytes": 333698,
+      "limit": 333700
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/interaction",
+      "gzipBytes": 131316,
+      "limit": 131400
+    }
+  ],
+  "policy": "Original installed receipts retain the prior limit failure; reuse exactly the same measurements after the measured minimum cap update. No reinstall or runtime edit."
+}

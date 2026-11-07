@@ -122,7 +122,7 @@
       },
       {
         "id": "guides/overflow-summary-line",
-        "statements": 1
+        "statements": 7
       },
       {
         "id": "guides/axis-label-edge-threshold",
@@ -863,11 +863,11 @@
     "cases": [
       {
         "id": "conditional-encoding/fresh-process-lifecycle",
-        "statements": 10
+        "statements": 2
       },
       {
         "id": "conditional-encoding/renderers-and-scene",
-        "statements": 22
+        "statements": 21
       },
       {
         "id": "conditional-encoding/bar-blend-lifecycle",
@@ -875,7 +875,7 @@
       },
       {
         "id": "conditional-encoding/position-text-lifecycle",
-        "statements": 23
+        "statements": 22
       }
     ]
   },
@@ -884,11 +884,11 @@
     "cases": [
       {
         "id": "paint/structured-filled-marks",
-        "statements": 10
+        "statements": 1
       },
       {
         "id": "paint/structured-text",
-        "statements": 7
+        "statements": 1
       },
       {
         "id": "paint/fresh-codec",
@@ -901,7 +901,7 @@
     "cases": [
       {
         "id": "images/resource-lifecycle",
-        "statements": 12
+        "statements": 11
       },
       {
         "id": "images/renderer-scene-offline",
@@ -930,12 +930,16 @@
     "file": "fonts.mjs",
     "cases": [
       {
+        "id": "fonts/axis-reflow-closure",
+        "statements": 14
+      },
+      {
         "id": "fonts/resource-metrics-offline",
         "statements": 15
       },
       {
         "id": "fonts/renderers-scene-handles",
-        "statements": 6
+        "statements": 11
       },
       {
         "id": "fonts/resource-backed-labels",
@@ -948,7 +952,7 @@
     "cases": [
       {
         "id": "data/observed-graph-lifecycle",
-        "statements": 16
+        "statements": 20
       }
     ]
   },
@@ -957,7 +961,7 @@
     "cases": [
       {
         "id": "paint/outline-basic-and-codec",
-        "statements": 8
+        "statements": 1
       },
       {
         "id": "paint/outline-text-and-fresh-edit",
@@ -965,7 +969,7 @@
       },
       {
         "id": "paint/outline-image-hierarchy-composition",
-        "statements": 20
+        "statements": 19
       }
     ]
   },
@@ -983,7 +987,15 @@
     "cases": [
       {
         "id": "data/inferred-graph-lifecycle",
-        "statements": 22
+        "statements": 38
+      },
+      {
+        "id": "data/inferred-graph-explicit-capacity",
+        "statements": 16
+      },
+      {
+        "id": "data/inferred-graph-bounded-execution",
+        "statements": 17
       }
     ]
   },
@@ -1026,7 +1038,7 @@
     "cases": [
       {
         "id": "flow/full-basic-lifecycle",
-        "statements": 13
+        "statements": 16
       },
       {
         "id": "flow/fresh-process-source-revision",
@@ -1056,7 +1068,7 @@
     "cases": [
       {
         "id": "contour/full-basic-lifecycle",
-        "statements": 12
+        "statements": 13
       },
       {
         "id": "contour/fresh-process-source-revision",
@@ -1071,6 +1083,54 @@
   {
     "file": "interaction.mjs",
     "cases": [
+      {
+        "id": "interaction/editing-arbitration",
+        "statements": 24
+      },
+      {
+        "id": "interaction/prepared-native-preview",
+        "statements": 27
+      },
+      {
+        "id": "interaction/native-camera-navigation",
+        "statements": 23
+      },
+      {
+        "id": "interaction/geographic-label-screen-history",
+        "statements": 16
+      },
+      {
+        "id": "interaction/observed-resize-prepared-native-policy",
+        "statements": 27
+      },
+      {
+        "id": "interaction/prepared-update",
+        "statements": 23
+      },
+      {
+        "id": "interaction/asset-preparation",
+        "statements": 26
+      },
+      {
+        "id": "interaction/history",
+        "statements": 19
+      },
+      {
+        "id": "interaction/annotation-drag",
+        "statements": 22
+      },
+      {
+        "id": "interaction/screen-annotation",
+        "statements": 14
+      },
+      {
+        "id": "interaction/geographic-annotation-edit",
+        "statements": 11
+      },
+      {
+        "id": "interaction/annotation-edit",
+        "statements": 29
+      },
       {
         "id": "interaction/geographic-representation",
         "statements": 5
@@ -1114,11 +1174,11 @@
     "cases": [
       {
         "id": "responsive/full-basic-resize-restore",
-        "statements": 1
+        "statements": 13
       },
       {
         "id": "responsive/renderers-scene-codec",
-        "statements": 1
+        "statements": 10
       }
     ]
   },
@@ -1127,11 +1187,11 @@
     "cases": [
       {
         "id": "selection/logical-item-update",
-        "statements": 1
+        "statements": 28
       },
       {
         "id": "selection/logical-scoped-update",
-        "statements": 1
+        "statements": 7
       }
     ]
   },
@@ -1161,21 +1221,45 @@
     "cases": [
       {
         "id": "nested/shared-layout-lifecycle",
-        "statements": 1
+        "statements": 13
       },
       {
         "id": "nested/projected-graph-source",
-        "statements": 1
+        "statements": 5
       },
       {
         "id": "nested/renderers-scene-codec",
-        "statements": 1
+        "statements": 10
       }
     ]
   },
   {
     "file": "edge-routes.mjs",
     "cases": [
+      {
+        "id": "edge-routes/packed-density-samples",
+        "statements": 13
+      },
+      {
+        "id": "edge-routes/ordered-force-storage",
+        "statements": 12
+      },
+      {
+        "id": "edge-routes/symmetric-force-pairs",
+        "statements": 4
+      },
+      {
+        "id": "edge-routes/bounded-hierarchy-spans",
+        "statements": 18
+      },
+      {
+        "id": "edge-routes/bounded-long-paths",
+        "statements": 13
+      },
+      {
+        "id": "edge-routes/own-host-options",
+        "statements": 10
+      },
       {
         "id": "edge-routes/responsive-source-and-guide-closure",
         "statements": 16
@@ -1199,15 +1283,19 @@
     "cases": [
       {
         "id": "geometry/full-basic-identity",
-        "statements": 11
+        "statements": 10
       },
       {
         "id": "geometry/fresh-process-offline",
-        "statements": 8
+        "statements": 9
       },
       {
         "id": "geometry/topology-atomic-failure",
-        "statements": 9
+        "statements": 8
+      },
+      {
+        "id": "geometry/declared-winding-offline-renderers",
+        "statements": 17
       }
     ]
   },
@@ -1246,15 +1334,15 @@
     "cases": [
       {
         "id": "geographic-join/typed-fields-and-atomic-revision",
-        "statements": 9
+        "statements": 11
       },
       {
         "id": "geographic-join/offline-fresh-process",
-        "statements": 3
+        "statements": 6
       },
       {
         "id": "geographic-join/four-renderer-source-geometry-parity",
-        "statements": 6
+        "statements": 12
       }
     ]
   },
@@ -1297,15 +1385,15 @@
     "cases": [
       {
         "id": "geographic-levels/hysteresis-selection-and-atomicity",
-        "statements": 10
+        "statements": 12
       },
       {
         "id": "geographic-levels/offline-fresh-process",
-        "statements": 4
+        "statements": 7
       },
       {
         "id": "geographic-levels/four-renderer-current-level-parity",
-        "statements": 6
+        "statements": 1
       }
     ]
   },
@@ -1323,6 +1411,589 @@
       {
         "id": "waterfall/fresh-process-and-nested",
         "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "geographic-annotations.mjs",
+    "cases": [
+      {
+        "id": "geographic-annotations/feature-anchor-and-atomicity",
+        "statements": 9
+      },
+      {
+        "id": "geographic-annotations/offline-fresh-process",
+        "statements": 6
+      },
+      {
+        "id": "geographic-annotations/four-renderer-native-text-parity",
+        "statements": 9
+      }
+    ]
+  },
+  {
+    "file": "geographic-encodings.mjs",
+    "cases": [
+      {
+        "id": "geographic-encodings/conditional-references-and-atomicity",
+        "statements": 9
+      },
+      {
+        "id": "geographic-encodings/fresh-process-conditional-source-revision",
+        "statements": 6
+      },
+      {
+        "id": "geographic-encodings/four-renderer-conditional-parity",
+        "statements": 10
+      },
+      {
+        "id": "geographic-encodings/fields-guides-and-atomic-edits",
+        "statements": 13
+      },
+      {
+        "id": "geographic-encodings/fresh-process-field-source-revision",
+        "statements": 7
+      },
+      {
+        "id": "geographic-encodings/four-renderer-feature-area-parity",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "geographic-camera.mjs",
+    "cases": [
+      {
+        "id": "geographic-camera/explicit-native-view-lifecycle",
+        "statements": 10
+      },
+      {
+        "id": "geographic-camera/fresh-process-restored-native-navigation",
+        "statements": 8
+      },
+      {
+        "id": "geographic-camera/four-renderer-anchored-view-parity",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "geographic-labels.mjs",
+    "cases": [
+      {
+        "id": "geographic-labels/native-source-and-selection",
+        "statements": 11
+      },
+      {
+        "id": "geographic-labels/offline-restored-source-revision",
+        "statements": 7
+      },
+      {
+        "id": "geographic-labels/four-renderer-native-text-parity",
+        "statements": 9
+      }
+    ]
+  },
+  {
+    "file": "trail-plots.mjs",
+    "cases": [
+      {
+        "id": "trail/public-lifecycle",
+        "statements": 15
+      },
+      {
+        "id": "trail/offline-scene-renderers",
+        "statements": 13
+      },
+      {
+        "id": "trail/fresh-process-and-nested",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "stream-baselines.mjs",
+    "cases": [
+      {
+        "id": "stream-baselines/public-lifecycle",
+        "statements": 19
+      },
+      {
+        "id": "stream-baselines/offline-scene-renderers",
+        "statements": 13
+      },
+      {
+        "id": "stream-baselines/fresh-process-nested",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "table-plots.mjs",
+    "cases": [
+      {
+        "id": "table/public-lifecycle",
+        "statements": 14
+      },
+      {
+        "id": "table/offline-clipped-scene-renderers",
+        "statements": 15
+      },
+      {
+        "id": "table/fresh-process-and-nested",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "weighted-blends.mjs",
+    "cases": [
+      {
+        "id": "weighted-blend/linear-pixels-and-four-renderers",
+        "statements": 12
+      },
+      {
+        "id": "weighted-blend/fresh-process-codec-and-scene",
+        "statements": 7
+      },
+      {
+        "id": "weighted-blend/endpoints-limits-and-immutable-failure",
+        "statements": 11
+      }
+    ]
+  },
+  {
+    "file": "composition-recipes.mjs",
+    "cases": [
+      {
+        "id": "composition-recipes/marginal",
+        "statements": 11
+      },
+      {
+        "id": "composition-recipes/bullet",
+        "statements": 8
+      },
+      {
+        "id": "composition-recipes/combo",
+        "statements": 7
+      }
+    ]
+  },
+  {
+    "file": "accessible-items.mjs",
+    "cases": [
+      {
+        "id": "accessible-items/native-grain-and-basic",
+        "statements": 8
+      },
+      {
+        "id": "accessible-items/nested-scoped-membership",
+        "statements": 7
+      },
+      {
+        "id": "accessible-items/fresh-process-filter-and-selection",
+        "statements": 5
+      }
+    ]
+  },
+  {
+    "file": "keyboard-focus.mjs",
+    "cases": [
+      {
+        "id": "keyboard-focus/current-paint-and-basic",
+        "statements": 2
+      },
+      {
+        "id": "keyboard-focus/nested-native-selection-and-offline-restore",
+        "statements": 12
+      },
+      {
+        "id": "keyboard-focus/native-hierarchy-paths",
+        "statements": 9
+      }
+    ]
+  },
+  {
+    "file": "static-delivery.mjs",
+    "cases": [
+      {
+        "id": "static-delivery/interacted-native-offline-four-formats",
+        "statements": 15
+      },
+      {
+        "id": "static-delivery/native-endpoints-animation-replay",
+        "statements": 20
+      }
+    ]
+  },
+  {
+    "file": "animation.mjs",
+    "cases": [
+      {
+        "id": "animation/grouped-legend-offline-native",
+        "statements": 1
+      },
+      {
+        "id": "animation/categorical-legend-offline-native",
+        "statements": 1
+      },
+      {
+        "id": "animation/size-legend-offline-native",
+        "statements": 1
+      },
+      {
+        "id": "animation/dependent-title-offline-native",
+        "statements": 1
+      },
+      {
+        "id": "animation/axis-label-layout-offline-native",
+        "statements": 2
+      },
+      {
+        "id": "animation/legend-offline-native",
+        "statements": 2
+      },
+      {
+        "id": "animation/geographic-text-offline-native",
+        "statements": 1
+      },
+      {
+        "id": "animation/guides-offline-native",
+        "statements": 17
+      },
+      {
+        "id": "animation/polar-offline-native",
+        "statements": 4
+      },
+      {
+        "id": "animation/bounded-repeated-interruption",
+        "statements": 12
+      },
+      {
+        "id": "animation/public-player-interruption",
+        "statements": 32
+      },
+      {
+        "id": "animation/offline-fresh-process",
+        "statements": 8
+      },
+      {
+        "id": "animation/four-public-renderers",
+        "statements": 12
+      },
+      {
+        "id": "animation/embedded-assets-fresh-process",
+        "statements": 13
+      },
+      {
+        "id": "animation/immutable-schedules-and-corruption",
+        "statements": 11
+      },
+      {
+        "id": "animation/cartesian-native-families",
+        "statements": 4
+      },
+      {
+        "id": "animation/cartesian-offline-renderers",
+        "statements": 13
+      },
+      {
+        "id": "animation/guide-anchors-offline-native",
+        "statements": 6
+      },
+      {
+        "id": "animation/axis-legend-clearance-offline-native",
+        "statements": 21
+      },
+      {
+        "id": "animation/implicit-legend-lanes-offline-native",
+        "statements": 18
+      }
+    ]
+  },
+  {
+    "file": "animation-graph.mjs",
+    "cases": [
+      {
+        "id": "animation-graph/offline-four-renderers",
+        "statements": 14
+      },
+      {
+        "id": "animation-graph/current-frame-interruption",
+        "statements": 12
+      },
+      {
+        "id": "animation-graph/topology-and-immutable-failure",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "animation-partition.mjs",
+    "cases": [
+      {
+        "id": "animation-partition/offline-four-renderers",
+        "statements": 12
+      },
+      {
+        "id": "animation-partition/current-frame-interruption",
+        "statements": 8
+      },
+      {
+        "id": "animation-partition/fallback-and-immutable-failure",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "interaction-animation.mjs",
+    "cases": [
+      {
+        "id": "interaction-animation/four-route-player-lifecycle",
+        "statements": 1
+      },
+      {
+        "id": "interaction-animation/geographic-route-seam-current-hit",
+        "statements": 12
+      },
+      {
+        "id": "interaction-animation/overlapping-edge-four-formats",
+        "statements": 5
+      },
+      {
+        "id": "interaction-animation/native-frame-four-formats",
+        "statements": 20
+      },
+      {
+        "id": "interaction-animation/player-frame-leases",
+        "statements": 18
+      },
+      {
+        "id": "interaction-animation/fresh-offline-native-scope",
+        "statements": 3
+      },
+      {
+        "id": "interaction-animation/geographic-projection-membership",
+        "statements": 18
+      },
+      {
+        "id": "interaction-animation/geographic-label-source-lifecycle",
+        "statements": 18
+      },
+      {
+        "id": "interaction-animation/current-graph-drag-four-formats",
+        "statements": 43
+      }
+    ]
+  },
+  {
+    "file": "animation-geo.mjs",
+    "cases": [
+      {
+        "id": "animation-geo/indexed-native-path-hit-policy",
+        "statements": 1
+      },
+      {
+        "id": "animation-geo/offline-four-renderers",
+        "statements": 1
+      },
+      {
+        "id": "animation-geo/current-frame-interruption",
+        "statements": 14
+      },
+      {
+        "id": "animation-geo/immutable-failure",
+        "statements": 8
+      },
+      {
+        "id": "animation-geo/numeric-capacity-path-four-renderers",
+        "statements": 12
+      }
+    ]
+  },
+  {
+    "file": "animation-appearance.mjs",
+    "cases": [
+      {
+        "id": "animation-appearance/offline-four-renderers",
+        "statements": 11
+      },
+      {
+        "id": "animation-appearance/current-frame-interruption",
+        "statements": 2
+      },
+      {
+        "id": "animation-appearance/current-ink-selection",
+        "statements": 5
+      }
+    ]
+  },
+  {
+    "file": "animation-timeline.mjs",
+    "cases": [
+      {
+        "id": "animation-timeline/nonlinear-offline-four-renderers",
+        "statements": 17
+      },
+      {
+        "id": "animation-timeline/player-marker-lifetimes",
+        "statements": 6
+      },
+      {
+        "id": "animation-timeline/current-hit-selection-rebase",
+        "statements": 4
+      }
+    ]
+  },
+  {
+    "file": "animation-cartesian-completion.mjs",
+    "cases": [
+      {
+        "id": "animation-cartesian-completion/native-four-renderers",
+        "statements": 2
+      },
+      {
+        "id": "animation-cartesian-completion/offline-network-free",
+        "statements": 6
+      },
+      {
+        "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+        "statements": 5
+      }
+    ]
+  },
+  {
+    "file": "geographic-routes.mjs",
+    "cases": [
+      {
+        "id": "geographic-routes/source-and-atomic-revision",
+        "statements": 10
+      },
+      {
+        "id": "geographic-routes/offline-restored-edit",
+        "statements": 5
+      },
+      {
+        "id": "geographic-routes/four-renderer-native-line-parity",
+        "statements": 14
+      }
+    ]
+  },
+  {
+    "file": "animation-geotext-expressions.mjs",
+    "cases": [
+      {
+        "id": "animation-geotext-expressions/current-four-renderers",
+        "statements": 2
+      },
+      {
+        "id": "animation-geotext-expressions/offline-network-free",
+        "statements": 6
+      },
+      {
+        "id": "animation-geotext-expressions/current-hit-rebase",
+        "statements": 5
+      }
+    ]
+  },
+  {
+    "file": "animation-axis-reflow.mjs",
+    "cases": [
+      {
+        "id": "animation-axis-reflow/dependent-title-legend-native-offline",
+        "statements": 2
+      },
+      {
+        "id": "animation-axis-reflow/current-native-fonts-four-renderers",
+        "statements": 2
+      },
+      {
+        "id": "animation-axis-reflow/offline-fonts-network-free",
+        "statements": 1
+      },
+      {
+        "id": "animation-axis-reflow/raw-current-hit-retime-rebase",
+        "statements": 2
+      }
+    ]
+  },
+  {
+    "file": "interaction-handles.mjs",
+    "cases": [
+      {
+        "id": "interaction-handles/scoped-region-pointer-and-command",
+        "statements": 22
+      },
+      {
+        "id": "interaction-handles/typed-category-pointer-and-command",
+        "statements": 22
+      },
+      {
+        "id": "interaction-handles/ambiguity-and-cancel-atomicity",
+        "statements": 19
+      }
+    ]
+  },
+  {
+    "file": "graph-inference-worker.mjs",
+    "cases": [
+      {
+        "id": "data/inferred-graph-worker-lifecycle",
+        "statements": 3
+      },
+      {
+        "id": "data/inferred-graph-worker-complete-grid",
+        "statements": 3
+      }
+    ]
+  },
+  {
+    "file": "hit-preparation.mjs",
+    "cases": [
+      {
+        "id": "hit-preparation/all-100000-native-points",
+        "statements": 11
+      },
+      {
+        "id": "hit-preparation/closed-session-policy-atomic-replacement",
+        "statements": 6
+      }
+    ],
+    "isolation": "case"
+  },
+  {
+    "file": "geographic-capacity.mjs",
+    "cases": [
+      {
+        "id": "geographic-capacity/all-original-vertices-and-atomic-native-closure",
+        "statements": 1
+      },
+      {
+        "id": "geographic-capacity/source-free-four-backend-and-scene",
+        "statements": 18
+      }
+    ],
+    "isolation": "case"
+  },
+  {
+    "file": "animation-point-scales.mjs",
+    "cases": [
+      {
+        "id": "animation-point-scales/native-default-and-explicit-meaning",
+        "statements": 1
+      },
+      {
+        "id": "animation-point-scales/sampled-rebase-offline-replay",
+        "statements": 1
+      }
+    ]
+  },
+  {
+    "file": "animation-batched.mjs",
+    "cases": [
+      {
+        "id": "animation-batched/complete-four-renderer-offline-and-rebase",
+        "statements": 1
       }
     ]
   }

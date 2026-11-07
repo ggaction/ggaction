@@ -1,0 +1,8 @@
+import {spawnSync} from 'node:child_process';
+import {collectTestFiles,testRunnerArguments} from '../../scripts/run-tests.js';
+const files=collectTestFiles('unit',undefined,['capability:animation','unit/core/validation.test.js','unit/selectors/graphic-capacity.test.js']);
+const owners=['animation/columnCodec.js','animation/resources.js','animation/planner.js','animation/envelopeCodec.js','animation/sample.js','animation/frameEndpoint.js','animation/partitionTracks.js','materialization/animation/point.js','materialization/animation/guides.js','core/validation.js','selectors/graphicCapacity.js'];
+const args=testRunnerArguments('unit',files);
+args.splice(2,0,'--experimental-test-coverage',...owners.map(file=>'--test-coverage-include=src/'+file),'--test-coverage-lines=94','--test-coverage-branches=89','--test-coverage-functions=98');
+console.log(JSON.stringify({node:process.version,files,owners}));
+const child=spawnSync(process.execPath,args,{stdio:'inherit'});process.exitCode=child.status??1;

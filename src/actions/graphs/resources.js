@@ -1,3 +1,4 @@
+import { readNativeGraphRouteUpdatePlan } from "../../resources/graphRoutes.js";
 import { withGraphSourceRevisions, withGraphSourceProjection } from "./sourceRevisionContext.js";
 import { orderResourceDependencies } from "../../materialization/resourceState.js";
 import { createInferredGraphData, editInferredGraphData } from "./inference.js";
@@ -10,7 +11,7 @@ import { createObservedGraphResource } from "../../materialization/graph/resourc
 import { findStoredResource, resolveInputReference } from "../../selectors/resources.js";
 import { requireMaterializedDataset } from "../../selectors/datasets.js";
 import { resolveGraphResource } from "../../selectors/graphs.js";
-import { layoutGraph, writeGraphResource } from "./layouts.js";
+import { layoutGraph, writeGraphResource, writePreparedGraphResource } from "./layouts.js";
 
 export const createGraphData = /* @__PURE__ */ closedAction(
   { op: "createGraphData", description: "Create a graph from observed node and edge tables." }, ["id", "nodes", "edges", ...OBSERVED_GRAPH_FIELDS], function (args = {}) {
@@ -22,17 +23,26 @@ export const createGraphData = /* @__PURE__ */ closedAction(
     return this.editSemantic({ property: `resource[graph:${id}]`, value: resource });
   });
 
+export function editedObservedGraphResource(program, args, previous) {
+  const { nodes, edges, definition = {} } = args;
+  ownRecord(definition, "Graph definition patch");
+  if (Object.keys(args).every(key => key === "target")) throw new TypeError("Graph edits require a nonempty patch.");
+  if (Object.entries(args).some(([key, value]) => key !== "target" && value === undefined)) throw new TypeError("Graph edits cannot contain undefined; omission preserves intent.");
+  if (nodes === undefined && edges === undefined && !Object.keys(definition).length) throw new TypeError("Graph edits require a nonempty definition or input change.");
+  const source = (requested, role) => requested === undefined ? resolveInputReference(program, previous.inputs[previous.options.roles[role]]) : requireMaterializedDataset(program, requested);
+  return createObservedGraphResource({ id: previous.id, revision: previous.revision + 1,
+    nodes: source(nodes, "nodes"), edges: source(edges, "edges"), definition: { ...previous.options.definition, ...definition } });
+}
+
 export const editGraphData = /* @__PURE__ */ closedAction(
   { op: "editGraphData", description: "Revise an observed graph and preserve typed endpoint identity." }, ["target", "nodes", "edges", "definition"], function (args = {}) {
     const previous = resolveGraphResource(this, args.target, "observed", false);
-    const { nodes, edges, definition = {} } = args;
-    ownRecord(definition, "Graph definition patch");
-    if (Object.keys(args).every(key => key === "target")) throw new TypeError("Graph edits require a nonempty patch.");
-    if (Object.entries(args).some(([key, value]) => key !== "target" && value === undefined)) throw new TypeError("Graph edits cannot contain undefined; omission preserves intent.");
-    if (nodes === undefined && edges === undefined && !Object.keys(definition).length) throw new TypeError("Graph edits require a nonempty definition or input change.");
-    const source = (requested, role) => requested === undefined ? resolveInputReference(this, previous.inputs[previous.options.roles[role]]) : requireMaterializedDataset(this, requested);
-    const resource = createObservedGraphResource({ id: previous.id, revision: previous.revision + 1,
-      nodes: source(nodes, "nodes"), edges: source(edges, "edges"), definition: { ...previous.options.definition, ...definition } });
+    const prepared = readNativeGraphRouteUpdatePlan(this, args, editGraphData);
+    if (prepared !== undefined) {
+      if (prepared.plan.previous !== previous) throw new TypeError("Prepared graph input is stale.");
+      return writePreparedGraphResource(this, { ...prepared.plan.plan, scope: prepared.scope });
+    }
+    const resource = editedObservedGraphResource(this, args, previous);
     return writeGraphResource(this, resource);
   });
 

@@ -1,8 +1,11 @@
+import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 import { translateFillPaint } from "../grammar/paint.js";
 import { validateGraphicClip, translateGraphicClip } from "../grammar/schemas/graphicClip.js";
-import { isOwned, cloneAndFreeze } from "../core/immutable.js";
+import { isOwned, cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { contentDigest } from "../core/contentDigest.js";
+import { translateWeightedBlendSources } from "../grammar/schemas/weightedBlend.js";
+import { batchGraphicRowCount, isBatchGraphicType } from "../grammar/schemas/batchGraphic.js";
 
 const compiled = new WeakMap();
 // Translate only concrete position properties. Path/text child coordinates keep
@@ -10,6 +13,7 @@ const compiled = new WeakMap();
 function position(properties, dx, dy) {
   if (!dx && !dy) return properties;
   const result = { ...properties };
+  if (properties.sources) result.sources = translateWeightedBlendSources(properties.sources, dx, dy);
   if (properties.fill !== undefined) result.fill = translateFillPaint(properties.fill, dx, dy);
   if (properties.fillBounds) result.fillBounds = { left: properties.fillBounds.left + dx, right: properties.fillBounds.right + dx,
     top: properties.fillBounds.top + dy, bottom: properties.fillBounds.bottom + dy };
@@ -18,11 +22,66 @@ function position(properties, dx, dy) {
   if (result.commands) result.commands = result.commands.map(command => position(command, dx, dy));
   return result;
 }
+// An owned array is a frozen exact value, so one full structure check stays valid
+// for every later frame that reuses it. Caller arrays are checked every time.
+const checkedOwnedRunKeys = new WeakSet();
+// The exact key tuple of a fully checked owned scene, one slot per anchor run.
+// A later scene skips only the cross-entry uniqueness pass when every entry is
+// owned and its whole tuple matches exactly; any miss runs every check again.
+const uniqueKeyTuples = new WeakMap();
+function ownedKeyTuple(entries) {
+  if (!isOwned(entries)) return undefined;
+  const tuple = [];
+  for (const entry of entries) {
+    if (!isOwned(entry)) return undefined;
+    if (entry.kind === "single" && isOwned(entry.node)) tuple.push(entry.node.key);
+    else if ((entry.kind === "circle-run" || entry.kind === "path-run") && checkedOwnedRunKeys.has(entry.keys)) tuple.push(entry.keys);
+    else return undefined;
+  }
+  return tuple.some(part => typeof part === "object") ? tuple : undefined;
+}
+function* concreteEntries(scene) {
+  if (scene.version === 2) { for (const node of scene.nodes) yield { node }; return; }
+  const tuple = ownedKeyTuple(scene.entries), anchor = tuple?.find(part => typeof part === "object");
+  const known = tuple !== undefined && uniqueKeyTuples.get(anchor), unique = known !== undefined && known !== false &&
+    known.length === tuple.length && known.every((part, index) => part === tuple[index]);
+  const logicalKeys = new Set();
+  for (let entryIndex = 0; entryIndex < scene.entries.length; entryIndex++) {
+    const entry = scene.entries[entryIndex];
+    let node, keys;
+    if (entry.kind === "single") { node = entry.node; keys = [node.key]; }
+    else if (entry.kind === "circle-run" || entry.kind === "path-run") {
+      const type = entry.kind === "circle-run" ? "circle-batch" : "path-batch", label = entry.kind === "circle-run" ? "Circle" : "Path";
+      validateConcreteGraphicProperties(type, entry.properties);
+      if (!checkedOwnedRunKeys.has(entry.keys)) {
+        ownArray(entry.keys, `${label} run keys`);
+        if (isOwned(entry.keys)) checkedOwnedRunKeys.add(entry.keys);
+      }
+      if (entry.keys.length !== batchGraphicRowCount(type, entry.properties)) throw new TypeError(`${label} run keys must follow every coordinate row.`);
+      node = { key: `animation/node/${entryIndex}`, type, properties: entry.properties,
+        offset: entry.offset, clip: entry.clip, clips: entry.clips }; keys = entry.keys;
+    } else throw new TypeError("Unknown Canvas scene entry kind.");
+    if (!unique) for (const key of keys) {
+      if (typeof key !== "string" || logicalKeys.has(key)) throw new TypeError("Canvas scene nodes require unique keys.");
+      logicalKeys.add(key);
+    }
+    yield { node, graphicId: `animation/node/${entryIndex}`, batch: entry.kind !== "single" };
+  }
+  if (tuple !== undefined && !unique) uniqueKeyTuples.set(anchor, tuple);
+}
+function positionBatch(properties, dx, dy) {
+  if (!dx && !dy) return properties;
+  return { ...properties, x: properties.x.map(value => value + dx), y: properties.y.map(value => value + dy),
+    appearance: position(properties.appearance, dx, dy) };
+}
 function compile(scene) {
-  if (scene?.version !== 2 || ![scene.width, scene.height].every(n => Number.isFinite(n) && n > 0) || !Array.isArray(scene.nodes)) {
-    throw new TypeError('renderTransitionScene requires a version 2 Canvas scene.');
+  if (![2, 3].includes(scene?.version) || ![scene.width, scene.height].every(n => Number.isFinite(n) && n > 0) ||
+      !Array.isArray(scene.version === 3 ? scene.entries : scene.nodes)) {
+    throw new TypeError('renderTransitionScene requires a version 2 or 3 Canvas scene.');
   }
   const objects = { canvas: { type: 'canvas', properties: { width: scene.width, height: scene.height }, children: [] } };
+  // Only locally created groups and wrappers still requiring a snapshot.
+  const pending = [['canvas',objects.canvas]];
   const keys = new Set();
   let index = 0, activeClips = [];
   const groups = [objects.canvas], origins = [[0, 0]];
@@ -35,14 +94,16 @@ function compile(scene) {
     return true;
   };
   const sameClip = (a, b) => a === b || JSON.stringify(a) === JSON.stringify(b);
-  for (const node of scene.nodes) {
+  for (const { node, graphicId, batch } of concreteEntries(scene)) {
     const clips = node.clips ?? [node.clip];
-    if (typeof node.key !== 'string' || keys.has(node.key) || !['circle','rect','line','path','text','image'].includes(node.type) ||
+    if (typeof node.key !== 'string' || keys.has(graphicId ?? node.key) ||
+        !(batch ? isBatchGraphicType(node.type) : ['circle','rect','line','path','text','image','weighted-blend'].includes(node.type)) ||
         node.offset?.length !== 2 || !node.offset.every(Number.isFinite) || !validClip(node.clip) ||
         !Array.isArray(clips) || !clips.every(validFrame) || !node.properties || typeof node.properties !== 'object') {
       throw new TypeError('Canvas scene nodes require unique keys, concrete properties, offsets and clips.');
     }
-    keys.add(node.key);
+    keys.add(graphicId ?? node.key);
+    if (batch) validateConcreteGraphicProperties(node.type, node.properties);
     let common = 0;
     while (common < Math.min(clips.length, activeClips.length) &&
         sameClip(clips[common], activeClips[common])) common++;
@@ -58,16 +119,24 @@ function compile(scene) {
         : { type: 'canvas', properties: {
           x: clip[0] - origin[0], y: clip[1] - origin[1], width: clip[2], height: clip[3]
         }, children: [] };
+      pending.push([id,nested]);
       parent.children.push(id); groups.push(nested); origins.push(pathClip ? origin : [clip[0], clip[1]]);
     }
     activeClips = clips;
     const group = groups.at(-1), origin = origins.at(-1);
-    const id = `node-${index++}`;
-    objects[id] = { type: node.type, properties: position(node.properties,
+    const id = graphicId ?? `node-${index++}`;
+    const object = { type: node.type, properties: (batch ? positionBatch : position)(node.properties,
       node.offset[0] - origin[0], node.offset[1] - origin[1]) };
+    if(isOwned(object.properties))objects[id]=freezeOwned(object);
+    else {objects[id]=object;pending.push([id,object]);}
     group.children.push(id);
   }
-  return { graphicSpec: { objects, order: ['canvas'] } };
+  // Preserve insertion/error order after every node has passed validation.
+  for(const [id,object] of pending){
+    if(Object.hasOwn(object,'children'))freezeOwned(object.children);
+    objects[id]=cloneAndFreeze(object,undefined,'state.graphicSpec.objects.'+id);
+  }
+  return freezeOwned({graphicSpec:freezeOwned({objects:freezeOwned(objects),order:freezeOwned(['canvas'])})});
 }
 
 function snapshotSignature(scene) {

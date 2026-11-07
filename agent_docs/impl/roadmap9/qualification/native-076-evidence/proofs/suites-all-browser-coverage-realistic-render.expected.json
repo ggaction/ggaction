@@ -1,0 +1,38 @@
+{
+  "targets": [
+    {
+      "target": "AT-84",
+      "owners": [
+        {
+          "test": "test/contracts/composition-recipes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/unit/composition-recipes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/contracts/realistic-composition-recipes.test.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/charts/marginal/renderer.render.js",
+          "discovered": true,
+          "suiteExit": 0
+        },
+        {
+          "test": "test/browser/composition-recipes.browser.js",
+          "discovered": true,
+          "suiteExit": 0
+        }
+      ],
+      "contracts": [
+        "agent_docs/contract/current/NATIVE_POLICY.md",
+        "agent_docs/contract/current/AXES.md"
+      ]
+    }
+  ]
+}

@@ -610,6 +610,14 @@
     "layer": "user-facing",
     "domain": "marks"
   },
+  "editAnnotation": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
   "createTextMark": {
     "operation": "create",
     "authoringRoles": [
@@ -2835,6 +2843,14 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "applyGraphEdgeRoutesUpdate": {
+    "operation": "apply",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "createGeometryData": {
     "operation": "create",
     "authoringRoles": [
@@ -2867,6 +2883,22 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "createGeoRouteData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "editGeoRouteData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "createGeoLODData": {
     "operation": "create",
     "authoringRoles": [
@@ -2892,6 +2924,14 @@
     "domain": "core"
   },
   "editProjection": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "navigateProjection": {
     "operation": "edit",
     "authoringRoles": [
       "H3"
@@ -2940,6 +2980,22 @@
     "domain": "marks"
   },
   "editGeoLineMark": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "createGeoAnnotation": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editGeoAnnotation": {
     "operation": "edit",
     "authoringRoles": [
       "H3"
@@ -3004,6 +3060,38 @@
     "domain": "marks"
   },
   "editWaterfallPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "createTrailPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editTrailPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "createTablePlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editTablePlot": {
     "operation": "edit",
     "authoringRoles": [
       "H3"

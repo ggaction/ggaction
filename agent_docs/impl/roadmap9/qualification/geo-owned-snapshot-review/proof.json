@@ -1,0 +1,479 @@
+{
+  "kind": "read-only loader prototype; unchanged product",
+  "pairs": 41,
+  "errors": 17,
+  "baselineAdds": 2052,
+  "candidateAdds": 27,
+  "reused": 8,
+  "cases": [
+    {
+      "label": "mutable null",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "reused": false
+    },
+    {
+      "label": "mutable true",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "reused": false
+    },
+    {
+      "label": "mutable 0",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "reused": false
+    },
+    {
+      "label": "mutable 0",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "reused": false
+    },
+    {
+      "label": "mutable \"\"",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "reused": false
+    },
+    {
+      "label": "mutable []",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "reused": false
+    },
+    {
+      "label": "owned []",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "reused": true
+    },
+    {
+      "label": "mutable {}",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "reused": false
+    },
+    {
+      "label": "owned {}",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "reused": true
+    },
+    {
+      "label": "mutable [1,[2]]",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 4,
+        "work": 10
+      },
+      "reused": false
+    },
+    {
+      "label": "owned [1,[2]]",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 4,
+        "work": 10
+      },
+      "reused": true
+    },
+    {
+      "label": "mutable {\"a\":{\"b\":[0,1]},\"z\":\"hello\"}",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 6,
+        "work": 21
+      },
+      "reused": false
+    },
+    {
+      "label": "owned {\"a\":{\"b\":[0,1]},\"z\":\"hello\"}",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 6,
+        "work": 21
+      },
+      "reused": true
+    },
+    {
+      "label": "mutable {\"__proto__\":{\"safe\":1}}",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 3,
+        "work": 18
+      },
+      "reused": false
+    },
+    {
+      "label": "owned {\"__proto__\":{\"safe\":1}}",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 3,
+        "work": 18
+      },
+      "reused": true
+    },
+    {
+      "label": "owned aliases",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 9,
+        "work": 25
+      },
+      "reused": false
+    },
+    {
+      "label": "mutable aliases",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 7,
+        "work": 19
+      },
+      "reused": false
+    },
+    {
+      "label": "shallow owned",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 4,
+        "work": 16
+      },
+      "reused": false
+    },
+    {
+      "label": "frozen unowned",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 3,
+        "work": 7
+      },
+      "reused": false
+    },
+    {
+      "label": "owned null prototype",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 2,
+        "work": 4
+      },
+      "reused": false
+    },
+    {
+      "label": "nested owned null prototype",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 3,
+        "work": 11
+      },
+      "reused": false
+    },
+    {
+      "label": "owned accessor",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "error": "Geometry JSON object requires enumerable own data properties; accessors are not supported.",
+      "reused": false
+    },
+    {
+      "label": "owned cycle",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 2,
+        "work": 4
+      },
+      "error": "Geometry source cannot contain cycles.",
+      "reused": false
+    },
+    {
+      "label": "owned sparse array",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "error": "Geometry JSON array must be dense.",
+      "reused": false
+    },
+    {
+      "label": "owned extra array",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "error": "Geometry JSON array cannot contain extra properties.",
+      "reused": false
+    },
+    {
+      "label": "owned nonfinite",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 2,
+        "work": 4
+      },
+      "error": "Geometry source requires finite JSON values.",
+      "reused": false
+    },
+    {
+      "label": "owned undefined",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 2,
+        "work": 4
+      },
+      "error": "Geometry source requires finite JSON values.",
+      "reused": false
+    },
+    {
+      "label": "owned symbol",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "error": "Geometry JSON object requires enumerable own data properties; accessors are not supported.",
+      "reused": false
+    },
+    {
+      "label": "owned nonenumerable",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "error": "Geometry JSON object requires enumerable own data properties; accessors are not supported.",
+      "reused": false
+    },
+    {
+      "label": "depth bound",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 3,
+        "work": 7
+      },
+      "error": "Geometry JSON nesting exceeds maxDepth.",
+      "reused": false
+    },
+    {
+      "label": "values bound",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 3,
+        "work": 6
+      },
+      "error": "Geometry values must not exceed 2.",
+      "reused": false
+    },
+    {
+      "label": "work bound 0",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 1
+      },
+      "error": "Prototype exact work boundary.",
+      "reused": false
+    },
+    {
+      "label": "work bound 1",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 2
+      },
+      "error": "Prototype exact work boundary.",
+      "reused": false
+    },
+    {
+      "label": "work bound 2",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 1,
+        "work": 3
+      },
+      "error": "Prototype exact work boundary.",
+      "reused": false
+    },
+    {
+      "label": "work bound 3",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 2,
+        "work": 4
+      },
+      "error": "Prototype exact work boundary.",
+      "reused": false
+    },
+    {
+      "label": "work bound 4",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 2,
+        "work": 5
+      },
+      "error": "Prototype exact work boundary.",
+      "reused": false
+    },
+    {
+      "label": "work bound 5",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 2,
+        "work": 6
+      },
+      "error": "Prototype exact work boundary.",
+      "reused": false
+    },
+    {
+      "label": "work bound 6",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 3,
+        "work": 7
+      },
+      "error": "Prototype exact work boundary.",
+      "reused": false
+    },
+    {
+      "label": "work bound 7",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 3,
+        "work": 7
+      },
+      "reused": true
+    },
+    {
+      "label": "owned 1000 original coordinates",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 3003,
+        "work": 10920
+      },
+      "reused": true
+    },
+    {
+      "label": "native group",
+      "diagnostics": {
+        "features": 0,
+        "positions": 0,
+        "arcs": 0,
+        "values": 3041,
+        "work": 11404
+      },
+      "reused": true
+    }
+  ],
+  "semanticPairs": 3
+}

@@ -1,0 +1,222 @@
+[
+  {
+    "file": "streamgraph-boundaries-final.log",
+    "sha256": "98741f91ec50cf8bab326f3a7eb59776222a02901aa6ba1abf46a2f9295cf383",
+    "bytes": 5417
+  },
+  {
+    "file": "streamgraph-boundaries.log",
+    "sha256": "839191d3ad93a7e9892859089ed43978a5d5a2d29508a0d493e1d572c9df7dfe",
+    "bytes": 7845
+  },
+  {
+    "file": "streamgraph-browser-final.log",
+    "sha256": "9db557cfb80ea6fff18bd100de7a5f3d47ff5aae144ee85af1e17090a479a1d6",
+    "bytes": 1926
+  },
+  {
+    "file": "streamgraph-browser-typed-path.log",
+    "sha256": "96b0af3b97b94f379b0ba9262d389e0e302cdbd403f2ebbf928139b8812c3fb8",
+    "bytes": 346
+  },
+  {
+    "file": "streamgraph-browser.log",
+    "sha256": "5febe7a5234fa82df2f5e302cad4d33f9ab4e6602c348fa292d3fb3250b8c027",
+    "bytes": 491
+  },
+  {
+    "file": "streamgraph-bundles-measure20.log",
+    "sha256": "6f42a4cca85f07a7e957e2cb5dac007ed39b7ec56e0a045cccfb6468ad9b3e1d",
+    "bytes": 1869
+  },
+  {
+    "file": "streamgraph-critical-coverage.log",
+    "sha256": "70c6a9cc15ed800117b6de798b85a72901eddb1574ffd89139d432aa5c6699a1",
+    "bytes": 34392
+  },
+  {
+    "file": "streamgraph-critical-final.log",
+    "sha256": "014f74172b87ac2e03a1e4f0ba9f7fefbdabe3f12657195de921cd171d365b6a",
+    "bytes": 34635
+  },
+  {
+    "file": "streamgraph-doc-snippet.log",
+    "sha256": "8f88fed1baf4953ad7a5542c2edd3109f145005ac1e6ca081ddf03deaba6a177",
+    "bytes": 390
+  },
+  {
+    "file": "streamgraph-docs-browser.log",
+    "sha256": "5d406fc0202888e36f8e4cca814b9e20859c9ce279fdc6df787d9539e5e87fdc",
+    "bytes": 81
+  },
+  {
+    "file": "streamgraph-docs-build.log",
+    "sha256": "49033cc6755241bdb3e1d274d0511a9f0b2a0cc2136a730b9bc77e5f5da5e9e1",
+    "bytes": 420
+  },
+  {
+    "file": "streamgraph-docs-built.log",
+    "sha256": "cf8509ada4e660303d4bc02229b10793844fe83aadf94220fb9a24997ae372e9",
+    "bytes": 179
+  },
+  {
+    "file": "streamgraph-docs-final-browser.log",
+    "sha256": "4433f1c4b2cb1044a8c7303eb5058141088fc04dd8d8d16a1c02905813373927",
+    "bytes": 91
+  },
+  {
+    "file": "streamgraph-docs-final-build.log",
+    "sha256": "0276415c67628767ef225679695fcea95b761939e87c2174d874f863c952a06b",
+    "bytes": 420
+  },
+  {
+    "file": "streamgraph-docs-final-built.log",
+    "sha256": "cf8509ada4e660303d4bc02229b10793844fe83aadf94220fb9a24997ae372e9",
+    "bytes": 179
+  },
+  {
+    "file": "streamgraph-docs-final-generate.log",
+    "sha256": "c5c65c9c6246f78e1a487f435ae2e7bc2ad0135a97cee6d11fe564ef70baa696",
+    "bytes": 13001
+  },
+  {
+    "file": "streamgraph-docs-final-refresh.log",
+    "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+    "bytes": 139
+  },
+  {
+    "file": "streamgraph-docs-final.log",
+    "sha256": "0dae0aa0b5c19924871c967f4dd3c3f8c06135e452f587e627645974c704ce89",
+    "bytes": 46654
+  },
+  {
+    "file": "streamgraph-docs-generate.log",
+    "sha256": "c5c65c9c6246f78e1a487f435ae2e7bc2ad0135a97cee6d11fe564ef70baa696",
+    "bytes": 13001
+  },
+  {
+    "file": "streamgraph-docs-refresh.log",
+    "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+    "bytes": 139
+  },
+  {
+    "file": "streamgraph-docs-repaired.log",
+    "sha256": "7a521a6035e3c8c30bd1fcc9b2eb3a45ac992fadfe7016ac81d1e9b2032e00ca",
+    "bytes": 949
+  },
+  {
+    "file": "streamgraph-docs.log",
+    "sha256": "34599ece5c8a236a83ec63cc26ea4df0664b03b981b1e89e13371be87cb4e434",
+    "bytes": 51693
+  },
+  {
+    "file": "streamgraph-final-boundaries.log",
+    "sha256": "e57135e68be70db3c91a14641d4da9de22e4a4492384e5efbf08b9fa49d2d471",
+    "bytes": 5163
+  },
+  {
+    "file": "streamgraph-final-pack.log",
+    "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+    "bytes": 208
+  },
+  {
+    "file": "streamgraph-first-integration.log",
+    "sha256": "ea45258ef993d99f9d6cd9848109d138589f9899f1351459ee75d7d6e2d81a9a",
+    "bytes": 5245
+  },
+  {
+    "file": "streamgraph-installed-node20.log",
+    "sha256": "d1006d320f367e0d9cc546406be52974e2f82ca415c1cccb5cb78f74b14e7f7d",
+    "bytes": 2214
+  },
+  {
+    "file": "streamgraph-installed-node22.log",
+    "sha256": "c26bae26daa97755ba28198fa31777423aa4b7a1890c34eddaf147656b3463a7",
+    "bytes": 2214
+  },
+  {
+    "file": "streamgraph-installed-node24.log",
+    "sha256": "31c1edd0ff1c7b4393c34746a85ab4d74485772fcdc6fcc61fb0767e733c1b62",
+    "bytes": 2219
+  },
+  {
+    "file": "streamgraph-inventory-measure.log",
+    "sha256": "bee2f96558d4e565871057fdc4cf3bb2755ba2183887662dc79df5ed10e42b57",
+    "bytes": 416
+  },
+  {
+    "file": "streamgraph-inventory-owning.log",
+    "sha256": "d59c7f468b25aa278292c0341216a1d1fd16505ea52fef52d1f99425a73259f4",
+    "bytes": 1721
+  },
+  {
+    "file": "streamgraph-owning-coverage.log",
+    "sha256": "3eb715f534e8eb826ce8b8494c47c4a8ac7d5cabc50d5232c67e42c6c654626b",
+    "bytes": 7982
+  },
+  {
+    "file": "streamgraph-pack-measure20.log",
+    "sha256": "58af0b9169abc391aa86b4f6f890f3f4bdf3656cdb1942dca5b289b5f0d1f600",
+    "bytes": 292
+  },
+  {
+    "file": "streamgraph-pack-measure22.log",
+    "sha256": "963462c83ec5257dc5d327d3994c00a2fbd1d0eef2bc6d79f012b69ad62788db",
+    "bytes": 292
+  },
+  {
+    "file": "streamgraph-pack-measure24.log",
+    "sha256": "58af0b9169abc391aa86b4f6f890f3f4bdf3656cdb1942dca5b289b5f0d1f600",
+    "bytes": 292
+  },
+  {
+    "file": "streamgraph-package-final20.log",
+    "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+    "bytes": 208
+  },
+  {
+    "file": "streamgraph-package-final24.log",
+    "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+    "bytes": 208
+  },
+  {
+    "file": "streamgraph-realistic.log",
+    "sha256": "cba49f14412128915ca84aefc81505ae9b126b603e0a1706a24e6ec25a60d8f6",
+    "bytes": 3711
+  },
+  {
+    "file": "streamgraph-render-final.log",
+    "sha256": "1152b997bb39092539b85cdfdf71f79abe956ffb0a837110380ee61d55994bb4",
+    "bytes": 3207
+  },
+  {
+    "file": "streamgraph-render-typed-path.log",
+    "sha256": "af191bffda3d0bc108a1cfd3220237c7f85873721324047e52517f91506c6d7d",
+    "bytes": 471
+  },
+  {
+    "file": "streamgraph-render.log",
+    "sha256": "c10636effc847b87a10c7b3868ded9057adeb3678fc160ad39533d222165466e",
+    "bytes": 5747
+  },
+  {
+    "file": "streamgraph-semantic-vocabulary-final.log",
+    "sha256": "93b2f18d543058bd6aab62b93bb1af774ec30fbe98d338188f1424c90eef9186",
+    "bytes": 3044
+  },
+  {
+    "file": "streamgraph-shared-coverage.log",
+    "sha256": "bb27516d196fe9fe1ec2b183477bd482df243363549604550950a5bf3b2bf49d",
+    "bytes": 24554
+  },
+  {
+    "file": "streamgraph-shared-regression.log",
+    "sha256": "05ccae180cce48b27e36e2dc7d2ab4d690e637e8351e5da3a8a6839aa1f2e1d6",
+    "bytes": 16501
+  },
+  {
+    "file": "streamgraph-shared-scale.log",
+    "sha256": "dab2e4971bb7f7ab7f7be028603ecddc384761385b17a1d238c8bcf7f0d9c4f6",
+    "bytes": 4465
+  }
+]

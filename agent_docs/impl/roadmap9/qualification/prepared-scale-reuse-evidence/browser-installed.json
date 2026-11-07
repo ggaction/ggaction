@@ -1,0 +1,13 @@
+{
+  "archiveSHA256": "ebaf0bbb61f178caafe4895a1991671841cb209ea84e671f74e14d7821ceb4b9",
+  "sourceRootInputs": 0,
+  "dpr": [
+    1,
+    2
+  ],
+  "versions": [
+    3,
+    4
+  ],
+  "status": "passed"
+}

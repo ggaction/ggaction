@@ -1,0 +1,512 @@
+{
+  "schemaVersion": 1,
+  "kind": "focused-geo-feature-qualification",
+  "implementationCommit": "ee40f42760da2dd50b4a5177ce03b5d9e0f73967",
+  "executionBoundary": "Checks ran against the working candidate. Source input hashes were verified against implementationCommit afterwards; no clean-execution or full-release completion is claimed.",
+  "archive": {
+    "sha256": "6ffdb3dc41b3409f6c380016f3b3103826b9635e746b6f3a51c70850d79fa5c7",
+    "file": ".artifacts/geo-winding/archive/ggaction-0.0.26.tgz",
+    "entries": 1048,
+    "packedBytes": 1483856,
+    "unpackedBytes": 6759508,
+    "node": "v22.23.1"
+  },
+  "scope": "Explicit source polygon winding, unchanged default direction and retained source coordinates; projected fills, fit, centroid, labels, annotations, joins, LOD and offline restoration.",
+  "checks": {
+    "geoUnit": {
+      "passed": 213,
+      "total": 213
+    },
+    "typesBoundaries": {
+      "passed": 28,
+      "total": 28
+    },
+    "packageContracts": {
+      "passed": 7,
+      "total": 7
+    },
+    "combinedContracts": {
+      "initial": {
+        "passed": 23,
+        "total": 24
+      },
+      "repair": "Only the failed package owner reran: 7/7; runtime unchanged."
+    },
+    "discovery": {
+      "passed": 16,
+      "total": 16
+    },
+    "realisticGeo": {
+      "passed": 48,
+      "total": 48
+    },
+    "inventoryLifecycle": {
+      "initial": {
+        "passed": 9,
+        "total": 10
+      },
+      "repair": {
+        "passed": 7,
+        "total": 7
+      }
+    },
+    "docsSource": {
+      "passed": 205,
+      "total": 205
+    },
+    "docsBuilt": {
+      "pages": 172,
+      "selectiveArtifacts": 1531
+    },
+    "docsBrowser": {
+      "passed": true,
+      "widths": [
+        320,
+        390,
+        768
+      ]
+    },
+    "browser": {
+      "passed": 2,
+      "total": 2,
+      "dpr": [
+        1,
+        2
+      ]
+    },
+    "canvasPngPdf": {
+      "passed": 1,
+      "total": 1,
+      "literalPixels": 8
+    },
+    "focusedCoverage": {
+      "lines": 100,
+      "branches": 98.52,
+      "functions": 100,
+      "owners": 51,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "installed": {
+      "archive": "6ffdb3dc41b3409f6c380016f3b3103826b9635e746b6f3a51c70850d79fa5c7",
+      "nodeMajors": [
+        20,
+        22,
+        24
+      ],
+      "runtimePerNode": 4,
+      "typeCheck": "strict",
+      "optionalPeers": true,
+      "bundlesPerNode": 5
+    },
+    "archiveInputProof": {
+      "entries": 1048,
+      "policy": "Existing canonical JSON/JavaScript package compaction only; every packed byte equals the declared source transformation."
+    }
+  },
+  "retainedFailures": [
+    {
+      "check": "evidenceSourceFile original byte limit",
+      "status": "parent-owned repair",
+      "reason": "Original helper git show buffer is 1 MiB; large source was verified with evidenceFile/evidenceHash and an explicit actual-length bounded git show. Parent owns the common helper fix."
+    },
+    {
+      "check": "initial winding unit",
+      "status": "repaired",
+      "reason": "New label fixture used target instead of the existing source argument; corrected fixture and all 213 Geo tests passed."
+    },
+    {
+      "check": "initial source boundary",
+      "status": "repaired",
+      "reason": "Moved exact winding lookup to existing materialization/geo/features.js so selectors retain their permitted imports; 28 owning checks passed."
+    },
+    {
+      "check": "initial package contract",
+      "status": "repaired",
+      "reason": "Measured added source bytes on all 3 supported Node majors and raised only necessary packed/unpacked limits with at least 1000 bytes margin; 7 owning checks and 3 installed runs passed."
+    },
+    {
+      "check": "initial inventory total",
+      "status": "repaired",
+      "reason": "The final ledger requires 2 added option paths plus 4 per-path literals; total synchronized without removing requirements."
+    }
+  ],
+  "followUp": [
+    "Parent final candidate reruns realistic-lifecycle-factor-effects, realistic-scenario-generator and realistic-scenario-generation-isolation for the shared direct-data-resources builder.",
+    "Parent applies explicit left-hand and restores filled land in the canonical gallery call.",
+    "No full integrated release or all-roadmap completion is claimed."
+  ],
+  "inputs": [
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "58d36c6d6e99fdc2d346a6ac188997db7ccfc1b4d9d3d370648c643f10aa8095"
+    },
+    {
+      "path": "agent_docs/contract/current/GEOMETRY.md",
+      "sha256": "0f16962f9ca74d2cc124973ef459d93e4acde18e701b05c4a46a0ae347e14bfa"
+    },
+    {
+      "path": "knowledge/action-cards.json",
+      "sha256": "152d62bb381eff5e795c186680ef199666c6d20f9154913639204202e301283b"
+    },
+    {
+      "path": "scripts/chart-gallery/data/land-110m.geojson",
+      "sha256": "9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9"
+    },
+    {
+      "path": "scripts/chart-gallery/data/manifest.json",
+      "sha256": "bcb6fcb51b8677c886c7c8500c2ecafc5ad24fd4d59febe0718dd77838fb744e"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/geometry.mjs",
+      "sha256": "dcb489939b98ec80a69b9e71ff3ecf091507e7a6698b26a890f7fb3e7f6e079f"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/manifest.json",
+      "sha256": "14bac34283819b0f6e8959ef14c1689ac586896a9c350e3f9c7671ae3e8425ea"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "fb0fb0055b532b911072eee24ad32381ccea0af7b7131b73680f982782d39ac6"
+    },
+    {
+      "path": "src/actions/data/resourcePlan.js",
+      "sha256": "6192395608174e1ce2898123993f6441eeda013295be1c875ffcaff923a43aad"
+    },
+    {
+      "path": "src/actions/geo/closure.js",
+      "sha256": "38f3164660ba865ddc8d9b7274c61091bb308a5769d79cc60bc1db3bf65dea3d"
+    },
+    {
+      "path": "src/actions/geo/projections.js",
+      "sha256": "485674bfe6a73f3ba2fa8f4dfbd7c316e69e205eca0ad958c503a38e277c0af6"
+    },
+    {
+      "path": "src/actions/geo/resources.js",
+      "sha256": "78bd23619f3324589441c73bde92570b59be46827eaa1619d2063bf549c6cb9e"
+    },
+    {
+      "path": "src/grammar/geo/centroid.js",
+      "sha256": "37418b8083d0ba316e344dff1ac95018143942ee435c948c1137ffd8a0fe8293"
+    },
+    {
+      "path": "src/grammar/geo/options.js",
+      "sha256": "a12f4f70bf03b9ae82241af57da2aeaac3dfe5f3232459def7b0d52169b92c14"
+    },
+    {
+      "path": "src/grammar/geo/projectionMath.js",
+      "sha256": "45d1e2677b42af4c76e92a3f34da34a4590842e1806fe28a48a8fd6a69b61fda"
+    },
+    {
+      "path": "src/grammar/geo/stream.js",
+      "sha256": "7f2b5bb17ac0184b7b3fde20ac285752fd8b638487c0142f10ba7af92561a669"
+    },
+    {
+      "path": "src/inspectionDescriptors.js",
+      "sha256": "9c30dca42bb38e5a93e6fcced89994a34bbac3e4c72d1f7c25c82c74510f7d42"
+    },
+    {
+      "path": "src/materialization/geo/annotation.js",
+      "sha256": "b89b1f37c87b8c57fe03e33730543e625330b3525120313d9da8b1d6df53ca4e"
+    },
+    {
+      "path": "src/materialization/geo/features.js",
+      "sha256": "ff2cd56407480e618769fdaa556c133bf33f3a66454afa9ccbd4afbd5a73aa85"
+    },
+    {
+      "path": "src/materialization/geo/labelAnchors.js",
+      "sha256": "e23f310e98c6ac33c9bfb465f78452ec0b0aff20e135058c7734eb70027f25ca"
+    },
+    {
+      "path": "src/materialization/geo/mark.js",
+      "sha256": "55f4c8455cdc715989fef5d1ed254c323d30d6db65cdd5d47deba0e95e291490"
+    },
+    {
+      "path": "src/materialization/geo/projectionResource.js",
+      "sha256": "d580ddb650a7a31b67203724fc68ae414e0b1c8fcee3871e3a0d682073efc91a"
+    },
+    {
+      "path": "src/materialization/geo/projectionState.js",
+      "sha256": "1738c5ede2064b4bfe3ba71f345bee4d0350dbc672e31bc1f8763498474cd655"
+    },
+    {
+      "path": "src/materialization/geo/resources.js",
+      "sha256": "4d9716a8a5c583771406debae07e86ad5b48e079896f4e03a463aac3ce739c1a"
+    },
+    {
+      "path": "src/materialization/geo/state.js",
+      "sha256": "f7e6f20acd3fab8e0047cc9ea1f212118cd0754ee4f4e46398359d1ff84ed0c3"
+    },
+    {
+      "path": "test/browser/geo-winding.browser.js",
+      "sha256": "4a2d36236447ee85d7f5e23e9a290a7b8f76f36434e5ab35777cf5cc37282bfb"
+    },
+    {
+      "path": "test/capabilities.json",
+      "sha256": "363c75e1ffb48a0358c2f473c774b7afaa8b3e3b3c2d24c8c471a5d2d3d9f556"
+    },
+    {
+      "path": "test/charts/geographic-marks/winding.render.js",
+      "sha256": "c64115b60a99006359e8f3a6fe24d09183a941abebd78479788051360f9c7b5c"
+    },
+    {
+      "path": "test/contracts/generated-lifecycle-scenarios.test.js",
+      "sha256": "a993b0b9d42f0073483b5c9bab0c7b5f407cd2f0f050f1c16acc1b82514bdb28"
+    },
+    {
+      "path": "test/contracts/generated-scenario-feature-coverage.test.js",
+      "sha256": "7c15442c1adceedae52e45a3b49cf0d44e3e413afba1b18db6f278ac0404ca1e"
+    },
+    {
+      "path": "test/contracts/geometry-types.test.js",
+      "sha256": "7af1db6ff045fdb586aab14e59bcac128be61740a41ca2a46dbfbfee0b7d28e1"
+    },
+    {
+      "path": "test/support/geographic-land.js",
+      "sha256": "97d42e0ba6c15eb2d4202ae21c6bc1e4aaacc09da03581537ab5c5cfc5cef5ca"
+    },
+    {
+      "path": "test/support/scenarios/lifecycle-recipes.js",
+      "sha256": "e56efb4ea2e4ea6a0911988f90dbdc4926b89d40b0fee5c5f5afb49a20017abd"
+    },
+    {
+      "path": "test/unit/geo/polygon-winding.test.js",
+      "sha256": "9421e97a3a6c18c145cc087445f1a96a6dca9573f5101344a03e0f4057b4eea3"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "718755e1bb72768e7585d7a60ce8f0ec2fbf98d06b1f61dd9d65d111e4dbfb24"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/source-inputs.json.gz",
+      "sha256": "29bc50f46cb761e60d49ccb8013489bb4fdbc5e7d66e172f4efb0731fda62f19",
+      "uncompressedSha256": "9135336e7fd8879e2f3cb3a68a4b850dc89fac827e2aa81a3bdaa067c72d40fd",
+      "bytes": 5441
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/evidence-source-limit.log.gz",
+      "sha256": "2779255cfca4c94326d6ce1aaff198ef8059eaa4f5ad2f5825bb63230e2a53e3",
+      "uncompressedSha256": "ca2fa3ec45100be94f339d29d48de2244aeb906b2bfdb29ea58c175570172340",
+      "bytes": 304
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/initial-repro.json.gz",
+      "sha256": "d152be224b41f13c7918ad00ff03c1a452e602ae89a286ff28f88f8945009a1f",
+      "uncompressedSha256": "2da853a8eb3406deec8c56151ebeb764172f463da73cf11e00904b0a6a050e3f",
+      "bytes": 1097
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/winding-first.log.gz",
+      "sha256": "e46cc57131b73fb13df3b9a0c6d5b7a81bdae2b278c6ba75bbee9d2e1dd34a1f",
+      "uncompressedSha256": "75227c9282786f3392aa8dfe1d59e476ec64bf6d662d6dced98014f68f9a3332",
+      "bytes": 3248
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/types-boundary.log.gz",
+      "sha256": "7b552af35f8ccb468ff88b441f8e804bb64ef20f2a6a69d7134c744b2c284c60",
+      "uncompressedSha256": "fbdca71607e83d47a44642122be97cd3dd5be8e70af2eca89e03163ca0f0fbdc",
+      "bytes": 6495
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/types-boundary-final.log.gz",
+      "sha256": "c57b2029c06f493900e211fbc04fd73c726333bad466ff98f0d9fe9845dd72fc",
+      "uncompressedSha256": "5c815e8d30050af9eb37995475895fd8de5bde2f02acb78692e2baa94997d0cd",
+      "bytes": 5720
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/contracts.log.gz",
+      "sha256": "a36e07edf719aaf067aaf12ec707f3b7fb20fd49b047ed01bea0bd0b7c659ea8",
+      "uncompressedSha256": "bcdf1418c274077b5cb240156c9572bac242afb55584d8ed6a61f3e1501018c6",
+      "bytes": 6244
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/package-final.log.gz",
+      "sha256": "2c74cf737248c048c673f4387567f2cc5d3f9411f1f6b4bbe1d38afe7bdf7d32",
+      "uncompressedSha256": "6df100454227835ada15b0d61b41917a4a74813df6cb7659bd2f81b4c07bcbca",
+      "bytes": 1718
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/coverage-topology-final.log.gz",
+      "sha256": "0474827cf0e16edece25800a4b836979c646e2536c4150eb942c5c9a3821a95a",
+      "uncompressedSha256": "7055d8112ad06eb6abdfa94bab1b0f319343ad0203985cf18bfd6d34c041ffa6",
+      "bytes": 56499
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/render.log.gz",
+      "sha256": "c42767466756bf46fa05dcb77c906e7390682e4ce8a1c22f096bdb9ccf7ca4f0",
+      "uncompressedSha256": "b18522f8972ef6c12fedf029d65188584aeadad889a2d173a456cd3332b4cd3a",
+      "bytes": 366
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/browser.log.gz",
+      "sha256": "52affc720065316212e0c61021c6b14887c37ab7c50d1c34634aa92ae6759172",
+      "uncompressedSha256": "fd951d68ec39d16ae55548b0c86ea49992bb99c9f43b1661f9fb0dc68b4fcd68",
+      "bytes": 558
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/realistic.log.gz",
+      "sha256": "a02d1e326b2110babf20fd9fb2d25c65c9e1082c080108180c92a617ef001c13",
+      "uncompressedSha256": "f18bc6f928e7a17a77756afe3dce5129d963e36c19d54f301942b72e1f624840",
+      "bytes": 13571
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/discovery.log.gz",
+      "sha256": "f2f763992f3d77a00f9b389fa05f1193e7126eb76e6510771fa5a78ff8ad1768",
+      "uncompressedSha256": "366ee22dbfb24f13848bb75377da45d147a6ac6351a979dc8a7c75cfa8e7a78f",
+      "bytes": 3280
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/inventory-lifecycle-initial.log.gz",
+      "sha256": "d85890077d1075ebb88eb534d92e721f0ca4af7161209e37a3bf354c962cb06e",
+      "uncompressedSha256": "ece72b9d1e4fdccb371502ba6c98fe95b31c0521a64f51b465faf5825ed1c551",
+      "bytes": 3062
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/inventory-lifecycle-initial.receipt.json.gz",
+      "sha256": "3cedecb1a0a9e5200b869f14ac078745bdc8745d8d8dd86163a6bad7ec7985c6",
+      "uncompressedSha256": "18ae7a2c99a172e9fff74254e9261a3ad18b06a1461a2aac60a6fff4a2a00bb7",
+      "bytes": 1706
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/inventory-lifecycle-repaired.log.gz",
+      "sha256": "7fc83669aedbff6b4d4e6c40e4d8ba108474a80feb59edd454ea6e41528bb94a",
+      "uncompressedSha256": "84ce531babf6c87e8b5ab828521c883ec6b4b706fc04438a1ccc7f4a3a548ac7",
+      "bytes": 1718
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/inventory-lifecycle-repaired.receipt.json.gz",
+      "sha256": "d3c37ee6f38e9e6312d90d2bd81083b0c7b3eba2a9cb1f2cfadcaa06617cbefe",
+      "uncompressedSha256": "1bcb00f7e794c49f8a4757be49a678c05bb8f30b1b5fcf717604d23544a81531",
+      "bytes": 1459
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/docs.log.gz",
+      "sha256": "f993a4b493dff70a1400a3d4b514a91b2368067343482f783c625d3dde1fe50b",
+      "uncompressedSha256": "631c312ed37b3ce535c0b4d0215a026da9555b15ffa9152612e9a69b90e96c14",
+      "bytes": 48155
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/docs-source-pinned.log.gz",
+      "sha256": "3257bad5df501da3359e7986fc27ec248d9fb92f6859e5d7891d867bdf5efef5",
+      "uncompressedSha256": "12a7e2bec364618400de4d8b90128f60ad1eee5a4c08c95e35a5d4642c95ee75",
+      "bytes": 48209
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/docs-build-pinned.log.gz",
+      "sha256": "6b70abd6bb9fe155a225595b15ab0ef46255892965f163bf7f44fd06b457a9bb",
+      "uncompressedSha256": "d705449a6f01e600e9e1d6b5f999813ccf23824487950d51a035ba84e40a922a",
+      "bytes": 420
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/docs-built-pinned.log.gz",
+      "sha256": "39fd24b3847fefcc21f9d9cc4acd6164888171d7d683c735ceceebef2470eea1",
+      "uncompressedSha256": "66f964bf4cff7c3b17c7751bedb184f5a2248d45ac9a6dc40a131e5c0499c901",
+      "bytes": 102
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/docs-browser-pinned.log.gz",
+      "sha256": "7d4114f7d9b21ae6fdc81432dabfead18b156ca8b6e12e649fc2722c33a4b118",
+      "uncompressedSha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d",
+      "bytes": 79
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/archive-source-inputs.json.gz",
+      "sha256": "180b89f23f0fa505dfd0ce77dd53af86ea51933ae42129254d4cb97fb3a82cda",
+      "uncompressedSha256": "62e0be605920a20d3b07fbdbb73a775dd4e648803f7509598c46edc3ae8f8065",
+      "bytes": 247030
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/archive-source-proof.log.gz",
+      "sha256": "132a51dc5f45fb5028ec1fdb46d7ff3d86000a5ab48216137899dc3b6bca5a1c",
+      "uncompressedSha256": "2268fca14350ac3d3535dd2cfaefd50231c8fc509bc11a3f2ac9ad938e22e286",
+      "bytes": 65
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/installed-20.json.gz",
+      "sha256": "1b917c04b7c84c0ff3a3c6b5e93fe53f8f682f8d32abac84608d89fbab7fbdb9",
+      "uncompressedSha256": "8531c601da5bbc448bb3e0ac486657c46d6e3fda4d5f6947fd88053b4dc75d4e",
+      "bytes": 1512
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/installed-final-20.log.gz",
+      "sha256": "b7442ceb72b5c83ec161ade34db7314b00f7e5b7425e10825b117b8d4637d15d",
+      "uncompressedSha256": "28e4d590d6c8a2b6bce53fd62865604de9deb00903bf6ac2756c98ced159fa95",
+      "bytes": 1513
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/installed-final-20.exit.json.gz",
+      "sha256": "9b3065d60ab05c2d9f201ce97a8b9c4aeb851d35ef723ae8f8b7127732e7c532",
+      "uncompressedSha256": "c50a0c4c734cad3e53761b21dd20e7d56661fc99e2f1398e7ff5cf098e698437",
+      "bytes": 90
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/package-size-20.json.gz",
+      "sha256": "363513b7ed71dfdad4e8246912a3920391f4d059803144a7af2ae9a9fe81ad71",
+      "uncompressedSha256": "d07797fdec43cf4da9b7e1b617a5f10c0e9daec33e5307dfcf0ba3a3df6920ee",
+      "bytes": 124
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/installed-22.json.gz",
+      "sha256": "026cca2d220b82913e0bac4c9e83e9213b4035874793e1cdd47172f5ecb8a6e3",
+      "uncompressedSha256": "4630bae05adca596a102589875aa1ff8618c242c03cbb017aa19339f4ffd4ce6",
+      "bytes": 1505
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/installed-final-22.log.gz",
+      "sha256": "092d4be066e77396ad4c3a8b8e35392aec914a678a605441c614b553e2b32488",
+      "uncompressedSha256": "c78b9c4a0b40abc129df7943c82e3d06fcecc8105e1e56896488381595f4ba73",
+      "bytes": 1506
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/installed-final-22.exit.json.gz",
+      "sha256": "4a5e2fda53b061131a5bb4258e84b9dd8cebd1a536de51be6f154bab6516b785",
+      "uncompressedSha256": "0ddd49b8d2519b9be0576477db1a5e0479364cceb7759ebbf9a10cf4ac80508e",
+      "bytes": 65
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/package-size-22.json.gz",
+      "sha256": "fbdba23d2569191b3ec607418d73fac2818aadc3aa3dce692eb20cdfcd30af7f",
+      "uncompressedSha256": "01d41a80b0d6e527292331f9671f4f7056a31491b64dcd8d9a0b5e1164e1587d",
+      "bytes": 117
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/installed-24.json.gz",
+      "sha256": "c9d0958afe94403b39e24f6282945a4c20cbe9792073895fa6ee6398e0f1d125",
+      "uncompressedSha256": "3dd9bba5adf310414124501d4f49b47420c043acf253b351634df27382c500eb",
+      "bytes": 1521
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/installed-final-24.log.gz",
+      "sha256": "795e71c18e2451ce036f4a045f6f0af0eca20e4ae4eb2775313215a60dc5bbbc",
+      "uncompressedSha256": "9b4825937b46b0e63ea817826785036d4fd8e1a52f62f56a54463f3223941285",
+      "bytes": 1522
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/installed-final-24.exit.json.gz",
+      "sha256": "4dd847a2a0a430d12075ea992fdd9ed47c2f7869c45247fb80008a210070201a",
+      "uncompressedSha256": "2e8c1326c5db4b3c4870ba7b50517fa037baeadb8608c5bfe183c95a5cde254a",
+      "bytes": 90
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/package-size-24.json.gz",
+      "sha256": "3b538b6da2dcdfafa28c2a2f25d68d8826acb500c3b89ba18312645f5b9cfde5",
+      "uncompressedSha256": "db28127f5bc3eeec0ca8c442ccdeef7f204beba50dae11a6ffbdb26537b365e6",
+      "bytes": 133
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/pixels.json",
+      "sha256": "59040e3cdb8fad1ebef0417934ce77ed1d4abac9f4f6c731b5ac6405a41551aa",
+      "bytes": 4853
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-winding-evidence/land.png",
+      "sha256": "3749d09cfa9d4fe28226897ce3cd398eab52ccb46d338c1bb867276c5b864635",
+      "bytes": 36465
+    }
+  ]
+}

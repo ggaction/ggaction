@@ -1,0 +1,2 @@
+export type GeoAnnotationAnchor = { readonly type: "position"; readonly position: readonly [number, number] }
+  | { readonly type: "feature"; readonly geometry?: string; readonly key: RowKey; readonly level?: string };

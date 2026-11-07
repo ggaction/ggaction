@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-04",
+  "status": "paused-by-user",
+  "repository": "https://github.com/ggaction/ggaction.git",
+  "completedSequentialStep": 56,
+  "finalRequestedStep": 77,
+  "primaryCheckout": {
+    "path": "/Users/hyeonjeon/Projects/ggactionnewbrand",
+    "branch": "main",
+    "head": "0bbc10ab00c8a8f11a7b384b885b65a23018cc95",
+    "status": "clean; unchanged"
+  },
+  "branches": [
+    {
+      "id": "integration",
+      "worktree": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand",
+      "branch": "codex/roadmap9-animation-timeline-public",
+      "observedHead": "abbd84b763ec8aeba3fabb3de5dfba144e9deeda",
+      "remoteHead": "abbd84b763ec8aeba3fabb3de5dfba144e9deeda",
+      "handoffBundlePrerequisite": "abbd84b763ec8aeba3fabb3de5dfba144e9deeda",
+      "sourceStatus": "only central handoff documents being written",
+      "archive": {
+        "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-de615969c3155394abd6e1b3f9f4eb015bc926be2ad6b819e48a170075d2ec47.tgz",
+        "sha256": "de615969c3155394abd6e1b3f9f4eb015bc926be2ad6b819e48a170075d2ec47",
+        "bytes": 1827459
+      },
+      "receipt": "agent_docs/impl/roadmap9/qualification/data-key-token-evidence/qualification.json"
+    },
+    {
+      "id": "format6",
+      "worktree": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand",
+      "branch": "codex/roadmap9-format6-product",
+      "observedHead": "9a57c0f2144b61f1453efa595db2587ca15215ec",
+      "remoteHead": "9a57c0f2144b61f1453efa595db2587ca15215ec",
+      "handoffBundlePrerequisite": "37de444b42c05fb749dbdd5c6975e70a9d0995b1",
+      "sourceStatus": "clean",
+      "archive": {
+        "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-format6-product/ggactionnewbrand/.artifacts/point-validation/archives/ggaction-186c01ea470a97e8c10a2f97e66061ef0d4a5583ae561ab1bfacd2b00a159c84.tgz",
+        "sha256": "186c01ea470a97e8c10a2f97e66061ef0d4a5583ae561ab1bfacd2b00a159c84",
+        "bytes": 1829700
+      },
+      "receipt": "agent_docs/impl/roadmap9/qualification/point-validation-evidence/qualification.json"
+    },
+    {
+      "id": "route",
+      "worktree": "/Users/hyeonjeon/.codex/worktrees/route-v2-native/ggactionnewbrand",
+      "branch": "codex/route-v2-native",
+      "observedHead": "a48449ebf0b6221634fa98e60e7be87f25b7abb7",
+      "remoteHead": "69605f4e3c813660744f448dab933e9be2d4f4bd",
+      "handoffBundlePrerequisite": "69605f4e3c813660744f448dab933e9be2d4f4bd",
+      "sourceStatus": "clean",
+      "archive": {
+        "path": "/Users/hyeonjeon/.codex/worktrees/route-v2-native/ggactionnewbrand/.artifacts/route-native-resource/package/ggaction-0.0.26.tgz",
+        "sha256": "b04826b709ed055822e33a9641c70fe425fe11819a71aa372088205c6df95a36",
+        "bytes": 1830188
+      },
+      "receipt": "agent_docs/impl/roadmap9/chart/route-native-resource-evidence/qualification.json"
+    },
+    {
+      "id": "partition",
+      "worktree": "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand",
+      "branch": "codex/roadmap9-partition-sampling",
+      "observedHead": "066e1ba4def5f10eb644e3c9ffa5c8d2423b67d0",
+      "remoteHead": "066e1ba4def5f10eb644e3c9ffa5c8d2423b67d0",
+      "handoffBundlePrerequisite": "6e71785ee0650cc8c2e68b3a7be9c419fbed0385",
+      "sourceStatus": "clean",
+      "archive": {
+        "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/.artifacts/partition-cell-package/archive/ggaction-0.0.26.tgz",
+        "sha256": "bb78b18bdda0f13451c84e469b6c42609a27898c6f297194427c4f1b853fab48",
+        "bytes": 1827690
+      },
+      "receipt": "agent_docs/impl/roadmap9/qualification/partition-cell-product-evidence/summary.json"
+    }
+  ],
+  "integrationNote": "observedHead is the runtime/source pin before central handoff metadata commit; final handoff head is captured in portable MANIFEST.json",
+  "qualificationChecks": [
+    {
+      "id": "normal",
+      "command": [
+        "npm",
+        "test"
+      ]
+    },
+    {
+      "id": "realistic",
+      "command": [
+        "npm",
+        "run",
+        "test:realistic"
+      ]
+    },
+    {
+      "id": "coverage",
+      "command": [
+        "npm",
+        "run",
+        "test:coverage"
+      ]
+    },
+    {
+      "id": "browser",
+      "command": [
+        "npm",
+        "run",
+        "test:browser"
+      ]
+    },
+    {
+      "id": "render",
+      "command": [
+        "npm",
+        "run",
+        "test:render"
+      ]
+    },
+    {
+      "id": "package",
+      "command": [
+        "npm",
+        "run",
+        "test:package"
+      ]
+    },
+    {
+      "id": "platform",
+      "command": [
+        "npm",
+        "run",
+        "test:platform"
+      ]
+    },
+    {
+      "id": "package-artifact",
+      "command": [
+        "npm",
+        "run",
+        "package:check"
+      ]
+    },
+    {
+      "id": "documentation",
+      "command": [
+        "npm",
+        "run",
+        "docs:verify"
+      ]
+    }
+  ],
+  "processScan": {
+    "date": "2026-11-04",
+    "scope": "Read-only process command scan for task benchmark/test owners; unrelated services unchanged",
+    "matched": []
+  },
+  "agents": "all three owners reported stopped and no owned execution processes",
+  "remoteException": "route handoff a48449ebf is local after two GitHub Internal Server Error push failures; included in portable Git bundle; central integration handoff push also rejected with Internal Server Error; portable bundle preserves local handoff commits and MANIFEST.json records final refs.",
+  "protectedOperations": "No PR creation, package publish, official docs deploy, service shutdown or automatic resume was performed."
+}

@@ -2,22 +2,38 @@
 
 ## Classification and entry
 
-`ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
+`ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy?, historyLimit?, assetResolver?, hitPreparation? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
 
-`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, at most one click-selection, categorical legend-selection/visibility, brush, lasso, or node-movement binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
+`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, at most one keyboard binding, up to 256 editing pointer bindings, and up to 256 explicit linked-selection/filter bindings described below, with 259 total records maximum. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including clock, are rejected. Asset preparation is opt-in as specified below.
 
 ## Handle and commands
 
-- `mount(element, { rootTransform? } = {})` accepts an event surface with `addEventListener`, `removeEventListener`, and `getBoundingClientRect`; public declarations use `Element`. It installs passive inspection listeners, a nonpassive listener for an explicit context-menu binding, and returns an idempotent unmount function. A later successful mount removes the previous listeners. Invalid frame/host setup preserves the previous state. `rootTransform` is an explicit six-number local-to-CSS affine matrix; omission is identity. CSS layout matrices and DPR are never guessed. The host renders the same program at the declared logical size and supplies any additional matrix.
+- `mount(element, { rootTransform?, observeResize? } = {})` accepts an event surface with `addEventListener`, `removeEventListener`, and `getBoundingClientRect`; public declarations use `Element`. It installs passive inspection listeners, a nonpassive listener for an explicit context-menu binding, and returns an idempotent unmount function. A later successful mount removes the previous listeners. Invalid frame/host setup preserves the previous state. `rootTransform` is an explicit six-number local-to-CSS affine matrix; omission is identity. CSS layout matrices and DPR are never guessed. The host renders the same program at the declared logical size and supplies any additional matrix.
 - `dispatch({ type: "inspect", point, pointerType?, slop?, hitInvisible? })` accepts an explicit CSS-local `{x,y}`. The pointer type is mouse (default), pen, or touch. Mounted events subtract the current client rectangle once. Root matrices transform indexed shapes and clips, preserving slop in CSS pixels; localPoint remains the child Canvas coordinate. Empty viewports or singular matrices produce no hit with diagnostics.
 - `dispatch({ type: "leave" })` clears the transient hit.
-- `dispatch({ type: "frame", scene, version, generation })` snapshots a version-2 concrete Canvas scene. `generation` must equal current state and `version` must be a greater non-negative safe integer. Stale commands return `{status:"stale"}` without examining scene contents. Current frames retain known node keys, type and topology from the current program; subsets and concrete sampled coordinates are permitted. Unknown keys or changed topology fail atomically. Use the accepted `getState().scene` with `renderTransitionScene` so drawing and targeting share one exact snapshot. The session does not sample animations or infer geometry from endpoints. Region previews use host RAF as specified below. An accepted external frame cancels an active captured gesture before replacing its baseline.
-- `updateProgram(program)` prepares the full replacement before committing it, increments frameVersion, generation and session revision, and clears transient hits. Earlier immutable programs and their indices are unchanged. Existing mounted bindings remain active.
-- `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}` with type inspect, contextMenu, leave, frame, program, mount, unmount, or destroy; program events also include `selectionChanges` below. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
-- `getState()` returns `{program,previewProgram,scene,frameVersion,generation,revision,hit,linkedSelections,mounted,destroyed}`. It remains readable after destruction and contains no host objects.
+- `dispatch({ type: "frame", scene, version, generation })` snapshots a version-2 concrete Canvas scene or a version-3 complete batch scene. Its scene limit counts logical rows, and batch row keys retain individual native bindings. `InteractionState.scene` and the scene frame command use `AnyCanvasTransitionScene`; TypeScript consumers must narrow `scene.version` before reading `nodes` or `entries`. `generation` must equal current state and `version` must be a greater non-negative safe integer. Stale commands return `{status:"stale"}` without examining scene contents. Current frames retain known node keys, type and topology from the current program; subsets and concrete sampled coordinates are permitted. Unknown keys or changed topology fail atomically. Use the accepted `getState().scene` with `renderTransitionScene` so drawing and targeting share one exact snapshot. The session does not sample animations or infer geometry from endpoints. Region previews use host RAF as specified below. An accepted external frame cancels an active captured gesture before replacing its baseline.
+- Alternatively, `dispatch({type:"frame",frame:TransitionFrame,version,generation})` accepts an authentic native animation sample under the contract below. Exactly one of `scene` or `frame` is required.
+- `updateProgram(program, {history?,origin?} = {})` prepares the full replacement before committing it, increments frameVersion, generation and session revision, and clears transient hits. Earlier immutable programs and their indices are unchanged. Existing mounted bindings remain active.
+- `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}`. Lifecycle types are inspect, contextMenu, leave, frame, mount, unmount, destroy and focus; program, resize, assets, update and unbundleEdge report changes, and editing transaction events carry a `phase`; program events also include `selectionChanges`, `origin` and the history policy below. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
+- `getSelectionHandles()` returns the frozen derived resize view described under selection-region handles below. It uses the existing accepted `frameVersion`; it does not allocate a new counter or persist state. It throws after destruction.
+- `getState()` returns `{program,previewProgram,previewFrame,scene,frameVersion,generation,revision,hit,focus,linkedSelections,history,assets,previewAssets,animationFrame,frameAssets,preparation,mounted,destroyed}`. It remains readable after destruction and contains no DOM nodes; prepared handles are runtime-only.
 - `destroy()` removes listeners and disposes the active index once; first call returns true and later calls false. Pending work is discarded. Later dispatch, mount, subscribe, or updateProgram calls throw a disposed error.
 
 Dispatch and updateProgram return `{status:"applied"|"queued"|"stale"|"unchanged"}`. Reentrant calls return queued; invalid operations throw. No inspection creates a selection resource, persistent hover, authoring transaction, history entry or asset request.
+
+## Authentic animation frames
+
+The `frame` alternative accepts the exact `AnyTransitionFrame` (legacy or format6) returned by the public animation sampler or player. Its native proof must include the session's exact current program among currently displayed contributors or direct native endpoints. An equal-looking program, cloned sample, independently authored key or offline-restored plan cannot confer that authority. A restored animation without native metadata is rejected; rendering it remains supported by the animation API. The session imports no planner, player, decoder or Full action implementation.
+
+The host supplies a non-negative safe-integer `version` greater than both the accepted frame version and the latest requested frame version, and the exact current `generation`. Keep a host counter across requests, including requests still preparing or failing. Mount/unmount and native commits can advance the accepted version. Stale counters return `stale` before reading the nested frame; a current invalid sample throws before cancelling an earlier request or changing the displayed frame. A frame's geometry, source metrics, lineage and child namespaces are taken from its authentic metadata. Enter/exit and weighted representations remain inspectable. Keyboard focus and native activation intersect that geometry with the current program's actual final items. An authenticated geographic source part or a native Text label attached to that geographic source may also use the current program's source-item membership: child scope, exact mark owner, resource kind/id and opaque logical item key must match. Geographic Text membership retains the source label selection and excludes undrawable source features; projection clipping and font measurement do not decide semantic membership. The frame origin and current native resource revisions are independently validated against their respective programs; revisions need not be equal. An entering or exiting item absent from the current program's semantic source remains ineligible. Weighted focus chooses the first source with an anchor admitted by its own opacity and clips. Source membership alone does not make an item focusable or clickable: the actual accepted frame must paint it within its clip, with nonzero opacity. Native selection stores existing item-key intent, and native highlights still affect only current materialized items.
+
+Without `assetResolver`, a valid frame publishes its scene, index, reconciled focus and `animationFrame` together in one `frame` event. With the resolver, the command returns `queued`; the request contains the exact `frame` plus `frameVersion`, current native `program`, generation, revision, transaction ID and that program's resource revision vector. Prepare image/font/shadow handles against `request.frame`, not `request.program`, when present. Existing renderer preparations consume its `graphicSpec` directly. The immutable sample identity supplies the transient asset boundary; its embedded endpoint assets are not synthesized as current native resources.
+
+While preparation is pending, the previous accepted scene, focus, `animationFrame` and `frameAssets` remain active. Acceptance publishes the new frame and prepared handles atomically; `assets` continues to describe the committed native program. A renderer should consume `state.animationFrame` with `state.frameAssets` when present. The resolver returns the same disposable lease shape as ordinary preparation. Frame failure/cancellation reports an `assets` event with status `error`/`cancelled`; `whenSettled()` observes the request current at the call. Failed or stale work cannot replace the displayed frame, program or history. Supersession aborts immediately and disposes late leases once. A successful native edit, history restore, program replacement or plain-scene replacement clears transient animation state and releases its accepted lease. Beginning a gesture cancels pending frame work; cancellation retains the accepted baseline. Movement still requires its owner's committed geometry as specified by the native movement contract.
+
+An authentic frame cancels any active captured gesture before starting its replacement preparation. Preparation revalidates current generation, program reference, resource vector, requested version and host transform before publication. Reentrant publication uses the existing FIFO reducer; a subscriber or disposer failure preserves already published state. Destruction aborts pending work, clears transient frame handles and prevents late events. Frames create no authoring trace, program revision or history entry. The host controls playback and reduced motion and may dispatch the resulting final frame through this same path.
+
+Evidence: `test/unit/animation/geo-frame-selection.test.js`, `test/unit/interaction-animation.test.js`, `test/unit/grammar/hit-focus.test.js`, `test/browser/interaction-animation.browser.js`, and the public interaction declaration tests.
 
 ## Hit results and semantic association
 
@@ -29,9 +45,19 @@ Filled paths honor nonzero/evenodd holes, strokes honor widths, dash gaps, caps 
 
 ## Bounds and unsupported operations
 
-Preparation supports at most 100,000 scene nodes and a 10,000,000-unit cumulative work budget; a query has a 2,000,000-unit budget. External frame snapshot work is bounded before canonical concrete validation. Guide layout reuse accounts for sample comparisons before computation. Frames containing accessors, cycles, unsupported objects, excessive work or mismatched semantic cardinality are rejected atomically.
+Preparation defaults to at most 100,000 scene nodes and independently bounded 10,000,000-unit binding and index work. `createInteractionSession` accepts optional `hitPreparation: {maxSceneNodes?, maxWork?, pathGeometry?}`. Omission, `undefined`, `{}`, and own undefined fields retain the defaults. `maxSceneNodes` is a safe integer from 1 through 200,000; `maxWork` is a safe integer from 1 through 128,000,000. Each binding and index preparation has its own maxWork bound (at most 256,000,000 combined), not one shared allowance. The closed plain record rejects null, unknown fields and accessors without reading inherited optional properties.
 
-Navigation, keyboard focus, async assets and history have no commands in this entry yet. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
+The policy is snapshotted for one session, is absent from program/state/codec, and cannot be changed by commands, frames or mount options. It applies to initial, nested aggregate, current-frame, preview, replacement, history, mount and async commit preparation. Background and every actual child node count; there is no free background exemption. Cached native bases recheck the current count and recharge their original preparation work. Exact fully validated immutable metadata can reuse its normalized info, identity key and signature; every reuse recharges its full original validation and serialization cost against the current policy. Caller-owned, cloned, ordinarily frozen and partially owned metadata receive full validation and isolated normalization. Native owner, source revision, epoch, asset, clip and exact frame authority remain independent requirements. Failed candidates leave the previous program, scene and history intact.
+
+Indexed entries and lineage arrays remain limited to 100,000; a query retains its 2,000,000-unit budget. The default shape/path, 10,000,000-unit external snapshot, selection, keyboard and animation limits are unchanged. Explicit preparation does not grant those consumers larger budgets or prove a latency target. External frame snapshot work is bounded before canonical concrete validation. Guide layout reuse accounts for sample comparisons before computation. Frames containing accessors, cycles, unsupported objects, excessive work or mismatched semantic cardinality are rejected atomically.
+
+`hitPreparation.pathGeometry` is an optional closed plain record. Omission or own undefined preserves the existing path preparation and whole-shape query charging. An own record (including `{}`) opts into bounded indexed preparation only for concrete paths carrying their own valid `maxCommands` declaration. `maxParts` defaults to 30,000 and accepts safe integers 1..400,000; `maxWork` defaults to 1,000,000 and accepts 1..2,000,000 independently for stroke generation and compiled geometry; `maxIndexWork` defaults to 10,000,000 and accepts 1..16,000,000 per path. Own undefined fields use those defaults. Null, unknown fields, accessors, non-records and invalid numbers are rejected without invoking inherited getters. Commands retain their existing explicit 200,000 ceiling and are validated against their actual declaration before processing.
+
+This policy does not propagate to clips, text-derived paths or other primitives. Each weighted source needs its own path declaration; the existing 1,000,000 weighted-union limit remains. Actual footprint geometry, stroke joins/caps/dashes, holes, clipping and nearest/focus results are unchanged. Indexed path queries charge visited tree nodes and actual tested footprints, including full fill/clip costs and clipped-distance work, against the same 2,000,000 query limit. Unsafe numeric bounds and analytic-circle parts retain scalar traversal. Overlapping or complicated geometry may still exceed the query budget; a path index is not a guaranteed latency bound. Native binding preparation additionally charges the bounded index build work. Cached shapes recheck their actual counts and costs under the current path policy. Focus retains original footprint order and its caller's existing work bound. Session replacement, mount, history and authentic sampled-frame paths share this policy and retain failure atomicity; offline frames gain no native authority.
+
+Hit tie ordering uses exact UTF-16 lexicographic comparison and charges the code units actually read, including shared prefixes; it does not repeatedly charge unread key suffixes. Input validation and metadata serialization retain their full work accounting. Item and query limits are unchanged; the session preparation option above is the only explicit extension. Evidence: `test/unit/grammar/hit-index.test.js` and the full 10,000-point CSS-hit regression in `test/unit/hit-program.test.js`; these correctness checks are not a performance qualification.
+
+Native navigation, keyboard focus and async asset preparation follow their sections below. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
 
 Evidence: `test/unit/interaction-session.test.js`, `test/unit/interaction-selection.test.js`, `test/unit/hit-guides.test.js`, `test/unit/hit-program.test.js`, `test/unit/hit-frame.test.js`, `test/browser/interaction-session.browser.js`, `test/contracts/interaction-types.test.js`.
 
@@ -44,18 +70,19 @@ The following advanced controller commands require an explicit `target` and `pay
 - `dispatch({type:"clearSelection", target, payload:{id}, transactionId?,origin?,causeTransactionId?})` replaces an existing selection with an empty item set, `empty:"none"`, and its existing grain. The resource, highlight, label and conditional consumers remain valid. It does not remove the resource or reset the chart.
 - `dispatch({type:"focusHierarchy",target,payload:{focus},transactionId?,origin?,causeTransactionId?})` invokes the existing Full partition editor. `focus` is the native typed `HierarchyNodeTarget` or null for the current root. Only an explicit partition owner is accepted; other hierarchy marks and Basic reject. Coordinate, layout, paint and pruning policy remain unchanged. Native source recovery, selection pruning and subsequent session reconciliation/linked closure retain their existing meaning. No new hierarchy calculation or stored schema is introduced.
 - `dispatch({type:"moveNode",target,payload:{key,x,y},transactionId?,origin?,causeTransactionId?})` addresses an explicit graph layout and delegates to `editLayout({node:payload})`. Typed key, finite layout-local coordinates, dormant intent, force pins, dependent routes/plots and failure atomicity follow the native layout owner. Basic and incompatible layout methods reject it.
-- `dispatch({type:"setViewport",target,payload:{scalePx?,translatePx?,centerDeg?,rotateDeg?},transactionId?,origin?,causeTransactionId?})` invokes the existing Full projection editor with a nonempty patch. The target identifies the projection itself. Values and projection-type applicability use `editProjection`; absolute scale/translation detach a prior fit, while angular changes retain and recompute it. Pixel units are native projection output coordinates before child composition and host transforms. The command preserves type, clipping, precision and geometry. Basic rejects it.
+- `dispatch({type:"annotate",target,payload,transactionId?,origin?,causeTransactionId?})` invokes Full `editAnnotation` for Text or `editGeoAnnotation` for a geographic annotation with a nonempty native patch. The target is one explicit existing annotation owner; payload cannot redirect target. Existing constant datum or local Canvas screen anchors, text, offsets, placement, item membership and layout keep their native ownership. Geographic position/feature anchors retain the native coordinate, typed feature key and original detail level. The selected target kind determines the closed payload; Text-only options reject for Geo and Geo-only options reject for Text. Complete preflight precedes one session reconciliation/link closure and commit/settled pair. Basic rejects; this command does not create annotations or infer an anchor.
+- `dispatch({type:"setViewport",target,payload:{scalePx?,translatePx?,centerDeg?,rotateDeg?},transactionId?,origin?,causeTransactionId?})` invokes the existing Full projection editor with a nonempty patch. The target identifies the projection itself. Values and projection-type applicability use `editProjection`; absolute scale/translation detach a prior fit, while angular changes retain and recompute it. Pixel units are native projection output coordinates before child composition and host transforms. The command preserves type, clipping, precision and geometry. Alternatively, the entire payload is `{operation:GeoCameraOperation}` and invokes Full `navigateProjection`. Operation and absolute transform fields are mutually exclusive. Pan, anchored zoom, pinch, spherical rotation, fit, explicit reset and resize use the native camera contract without a second stored camera. Basic rejects both paths.
 - `dispatch({type:"setParameter", target, payload:{value}, transactionId?,origin?,causeTransactionId?})` invokes the existing parameter editor and its entire dependency closure. An unchanged scalar value returns `{status:"unchanged"}` without a trace, revision or event. Basic lacks these editors and rejects them even for unchanged values.
 - `dispatch({type:"filter",target,payload:{select,mode?,recompute?},transactionId?,origin?,causeTransactionId?})` invokes `filterMarks` with the existing inline `MarkSelector`. `mode` is native replace/compose; `recompute` retains the existing inferred-graph restriction. Named-selection AST, region and screen metadata are not inline filter selectors. `{clear:true}` replaces the entire payload to invoke `removeMarkFilter`. Clear removes only that filter; it does not reset other state. Missing active filters and invalid native options reject atomically.
 - `dispatch({type:"reorder",target,payload:{channel,values}|{channel,by,direction?}|{channel,clear:true},transactionId?,origin?,causeTransactionId?})` invokes `orderCategories` or `removeCategoryOrder`. Channel is x/y/theta and all values, computed ordering, shared-scale compatibility and automatic-domain rules are the existing category-order contract. Source rows stay in their original order; mark geometry, axes, linked legends and selection items follow the native order. Clear requires an active order. A clear payload cannot contain replacement options and clear accepts only true. Basic rejects both direct-control editors.
 
 A target is a root owner ID string or `{childPath,id,facetSource?}` using existing action scopes. Selection, filter, reorder and hierarchy-focus commands identify the mark owner; parameter commands identify the parameter and viewport commands identify the projection; node commands identify the layout. No list or inferred owner is accepted. Concat paths retain exact item namespaces; facet edits require `facetSource:true` and regenerate retained cells. Generated facet cells cannot be edited individually. An existing selection must belong to the stated owner. Child paths are limited to 1,024 components; ordinary action target validation also applies.
 
-Each accepted edit first invokes the wrapped domain action on an immutable candidate and prepares its complete current hit frame. Only successful preparation replaces the session program/scene, increments revision and generation once, advances frameVersion, and clears the transient hit. The original program remains unchanged. The host renders `event.current` or the current accepted scene; the controller does not draw or prepare renderer assets. `settled` means this synchronous program/frame work has completed, not that a host renderer or asynchronous asset job has finished.
+Each accepted edit first invokes the wrapped domain action on an immutable candidate and prepares its complete current hit frame. Only successful preparation replaces the session program/scene, increments revision and generation once, advances frameVersion, and clears the transient hit. The original program remains unchanged. The host renders `event.current` or the current accepted scene; the controller never draws. Without assetResolver, `settled` means the synchronous program/frame work is complete. With assetResolver, the atomic preparation contract below also applies before commit.
 
 Transaction events contain `{type,transactionId,origin,causeTransactionId?,phase,revision,affectedOwners,previous,current,diagnostics,selectionChanges,state}`. The type is the command type. `previous` and `current` are immutable program references. `affectedOwners` contains the explicitly addressed owner and changed linked target owners, each with its child path; it is not an inventory of every rematerialized dependency. Origin defaults to `programmatic`, with `user`, `replay`, and `linked` also accepted. IDs are nonempty strings of at most 1,024 characters; an omitted ID is generated within the session. A cause ID records provenance without enabling automatic linked propagation.
 
-Successful commands publish `commit` then `settled` at one revision. A valid envelope whose payload, target, action or frame preparation fails publishes one `error` with unchanged program/frame/revision, empty affectedOwners and a diagnostic, then throws. Malformed envelopes and unsafe snapshots are rejected before a transaction begins. Subscriber errors propagate and stop further delivery, preserve an already committed state, and discard pending work; they are not reported as action rejections.
+Successful commands publish `commit` then `settled` at one revision. A valid envelope whose payload, target, action or frame preparation fails publishes one `error` with unchanged program/frame/revision, empty affectedOwners and a diagnostic, then throws. Malformed envelopes and unsafe snapshots are rejected before a transaction begins. Subscriber errors propagate and stop further delivery, preserve an already committed state, and discard pending work; a requested destroy still completes. They are not reported as action rejections.
 
 Reentrant commands are snapshotted before callbacks resume and run FIFO after both transaction phases. Repeated transaction IDs in one drain return `stale`, preventing callback feedback for that transaction. The 256-operation drain bound remains. IDs are not retained as a durable replay ledger. Input snapshots have a 10,000,000-unit cumulative work limit and reject accessors, cycles, sparse arrays and executable values. Runtime queues, IDs and subscribers never enter the program codec.
 
@@ -205,7 +232,7 @@ selection membership at initialization, after committed commands, and after `upd
 Initialization records existing hidden keys without authoring or emitting changes. Changes compare
 exact logical keys at the final item grain. An absent item, removed child/owner, or explicit
 `visible:false` item (such as partition focus) is unavailable. Opacity zero, clipping, and a sampled
-animation frame do not remove semantic membership. A visible geographic detail item also makes its
+animation frame do not remove semantic membership. Geographic projection clipping likewise preserves source membership for features and their attached Text labels; removing the original feature is a semantic removal. Explicit keys and non-property predicates use that source grain for lifecycle snapshots, while graphic-property predicates keep their concrete evaluation. A geographic detail source item also makes its
 explicit `representationKeys` available. An explicit items selection retains its authored logical keys
 for lifecycle snapshots and hidden/restored/dropped events; its current resolved selection and hit still
 use the visible representation's key. A detail-level change alone neither prunes nor emits hidden keys.
@@ -251,7 +278,7 @@ realistic corpus, browser interaction tests and installed interaction consumers.
 
 ## Automatic click binding
 
-Full accepts one `{type:"select",target,selection,mode?,onMiss?,slop?,hitInvisible?}` binding. The target
+Full accepts `{type:"select",target,selection,mode?,onMiss?,slop?,hitInvisible?}` bindings. The target
 is one explicit root or concat mark owner and `selection` must be an existing authored selection on
 that owner. Root/concat facade items follow their native final grain. Basic, generated selection IDs,
 facet-source geometry, duplicate click bindings and conflicting linked target writers are rejected.
@@ -276,8 +303,7 @@ the existing FIFO lifecycle. Captured up commits before the subsequent click ins
 release listeners, and a captured old listener is inactive. All successful selection event consumers
 must render the accepted program; the controller never renders. SVG hosts remount after replacing
 the root element. Headless authors use explicit select/clear commands instead of a new low-level
-click command. No automatic modifier, brush/lasso, competing binding, keyboard focus or history policy is
-inferred. Existing count/work limits apply; candidate and key expansion additionally share a
+click command. No modifier-driven mode change or keyboard focus is inferred. Explicit competing editing bindings use the arbitration rules below. Existing count/work limits apply; candidate and key expansion additionally share a
 10,000,000-unit click-selection budget.
 
 Evidence: `test/unit/interaction-click-selection.test.js`, `test/browser/interaction-session.browser.js`,
@@ -302,8 +328,7 @@ transaction phase. A successful up uses one generated transaction ID for commit 
 
 Capture is released before terminal subscribers run. The subsequent browser click is suppressed,
 including when an up subscriber replaces the SVG root and remounts it. An explicit activation click
-with `detail:0` remains available to host keyboard controls. The controller does not add Enter/Space
-behavior or guess a focused item. An independent click-inspection binding receives the later click;
+with `detail:0` remains available to host keyboard controls. The pointer binding does not add Enter/Space behavior; the explicit keyboard binding below owns keyboard focus and activation. An independent click-inspection binding receives the later click;
 on capture-capable hosts selection commits on up before that click inspection.
 
 Custom event surfaces without either capture method retain click-only handling. Supplying exactly one
@@ -316,14 +341,14 @@ or empty viewport cannot acquire capture; one arising during a gesture cancels i
 
 DOM events, capture IDs and armed program references are runtime-only. Codec, static PNG/PDF and
 renderer geometry remain unchanged. Browser tests cover actual mouse, Escape and touch on Canvas/SVG;
-brush/lasso preview, RAF coalescing, navigation pinch and history remain unsupported public options.
+The click binding does not accept a pinch option; native navigation, region preview and session history are specified below.
 Evidence: `test/unit/interaction-pointer-capture.test.js` and `test/browser/interaction-session.browser.js`.
 
 
 ## Brush and screen lasso bindings
 
-Full sessions accept one `{type:"brush",target,selection,axis?,channels?,mode?}` or
-`{type:"lasso",target,selection,mode?}` instead of the click-selection binding. The existing authored
+Full sessions accept `{type:"brush",target,selection,axis?,channels?,mode?}` and
+`{type:"lasso",target,selection,mode?}` through the common pointer arbitration rules. The existing authored
 selection must match the explicit root or concat owner; facet-source geometry and linked target
 writers are rejected. A missing endpoint after program replacement remains dormant. Brush axis
 is `"x"`, `"y"`, `"theta"` or default `"xy"`. Optional `channels` maps each active axis to its same-axis semantic
@@ -366,11 +391,71 @@ The prior program and trace remain exact; late up/RAF callbacks cannot commit. T
 FIFO guarantees as captured click apply. For SVG previews keep the captured host stable (for example,
 a correctly sized wrapper containing the replaced SVG); replacing the capture element cancels it.
 The host owns touch-action and rendering, and must redraw the committed program after cancel.
-No keyboard, multi-binding arbitration, pinch or history support is implied.
+Region bindings participate in the common pointer arbitration below; they do not add keyboard or pinch handling.
 
 Evidence: `test/unit/selection-region.test.js`, `test/unit/actions/selection/region-selection.test.js`,
 `test/unit/interaction-region-gesture.test.js`, `test/contracts/interaction-types.test.js`.
 
+
+### Selection-region and category handles
+
+Full sessions accept `{type:"resize",target,selection,axis,channels?,slop?,priority?,modifiers?}`.
+`axis` is required and is exactly `x`, `y`, `xy`, or `theta`; channels use the same matching
+x/x2, y/y2 and theta bindings as brush. Resize always replaces an existing persistent region
+through the native `select` command. It does not resize the Canvas or observe its host size.
+Item-key and lasso selections, empty regions, noncontiguous category runs, regions with unmatched
+channels, and boundaries outside the native domain have no handles. Cartesian numeric regions
+must contain one interval per axis. A zero-width interval, coincident projected handles or an
+equidistant nearest hit rejects explicitly. No array-order choice resolves different handles.
+
+`getSelectionHandles()` returns `{frameVersion,handles}`. Each frozen handle contains
+`{target,selection,axis,handle,point:{x,y}}`; target is the normalized scoped native mark target,
+and selection is its exact existing selection ID. There is no format version or separate handle
+counter. `frameVersion` is the existing accepted scene version, including during a selection
+preview. Values are recomputed for the current native program or accepted preview; the query
+never writes state. The handle vocabulary is `x-min|x-max`, `y-min|y-max`, the four
+`x-min-y-min|x-min-y-max|x-max-y-min|x-max-y-max` corners for xy, and `theta-start|theta-end`.
+Single-axis handles use the other plot dimension's midpoint; xy includes four edge midpoints
+and four corners. Min/max name domain endpoints even under reversed scales. Theta preserves
+the authored directed arc, using consistent saved screenAngles or an unambiguous native inverse.
+A full coincident arc and contradictory metadata do not invent a direction.
+
+Points are CSS-local to the mounted surface, with native child placement and the declared
+rootTransform applied once. DPR is not multiplied. Plot, Canvas and collection clips restrict
+eligibility. The host draws idle handles and provides ARIA/focus controls from this exact query;
+the controller draws no idle DOM or graphics. Pointer hit uses these same points and the existing
+CSS slop (mouse/pen 3, touch 6 by default). A singular transform rejects. Bounds use the native
+linear/log/time or resolved ordinal/band/point forward mapper; drag values use the existing native
+inverse. For categories, the fixed category's center anchors the inverse so touching band edges
+do not add its neighbor; the queried handles and preview remain on the selected bands' outer
+edges. Returning to the authored boundary restores the original predicate. Crossing a numeric
+boundary preserves the untouched endpoint's inclusive flag. Arbitrary independently sampled
+geometry cannot supply an inferred native scale and rejects before capture or publication.
+
+`{type:"reorder",target,channel,slop?,priority?,modifiers?}` binds an existing nominal/ordinal
+x, y or theta position to its actual painted native axis tick/label values. It never parses displayed
+label strings. Missing ticks, titles and mark bodies are not handles. The owner, source field,
+resolved scale and shared-scale compatibility use the native category-order resolver. The dragged
+typed value is inserted into the ordered native domain as the pointer crosses other category
+centers, then the existing `reorder` command calls `orderCategories`; marks, axes and linked
+legends rematerialize through that action. Reversed ranges use their resolved direction once.
+Theta uses the scale's explicit directed domain cut, including the full-circle start. An ambiguous
+non-native cut rejects rather than guessing a rotation.
+
+Both bindings use default priority 60 and the existing modifier/ambiguity rules. A click-sized tap
+or a final order/region equal to the baseline adds no history. Accepted previews use one host RAF,
+retain the exact down program, and commit once on up. Resize reuses the transient region overlay;
+reorder previews the immutable native candidate. Escape, pointercancel, lost capture, blur,
+replacement, unmount and destruction discard previews and pending callbacks. Invalid inverse,
+capability, clip or native command results preserve the committed program/history. Existing
+asset preparation and linked-selection atomic closure apply. Host keyboard controls use the same
+`dispatch({type:"select",...mode:"replace"})` or `dispatch({type:"reorder",...values})` commands;
+this API does not add a second keyboard model. The inspected-chart browser example demonstrates
+both paths for Canvas and SVG. Existing 10M work bounds also cover derived handle queries.
+
+Evidence: `test/unit/selection-handles.test.js`, `test/unit/interaction-handles.test.js`,
+`test/browser/interaction-handles.browser.js`, `test/contracts/interaction-types.test.js`, and
+`scripts/consumers/fixtures/node/interaction-handles.mjs`.
 
 ### Angular brush
 
@@ -424,19 +509,18 @@ dormant; an invalid or ambiguous replacement rejects without changing committed 
 The shared captured-click lifecycle, immutable native command transaction, selection policy and
 linked-selection/filter closure apply with `origin:"user"`. Runtime bindings are recreated after
 codec restoration; the native selection is persisted. Root and explicit child scopes are supported;
-facet-source geometry, competing editing bindings and linked target-selection writers reject.
+facet-source geometry and linked target-selection writers reject. Editing bindings use the common arbitration below.
 Evidence: `test/unit/interaction-legend-selection.test.js`, `test/browser/interaction-session.browser.js`,
 `test/contracts/realistic-logical-selection.test.js`, and the installed interaction consumer.
 
 
 ## Categorical legend visibility
 
-Full accepts `{type:"legend",effect:"visibility",target,channel,scaleDomain,slop?}` as its one editing
+Full accepts `{type:"legend",effect:"visibility",target,channel,scaleDomain,slop?}` as an editing
 pointer binding. It selects an existing categorical legend block at the explicit root/concat owner;
 no named selection is required. Each symbol/label click toggles that typed category using native
 `setMarkVisibility`. Titles, background, overflow summaries and other blocks are inert. Missing
-owners or removed legends become dormant. Continuous/interval blocks, facet geometry, competing
-pointer bindings and Basic authoring reject. Captured-click cancellation, CSS slop, current-frame
+owners or removed legends become dormant. Continuous/interval blocks, facet geometry and Basic authoring reject. Captured-click cancellation, CSS slop, current-frame
 identity and immutable input rules match categorical selection.
 
 `dispatch({type:"setVisibility",target,payload:{channel,values,visible,scaleDomain},transactionId?,origin?,causeTransactionId?})`
@@ -468,8 +552,8 @@ resource revision/DAG closure, then the same session reconciliation and linked p
 Invalid values preserve program/trace/revision; unchanged values do not commit. The session creates no
 DOM widget or implicit coercion and does not bypass Basic's missing parameter editor.
 
-`{type:"contextMenu",slop?,hitInvisible?}` adds one optional context binding alongside inspection and one
-editing pointer binding. Only that explicit mounted binding prevents the native `contextmenu` default.
+`{type:"contextMenu",slop?,hitInvisible?}` adds one optional context binding alongside inspection and
+editing pointer bindings. Only that explicit mounted binding prevents the native `contextmenu` default.
 It emits `{type:"contextMenu",state}` through existing subscribers; `state.hit` contains current-frame
 semantic candidates with the same CSS coordinates, clips, roles, item/row/resource identities and ordering
 as inspection. Missing geometry produces a null target and diagnostics, never an inferred owner. No raw
@@ -505,15 +589,25 @@ and existing partition resource/renderer tests.
 
 ## Host projection viewport
 
-`setViewport` delegates validation and materialization to `editProjection`, retaining geometry identity,
-feature selection keys and native projection revision semantics. Its payload accepts only `scalePx`,
-`translatePx`, `centerDeg` and `rotateDeg`; at least one must be present. Invalid values, unsupported
-projection parameters, unknown targets and later dependent failures preserve the previous program,
-trace, scene and revision. The command does not derive level-of-detail zoom or cursor anchoring.
+`setViewport` delegates validation and materialization to the existing Full native owners, retaining
+geometry identity, feature selection keys and projection revision semantics. Use either a nonempty
+absolute patch with `scalePx`, `translatePx`, `centerDeg` and `rotateDeg`, or the exclusive payload
+`{operation:GeoCameraOperation}`. The former invokes `editProjection`; the latter invokes
+`navigateProjection` with its existing pan, inverse-anchored zoom, pinch, spherical rotation, fit,
+explicit reset and resize contract. All pixel coordinates precede composition and host transforms.
+An operation cannot accompany an absolute transform field, and unknown fields reject.
 
-Host buttons or typed controls may send absolute transform patches and redraw the committed program.
-They retain native keyboard activation and focus. Existing scope routing permits explicit child
-projection targets. No navigation listeners, animation or camera state are installed.
+The target is always one explicit projection ID or `{childPath,id}`; the session never chooses another
+projection or child. The host obtains reset parameters through `getProjectionView` and supplies them
+explicitly. No second camera baseline is stored. The complete native action and dependent closure form
+one transaction and history entry, including a resize that edits both Canvas and projection.
+Invalid values, unsupported parameters, unknown targets and later dependent failures preserve the
+previous program, trace, scene and revision. Asset preparation precedes commit; cancellation or failure
+preserves committed program, current frame and history together, while late leases are disposed once.
+
+Host buttons or typed controls may send either payload and redraw the committed program. They retain
+native keyboard activation and focus. No pointer navigation listeners, animation or level-of-detail
+zoom inference are installed by this direct command.
 
 Evidence: `test/unit/interaction-viewport.test.js`, the canonical viewport browser snippet,
 `test/support/scenarios/region-interaction.js` and the installed interaction consumer.
@@ -524,7 +618,7 @@ Evidence: `test/unit/interaction-viewport.test.js`, the canonical viewport brows
 `{type:"moveNode",target}` binds one explicit GraphPlot with a fixed or force layout and an explicit
 plot origin. It uses the current visible node hit, the exact stored layout reference and original typed
 source key. Edges/background do not capture. Facet sources, automatic origins, incompatible methods,
-extra options and competing editing pointer bindings fail closed. Scope and explicit CSS transforms
+unsupported options fail closed. Editing bindings use the common arbitration below. Scope and explicit CSS transforms
 follow the common coordinate owner; no graph position or transform is inferred from screen bounds.
 
 Capture starts armed; movement of at least 3 CSS pixels begins dragging. The initial pointer-to-node
@@ -538,9 +632,389 @@ cancel the draft, cancel RAF and release capture. Cancelling a geometry preview 
 hit frame. Frame versions advance for previews and restoration as well as commit; an external frame
 that interrupts a preview may receive a later frameVersion to retain this ordering. Read the current
 frameVersion when producing the next external frame. Session revision still changes only on commit.
-A sampled moving node must return to its committed concrete geometry before a new drag can start.
+An authentic animation frame with complete current graph meanings can start a drag directly. The exact
+current native owner, scoped graph/layout identity, node keys and edge topology must still match. Every
+represented graph role must agree with the shared native forward geometry. Copied/plain altered scenes,
+fallback graph roles, partial topology and incompatible owners reject before capture.
+
+For that path, RAF computes `previewFrame` from the accepted frame's current semantic node coordinates.
+Other nodes retain their current coordinates; incident routed points follow endpoint displacement by
+route arc length and use the native clipping/arrow owner. No native layout action, committed program or
+history entry is created during preview. `animationFrame` and `frameAssets` remain the accepted baseline.
+The preview is itself an authentic TransitionFrame and can be passed to `planTransition` as a new start.
+Release creates one native layout replacement from current positions. Fixed layouts preserve them;
+force layouts use them as initial positions, preserve existing pins and pin the dragged node before
+running the existing solver once. Other nodes are not permanently pinned. Native solver and route output
+may differ from the last preview; the host may explicitly transition from that preview to the committed
+program. Undo/redo restore the exact native programs, not a transient picture.
+
+Cancel restores the exact accepted animation frame and its lease. Source/frame replacement and teardown
+cancel capture and pending jobs; stale results cannot replace the current frame. Explicit `moveNode`
+commands continue to mean native layout coordinates and do not implicitly inherit an animation frame.
 
 The host supplies capture, RAF and its touch-action policy. Keyboard controls may send `moveNode`
-with explicit typed key and layout coordinates. General keyboard focus, undo/redo, unpinning and
+with explicit typed key and layout coordinates. General keyboard focus, unpinning and
 automatic-origin dragging are separate capabilities. Evidence: `test/unit/interaction-node-move.test.js`,
 the canonical node-drag browser example and the installed interaction consumer.
+
+
+### Native annotation offset dragging
+
+`{type:"annotate",target}` is one explicit Full Text or geographic annotation editing pointer binding.
+It edits native dx/dy from the committed baseline using local pointer displacement and preserves all
+data/plot/feature/item/screen anchor intent, lineage and item keys. The target layer is the edit unit:
+all source-owned labels move together; use a separate annotation with membership for a single label.
+Encoded offsets and facet sources reject. Missing owners are inert; malformed/Basic/other mark targets reject.
+The common pointer arbitration rules apply. No new persisted schema or renderer is introduced.
+
+The host provides pointer capture, RAF and touch-action policy. Only an exact target hit begins capture,
+and the owner's graphics must match the committed frame. Root/child matrices convert CSS displacement
+without DPR inference. Preview uses the same native editor, reconciliation/link closure and actual current
+hit frame; immutable committed state changes only once on final release. Escape/cancel/lost capture/blur/
+update/frame/unmount/destroy restore the committed frame and discard preview. Under-threshold clicks are
+no-ops. Coordinate overflow cancels; native preflight errors release capture and publish error without commit.
+Keyboard hosts dispatch the same annotate command. General keyboard focus remains a separate session capability. Evidence: `test/unit/interaction-annotation-drag.test.js`,
+`test/browser/interaction-session.browser.js`, and installed `interaction/annotation-drag`.
+
+
+## Bounded session history
+
+`historyLimit` is an integer from 0 through 10000, default 100. `getState().history` is a frozen
+`{undoCount,redoCount,limit}` summary. Runtime history retains immutable program references and the
+corresponding private reconciliation records and linked-selection projections, never DOM or host objects.
+It is not part of program serialization. Zero disables undo/redo retention but keeps the initial reset baseline.
+
+`dispatch({type:"undo"|"redo"|"reset",transactionId?,origin?,causeTransactionId?})` restores a whole snapshot.
+Target, payload and other options reject. The existing transaction metadata vocabulary, bounded FIFO and
+same-drain loop guard apply. Successful native commits record one previous snapshot and clear redo;
+preview/cancel/error and native no-ops record none. At the limit the oldest undo snapshot is evicted.
+Undo/redo move between exact saved snapshots without authoring, cloning or selection reconciliation.
+Runtime bindings remain active. Subsequent native edits reconcile from the restored selection records.
+
+Reset restores the session-creation snapshot, independently of later external replacements, and records
+one undoable transition if the program differs. Empty undo/redo and already-initial reset return unchanged,
+cancelling active capture/preview with reason updateProgram but emitting no history commit. Successful
+restores preflight counters, current host transform and hit frame before changing program or history;
+failure publishes error and preserves committed program/trace/history. Success advances revision and
+generation, clears transient hit, cancels active preview, and publishes commit then settled once.
+
+Undo/redo preserve their transition's affectedOwners. Reset and external replacement transitions use []
+for whole-program scope. `previous`/`current` identify exact snapshots. History restoration reports
+selectionChanges [] because it restores stored selection state; current/state.linkedSelections carry
+that state rather than new reconciliation diagnostics.
+
+`updateProgram(program,{history?:"reset"|"record",origin?}={})` defaults to reset/programmatic.
+Reset clears both stacks after successful preflight. Record adds the previous snapshot only when the
+committed program reference changes. Both retain the session's original reset baseline and existing
+external replacement/capture behavior. The program event adds origin and the resolved history policy.
+Invalid options and failed replacements preserve program and history. Destroy releases both stacks
+and the initial baseline; the public terminal state retains only the existing final committed snapshot.
+
+Evidence: test/unit/interaction-history.test.js, test/unit/interaction-annotation-drag.test.js,
+test/browser/interaction-session.browser.js and installed interaction fixtures.
+
+## Atomic asset preparation
+
+`createInteractionSession({program,bindings?,selectionPolicy?,historyLimit?,assetResolver?,hitPreparation?})` accepts
+an optional explicit host callback. It receives `{program,signal,sessionGeneration,transactionId,
+baseRevision,resourceRevisionVector}`. The program is the immutable native candidate; no DOM event
+or mutable source is passed. The vector contains every dataset and stored resource in each composition
+scope, including retained facet sources and invisible resources, with `childPath` plus its exact input
+reference. Dataset entries retain logical identity. Snapshot work is bounded by 10,000,000 units and
+100,000 resource entries. The callback must return or resolve a lease
+`{images?,fonts?,shadows?,dispose()}` using the existing authentic prepared renderer handles.
+A lease container may contain only those own data properties; handles must be frozen objects.
+The renderer retains authentication and exact graphic identity validation. The host releases partial
+preparation when its callback throws; the session owns every complete returned lease.
+
+`state.assets` is a frozen projection of the accepted lease's rendering handles, or null before
+initial preparation and after destroy. It is suitable as the renderer options for `state.program`;
+it is not an animation-scene preparation or a second asset cache. `state.preparation` is the pending
+job's four tags, or null. No second authoritative program enters state. `whenSettled()` returns the
+job Promise current at that call: `{status:'settled'|'cancelled'|'error',preparation?}`. Without a
+resolver it resolves immediately. Resolver and validation failures return error and publish one error
+event; subscriber or disposer exceptions reject that Promise. Unobserved Promise rejection does not
+create a global unhandled rejection, but awaiting the same Promise still observes the exception.
+
+Without a resolver, native commands retain the existing synchronous lifecycle. With a resolver,
+native action and hit preparation run before the callback, and dispatch returns queued. The previous
+committed program, trace, revision, history and assets remain usable while the candidate prepares.
+Only the same pending transaction with matching session generation, base revision, scoped resource
+revision vector and immutable base program may commit. Acceptance installs the new handles and
+candidate in one FIFO reducer, then emits commit and settled once. Failure emits error once with
+commit zero. A superseding valid candidate, an unchanged restore, a new editing gesture or destroy
+cancels pending work once, aborts its signal, and prevents a late commit or settled. Invalid commands
+preserve an already pending job. A late complete lease is disposed once without publishing another event.
+History stores no prepared handles; undo/redo/reset prepare their exact restored program again.
+
+Initial preparation leaves revision/history unchanged. External updateProgram also waits for the
+lease before publishing its existing program event or applying its history policy. Initial and external
+preparation publish `{type:'assets',status:'settled'|'cancelled'|'error',preparation,diagnostics,state}`.
+Native edits use their existing transaction event instead. Initial transaction ID is interaction-initial;
+external replacements receive a generated ID. Inspection and mounting remain available while preparing.
+A successful candidate is rebound to the current host transform immediately before commit.
+
+Replacement aborts and disposes the previous accepted lease after publishing the replacement. Destroy
+aborts pending work, releases its accepted lease and host listeners/capture, and clears callback and
+candidate references. Host disposers are called once even when they throw. A destroy requested from a
+subscriber remains terminal even if that subscriber throws; the original subscriber exception is
+preserved. Reentrant commands still use the bounded FIFO and transaction-ID guard when asynchronous
+completion enters the reducer. The session does not schedule worker layouts, observe resize, prepare
+animation frames or import a renderer; those owners must pass their accepted native program explicitly.
+
+## Prepared native replacements
+
+`updateProgram(prepare, {history?,origin?,transactionId?,causeTransactionId?} = {})` accepts a host callback
+returning an immutable program or a Promise of one. The callback receives a frozen `InteractionUpdateRequest`:
+`{program,signal,sessionGeneration,transactionId,baseRevision,resourceRevisionVector}`. Its program is the exact
+committed base at request start; the scoped vector includes that base's datasets and resources as specified above.
+Use the existing native resource preparers and actions inside this callback. Forward `signal` to workers and
+release partially acquired host resources in the callback's own `finally` block. No executor, worker protocol,
+resource result or authoring action is implemented by the session.
+
+The callback form returns queued and uses the same single pending preparation slot as asset preparation.
+`whenSettled()` observes native computation, replacement validation and optional asset preparation together.
+After computation, existing replacement selection/link/binding/hit validation runs before `assetResolver`.
+That resolver receives the validated candidate and its candidate resource vector, while the outer job continues
+to guard its original base tags and exact program identity. State preparation describes the outer base request.
+The committed program, revision, history and accepted assets remain unchanged until all preparation succeeds.
+
+Success publishes the existing `program` event followed by exactly one `update` event with status settled.
+Failure publishes one update error and no program event; supersession or destruction publishes one update
+cancelled. Update events have `transactionId`, `origin`, optional `causeTransactionId`, preparation tags,
+diagnostics and current state. Their status is separate from native transaction phase. The history and origin
+options retain the ordinary replacement defaults. Explicit transaction IDs and causes are accepted only by
+the callback overload and reuse the existing bounded validation and subscriber loop guard.
+
+A valid newer prepared replacement, ordinary replacement, native edit, restore or editing gesture aborts the
+pending job. Invalid native input leaves it pending. Late success or failure cannot publish or overwrite newer
+state. Inspecting, remounting or sampling a frame does not change the committed base; final candidate geometry
+is checked against the current host transform before commit. Destroy aborts the native signal and disposes the
+accepted renderer lease; duplicate destruction remains safe. Ordinary synchronous replacement is unchanged.
+
+## Mounted surface observation
+
+`observeResize` is an optional boolean, default false. True requires the mounted element's
+`ownerDocument.defaultView.ResizeObserver`. The session observes only that surface with
+`box:"content-box"` and emits `{type:"resize",size:{width,height},state}` through its existing
+FIFO. Size is frozen, finite, non-negative content-box CSS pixels; zero is valid and exact
+repeated dimensions are deduplicated per mount. DPR/rootTransform do not change measurements.
+Observation does not edit authoring state, history, revision, hit frame or viewport. The host
+may explicitly call an existing native action through updateProgram to choose its resize policy.
+
+Each mount owns one observer. Remount/unmount/destroy disconnect it once; late callbacks cannot
+publish. A failed constructor/observe attempt removes its listeners, capture and candidate index
+while preserving the previous mount. A throwing disconnect does not prevent other cleanup.
+Malformed or duplicate matching entries and batches over the existing 256 dispatch bound reject
+before publication. Unsupported hosts fail explicitly; no global observer or inferred camera policy
+is substituted. User-driven authoring and asynchronous preparation retain their existing contracts.
+
+
+## Native camera navigation binding
+
+`{type:"navigate",target,mode:"pan"|"rotate",scaleExtent:[min,max],initial,rotationStepDeg?}` is Full-only
+and participates in the common pointer arbitration rules. `target` is one explicit projection ID or scoped
+`{childPath,id}`; facet sources and composition containers reject. `initial` is an explicit native
+`ProjectionParameters` snapshot with the same type as the current projection. The extent is finite,
+positive and ordered. Only rotate mode requires a positive finite `rotationStepDeg`, measured in degrees
+per local projection pixel; rotation requires a non-composite spherical projection. All other options
+reject. The host supplies surface focus/tabindex and touch-action CSS.
+
+One captured pointer translates or rotates from a fixed baseline. A second pointer is accepted only for
+navigation and converts the existing native phase candidate into a fixed pinch baseline. The second
+phase consumes native pinch center/distance; no duplicate camera math or stored camera is created.
+RAF previews update the explicit preview program and hit frame; final up handles the latest coordinates
+and one prepared candidate enters the existing selection/link/preparation/history pipeline. Native phase
+revisions and trace decomposition remain intact; the session history gains one entry. A click, unchanged
+two-pointer gesture or a drag returning to the initial position adds no history entry.
+
+Wheel deltaMode0/1/2 means CSS pixels/16-pixel lines/surface-height pages. Finite delta maps to
+`2^clamp(-deltaPx/300,-20,20)` before native extent clamping and inverse anchor validation. Zero delta is
+unchanged. The focused surface's Arrow keys pan ten local pixels or rotate by ten times rotationStepDeg;
++/= and -/_ zoom by two/one-half at the visible owner Canvas center, Home resets to initial. Unknown keys
+and Ctrl/Meta/Alt shortcuts are ignored. Wheel and keyboard interrupt an active draft and use the same
+native command lifecycle. Pointer starts outside the owner's transformed Canvas clip are ignored.
+
+Cancellation, source/frame replacement, remount and unmount restore both committed program and displayed
+frame. Pending final asset preparation also displays the committed frame; failure or cancellation cannot
+leave a camera preview visible. All pointer captures, RAF callbacks and DOM listeners are released on
+teardown, and late callbacks are ignored. Removed target owners remain inactive; replacement owners must
+remain compatible with the explicit binding. An independently sampled camera frame cannot be used as a
+semantic baseline before the public animation adapter is connected. The accepted state.assets handles
+belong only to state.program; previewAssets belongs only to the exact previewProgram, as described below.
+
+Evidence: `test/unit/interaction-navigation.test.js`, shared pointer/session regressions and the canonical
+navigation browser snippet. Full camera animation remains separate.
+
+## Prepared gesture previews
+
+When assetResolver is configured, the existing editing gesture adapters prepare transient candidates
+through the same asset preparation owner. Initial committed preparation must be accepted before capture
+starts. Each RAF sample supersedes the preceding pending preview; a previously accepted preview remains
+visible while its replacement prepares. Success publishes previewProgram (or previewFrame for an authentic animated graph drag), readonly previewAssets and
+the matching current hit frame together in one preview event. No committed program, revision, trace or
+history changes. Without a resolver, existing synchronous previews remain and previewAssets is null.
+
+state.preparation describes the current pending preview or native candidate using the existing four tags.
+whenSettled observes the most recently started preparation, including its settled/cancelled/error result.
+The callback receives the exact preview program, or the current committed program plus `frame` for an animated graph preview, in the existing closed request shape. A gesture owns only
+one pending and one accepted transient lease; the committed lease stays separate and remains usable.
+
+Final pointer release calculates the latest candidate without starting another preview request, restores
+the accepted baseline frame, disposes transient leases and uses the ordinary final preparation/history path.
+Preview rejection reports one gesture error and commit zero; capture and the accepted preview are released.
+Superseded results cannot publish, and each complete late lease is disposed once. Cancel, native replacement,
+frame replacement, remount, unmount and destroy discard all transient preparation. Host abort listeners
+observe the restored committed state. Returned lease disposers remain exactly-once even when they throw.
+A disposer/subscriber exception after accepting a valid preview rejects that preparation Promise without
+rolling the accepted preview back; later cancellation/destroy still releases it.
+
+Host rendering selects previewFrame/previewAssets, then animationFrame/frameAssets, then
+previewProgram/previewAssets, then program/assets. It must not reuse baseline handles for a preview.
+Existing image/font/shadow authentication is unchanged. Animated graph gestures require an authentic
+current meaning; arbitrary host scenes do not gain native authority. Evidence:
+test/unit/interaction-preview-preparation.test.js, test/unit/animation/graph-drag.test.js and the actual browser bitmap lifecycle fixture.
+
+
+## Editing gesture arbitration
+
+Every select, legend-selection/visibility, brush, lasso, moveNode, annotate or navigate binding accepts
+optional `priority` and `modifiers`. Priority is an integer from -1,000,000 to 1,000,000. Defaults are
+selection resize and category reorder 60, annotation 50, brush/lasso 40, node 30, navigation 20 and click/legend 10. Modifiers are an own-data record
+with optional boolean alt, ctrl, meta and shift conjunctions; omission leaves that key unconstrained.
+Equal priorities whose modifier conditions can overlap are initialization errors, even for different
+owners. Explicit priority or disjoint modifier conditions resolve the ambiguity; array order never does.
+Inspect/context-menu/linked bindings do not accept these options. Limits are 256 editing and 259 total.
+
+On primary pointerdown, the session probes matching candidates in descending priority. Annotation/node
+candidates require an exact current visible target hit; region/navigation candidates require the native
+owner's current viewport and compatible committed frame. Click/legend candidates require their existing
+native command to apply, including an explicit click clear-on-miss. Hidden, missing or out-of-viewport
+candidates do not claim capture. Only the winning adapter begins a transaction; probes have no program,
+history, capture or preparation side effects. One shared DOM capture owner serves all editing bindings.
+
+The winner, modifier choice and transaction remain fixed through pointerup/cancel despite later modifier
+changes. A second pointer promotes only the same navigation winner to pinch when it falls in that winner’s viewport; another child’s pointer is ignored. Final coordinates, 3 CSS px
+threshold, RAF coalescing, preview assets, one commit/settled pair, undo and cancel restoration retain their
+existing contracts. Program/frame replacement, source removal, remount, unmount and destroy cancel the
+winner once and release shared listeners/captures. Late input cannot reactivate it. Pure click-only custom
+surfaces remain supported; any drag binding requires capture and host RAF methods.
+
+Wheel/keyboard select among matching navigation bindings; synthetic/keyboard click selects among matching
+click/legend bindings. Native Ctrl/Meta/Alt keyboard shortcuts remain host-owned. Modifiers choose bindings
+and never silently change a binding's authored update mode. An active pointer gesture does not switch
+owners mid-drag. Public animation remains a separate integration. Keyboard focus is defined below. Evidence:
+`test/unit/interaction-gesture-arbitration.test.js`, common capture regressions and actual browser consumers.
+
+## Keyboard focus and native activation
+
+A single `{type:'keyboard',targets:[{target,activation?}]}` binding accepts 1–256 distinct explicit
+leaf mark targets in caller order. Targets use the existing root/concat `InteractionTarget`; an owner
+component is addressed explicitly. Composite roots with no materialized native layer, facet sources
+and implicit composition targets reject. Omitted activation provides read-only focus for Full/Basic.
+`activation:{type:'select',selection,mode?}` requires an existing authored selection on the target;
+mode is replace (default) or toggle and linked target writers reject. `{type:'focusHierarchy'}` requires
+a Full partition owner and uses its existing native focus action. Unsupported activation options reject.
+
+- `dispatch({type:'focus',target,itemKey})` accepts a scoped native item key or null for its owner
+  container. A key must identify an eligible current item or exactly one current representation.
+  Unknown, hidden, ambiguous, fully clipped and opacity-zero keys reject without a state change.
+- `dispatch({type:'focus',move})` accepts next/previous/first/last across eligible targets and native
+  item order, or parent/firstChild/previousSibling/nextSibling/root using the existing hierarchy
+  navigation metadata. Traversal clamps at the ends; unavailable hierarchy neighbors are no-ops.
+- `dispatch({type:'activate'})` uses only the configured activation of the focused current item.
+  Selection delegates to the same native command as pointer selection. Partition activation resolves
+  the exact original typed key or grouped path using the existing hierarchy source adapter; it never
+  decodes opaque item keys. No activation or owner-container focus is a no-op.
+
+`state.focus` starts null. Its immutable non-null value is
+`{target,itemKey,currentItemKey,screenPoint,role}`. `itemKey` is the stable authored scoped identity;
+`currentItemKey` is the present representation. For container focus both keys, screenPoint and role
+are null. Focus survives accepted program/frame/host changes only while exactly one eligible item
+represents it; otherwise it falls back to that configured owner container, including owner removal.
+A later reappearance does not silently move container focus. Destroy clears focus. Focus is runtime
+state, excluded from program serialization and history; only a changed focus dispatch emits `focus`.
+Native edits and accepted frame changes include reconciled focus in their existing events.
+
+Eligibility intersects native logical visibility with actual current-frame painted geometry and every
+transformed clip. The shared hit geometry owner supplies an admitted CSS point with zero slop, preserving
+fill rules, stroke caps/joins and dash gaps. Opacity zero and singular transforms are ineligible. Text
+uses the existing declared metric-box hit policy, not a glyph-alpha claim. Overlapping items remain
+eligible; z order chooses a primitive within one item and does not hide other logical items. Model work
+is bounded by 100,000 items and 10M cumulative units; preparation precedes program/history commitment.
+The same preparation and frame-generation rules still govern asynchronous candidates.
+
+Mounted keyboard handling owns only the explicit surface (`event.target === element`), leaves nested
+controls and Alt/Ctrl/Meta/Shift combinations to the host, and never traps Tab. Arrow/Home/End move focus;
+for a hierarchy item Left/Right are parent/firstChild, Up/Down previous/next sibling and Home root.
+Enter/Space activate. Escape invokes a partition activation's parent focus; elsewhere it is a no-op.
+When keyboard and navigate bindings share one surface, the keyboard binding owns those key events and
+camera wheel/pointer operations remain available. Existing capture cancellation still owns Escape for
+an active drag. Remount/unmount/destroy remove listeners, and queued stale lease callbacks cannot act.
+The host supplies tabIndex, roles, safe text descriptions, active-descendant IDs and focus drawing.
+No DOM, HTML string, inferred accessible name or new renderer state is authored by the library.
+
+Tooltip/touch parity for additional controls and public animation/reduced-motion integration remain
+separate capabilities; this entry does not invent a player or an implicit timer.
+
+The documented accessible-tooltip recipe is host-owned UI using the existing `inspect`, `focus` and
+`activate` commands. It demonstrates safe native descriptions, a hoverable tooltip, Escape dismissal,
+keyboard/touch selection and teardown for Canvas/SVG. The host reserves tooltip space so hiding it
+cannot move adjacent controls during a click. It stores no alternate semantic selection, imports no
+new runtime service and makes no reduced-motion/player support claim. `format:'items'` supplies current
+logical fields/selected state; the session supplies exact current-frame eligibility. A host must dispose
+its own tooltip/control listeners together with its session.
+
+The documented native-control alternatives preserve ordinary HTML button/input focus and dispatch the
+existing native edit/history commands with `origin: "user"`. Category controls remain reachable when
+their items are hidden. Their status text reads committed `exportAccessibleData(..., {format:"items"})`
+values and `selectedBy`; they do not infer visibility from opacity or keep a second selection/history
+store. The parameter context-action button obtains its explicit native item's current-frame focus
+point before requesting `contextMenu`, so keyboard and touch users do not need hover or right-click.
+Hosts own labeled controls, safe text, control disposal and applicability; the library does not install
+a DOM widget system. Public playback and reduced-motion integration remain outside these static examples.
+
+## Overlapping edge candidates and temporary presentation
+
+`focus.move:'nextCandidate'|'previousCandidate'` cycles the last current-frame inspection's actual
+candidate order, intersected with configured keyboard targets and eligible native items. Logical
+body/arrow duplicates appear once. The moves wrap, start at the first/last candidate when focus is
+outside that set, and leave focus unchanged when no eligible current candidates exist. PageDown and
+PageUp dispatch these moves without modifiers; nested controls and Tab retain their host behavior.
+No candidate move edits selection or history. Ordinary next/previous and hierarchy moves retain
+their existing non-wrapping rules.
+
+`dispatch({type:'unbundleEdge',target,itemKey})` requires an explicit native Full GraphPlot target and
+an opaque scoped edge key that belongs to the current native graph and is painted in the current
+frame. `itemKey:null` clears that target's temporary presentation, or is unchanged when none exists.
+It accepts a native baseline or authentic graph sample with matching native topology; independently
+modified plain scenes, unsupported constructors, non-edge/unknown keys, fully clipped or zero-opacity
+items, and active editing previews reject before a presentation change. Finite scene and work limits
+still apply. Existing graph layout, parallel-edge, loop, endpoint and arrow policies calculate the
+selected edge's unbundled geometry. Only that logical edge's body/arrow change; all other concrete
+items, roles, order, clips, opacity and source identities remain intact. No junctions or new native
+resources are introduced. A graph already using native edge geometry may produce an equal picture.
+
+The accepted result is a runtime `previewFrame`, paired only with `previewAssets`. The original
+`animationFrame`/`frameAssets` or native baseline is retained. Program identity, trace, layout,
+canonical route resource, selection, revision and history do not change. Success emits
+`{type:'unbundleEdge',target,itemKey,state}`; this is a presentation event, not a native transaction.
+One edge is shown at a time; switching keys starts from the original baseline. With an asset resolver,
+preparation uses the exact candidate in `request.frame`, retains the prior picture/lease until success,
+and reuses the session generation/revision/resource-vector checks. Failure retains the last accepted
+picture; stale or disposed results release their leases and never publish.
+
+Explicit null, Escape, candidate cycling, editing gesture start, native edit/history request, source
+replacement, a valid newer frame, unmount or destruction clear the temporary view. Invalid commands
+and stale frames do not clear it. Candidate cycling first restores the baseline and queries the
+original inspection point with the original hit options at the new frame version. A prior leave
+clears that point, so it cannot revive a stale candidate list. Native selection still uses explicit
+`activate` or existing selection commands and records at most one normal history transaction.
+When focus or history remains unchanged, restoration still emits `unbundleEdge` with `itemKey:null`,
+so hosts receive the restored view without a native program, revision or history change.
+Hosts render preview before animation/native state and own accessible descriptions, tooltip DOM,
+dismissal and listener teardown; field values are inserted as text.
+
+Evidence: `test/unit/interaction-edge-presentation.test.js`,
+`test/browser/interaction-animation.browser.js`, `test/contracts/realistic-graph-drag.test.js`,
+the canonical overlapping-edge documentation example and installed interaction-animation consumer.

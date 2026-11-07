@@ -82,6 +82,10 @@ const encodeColor = /* @__PURE__ */ action(
         APPEARANCE_MARK_TYPES.encodeColor, "color mark");
       const next = layer.encoding?.color === undefined ? this
         : removeEncoding.call(this, { target, channel: "color" });
+      if (layer.mark.type === "geo") {
+        const method = { shape: "editGeoShapeMark", point: "editGeoPointMark", line: "editGeoLineMark" }[layer.geoBinding.mode];
+        return next[method]({ target, [layer.geoBinding.mode === "line" ? "stroke" : "fill"]: value });
+      }
       const method = { point: "editPointMark", line: "editLineMark", bar: "editBarMark",
         area: "editAreaMark", arc: "editArcMark", rect: "editRectMark", text: "editTextMark" }[layer.mark.type];
       return next[method]({ target, [layer.mark.type === "line" ? "stroke" : "fill"]: value });

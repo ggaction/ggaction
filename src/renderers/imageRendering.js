@@ -2,7 +2,7 @@ import { canvasSceneProgram } from "./canvasScene.js";
 import { ownRecord } from "../core/ownData.js";
 import { assetError, assertAssetActive, assetHostStage } from "../core/assetHost.js";
 import { imagePayloadBytes, validateImagePayload } from "../grammar/imagePayload.js";
-import { walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
+import { walkGraphicSources } from "../grammar/schemas/graphicSources.js";
 
 const MAX_BYTES = 64 * 1024 * 1024;
 const MAX_PIXELS = 64 * 1024 * 1024;
@@ -37,10 +37,7 @@ function imageValues(graphicSpec) {
     if (bytes > MAX_BYTES || pixels > MAX_PIXELS) throw assetError("render-budget", "Image rendering exceeds the unique byte or pixel budget.");
     values.set(image.contentHash, image);
   }
-  walkGraphicTreeEvents(graphicSpec, {
-    enter({ object }) { if (!Array.isArray(object.items)) add(object, object.type); },
-    item({ object, owner }) { add(object, object.type ?? owner.type); }
-  });
+  walkGraphicSources(graphicSpec, (_id, object, type) => add(object, type));
   return values;
 }
 
@@ -49,7 +46,7 @@ export async function prepareImageRendering(program, options) {
   const { decode, signal } = options;
   if (typeof decode !== "function") throw new TypeError("Image rendering requires an explicit decode callback.");
   assertAssetActive(signal);
-  const scene = program?.version === 2 && Array.isArray(program.nodes) ? program : undefined;
+  const scene = (program?.version === 2 && Array.isArray(program.nodes) || program?.version === 3 && Array.isArray(program.entries)) ? program : undefined;
   const graphicSpec = imageSpec(scene === undefined ? program : canvasSceneProgram(scene));
   // Complete every payload and cumulative budget check before the first callback.
   const values = imageValues(graphicSpec);

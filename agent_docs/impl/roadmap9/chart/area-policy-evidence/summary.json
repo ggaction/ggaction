@@ -1,0 +1,76 @@
+{
+  "scope": "Area facade final-policy preflight and compatible shared-scale authoring",
+  "status": "source-qualified; combined package qualification pending",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "publicApiChanges": false,
+  "storedSchemaChanges": false,
+  "addedRuntimeFiles": 0,
+  "checks": {
+    "focusedAndCritical": {
+      "passed": 112,
+      "failed": 0,
+      "critical": {
+        "src/actions/charts/area.js": [
+          100,
+          98.21,
+          100
+        ],
+        "src/actions/encodings/seriesLayout.js": [
+          98.5,
+          93.52,
+          100
+        ]
+      }
+    },
+    "renderers": {
+      "passed": 13,
+      "failed": 0
+    },
+    "canonicalRealisticStreamBaselines": {
+      "passed": 15,
+      "failed": 0
+    },
+    "documentedAreaPrograms": {
+      "passed": 2,
+      "failed": 0
+    },
+    "actionHierarchy": {
+      "passed": 1,
+      "failed": 0
+    },
+    "boundariesAndDiscovery": {
+      "passed": 35,
+      "failed": 1,
+      "failure": "Combined baseline discovers 57 realistic files; old expectation 54."
+    },
+    "streamFixtureShape": {
+      "passed": true,
+      "cases": 3,
+      "sourceFree": true
+    },
+    "allFixtureManifest": {
+      "passed": false,
+      "failure": "Combined interaction case order differs from existing manifest order."
+    },
+    "package": {
+      "passed": false,
+      "actualEntries": 1106,
+      "limitEntries": 1065,
+      "areaEntryDelta": 0,
+      "installedRun": false
+    }
+  },
+  "integrationOwner": "root",
+  "pending": [
+    "Combined measured package/browser ceilings and exact final archive Node20/22/24 consumers",
+    "Combined discovery and interaction manifest metadata",
+    "Final combined docs/build/STEP074 qualification"
+  ],
+  "preserved": [
+    "Public layoutSeries still requires complete positions",
+    "No renderer, schema, primitive or public API change",
+    "Immutable receiver and caller inputs",
+    "All first failed attempts retained separately",
+    "Table exact tar evidence remains attached to its original source, not reused for this source"
+  ]
+}

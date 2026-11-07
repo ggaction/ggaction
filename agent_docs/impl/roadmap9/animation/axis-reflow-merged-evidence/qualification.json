@@ -1,0 +1,458 @@
+{
+  "status": "dynamic-axis-labels-integrated; dependent-lane-title-and-final-qualification-pending",
+  "base": "d59526a40",
+  "sourceRevision": "3ed6e8ef93217a0f92bbf4b1908515ca3fb2bf66",
+  "incomingSource": "0811878a9500f2637e1ea60a1e4d40eb352f8370",
+  "upstreamPin": "e37357c6c",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1236,
+    "packedBytes": 1768669,
+    "unpackedBytes": 7983602,
+    "file": "ggaction-98c55c6bec2ca8525b8579933ffe86d239dd62b1468e0c5722b9abea45a5f8ba.tgz",
+    "sha256": "98c55c6bec2ca8525b8579933ffe86d239dd62b1468e0c5722b9abea45a5f8ba"
+  },
+  "sourceInputEquality": {
+    "base": "d165696d6ef93fa5b1c4c6e9c26b881d66567dcb",
+    "incoming": "e37357c6c",
+    "files": [
+      "src/animation/axisLabelFrames.js",
+      "src/animation/axisLabelTracks.js",
+      "src/animation/frameEndpoint.js",
+      "src/animation/frameProvenance.js",
+      "src/animation/frames.js",
+      "src/animation/planner.js",
+      "src/animation/sample.js",
+      "src/animation/timelineTracks.js",
+      "src/grammar/animation/axisLabelDecision.js",
+      "src/grammar/animation/guideState.js",
+      "src/grammar/animation/placement.js",
+      "src/interaction/hitAxisLabels.js",
+      "src/interaction/hitProgram.js",
+      "src/materialization/animation/axisLabelGroups.js",
+      "src/materialization/animation/axisLabelReflowState.js",
+      "src/materialization/animation/axisLabelState.js",
+      "src/materialization/animation/geoPresentation.js",
+      "src/materialization/animation/geoText.js",
+      "src/materialization/axisLabelCandidates.js",
+      "src/materialization/axisLabelQueries.js",
+      "types/animation.d.ts"
+    ],
+    "different": []
+  },
+  "checks": {
+    "owning.log": 731,
+    "render.log": 1,
+    "browser.log": 1,
+    "realistic.log": 5,
+    "boundaries.log": 47,
+    "docs.log": 241,
+    "pin-docs.log": 49
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-98c55c6bec2ca8525b8579933ffe86d239dd62b1468e0c5722b9abea45a5f8ba.tgz",
+      "sha256": "98c55c6bec2ca8525b8579933ffe86d239dd62b1468e0c5722b9abea45a5f8ba",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1057,
+          "minifiedBytes": 2733446,
+          "gzipBytes": 783678,
+          "limit": 783700,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 624,
+          "minifiedBytes": 1446511,
+          "gzipBytes": 424277,
+          "limit": 424300,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954,
+          "limit": 26000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 148980,
+          "gzipBytes": 44683,
+          "limit": 46000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 506,
+          "minifiedBytes": 1093639,
+          "gzipBytes": 327739,
+          "limit": 327800,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 205,
+          "minifiedBytes": 410425,
+          "gzipBytes": 131286,
+          "limit": 131400,
+          "pass": true
+        }
+      ],
+      "runtimeCases": 3,
+      "strictTypes": true,
+      "documentationSnippets": 1
+    },
+    {
+      "node": "v22.23.1",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-98c55c6bec2ca8525b8579933ffe86d239dd62b1468e0c5722b9abea45a5f8ba.tgz",
+      "sha256": "98c55c6bec2ca8525b8579933ffe86d239dd62b1468e0c5722b9abea45a5f8ba",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1057,
+          "minifiedBytes": 2733446,
+          "gzipBytes": 782272,
+          "limit": 783700,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 624,
+          "minifiedBytes": 1446511,
+          "gzipBytes": 423405,
+          "limit": 424300,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24779,
+          "limit": 26000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 148980,
+          "gzipBytes": 44526,
+          "limit": 46000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 506,
+          "minifiedBytes": 1093639,
+          "gzipBytes": 326698,
+          "limit": 327800,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 205,
+          "minifiedBytes": 410425,
+          "gzipBytes": 130829,
+          "limit": 131400,
+          "pass": true
+        }
+      ],
+      "runtimeCases": 3,
+      "strictTypes": true,
+      "documentationSnippets": 1
+    },
+    {
+      "node": "v24.22.1",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-98c55c6bec2ca8525b8579933ffe86d239dd62b1468e0c5722b9abea45a5f8ba.tgz",
+      "sha256": "98c55c6bec2ca8525b8579933ffe86d239dd62b1468e0c5722b9abea45a5f8ba",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1057,
+          "minifiedBytes": 2733446,
+          "gzipBytes": 783678,
+          "limit": 783700,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 624,
+          "minifiedBytes": 1446511,
+          "gzipBytes": 424277,
+          "limit": 424300,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954,
+          "limit": 26000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 148980,
+          "gzipBytes": 44683,
+          "limit": 46000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 506,
+          "minifiedBytes": 1093639,
+          "gzipBytes": 327739,
+          "limit": 327800,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 205,
+          "minifiedBytes": 410425,
+          "gzipBytes": 131286,
+          "limit": 131400,
+          "pass": true
+        }
+      ],
+      "runtimeCases": 3,
+      "strictTypes": true,
+      "documentationSnippets": 1
+    }
+  ],
+  "reusedCriticalCoverage": {
+    "record": "../axis-reflow-evidence/public-emission.json#criticalOwners",
+    "owners": 14,
+    "reason": "All 21 incoming runtime/type files are byte-identical; root reran 731 owning tests and actual renderer/browser/realistic/contracts/docs on union."
+  },
+  "reusedBuiltDoc": {
+    "record": "../axis-reflow-evidence/public-emission.json#sourcePin",
+    "pages": 186,
+    "llmArtifacts": 1603,
+    "widths": [
+      320,
+      390,
+      768,
+      1280
+    ],
+    "reason": "Same public animation page and site layout; root only regenerated provenance/machine/LLM outputs and reran all 241 docs tests."
+  },
+  "priorFailure": {
+    "file": "pack20-initial.stderr",
+    "reason": "Actual Node20 packed1771952 exceeded incoming1771800. Measured minimal cap1772000; unpacked7983602 uses cap7983700. No runtime size bypass."
+  },
+  "remaining": [
+    "P fixed-axis lane12 and current-label dependent title/lane13 union",
+    "STEP057-070 remaining interaction obligations and combined qualification",
+    "AT56/82 actual fixed-size performance and heap; AT60 independent review; AT61 protected exact artifact delivery",
+    "All actual577consumer/79group evidence and nine final commands; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "boundaries.log": {
+      "sha256": "d7109345110446b5ec7adbe48bf157f3a6f6dd6cf60bb7fadb924594eb3902d4",
+      "bytes": 9751
+    },
+    "browser.log": {
+      "sha256": "f3c124c850bea7f00ad6c4afdd366d0eba766bcf17436d6c2c0116af9a3de798",
+      "bytes": 360
+    },
+    "bundles20.json": {
+      "sha256": "d7b10c798058e9a6618e0a55f3cf390bfc44a031d14bb4d7d7f711a55e0a928a",
+      "bytes": 305
+    },
+    "bundles20.log": {
+      "sha256": "b792315a6f8ba6938628221f8e8a0300dc703e474d073b23f71c9aa32ca21bf1",
+      "bytes": 253
+    },
+    "bundles22.json": {
+      "sha256": "36759f73d71efcb57529e5cb7e1ecb7965261633a81b45b3ee4b323176f36179",
+      "bytes": 305
+    },
+    "bundles22.log": {
+      "sha256": "b7623cd24ebdd8bacdf1383e00a9c23c72a0525987b84e4881a014c08627c4d0",
+      "bytes": 253
+    },
+    "bundles24.json": {
+      "sha256": "71d0d4fdf54250ffa1facfbb92df43518c9edb640417e77d92e1165a46d2c33d",
+      "bytes": 305
+    },
+    "bundles24.log": {
+      "sha256": "72135d548705ae5a2d8b1582d4897ae2f06d2b80e32ce1d7b082aec1aea18845",
+      "bytes": 253
+    },
+    "docs.log": {
+      "sha256": "8414cb8ec64aacf4f324009db9735addb91fa37b21a6efb6edc1aba74952a6d3",
+      "bytes": 73443
+    },
+    "frozen.json": {
+      "sha256": "26203fa0376f8c63fa1a9a9cbf1ea4a853538cd994a932989f4daabbcf31c8e1",
+      "bytes": 436
+    },
+    "installed.mjs": {
+      "sha256": "c08d7a6c86382f92960038805e0e3eb81a42cc957332dd2b922dc96c2af4a6a0",
+      "bytes": 3227
+    },
+    "installed20.json": {
+      "sha256": "f51e07e1fdc06ea17159cb16a0a370af37a727d5593bcaa68ca735edd20d7d8a",
+      "bytes": 1541
+    },
+    "installed20.log": {
+      "sha256": "d55d51794222b67467db0d577978831ec4729cc65c8d5136fb323969ad8e3558",
+      "bytes": 1721
+    },
+    "installed22.json": {
+      "sha256": "33d40012b5f197e4f353927b16424746f36c185afa92f8de33d6befb2a0d7cf1",
+      "bytes": 1541
+    },
+    "installed22.log": {
+      "sha256": "3f3015e2a9dfa46079185f4f137a9e2db2f01413292cd1d7c47e887814ce801c",
+      "bytes": 1721
+    },
+    "installed24.json": {
+      "sha256": "2efe9346723ff37c3c7d8020b106308e71fdb80bb8a72e105c9ca0def85a1946",
+      "bytes": 1541
+    },
+    "installed24.log": {
+      "sha256": "4fd9db3bfb0dff8b78141cd9082e272124fd8f97d3d3f2f5fa9b74955e69a93e",
+      "bytes": 1721
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "owning.log": {
+      "sha256": "3646cd8d090e9e842a1ed0a73e1696c8ea1d98772bba23acd96a7eab6ef61b55",
+      "bytes": 174802
+    },
+    "pack20-initial.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack20-initial.stderr": {
+      "sha256": "e63c9d7b9b3a59560af9de61024dad68502424b80abb0fc03c8a5cd961d1dbd7",
+      "bytes": 966
+    },
+    "pack20.json": {
+      "sha256": "9fc0fa6af299ee86ff1ab745febc27bcad83fc77b68787c57332246c9d750e42",
+      "bytes": 383
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack22.json": {
+      "sha256": "fe5f4d014058a469f5ffbf86f079ce3a5a14635c47c5bd24ccced0aa707cb2d0",
+      "bytes": 383
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24.json": {
+      "sha256": "5777bc09ba899fce55cca84e5367fc79a74afe23c57d2b9a65e42fc2c432c16d",
+      "bytes": 383
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "prepack.json": {
+      "sha256": "d4a4fcb5e1a910c9d24dcbeaa23b8d4f1cd8d1b6c2f172ea10a7f86467d5dfe9",
+      "bytes": 295
+    },
+    "prepack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "realistic.log": {
+      "sha256": "436d78a0017ec59bd89610d9e9d776d9c10ad6e086c8ed87b940b463ce8feaad",
+      "bytes": 1261
+    },
+    "render.log": {
+      "sha256": "e4681dc717eea6e80313fe99d574a2013d37b5773a2a9d58541ce8e33e4c15cd",
+      "bytes": 358
+    },
+    "search-initial.log": {
+      "sha256": "6eadafbe91cb6766c787ba78a1958acfdbccf42241bd1e1ee05a61bc12773574",
+      "bytes": 121
+    },
+    "source-files.json": {
+      "sha256": "30b44bbb8929a216e5351035da1500a36c07038ac0f3ab746d06720237e84005",
+      "bytes": 1024
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "61e11eab762877caa57016b43bca23b72190f36d56c2c14be2afeb8cf81bd36b",
+      "bytes": 1812
+    },
+    "source-pin-pack.json": {
+      "sha256": "d1880f6ea487bd61f4dc961348fb9b5edc91b3e2c90e18638899196341205a2d",
+      "bytes": 388
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pin-docs.log": {
+      "sha256": "1934fd3ad2784e02181c2ba9d25258bdac20f5e581d47c3069977435aa7ec265",
+      "bytes": 10260,
+      "tests": 49
+    }
+  },
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  }
+}

@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import {readFile,writeFile,copyFile} from 'node:fs/promises';
+import {join} from 'node:path';
+import {preparePackageConsumer} from '../../scripts/package-consumer.js';
+import {run,root} from '../../scripts/consumers/runtime.js';
+import {testTypeScriptConsumer} from '../../scripts/consumers/types.js';
+import {testOptionalDependencies} from '../../scripts/consumers/optional-peers.js';
+import {documentationPrograms} from '../../scripts/doc-snippets.js';
+import {measureMinimalBrowserBundle,BROWSER_BUNDLE_GZIP_LIMITS} from '../../scripts/browser-bundle-size.js';
+const artifact=JSON.parse(await readFile('.artifacts/prepared-scale/package.json','utf8'));
+const consumer=await preparePackageConsumer({packageSpec:artifact.file});
+const receipt={artifact,node:process.version,records:[],bundles:{},kind:'same source-free archive; small public runtime/types/docs/peers/bundles only'};
+try{
+ await testOptionalDependencies(consumer);receipt.records.push({id:'optional-peers',status:'passed'});
+ for(const name of['animation-point-scales.mjs','animation.mjs'])await copyFile(join(root,'scripts/consumers/fixtures/node',name),join(consumer.directory,name));
+ await writeFile(join(consumer.directory,'prepared-scales-run.mjs'),`for(const file of['animation-point-scales.mjs','animation.mjs']){const{cases}=await import('./'+file);for(const entry of cases){await entry.run();console.log(entry.id+' passed');}}`);
+ run(process.execPath,['prepared-scales-run.mjs'],consumer.directory);receipt.records.push({id:'public-prepared-scales-and-animation',status:'passed'});
+ await testTypeScriptConsumer(consumer.directory);receipt.records.push({id:'strict-types',status:'passed'});
+ for(const example of(await documentationPrograms()).filter(item=>item.file==='api/animation.md')){const name='animation-doc-'+example.id+'.mjs';await writeFile(join(consumer.directory,name),example.code);run(process.execPath,[name],consumer.directory);receipt.records.push({id:'doc:'+example.id,status:'passed'});}
+ for(const specifier of Object.keys(BROWSER_BUNDLE_GZIP_LIMITS)){const measured=await measureMinimalBrowserBundle(consumer.directory,{specifier});receipt.bundles[specifier]={gzipBytes:measured.gzipBytes,limit:BROWSER_BUNDLE_GZIP_LIMITS[specifier],status:measured.gzipBytes<=BROWSER_BUNDLE_GZIP_LIMITS[specifier]?'passed':'exceeded'};}
+ receipt.peers=consumer.resolvedPeers;
+}finally{await writeFile('.artifacts/prepared-scale/consumer-'+process.versions.node+'.json',JSON.stringify(receipt,null,2)+'\n');await consumer.cleanup();}
+console.log(JSON.stringify(receipt));assert.ok(Object.values(receipt.bundles).every(entry=>entry.status==='passed'));

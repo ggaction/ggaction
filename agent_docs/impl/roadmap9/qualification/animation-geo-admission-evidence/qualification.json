@@ -1,0 +1,568 @@
+{
+  "schemaVersion": 1,
+  "status": "private-geo-dynamic-presentation-checkpoint",
+  "sourceCommit": "49aba235f357a5e62241ccd37093bf8876f3591a",
+  "runtimeSourceCommit": "a7787efd7",
+  "approval": "agent_docs/impl/roadmap9/AUTHORIZATION.json#remainingApproval",
+  "sourceInputs": [
+    {
+      "path": "README.md",
+      "sha256": "15223f8daab4722536196dd3c75193a0d85c37c6e49e242560e6edcfea0393b9"
+    },
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "sha256": "3779d202bdf489bf17efb7c6ee31bc85dc140e94a8ba980570ff644818cb7f4e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo.md",
+      "sha256": "8e82d1fbcda58a54aabf497e4e609c7b9c11ff8fdd58fa9017526edf6b222979"
+    },
+    {
+      "path": "docs/_data/provenance.json",
+      "sha256": "5fa2c5652c234adb0b98fbe1ffa4deb1472a8488fe7ceca7b9bf21aeeb0196b1"
+    },
+    {
+      "path": "docs/assets/images/manifest.json",
+      "sha256": "d0a096127b3939bd1450cbc567405911025bf7903c407e22735c678312d69920"
+    },
+    {
+      "path": "docs/doc-provenance.json",
+      "sha256": "5fa2c5652c234adb0b98fbe1ffa4deb1472a8488fe7ceca7b9bf21aeeb0196b1"
+    },
+    {
+      "path": "docs/llm/index.json",
+      "sha256": "a14af4d035a304f2f6a92f21b55155cbb00b26592bf13a9b74428424578aeb2c"
+    },
+    {
+      "path": "docs/llm/pages.json",
+      "sha256": "f6a8956c47604951164617883a58f5c50fe68033d8a23b7e85d2e872b580e4d7"
+    },
+    {
+      "path": "docs/llm/pages/extension/primitives.txt",
+      "sha256": "414b366bd538a96075a669554992d7cd92f505b606ea5d1bb8a66cc07ac4b568"
+    },
+    {
+      "path": "docs/llm/pages/mcp.txt",
+      "sha256": "886e749a41bb21027c0ac7be4e391c8f3d34ec4f3903c11fb040b3a433963db7"
+    },
+    {
+      "path": "docs/llm/pages/version.txt",
+      "sha256": "dc06a6ea4fdef208b48a84dcb26752d973e52955e4b1bb2e2c13960da22e56e5"
+    },
+    {
+      "path": "docs/llms-full.txt",
+      "sha256": "407879b4ba7fa7f632c43c4259cf40680d31a24d91a6fa27425ff2e103d0b043"
+    },
+    {
+      "path": "docs/llms-manifest.json",
+      "sha256": "f69196ca3aaf30f6c178932fcb9b56adf1d959216402e203e8a706dd9c370d35"
+    },
+    {
+      "path": "scripts/browser-bundle-size.js",
+      "sha256": "feb328fd0ac0b46f2a34dddf6416aa42738a95120f1848559e22e792090875da"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "942343c7d48a9c3f4f459392c4b1760e83e6ed190f09fa3a4c6ec415336fac6c"
+    },
+    {
+      "path": "src/animation/endpoints.js",
+      "sha256": "34aee7d839e6fcd280b5b668e2801fc12f88453ac32115002fc3b0cd5c3efde2"
+    },
+    {
+      "path": "src/grammar/animation/geoState.js",
+      "sha256": "8400e7a6fd0a01ea4103e5a898401523840e99b5c2385566cc6a3b67358b5ae3"
+    },
+    {
+      "path": "src/grammar/geo/markGeometry.js",
+      "sha256": "2c765d8be4afccf8dfabb810b94cd9a8b91efa1425bbf3c7a003a85f67de6c17"
+    },
+    {
+      "path": "src/materialization/animation/geo.js",
+      "sha256": "e38509aff782c2bc4e0ce2ae7844c7073216704218e635b081445723d2aaf71c"
+    },
+    {
+      "path": "src/materialization/animation/geoPresentation.js",
+      "sha256": "f4f6e4d7f453c643d9b262a72abe10fac7e3b222b064db6599d92175c4bb1d23"
+    },
+    {
+      "path": "src/materialization/fillPaint.js",
+      "sha256": "9bf3a76a90af29b5149fcaa36d1c08b2f2495eca58a529395b9f2cd7166662bf"
+    },
+    {
+      "path": "src/materialization/geo/appearance.js",
+      "sha256": "4990ff16df3885257e05f4395ac816ca973e9698bddbdc3d074f435ebacdebd2"
+    },
+    {
+      "path": "src/materialization/geo/mark.js",
+      "sha256": "dca5f09841b8cdb4fe273e7e681ffe24611695310ed0eb04b4f30710906def8c"
+    },
+    {
+      "path": "src/renderers/transitionScene.js",
+      "sha256": "bc57ca22367746bd93b80d1577adbda4538d6d5b82fa76e16c2902ecefe987a0"
+    },
+    {
+      "path": "src/sceneSnapshot.js",
+      "sha256": "a1ad8013c039a47ac2cd6f9933eff686eef60beabbf53bf182ff9a99ccac9abc"
+    },
+    {
+      "path": "test/charts/structured-paints/variants/pattern-paints/backends.render.js",
+      "sha256": "c9ceb87650a9deac197b99854389d1faaee679ae4f6565152743540976f77923"
+    },
+    {
+      "path": "test/unit/animation/geo-presentation.test.js",
+      "sha256": "43272ca4c9f203e6a2ba16314192108abfa181ac013faf0894b2c1e845d35b80"
+    },
+    {
+      "path": "test/unit/renderers/transition-scene.test.js",
+      "sha256": "6ceb9f16a79b9d9f6f6e425c657c5e3024d68d8f72f4ca3479342bdcd61410e1"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/presentation-owning.log.gz",
+      "sha256": "8715f5dbf63b759f87dc3b674d8883ae72fa5dbf2170eb8999e78ee4782311be"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/presentation-owning-2.log.gz",
+      "sha256": "1d52d50e34f1f49c539e9f0826e3e3e5209c1a013e7e58837bd10d0fd0776268"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/presentation-owning-3.log.gz",
+      "sha256": "e395da3e24373289d06804b50935dad5170baa3b386c45b64a1edd533ca97751"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/presentation-owning-4.log.gz",
+      "sha256": "ff5479143f488e83e10954835c4884f3e18bdf66684d1207a149418a28aa440e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/presentation-owning-5.log.gz",
+      "sha256": "9edce5f51797aac0ceb0d541c9dbb7216c92099db4ae9ebf7adbba454bdc1689"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/admission-cumulative.log.gz",
+      "sha256": "3776b03c07c5fae0eddf3906e6fa4fdb155c60a1137ce1d3a34741237d7d1a09"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/admission-boundaries.log.gz",
+      "sha256": "0516e23e142b31438f6945950f1304fa89d2cef7fde4cdb2304e6e8cafc8a90f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/admission-coverage.log.gz",
+      "sha256": "87fc9e54300480e1d93d50431fc5531bded8e732db2a0a60401ea7ca78e9cb90"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/admission-coverage-2.log.gz",
+      "sha256": "99b66d58fdbfb9bf22298366b34961f6fb45bafceec5cf368d0a4baeab6b7701"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/admission-render.log.gz",
+      "sha256": "04a91e6c8604b9e9e75e4215d7ff68d657085734c1e5532a24efa9c190d5d748"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/admission-pattern-repair.log.gz",
+      "sha256": "72f044990280b2ca119344cd26431b340ad346d25edb516ff8b83c2aa4ed120b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/clean-canonical.log.gz",
+      "sha256": "067d2db364db726bd1711691cb076a0c68c996278de2ad26bdcfca3a6b7452a3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/clean-canonical.receipt.json.gz",
+      "sha256": "f3c728855cdf781c2700958c057462335d722a7a04e4cdd9a66b65ccabb354b0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/clean-canonical.check.log.gz",
+      "sha256": "067d2db364db726bd1711691cb076a0c68c996278de2ad26bdcfca3a6b7452a3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/node20.log.gz",
+      "sha256": "5052fb0b8d3940adff093855ec716f368767136c1ceebaa57411f4c18c10a5dd"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/node24.log.gz",
+      "sha256": "1779a86882a4140d1e851b4c6a0aa253725e57f46394ea24baa087da1dca36c1"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/contracts.log.gz",
+      "sha256": "179ba30aba808934d2735df8aa325a7aaf68c61052594756c78266575e847b05"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/coverage.log.gz",
+      "sha256": "2fc8a915ee1ff5d5f1291d01869d24d42086b7c4395bb5a480c6d03b54fe505b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/docs-generate.log.gz",
+      "sha256": "5e84a92cd3fc1d0c84a2acba39fa05e9948714da5e636a24aba363c0c9f436c4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/docs-owning.log.gz",
+      "sha256": "f2504677e9e76bafa076e5e14099ec938852369fecc67dafe37dbb44c6cbb804"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/docs-owning-full.log.gz",
+      "sha256": "cbaf0fcbf4848b6776b889e8a3aed7c17ba9039eeef08a836b9924cc05c145c8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/docs-contract.log.gz",
+      "sha256": "953e538ca3decb4bbcd7a6bd59f07422c69ede4bce39de61d5ae587efdc83ee9"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/docs-contract-repair.log.gz",
+      "sha256": "ede019aac6e713f3f2d8e3e86c13692215f06c1900fe78c2b487ad57466535fd"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/evidence-owning.log.gz",
+      "sha256": "9bc6ddb97f96e06e8a023d0e996e13f2c943c1ece63526f1df0618efdef37aa9"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/package-size-20.json.gz",
+      "sha256": "c3ba9ee3ed9f2e64bd62e43454408bc90abc56d748085e693f5ebc98c743a822"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/package-20.log.gz",
+      "sha256": "5297336ecebe32a3e9d287b055a5884e4ba7eae3ac7ef5d663982eb10ba474f0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/bundles-20.json.gz",
+      "sha256": "613b15f913bc218d93b84e735d9269f4cf0d0d147f10c8244ebd13e06c53ca4d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/bundles-20.log.gz",
+      "sha256": "061785693ecb8eadce6c170486a027fe64f697132320d101f4e04d365fc338e1"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/package-size-22.json.gz",
+      "sha256": "bad7336ab3f0c4143facb24e5528387da2bb8d970a69ee5a36936b00d9cd9631"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/package-22.log.gz",
+      "sha256": "0ecd9e6670cf0a70818f25b154c91876d505f25152cd536e469dfb29b90291e8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/bundles-22.json.gz",
+      "sha256": "2a575d25837aaca341c11eb1075ead6690cb4bee346478c0369400f1aa1086e2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/bundles-22.log.gz",
+      "sha256": "06b69f69f2c35f91381186227732834ba9fca4ff4b8fa286df0e283e533dc66f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/package-size-24.json.gz",
+      "sha256": "42074bf26cb46961e22894a8d0ea0ab0fb507f6c8da2af799a4131a141431213"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/package-24.log.gz",
+      "sha256": "748b459b6979fd0225f979b5ba96a4e91fd36d566f6a35c9709ad58c5a845944"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/bundles-24.json.gz",
+      "sha256": "e1af929d49122361943b336429239395a6b9db598095b76611e5a5e5af74e7ae"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-admission-evidence/bundles-24.log.gz",
+      "sha256": "630ec16baa32265b1f27f0e13374335bcaa645094059a989a93db463f47ca9e9"
+    }
+  ],
+  "scope": {
+    "addedPublicExports": 0,
+    "newOwner": "src/materialization/animation/geoPresentation.js",
+    "nativeOwnerExtractions": [
+      "src/materialization/fillPaint.js",
+      "src/materialization/geo/appearance.js",
+      "src/grammar/geo/markGeometry.js"
+    ],
+    "privateCollectionMetadata": true,
+    "runtimePoliciesChanged": false
+  },
+  "checks": {
+    "cleanCanonical": {
+      "sourceCommit": "a7787efd7",
+      "runtimeUnchangedAfter": true,
+      "passed": 447,
+      "failed": 0,
+      "receipt": "clean-canonical.receipt.json.gz"
+    },
+    "coverage": {
+      "passed": 266,
+      "failed": 0,
+      "lines": 100,
+      "branches": 94.94,
+      "functions": 100,
+      "floors": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "node20": {
+      "passed": 23,
+      "failed": 0
+    },
+    "node24": {
+      "passed": 23,
+      "failed": 0
+    },
+    "sourceBoundaries": {
+      "passed": 35,
+      "failed": 0
+    },
+    "contracts": {
+      "passed": 42,
+      "failed": 0
+    },
+    "docs": {
+      "generation": "passed",
+      "owningPassed": 34,
+      "owningFailed": 0,
+      "boundaryOriginal": {
+        "passed": 1,
+        "failed": 2
+      },
+      "boundaryRepair": {
+        "passed": 3,
+        "failed": 0
+      }
+    },
+    "render": {
+      "originalPassed": 8,
+      "originalFailed": 1,
+      "repairPassed": 1,
+      "repairFailed": 0,
+      "repair": "Existing raw HTML pattern harness now uses canonical repository dependency map; all four renderer paths pass."
+    }
+  },
+  "package": {
+    "measuredSourceCommit": "a7787efd7",
+    "measurements": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "entries": 1138,
+        "packedBytes": 1627815,
+        "unpackedBytes": 7370195
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "entries": 1138,
+        "packedBytes": 1625162,
+        "unpackedBytes": 7370195
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "entries": 1138,
+        "packedBytes": 1627815,
+        "unpackedBytes": 7370195
+      }
+    ],
+    "limits": {
+      "entries": 1138,
+      "packedBytes": 1628000,
+      "unpackedBytes": 7371000
+    }
+  },
+  "bundles": {
+    "measuredSourceCommit": "a7787efd7",
+    "scope": "current-source-not-installed",
+    "measurements": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "scope": "current-source-not-installed",
+        "entries": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1024,
+            "minifiedBytes": 2702306,
+            "gzipBytes": 774129
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 608,
+            "minifiedBytes": 1441396,
+            "gzipBytes": 422184
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73993,
+            "gzipBytes": 24959
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 147084,
+            "gzipBytes": 44075
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 187,
+            "minifiedBytes": 374784,
+            "gzipBytes": 120667
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 312,
+            "minifiedBytes": 633165,
+            "gzipBytes": 192107
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "scope": "current-source-not-installed",
+        "entries": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1024,
+            "minifiedBytes": 2702306,
+            "gzipBytes": 772480
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 608,
+            "minifiedBytes": 1441396,
+            "gzipBytes": 421285
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73993,
+            "gzipBytes": 24778
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 147084,
+            "gzipBytes": 43923
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 187,
+            "minifiedBytes": 374784,
+            "gzipBytes": 120119
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 312,
+            "minifiedBytes": 633165,
+            "gzipBytes": 191683
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "scope": "current-source-not-installed",
+        "entries": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1024,
+            "minifiedBytes": 2702306,
+            "gzipBytes": 774129
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 608,
+            "minifiedBytes": 1441396,
+            "gzipBytes": 422184
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73993,
+            "gzipBytes": 24959
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 147084,
+            "gzipBytes": 44075
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 187,
+            "minifiedBytes": 374784,
+            "gzipBytes": 120667
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 312,
+            "minifiedBytes": 633165,
+            "gzipBytes": 192107
+          }
+        ]
+      }
+    ],
+    "limits": {
+      "full": 774200,
+      "basic": 422200,
+      "svg": 26000,
+      "graph": 46000,
+      "interaction": 128700,
+      "animation": 192200
+    }
+  },
+  "originalFailures": [
+    {
+      "log": "docs-contract.log.gz",
+      "reason": "Existing public animation entry missing from architecture package list and table had stale measured caps; synchronized documentation only."
+    },
+    {
+      "log": "presentation-owning.log.gz",
+      "reason": "New fixture guessed shadow and clipExtent option names; corrected to current native contract."
+    },
+    {
+      "log": "presentation-owning-4.log.gz",
+      "reason": "New state validator admitted negative insertion; explicit nonnegative guard added. New reorder fixture targeted Canvas rather than named parent collection."
+    },
+    {
+      "log": "presentation-owning-5.log.gz",
+      "reason": "Negative insertion reproduction remained; corrected bound and reran owning coverage."
+    },
+    {
+      "log": "admission-coverage.log.gz",
+      "reason": "Runtime264 passed but existing collector callback function floor unmet; independent literal empty/nested collection regression closes existing floor."
+    },
+    {
+      "log": "admission-render.log.gz",
+      "reason": "Native Geo8 passed; existing raw pattern browser fixture omitted repository dependency map and timed out on bare geographic-math. Narrow harness repair passed owning four-backend test."
+    }
+  ],
+  "openObligations": [
+    "Shared planner/sample dynamic emission and exact endpoint paths",
+    "Authentic frame rebase and strict offline proof with all hidden feature state",
+    "Native current-frame hit and source membership activation",
+    "Public four renderer/offline/three Node installed consumers",
+    "Typed labels and annotation geometry",
+    "Final combined corpus and release qualification"
+  ],
+  "notClaimed": [
+    "Public Geo animation support",
+    "Full repository coverage",
+    "Installed archive consumer execution",
+    "Built-site browser or deployment",
+    "Roadmap9 completion"
+  ]
+}

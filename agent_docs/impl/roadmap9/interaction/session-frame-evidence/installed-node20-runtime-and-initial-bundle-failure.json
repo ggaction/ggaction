@@ -1,0 +1,28 @@
+{
+  "node": "v20.20.2",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/session-animation-archives/ggaction-ae486a9124187717bb8a3c95e54b14c636e6c924e8c0795288e60f9ab721275f.tgz",
+  "sha256": "ae486a9124187717bb8a3c95e54b14c636e6c924e8c0795288e60f9ab721275f",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2714.911
+    },
+    {
+      "id": "interaction-animation-three-public-cases",
+      "status": "passed",
+      "durationMs": 2103.897916
+    },
+    {
+      "id": "interaction-strict-types",
+      "status": "passed",
+      "durationMs": 400.8264169999993
+    },
+    {
+      "id": "ggaction",
+      "status": "failed",
+      "durationMs": 5903.343042,
+      "error": "AssertionError [ERR_ASSERTION]: {\"specifier\":\"ggaction\",\"chunks\":1,\"modules\":1024,\"minifiedBytes\":2701537,\"gzipBytes\":773950}\n    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-session-animation.mjs:31:115\n    at async check (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-session-animation.mjs:19:75)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-session-animation.mjs:30:132"
+    }
+  ]
+}

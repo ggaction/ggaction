@@ -82,6 +82,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editMarkLabelPlacement`](current/MARKS.md#editmarklabelplacement) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeMarkLabels`](current/MARKS.md#removemarklabels) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createAnnotation`](current/MARKS.md#createannotation) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`editAnnotation`](current/MARKS.md#editannotation) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTextMark`](current/MARKS.md#createtextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTextMark`](current/MARKS.md#edittextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`layoutLabels`](current/MARKS.md#layoutlabels) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -355,20 +356,26 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editCalendarPlot`](current/CALENDAR.md#editcalendarplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`bundleGraphEdges`](current/EDGE_ROUTES.md#bundlegraphedges) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editEdgeRoute`](current/EDGE_ROUTES.md#editedgeroute) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`applyGraphEdgeRoutesUpdate`](current/EDGE_ROUTES.md#applygraphedgeroutesupdate) | core | Immutable create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGeometryData`](current/GEOMETRY.md#creategeometrydata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGeometryData`](current/GEOMETRY.md#editgeometrydata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGeoJoinData`](current/GEOMETRY.md#creategeojoindata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGeoJoinData`](current/GEOMETRY.md#editgeojoindata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createGeoRouteData`](current/GEOMETRY.md#creategeoroutedata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editGeoRouteData`](current/GEOMETRY.md#editgeoroutedata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGeoLODData`](current/GEOMETRY.md#creategeoloddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGeoLODData`](current/GEOMETRY.md#editgeoloddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createProjection`](current/GEOMETRY.md#createprojection) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editProjection`](current/GEOMETRY.md#editprojection) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`navigateProjection`](current/GEOMETRY.md#navigateprojection) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGeoShapeMark`](current/GEOMETRY.md#creategeoshapemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGeoShapeMark`](current/GEOMETRY.md#editgeoshapemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGeoPointMark`](current/GEOMETRY.md#creategeopointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGeoPointMark`](current/GEOMETRY.md#editgeopointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGeoLineMark`](current/GEOMETRY.md#creategeolinemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGeoLineMark`](current/GEOMETRY.md#editgeolinemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createGeoAnnotation`](current/GEOMETRY.md#creategeoannotation) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editGeoAnnotation`](current/GEOMETRY.md#editgeoannotation) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGraticule`](current/GEOMETRY.md#creategraticule) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGraticule`](current/GEOMETRY.md#editgraticule) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createPyramidPlot`](current/PYRAMID.md#createpyramidplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -377,6 +384,10 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editOHLCPlot`](current/OHLC.md#editohlcplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createWaterfallPlot`](current/WATERFALL.md#createwaterfallplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editWaterfallPlot`](current/WATERFALL.md#editwaterfallplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createTrailPlot`](current/TRAIL.md#createtrailplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editTrailPlot`](current/TRAIL.md#edittrailplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createTablePlot`](current/TABLE.md#createtableplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editTablePlot`](current/TABLE.md#edittableplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

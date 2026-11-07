@@ -1,0 +1,814 @@
+{
+  "scope": "Geo feature grain의 조건부 color/size와 기존 parameter/selection/scale closure",
+  "base": "dd4f9b3081f2fddac1fe66a8e8e86e743f1dd196",
+  "source": "cc5e6f75289aec3e01e1879102801d437d151bb6",
+  "approval": "AUTHORIZATION.json STEP077 전체 설계·시각 승인 재사용",
+  "checks": {
+    "newRegression": {
+      "tests": 13,
+      "pass": 13,
+      "fail": 0
+    },
+    "geoCoverage": {
+      "tests": 190,
+      "pass": 190,
+      "fail": 0
+    },
+    "floors": {
+      "owners": 19,
+      "floors": {
+        "actions/geo/marks.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "grammar/geo/encoding.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "grammar/geo/mark.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/annotation.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/annotationSource.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/appearance.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/coordinateState.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/featureDataset.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/features.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/joinResource.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/joinState.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/lodResource.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/lodState.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/mark.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/projectionResource.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/projectionState.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/resources.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/source.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/state.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "coverage": {
+        "actions/geo/marks.js": {
+          "lines": 100,
+          "branches": 98.04,
+          "functions": 100
+        },
+        "grammar/geo/encoding.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "grammar/geo/mark.js": {
+          "lines": 100,
+          "branches": 94.29,
+          "functions": 100
+        },
+        "materialization/geo/annotation.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/annotationSource.js": {
+          "lines": 100,
+          "branches": 93.94,
+          "functions": 100
+        },
+        "materialization/geo/appearance.js": {
+          "lines": 100,
+          "branches": 92.86,
+          "functions": 100
+        },
+        "materialization/geo/coordinateState.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/featureDataset.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/features.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/joinResource.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/joinState.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/lodResource.js": {
+          "lines": 100,
+          "branches": 96.67,
+          "functions": 100
+        },
+        "materialization/geo/lodState.js": {
+          "lines": 100,
+          "branches": 95.65,
+          "functions": 100
+        },
+        "materialization/geo/mark.js": {
+          "lines": 100,
+          "branches": 97.37,
+          "functions": 100
+        },
+        "materialization/geo/projectionResource.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/projectionState.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/resources.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/source.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/state.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "all files": {
+          "lines": 100,
+          "branches": 97.81,
+          "functions": 100
+        }
+      }
+    },
+    "nativeConditions": {
+      "tests": 116,
+      "pass": 116,
+      "fail": 0
+    },
+    "primitiveTypes": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0
+    },
+    "renderers": {
+      "tests": 12,
+      "pass": 12,
+      "fail": 0
+    },
+    "browser": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0
+    },
+    "realistic": {
+      "tests": 32,
+      "pass": 32,
+      "fail": 0
+    },
+    "sourceBoundaryInitial": {
+      "tests": 34,
+      "pass": 33,
+      "fail": 1
+    },
+    "packageAfterLimits": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0
+    },
+    "cards": {
+      "tests": 12,
+      "pass": 12,
+      "fail": 0
+    },
+    "persistencePackage": {
+      "tests": 19,
+      "pass": 19,
+      "fail": 0
+    },
+    "snippets": {
+      "tests": 112,
+      "pass": 112,
+      "fail": 0
+    },
+    "sourceDocsInitial": {
+      "tests": 203,
+      "pass": 202,
+      "fail": 1
+    },
+    "sourceDocsFinal": {
+      "tests": 203,
+      "pass": 203,
+      "fail": 0
+    },
+    "builtDocs": {
+      "pages": 172,
+      "llmArtifacts": 1529,
+      "browser": "passed: desktop search and all pages at 320px, 390px, 768px"
+    }
+  },
+  "package": {
+    "sha256": "590ebcff51ae88ce9d029478d42e6a8655383579a8f8357a96f0794ec4a72d68",
+    "entries": 1040,
+    "packedBytes": 1473594,
+    "unpackedBytes": 6721113,
+    "measurements": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "entries": 1040,
+        "packedBytes": 1476716,
+        "unpackedBytes": 6721113
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "entries": 1040,
+        "packedBytes": 1473594,
+        "unpackedBytes": 6721113
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "entries": 1040,
+        "packedBytes": 1476716,
+        "unpackedBytes": 6721113
+      }
+    ],
+    "limits": {
+      "entries": 1040,
+      "packedBytes": 1478000,
+      "unpackedBytes": 6723000
+    },
+    "inputParity": {
+      "sha256": "590ebcff51ae88ce9d029478d42e6a8655383579a8f8357a96f0794ec4a72d68",
+      "files": 1040,
+      "canonicalPackageTransforms": true,
+      "mismatches": []
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "sha256": "590ebcff51ae88ce9d029478d42e6a8655383579a8f8357a96f0794ec4a72d68",
+        "cases": [
+          {
+            "id": "geographic-encodings/conditional-references-and-atomicity",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/fresh-process-conditional-source-revision",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/four-renderer-conditional-parity",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/fields-guides-and-atomic-edits",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/fresh-process-field-source-revision",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/four-renderer-feature-area-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 963,
+            "minifiedBytes": 2539434,
+            "gzipBytes": 727588
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 561,
+            "minifiedBytes": 1316070,
+            "gzipBytes": 383836
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335400,
+            "gzipBytes": 109133
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146183,
+            "gzipBytes": 43764
+          }
+        },
+        "types": "strict Full/Basic geographic encodings consumer passed",
+        "snippets": [
+          "geographic-feature-conditions"
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "sha256": "590ebcff51ae88ce9d029478d42e6a8655383579a8f8357a96f0794ec4a72d68",
+        "cases": [
+          {
+            "id": "geographic-encodings/conditional-references-and-atomicity",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/fresh-process-conditional-source-revision",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/four-renderer-conditional-parity",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/fields-guides-and-atomic-edits",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/fresh-process-field-source-revision",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/four-renderer-feature-area-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 963,
+            "minifiedBytes": 2539434,
+            "gzipBytes": 725886
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 561,
+            "minifiedBytes": 1316070,
+            "gzipBytes": 382912
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335400,
+            "gzipBytes": 108504
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146183,
+            "gzipBytes": 43604
+          }
+        },
+        "types": "strict Full/Basic geographic encodings consumer passed",
+        "snippets": [
+          "geographic-feature-conditions"
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "sha256": "590ebcff51ae88ce9d029478d42e6a8655383579a8f8357a96f0794ec4a72d68",
+        "cases": [
+          {
+            "id": "geographic-encodings/conditional-references-and-atomicity",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/fresh-process-conditional-source-revision",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/four-renderer-conditional-parity",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/fields-guides-and-atomic-edits",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/fresh-process-field-source-revision",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/four-renderer-feature-area-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 963,
+            "minifiedBytes": 2539434,
+            "gzipBytes": 727588
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 561,
+            "minifiedBytes": 1316070,
+            "gzipBytes": 383836
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335400,
+            "gzipBytes": 109133
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146183,
+            "gzipBytes": 43764
+          }
+        },
+        "types": "strict Full/Basic geographic encodings consumer passed",
+        "snippets": [
+          "geographic-feature-conditions"
+        ]
+      }
+    ]
+  },
+  "repairs": [
+    "초기 visual baseline import 교체가 camera editGraphics에 잘못 추가한 conditionalPoints 옵션을 제거했다. 최초6/7과 수리7/7을 별도로 보존한다.",
+    "새 adapter 파일 한 개로 package가1040entries가 되어 이전1039 한도를 넘었다. 세 Node의 실제 byte 측정과 최소 여유를 기준으로 package cap만 조정했다. 기존 bundle cap은 유지했다.",
+    "stored native binding guard 회귀를 보강해 mark grammar branch88.24에서94.29로 회복했다. 모든19개 측정 owner가 기존95/90/100 floor를 통과한다.",
+    "일반 Point→Geo join 테스트의 coordinate 옵션은 mark가 아니라 encoder 소유여서 fixture를 고쳤다. 최종13/13 통과했다.",
+    "문서 최초202/203의 유일 실패는 아직 푸시되지 않은 예제 source link였다. source cc5e6f752를 푸시한 뒤 문서203/203 및 전체 built browser를 통과했다."
+  ],
+  "limits": [
+    "전체 unit/global coverage 또는 전수 installed suite를 새로 실행했다고 주장하지 않는다. Geo owner·공통 conditional·package·affected docs를 검증했다.",
+    "이번 조건부는 common lifecycle builder를 변경하지 않았다. 이전 camera direct-pan builder에 따른 common3 의무는 root 최종 합산에 남는다.",
+    "Feature/graticule labels 및 후행 generic animation/session camera 연계는 다음 개념 의무다."
+  ],
+  "artifacts": [
+    {
+      "file": "conditional-actions-1.log.gz",
+      "sha256": "0eb23c277a9aba19baa18a30b2fefab3256fa67bd8cb7106b403b5c995e11ded"
+    },
+    {
+      "file": "conditional-actions-2.log.gz",
+      "sha256": "bf2c188cba7fea6e09e7ec8a4c4c9aaddf6cf21c05da64bb0caf9729d0574d2b"
+    },
+    {
+      "file": "conditional-actions-3.log.gz",
+      "sha256": "0f608ba6ebe7cb37e1d0c18a51da885f6e48c6203a090301020b966abf740430"
+    },
+    {
+      "file": "conditional-actions-4.log.gz",
+      "sha256": "559b9b948ac0faceace4e0f75d1caaa84deb90a14b31b7d3cf15d448206830a1"
+    },
+    {
+      "file": "conditional-actions-5.log.gz",
+      "sha256": "565f5bef6c16ee4d0da6c2ae388702362b4b11ca8f13ccd30b509ada65bcb45f"
+    },
+    {
+      "file": "conditional-actions-6.log.gz",
+      "sha256": "eef57a62806bfe17e59b78f5d28eae8568d78fd4ec385eb043ae0efa65ba8b1a"
+    },
+    {
+      "file": "conditional-actions-7.log.gz",
+      "sha256": "4df7a60a0904e32d8dbf12db1e4e625842c753ce7ae57ab24dfcd51073a55487"
+    },
+    {
+      "file": "conditional-actions-8.log.gz",
+      "sha256": "f057955e58ce51373e4841c512fef22a423e5fb183aa15f5efbfbbbcb427a433"
+    },
+    {
+      "file": "conditional-boundaries-1.log.gz",
+      "sha256": "156810cce7be308e2b1d5b1e80cb7bc761bcaec8dbb8816ea4b61865ef2eda99"
+    },
+    {
+      "file": "conditional-boundaries-2.log.gz",
+      "sha256": "974aefcd2646ff9d00b8c3bb5bf6e182ff3d56fa4090b4dd27570b36fb105e81"
+    },
+    {
+      "file": "conditional-browser-1.log.gz",
+      "sha256": "7e7336f247bb84e478993244e92426db2170f890f8130312f40e7b96415a0c9d"
+    },
+    {
+      "file": "conditional-contracts-1.log.gz",
+      "sha256": "e578bc430fbf9eb873ecb540a08f511de69000470e03f8d67ae67b36dcb50e9a"
+    },
+    {
+      "file": "conditional-doc-generate-1.log.gz",
+      "sha256": "7c6e3618139a08aa4b20869d57855346d5a1d40211e324f7209b20ca75f60702"
+    },
+    {
+      "file": "conditional-docs-1.log.gz",
+      "sha256": "7ac7884656f77a6eb57d55c0499cd6b20bd0e3ca1b53626b5d6951c0af981ada"
+    },
+    {
+      "file": "conditional-docs-1.receipt.json.gz",
+      "sha256": "b2dedc6f02836fb36881891e656e1d0b8f4183336eadc8457c704a5209342ac8"
+    },
+    {
+      "file": "conditional-docs-browser.log.gz",
+      "sha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
+    },
+    {
+      "file": "conditional-docs-build.log.gz",
+      "sha256": "5a1264744effbfe34298327faeae332efb4eb7819f69326e8b92d40c0f919307"
+    },
+    {
+      "file": "conditional-docs-built.log.gz",
+      "sha256": "609ac22e81ef5f18a4d13247a04f1ffd994d46314d2bafde1babc10981d5102e"
+    },
+    {
+      "file": "conditional-docs-final.log.gz",
+      "sha256": "40a9db9b9e8290ce19590334f91892763755a001a99319c936c96eae120c2497"
+    },
+    {
+      "file": "conditional-evidence.log.gz",
+      "sha256": "278fdf360b00d3a00454e597baf6ef45a69c8f37e053b594214871eb1c62e289"
+    },
+    {
+      "file": "conditional-geo-regressions-1.log.gz",
+      "sha256": "b2b4e8fd1604096f04b47ae55cbe58b23599a8a1f0c69f0ddafabbcb2eaa0579"
+    },
+    {
+      "file": "conditional-geo-regressions-2.log.gz",
+      "sha256": "e98c137baa531b021426a4ab20f1ea723b0dcefb65d702d89c8ba0ba799a5401"
+    },
+    {
+      "file": "conditional-mark-branches.log.gz",
+      "sha256": "11fd83d2d0cad0a040a1a5facaa9ecd2564a71afa34b0bce10929c3a98c796da"
+    },
+    {
+      "file": "conditional-native-regressions-final.log.gz",
+      "sha256": "2e583b03de9b303575d0b0df095fde0850a8130ab08e0a4d7cf6bd45c81185f1"
+    },
+    {
+      "file": "conditional-owner-coverage-1.log.gz",
+      "sha256": "e50f3d9db7d45ffcaa3bd8324f1c12efafe12b80550615f5ebf8d96bc113a788"
+    },
+    {
+      "file": "conditional-owner-coverage-2.log.gz",
+      "sha256": "a7760b74f3664ac53cc4d6b902181f0149982c55c156a0b9a1ddf9267ed46711"
+    },
+    {
+      "file": "conditional-package-contracts-2.log.gz",
+      "sha256": "e87f3e2b41af5e73cdc22833fb74132568ff7544cc2395e0eaebaae47a6243a6"
+    },
+    {
+      "file": "conditional-persistence-package.log.gz",
+      "sha256": "8cf7522670e8445eda4944689b797d9032e5bc1cc728eb29cb07e6d861e0a673"
+    },
+    {
+      "file": "conditional-realistic-1.check.log.gz",
+      "sha256": "a1252e52af9b9309fb50c6263cbd6377116deb0b53b89243fc17e256976f7342"
+    },
+    {
+      "file": "conditional-realistic-1.log.gz",
+      "sha256": "a1252e52af9b9309fb50c6263cbd6377116deb0b53b89243fc17e256976f7342"
+    },
+    {
+      "file": "conditional-realistic-1.receipt.json.gz",
+      "sha256": "090465f242e14fc46e3482d4dc45f3d3e8e2540716095513349176b9ece891af"
+    },
+    {
+      "file": "conditional-record-final.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "conditional-render-1.log.gz",
+      "sha256": "13d3f82ed7e1bb0401941979d81e015830dfa2b079c8c3ace392d9eefbb4acc3"
+    },
+    {
+      "file": "conditional-snippets-1.log.gz",
+      "sha256": "825065dc8b767db1fedea44fa8670dfbe8d06ba84a674d2c78e7e3ac221d9628"
+    },
+    {
+      "file": "conditional-visual-types-1.log.gz",
+      "sha256": "59b8a5771bffb625b487db75efcdd892548e264253fcbaa61d1d24ef4442fe7f"
+    },
+    {
+      "file": "conditional-visual-types-2.log.gz",
+      "sha256": "20384cfc4e9b1c1ef36639052bd41fccba43a4b4bce0cc1b003707c1df1df3f7"
+    },
+    {
+      "file": "bundle-measure-22.log.gz",
+      "sha256": "0a0082094693ad5a50ca58af8e9dbd73eb723e19bfdfcb1cfc02d08687dc5e24"
+    },
+    {
+      "file": "coverage-floors.json.gz",
+      "sha256": "f4e403708a8d84d76a64e94e688acd7bfece3a648cfc0025f8f773322900c265"
+    },
+    {
+      "file": "installed-20.exit.json.gz",
+      "sha256": "c50a0c4c734cad3e53761b21dd20e7d56661fc99e2f1398e7ff5cf098e698437"
+    },
+    {
+      "file": "installed-20.json.gz",
+      "sha256": "046b71a47f52b86c31f72a160d3e59394f40aa3500f24844d7110922e1722c54"
+    },
+    {
+      "file": "installed-20.log.gz",
+      "sha256": "75412a1d4c8e33d7ebb6ac72fada2adf3f1fc8c511dc3714c0c777d770717279"
+    },
+    {
+      "file": "installed-22.exit.json.gz",
+      "sha256": "0ddd49b8d2519b9be0576477db1a5e0479364cceb7759ebbf9a10cf4ac80508e"
+    },
+    {
+      "file": "installed-22.json.gz",
+      "sha256": "7e5db09d397adcbdb4a932c9743f26adf03e8bb3ea46855e4a4c3abe10ae586c"
+    },
+    {
+      "file": "installed-22.log.gz",
+      "sha256": "efca29d37c558020e05c525c659bb13ee09a165e195e526b34a7253b041d6740"
+    },
+    {
+      "file": "installed-24.exit.json.gz",
+      "sha256": "2e8c1326c5db4b3c4870ba7b50517fa037baeadb8608c5bfe183c95a5cde254a"
+    },
+    {
+      "file": "installed-24.json.gz",
+      "sha256": "7a91ca77d92d606a23796173cb547a35d02781eac33a5d2514e674e5ca306c31"
+    },
+    {
+      "file": "installed-24.log.gz",
+      "sha256": "a5a81f80dcb5621bb92959a5bc292ded242d741a9c4cbf3dce0f820b595f798a"
+    },
+    {
+      "file": "installed-all.log.gz",
+      "sha256": "87275db8595fa93f7ea3c6aab1a2ca08f40c0887d17769e28432ca26d2e52501"
+    },
+    {
+      "file": "measure-remaining.log.gz",
+      "sha256": "82d44bd7ac60d7d216e6676997c73f497fae3dfb38165543a0ede6467ef58931"
+    },
+    {
+      "file": "package-final.log.gz",
+      "sha256": "08a5fb2d88a5565dcbc6c094ae8614081a6c7c1922b3b6db4900b7551decfda7"
+    },
+    {
+      "file": "package-input-parity-final.log.gz",
+      "sha256": "054909dcbc6c0ae38a4028d9b773296e88528f19bada248864028e2b8d9b62a6"
+    },
+    {
+      "file": "package-input-parity.json.gz",
+      "sha256": "3d881af07ec7332f43bf3bd8c3568d1a6dab24a163200eccf797f8f56bf9d625"
+    },
+    {
+      "file": "package-input-parity.log.gz",
+      "sha256": "054909dcbc6c0ae38a4028d9b773296e88528f19bada248864028e2b8d9b62a6"
+    },
+    {
+      "file": "package-inputs.json.gz",
+      "sha256": "1707c0e8b216db5b77b8d155aeffb5d9fc18d36ab5aae9ef3630f5b6fc06cd7c"
+    },
+    {
+      "file": "package-measure-22.log.gz",
+      "sha256": "5e2818a1610611c657c9230b81900313512a917a29bcc2356f7461970db5489e"
+    },
+    {
+      "file": "package-size-20.json.gz",
+      "sha256": "670a8030c98b48fd6f1fa6d6b4a8d7e3013ef8b496c8e8b78d5f4773199fe52c"
+    },
+    {
+      "file": "package-size-22.json.gz",
+      "sha256": "38e6d0298e7f4867af7a5f44598fdda26170e68e0aa490b221bd7ca64eca79d5"
+    },
+    {
+      "file": "package-size-24.json.gz",
+      "sha256": "c5863b320711096e041a047b57c85ab83333682923efd1b71e6bb6b78a634b2b"
+    },
+    {
+      "file": "package-source-inputs.json.gz",
+      "sha256": "513879cedba39d2f94a8a64876df05c64e5d3c03919fa1a1c28a43a33a183628"
+    },
+    {
+      "file": "package.json.gz",
+      "sha256": "d80edcf8157390203007fc29c58ee734296b4cc51cc882e0f37d1cdbd975fdc0"
+    },
+    {
+      "file": "source-bundles-20.json.gz",
+      "sha256": "e91046d8204cfa01f4a33344eac39ad57bf897a5fecc998d81477790d0444cb2"
+    },
+    {
+      "file": "source-bundles-22.json.gz",
+      "sha256": "41a9df00448c81bb3e9717205067653d76946724044ad79fa5874b90d25fc06f"
+    },
+    {
+      "file": "source-bundles-24.json.gz",
+      "sha256": "1557669a1817507291c72b915d37d8bd0959b16c3d46d4df146b7dbd8e3d4966"
+    }
+  ],
+  "visual": {
+    "path": ".artifacts/test/png/charts/geographic-marks/geographic-fields/conditional/user-facing.png",
+    "sha256": "718ce66b584a8f0aad42714376841be4114824f780c8eccd6ec491e6f5e183cf",
+    "review": "직접 이미지 확인: West gray, Central teal, East red; native radii8/16/24; hole/route unchanged."
+  }
+}

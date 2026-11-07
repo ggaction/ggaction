@@ -1,6 +1,8 @@
+import { geoLabelSource } from "./geo/labels.js";
+import { drainStages } from "../core/stages.js";
 export { validateConditionalDependencies } from "./conditionalState.js";
 import { validateRowReference } from "../core/rowReference.js";
-import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
+import { cloneAndFreeze, freezeOwned, isOwned } from "../core/immutable.js";
 import { annotateError } from "../core/diagnostics.js";
 import { validateUserId } from "../core/identifiers.js";
 import { validateWorkLimit } from "../core/validation.js";
@@ -32,11 +34,27 @@ function exact(value, keys, label) {
   }
 }
 
+// The kind validation of an exact owned resource is a pure function of that
+// resource and the program constructor. A passed check is kept on the resource
+// itself, so an unchanged resource is not proved again by every later edit.
+// Only a resource whose stored members are all owned values qualifies.
+class ResourceTarget { constructor(value) { return value; } }
+class ValidatedResource extends ResourceTarget {
+  #classes = new Set();
+  static has(resource, ProgramClass) { return #classes in resource && resource.#classes.has(ProgramClass); }
+  static add(resource, ProgramClass) {
+    if (!(#classes in resource)) { try { new ValidatedResource(resource); } catch { return; } }
+    resource.#classes.add(ProgramClass);
+  }
+}
+const ownedResource = resource => isOwned(resource) &&
+  ["ownership", "inputs", "options", "result", "provenance"].every(key => isOwned(resource[key]));
+
 export function validateStoredResource(resource, ProgramClass) {
   exact(resource, ["kind", "id", "revision", "algorithmVersion", "ownership", "inputs", "options", "result", "provenance"], "Resource");
   if (!STORED_RESOURCE_KINDS.includes(resource.kind)) throw error("Unsupported resource kind.", "unsupported-format");
   validateUserId(resource.id, "Resource id"); validateResourceRevision(resource.revision);
-  if (resource.algorithmVersion !== "1") throw error("Unsupported resource algorithm version.", "unsupported-format");
+  if (resource.algorithmVersion !== "1" && !(resource.kind === "edge-route" && resource.algorithmVersion === "2")) throw error("Unsupported resource algorithm version.", "unsupported-format");
   const ownership = resource.ownership;
   ownRecord(ownership, "Resource ownership");
   exact(ownership, ownership?.mode === "generated" ? ["mode", "owner"] : ["mode"], "Resource ownership");
@@ -52,7 +70,10 @@ export function validateStoredResource(resource, ProgramClass) {
     const handler = getBuiltinResourceKindHandler(ProgramClass, resource.kind);
     if (handler === undefined) throw error("Resource kind is not registered for this program constructor.", "unsupported-format");
     validateResourceProvenance(resource);
+    const owned = ownedResource(resource);
+    if (owned && ValidatedResource.has(resource, ProgramClass)) return resource;
     handler.validateStored(resource);
+    if (owned) ValidatedResource.add(resource, ProgramClass);
     return resource;
   }
   exact(resource.result, [], "Persistent selection result");
@@ -93,13 +114,20 @@ export function resourceDependencies(resource) {
   return [...resource.inputs, ...(resource.ownership.mode === "generated" ? [resource.ownership.owner] : [])];
 }
 
-export function validateResourceGraph(program, ProgramClass = program.constructor) {
+export function validateResourceGraph(program, ProgramClass = program.constructor, routeScope) {
+  return drainStages(validateResourceGraphStages(program, ProgramClass, routeScope));
+}
+
+// The same checks in order, yielding between resources and inside staged
+// binding checks so a large graph never runs as one host turn.
+export function* validateResourceGraphStages(program, ProgramClass = program.constructor, routeScope) {
   if (program.materializationConfigs?.textMetrics?.schemaVersion === 2) normalizeFontMetricProfile(program.materializationConfigs?.textMetrics);
   const resources = program.semanticSpec.resources;
   if (!Array.isArray(resources)) throw error("Semantic resources must be an array.");
   validateWorkLimit(resources.length, "Resource count");
   const byId = new Map();
   for (const resource of resources) {
+    yield;
     validateStoredResource(resource, ProgramClass);
     if (resource.kind === "data-source") resolveInputReference(program, resource.result.data);
     resource.provenance.sourceRows?.forEach(ref => resolveRowReference(program, ref));
@@ -138,9 +166,14 @@ export function validateResourceGraph(program, ProgramClass = program.constructo
     geographicCoordinates.add(coordinate.id);
   }
   for (const layer of program.semanticSpec.layers ?? []) {
-    if (geographicCoordinates.has(layer.coordinate) !== (layer.mark?.type === "geo")) throw error("Geo coordinates require geographic marks and exact coordinate bindings.");
+    if (geographicCoordinates.has(layer.coordinate) !== (layer.mark?.type === "geo" || geoLabelSource(program, layer) !== undefined)) throw error("Geo coordinates require geographic marks and exact coordinate bindings.");
   }
-  for (const resource of resources) getBuiltinResourceKindHandler(ProgramClass, resource.kind)?.validateBindings(program, resource);
+  for (const resource of resources) {
+    yield;
+    const handler = getBuiltinResourceKindHandler(ProgramClass, resource.kind), scope = resource.kind === "edge-route" ? routeScope : undefined;
+    if (handler?.validateBindingsStages !== undefined) yield* handler.validateBindingsStages(program, resource, scope);
+    else handler?.validateBindings(program, resource, scope);
+  }
 }
 
 // Iterative postorder keeps a valid deep DAG within the work budget and avoids

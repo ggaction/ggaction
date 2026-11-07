@@ -1,0 +1,100 @@
+{
+  "status": "candidate-awaiting-shared-fix",
+  "base": "2e6a573d9ac2e8a6687cde1bbf46c7eb0cfe43d1",
+  "approval": "../AUTHORIZATION.json#remainingApproval",
+  "runtimeSourceChanges": [
+    "src/grammar/animation/guideState.js",
+    "src/materialization/animation/guideAnchors.js",
+    "src/materialization/animation/guides.js"
+  ],
+  "sharedPlannerSourceChanges": [],
+  "checks": {
+    "animationUnit": {
+      "total": 350,
+      "passed": 349,
+      "failed": 1
+    },
+    "guideCoverage": {
+      "total": 58,
+      "passed": 57,
+      "failed": 1,
+      "lines": 100,
+      "branches": 98.04,
+      "functions": 100
+    },
+    "renderBrowser": {
+      "tests": 6,
+      "passed": 6,
+      "browserPairs": 10
+    },
+    "realistic": {
+      "datasets": 5,
+      "recipes": 30,
+      "tests": 5,
+      "passed": 5,
+      "durationMs": 2656.081125
+    },
+    "sourceContracts": {
+      "passed": 40
+    },
+    "packageContracts": {
+      "passed": 17
+    },
+    "docs": {
+      "passed": 232
+    },
+    "built": {
+      "pages": 186,
+      "llmArtifacts": 1598
+    },
+    "builtBrowser": {
+      "status": "passed",
+      "responsiveWidths": [
+        320,
+        390,
+        768
+      ],
+      "desktopSearch": true,
+      "sameContentBeforeSourcePin": true,
+      "sourcePinDelta": "Only generated source links and identity metadata changed; documented content/layout/assets/runtime unchanged."
+    },
+    "sourcePinnedDocs": {
+      "passed": 23,
+      "build": "passed",
+      "builtPages": 186,
+      "llmArtifacts": 1598
+    }
+  },
+  "pending": [
+    "shared Parallel body fallback reason preservation",
+    "final archive and source-free Node20/22/24 consumer qualification",
+    "final source-pinned docs and evidence"
+  ],
+  "failures": [
+    {
+      "id": "parallel-offline-reason",
+      "scope": "preexisting shared planner serialization",
+      "live": "sampled-concrete",
+      "restored": "unsupported-family",
+      "sceneEqual": true,
+      "wholeFrameEqual": false,
+      "alsoReproducedOn": "312026112"
+    }
+  ],
+  "inputHashes": {
+    "src/grammar/animation/guideState.js": "e3e6724cee46975d4f8449ca2d387fd476b4c75c2c2a43969fb46f34ae6ee406",
+    "src/materialization/animation/guideAnchors.js": "f060d3c48bf72b57b61665fe58c27a578ca439268b4b49527f96234528ac28ad",
+    "src/materialization/animation/guides.js": "6dbae56f215a7608c7a40f6cc72738eb08f177a7113918838a57e266c8fec5ce",
+    "test/unit/animation/guide-anchor-transitions.test.js": "c0fda0b178cfeb148af043901b2507c3f2418eb2381b4b011e51300ca8604230",
+    "test/contracts/realistic-guide-transitions.test.js": "cc0768974eeb9a413a618ad94c82d995da725cf59cf0d8680e96be4b598a839b",
+    "scripts/consumers/fixtures/node/animation.mjs": "b6a97202387f164bd6718ffa53caa329466d2fc1878055c078838b4ad95555ad"
+  },
+  "sourceRevision": "bd8ce86d1",
+  "executionFailures": [
+    {
+      "check": "source-pinned Jekyll build first attempt",
+      "reason": "Command omitted canonical --source docs --destination _site --baseurl /ggaction arguments.",
+      "repair": "Used npm run docs:build; final build and built verifier passed."
+    }
+  ]
+}

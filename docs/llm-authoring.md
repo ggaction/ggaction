@@ -108,12 +108,15 @@ exact PNG and PDF output options.
 
 ## Terminal limitations and open decisions
 
-These canonical capability IDs are terminal limitations in the current static
-chart contract:
+These canonical capability IDs are terminal for the static-chart task resolver:
 
-- `unsupported.geo` — geographic projections and map marks
-- `unsupported.animation` — animated transitions
-- `unsupported.interaction` — interactive runtime behavior
+- `unsupported.geo` — geographic maps; the resolver does not plan them. Build them in
+  Full with `createGeometryData`, `createProjection`, `createCoordinate({ type: "geo" })`
+  and the Geo marks; see [Geometry and projections](./api/geometry.md).
+- `unsupported.animation` — animated transitions; the resolver does not plan them. Use
+  [`ggaction/animation`](./api/animation.md) or [`ggaction/live`](./api/live.md).
+- `unsupported.interaction` — interactive runtime behavior; the resolver does not plan it.
+  Use [`ggaction/live`](./api/live.md) or [`ggaction/interaction`](./api/interaction.md).
 - `unsupported.3d` — three-dimensional charts
 - `unsupported.jpg` — JPEG output
 - `unsupported.areaStrokeDash` — field-driven dash encoding on an area mark

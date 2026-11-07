@@ -1,11 +1,11 @@
 import { isPendingMeasuredRadiusConsumer } from "../../materialization/scales/policies/arc.js";
 import { findScale, findScaleConsumers } from "../../materialization/scales/consumers/index.js";
-import { resolveScalePreview, validatePendingMeasuredScale } from "./preview.js";
-import { action } from "../../core/action.js";
+import { resolveScalePreviewStages, validatePendingMeasuredScale } from "./preview.js";
+import { invokeActionStages, stagedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
 import {
-  applyMaterializationPlan,
+  applyMaterializationPlanStages,
   planScaleGuideRematerialization
 } from "../../materialization/dependencies.js";
 import {
@@ -27,12 +27,12 @@ function validateOptions(args) {
   }
 }
 
-export const rematerializeScale = /* @__PURE__ */ action(
+export const rematerializeScale = /* @__PURE__ */ stagedAction(
   {
     op: "rematerializeScale",
     description: "Recompute every concrete consumer of a scale."
   },
-  function (args = {}) {
+  function* (args = {}) {
     validateOptions(args);
     const id = validateUserId(args.id, "Scale id");
     const semanticScale = findScale(this, id);
@@ -42,8 +42,10 @@ export const rematerializeScale = /* @__PURE__ */ action(
       validatePendingMeasuredScale(this, semanticScale, consumers);
       return this._withoutResolvedScale(id);
     }
-    const { channel, valuesByConsumer, resolvedScale } = resolveScalePreview(this, id);
+    const { channel, valuesByConsumer, resolvedScale } = yield* resolveScalePreviewStages(this, id);
     let next = this._withResolvedScale(id, resolvedScale);
+    // The preview reads every consumer row; its consumers apply as later stages.
+    yield;
 
     for (const { consumer, values } of valuesByConsumer) {
       if (
@@ -60,17 +62,17 @@ export const rematerializeScale = /* @__PURE__ */ action(
       if (materializationMode === "rematerialize") {
         if (args.marks !== false) {
           const step = getMarkRematerializationStep(this, consumer.layer);
-          if (step !== undefined) next = next[step.op](step.args);
+          if (step !== undefined) next = yield* invokeActionStages(next, next[step.op], step.args);
         }
         continue;
       }
       if (materializationMode === "defer") continue;
       if (Object.values(this.materializationConfigs.highlights ?? {})
         .some(config => config.target === consumer.layer.id)) {
-        next = next.rematerializePointMark({ id: consumer.layer.id });
+        next = yield* invokeActionStages(next, next.rematerializePointMark, { id: consumer.layer.id });
         continue;
       }
-      next = next.editGraphics({
+      next = yield* invokeActionStages(next, next.editGraphics, {
         target: consumer.layer.id,
         property: consumerChannel === "color" ? "fill" : consumerChannel,
         value: mapScaleConsumerValues(values, resolvedScale, consumerChannel)
@@ -79,7 +81,7 @@ export const rematerializeScale = /* @__PURE__ */ action(
 
     return args.guides === false
       ? next
-      : applyMaterializationPlan(
+      : yield* applyMaterializationPlanStages(
           next,
           planScaleGuideRematerialization(next, id)
         );

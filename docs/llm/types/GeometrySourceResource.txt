@@ -2,7 +2,8 @@ export interface GeometrySourceResource {
   readonly kind: "geometry"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
   readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly [];
   readonly options: { readonly method: "geo"; readonly format: "geojson" | "topojson"; readonly coordinateKind: "geographic" | "planar";
-    readonly featureKey?: readonly string[]; readonly topoObject?: string; readonly limits: Required<GeometryLimits> };
+    readonly featureKey?: readonly string[]; readonly topoObject?: string; readonly limits: Required<GeometryLimits>;
+    readonly polygonWinding?: "right-hand" | "left-hand" };
   readonly result: {
     readonly features: readonly { readonly id?: string | number; readonly properties: Readonly<Record<string, GeometryJSONValue>> | null;
       readonly geometry: GeographicGeometry | null; readonly sourcePath: readonly (string | number)[]; readonly drawable: boolean }[];

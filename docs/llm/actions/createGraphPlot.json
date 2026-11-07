@@ -107,6 +107,11 @@
       "type": "false | GraphLabelsOptions | undefined"
     },
     {
+      "name": "maxItems",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
       "name": "target",
       "required": false,
       "type": "ActionTargetList | ScopedActionTarget"
