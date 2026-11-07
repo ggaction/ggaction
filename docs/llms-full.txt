@@ -13802,14 +13802,19 @@ const drawControls = () => {
   render(state.program, canvas.getContext("2d"));
   const items = exportAccessibleData(state.program, { format: "items", target: "bars" }).views[0].items;
   summary.textContent = items.length ? items.map(item => `${item.fields.category}: ${item.fields.value}${item.selectedBy.includes("picked") ? ", selected" : ""}`).join("; ") : "No visible categories";
-  panel.querySelector("#choose-a").disabled = !items.some(item => item.fields.category === "A");
-  panel.querySelector("#choose-b").disabled = !items.some(item => item.fields.category === "B");
-  panel.querySelector("#undo-control").disabled = state.history.undoCount === 0;
-  panel.querySelector("#redo-control").disabled = state.history.redoCount === 0;
+  // aria-disabled keeps focus on a control that becomes unavailable, such as Redo
+  // after its last step; a native disabled button would drop focus to the page.
+  const unavailable = (id, value) => panel.querySelector(`#${id}`).setAttribute("aria-disabled", String(value));
+  unavailable("choose-a", !items.some(item => item.fields.category === "A"));
+  unavailable("choose-b", !items.some(item => item.fields.category === "B"));
+  unavailable("undo-control", state.history.undoCount === 0);
+  unavailable("redo-control", state.history.redoCount === 0);
 };
 const listeners = commands.map(([id, command]) => {
   const button = panel.querySelector(`#${id}`);
-  const activate = () => controlSession.dispatch({ ...command, origin: "user" });
+  const activate = () => {
+    if (button.getAttribute("aria-disabled") !== "true") controlSession.dispatch({ ...command, origin: "user" });
+  };
   button.addEventListener("click", activate);
   return () => button.removeEventListener("click", activate);
 });

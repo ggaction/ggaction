@@ -3035,7 +3035,7 @@
     "prerequisites": "Use this section's HTML and JavaScript together. Activate category and history controls with Enter, Space or touch.",
     "host": "paired-html",
     "htmlSha256": "4e8bca2df8af6c4b82305a7e5ddb041c22669f0856372cc9cf52aae2fe9e921e",
-    "sha256": "262373f5d1dc5cd6c83e564101d1e95722572cad747d30dfbdc4b88c167f437e",
+    "sha256": "71b669ce6689fd12c2c819944cf799d27772068b1e4cec65ef5b6ffa56704257",
     "executable": true
   },
   {

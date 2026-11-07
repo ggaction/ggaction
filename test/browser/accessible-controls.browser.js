@@ -65,7 +65,7 @@ for (const input of ["keyboard", "touch"]) test(`native category and history con
   await host("interaction-native-controls", "controlSession", "disposeNativeControls", async page => {
     if (input === "keyboard") {
       await page.evaluate(() => { const button = document.createElement("button"); button.id = "after-controls"; button.textContent = "After chart"; document.querySelector("main").append(button); });
-      for (const id of ["choose-a", "choose-b", "clear-picked", "hide-a", "show-a", "hide-b", "show-b", "only-b", "clear-filter", "reverse-categories", "clear-order", "reset-control", "after-controls"]) {
+      for (const id of ["choose-a", "choose-b", "clear-picked", "hide-a", "show-a", "hide-b", "show-b", "only-b", "clear-filter", "reverse-categories", "clear-order", "undo-control", "redo-control", "reset-control", "after-controls"]) {
         await page.keyboard.press("Tab"); assert.equal(await page.evaluate(() => document.activeElement.id), id);
       }
     }

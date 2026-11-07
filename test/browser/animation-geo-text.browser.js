@@ -25,6 +25,8 @@ test("browser geographic Text keeps native current-camera Canvas and SVG pixels 
         const result = await opened.page.evaluate(async ({ratio,variant}) => {
           const { animationGeoTextFrame, render, renderToSVG } = await import("/frame.js");
           const { frame, native } = animationGeoTextFrame(variant), canvas = document.querySelector("canvas");
+          // Draw the text once first so host font matching is settled before either compared draw.
+          render(native, document.createElement("canvas").getContext("2d"), { pixelRatio: ratio });
           render(frame, canvas.getContext("2d"), { pixelRatio: ratio });
           const image = new Image();image.src = `data:image/svg+xml,${encodeURIComponent(renderToSVG(frame))}`;await image.decode();
           const svg = document.createElement("canvas");svg.width = frame.scene.width * ratio;svg.height = frame.scene.height * ratio;
