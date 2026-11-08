@@ -8,6 +8,7 @@ import { createCanvas, loadImage } from "@napi-rs/canvas";
 
 import {
   chartImages,
+  docAnimations,
   docThumbnailDimensions,
   showcaseImages,
   guideImages,
@@ -158,4 +159,35 @@ test("keeps the composition asset legible as two distinct child panels", async (
   const catalog = read("docs/_data/chart_examples.yml");
   assert.match(catalog, /alt: Blue point panel and orange replacement bar panel/);
   assert.match(catalog, /stable main slot retains points/);
+});
+
+// Walk the GIF block structure and count image descriptors.
+function gifImageCount(gif) {
+  const skipSubBlocks = index => {
+    while (gif[index] !== 0) index += gif[index] + 1;
+    return index + 1;
+  };
+  const tableSize = flags => (flags & 0x80) ? 3 * 2 ** ((flags & 0x07) + 1) : 0;
+  let index = 13 + tableSize(gif[10]);
+  let images = 0;
+  while (gif[index] !== 0x3b) {
+    if (gif[index] === 0x21) index = skipSubBlocks(index + 2);
+    else if (gif[index] === 0x2c) {
+      images += 1;
+      index = skipSubBlocks(index + 10 + tableSize(gif[index + 9]) + 1);
+    } else throw new Error(`Unexpected GIF block 0x${gif[index].toString(16)} at ${index}.`);
+  }
+  return images;
+}
+
+test("keeps every generated animation a GIF of its declared size and frame count", () => {
+  for (const animation of docAnimations) {
+    const gif = readFileSync(path.join(root, `docs/assets/images/${animation.id}.gif`));
+    assert.equal(gif.subarray(0, 6).toString("latin1"), "GIF89a", animation.id);
+    assert.equal(gif.readUInt16LE(6), animation.width, `${animation.id} width`);
+    assert.equal(gif.readUInt16LE(8), animation.height, `${animation.id} height`);
+    const transitions = animation.createPrograms().length - 1;
+    const expected = transitions * animation.frameTimesMs.length + 1;
+    assert.equal(gifImageCount(gif), expected, `${animation.id} frames`);
+  }
 });

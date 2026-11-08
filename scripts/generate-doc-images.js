@@ -5,9 +5,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import gifenc from "gifenc";
-import { render } from "ggaction";
 import { exportAnimationFrames, planTransition } from "ggaction/animation";
-import { renderToPNG } from "ggaction/png";
+import { renderToPNG, renderToPNGBuffer } from "ggaction/png";
 import { createGettingStartedChart } from
   "../examples/getting-started/program.js";
 import { publicExamples } from "../examples/registry.js";
@@ -88,9 +87,12 @@ async function generateDocAnimation(animation) {
   const { GIFEncoder, applyPalette, quantize } = gifenc;
   const canvas = createCanvas(animation.width, animation.height);
   const context = canvas.getContext("2d");
-  const pixels = program => {
+  // Frames go through the PNG renderer so that text uses the same bundled fonts
+  // on every platform, as the static documentation images do.
+  const pixels = async program => {
+    const { buffer } = await renderToPNGBuffer(program);
     context.clearRect(0, 0, animation.width, animation.height);
-    render(program, context);
+    context.drawImage(await loadImage(buffer), 0, 0);
     return new Uint8Array(context.getImageData(0, 0, animation.width, animation.height).data);
   };
   const programs = animation.createPrograms();
@@ -102,10 +104,10 @@ async function generateDocAnimation(animation) {
       options: { durationMs: animation.transitionMs, easing: "cubic-in-out" }
     });
     for (const [step, frame] of exportAnimationFrames(plan, { timesMs: animation.frameTimesMs }).entries()) {
-      frames.push({ pixels: pixels(frame), delay: step === 0 ? 500 : 70 });
+      frames.push({ pixels: await pixels(frame), delay: step === 0 ? 500 : 70 });
     }
   }
-  frames.push({ pixels: pixels(programs.at(-1)), delay: 2500 });
+  frames.push({ pixels: await pixels(programs.at(-1)), delay: 2500 });
   const sample = new Uint8Array(frames[0].pixels.length * 2);
   sample.set(frames[0].pixels);
   sample.set(frames.at(-1).pixels, frames[0].pixels.length);
