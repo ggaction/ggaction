@@ -740,10 +740,13 @@
         "browser-canvas-renders-nothing",
         "node-png-or-pdf-export-is-unavailable-in-the-browser",
         "images-fonts-or-routes-are-missing-or-rejected",
+        "a-map-is-blank-cut-off-or-one-solid-shape",
+        "clicking-or-brushing-a-chart-does-nothing",
+        "data-changes-do-not-move-the-marks",
         "inspect-the-program"
       ],
-      "bytes": 9753,
-      "sha256": "6d0b938e98cae926dd7f97e457807d2b77de65229f0c3c5675314ae4be153351"
+      "bytes": 11126,
+      "sha256": "7166b670d43b360afaa4dbcd98cfee854832a6e6d09b5f90546b1c5ad31599f6"
     },
     {
       "order": 47,
@@ -4271,6 +4274,8 @@
       "source": "api/geometry.md",
       "headings": [
         "geometry-and-projections",
+        "draw-a-world-map",
+        "common-map-pitfalls",
         "examples-with-real-data",
         "creategeometrydata",
         "editgeometrydata",
@@ -4301,8 +4306,8 @@
         "editgeoroutedata",
         "related"
       ],
-      "bytes": 43768,
-      "sha256": "3622a4260515ec3959f55f4ddcdecaec4c48f631c3ccaec5053ae5ef9a83ac20"
+      "bytes": 45902,
+      "sha256": "92f18ddd05eb4ebdd7ded3c846c91124f3958cffc5fe35e029110cf67e3a646a"
     },
     {
       "order": 173,

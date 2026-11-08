@@ -1153,7 +1153,7 @@
     "title": "Geometry and Projections",
     "source": "docs/api/geometry.md",
     "editSource": "docs/api/geometry.md",
-    "description": "Keep geographic or planar shapes in an immutable resource with explicit feature identity.",
+    "description": "Draw maps from GeoJSON or TopoJSON: country shapes colored by a value, points placed by longitude and latitude, routes, graticules and annotations.",
     "image": "/assets/images/world-gdp-map.png"
   },
   "/api/contours/": {
