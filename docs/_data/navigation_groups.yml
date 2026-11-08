@@ -1,9 +1,13 @@
 - id: start
   title: Start
-- id: chart-api
-  title: Chart API
+- id: chart-types
+  title: Chart Types
 - id: statistics
-  title: Statistical Layers
+  title: Statistics
+- id: interaction
+  title: Interaction and Animation
+- id: chart-api
+  title: Building Blocks
 - id: concepts
   title: Concepts
 - id: production

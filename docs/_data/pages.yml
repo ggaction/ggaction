@@ -154,10 +154,14 @@
   nav_order: 1
 - title: Basic Charts
   url: /api/basic-charts/
-  parent: /api/
+  nav_title: Basic Charts
+  nav_group: chart-types
+  nav_order: 2
 - title: Parallel Coordinates
   url: /api/parallel-coordinates/
-  parent: /api/
+  nav_title: Parallel Coordinates
+  nav_group: chart-types
+  nav_order: 9
 - title: Canvas
   url: /api/canvas/
   parent: /api/
@@ -245,13 +249,19 @@
   parent: /api/
 - title: Animate and Export Chart Frames
   url: /api/animation/
-  parent: /api/rendering/
+  nav_title: Animation
+  nav_group: interaction
+  nav_order: 3
 - title: Live Charts
   url: /api/live/
-  parent: /api/rendering/
+  nav_title: Live Charts
+  nav_group: interaction
+  nav_order: 1
 - title: Interaction Sessions
   url: /api/interaction/
-  parent: /api/rendering/
+  nav_title: Interaction Sessions
+  nav_group: interaction
+  nav_order: 2
 - title: Inspect Overlapping Chart Items
   url: /recipes/inspect-chart/
   parent: /recipes/
@@ -372,8 +382,9 @@
   nav_order: 4
 - title: Data Updates and Live Refresh
   url: /data-updates/
-  nav_group: production
-  nav_order: 5
+  nav_title: Data Updates
+  nav_group: interaction
+  nav_order: 4
 - title: Program Inspection
   url: /inspection/
   nav_group: production
@@ -498,7 +509,9 @@
   parent: /api/data/
 - title: Choose a Chart
   url: /api/chart-picker/
-  parent: /api/
+  nav_title: Choose a Chart
+  nav_group: chart-types
+  nav_order: 1
 - title: Documentation Version
   url: /version/
   parent: /reference/actions/
@@ -514,13 +527,17 @@
   parent: /tutorials/
 - title: Hierarchy Resources and Plots
   url: /api/hierarchy/
-  parent: /api/
+  nav_title: Trees and Treemaps
+  nav_group: chart-types
+  nav_order: 4
 - title: Hierarchy Tutorial
   url: /tutorials/hierarchy/
   parent: /tutorials/
 - title: Graph Plots
   url: /api/graphs/
-  parent: /api/
+  nav_title: Networks
+  nav_group: chart-types
+  nav_order: 5
 - title: Graph Tutorial
   url: /tutorials/graphs/
   parent: /tutorials/
@@ -540,19 +557,23 @@
 
 - title: Flow Data and Sankey Layouts
   url: /api/flows/
-  parent: /api/
+  nav_title: Sankey Flows
+  nav_group: chart-types
+  nav_order: 6
 - title: Draw Conserved Flows
   url: /tutorials/flows/
   parent: /tutorials/
 
 - title: Geometry and Projections
   url: /api/geometry/
-  parent: /api/
-
+  nav_title: Maps
+  nav_group: chart-types
+  nav_order: 3
 - title: Contours and Two-Dimensional Density
   url: /api/contours/
-  parent: /api/
-
+  nav_title: Contours
+  nav_group: chart-types
+  nav_order: 7
 - title: Draw Levels, Bands and Density
   url: /tutorials/contours/
   parent: /tutorials/
@@ -563,7 +584,9 @@
 
 - title: Calendar Plots
   url: /api/calendar/
-  parent: /api/
+  nav_title: Calendars
+  nav_group: chart-types
+  nav_order: 8
 - title: Place Observations on a Calendar
   url: /tutorials/calendar/
   parent: /tutorials/
@@ -578,8 +601,9 @@
 
 - title: Pyramid Plots
   url: /api/pyramid/
-  parent: /api/
-
+  nav_title: Pyramids and Funnels
+  nav_group: chart-types
+  nav_order: 12
 - title: Compare Ordered Stages
   url: /tutorials/pyramid/
   parent: /tutorials/
@@ -587,29 +611,36 @@
 
 - title: OHLC Plots
   url: /api/ohlc/
-  parent: /api/
-
+  nav_title: Candlesticks (OHLC)
+  nav_group: chart-types
+  nav_order: 10
 - title: Show open, high, low and close
   url: /tutorials/ohlc/
   parent: /tutorials/
 
 - title: Waterfall Plots
   url: /api/waterfall/
-  parent: /api/
+  nav_title: Waterfalls
+  nav_group: chart-types
+  nav_order: 11
 - title: Show Contributions and Totals
   url: /tutorials/waterfall/
   parent: /tutorials/
 
 - title: Trail Plots
   url: /api/trail/
-  parent: /api/
+  nav_title: Trails
+  nav_group: chart-types
+  nav_order: 13
 - title: Show Width Along a Series
   url: /tutorials/trail/
   parent: /tutorials/
 
 - title: Table Plots
   url: /api/table/
-  parent: /api/
+  nav_title: Tables
+  nav_group: chart-types
+  nav_order: 14
 - title: Combine Values and Small Charts in a Table
   url: /tutorials/table/
   parent: /tutorials/
