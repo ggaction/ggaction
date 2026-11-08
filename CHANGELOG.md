@@ -4,6 +4,15 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+This release changes documentation and examples only; the runtime is the same as 0.0.27.
+
+### Documentation
+
+- The gallery and home page show real-data charts: maps, a Sankey diagram, a treemap and sunburst, a network, a calendar, contours, OHLC, waterfall, trail, table, distribution and bar charts drawn from Natural Earth, USGS, NASA GISTEMP, FiveThirtyEight, Palmer penguins, Gapminder and other pinned datasets. Single-option illustrations stay on the page that explains their option.
+- New guides: [Make a Chart Interactive](https://ggaction.github.io/ggaction/tutorials/interactive-chart/) with `ggaction/live`, a browser animation quick start with the `keyField` and `reviseData` source rules, a world-map walkthrough with common map pitfalls, and [Distribution Plots](https://ggaction.github.io/ggaction/api/distribution-plots/) for raincloud, beeswarm and strip plots.
+- Getting Started draws a real dataset, edits the chart and saves it as SVG or PNG. Every chart recipe is a complete program over real data, and chart-family tutorials open with their real-data programs.
+- The sidebar groups chart types, statistics, and interaction and animation. Supported features list the limits of the newer families, and troubleshooting covers maps, clicks and animated updates.
+
 ## [0.0.27] - 2026-11-06
 
 This release adds 82 actions (380 declared in total, up from 298) and four package entries. Unless noted, new actions are available from `ggaction` and not from `ggaction/basic`.
