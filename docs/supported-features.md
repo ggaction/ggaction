@@ -159,6 +159,29 @@ faceting, and exact one-dimension field repetition. Temporal dimensions, curved
 paths, axis drag reordering, brushing, bundling, outer shared Parallel axes,
 and automatic cross-composition scale sharing are not implemented.
 
+### Maps, hierarchies, graphs, and other newer families
+
+- **Maps.** A Geo mark draws at most 10,000 projected points and 30,000 path
+  commands unless you raise its `capacity`; a whole-world outline needs more.
+  Projection pixels are Canvas pixels, so fit the projection to the whole
+  Canvas. See [common map pitfalls](api/geometry.md#common-map-pitfalls).
+- **Trees and treemaps.** Positions come from the stored layout, so encoding
+  and legend actions such as `encodeColor` reject these layers. Color nodes
+  with typed `overrides` and compose a separate mark for a legend.
+- **Graphs.** Layout coordinates are not scaled to the plot; `origin: "auto"`
+  only centers them, so tune `linkDistance` or the layout radius to the Canvas.
+  Graph facet and repeat composition are not supported. A plot draws at most
+  10,000 graphics unless `maxItems` raises it to 100,000.
+- **Edge bundling.** Density bundling and force-directed bundling of very large
+  graphs exceed their time targets; see
+  [performance known limits](performance.md#known-limits).
+- **Calendars and density contours.** Each accepts at most 10,000 source rows.
+  Filter a calendar's data to its `start`–`end` range first; out-of-range dates
+  are rejected.
+- **Live charts.** `ggaction/live` cannot draw images, embedded fonts, or
+  shadows. Use an [interaction session](api/interaction.md) and render with
+  prepared resources instead.
+
 ### Individual display text
 
 Change category display names without replacing data values using `labelMap` on Cartesian and categorical theta axis labels, categorical parallel axis labels, or categorical legend blocks (including ordinal size). For example:

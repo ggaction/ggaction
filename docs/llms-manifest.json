@@ -147,8 +147,8 @@
         "current-boundary",
         "related"
       ],
-      "bytes": 4017,
-      "sha256": "fe5d3cde978b0ed862d97545ababbfea550ca1e609cf1690a1c165ca61052050"
+      "bytes": 4146,
+      "sha256": "8cb9aacc365b6637b8287537a7993db0d3f93f6f3d81e6b69f597296ad33b399"
     },
     {
       "order": 9,
@@ -345,8 +345,8 @@
         "choose-filtering-reusable-selection-or-highlighting",
         "run-and-continue"
       ],
-      "bytes": 7146,
-      "sha256": "c82f9a77ee44b96781728f97843f94021691a6204c62a27eb53160384bf7fecc"
+      "bytes": 7136,
+      "sha256": "2c93130b38d8d5b9bc3b5de457277ebcc089de341a811c73a279b0820e242b98"
     },
     {
       "order": 21,
@@ -629,8 +629,8 @@
         "the-library-infers",
         "continue"
       ],
-      "bytes": 5314,
-      "sha256": "80c7678cf31d0fa176b7b6ab0923cb9fa092b3c359c2cdb95a12fcc09e7d38ae"
+      "bytes": 5361,
+      "sha256": "867843f390991ac4ba862c64b45adc3ac3e86d7c9b04db4fb1e2bf110c66cf4b"
     },
     {
       "order": 40,
@@ -1689,8 +1689,8 @@
         "shadows",
         "related"
       ],
-      "bytes": 17940,
-      "sha256": "c04b51d3c7c4a3733cf89e2e43707d856e6b86dcdce9486e0295cbef4a97f3f4"
+      "bytes": 18328,
+      "sha256": "56c5899b29a47a0bf28698f63990ff1f1d1ecd50227962d0ddfc81bc46579fef"
     },
     {
       "order": 97,
@@ -2193,10 +2193,11 @@
         "distribution-charts",
         "selection-appearance-and-text",
         "coordinates-and-composition",
+        "maps-hierarchies-graphs-and-other-newer-families",
         "individual-display-text"
       ],
-      "bytes": 13573,
-      "sha256": "b4cd8b0c9b164e329d690925f364bab2b1fe06b27704bd09a5adffa3716ae4c9"
+      "bytes": 14969,
+      "sha256": "797443aa62e7a864955b0cbd28d3a5525788ebc8612f642c4e5ac068662c9981"
     },
     {
       "order": 126,
@@ -3859,8 +3860,8 @@
         "boundaries-and-failure-behavior",
         "related"
       ],
-      "bytes": 3313,
-      "sha256": "5b87c0534be49b06c6d5bc2e17af5e6a620599617ad85e42af7c4923f2b756a2"
+      "bytes": 3195,
+      "sha256": "9d9ca710eb7a74eb041df979746bc1b3c63e3877c9ff45d8e693b603a5cdd179"
     },
     {
       "order": 147,
@@ -3875,8 +3876,8 @@
         "boundaries-and-failure-behavior",
         "related"
       ],
-      "bytes": 2740,
-      "sha256": "df3ee0d3553a4c165daa91ebc9bb0b0165f53932938da03ca77370b7dfa48a37"
+      "bytes": 2622,
+      "sha256": "8b003f7b6ac4ce40698a50ae40a0a2a3666c3ec6b285273052752ec2b2156a4c"
     },
     {
       "order": 148,
@@ -3891,8 +3892,8 @@
         "boundaries-and-failure-behavior",
         "related"
       ],
-      "bytes": 2685,
-      "sha256": "8b7ff73872e01415925768d9e71b00cced459e7237af9269cae481f07d1552ce"
+      "bytes": 2567,
+      "sha256": "9909b5fe4b65db3d6747cc5ebef812d545b01201e7a71c15f1a17bf264617a07"
     },
     {
       "order": 149,
@@ -3907,8 +3908,8 @@
         "boundaries-and-failure-behavior",
         "related"
       ],
-      "bytes": 2156,
-      "sha256": "5f9a9dd1e29049768f40392954bed39f5dadb803122b8725347730a030ed28c6"
+      "bytes": 2038,
+      "sha256": "719e85d738b859ac5ef9dc35c9e6ef60394e314f011a3e9596a797773a379692"
     },
     {
       "order": 150,
@@ -3923,8 +3924,8 @@
         "boundaries-and-failure-behavior",
         "related"
       ],
-      "bytes": 2646,
-      "sha256": "7262f9d736122fcd3908930b9a003fba3e2654b653c012658e00ef64fa2742bc"
+      "bytes": 2528,
+      "sha256": "c3e51858d14911a7ac9dff3579e87effb99a557974f4d45d8beb63918b852a12"
     },
     {
       "order": 151,
@@ -3939,8 +3940,8 @@
         "boundaries-and-failure-behavior",
         "related"
       ],
-      "bytes": 5004,
-      "sha256": "20b9847c73db938708908425a4053e75d20e1465b7c1e0afed97e9e0ce8b1f18"
+      "bytes": 4886,
+      "sha256": "7751b0e263ee42ea1be6ce2254de39c296ab906b74f898186ac13aad241efe91"
     },
     {
       "order": 152,
@@ -3955,8 +3956,8 @@
         "boundaries-and-failure-behavior",
         "related"
       ],
-      "bytes": 2644,
-      "sha256": "3ad6ef82965e6403f6ee646014c7180f03fe30ef78e4132ad6f6281d37b6cf1d"
+      "bytes": 2526,
+      "sha256": "87808d865fc89857733e821e75ee03cd2a866b9f845a896f30b85a7cbf5cd053"
     },
     {
       "order": 153,
@@ -3971,8 +3972,8 @@
         "boundaries-and-failure-behavior",
         "related"
       ],
-      "bytes": 2532,
-      "sha256": "bd52808145b2b978ece405b20eecac4eba4f230520ae45ad0e9b26af27097e99"
+      "bytes": 2414,
+      "sha256": "2bb5773926dd1fc43661b1111f1082f580478acbc5bdfb886428e996dc5282f8"
     },
     {
       "order": 154,

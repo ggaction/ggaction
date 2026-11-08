@@ -327,7 +327,14 @@ followed by clipping and blending. Source identity, row selection and hit geomet
 automatic legend samples include the effect. Labels and annotations use the same Text option; Text shadows
 require embedded font preparation and actual glyph ink metrics.
 
-Canvas and SVG use an explicit prepared handle; PNG/PDF prepare it automatically with the native adapter.
+> **A chart with shadows needs a prepared handle in Canvas and SVG.** Plain
+> `render(program, context)` throws *Shadow graphics require
+> prepareShadowRendering before rendering*, and `renderToSVG(program)` throws
+> *Graphic "…" requires a prepared shadow glyph*, until you prepare the shadows
+> with `prepareShadowRendering` and pass the handle. `renderToPNG` and
+> `renderToPDF` prepare them for you. `ggaction/live` cannot draw shadows.
+> Images and embedded fonts follow the same rule.
+
 See [prepared shadows](../../../../api/rendering/#prepared-shadows) for the complete output lifecycle and limits.
 
 ## Related

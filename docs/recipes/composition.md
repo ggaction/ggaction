@@ -59,7 +59,7 @@ Edit the source to change linked positions. `editOverlay({ target: "trend", foll
 freezes the current geometry as an independent normalized plot snapshot; further source edits
 no longer move it. Independent axis scales require explicit axis selection when creating guides.
 
-The [runnable overlay example](https://ggaction.github.io/ggaction/examples/linked-overlay/) uses the same public program as
+The [runnable overlay example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/linked-overlay/) uses the same public program as
 the primitive-equivalence and rendering tests.
 
 ## Pair a resource view with an analytical chart

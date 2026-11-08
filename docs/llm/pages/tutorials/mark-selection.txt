@@ -15,8 +15,8 @@ Follow [Getting Started](../../../getting-started/) to create a browser module a
 curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/cars.json --output public/cars.json
 ```
 
-This complete point workflow matches the canonical program used for its image.
-The earlier snippets are alternatives for the matching point, bar, or line base.
+This complete point workflow draws the image above. The histogram and line
+sections below start from their own bar or line chart instead of this one.
 
 > **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
 

@@ -20,8 +20,8 @@ Follow [Getting Started](../getting-started.md) to create a browser module and
 curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ site.data.provenance.exampleSourceRef }}/data/cars.json --output public/cars.json
 ```
 
-This complete point workflow matches the canonical program used for its image.
-The earlier snippets are alternatives for the matching point, bar, or line base.
+This complete point workflow draws the image above. The histogram and line
+sections below start from their own bar or line chart instead of this one.
 
 <!-- snippet-context:start -->
 

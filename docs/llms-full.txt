@@ -1174,8 +1174,9 @@ radial axis together, or a focused edit such as
 
 Polar point marks support ordinary color, size, shape, opacity, filtering,
 selection, highlighting, theta/radius axes, and both Polar grid families.
-Polar lines and closed radar paths use the same position and guide system; arc
-marks remain outside this slice.
+Polar lines and closed radar paths use the same position and guide system; see
+the [polar line tutorial](./tutorials/polar-lines/). Pie, donut, rose and radial bar
+charts use arc marks; see the [polar arc tutorial](./tutorials/polar-arcs/).
 
 ## Related
 
@@ -2838,8 +2839,8 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/cars.json --output public/cars.json
 ```
 
-This complete point workflow matches the canonical program used for its image.
-The earlier snippets are alternatives for the matching point, bar, or line base.
+This complete point workflow draws the image above. The histogram and line
+sections below start from their own bar or line chart instead of this one.
 
 > **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
 
@@ -4248,7 +4249,7 @@ Edit the source to change linked positions. `editOverlay({ target: "trend", foll
 freezes the current geometry as an independent normalized plot snapshot; further source edits
 no longer move it. Independent axis scales require explicit axis selection when creating guides.
 
-The [runnable overlay example](https://ggaction.github.io/ggaction/examples/linked-overlay/) uses the same public program as
+The [runnable overlay example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/linked-overlay/) uses the same public program as
 the primitive-equivalence and rendering tests.
 
 ## Pair a resource view with an analytical chart
@@ -17371,7 +17372,14 @@ followed by clipping and blending. Source identity, row selection and hit geomet
 automatic legend samples include the effect. Labels and annotations use the same Text option; Text shadows
 require embedded font preparation and actual glyph ink metrics.
 
-Canvas and SVG use an explicit prepared handle; PNG/PDF prepare it automatically with the native adapter.
+> **A chart with shadows needs a prepared handle in Canvas and SVG.** Plain
+> `render(program, context)` throws *Shadow graphics require
+> prepareShadowRendering before rendering*, and `renderToSVG(program)` throws
+> *Graphic "…" requires a prepared shadow glyph*, until you prepare the shadows
+> with `prepareShadowRendering` and pass the handle. `renderToPNG` and
+> `renderToPDF` prepare them for you. `ggaction/live` cannot draw shadows.
+> Images and embedded fonts follow the same rule.
+
 See [prepared shadows](./api/rendering/#prepared-shadows) for the complete output lifecycle and limits.
 
 ## Related
@@ -22620,6 +22628,29 @@ paths, dimension-local axes, color/stroke-dash legends, selection, filtering,
 faceting, and exact one-dimension field repetition. Temporal dimensions, curved
 paths, axis drag reordering, brushing, bundling, outer shared Parallel axes,
 and automatic cross-composition scale sharing are not implemented.
+
+### Maps, hierarchies, graphs, and other newer families
+
+- **Maps.** A Geo mark draws at most 10,000 projected points and 30,000 path
+ commands unless you raise its `capacity`; a whole-world outline needs more.
+ Projection pixels are Canvas pixels, so fit the projection to the whole
+ Canvas. See [common map pitfalls](./api/geometry/#common-map-pitfalls).
+- **Trees and treemaps.** Positions come from the stored layout, so encoding
+ and legend actions such as `encodeColor` reject these layers. Color nodes
+ with typed `overrides` and compose a separate mark for a legend.
+- **Graphs.** Layout coordinates are not scaled to the plot; `origin: "auto"`
+ only centers them, so tune `linkDistance` or the layout radius to the Canvas.
+ Graph facet and repeat composition are not supported. A plot draws at most
+ 10,000 graphics unless `maxItems` raises it to 100,000.
+- **Edge bundling.** Density bundling and force-directed bundling of very large
+ graphs exceed their time targets; see
+ [performance known limits](./performance/#known-limits).
+- **Calendars and density contours.** Each accepts at most 10,000 source rows.
+ Filter a calendar's data to its `start`–`end` range first; out-of-range dates
+ are rejected.
+- **Live charts.** `ggaction/live` cannot draw images, embedded fonts, or
+ shadows. Use an [interaction session](./api/interaction/) and render with
+ prepared resources instead.
 
 ### Individual display text
 
@@ -57561,8 +57592,7 @@ Restore an omitted time key, impute its measure, and recompute a trailing window
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.15 or later;
-check the [documentation version](./version/) for release compatibility.
+includes its data and imports.
 
 Decision sequence: line chart → data transform actions → mark rebind.
 
@@ -57627,8 +57657,7 @@ Compare three different summaries of the same weighted observations without trea
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.15 or later;
-check the [documentation version](./version/) for release compatibility.
+includes its data and imports.
 
 Decision sequence: histogram, density, and ECDF facades → weighted transforms.
 
@@ -57685,8 +57714,7 @@ Switch two supported channels between field encodings and constants as one valid
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.15 or later;
-check the [documentation version](./version/) for release compatibility.
+includes its data and imports.
 
 Decision sequence: `createScatterPlot` creates the initial chart; the Advanced
 `encodeChannels` action batches subsequent channel changes.
@@ -57748,8 +57776,7 @@ Change an existing positional mapping and keep its visible ticks aligned with th
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.15 or later;
-check the [documentation version](./version/) for release compatibility.
+includes its data and imports.
 
 Decision sequence: scatterplot → scale editors and axis editors.
 
@@ -57800,8 +57827,7 @@ Label only the largest final aggregates, place labels outside bar ends, and appl
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.15 or later;
-check the [documentation version](./version/) for release compatibility.
+includes its data and imports.
 
 Decision sequence: bar facade → final-item selection and placement → collision policy.
 
@@ -57860,8 +57886,7 @@ Apply reusable defaults, preserve an intentional local override, and remove the 
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.15 or later;
-check the [documentation version](./version/) for release compatibility.
+includes its data and imports.
 
 Decision sequence: scatterplot → theme and mark-style editing.
 
@@ -57929,8 +57954,7 @@ Replace a facet's retained source program, rename its headers, and arrange outer
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.15 or later;
-check the [documentation version](./version/) for release compatibility.
+includes its data and imports.
 
 Decision sequence: faceting → source replay → header and guide policies.
 
@@ -57991,8 +58015,7 @@ Use the ownership error to identify a live consumer, then delete the consumer an
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.15 or later;
-check the [documentation version](./version/) for release compatibility.
+includes its data and imports.
 
 Decision sequence: Complete chart → independent mark removal → explicit data lifecycle.
 

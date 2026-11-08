@@ -128,8 +128,9 @@ radial axis together, or a focused edit such as
 
 Polar point marks support ordinary color, size, shape, opacity, filtering,
 selection, highlighting, theta/radius axes, and both Polar grid families.
-Polar lines and closed radar paths use the same position and guide system; arc
-marks remain outside this slice.
+Polar lines and closed radar paths use the same position and guide system; see
+the [polar line tutorial](polar-lines.md). Pie, donut, rose and radial bar
+charts use arc marks; see the [polar arc tutorial](polar-arcs.md).
 
 ## Related
 

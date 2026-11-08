@@ -6,8 +6,7 @@ Switch two supported channels between field encodings and constants as one valid
 
 Use the [Getting Started browser module setup](../../../getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.15 or later;
-check the [documentation version](../../../version/) for release compatibility.
+includes its data and imports.
 
 Decision sequence: `createScatterPlot` creates the initial chart; the Advanced
 `encodeChannels` action batches subsequent channel changes.
