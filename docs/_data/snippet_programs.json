@@ -28,11 +28,11 @@
   },
   "recipes/annotations.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "films",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve imdb_selected.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "imdb_selected"
   },
   "recipes/apply-custom-theme.md": {
     "mode": "complete",
@@ -47,19 +47,19 @@
   },
   "recipes/bar-chart.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
   },
   "recipes/box-plot.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
   },
   "recipes/bullet.md": {
     "mode": "complete",
@@ -103,19 +103,19 @@
   },
   "recipes/composition.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "composition",
+    "environment": "browser-module",
     "result": "dashboard",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
   },
   "recipes/density-area.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
   },
   "recipes/edit-facet-source.md": {
     "mode": "complete",
@@ -152,59 +152,59 @@
   },
   "recipes/error-band.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "intervals",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "gapminder"
   },
   "recipes/error-bar.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
   },
   "recipes/facet.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "cars",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
   },
   "recipes/gradient-plot.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "cars",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
   },
   "recipes/heatmap.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "cells",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "gapminder"
   },
   "recipes/histogram.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
   },
   "recipes/horizon.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "horizon",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "gapminder"
   },
   "recipes/inspect-chart.md": {
     "mode": "complete",
@@ -219,11 +219,11 @@
   },
   "recipes/line-chart.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
   },
   "recipes/marginal.md": {
     "mode": "complete",
@@ -242,27 +242,27 @@
   },
   "recipes/parallel-coordinates.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "cars",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
   },
   "recipes/path-ordering.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "observations",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "gapminder"
   },
   "recipes/regression-scatterplot.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "cars",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
   },
   "recipes/remove-dependent-resources.md": {
     "mode": "complete",
@@ -288,19 +288,19 @@
   },
   "recipes/rose-chart.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "rose",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve nightingale_rose.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "nightingale_rose"
   },
   "recipes/scatterplot.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
   },
   "recipes/switch-encoding-modes.md": {
     "mode": "complete",
@@ -315,11 +315,11 @@
   },
   "recipes/violin-plot.md": {
     "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
+    "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
   },
   "tutorials/area-layout.md": {
     "mode": "complete",

@@ -3596,15 +3596,26 @@ offline output.
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car =>
+  Number.isFinite(car.Horsepower) && Number.isFinite(car.Miles_per_Gallon));
 
 const program = chart()
-  .createCanvas()
+  .createCanvas({ margin: { right: 140 } })
   .createData({ values })
-  .createScatterPlot({ x: "x", y: "y" });
+  .createScatterPlot({
+    x: "Horsepower",
+    y: "Miles_per_Gallon",
+    color: "Origin",
+    guides: { legend: {} }
+  });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide
@@ -3612,8 +3623,8 @@ const program = chart()
 - Dataset values
 - Quantitative x and y fields
 
-Add `color: "group"`, `size: "amount"`, or `shape: "category"` to the same
-call for field-driven appearance. The default point radius is `3`.
+Add `color`, `size`, or `shape` fields to the same call for field-driven
+appearance. The default point radius is `3`.
 
 ## The library infers
 
@@ -3623,8 +3634,9 @@ call for field-driven appearance. The default point radius is `3`.
 - The `main` Cartesian coordinate
 - Plot-bound ranges, axes, and horizontal grid
 
-Point color, shape, and size legends are created when those encodings are
-present. Multiple compatible marks or scales require explicit `target` or
+A legend is created automatically for matching `color` and `shape` fields or
+for a `size` field. For `color` alone, request it with `guides: { legend: {} }`,
+as above. Multiple compatible marks or scales require explicit `target` or
 scale IDs.
 
 ## Continue
@@ -3640,18 +3652,25 @@ scale IDs.
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car =>
+  Number.isFinite(car.Acceleration));
 
 const program = chart()
   .createCanvas({ margin: { right: 140 } })
   .createData({ values })
   .createLinePlot({
-    x: { field: "date", fieldType: "temporal" },
-    y: { field: "value", aggregate: "mean" }
+    x: { field: "Year", fieldType: "temporal" },
+    y: { field: "Acceleration", aggregate: "mean" },
+    color: "Origin"
   });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide
@@ -3720,15 +3739,21 @@ The accepted curve vocabulary is `linear`, `step`, `step-before`, `step-after`,
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car =>
+  Number.isFinite(car.Displacement));
 
 const program = chart()
   .createCanvas({ margin: { right: 140 } })
   .createData({ values })
-  .createHistogram({ field: "value" });
+  .createHistogram({ field: "Displacement" });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide
@@ -3765,25 +3790,33 @@ the public tutorial.
 
 # Bar Chart Recipe
 
-The current complete bar-chart example uses grouped bars. Grouping is a layout
-choice inside the bar chart, not a separate top-level chart type.
+This recipe draws average fuel economy for each cylinder count, with one bar
+per region of origin. Grouping is a layout choice inside the bar chart, not a
+separate chart type: remove `color` for one bar per category, or use
+`layout: "stack"` to stack the regions.
 
 ## Minimal grouped flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car =>
+  Number.isFinite(car.Miles_per_Gallon) && [4, 6, 8].includes(car.Cylinders));
 
 const program = chart()
   .createCanvas({ margin: { right: 140 } })
   .createData({ values })
   .createBarPlot({
-    x: { field: "category", fieldType: "ordinal" },
-    y: { field: "value", aggregate: "mean" },
-    color: { field: "group", layout: "group" },
+    x: { field: "Cylinders", fieldType: "ordinal", scale: { domain: [4, 6, 8] } },
+    y: { field: "Miles_per_Gallon", aggregate: "mean" },
+    color: { field: "Origin", layout: "group" },
     width: { band: 0.72 }
   });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide
@@ -3824,23 +3857,29 @@ quantitative measure on x and the ordinal category on y.
 
 ## Pre-gridded flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const gapminder = await fetch("/gapminder.json").then(response => response.json());
+const countries = ["Afghanistan", "Brazil", "China", "India", "Japan", "United States"];
+const values = gapminder.filter(row => countries.includes(row.country));
 
 const program = chart()
-  .createCanvas({ margin: { right: 120 } })
-  .createData({ values: cells })
+  .createCanvas({ margin: { right: 120, left: 110 } })
+  .createData({ values })
   .createHeatmap({
-    x: { field: "column", fieldType: "ordinal" },
-    y: { field: "row", fieldType: "nominal" },
+    x: { field: "year", fieldType: "ordinal" },
+    y: { field: "country", fieldType: "nominal" },
     color: {
-      field: "value",
+      field: "life_expect",
       fieldType: "quantitative",
       scale: { type: "sequential", palette: "viridis" }
     }
   });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## Raw-row binned flow
@@ -3909,10 +3948,14 @@ bands over a point chart.
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car => ["Horsepower", "Miles_per_Gallon", "Weight_in_lbs", "Acceleration", "Displacement", "Cylinders"]
+  .every(field => Number.isFinite(car[field])));
 
 const program = chart()
   .createCanvas({
@@ -3920,7 +3963,7 @@ const program = chart()
     height: 480,
     margin: { top: 40, right: 190, bottom: 70, left: 80 }
   })
-  .createData({ values: cars })
+  .createData({ values })
   .createPointMark()
   .encodeX({ field: "Displacement", scale: { nice: true, zero: false } })
   .encodeY({ field: "Acceleration", scale: { nice: true, zero: false } })
@@ -3935,6 +3978,8 @@ const program = chart()
   })
   .createRegression()
   .createGuides();
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide
@@ -3965,18 +4010,24 @@ Pass `target`, `x`, `y`, or `groupBy` only when inference is ambiguous.
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car =>
+  Number.isFinite(car.Acceleration));
 
 const program = chart()
   .createCanvas({ margin: { top: 100, right: 140 } })
   .createData({ values })
-  .createAreaMark()
-  .encodeDensity({ field: "value", groupBy: "group" })
-  .encodeColor({ field: "group" })
+  .createAreaMark({ opacity: 0.6 })
+  .encodeDensity({ field: "Acceleration", groupBy: "Origin" })
+  .encodeColor({ field: "Origin" })
   .createGuides();
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide
@@ -4011,17 +4062,22 @@ options only when that composition is intentional.
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const gapminder = await fetch("/gapminder.json").then(response => response.json());
+const values = gapminder.filter(row => row.country === "Kenya");
 
 const program = chart()
   .createCanvas({ margin: { top: 60, right: 60, bottom: 90, left: 60 } })
   .createData({ values })
   .createAreaMark({ curve: "monotone" })
-  .encodeHorizon({ x: "time", y: "value" })
+  .encodeHorizon({ x: "year", y: "life_expect" })
   .createGuides();
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide
@@ -4057,19 +4113,25 @@ comparison is intentional.
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car =>
+  Number.isFinite(car.Acceleration));
 
 const program = chart()
   .createCanvas()
   .createData({ values })
   .createErrorBar({
-    x: { field: "group", fieldType: "nominal" },
-    y: { field: "value" }
+    x: { field: "Origin", fieldType: "nominal" },
+    y: { field: "Acceleration" }
   })
   .createGuides();
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide
@@ -4099,21 +4161,26 @@ options to reuse its fields, data, coordinate, and scales.
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const gapminder = await fetch("/gapminder.json").then(response => response.json());
+const values = gapminder.map(row => ({ ...row, cluster: `Cluster ${row.cluster}` }));
 
 const program = chart()
   .createCanvas({ margin: { top: 60, right: 180, bottom: 80, left: 70 } })
   .createData({ values })
   .createErrorBand({
-    x: { field: "time", fieldType: "temporal" },
-    y: { field: "value" },
-    groupBy: "series"
+    x: { field: "year" },
+    y: { field: "life_expect" },
+    groupBy: "cluster"
   })
-  .encodeColor({ target: "errorBand", field: "series" })
+  .encodeColor({ target: "errorBand", field: "cluster" })
   .createGuides();
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide
@@ -4151,19 +4218,25 @@ axis is unambiguous.
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car =>
+  Number.isFinite(car.Miles_per_Gallon));
 
 const program = chart()
   .createCanvas()
   .createData({ values })
   .createBoxPlot({
-    x: { field: "category", fieldType: "nominal" },
-    y: { field: "value" },
+    x: { field: "Origin", fieldType: "nominal" },
+    y: { field: "Miles_per_Gallon" },
     guides: { legend: false }
   });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide
@@ -4196,18 +4269,21 @@ component appearance through the stable box-plot owner.
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car =>
+  Number.isFinite(car.Acceleration));
 
 const program = chart()
   .createCanvas()
   .createData({ values })
-  .createViolinPlot({
-    x: "category",
-    y: "value"
-  });
+  .createViolinPlot({ x: "Origin", y: "Acceleration" });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide
@@ -4240,20 +4316,23 @@ side assignment must be stable independently of source order.
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 ```javascript
-import { chart, hconcat } from "ggaction";
+import { chart, hconcat, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car => Number.isFinite(car.Horsepower) && Number.isFinite(car.Miles_per_Gallon));
 
 const points = chart()
-  .createCanvas({ width: 280, height: 220 })
-  .createData({ values: pointRows })
-  .createScatterPlot({ x: "x", y: "y" });
+  .createCanvas({ width: 320, height: 240 })
+  .createData({ values })
+  .createScatterPlot({ x: "Horsepower", y: "Miles_per_Gallon" });
 
 const bars = chart()
-  .createCanvas({ width: 260, height: 220 })
-  .createData({ values: barRows })
-  .createBarPlot({ x: "category", y: "value" });
+  .createCanvas({ width: 280, height: 240 })
+  .createData({ values })
+  .createBarPlot({ x: "Origin", y: { field: "Miles_per_Gallon", aggregate: "mean" } });
 
 const dashboard = hconcat({
   programs: [
@@ -4262,6 +4341,8 @@ const dashboard = hconcat({
   ],
   gap: 20
 });
+
+render(dashboard, document.querySelector("#chart").getContext("2d"));
 ```
 
 `pointRows` and `barRows` are arrays of plain row objects containing the named
@@ -4360,14 +4441,18 @@ earlier composition.
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car => ["Horsepower", "Miles_per_Gallon", "Weight_in_lbs", "Acceleration", "Displacement", "Cylinders"]
+  .every(field => Number.isFinite(car[field])));
 
 const program = chart()
   .createCanvas({ width: 250, height: 230 })
-  .createData({ values: cars })
+  .createData({ values })
   .createScatterPlot({
     x: "Horsepower",
     y: "Miles_per_Gallon",
@@ -4378,6 +4463,8 @@ const program = chart()
     columns: 3,
     guides: { legend: "shared" }
   });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 `cars` is an array of plain row objects containing the encoded fields and
@@ -4409,14 +4496,18 @@ Use `editFacetHeaders` for repeated header appearance and
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car => ["Horsepower", "Miles_per_Gallon", "Weight_in_lbs", "Acceleration", "Displacement", "Cylinders"]
+  .every(field => Number.isFinite(car[field])));
 
 const program = chart()
   .createCanvas({ margin: { top: 80, right: 140, bottom: 60, left: 70 } })
-  .createData({ values: cars })
+  .createData({ values })
   .createParallelCoordinates({
     dimensions: [
       "Miles_per_Gallon",
@@ -4426,6 +4517,8 @@ const program = chart()
     ],
     color: "Origin"
   });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 `cars` is an array of plain row objects. Every eligible row becomes one open
@@ -4457,10 +4550,12 @@ The overlay layout draws larger sectors first so smaller sectors remain visible.
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve nightingale_rose.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const nightingaleRows = await fetch("/nightingale_rose.json").then(response => response.json());
 
 const monthOrder = [
   "April", "May", "June", "July", "August", "September",
@@ -4501,6 +4596,8 @@ const program = chart()
     grid: { theta: false, radial: { values: [2, 4, 6] } },
     legend: { position: "right", title: "Cause" }
   });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 `nightingaleRows` is an array with `month`, `cause`, and finite numeric `value`
@@ -4533,19 +4630,25 @@ properties. Each month/cause pair should appear at most once.
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car => ["Horsepower", "Miles_per_Gallon", "Weight_in_lbs", "Acceleration", "Displacement", "Cylinders"]
+  .every(field => Number.isFinite(car[field])));
 
 const program = chart()
   .createCanvas({ margin: { top: 70, right: 150, bottom: 70, left: 70 } })
-  .createData({ values: cars })
+  .createData({ values })
   .createGradientPlot({
     x: { field: "Origin", fieldType: "nominal" },
     y: { field: "Acceleration", fieldType: "quantitative" }
   })
   .encodeColor({ field: "Origin" });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 `cars` contains plain rows with non-empty categorical `Origin` and finite
@@ -4579,14 +4682,17 @@ or center statistic without rebuilding the program manually.
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve imdb_selected.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const films = await fetch("/imdb_selected.json").then(response => response.json());
+const values = films.map(film => ({ ...film, Released_Year: Number(film.Released_Year) }));
 
 const program = chart()
   .createCanvas()
-  .createData({ values: films })
+  .createData({ values })
   .createScatterPlot({ x: "Released_Year", y: "IMDB_Rating" })
   .createTextMark({ dx: 7, dy: -6, align: "left", baseline: "bottom" })
   .encodeText({ field: "Series_Title" })
@@ -4595,6 +4701,8 @@ const program = chart()
     maxDisplacement: 48,
     leader: { stroke: "#94a3b8", opacity: 0.8 }
   });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 `films` is an array of plain row objects containing the two position fields and
@@ -4632,20 +4740,25 @@ For host-measured text widths, see [Measured text layout](./api/rendering/#measu
 
 ## Minimal flow
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const gapminder = await fetch("/gapminder.json").then(response => response.json());
+const values = gapminder.filter(row => ["China", "South Africa", "United States"].includes(row.country));
 
 const program = chart()
   .createCanvas({ margin: { top: 60, right: 180, bottom: 70, left: 70 } })
-  .createData({ values: observations })
+  .createData({ values })
   .createLineMark()
   .encodeX({ field: "fertility" })
   .encodeY({ field: "life_expect" })
   .encodeColor({ field: "country" })
   .encodePathOrder({ field: "year", order: "ascending" })
   .createGuides();
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 `observations` is an array of plain row objects. Source rows may be shuffled;

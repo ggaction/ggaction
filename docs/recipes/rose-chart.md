@@ -16,12 +16,14 @@ The overlay layout draws larger sectors first so smaller sectors remain visible.
 
 <!-- snippet-context:start -->
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve nightingale_rose.json from the site root.
 
 <!-- snippet-context:end -->
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const nightingaleRows = await fetch("/nightingale_rose.json").then(response => response.json());
 
 const monthOrder = [
   "April", "May", "June", "July", "August", "September",
@@ -62,6 +64,8 @@ const program = chart()
     grid: { theta: false, radial: { values: [2, 4, 6] } },
     legend: { position: "right", title: "Cause" }
   });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 `nightingaleRows` is an array with `month`, `cause`, and finite numeric `value`

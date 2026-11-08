@@ -18,6 +18,8 @@
   featured: true
   gallery_featured: true
   tutorial_order: 30
+  recipe_url: /recipes/bar-chart/
+  recipe_order: 40
 - id: gapminder-bubbles
   example: /examples/gapminder-bubbles/
   title: Animated bubble chart
@@ -641,10 +643,8 @@
   actions: createBarPlot
   tasks: comparison
   url: /tutorials/grouped-bar/
-  recipe_url: /recipes/bar-chart/
   home_group: essentials
   home_order: 70
-  recipe_order: 40
   gallery_featured: true
 - id: ordered-category-bar
   example: /examples/ordered-category-bar/

@@ -13,17 +13,28 @@ title: Scatterplot Recipe
 
 <!-- snippet-context:start -->
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 <!-- snippet-context:end -->
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car =>
+  Number.isFinite(car.Horsepower) && Number.isFinite(car.Miles_per_Gallon));
 
 const program = chart()
-  .createCanvas()
+  .createCanvas({ margin: { right: 140 } })
   .createData({ values })
-  .createScatterPlot({ x: "x", y: "y" });
+  .createScatterPlot({
+    x: "Horsepower",
+    y: "Miles_per_Gallon",
+    color: "Origin",
+    guides: { legend: {} }
+  });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide
@@ -31,8 +42,8 @@ const program = chart()
 - Dataset values
 - Quantitative x and y fields
 
-Add `color: "group"`, `size: "amount"`, or `shape: "category"` to the same
-call for field-driven appearance. The default point radius is `3`.
+Add `color`, `size`, or `shape` fields to the same call for field-driven
+appearance. The default point radius is `3`.
 
 ## The library infers
 
@@ -42,8 +53,9 @@ call for field-driven appearance. The default point radius is `3`.
 - The `main` Cartesian coordinate
 - Plot-bound ranges, axes, and horizontal grid
 
-Point color, shape, and size legends are created when those encodings are
-present. Multiple compatible marks or scales require explicit `target` or
+A legend is created automatically for matching `color` and `shape` fields or
+for a `size` field. For `color` alone, request it with `guides: { legend: {} }`,
+as above. Multiple compatible marks or scales require explicit `target` or
 scale IDs.
 
 ## Continue

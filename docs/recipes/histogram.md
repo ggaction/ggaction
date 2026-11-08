@@ -13,17 +13,23 @@ title: Histogram Recipe
 
 <!-- snippet-context:start -->
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
 
 <!-- snippet-context:end -->
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car =>
+  Number.isFinite(car.Displacement));
 
 const program = chart()
   .createCanvas({ margin: { right: 140 } })
   .createData({ values })
-  .createHistogram({ field: "value" });
+  .createHistogram({ field: "Displacement" });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide

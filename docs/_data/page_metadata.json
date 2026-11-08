@@ -173,35 +173,35 @@
     "title": "Scatterplot Recipe",
     "source": "docs/recipes/scatterplot.md",
     "editSource": "docs/recipes/scatterplot.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/recipes/line-chart/": {
     "title": "Line Chart Recipe",
     "source": "docs/recipes/line-chart.md",
     "editSource": "docs/recipes/line-chart.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/recipes/histogram/": {
     "title": "Histogram Recipe",
     "source": "docs/recipes/histogram.md",
     "editSource": "docs/recipes/histogram.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-histogram.png"
   },
   "/recipes/bar-chart/": {
     "title": "Bar Chart Recipe",
     "source": "docs/recipes/bar-chart.md",
     "editSource": "docs/recipes/bar-chart.md",
-    "description": "The current complete bar chart example uses grouped bars. Grouping is a layout choice inside the bar chart, not a separate top level chart type.",
-    "image": "/assets/images/jobs-grouped-bar.png"
+    "description": "This recipe draws average fuel economy for each cylinder count, with one bar per region of origin.",
+    "image": "/assets/images/cars-mpg-bars.png"
   },
   "/recipes/heatmap/": {
     "title": "Heatmap Recipe",
     "source": "docs/recipes/heatmap.md",
     "editSource": "docs/recipes/heatmap.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
     "image": "/assets/images/gapminder-life-expectancy-heatmap.png"
   },
   "/recipes/regression-scatterplot/": {
@@ -215,63 +215,63 @@
     "title": "Density Area Recipe",
     "source": "docs/recipes/density-area.md",
     "editSource": "docs/recipes/density-area.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-density-area.png"
   },
   "/recipes/horizon/": {
     "title": "Horizon Chart Recipe",
     "source": "docs/recipes/horizon.md",
     "editSource": "docs/recipes/horizon.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
     "image": "/assets/images/gapminder-horizon.png"
   },
   "/recipes/error-bar/": {
     "title": "Error Bar Recipe",
     "source": "docs/recipes/error-bar.md",
     "editSource": "docs/recipes/error-bar.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-error-bar.png"
   },
   "/recipes/error-band/": {
     "title": "Error Band Recipe",
     "source": "docs/recipes/error-band.md",
     "editSource": "docs/recipes/error-band.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
     "image": "/assets/images/gapminder-error-band.png"
   },
   "/recipes/box-plot/": {
     "title": "Box Plot Recipe",
     "source": "docs/recipes/box-plot.md",
     "editSource": "docs/recipes/box-plot.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-box-plot.png"
   },
   "/recipes/violin-plot/": {
     "title": "Violin Plot Recipe",
     "source": "docs/recipes/violin-plot.md",
     "editSource": "docs/recipes/violin-plot.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-acceleration-violins.png"
   },
   "/recipes/composition/": {
     "title": "Composition Recipe",
     "source": "docs/recipes/composition.md",
     "editSource": "docs/recipes/composition.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/program-composition.png"
   },
   "/recipes/facet/": {
     "title": "Facet Recipe",
     "source": "docs/recipes/facet.md",
     "editSource": "docs/recipes/facet.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-origin-scatterplot-facet.png"
   },
   "/recipes/parallel-coordinates/": {
     "title": "Parallel Coordinates Recipe",
     "source": "docs/recipes/parallel-coordinates.md",
     "editSource": "docs/recipes/parallel-coordinates.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-parallel-coordinates.png"
   },
   "/recipes/rose-chart/": {
@@ -285,21 +285,21 @@
     "title": "Gradient Plot Recipe",
     "source": "docs/recipes/gradient-plot.md",
     "editSource": "docs/recipes/gradient-plot.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-gradient-plot.png"
   },
   "/recipes/annotations/": {
     "title": "Annotation Recipe",
     "source": "docs/recipes/annotations.md",
     "editSource": "docs/recipes/annotations.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve imdb selected.json from the site root.",
     "image": "/assets/images/annotated-imdb-scatterplot.png"
   },
   "/recipes/path-ordering/": {
     "title": "Path Ordering Recipe",
     "source": "docs/recipes/path-ordering.md",
     "editSource": "docs/recipes/path-ordering.md",
-    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
     "image": "/assets/images/gapminder-development-trajectories.png"
   },
   "/troubleshooting/": {

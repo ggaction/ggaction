@@ -13,16 +13,19 @@ title: Annotation Recipe
 
 <!-- snippet-context:start -->
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve imdb_selected.json from the site root.
 
 <!-- snippet-context:end -->
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const films = await fetch("/imdb_selected.json").then(response => response.json());
+const values = films.map(film => ({ ...film, Released_Year: Number(film.Released_Year) }));
 
 const program = chart()
   .createCanvas()
-  .createData({ values: films })
+  .createData({ values })
   .createScatterPlot({ x: "Released_Year", y: "IMDB_Rating" })
   .createTextMark({ dx: 7, dy: -6, align: "left", baseline: "bottom" })
   .encodeText({ field: "Series_Title" })
@@ -31,6 +34,8 @@ const program = chart()
     maxDisplacement: 48,
     leader: { stroke: "#94a3b8", opacity: 0.8 }
   });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 `films` is an array of plain row objects containing the two position fields and

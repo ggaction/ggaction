@@ -13,19 +13,24 @@ title: Horizon Chart Recipe
 
 <!-- snippet-context:start -->
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.
 
 <!-- snippet-context:end -->
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const gapminder = await fetch("/gapminder.json").then(response => response.json());
+const values = gapminder.filter(row => row.country === "Kenya");
 
 const program = chart()
   .createCanvas({ margin: { top: 60, right: 60, bottom: 90, left: 60 } })
   .createData({ values })
   .createAreaMark({ curve: "monotone" })
-  .encodeHorizon({ x: "time", y: "value" })
+  .encodeHorizon({ x: "year", y: "life_expect" })
   .createGuides();
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide

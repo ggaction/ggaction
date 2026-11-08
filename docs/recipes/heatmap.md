@@ -13,25 +13,31 @@ title: Heatmap Recipe
 
 <!-- snippet-context:start -->
 
-> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.
 
 <!-- snippet-context:end -->
 
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const gapminder = await fetch("/gapminder.json").then(response => response.json());
+const countries = ["Afghanistan", "Brazil", "China", "India", "Japan", "United States"];
+const values = gapminder.filter(row => countries.includes(row.country));
 
 const program = chart()
-  .createCanvas({ margin: { right: 120 } })
-  .createData({ values: cells })
+  .createCanvas({ margin: { right: 120, left: 110 } })
+  .createData({ values })
   .createHeatmap({
-    x: { field: "column", fieldType: "ordinal" },
-    y: { field: "row", fieldType: "nominal" },
+    x: { field: "year", fieldType: "ordinal" },
+    y: { field: "country", fieldType: "nominal" },
     color: {
-      field: "value",
+      field: "life_expect",
       fieldType: "quantitative",
       scale: { type: "sequential", palette: "viridis" }
     }
   });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## Raw-row binned flow

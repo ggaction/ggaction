@@ -6779,11 +6779,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "ce818623ccbaaa0fa580cbc4fa12c8937874b49d3e49323d9b7c679fec0286d1",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve imdb_selected.json from the site root.",
+    "sha256": "b73c0301579ce64984116f49d43c10d7bf4d35eeb4ec039061af54edb28adc48",
     "executable": true
   },
   {
@@ -6791,11 +6791,11 @@
     "block": 1,
     "heading": "Minimal grouped flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "30fe88cfcf1b7e166d4be95a9b5073ea71a3d6ce4739b73142a35bbc1111894e",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "sha256": "89f3c77acf9e23859d6215c03b39a6c11f7a60316181bfaba9402b192256f5bc",
     "executable": true
   },
   {
@@ -6803,11 +6803,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "3a6a7151f81b296240fa45d87f3ae859bf4f37c3d19508329a6ad15e594cf9df",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "sha256": "d06340b8d74d7cf6d096c6cff2ceb3c2e7e0f6512d94077998a83a90e7e3ca80",
     "executable": true
   },
   {
@@ -6839,11 +6839,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "cb3c423c571f15191275752eef12611e5ee5ec4d32de48f7335d46554b634077",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "sha256": "7fcb9bcbda9b41fc388faec02b09a9790d7f48b07ee9b83c01d2db29fc680dcf",
     "executable": true
   },
   {
@@ -6863,11 +6863,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "c5c33c6016aa381e51a067e214c91b359c29d6a0674d5186b5cf7ca64bc7ea42",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "sha256": "8e34bb9fcfb0c2b4e2977eb620b734fe17c4f44c555e7e8cf45276b531e77d45",
     "executable": true
   },
   {
@@ -6875,13 +6875,13 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [
       "target: \"errorBand\""
     ],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "5a0799f16223ef516803cfca666e6dc88630a8f6dbe1d008dce14c9179a4c35b",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
+    "sha256": "cb80733e62a42b666ce811943d1cdbf12b82e47ba3e83070571f6ca4e82098ad",
     "executable": true
   },
   {
@@ -6889,11 +6889,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "f1dc56716a6b2eca9f51c8b519c2fefe80de25c5c782a3f9cb438e2d6cde362a",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "sha256": "84940236f50fb4bd792b07f80b86f2b0afa11f625748d4595ff94d9b40222ca2",
     "executable": true
   },
   {
@@ -6901,11 +6901,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "ce282608a312de16e5c5ce9753196bca7f2b21e769df6561f8b3fec52accb521",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "sha256": "f5c519007b3e41ec62696e6af1ebc3521e061c8a6966979521e1ec0225f40ce2",
     "executable": true
   },
   {
@@ -6913,11 +6913,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "bab424d706990c8f4d14f1f42cf7e044a41103c1515f797bc19ad100b604828d",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "sha256": "8f5b9460b33a8313226bbb7bd89961c98e642bfe00a7c2cad50fb9986a6ec8f9",
     "executable": true
   },
   {
@@ -6925,11 +6925,11 @@
     "block": 1,
     "heading": "Pre-gridded flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "3890522a709f614cdea790f1a601bafde16f7f62fed3fed1897597e1df38ee51",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
+    "sha256": "047e4cadbd40a1bb7aad39bb558664b2c8bfdb935a9f0b988a40ea51a96558b0",
     "executable": true
   },
   {
@@ -6961,11 +6961,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "16793039f3b974dce5961d27726468a86bbb354f90eb89d3db93c9391b0de438",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "sha256": "41bf922ea145d680ed4f1a535666890f10197578f82ca899fe395faf01fba488",
     "executable": true
   },
   {
@@ -6973,11 +6973,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "3f137dd064dfc24f5f608ba5d8088e46be146ff37ae37dec0c1e6ac7fb2cd540",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
+    "sha256": "f3bd26dd4dbf21ed5249135916d3b1b525310de1cfbbda2d8a76402988d28ca9",
     "executable": true
   },
   {
@@ -6997,11 +6997,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "f948f315dd8c409359ba9a55a1f04dac4892544ae11937ecb1edcccf56865aeb",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "sha256": "416aa1e8075360884c20bd584bf00fbd3c7231ced64d79602a6786cc56ffd054",
     "executable": true
   },
   {
@@ -7047,11 +7047,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "220d3636a6a0dd32880ab9ae7769c967b507c2751b6edca2af7f26786bf96ee1",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "sha256": "16dd405bcaa7ab6ae5a1af3d4ccb0db05dd9ac81484f54bfd3b26b427a514187",
     "executable": true
   },
   {
@@ -7059,11 +7059,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "8f7d9d707147050c2b307549e44b37a3df2da0eb493b408b9f2cedc3deca756c",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
+    "sha256": "5822295bb78d32ca0f29d713b32adfd84683ebd40a7edc151d7d97ab62a0fbcc",
     "executable": true
   },
   {
@@ -7071,11 +7071,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "b0e1a53d4e8a812eaa6715c974318235ea99563f8ecf1ab1def60fad8e817085",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "sha256": "0817cc6ef81bee8dcaee5ffbe05185ebc204968f4792e6f8f8356fde5ba42f53",
     "executable": true
   },
   {
@@ -7083,11 +7083,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "2f108ab82b1fcefd0e6f624763fe4f8a13b38aef83b4ceb589340b0f139e8ff1",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve nightingale_rose.json from the site root.",
+    "sha256": "735400e1f6e93cb3e34c57fc86ff7a4689f04f2ac424121c8b0679183ddf738c",
     "executable": true
   },
   {
@@ -7095,11 +7095,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "8fca2b5056ea046d41e1db9db14a9afa5c8605a2ce440404a61422324bebf874",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "sha256": "d41dd927967b88ee79058867369c53405e149f45aec10bc9f648995ff185f4fb",
     "executable": true
   },
   {
@@ -7107,11 +7107,11 @@
     "block": 1,
     "heading": "Minimal flow",
     "mode": "complete",
-    "environment": "node-esm",
+    "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "sha256": "3d7ecd7d48f19fb75443150e3462755f7bfd211b81f71605eb2e206163fb6612",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "sha256": "66c2b92e86ac290091d0b901bb87dbb4b43387aa58f4c9e59be184e58f2e7e58",
     "executable": true
   }
 ]
