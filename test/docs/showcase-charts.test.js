@@ -33,7 +33,7 @@ test("pins every showcase data file to its recorded source, license, and bytes",
   }
 });
 
-test("lists every showcase chart in the gallery and on exactly one owning page", () => {
+test("lists every showcase chart in the gallery and once on each owning page", () => {
   const catalog = new Map(readDocChartCatalog(read("docs/_data/chart_examples.yml").toString())
     .map(entry => [entry.id, entry]));
   assert.deepEqual(Object.keys(SHOWCASE_PAGES).sort(), SHOWCASE_CHARTS.map(chart => chart.id).sort());
@@ -43,8 +43,10 @@ test("lists every showcase chart in the gallery and on exactly one owning page",
     assert.notEqual(entry.figure_only, true, `${chart.id} stays in the gallery`);
     assert.equal(entry.example, `/examples/${chart.id}/`);
     assert.deepEqual([entry.width, entry.height], [chart.width * 2, chart.height * 2]);
-    const page = read(SHOWCASE_PAGES[chart.id]).toString();
-    assert.equal(page.split(`<!-- showcase-program:${chart.id}:start -->`).length, 2, chart.id);
+    for (const owner of [SHOWCASE_PAGES[chart.id]].flat()) {
+      const page = read(owner).toString();
+      assert.equal(page.split(`<!-- showcase-program:${chart.id}:start -->`).length, 2, `${chart.id} on ${owner}`);
+    }
   }
 });
 

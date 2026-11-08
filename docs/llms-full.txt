@@ -272,11 +272,11 @@ the one-tool workflow.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 <!-- Source: /mcp/ -->
@@ -700,15 +700,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/docs-overhaul/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -853,7 +853,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -1070,7 +1070,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/docs-overhaul/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1183,7 +1183,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/docs-overhaul/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1353,7 +1353,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/docs-overhaul/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1575,15 +1575,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/docs-overhaul/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1719,7 +1719,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1733,15 +1733,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/docs-overhaul/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1839,7 +1839,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1853,15 +1853,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/docs-overhaul/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1970,7 +1970,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1986,15 +1986,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/docs-overhaul/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2119,7 +2119,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -2188,7 +2188,7 @@ Wiggle moves the shared baseline to reduce thickness-weighted movement of the la
 It preserves every sample's thickness and series order. Each connected run begins at zero;
 an all-zero sample keeps the previous baseline. Numeric or temporal x positions must be aligned,
 with no custom path order. Use `missing:'break'` to break all layers together at a null measure.
-The [canonical rendered program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/streamgraph/program.js)
+The [canonical rendered program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/streamgraph/program.js)
 fixes a small two-series example, including a layer that ends at zero thickness.
 
 The wiggle value scale must support zero; logarithmic value scales are rejected.
@@ -2226,7 +2226,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -2236,15 +2236,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/docs-overhaul/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2369,7 +2369,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2402,7 +2402,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2413,8 +2413,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2510,15 +2510,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/docs-overhaul/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2615,15 +2615,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/docs-overhaul/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2729,8 +2729,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2739,7 +2739,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/docs-overhaul/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2930,77 +2930,6 @@ These three Full entry actions share one categorical endpoint model. Each starts
 from immutable rows and produces ordinary point and rule children, so existing
 mark, scale, label, guide, and renderer actions continue to work.
 
-```javascript
-import { chart, render } from "ggaction";
-
-const values = [
-  { category: "A", value: 4, before: 2, after: 5 },
-  { category: "B", value: -1, before: 3, after: -1 },
-  { category: "C", value: 2, before: 2, after: 2 }
-];
-const base = chart()
-  .createCanvas({ width: 480, height: 320, margin: 50 })
-  .createData({ id: "data", values });
-
-const dots = base.createDotPlot({
-  category: "category",
-  value: "value"
-});
-const lollipops = base.createLollipopPlot({
-  category: "category",
-  value: "value",
-  baseline: 0
-});
-const changes = base.createDumbbellPlot({
-  id: "dumbbell",
-  category: "category",
-  start: "before",
-  end: "after",
-  guides: false
-});
-
-render(changes, document.querySelector("#chart").getContext("2d"));
-```
-
-The rendered panel is the canonical guide-free dumbbell example. Use the browser
-module setup with `<canvas id="chart"></canvas>`. Add `labels: { endpoint: "both" }`
-and reserve guide space when those components are desired.
-
-Raw rows remain raw. When categories repeat, set `summary` to `mean`, `median`,
-`sum`, `min`, or `max` to request one derived row per category. Ggaction never
-chooses an aggregate from the data shape.
-
-Lollipop stems use the same quantitative scale as their value points. The
-baseline defaults to zero and may be any finite number. For a log scale, provide
-a positive baseline and positive values.
-
-Dumbbell `start` and `end` name semantic roles rather than the lower and higher
-number. A reversed or equal pair keeps the same endpoint appearance and label.
-Both endpoint fields share one quantitative scale; conflicting scale definitions
-are rejected before the caller program changes.
-
-Use `editEndpointPlot` when a source or semantic role changes:
-
-```javascript
-const withReplacement = changes.createData({
-  id: "replacement",
-  values: values.map(row => ({ ...row, after: row.after + 1 }))
-});
-const revised = withReplacement.editEndpointPlot({
-  data: "replacement",
-  start: "after",
-  end: "before",
-  orientation: "vertical",
-  summary: false
-});
-```
-
-The editor replaces every owned point, rule, label, and summary dataset in one
-immutable action while retaining the original appearance and guide policy.
-Axes removed after construction stay removed when roles change.
-Individual point, rule, label, scale, and guide actions remain the lower-level
-style editing path.
-
 ## Examples with real data
 
 `createLifeExpectancyDumbbell` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
@@ -3077,6 +3006,79 @@ export function createFertilityLollipop(gapminder) {
 }
 ```
 
+## A small worked example
+
+```javascript
+import { chart, render } from "ggaction";
+
+const values = [
+  { category: "A", value: 4, before: 2, after: 5 },
+  { category: "B", value: -1, before: 3, after: -1 },
+  { category: "C", value: 2, before: 2, after: 2 }
+];
+const base = chart()
+  .createCanvas({ width: 480, height: 320, margin: 50 })
+  .createData({ id: "data", values });
+
+const dots = base.createDotPlot({
+  category: "category",
+  value: "value"
+});
+const lollipops = base.createLollipopPlot({
+  category: "category",
+  value: "value",
+  baseline: 0
+});
+const changes = base.createDumbbellPlot({
+  id: "dumbbell",
+  category: "category",
+  start: "before",
+  end: "after",
+  guides: false
+});
+
+render(changes, document.querySelector("#chart").getContext("2d"));
+```
+
+The rendered panel is the canonical guide-free dumbbell example. Use the browser
+module setup with `<canvas id="chart"></canvas>`. Add `labels: { endpoint: "both" }`
+and reserve guide space when those components are desired.
+
+Raw rows remain raw. When categories repeat, set `summary` to `mean`, `median`,
+`sum`, `min`, or `max` to request one derived row per category. Ggaction never
+chooses an aggregate from the data shape.
+
+Lollipop stems use the same quantitative scale as their value points. The
+baseline defaults to zero and may be any finite number. For a log scale, provide
+a positive baseline and positive values.
+
+Dumbbell `start` and `end` name semantic roles rather than the lower and higher
+number. A reversed or equal pair keeps the same endpoint appearance and label.
+Both endpoint fields share one quantitative scale; conflicting scale definitions
+are rejected before the caller program changes.
+
+Use `editEndpointPlot` when a source or semantic role changes:
+
+```javascript
+const withReplacement = changes.createData({
+  id: "replacement",
+  values: values.map(row => ({ ...row, after: row.after + 1 }))
+});
+const revised = withReplacement.editEndpointPlot({
+  data: "replacement",
+  start: "after",
+  end: "before",
+  orientation: "vertical",
+  summary: false
+});
+```
+
+The editor replaces every owned point, rule, label, and summary dataset in one
+immutable action while retaining the original appearance and guide policy.
+Axes removed after construction stay removed when roles change.
+Individual point, rule, label, scale, and guide actions remain the lower-level
+style editing path.
+
 <!-- Source: /tutorials/ecdf/ -->
 
 # Empirical Cumulative Distribution Plots
@@ -3085,6 +3087,39 @@ An empirical cumulative distribution function answers: “What share of the
 observations is less than or equal to this value?” `createECDFPlot` owns that
 statistical definition and expresses the result with ordinary derived data,
 Line, encoding, label, scale, and guide actions.
+
+## Example with real data
+
+`createCarsMpgEcdf` builds this chart from real data. It receives the rows of `data/cars.json` (1970–1982 car models).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// Cumulative share of cars at or below each fuel economy, by region of origin.
+export function createCarsMpgEcdf(cars) {
+  const measured = cars.filter(car => Number.isFinite(car.Miles_per_Gallon));
+
+  return chart()
+    .createCanvas({ width: 900, height: 460, margin: { top: 80, right: 140, bottom: 60, left: 70 } })
+    .createData({ id: "cars", values: measured })
+    .createECDFPlot({
+      field: "Miles_per_Gallon",
+      groupBy: "Origin",
+      color: { field: "Origin", scale: { domain: ["USA", "Europe", "Japan"], range: ["#2563eb", "#f97316", "#dc2626"] } },
+      line: { strokeWidth: 2.5 },
+      guides: {
+        axes: { x: { title: { text: "Miles per gallon" } }, y: { title: { text: "Share of cars at or below" } } },
+        legend: { title: "Origin" },
+        grid: { horizontal: true, vertical: true }
+      }
+    })
+    .createTitle({
+      text: "Half of American cars got under 19 miles per gallon",
+      subtitle: "Empirical cumulative distribution of 398 cars, 1970–1982"
+    });
+}
+```
 
 ## Build a grouped weighted ECDF
 
@@ -3115,7 +3150,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -3196,39 +3231,6 @@ explicitly during another role edit. Line appearance, labels, scales, and guides
 their ordinary lower-level actions.
 Axes removed after construction stay removed when the statistical source changes.
 
-## Example with real data
-
-`createCarsMpgEcdf` builds this chart from real data. It receives the rows of `data/cars.json` (1970–1982 car models).
-Draw the returned program with `render` in a browser or `renderToPNG` in Node.
-
-```javascript
-import { chart } from "ggaction";
-
-// Cumulative share of cars at or below each fuel economy, by region of origin.
-export function createCarsMpgEcdf(cars) {
-  const measured = cars.filter(car => Number.isFinite(car.Miles_per_Gallon));
-
-  return chart()
-    .createCanvas({ width: 900, height: 460, margin: { top: 80, right: 140, bottom: 60, left: 70 } })
-    .createData({ id: "cars", values: measured })
-    .createECDFPlot({
-      field: "Miles_per_Gallon",
-      groupBy: "Origin",
-      color: { field: "Origin", scale: { domain: ["USA", "Europe", "Japan"], range: ["#2563eb", "#f97316", "#dc2626"] } },
-      line: { strokeWidth: 2.5 },
-      guides: {
-        axes: { x: { title: { text: "Miles per gallon" } }, y: { title: { text: "Share of cars at or below" } } },
-        legend: { title: "Origin" },
-        grid: { horizontal: true, vertical: true }
-      }
-    })
-    .createTitle({
-      text: "Half of American cars got under 19 miles per gallon",
-      subtitle: "Empirical cumulative distribution of 398 cars, 1970–1982"
-    });
-}
-```
-
 <!-- Source: /recipes/ -->
 
 # Chart Recipes
@@ -3262,8 +3264,8 @@ Use the [Getting Started browser module setup](./getting-started/) with a
 
 ## Complete program
 
-Run this entry in the [example directory](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/marginal/)
-after installing ggaction. Its [program.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/marginal/program.js)
+Run this entry in the [example directory](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/marginal/)
+after installing ggaction. Its [program.js](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/marginal/program.js)
 contains the public action chain; `fixture.js` declares the rows, boundaries,
 domains and panel dimensions. Replace the source import in that module with
 `import { chart, hconcat, vconcat } from "ggaction"` for an installed application.
@@ -3293,7 +3295,7 @@ coordinates remain separate observations; duplicate explicit keys are rejected.
 Zero is a valid observation. An empty array has no inferred field schema and
 cannot create this recipe's bins.
 
-The linked [selection example](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/marginal/selection.js)
+The linked [selection example](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/marginal/selection.js)
 uses public `getMarkItems` to read one bin's exact source rows, then calls
 `highlightMarks` with the same row indices in each explicitly named child.
 It checks current logical source identity and revision before linking. It never
@@ -3333,8 +3335,8 @@ Use the [Getting Started browser module setup](./getting-started/) with a
 
 ## Complete program
 
-Run this entry in the [example directory](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/bullet/)
-after installing ggaction. The linked [program.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/bullet/program.js)
+Run this entry in the [example directory](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/bullet/)
+after installing ggaction. The linked [program.js](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/bullet/program.js)
 contains the public action chain and `fixture.js` supplies the observations and
 reference ranges. Replace that module's source import with
 `import { chart } from "ggaction"` in an installed application.
@@ -3394,7 +3396,7 @@ Use the [Getting Started browser module setup](./getting-started/) with a
 
 ## Complete program
 
-Run this entry beside the canonical [program.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/linked-overlay/program.js)
+Run this entry beside the canonical [program.js](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/linked-overlay/program.js)
 after installing ggaction and replacing its source import with
 `import { chart } from "ggaction"`.
 
@@ -4100,7 +4102,7 @@ its source measurements. Each child owns its data, marks, scales and guides.
 The analytical axis and legend explain the point chart; the resource view keeps
 its native layout, thickness and styles.
 
-Copy the [resource comparison module](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/program-composition/resource-comparison.js)
+Copy the [resource comparison module](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/program-composition/resource-comparison.js)
 beside this browser module, set its `chart`/`hconcat` import to `from "ggaction"`,
 and provide `<canvas id="chart"></canvas>`. The helper
 builds both children from the same rows, including distinct numeric `1` and
@@ -6889,7 +6891,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -14740,7 +14742,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -14806,7 +14808,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -15242,7 +15244,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -15844,7 +15846,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -54981,9 +54983,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -56304,7 +56306,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -56357,7 +56359,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -56603,7 +56605,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -56655,7 +56657,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/repeat-charts).
 
 ## Space between plots
 
@@ -57362,7 +57364,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -58295,7 +58297,7 @@ The comparison baseline below is the older release used by the migration notes.
 | Identity | Value |
 | --- | --- |
 | Contract fingerprint | `sha256:cdfbebb474d11f7d3608c8c465f43cc2fcf995bfcc885da0165bb9410577c9fd` |
-| Example and dataset source | `codex/docs-overhaul` |
+| Example and dataset source | `d11f932ea5d6209defb7013d77c1176fb8ab750c` |
 | Runtime source commit | `6322f990c79f93a7d9cf1e61af8f49a7f36648fe` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 380 |
@@ -58849,12 +58851,12 @@ option does not apply to Polar or Parallel labels.
 # Place a retained image
 
 Prepare image bytes explicitly, then use one image mark to control its fit,
-alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/image-assets/)
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/image-assets/)
 uses one pinned SVG asset for six placements and retains the bytes for offline export.
 
 ## Prepare and place
 
-The canonical [example program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/image-assets/program.js) loads its
+The canonical [example program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/image-assets/program.js) loads its
 inline asset through `prepareImageResource` and applies the returned handle to the
 same immutable program. Its application-owned decoder reports the source dimensions.
 The synchronous `createImageResource` action stores the validated bytes. Then
@@ -58959,13 +58961,13 @@ Use `editImageMark({target:"image",shadow:{color:"#0008",offsetX:4,offsetY:4,blu
 # Prepare fonts before text layout
 
 Keep font loading explicit, measure with the loaded bytes, and save the final
-text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/font-assets/)
+text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/font-assets/)
 uses licensed Korean and monochrome emoji subsets with fixed content hashes.
 It includes a combining accent and a wrapped Korean title.
 
 ## Load, measure, apply
 
-The canonical [program](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/font-assets/program.js)
+The canonical [program](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/font-assets/program.js)
 first creates a title using the requested font families. Its initial estimated
 layout is a usable immutable program while loading runs. For each named font,
 `prepareFontResource` asks the application to load and decode bytes and verifies
@@ -58976,7 +58978,7 @@ original receiver using the current request token.
 measure every width needed by the existing layout. `applyTextMetrics` commits the
 exact profile and rematerializes the title. Widths that have not been measured
 cannot silently use an estimate. A late result for an edited receiver is stale.
-The [host adapter](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/font-assets/host.js)
+The [host adapter](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/font-assets/host.js)
 uses browser `FontFace` and Canvas measurement, or a native Canvas in Node.
 
 ## Draw the prepared text
@@ -59267,9 +59269,95 @@ Tree links accept shadow, while their ordinary stroke remains the link appearanc
 
 A hierarchy describes parent-child meaning. A layout computes positions, and a plot draws those positions. Keeping these steps separate lets two views share the same source while using different layouts.
 
+## Example with real data
+
+`createWorldPopulationTreemap` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+export const REGIONS = Object.freeze([
+  "South Asia",
+  "Europe & Central Asia",
+  "Sub-Saharan Africa",
+  "Americas",
+  "East Asia & Pacific",
+  "Middle East & North Africa"
+]);
+const COLORS = ["#f59e0b", "#3b82f6", "#10b981", "#ef4444", "#8b5cf6", "#ec4899"];
+
+// Gapminder 2005 populations grouped by the dataset's six regional clusters.
+export function populationRows(gapminder) {
+  return gapminder
+    .filter(row => row.year === 2005)
+    .map(row => ({ region: REGIONS[row.cluster], country: row.country, population: row.pop }));
+}
+
+// Region cells are pale, country cells strong; labels name places, not raw counts.
+function paint(rows, regionOpacity, countryOpacity) {
+  return REGIONS.flatMap((region, index) => [
+    { path: [region], fill: COLORS[index], opacity: regionOpacity },
+    ...rows.filter(row => row.region === region)
+      .map(row => ({ path: [region, row.country], fill: COLORS[index], opacity: countryOpacity }))
+  ]);
+}
+
+function names(rows, minimumPopulation) {
+  return [
+    ...REGIONS.map(region => ({ path: [region], text: region })),
+    ...rows.map(row => ({
+      path: [row.region, row.country],
+      text: row.population >= minimumPopulation ? row.country : ""
+    }))
+  ];
+}
+
+export function createWorldPopulationTreemap(gapminder) {
+  const rows = populationRows(gapminder);
+  return chart()
+    .createCanvas({ width: 960, height: 600, margin: { top: 80, right: 20, bottom: 20, left: 20 } })
+    .createData({ id: "population", values: rows })
+    .createHierarchyData({ id: "regions", data: "population", groupFields: ["region", "country"], value: "population" })
+    .layoutHierarchy({ id: "treemap", method: "treemap", options: { size: [920, 500], padding: 18, method: "squarify" } })
+    .createTreemapPlot({
+      cells: { stroke: "#ffffff", strokeWidth: 1.5, overrides: paint(rows, 0.2, 0.85) },
+      labels: { fontSize: 11, fill: "#0f172a", overrides: names(rows, 40e6) }
+    })
+    .createTitle({
+      text: "Where the world's people lived in 2005",
+      subtitle: "62 Gapminder countries · rectangle area is population · grouped by region"
+    });
+}
+
+export function createWorldPopulationSunburst(gapminder) {
+  const rows = populationRows(gapminder);
+  return chart()
+    .createCanvas({ width: 760, height: 640, margin: { top: 80, right: 20, bottom: 20, left: 20 } })
+    .createData({ id: "population", values: rows })
+    .createHierarchyData({ id: "regions", data: "population", groupFields: ["region", "country"], value: "population" })
+    .layoutHierarchy({ id: "partition", method: "partition" })
+    .createCoordinate({ id: "rings", type: "polar" })
+    .createPartitionPlot({
+      layout: "partition",
+      coordinate: "rings",
+      rootVisible: false,
+      innerRadius: 60,
+      outerRadius: 260,
+      padding: [1, 1],
+      cells: { stroke: "#ffffff", strokeWidth: 1, overrides: paint(rows, 0.95, 0.6) },
+      labels: { fontSize: 10, minArcLength: 30, overrides: names(rows, 60e6) }
+    })
+    .createTitle({
+      text: "World population by region and country, 2005",
+      subtitle: "Inner ring: region · outer ring: country · angle is population"
+    });
+}
+```
+
 ## Run the maintained examples
 
-Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 
@@ -59681,7 +59769,7 @@ The library validates the complete model, source binding, metric weights and
 saved diagnostics before exposing a prepared handle.
 
 This complete Node ES-module example uses the adjacent
-[`inference-worker.mjs`](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/graph-inference/worker.mjs) file. Save that
+[`inference-worker.mjs`](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/graph-inference/worker.mjs) file. Save that
 worker beside the host module. In a browser, use a module `Worker` directly as the
 factory result and have its message handler call the same `computeGraphInference`;
 Node-specific worker adapters are not needed in the browser.
@@ -59840,6 +59928,64 @@ const program = chart()
     }
   });
 render(program, document.querySelector("#chart").getContext("2d"));
+```
+
+## Example with real data
+
+`createCountrySimilarityNetwork` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// Gapminder's six regional clusters, in cluster-number order.
+const REGIONS = ["South Asia", "Europe & Central Asia", "Sub-Saharan Africa", "Americas",
+  "East Asia & Pacific", "Middle East & North Africa"];
+const COLORS = ["#f59e0b", "#3b82f6", "#10b981", "#ef4444", "#8b5cf6", "#ec4899"];
+
+// Each country links to its three nearest neighbors in standardized
+// (life expectancy, fertility) space for 2005.
+export function createCountrySimilarityNetwork(gapminder) {
+  const countries = gapminder
+    .filter(row => row.year === 2005)
+    .map(row => ({
+      country: row.country,
+      region: REGIONS[row.cluster],
+      lifeExpectancy: row.life_expect,
+      fertility: row.fertility
+    }));
+
+  return chart()
+    .createCanvas({ width: 900, height: 640, margin: { top: 80, right: 200, bottom: 20, left: 20 } })
+    .createData({ id: "countries", keyField: "country", values: countries })
+    .createInferredGraphData({
+      id: "similar",
+      data: "countries",
+      nodeKey: "country",
+      ruleId: "three-nearest",
+      rule: "knn",
+      features: ["lifeExpectancy", "fertility"],
+      metric: "euclidean",
+      preprocess: "standardize",
+      attributes: ["region"],
+      options: { k: 3, symmetrize: "union" }
+    })
+    .layoutGraph({ id: "placement", graph: "similar", method: "force", options: { seed: 7, iterations: 400, linkDistance: 70, collisionRadius: 14 } })
+    .createGraphPlot({
+      nodes: {
+        radius: 6,
+        stroke: "#ffffff",
+        strokeWidth: 1,
+        overrides: countries.map(row => ({ key: row.country, fill: COLORS[REGIONS.indexOf(row.region)] }))
+      },
+      edges: { stroke: "#cbd5e1", strokeWidth: 1 },
+      labels: { fontSize: 9, fill: "#334155" }
+    })
+    .createTitle({
+      text: "Countries with similar health and family size, 2005",
+      subtitle: "Each country links to its 3 nearest neighbors in life expectancy and fertility · color: region"
+    });
+}
 ```
 
 ## Preserve separate connections
@@ -60174,7 +60320,7 @@ The long A–C connection follows the existing A–B–C path, with two corner c
 All three original edges remain independently selectable.
 
 This complete ES module uses the same data and action flow as the
-[executable example](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/edge-routes/program.js).
+[executable example](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/edge-routes/program.js).
 
 ```javascript
 import { chart } from 'ggaction';
@@ -60220,10 +60366,10 @@ axis and legend belong to that child; editing them leaves the route child's nati
 positions, route references and stroke unchanged. Equal row keys do not create an
 automatic link: revise both source datasets with explicit child targets.
 
-Copy [comparison.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/edge-routes/comparison.js),
-[program.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/edge-routes/program.js),
-[options.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/edge-routes/options.js)
-and [data.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/edge-routes/data.js)
+Copy [comparison.js](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/edge-routes/comparison.js),
+[program.js](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/edge-routes/program.js),
+[options.js](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/edge-routes/options.js)
+and [data.js](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/edge-routes/data.js)
 beside this ES module and use `ggaction` for the helpers' public package imports.
 
 ```javascript
@@ -60383,7 +60529,93 @@ Body and label styles accept `outline:{color,width}|false` and `shadow:{color,of
 
 # Partition tutorial
 
-A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
+A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
+
+## Example with real data
+
+`createWorldPopulationSunburst` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+export const REGIONS = Object.freeze([
+  "South Asia",
+  "Europe & Central Asia",
+  "Sub-Saharan Africa",
+  "Americas",
+  "East Asia & Pacific",
+  "Middle East & North Africa"
+]);
+const COLORS = ["#f59e0b", "#3b82f6", "#10b981", "#ef4444", "#8b5cf6", "#ec4899"];
+
+// Gapminder 2005 populations grouped by the dataset's six regional clusters.
+export function populationRows(gapminder) {
+  return gapminder
+    .filter(row => row.year === 2005)
+    .map(row => ({ region: REGIONS[row.cluster], country: row.country, population: row.pop }));
+}
+
+// Region cells are pale, country cells strong; labels name places, not raw counts.
+function paint(rows, regionOpacity, countryOpacity) {
+  return REGIONS.flatMap((region, index) => [
+    { path: [region], fill: COLORS[index], opacity: regionOpacity },
+    ...rows.filter(row => row.region === region)
+      .map(row => ({ path: [region, row.country], fill: COLORS[index], opacity: countryOpacity }))
+  ]);
+}
+
+function names(rows, minimumPopulation) {
+  return [
+    ...REGIONS.map(region => ({ path: [region], text: region })),
+    ...rows.map(row => ({
+      path: [row.region, row.country],
+      text: row.population >= minimumPopulation ? row.country : ""
+    }))
+  ];
+}
+
+export function createWorldPopulationTreemap(gapminder) {
+  const rows = populationRows(gapminder);
+  return chart()
+    .createCanvas({ width: 960, height: 600, margin: { top: 80, right: 20, bottom: 20, left: 20 } })
+    .createData({ id: "population", values: rows })
+    .createHierarchyData({ id: "regions", data: "population", groupFields: ["region", "country"], value: "population" })
+    .layoutHierarchy({ id: "treemap", method: "treemap", options: { size: [920, 500], padding: 18, method: "squarify" } })
+    .createTreemapPlot({
+      cells: { stroke: "#ffffff", strokeWidth: 1.5, overrides: paint(rows, 0.2, 0.85) },
+      labels: { fontSize: 11, fill: "#0f172a", overrides: names(rows, 40e6) }
+    })
+    .createTitle({
+      text: "Where the world's people lived in 2005",
+      subtitle: "62 Gapminder countries · rectangle area is population · grouped by region"
+    });
+}
+
+export function createWorldPopulationSunburst(gapminder) {
+  const rows = populationRows(gapminder);
+  return chart()
+    .createCanvas({ width: 760, height: 640, margin: { top: 80, right: 20, bottom: 20, left: 20 } })
+    .createData({ id: "population", values: rows })
+    .createHierarchyData({ id: "regions", data: "population", groupFields: ["region", "country"], value: "population" })
+    .layoutHierarchy({ id: "partition", method: "partition" })
+    .createCoordinate({ id: "rings", type: "polar" })
+    .createPartitionPlot({
+      layout: "partition",
+      coordinate: "rings",
+      rootVisible: false,
+      innerRadius: 60,
+      outerRadius: 260,
+      padding: [1, 1],
+      cells: { stroke: "#ffffff", strokeWidth: 1, overrides: paint(rows, 0.95, 0.6) },
+      labels: { fontSize: 10, minArcLength: 30, overrides: names(rows, 60e6) }
+    })
+    .createTitle({
+      text: "World population by region and country, 2005",
+      subtitle: "Inner ring: region · outer ring: country · angle is population"
+    });
+}
+```
 
 ## Run the icicle
 
@@ -60842,6 +61074,79 @@ Start with a node table and an edge table whose values have one shared unit.
 A flow graph validates the endpoints and values, a layout stores their positions,
 and two marks draw the ribbons and nodes.
 
+## Example with real data
+
+`createPenguinSankey` builds this chart from real data. It receives the rows of `data/showcase/penguins.csv` (palmerpenguins, CC0) with numbers parsed and `NA` read as `null`.
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+const SPECIES_COLORS = { Adelie: "#f97316", Chinstrap: "#a855f7", Gentoo: "#0d9488" };
+
+// Every penguin flows from its species to the island it was measured on, then to its sex.
+export function createPenguinSankey(penguins) {
+  const nodes = new Map();
+  const links = new Map();
+  const node = (id, name, fill) => {
+    if (!nodes.has(id)) nodes.set(id, { id, name, fill });
+  };
+  const link = (from, to, fill) => {
+    const id = `${from}→${to}`;
+    if (!links.has(id)) links.set(id, { id, from, to, count: 0, fill });
+    links.get(id).count += 1;
+  };
+  for (const penguin of penguins) {
+    const species = `species:${penguin.species}`;
+    const island = `island:${penguin.island}`;
+    const sex = `sex:${penguin.sex ?? "unrecorded"}`;
+    const fill = SPECIES_COLORS[penguin.species];
+    node(species, penguin.species, fill);
+    node(island, `${penguin.island} Island`, "#64748b");
+    node(sex, penguin.sex ? penguin.sex[0].toUpperCase() + penguin.sex.slice(1) : "Not recorded", "#94a3b8");
+    link(species, island, fill);
+    link(island, sex, "#94a3b8");
+  }
+  const nodeRows = [...nodes.values()];
+  const linkRows = [...links.values()];
+
+  return chart()
+    .createCanvas({ width: 900, height: 520, margin: { top: 80, right: 120, bottom: 30, left: 100 } })
+    .createData({ id: "nodes", keyField: "id", values: nodeRows })
+    .createData({ id: "links", keyField: "id", values: linkRows })
+    .createFlowData({
+      id: "flow",
+      nodes: "nodes",
+      edges: "links",
+      nodeKey: "id",
+      edgeKey: "id",
+      source: "from",
+      target: "to",
+      value: "count",
+      attributes: ["name"]
+    })
+    .layoutFlow({
+      id: "layout",
+      method: "dag",
+      options: { width: 680, height: 410, nodeWidth: 16, nodePadding: 22, order: "barycentric", iterations: 16 }
+    })
+    .createFlowLinks({
+      links: { opacity: 0.45, overrides: linkRows.map(row => ({ key: row.id, fill: row.fill })) }
+    })
+    .createFlowNodes({
+      clip: false,
+      nodes: { overrides: nodeRows.map(row => ({ key: row.id, fill: row.fill })) },
+      labels: { content: { field: "name" }, fontSize: 13, fontWeight: 600, outline: { color: "#ffffff", width: 3 } }
+    })
+    .createTitle({
+      text: "344 Palmer penguins by species, island and sex",
+      subtitle: "Gentoo live only on Biscoe and Chinstrap only on Dream · link width is the number of birds"
+    });
+}
+```
+
+## A small worked example
+
 This runnable Full example sends six units from one source and four from another
 to a total of ten. The layout preserves a common thickness scale.
 
@@ -60987,7 +61292,7 @@ For feedback, select `method: "cyclic"`. All edges remain represented, including
 self-loops when the flow graph explicitly enables them. Outside lanes are part
 of the stored bounds, so fitting and clipping include their full extent.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/flow-layouts/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/flow-layouts/program.js)
 also demonstrates vertical flow and typed per-item colors. The browser example,
 primitive comparisons and generated figures use that one program.
 See [Flow Data and Sankey Layouts](./api/flows/) for exact options, selection
@@ -62206,6 +62511,69 @@ A scalar grid states where measurements were sampled. Contours interpolate the
 boundaries between those samples. This example has a center value of two and
 surrounding zeros, so level one crosses every adjoining edge halfway.
 
+## Example with real data
+
+`createPenguinDensityContours` builds this chart from real data. It receives the rows of `data/showcase/penguins.csv` (palmerpenguins, CC0) with numbers parsed and `NA` read as `null`.
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// Palmer penguins with both bill measurements recorded.
+export function createPenguinDensityContours(penguins) {
+  const measured = penguins.filter(row =>
+    Number.isFinite(row.bill_length_mm) && Number.isFinite(row.bill_depth_mm));
+
+  return chart()
+    .createCanvas({
+      width: 760,
+      height: 520,
+      margin: { top: 80, right: 170, bottom: 60, left: 70 }
+    })
+    .createData({ id: "penguins", values: measured })
+    .createDensityContourData({
+      id: "density",
+      data: "penguins",
+      x: "bill_length_mm",
+      y: "bill_depth_mm",
+      grid: { origin: [30, 12], dx: 0.5, dy: 0.25, width: 65, height: 49 },
+      estimator: "kde",
+      normalization: "count",
+      bandwidth: [2, 1],
+      kernel: "gaussian",
+      thresholds: [0.1, 0.3, 0.6, 1, 2, 4, 8]
+    })
+    .createContourMark({
+      id: "contours",
+      geometry: "density",
+      mode: "filled",
+      color: { type: "sequential", palette: "blues" },
+      x: { domain: [30, 62], nice: false, zero: false },
+      y: { domain: [12, 24], nice: false, zero: false },
+      stroke: "#ffffff",
+      strokeWidth: 0.6
+    })
+    // Individual penguins share the contour scales and are colored by species.
+    .createPointMark({ id: "penguins-points", data: "penguins", opacity: 0.8, stroke: "#ffffff", strokeWidth: 0.5 })
+    .encodeX({ field: "bill_length_mm", scale: { id: "contours-x" } })
+    .encodeY({ field: "bill_depth_mm", scale: { id: "contours-y" } })
+    .encodeColor({
+      field: "species",
+      scale: { domain: ["Adelie", "Chinstrap", "Gentoo"], range: ["#f97316", "#a855f7", "#0d9488"] }
+    })
+    .encodeRadius({ value: 2.5 })
+    .createXAxis({ scale: "contours-x", title: { text: "Bill length (mm)" } })
+    .createYAxis({ scale: "contours-y", title: { text: "Bill depth (mm)" } })
+    .createLegend({ target: "penguins-points", channels: ["color"], title: "Species" })
+    .createTitle({
+      text: "Penguin bill shapes cluster by species",
+      subtitle: "Darker bands hold more penguins · Gaussian kernel density of 342 birds"
+    });
+}
+```
+
+## A small worked example
+
 The complete Full program uses explicit geometry before creating its mark.
 
 ```javascript
@@ -62309,7 +62677,7 @@ example uses one point of weight two. The kernel example uses the same point,
 a triangular product kernel and bandwidth [1, 1]. On this grid their sampled
 values agree, while their estimation policies remain explicit.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/contours/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/contours/program.js)
 contains all five variants. Browser examples, primitive comparisons and images
 use that one program. See [Contours and two-dimensional density](./api/contours/)
 for exact options, limits, guide mappings, edits and source revision behavior.
@@ -62538,6 +62906,56 @@ A calendar makes each civil day a stable location. This example uses the 366 day
 of 2024, then leaves every fifth observation absent. Blue cells have observations;
 pale cells have none. Fixed paint makes missing-day placement easy to compare.
 
+## Example with real data
+
+`createUsBirthsCalendar` builds this chart from real data. It receives the rows of `data/showcase/us-births-2000-2014.csv` (FiveThirtyEight, CC BY 4.0) with numeric fields parsed.
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// FiveThirtyEight daily United States births, 2014 only.
+export function createUsBirthsCalendar(births) {
+  const days = births
+    .filter(row => row.year === 2014)
+    .map(row => ({
+      date: `2014-${String(row.month).padStart(2, "0")}-${String(row.date_of_month).padStart(2, "0")}`,
+      births: row.births
+    }));
+
+  return chart()
+    .createCanvas({
+      width: 960,
+      height: 250,
+      margin: { top: 80, right: 130, bottom: 20, left: 50 }
+    })
+    .createData({ id: "births", keyField: "date", values: days })
+    .createCalendarLayout({
+      id: "days",
+      date: "date",
+      value: "births",
+      start: "2014-01-01",
+      end: "2014-12-31",
+      timeZone: "UTC",
+      weekStartsOn: 1,
+      aggregate: "sum",
+      missing: "empty"
+    })
+    .createCalendarPlot({
+      color: { type: "sequential", palette: "viridis" },
+      labels: { week: false },
+      monthBoundary: { stroke: "#475569", strokeWidth: 1 }
+    })
+    .createLegend({ target: "calendar", title: "Births per day" })
+    .createTitle({
+      text: "United States births in 2014",
+      subtitle: "Weekends and holidays have far fewer births than weekdays"
+    });
+}
+```
+
+## A small worked example
+
 The complete Full program names its time zone, date range, aggregate, week start
 and missing-day policy before creating the plot.
 
@@ -62623,7 +63041,7 @@ With missing: "omit", unobserved dates have no cells. Their locations remain
 empty, so later dates never shift into those gaps. This variant hides month
 boundaries to emphasize the missing cells.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/calendar/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/calendar/program.js)
 contains all three variants. Its program is shared by browser examples, renderer
 pairs and generated images. See [Calendar plots](./api/calendar/) for exact
 options, selection, aggregation, edits and source revision behavior.
@@ -62702,6 +63120,97 @@ and one Geo coordinate shares that projection among shapes, points and lines.
 This example uses local planar coordinates, so an identity projection preserves
 the district outline, its courtyard, the three stops and their service route.
 
+## Example with real data
+
+`createWorldGdpMap` builds this chart from real data. It receives the parsed GeoJSON of `data/showcase/countries-110m.geojson` (Natural Earth, public domain).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// Natural Earth 1:110m countries carry 2019 population and GDP estimates.
+// Antarctica has no resident population, so it is left out of the map.
+export function createWorldGdpMap(countries) {
+  const inhabited = {
+    type: "FeatureCollection",
+    features: countries.features.filter(feature => feature.properties.CONTINENT !== "Antarctica")
+  };
+  const economy = inhabited.features.map(feature => {
+    const { ADM0_A3, NAME, POP_EST, GDP_MD } = feature.properties;
+    return {
+      code: ADM0_A3,
+      name: NAME,
+      gdpPerPerson: POP_EST > 0 && GDP_MD > 0 ? (GDP_MD * 1e6) / POP_EST : null
+    };
+  });
+
+  return chart()
+    .createCanvas({
+      width: 960,
+      height: 540,
+      margin: { top: 70, right: 30, bottom: 30, left: 30 }
+    })
+    .createGeometryData({
+      id: "countries",
+      format: "geojson",
+      coordinateKind: "geographic",
+      polygonWinding: "left-hand",
+      values: inhabited
+    })
+    .createData({ id: "economy", keyField: "code", values: economy })
+    .createGeoJoinData({
+      id: "country-economy",
+      geometry: "countries",
+      data: "economy",
+      geometryKey: ["properties", "ADM0_A3"],
+      dataKey: "code"
+    })
+    // Projected coordinates are Canvas pixels, so fit the whole Canvas and pad it.
+    .createProjection({
+      id: "world",
+      type: "equal-earth",
+      fit: { geometry: "countries", width: 960, height: 540, padding: 50 }
+    })
+    .createCoordinate({ id: "map", type: "geo", projection: "world" })
+    .createGraticule({
+      coordinate: "map",
+      extentDeg: [[-180, -60], [180, 85]],
+      stepDeg: [30, 30],
+      stroke: "#e2e8f0",
+      strokeWidth: 0.6
+    })
+    .createGeoShapeMark({
+      id: "countries-shape",
+      geometry: "country-economy",
+      coordinate: "map",
+      stroke: "#ffffff",
+      strokeWidth: 0.5,
+      // A whole-world outline exceeds the default 10,000 projected points.
+      capacity: { maxProjectedPoints: 40000, maxPathCommands: 60000 }
+    })
+    .encodeColor({
+      target: "countries-shape",
+      field: "gdpPerPerson",
+      fieldType: "quantitative",
+      scale: {
+        type: "threshold",
+        domain: [2000, 5000, 10000, 25000, 50000],
+        range: ["#fde68a", "#fbbf24", "#f59e0b", "#d97706", "#b45309", "#78350f"]
+      }
+    })
+    .createLegend({
+      target: "countries-shape",
+      channels: ["color"],
+      title: "GDP per person (USD)",
+      position: "bottom-left"
+    })
+    .createTitle({
+      text: "GDP per person, 2019",
+      subtitle: "Natural Earth country estimates · equal-earth projection"
+    });
+}
+```
+
 ## Complete program
 
 The Full package contains the geographic actions. This complete example declares
@@ -62738,7 +63247,7 @@ and translation; Canvas resizing alone does not silently fit the geometry.
 
 See [Geometry and projections](./api/geometry/) for exact options, revisions,
 selection, coordinate compatibility and current limitations. The
-[shared example source](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/geographic-marks/program.js)
+[shared example source](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/geographic-marks/program.js)
 is used by this tutorial, the browser examples and the primitive comparisons.
 
 ## Keep labels attached to their features
@@ -62818,9 +63327,9 @@ An explicit analytical child can map those values to positions, colors, an axis
 and a legend. These guides describe that child: they do not turn the graticule's
 projection geometry into Cartesian field encodings or scales.
 
-Copy [comparison.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/geographic-marks/comparison.js),
-[program.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/geographic-marks/program.js)
-and [fixture.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/geographic-marks/fixture.js)
+Copy [comparison.js](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/geographic-marks/comparison.js),
+[program.js](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/geographic-marks/program.js)
+and [fixture.js](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/geographic-marks/fixture.js)
 into a `geographic-marks` folder beside this module, using the helpers' public
 `ggaction` and `ggaction/inspection` imports.
 
@@ -62978,7 +63487,7 @@ Directions are explicit. `orientation: "up"`, `"right"` or `"left"` changes
 the direction of progress; it does not sort the source rows. A pointed ending
 is an explicit `lastStage: "point"` choice for width mode.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/pyramid/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/pyramid/program.js)
 drives the browser examples, primitive comparisons and generated images.
 See [Pyramid plots](./api/pyramid/) for labels, percentages, color, selection
 and editing options.
@@ -63151,6 +63660,74 @@ See the [OHLC tutorial](./tutorials/ohlc/) for a complete public call chain.
 
 Keep each observation's four prices together. A high-low stem and an open-close
 body are one chart item, so selecting either part selects the same source row.
+
+## Example with real data
+
+`createIbmCandlesticks` builds this chart from real data. It receives the parsed JSON response in `data/showcase/ibm-daily.json` (Alpha Vantage demo endpoint).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart, vconcat } from "ggaction";
+
+// Alpha Vantage demo response: IBM daily open, high, low, close and volume.
+export function createIbmCandlesticks(response) {
+  const sessions = Object.entries(response["Time Series (Daily)"])
+    .sort(([a], [b]) => a.localeCompare(b))
+    .slice(-60)
+    .map(([date, day]) => ({
+      date,
+      open: Number(day["1. open"]),
+      high: Number(day["2. high"]),
+      low: Number(day["3. low"]),
+      close: Number(day["4. close"]),
+      volume: Number(day["5. volume"]) / 1e6
+    }));
+  const ticks = sessions.filter((_, index) => index % 10 === 0).map(day => day.date);
+  const x = { field: "date", fieldType: "ordinal" };
+  const xAxis = { ticksAndLabels: { values: ticks }, title: false };
+
+  const prices = chart()
+    .createCanvas({ width: 960, height: 400, margin: { top: 80, right: 40, bottom: 40, left: 70 } })
+    .createData({ id: "sessions", keyField: "date", values: sessions })
+    .createOHLCPlot({
+      x,
+      low: "low",
+      high: "high",
+      open: "open",
+      close: "close",
+      yScale: { zero: false, nice: true },
+      width: { band: 0.6 },
+      body: { upFill: "#0d9488", downFill: "#e11d48", strokeWidth: 0 },
+      stem: { stroke: "#475569", strokeWidth: 1 },
+      guides: {
+        axes: { x: xAxis, y: { title: { text: "Price (USD)" } } },
+        legend: false,
+        grid: { horizontal: true, vertical: false }
+      }
+    })
+    .createTitle({
+      text: "IBM daily prices, last 60 trading sessions",
+      subtitle: "Teal: closed above the open · red: closed below the open"
+    });
+
+  const volume = chart()
+    .createCanvas({ width: 960, height: 160, margin: { top: 10, right: 40, bottom: 50, left: 70 } })
+    .createData({ id: "sessions", keyField: "date", values: sessions })
+    .createBarPlot({
+      x,
+      y: { field: "volume", aggregate: "sum" },
+      bar: { fill: "#94a3b8" },
+      guides: {
+        axes: { x: { ...xAxis, title: { text: "Trading session" } }, y: { title: { text: "Volume (M)" } } },
+        legend: false
+      }
+    });
+
+  return vconcat({ programs: [{ id: "prices", program: prices }, { id: "volume", program: volume }], gap: 0 });
+}
+```
+
+## A small worked example
 
 ```js
 import { chart } from "ggaction";
@@ -63335,6 +63912,53 @@ Declare each row's role so its effect on the running balance is explicit.
 Positive and negative contributions share the same ordered scale; totals start
 at zero without changing the balance.
 
+## Example with real data
+
+`createTemperatureWaterfall` builds this chart from real data. It receives the rows of `data/showcase/global-temperatures.csv` (NASA GISTEMP, public domain) with numeric fields parsed.
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// NASA GISTEMP annual (J-D) anomalies: the 2013 level plus each later year's change.
+export function createTemperatureWaterfall(temperatures) {
+  const years = temperatures
+    .filter(row => row.Year >= 2013 && row.Year <= 2022 && Number.isFinite(row["J-D"]))
+    .map(row => ({ year: row.Year, anomaly: row["J-D"] }));
+  const steps = years.map((row, index) => ({
+    id: String(row.year),
+    stage: index === 0 ? "2013 level" : String(row.year),
+    role: "delta",
+    value: index === 0 ? row.anomaly : Number((row.anomaly - years[index - 1].anomaly).toFixed(2))
+  }));
+  steps.push({ id: "total", stage: "2022 level", role: "total" });
+
+  return chart()
+    .createCanvas({ width: 900, height: 460, margin: { top: 80, right: 40, bottom: 60, left: 70 } })
+    .createData({ id: "steps", keyField: "id", values: steps })
+    .createWaterfallPlot({
+      x: "stage",
+      role: "role",
+      value: "value",
+      width: { band: 0.65 },
+      // Leave room above the highest running total for its label.
+      yScale: { domain: [0, 1.2] },
+      labels: { content: "value", format: ".2f", fontSize: 12 },
+      guides: {
+        axes: { x: { title: false }, y: { title: { text: "Temperature anomaly (°C)" } } },
+        legend: false,
+        grid: { horizontal: true, vertical: false }
+      }
+    })
+    .createTitle({
+      text: "How the global temperature anomaly moved, 2013–2022",
+      subtitle: "Green bars warm the running total, red bars cool it · NASA GISTEMP annual means"
+    });
+}
+```
+
+## A small worked example
+
 ```js
 import { chart } from "ggaction";
 
@@ -63512,6 +64136,63 @@ See [the Trail tutorial](./tutorials/trail/) for a complete shared program.
 
 Keep position and sample width separate. These two signals have constant vertical
 positions while the first ribbon widens and the second narrows.
+
+## Example with real data
+
+`createGapminderLifeTrails` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+const LARGEST = ["China", "India", "United States", "Indonesia", "Brazil", "Pakistan", "Bangladesh", "Nigeria"];
+
+// Gapminder life expectancy for the eight most populous countries in 2005.
+export function createGapminderLifeTrails(gapminder) {
+  const rows = gapminder
+    .filter(row => LARGEST.includes(row.country))
+    .map(row => ({
+      id: `${row.country}/${row.year}`,
+      country: row.country,
+      year: row.year,
+      lifeExpectancy: row.life_expect,
+      // Ribbon width in pixels grows with the square root of population.
+      width: 1 + 0.6 * Math.sqrt(row.pop / 1e6)
+    }));
+
+  return chart()
+    .createCanvas({ width: 900, height: 520, margin: { top: 80, right: 160, bottom: 60, left: 70 } })
+    .createData({ id: "trajectories", keyField: "id", values: rows })
+    .createTrailPlot({
+      x: { field: "year", scale: { zero: false, nice: false } },
+      y: { field: "lifeExpectancy", scale: { zero: false, domain: [20, 80] } },
+      width: "width",
+      groupBy: "country",
+      color: {
+        field: "country",
+        scale: {
+          domain: LARGEST,
+          range: ["#dc2626", "#ea580c", "#2563eb", "#16a34a", "#0d9488", "#7c3aed", "#db2777", "#ca8a04"]
+        }
+      },
+      body: { opacity: 0.75 },
+      guides: {
+        axes: {
+          x: { title: { text: "Year" }, ticksAndLabels: { labels: { format: ".0f" } } },
+          y: { title: { text: "Life expectancy (years)" } }
+        },
+        legend: { title: "Country" },
+        grid: { horizontal: true, vertical: false }
+      }
+    })
+    .createTitle({
+      text: "Fifty years of longer lives",
+      subtitle: "Life expectancy 1955–2005 · ribbon width follows population · China dips during the 1959–61 famine"
+    });
+}
+```
+
+## A small worked example
 
 ```js
 import { chart } from "ggaction";
@@ -63726,6 +64407,68 @@ See [the Table tutorial](./tutorials/table/) for a complete program.
 Keep a source row's name, value and ordered observations together. The amount uses
 both an exact number and a bar. Each trend uses the same x and y scales, and the
 footer sums both source amounts.
+
+## Example with real data
+
+`createGapminderCountryTable` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// One row per Gapminder country: 2005 values plus its 1955–2005 history.
+export function createGapminderCountryTable(gapminder) {
+  const histories = new Map();
+  for (const row of gapminder) {
+    if (!histories.has(row.country)) histories.set(row.country, []);
+    histories.get(row.country).push({ year: row.year, lifeExpectancy: row.life_expect });
+  }
+  const countries = [...histories].map(([country, history]) => {
+    history.sort((a, b) => a.year - b.year);
+    const latest = gapminder.find(row => row.country === country && row.year === 2005);
+    return {
+      country,
+      lifeExpectancy: latest.life_expect,
+      fertility: latest.fertility,
+      populationMillions: latest.pop / 1e6,
+      history
+    };
+  });
+
+  return chart()
+    .createCanvas({ width: 960, height: 700, margin: { top: 80, right: 30, bottom: 30, left: 30 } })
+    .createData({ id: "countries", keyField: "country", values: countries })
+    .createTablePlot({
+      rowLimit: 12,
+      rowHeight: 36,
+      padding: 7,
+      sortBy: [{ field: "populationMillions", order: "descending" }],
+      columns: [
+        { field: "country", label: "Country", width: 170, footer: "count" },
+        { field: "populationMillions", label: "Population (M)", width: 190, cell: "bar", format: ".0f",
+          align: "right", footer: { op: "sum", format: ".0f" } },
+        { field: "lifeExpectancy", label: "Life expectancy", width: 170,
+          cell: { type: "bar", domain: [0, 90] }, format: ".1f", align: "right" },
+        { field: "fertility", label: "Births per woman", width: 140, format: ".2f", align: "right" },
+        { field: "history", label: "Life expectancy, 1955–2005", width: 230,
+          cell: { type: "sparkline", x: "year", y: "lifeExpectancy", xDomain: [1955, 2005], yDomain: [30, 85],
+            resolveY: "shared" } }
+      ],
+      labels: { fontSize: 12 },
+      cells: { stroke: "#e2e8f0", strokeWidth: 0.6 },
+      bars: { fill: "#bfdbfe" },
+      sparklines: { stroke: "#0d9488", strokeWidth: 2 },
+      headerStyle: { fill: "#f1f5f9", color: "#0f172a" },
+      footerStyle: { fill: "#eff6ff", color: "#0f172a" }
+    })
+    .createTitle({
+      text: "The twelve most populous countries in 2005",
+      subtitle: "Bars and sparklines share one scale per column · footer totals all 62 countries"
+    });
+}
+```
+
+## A small worked example
 
 ```js
 import { chart } from "ggaction";

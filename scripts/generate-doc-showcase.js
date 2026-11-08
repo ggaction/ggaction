@@ -6,23 +6,24 @@ import { SHOWCASE_CHARTS } from "../examples/registry.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 
-// The page that teaches each real-data showcase chart.
+// The pages that show each real-data showcase chart: its API page and, for a
+// chart family with a tutorial, the tutorial that opens with it.
 export const SHOWCASE_PAGES = Object.freeze({
   "gapminder-bubbles": "docs/tutorials/interactive-chart.md",
-  "world-gdp-map": "docs/api/geometry.md",
+  "world-gdp-map": ["docs/api/geometry.md", "docs/tutorials/geographic-marks.md"],
   "world-earthquakes-map": "docs/api/geometry.md",
   "global-temperature-heatmap": "docs/api/basic-charts.md",
-  "us-births-calendar": "docs/api/calendar.md",
-  "penguin-density-contours": "docs/api/contours.md",
-  "penguin-sankey": "docs/api/flows.md",
-  "country-similarity-network": "docs/api/graphs.md",
-  "world-population-treemap": "docs/api/hierarchy.md",
-  "world-population-sunburst": "docs/api/partition.md",
+  "us-births-calendar": ["docs/api/calendar.md", "docs/tutorials/calendar.md"],
+  "penguin-density-contours": ["docs/api/contours.md", "docs/tutorials/contours.md"],
+  "penguin-sankey": ["docs/api/flows.md", "docs/tutorials/flows.md"],
+  "country-similarity-network": ["docs/api/graphs.md", "docs/tutorials/graphs.md"],
+  "world-population-treemap": ["docs/api/hierarchy.md", "docs/tutorials/hierarchy.md"],
+  "world-population-sunburst": ["docs/api/partition.md", "docs/tutorials/partition.md"],
   "flare-radial-tree": "docs/api/hierarchy.md",
-  "ibm-candlesticks": "docs/api/ohlc.md",
-  "temperature-waterfall": "docs/api/waterfall.md",
-  "gapminder-life-trails": "docs/api/trail.md",
-  "gapminder-country-table": "docs/api/table.md",
+  "ibm-candlesticks": ["docs/api/ohlc.md", "docs/tutorials/ohlc.md"],
+  "temperature-waterfall": ["docs/api/waterfall.md", "docs/tutorials/waterfall.md"],
+  "gapminder-life-trails": ["docs/api/trail.md", "docs/tutorials/trail.md"],
+  "gapminder-country-table": ["docs/api/table.md", "docs/tutorials/table.md"],
   "penguin-mass-raincloud": "docs/api/distribution-plots.md",
   "penguin-flipper-beeswarm": "docs/api/distribution-plots.md",
   "cars-mpg-ecdf": "docs/tutorials/ecdf.md",
@@ -79,8 +80,9 @@ async function section(chart) {
 export async function generateDocShowcase({ check = false } = {}) {
   const pages = new Map();
   for (const chart of SHOWCASE_CHARTS) {
-    const relative = SHOWCASE_PAGES[chart.id];
-    if (relative === undefined) throw new Error(`Showcase chart "${chart.id}" needs an owning page.`);
+    const owners = SHOWCASE_PAGES[chart.id];
+    if (owners === undefined) throw new Error(`Showcase chart "${chart.id}" needs an owning page.`);
+    for (const relative of [owners].flat()) {
     const file = path.join(root, relative);
     const source = pages.get(file) ?? await readFile(file, "utf8");
     const pattern = new RegExp(
@@ -89,6 +91,7 @@ export async function generateDocShowcase({ check = false } = {}) {
     if (!pattern.test(source)) throw new Error(`${relative} needs the ${chart.id} showcase marker.`);
     const replacement = await section(chart);
     pages.set(file, source.replace(pattern, () => replacement));
+    }
   }
   for (const [file, expected] of pages) {
     const current = await readFile(file, "utf8");

@@ -2590,7 +2590,7 @@
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Revise the statistical source\" on docs/tutorials/ecdf.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/tutorials/endpoint-plots.md#dot-lollipop-and-dumbbell-plots:2",
+    "id": "docs/tutorials/endpoint-plots.md#a-small-worked-example:2",
     "sha256": "b28fe404b8e6c7661b139006348b0015cc4b476dc8ed587136336834c88628db",
     "mode": "contextual-fragment",
     "owner": "docs/tutorials/endpoint-plots.md",

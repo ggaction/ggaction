@@ -9,6 +9,62 @@ A calendar makes each civil day a stable location. This example uses the 366 day
 of 2024, then leaves every fifth observation absent. Blue cells have observations;
 pale cells have none. Fixed paint makes missing-day placement easy to compare.
 
+## Example with real data
+
+<!-- showcase-program:us-births-calendar:start -->
+
+{% include chart-example.html id="us-births-calendar" %}
+
+`createUsBirthsCalendar` builds this chart from real data. It receives the rows of `data/showcase/us-births-2000-2014.csv` (FiveThirtyEight, CC BY 4.0) with numeric fields parsed.
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// FiveThirtyEight daily United States births, 2014 only.
+export function createUsBirthsCalendar(births) {
+  const days = births
+    .filter(row => row.year === 2014)
+    .map(row => ({
+      date: `2014-${String(row.month).padStart(2, "0")}-${String(row.date_of_month).padStart(2, "0")}`,
+      births: row.births
+    }));
+
+  return chart()
+    .createCanvas({
+      width: 960,
+      height: 250,
+      margin: { top: 80, right: 130, bottom: 20, left: 50 }
+    })
+    .createData({ id: "births", keyField: "date", values: days })
+    .createCalendarLayout({
+      id: "days",
+      date: "date",
+      value: "births",
+      start: "2014-01-01",
+      end: "2014-12-31",
+      timeZone: "UTC",
+      weekStartsOn: 1,
+      aggregate: "sum",
+      missing: "empty"
+    })
+    .createCalendarPlot({
+      color: { type: "sequential", palette: "viridis" },
+      labels: { week: false },
+      monthBoundary: { stroke: "#475569", strokeWidth: 1 }
+    })
+    .createLegend({ target: "calendar", title: "Births per day" })
+    .createTitle({
+      text: "United States births in 2014",
+      subtitle: "Weekends and holidays have far fewer births than weekdays"
+    });
+}
+```
+
+<!-- showcase-program:us-births-calendar:end -->
+
+## A small worked example
+
 {% include chart-example.html id="calendar" %}
 
 The complete Full program names its time zone, date range, aggregate, week start

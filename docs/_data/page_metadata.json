@@ -132,14 +132,14 @@
     "source": "docs/tutorials/endpoint-plots.md",
     "editSource": "examples/dumbbell-plot/program.js",
     "description": "These three Full entry actions share one categorical endpoint model. Each starts from immutable rows and produces ordinary point and rule children, so existing mark, scale, label,…",
-    "image": "/assets/images/dumbbell-plot.png"
+    "image": "/assets/images/life-expectancy-dumbbell.png"
   },
   "/tutorials/ecdf/": {
     "title": "Empirical Cumulative Distribution Plots",
     "source": "docs/tutorials/ecdf.md",
     "editSource": "examples/ecdf-plot/program.js",
     "description": "An empirical cumulative distribution function answers: “What share of the observations is less than or equal to this value?” createECDFPlot owns that statistical definition and…",
-    "image": "/assets/images/ecdf-plot.png"
+    "image": "/assets/images/cars-mpg-ecdf.png"
   },
   "/recipes/": {
     "title": "Chart Recipes",
@@ -1147,7 +1147,7 @@
     "source": "docs/tutorials/flows.md",
     "editSource": "examples/flow-layouts/program.js",
     "description": "Build a Sankey diagram from explicit node and edge tables, including cyclic feedback.",
-    "image": "/assets/images/flow-layouts.png"
+    "image": "/assets/images/penguin-sankey.png"
   },
   "/api/geometry/": {
     "title": "Geometry and Projections",
@@ -1168,7 +1168,7 @@
     "source": "docs/tutorials/contours.md",
     "editSource": "examples/contours/program.js",
     "description": "A scalar grid states where measurements were sampled. Contours interpolate the boundaries between those samples.",
-    "image": "/assets/images/contours.png"
+    "image": "/assets/images/penguin-density-contours.png"
   },
   "/tutorials/responsive-guides/": {
     "title": "Fit Labels Inside a Fixed Canvas",
@@ -1189,7 +1189,7 @@
     "source": "docs/tutorials/calendar.md",
     "editSource": "examples/calendar/program.js",
     "description": "A calendar makes each civil day a stable location. This example uses the 366 days of 2024, then leaves every fifth observation absent.",
-    "image": "/assets/images/calendar.png"
+    "image": "/assets/images/us-births-calendar.png"
   },
   "/tutorials/nested-responsive/": {
     "title": "Arrange Nested Panels with Shared Guides",
@@ -1231,7 +1231,7 @@
     "source": "docs/tutorials/ohlc.md",
     "editSource": "examples/ohlc/program.js",
     "description": "Keep each observation's four prices together. A high low stem and an open close body are one chart item, so selecting either part selects the same source row.",
-    "image": "/assets/images/ohlc.png"
+    "image": "/assets/images/ibm-candlesticks.png"
   },
   "/api/waterfall/": {
     "title": "Waterfall Plots",
@@ -1245,7 +1245,7 @@
     "source": "docs/tutorials/waterfall.md",
     "editSource": "examples/waterfall/program.js",
     "description": "Declare each row's role so its effect on the running balance is explicit.",
-    "image": "/assets/images/waterfall.png"
+    "image": "/assets/images/temperature-waterfall.png"
   },
   "/api/trail/": {
     "title": "Trail Plots",
@@ -1259,7 +1259,7 @@
     "source": "docs/tutorials/trail.md",
     "editSource": "examples/trail/program.js",
     "description": "Keep position and sample width separate. These two signals have constant vertical positions while the first ribbon widens and the second narrows.",
-    "image": "/assets/images/trail.png"
+    "image": "/assets/images/gapminder-life-trails.png"
   },
   "/api/table/": {
     "title": "Table Plots",
@@ -1273,6 +1273,6 @@
     "source": "docs/tutorials/table.md",
     "editSource": "examples/table/program.js",
     "description": "Keep a source row's name, value and ordered observations together. The amount uses both an exact number and a bar.",
-    "image": "/assets/images/table.png"
+    "image": "/assets/images/gapminder-country-table.png"
   }
 }
