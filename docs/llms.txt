@@ -13,6 +13,7 @@ HTML routes are canonical; the generated full-text bundle is available at
 - Local one-tool MCP for compact chart-authoring knowledge: ./mcp/
 - Bounded complete-program bootstrap and canonical capability IDs: ./llm-authoring/
 - Chart recipes: ./recipes/
+- Interactive chart in a web page (ggaction/live), complete HTML and module: ./tutorials/interactive-chart/#complete-program
 - Complete public action reference: ./reference/actions/
 - Supported features and limitations: ./supported-features/
 - Inference and layout troubleshooting: ./troubleshooting/
@@ -31,6 +32,7 @@ HTML routes are canonical; the generated full-text bundle is available at
 - Vertical and horizontal statistical and explicit error bands: ./api/error-bands/
 - Vertical/horizontal Tukey and min–max box plots: ./api/box-plots/
 - Vertical/horizontal categorical gradient plots: ./api/gradient-plots/
+- Raincloud, beeswarm and strip plots: ./api/distribution-plots/#raincloud-plot
 - Live charts, interaction sessions and animation: ./api/live/ | ./api/interaction/ | ./api/animation/
 - Hierarchies, graphs, edge routes, flows and maps: ./api/hierarchy/ | ./api/partition/ | ./api/graphs/ | ./api/edge-routes/ | ./api/flows/ | ./api/geometry/
 - Specialized plots: ./api/pyramid/ | ./api/ohlc/ | ./api/waterfall/ | ./api/trail/ | ./api/table/ | ./api/calendar/ | ./api/contours/
@@ -52,6 +54,10 @@ are internal operations.
 - Density area: ./recipes/density-area/ | ./tutorials/density-area/
 - Error bar: ./recipes/error-bar/ | ./tutorials/error-bar/
 - Mark selection and highlighting: ./tutorials/mark-selection/ | ./api/appearance/selection-and-highlighting/
+- Animate a data change in a browser (keyField and reviseData source rules): ./api/animation/#animate-a-data-change-in-a-browser
+- Choose live charts or interaction sessions: ./api/live/#live-charts-or-interaction-sessions
+- World map walkthrough: ./api/geometry/#draw-a-world-map
+- Map capacity, fit and winding pitfalls: ./api/geometry/#common-map-pitfalls
 
 ## Core concepts
 

@@ -11,7 +11,7 @@ An empty container accepts `[]`. Caller arrays and earlier programs stay immutab
 
 This runnable identity-and-order example leaves geometry for a later authoring step:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "plot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "plot"`.
 
 ```js
 import { ChartProgram } from "ggaction/extension";
@@ -43,7 +43,7 @@ Stored values cannot contain functions, class instances, or cyclic references.
 Creates, replaces, or removes one supported semantic branch and structurally
 copies the changed path.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.editSemantic({
@@ -79,7 +79,7 @@ lifecycles. They validate ownership and all live references, then invoke
 `editSemantic` for the concrete semantic deletion. `removeData` additionally
 releases a standalone logical data owner's retained configuration.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.editSemantic({
@@ -118,7 +118,7 @@ removes its policy container without changing graphics.
 Creates one concrete object, a homogeneous drawable collection, or an empty
 heterogeneous drawable `collection`.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createGraphics({ id: "points", type: "circle", length: 2 });
@@ -131,7 +131,7 @@ one `editGraphics({ property: "items" })` call instead; replacement `items`
 arrays are likewise limited to 10,000 entries. Equivalent repeated
 creation is idempotent.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "symbols"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "symbols"`.
 
 ```javascript
 program
@@ -177,7 +177,7 @@ top-level placement in `graphicSpec.order`.
 Ordinary chart actions create and use their Canvas/plot hierarchy automatically.
 An extension that authors the same structure directly makes every owner explicit:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 program
@@ -199,7 +199,7 @@ program
 mutually exclusive, the referenced graphic must already belong to the same
 parent, and no top-level graphic can be placed before the Canvas.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createGraphics({
@@ -243,12 +243,12 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "band"`.
 
 ```javascript
 program
@@ -275,7 +275,7 @@ adjacent offsets create a hard transition. A paint object and its nested `stops`
 array are one scalar property value, so broadcasting it to a collection applies
 the complete paint to every item.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "distributionStrips"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "distributionStrips"`.
 
 ```javascript
 const verticalDensityPaint = {
@@ -324,7 +324,7 @@ grouped line paths, and two concrete legends.
 
 Sets one validated concrete property or atomically removes named graphic subtrees. For removal only, `target` can be a non-empty array of IDs. Duplicate and overlapping subtrees are removed once; every target is validated before changing the program. Root Canvas and generated item removal remain invalid.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 ```javascript
 program.editGraphics({
@@ -344,7 +344,7 @@ its owned named descendants. The action also detaches the root from its parent
 or top-level order. The Canvas root and generated items cannot be removed;
 resize or replace an item's owning collection instead.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "opacityLegendSymbols"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "opacityLegendSymbols"`.
 
 ```javascript
 program.editGraphics({
@@ -385,7 +385,7 @@ consumers resolve their domains from derived means rather than raw rows. Ordinal
 ranges may contain color strings, a validated named-palette descriptor, or validated
 even-length stroke-dash patterns for the matching channel.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createScale({ id: "x", type: "linear" });
@@ -422,7 +422,7 @@ fully materialized primitives, including different Text or primitive kinds.
 It combines colors in premultiplied linear-light sRGB. Two overlapping source-over
 opacity layers do not produce this result.
 
-> **Executable complete.** Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.
+> **Runnable complete example.** Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.
 
 ```javascript
 import { ChartProgram } from "ggaction/extension";
@@ -482,7 +482,7 @@ same length from 1 through 10000. Coordinates are finite and radii non-negative.
 `appearance` accepts the existing concrete circle paint, outline, stroke, opacity,
 blend and shadow properties; it cannot contain coordinates or `length`.
 
-> **Executable complete.** Run the complete ES module with ggaction installed; it authors one canvas and fully materialized circle columns.
+> **Runnable complete example.** Run the complete ES module with ggaction installed; it authors one canvas and fully materialized circle columns.
 
 ```javascript
 import { ChartProgram } from "ggaction/extension";
@@ -521,7 +521,7 @@ drawn as one `M`/`L` subpath, closed with `Z` when `closed` is true.
 opacity, blend and shadow properties; it cannot contain `commands`,
 `maxCommands` or `length`.
 
-> **Executable complete.** Run the complete ES module with ggaction installed; it authors one canvas and two closed path rows.
+> **Runnable complete example.** Run the complete ES module with ggaction installed; it authors one canvas and two closed path rows.
 
 ```javascript
 import { ChartProgram } from "ggaction/extension";

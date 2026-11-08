@@ -5,18 +5,242 @@ title: Geometry and Projections
 
 # Geometry and projections
 
-Keep geographic or planar shapes in an immutable resource with explicit feature
-identity. These Full `ggaction` actions prepare source geometry; creating a
-resource does not draw it. [Contours](contours.md) use the same resource kind
-with their own scalar-grid contract.
+Draw maps from GeoJSON or TopoJSON: country shapes colored by a value, points
+placed by longitude and latitude, routes, graticules and annotations. Geometry
+lives in an immutable resource with explicit feature identity, so maps keep
+working with selection, filtering, animation and saved charts. Creating a
+geometry resource does not draw it; a projection, a `geo` coordinate and a
+mark do. [Contours](contours.md) use the same resource kind with their own
+scalar-grid contract.
 
-Clockwise geographic datasets can declare `polygonWinding: "left-hand"` when creating
-or editing their geometry source. The default `"right-hand"` convention preserves existing
-counterclockwise exteriors and clockwise holes. This declaration preserves all source
-coordinates and hashes; projection, fit, feature centroids and labels share it. Reversing a
-ring relative to the declared convention still represents a spherical complement. Planar
-sources do not accept this option. Generated geographic-radius circles retain their own
-direction, including circles larger than a hemisphere.
+## Draw a world map
+
+A map needs five steps. The [examples below](#examples-with-real-data) are the
+complete programs.
+
+1. **Load the shapes.** `createGeometryData({ id, format: "geojson", coordinateKind: "geographic", values })`
+   takes a parsed GeoJSON object. For TopoJSON, use `format: "topojson"` and name the object with `topoObject`.
+2. **Add the values.** Put your table in `createData`, then join it to the
+   shapes with `createGeoJoinData({ id, geometry, data, geometryKey, dataKey })`.
+3. **Choose a projection.** `createProjection({ id, type: "equal-earth", fit: { geometry, width, height, padding } })`
+   scales and centers the shapes. Then `createCoordinate({ id, type: "geo", projection })`.
+4. **Draw.** `createGeoShapeMark` for areas, `createGeoPointMark` for places,
+   `createGeoLineMark` for routes, and `createGraticule` for the latitude and
+   longitude grid.
+5. **Encode and explain.** `encodeColor`, `encodeSize`, `createLegend` and
+   `createTitle` work as on any other chart.
+
+## Common map pitfalls
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| *Geographic mark point count must not exceed 10000.* | A world outline has more than the default 10,000 projected points. | Pass `capacity: { maxProjectedPoints, maxPathCommands }` to the shape mark, for example `{ maxProjectedPoints: 40000, maxPathCommands: 60000 }`. |
+| The map overlaps the title or ignores the margins. | Projection pixels are Canvas pixels; `fit` does not read the Canvas or its margins. | Fit to the whole Canvas, `fit: { geometry, width: canvasWidth, height: canvasHeight, padding }`, and use `padding` for room around the map. |
+| Only a corner of the map is visible. | An unfitted projection translates to `[0, 0]`, the Canvas's top-left corner. | Use `fit`, or set `translatePx` to the Canvas center. |
+| One color fills the whole globe and `fit` frames the entire sphere. | The polygons wind clockwise, so the default `"right-hand"` reading takes each shape's complement. | Declare `polygonWinding: "left-hand"` on `createGeometryData`. Natural Earth GeoJSON files need it. |
+| Antarctica or empty ocean stretches the fit. | `fit` covers every feature in the geometry. | Filter the features first, as the world map example does. |
+
+`polygonWinding` keeps the source coordinates and hashes; projection, fit,
+centroids and labels share the declared convention. Planar sources do not
+accept it. Generated geographic-radius circles keep their own direction,
+including circles larger than a hemisphere.
+
+## Examples with real data
+
+<!-- showcase-program:world-gdp-map:start -->
+
+{% include chart-example.html id="world-gdp-map" %}
+
+`createWorldGdpMap` builds this chart from real data. It receives the parsed GeoJSON of `data/showcase/countries-110m.geojson` (Natural Earth, public domain).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// Natural Earth 1:110m countries carry 2019 population and GDP estimates.
+// Antarctica has no resident population, so it is left out of the map.
+export function createWorldGdpMap(countries) {
+  const inhabited = {
+    type: "FeatureCollection",
+    features: countries.features.filter(feature => feature.properties.CONTINENT !== "Antarctica")
+  };
+  const economy = inhabited.features.map(feature => {
+    const { ADM0_A3, NAME, POP_EST, GDP_MD } = feature.properties;
+    return {
+      code: ADM0_A3,
+      name: NAME,
+      gdpPerPerson: POP_EST > 0 && GDP_MD > 0 ? (GDP_MD * 1e6) / POP_EST : null
+    };
+  });
+
+  return chart()
+    .createCanvas({
+      width: 960,
+      height: 540,
+      margin: { top: 70, right: 30, bottom: 30, left: 30 }
+    })
+    .createGeometryData({
+      id: "countries",
+      format: "geojson",
+      coordinateKind: "geographic",
+      polygonWinding: "left-hand",
+      values: inhabited
+    })
+    .createData({ id: "economy", keyField: "code", values: economy })
+    .createGeoJoinData({
+      id: "country-economy",
+      geometry: "countries",
+      data: "economy",
+      geometryKey: ["properties", "ADM0_A3"],
+      dataKey: "code"
+    })
+    // Projected coordinates are Canvas pixels, so fit the whole Canvas and pad it.
+    .createProjection({
+      id: "world",
+      type: "equal-earth",
+      fit: { geometry: "countries", width: 960, height: 540, padding: 50 }
+    })
+    .createCoordinate({ id: "map", type: "geo", projection: "world" })
+    .createGraticule({
+      coordinate: "map",
+      extentDeg: [[-180, -60], [180, 85]],
+      stepDeg: [30, 30],
+      stroke: "#e2e8f0",
+      strokeWidth: 0.6
+    })
+    .createGeoShapeMark({
+      id: "countries-shape",
+      geometry: "country-economy",
+      coordinate: "map",
+      stroke: "#ffffff",
+      strokeWidth: 0.5,
+      // A whole-world outline exceeds the default 10,000 projected points.
+      capacity: { maxProjectedPoints: 40000, maxPathCommands: 60000 }
+    })
+    .encodeColor({
+      target: "countries-shape",
+      field: "gdpPerPerson",
+      fieldType: "quantitative",
+      scale: {
+        type: "threshold",
+        domain: [2000, 5000, 10000, 25000, 50000],
+        range: ["#fde68a", "#fbbf24", "#f59e0b", "#d97706", "#b45309", "#78350f"]
+      }
+    })
+    .createLegend({
+      target: "countries-shape",
+      channels: ["color"],
+      title: "GDP per person (USD)",
+      position: "bottom-left"
+    })
+    .createTitle({
+      text: "GDP per person, 2019",
+      subtitle: "Natural Earth country estimates · equal-earth projection"
+    });
+}
+```
+
+<!-- showcase-program:world-gdp-map:end -->
+
+<!-- showcase-program:world-earthquakes-map:start -->
+
+{% include chart-example.html id="world-earthquakes-map" %}
+
+`createWorldEarthquakesMap` builds this chart from real data. It receives one object: `countries` is the parsed GeoJSON of `data/showcase/countries-110m.geojson` (Natural Earth, public domain); `earthquakes` is the parsed GeoJSON of `data/showcase/earthquakes-2024-01.geojson` (USGS, public domain).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// USGS events of magnitude 5 or more in January 2024 over Natural Earth countries.
+export function createWorldEarthquakesMap({ countries, earthquakes }) {
+  const land = {
+    type: "FeatureCollection",
+    features: countries.features.filter(feature => feature.properties.CONTINENT !== "Antarctica")
+  };
+  const events = {
+    type: "FeatureCollection",
+    features: earthquakes.features
+      .filter(feature => feature.properties.type === "earthquake")
+      .map(feature => ({
+        ...feature,
+        properties: { ...feature.properties, depth: feature.geometry.coordinates[2] }
+      }))
+  };
+
+  return chart()
+    .createCanvas({
+      width: 960,
+      height: 540,
+      margin: { top: 70, right: 30, bottom: 30, left: 30 }
+    })
+    .createGeometryData({
+      id: "land",
+      format: "geojson",
+      coordinateKind: "geographic",
+      polygonWinding: "left-hand",
+      values: land
+    })
+    .createGeometryData({
+      id: "events",
+      format: "geojson",
+      coordinateKind: "geographic",
+      featureKey: "id",
+      values: events
+    })
+    // Rotating by -150° centers the Pacific Ring of Fire.
+    .createProjection({
+      id: "pacific",
+      type: "equal-earth",
+      rotateDeg: [-150, 0],
+      fit: { geometry: "land", width: 960, height: 540, padding: 50 }
+    })
+    .createCoordinate({ id: "map", type: "geo", projection: "pacific" })
+    .createGraticule({
+      coordinate: "map",
+      extentDeg: [[-180, -60], [180, 85]],
+      stepDeg: [30, 30],
+      stroke: "#e2e8f0",
+      strokeWidth: 0.6
+    })
+    .createGeoShapeMark({
+      id: "land-shape",
+      geometry: "land",
+      coordinate: "map",
+      fill: "#e2e8f0",
+      stroke: "#ffffff",
+      strokeWidth: 0.5,
+      capacity: { maxProjectedPoints: 40000, maxPathCommands: 60000 }
+    })
+    .createGeoPointMark({
+      id: "earthquakes",
+      geometry: "events",
+      coordinate: "map",
+      opacity: 0.8,
+      stroke: "#ffffff",
+      strokeWidth: 0.7
+    })
+    .encodeSize({ target: "earthquakes", field: "mag", scale: { domain: [5, 7.5], range: [30, 600] } })
+    .encodeColor({
+      target: "earthquakes",
+      field: "depth",
+      fieldType: "quantitative",
+      scale: { palette: "viridis", domain: [0, 650], reverse: true }
+    })
+    .createLegend({
+      target: "earthquakes",
+      channels: ["color"],
+      title: "Depth (km)",
+      position: "bottom-left"
+    })
+    .createTitle({
+      text: "Earthquakes of magnitude 5 or more, January 2024",
+      subtitle: "USGS event locations · point area: magnitude · color: depth"
+    });
+}
+```
+
+<!-- showcase-program:world-earthquakes-map:end -->
 
 ## `createGeometryData`
 
@@ -34,7 +258,7 @@ the source and normalized result.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import ggaction; the example supplies its own feature collection.
+> **Runnable complete example.** Import ggaction; the example supplies its own feature collection.
 
 <!-- snippet-context:end -->
 
@@ -121,7 +345,7 @@ start at the feature or table row, respectively.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete module with its inline region features and population table. Both regions remain in the joined result.
+> **Runnable complete example.** Run the complete module with its inline region features and population table. Both regions remain in the joined result.
 
 <!-- snippet-context:end -->
 
@@ -140,9 +364,9 @@ const joined = chart()
   .createGeoJoinData({ id: "measured-regions", geometryKey: "id", dataKey: "code" });
 ```
 
-The result retains both regions. West maps to table row0; East has a missing
-measurement, and its null geometry remains identifiable. Numeric1, string`"1"`
-and tuple`[1]` are distinct keys. Missing keys never match each other. Duplicate
+The result retains both regions. West maps to table row 0; East has a missing
+measurement, and its null geometry remains identifiable. Numeric `1`, string `"1"`
+and tuple `[1]` are distinct keys. Missing keys never match each other. Duplicate
 nonmissing keys on either input fail; aggregate duplicates explicitly beforehand.
 
 Use a string field or a nonempty property path such as `["properties","code"]`.
@@ -180,7 +404,7 @@ must use the same coordinate system. Joins retain their source feature keys and 
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.
+> **Runnable complete example.** Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.
 
 <!-- snippet-context:end -->
 
@@ -275,7 +499,7 @@ identity (planar) or a spherical projection (geographic).
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete ES module with its inline planar geometry and public chart import. The projection fit has scale 5 and translation [25, 0].
+> **Runnable complete example.** Run the complete ES module with its inline planar geometry and public chart import. The projection fit has scale 5 and translation [25, 0].
 
 <!-- snippet-context:end -->
 
@@ -358,7 +582,7 @@ explicitly include `plot:false`. Authored projection clipping stays unchanged.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Runnable complete example.** Runs as written with ggaction installed.
 
 <!-- snippet-context:end -->
 
@@ -391,7 +615,7 @@ Canvas resizing preserves that transform; `clip: true` clips at the current plot
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import the Full package and run this complete planar polygon-with-hole example.
+> **Runnable complete example.** Import the Full package and run this complete planar polygon-with-hole example.
 
 <!-- snippet-context:end -->
 
@@ -438,7 +662,7 @@ projected output budget on its line mark. Projection edits retain that policy.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Install ggaction and run this complete ES module in Node.js 20 or later.
+> **Runnable complete example.** Install ggaction and run this complete ES module in Node.js 20 or later.
 
 <!-- snippet-context:end -->
 
@@ -494,7 +718,7 @@ to CSS-pixel area. Native categorical, continuous and discrete scales apply.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** The two inline places supply their own population measurements.
+> **Runnable complete example.** The two inline places supply their own population measurements.
 
 <!-- snippet-context:end -->
 
@@ -542,7 +766,7 @@ A zero size hides the circle without removing its logical item.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
+> **Runnable complete example.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
 
 <!-- snippet-context:end -->
 
@@ -680,7 +904,7 @@ how the anchor projects. The default ID is `geo-annotation`; give additional ann
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete module with its inline keyed planar port feature.
+> **Runnable complete example.** Run the complete module with its inline keyed planar port feature.
 
 <!-- snippet-context:end -->
 
@@ -773,7 +997,7 @@ This complete authoring example uses explicit longitude/latitude layout anchors:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors.
+> **Runnable complete example.** Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors.
 
 <!-- snippet-context:end -->
 

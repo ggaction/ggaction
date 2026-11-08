@@ -5,7 +5,7 @@
 `selectMarks` is the advanced reusable-selection action. Selection by itself
 stores its meaning in `semanticSpec.resources` and leaves `graphicSpec` unchanged:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 ```javascript
 const selected = program.selectMarks({
@@ -59,7 +59,7 @@ is the upper/end endpoint. Concrete property `y` is the top pixel and concrete
 property `height` is its pixel length. For example, select the tallest complete
 histogram stack semantically with:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "bars"`.
 
 ```javascript
 program.selectMarks({
@@ -76,7 +76,7 @@ the currently rendered pixel height.
 `highlightMarks` is the concise chart-authoring facade. It can create the
 selection inline or reuse one:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`, `selected`. Resource selectors used here: `selection: "highestByOrigin"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program`, `selected` from that setup. It refers to `selection: "highestByOrigin"`.
 
 ```javascript
 const highlighted = program.highlightMarks({
@@ -151,7 +151,7 @@ references. It accepts a mark ID or a `{childPath, id}` target. Geometry is
 backend-neutral and has no raw graphic IDs. This supports direct picking and
 row-selection interfaces without adding hidden columns to the data.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "trends"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "trends"`.
 
 ```javascript
 program.highlightMarks({
@@ -179,7 +179,7 @@ Use `items` when a picker or list already identifies complete visual items. Keys
 come from `getMarkItems` or the interaction hit result; array positions and raw
 graphic IDs are not keys.
 
-> **Executable complete.** Run the complete ES module with its inline observations and public imports. Inspect the immutable selection resource after toggling its sole key.
+> **Runnable complete example.** Run the complete ES module with its inline observations and public imports. Inspect the immutable selection resource after toggling its sole key.
 
 ```javascript
 import { chart } from "ggaction";
@@ -219,7 +219,7 @@ Composite inspection reports each item's component `target`.
 
 Replace a stored selector while keeping its ID and mark target:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `highlighted`. Resource selectors used here: `selection: "highestByOrigin"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `highlighted` from that setup. It refers to `selection: "highestByOrigin"`.
 
 ```javascript
 const revised = highlighted.editMarkSelection({
@@ -237,7 +237,7 @@ ordinary baseline before the existing style is applied to the new keys.
 Remove only the graphical assignment while retaining reusable selection intent,
 or release both through the selection action:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `revised`. Resource selectors used here: `selection: "highestByOrigin"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `revised` from that setup. It refers to `selection: "highestByOrigin"`.
 
 ```javascript
 const selectedOnly = revised.removeMarkHighlight({
@@ -269,7 +269,7 @@ expression. Fields are read at the final item grain: a grouped path or aggregate
 must have one unique value for the referenced field. The expression does not
 match individual contributing rows behind that item.
 
-> **Executable complete.** Run the complete ES module with its inline observations and public chart import. The parameter edit raises the highlight threshold from 100 to 150 without changing the original program.
+> **Runnable complete example.** Run the complete ES module with its inline observations and public chart import. The parameter edit raises the highlight threshold from 100 to 150 without changing the original program.
 
 ```javascript
 import { chart } from "ggaction";
@@ -329,7 +329,7 @@ highlight appearance stay in their respective materialization configurations.
 Named selections can intersect final-item position channels. This complete module selects the
 observation at (15, 5):
 
-> **Executable complete.** Run this complete ES module with its inline observations and public import. The named region selects the observation at (15, 5).
+> **Runnable complete example.** Run this complete ES module with its inline observations and public import. The named region selects the observation at (15, 5).
 
 ```javascript
 import { chart } from "ggaction";

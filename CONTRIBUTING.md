@@ -104,3 +104,17 @@ state whether Browser Canvas, SVG, Node PNG, and vector PDF remain aligned.
 
 By contributing, you help make chart authoring more inspectable, traceable, and
 useful to everyone.
+
+## Prepare a release
+
+Record changes under `Unreleased` in `CHANGELOG.md` and commit the reviewed work.
+Set `NEXT_VERSION` to the agreed next release version (at least the current package version).
+Run `npm run release:prepare -- "$NEXT_VERSION" --dry-run` to preview version updates.
+Omit `--dry-run` to update versions, promote notes, and generate the release
+contract, documentation, and local notes. Review the Git diff. After committing
+runtime changes, rerun the command to refresh source provenance; existing notes
+and their date are preserved.
+
+Preparation does not commit, push, tag, publish, or deploy. Integration and required
+PR checks precede an annotated tag. The protected workflow verifies and publishes
+one candidate from that tag. Generation failures leave an unfinished diff to review.

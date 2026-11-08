@@ -8,8 +8,8 @@ title: Mark Selection and Highlighting Tutorial
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
 contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/mark-selection/program.js)
-used by the acceptance and PNG tests below.
+and the [program source](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/mark-selection/program.js)
+that draws the figures below.
 
 ## Complete program
 
@@ -20,8 +20,14 @@ Follow [Getting Started](../getting-started.md) to create a browser module and
 curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ site.data.provenance.exampleSourceRef }}/data/cars.json --output public/cars.json
 ```
 
-This complete point workflow matches the canonical program used for its image.
-The earlier snippets are alternatives for the matching point, bar, or line base.
+This complete point workflow draws the image above. The histogram and line
+sections below start from their own bar or line chart instead of this one.
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart, render } from "ggaction";
@@ -95,6 +101,12 @@ The selector runs at point-item grain. `groupBy: "Origin"` chooses one maximum
 Horsepower row per Origin; styling happens only after the three semantic items
 have been selected.
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.highlightMarks({
   target: "points",
@@ -124,6 +136,12 @@ separate. `channel: "y2"` compares the upper semantic endpoint. With
 `grain: "stack"`, every colored rectangle attached to the tallest bin is one
 selected item.
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "bars"`.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.highlightMarks({
   target: "bars",
@@ -148,6 +166,12 @@ topmost matching rectangle rather than the complete stack.
 
 A multi-row line is one series item. The selected field must therefore have
 one unique value over the complete path.
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "trends"`.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.highlightMarks({
@@ -174,6 +198,12 @@ remains fully readable.
 
 Create a reusable selection when more than one later action should refer to the
 same items:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "trends"`; `selection: "japanSeries"`.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const selected = program.selectMarks({

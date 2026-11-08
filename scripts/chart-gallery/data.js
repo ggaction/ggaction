@@ -26,10 +26,12 @@ export function localSource(filename, name) {
 export const repositoryRoot = fileURLToPath(root);
 
 export function snapshotSource(filename) {
-  const manifest = JSON.parse(readFileSync(new URL("./data/manifest.json", import.meta.url)));
-  const provenance = manifest[filename];
-  if (!provenance) throw new Error(`Unknown gallery snapshot: ${filename}`);
-  const bytes = readFileSync(new URL(`./data/${filename}`, import.meta.url));
+  const directories = [new URL("./data/", import.meta.url), new URL("data/showcase/", root)];
+  const directory = directories.find(candidate =>
+    Object.hasOwn(JSON.parse(readFileSync(new URL("manifest.json", candidate))), filename));
+  if (!directory) throw new Error(`Unknown gallery snapshot: ${filename}`);
+  const provenance = JSON.parse(readFileSync(new URL("manifest.json", directory)))[filename];
+  const bytes = readFileSync(new URL(filename, directory));
   if (createHash("sha256").update(bytes).digest("hex") !== provenance.sha256) throw new Error(`Gallery snapshot hash mismatch: ${filename}`);
   return {value: JSON.parse(bytes), provenance};
 }

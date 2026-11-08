@@ -13,7 +13,7 @@ inputs from an already encoded layer or accept both channel roles directly.
 
 ## `createErrorBar(options?)`
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const intervals = chart()
@@ -98,7 +98,7 @@ Use `encodeXOffset` or `encodeYOffset` when more than one estimate belongs to a
 category. An error bar inferred from that point layer reuses the offset field,
 scale, domain order, and padding automatically:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "estimates"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "estimates"`.
 
 ```javascript
 const grouped = chart()
@@ -122,7 +122,7 @@ parent-position-scale, offset-scale, or data changes.
 
 For a direct facade without a source layer, pass the matching offset explicitly:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createErrorBar({
@@ -142,7 +142,7 @@ Use an explicit interval definition when observations sit on a numeric x or y
 position. The `lower` and `upper` fields identify the interval axis, so the
 other quantitative channel remains the independent position:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const learningCurve = chart()
@@ -176,7 +176,7 @@ the ambiguity.
 
 ## Horizontal intervals
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const horizontal = chart()
@@ -192,7 +192,7 @@ This stores y/x/x2 encodings and creates vertical fixed-pixel caps.
 
 ## Existing interval fields
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const explicit = chart()
@@ -216,7 +216,7 @@ the interval-axis title unless a later guide action supplies another title.
 
 ## Inference from an encoded layer
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const overlay = chart()
@@ -264,7 +264,7 @@ Cap/join/miter values use the shared
 [Mark Style](../../../api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles)
 contract and replay across all generated Rule children.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `intervals`. Resource selectors used here: `data: "data"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `intervals` from that setup. It refers to `data: "data"`.
 
 ```javascript
 const styled = intervals.createErrorBar({
@@ -284,7 +284,7 @@ const styled = intervals.createErrorBar({
 
 Use the stable error-bar owner instead of editing generated cap layers:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `intervals`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `intervals` from that setup.
 
 ```javascript
 const edited = intervals.editErrorBar({

@@ -35,6 +35,12 @@ the standard browser module setup. Its local `program.js` performs the font
 resource and metric preparation described above; `host.js` registers and releases
 the exact requested font alias.
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Run inside the canonical font-assets example directory with program.js, host.js and a canvas element, using the Getting Started module setup.
+
+<!-- snippet-context:end -->
+
 ```js
 import { render, prepareFontRendering } from "ggaction";
 import { createFontExample } from "./program.js";

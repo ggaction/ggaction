@@ -38,7 +38,7 @@ the new chart is attached. Overlays and generated facet cells cannot be sources.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import chart from ggaction. This complete example includes all data and adds a full-width line below an existing pair using an explicit source panel.
+> **Runnable complete example.** Import chart from ggaction. This complete example includes all data and adds a full-width line below an existing pair using an explicit source panel.
 
 <!-- snippet-context:end -->
 
@@ -109,7 +109,7 @@ The Basic entry point and low-level primitives retain their original target cont
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `row`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `row` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -126,7 +126,7 @@ use its own retained parent to change the number of columns:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `faceted`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `faceted` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -150,7 +150,7 @@ header anchors are recomputed from the newly translated child plot bounds.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `faceted`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `faceted` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -189,7 +189,7 @@ still rejects `axes: "outer"`.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `matrix`. Resource selectors used here: `target: "plot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `matrix` from that setup. It refers to `target: "plot"`.
 
 <!-- snippet-context:end -->
 
@@ -225,7 +225,7 @@ the caller-owned program.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `revised`. Resource selectors used here: `target: "detail"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `revised` from that setup. It refers to `target: "detail"`.
 
 <!-- snippet-context:end -->
 
@@ -248,7 +248,7 @@ Facet cells are derived from one canonical source and cannot be replaced with
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `row`. Resource selectors used here: `target: "detail"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `row` from that setup. It refers to `target: "detail"`.
 
 <!-- snippet-context:end -->
 
@@ -317,7 +317,7 @@ Use `createLayerPlot` for independently computed plots over the same measurement
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Self-contained deterministic observations with shared measurement scales and independent native layers.
+> **Runnable complete example.** Self-contained deterministic observations with shared measurement scales and independent native layers.
 
 <!-- snippet-context:end -->
 

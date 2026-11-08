@@ -93,7 +93,7 @@ Explicit `legacy-bottom` retains its fixed Canvas anchors.
 one legend target exists; otherwise pass its mark ID. It accepts content, layout and appearance changes supported by the resulting
 legend kind. Mark encodings and scales stay unchanged.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 ~~~javascript
 program.editLegend({
@@ -138,7 +138,7 @@ Standalone size legends support `title`, `count`, `labels`, `titleStyle`, border
 and edge/corner layout through the same editing actions. On a Full program
 with an existing standalone size legend, this fragment edits its sampled content:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const edited = program.editLegend({
@@ -154,7 +154,7 @@ const restored = edited.editLegendTitle({ title: false })
 For continuous size, opacity, stroke-width, color-symbol and color/stroke-gradient legends, `values` replaces the
 automatic samples with exact values:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const exact = program.editLegend({ values: [10, 50, 100] });
@@ -202,7 +202,7 @@ space; visible content and borders must fit the Canvas.
 
 For a line or rule with an existing stroke-width legend (fragment):
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `weightedLines`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `weightedLines` from that setup.
 
 ```javascript
 weightedLines.editLegend({
@@ -218,7 +218,7 @@ Pass `channels` as the exact final content set for the entire target. This
 fragment requires a Full program with an existing legend and color, shape and
 size encodings on `points`:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 ```javascript
 const colorAndSize = program.editLegend({
@@ -281,7 +281,7 @@ Use `editLegendBlock()` when one mark has several legend blocks and an edit
 must apply to only one of them. Both selectors are required: `target` is the
 owning mark ID and `channel` identifies the logical block.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 ```javascript
 const edited = program.editLegendBlock({
@@ -316,7 +316,7 @@ and restore the current base style.
 Use `labelMap` on a categorical block to change reader-facing names while
 preserving the typed raw domain and block order:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 ```javascript
 const localized = program.editLegendBlock({
@@ -356,7 +356,7 @@ An omitted stroke retains the existing unoutlined sample.
 Focused actions avoid constructing nested `editLegend()` options when only one
 legend component should change:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 program
@@ -402,7 +402,7 @@ Legend label and title weights follow the shared
 `removeLegend()` removes every legend block associated with one mark, including
 combined categorical and size blocks. Mark encodings and scales remain.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 ```javascript
 const withoutLegend = program.removeLegend({ target: "points" });
@@ -413,7 +413,7 @@ legend owners require an explicit target.
 
 Pass `channels` to remove only the selected content:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 ```javascript
 const withoutSize = program.removeLegend({
@@ -483,7 +483,7 @@ visibility. Whole-content replacement preserves both retained blocks' settings.
 
 Continuous size blocks accept exact numeric display maps, including keys not currently sampled:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 ```js
 // Fragment: program already owns a continuous size legend on points.
@@ -501,7 +501,7 @@ reject this map. Values are compared exactly, so zero and negative zero are dupl
 
 Pass an even-length dash sequence on a legend border:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```js
 // Fragment: program already owns one legend.

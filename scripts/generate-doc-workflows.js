@@ -2,6 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { publicExamples } from "../examples/registry.js";
+import { generateDocShowcase } from "./generate-doc-showcase.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 export async function generateDocWorkflows({ check = false } = {}) {
@@ -22,5 +23,7 @@ export async function generateDocWorkflows({ check = false } = {}) {
   }
 }
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
+  // Showcase programs are canonical page programs too; one step refreshes both.
   await generateDocWorkflows({ check: process.argv.includes("--check") });
+  await generateDocShowcase({ check: process.argv.includes("--check") });
 }

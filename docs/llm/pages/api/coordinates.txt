@@ -40,7 +40,7 @@ or attached explicitly.
 | `layers` | array of existing layer IDs | `[]` |
 | `projection` | existing projection ID for Geo | existing binding, current or unique eligible projection |
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createCoordinate({
@@ -74,7 +74,7 @@ Basic accepts only native coordinate types.
 Use this complete-entry action to constrain the shape of an existing coordinate
 without changing the Canvas or its allocated plot rectangle.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "main"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "main"`.
 
 ```javascript
 const square = program.editCoordinate({
@@ -97,7 +97,7 @@ ggaction places the largest matching rectangle inside the current plot allocatio
 data unit. It requires a complete Cartesian coordinate whose active layers all
 share one quantitative linear x/y scale pair:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "main"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "main"`.
 
 ```javascript
 const equalUnits = program.editCoordinate({
@@ -113,7 +113,7 @@ must already agree with the requested effective bounds.
 
 Use `aspect: "auto"` to remove the constraint:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `equalUnits`. Resource selectors used here: `target: "main"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `equalUnits` from that setup. It refers to `target: "main"`.
 
 ```javascript
 const automatic = equalUnits.editCoordinate({
@@ -127,7 +127,7 @@ The action is available from `ggaction` and is absent from `ggaction/basic`.
 For a Polar coordinate, `polarFrame` moves the center and constrains the radial
 extent relative to the aspect-adjusted effective bounds:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `polarProgram`. Resource selectors used here: `target: "polar"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `polarProgram` from that setup. It refers to `target: "polar"`.
 
 ```javascript
 const movedPolar = polarProgram.editCoordinate({
@@ -162,7 +162,7 @@ remain smaller than the outer radius.
 
 Full programs can remove an unattached named coordinate with an explicit ID:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const cleaned = program.removeCoordinate({ id: "temporaryFrame" });

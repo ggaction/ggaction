@@ -181,8 +181,7 @@ code, access arbitrary files, make network requests, require an account, or
 collect telemetry.
 
 [Set up the local MCP server](https://ggaction.github.io/ggaction/mcp/) ·
-[Inspect the benchmark record](./benchmarks/llm-authoring-v1/) ·
-[Read the complete evaluation report](./agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[Inspect the benchmark record](./benchmarks/llm-authoring-v1/)
 
 ## What it supports
 
@@ -230,6 +229,8 @@ browser DOM to draw.
 ## Documentation
 
 - [Getting Started](https://ggaction.github.io/ggaction/getting-started/)
+- [Chart Gallery](https://ggaction.github.io/ggaction/gallery/)
+- [Make a Chart Interactive](https://ggaction.github.io/ggaction/tutorials/interactive-chart/)
 - [Tutorials and Examples](https://ggaction.github.io/ggaction/tutorials/)
 - [Action Reference](https://ggaction.github.io/ggaction/reference/actions/)
 - [Local MCP for LLM Chart Authoring](https://ggaction.github.io/ggaction/mcp/)
@@ -267,17 +268,3 @@ For extension authors, the installed package includes `node_modules/ggaction/kno
 ## Related Links
 
 - Action-trace demo: [Link](https://ggactionbot.github.io/action-trace-demo/)
-
-### Prepare a release
-
-Record changes under `Unreleased` in `CHANGELOG.md` and commit the reviewed work.
-Set `NEXT_VERSION` to the agreed next release version (at least the current package version).
-Run `npm run release:prepare -- "$NEXT_VERSION" --dry-run` to preview version updates.
-Omit `--dry-run` to update versions, promote notes, and generate the release
-contract, documentation, and local notes. Review the Git diff. After committing
-runtime changes, rerun the command to refresh source provenance; existing notes
-and their date are preserved.
-
-Preparation does not commit, push, tag, publish, or deploy. Integration and required
-PR checks precede an annotated tag. The protected workflow verifies and publishes
-one candidate from that tag. Generation failures leave an unfinished diff to review.

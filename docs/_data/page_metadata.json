@@ -9,7 +9,7 @@
     "title": "Getting Started",
     "source": "docs/getting-started.md",
     "editSource": "docs/getting-started.md",
-    "description": "This walkthrough installs ggaction, creates a complete scatterplot from an inline dataset, and renders it to Browser Canvas.",
+    "description": "This walkthrough draws the scatterplot above from 392 real car models, changes it, and saves it as an image. It takes about ten minutes.",
     "image": "/assets/images/getting-started.png"
   },
   "/mcp/": {
@@ -36,25 +36,32 @@
     "editSource": "docs/tutorials/scatterplot.md",
     "description": "This tutorial uses the public npm package. The repository also contains a runnable browser example and its canonical program."
   },
+  "/tutorials/interactive-chart/": {
+    "title": "Make a Chart Interactive",
+    "source": "docs/tutorials/interactive-chart.md",
+    "editSource": "docs/tutorials/interactive-chart.md",
+    "description": "Build a Gapminder bubble chart in a web page, add tooltips, brushing and legend toggles, and animate it through fifty years.",
+    "image": "/assets/images/gapminder-bubbles.png"
+  },
   "/tutorials/polar-points/": {
     "title": "Polar Point Tutorial",
     "source": "docs/tutorials/polar-points.md",
     "editSource": "docs/tutorials/polar-points.md",
-    "description": "This tutorial maps car acceleration to angle, horsepower to distance from the center, and origin to color.",
+    "description": "Polar charts in three steps: points and guides · lines and radar charts · pie, donut, rose, and radial bar charts.",
     "image": "/assets/images/cars-polar-scatterplot.png"
   },
   "/tutorials/polar-lines/": {
     "title": "Polar Line and Radar Tutorial",
     "source": "docs/tutorials/polar-lines.md",
     "editSource": "docs/tutorials/polar-lines.md",
-    "description": "Polar line marks use the same encodeTheta and encodeR actions as Polar points. The line stays open by default; closed: true turns each grouped series into a radar path.",
+    "description": "Polar charts in three steps: points and guides · lines and radar charts · pie, donut, rose, and radial bar charts.",
     "image": "/assets/images/gapminder-polar-trends.png"
   },
   "/tutorials/polar-arcs/": {
     "title": "Polar Arc Tutorial",
     "source": "docs/tutorials/polar-arcs.md",
     "editSource": "docs/tutorials/polar-arcs.md",
-    "description": "Arc marks turn Polar positions into closed sector paths. Map a quantitative theta field directly to proportional sectors, aggregate categorical theta by count or weighted sum, or…",
+    "description": "Polar charts in three steps: points and guides · lines and radar charts · pie, donut, rose, and radial bar charts.",
     "image": "/assets/images/pie-plot.png"
   },
   "/tutorials/line-chart/": {
@@ -73,7 +80,8 @@
     "title": "Bar Chart Tutorial",
     "source": "docs/tutorials/grouped-bar.md",
     "editSource": "docs/tutorials/grouped-bar.md",
-    "description": "This tutorial uses a grouped bar chart as one concrete bar chart layout. It aggregates job percentages by year and places the mean for men and women side by side."
+    "description": "This tutorial uses a grouped bar chart as one concrete bar chart layout. It aggregates job percentages by year and places the mean for men and women side by side.",
+    "image": "/assets/images/cars-mpg-bars.png"
   },
   "/tutorials/regression-scatterplot/": {
     "title": "Regression Scatterplot Tutorial",
@@ -125,14 +133,14 @@
     "source": "docs/tutorials/endpoint-plots.md",
     "editSource": "examples/dumbbell-plot/program.js",
     "description": "These three Full entry actions share one categorical endpoint model. Each starts from immutable rows and produces ordinary point and rule children, so existing mark, scale, label,…",
-    "image": "/assets/images/dumbbell-plot.png"
+    "image": "/assets/images/life-expectancy-dumbbell.png"
   },
   "/tutorials/ecdf/": {
     "title": "Empirical Cumulative Distribution Plots",
     "source": "docs/tutorials/ecdf.md",
     "editSource": "examples/ecdf-plot/program.js",
     "description": "An empirical cumulative distribution function answers: “What share of the observations is less than or equal to this value?” createECDFPlot owns that statistical definition and…",
-    "image": "/assets/images/ecdf-plot.png"
+    "image": "/assets/images/cars-mpg-ecdf.png"
   },
   "/recipes/": {
     "title": "Chart Recipes",
@@ -165,35 +173,35 @@
     "title": "Scatterplot Recipe",
     "source": "docs/recipes/scatterplot.md",
     "editSource": "docs/recipes/scatterplot.md",
-    "description": "Add color: \"group\", size: \"amount\", or shape: \"category\" to the same call for field driven appearance. The default point radius is 3.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/recipes/line-chart/": {
     "title": "Line Chart Recipe",
     "source": "docs/recipes/line-chart.md",
     "editSource": "docs/recipes/line-chart.md",
-    "description": "For multiple series, add color: \"group\", groupBy: \"group\", or strokeDash: { field: \"group\" } to the facade call.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/recipes/histogram/": {
     "title": "Histogram Recipe",
     "source": "docs/recipes/histogram.md",
     "editSource": "docs/recipes/histogram.md",
-    "description": "Add color: { field: \"group\", layout: \"stack\" } to the createHistogram options.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-histogram.png"
   },
   "/recipes/bar-chart/": {
     "title": "Bar Chart Recipe",
     "source": "docs/recipes/bar-chart.md",
     "editSource": "docs/recipes/bar-chart.md",
-    "description": "The current complete bar chart example uses grouped bars. Grouping is a layout choice inside the bar chart, not a separate top level chart type.",
-    "image": "/assets/images/jobs-grouped-bar.png"
+    "description": "This recipe draws average fuel economy for each cylinder count, with one bar per region of origin.",
+    "image": "/assets/images/cars-mpg-bars.png"
   },
   "/recipes/heatmap/": {
     "title": "Heatmap Recipe",
     "source": "docs/recipes/heatmap.md",
     "editSource": "docs/recipes/heatmap.md",
-    "description": "This mode derives rectangular x/y bounds and a count for each cell. It emits the complete grid by default, including zero count cells.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
     "image": "/assets/images/gapminder-life-expectancy-heatmap.png"
   },
   "/recipes/regression-scatterplot/": {
@@ -207,63 +215,63 @@
     "title": "Density Area Recipe",
     "source": "docs/recipes/density-area.md",
     "editSource": "docs/recipes/density-area.md",
-    "description": "Use createGuides({ grid: { horizontal: {}, vertical: {} } }) for both grid directions.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-density-area.png"
   },
   "/recipes/horizon/": {
     "title": "Horizon Chart Recipe",
     "source": "docs/recipes/horizon.md",
     "editSource": "docs/recipes/horizon.md",
-    "description": "values contains finite numeric value and ordered numeric or ISO date time values, with one observation per time. For example, use monthly dates such as \"2024 01 01\".",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
     "image": "/assets/images/gapminder-horizon.png"
   },
   "/recipes/error-bar/": {
     "title": "Error Bar Recipe",
     "source": "docs/recipes/error-bar.md",
     "editSource": "docs/recipes/error-bar.md",
-    "description": "When one compatible layer is already encoded, call createErrorBar() without options to reuse its fields, data, coordinate, and scales.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-error-bar.png"
   },
   "/recipes/error-band/": {
     "title": "Error Band Recipe",
     "source": "docs/recipes/error-band.md",
     "editSource": "docs/recipes/error-band.md",
-    "description": "values contains ISO date strings in time, finite numbers in value, and non empty series names.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
     "image": "/assets/images/gapminder-error-band.png"
   },
   "/recipes/box-plot/": {
     "title": "Box Plot Recipe",
     "source": "docs/recipes/box-plot.md",
     "editSource": "docs/recipes/box-plot.md",
-    "description": "Use whisker: { type: \"minmax\" } for observed minimum and maximum whiskers without an outlier layer.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-box-plot.png"
   },
   "/recipes/violin-plot/": {
     "title": "Violin Plot Recipe",
     "source": "docs/recipes/violin-plot.md",
     "editSource": "docs/recipes/violin-plot.md",
-    "description": "Add color: \"category\" for category fills. Use split: { field } when the field has exactly two values, or provide an explicit two value domain when side assignment must be stable…",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-acceleration-violins.png"
   },
   "/recipes/composition/": {
     "title": "Composition Recipe",
     "source": "docs/recipes/composition.md",
     "editSource": "docs/recipes/composition.md",
-    "description": "pointRows and barRows are arrays of plain row objects containing the named fields. Every child must already have one complete materialized Canvas.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/program-composition.png"
   },
   "/recipes/facet/": {
     "title": "Facet Recipe",
     "source": "docs/recipes/facet.md",
     "editSource": "docs/recipes/facet.md",
-    "description": "cars is an array of plain row objects containing the encoded fields and Origin. Facet values retain source first appearance order.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-origin-scatterplot-facet.png"
   },
   "/recipes/parallel-coordinates/": {
     "title": "Parallel Coordinates Recipe",
     "source": "docs/recipes/parallel-coordinates.md",
     "editSource": "docs/recipes/parallel-coordinates.md",
-    "description": "cars is an array of plain row objects. Every eligible row becomes one open path across the ordered dimensions.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-parallel-coordinates.png"
   },
   "/recipes/rose-chart/": {
@@ -277,21 +285,21 @@
     "title": "Gradient Plot Recipe",
     "source": "docs/recipes/gradient-plot.md",
     "editSource": "docs/recipes/gradient-plot.md",
-    "description": "cars contains plain rows with non empty categorical Origin and finite numeric Acceleration.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "image": "/assets/images/cars-gradient-plot.png"
   },
   "/recipes/annotations/": {
     "title": "Annotation Recipe",
     "source": "docs/recipes/annotations.md",
     "editSource": "docs/recipes/annotations.md",
-    "description": "films is an array of plain row objects containing the two position fields and the label field.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve imdb selected.json from the site root.",
     "image": "/assets/images/annotated-imdb-scatterplot.png"
   },
   "/recipes/path-ordering/": {
     "title": "Path Ordering Recipe",
     "source": "docs/recipes/path-ordering.md",
     "editSource": "docs/recipes/path-ordering.md",
-    "description": "observations is an array of plain row objects. Source rows may be shuffled; the order field controls vertices independently inside each color/group series.",
+    "description": "Runnable complete example. Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
     "image": "/assets/images/gapminder-development-trajectories.png"
   },
   "/troubleshooting/": {
@@ -351,7 +359,7 @@
     "title": "Source and Derived Data",
     "source": "docs/api/data/source-and-derived.md",
     "editSource": "docs/api/data/source-and-derived.md",
-    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section.",
+    "description": "Fragment. Not a complete program: it continues the setup described in this section.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/data/filtering/": {
@@ -484,6 +492,13 @@
     "description": "Use createViolinPlot to compare kernel density profiles inside categorical bands.",
     "image": "/assets/images/cars-acceleration-violins.png"
   },
+  "/api/distribution-plots/": {
+    "title": "Distribution Plots",
+    "source": "docs/api/distribution-plots.md",
+    "editSource": "docs/api/distribution-plots.md",
+    "description": "Show every observation, its density, and its summary with strip, beeswarm, and raincloud plots.",
+    "image": "/assets/images/penguin-mass-raincloud.png"
+  },
   "/api/guides/": {
     "title": "Guides",
     "source": "docs/api/guides.md",
@@ -509,15 +524,14 @@
     "title": "Animate and Export Chart Frames",
     "source": "docs/api/animation.md",
     "editSource": "docs/api/animation.md",
-    "description": "Prepare a transition between two immutable charts, sample it at an explicit time, and pass the returned frame directly to Canvas, SVG, PNG, or PDF.",
-    "image": "/assets/images/cars-scatterplot.png"
+    "description": "Prepare a transition between two immutable charts, sample it at an explicit time, and pass the returned frame directly to Canvas, SVG, PNG, or PDF."
   },
   "/api/live/": {
     "title": "Live Charts",
     "source": "docs/api/live.md",
     "editSource": "docs/api/live.md",
     "description": "ggaction/live is the shortest path to an interactive chart in a browser.",
-    "image": "/assets/images/cars-scatterplot.png"
+    "image": "/assets/images/gapminder-bubbles.png"
   },
   "/api/interaction/": {
     "title": "Interaction Sessions",
@@ -551,21 +565,21 @@
     "title": "Quantitative Positions",
     "source": "docs/api/position/quantitative.md",
     "editSource": "docs/api/position/quantitative.md",
-    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section.",
+    "description": "Fragment. Not a complete program: it continues the setup described in this section.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/position/temporal/": {
     "title": "Temporal Line Positions",
     "source": "docs/api/position/temporal.md",
     "editSource": "docs/api/position/temporal.md",
-    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: program.",
+    "description": "Fragment. Not a complete program: it continues the setup described in this section. It uses program from that setup.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/position/ordinal-bars/": {
     "title": "Ordinal Bar Positions",
     "source": "docs/api/position/ordinal-bars.md",
     "editSource": "docs/api/position/ordinal-bars.md",
-    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: program.",
+    "description": "Fragment. Not a complete program: it continues the setup described in this section. It uses program from that setup.",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
   "/api/position/category-ordering/": {
@@ -586,7 +600,7 @@
     "title": "Ordinal Offsets",
     "source": "docs/api/position/offsets.md",
     "editSource": "docs/api/position/offsets.md",
-    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: program.",
+    "description": "Fragment. Not a complete program: it continues the setup described in this section. It uses program from that setup.",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
   "/api/series-encodings/": {
@@ -1134,13 +1148,14 @@
     "source": "docs/tutorials/flows.md",
     "editSource": "examples/flow-layouts/program.js",
     "description": "Build a Sankey diagram from explicit node and edge tables, including cyclic feedback.",
-    "image": "/assets/images/flow-layouts.png"
+    "image": "/assets/images/penguin-sankey.png"
   },
   "/api/geometry/": {
     "title": "Geometry and Projections",
     "source": "docs/api/geometry.md",
     "editSource": "docs/api/geometry.md",
-    "description": "Keep geographic or planar shapes in an immutable resource with explicit feature identity."
+    "description": "Draw maps from GeoJSON or TopoJSON: country shapes colored by a value, points placed by longitude and latitude, routes, graticules and annotations.",
+    "image": "/assets/images/world-gdp-map.png"
   },
   "/api/contours/": {
     "title": "Contours and Two-Dimensional Density",
@@ -1154,7 +1169,7 @@
     "source": "docs/tutorials/contours.md",
     "editSource": "examples/contours/program.js",
     "description": "A scalar grid states where measurements were sampled. Contours interpolate the boundaries between those samples.",
-    "image": "/assets/images/contours.png"
+    "image": "/assets/images/penguin-density-contours.png"
   },
   "/tutorials/responsive-guides/": {
     "title": "Fit Labels Inside a Fixed Canvas",
@@ -1175,7 +1190,7 @@
     "source": "docs/tutorials/calendar.md",
     "editSource": "examples/calendar/program.js",
     "description": "A calendar makes each civil day a stable location. This example uses the 366 days of 2024, then leaves every fifth observation absent.",
-    "image": "/assets/images/calendar.png"
+    "image": "/assets/images/us-births-calendar.png"
   },
   "/tutorials/nested-responsive/": {
     "title": "Arrange Nested Panels with Shared Guides",
@@ -1217,7 +1232,7 @@
     "source": "docs/tutorials/ohlc.md",
     "editSource": "examples/ohlc/program.js",
     "description": "Keep each observation's four prices together. A high low stem and an open close body are one chart item, so selecting either part selects the same source row.",
-    "image": "/assets/images/ohlc.png"
+    "image": "/assets/images/ibm-candlesticks.png"
   },
   "/api/waterfall/": {
     "title": "Waterfall Plots",
@@ -1231,7 +1246,7 @@
     "source": "docs/tutorials/waterfall.md",
     "editSource": "examples/waterfall/program.js",
     "description": "Declare each row's role so its effect on the running balance is explicit.",
-    "image": "/assets/images/waterfall.png"
+    "image": "/assets/images/temperature-waterfall.png"
   },
   "/api/trail/": {
     "title": "Trail Plots",
@@ -1245,7 +1260,7 @@
     "source": "docs/tutorials/trail.md",
     "editSource": "examples/trail/program.js",
     "description": "Keep position and sample width separate. These two signals have constant vertical positions while the first ribbon widens and the second narrows.",
-    "image": "/assets/images/trail.png"
+    "image": "/assets/images/gapminder-life-trails.png"
   },
   "/api/table/": {
     "title": "Table Plots",
@@ -1259,6 +1274,6 @@
     "source": "docs/tutorials/table.md",
     "editSource": "examples/table/program.js",
     "description": "Keep a source row's name, value and ordered observations together. The amount uses both an exact number and a bar.",
-    "image": "/assets/images/table.png"
+    "image": "/assets/images/gapminder-country-table.png"
   }
 }

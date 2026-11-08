@@ -17,7 +17,7 @@ Create reusable aggregate rows without tying the calculation to a chart type:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "sales"`.
 
 <!-- snippet-context:end -->
 
@@ -104,7 +104,7 @@ labels, or several charts:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "people"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "people"`.
 
 <!-- snippet-context:end -->
 
@@ -143,7 +143,7 @@ column per category. For the exact contract, see
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** The complete snippet imports chart and declares its input rows.
+> **Runnable complete example.** The complete snippet imports chart and declares its input rows.
 
 <!-- snippet-context:end -->
 
@@ -196,7 +196,7 @@ Turn selected fields in a wide dataset into reusable key/value rows:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "fruitWide"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "fruitWide"`.
 
 <!-- snippet-context:end -->
 
@@ -230,7 +230,7 @@ Materialize stack geometry once and reuse it across ranged marks and labels:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "sales"`.
 
 <!-- snippet-context:end -->
 
@@ -264,7 +264,7 @@ arrays pad with `null`; this is not a Cartesian product. Raw ancestor records re
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -307,7 +307,7 @@ Keep two tables separate and copy selected reference fields using a typed key:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: "people"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `data: "people"`.
 
 <!-- snippet-context:end -->
 

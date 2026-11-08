@@ -75,7 +75,7 @@ areas, signed values, duplicate group/x rows, or missing positions.
 
 ## Polar positions
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 program
@@ -111,7 +111,7 @@ On an Arc mark with categorical theta, `encodeR` can aggregate a measure per
 category and encode either annular area or radial length. This fragment assumes
 `program` already has data with `category` and non-negative numeric `value` fields:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 program
@@ -153,7 +153,7 @@ one of `field` or `datum`. Datum-only rules infer finite numbers as quantitative
 and other supported scalar values as nominal. Field rules, temporal data, and
 ambiguous values require an explicit `fieldType`:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 program

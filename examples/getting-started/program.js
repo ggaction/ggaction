@@ -1,24 +1,23 @@
-import { chart } from "../../src/basic.js";
+import { chart } from "../../src/index.js";
 
-export const cars = [
-  { horsepower: 88, mpg: 27, origin: "USA" },
-  { horsepower: 70, mpg: 36, origin: "Japan" },
-  { horsepower: 110, mpg: 24, origin: "Europe" }
-];
+// The rows of data/cars.json: 406 car models from 1970–1982.
+export function createGettingStartedChart(cars) {
+  const measured = cars.filter(car =>
+    Number.isFinite(car.Horsepower) && Number.isFinite(car.Miles_per_Gallon));
 
-export function createGettingStartedChart() {
   return chart()
     .createCanvas({
       width: 640,
       height: 400,
       margin: { top: 30, right: 130, bottom: 60, left: 70 }
     })
-    .createData({ values: cars })
+    .createData({ values: measured })
     .createScatterPlot({
-      x: "horsepower",
-      y: "mpg",
-      color: "origin",
-      shape: "origin",
+      id: "cars",
+      x: "Horsepower",
+      y: "Miles_per_Gallon",
+      color: "Origin",
+      shape: "Origin",
       guides: {
         axes: {
           x: { title: { text: "Horsepower" } },

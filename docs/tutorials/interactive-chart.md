@@ -1,0 +1,214 @@
+---
+layout: default
+title: Make a Chart Interactive
+description: Build a Gapminder bubble chart in a web page, add tooltips, brushing and legend toggles, and animate it through fifty years.
+---
+
+# Make a Chart Interactive
+
+![Gapminder bubble chart animating from 1955 to 2005 as countries move toward lower fertility and longer lives](../assets/images/gapminder-bubbles-animation.gif){: loading="eager" width="820" height="500" }
+
+This tutorial builds the chart above in a web page. You will draw it once,
+then add a tooltip, hover highlighting, brush selection and legend toggles,
+and finally play it through fifty years of data. It uses `ggaction/live`,
+which redraws the page for you after every call.
+
+## 1. Set up a page
+
+Create a Vite project, install ggaction, and download the Gapminder rows into
+the folder that Vite serves as-is:
+
+```bash
+npm create vite@latest bubbles -- --template vanilla
+cd bubbles
+npm install ggaction
+curl -o public/gapminder.json https://raw.githubusercontent.com/ggaction/ggaction/main/data/gapminder.json
+npm run dev
+```
+
+Each row is one country in one year, for example
+`{ "year": 2005, "country": "Japan", "cluster": 4, "pop": 127417244, "life_expect": 82.6, "fertility": 1.27 }`.
+`cluster` is a region number from 0 to 5.
+
+## 2. Draw the chart
+
+Replace `index.html` and `main.js` with the two files below. The page holds a
+`<canvas>`, a play button and a line of text for the current selection.
+
+## Complete program
+
+```html
+<button id="play" type="button">Play 1955–2005</button>
+<p id="selected">Drag across the chart to select countries.</p>
+<canvas id="chart" aria-label="Gapminder bubble chart"></canvas>
+```
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use this section's HTML and JavaScript together in a Vite project with ggaction installed and public/gapminder.json downloaded.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction/live";
+
+const REGIONS = ["South Asia", "Europe & Central Asia", "Sub-Saharan Africa", "Americas",
+  "East Asia & Pacific", "Middle East & North Africa"];
+const rows = await fetch("/gapminder.json").then(response => response.json());
+const countries = year => rows
+  .filter(row => row.year === year)
+  .map(row => ({ ...row, region: REGIONS[row.cluster] }));
+
+const bubbles = chart()
+  .addCanvas(document.querySelector("#chart"))
+  .createCanvas({ width: 820, height: 500, margin: { top: 70, right: 220, bottom: 60, left: 70 } })
+  .createData({ id: "countries", keyField: "country", values: countries(1955) })
+  .createScatterPlot({
+    id: "bubbles",
+    x: { field: "fertility", scale: { domain: [0, 9], nice: false } },
+    y: { field: "life_expect", scale: { domain: [20, 85], nice: false } },
+    color: { field: "region", scale: { domain: REGIONS } },
+    size: { field: "pop", scale: { domain: [0, 1.4e9], range: [8, 1600] } },
+    point: { opacity: 0.8, stroke: "#ffffff", strokeWidth: 0.6 },
+    guides: {
+      axes: {
+        x: { title: { text: "Births per woman" } },
+        y: { title: { text: "Life expectancy (years)" } }
+      },
+      legend: { channels: ["color"], title: "Region" }
+    }
+  })
+  .createTitle({ text: "Health and family size, 1955", subtitle: "Bubble area is population" })
+  .addTooltip({ fields: ["country", "life_expect", "fertility"] })
+  .addHover()
+  .addBrush()
+  .addLegendToggle();
+
+bubbles.on("select", event => {
+  const selected = event.selected.bubbles ?? [];
+  document.querySelector("#selected").textContent = selected.length
+    ? `Selected: ${selected.map(row => row.country).join(", ")}`
+    : "Drag across the chart to select countries.";
+});
+
+document.querySelector("#play").addEventListener("click", async () => {
+  for (let year = 1960; year <= 2005; year += 5) {
+    await bubbles.setData(countries(year), { duration: 700 });
+    bubbles.editTitle({ text: `Health and family size, ${year}` });
+  }
+});
+
+const program = bubbles.program;
+```
+
+Open the page that `npm run dev` prints. The chart appears at once because
+`addCanvas` attached it before the first chart action.
+
+## 3. What each interaction does
+
+- `addTooltip({ fields })` shows those fields next to the bubble under the
+  pointer.
+- `addHover()` rings the bubble under the pointer.
+- `addBrush()` selects the bubbles inside a dragged rectangle and dims the
+  rest. The `select` event receives `event.selected.bubbles`, an array of the
+  selected rows' fields, keyed by the mark ID `"bubbles"`.
+- `addLegendToggle()` hides a region when you click its legend entry. The
+  axes keep their full range, so the remaining bubbles do not jump.
+
+## 4. Animate the data
+
+`setData` replaces the rows and animates from the old positions to the new
+ones. Two choices in this program make that motion readable:
+
+- `keyField: "country"` gives every row a stable identity. Without it, the
+  chart cannot tell that Japan in 1960 is Japan in 1955, so bubbles fade out
+  and in instead of moving.
+- The fixed x, y and size domains keep the axes still while the data changes.
+
+`setData` always replaces the data the chart currently draws. The equivalent
+immutable program, `createGapminderBubbleYears` below, revises one dataset
+after another; there each `reviseData` must name the previous revision as its
+`source`, or the bubbles keep the earlier rows.
+
+## 5. Save the result
+
+Call `bubbles.download("png")` or `bubbles.download("svg")` from a button to
+save the current view. `bubbles.program` is an ordinary immutable chart, so
+you can also render it on a server with `renderToPNG` from `ggaction/png`.
+
+## The same chart without live updates
+
+<!-- showcase-program:gapminder-bubbles:start -->
+
+{% include chart-example.html id="gapminder-bubbles" %}
+
+`createGapminderBubbles` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// Gapminder's six regional clusters, in cluster-number order.
+export const REGIONS = ["South Asia", "Europe & Central Asia", "Sub-Saharan Africa", "Americas",
+  "East Asia & Pacific", "Middle East & North Africa"];
+
+export function gapminderCountries(gapminder, year) {
+  return gapminder
+    .filter(row => row.year === year)
+    .map(row => ({ ...row, region: REGIONS[row.cluster] }));
+}
+
+// Fixed domains keep the axes still while the data changes year by year.
+export const bubbleOptions = {
+  id: "bubbles",
+  x: { field: "fertility", scale: { domain: [0, 9], nice: false } },
+  y: { field: "life_expect", scale: { domain: [20, 85], nice: false } },
+  color: { field: "region", scale: { domain: REGIONS } },
+  size: { field: "pop", scale: { domain: [0, 1.4e9], range: [8, 1600] } },
+  point: { opacity: 0.8, stroke: "#ffffff", strokeWidth: 0.6 },
+  guides: {
+    axes: {
+      x: { title: { text: "Births per woman" } },
+      y: { title: { text: "Life expectancy (years)" } }
+    },
+    legend: { channels: ["color"], title: "Region" }
+  }
+};
+
+export function createGapminderBubbles(gapminder, year = 2005) {
+  return chart()
+    .createCanvas({ width: 820, height: 500, margin: { top: 70, right: 220, bottom: 60, left: 70 } })
+    .createData({ id: "countries", keyField: "country", values: gapminderCountries(gapminder, year) })
+    .createScatterPlot(bubbleOptions)
+    .createTitle({ text: `Health and family size, ${year}`, subtitle: "Bubble area is population · 62 Gapminder countries" });
+}
+
+// One program per year. Each revision names the dataset it replaces, so the
+// rows keep their country keys and the bubbles move instead of fading.
+export function createGapminderBubbleYears(gapminder) {
+  const years = [...new Set(gapminder.map(row => row.year))].sort((a, b) => a - b);
+  const programs = [createGapminderBubbles(gapminder, years[0])];
+  for (const [index, year] of years.slice(1).entries()) {
+    programs.push(programs.at(-1)
+      .reviseData({
+        source: index === 0 ? "countries" : `countries-${years[index]}`,
+        id: `countries-${year}`,
+        values: gapminderCountries(gapminder, year)
+      })
+      .editTitle({ text: `Health and family size, ${year}` }));
+  }
+  return programs;
+}
+```
+
+<!-- showcase-program:gapminder-bubbles:end -->
+
+## Related
+
+- [Live charts](../api/live.md) lists every live method, including zoom,
+  lasso, sliders and linked charts.
+- [Interaction sessions](../api/interaction.md) give you the same interactions
+  when you want to keep each state as an immutable program and draw it
+  yourself.
+- [Animation](../api/animation.md) plans, samples and exports transitions
+  between any two charts.

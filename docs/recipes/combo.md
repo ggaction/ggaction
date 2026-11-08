@@ -22,6 +22,12 @@ Run this entry beside the canonical [program.js](https://github.com/ggaction/gga
 after installing ggaction and replacing its source import with
 `import { chart } from "ggaction"`.
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart and the linked example support modules.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { render } from "ggaction";
 import { createLinkedOverlay } from "./program.js";

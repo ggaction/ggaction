@@ -4,6 +4,8 @@
 
 Use `createHorizonPlot` to author signed bands and the original x axis in one action:
 
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
 ```javascript
 import { chart } from "ggaction";
 
@@ -25,7 +27,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](../../../assets/images/gapminder-horizon.png)
@@ -36,10 +38,12 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/gapminder-horizon/program.js).
 
 ## Complete program
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
 
 ```javascript
 import { chart, render } from "ggaction";
@@ -88,6 +92,8 @@ amplitude rather than the original life-expectancy values, Horizon guide policy
 creates only the original x axis and grid and no automatic legend.
 
 ## Revise without mutation
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const revised = program.editHorizon({

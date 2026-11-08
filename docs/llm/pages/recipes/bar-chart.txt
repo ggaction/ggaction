@@ -1,22 +1,32 @@
 # Bar Chart Recipe
 
-The current complete bar-chart example uses grouped bars. Grouping is a layout
-choice inside the bar chart, not a separate top-level chart type.
+This recipe draws average fuel economy for each cylinder count, with one bar
+per region of origin. Grouping is a layout choice inside the bar chart, not a
+separate chart type: remove `color` for one bar per category, or use
+`layout: "stack"` to stack the regions.
 
 ## Minimal grouped flow
 
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
+
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car =>
+  Number.isFinite(car.Miles_per_Gallon) && [4, 6, 8].includes(car.Cylinders));
 
 const program = chart()
   .createCanvas({ margin: { right: 140 } })
   .createData({ values })
   .createBarPlot({
-    x: { field: "category", fieldType: "ordinal" },
-    y: { field: "value", aggregate: "mean" },
-    color: { field: "group", layout: "group" },
+    x: { field: "Cylinders", fieldType: "ordinal", scale: { domain: [4, 6, 8] } },
+    y: { field: "Miles_per_Gallon", aggregate: "mean" },
+    color: { field: "Origin", layout: "group" },
     width: { band: 0.72 }
   });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide

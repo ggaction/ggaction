@@ -2,24 +2,34 @@
 
 ## Pre-gridded flow
 
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.
+
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const gapminder = await fetch("/gapminder.json").then(response => response.json());
+const countries = ["Afghanistan", "Brazil", "China", "India", "Japan", "United States"];
+const values = gapminder.filter(row => countries.includes(row.country));
 
 const program = chart()
-  .createCanvas({ margin: { right: 120 } })
-  .createData({ values: cells })
+  .createCanvas({ margin: { right: 120, left: 110 } })
+  .createData({ values })
   .createHeatmap({
-    x: { field: "column", fieldType: "ordinal" },
-    y: { field: "row", fieldType: "nominal" },
+    x: { field: "year", fieldType: "ordinal" },
+    y: { field: "country", fieldType: "nominal" },
     color: {
-      field: "value",
+      field: "life_expect",
       fieldType: "quantitative",
       scale: { type: "sequential", palette: "viridis" }
     }
   });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## Raw-row binned flow
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -58,6 +68,8 @@ and a `Count` legend. It disables separate chart grid lines unless requested.
 
 Use `rect: { opacity, stroke, strokeWidth }` for cell appearance. Cell fill is
 owned by the required color encoding. The following continuation applies only to the **pre-gridded flow** above, whose source rows contain `value`. Set `program` to that branch; the raw-row binned branch owns generated count data and cannot use this source-field label:
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const labeled = program

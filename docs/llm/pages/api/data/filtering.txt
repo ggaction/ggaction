@@ -4,7 +4,7 @@
 
 Create a named derived dataset without replacing or mutating its source.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const selected = chart()
@@ -38,7 +38,7 @@ Comparison operators are `"eq"`, `"neq"`, `"lt"`, `"lte"`, `"gt"`, and
 require both values to be finite numbers or both to be strings; incompatible or
 missing field values are omitted. String order is lexicographic.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const powerfulCars = chart()
@@ -60,7 +60,7 @@ endpoints must have compatible ordered types, and `min` cannot exceed `max`.
 property `inclusive` sets both endpoints together, but cannot be combined with
 either endpoint-specific property. An empty result is valid.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "cars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "cars"`.
 
 ```javascript
 program.filterData({
@@ -83,7 +83,7 @@ fields. It is exclusive with `field`, `oneOf`, `noneOf`, `predicate`, `range`, a
 converted to booleans. All branches are checked for missing fields, parameters,
 and incompatible types, even when they are inactive.
 
-> **Executable complete.** Standalone ES module with a Canvas, all observations and imports included. Inspect each immutable filtered dataset.
+> **Runnable complete example.** Standalone ES module with a Canvas, all observations and imports included. Inspect each immutable filtered dataset.
 
 ```js
 import { chart } from "ggaction";
@@ -150,7 +150,7 @@ constraints still apply, so a subset too small for k or a disconnected MST witho
 `forest: true` is rejected. Remove the filter before changing its source or node key.
 Observed graphs and other mark families reject `recompute: true`.
 
-> **Executable complete.** Import chart from ggaction and provide Cars rows with finite Displacement and Acceleration.
+> **Runnable complete example.** Import chart from ggaction and provide Cars rows with finite Displacement and Acceleration.
 
 ```javascript
 const filtered = chart()
@@ -174,7 +174,7 @@ concrete graphical value. Operators are `eq | neq | gt | gte | lt | lte`,
 line/area series path, arc sector, or rule. Stacked bars additionally support
 `grain: "stack"`.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "bars"`.
 
 ```javascript
 program.filterMarks({
@@ -189,7 +189,7 @@ The first filter records the mark's canonical source and a normalized selector
 recipe. Repeating the same selector is idempotent. A different repeated filter
 must state whether it replaces the recipe or composes with its current result.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `filtered`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `filtered` from that setup. It refers to `target: "points"`.
 
 ```javascript
 const narrower = filtered.filterMarks({
@@ -238,7 +238,7 @@ scales, and guides, and releases the filtered dataset when no downstream dataset
 still references that snapshot. Omit `target` for the current or unique active
 filter.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `japanOnly`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `japanOnly` from that setup. It refers to `target: "points"`.
 
 ```javascript
 const restored = japanOnly.removeMarkFilter({ target: "points" });

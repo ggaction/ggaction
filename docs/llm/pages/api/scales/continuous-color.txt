@@ -4,7 +4,7 @@
 
 Use a name directly or an object with optional sampling controls:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeColor({
@@ -101,7 +101,7 @@ extrapolates it toward the beginning of each segment. The
 [complete color controls program](https://github.com/ggaction/ggaction/blob/main/examples/color-controls/program.js) also exports
 `createZeroGammaControls` and `createBelowZeroGammaControls` as complete programs.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeColor({
@@ -162,7 +162,7 @@ A quantitative sequential scale can use `midpoint` to assign the palette's cente
 sample to a meaningful value. In this complete example, zero is white even though
 the domain runs from -2 to 8:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";

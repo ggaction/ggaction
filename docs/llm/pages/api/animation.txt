@@ -1,15 +1,76 @@
 # Animate and Export Chart Frames
 
+![Gapminder bubble chart moving year by year from 1955 to 2005](../../../assets/images/gapminder-bubbles-animation.gif)
+
 Prepare a transition between two immutable charts, sample it at an explicit time,
 and pass the returned frame directly to Canvas, SVG, PNG, or PDF. The
 `ggaction/animation` entry is browser-safe. These functions are advanced chart
 authoring APIs; they leave both source programs and their action traces unchanged.
 
+Choose the shortest path that fits:
+
+| You want to | Use |
+| --- | --- |
+| Animate a chart that is already on the page when its data changes | `setData` or `animateTo` from [`ggaction/live`](../../../api/live/); see the [interactive chart tutorial](../../../tutorials/interactive-chart/) |
+| Play one transition between two programs on a `<canvas>` | `playAnimation(from, to, canvas)` from `ggaction/live` |
+| Control timing yourself, or export frames | `planTransition`, `createAnimationPlayer`, and `exportAnimationFrames` on this page |
+
+## Animate a data change in a browser
+
+```html
+<canvas id="chart" aria-label="Gapminder bubbles moving from 1955 to 2005"></canvas>
+```
+
+> **Runnable complete example.** Use this section's HTML and JavaScript together with ggaction installed and gapminder.json served from the site root.
+
+```javascript
+import { chart, render } from "ggaction";
+import { createAnimationPlayer, planTransition } from "ggaction/animation";
+
+const rows = await fetch("/gapminder.json").then(response => response.json());
+const countries = year => rows.filter(row => row.year === year);
+
+const before = chart()
+  .createCanvas({ width: 640, height: 400, margin: { top: 30, right: 30, bottom: 60, left: 70 } })
+  .createData({ id: "countries", keyField: "country", values: countries(1955) })
+  .createScatterPlot({
+    x: { field: "fertility", scale: { domain: [0, 9], nice: false } },
+    y: { field: "life_expect", scale: { domain: [20, 85], nice: false } },
+    size: { field: "pop", scale: { domain: [0, 1.4e9], range: [8, 1200] } },
+    guides: { legend: false }
+  });
+const after = before.reviseData({ source: "countries", id: "countries-2005", values: countries(2005) });
+
+const context = document.querySelector("#chart").getContext("2d");
+render(before, context);
+const player = createAnimationPlayer({
+  plan: planTransition({ from: before, to: after, options: { durationMs: 1500, easing: "cubic-in-out" } }),
+  clock: {
+    now: () => performance.now(),
+    requestFrame: callback => requestAnimationFrame(callback),
+    cancelFrame: handle => cancelAnimationFrame(handle)
+  },
+  render: frame => render(frame, context)
+});
+player.play();
+const program = after;
+```
+
+Three rules make the motion readable:
+
+- Give the rows a `keyField`. Items with the same key move; without keys the
+ old items fade out and the new ones fade in.
+- Derive the second chart from the first with `reviseData`, naming the
+ dataset it replaces as `source`. When you revise again, the `source` is the
+ previous revision's `id`; naming an older dataset leaves the marks on the
+ older rows.
+- Fix the scale domains when the axes should stay still.
+
 ## Prepare, save, and sample
 
 Run this complete ES module in Node.js 20+ after installing `ggaction`:
 
-> **Executable complete.** Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.
 
 ```javascript
 import { chart } from 'ggaction';
@@ -90,7 +151,7 @@ separate `decisions` vector. A batched frame embeds decisions in each entry:
 Both representations are immutable. Circle batches preserve individual drawing
 order and alpha for every circle.
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both keyed endpoints, format6 sampling, SVG output and offline version narrowing are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both keyed endpoints, format6 sampling, SVG output and offline version narrowing are included.
 
 ```js
 import { chart } from 'ggaction';
@@ -140,7 +201,7 @@ Use `formatVersion: 5` when geographic endpoints declare their own capacity.
 The option uses lossless numeric storage and carries each native geographic
 group's projected point and path command limits through sampling and restoration.
 
-> **Executable complete.** Run with ggaction installed; geographic source, capacity, both endpoints and offline replay are included.
+> **Runnable complete example.** Run with ggaction installed; geographic source, capacity, both endpoints and offline replay are included.
 
 ```js
 import { chart } from 'ggaction';
@@ -328,7 +389,7 @@ line role. It never matches different values by their array position or text.
 For example, this complete Node.js module moves the grid at value 5 through a
 changing domain and exports the offline midpoint:
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.
 
 ```javascript
 import { chart } from 'ggaction';
@@ -444,7 +505,7 @@ current label cannot invent an anchor. Inferred titles retain the native preferr
 Current label, line, and clip work shares the frame-export budget, including frames with
 no visible labels. Unsupported sibling and non-Cartesian clearance policies still fade.
 
-> **Executable complete.** Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change.
+> **Runnable complete example.** Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change.
 
 ```js
 import { chart } from "ggaction";
@@ -466,7 +527,7 @@ const restored = deserializeAnimation(serializeAnimation(transition));
 console.log(renderToSVG(sampleTransition(restored.plan, 50)));
 ```
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both native categorical legends and their offline midpoint are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both native categorical legends and their offline midpoint are included.
 
 ```js
 import { chart } from "ggaction";
@@ -486,7 +547,7 @@ const restored = deserializeAnimation(serializeAnimation(plan));
 console.log(renderToSVG(sampleTransition(restored.plan, 50)));
 ```
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included.
 
 ```js
 import { chart } from "ggaction";
@@ -504,7 +565,7 @@ const svg = renderToSVG(sampleTransition(plan, 50));
 console.log(svg);
 ```
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included.
 
 ```js
 import { chart } from 'ggaction';
@@ -606,7 +667,7 @@ visits before sampling. Returned arrays and frames are immutable.
 Use explicit limits when the prepared endpoints or sampled output exceed the default
 10,000 nodes. Run this complete ES module, replacing the example rows with your data:
 
-> **Executable complete.** Run with ggaction installed; both endpoints and explicit rebase limits are included.
+> **Runnable complete example.** Run with ggaction installed; both endpoints and explicit rebase limits are included.
 
 ```javascript
 import { chart } from 'ggaction';
@@ -651,7 +712,7 @@ promise a frame time or bypass frame-export, geometry, or playback work limits.
 This Node fragment follows the first example. Install the optional backend with
 `npm install @napi-rs/canvas`:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { createCanvas } from '@napi-rs/canvas';
@@ -678,7 +739,7 @@ does not load a Node renderer, fetch assets, or write files.
 This browser fragment follows the first example and assumes a Canvas element
 whose id is `chart`. It uses the browser's animation clock explicitly:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `performance`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `performance` from that setup.
 
 ```javascript
 import { render } from 'ggaction';

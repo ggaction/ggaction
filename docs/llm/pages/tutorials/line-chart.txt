@@ -4,18 +4,20 @@
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](../../../getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/64045b214475110de9621328bbe7d060c9149f04/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/c463cf422b0a1f4fa7d3c903525387ac393c3c09/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
 
 ```javascript
 import { chart, render } from "ggaction";
@@ -80,6 +82,8 @@ field and ordered domain, `createGuides` combines them into one legend.
 Curve is line appearance rather than a semantic field encoding. It can be set
 inside the facade:
 
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
 ```javascript
 .createLinePlot({
   id: "trends",
@@ -90,6 +94,8 @@ inside the facade:
 ```
 
 or edited after the complete chart exists:
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const smooth = program.editLineMark({
@@ -105,6 +111,8 @@ mean aggregation, grouping, scales, axes, and legend remain unchanged.
 
 Use named styles in a field scale when each series needs its own pattern:
 
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
+
 ```javascript
 const named = program.encodeStrokeDash({
   field: "Origin",
@@ -113,6 +121,8 @@ const named = program.encodeStrokeDash({
 ```
 
 Or replace the field mapping with one constant pattern:
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `named` from that setup.
 
 ```javascript
 const dotted = named.encodeStrokeDash({ value: "dotted" });
@@ -148,7 +158,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/cars-line-chart/program.js).
 - Continue with [Encodings](../../../api/encodings/),
  [Guides](../../../api/guides/), [Titles](../../../api/titles/), and the
  [Basic Chart contract](../../../api/basic-charts/#createlineplot).

@@ -10,6 +10,64 @@ Coordinates are layout-local. Other authored positions, including dormant source
 The node patch cannot be combined with `options` or `order` and does not apply to circular or flow layouts.
 For pointer and keyboard controls, see [node movement](../../../api/interaction/#move-graph-nodes-with-pointer-or-keyboard).
 
+## Example with real data
+
+`createCountrySimilarityNetwork` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// Gapminder's six regional clusters, in cluster-number order.
+const REGIONS = ["South Asia", "Europe & Central Asia", "Sub-Saharan Africa", "Americas",
+  "East Asia & Pacific", "Middle East & North Africa"];
+const COLORS = ["#f59e0b", "#3b82f6", "#10b981", "#ef4444", "#8b5cf6", "#ec4899"];
+
+// Each country links to its three nearest neighbors in standardized
+// (life expectancy, fertility) space for 2005.
+export function createCountrySimilarityNetwork(gapminder) {
+  const countries = gapminder
+    .filter(row => row.year === 2005)
+    .map(row => ({
+      country: row.country,
+      region: REGIONS[row.cluster],
+      lifeExpectancy: row.life_expect,
+      fertility: row.fertility
+    }));
+
+  return chart()
+    .createCanvas({ width: 900, height: 640, margin: { top: 80, right: 200, bottom: 20, left: 20 } })
+    .createData({ id: "countries", keyField: "country", values: countries })
+    .createInferredGraphData({
+      id: "similar",
+      data: "countries",
+      nodeKey: "country",
+      ruleId: "three-nearest",
+      rule: "knn",
+      features: ["lifeExpectancy", "fertility"],
+      metric: "euclidean",
+      preprocess: "standardize",
+      attributes: ["region"],
+      options: { k: 3, symmetrize: "union" }
+    })
+    .layoutGraph({ id: "placement", graph: "similar", method: "force", options: { seed: 7, iterations: 400, linkDistance: 70, collisionRadius: 14 } })
+    .createGraphPlot({
+      nodes: {
+        radius: 6,
+        stroke: "#ffffff",
+        strokeWidth: 1,
+        overrides: countries.map(row => ({ key: row.country, fill: COLORS[REGIONS.indexOf(row.region)] }))
+      },
+      edges: { stroke: "#cbd5e1", strokeWidth: 1 },
+      labels: { fontSize: 9, fill: "#334155" }
+    })
+    .createTitle({
+      text: "Countries with similar health and family size, 2005",
+      subtitle: "Each country links to its 3 nearest neighbors in life expectancy and fertility · color: region"
+    });
+}
+```
+
 ## createGraphPlot
 
 ```typescript
@@ -72,7 +130,7 @@ Remove a plot with `removeMark` before removing its bound layout or graph. Resou
 Use `createInferredGraphData` when relationships follow a rule. The resulting
 graph works with the same `layoutGraph` and `createGraphPlot` actions.
 
-> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Runnable complete example.** Runs as written with ggaction installed.
 
 ```javascript
 import { chart } from 'ggaction';
@@ -171,17 +229,76 @@ A worker factory is required. Each request owns one fresh worker, and an executo
 accepts one pending request; another request fails instead of joining a queue.
 There is no result cache. The worker must call `computeGraphInference` with the
 unchanged job and return its completion. The host supplies this trusted computation
-provider; consistency hashes do not certify a provider's mathematical honesty.
+provider; the library checks the result's shape and consistency, not that the computation itself is correct.
 The library validates the complete model, source binding, metric weights and
 saved diagnostics before exposing a prepared handle.
 
+### Run inference in a browser worker
+
+In a browser, the worker is two lines. Save it as `inference-worker.js` beside
+the page's module:
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `self` from that setup.
+
+```javascript
+import { computeGraphInference } from "ggaction/graph";
+self.onmessage = ({ data: { job } }) => self.postMessage(computeGraphInference(job));
+```
+
+The page creates the executor with a module `Worker`, prepares the graph off
+the main thread, and applies it. Bundlers such as Vite recognize
+`new Worker(new URL(..., import.meta.url), { type: "module" })` and bundle the
+worker file with its `ggaction/graph` import:
+
+```html
+<canvas id="chart" aria-label="Network of countries linked to their nearest neighbors"></canvas>
+```
+
+> **Runnable complete example.** Use this section's HTML and module with inference-worker.js beside them, and serve gapminder.json from the site root.
+
+```javascript
+import { chart, render } from "ggaction";
+import { createGraphInferenceExecutor, prepareInferredGraphData } from "ggaction/graph";
+
+const rows = await fetch("/gapminder.json").then(response => response.json());
+const countries = rows.filter(row => row.year === 2005);
+
+const base = chart()
+  .createCanvas({ width: 640, height: 480 })
+  .createData({ id: "countries", keyField: "country", values: countries });
+const executor = createGraphInferenceExecutor({
+  createWorker: () => new Worker(new URL("./inference-worker.js", import.meta.url), { type: "module" })
+});
+let program;
+try {
+  const prepared = await prepareInferredGraphData(base, {
+    kind: "create", id: "similar", nodeKey: "country", ruleId: "nearest",
+    rule: "knn", features: ["life_expect", "fertility"], metric: "euclidean",
+    preprocess: "standardize", options: { k: 3, symmetrize: "union" }
+  }, { executor, requestToken: "similar-1" });
+  program = base
+    .createInferredGraphData({ prepared, requestToken: "similar-1" })
+    .layoutGraph({ id: "placement", method: "force", options: { seed: 7, linkDistance: 60 } })
+    .createGraphPlot({ labels: { fontSize: 9 } });
+} finally {
+  executor.dispose();
+}
+render(program, document.querySelector("#chart").getContext("2d"));
+```
+
+The same pattern works for edge routes with `createGraphRouteExecutor` and a
+worker that calls `computeGraphEdgeRoutesAsync`; see
+[edge routes](../../../api/edge-routes/).
+
+### Run inference in a Node.js worker
+
 This complete Node ES-module example uses the adjacent
-[`inference-worker.mjs`](https://github.com/ggaction/ggaction/blob/64045b214475110de9621328bbe7d060c9149f04/examples/graph-inference/worker.mjs) file. Save that
+[`inference-worker.mjs`](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/graph-inference/worker.mjs) file. Save that
 worker beside the host module. In a browser, use a module `Worker` directly as the
 factory result and have its message handler call the same `computeGraphInference`;
 Node-specific worker adapters are not needed in the browser.
 
-> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Runnable complete example.** Runs as written with ggaction installed.
 
 ```javascript
 import { Worker } from 'node:worker_threads';
@@ -235,8 +352,8 @@ Each encoded job and completion is limited to 128 MiB, or the smaller explicit
 `execution.maxBytes`. The existing inference work and capacity policies still apply.
 These are admission bounds, not total heap or latency guarantees. Worker startup,
 message copying, main-thread input preparation, result validation and the explicit
-commit remain real costs. Source revisions still use their existing synchronous
-resource closure; preparation does not silently turn it into an asynchronous update.
+commit remain real costs. Source data revisions still update the graph synchronously;
+preparation does not turn them into asynchronous updates.
 
 ## Outlines and shadows
 

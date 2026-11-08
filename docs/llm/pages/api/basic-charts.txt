@@ -11,7 +11,7 @@ all their children, retain the original source for later role edits, and replay
 the policy when data is revised. Other statistical requirements still apply:
 for example, a density estimate needs enough varying observations per group.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const program = chart()
@@ -31,6 +31,59 @@ See [Mark Style](../../../api/appearance/mark-style/#stroke-caps-joins-and-round
 
 This page covers six common Cartesian facades. Use [Choose a Chart](../../../api/chart-picker/)
 for all H0 chart families and their package and editing paths.
+
+## Example with real data
+
+`createGlobalTemperatureHeatmap` builds this chart from real data. It receives the rows of `data/showcase/global-temperatures.csv` (NASA GISTEMP, public domain) with numeric fields parsed.
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+// NASA GISTEMP global monthly anomalies relative to 1951–1980.
+export function createGlobalTemperatureHeatmap(temperatures) {
+  const cells = temperatures.flatMap(row => MONTHS.map(month => ({
+    year: row.Year,
+    month,
+    anomaly: row[month]
+  }))).filter(cell => Number.isFinite(cell.anomaly));
+
+  return chart()
+    .createCanvas({
+      width: 960,
+      height: 360,
+      margin: { top: 80, right: 140, bottom: 50, left: 60 }
+    })
+    .createData({ id: "temperatures", values: cells })
+    .createHeatmap({
+      id: "anomalies",
+      x: { field: "year", fieldType: "ordinal" },
+      y: { field: "month", fieldType: "ordinal", scale: { domain: MONTHS } },
+      color: {
+        field: "anomaly",
+        fieldType: "quantitative",
+        // A symmetric domain keeps zero anomaly at the white center.
+        scale: { type: "sequential", domain: [-1.4, 1.4], range: ["#2166ac", "#f7f7f7", "#b2182b"] }
+      },
+      guides: {
+        axes: {
+          x: {
+            title: { text: "Year" },
+            ticksAndLabels: { values: [1880, 1900, 1920, 1940, 1960, 1980, 2000, 2020] }
+          },
+          y: { title: false }
+        },
+        legend: { title: "Anomaly (°C)" }
+      }
+    })
+    .createTitle({
+      text: "Global surface temperature, 1880–2023",
+      subtitle: "Monthly anomaly from the 1951–1980 mean · NASA GISTEMP"
+    });
+}
+```
 
 ## Choose a facade
 
@@ -100,7 +153,7 @@ createScatterPlot(options: CreateScatterPlotOptions): ChartProgram
 Required options are `x` and `y`. Optional `color`, `stroke`, `size`, and `shape` values
 create field encodings; `point` controls constant point appearance.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const scatter = chart()
@@ -152,7 +205,7 @@ null/absent observations as gaps. The default remains strict. See
 [gaps in direct lines](../../../api/marks/line-area/#gaps) for supported
 positions, ordering, domains and segment ownership.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const line = chart()
@@ -213,7 +266,7 @@ for vertical bars, or add `orientation: "horizontal"` for horizontal bars.
 Width defaults to 5 pixels. Numeric ranges infer orientation from their measure
 channel. Numeric bars preserve repeated centers and allow overlay layout only.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -238,7 +291,7 @@ Both `{ x: "product", y: "units_sold" }` and the horizontal
 Set `aggregate` explicitly for another statistic. Temporal categories work
 on either axis and accept temporal scale options.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const bars = chart()
@@ -247,7 +300,7 @@ const bars = chart()
   .createBarPlot({ x: "product", y: "units_sold" });
 ```
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const bars = chart()
@@ -267,6 +320,41 @@ opacity, stroke, and stroke width.
 
 For interval-width bars with a separate Y measure, use `createBarPlot` with `x.bin` and `y.aggregate`; see [bins with a separate measure](../../../api/position/histogram/#bins-with-a-separate-measure).
 
+### Bar chart from real data
+
+`createCarsMpgBars` builds this chart from real data. It receives the rows of `data/cars.json` (1970–1982 car models).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// Average fuel economy of 1970–1982 cars by cylinder count and region of origin.
+export function createCarsMpgBars(cars) {
+  const common = cars.filter(car =>
+    Number.isFinite(car.Miles_per_Gallon) && [4, 6, 8].includes(car.Cylinders))
+    .map(car => ({ cylinders: `${car.Cylinders} cylinders`, origin: car.Origin, mpg: car.Miles_per_Gallon }));
+
+  return chart()
+    .createCanvas({ width: 760, height: 440, margin: { top: 80, right: 140, bottom: 60, left: 70 } })
+    .createData({ id: "cars", values: common })
+    .createBarPlot({
+      id: "bars",
+      x: { field: "cylinders", fieldType: "ordinal", scale: { domain: ["4 cylinders", "6 cylinders", "8 cylinders"] } },
+      y: { field: "mpg", aggregate: "mean", scale: { domain: [0, 35] } },
+      color: { field: "origin", layout: "group", scale: { domain: ["USA", "Japan", "Europe"], range: ["#2563eb", "#dc2626", "#f97316"] } },
+      guides: {
+        axes: { x: { title: false }, y: { title: { text: "Average miles per gallon" } } },
+        legend: { title: "Origin" },
+        grid: { horizontal: true, vertical: false }
+      }
+    })
+    .createTitle({
+      text: "Fewer cylinders, more miles per gallon",
+      subtitle: "Average fuel economy of 1970–1982 car models · no European or Japanese 8-cylinder cars"
+    });
+}
+```
+
 ## `createHistogram`
 
 ```typescript
@@ -276,7 +364,7 @@ createHistogram(options: CreateHistogramOptions): ChartProgram
 `field` is required. The action atomically creates binned x and count y
 encodings because those meanings depend on each other.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const histogram = chart()
@@ -308,7 +396,7 @@ one cell for each valid observed row. `color` is optional; omit it to declare th
 cell layout first, then assign a field with `encodeColor`. With `bin`, raw quantitative `x` and `y` fields are divided into a
 rectangular grid and cell color represents the generated count.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const heatmap = chart()
@@ -326,7 +414,7 @@ const heatmap = chart()
   });
 ```
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const binnedHeatmap = chart()
@@ -395,7 +483,7 @@ immutable semantic and graphical resources.
 
 Create one independent text mark per data row, without aggregation:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";

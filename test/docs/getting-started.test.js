@@ -5,13 +5,15 @@ import test from "node:test";
 import {
   createGettingStartedChart
 } from "../../examples/getting-started/program.js";
+import { renderToSVG } from "../../src/renderers/svg.js";
 
 function read(relative) {
   return readFileSync(new URL(`../../${relative}`, import.meta.url), "utf8");
 }
 
 test("keeps the first chart identifiable without color alone", () => {
-  const program = createGettingStartedChart();
+  const cars = JSON.parse(read("data/cars.json"));
+  const program = createGettingStartedChart(cars);
   const facade = program.trace.children.at(-1);
   const guides = facade.children.at(-1);
   const legend = program.semanticSpec.guides.legend.series;
@@ -37,18 +39,24 @@ test("keeps the first chart identifiable without color alone", () => {
     ),
     ["USA", "Japan", "Europe"]
   );
-  assert.deepEqual(
-    program.graphicSpec.objects.scatterPlot.items.map(
-      item => item.type ?? "circle"
-    ),
-    ["circle", "rect", "path"]
-  );
+  const items = program.graphicSpec.objects.cars.items;
+  assert.equal(items.length, 392);
+  const shapeByOrigin = new Map();
+  for (const [index, row] of program.semanticSpec.datasets[0].values.entries()) {
+    shapeByOrigin.set(row.Origin, items[index].type ?? "circle");
+  }
+  assert.deepEqual([...shapeByOrigin], [["USA", "circle"], ["Japan", "rect"], ["Europe", "path"]]);
   assert.equal(program.materializationConfigs.canvas.margin.right, 130);
 
-  for (const source of [read("README.md"), read("docs/getting-started.md")]) {
-    assert.match(source, /right: 130/);
-    assert.match(source, /shape: "origin"/);
-  }
+  assert.match(read("README.md"), /right: 130/);
+  assert.match(read("README.md"), /shape: "origin"/);
+  const faded = program.editPointMark({ target: "cars", opacity: 0.5 });
+  assert.deepEqual(faded.trace.children.map(step => step.op),
+    ["createCanvas", "createData", "createScatterPlot", "editPointMark"]);
+  assert.equal(program.trace.children.at(-1).op, "createScatterPlot");
+  assert.match(renderToSVG(faded), /^<svg /);
+  assert.match(read("docs/getting-started.md"), /right: 130/);
+  assert.match(read("docs/getting-started.md"), /shape: "Origin"/);
   assert.match(read("docs/getting-started.md"), /getting-started-chart\.html/);
   assert.match(
     read("docs/_includes/getting-started-chart.html"),

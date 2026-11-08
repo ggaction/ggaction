@@ -21,6 +21,12 @@ curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ si
 
 ## Complete program
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, render } from "ggaction";
 
@@ -75,9 +81,15 @@ read that stored relationship; they do not create or repair coordinates.
 The same encoding actions can replace compatible bindings. For a field-sized
 variant, use the following alternative. If your own variant explicitly sets a constant `encodeRadius`, omit that conflicting graphical constant first:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const reassigned = chart()
-  .createCanvas({ width: 640, height: 400, margin: 30 })
+  .createCanvas({ width: 640, height: 400, margin: { top: 30, right: 30, bottom: 60, left: 70 } })
   .createData({ id: "cars", values: rows })
   .createPointMark({ id: "points" })
   .encodeX({ field: "Horsepower" })
@@ -101,6 +113,12 @@ silently delete that graphical choice.
 Use a quantitative field type to map point color continuously, then request its
 gradient legend:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const continuousColor = chart()
   .createCanvas({
@@ -119,6 +137,12 @@ const continuousColor = chart()
 
 Field opacity uses the same assignment style and automatically maps its domain
 to `[0.2, 1]`:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const fieldOpacity = chart()

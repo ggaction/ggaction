@@ -1,3 +1,401 @@
+- id: cars-mpg-bars
+  example: /examples/cars-mpg-bars/
+  title: Grouped bar chart
+  image: /assets/images/cars-mpg-bars.png
+  alt: Grouped bars of average miles per gallon for 4, 6 and 8 cylinder cars from the USA, Japan and Europe
+  width: 1520
+  height: 880
+  thumbnail: /assets/images/cars-mpg-bars-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 371
+  caption: Average fuel economy by cylinder count, grouped by region of origin.
+  summary: Compare an aggregated value across two categorical fields.
+  actions: createBarPlot
+  tasks: comparison
+  url: /tutorials/grouped-bar/
+  home_group: essentials
+  home_order: 71
+  featured: true
+  gallery_featured: true
+  tutorial_order: 30
+  recipe_url: /recipes/bar-chart/
+  recipe_order: 40
+- id: gapminder-bubbles
+  example: /examples/gapminder-bubbles/
+  title: Animated bubble chart
+  image: /assets/images/gapminder-bubbles.png
+  alt: Gapminder bubble chart of fertility against life expectancy in 2005 with bubbles sized by population and colored by region
+  width: 1640
+  height: 1000
+  thumbnail: /assets/images/gapminder-bubbles-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 390
+  caption: Countries sized by population; the tutorial adds tooltips, brushing and a fifty-year animation.
+  summary: Make a chart interactive in a web page and animate it through time.
+  actions: createScatterPlot · addTooltip · addBrush · setData
+  tasks: relationship trend interactive
+  url: /tutorials/interactive-chart/
+  gallery_featured: true
+  home_group: essentials
+  home_order: 11
+  featured: true
+  tutorial_order: 12
+- id: world-gdp-map
+  example: /examples/world-gdp-map/
+  title: World choropleth map
+  image: /assets/images/world-gdp-map.png
+  alt: World map shading each country by 2019 GDP per person from pale yellow to dark brown
+  width: 1920
+  height: 1080
+  thumbnail: /assets/images/world-gdp-map-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 360
+  caption: Natural Earth countries joined to their own GDP and population estimates, drawn in an equal-earth projection.
+  summary: Join a table to country shapes and color each country by a value.
+  actions: createGeometryData · createGeoJoinData · createProjection · createGeoShapeMark
+  tasks: geographic comparison
+  url: /tutorials/geographic-marks/
+  gallery_featured: true
+  home_group: domains
+  home_order: 10
+  featured: true
+  tutorial_order: 170
+- id: world-earthquakes-map
+  example: /examples/world-earthquakes-map/
+  title: Earthquake map
+  image: /assets/images/world-earthquakes-map.png
+  alt: Pacific-centered world map with circles at each January 2024 earthquake, sized by magnitude and colored by depth
+  width: 1920
+  height: 1080
+  thumbnail: /assets/images/world-earthquakes-map-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 360
+  caption: USGS events of magnitude 5 or more on a Pacific-centered world map.
+  summary: Place points by longitude and latitude and encode size and color.
+  actions: createProjection · createGraticule · createGeoPointMark · encodeSize
+  tasks: geographic distribution
+  url: /api/geometry/
+  gallery_featured: true
+  home_group: domains
+  home_order: 20
+  featured: true
+- id: global-temperature-heatmap
+  example: /examples/global-temperature-heatmap/
+  title: Temperature anomaly heatmap
+  image: /assets/images/global-temperature-heatmap.png
+  alt: Heatmap of monthly global temperature anomalies from 1880 to 2023, turning from blue to deep red in recent decades
+  width: 1920
+  height: 720
+  thumbnail: /assets/images/global-temperature-heatmap-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 240
+  caption: Every month since 1880 relative to the 1951–1980 mean, from NASA GISTEMP.
+  summary: Show a long monthly series as a year by month grid with a diverging color scale.
+  actions: createHeatmap
+  tasks: trend comparison
+  url: /api/basic-charts/
+  gallery_featured: true
+  home_group: essentials
+  home_order: 65
+  featured: true
+- id: us-births-calendar
+  example: /examples/us-births-calendar/
+  title: Daily births calendar
+  image: /assets/images/us-births-calendar.png
+  alt: Calendar heatmap of every day in 2014 with weekends and holidays noticeably darker than weekdays
+  width: 1920
+  height: 500
+  thumbnail: /assets/images/us-births-calendar-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 167
+  caption: Daily United States births in 2014, where weekends and holidays stand out.
+  summary: Lay out daily values as a weekday by week calendar.
+  actions: createCalendarLayout · createCalendarPlot
+  tasks: trend comparison
+  url: /tutorials/calendar/
+  gallery_featured: true
+  home_group: domains
+  home_order: 60
+  featured: true
+  tutorial_order: 240
+- id: penguin-density-contours
+  example: /examples/penguin-density-contours/
+  title: Density contours with points
+  image: /assets/images/penguin-density-contours.png
+  alt: Filled density contours of penguin bill length against depth with points colored by species forming three groups
+  width: 1520
+  height: 1040
+  thumbnail: /assets/images/penguin-density-contours-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 438
+  caption: Kernel density bands of 342 penguins with each bird colored by species.
+  summary: Estimate a two-dimensional density and overlay the raw observations.
+  actions: createDensityContourData · createContourMark · createPointMark
+  tasks: distribution relationship
+  url: /tutorials/contours/
+  gallery_featured: true
+  home_group: statistical
+  home_order: 5
+  featured: true
+  tutorial_order: 230
+- id: penguin-sankey
+  example: /examples/penguin-sankey/
+  title: Sankey diagram
+  image: /assets/images/penguin-sankey.png
+  alt: Sankey diagram where three penguin species flow into three islands and then into female, male and not recorded
+  width: 1800
+  height: 1040
+  thumbnail: /assets/images/penguin-sankey-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 370
+  caption: Each of 344 penguins flows from species to island to sex.
+  summary: Show how counts split and merge across stages.
+  actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
+  tasks: part-to-whole composition network
+  url: /tutorials/flows/
+  gallery_featured: true
+  home_group: domains
+  home_order: 30
+  featured: true
+  tutorial_order: 220
+- id: country-similarity-network
+  example: /examples/country-similarity-network/
+  title: Similarity network
+  image: /assets/images/country-similarity-network.png
+  alt: Force-directed network of 62 countries linked to their three most similar neighbors, colored by region
+  width: 1800
+  height: 1280
+  thumbnail: /assets/images/country-similarity-network-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 455
+  caption: A three-nearest-neighbor graph inferred from life expectancy and fertility.
+  summary: Infer links from feature similarity and lay them out with a seeded force layout.
+  actions: createInferredGraphData · layoutGraph · createGraphPlot
+  tasks: relationship network
+  url: /tutorials/graphs/
+  gallery_featured: true
+  home_group: domains
+  home_order: 50
+  featured: true
+  tutorial_order: 200
+- id: world-population-treemap
+  example: /examples/world-population-treemap/
+  title: Population treemap
+  image: /assets/images/world-population-treemap.png
+  alt: Squarified treemap of 2005 population with large blocks for China and India grouped inside six regions
+  width: 1920
+  height: 1200
+  thumbnail: /assets/images/world-population-treemap-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 400
+  caption: Rectangle area is population; countries nest inside six regions.
+  summary: Size nested rectangles by a value in a two-level hierarchy.
+  actions: createHierarchyData · layoutHierarchy · createTreemapPlot
+  tasks: part-to-whole composition network
+  url: /tutorials/hierarchy/
+  gallery_featured: true
+  home_group: domains
+  home_order: 40
+  featured: true
+  tutorial_order: 180
+- id: world-population-sunburst
+  example: /examples/world-population-sunburst/
+  title: Population sunburst
+  image: /assets/images/world-population-sunburst.png
+  alt: Sunburst with regions in the inner ring and countries in the outer ring, sized by 2005 population
+  width: 1520
+  height: 1280
+  thumbnail: /assets/images/world-population-sunburst-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 539
+  caption: The same population hierarchy as concentric rings.
+  summary: Show a hierarchy as rings whose angles follow a value.
+  actions: createHierarchyData · layoutHierarchy · createPartitionPlot
+  tasks: part-to-whole composition coordinate network
+  url: /tutorials/partition/
+  home_group: domains
+  home_order: 80
+  tutorial_order: 190
+- id: flare-radial-tree
+  example: /examples/flare-radial-tree/
+  title: Radial class tree
+  image: /assets/images/flare-radial-tree.png
+  alt: Radial node-link tree of the 252 packages and classes in the Flare toolkit
+  width: 1520
+  height: 1520
+  thumbnail: /assets/images/flare-radial-tree-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 640
+  caption: The Flare toolkit class hierarchy laid out as a radial tree.
+  summary: Draw a parent-child table as a node-link tree.
+  actions: createHierarchyData · layoutHierarchy · createTreePlot
+  tasks: composition coordinate network
+  url: /api/hierarchy/
+  home_group: domains
+  home_order: 90
+- id: ibm-candlesticks
+  example: /examples/ibm-candlesticks/
+  title: Candlestick chart with volume
+  image: /assets/images/ibm-candlesticks.png
+  alt: Sixty daily IBM candlesticks in teal and red above a gray bar chart of trading volume
+  width: 1920
+  height: 1120
+  thumbnail: /assets/images/ibm-candlesticks-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 373
+  caption: Open, high, low and close prices above a separate volume panel.
+  summary: Draw daily price ranges and align a second panel on the same sessions.
+  actions: createOHLCPlot · createBarPlot · vconcat
+  tasks: trend comparison
+  url: /tutorials/ohlc/
+  gallery_featured: true
+  home_group: domains
+  home_order: 70
+  featured: true
+  tutorial_order: 250
+- id: temperature-waterfall
+  example: /examples/temperature-waterfall/
+  title: Waterfall chart
+  image: /assets/images/temperature-waterfall.png
+  alt: Waterfall chart starting at the 2013 global temperature anomaly with green warming and red cooling steps to the 2022 level
+  width: 1800
+  height: 920
+  thumbnail: /assets/images/temperature-waterfall-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 327
+  caption: Year-to-year changes carry the 2013 anomaly to the 2022 level.
+  summary: Explain how a total is built from signed steps.
+  actions: createWaterfallPlot
+  tasks: comparison part-to-whole
+  url: /tutorials/waterfall/
+  home_group: domains
+  home_order: 100
+  tutorial_order: 260
+- id: gapminder-life-trails
+  example: /examples/gapminder-life-trails/
+  title: Trail chart
+  image: /assets/images/gapminder-life-trails.png
+  alt: Eight colored ribbons of life expectancy from 1955 to 2005 whose width follows population
+  width: 1800
+  height: 1040
+  thumbnail: /assets/images/gapminder-life-trails-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 370
+  caption: Life expectancy paths whose ribbon width follows population.
+  summary: Draw a line whose width varies with a third field.
+  actions: createTrailPlot
+  tasks: trend comparison
+  url: /tutorials/trail/
+  home_group: domains
+  home_order: 120
+  tutorial_order: 270
+- id: gapminder-country-table
+  example: /examples/gapminder-country-table/
+  title: Table with bars and sparklines
+  image: /assets/images/gapminder-country-table.png
+  alt: Table of the twelve most populous countries with population bars, life expectancy bars and fifty-year sparklines
+  width: 1920
+  height: 1400
+  thumbnail: /assets/images/gapminder-country-table-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 467
+  caption: Formatted values, in-cell bars, sparklines and a footer total.
+  summary: Combine exact values with small graphics in one table.
+  actions: createTablePlot
+  tasks: comparison trend
+  url: /tutorials/table/
+  home_group: domains
+  home_order: 110
+  tutorial_order: 280
+- id: penguin-mass-raincloud
+  example: /examples/penguin-mass-raincloud/
+  title: Raincloud plot
+  image: /assets/images/penguin-mass-raincloud.png
+  alt: Horizontal raincloud plot of penguin body mass with density, box summary and points for each species
+  width: 1800
+  height: 920
+  thumbnail: /assets/images/penguin-mass-raincloud-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 327
+  caption: Density, box summary and every weighed penguin per species.
+  summary: Show a distribution's shape, summary and observations together.
+  actions: createRaincloudPlot
+  tasks: distribution comparison
+  url: /api/distribution-plots/
+  gallery_featured: true
+  home_group: statistical
+  home_order: 16
+  featured: true
+- id: penguin-flipper-beeswarm
+  example: /examples/penguin-flipper-beeswarm/
+  title: Beeswarm plot
+  image: /assets/images/penguin-flipper-beeswarm.png
+  alt: Beeswarm of penguin flipper length by species with female points in red and male points in blue
+  width: 1800
+  height: 920
+  thumbnail: /assets/images/penguin-flipper-beeswarm-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 327
+  caption: Packed points keep every penguin visible.
+  summary: Show every observation in a category without overlap.
+  actions: createBeeswarmPlot
+  tasks: distribution comparison
+  url: /api/distribution-plots/
+  home_group: statistical
+  home_order: 25
+- id: cars-mpg-ecdf
+  example: /examples/cars-mpg-ecdf/
+  title: Cumulative distribution by group
+  image: /assets/images/cars-mpg-ecdf.png
+  alt: Three step curves of the cumulative share of cars by fuel economy for USA, Europe and Japan
+  width: 1800
+  height: 920
+  thumbnail: /assets/images/cars-mpg-ecdf-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 327
+  caption: The share of cars at or below each fuel economy, by origin.
+  summary: Compare whole distributions without choosing bins.
+  actions: createECDFPlot
+  tasks: distribution comparison
+  url: /tutorials/ecdf/
+  home_group: statistical
+  home_order: 35
+  tutorial_order: 100
+- id: life-expectancy-dumbbell
+  example: /examples/life-expectancy-dumbbell/
+  title: Dumbbell plot
+  image: /assets/images/life-expectancy-dumbbell.png
+  alt: Dumbbell plot of twenty countries joining 1955 and 2005 life expectancy, ordered by years gained
+  width: 1800
+  height: 1240
+  thumbnail: /assets/images/life-expectancy-dumbbell-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 441
+  caption: Two years per country joined by a connector.
+  summary: Compare a before and after value for each category.
+  actions: createDumbbellPlot
+  tasks: comparison
+  url: /tutorials/endpoint-plots/
+  home_group: essentials
+  home_order: 76
+  tutorial_order: 110
+- id: fertility-lollipop
+  example: /examples/fertility-lollipop/
+  title: Lollipop chart
+  image: /assets/images/fertility-lollipop.png
+  alt: Horizontal lollipop chart of the fifteen highest fertility rates in 2005
+  width: 1800
+  height: 1040
+  thumbnail: /assets/images/fertility-lollipop-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 370
+  caption: A lighter alternative to bars for ranked values.
+  summary: Rank categories by one value with a stem and a point.
+  actions: createLollipopPlot
+  tasks: comparison
+  url: /tutorials/endpoint-plots/
+  home_group: essentials
+  home_order: 85
 - id: composition
   example: /examples/program-composition/
   title: Program composition
@@ -15,9 +413,9 @@
   url: /recipes/composition/
   recipe_url: /recipes/composition/
   recipe_order: 130
-  gallery_featured: true
   home_group: essentials
   home_order: 110
+  figure_only: true
 - id: facet
   example: /examples/cars-origin-scatterplot-facet/
   title: Faceted scatterplot
@@ -52,9 +450,9 @@
   actions: facetGrid · editFacetSource · editCompositionLayout
   tasks: composition comparison
   url: /api/composition/#build-a-row-and-column-facet-grid
-  gallery_featured: true
   home_group: essentials
   home_order: 130
+  figure_only: true
 - id: repeat-charts
   example: /examples/repeat-charts/
   title: Repeated metric charts
@@ -70,9 +468,9 @@
   actions: repeatCharts · editFacetSource · editCompositionLayout
   tasks: composition comparison
   url: /api/composition/#repeat-a-positional-encoding-across-fields
-  gallery_featured: true
   home_group: essentials
   home_order: 140
+  figure_only: true
 - id: scatterplot
   example: /examples/cars-scatterplot/
   title: Scatterplot
@@ -91,10 +489,10 @@
   recipe_url: /recipes/scatterplot/
   home_group: essentials
   home_order: 10
-  tutorial_order: 10
   recipe_order: 10
   featured: true
   gallery_featured: true
+  tutorial_order: 10
 - id: canvas-fitting
   example: /examples/fitted-long-labels/
   title: Fitted long axis labels
@@ -112,6 +510,7 @@
   url: /api/canvas/#fitcanvasoptions
   home_group: essentials
   home_order: 12
+  figure_only: true
 - id: multi-legend-layout
   example: /examples/cars-multi-legend-layout/
   title: Multi-legend layout
@@ -147,10 +546,10 @@
   recipe_url: /recipes/line-chart/
   home_group: essentials
   home_order: 30
-  tutorial_order: 50
   recipe_order: 20
   featured: true
   gallery_featured: true
+  tutorial_order: 20
 - id: temporal-bar-line
   example: /examples/cars-temporal-bar-line/
   title: Temporal bar and line
@@ -244,12 +643,8 @@
   actions: createBarPlot
   tasks: comparison
   url: /tutorials/grouped-bar/
-  recipe_url: /recipes/bar-chart/
   home_group: essentials
   home_order: 70
-  tutorial_order: 70
-  recipe_order: 40
-  featured: true
   gallery_featured: true
 - id: ordered-category-bar
   example: /examples/ordered-category-bar/
@@ -268,6 +663,7 @@
   url: /api/position/category-ordering/
   home_group: essentials
   home_order: 75
+  figure_only: true
 - id: horizontal-grouped-bar
   example: /examples/jobs-horizontal-grouped-bar/
   title: Horizontal grouped bar
@@ -304,10 +700,10 @@
   recipe_url: /recipes/histogram/
   home_group: essentials
   home_order: 90
-  tutorial_order: 60
   recipe_order: 30
   featured: true
   gallery_featured: true
+  tutorial_order: 40
 - id: density
   example: /examples/cars-density-area/
   title: Density area
@@ -326,8 +722,8 @@
   recipe_url: /recipes/density-area/
   home_group: essentials
   home_order: 100
-  tutorial_order: 90
   recipe_order: 70
+  tutorial_order: 60
 - id: centered-area-stream
   example: /examples/centered-area-stream/
   title: Center-stacked area
@@ -363,10 +759,10 @@
   recipe_url: /recipes/regression-scatterplot/
   home_group: statistical
   home_order: 10
-  tutorial_order: 80
   recipe_order: 60
   featured: true
   gallery_featured: true
+  tutorial_order: 50
 - id: horizon
   example: /examples/gapminder-horizon/
   title: Horizon chart
@@ -385,8 +781,8 @@
   recipe_url: /recipes/horizon/
   home_group: statistical
   home_order: 20
-  tutorial_order: 100
   recipe_order: 80
+  tutorial_order: 70
 - id: error-bar
   example: /examples/cars-error-bar/
   title: Error bar
@@ -405,8 +801,8 @@
   recipe_url: /recipes/error-bar/
   home_group: statistical
   home_order: 30
-  tutorial_order: 110
   recipe_order: 90
+  tutorial_order: 80
 - id: error-band
   example: /examples/gapminder-error-band/
   title: Error band
@@ -426,8 +822,8 @@
   recipe_url: /recipes/error-band/
   home_group: statistical
   home_order: 40
-  tutorial_order: 120
   recipe_order: 100
+  tutorial_order: 90
 - id: box
   example: /examples/cars-box-plot/
   title: Box plot
@@ -511,7 +907,7 @@
   gallery_featured: true
 - id: polar
   example: /examples/polar-points/
-  title: Polar points
+  title: Polar point cloud
   image: /assets/images/cars-polar-scatterplot.png
   alt: Cars Polar scatterplot using acceleration angle and horsepower radius
   width: 1040
@@ -526,11 +922,10 @@
   url: /tutorials/polar-points/
   home_group: coordinates
   home_order: 30
-  tutorial_order: 20
-  gallery_featured: true
+  figure_only: true
 - id: polar-guides
   example: /examples/polar-guides/
-  title: Polar guides
+  title: Polar points
   image: /assets/images/cars-polar-guides.png
   alt: Cars Polar scatterplot with circular and radial axes and grids
   width: 1240
@@ -542,9 +937,10 @@
   summary: Read angle and radial mappings with aligned axes, labels, and grids.
   actions: createGuides · editRadialAxis
   tasks: coordinate
-  url: /tutorials/polar-points/#add-polar-guides
+  url: /tutorials/polar-points/
   home_group: coordinates
   home_order: 40
+  tutorial_order: 120
 - id: polar-line
   example: /examples/gapminder-polar-trends/
   title: Polar lines
@@ -562,7 +958,7 @@
   url: /tutorials/polar-lines/
   home_group: coordinates
   home_order: 50
-  tutorial_order: 30
+  tutorial_order: 130
 - id: radar
   example: /examples/jobs-radar-chart/
   title: Radar chart
@@ -598,7 +994,7 @@
   url: /tutorials/polar-arcs/
   home_group: coordinates
   home_order: 70
-  tutorial_order: 40
+  tutorial_order: 140
 - id: weighted-donut
   example: /examples/gapminder-population-donut/
   title: Weighted donut chart
@@ -670,8 +1066,7 @@
   tasks: selection
   gallery_featured: true
   url: /tutorials/mark-selection/
-  tutorial_order: 130
-
+  tutorial_order: 160
 - id: horizon-plot
   example: /examples/horizon-plot/
   title: Signed Horizon chart
@@ -687,7 +1082,7 @@
   actions: createHorizonPlot
   tasks: trend comparison
   url: /tutorials/horizon/#complete-horizon-facade
-
+  figure_only: true
 - id: density-plot
   example: /examples/density-plot/
   title: Density profile
@@ -703,7 +1098,7 @@
   actions: createDensityPlot
   tasks: distribution comparison
   url: /tutorials/density-area/#complete-density-facade
-
+  figure_only: true
 - id: pie-plot
   example: /examples/pie-plot/
   title: Category pie chart
@@ -719,7 +1114,7 @@
   actions: createPiePlot
   tasks: part-to-whole
   url: /tutorials/polar-arcs/#complete-pie-and-donut-plots
-
+  figure_only: true
 - id: area-layout
   example: /examples/area-layout/
   title: Area with an explicit baseline
@@ -734,9 +1129,9 @@
   summary: Define bounds and independently revise series identity, placement, and color.
   actions: createAreaPlot · layoutSeries · encodeGroup
   tasks: trend comparison
-  tutorial_order: 140
   url: /tutorials/area-layout/
-
+  figure_only: true
+  tutorial_order: 150
 - id: radial-sectors
   example: /examples/radial-sectors/
   title: Measured rose sectors
@@ -752,7 +1147,7 @@
   actions: createRosePlot · createRadialBarPlot · encodeR
   tasks: polar category comparison
   url: /tutorials/polar-arcs/#measured-rose-and-radial-bar-plots
-
+  figure_only: true
 - id: color-midpoint
   example: /examples/color-midpoint/
   title: A meaningful color midpoint
@@ -768,7 +1163,7 @@
   actions: createScatterPlot · encodeColor · editScale
   tasks: quantitative color comparison
   url: /api/scales/continuous-color/#explicit-color-midpoint
-
+  figure_only: true
 - id: color-transitions
   example: /examples/color-transitions/
   title: Color scale and legend transitions
@@ -784,6 +1179,7 @@
   actions: createBarPlot · editScale · createLegend
   tasks: color scale transitions
   url: /api/scales/discretized-color/#changing-color-scale-families
+  figure_only: true
 - id: cars-origin-histogram-facet
   example: /examples/cars-origin-histogram-facet/
   title: Faceted car histograms
@@ -814,6 +1210,7 @@
   actions: createRuleMark · encodeX · encodeX2
   tasks: comparison
   url: /reference/actions/marks/#createrulemark
+  figure_only: true
 - id: raincloud-plot
   example: /examples/raincloud-plot/
   title: Raincloud distribution
@@ -844,6 +1241,7 @@
   actions: createBeeswarmPlot
   tasks: distribution comparison
   url: /reference/actions/charts-data/#createbeeswarmplot
+  figure_only: true
 - id: dot-plot
   example: /examples/dot-plot/
   title: Categorical dot plot
@@ -859,6 +1257,7 @@
   actions: createDotPlot
   tasks: comparison
   url: /reference/actions/charts-data/#createdotplot
+  figure_only: true
 - id: lollipop-plot
   example: /examples/lollipop-plot/
   title: Lollipop plot
@@ -874,6 +1273,7 @@
   actions: createLollipopPlot
   tasks: comparison
   url: /reference/actions/charts-data/#createlollipopplot
+  figure_only: true
 - id: dumbbell-plot
   example: /examples/dumbbell-plot/
   title: Dumbbell changes
@@ -889,7 +1289,7 @@
   actions: createDumbbellPlot
   tasks: comparison
   url: /tutorials/endpoint-plots/
-  tutorial_order: 150
+  figure_only: true
 - id: ecdf-plot
   example: /examples/ecdf-plot/
   title: Empirical cumulative distribution
@@ -905,7 +1305,7 @@
   actions: createECDFPlot
   tasks: distribution
   url: /tutorials/ecdf/
-  tutorial_order: 160
+  figure_only: true
 - id: theta-legend-order
   example: /examples/theta-legend-order/
   title: Pie legend order
@@ -921,6 +1321,7 @@
   actions: createPiePlot · editLegend
   tasks: composition
   url: /reference/actions/charts-data/#createpieplot
+  figure_only: true
 - id: temporal-input
   example: /examples/temporal-input/
   title: Explicit temporal inputs
@@ -936,6 +1337,7 @@
   actions: createScatterPlot · createTitle
   tasks: time
   url: /reference/actions/charts-data/#createscatterplot
+  figure_only: true
 - id: series-identity
   example: /examples/series-identity/
   title: Independent series appearance
@@ -951,6 +1353,7 @@
   actions: createLinePlot · encodeStrokeWidth · encodeOpacity
   tasks: relationship
   url: /reference/actions/charts-data/#createlineplot
+  figure_only: true
 - id: directional-tick-plot
   example: /examples/directional-tick-plot/
   title: Directional ticks and points
@@ -966,6 +1369,7 @@
   actions: encodeX · encodeY · createTickMark
   tasks: distribution
   url: /reference/actions/encodings/#encodex
+  figure_only: true
 - id: cars-binned-heatmap
   example: /examples/cars-binned-heatmap/
   title: Binned cars heatmap
@@ -996,6 +1400,7 @@
   actions: createTimeUnitData · createScatterPlot · createTitle
   tasks: time
   url: /api/data/time-units/
+  figure_only: true
 - id: airline-passenger-moving-windows
   example: /examples/airline-passenger-moving-windows/
   title: Moving passenger windows
@@ -1041,6 +1446,7 @@
   actions: facet · editCompositionLayout
   tasks: composition
   url: /reference/actions/charts-data/#facet
+  figure_only: true
 - id: cars-origin-jitter
   example: /examples/point-jitter/
   title: Cars by origin with jitter
@@ -1071,6 +1477,7 @@
   actions: createPointMark · encodeX · encodeY
   tasks: relationship
   url: /reference/actions/marks/#createpointmark
+  figure_only: true
 - id: gapminder-country-labels
   example: /examples/gapminder-country-labels/
   title: Country labels without overlap
@@ -1163,6 +1570,7 @@
   url: /recipes/repair-missing-observations/
   recipe_url: /recipes/repair-missing-observations/
   recipe_order: 200
+  figure_only: true
 - id: compare-weighted-distributions
   example: /examples/compare-weighted-distributions/
   title: Compare weighted distributions
@@ -1180,6 +1588,7 @@
   url: /recipes/compare-weighted-distributions/
   recipe_url: /recipes/compare-weighted-distributions/
   recipe_order: 201
+  figure_only: true
 - id: switch-encoding-modes
   example: /examples/switch-encoding-modes/
   title: Switch encoding modes atomically
@@ -1197,6 +1606,7 @@
   url: /recipes/switch-encoding-modes/
   recipe_url: /recipes/switch-encoding-modes/
   recipe_order: 202
+  figure_only: true
 - id: edit-scales-and-guides
   example: /examples/edit-scales-and-guides/
   title: Edit scales and refresh guides
@@ -1214,6 +1624,7 @@
   url: /recipes/edit-scales-and-guides/
   recipe_url: /recipes/edit-scales-and-guides/
   recipe_order: 203
+  figure_only: true
 - id: edit-selected-labels
   example: /examples/edit-selected-labels/
   title: Select and place final-item labels
@@ -1231,6 +1642,7 @@
   url: /recipes/edit-selected-labels/
   recipe_url: /recipes/edit-selected-labels/
   recipe_order: 204
+  figure_only: true
 - id: apply-custom-theme
   example: /examples/apply-custom-theme/
   title: Apply, override, and remove a theme
@@ -1248,6 +1660,7 @@
   url: /recipes/apply-custom-theme/
   recipe_url: /recipes/apply-custom-theme/
   recipe_order: 205
+  figure_only: true
 - id: edit-facet-source
   example: /examples/edit-facet-source/
   title: Revise facet source and shared guides
@@ -1265,6 +1678,7 @@
   url: /recipes/edit-facet-source/
   recipe_url: /recipes/edit-facet-source/
   recipe_order: 206
+  figure_only: true
 - id: remove-dependent-resources
   example: /examples/remove-dependent-resources/
   title: Remove resources in dependency order
@@ -1282,6 +1696,7 @@
   url: /recipes/remove-dependent-resources/
   recipe_url: /recipes/remove-dependent-resources/
   recipe_order: 207
+  figure_only: true
 - id: hierarchical-authoring
   example: /examples/hierarchical-authoring/
   title: Choose the right authoring level
@@ -1297,8 +1712,8 @@
   actions: createScatterPlot · createPointMark · editPointMark
   tasks: comparison
   url: /tutorials/hierarchical-authoring/
-  tutorial_order: 1
-
+  figure_only: true
+  tutorial_order: 400
 - id: color-controls
   example: /examples/color-controls/
   title: Cubehelix gamma and signed-power color
@@ -1314,7 +1729,7 @@
   actions: createRectMark · encodeColor · editColorScale
   tasks: continuous color editing
   url: /api/scales/continuous-color/#color-gamma-and-signed-power
-
+  figure_only: true
 - id: color-white-point
   example: /examples/color-white-point/
   title: Lab white point comparison
@@ -1330,7 +1745,7 @@
   actions: createRectMark · encodeColor · editColorScale
   tasks: continuous color editing
   url: /api/scales/continuous-color/#lab-white-point-comparison
-
+  figure_only: true
 - id: bar-compositing
   example: /examples/bar-compositing/
   title: Bar difference compositing
@@ -1346,7 +1761,7 @@
   actions: createBarPlot · editBarMark
   tasks: appearance editing
   url: /api/marks/bar/#blend-with-underlying-content
-
+  figure_only: true
 - id: axis-owners
   example: /examples/axis-owners/
   title: Named Cartesian axis owners
@@ -1362,7 +1777,7 @@
   actions: createAxes · editYAxis · editYAxisLabels
   tasks: axis editing
   url: /api/axes/complete/#independent-named-cartesian-axes
-
+  figure_only: true
 - id: shared-facet-owner
   example: /examples/shared-facet-owner/
   title: A shared legend across narrow facet panels
@@ -1378,7 +1793,7 @@
   actions: facet · editLegendLayout
   tasks: composition and guide editing
   url: /api/composition/facets/#declare-a-legend-for-the-complete-facet
-
+  figure_only: true
 - id: symbol-window
   example: /examples/symbol-window/
   title: Encoded area symbol window
@@ -1394,7 +1809,7 @@
   actions: encodeSize · createLegend · editLegendSymbols
   tasks: comparison
   url: /api/legends/categorical/#sample-windows
-
+  figure_only: true
 - id: legend-appearance
   example: /examples/legend-appearance/
   title: Whole symbol opacity
@@ -1410,7 +1825,7 @@
   actions: createLegend · editLegendSymbols
   tasks: comparison
   url: /api/legends/categorical/#recipe-layer-opacity
-
+  figure_only: true
 - id: named-shapes
   example: /examples/named-shapes/
   title: Directional point shapes preserve area
@@ -1426,6 +1841,7 @@
   actions: createScatterPlot · encodeShape · encodeSize · encodeAngle
   tasks: shape size appearance
   url: /api/marks/point/#directional-shapes-and-area
+  figure_only: true
 - id: combined-legends
   example: /examples/combined-legends/
   title: Combined legends
@@ -1441,7 +1857,7 @@
   actions: encodeColor · encodeSize · createLegend · editLegend
   tasks: comparison
   url: /api/legends/categorical/#quantitative-color-and-size
-
+  figure_only: true
 - id: legend-layout
   example: /examples/legend-layout/
   title: Independent legend layout and border
@@ -1457,7 +1873,7 @@
   actions: createLegend · editLegendLayout · editLegendBorder · editLegendBlock
   tasks: appearance guide editing
   url: /api/legends/categorical/#independent-legend-appearance
-
+  figure_only: true
 - id: legend-content-spacing
   example: /examples/legend-content-spacing/
   title: Equal gaps between different-sized legend rows
@@ -1473,7 +1889,7 @@
   actions: createLegend · editLegendLayout
   tasks: appearance guide editing
   url: /api/legends/#space-rows-by-content
-
+  figure_only: true
 - id: legend-recipe-opacity
   example: /examples/legend-recipe-opacity/
   title: Opacity of a layered legend recipe
@@ -1489,7 +1905,7 @@
   actions: createLegend · editLegendLabels · editLegendSymbols
   tasks: appearance guide editing
   url: /api/legends/categorical/#layered-recipe-opacity
-
+  figure_only: true
 - id: continuous-area-color
   example: /examples/continuous-area-color/
   title: Quantitative color within independent area series
@@ -1505,7 +1921,7 @@
   actions: createAreaPlot · encodeGroup · encodeColor · layoutSeries
   tasks: color grouping appearance
   url: /api/series/color/#continuous-area-color
-
+  figure_only: true
 - id: bootstrap-mean-ci
   example: /examples/bootstrap-mean-ci/
   title: Reproducible bootstrap mean confidence intervals
@@ -1521,7 +1937,7 @@
   actions: createSummaryData · createAreaPlot · createLineMark
   tasks: statistics dataflow uncertainty
   url: /api/data/summaries-and-shaping/#bootstrap-mean-confidence-intervals
-
+  figure_only: true
 - id: facet-shared-top-lane
   example: /examples/facet-shared-top-lane/
   title: Share the existing facet top margin
@@ -1537,7 +1953,7 @@
   actions: facet · editCompositionLayout · editFacetHeaders
   tasks: composition layout
   url: /api/composition/facets/#share-the-existing-top-margin
-
+  figure_only: true
 - id: plot-guide-underlays
   example: /examples/plot-guide-underlays/
   title: Composite marks over guides
@@ -1553,7 +1969,7 @@
   actions: createXAxis · editXAxis · editCanvas
   tasks: composition appearance editing
   url: /api/axes/complete/#composite-marks-over-guides
-
+  figure_only: true
 - id: facet-header-rotation
   example: /examples/facet-header-rotation/
   title: Vertical region headers
@@ -1571,7 +1987,7 @@
   url: /api/composition/facets/#rotate-panel-headers
   home_group: essentials
   home_order: 155
-
+  figure_only: true
 - id: lookup-data
   example: /examples/lookup-data/
   title: Mean age by group
@@ -1589,7 +2005,7 @@
   url: /api/data/summaries-and-shaping/#named-table-lookup
   home_group: essentials
   home_order: 156
-
+  figure_only: true
 - id: facet-field-titles
   example: /examples/facet-field-titles/
   title: One field title across two panels
@@ -1607,7 +2023,7 @@
   url: /api/composition/facets/#name-the-complete-facet-field
   home_group: essentials
   home_order: 157
-
+  figure_only: true
 - id: linear-nice-count
   example: /examples/linear-nice-count/
   title: Count-based automatic linear domain
@@ -1625,7 +2041,7 @@
   url: /api/scales/#count-based-linear-domain-rounding
   home_group: essentials
   home_order: 158
-
+  figure_only: true
 - id: linear-nearest-ticks
   example: /examples/linear-nearest-ticks/
   title: Nearest-step automatic linear ticks
@@ -1643,7 +2059,7 @@
   url: /api/axes/#choose-nearest-step-linear-ticks
   home_group: essentials
   home_order: 159
-
+  figure_only: true
 - id: linked-overlay
   example: /examples/linked-overlay/
   title: Linked overlay
@@ -1661,7 +2077,7 @@
   url: /recipes/combo/
   recipe_url: /recipes/combo/
   recipe_order: 212
-
+  figure_only: true
 - id: shared-adjacent
   example: /examples/shared-adjacent/
   title: Shared-scale adjacent charts
@@ -1677,6 +2093,7 @@
   actions: createAdjacentPlot editCompositionScales createTitle
   tasks: composition comparison
   url: /api/composition/editing/
+  figure_only: true
 - id: compound-path
   example: /examples/compound-path/
   title: Compound paths and holes
@@ -1692,7 +2109,7 @@
   actions: createGraphics · editGraphics
   tasks: extension
   url: /extension/primitives/
-
+  figure_only: true
 - id: structured-paints
   example: /examples/structured-paints/
   title: Pattern and gradient fills
@@ -1708,6 +2125,7 @@
   actions: createRectMark · editRectMark
   tasks: appearance
   url: /api/appearance/mark-style/
+  figure_only: true
 - id: font-assets
   example: /examples/font-assets/
   title: Prepared Korean and emoji fonts
@@ -1723,8 +2141,8 @@
   actions: createFontResource · applyTextMetrics · replaceFontResource
   tasks: fonts text layout
   url: /tutorials/font-assets/
-  tutorial_order: 171
-
+  figure_only: true
+  tutorial_order: 310
 - id: mark-outlines
   example: /examples/mark-outlines/
   title: Outlines and text halos
@@ -1740,6 +2158,7 @@
   actions: createRectMark · createTextMark · editTextMark
   tasks: appearance
   url: /api/appearance/mark-style/
+  figure_only: true
 - id: image-assets
   example: /examples/image-assets/
   title: Retained image placement
@@ -1755,7 +2174,8 @@
   actions: createImageResource · createImageMark · editImageMark
   tasks: image assets
   url: /tutorials/image-assets/
-  tutorial_order: 170
+  figure_only: true
+  tutorial_order: 300
 - id: tree-layouts
   example: /examples/tree-layouts/
   title: Tree layout
@@ -1771,7 +2191,7 @@
   actions: createHierarchyData · layoutHierarchy · createTreePlot
   tasks: hierarchy layout part-to-whole
   url: /tutorials/hierarchy/
-  tutorial_order: 180
+  figure_only: true
 - id: tree-horizontal
   example: /examples/tree-horizontal/
   title: Horizontal tree
@@ -1787,6 +2207,7 @@
   actions: createHierarchyData · layoutHierarchy · createTreePlot
   tasks: hierarchy layout part-to-whole
   url: /tutorials/hierarchy/
+  figure_only: true
 - id: tree-radial
   example: /examples/tree-radial/
   title: Radial tree
@@ -1802,6 +2223,7 @@
   actions: createHierarchyData · layoutHierarchy · createTreePlot
   tasks: hierarchy layout part-to-whole
   url: /tutorials/hierarchy/
+  figure_only: true
 - id: treemap-layouts
   example: /examples/treemap-layouts/
   title: Treemap layout
@@ -1817,6 +2239,7 @@
   actions: createHierarchyData · layoutHierarchy · createTreemapPlot
   tasks: hierarchy layout part-to-whole
   url: /tutorials/hierarchy/
+  figure_only: true
 - id: treemap-squarify
   example: /examples/treemap-squarify/
   title: Squarified treemap
@@ -1832,6 +2255,7 @@
   actions: createHierarchyData · layoutHierarchy · createTreemapPlot
   tasks: hierarchy layout part-to-whole
   url: /tutorials/hierarchy/
+  figure_only: true
 - id: graph-plots
   example: /examples/graph-plots/
   title: Directed graph
@@ -1847,7 +2271,7 @@
   actions: createGraphData · layoutGraph · createGraphPlot
   tasks: graph network layout relationship
   url: /tutorials/graphs/
-  tutorial_order: 220
+  figure_only: true
 - id: graph-parallel
   example: /examples/graph-parallel/
   title: Parallel edges
@@ -1863,6 +2287,7 @@
   actions: createGraphData · layoutGraph · createGraphPlot
   tasks: graph network layout relationship
   url: /tutorials/graphs/
+  figure_only: true
 - id: graph-self-loop
   example: /examples/graph-self-loop/
   title: Self-loop
@@ -1878,8 +2303,8 @@
   actions: createGraphData · layoutGraph · createGraphPlot
   tasks: graph network layout relationship
   url: /tutorials/graphs/
+  figure_only: true
 - id: partition-layouts
-  tutorial_order: 250
   example: /examples/partition-layouts/
   title: Icicle partition
   image: /assets/images/partition-layouts.png
@@ -1894,6 +2319,7 @@
   actions: createHierarchyData · layoutHierarchy · createPartitionPlot
   tasks: hierarchy partition focus part-to-whole
   url: /tutorials/partition/
+  figure_only: true
 - id: partition-sunburst
   example: /examples/partition-sunburst/
   title: Sunburst partition
@@ -1909,6 +2335,7 @@
   actions: createHierarchyData · layoutHierarchy · createPartitionPlot
   tasks: hierarchy partition focus part-to-whole
   url: /tutorials/partition/
+  figure_only: true
 - id: mark-shadows
   example: /examples/mark-shadows/
   title: Bounded mark shadows
@@ -1924,6 +2351,7 @@
   actions: createRectMark · editRectMark
   tasks: appearance shadows
   url: /api/appearance/mark-style/#shadows
+  figure_only: true
 - id: text-shadows
   example: /examples/text-shadows/
   title: Exact text shadows
@@ -1939,8 +2367,8 @@
   actions: createTextMark · createFontResource · applyTextMetrics
   tasks: appearance shadows
   url: /api/appearance/mark-style/#shadows
+  figure_only: true
 - id: flow-layouts
-  tutorial_order: 200
   example: /examples/flow-layouts/
   title: Conserved flows
   image: /assets/images/flow-layouts.png
@@ -1955,6 +2383,7 @@
   actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
   tasks: flow conservation part-to-whole relationship
   url: /tutorials/flows/
+  figure_only: true
 - id: flow-vertical
   example: /examples/flow-vertical/
   title: Vertical flows
@@ -1970,6 +2399,7 @@
   actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
   tasks: flow conservation part-to-whole relationship
   url: /tutorials/flows/
+  figure_only: true
 - id: flow-cyclic
   example: /examples/flow-cyclic/
   title: Cyclic flows
@@ -1985,6 +2415,7 @@
   actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
   tasks: flow conservation part-to-whole relationship
   url: /tutorials/flows/
+  figure_only: true
 - id: flow-cyclic-vertical
   example: /examples/flow-cyclic-vertical/
   title: Vertical feedback
@@ -2000,8 +2431,8 @@
   actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
   tasks: flow conservation part-to-whole relationship
   url: /tutorials/flows/
+  figure_only: true
 - id: contours
-  tutorial_order: 210
   example: /examples/contours/
   title: A level boundary
   image: /assets/images/contours.png
@@ -2016,6 +2447,7 @@
   actions: createContourData · createDensityContourData · createContourMark
   tasks: contour density distribution multivariate
   url: /tutorials/contours/
+  figure_only: true
 - id: contour-bands
   example: /examples/contour-bands/
   title: Bands between levels
@@ -2031,6 +2463,7 @@
   actions: createContourData · createDensityContourData · createContourMark
   tasks: contour density distribution multivariate
   url: /tutorials/contours/
+  figure_only: true
 - id: contour-holes
   example: /examples/contour-holes/
   title: A missing center remains empty
@@ -2046,6 +2479,7 @@
   actions: createContourData · createDensityContourData · createContourMark
   tasks: contour density distribution multivariate
   url: /tutorials/contours/
+  figure_only: true
 - id: contour-histogram
   example: /examples/contour-histogram/
   title: Weighted point bins
@@ -2061,6 +2495,7 @@
   actions: createContourData · createDensityContourData · createContourMark
   tasks: contour density distribution multivariate
   url: /tutorials/contours/
+  figure_only: true
 - id: contour-density
   example: /examples/contour-density/
   title: A two-dimensional kernel
@@ -2076,7 +2511,7 @@
   actions: createContourData · createDensityContourData · createContourMark
   tasks: contour density distribution multivariate
   url: /tutorials/contours/
-
+  figure_only: true
 - id: inspect-chart
   example: /examples/inspect-chart/
   title: Inspect overlapping chart items
@@ -2094,8 +2529,8 @@
   url: /recipes/inspect-chart/
   recipe_url: /recipes/inspect-chart/
   recipe_order: 209
+  figure_only: true
 - id: responsive-guides
-  tutorial_order: 260
   example: /examples/responsive-guides/
   title: Labels inside a fixed Canvas
   image: /assets/images/responsive-guides.png
@@ -2110,9 +2545,9 @@
   actions: createCanvas · createBarPlot · editCanvas
   tasks: responsive labels
   url: /tutorials/responsive-guides/
-
+  figure_only: true
+  tutorial_order: 320
 - id: calendar
-  tutorial_order: 230
   example: /examples/calendar/
   title: A leap year, one cell per civil day
   image: /assets/images/calendar.png
@@ -2127,6 +2562,7 @@
   actions: createCalendarLayout · createCalendarPlot · editCalendarPlot
   tasks: calendar dates trend
   url: /tutorials/calendar/
+  figure_only: true
 - id: calendar-monday
   example: /examples/calendar-monday/
   title: Weeks begin on Monday
@@ -2142,6 +2578,7 @@
   actions: createCalendarLayout · createCalendarPlot · editCalendarPlot
   tasks: calendar dates trend
   url: /tutorials/calendar/
+  figure_only: true
 - id: calendar-omitted
   example: /examples/calendar-omitted/
   title: Omit unobserved days
@@ -2157,9 +2594,8 @@
   actions: createCalendarLayout · createCalendarPlot · editCalendarPlot
   tasks: calendar dates trend
   url: /tutorials/calendar/
-
+  figure_only: true
 - id: nested-responsive
-  tutorial_order: 270
   example: /examples/nested-responsive/
   title: Nested panels with shared guides
   image: /assets/images/nested-responsive.png
@@ -2174,6 +2610,8 @@
   actions: facet · hconcat · editCanvas
   tasks: nested panels
   url: /tutorials/nested-responsive/
+  figure_only: true
+  tutorial_order: 330
 - id: edge-routes
   example: /examples/edge-routes/
   title: Edge routes
@@ -2189,9 +2627,9 @@
   actions: bundleGraphEdges · createGraphPlot · editEdgeRoute
   tasks: graph edge routes bundling relationship
   url: /tutorials/edge-routes/
-  tutorial_order: 225
+  figure_only: true
+  tutorial_order: 210
 - id: geographic-marks
-  tutorial_order: 240
   example: /examples/geographic-marks/
   title: A district, stops and service route
   image: /assets/images/geographic-marks.png
@@ -2206,6 +2644,7 @@
   actions: createGeometryData · createProjection · createGeoShapeMark · createGeoPointMark · createGeoLineMark · createGraticule
   tasks: geometry projection map coordinate
   url: /tutorials/geographic-marks/
+  figure_only: true
 - id: geographic-grid
   example: /examples/geographic-grid/
   title: Longitude and latitude on one projection
@@ -2221,9 +2660,8 @@
   actions: createGeometryData · createProjection · createGeoShapeMark · createGeoPointMark · createGeoLineMark · createGraticule
   tasks: geometry projection map coordinate
   url: /tutorials/geographic-marks/
-
+  figure_only: true
 - id: pyramid
-  tutorial_order: 280
   example: /examples/pyramid/
   title: Ordered stages by width
   image: /assets/images/pyramid.png
@@ -2238,7 +2676,8 @@
   actions: createPyramidPlot · editPyramidPlot
   tasks: ordered stages comparison part-to-whole
   url: /tutorials/pyramid/
-
+  figure_only: true
+  tutorial_order: 290
 - id: pyramid-area
   example: /examples/pyramid-area/
   title: Ordered stages by area
@@ -2254,7 +2693,7 @@
   actions: createPyramidPlot · editPyramidPlot
   tasks: ordered stages comparison part-to-whole
   url: /tutorials/pyramid/
-
+  figure_only: true
 - id: pyramid-up
   example: /examples/pyramid-up/
   title: Stages progress upward
@@ -2270,7 +2709,7 @@
   actions: createPyramidPlot · editPyramidPlot
   tasks: ordered stages comparison part-to-whole
   url: /tutorials/pyramid/
-
+  figure_only: true
 - id: pyramid-right
   example: /examples/pyramid-right/
   title: Stages progress rightward
@@ -2286,7 +2725,7 @@
   actions: createPyramidPlot · editPyramidPlot
   tasks: ordered stages comparison part-to-whole
   url: /tutorials/pyramid/
-
+  figure_only: true
 - id: pyramid-left
   example: /examples/pyramid-left/
   title: Stages progress leftward
@@ -2302,7 +2741,7 @@
   actions: createPyramidPlot · editPyramidPlot
   tasks: ordered stages comparison part-to-whole
   url: /tutorials/pyramid/
-
+  figure_only: true
 - id: pyramid-point
   example: /examples/pyramid-point/
   title: An explicit pointed ending
@@ -2318,7 +2757,7 @@
   actions: createPyramidPlot · editPyramidPlot
   tasks: ordered stages comparison part-to-whole
   url: /tutorials/pyramid/
-
+  figure_only: true
 - id: ohlc
   example: /examples/ohlc/
   title: Open, high, low and close
@@ -2334,8 +2773,7 @@
   actions: createOHLCPlot · editOHLCPlot
   tasks: price ranges trend uncertainty
   url: /tutorials/ohlc/
-  tutorial_order: 290
-
+  figure_only: true
 - id: ohlc-labels
   example: /examples/ohlc-labels/
   title: Explicit closing price labels
@@ -2351,7 +2789,7 @@
   actions: createOHLCPlot · editOHLCPlot
   tasks: price ranges trend uncertainty
   url: /tutorials/ohlc/
-
+  figure_only: true
 - id: ohlc-no-doji
   example: /examples/ohlc-no-doji/
   title: Explicit flat-body policy
@@ -2367,7 +2805,7 @@
   actions: createOHLCPlot · editOHLCPlot
   tasks: price ranges trend uncertainty
   url: /tutorials/ohlc/
-
+  figure_only: true
 - id: waterfall
   example: /examples/waterfall/
   title: Ordered contributions and totals
@@ -2383,8 +2821,7 @@
   actions: createWaterfallPlot · editWaterfallPlot
   tasks: contributions and running balances comparison part-to-whole
   url: /tutorials/waterfall/
-  tutorial_order: 300
-
+  figure_only: true
 - id: waterfall-labels
   example: /examples/waterfall-labels/
   title: Explicit stage labels
@@ -2400,7 +2837,7 @@
   actions: createWaterfallPlot · editWaterfallPlot
   tasks: contributions and running balances comparison part-to-whole
   url: /tutorials/waterfall/
-
+  figure_only: true
 - id: waterfall-no-connectors
   example: /examples/waterfall-no-connectors/
   title: Contribution bars without connectors
@@ -2416,6 +2853,7 @@
   actions: createWaterfallPlot · editWaterfallPlot
   tasks: contributions and running balances comparison part-to-whole
   url: /tutorials/waterfall/
+  figure_only: true
 - id: geographic-annotations
   example: /examples/geographic-annotations/
   title: Labels stay attached to the original stops
@@ -2431,7 +2869,7 @@
   actions: createGeoAnnotation · editGeoAnnotation · createProjection
   tasks: geometry annotation label map coordinate
   url: /tutorials/geographic-marks/
-
+  figure_only: true
 - id: geographic-fields
   example: /examples/geographic-fields/
   title: Stop area follows visitor counts
@@ -2447,7 +2885,7 @@
   actions: createGeoPointMark · encodeColor · encodeSize
   tasks: geometry choropleth map proportional symbol coordinate
   url: /tutorials/geographic-marks/
-
+  figure_only: true
 - id: trail
   example: /examples/trail/
   title: Changing width along each series
@@ -2463,8 +2901,7 @@
   actions: createTrailPlot · editTrailPlot
   tasks: sample width along ordered series trend multivariate
   url: /tutorials/trail/
-  tutorial_order: 310
-
+  figure_only: true
 - id: trail-constant-width
   example: /examples/trail-constant-width/
   title: An explicit constant ribbon width
@@ -2480,7 +2917,7 @@
   actions: createTrailPlot · editTrailPlot
   tasks: sample width along ordered series trend multivariate
   url: /tutorials/trail/
-
+  figure_only: true
 - id: streamgraph
   example: /examples/streamgraph/
   title: Moving streamgraph baseline
@@ -2496,7 +2933,7 @@
   actions: createAreaPlot · layoutSeries
   tasks: composition trend
   url: /tutorials/area-layout/#use-a-moving-streamgraph-baseline
-
+  figure_only: true
 - id: table
   example: /examples/table/
   title: Values and small charts in a keyed table
@@ -2512,8 +2949,7 @@
   actions: createTablePlot · editTablePlot
   tasks: formatted rows and inline charts comparison multivariate
   url: /tutorials/table/
-  tutorial_order: 320
-
+  figure_only: true
 - id: marginal
   example: /examples/marginal/
   title: Marginal distributions
@@ -2531,7 +2967,7 @@
   url: /recipes/marginal/
   recipe_url: /recipes/marginal/
   recipe_order: 210
-
+  figure_only: true
 - id: bullet
   example: /examples/bullet/
   title: Bullet comparison
@@ -2549,3 +2985,4 @@
   url: /recipes/bullet/
   recipe_url: /recipes/bullet/
   recipe_order: 211
+  figure_only: true

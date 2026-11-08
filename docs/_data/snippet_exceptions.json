@@ -2352,13 +2352,6 @@
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Loading in browsers\" on docs/fonts.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/getting-started.md#2-build-the-program:1",
-    "sha256": "14c0501a8cb73d808b9181331de8af8c740e9f883a091eb4773cf4641258f47e",
-    "mode": "contextual-fragment",
-    "owner": "docs/getting-started.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"2. Build the program\" on docs/getting-started.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
-  },
-  {
     "id": "docs/inspection.md#program-inspection:1",
     "sha256": "6d15d17be58f7519df13460ccab8f2b86b1ebf998cdd4540f0cb4088d45b22e8",
     "mode": "contextual-fragment",
@@ -2597,7 +2590,7 @@
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Revise the statistical source\" on docs/tutorials/ecdf.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/tutorials/endpoint-plots.md#dot-lollipop-and-dumbbell-plots:2",
+    "id": "docs/tutorials/endpoint-plots.md#a-small-worked-example:2",
     "sha256": "b28fe404b8e6c7661b139006348b0015cc4b476dc8ed587136336834c88628db",
     "mode": "contextual-fragment",
     "owner": "docs/tutorials/endpoint-plots.md",
@@ -2605,10 +2598,10 @@
   },
   {
     "id": "docs/tutorials/error-band.md#horizontal-bands-and-boundaries:1",
-    "sha256": "0da9d4d960be1d0c4863d49b31f22b1b61b6fe2ecb8a522df82758070c9287e5",
+    "sha256": "aad817234fd115eb56f9107aaa3916f716dc46b7f49b46030fad3be276a29e66",
     "mode": "contextual-fragment",
     "owner": "docs/tutorials/error-band.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Horizontal bands and boundaries\" on docs/tutorials/error-band.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
+    "reason": "Continuation of the tutorial's complete program: it reuses the gapminder rows that program fetched. The same horizontal createErrorBand call over the repository Gapminder rows was run during review and completes."
   },
   {
     "id": "docs/tutorials/error-bar.md#add-intervals-to-an-existing-layer:1",
@@ -2633,10 +2626,10 @@
   },
   {
     "id": "docs/tutorials/grouped-bar.md#width-spacing-and-reassignment:3",
-    "sha256": "72620ac09e7ae3978d7cfaffe2614e00a5619fceabe64b7c201a6f05fd6664fe",
+    "sha256": "d3e29a8145881af570d56141ac024710a54ef536e2d33463589fbea3e438b3f9",
     "mode": "contextual-fragment",
     "owner": "docs/tutorials/grouped-bar.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Width, spacing, and reassignment\" on docs/tutorials/grouped-bar.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
+    "reason": "Continuation of the tutorial's grouped bar program. Switching the existing sex grouping to layout stack on the repository jobs rows was run during review and completes; the former job grouping failed because 255 legend entries cannot fit the margin."
   },
   {
     "id": "docs/tutorials/histogram.md#what-the-actions-establish:1",
@@ -2794,10 +2787,10 @@
   },
   {
     "id": "docs/tutorials/scatterplot.md#reassign-encodings:1",
-    "sha256": "d479cae27627883d52ce92992684fdfd8b8005e1356d6c904da85a548287edb6",
+    "sha256": "865fdee26d226056d44bdc63e3f8099f194a07e6d5d8aaf5af0fc118580e1a3f",
     "mode": "contextual-fragment",
     "owner": "docs/tutorials/scatterplot.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Reassign encodings\" on docs/tutorials/scatterplot.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
+    "reason": "Alternative program over the tutorial's loaded cars rows. Run during review with the repository cars rows that have every reassigned field; the explicit margins leave room for both axis titles, which the former 30-pixel margin did not."
   },
   {
     "id": "docs/tutorials/scatterplot.md#continuous-appearance-variants:1",
@@ -2891,7 +2884,7 @@
     "reason": "Requires the retained-image program, Canvas context and explicit interactionBindings supplied in the text. The exact fragment is executed with real browser image bytes for committed commands and pointer previews in test/browser/interaction-session.browser.js. Authentic graph frame preparation and matching preview/frame assets are additionally verified by the public current-graph drag browser and installed consumers."
   },
   {
-    "id": "docs/api/interaction.md#prepare-native-work-before-replacing-the-program:1",
+    "id": "docs/api/interaction.md#prepare-edits-before-replacing-the-program:1",
     "sha256": "d2ba963d0e1da08724959b45ef21d2bdb2a21c685e1a8f64307cb695cea5ce1d",
     "mode": "contextual-fragment",
     "owner": "docs/api/interaction.md",
@@ -2952,5 +2945,33 @@
     "mode": "contextual-fragment",
     "owner": "docs/api/live.md",
     "reason": "Contextual continuation of the live scatter example. It needs that attached live chart, a second live chart named other, and browser animation frames; setData, animateTo, linkTo and save are executed in test/unit/live/live-chart.test.js."
+  },
+  {
+    "id": "docs/getting-started.md#4-change-the-chart:1",
+    "sha256": "387a0ec6e51be56a5b8e11ec85254e98f671e2d73fdbf2b6c6480eea8908c01a",
+    "mode": "contextual-fragment",
+    "owner": "docs/getting-started.md",
+    "reason": "Continuation of the executable step 2 program: it needs that program and its canvas. The same editPointMark call on the same chart and its trace operations are asserted in test/docs/getting-started.test.js."
+  },
+  {
+    "id": "docs/getting-started.md#5-save-it-as-an-image:1",
+    "sha256": "40741da14eb4086ef3bb313c0a2d27a4671ef90a6b40d48e7955e3863e9f1026",
+    "mode": "contextual-fragment",
+    "owner": "docs/getting-started.md",
+    "reason": "Browser continuation of step 4 that needs the edited chart, a DOM document and object URLs to trigger a download; renderToSVG on the same program is asserted in test/docs/getting-started.test.js."
+  },
+  {
+    "id": "docs/getting-started.md#5-save-it-as-an-image:2",
+    "sha256": "535a27db3af77b61b92db79bcd88f3ca4bf2552cc9fd97407f4234da26259bd5",
+    "mode": "contextual-fragment",
+    "owner": "docs/getting-started.md",
+    "reason": "Complete Node.js script that reads public/cars.json from the project created in step 1 and writes cars.png with the optional native Canvas peer; the same program renders to PNG in the documentation image generator."
+  },
+  {
+    "id": "docs/api/graphs.md#run-inference-in-a-browser-worker:1",
+    "sha256": "76b1757fe88f5c7ab1b6f2400feb0ef336e3b39b33eb5f347e08f3eca86588c9",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/graphs.md",
+    "reason": "Worker support file, not a page module. Its source is examples/graph-inference/browser-worker.js with the public ggaction/graph import, and the graph-inference-browser-worker case bundles and runs it in a module Worker in Chromium."
   }
 ]

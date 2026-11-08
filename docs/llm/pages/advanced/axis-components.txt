@@ -6,7 +6,7 @@ bounds. x supports `bottom` and `top`; y supports `left` and `right`.
 
 ## Complete single-channel axes
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createXAxis({
@@ -41,7 +41,7 @@ it on the semantic guide.
 
 ## Lines
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createXAxisLine({
@@ -60,7 +60,7 @@ bounds; concrete endpoints are not accepted.
 
 ## Ticks
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createXAxisTicks({ count: 5, length: 6 });
@@ -84,7 +84,7 @@ that inference.
 
 ## Labels
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createXAxisLabels({ format: { decimals: 1 } });
@@ -117,7 +117,7 @@ tick and label configurations produce an error.
 
 ## Ticks and labels together
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createXAxisTicksAndLabels({
@@ -147,7 +147,7 @@ An explicit title always takes precedence.
 ECDF guides use the original measure name and `Cumulative probability` instead
 of generated output field names; cumulative-count outputs use `Cumulative count`.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createXAxisTitle({ text: "Horsepower" });

@@ -44,7 +44,7 @@ The owner ID remains stable while successful edits create immutable physical
 revisions. Use the generic action when an editor must receive a complete
 normalized transform definition:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "twice"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "twice"`.
 
 ```javascript
 const revised = program.editDerivedData({
@@ -132,7 +132,7 @@ and follows the same stable comparison and null-placement rules as
 `createSortedData`. Use `dependents: "recompute"` when downstream derived data
 must advance with the new row order.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `ordered`. Resource selectors used here: `target: "orderedSales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `ordered` from that setup. It refers to `target: "orderedSales"`.
 
 ```javascript
 const descending = ordered.editSortedData({
@@ -150,7 +150,7 @@ edited current revision, in which case it moves to the new revision.
 The following chain demonstrates rejection by default, downstream replay, and
 logical-source reuse:
 
-> **expected-error.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "raw"`; `source: "twice"`; `target: "twice"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Expected error.** Not a complete program: it continues the setup described in this section. It refers to `source: "raw"`; `source: "twice"`; `target: "twice"`.
 
 ```javascript
 const before = chart()
@@ -199,7 +199,7 @@ const after = before.editComputedData({
 Full programs can delete one named dataset after its final live consumer has
 been removed:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "temporaryPoints"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "temporaryPoints"`.
 
 ```javascript
 const cleaned = program

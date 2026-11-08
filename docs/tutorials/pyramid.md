@@ -10,6 +10,12 @@ the process. Pyramid keeps it even if a later count exceeds an earlier one.
 
 {% include chart-example.html id="pyramid" %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import the Full ggaction package; this example declares its ordered stage observations.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from "ggaction";
 
@@ -37,12 +43,11 @@ the direction of progress; it does not sort the source rows. A pointed ending
 is an explicit `lastStage: "point"` choice for width mode.
 
 The [shared example source](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/pyramid/program.js)
-drives the browser examples, primitive comparisons and generated images.
+draws the figures on this page.
 See [Pyramid plots](../api/pyramid.md) for labels, percentages, color, selection
 and editing options.
 
 ## Key action trace
 
-`createPyramidPlot` records its stage/value meaning, then explicitly calls
-`materializePyramidPlot` and the graphic primitives. `editPyramidPlot` validates
-the whole candidate before applying the same materializer.
+`createPyramidPlot` records which fields are the stages and values, then draws
+the stages. `editPyramidPlot` checks the whole edited chart before redrawing it.

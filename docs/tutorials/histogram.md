@@ -23,6 +23,12 @@ curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ si
 
 ## Complete program
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, render } from "ggaction";
 
@@ -81,6 +87,12 @@ and grids while preserving compatible color grouping and legends.
 
 To compare proportions instead of absolute counts, set the color layout to
 `"fill"`. It invokes normalized y stacking and produces a `[0, 1]` axis:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeColor({ field: "Origin", layout: "fill" });

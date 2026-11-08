@@ -39,7 +39,7 @@ tooltips, brushing and animated updates, use [live charts](../../../api/live/).
 
 Run this ES module in a bundler-based browser page containing `<canvas id="chart"></canvas>`:
 
-> **Executable complete.** Use a browser ES module with a canvas element whose id is chart; all input rows are included.
+> **Runnable complete example.** Use a browser ES module with a canvas element whose id is chart; all input rows are included.
 
 ```javascript
 import { chart, render } from "ggaction/basic";
@@ -75,7 +75,7 @@ example, use `pixelRatio`, not `pixelratio`, for PNG density.
 
 Every rendering fragment below continues from this complete program:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -106,7 +106,7 @@ const program = chart()
 In a browser page containing `<canvas id="chart"></canvas>`, render with its 2D
 context:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { render } from "ggaction";
@@ -119,7 +119,7 @@ The optional `pixelRatio` increases physical output density while retaining
 logical chart coordinates. For an HTML Canvas, ggaction also preserves the
 logical CSS width and height while enlarging the backing store:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 render(program, context, { pixelRatio: 2 });
@@ -144,7 +144,7 @@ The browser-safe SVG entry returns a complete SVG document string without
 reading the DOM or filesystem. Assign it to a trusted application container or
 save the returned string with the file API available in your environment.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { renderToSVG } from "ggaction/svg";
@@ -168,7 +168,7 @@ and contain only ASCII letters, numbers, `_`, or `-`.
 For example, a browser application can place the generated document in an
 existing output container:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 document.querySelector("#svg-output").innerHTML = svg;
@@ -178,7 +178,7 @@ document.querySelector("#svg-output").innerHTML = svg;
 
 The Node-only entry point writes a completed program directly to PNG.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { renderToPNG } from "ggaction/png";
@@ -210,7 +210,7 @@ authoring or Canvas drawing off the JavaScript thread.
 
 The Node-only PDF entry writes one completed chart as one vector PDF page:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { renderToPDF } from "ggaction/pdf";
@@ -303,7 +303,7 @@ Browser and Node with Full or Basic editable programs. It returns a deeply froze
 `{ schemaVersion: 1, title, views }` without changing the program or its trace.
 `title` is the semantic title string or `null`. Omit `format` or use `format: "table"` for this table schema.
 
-> **alternative.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Alternative.** Not a complete program: it continues the setup described in this section. It refers to `target: "sales"`.
 
 ```javascript
 import { chart } from "ggaction";
@@ -375,7 +375,7 @@ Each item contains its opaque `key`, `component`, `markType`, optional native
 standalone Text use the existing native Text items in this mode. A path remains
 one native series item rather than becoming a row per source observation.
 
-> **Executable complete.** Use an ES module. The example prints native aggregate values and their named selection membership.
+> **Runnable complete example.** Use an ES module. The example prints native aggregate values and their named selection membership.
 
 ```javascript
 import { chart } from "ggaction";
@@ -436,7 +436,7 @@ preserved through scoped definitions and fragment wrappers. The SVG `clip`
 rectangle retains the rectangular viewport/owner intersection; path clips apply
 inside the fragment so fractional edges are not clipped twice.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: "data"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `data: "data"`.
 
 ```js
 import { chart } from 'ggaction';
@@ -489,7 +489,7 @@ properties. Do not use keys as editable graphic addresses.
 
 Browser example (with an existing `<canvas id="chart">` element):
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: "data"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `data: "data"`.
 
 ```js
 import { chart } from 'ggaction';
@@ -520,7 +520,7 @@ empty strings are valid.
 This complete browser example waits for fonts and measures the full string and
 word candidates that its title wrapping will use:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -605,7 +605,7 @@ described in [Marks](../../../api/marks/#image-marks).
 
 For browser Canvas, prepare embedded bytes with an application-owned decoder:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `URL`, `canvas`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `URL`, `canvas` from that setup.
 
 ```js
 import { prepareImageRendering, render } from "ggaction";
@@ -730,7 +730,7 @@ This preparation does not change the immutable program.
 
 Complete browser module with a destination `<canvas id="chart">`:
 
-> **Executable complete.** Use the installed ggaction package in a browser module with a canvas element whose id is chart.
+> **Runnable complete example.** Use the installed ggaction package in a browser module with a canvas element whose id is chart.
 
 ```js
 import { chart, prepareShadowRendering, render } from "ggaction";

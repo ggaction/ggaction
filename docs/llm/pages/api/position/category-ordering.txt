@@ -7,7 +7,7 @@ together. It never reorders source rows.
 
 ## `orderCategories(options)`
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "bars"`.
 
 ```javascript
 const ordered = program.orderCategories({
@@ -44,7 +44,7 @@ authorities and cannot be combined.
 
 ## `removeCategoryOrder({ target?, channel })`
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `ordered`. Resource selectors used here: `target: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `ordered` from that setup. It refers to `target: "bars"`.
 
 ```javascript
 const automatic = ordered.removeCategoryOrder({
@@ -63,7 +63,7 @@ preserved. Removing a missing assignment is an error.
 On an existing weighted Pie, these calls put category C first without changing
 its weight or color (fragment; `pie` must already encode categories A, B, and C):
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `pie`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `pie` from that setup.
 
 ```javascript
 const ordered = pie.orderCategories({ channel: "theta", values: ["C", "A"] });

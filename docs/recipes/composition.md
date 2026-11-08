@@ -11,18 +11,27 @@ title: Composition Recipe
 
 {% include runnable-recipe-note.html %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
+
+<!-- snippet-context:end -->
+
 ```javascript
-import { chart, hconcat } from "ggaction";
+import { chart, hconcat, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car => Number.isFinite(car.Horsepower) && Number.isFinite(car.Miles_per_Gallon));
 
 const points = chart()
-  .createCanvas({ width: 280, height: 220 })
-  .createData({ values: pointRows })
-  .createScatterPlot({ x: "x", y: "y" });
+  .createCanvas({ width: 320, height: 240 })
+  .createData({ values })
+  .createScatterPlot({ x: "Horsepower", y: "Miles_per_Gallon" });
 
 const bars = chart()
-  .createCanvas({ width: 260, height: 220 })
-  .createData({ values: barRows })
-  .createBarPlot({ x: "category", y: "value" });
+  .createCanvas({ width: 280, height: 240 })
+  .createData({ values })
+  .createBarPlot({ x: "Origin", y: { field: "Miles_per_Gallon", aggregate: "mean" } });
 
 const dashboard = hconcat({
   programs: [
@@ -31,6 +40,8 @@ const dashboard = hconcat({
   ],
   gap: 20
 });
+
+render(dashboard, document.querySelector("#chart").getContext("2d"));
 ```
 
 `pointRows` and `barRows` are arrays of plain row objects containing the named
@@ -53,7 +64,7 @@ Edit the source to change linked positions. `editOverlay({ target: "trend", foll
 freezes the current geometry as an independent normalized plot snapshot; further source edits
 no longer move it. Independent axis scales require explicit axis selection when creating guides.
 
-The [runnable overlay example](https://ggaction.github.io/ggaction/examples/linked-overlay/) uses the same public program as
+The [runnable overlay example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/linked-overlay/) uses the same public program as
 the primitive-equivalence and rendering tests.
 
 ## Pair a resource view with an analytical chart
@@ -69,6 +80,12 @@ and provide `<canvas id="chart"></canvas>`. The helper
 builds both children from the same rows, including distinct numeric `1` and
 string `"1"` keys. Run this complete example in an ES module with `ggaction`
 available through your bundler or import map.
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Copy the linked resource-comparison.js beside this module, use its public ggaction import, and provide a Canvas with id chart. The helper contains typed source rows and both complete child programs.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { render } from "ggaction";

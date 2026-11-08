@@ -6,7 +6,7 @@ Canvas contains concrete snapshots of its named children.
 
 ## Arrange complete programs
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { hconcat, vconcat } from "ggaction";
@@ -30,7 +30,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -80,7 +80,7 @@ graphic tree, so Canvas, SVG, PNG, and PDF renderers use the same result.
 
 When a nested child changes, replace it in each ancestor explicitly:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `polarRow`, `dashboard`. Resource selectors used here: `target: "detail"`; `target: "polarRow"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `polarRow`, `dashboard` from that setup. It refers to `target: "detail"`; `target: "polarRow"`.
 
 ```javascript
 const revisedPolarRow = polarRow.replaceCompositionChild({
@@ -96,7 +96,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field

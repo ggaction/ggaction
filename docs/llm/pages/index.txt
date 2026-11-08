@@ -14,18 +14,26 @@ one part. Every package entry includes TypeScript declarations.
 
 ## Start here
 
-Learn [how the same chart stays editable across authoring levels](../../tutorials/hierarchical-authoring/),
-then [choose from every complete chart family](../../api/chart-picker/).
+New here? [Build your first chart](../../getting-started/), then
+[make it interactive](../../tutorials/interactive-chart/) or
+[choose from every chart family](../../api/chart-picker/).
 
  [Build your first chart Install the package, render a complete chart, and understand the action chain.](../../getting-started/)
  [Start from a chart type Copy the shortest supported scatterplot, line, bar, or area flow.](../../recipes/)
  [Find an action Look up exact signatures, defaults, inference, and related guides.](../../reference/actions/)
+ [Make a chart interactive Add tooltips, brushing, legend toggles, and animated data updates in a web page.](../../tutorials/interactive-chart/)
+ [Draw a map Project GeoJSON countries, color them by a value, and place points by longitude and latitude.](../../api/geometry/)
  [Connect an LLM locally Use one read-only MCP search tool without preloading the full documentation.](../../mcp/)
 
 ## Common chart types
 
 Start with common Cartesian charts for relationships, comparisons, trends,
 and distributions.
+
+## Maps, networks, and flows
+
+Draw geographic data, hierarchies, networks, flows, calendars, and financial
+series with the same immutable action chain.
 
 ## Statistics and uncertainty
 

@@ -1,0 +1,72 @@
+{
+  "countries-110m.geojson": {
+    "name": "Natural Earth · admin 0 countries 1:110m v5.1.2",
+    "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_110m_admin_0_countries.geojson",
+    "origin": "https://www.naturalearthdata.com/about/terms-of-use/",
+    "license": "Public domain (Natural Earth)",
+    "attribution": "Made with Natural Earth",
+    "retrievedAt": "2026-11-08",
+    "bytes": 838726,
+    "sha256": "6866c877d39cba9c357620878839b336d569f8c662d3cfab4cb1dbe2d39c977f"
+  },
+  "earthquakes-2024-01.geojson": {
+    "name": "USGS · January 2024 earthquakes M≥5",
+    "url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2024-01-01&endtime=2024-02-01&minmagnitude=5&orderby=time-asc",
+    "origin": "https://earthquake.usgs.gov/fdsnws/event/1/",
+    "license": "Public domain (USGS)",
+    "attribution": "U.S. Geological Survey, Earthquake Hazards Program",
+    "retrievedAt": "2026-10-29",
+    "bytes": 98730,
+    "sha256": "b2f4ab477325ab63819f73d2e6f56e1cef97dfa7b459588ed13c714aa2777346"
+  },
+  "flare.json": {
+    "name": "Flare visualization toolkit class hierarchy",
+    "url": "https://cdn.jsdelivr.net/npm/vega-datasets@2.8.0/data/flare.json",
+    "origin": "https://github.com/vega/vega-datasets",
+    "license": "BSD-3-Clause",
+    "attribution": "Flare toolkit, UC Berkeley Visualization Lab, via vega-datasets",
+    "retrievedAt": "2026-11-08",
+    "bytes": 20638,
+    "sha256": "fa08f99648d443e576c407701943b3f1c6e0c15d3891754005b98eff136b5c99"
+  },
+  "global-temperatures.csv": {
+    "name": "NASA GISS surface temperature analysis · global means",
+    "url": "https://raw.githubusercontent.com/rfordatascience/tidytuesday/1f5a20eae51d871ec4ac0f95d16e43b9ba3f1dec/data/2023/2023-07-11/global_temps.csv",
+    "origin": "https://data.giss.nasa.gov/gistemp/",
+    "license": "Public domain (NASA)",
+    "attribution": "GISTEMP Team, NASA Goddard Institute for Space Studies, via TidyTuesday 2023-07-11",
+    "retrievedAt": "2026-11-04",
+    "bytes": 14924,
+    "sha256": "e3dd3aadca1ae73333cb3463904ce8dc7d07db0b01179422e12b2b6a09859f46"
+  },
+  "ibm-daily.json": {
+    "name": "Alpha Vantage · IBM daily OHLCV",
+    "url": "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&apikey=demo",
+    "origin": "https://www.alphavantage.co/documentation/",
+    "license": "Alpha Vantage public demo response",
+    "attribution": "Alpha Vantage demo endpoint",
+    "retrievedAt": "2026-10-29",
+    "bytes": 21302,
+    "sha256": "bc463c1079bf3f669cf4882a2607dcce7e751f95ec6919dec3e6d27ccc9e12aa"
+  },
+  "penguins.csv": {
+    "name": "Palmer Penguins",
+    "url": "https://raw.githubusercontent.com/allisonhorst/palmerpenguins/v0.1.0/inst/extdata/penguins.csv",
+    "origin": "https://allisonhorst.github.io/palmerpenguins/",
+    "license": "CC0-1.0",
+    "attribution": "Horst, Hill and Gorman, palmerpenguins; data collected by Kristen Gorman at Palmer Station, Antarctica LTER",
+    "retrievedAt": "2026-11-08",
+    "bytes": 15241,
+    "sha256": "f204db2c753b0937caac3cb35258562c14f073e4bbc76be24b4c51ce22767a93"
+  },
+  "us-births-2000-2014.csv": {
+    "name": "United States daily births 2000–2014",
+    "url": "https://raw.githubusercontent.com/rfordatascience/tidytuesday/1f5a20eae51d871ec4ac0f95d16e43b9ba3f1dec/data/2018/2018-10-02/us_births_2000-2014.csv",
+    "origin": "https://github.com/fivethirtyeight/data/tree/master/births",
+    "license": "CC-BY-4.0",
+    "attribution": "FiveThirtyEight (Social Security Administration counts), via TidyTuesday 2018-10-02",
+    "retrievedAt": "2026-11-04",
+    "bytes": 96748,
+    "sha256": "dfb9f4e0518bbb255cc24f1fdad496a1098ee24cd66509fe8ced7ac5e3d17fb2"
+  }
+}

@@ -11,19 +11,30 @@ title: Error Band Recipe
 
 {% include runnable-recipe-note.html %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.
+
+<!-- snippet-context:end -->
+
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const gapminder = await fetch("/gapminder.json").then(response => response.json());
+const values = gapminder.map(row => ({ ...row, cluster: `Cluster ${row.cluster}` }));
 
 const program = chart()
   .createCanvas({ margin: { top: 60, right: 180, bottom: 80, left: 70 } })
   .createData({ values })
   .createErrorBand({
-    x: { field: "time", fieldType: "temporal" },
-    y: { field: "value" },
-    groupBy: "series"
+    x: { field: "year" },
+    y: { field: "life_expect" },
+    groupBy: "cluster"
   })
-  .encodeColor({ target: "errorBand", field: "series" })
+  .encodeColor({ target: "errorBand", field: "cluster" })
   .createGuides();
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide

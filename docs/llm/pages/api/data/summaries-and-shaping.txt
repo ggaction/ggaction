@@ -8,7 +8,7 @@ This heading shows common options. For the full callable contract and all branch
 
 Create reusable aggregate rows without tying the calculation to a chart type:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "sales"`.
 
 ```javascript
 const totals = program.createSummaryData({
@@ -89,7 +89,7 @@ or interval data creation; use the Full facade.
 Materialize one-dimensional bin bounds and counts for reuse by ranged marks,
 labels, or several charts:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "people"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "people"`.
 
 ```javascript
 const bins = program.createBinData({
@@ -124,7 +124,7 @@ column per category. For the exact contract, see
 [`createPivotData`](../../../../reference/actions/statistics/#createpivotdata) and
 [`editPivotData`](../../../../reference/actions/statistics/#editpivotdata).
 
-> **Executable complete.** The complete snippet imports chart and declares its input rows.
+> **Runnable complete example.** The complete snippet imports chart and declares its input rows.
 
 ```javascript
 import { chart } from "ggaction";
@@ -173,7 +173,7 @@ Basic does not expose pivot creation or editing.
 
 Turn selected fields in a wide dataset into reusable key/value rows:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "fruitWide"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "fruitWide"`.
 
 ```javascript
 const long = program.createFoldData({
@@ -203,7 +203,7 @@ The minimal declaration needs only `category`, `group`, and `value`.
 
 Materialize stack geometry once and reuse it across ranged marks and labels:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "sales"`.
 
 ```javascript
 const stacked = program.createStackData({
@@ -233,7 +233,7 @@ Expand parallel array fields by matching index. Each source row produces as many
 longest selected array, preserving source-row order followed by array-index order. Shorter
 arrays pad with `null`; this is not a Cartesian product. Raw ancestor records remain unchanged.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -270,7 +270,7 @@ same normalized `flatten` definition through `editDerivedData`. See
 
 Keep two tables separate and copy selected reference fields using a typed key:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: "people"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `data: "people"`.
 
 ```javascript
 import { chart } from "ggaction";

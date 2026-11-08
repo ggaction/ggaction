@@ -36,7 +36,7 @@ Top, bottom, and in-plot corner positions keep their own alignment rules.
 
 Use the optional singular `channel` on `editLegend` or a focused editor to select one existing block:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```js
 // Fragment: program already owns color and opacity legends for one point mark.
@@ -51,7 +51,7 @@ whole-target content, or whole-group `blockLayout`/`at` controls.
 
 Keep an edge anchor while adjusting its position with `editLegend` or `editLegendLayout`. `offset` sets the perpendicular gap from the plot; `alongOffset` is a signed pixel shift along that edge. Positive values move right on top/bottom and in-plot corners, and down on left/right. Omission preserves the value; `0` resets the shift.
 
-> **Executable complete.** Import chart from ggaction. This complete example includes two observations, an explicit color legend and sufficient margins. Keep the returned shifted program to render the revised position.
+> **Runnable complete example.** Import chart from ggaction. This complete example includes two observations, an explicit color legend and sufficient margins. Keep the returned shifted program to render the revised position.
 
 ```js
 import { chart } from "ggaction";
@@ -144,7 +144,7 @@ measured guide overflow grows the outer margins. Symbol layers are never dropped
 Create the complete legend first, then refine its spacing. This fragment requires
 an existing item-based legend:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.editLegendLayout({ rowPadding: 7, titlePadding: 20 });
@@ -215,7 +215,7 @@ The option is also accepted at creation; omission preserves native defaults.
 
 For one Cartesian point layer, `combine: "color-size-shape"` combines interval color (or stroke), interval size, and ordinal shape for the same field. Hue and size must have identical threshold boundaries. Provide one ascending finite representative per interval; the shape scale evaluates that exact value, including its configured fallback. This preserves ordinal shapes without converting them into interval bins.
 
-> **Executable complete.** Standalone ES module with ggaction installed.
+> **Runnable complete example.** Standalone ES module with ggaction installed.
 
 ```js
 import { chart } from "ggaction";

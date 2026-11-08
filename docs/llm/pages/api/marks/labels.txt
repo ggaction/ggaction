@@ -6,7 +6,7 @@
 
 Create final-item labels in one call, then use the lower text actions to refine them:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "piePlot-labels"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "piePlot-labels"`.
 
 ```javascript
 import { chart } from "ggaction";
@@ -50,7 +50,7 @@ with `removeMark` still removes all labels it owns.
 To label a subset, pass an inline `MarkSelector` with `select`, or a reusable stored
 selection ID with `selection`:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `source: "bars"`.
 
 ```javascript
 const selectedLabels = chart()
@@ -88,7 +88,7 @@ visible label to 100%.
 
 Replace the complete membership request for an existing attached label layer:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `labeled`. Resource selectors used here: `target: "piePlot-labels"`; `selection: "focus"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `labeled` from that setup. It refers to `target: "piePlot-labels"`; `selection: "focus"`.
 
 ```javascript
 const inline = labeled.editMarkLabelSelection({
@@ -116,7 +116,7 @@ without turning resolved item indices into persistent state.
 
 Attach the label position to the meaning of the source geometry:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `labeled`. Resource selectors used here: `target: "piePlot-labels"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `labeled` from that setup. It refers to `target: "piePlot-labels"`.
 
 ```javascript
 const outside = labeled.editMarkLabelPlacement({
@@ -161,7 +161,7 @@ semantic override and restores the legacy source anchor.
 
 Use exactly one explicit selector:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `labeled`. Resource selectors used here: `target: "piePlot-labels"`; `source: "piePlot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `labeled` from that setup. It refers to `target: "piePlot-labels"`; `source: "piePlot"`.
 
 ```javascript
 const oneRemoved = labeled.removeMarkLabels({ target: "piePlot-labels" });
@@ -204,7 +204,7 @@ annotation continues to identify one explicit position or original feature.
 The standalone geographic example uses the same action for feature names and
 generated longitude values:
 
-> **Executable complete.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
+> **Runnable complete example.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
 
 ```js
 import { createGeographicMarks } from "./geographic-marks/program.js";

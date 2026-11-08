@@ -18,7 +18,7 @@ This runnable identity-and-order example leaves geometry for a later authoring s
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "plot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "plot"`.
 
 <!-- snippet-context:end -->
 
@@ -56,7 +56,7 @@ copies the changed path.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -96,7 +96,7 @@ releases a standalone logical data owner's retained configuration.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -139,7 +139,7 @@ heterogeneous drawable `collection`.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -156,7 +156,7 @@ creation is idempotent.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "symbols"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "symbols"`.
 
 <!-- snippet-context:end -->
 
@@ -206,7 +206,7 @@ An extension that authors the same structure directly makes every owner explicit
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -232,7 +232,7 @@ parent, and no top-level graphic can be placed before the Canvas.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -287,7 +287,7 @@ is shared by the browser example and renderer regressions.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "band"`.
 
 <!-- snippet-context:end -->
 
@@ -318,7 +318,7 @@ the complete paint to every item.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "distributionStrips"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "distributionStrips"`.
 
 <!-- snippet-context:end -->
 
@@ -371,7 +371,7 @@ Sets one validated concrete property or atomically removes named graphic subtree
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 <!-- snippet-context:end -->
 
@@ -395,7 +395,7 @@ resize or replace an item's owning collection instead.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "opacityLegendSymbols"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "opacityLegendSymbols"`.
 
 <!-- snippet-context:end -->
 
@@ -440,7 +440,7 @@ even-length stroke-dash patterns for the matching channel.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -482,7 +482,7 @@ opacity layers do not produce this result.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.
+> **Runnable complete example.** Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.
 
 <!-- snippet-context:end -->
 
@@ -546,7 +546,7 @@ blend and shadow properties; it cannot contain coordinates or `length`.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete ES module with ggaction installed; it authors one canvas and fully materialized circle columns.
+> **Runnable complete example.** Run the complete ES module with ggaction installed; it authors one canvas and fully materialized circle columns.
 
 <!-- snippet-context:end -->
 
@@ -589,7 +589,7 @@ opacity, blend and shadow properties; it cannot contain `commands`,
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete ES module with ggaction installed; it authors one canvas and two closed path rows.
+> **Runnable complete example.** Run the complete ES module with ggaction installed; it authors one canvas and two closed path rows.
 
 <!-- snippet-context:end -->
 

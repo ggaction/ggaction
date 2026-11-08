@@ -7,7 +7,7 @@
 Materialize missing keys inside each observed group without silently turning
 absence into zero:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "sales"`.
 
 ```javascript
 const completed = program.createCompleteData({
@@ -46,7 +46,7 @@ First bucket timestamps in the same zone and explicitly aggregate repeated
 observations. This complete ES module preserves a missing day as `null` and an
 observed zero as `0`:
 
-> **Executable complete.** Standalone ES module with ggaction installed; the sample declares all input events.
+> **Runnable complete example.** Standalone ES module with ggaction installed; the sample declares all input events.
 
 ```javascript
 import { chart } from "ggaction";
@@ -107,7 +107,7 @@ recompute the pipeline and reject newly observed dates outside the range.
 Replace explicit `null` or `undefined` cells without changing row grain or final
 source order:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `completed`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `completed` from that setup.
 
 ```javascript
 const imputed = completed.createImputedData({

@@ -33,7 +33,7 @@ continuous gradient. Right/left positions orient it vertically; top/bottom
 orient it horizontally. The implementation writes 60 adjacent concrete rects,
 tick lines, and text to `graphicSpec`; renderers do not interpolate colors.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ~~~javascript
 program.createLegend({
@@ -66,7 +66,7 @@ positive. `fill`, `stroke`, and non-negative `strokeWidth` are also supported.
 The same recipe works with `editLegend`, `editLegendSymbols`, and
 `createGuides({ legend: ... })`, including TypeScript.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ~~~javascript
 program.createLegend({ channels: ["opacity"], position: "left" });
@@ -78,7 +78,7 @@ quantile, and threshold stroke scales create a stroke interval legend. Its
 symbols keep the mark's fill and draw the mapped color as the outline. An
 explicit mark `strokeWidth: 0` remains zero.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ~~~javascript
 program
@@ -111,7 +111,7 @@ or focused layout edits. Gradient strips accept only `titlePadding`; explicitly
 reset a stored `rowPadding` before a symbols-to-gradient or scale-family
 transition. See [content spacing](../../../../api/legends/#space-rows-by-content).
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ~~~javascript
 program.createLegend({
@@ -160,7 +160,7 @@ explicit gradient direction; reset it with `"auto"` or remove and recreate the l
 For a prepared continuous color or stroke scale with domain `[35, 85]`, this
 contextual fragment labels only 40, 60, and 80:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ~~~javascript
 program.createLegend({ values: [40, 60, 80], gradient: { length: 125 } });
@@ -199,7 +199,7 @@ gradient. The option supports the existing sequential, log, and symlog color
 scales, including the existing sequential midpoint mapping. It does not add a
 new scale type or change a continuous scale into categories.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -265,7 +265,7 @@ The array is used as written: ggaction does not sort or deduplicate it. Every
 value must lie inside the effective scale domain, and log scales require
 positive values. `count` and `values` cannot appear in the same call.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ~~~javascript
 program.createLegend({
@@ -303,7 +303,7 @@ stroke width in both dimensions. The default `labels.offset: 8` is the gap
 after the painted swatch edge. Large samples and text expand rows and keep
 12 pixels below a visible top title; insufficient Canvas space is an error.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ~~~javascript
 program.createLegend({

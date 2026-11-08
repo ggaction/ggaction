@@ -14,8 +14,18 @@ bands over a point chart.
 
 {% include runnable-recipe-note.html %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
+
+<!-- snippet-context:end -->
+
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car => ["Horsepower", "Miles_per_Gallon", "Weight_in_lbs", "Acceleration", "Displacement", "Cylinders"]
+  .every(field => Number.isFinite(car[field])));
 
 const program = chart()
   .createCanvas({
@@ -23,7 +33,7 @@ const program = chart()
     height: 480,
     margin: { top: 40, right: 190, bottom: 70, left: 80 }
   })
-  .createData({ values: cars })
+  .createData({ values })
   .createPointMark()
   .encodeX({ field: "Displacement", scale: { nice: true, zero: false } })
   .encodeY({ field: "Acceleration", scale: { nice: true, zero: false } })
@@ -38,6 +48,8 @@ const program = chart()
   })
   .createRegression()
   .createGuides();
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide

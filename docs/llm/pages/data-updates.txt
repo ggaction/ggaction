@@ -17,6 +17,25 @@ dependent chart, or rebuild a program from application-owned rows.
 | Transform parameters change | The owning `edit*Data` action | Existing logical transform ID and valid options |
 | One mark should use independent data | `createData` then the mark's data editor | Explicit target and a compatible replacement schema |
 
+## The common case: replace the rows
+
+Most updates replace the rows of a chart with new rows that have the same
+fields:
+
+- On a page with an attached [live chart](../../api/live/), call
+ `chart.setData(rows)`. It finds the current data for you and animates the
+ change.
+- With an immutable program, call
+ `program.reviseData({ source: "sales", id: "sales-2", values: rows })` and
+ render the returned program. The next update names the latest revision:
+ `{ source: "sales-2", id: "sales-3", … }`. Naming an older dataset as the
+ `source` leaves the marks drawing the older rows.
+
+Give the rows a `keyField` in `createData` when the marks should move between
+updates. Without keys, an animated update fades the old marks out and the new
+ones in. Use the prepared path below only when the data arrives as CSV or JSON
+text, comes from a URL, or must be loaded and checked before it is applied.
+
 ## Prepare and apply source data {#prepare-and-apply-source-data}
 
 This complete ES module prepares inline CSV, builds a chart, and refreshes its

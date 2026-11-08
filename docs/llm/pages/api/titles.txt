@@ -28,7 +28,7 @@ On a concat parent, omit `target` to create or edit one overall title. Use
 `target: { childPath: ["main"] }` to title only the named child view. Parent and
 child titles are independent; removing the parent title preserves child titles.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createTitle({
@@ -59,7 +59,7 @@ Style edits preserve omitted fields. Measured wrapping distinguishes normal and 
 Numeric weights follow the shared [Canvas font-weight policy](../../../api/marks/text/#font-weights).
 The defaults are:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 {
@@ -128,7 +128,7 @@ increase the margins or change the placement explicitly.
 
 Partially edits the existing title. At least one option is required.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const edited = program.editTitle({
@@ -150,7 +150,7 @@ unrelated chart state.
 Remove the complete chart title resource, including subtitle text, concrete
 graphics, and stored layout settings:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const untitled = program.removeTitle();

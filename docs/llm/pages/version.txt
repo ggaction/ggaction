@@ -10,7 +10,7 @@ The comparison baseline below is the older release used by the migration notes.
 | Identity | Value |
 | --- | --- |
 | Contract fingerprint | `sha256:cdfbebb474d11f7d3608c8c465f43cc2fcf995bfcc885da0165bb9410577c9fd` |
-| Example and dataset source | `64045b214475110de9621328bbe7d060c9149f04` |
+| Example and dataset source | `c463cf422b0a1f4fa7d3c903525387ac393c3c09` |
 | Runtime source commit | `6322f990c79f93a7d9cf1e61af8f49a7f36648fe` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 380 |
@@ -30,6 +30,26 @@ contract fingerprint, runtime source revision, baseline, and action availability
 The full LLM bundle and its section manifest carry that identity too. The fingerprint
 covers runtime code, declarations, and public package configuration; documentation
 edits alone do not change the chart API fingerprint.
+
+## What's new in 0.0.27 {#whats-new-in-0027}
+
+| New in 0.0.27 | Start here |
+| --- | --- |
+| Interactive charts in a web page: tooltips, hover, brushing, legend toggles, zoom, sliders, linked charts | [Make a chart interactive](../../tutorials/interactive-chart/), [live charts](../../api/live/), [interaction sessions](../../api/interaction/) |
+| Animated transitions between charts and offline frame export | [Animation](../../api/animation/) |
+| Maps: GeoJSON and TopoJSON, 15 projections, joins, graticules, routes | [Maps](../../api/geometry/) |
+| Trees, treemaps, icicles and sunbursts | [Hierarchies](../../api/hierarchy/), [partitions](../../api/partition/) |
+| Networks inferred from data, layouts and edge bundling | [Networks](../../api/graphs/), [edge routes](../../api/edge-routes/) |
+| Sankey flows | [Flows](../../api/flows/) |
+| Contours, calendars, OHLC, waterfall, trail, pyramid and table plots | [Choose a chart](../../api/chart-picker/) |
+| Raincloud, beeswarm and strip plots | [Distribution plots](../../api/distribution-plots/) |
+| Images and embedded fonts | [Rendering](../../api/rendering/) |
+| Parameters, version 2 expressions and conditional appearance | [Expressions and parameters](../../api/data/expressions-and-normalization/) |
+| Prepared CSV, JSON and URL data, and time-sliced revisions and loads | [Data updates](../../data-updates/) |
+
+The [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md)
+lists every new action, and [performance](../../performance/#known-limits)
+records the known limits of this release.
 
 ## Migration from v0.0.26 {#migration-from-v0026}
 

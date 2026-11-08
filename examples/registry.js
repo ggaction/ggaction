@@ -1,3 +1,23 @@
+import { createWorldGdpMap } from "./world-gdp-map/program.js";
+import { createWorldEarthquakesMap } from "./world-earthquakes-map/program.js";
+import { createGlobalTemperatureHeatmap } from "./global-temperature-heatmap/program.js";
+import { createUsBirthsCalendar } from "./us-births-calendar/program.js";
+import { createPenguinDensityContours } from "./penguin-density-contours/program.js";
+import { createPenguinSankey } from "./penguin-sankey/program.js";
+import { createCountrySimilarityNetwork } from "./country-similarity-network/program.js";
+import { createWorldPopulationTreemap, createWorldPopulationSunburst } from "./world-population-treemap/program.js";
+import { createFlareRadialTree } from "./flare-radial-tree/program.js";
+import { createIbmCandlesticks } from "./ibm-candlesticks/program.js";
+import { createTemperatureWaterfall } from "./temperature-waterfall/program.js";
+import { createGapminderLifeTrails } from "./gapminder-life-trails/program.js";
+import { createGapminderCountryTable } from "./gapminder-country-table/program.js";
+import { createPenguinMassRaincloud } from "./penguin-mass-raincloud/program.js";
+import { createPenguinFlipperBeeswarm } from "./penguin-flipper-beeswarm/program.js";
+import { createCarsMpgEcdf } from "./cars-mpg-ecdf/program.js";
+import { createLifeExpectancyDumbbell } from "./life-expectancy-dumbbell/program.js";
+import { createFertilityLollipop } from "./fertility-lollipop/program.js";
+import { createGapminderBubbles } from "./gapminder-bubbles/program.js";
+import { createCarsMpgBars } from "./cars-mpg-bars/program.js";
 import { createMarginal } from "./marginal/program.js";
 import { createBullet } from "./bullet/program.js";
 import { createGeographicMarks } from "./geographic-marks/program.js";
@@ -183,7 +203,7 @@ function example({ id, data, width, height, createProgram, ...options }) {
 
 export const DOCUMENTATION_ONLY_PROGRAMS = Object.freeze({
   "readme-rose-sequence": "Paper Nightingale sequence used by the generated README animation, with progressive intermediate states.",
-  "getting-started": "Inline-data program for the Getting Started guide.",
+  "getting-started": "Program for the Getting Started guide over the repository cars dataset.",
   "readme-authoring-sequence": "Stepwise animation for the repository README."
 });
 
@@ -1175,6 +1195,75 @@ export function publicCharts(options = {}) {
   );
 }
 
+
+// Real-data documentation showcase. Each program composes already-qualified
+// public chart families over a pinned dataset from data/ or data/showcase/.
+export const SHOWCASE_CHARTS = Object.freeze([
+  example({ id: "cars-mpg-bars", data: "cars", width: 760, height: 440, docsGroup: "showcase", createProgram: createCarsMpgBars,
+    browser: { path: "browser-host/?chart=cars-mpg-bars", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "cars-mpg-bars", width: 760, height: 440 } } } }),
+  example({ id: "gapminder-bubbles", data: "gapminder", width: 820, height: 500, docsGroup: "showcase", createProgram: createGapminderBubbles,
+    browser: { path: "browser-host/?chart=gapminder-bubbles", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "gapminder-bubbles", width: 820, height: 500 } } } }),
+  example({ id: "world-gdp-map", data: "worldCountries", width: 960, height: 540, docsGroup: "showcase", createProgram: createWorldGdpMap,
+    browser: { path: "browser-host/?chart=world-gdp-map", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "world-gdp-map", width: 960, height: 540 } } } }),
+  example({ id: "world-earthquakes-map", data: { countries: "worldCountries", earthquakes: "earthquakes" }, width: 960, height: 540, docsGroup: "showcase", createProgram: createWorldEarthquakesMap,
+    browser: { path: "browser-host/?chart=world-earthquakes-map", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "world-earthquakes-map", width: 960, height: 540 } } } }),
+  example({ id: "global-temperature-heatmap", data: "globalTemperatures", width: 960, height: 360, docsGroup: "showcase", createProgram: createGlobalTemperatureHeatmap,
+    browser: { path: "browser-host/?chart=global-temperature-heatmap", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "global-temperature-heatmap", width: 960, height: 360 } } } }),
+  example({ id: "us-births-calendar", data: "usBirths", width: 960, height: 250, docsGroup: "showcase", createProgram: createUsBirthsCalendar,
+    browser: { path: "browser-host/?chart=us-births-calendar", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "us-births-calendar", width: 960, height: 250 } } } }),
+  example({ id: "penguin-density-contours", data: "penguins", width: 760, height: 520, docsGroup: "showcase", createProgram: createPenguinDensityContours,
+    browser: { path: "browser-host/?chart=penguin-density-contours", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "penguin-density-contours", width: 760, height: 520 } } } }),
+  example({ id: "penguin-sankey", data: "penguins", width: 900, height: 520, docsGroup: "showcase", createProgram: createPenguinSankey,
+    browser: { path: "browser-host/?chart=penguin-sankey", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "penguin-sankey", width: 900, height: 520 } } } }),
+  example({ id: "country-similarity-network", data: "gapminder", width: 900, height: 640, docsGroup: "showcase", createProgram: createCountrySimilarityNetwork,
+    browser: { path: "browser-host/?chart=country-similarity-network", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "country-similarity-network", width: 900, height: 640 } } } }),
+  example({ id: "world-population-treemap", data: "gapminder", width: 960, height: 600, docsGroup: "showcase", createProgram: createWorldPopulationTreemap,
+    browser: { path: "browser-host/?chart=world-population-treemap", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "world-population-treemap", width: 960, height: 600 } } } }),
+  example({ id: "world-population-sunburst", programDirectory: "world-population-treemap", data: "gapminder", width: 760, height: 640, docsGroup: "showcase", createProgram: createWorldPopulationSunburst,
+    browser: { path: "browser-host/?chart=world-population-sunburst", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "world-population-sunburst", width: 760, height: 640 } } } }),
+  example({ id: "flare-radial-tree", data: "flare", width: 760, height: 760, docsGroup: "showcase", createProgram: createFlareRadialTree,
+    browser: { path: "browser-host/?chart=flare-radial-tree", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "flare-radial-tree", width: 760, height: 760 } } } }),
+  example({ id: "ibm-candlesticks", data: "ibmDaily", width: 960, height: 560, docsGroup: "showcase", createProgram: createIbmCandlesticks,
+    browser: { path: "browser-host/?chart=ibm-candlesticks", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "ibm-candlesticks", width: 960, height: 560 } } } }),
+  example({ id: "temperature-waterfall", data: "globalTemperatures", width: 900, height: 460, docsGroup: "showcase", createProgram: createTemperatureWaterfall,
+    browser: { path: "browser-host/?chart=temperature-waterfall", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "temperature-waterfall", width: 900, height: 460 } } } }),
+  example({ id: "gapminder-life-trails", data: "gapminder", width: 900, height: 520, docsGroup: "showcase", createProgram: createGapminderLifeTrails,
+    browser: { path: "browser-host/?chart=gapminder-life-trails", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "gapminder-life-trails", width: 900, height: 520 } } } }),
+  example({ id: "gapminder-country-table", data: "gapminder", width: 960, height: 700, docsGroup: "showcase", createProgram: createGapminderCountryTable,
+    browser: { path: "browser-host/?chart=gapminder-country-table", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "gapminder-country-table", width: 960, height: 700 } } } }),
+  example({ id: "penguin-mass-raincloud", data: "penguins", width: 900, height: 460, docsGroup: "showcase", createProgram: createPenguinMassRaincloud,
+    browser: { path: "browser-host/?chart=penguin-mass-raincloud", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "penguin-mass-raincloud", width: 900, height: 460 } } } }),
+  example({ id: "penguin-flipper-beeswarm", data: "penguins", width: 900, height: 460, docsGroup: "showcase", createProgram: createPenguinFlipperBeeswarm,
+    browser: { path: "browser-host/?chart=penguin-flipper-beeswarm", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "penguin-flipper-beeswarm", width: 900, height: 460 } } } }),
+  example({ id: "cars-mpg-ecdf", data: "cars", width: 900, height: 460, docsGroup: "showcase", createProgram: createCarsMpgEcdf,
+    browser: { path: "browser-host/?chart=cars-mpg-ecdf", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "cars-mpg-ecdf", width: 900, height: 460 } } } }),
+  example({ id: "life-expectancy-dumbbell", data: "gapminder", width: 900, height: 620, docsGroup: "showcase", createProgram: createLifeExpectancyDumbbell,
+    browser: { path: "browser-host/?chart=life-expectancy-dumbbell", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "life-expectancy-dumbbell", width: 900, height: 620 } } } }),
+  example({ id: "fertility-lollipop", data: "gapminder", width: 900, height: 520, docsGroup: "showcase", createProgram: createFertilityLollipop,
+    browser: { path: "browser-host/?chart=fertility-lollipop", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "fertility-lollipop", width: 900, height: 520 } } } })
+]);
+
 export function publicChart(id) {
   const chart = PUBLIC_CHARTS.find(candidate => candidate.id === id);
   if (!chart) throw new Error(`Unknown public chart "${id}".`);
@@ -1182,7 +1271,7 @@ export function publicChart(id) {
 }
 
 export function publicExamples(options = {}) {
-  return [...PUBLIC_CHARTS, ...DOCUMENTATION_WORKFLOWS].filter(example =>
+  return [...SHOWCASE_CHARTS, ...PUBLIC_CHARTS, ...DOCUMENTATION_WORKFLOWS].filter(example =>
     (options.docsGroup === undefined || example.docsGroup === options.docsGroup) &&
     (options.browser === undefined || Boolean(example.browser) === options.browser)
   );

@@ -91,7 +91,7 @@ accept the same Text option.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with ggaction installed; the inline row supplies the position and label fields.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; the inline row supplies the position and label fields.
 
 <!-- snippet-context:end -->
 
@@ -140,7 +140,7 @@ is clamped separately for each item to half its smaller side:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -190,7 +190,7 @@ categorical, quantitative, or temporal data through an independent stroke scale:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -229,7 +229,7 @@ representative row is selected. The default concrete width range is `[1, 8]`.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -274,7 +274,7 @@ layout—used by an aggregate or ranged bar and rematerialize its rectangles.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -338,7 +338,7 @@ A complete runnable example:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with ggaction installed; the inline rows supply both position fields.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; the inline rows supply both position fields.
 
 <!-- snippet-context:end -->
 
@@ -370,7 +370,14 @@ followed by clipping and blending. Source identity, row selection and hit geomet
 automatic legend samples include the effect. Labels and annotations use the same Text option; Text shadows
 require embedded font preparation and actual glyph ink metrics.
 
-Canvas and SVG use an explicit prepared handle; PNG/PDF prepare it automatically with the native adapter.
+> **A chart with shadows needs a prepared handle in Canvas and SVG.** Plain
+> `render(program, context)` throws *Shadow graphics require
+> prepareShadowRendering before rendering*, and `renderToSVG(program)` throws
+> *Graphic "…" requires a prepared shadow glyph*, until you prepare the shadows
+> with `prepareShadowRendering` and pass the handle. `renderToPNG` and
+> `renderToPDF` prepare them for you. `ggaction/live` cannot draw shadows.
+> Images and embedded fonts follow the same rule.
+
 See [prepared shadows](../rendering.md#prepared-shadows) for the complete output lifecycle and limits.
 
 

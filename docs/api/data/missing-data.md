@@ -16,7 +16,7 @@ absence into zero:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "sales"`.
 
 <!-- snippet-context:end -->
 
@@ -59,7 +59,7 @@ observed zero as `0`:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Standalone ES module with ggaction installed; the sample declares all input events.
+> **Runnable complete example.** Standalone ES module with ggaction installed; the sample declares all input events.
 
 <!-- snippet-context:end -->
 
@@ -124,7 +124,7 @@ source order:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `completed`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `completed` from that setup.
 
 <!-- snippet-context:end -->
 

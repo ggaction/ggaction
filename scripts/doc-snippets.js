@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { readFile, readdir, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { showcaseDisplays } from "./generate-doc-showcase.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 
@@ -20,7 +21,8 @@ export async function copyDocumentationSupportFiles(example, destination) {
     let bytes = await readFile(path.join(root, source));
     if (/\.[cm]?js$/.test(source)) bytes = Buffer.from(bytes.toString("utf8")
       .replace(/from (["\'])\.\.\/\.\.\/src\/index\.js\1/g, 'from "ggaction"')
-      .replace(/from (["\'])\.\.\/\.\.\/src\/inspection\.js\1/g, 'from "ggaction/inspection"'));
+      .replace(/from (["\'])\.\.\/\.\.\/src\/inspection\.js\1/g, 'from "ggaction/inspection"')
+      .replace(/from (["\'])\.\.\/\.\.\/src\/graph\.js\1/g, 'from "ggaction/graph"'));
     if (/\.[cm]?js$/.test(source) && /(?:from\s*|import\s*\()["'][^"']*\bsrc\//.test(bytes.toString("utf8"))) {
       throw new Error("Documentation support modules must import the public installed package.");
     }
@@ -92,11 +94,14 @@ export async function documentationPrograms() {
     throw new Error("Every tutorial and recipe needs a runnable entry in docs/_data/snippet_programs.json.");
   }
   const extra = JSON.parse(await readFile(path.join(root, "docs/_data/snippet_cases.json"), "utf8"));
+  const showcase = await showcaseDisplays();
   if (new Set(extra.map(entry => entry.id)).size !== extra.length) throw new Error("Snippet case IDs must be unique.");
   return Promise.all([...Object.entries(registry), ...extra.map(({ file, ...options }) => [file, options])].map(async ([file, options]) => {
     const source = await readFile(path.join(root, "docs", file), "utf8");
     const blocks = documentationCodeBlocks(source);
-    const javascript = blocks.filter(block => ["js", "javascript"].includes(block.language));
+    // Generated showcase programs are copies of example modules, never a page's own program.
+    const javascript = blocks.filter(block => ["js", "javascript"].includes(block.language) &&
+      !showcase.has(block.code));
     if (options.contains && javascript.filter(item => item.code.includes(options.contains)).length !== 1) {
       throw new Error(`${file}: snippet marker must select exactly one block: ${options.contains}`);
     }

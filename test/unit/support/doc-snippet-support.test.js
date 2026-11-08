@@ -16,7 +16,8 @@ test("documentation support maps the canonical public entry while preserving exa
       (await readFile(new URL("../../../examples/geographic-marks/comparison.js", import.meta.url), "utf8"))
         .replace('from "../../src/index.js"', 'from "ggaction"')
         .replace('from "../../src/inspection.js"', 'from "ggaction/inspection"'));
-    await assert.rejects(copyDocumentationSupportFiles({ supportFiles: { "private.js": "examples/getting-started/program.js" } }, directory), /public installed package/);
+    // text-shadows/main.js imports ../../src/renderers/svg.js, which is not a mapped public entry.
+    await assert.rejects(copyDocumentationSupportFiles({ supportFiles: { "private.js": "examples/text-shadows/main.js" } }, directory), /public installed package/);
   } finally { await rm(directory, { recursive: true, force: true }); }
 });
 

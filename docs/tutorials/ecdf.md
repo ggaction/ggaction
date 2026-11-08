@@ -5,14 +5,57 @@ title: Empirical Cumulative Distribution Plots
 
 # Empirical Cumulative Distribution Plots
 
-{% include chart-example.html id="ecdf-plot" lead=true %}
-
 An empirical cumulative distribution function answers: “What share of the
 observations is less than or equal to this value?” `createECDFPlot` owns that
 statistical definition and expresses the result with ordinary derived data,
 Line, encoding, label, scale, and guide actions.
 
+## Example with real data
+
+<!-- showcase-program:cars-mpg-ecdf:start -->
+
+{% include chart-example.html id="cars-mpg-ecdf" %}
+
+`createCarsMpgEcdf` builds this chart from real data. It receives the rows of `data/cars.json` (1970–1982 car models).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// Cumulative share of cars at or below each fuel economy, by region of origin.
+export function createCarsMpgEcdf(cars) {
+  const measured = cars.filter(car => Number.isFinite(car.Miles_per_Gallon));
+
+  return chart()
+    .createCanvas({ width: 900, height: 460, margin: { top: 80, right: 140, bottom: 60, left: 70 } })
+    .createData({ id: "cars", values: measured })
+    .createECDFPlot({
+      field: "Miles_per_Gallon",
+      groupBy: "Origin",
+      color: { field: "Origin", scale: { domain: ["USA", "Europe", "Japan"], range: ["#2563eb", "#f97316", "#dc2626"] } },
+      line: { strokeWidth: 2.5 },
+      guides: {
+        axes: { x: { title: { text: "Miles per gallon" } }, y: { title: { text: "Share of cars at or below" } } },
+        legend: { title: "Origin" },
+        grid: { horizontal: true, vertical: true }
+      }
+    })
+    .createTitle({
+      text: "Half of American cars got under 19 miles per gallon",
+      subtitle: "Empirical cumulative distribution of 398 cars, 1970–1982"
+    });
+}
+```
+
+<!-- showcase-program:cars-mpg-ecdf:end -->
+
 ## Build a grouped weighted ECDF
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart, render } from "ggaction";
@@ -74,6 +117,12 @@ errors.
 Use `createECDFData` when another chart or annotation should consume the same
 statistics:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const dataOnly = chart()
   .createData({ id: "data", values })
@@ -102,6 +151,12 @@ denominator.
 ## Revise the statistical source
 
 Filter raw observations first, then point the ECDF owner at that derived source:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `source: "data"`; `target: "ecdf"`; `data: "positive"`.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const revised = program

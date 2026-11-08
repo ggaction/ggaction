@@ -12,6 +12,12 @@ footer. Every regional bar uses the common 0–20 value range.
 
 {% include chart-example.html id="nested-responsive" %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import the Full ggaction package; this example declares all regional rows.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, hconcat } from "ggaction";
 

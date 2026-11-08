@@ -5,6 +5,10 @@ title: Polar Point Chart Tutorial
 
 # Polar Point Chart Tutorial
 
+> **Polar charts in three steps:** [points and guides](polar-points.md) ·
+> [lines and radar charts](polar-lines.md) ·
+> [pie, donut, rose, and radial bar charts](polar-arcs.md).
+
 {% include chart-example.html id="polar" lead=true %}
 
 This tutorial maps car acceleration to angle, horsepower to distance from the
@@ -20,6 +24,12 @@ curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ si
 ```
 
 ## Complete program
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart, render } from "ggaction";
@@ -56,6 +66,12 @@ but no visible point position is produced.
 Theta uses `[0, 360]` by default. An explicit range may be reversed, but its
 absolute span cannot exceed 360 degrees:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const reversed = program.editScale({ id: "theta", reverse: true });
 ```
@@ -63,6 +79,12 @@ const reversed = program.editScale({ id: "theta", reverse: true });
 Radius uses `[0, min(plot width, plot height) / 2]` by default. Explicit radial
 ranges are logical Canvas pixels, must be non-negative, and must fit the current
 plot bounds. Canvas size and margin edits recompute automatic radial ranges.
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const zoomed = program.editScale({
@@ -81,6 +103,12 @@ separate from semantic radial position in `encodeR`.
 
 Call `createGuides()` after both position encodings to infer theta/radius axes
 and grids:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const guided = chart()
@@ -104,8 +132,9 @@ radial axis together, or a focused edit such as
 
 Polar point marks support ordinary color, size, shape, opacity, filtering,
 selection, highlighting, theta/radius axes, and both Polar grid families.
-Polar lines and closed radar paths use the same position and guide system; arc
-marks remain outside this slice.
+Polar lines and closed radar paths use the same position and guide system; see
+the [polar line tutorial](polar-lines.md). Pie, donut, rose and radial bar
+charts use arc marks; see the [polar arc tutorial](polar-arcs.md).
 
 ## Related
 

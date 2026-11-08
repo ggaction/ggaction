@@ -41,7 +41,7 @@ encoder's usual payload without `target`. The first true predicate wins; opacity
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** The displayed program imports chart and supplies its inline data and parameter.
+> **Runnable complete example.** The displayed program imports chart and supplies its inline data and parameter.
 
 <!-- snippet-context:end -->
 
@@ -74,7 +74,7 @@ scales stay live until the encoding is replaced or removed.
 
 Field branches contribute their complete final-item populations to automatic
 scale domains. Conditions select values without filtering the input population. Use a
-[parameterized data filter](../data-updates.md) to change statistical input.
+[parameterized data filter](data/filtering.md#filter-with-a-parameter) to change statistical input.
 Categorical color, stroke, shape and dash domains retain their source appearance
 order, including when aggregation changes the order of the displayed items.
 Appearance on paths and aggregate marks requires one branch value and one predicate result per
@@ -200,7 +200,7 @@ line, bar, area, arc, rect and text; size supports point marks.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -238,7 +238,7 @@ create a scale or legend. `0` points up and positive values rotate clockwise.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "ticks"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "ticks"`.
 
 <!-- snippet-context:end -->
 
@@ -318,7 +318,7 @@ without deleting its named scale, source dataset, or coordinate:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 

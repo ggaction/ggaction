@@ -8,7 +8,7 @@ A facet can set `gap: { x: 32, y: 48 }` to leave more space between rows than
 between columns. The existing number form applies the same gap in both directions.
 This complete example preserves one plot per panel:
 
-> **Executable complete.** Import chart from ggaction. This complete program includes all four panel rows and retains the original dataset while creating the facet.
+> **Runnable complete example.** Import chart from ggaction. This complete program includes all four panel rows and retains the original dataset while creating the facet.
 
 ```js
 import { chart } from "ggaction";
@@ -37,7 +37,7 @@ Pass a legend object to `guides.legend` to create it against the combined inner 
 This runnable example keeps each child plot 60 pixels wide while its parent legend uses
 the 246-pixel union of four plots and three 2-pixel gaps:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```js
 import { chart } from "ggaction";
@@ -95,7 +95,7 @@ other parent legend blocks intact.
 
 Put a region name beside its panel with the existing header editor:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```js
 program.editFacetHeaders({
@@ -107,7 +107,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -137,7 +137,7 @@ requires `spacing: "plot"` or `"content"` and sufficient space; it never changes
 Call `facet` on one complete unit chart to repeat it for each observed field
 value:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -160,7 +160,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -212,7 +212,7 @@ preserves an explicit `left`, `right`, `top`, or `bottom` edge and the
 horizontal `align` used by top and bottom legends; there is no separate facet
 legend-position option:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const source = chart()
@@ -265,7 +265,7 @@ resolved against its child Canvas.
 
 These are fragments that require already-complete unit programs:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `polarUnit`, `parallelUnit`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `polarUnit`, `parallelUnit` from that setup.
 
 ```javascript
 const radialPanels = polarUnit.facet({
@@ -296,7 +296,7 @@ does not visually offset panel titles.
 
 Edit the repeated header style without addressing generated graphic IDs:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `faceted`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `faceted` from that setup.
 
 ```javascript
 const emphasized = faceted.editFacetHeaders({
@@ -313,7 +313,7 @@ Facet-header weights follow the shared
 An unqualified edit updates the common header style and keeps the existing
 one-header-per-cell layout. A row or column role switches to separate strips:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const labeledMatrix = matrix
@@ -360,7 +360,7 @@ required parent space without moving or rewriting child program identity.
 
 A complete example with a right-side header for each panel:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -380,7 +380,7 @@ const panels = chart()
 
 Use `facetGrid` when two source fields define the comparison:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `unit`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `unit` from that setup.
 
 ```javascript
 const matrix = unit.facetGrid({
@@ -406,7 +406,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -418,7 +418,7 @@ from the retained source when a repeated computed field depends on that paramete
 
 `repeatCharts` compares several fields without copying the complete unit recipe:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `unit`. Resource selectors used here: `target: "product"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `unit` from that setup. It refers to `target: "product"`.
 
 ```javascript
 const metrics = unit.repeatCharts({
@@ -442,7 +442,7 @@ and headers follow the ordered field list.
 
 This fragment requires a complete Parallel-coordinate unit:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `parallelUnit`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `parallelUnit` from that setup.
 
 ```javascript
 const comparisons = parallelUnit.repeatCharts({
@@ -458,7 +458,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/64045b214475110de9621328bbe7d060c9149f04/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/repeat-charts).
 
 ## Space between plots
 
@@ -482,7 +482,7 @@ existing child top margin and parent padding. The default `"stacked"` reserves t
 height separately. This complete program retains seven 40 × 200 plots inside a
 508 × 262 Canvas, including the upper Y-axis endpoint:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```js
 import { chart } from "ggaction";

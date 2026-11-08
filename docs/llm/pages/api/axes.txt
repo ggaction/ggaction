@@ -35,7 +35,7 @@ finite non-negative distance in logical pixels outside the occupied label block.
 It follows the same axis owner and physical side, including rotated labels and
 independent facet scales. Declare the axis first, then refine its title:
 
-> **Executable complete.** Import chart from ggaction; all rows and both axes are declared in this complete program.
+> **Runnable complete example.** Import chart from ggaction; all rows and both axes are declared in this complete program.
 
 ```js
 import { chart } from "ggaction";
@@ -78,7 +78,7 @@ choose the nearest 1–2–5 decade step. The default count density is 5: a 0–
 domain gets labels 0, 20, …, 140. Count is an approximate density, not an exact
 number of ticks. Omission keeps the existing behavior; `"ceiling"` restores it.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -153,7 +153,7 @@ for side occupancy, selection, arrays and independent scales.
 An axis does not need an invisible mark or dataset. Supply an existing Cartesian
 coordinate and a scale with an explicit domain:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -181,7 +181,7 @@ These actions are available from `ggaction`.
 | Tick text | `createThetaAxisLabels` | `createRadialAxisLabels` |
 | Title | `createThetaAxisTitle` | `createRadialAxisTitle` |
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -258,7 +258,7 @@ display mapping, formatting, wrapping, Polar/Parallel decisions, and examples.
 Use `editXAxis()` or `editYAxis()` when several components of one existing
 axis should change together:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 program
@@ -302,7 +302,7 @@ radial title placement while preserving its text and style.
 labels, title, semantic guide state, and stored materialization settings. Marks,
 scales, coordinates, and the opposite axis remain.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const withoutXAxis = program.removeXAxis();
@@ -330,7 +330,7 @@ an invalid later component cannot leave a partial result.
 
 ## Edit several existing axes
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```js
 // Fragment: program already contains x and y axes.

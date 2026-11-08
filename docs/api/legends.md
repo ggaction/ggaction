@@ -47,7 +47,7 @@ Use the optional singular `channel` on `editLegend` or a focused editor to selec
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -66,7 +66,7 @@ Keep an edge anchor while adjusting its position with `editLegend` or `editLegen
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import chart from ggaction. This complete example includes two observations, an explicit color legend and sufficient margins. Keep the returned shifted program to render the revised position.
+> **Runnable complete example.** Import chart from ggaction. This complete example includes two observations, an explicit color legend and sufficient margins. Keep the returned shifted program to render the revised position.
 
 <!-- snippet-context:end -->
 
@@ -169,7 +169,7 @@ an existing item-based legend:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -248,7 +248,7 @@ For one Cartesian point layer, `combine: "color-size-shape"` combines interval c
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Standalone ES module with ggaction installed.
+> **Runnable complete example.** Standalone ES module with ggaction installed.
 
 <!-- snippet-context:end -->
 

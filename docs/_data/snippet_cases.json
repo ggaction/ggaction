@@ -959,5 +959,43 @@
     "result": "program",
     "prerequisites": "Run the complete ES module with ggaction installed; it authors one canvas and two closed path rows.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "animation-browser-quickstart",
+    "file": "api/animation.md",
+    "contains": "const after = before.reviseData({ source: \"countries\", id: \"countries-2005\"",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "host": "paired-html",
+    "dataset": "gapminder",
+    "prerequisites": "Use this section's HTML and JavaScript together with ggaction installed and gapminder.json served from the site root."
+  },
+  {
+    "id": "getting-started-main",
+    "file": "getting-started.md",
+    "contains": "render(program, canvas.getContext(\"2d\"));",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "dataset": "cars",
+    "prerequisites": "Use the index.html from step 1 and serve cars.json from the site root, as the Vite public folder does."
+  },
+  {
+    "id": "graph-inference-browser-worker",
+    "file": "api/graphs.md",
+    "contains": "createWorker: () => new Worker(new URL(\"./inference-worker.js\", import.meta.url), { type: \"module\" })",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "host": "paired-html",
+    "dataset": "gapminder",
+    "prerequisites": "Use this section's HTML and module with inference-worker.js beside them, and serve gapminder.json from the site root.",
+    "supportFiles": {
+      "inference-worker.js": "examples/graph-inference/browser-worker.js"
+    }
   }
 ]

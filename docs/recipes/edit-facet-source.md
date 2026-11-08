@@ -13,8 +13,7 @@ Replace a facet's retained source program, rename its headers, and arrange outer
 
 Use the [Getting Started browser module setup](../getting-started.md), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.15 or later;
-check the [documentation version](../version.md) for release compatibility.
+includes its data and imports.
 
 Decision sequence: faceting → source replay → header and guide policies.
 

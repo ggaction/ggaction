@@ -55,7 +55,8 @@ const expectedFeaturedCount = (chartCatalog.match(/^  featured: true$/gm) ?? [])
 const expectedGalleryFeaturedCount = (
   chartCatalog.match(/^  gallery_featured: true$/gm) ?? []
 ).length;
-const expectedGalleryCount = (chartCatalog.match(/^- id:/gm) ?? []).length;
+const expectedGalleryCount = chartCatalog.split(/^(?=- id:)/m)
+  .filter(record => record.startsWith("- id:") && !/^  figure_only: true$/m.test(record)).length;
 await mkdir(artifactRoot, { recursive: true });
 
 async function files(directory) {
@@ -185,11 +186,22 @@ try {
     await desktop.locator(".docs-chart-gallery__title").allInnerTexts(),
     [
       "Scatterplot",
+      "Animated bubble chart",
       "Line chart",
       "Heatmap",
-      "Bar chart",
+      "Temperature anomaly heatmap",
+      "Grouped bar chart",
       "Histogram",
+      "World choropleth map",
+      "Earthquake map",
+      "Sankey diagram",
+      "Population treemap",
+      "Similarity network",
+      "Daily births calendar",
+      "Candlestick chart with volume",
+      "Density contours with points",
       "Regression scatterplot",
+      "Raincloud plot",
       "Box plot",
       "Parallel coordinates",
       "Rose chart"
@@ -414,7 +426,7 @@ try {
   );
   assert.equal(
     await desktop.locator(".docs-example-figure img").getAttribute("alt"),
-    "Three-point scatterplot of horsepower and fuel economy using color and shape for origin"
+    "Scatterplot of horsepower and fuel economy for 392 cars using color and shape for origin"
   );
   assert.equal(
     await desktop.locator(".docs-example-figure img").getAttribute("fetchpriority"),
@@ -426,7 +438,7 @@ try {
   });
   assert.deepEqual(
     await desktop.locator(".docs-breadcrumbs li").allInnerTexts(),
-    ["Docs", "Chart API", "Basic Charts"]
+    ["Docs", "Chart Types", "Basic Charts"]
   );
   await assertFragmentPlacement(desktop, "#createlineplot", "desktop direct h2 fragment");
   await desktop.screenshot({

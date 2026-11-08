@@ -3,6 +3,7 @@ import { readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { documentationCodeBlocks, documentationPrograms } from "./doc-snippets.js";
+import { showcaseDisplays } from "./generate-doc-showcase.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 async function markdownFiles(directory) {
@@ -23,24 +24,27 @@ function receiverNames(code) {
 }
 export async function generateDocSnippetContracts({ check = false } = {}) {
   const programs = await documentationPrograms();
-  const files = (await Promise.all(["api", "advanced", "extension"].map(group => markdownFiles(path.join(root, "docs", group))))).flat();
+  const showcase = await showcaseDisplays();
+  const files = (await Promise.all(["api", "advanced", "extension", "tutorials", "recipes"].map(group => markdownFiles(path.join(root, "docs", group))))).flat();
   const records = [];
   for (const file of files) {
     const original = await readFile(file, "utf8");
     let source = original.replace(/<!-- snippet-context:start -->[\s\S]*?<!-- snippet-context:end -->\n*/g, "");
     const relative = path.relative(path.join(root, "docs"), file);
-    const blocks = documentationCodeBlocks(source).filter(block => ["javascript", "js"].includes(block.language));
+    // Showcase and workflow programs are generated from example modules and carry no callout.
+    const workflow = source.match(/<!-- workflow-program:start -->[\s\S]*?<!-- workflow-program:end -->/)?.[0] ?? "";
+    const blocks = documentationCodeBlocks(source).filter(block => ["javascript", "js"].includes(block.language) &&
+      !showcase.has(block.code) && !workflow.includes(block.code));
     for (const [index, block] of blocks.entries()) {
       const registered = programs.find(program => program.file === relative && program.code === block.code);
       const receivers = receiverNames(block.code);
       const resources = [...new Set([...block.code.matchAll(/\b(target|data|source|selection):\s*["']([^"']+)["']/g)]
         .map(match => `${match[1]}: "${match[2]}"`))];
       const mode = registered?.mode ?? (/\bcatch\s*(?:\([^)]*\))?\s*\{/.test(block.code) ? "expected-error" : /\b(?:alternative|each starts)\b/i.test(block.code) ? "alternative" : "fragment");
-      const prerequisites = registered?.prerequisites ?? [
-        "Use an ES module with the imports, data, and prepared resource state described in this section.",
-        ...(receivers.length ? [`Caller-provided receivers: ${receivers.map(name => `\`${name}\``).join(", ")}.`] : []),
-        ...(resources.length ? [`Resource selectors used here: ${resources.map(value => `\`${value}\``).join("; ")}.`] : []),
-        "Resolve these names from setup in this fragment or section; alternatives branch from the same base."
+      const prerequisites = registered ? registered.prerequisites ?? "Runs as written with ggaction installed." : [
+        "Not a complete program: it continues the setup described in this section.",
+        ...(receivers.length ? [`It uses ${receivers.map(name => `\`${name}\``).join(", ")} from that setup.`] : []),
+        ...(resources.length ? [`It refers to ${resources.map(value => `\`${value}\``).join("; ")}.`] : [])
       ].join(" ");
       records.push({ file: relative, block: index + 1, heading: block.heading, mode,
         environment: registered?.environment ?? (/\bdocument\./.test(block.code) ? "browser-module" : "esm-context"),
@@ -48,7 +52,8 @@ export async function generateDocSnippetContracts({ check = false } = {}) {
         ...(registered?.htmlSha256 ? { host: registered.host, htmlSha256: registered.htmlSha256 } : {}),
         sha256: createHash("sha256").update(block.code).digest("hex"),
         executable: Boolean(registered) });
-      const label = registered ? `Executable ${mode}` : mode === "fragment" ? "Contextual fragment" : mode;
+      const label = registered ? `Runnable ${mode} example`
+        : { fragment: "Fragment", "expected-error": "Expected error", alternative: "Alternative" }[mode] ?? mode;
       const callout = `<!-- snippet-context:start -->\n\n> **${label}.** ${prerequisites}\n\n<!-- snippet-context:end -->\n\n`;
       const fenced = `${block.fence}${block.language}\n${block.code}\n${block.fence}`;
       source = source.replace(fenced, callout + fenced);

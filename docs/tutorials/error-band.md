@@ -25,6 +25,12 @@ curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ si
 
 ## Complete program
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, render } from "ggaction";
 
@@ -85,18 +91,29 @@ Place the interval definition on x and the independent position on y to create
 a horizontal band. Pass `boundaries: {}` to add lower and upper line paths, or
 provide shared stroke, width, dash, opacity, and curve options:
 
+This variant reuses the `gapminder` rows loaded above:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
+
 ```javascript
-program.createErrorBand({
-  x: { field: "value", extent: "ci" },
-  y: { field: "date", fieldType: "temporal" },
-  curve: "cardinal",
-  boundaries: {
-    stroke: "#25364d",
-    strokeWidth: 1.4,
-    strokeDash: [6, 3],
-    opacity: 0.8
-  }
-});
+const horizontal = chart()
+  .createCanvas({ width: 640, height: 420, margin: { top: 30, right: 30, bottom: 60, left: 70 } })
+  .createData({ values: gapminder })
+  .createErrorBand({
+    x: { field: "life_expect", extent: "ci" },
+    y: { field: "year" },
+    curve: "cardinal",
+    boundaries: {
+      stroke: "#25364d",
+      strokeWidth: 1.4,
+      strokeDash: [6, 3],
+      opacity: 0.8
+    }
+  });
 ```
 
 ## Key action trace

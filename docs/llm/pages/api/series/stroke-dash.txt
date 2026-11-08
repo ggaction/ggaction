@@ -5,7 +5,7 @@
 Map a nominal or ordinal field to line-series or rule dash patterns, or apply one constant pattern
 to every series.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeStrokeDash({ field: "Origin" });
@@ -49,7 +49,7 @@ numbers that is not entirely zero. Named styles resolve as follows:
 Names remain in semantic scale state, while resolved scales and graphics store
 only numeric patterns.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeStrokeDash({

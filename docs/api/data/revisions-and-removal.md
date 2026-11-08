@@ -53,7 +53,7 @@ normalized transform definition:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "twice"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "twice"`.
 
 <!-- snippet-context:end -->
 
@@ -145,7 +145,7 @@ must advance with the new row order.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `ordered`. Resource selectors used here: `target: "orderedSales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `ordered` from that setup. It refers to `target: "orderedSales"`.
 
 <!-- snippet-context:end -->
 
@@ -167,7 +167,7 @@ logical-source reuse:
 
 <!-- snippet-context:start -->
 
-> **expected-error.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "raw"`; `source: "twice"`; `target: "twice"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Expected error.** Not a complete program: it continues the setup described in this section. It refers to `source: "raw"`; `source: "twice"`; `target: "twice"`.
 
 <!-- snippet-context:end -->
 
@@ -220,7 +220,7 @@ been removed:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "temporaryPoints"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "temporaryPoints"`.
 
 <!-- snippet-context:end -->
 

@@ -9,6 +9,7 @@ import { createCanvas, loadImage } from "@napi-rs/canvas";
 import {
   chartImages,
   docThumbnailDimensions,
+  showcaseImages,
   guideImages,
   tutorialImages
 } from "../../scripts/generate-doc-images.js";
@@ -42,17 +43,22 @@ test("keeps one generated gallery image for every public chart", () => {
   const catalog = read("docs/_data/chart_examples.yml");
 
   assert.equal(chartImages.length, 39);
-  for (const { id, width, height } of chartImages) {
+  assert.equal(showcaseImages.length, 21);
+  for (const { id, width, height } of [...showcaseImages, ...chartImages]) {
     assertPng(id, width, height);
     assertThumbnail(id, width, height);
     assert.match(catalog, new RegExp(`image: /assets/images/${id}\\.png`));
     assert.match(catalog, new RegExp(`thumbnail: /assets/images/${id}-thumb\\.png`));
   }
-  assert.equal((catalog.match(/^  home_group:/gm) ?? []).length, chartImages.length);
+  assert.equal(
+    (catalog.match(/^  home_group:/gm) ?? []).length,
+    chartImages.length + showcaseImages.length
+  );
   assert.match(index, /chart-gallery-card\.html/);
   assert.match(index, /home_group", "essentials"/);
   assert.match(index, /home_group", "statistical"/);
   assert.match(index, /home_group", "coordinates"/);
+  assert.match(index, /home_group", "domains"/);
 
   assert.match(tutorials, /example\.tutorial_order/);
 
@@ -63,6 +69,10 @@ test("keeps one generated gallery image for every public chart", () => {
     chartImages.map(({ id }) => id).sort()
   );
   assert.deepEqual(
+    Object.keys(manifest.showcase).sort(),
+    showcaseImages.map(({ id }) => id).sort()
+  );
+  assert.deepEqual(
     Object.keys(manifest.tutorials).sort(),
     tutorialImages.map(({ id }) => id).sort()
   );
@@ -71,6 +81,7 @@ test("keeps one generated gallery image for every public chart", () => {
     guideImages.map(({ id }) => id).sort()
   );
   for (const entry of [
+    ...Object.values(manifest.showcase),
     ...Object.values(manifest.charts),
     ...Object.values(manifest.tutorials),
     ...Object.values(manifest.guides)

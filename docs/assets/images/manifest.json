@@ -2,6 +2,197 @@
   "version": 5,
   "pixelRatio": 2,
   "thumbnailMaxWidth": 640,
+  "showcase": {
+    "cars-mpg-bars": {
+      "width": 1520,
+      "height": 880,
+      "thumbnail": {
+        "width": 640,
+        "height": 371
+      },
+      "sourceHash": "06521a530592698a2ce2c61b61755ee2e5f36d227d1c7e902a531524a9fa7c32"
+    },
+    "gapminder-bubbles": {
+      "width": 1640,
+      "height": 1000,
+      "thumbnail": {
+        "width": 640,
+        "height": 390
+      },
+      "sourceHash": "86d1aa7872b06dccc080dbfff99b5b9f8c43752e2ea0413f11a4867d76c1b8ed"
+    },
+    "world-gdp-map": {
+      "width": 1920,
+      "height": 1080,
+      "thumbnail": {
+        "width": 640,
+        "height": 360
+      },
+      "sourceHash": "f3673a7f593db99bc5a54e4371e2c994fa3ea25ef5871c217238b6d93bdcc016"
+    },
+    "world-earthquakes-map": {
+      "width": 1920,
+      "height": 1080,
+      "thumbnail": {
+        "width": 640,
+        "height": 360
+      },
+      "sourceHash": "d92b13f023a6e9545a4add614449602cbcbb9200aa5048792205da9ebc9d6242"
+    },
+    "global-temperature-heatmap": {
+      "width": 1920,
+      "height": 720,
+      "thumbnail": {
+        "width": 640,
+        "height": 240
+      },
+      "sourceHash": "d08548aea368f05a6d5bfeec8c9113df12f37ef6eb34b99a3f6d9ed026f7e5e1"
+    },
+    "us-births-calendar": {
+      "width": 1920,
+      "height": 500,
+      "thumbnail": {
+        "width": 640,
+        "height": 167
+      },
+      "sourceHash": "9ae3aa70e6ccb9e945273913ab6e2c5f84919a2c2f001e4d387c81d65d06383c"
+    },
+    "penguin-density-contours": {
+      "width": 1520,
+      "height": 1040,
+      "thumbnail": {
+        "width": 640,
+        "height": 438
+      },
+      "sourceHash": "cec994a949f45b7d304d46590e370c347f5fcc1abfa358310869d26ffd210e6c"
+    },
+    "penguin-sankey": {
+      "width": 1800,
+      "height": 1040,
+      "thumbnail": {
+        "width": 640,
+        "height": 370
+      },
+      "sourceHash": "e7a56f9313f7a96fa84dfacb94a8a3016058e0e6cde745232b812fe5b34b20ca"
+    },
+    "country-similarity-network": {
+      "width": 1800,
+      "height": 1280,
+      "thumbnail": {
+        "width": 640,
+        "height": 455
+      },
+      "sourceHash": "61d1d977ea5b08e968231d0242e072e206d694cabe7a0a04111c044a2810cb5b"
+    },
+    "world-population-treemap": {
+      "width": 1920,
+      "height": 1200,
+      "thumbnail": {
+        "width": 640,
+        "height": 400
+      },
+      "sourceHash": "1c575329e04631d3d59b421dc066786e2da041cef881ab53a964a388d0c95c5d"
+    },
+    "world-population-sunburst": {
+      "width": 1520,
+      "height": 1280,
+      "thumbnail": {
+        "width": 640,
+        "height": 539
+      },
+      "sourceHash": "5d7b66dcd5e44ad0728861ecf725c08c5b48f4b877d0c484c2e8142790339988"
+    },
+    "flare-radial-tree": {
+      "width": 1520,
+      "height": 1520,
+      "thumbnail": {
+        "width": 640,
+        "height": 640
+      },
+      "sourceHash": "7d055e02c61f117536d7069c2d4f72546a078624e6e2c7e799c62abd67443dbb"
+    },
+    "ibm-candlesticks": {
+      "width": 1920,
+      "height": 1120,
+      "thumbnail": {
+        "width": 640,
+        "height": 373
+      },
+      "sourceHash": "c31d27fdc09e0caf262c5038a2acb173b7062f8921e4dddedcb43a081797801c"
+    },
+    "temperature-waterfall": {
+      "width": 1800,
+      "height": 920,
+      "thumbnail": {
+        "width": 640,
+        "height": 327
+      },
+      "sourceHash": "8dfe6e88ef238ab17ba160ec9170c0ee72ac5a97539b597dbfc7a7e365d5e6c0"
+    },
+    "gapminder-life-trails": {
+      "width": 1800,
+      "height": 1040,
+      "thumbnail": {
+        "width": 640,
+        "height": 370
+      },
+      "sourceHash": "43b1aa00b5866545b7000e1b584747c754d5c27e609f27488465eff30a9fb07e"
+    },
+    "gapminder-country-table": {
+      "width": 1920,
+      "height": 1400,
+      "thumbnail": {
+        "width": 640,
+        "height": 467
+      },
+      "sourceHash": "51b15dcedd7ef24e81d1949d7cb1a358d479ae566ce0498c5636c012291d8d8c"
+    },
+    "penguin-mass-raincloud": {
+      "width": 1800,
+      "height": 920,
+      "thumbnail": {
+        "width": 640,
+        "height": 327
+      },
+      "sourceHash": "346ae759d0ee3d61953521df8e9eaf7f6a966230068fee0e6f0eda99fff5dcdf"
+    },
+    "penguin-flipper-beeswarm": {
+      "width": 1800,
+      "height": 920,
+      "thumbnail": {
+        "width": 640,
+        "height": 327
+      },
+      "sourceHash": "4ea1e45d082e7381175c35418307171cdf03544a8df9e78c0ef9eafe90eec9de"
+    },
+    "cars-mpg-ecdf": {
+      "width": 1800,
+      "height": 920,
+      "thumbnail": {
+        "width": 640,
+        "height": 327
+      },
+      "sourceHash": "5ee9dac13512d0ec83bafa51192161bcb0efc25381e5d66c9d6ceed2aa5c706c"
+    },
+    "life-expectancy-dumbbell": {
+      "width": 1800,
+      "height": 1240,
+      "thumbnail": {
+        "width": 640,
+        "height": 441
+      },
+      "sourceHash": "8d080e6db754f2cb064d4ccd5e025411df52152891b4aab385004eb664fc6ec0"
+    },
+    "fertility-lollipop": {
+      "width": 1800,
+      "height": 1040,
+      "thumbnail": {
+        "width": 640,
+        "height": 370
+      },
+      "sourceHash": "c84d317deb52363b9a6566061c4c34d517dfbdb2227cce6e6dbb3a566471ad98"
+    }
+  },
   "charts": {
     "centered-area-stream": {
       "width": 1380,
@@ -1418,7 +1609,7 @@
         "width": 640,
         "height": 400
       },
-      "sourceHash": "f12418f743e1f6f702d6c8e28e54f5910e8956405e1215e3fd7c21cf539771aa"
+      "sourceHash": "27fc26562b383c5e9b61e296fec2580cbe3f58a5731afa5ef455a05934adc7af"
     }
   }
 }

@@ -11,7 +11,7 @@ composes ordinary ranged-bar, error-bar, rule, and optional point actions.
 | `createBoxPlot` | `createBoxPlot()` after one eligible encoded layer | Quartile boxes, medians, whiskers, caps, and optional outliers |
 | `editBoxPlot` | `editBoxPlot({ width: { band: 0.5 } })` | Stable owner and current summary retained unless statistics change |
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -32,7 +32,7 @@ const program = chart()
 
 ## `createBoxPlot`
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 createBoxPlot({
@@ -76,7 +76,7 @@ additional summary groups. Choose either `color` or an explicit `box.fill`.
 The category/measure pairing determines orientation. This horizontal min–max
 example creates no outlier resources:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createBoxPlot({
@@ -89,7 +89,7 @@ program.createBoxPlot({
 Tukey factor and component appearance can be changed together without exposing
 the child marks:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createBoxPlot({
@@ -113,7 +113,7 @@ The shape-detail vocabulary and lifecycle follow
 Edit the stable box owner instead of generated whisker, cap, median, or
 outlier IDs:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "boxPlot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "boxPlot"`.
 
 ```javascript
 const styled = program.editBoxPlot({
@@ -129,7 +129,7 @@ const styled = program.editBoxPlot({
 Revise the raw source or replace either complete positional role without
 recreating the plot:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `styled`. Resource selectors used here: `data: "observations"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `styled` from that setup. It refers to `data: "observations"`.
 
 ```javascript
 const horizontal = styled.editBoxPlot({
@@ -179,7 +179,7 @@ are not implemented.
 
 Supply one row per box when the five summary values are already known:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";

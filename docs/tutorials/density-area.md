@@ -11,6 +11,12 @@ title: Density Area Chart Tutorial
 
 Use `createDensityPlot` to complete a density chart in one action:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from "ggaction";
 
@@ -52,6 +58,12 @@ curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ si
 ```
 
 ## Complete program
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart, render } from "ggaction";
@@ -121,6 +133,12 @@ the three items without changing the chart-wide right-side legend default.
 
 The title is an independently editable resource. This optional continuation
 uses the `program` created above and returns a new program without changing it:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const bottomTitleProgram = program

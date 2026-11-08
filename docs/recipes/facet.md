@@ -11,12 +11,22 @@ title: Facet Recipe
 
 {% include runnable-recipe-note.html %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
+
+<!-- snippet-context:end -->
+
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car => ["Horsepower", "Miles_per_Gallon", "Weight_in_lbs", "Acceleration", "Displacement", "Cylinders"]
+  .every(field => Number.isFinite(car[field])));
 
 const program = chart()
   .createCanvas({ width: 250, height: 230 })
-  .createData({ values: cars })
+  .createData({ values })
   .createScatterPlot({
     x: "Horsepower",
     y: "Miles_per_Gallon",
@@ -27,6 +37,8 @@ const program = chart()
     columns: 3,
     guides: { legend: "shared" }
   });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 `cars` is an array of plain row objects containing the encoded fields and

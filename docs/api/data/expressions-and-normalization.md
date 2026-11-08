@@ -17,7 +17,7 @@ The following legacy syntax and rules describe v1:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "sales"`.
 
 <!-- snippet-context:end -->
 
@@ -118,6 +118,22 @@ Unary operations are `negate` and `not`. Binary operations are `add`, `subtract`
 The closed function registry covers numeric, string, array, and calendar
 operations. Use [getExpressionFunctions](../../inspection.md#expression-functions)
 to inspect names, argument limits, input/output types, and option families.
+
+| Group | Functions (argument count) |
+| --- | --- |
+| Numbers | `abs` (1), `sqrt` (1), `log` (1), `exp` (1), `round` (1), `floor` (1), `ceil` (1), `min` (1–64), `max` (1–64), `pow` (2), `toNumber` (1) |
+| Angles (need `options.angleUnit`) | `sin` (1), `cos` (1), `tan` (1), `atan2` (2) |
+| Strings | `lower` (1), `upper` (1), `length` (1), `substring` (3), `replace` (3), `concat` (1–64) |
+| Tests and fallbacks | `isNull` (1), `isMissing` (1), `isFinite` (1), `coalesce` (2–64) |
+| Arrays | `arrayLength` (1), `at` (2) |
+| Dates and times (need options) | `parseTime` (1), `datePart` (1), `timeFloor` (1) |
+
+A call node names the function and passes its arguments as nodes. For example,
+`{ type: "call", name: "round", args: [{ type: "field", name: "price" }] }`
+rounds a field, and
+`{ type: "call", name: "coalesce", args: [{ type: "field", name: "label" }, { type: "literal", value: "unknown" }] }`
+replaces missing labels.
+
 Trigonometric calls require `options.angleUnit` (`radians` or `degrees`).
 `parseTime` requires an explicit `format` (`%Y-%m-%d`, `%d/%m/%Y`, `%m/%d/%Y`,
 or `iso-offset`). `datePart` requires `part` and `timeZone`; `timeFloor` requires
@@ -155,7 +171,7 @@ This complete ES module creates a computed column, then updates its parameter:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this standalone ES module; all data and imports are included. Both immutable programs own a Canvas and materialized point chart.
+> **Runnable complete example.** Run this standalone ES module; all data and imports are included. Both immutable programs own a Canvas and materialized point chart.
 
 <!-- snippet-context:end -->
 
@@ -192,6 +208,11 @@ lookup dependencies, scales, guides, and highlights. Unrelated branches stay sha
 An unchanged value preserves revisions; negative zero and zero are distinct edits.
 A failed computation or consumer validation leaves the original program unchanged.
 
+In a browser, bind a parameter to a control with [`ggaction/live`](../live.md):
+`chart.addSlider("factor", { min: 1, max: 5, step: 0.5, label: "Factor" })` edits
+the parameter as the slider moves, and `addDropdown("factor", { options: [1, 2, 3] })`
+offers fixed choices.
+
 If a parameter is used by a live data source URL, a changed value requires
 [`prepareDataUpdate` and `applyDataUpdate`](./source-and-derived.md#prepared-data-updates).
 A direct changed-value `editParameter` reports `prepared-data-required`.
@@ -217,7 +238,7 @@ statistics back to source rows:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "sales"`.
 
 <!-- snippet-context:end -->
 

@@ -5,6 +5,8 @@ content spacing accounts for rotated headers, long labels, strokes and shared
 guides. The last row has one panel, while the two retained bottom axes share one
 footer. Every regional bar uses the common 0–20 value range.
 
+> **Runnable complete example.** Import the Full ggaction package; this example declares all regional rows.
+
 ```javascript
 import { chart, hconcat } from "ggaction";
 

@@ -234,6 +234,35 @@ and apply it with [`applyGraphEdgeRoutesUpdate`](./api/edge-routes.md#applygraph
 A `resource-limit` error that names a graphic count needs fewer items or an explicit
 `maxItems`; see [Generated-work limits](./performance.md#generated-work-limits).
 
+## A map is blank, cut off, or one solid shape
+
+Most first maps fail in one of four ways; each has a one-line fix in
+[common map pitfalls](api/geometry.md#common-map-pitfalls):
+
+- *Geographic mark point count must not exceed 10000.* Raise the mark's
+  `capacity`.
+- The map overlaps the title or only its corner shows. Projection pixels are
+  Canvas pixels: fit the projection to the whole Canvas with `padding`.
+- One color fills the whole globe. Declare `polygonWinding: "left-hand"` for
+  clockwise sources such as Natural Earth.
+- The map is small inside a huge frame. Filter out features you do not draw,
+  such as Antarctica, before fitting.
+
+## Clicking or brushing a chart does nothing
+
+An [interaction session](api/interaction.md#start-here) never draws. Render
+`event.current` when `event.phase === "commit"`, and pass a `rootTransform`
+when CSS scales the element. With [`ggaction/live`](api/live.md) the chart
+redraws for you, but drag tools after the first need a modifier key: Shift,
+then Alt, then Ctrl.
+
+## Data changes do not move the marks
+
+Animated updates match rows by key. Add `keyField` to `createData`; without it,
+old items fade out and new ones fade in. When you chain `reviseData`, each
+revision's `source` must be the previous revision's `id`, or the marks keep
+the older rows. See [animation](api/animation.md#animate-a-data-change-in-a-browser).
+
 ## Inspect the program
 
 Use these public states to locate the last successful authoring step:

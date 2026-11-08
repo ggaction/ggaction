@@ -1,298 +1,4 @@
 {
-  "recipes/annotations.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "films",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/bar-chart.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/box-plot.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/composition.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "composition",
-    "result": "dashboard",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/density-area.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/error-band.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "intervals",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/error-bar.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/facet.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "cars",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/gradient-plot.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "cars",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/heatmap.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "cells",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/histogram.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/horizon.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "horizon",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/line-chart.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/parallel-coordinates.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "cars",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/path-ordering.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "observations",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/regression-scatterplot.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "cars",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/rose-chart.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "rose",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/scatterplot.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "recipes/violin-plot.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
-    "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
-    "rendering": "authoring-only"
-  },
-  "tutorials/area-layout.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "canonical": {
-      "file": "examples/area-layout/program.js",
-      "exported": "createAreaSimple"
-    },
-    "rendering": "renders-canvas"
-  },
-  "tutorials/density-area.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars",
-    "rendering": "renders-canvas"
-  },
-  "tutorials/ecdf.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "canonical": {
-      "file": "examples/ecdf-plot/program.js",
-      "exported": "createECDFExample"
-    },
-    "rendering": "renders-canvas"
-  },
-  "tutorials/endpoint-plots.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "changes",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "canonical": {
-      "file": "examples/dumbbell-plot/program.js",
-      "exported": "createDumbbellPlotExample"
-    },
-    "rendering": "renders-canvas"
-  },
-  "tutorials/error-band.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "gapminder",
-    "rendering": "renders-canvas"
-  },
-  "tutorials/error-bar.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars",
-    "rendering": "renders-canvas"
-  },
-  "tutorials/grouped-bar.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "jobs",
-    "rendering": "renders-canvas"
-  },
-  "tutorials/histogram.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars",
-    "rendering": "renders-canvas"
-  },
-  "tutorials/horizon.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "gapminder",
-    "rendering": "renders-canvas"
-  },
-  "tutorials/line-chart.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars",
-    "rendering": "renders-canvas"
-  },
-  "tutorials/mark-selection.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars",
-    "canonical": {
-      "file": "examples/mark-selection/program.js",
-      "exported": "createGroupedMaximumPointHighlight",
-      "input": "cars"
-    },
-    "rendering": "renders-canvas"
-  },
-  "tutorials/polar-arcs.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars",
-    "rendering": "renders-canvas"
-  },
-  "tutorials/polar-lines.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "gapminder",
-    "rendering": "renders-canvas"
-  },
-  "tutorials/polar-points.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars",
-    "rendering": "renders-canvas"
-  },
-  "tutorials/regression-scatterplot.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars",
-    "rendering": "renders-canvas"
-  },
-  "tutorials/scatterplot.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars",
-    "rendering": "renders-canvas"
-  },
   "api/data/filtering.md": {
     "mode": "complete",
     "environment": "node-esm",
@@ -303,60 +9,30 @@
     "prerequisites": "Import chart from ggaction and provide Cars rows with finite Displacement and Acceleration.",
     "rendering": "authoring-only"
   },
-  "recipes/repair-missing-observations.md": {
+  "api/geometry.md": {
     "mode": "complete",
-    "environment": "browser-module",
+    "environment": "node-esm",
+    "fixture": "values",
     "result": "program",
-    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
-    "canonical": {
-      "file": "examples/repair-missing-observations/program.js",
-      "exported": "createMissingObservationsWorkflow"
-    },
-    "rendering": "renders-canvas"
+    "prerequisites": "Import ggaction; the example supplies its own feature collection.",
+    "rendering": "authoring-only",
+    "resultKind": "semantic"
   },
-  "recipes/compare-weighted-distributions.md": {
+  "api/marks/line-area.md": {
     "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
-    "canonical": {
-      "file": "examples/compare-weighted-distributions/program.js",
-      "exported": "createWeightedDistributionsWorkflow"
-    },
-    "rendering": "renders-canvas"
+    "environment": "node-esm",
+    "result": "gaps",
+    "contains": "const gaps =",
+    "prerequisites": "Import ggaction in an ES module; all observations and required setup are included in this program.",
+    "rendering": "authoring-only"
   },
-  "recipes/switch-encoding-modes.md": {
+  "recipes/annotations.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
-    "canonical": {
-      "file": "examples/switch-encoding-modes/program.js",
-      "exported": "createEncodingModesWorkflow"
-    },
-    "rendering": "renders-canvas"
-  },
-  "recipes/edit-scales-and-guides.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
-    "canonical": {
-      "file": "examples/edit-scales-and-guides/program.js",
-      "exported": "createScaleGuidesWorkflow"
-    },
-    "rendering": "renders-canvas"
-  },
-  "recipes/edit-selected-labels.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
-    "canonical": {
-      "file": "examples/edit-selected-labels/program.js",
-      "exported": "createSelectedLabelsWorkflow"
-    },
-    "rendering": "renders-canvas"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve imdb_selected.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "imdb_selected"
   },
   "recipes/apply-custom-theme.md": {
     "mode": "complete",
@@ -369,277 +45,21 @@
     },
     "rendering": "renders-canvas"
   },
-  "recipes/edit-facet-source.md": {
+  "recipes/bar-chart.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
-    "canonical": {
-      "file": "examples/edit-facet-source/program.js",
-      "exported": "createFacetSourceWorkflow"
-    },
-    "rendering": "renders-canvas"
-  },
-  "recipes/remove-dependent-resources.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
-    "canonical": {
-      "file": "examples/remove-dependent-resources/program.js",
-      "exported": "createResourceRemovalWorkflow"
-    },
-    "rendering": "renders-canvas"
-  },
-  "tutorials/hierarchical-authoring.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup and a canvas whose id is chart.",
-    "canonical": {
-      "file": "examples/hierarchical-authoring/program.js",
-      "exported": "createHierarchicalAuthoring"
-    },
-    "rendering": "renders-canvas"
-  },
-  "api/marks/line-area.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "result": "gaps",
-    "contains": "const gaps =",
-    "prerequisites": "Import ggaction in an ES module; all observations and required setup are included in this program.",
-    "rendering": "authoring-only"
-  },
-  "tutorials/image-assets.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Install ggaction and provide a canvas with id chart; the explicit decoder supplies image dimensions and backend objects.",
-    "canonical": {
-      "file": "examples/image-assets/program.js",
-      "exported": "createImageExample"
-    },
-    "rendering": "renders-canvas"
-  },
-  "tutorials/hierarchy.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "vertical",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "canonical": {
-      "file": "examples/tree-layouts/program.js",
-      "exported": "createTree"
-    },
-    "rendering": "renders-canvas"
-  },
-  "tutorials/font-assets.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Run inside the canonical font-assets example directory with program.js, host.js and a canvas element, using the Getting Started module setup.",
-    "canonical": {
-      "file": "examples/font-assets/program.js",
-      "exported": "createFontExample"
-    },
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
     "rendering": "renders-canvas",
-    "supportFiles": {
-      "program.js": "examples/font-assets/program.js",
-      "host.js": "examples/font-assets/host.js",
-      "fonts/manifest.js": "examples/font-assets/fonts/manifest.js",
-      "fonts/korean.otf": "examples/font-assets/fonts/korean.otf",
-      "fonts/emoji.ttf": "examples/font-assets/fonts/emoji.ttf",
-      "fonts/KOREAN-OFL.txt": "examples/font-assets/fonts/KOREAN-OFL.txt",
-      "fonts/EMOJI-OFL.txt": "examples/font-assets/fonts/EMOJI-OFL.txt"
-    }
+    "dataset": "cars"
   },
-  "tutorials/graphs.md": {
+  "recipes/box-plot.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "canonical": {
-      "file": "examples/graph-plots/program.js",
-      "exported": "createGraph"
-    },
-    "rendering": "renders-canvas"
-  },
-  "tutorials/partition.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "icicle",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "canonical": {
-      "file": "examples/partition-layouts/program.js",
-      "exported": "createPartition"
-    },
-    "rendering": "renders-canvas"
-  },
-  "tutorials/flows.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "result": "program",
-    "prerequisites": "Import the Full ggaction package; the example declares its own node and edge tables.",
-    "canonical": {
-      "file": "examples/flow-layouts/program.js",
-      "exported": "createFlow"
-    },
-    "rendering": "authoring-only"
-  },
-  "tutorials/contours.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "result": "program",
-    "prerequisites": "Import the Full ggaction package; this example declares its scalar grid.",
-    "canonical": {
-      "file": "examples/contours/program.js",
-      "exported": "createContours"
-    },
-    "rendering": "authoring-only"
-  },
-  "recipes/inspect-chart.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
-    "canonical": {
-      "file": "examples/inspect-chart/program.js",
-      "exported": "createInspectionChart"
-    },
-    "rendering": "renders-canvas"
-  },
-  "tutorials/calendar.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "result": "program",
-    "prerequisites": "Import the Full ggaction package; this example declares its civil-day observations.",
-    "canonical": {
-      "file": "examples/calendar/program.js",
-      "exported": "createCalendar"
-    },
-    "rendering": "authoring-only"
-  },
-  "tutorials/edge-routes.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "result": "program",
-    "prerequisites": "Install ggaction and run this ES module in Node.js 20 or later.",
-    "canonical": {
-      "file": "examples/edge-routes/program.js",
-      "exported": "createEdgeRoutes"
-    },
-    "rendering": "authoring-only"
-  },
-  "api/geometry.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "fixture": "values",
-    "result": "program",
-    "prerequisites": "Import ggaction; the example supplies its own feature collection.",
-    "rendering": "authoring-only",
-    "resultKind": "semantic"
-  },
-  "tutorials/responsive-guides.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "result": "program",
-    "prerequisites": "Import the Full ggaction package; this example declares its category rows.",
-    "canonical": {
-      "file": "examples/responsive-guides/program.js",
-      "exported": "createResponsiveGuides"
-    },
-    "rendering": "authoring-only"
-  },
-  "tutorials/nested-responsive.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "result": "program",
-    "prerequisites": "Import the Full ggaction package; this example declares all regional rows.",
-    "canonical": {
-      "file": "examples/nested-responsive/program.js",
-      "exported": "createNestedResponsive"
-    },
-    "rendering": "authoring-only"
-  },
-  "tutorials/geographic-marks.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "result": "program",
-    "prerequisites": "Import the Full ggaction package; this example declares its own planar geometry.",
-    "canonical": {
-      "file": "examples/geographic-marks/program.js",
-      "exported": "createGeographicMarks"
-    },
-    "rendering": "authoring-only"
-  },
-  "tutorials/pyramid.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "result": "program",
-    "prerequisites": "Import the Full ggaction package; this example declares its ordered stage observations.",
-    "canonical": {
-      "file": "examples/pyramid/program.js",
-      "exported": "createPyramid"
-    },
-    "rendering": "authoring-only"
-  },
-  "tutorials/ohlc.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "result": "prices",
-    "prerequisites": "Import the Full ggaction package; this example declares four prices per source observation.",
-    "canonical": {
-      "file": "examples/ohlc/program.js",
-      "exported": "createOHLC"
-    },
-    "rendering": "authoring-only"
-  },
-  "tutorials/waterfall.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "result": "contributions",
-    "prerequisites": "Import the Full ggaction package; this example declares each contribution and its explicit role.",
-    "canonical": {
-      "file": "examples/waterfall/program.js",
-      "exported": "createWaterfall"
-    },
-    "rendering": "authoring-only"
-  },
-  "tutorials/trail.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "result": "signals",
-    "prerequisites": "Import the Full ggaction package; the example declares position and sample screen widths explicitly.",
-    "canonical": {
-      "file": "examples/trail/program.js",
-      "exported": "createTrail"
-    },
-    "rendering": "authoring-only"
-  },
-  "tutorials/table.md": {
-    "mode": "complete",
-    "environment": "node-esm",
-    "result": "table",
-    "prerequisites": "Import the Full ggaction package; the example declares source rows, typed columns and whole-source footer aggregation.",
-    "canonical": {
-      "file": "examples/table/program.js",
-      "exported": "createTable"
-    },
-    "rendering": "authoring-only"
-  },
-  "recipes/marginal.md": {
-    "mode": "complete",
-    "environment": "browser-module",
-    "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart and the linked example support modules.",
-    "canonical": {
-      "file": "examples/marginal/program.js",
-      "exported": "createMarginal"
-    },
-    "supportFiles": {
-      "program.js": "examples/marginal/program.js",
-      "fixture.js": "examples/marginal/fixture.js"
-    },
-    "rendering": "renders-canvas"
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
   },
   "recipes/bullet.md": {
     "mode": "complete",
@@ -669,5 +89,594 @@
       "program.js": "examples/linked-overlay/program.js"
     },
     "rendering": "renders-canvas"
+  },
+  "recipes/compare-weighted-distributions.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/compare-weighted-distributions/program.js",
+      "exported": "createWeightedDistributionsWorkflow"
+    },
+    "rendering": "renders-canvas"
+  },
+  "recipes/composition.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "dashboard",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
+  },
+  "recipes/density-area.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
+  },
+  "recipes/edit-facet-source.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/edit-facet-source/program.js",
+      "exported": "createFacetSourceWorkflow"
+    },
+    "rendering": "renders-canvas"
+  },
+  "recipes/edit-scales-and-guides.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/edit-scales-and-guides/program.js",
+      "exported": "createScaleGuidesWorkflow"
+    },
+    "rendering": "renders-canvas"
+  },
+  "recipes/edit-selected-labels.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/edit-selected-labels/program.js",
+      "exported": "createSelectedLabelsWorkflow"
+    },
+    "rendering": "renders-canvas"
+  },
+  "recipes/error-band.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "gapminder"
+  },
+  "recipes/error-bar.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
+  },
+  "recipes/facet.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
+  },
+  "recipes/gradient-plot.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
+  },
+  "recipes/heatmap.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "gapminder"
+  },
+  "recipes/histogram.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
+  },
+  "recipes/horizon.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "gapminder"
+  },
+  "recipes/inspect-chart.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/inspect-chart/program.js",
+      "exported": "createInspectionChart"
+    },
+    "rendering": "renders-canvas"
+  },
+  "recipes/line-chart.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
+  },
+  "recipes/marginal.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart and the linked example support modules.",
+    "canonical": {
+      "file": "examples/marginal/program.js",
+      "exported": "createMarginal"
+    },
+    "supportFiles": {
+      "program.js": "examples/marginal/program.js",
+      "fixture.js": "examples/marginal/fixture.js"
+    },
+    "rendering": "renders-canvas"
+  },
+  "recipes/parallel-coordinates.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
+  },
+  "recipes/path-ordering.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve gapminder.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "gapminder"
+  },
+  "recipes/regression-scatterplot.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
+  },
+  "recipes/remove-dependent-resources.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/remove-dependent-resources/program.js",
+      "exported": "createResourceRemovalWorkflow"
+    },
+    "rendering": "renders-canvas"
+  },
+  "recipes/repair-missing-observations.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/repair-missing-observations/program.js",
+      "exported": "createMissingObservationsWorkflow"
+    },
+    "rendering": "renders-canvas"
+  },
+  "recipes/rose-chart.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve nightingale_rose.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "nightingale_rose"
+  },
+  "recipes/scatterplot.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
+  },
+  "recipes/switch-encoding-modes.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/switch-encoding-modes/program.js",
+      "exported": "createEncodingModesWorkflow"
+    },
+    "rendering": "renders-canvas"
+  },
+  "recipes/violin-plot.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.",
+    "rendering": "renders-canvas",
+    "dataset": "cars"
+  },
+  "tutorials/area-layout.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/area-layout/program.js",
+      "exported": "createAreaSimple"
+    },
+    "rendering": "renders-canvas"
+  },
+  "tutorials/calendar.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its civil-day observations.",
+    "canonical": {
+      "file": "examples/calendar/program.js",
+      "exported": "createCalendar"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/contours.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its scalar grid.",
+    "canonical": {
+      "file": "examples/contours/program.js",
+      "exported": "createContours"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/density-area.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "dataset": "cars",
+    "rendering": "renders-canvas"
+  },
+  "tutorials/ecdf.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/ecdf-plot/program.js",
+      "exported": "createECDFExample"
+    },
+    "rendering": "renders-canvas"
+  },
+  "tutorials/edge-routes.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Install ggaction and run this ES module in Node.js 20 or later.",
+    "canonical": {
+      "file": "examples/edge-routes/program.js",
+      "exported": "createEdgeRoutes"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/endpoint-plots.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "changes",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/dumbbell-plot/program.js",
+      "exported": "createDumbbellPlotExample"
+    },
+    "rendering": "renders-canvas"
+  },
+  "tutorials/error-band.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "dataset": "gapminder",
+    "rendering": "renders-canvas"
+  },
+  "tutorials/error-bar.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "dataset": "cars",
+    "rendering": "renders-canvas"
+  },
+  "tutorials/flows.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; the example declares its own node and edge tables.",
+    "canonical": {
+      "file": "examples/flow-layouts/program.js",
+      "exported": "createFlow"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/font-assets.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Run inside the canonical font-assets example directory with program.js, host.js and a canvas element, using the Getting Started module setup.",
+    "canonical": {
+      "file": "examples/font-assets/program.js",
+      "exported": "createFontExample"
+    },
+    "rendering": "renders-canvas",
+    "supportFiles": {
+      "program.js": "examples/font-assets/program.js",
+      "host.js": "examples/font-assets/host.js",
+      "fonts/manifest.js": "examples/font-assets/fonts/manifest.js",
+      "fonts/korean.otf": "examples/font-assets/fonts/korean.otf",
+      "fonts/emoji.ttf": "examples/font-assets/fonts/emoji.ttf",
+      "fonts/KOREAN-OFL.txt": "examples/font-assets/fonts/KOREAN-OFL.txt",
+      "fonts/EMOJI-OFL.txt": "examples/font-assets/fonts/EMOJI-OFL.txt"
+    }
+  },
+  "tutorials/geographic-marks.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its own planar geometry.",
+    "canonical": {
+      "file": "examples/geographic-marks/program.js",
+      "exported": "createGeographicMarks"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/graphs.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/graph-plots/program.js",
+      "exported": "createGraph"
+    },
+    "rendering": "renders-canvas"
+  },
+  "tutorials/grouped-bar.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "dataset": "jobs",
+    "rendering": "renders-canvas"
+  },
+  "tutorials/hierarchical-authoring.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup and a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/hierarchical-authoring/program.js",
+      "exported": "createHierarchicalAuthoring"
+    },
+    "rendering": "renders-canvas"
+  },
+  "tutorials/hierarchy.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "vertical",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/tree-layouts/program.js",
+      "exported": "createTree"
+    },
+    "rendering": "renders-canvas"
+  },
+  "tutorials/histogram.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "dataset": "cars",
+    "rendering": "renders-canvas"
+  },
+  "tutorials/horizon.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "dataset": "gapminder",
+    "rendering": "renders-canvas"
+  },
+  "tutorials/image-assets.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Install ggaction and provide a canvas with id chart; the explicit decoder supplies image dimensions and backend objects.",
+    "canonical": {
+      "file": "examples/image-assets/program.js",
+      "exported": "createImageExample"
+    },
+    "rendering": "renders-canvas"
+  },
+  "tutorials/interactive-chart.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "host": "paired-html",
+    "dataset": "gapminder",
+    "prerequisites": "Use this section's HTML and JavaScript together in a Vite project with ggaction installed and public/gapminder.json downloaded."
+  },
+  "tutorials/line-chart.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "dataset": "cars",
+    "rendering": "renders-canvas"
+  },
+  "tutorials/mark-selection.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "dataset": "cars",
+    "canonical": {
+      "file": "examples/mark-selection/program.js",
+      "exported": "createGroupedMaximumPointHighlight",
+      "input": "cars"
+    },
+    "rendering": "renders-canvas"
+  },
+  "tutorials/nested-responsive.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares all regional rows.",
+    "canonical": {
+      "file": "examples/nested-responsive/program.js",
+      "exported": "createNestedResponsive"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/ohlc.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "prices",
+    "prerequisites": "Import the Full ggaction package; this example declares four prices per source observation.",
+    "canonical": {
+      "file": "examples/ohlc/program.js",
+      "exported": "createOHLC"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/partition.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "icicle",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/partition-layouts/program.js",
+      "exported": "createPartition"
+    },
+    "rendering": "renders-canvas"
+  },
+  "tutorials/polar-arcs.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "dataset": "cars",
+    "rendering": "renders-canvas"
+  },
+  "tutorials/polar-lines.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "dataset": "gapminder",
+    "rendering": "renders-canvas"
+  },
+  "tutorials/polar-points.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "dataset": "cars",
+    "rendering": "renders-canvas"
+  },
+  "tutorials/pyramid.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its ordered stage observations.",
+    "canonical": {
+      "file": "examples/pyramid/program.js",
+      "exported": "createPyramid"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/regression-scatterplot.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "dataset": "cars",
+    "rendering": "renders-canvas"
+  },
+  "tutorials/responsive-guides.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its category rows.",
+    "canonical": {
+      "file": "examples/responsive-guides/program.js",
+      "exported": "createResponsiveGuides"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/scatterplot.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "dataset": "cars",
+    "rendering": "renders-canvas"
+  },
+  "tutorials/table.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "table",
+    "prerequisites": "Import the Full ggaction package; the example declares source rows, typed columns and whole-source footer aggregation.",
+    "canonical": {
+      "file": "examples/table/program.js",
+      "exported": "createTable"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/trail.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "signals",
+    "prerequisites": "Import the Full ggaction package; the example declares position and sample screen widths explicitly.",
+    "canonical": {
+      "file": "examples/trail/program.js",
+      "exported": "createTrail"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/waterfall.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "contributions",
+    "prerequisites": "Import the Full ggaction package; this example declares each contribution and its explicit role.",
+    "canonical": {
+      "file": "examples/waterfall/program.js",
+      "exported": "createWaterfall"
+    },
+    "rendering": "authoring-only"
   }
 }

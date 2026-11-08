@@ -11,16 +11,25 @@ title: Violin Plot Recipe
 
 {% include runnable-recipe-note.html %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser project with a canvas whose id is chart, and serve cars.json from the site root.
+
+<!-- snippet-context:end -->
+
 ```javascript
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+
+const cars = await fetch("/cars.json").then(response => response.json());
+const values = cars.filter(car =>
+  Number.isFinite(car.Acceleration));
 
 const program = chart()
   .createCanvas()
   .createData({ values })
-  .createViolinPlot({
-    x: "category",
-    y: "value"
-  });
+  .createViolinPlot({ x: "Origin", y: "Acceleration" });
+
+render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 ## You must decide

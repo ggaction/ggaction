@@ -116,7 +116,7 @@ fail. Host options are captured before waiting.
 
 `createGraphRouteExecutor({createWorker?})` returns `compute(job,{signal?})` (version 2:
 `compute(job,{signal?,deadlineMs})`), `evict(inputHash?)` and `dispose()`. With no
-factory, it runs the same synchronous numeric owner. A factory returns a browser Worker
+factory, it computes the routes on the main thread. A factory returns a browser Worker
 or matching message-event host. The worker receives `{job}` and posts
 `computeGraphEdgeRoutes(job)` for version 1 jobs or `await computeGraphEdgeRoutesAsync(job)`
 for version 2 jobs. A worker that serves both must branch on `job.schemaVersion`:
@@ -165,7 +165,7 @@ layout `l`, and `route-worker.js` is served as an ES module:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -194,7 +194,7 @@ The corresponding complete worker module uses the explicit async entry:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `self`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `self` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -227,7 +227,7 @@ flow and hierarchy revisions, source data, parameter, Canvas, fit and filter edi
 other public action that reaches a version 2 route use the explicit prepared update below. An
 action that reaches no version 2 route is rejected with a message to call it directly.
 Stored version 2 vectors still restore offline and render through every existing
-backend. Consumer materialization remains an explicit wrapped action after prepare.
+backend. Applying the prepared result redraws the affected plots in one action.
 
 
 ## `applyGraphEdgeRoutesUpdate`
@@ -265,7 +265,7 @@ The fragment below assumes `program` contains a version 2 route on fixed or forc
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "l"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "l"`.
 
 <!-- snippet-context:end -->
 

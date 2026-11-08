@@ -20,7 +20,7 @@ for example, a density estimate needs enough varying observations per group.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -42,6 +42,65 @@ See [Mark Style](./appearance/mark-style.md#stroke-caps-joins-and-rounded-rectan
 
 This page covers six common Cartesian facades. Use [Choose a Chart](./chart-picker.md)
 for all H0 chart families and their package and editing paths.
+
+## Example with real data
+
+<!-- showcase-program:global-temperature-heatmap:start -->
+
+{% include chart-example.html id="global-temperature-heatmap" %}
+
+`createGlobalTemperatureHeatmap` builds this chart from real data. It receives the rows of `data/showcase/global-temperatures.csv` (NASA GISTEMP, public domain) with numeric fields parsed.
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+// NASA GISTEMP global monthly anomalies relative to 1951–1980.
+export function createGlobalTemperatureHeatmap(temperatures) {
+  const cells = temperatures.flatMap(row => MONTHS.map(month => ({
+    year: row.Year,
+    month,
+    anomaly: row[month]
+  }))).filter(cell => Number.isFinite(cell.anomaly));
+
+  return chart()
+    .createCanvas({
+      width: 960,
+      height: 360,
+      margin: { top: 80, right: 140, bottom: 50, left: 60 }
+    })
+    .createData({ id: "temperatures", values: cells })
+    .createHeatmap({
+      id: "anomalies",
+      x: { field: "year", fieldType: "ordinal" },
+      y: { field: "month", fieldType: "ordinal", scale: { domain: MONTHS } },
+      color: {
+        field: "anomaly",
+        fieldType: "quantitative",
+        // A symmetric domain keeps zero anomaly at the white center.
+        scale: { type: "sequential", domain: [-1.4, 1.4], range: ["#2166ac", "#f7f7f7", "#b2182b"] }
+      },
+      guides: {
+        axes: {
+          x: {
+            title: { text: "Year" },
+            ticksAndLabels: { values: [1880, 1900, 1920, 1940, 1960, 1980, 2000, 2020] }
+          },
+          y: { title: false }
+        },
+        legend: { title: "Anomaly (°C)" }
+      }
+    })
+    .createTitle({
+      text: "Global surface temperature, 1880–2023",
+      subtitle: "Monthly anomaly from the 1951–1980 mean · NASA GISTEMP"
+    });
+}
+```
+
+<!-- showcase-program:global-temperature-heatmap:end -->
 
 ## Choose a facade
 
@@ -113,7 +172,7 @@ create field encodings; `point` controls constant point appearance.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -169,7 +228,7 @@ positions, ordering, domains and segment ownership.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -234,7 +293,7 @@ channel. Numeric bars preserve repeated centers and allow overlay layout only.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -263,7 +322,7 @@ on either axis and accept temporal scale options.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -276,7 +335,7 @@ const bars = chart()
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -298,6 +357,47 @@ opacity, stroke, and stroke width.
 
 For interval-width bars with a separate Y measure, use `createBarPlot` with `x.bin` and `y.aggregate`; see [bins with a separate measure](position/histogram.md#bins-with-a-separate-measure).
 
+### Bar chart from real data
+
+<!-- showcase-program:cars-mpg-bars:start -->
+
+{% include chart-example.html id="cars-mpg-bars" %}
+
+`createCarsMpgBars` builds this chart from real data. It receives the rows of `data/cars.json` (1970–1982 car models).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// Average fuel economy of 1970–1982 cars by cylinder count and region of origin.
+export function createCarsMpgBars(cars) {
+  const common = cars.filter(car =>
+    Number.isFinite(car.Miles_per_Gallon) && [4, 6, 8].includes(car.Cylinders))
+    .map(car => ({ cylinders: `${car.Cylinders} cylinders`, origin: car.Origin, mpg: car.Miles_per_Gallon }));
+
+  return chart()
+    .createCanvas({ width: 760, height: 440, margin: { top: 80, right: 140, bottom: 60, left: 70 } })
+    .createData({ id: "cars", values: common })
+    .createBarPlot({
+      id: "bars",
+      x: { field: "cylinders", fieldType: "ordinal", scale: { domain: ["4 cylinders", "6 cylinders", "8 cylinders"] } },
+      y: { field: "mpg", aggregate: "mean", scale: { domain: [0, 35] } },
+      color: { field: "origin", layout: "group", scale: { domain: ["USA", "Japan", "Europe"], range: ["#2563eb", "#dc2626", "#f97316"] } },
+      guides: {
+        axes: { x: { title: false }, y: { title: { text: "Average miles per gallon" } } },
+        legend: { title: "Origin" },
+        grid: { horizontal: true, vertical: false }
+      }
+    })
+    .createTitle({
+      text: "Fewer cylinders, more miles per gallon",
+      subtitle: "Average fuel economy of 1970–1982 car models · no European or Japanese 8-cylinder cars"
+    });
+}
+```
+
+<!-- showcase-program:cars-mpg-bars:end -->
+
 ## `createHistogram`
 
 ```typescript
@@ -309,7 +409,7 @@ encodings because those meanings depend on each other.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -345,7 +445,7 @@ rectangular grid and cell color represents the generated count.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -367,7 +467,7 @@ const heatmap = chart()
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -440,7 +540,7 @@ Create one independent text mark per data row, without aggregation:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 

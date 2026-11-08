@@ -5,12 +5,75 @@ title: Animate and Export Chart Frames
 
 # Animate and Export Chart Frames
 
-{% include chart-example.html id="scatterplot" lead=true %}
+![Gapminder bubble chart moving year by year from 1955 to 2005](../assets/images/gapminder-bubbles-animation.gif){: loading="eager" width="820" height="500" }
 
 Prepare a transition between two immutable charts, sample it at an explicit time,
 and pass the returned frame directly to Canvas, SVG, PNG, or PDF. The
 `ggaction/animation` entry is browser-safe. These functions are advanced chart
 authoring APIs; they leave both source programs and their action traces unchanged.
+
+Choose the shortest path that fits:
+
+| You want to | Use |
+| --- | --- |
+| Animate a chart that is already on the page when its data changes | `setData` or `animateTo` from [`ggaction/live`](live.md); see the [interactive chart tutorial](../tutorials/interactive-chart.md) |
+| Play one transition between two programs on a `<canvas>` | `playAnimation(from, to, canvas)` from `ggaction/live` |
+| Control timing yourself, or export frames | `planTransition`, `createAnimationPlayer`, and `exportAnimationFrames` on this page |
+
+## Animate a data change in a browser
+
+```html
+<canvas id="chart" aria-label="Gapminder bubbles moving from 1955 to 2005"></canvas>
+```
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use this section's HTML and JavaScript together with ggaction installed and gapminder.json served from the site root.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart, render } from "ggaction";
+import { createAnimationPlayer, planTransition } from "ggaction/animation";
+
+const rows = await fetch("/gapminder.json").then(response => response.json());
+const countries = year => rows.filter(row => row.year === year);
+
+const before = chart()
+  .createCanvas({ width: 640, height: 400, margin: { top: 30, right: 30, bottom: 60, left: 70 } })
+  .createData({ id: "countries", keyField: "country", values: countries(1955) })
+  .createScatterPlot({
+    x: { field: "fertility", scale: { domain: [0, 9], nice: false } },
+    y: { field: "life_expect", scale: { domain: [20, 85], nice: false } },
+    size: { field: "pop", scale: { domain: [0, 1.4e9], range: [8, 1200] } },
+    guides: { legend: false }
+  });
+const after = before.reviseData({ source: "countries", id: "countries-2005", values: countries(2005) });
+
+const context = document.querySelector("#chart").getContext("2d");
+render(before, context);
+const player = createAnimationPlayer({
+  plan: planTransition({ from: before, to: after, options: { durationMs: 1500, easing: "cubic-in-out" } }),
+  clock: {
+    now: () => performance.now(),
+    requestFrame: callback => requestAnimationFrame(callback),
+    cancelFrame: handle => cancelAnimationFrame(handle)
+  },
+  render: frame => render(frame, context)
+});
+player.play();
+const program = after;
+```
+
+Three rules make the motion readable:
+
+- Give the rows a `keyField`. Items with the same key move; without keys the
+  old items fade out and the new ones fade in.
+- Derive the second chart from the first with `reviseData`, naming the
+  dataset it replaces as `source`. When you revise again, the `source` is the
+  previous revision's `id`; naming an older dataset leaves the marks on the
+  older rows.
+- Fix the scale domains when the axes should stay still.
 
 ## Prepare, save, and sample
 
@@ -18,7 +81,7 @@ Run this complete ES module in Node.js 20+ after installing `ggaction`:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.
 
 <!-- snippet-context:end -->
 
@@ -103,7 +166,7 @@ order and alpha for every circle.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both keyed endpoints, format6 sampling, SVG output and offline version narrowing are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both keyed endpoints, format6 sampling, SVG output and offline version narrowing are included.
 
 <!-- snippet-context:end -->
 
@@ -157,7 +220,7 @@ group's projected point and path command limits through sampling and restoration
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run with ggaction installed; geographic source, capacity, both endpoints and offline replay are included.
+> **Runnable complete example.** Run with ggaction installed; geographic source, capacity, both endpoints and offline replay are included.
 
 <!-- snippet-context:end -->
 
@@ -349,7 +412,7 @@ changing domain and exports the offline midpoint:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.
 
 <!-- snippet-context:end -->
 
@@ -469,7 +532,7 @@ no visible labels. Unsupported sibling and non-Cartesian clearance policies stil
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change.
+> **Runnable complete example.** Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change.
 
 <!-- snippet-context:end -->
 
@@ -495,7 +558,7 @@ console.log(renderToSVG(sampleTransition(restored.plan, 50)));
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both native categorical legends and their offline midpoint are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both native categorical legends and their offline midpoint are included.
 
 <!-- snippet-context:end -->
 
@@ -519,7 +582,7 @@ console.log(renderToSVG(sampleTransition(restored.plan, 50)));
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included.
 
 <!-- snippet-context:end -->
 
@@ -541,7 +604,7 @@ console.log(svg);
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included.
 
 <!-- snippet-context:end -->
 
@@ -647,7 +710,7 @@ Use explicit limits when the prepared endpoints or sampled output exceed the def
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run with ggaction installed; both endpoints and explicit rebase limits are included.
+> **Runnable complete example.** Run with ggaction installed; both endpoints and explicit rebase limits are included.
 
 <!-- snippet-context:end -->
 
@@ -696,7 +759,7 @@ This Node fragment follows the first example. Install the optional backend with
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -727,7 +790,7 @@ whose id is `chart`. It uses the browser's animation clock explicitly:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `performance`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `performance` from that setup.
 
 <!-- snippet-context:end -->
 
