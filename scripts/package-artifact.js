@@ -22,10 +22,11 @@ import { npmInvocation } from "./npm-command.js";
 const root = fileURLToPath(new URL("../", import.meta.url));
 
 
+// Measured maxima on Node 20/22/24 for the 0.0.28 documentation release.
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 1288,
-  packedBytes: 1894810,
-  unpackedBytes: 8474183
+  packedBytes: 1894998,
+  unpackedBytes: 8474751
 });
 
 const REQUIRED_FILES = Object.freeze([
