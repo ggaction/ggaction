@@ -11,7 +11,7 @@
 
 Most chart authors should use:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeColor({ field: "sex", layout: "group" });
@@ -54,7 +54,7 @@ Canvas resize, and renderer replay on the same requested policy.
 
 ## Focused offset scale editing
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `groupedBars`. Resource selectors used here: `target: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `groupedBars` from that setup. It refers to `target: "bars"`.
 
 ```javascript
 const reordered = groupedBars.editXOffsetScale({

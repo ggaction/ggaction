@@ -15,7 +15,7 @@ The `createBarPlot` facade infers vertical orientation for two raw numeric field
 
 This heading shows common options. For the full callable contract and all branches, see [`createBarMark`](../../../../reference/actions/marks/#createbarmark) and the [exact declarations](../../../../reference/types/).
 
-> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
+> **Runnable complete example.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 ```javascript
 const program = chart().createCanvas()
@@ -43,7 +43,7 @@ For an aggregate bar, combine an ordinal position and quantitative aggregate.
 Complete aggregate and ranged bars immediately use the default `0.72` band
 width; call `encodeBarWidth` only to override it:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 program
@@ -66,7 +66,7 @@ explicit timestamp units.
 
 This heading shows common options. For the full callable contract and all branches, see [`editBarMark`](../../../../reference/actions/marks/#editbarmark) and the [exact declarations](../../../../reference/types/).
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.editBarMark({

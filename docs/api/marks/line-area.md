@@ -18,7 +18,7 @@ This heading shows common options. For the full callable contract and all branch
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
+> **Runnable complete example.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 <!-- snippet-context:end -->
 
@@ -57,7 +57,7 @@ Valid x values still contribute to the x domain when y is missing, and vice vers
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import ggaction in an ES module; all observations and required setup are included in this program.
+> **Runnable complete example.** Import ggaction in an ES module; all observations and required setup are included in this program.
 
 <!-- snippet-context:end -->
 
@@ -94,7 +94,7 @@ otherwise categories follow first appearance across the input rows.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -124,7 +124,7 @@ so an aggregate trend over aggregate bars needs no repeated `encodeX` or
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
+> **Runnable complete example.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 <!-- snippet-context:end -->
 
@@ -148,7 +148,7 @@ This heading shows common options. For the full callable contract and all branch
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -184,7 +184,7 @@ away from cardinal clears the previous tension.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -214,7 +214,7 @@ produce a path until both are present.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
+> **Runnable complete example.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 <!-- snippet-context:end -->
 
@@ -243,7 +243,7 @@ This heading shows common options. For the full callable contract and all branch
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
+> **Runnable complete example.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 <!-- snippet-context:end -->
 
@@ -265,7 +265,7 @@ when needed; a gradient cannot supply one inferred outline color.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -297,7 +297,7 @@ This heading shows common options. For the full callable contract and all branch
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -325,7 +325,7 @@ Area stroke details use the same shared Mark Style contract as Line.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -380,7 +380,7 @@ domains. Completion edits rematerialize area consumers.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 

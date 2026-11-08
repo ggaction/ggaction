@@ -20,7 +20,7 @@ title: Source and Derived Data
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -83,7 +83,7 @@ materialized tables. It creates no graphics.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Imports and both source tables are included. This data-only example creates a semantic graph and no Canvas.
+> **Runnable complete example.** Imports and both source tables are included. This data-only example creates a semantic graph and no Canvas.
 
 <!-- snippet-context:end -->
 
@@ -236,7 +236,7 @@ pipeline is not accepted.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "source"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `source: "source"`.
 
 <!-- snippet-context:end -->
 
@@ -324,7 +324,7 @@ coerced. Equal keys retain source order.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -357,7 +357,7 @@ dataset while preserving its encoding and visual configuration:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`; `data: "selectedCars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`; `data: "selectedCars"`.
 
 <!-- snippet-context:end -->
 

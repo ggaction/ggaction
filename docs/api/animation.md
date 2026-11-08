@@ -28,7 +28,7 @@ Choose the shortest path that fits:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use this section's HTML and JavaScript together with ggaction installed and gapminder.json served from the site root.
+> **Runnable complete example.** Use this section's HTML and JavaScript together with ggaction installed and gapminder.json served from the site root.
 
 <!-- snippet-context:end -->
 
@@ -81,7 +81,7 @@ Run this complete ES module in Node.js 20+ after installing `ggaction`:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.
 
 <!-- snippet-context:end -->
 
@@ -166,7 +166,7 @@ order and alpha for every circle.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both keyed endpoints, format6 sampling, SVG output and offline version narrowing are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both keyed endpoints, format6 sampling, SVG output and offline version narrowing are included.
 
 <!-- snippet-context:end -->
 
@@ -220,7 +220,7 @@ group's projected point and path command limits through sampling and restoration
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run with ggaction installed; geographic source, capacity, both endpoints and offline replay are included.
+> **Runnable complete example.** Run with ggaction installed; geographic source, capacity, both endpoints and offline replay are included.
 
 <!-- snippet-context:end -->
 
@@ -412,7 +412,7 @@ changing domain and exports the offline midpoint:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.
 
 <!-- snippet-context:end -->
 
@@ -532,7 +532,7 @@ no visible labels. Unsupported sibling and non-Cartesian clearance policies stil
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change.
+> **Runnable complete example.** Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change.
 
 <!-- snippet-context:end -->
 
@@ -558,7 +558,7 @@ console.log(renderToSVG(sampleTransition(restored.plan, 50)));
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both native categorical legends and their offline midpoint are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both native categorical legends and their offline midpoint are included.
 
 <!-- snippet-context:end -->
 
@@ -582,7 +582,7 @@ console.log(renderToSVG(sampleTransition(restored.plan, 50)));
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included.
 
 <!-- snippet-context:end -->
 
@@ -604,7 +604,7 @@ console.log(svg);
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included.
+> **Runnable complete example.** Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included.
 
 <!-- snippet-context:end -->
 
@@ -710,7 +710,7 @@ Use explicit limits when the prepared endpoints or sampled output exceed the def
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run with ggaction installed; both endpoints and explicit rebase limits are included.
+> **Runnable complete example.** Run with ggaction installed; both endpoints and explicit rebase limits are included.
 
 <!-- snippet-context:end -->
 
@@ -759,7 +759,7 @@ This Node fragment follows the first example. Install the optional backend with
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -790,7 +790,7 @@ whose id is `chart`. It uses the browser's animation clock explicitly:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `performance`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `performance` from that setup.
 
 <!-- snippet-context:end -->
 

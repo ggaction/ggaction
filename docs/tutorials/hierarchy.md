@@ -108,6 +108,12 @@ Serve the repository over HTTP and open [the tree example](https://github.com/gg
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, render } from "ggaction";
 

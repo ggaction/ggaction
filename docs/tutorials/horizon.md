@@ -11,6 +11,12 @@ title: Horizon Chart Tutorial
 
 Use `createHorizonPlot` to author signed bands and the original x axis in one action:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from "ggaction";
 
@@ -47,6 +53,12 @@ The repository contains a
 and its [complete program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/gapminder-horizon/program.js).
 
 ## Complete program
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart, render } from "ggaction";
@@ -95,6 +107,12 @@ amplitude rather than the original life-expectancy values, Horizon guide policy
 creates only the original x axis and grid and no automatic legend.
 
 ## Revise without mutation
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const revised = program.editHorizon({

@@ -16,7 +16,7 @@ together. It never reorders source rows.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "bars"`.
 
 <!-- snippet-context:end -->
 
@@ -57,7 +57,7 @@ authorities and cannot be combined.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `ordered`. Resource selectors used here: `target: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `ordered` from that setup. It refers to `target: "bars"`.
 
 <!-- snippet-context:end -->
 
@@ -80,7 +80,7 @@ its weight or color (fragment; `pie` must already encode categories A, B, and C)
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `pie`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `pie` from that setup.
 
 <!-- snippet-context:end -->
 

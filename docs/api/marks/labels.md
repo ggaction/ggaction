@@ -15,7 +15,7 @@ Create final-item labels in one call, then use the lower text actions to refine 
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "piePlot-labels"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "piePlot-labels"`.
 
 <!-- snippet-context:end -->
 
@@ -63,7 +63,7 @@ selection ID with `selection`:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `source: "bars"`.
 
 <!-- snippet-context:end -->
 
@@ -105,7 +105,7 @@ Replace the complete membership request for an existing attached label layer:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `labeled`. Resource selectors used here: `target: "piePlot-labels"`; `selection: "focus"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `labeled` from that setup. It refers to `target: "piePlot-labels"`; `selection: "focus"`.
 
 <!-- snippet-context:end -->
 
@@ -137,7 +137,7 @@ Attach the label position to the meaning of the source geometry:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `labeled`. Resource selectors used here: `target: "piePlot-labels"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `labeled` from that setup. It refers to `target: "piePlot-labels"`.
 
 <!-- snippet-context:end -->
 
@@ -186,7 +186,7 @@ Use exactly one explicit selector:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `labeled`. Resource selectors used here: `target: "piePlot-labels"`; `source: "piePlot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `labeled` from that setup. It refers to `target: "piePlot-labels"`; `source: "piePlot"`.
 
 <!-- snippet-context:end -->
 
@@ -233,7 +233,7 @@ generated longitude values:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
+> **Runnable complete example.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
 
 <!-- snippet-context:end -->
 

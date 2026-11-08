@@ -43,6 +43,12 @@ Replace `index.html` and `main.js` with the two files below. The page holds a
 <canvas id="chart" aria-label="Gapminder bubble chart"></canvas>
 ```
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use this section's HTML and JavaScript together in a Vite project with ggaction installed and public/gapminder.json downloaded.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from "ggaction/live";
 

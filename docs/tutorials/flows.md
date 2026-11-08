@@ -94,6 +94,12 @@ export function createPenguinSankey(penguins) {
 This runnable Full example sends six units from one source and four from another
 to a total of ten. The layout preserves a common thickness scale.
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import the Full ggaction package; the example declares its own node and edge tables.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from "ggaction";
 

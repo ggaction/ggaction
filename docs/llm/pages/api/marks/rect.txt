@@ -7,7 +7,7 @@ bars: rects do not infer aggregation, a zero baseline, stacking, or bar width.
 
 This heading shows common options. For the full callable contract and all branches, see [`createRectMark`](../../../../reference/actions/marks/#createrectmark) and the [exact declarations](../../../../reference/types/).
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const program = chart()
@@ -29,7 +29,7 @@ row. Missing category combinations are not synthesized.
 
 Ranged rects use complete continuous endpoint pairs:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 program
@@ -42,7 +42,7 @@ program
 A continuous `x`/`x2` pair on its own spans the plot height; a `y`/`y2` pair
 on its own spans the plot width. Use this for interval shading:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: "data"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `data: "data"`.
 
 ```javascript
 import { chart } from "ggaction";
@@ -87,7 +87,7 @@ row. `encodeColor` accepts categorical and continuous color scales.
 
 This heading shows common options. For the full callable contract and all branches, see [`editRectMark`](../../../../reference/actions/marks/#editrectmark) and the [exact declarations](../../../../reference/types/).
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const outlined = program.editRectMark({

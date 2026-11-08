@@ -25,7 +25,7 @@ Only `dimensions` is required after a Canvas and an unambiguous dataset exist.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -105,7 +105,7 @@ to remain individually controllable:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "profiles"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "profiles"`.
 
 <!-- snippet-context:end -->
 
@@ -138,7 +138,7 @@ the Parallel line layer and `dimension` is the exact stored field name.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "parallelLines"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "parallelLines"`.
 
 <!-- snippet-context:end -->
 

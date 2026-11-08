@@ -64,6 +64,12 @@ export function createTemperatureWaterfall(temperatures) {
 
 {% include chart-example.html id="waterfall" %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import the Full ggaction package; this example declares each contribution and its explicit role.
+
+<!-- snippet-context:end -->
+
 ```js
 import { chart } from "ggaction";
 

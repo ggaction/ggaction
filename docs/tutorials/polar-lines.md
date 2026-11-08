@@ -26,6 +26,12 @@ curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ si
 
 ## Complete program
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, render } from "ggaction";
 
@@ -78,6 +84,12 @@ highlighting all operate on those final series.
 {% include chart-example.html id="radar" %}
 
 The radar chart uses nominal theta categories and normalized radial values:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const radar = chart()

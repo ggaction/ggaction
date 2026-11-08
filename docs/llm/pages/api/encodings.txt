@@ -32,7 +32,7 @@ editable Full program. See [Saved programs](../../../data-updates/#save-and-rest
 encoder's usual payload without `target`. The first true predicate wins; opacity
 `0` remains fully transparent. Every branch is validated, including inactive ones.
 
-> **Executable complete.** The displayed program imports chart and supplies its inline data and parameter.
+> **Runnable complete example.** The displayed program imports chart and supplies its inline data and parameter.
 
 ```javascript
 import { chart } from "ggaction";
@@ -181,7 +181,7 @@ removes that channel's legend participation, preserving other guides and styles.
 Switching back to a field removes its constant override. Color supports point,
 line, bar, area, arc, rect and text; size supports point marks.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```js
 import { chart } from "ggaction";
@@ -214,7 +214,7 @@ and independent series groups take precedence.
 accepts either one constant `value` or one quantitative `field`; it does not
 create a scale or legend. `0` points up and positive values rotate clockwise.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "ticks"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "ticks"`.
 
 ```javascript
 const directional = chart()
@@ -290,7 +290,7 @@ scale IDs. The exact option and error contracts live in the
 Use `removeEncoding({ channel, target? })` to remove one active assignment
 without deleting its named scale, source dataset, or coordinate:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const plainPoints = encodedPoints

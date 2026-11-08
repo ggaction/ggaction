@@ -71,6 +71,8 @@ export function createIbmCandlesticks(response) {
 
 ## A small worked example
 
+> **Runnable complete example.** Import the Full ggaction package; this example declares four prices per source observation.
+
 ```js
 import { chart } from "ggaction";
 

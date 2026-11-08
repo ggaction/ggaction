@@ -122,7 +122,7 @@ Sparkline cells read an array of observations from the field:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import the Full ggaction package; this complete example declares the nested observations and their shared sparkline channels.
+> **Runnable complete example.** Import the Full ggaction package; this complete example declares the nested observations and their shared sparkline channels.
 
 <!-- snippet-context:end -->
 

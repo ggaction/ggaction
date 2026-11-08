@@ -70,6 +70,12 @@ export function createUsBirthsCalendar(births) {
 The complete Full program names its time zone, date range, aggregate, week start
 and missing-day policy before creating the plot.
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import the Full ggaction package; this example declares its civil-day observations.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from "ggaction";
 

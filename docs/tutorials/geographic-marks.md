@@ -114,6 +114,12 @@ export function createWorldGdpMap(countries) {
 The Full package contains the geographic actions. This complete example declares
 its own geometry and uses pixel radii for the stop symbols.
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import the Full ggaction package; this example declares its own planar geometry.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from "ggaction";
 
@@ -158,6 +164,12 @@ The annotation variant of the shared example adds West, Central and East using e
 feature key. This module imports the shared example program shown above; keep its `program.js` and
 `fixture.js` together in a `geographic-marks` folder. A negative `dy` places the text sixteen logical
 pixels above its projected anchor.
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Copy the linked geographic-marks program.js and fixture.js into a geographic-marks folder beside this module.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { createGeographicMarks } from "./geographic-marks/program.js";
@@ -236,6 +248,12 @@ Copy [comparison.js](https://github.com/ggaction/ggaction/blob/{{ site.data.prov
 and [fixture.js](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/geographic-marks/fixture.js)
 into a `geographic-marks` folder beside this module, using the helpers' public
 `ggaction` and `ggaction/inspection` imports.
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Copy geographic-marks/comparison.js, program.js and fixture.js beside this module and use their public package imports. The helper explicitly snapshots raw axis and numeric degree values.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { createGraticuleComparison, refreshGraticuleComparison } from './geographic-marks/comparison.js';

@@ -24,7 +24,7 @@ For a complete quadratic example:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Standalone ES module with ggaction installed; all observations are declared in the sample.
+> **Runnable complete example.** Standalone ES module with ggaction installed; all observations are declared in the sample.
 
 <!-- snippet-context:end -->
 
@@ -53,7 +53,7 @@ The fitted values match the quadratic observations within floating-point precisi
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `points`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `points` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -70,7 +70,7 @@ Legacy explicit `groupBy: undefined` keeps the same JavaScript behavior.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -119,7 +119,7 @@ Choose another model or interval without coordinating its child layers:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `points`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `points` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -200,7 +200,7 @@ Use the original point owner, not generated band or line IDs:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 <!-- snippet-context:end -->
 
@@ -218,7 +218,7 @@ Create-time data roles can be revised through the same stable owner:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `data: "observations"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `data: "observations"`.
 
 <!-- snippet-context:end -->
 
@@ -249,7 +249,7 @@ only regression owner and fails on ambiguity.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 

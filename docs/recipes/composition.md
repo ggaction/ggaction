@@ -11,6 +11,12 @@ title: Composition Recipe
 
 {% include runnable-recipe-note.html %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, hconcat } from "ggaction";
 
@@ -69,6 +75,12 @@ and provide `<canvas id="chart"></canvas>`. The helper
 builds both children from the same rows, including distinct numeric `1` and
 string `"1"` keys. Run this complete example in an ES module with `ggaction`
 available through your bundler or import map.
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Copy the linked resource-comparison.js beside this module, use its public ggaction import, and provide a Canvas with id chart. The helper contains typed source rows and both complete child programs.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { render } from "ggaction";

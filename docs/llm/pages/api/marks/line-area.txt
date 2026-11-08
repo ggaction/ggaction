@@ -9,7 +9,7 @@ values; areas close two edges or one density edge against a baseline.
 
 This heading shows common options. For the full callable contract and all branches, see [`createLineMark`](../../../../reference/actions/marks/#createlinemark) and the [exact declarations](../../../../reference/types/).
 
-> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
+> **Runnable complete example.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 ```javascript
 const program = chart().createCanvas()
@@ -44,7 +44,7 @@ quantitative or temporal positions. Numeric strings, invalid dates and nonfinite
 numbers remain errors. Each dimension needs at least one nonmissing value.
 Valid x values still contribute to the x domain when y is missing, and vice versa.
 
-> **Executable complete.** Import ggaction in an ES module; all observations and required setup are included in this program.
+> **Runnable complete example.** Import ggaction in an ES module; all observations and required setup are included in this program.
 
 ```javascript
 import { chart } from "ggaction";
@@ -77,7 +77,7 @@ The default categorical scale is `point`; `band` uses the same category centers
 as companion points or bars. An explicit domain determines vertex order;
 otherwise categories follow first appearance across the input rows.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -103,7 +103,7 @@ data and positions are inferred. Compatible aggregate grain is inferred too,
 so an aggregate trend over aggregate bars needs no repeated `encodeX` or
 `encodeY` call:
 
-> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
+> **Runnable complete example.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 ```javascript
 const layered = chart().createCanvas()
@@ -123,7 +123,7 @@ line with explicit encodings and scale IDs.
 
 This heading shows common options. For the full callable contract and all branches, see [`editLineMark`](../../../../reference/actions/marks/#editlinemark) and the [exact declarations](../../../../reference/types/).
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.editLineMark({
@@ -155,7 +155,7 @@ Endpoints use the nearest endpoint again as the missing neighbor; two-point
 series remain linear. Other curve modes reject an explicit tension. Editing
 away from cardinal clears the previous tension.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -181,7 +181,7 @@ Line marks also accept theta/radius positions. The two encoding actions may be
 called in either order; one channel remains valid semantic state but does not
 produce a path until both are present.
 
-> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
+> **Runnable complete example.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 ```javascript
 const radar = chart().createCanvas()
@@ -206,7 +206,7 @@ through the shared line materialization lifecycle.
 
 This heading shows common options. For the full callable contract and all branches, see [`createAreaMark`](../../../../reference/actions/marks/#createareamark) and the [exact declarations](../../../../reference/types/).
 
-> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
+> **Runnable complete example.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 ```javascript
 const area = chart().createCanvas()
@@ -224,7 +224,7 @@ selection restoration, and editable or graphic persistence. Density, violin,
 and error-band fill options share this contract. Use an explicit solid outline
 when needed; a gradient cannot supply one inferred outline color.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -252,7 +252,7 @@ center y policy atomically.
 
 This heading shows common options. For the full callable contract and all branches, see [`editAreaMark`](../../../../reference/actions/marks/#editareamark) and the [exact declarations](../../../../reference/types/).
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.editAreaMark({
@@ -276,7 +276,7 @@ Area stroke details use the same shared Mark Style contract as Line.
 
 ### `createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const donut = chart()
@@ -327,7 +327,7 @@ zero; keep missing means null with `missing: "break"`. Stack/fill/center break a
 series at unknown totals. Isolated samples produce empty paths with finite
 domains. Completion edits rematerialize area consumers.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```js
 import { chart } from "ggaction";

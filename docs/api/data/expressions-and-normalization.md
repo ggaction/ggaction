@@ -17,7 +17,7 @@ The following legacy syntax and rules describe v1:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "sales"`.
 
 <!-- snippet-context:end -->
 
@@ -155,7 +155,7 @@ This complete ES module creates a computed column, then updates its parameter:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this standalone ES module; all data and imports are included. Both immutable programs own a Canvas and materialized point chart.
+> **Runnable complete example.** Run this standalone ES module; all data and imports are included. Both immutable programs own a Canvas and materialized point chart.
 
 <!-- snippet-context:end -->
 
@@ -217,7 +217,7 @@ statistics back to source rows:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "sales"`.
 
 <!-- snippet-context:end -->
 

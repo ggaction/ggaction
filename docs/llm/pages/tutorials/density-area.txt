@@ -4,6 +4,8 @@
 
 Use `createDensityPlot` to complete a density chart in one action:
 
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
 ```javascript
 import { chart } from "ggaction";
 
@@ -44,6 +46,8 @@ curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f9
 ```
 
 ## Complete program
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
 
 ```javascript
 import { chart, render } from "ggaction";
@@ -113,6 +117,8 @@ the three items without changing the chart-wide right-side legend default.
 
 The title is an independently editable resource. This optional continuation
 uses the `program` created above and returns a new program without changing it:
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const bottomTitleProgram = program

@@ -11,7 +11,7 @@ continuous gradient:
 - `threshold` uses an explicit, strictly increasing boundary array. A domain
  with `n` boundaries requires `n + 1` colors.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeColor({
@@ -44,7 +44,7 @@ In Full, `editScale` and a type-changing `encodeColor` reassignment share one
 transition policy. Both update every attached mark. A compatible gradient legend
 becomes an interval legend, or the reverse, in the same immutable action.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";

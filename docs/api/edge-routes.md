@@ -165,7 +165,7 @@ layout `l`, and `route-worker.js` is served as an ES module:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -194,7 +194,7 @@ The corresponding complete worker module uses the explicit async entry:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `self`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `self` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -265,7 +265,7 @@ The fragment below assumes `program` contains a version 2 route on fixed or forc
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "l"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "l"`.
 
 <!-- snippet-context:end -->
 

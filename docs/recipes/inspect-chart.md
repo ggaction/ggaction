@@ -57,6 +57,12 @@ render(program, document.querySelector("#chart").getContext("2d"));
 
 Continue in the same module after rendering the `program` above:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { createInteractionSession } from "ggaction/interaction";
 const session = createInteractionSession({ program });

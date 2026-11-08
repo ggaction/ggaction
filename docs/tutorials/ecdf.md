@@ -51,6 +51,12 @@ export function createCarsMpgEcdf(cars) {
 
 ## Build a grouped weighted ECDF
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, render } from "ggaction";
 
@@ -111,6 +117,12 @@ errors.
 Use `createECDFData` when another chart or annotation should consume the same
 statistics:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const dataOnly = chart()
   .createData({ id: "data", values })
@@ -139,6 +151,12 @@ denominator.
 ## Revise the statistical source
 
 Filter raw observations first, then point the ECDF owner at that derived source:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `source: "data"`; `target: "ecdf"`; `data: "positive"`.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const revised = program

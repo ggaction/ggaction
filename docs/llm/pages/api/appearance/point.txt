@@ -4,7 +4,7 @@
 
 Broadcast a non-negative finite graphical radius to a point mark.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeRadius({ value: 3 });
@@ -26,7 +26,7 @@ is not a Polar radial position channel.
 
 ## `removePointRadius({ target? } = {})`
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const defaultSized = program.removePointRadius();
@@ -39,7 +39,7 @@ without an explicit radius is an error.
 
 ## Point field encodings
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 program

@@ -12,6 +12,12 @@ ticks, font size or outer dimensions.
 
 {% include chart-example.html id="responsive-guides" %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import the Full ggaction package; this example declares its category rows.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from "ggaction";
 

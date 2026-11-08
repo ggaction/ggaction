@@ -5,6 +5,8 @@ policy reserves space for guides, and the label policy decides how much text
 can fit. This example wraps four category labels without changing the data,
 ticks, font size or outer dimensions.
 
+> **Runnable complete example.** Import the Full ggaction package; this example declares its category rows.
+
 ```javascript
 import { chart } from "ggaction";
 

@@ -239,7 +239,7 @@ and latitude in degrees; latitude must be within −90 to 90. Planar coordinates
 retain their original units. Extra coordinate dimensions remain available in
 the source and normalized result.
 
-> **Executable complete.** Import ggaction; the example supplies its own feature collection.
+> **Runnable complete example.** Import ggaction; the example supplies its own feature collection.
 
 ```javascript
 import { chart } from "ggaction";
@@ -322,7 +322,7 @@ Join a geometry resource and materialized table with exact typed keys. Supply a 
 current resource or one eligible input identifies each unambiguously. Key paths
 start at the feature or table row, respectively.
 
-> **Executable complete.** Run the complete module with its inline region features and population table. Both regions remain in the joined result.
+> **Runnable complete example.** Run the complete module with its inline region features and population table. Both regions remain in the joined result.
 
 ```javascript
 import { chart } from "ggaction";
@@ -377,7 +377,7 @@ Use explicit keyed geometry resources for each detail level. List levels from co
 Every finer region needs one typed key and its parent key in the preceding level. All resources
 must use the same coordinate system. Joins retain their source feature keys and can supply measurements.
 
-> **Executable complete.** Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.
+> **Runnable complete example.** Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.
 
 ```javascript
 import { chart } from "ggaction";
@@ -468,7 +468,7 @@ To fit an existing geometry source, provide `fit` with explicit `width` and
 it. Optional `padding` defaults to zero. The geometry coordinate kind must match
 identity (planar) or a spherical projection (geographic).
 
-> **Executable complete.** Run the complete ES module with its inline planar geometry and public chart import. The projection fit has scale 5 and translation [25, 0].
+> **Runnable complete example.** Run the complete ES module with its inline planar geometry and public chart import. The projection fit has scale 5 and translation [25, 0].
 
 ```javascript
 import { chart } from "ggaction";
@@ -547,7 +547,7 @@ explicitly include `plot:false`. Authored projection clipping stays unchanged.
 
 > **Executable complete.** Run as an ES module. This resource-only example creates no graphics; the initial frozen view is explicit caller state.
 
-> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Runnable complete example.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -576,7 +576,7 @@ its geometry source; it does not copy the projection settings. Projection pixels
 are Canvas-local CSS pixels. Fit explicitly with the intended viewport when needed.
 Canvas resizing preserves that transform; `clip: true` clips at the current plot.
 
-> **Executable complete.** Import the Full package and run this complete planar polygon-with-hole example.
+> **Runnable complete example.** Import the Full package and run this complete planar polygon-with-hole example.
 
 ```javascript
 import { chart } from "ggaction";
@@ -619,7 +619,7 @@ interaction session an explicit `hitPreparation.pathGeometry` to hit-test larger
 This complete Node.js program keeps every source position and declares the
 projected output budget on its line mark. Projection edits retain that policy.
 
-> **Executable complete.** Install ggaction and run this complete ES module in Node.js 20 or later.
+> **Runnable complete example.** Install ggaction and run this complete ES module in Node.js 20 or later.
 
 ```javascript
 import { chart } from "ggaction";
@@ -671,7 +671,7 @@ Use `encodeColor` on shape, point or line marks. Filled shapes and points
 map to fill; lines map to stroke. Use `encodeSize` on point marks to map values
 to CSS-pixel area. Native categorical, continuous and discrete scales apply.
 
-> **Executable complete.** The two inline places supply their own population measurements.
+> **Runnable complete example.** The two inline places supply their own population measurements.
 
 ```javascript
 import { chart } from "ggaction";
@@ -715,7 +715,7 @@ feature. All branches must have valid fields, scales and values even when inacti
 Use the existing typed expressions or an explicit `{ selection: "name" }` predicate.
 A zero size hides the circle without removing its logical item.
 
-> **Executable complete.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
+> **Runnable complete example.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
 
 ```javascript
 import { createGeographicMarks } from "./geographic-marks/program.js";
@@ -849,7 +849,7 @@ createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgra
 Place text at a source position or at the centroid of a named feature. A Geo coordinate determines
 how the anchor projects. The default ID is `geo-annotation`; give additional annotations explicit IDs.
 
-> **Executable complete.** Run the complete module with its inline keyed planar port feature.
+> **Runnable complete example.** Run the complete module with its inline keyed planar port feature.
 
 ```js
 import { chart } from "ggaction";
@@ -938,7 +938,7 @@ the stored result against exact route inputs without running the solver again.
 
 This complete authoring example uses explicit longitude/latitude layout anchors:
 
-> **Executable complete.** Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors.
+> **Runnable complete example.** Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors.
 
 ```javascript
 import { chart } from "ggaction";

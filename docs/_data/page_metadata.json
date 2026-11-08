@@ -172,21 +172,21 @@
     "title": "Scatterplot Recipe",
     "source": "docs/recipes/scatterplot.md",
     "editSource": "docs/recipes/scatterplot.md",
-    "description": "Add color: \"group\", size: \"amount\", or shape: \"category\" to the same call for field driven appearance. The default point radius is 3.",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/recipes/line-chart/": {
     "title": "Line Chart Recipe",
     "source": "docs/recipes/line-chart.md",
     "editSource": "docs/recipes/line-chart.md",
-    "description": "For multiple series, add color: \"group\", groupBy: \"group\", or strokeDash: { field: \"group\" } to the facade call.",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/recipes/histogram/": {
     "title": "Histogram Recipe",
     "source": "docs/recipes/histogram.md",
     "editSource": "docs/recipes/histogram.md",
-    "description": "Add color: { field: \"group\", layout: \"stack\" } to the createHistogram options.",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/cars-histogram.png"
   },
   "/recipes/bar-chart/": {
@@ -200,7 +200,7 @@
     "title": "Heatmap Recipe",
     "source": "docs/recipes/heatmap.md",
     "editSource": "docs/recipes/heatmap.md",
-    "description": "This mode derives rectangular x/y bounds and a count for each cell. It emits the complete grid by default, including zero count cells.",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/gapminder-life-expectancy-heatmap.png"
   },
   "/recipes/regression-scatterplot/": {
@@ -214,63 +214,63 @@
     "title": "Density Area Recipe",
     "source": "docs/recipes/density-area.md",
     "editSource": "docs/recipes/density-area.md",
-    "description": "Use createGuides({ grid: { horizontal: {}, vertical: {} } }) for both grid directions.",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/cars-density-area.png"
   },
   "/recipes/horizon/": {
     "title": "Horizon Chart Recipe",
     "source": "docs/recipes/horizon.md",
     "editSource": "docs/recipes/horizon.md",
-    "description": "values contains finite numeric value and ordered numeric or ISO date time values, with one observation per time. For example, use monthly dates such as \"2024 01 01\".",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/gapminder-horizon.png"
   },
   "/recipes/error-bar/": {
     "title": "Error Bar Recipe",
     "source": "docs/recipes/error-bar.md",
     "editSource": "docs/recipes/error-bar.md",
-    "description": "When one compatible layer is already encoded, call createErrorBar() without options to reuse its fields, data, coordinate, and scales.",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/cars-error-bar.png"
   },
   "/recipes/error-band/": {
     "title": "Error Band Recipe",
     "source": "docs/recipes/error-band.md",
     "editSource": "docs/recipes/error-band.md",
-    "description": "values contains ISO date strings in time, finite numbers in value, and non empty series names.",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/gapminder-error-band.png"
   },
   "/recipes/box-plot/": {
     "title": "Box Plot Recipe",
     "source": "docs/recipes/box-plot.md",
     "editSource": "docs/recipes/box-plot.md",
-    "description": "Use whisker: { type: \"minmax\" } for observed minimum and maximum whiskers without an outlier layer.",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/cars-box-plot.png"
   },
   "/recipes/violin-plot/": {
     "title": "Violin Plot Recipe",
     "source": "docs/recipes/violin-plot.md",
     "editSource": "docs/recipes/violin-plot.md",
-    "description": "Add color: \"category\" for category fills. Use split: { field } when the field has exactly two values, or provide an explicit two value domain when side assignment must be stable…",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/cars-acceleration-violins.png"
   },
   "/recipes/composition/": {
     "title": "Composition Recipe",
     "source": "docs/recipes/composition.md",
     "editSource": "docs/recipes/composition.md",
-    "description": "pointRows and barRows are arrays of plain row objects containing the named fields. Every child must already have one complete materialized Canvas.",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/program-composition.png"
   },
   "/recipes/facet/": {
     "title": "Facet Recipe",
     "source": "docs/recipes/facet.md",
     "editSource": "docs/recipes/facet.md",
-    "description": "cars is an array of plain row objects containing the encoded fields and Origin. Facet values retain source first appearance order.",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/cars-origin-scatterplot-facet.png"
   },
   "/recipes/parallel-coordinates/": {
     "title": "Parallel Coordinates Recipe",
     "source": "docs/recipes/parallel-coordinates.md",
     "editSource": "docs/recipes/parallel-coordinates.md",
-    "description": "cars is an array of plain row objects. Every eligible row becomes one open path across the ordered dimensions.",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/cars-parallel-coordinates.png"
   },
   "/recipes/rose-chart/": {
@@ -284,21 +284,21 @@
     "title": "Gradient Plot Recipe",
     "source": "docs/recipes/gradient-plot.md",
     "editSource": "docs/recipes/gradient-plot.md",
-    "description": "cars contains plain rows with non empty categorical Origin and finite numeric Acceleration.",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/cars-gradient-plot.png"
   },
   "/recipes/annotations/": {
     "title": "Annotation Recipe",
     "source": "docs/recipes/annotations.md",
     "editSource": "docs/recipes/annotations.md",
-    "description": "films is an array of plain row objects containing the two position fields and the label field.",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/annotated-imdb-scatterplot.png"
   },
   "/recipes/path-ordering/": {
     "title": "Path Ordering Recipe",
     "source": "docs/recipes/path-ordering.md",
     "editSource": "docs/recipes/path-ordering.md",
-    "description": "observations is an array of plain row objects. Source rows may be shuffled; the order field controls vertices independently inside each color/group series.",
+    "description": "Runnable complete example. Import ggaction and provide the named row array with the fields and grain described on this recipe.",
     "image": "/assets/images/gapminder-development-trajectories.png"
   },
   "/troubleshooting/": {
@@ -358,7 +358,7 @@
     "title": "Source and Derived Data",
     "source": "docs/api/data/source-and-derived.md",
     "editSource": "docs/api/data/source-and-derived.md",
-    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section.",
+    "description": "Fragment. Not a complete program: it continues the setup described in this section.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/data/filtering/": {
@@ -564,21 +564,21 @@
     "title": "Quantitative Positions",
     "source": "docs/api/position/quantitative.md",
     "editSource": "docs/api/position/quantitative.md",
-    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section.",
+    "description": "Fragment. Not a complete program: it continues the setup described in this section.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/position/temporal/": {
     "title": "Temporal Line Positions",
     "source": "docs/api/position/temporal.md",
     "editSource": "docs/api/position/temporal.md",
-    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: program.",
+    "description": "Fragment. Not a complete program: it continues the setup described in this section. It uses program from that setup.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/position/ordinal-bars/": {
     "title": "Ordinal Bar Positions",
     "source": "docs/api/position/ordinal-bars.md",
     "editSource": "docs/api/position/ordinal-bars.md",
-    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: program.",
+    "description": "Fragment. Not a complete program: it continues the setup described in this section. It uses program from that setup.",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
   "/api/position/category-ordering/": {
@@ -599,7 +599,7 @@
     "title": "Ordinal Offsets",
     "source": "docs/api/position/offsets.md",
     "editSource": "docs/api/position/offsets.md",
-    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: program.",
+    "description": "Fragment. Not a complete program: it continues the setup described in this section. It uses program from that setup.",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
   "/api/series-encodings/": {

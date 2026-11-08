@@ -2598,10 +2598,10 @@
   },
   {
     "id": "docs/tutorials/error-band.md#horizontal-bands-and-boundaries:1",
-    "sha256": "0da9d4d960be1d0c4863d49b31f22b1b61b6fe2ecb8a522df82758070c9287e5",
+    "sha256": "aad817234fd115eb56f9107aaa3916f716dc46b7f49b46030fad3be276a29e66",
     "mode": "contextual-fragment",
     "owner": "docs/tutorials/error-band.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Horizontal bands and boundaries\" on docs/tutorials/error-band.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
+    "reason": "Continuation of the tutorial's complete program: it reuses the gapminder rows that program fetched. The same horizontal createErrorBand call over the repository Gapminder rows was run during review and completes."
   },
   {
     "id": "docs/tutorials/error-bar.md#add-intervals-to-an-existing-layer:1",
@@ -2626,10 +2626,10 @@
   },
   {
     "id": "docs/tutorials/grouped-bar.md#width-spacing-and-reassignment:3",
-    "sha256": "72620ac09e7ae3978d7cfaffe2614e00a5619fceabe64b7c201a6f05fd6664fe",
+    "sha256": "d3e29a8145881af570d56141ac024710a54ef536e2d33463589fbea3e438b3f9",
     "mode": "contextual-fragment",
     "owner": "docs/tutorials/grouped-bar.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Width, spacing, and reassignment\" on docs/tutorials/grouped-bar.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
+    "reason": "Continuation of the tutorial's grouped bar program. Switching the existing sex grouping to layout stack on the repository jobs rows was run during review and completes; the former job grouping failed because 255 legend entries cannot fit the margin."
   },
   {
     "id": "docs/tutorials/histogram.md#what-the-actions-establish:1",
@@ -2787,10 +2787,10 @@
   },
   {
     "id": "docs/tutorials/scatterplot.md#reassign-encodings:1",
-    "sha256": "d479cae27627883d52ce92992684fdfd8b8005e1356d6c904da85a548287edb6",
+    "sha256": "865fdee26d226056d44bdc63e3f8099f194a07e6d5d8aaf5af0fc118580e1a3f",
     "mode": "contextual-fragment",
     "owner": "docs/tutorials/scatterplot.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Reassign encodings\" on docs/tutorials/scatterplot.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
+    "reason": "Alternative program over the tutorial's loaded cars rows. Run during review with the repository cars rows that have every reassigned field; the explicit margins leave room for both axis titles, which the former 30-pixel margin did not."
   },
   {
     "id": "docs/tutorials/scatterplot.md#continuous-appearance-variants:1",

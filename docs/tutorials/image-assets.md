@@ -19,6 +19,12 @@ same immutable program. Its application-owned decoder reports the source dimensi
 The synchronous `createImageResource` action stores the validated bytes. Then
 `createImageMark` places that resource in a square viewport.
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
+
+<!-- snippet-context:end -->
+
 ```js
 // Fragment after the exact prepared resource has been committed.
 program = program.createImageMark({
@@ -51,6 +57,12 @@ mark that references the resource. Item keys and alternative text remain stable.
 Run this browser ES module with `ggaction` installed and a `<canvas id="chart">` element.
 The decoder also supports Node with the optional native Canvas peer.
 The decoration primitives reproduce the example title and viewport background.
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Install ggaction and provide a canvas with id chart; the explicit decoder supplies image dimensions and backend objects.
+
+<!-- snippet-context:end -->
 
 ```js
 import { chart, prepareImageResource, prepareImageRendering, render } from "ggaction";

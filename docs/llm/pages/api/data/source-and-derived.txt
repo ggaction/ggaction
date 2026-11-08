@@ -11,7 +11,7 @@
 | `keyFields` | ordered field names forming unique tuples | no |
 | `keys` | a separate array of scalar or tuple keys | no |
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const program = chart().createData({
@@ -70,7 +70,7 @@ attributes?, directed?, selfLoops?, maxNodes?, maxEdges? })` is a Full
 chart-authoring action. It stores a graph from two explicitly selected,
 materialized tables. It creates no graphics.
 
-> **Executable complete.** Imports and both source tables are included. This data-only example creates a semantic graph and no Canvas.
+> **Runnable complete example.** Imports and both source tables are included. This data-only example creates a semantic graph and no Canvas.
 
 ```javascript
 import { chart } from "ggaction";
@@ -219,7 +219,7 @@ higher-level data actions. `transform` must be a one-element array containing
 one supported transform object; a bare object, an empty array, or a transform
 pipeline is not accepted.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "source"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `source: "source"`.
 
 ```javascript
 import { chart } from "ggaction";
@@ -303,7 +303,7 @@ defaults to `"last"`. Quantitative, categorical, and temporal keys use their
 declared comparison rules. Mixed incompatible values fail instead of being
 coerced. Equal keys retain source order.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const ordered = chart()
@@ -332,7 +332,7 @@ and normalize that single transform.
 Use `bindMarkData` to move an existing independent mark to another materialized
 dataset while preserving its encoding and visual configuration:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`; `data: "selectedCars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`; `data: "selectedCars"`.
 
 ```javascript
 const revised = program.bindMarkData({

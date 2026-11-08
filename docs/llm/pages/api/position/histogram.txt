@@ -10,7 +10,7 @@
 
 Prefer the atomic action for ordinary chart authoring:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeHistogram({ field: "Displacement", maxBins: 10 });
@@ -22,7 +22,7 @@ or validation.
 Pass a statistical weight when rows represent repeated observations or have
 unequal reliability:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeHistogram({
@@ -92,7 +92,7 @@ empty intervals. Mean, median, sum, min, max and the other native aggregate
 operations use the same per-bin, per-series samples as the measure domain and
 mark labels. Non-count bins do not accept statistical weights.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";

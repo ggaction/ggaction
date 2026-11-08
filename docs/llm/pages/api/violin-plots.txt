@@ -6,7 +6,7 @@ gradient plots, then infers orientation from the complete field pair.
 
 ## Minimal vertical violin
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const program = chart()
@@ -26,7 +26,7 @@ role unambiguous.
 
 ## Density width and orientation
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 .createViolinPlot({
@@ -48,7 +48,7 @@ shape. `resolve: "shared"` uses one density maximum across categories;
 
 For weighted observations, put the definition inside `density`:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 .createViolinPlot({
@@ -65,7 +65,7 @@ same weighted rules determine unit/count density and automatic bandwidth.
 
 ## Split a category into two halves
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 .createViolinPlot({
@@ -89,7 +89,7 @@ values are observed.
 
 ## Appearance and guides
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 .createViolinPlot({
@@ -114,7 +114,7 @@ contract.
 `createViolinPlot` creates a stable owner. Revise its data and statistical
 roles together:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "violins"`; `data: "revised"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "violins"`; `data: "revised"`.
 
 ```javascript
 const revised = program.editViolinPlot({
@@ -134,7 +134,7 @@ The owner ID stays stable while the action creates a new immutable density-data
 revision and reconciles orientation, scales, axes, grid, selections, and
 highlights. Use the lower actions for a single resource decision:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const revised = program

@@ -24,6 +24,12 @@ contains the public action chain and `fixture.js` supplies the observations and
 reference ranges. Replace that module's source import with
 `import { chart } from "ggaction"` in an installed application.
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart and the linked example support modules.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { render } from "ggaction";
 import { createBullet } from "./program.js";

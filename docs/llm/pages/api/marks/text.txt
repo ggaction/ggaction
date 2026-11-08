@@ -9,7 +9,7 @@ items without requiring a dataset; see [attached labels](../../../../api/marks/l
 
 Create constant text at a final mark, data coordinate, plot fraction, or local Canvas position:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `points`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `points` from that setup.
 
 ```javascript
 const dataNote = points.createAnnotation({
@@ -99,7 +99,7 @@ See [Attached Mark Labels](../../../../api/marks/labels/#removemarklabelsoptions
 
 ## `createTextMark(options?)`
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const annotated = points
@@ -130,7 +130,7 @@ automatic domains.
 
 Use `source` to select a particular mark when a chart has several layers:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `source: "bars"`.
 
 ```javascript
 // Fragment: layeredChart contains a mark named "bars".
@@ -199,7 +199,7 @@ preserves the previous format unless you supply one. Precision is an integer
 from 0 through 12; two-digit zero-padded forms such as `".01f"` are also
 accepted and mean the same as `".1f"`.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 bars
@@ -213,7 +213,7 @@ events
 
 Use semantic content when the label should describe the source's final items:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 // Fragment: pie contains a completed Pie mark.
@@ -259,7 +259,7 @@ at its angular midpoint. The anchor is derived from the materialized sector path
 so Canvas, scale, padding, and inner-radius changes keep labels aligned. A field
 used for arc text must resolve to one value at the final sector grain.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const labeledDonut = donut
@@ -272,7 +272,7 @@ const labeledDonut = donut
 Edit typography, opacity, alignment, baseline, rotation, or `dx`/`dy` without
 changing the semantic anchor:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `annotated`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `annotated` from that setup.
 
 ```javascript
 const revised = annotated.editTextMark({
@@ -299,7 +299,7 @@ In Full, `encodeDx` and `encodeDy` assign a finite numeric field or constant to
 independent Text glyph offsets. These are signed logical pixels after position
 scaling; they do not create a scale or change axis domains.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import {chart} from 'ggaction';

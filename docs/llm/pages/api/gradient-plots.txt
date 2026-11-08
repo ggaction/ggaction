@@ -7,7 +7,7 @@ The action uses the same categorical/quantitative `x` and `y` roles as
 
 ## Create a gradient plot
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -32,7 +32,7 @@ materializes an internal sampled profile dataset.
 
 Use a categorical color encoding when each category should keep its own hue:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "gradientPlot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "gradientPlot"`.
 
 ```javascript
 const colored = program.encodeColor({
@@ -64,7 +64,7 @@ right-side channel legends to keep their labels separate.
 
 ## Options and defaults
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 createGradientPlot({
@@ -101,7 +101,7 @@ choice is accepted only when one source or target is unambiguous.
 
 ## Edit and compose
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `colored`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `colored` from that setup.
 
 ```javascript
 const edited = colored.editGradientPlot({
@@ -113,7 +113,7 @@ const edited = colored.editGradientPlot({
 
 The same owner can revise its raw source or complete positional roles:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `edited`. Resource selectors used here: `data: "observations"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `edited` from that setup. It refers to `data: "observations"`.
 
 ```javascript
 const horizontal = edited.editGradientPlot({

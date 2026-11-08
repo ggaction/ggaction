@@ -82,6 +82,12 @@ export function createPenguinDensityContours(penguins) {
 
 The complete Full program uses explicit geometry before creating its mark.
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import the Full ggaction package; this example declares its scalar grid.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from "ggaction";
 

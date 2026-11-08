@@ -11,6 +11,12 @@ title: Heatmap Recipe
 
 {% include runnable-recipe-note.html %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from "ggaction";
 
@@ -31,6 +37,12 @@ const program = chart()
 ## Raw-row binned flow
 
 {% include runnable-recipe-note.html %}
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart } from "ggaction";
@@ -69,6 +81,12 @@ and a `Count` legend. It disables separate chart grid lines unless requested.
 
 Use `rect: { opacity, stroke, strokeWidth }` for cell appearance. Cell fill is
 owned by the required color encoding. The following continuation applies only to the **pre-gridded flow** above, whose source rows contain `value`. Set `program` to that branch; the raw-row binned branch owns generated count data and cannot use this source-field label:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const labeled = program

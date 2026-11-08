@@ -154,7 +154,7 @@ original signal and adds its validation work to the preparation total.
 The following host fragment assumes `program` already contains graph `g` and its
 layout `l`, and `route-worker.js` is served as an ES module:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```js
 import { createGraphRouteExecutor, prepareGraphEdgeRoutes } from "ggaction/graph";
@@ -179,7 +179,7 @@ try {
 
 The corresponding complete worker module uses the explicit async entry:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `self`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `self` from that setup.
 
 ```js
 import { computeGraphEdgeRoutesAsync } from "ggaction/graph";
@@ -245,7 +245,7 @@ never runs a synchronous fallback.
 The fragment below assumes `program` contains a version 2 route on fixed or force layout
 `l` with node key `1`, and a fresh executor that has not been disposed.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "l"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "l"`.
 
 ```js
 const executor = createGraphRouteExecutor({

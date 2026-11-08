@@ -60,6 +60,8 @@ export function createGapminderLifeTrails(gapminder) {
 
 ## A small worked example
 
+> **Runnable complete example.** Import the Full ggaction package; the example declares position and sample screen widths explicitly.
+
 ```js
 import { chart } from "ggaction";
 

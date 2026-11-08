@@ -258,7 +258,7 @@ the source and normalized result.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import ggaction; the example supplies its own feature collection.
+> **Runnable complete example.** Import ggaction; the example supplies its own feature collection.
 
 <!-- snippet-context:end -->
 
@@ -345,7 +345,7 @@ start at the feature or table row, respectively.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete module with its inline region features and population table. Both regions remain in the joined result.
+> **Runnable complete example.** Run the complete module with its inline region features and population table. Both regions remain in the joined result.
 
 <!-- snippet-context:end -->
 
@@ -404,7 +404,7 @@ must use the same coordinate system. Joins retain their source feature keys and 
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.
+> **Runnable complete example.** Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.
 
 <!-- snippet-context:end -->
 
@@ -499,7 +499,7 @@ identity (planar) or a spherical projection (geographic).
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete ES module with its inline planar geometry and public chart import. The projection fit has scale 5 and translation [25, 0].
+> **Runnable complete example.** Run the complete ES module with its inline planar geometry and public chart import. The projection fit has scale 5 and translation [25, 0].
 
 <!-- snippet-context:end -->
 
@@ -582,7 +582,7 @@ explicitly include `plot:false`. Authored projection clipping stays unchanged.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Runnable complete example.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -615,7 +615,7 @@ Canvas resizing preserves that transform; `clip: true` clips at the current plot
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import the Full package and run this complete planar polygon-with-hole example.
+> **Runnable complete example.** Import the Full package and run this complete planar polygon-with-hole example.
 
 <!-- snippet-context:end -->
 
@@ -662,7 +662,7 @@ projected output budget on its line mark. Projection edits retain that policy.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Install ggaction and run this complete ES module in Node.js 20 or later.
+> **Runnable complete example.** Install ggaction and run this complete ES module in Node.js 20 or later.
 
 <!-- snippet-context:end -->
 
@@ -718,7 +718,7 @@ to CSS-pixel area. Native categorical, continuous and discrete scales apply.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** The two inline places supply their own population measurements.
+> **Runnable complete example.** The two inline places supply their own population measurements.
 
 <!-- snippet-context:end -->
 
@@ -766,7 +766,7 @@ A zero size hides the circle without removing its logical item.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
+> **Runnable complete example.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
 
 <!-- snippet-context:end -->
 
@@ -904,7 +904,7 @@ how the anchor projects. The default ID is `geo-annotation`; give additional ann
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete module with its inline keyed planar port feature.
+> **Runnable complete example.** Run the complete module with its inline keyed planar port feature.
 
 <!-- snippet-context:end -->
 
@@ -997,7 +997,7 @@ This complete authoring example uses explicit longitude/latitude layout anchors:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors.
+> **Runnable complete example.** Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors.
 
 <!-- snippet-context:end -->
 

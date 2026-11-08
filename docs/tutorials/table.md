@@ -79,6 +79,12 @@ export function createGapminderCountryTable(gapminder) {
 
 {% include chart-example.html id="table" %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import the Full ggaction package; the example declares source rows, typed columns and whole-source footer aggregation.
+
+<!-- snippet-context:end -->
+
 ```js
 import { chart } from "ggaction";
 

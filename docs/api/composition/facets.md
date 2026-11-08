@@ -17,7 +17,7 @@ This complete example preserves one plot per panel:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import chart from ggaction. This complete program includes all four panel rows and retains the original dataset while creating the facet.
+> **Runnable complete example.** Import chart from ggaction. This complete program includes all four panel rows and retains the original dataset while creating the facet.
 
 <!-- snippet-context:end -->
 
@@ -52,7 +52,7 @@ the 246-pixel union of four plots and three 2-pixel gaps:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -116,7 +116,7 @@ Put a region name beside its panel with the existing header editor:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -164,7 +164,7 @@ value:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -243,7 +243,7 @@ legend-position option:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -300,7 +300,7 @@ These are fragments that require already-complete unit programs:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `polarUnit`, `parallelUnit`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `polarUnit`, `parallelUnit` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -335,7 +335,7 @@ Edit the repeated header style without addressing generated graphic IDs:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `faceted`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `faceted` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -356,7 +356,7 @@ one-header-per-cell layout. A row or column role switches to separate strips:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -407,7 +407,7 @@ A complete example with a right-side header for each panel:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -433,7 +433,7 @@ Use `facetGrid` when two source fields define the comparison:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `unit`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `unit` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -477,7 +477,7 @@ from the retained source when a repeated computed field depends on that paramete
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `unit`. Resource selectors used here: `target: "product"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `unit` from that setup. It refers to `target: "product"`.
 
 <!-- snippet-context:end -->
 
@@ -505,7 +505,7 @@ This fragment requires a complete Parallel-coordinate unit:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `parallelUnit`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `parallelUnit` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -551,7 +551,7 @@ height separately. This complete program retains seven 40 × 200 plots inside a
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 

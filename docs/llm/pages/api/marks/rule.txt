@@ -7,7 +7,7 @@ primitives without exposing a renderer-specific path format.
 
 This heading shows common options. For the full callable contract and all branches, see [`createRuleMark`](../../../../reference/actions/marks/#createrulemark) and the [exact declarations](../../../../reference/types/).
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -65,7 +65,7 @@ it. Canvas and scale changes recompute all endpoints.
 Use reference facades to add a constant threshold or interval to a chart. This example uses the scatterplot's
 x scale for the band and y scale for the line:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "referenceLine"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `source: "referenceLine"`.
 
 ```javascript
 import { chart } from "ggaction";
@@ -89,7 +89,7 @@ Both resize with the Canvas. Existing data is required, but may be empty for plo
 
 Statistical references keep the same Rule and Rect editing surface while deriving their positions from a source mark:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "observations"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `source: "observations"`.
 
 ```javascript
 const summarized = chart()
@@ -139,7 +139,7 @@ Reference marks remain editable with ordinary mark, encoding, and scale actions.
 
 Use `createStatisticalReference` to choose a line or data interval through one action in the full API:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `source: "points"`.
 
 ```javascript
 import { chart } from "ggaction";

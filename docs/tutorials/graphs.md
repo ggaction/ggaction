@@ -10,6 +10,12 @@ Create two node rows and one observed directed edge. A fixed layout determines p
 
 {% include chart-example.html id="graph-plots" %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, render } from "ggaction";
 

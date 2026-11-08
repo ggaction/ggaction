@@ -7,7 +7,7 @@
 Use explicit offsets for intentional placement, or assign collision-aware
 placement after the text encoding is complete:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `annotated`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `annotated` from that setup.
 
 ```javascript
 const arranged = annotated.layoutLabels({
@@ -47,7 +47,7 @@ for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `arranged`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `arranged` from that setup.
 
 ```javascript
 const originalPlacement = arranged.removeLabelLayout();

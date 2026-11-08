@@ -9,7 +9,7 @@
 
 ## Temporal line `encodeX(options)`
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeX({
@@ -52,7 +52,7 @@ Explicit year accepts integer 0–9999 or exactly four digits. Timestamp require
 a finite number in the Date range; numeric strings, Date objects and automatic
 seconds inference are excluded. Other unit names, null and false fail.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeX({
@@ -72,7 +72,7 @@ See the runnable [three-variant example](https://github.com/ggaction/ggaction/tr
 
 ## Aggregate line `encodeY(options)`
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeY({
@@ -125,7 +125,7 @@ two finite values per final group.
 Parameterized aggregates accept either a quantile probability or an ordered
 row selection:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeY({

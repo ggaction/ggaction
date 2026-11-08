@@ -11,7 +11,7 @@ stay the same; the drawing order changes.
 
 This complete example declares the axis first and then edits its placement:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```js
 import {chart} from "ggaction";
@@ -49,7 +49,7 @@ Create an axis with `id` when it needs an independent identity. The default IDs 
 `x` and `y`. Refine or remove a named axis with `target`, which selects the axis,
 not its mark or scale. This complete runnable program places the chart’s single Y axis on the right:
 
-> **Executable complete.** Import chart from ggaction; this complete example creates its own Canvas, source, mark and single named Y axis.
+> **Runnable complete example.** Import chart from ggaction; this complete example creates its own Canvas, source, mark and single named Y axis.
 
 ```js
 import { chart } from "ggaction";
@@ -92,7 +92,7 @@ Named text bounds must fit the Canvas and remain separate from other axis text.
 
 On an existing Cartesian program, create the full axis before focused text edits:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```js
 program
@@ -127,7 +127,7 @@ bounds must still fit, and axis-title/label collision checks remain active.
 Create a complete axis first, then refine its native ticks. On an existing Cartesian
 program with a quantitative y encoding, this fragment keeps the zero tick solid:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```js
 program
@@ -147,7 +147,7 @@ whole-axis edits and ticks-and-labels groups. Polar and Parallel ticks are uncha
 Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis
 action for ordinary chart authoring.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createAxes({
@@ -213,7 +213,7 @@ the stored category values.
 Cartesian labels and categorical theta labels can replace display
 text without changing raw values:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const named = program.createXAxisLabels({
@@ -246,7 +246,7 @@ label is desired.
 The default edges remain bottom for x and left for y. A complete axis forwards
 an explicit edge to its line, ticks, labels, and title:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createAxes({
@@ -274,7 +274,7 @@ single cluster exceeds `maxWidth`. LF, CRLF, and CR breaks preserve separate
 lines and blank-line spacing. `lineHeight` defaults to `fontSize * 1.2`
 and cannot be smaller than the font size.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createXAxis({
@@ -305,7 +305,7 @@ when neighboring labels also overlap.
 
 Fragment after a data-backed Cartesian chart has been created:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 .createAxes({
@@ -342,7 +342,7 @@ up to twelve decimals; finer unsupported precision is rejected. One tick uses
 its normalized decimal places, and an empty tick list stays empty. Values,
 domains and tick positions are preserved. Edits and replay recompute the labels.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```js
 // Fragment: after creating a numeric y encoding.
@@ -409,7 +409,7 @@ Each encoded field gets a baseline, ticks, labels, and a title. Use
 The following fragment assumes `program` has a Parallel dimension named
 `Miles_per_Gallon` with existing axes:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const styled = program.editParallelAxis({

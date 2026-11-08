@@ -22,7 +22,7 @@ encodings.
 | `background` | non-empty string | `"white"` |
 | `margin` | non-negative number or side object | `{ top: 30, right: 30, bottom: 60, left: 70 }` |
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const program = chart().createCanvas({
@@ -57,7 +57,7 @@ ordinary marks and below axes by default. Set `underlay: true` to paint it befor
 ordinary marks, without changing mark positions, scale ranges,
 plot size, margins, or clipping.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const bordered = chart().createCanvas({ plotBorder: {} });
@@ -86,7 +86,7 @@ Updates one or more existing canvas options. Omitted values are preserved. A
 numeric margin applies to every side; a partial object updates only named sides.
 The `plotBorder` object replaces its complete style as described above.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const resized = program.editCanvas({
@@ -113,7 +113,7 @@ Use `align: "center"` in this mode to redistribute that outer-space budget aroun
 the visible chart and guides. Required ink clearance is preserved, while the
 spare space is divided equally between opposite edges:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const fitted = program.fitCanvas({

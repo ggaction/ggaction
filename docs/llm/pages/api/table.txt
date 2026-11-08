@@ -107,7 +107,7 @@ Bars clamp to the inner cell; their accessible numeric values remain unchanged.
 
 Sparkline cells read an array of observations from the field:
 
-> **Executable complete.** Import the Full ggaction package; this complete example declares the nested observations and their shared sparkline channels.
+> **Runnable complete example.** Import the Full ggaction package; this complete example declares the nested observations and their shared sparkline channels.
 
 ```js
 import { chart } from "ggaction";

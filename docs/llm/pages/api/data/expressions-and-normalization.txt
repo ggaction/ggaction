@@ -8,7 +8,7 @@ Add a scalar field to every source row with a serializable formula. Full and Bas
 support both existing v1 expressions and [explicit v2 expressions](../../../../api/data/expressions-and-normalization/#version-2-expressions).
 The following legacy syntax and rules describe v1:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "sales"`.
 
 ```javascript
 const shares = program.createComputedData({
@@ -142,7 +142,7 @@ are invalid; convert dates to epoch milliseconds explicitly when needed.
 
 This complete ES module creates a computed column, then updates its parameter:
 
-> **Executable complete.** Run this standalone ES module; all data and imports are included. Both immutable programs own a Canvas and materialized point chart.
+> **Runnable complete example.** Run this standalone ES module; all data and imports are included. Both immutable programs own a Canvas and materialized point chart.
 
 ```javascript
 import { chart } from "ggaction";
@@ -200,7 +200,7 @@ or expression versions.
 Materialize common row-preserving comparisons without manually joining group
 statistics back to source rows:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "sales"`.
 
 ```javascript
 const indexed = program.createNormalizedData({

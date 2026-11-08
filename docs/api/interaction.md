@@ -54,7 +54,7 @@ Continue from a rendered `program` and its Canvas or SVG root element:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -87,7 +87,7 @@ Large native scenes can opt into a larger preparation allowance for one session:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete ES module with public imports. The explicit preparation allowance belongs only to this immutable program session.
+> **Runnable complete example.** Run the complete ES module with public imports. The explicit preparation allowance belongs only to this immutable program session.
 
 <!-- snippet-context:end -->
 
@@ -127,7 +127,7 @@ uses the existing query limit:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with public package imports. Concrete path capacity and session preparation are explicit.
+> **Runnable complete example.** Run this complete ES module with public package imports. Concrete path capacity and session preparation are explicit.
 
 <!-- snippet-context:end -->
 
@@ -171,7 +171,7 @@ Selection resize is separate from resizing a Canvas or observing a DOM element.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete ES module with its inline observations and public imports. Inspect native CSS handle coordinates and replace the same persistent region with an explicit command.
+> **Runnable complete example.** Run the complete ES module with its inline observations and public imports. Inspect native CSS handle coordinates and replace the same persistent region with an explicit command.
 
 <!-- snippet-context:end -->
 
@@ -240,7 +240,7 @@ when a map needs fitting or a preserved viewport.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -280,7 +280,7 @@ explicit `interactionBindings` array (use `[]` for commands without pointer edit
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `signal`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `signal` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -345,7 +345,7 @@ Use the same dispatch path from host buttons, keyboard controls or headless code
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this ES module headlessly. The final program restores the Original note; history commands take no target or payload.
+> **Runnable complete example.** Run this ES module headlessly. The final program restores the Original note; history commands take no target or payload.
 
 <!-- snippet-context:end -->
 
@@ -388,7 +388,7 @@ selection state; read `state.linkedSelections` or inspect `current` for its exac
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `session`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `session` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -456,7 +456,7 @@ Offline and cloned frames retain no native targeting authority. Render the accep
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `session`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `session` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -497,7 +497,7 @@ clear queued work; the already published state remains available.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `session`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `session` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -526,7 +526,7 @@ and reject these editors.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete ES module with its inline observations and public imports. The session commits one named selection, then clears it without changing the earlier program.
+> **Runnable complete example.** Run the complete ES module with its inline observations and public imports. The session commits one named selection, then clears it without changing the earlier program.
 
 <!-- snippet-context:end -->
 
@@ -602,7 +602,7 @@ Basic programs reject these editors.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Install ggaction and import the authoring and interaction entries.
+> **Runnable complete example.** Install ggaction and import the authoring and interaction entries.
 
 <!-- snippet-context:end -->
 
@@ -639,7 +639,7 @@ source, `intersection` requires every source, and `global` uses exactly one sour
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete ES module with its inline keyed observations and public imports. One selection command updates both explicitly linked child owners.
+> **Runnable complete example.** Run the complete ES module with its inline keyed observations and public imports. One selection command updates both explicitly linked child owners.
 
 <!-- snippet-context:end -->
 
@@ -711,7 +711,7 @@ independent, so target selections can still be edited or brushed. Projections an
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this ES module with its inline observations. Selecting a in the source leaves only a in the target view.
+> **Runnable complete example.** Run this ES module with its inline observations. Selecting a in the source leaves only a in the target view.
 
 <!-- snippet-context:end -->
 
@@ -772,7 +772,7 @@ in raw data units:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete ES module with its inline keyed observations and public imports. Explicit Euclidean data distance selects observation b.
+> **Runnable complete example.** Run the complete ES module with its inline keyed observations and public imports. Explicit Euclidean data distance selects observation b.
 
 <!-- snippet-context:end -->
 
@@ -858,7 +858,7 @@ Place `<canvas id="chart" aria-label="Selectable legend"></canvas>` in the page,
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use this browser module with the Canvas element whose id is chart. Click a legend symbol or label to toggle that category.
+> **Runnable complete example.** Use this browser module with the Canvas element whose id is chart. Click a legend symbol or label to toggle that category.
 
 <!-- snippet-context:end -->
 
@@ -911,7 +911,7 @@ Place `<canvas id="chart" aria-label="Category visibility"></canvas>` in the pag
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use this browser module with the Canvas element whose id is chart. Click a legend category twice to hide and restore its items.
+> **Runnable complete example.** Use this browser module with the Canvas element whose id is chart. Click a legend category twice to hide and restore its items.
 
 <!-- snippet-context:end -->
 
@@ -962,7 +962,7 @@ Place `<canvas id="chart" aria-label="Selectable observations"></canvas>` in the
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use this complete browser module with the Canvas element whose id is chart, shown immediately before it. Click an observation to toggle its named selection.
+> **Runnable complete example.** Use this complete browser module with the Canvas element whose id is chart, shown immediately before it. Click an observation to toggle its named selection.
 
 <!-- snippet-context:end -->
 
@@ -1037,7 +1037,7 @@ has a `points` mark and `picked` selection, and `canvas` is an HTML Canvas eleme
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `canvas`. Resource selectors used here: `target: "points"`; `selection: "picked"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `canvas` from that setup. It refers to `target: "points"`; `selection: "picked"`.
 
 <!-- snippet-context:end -->
 
@@ -1108,7 +1108,7 @@ This browser module expects `<canvas id="chart" aria-label="Adjustable points"><
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use a Canvas with id chart. Arrow keys on Multiplier update computed data; right-click a point and activate the host selection button.
+> **Runnable complete example.** Use a Canvas with id chart. Arrow keys on Multiplier update computed data; right-click a point and activate the host selection button.
 
 <!-- snippet-context:end -->
 
@@ -1197,7 +1197,7 @@ This browser module expects `<canvas id="chart" aria-label="Hierarchy partition"
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use a Canvas with id chart. Activate Group A or All groups with a pointer, Enter or Space; the breadcrumb text follows the native partition view.
+> **Runnable complete example.** Use a Canvas with id chart. Activate Group A or All groups with a pointer, Enter or Space; the breadcrumb text follows the native partition view.
 
 <!-- snippet-context:end -->
 
@@ -1264,7 +1264,7 @@ This browser module expects `<canvas id="chart" aria-label="Map points"></canvas
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use a Canvas with id chart. Pan right, Zoom in and Original view work with pointer, Enter and Space; the output reports the current projection transform.
+> **Runnable complete example.** Use a Canvas with id chart. Pan right, Zoom in and Original view work with pointer, Enter and Space; the output reports the current projection transform.
 
 <!-- snippet-context:end -->
 
@@ -1332,7 +1332,7 @@ or noninvertible anchor rejects without changing the committed program. No proje
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use a Canvas with id chart. Focus it with Tab for keyboard navigation. Drag or pinch the map, scroll to zoom, and press Escape to cancel a drag.
+> **Runnable complete example.** Use a Canvas with id chart. Focus it with Tab for keyboard navigation. Drag or pinch the map, scroll to zoom, and press Escape to cancel a drag.
 
 <!-- snippet-context:end -->
 
@@ -1388,7 +1388,7 @@ This browser module expects `<canvas id="chart" aria-label="Movable graph nodes"
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use a Canvas with id chart. Drag either node with a pointer or touch; activate Move first node right with Enter or Space. Escape cancels a drag.
+> **Runnable complete example.** Use a Canvas with id chart. Drag either node with a pointer or touch; activate Move first node right with Enter or Space. Escape cancels a drag.
 
 <!-- snippet-context:end -->
 
@@ -1483,7 +1483,7 @@ This browser module expects `<canvas id="chart" aria-label="Annotated points"></
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use a Canvas with id chart. Revise note and Offset note work with pointer, touch, Enter and Space; the text keeps its data anchor.
+> **Runnable complete example.** Use a Canvas with id chart. Revise note and Offset note work with pointer, touch, Enter and Space; the text keeps its data anchor.
 
 <!-- snippet-context:end -->
 
@@ -1554,7 +1554,7 @@ and apply its prepared result through the native actions:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "network"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "network"`.
 
 <!-- snippet-context:end -->
 
@@ -1602,7 +1602,7 @@ can take a second pointer, and only within its chosen viewport. Every gesture us
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture.
+> **Runnable complete example.** Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture.
 
 <!-- snippet-context:end -->
 
@@ -1660,7 +1660,7 @@ activation can instead use `activation: { type: "focusHierarchy" }`.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.
+> **Runnable complete example.** Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.
 
 <!-- snippet-context:end -->
 
@@ -1754,7 +1754,7 @@ it does not create a second selection or history store.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use this section's HTML and JavaScript together. Hover, focus or tap an item; Escape dismisses its description.
+> **Runnable complete example.** Use this section's HTML and JavaScript together. Hover, focus or tap an item; Escape dismisses its description.
 
 <!-- snippet-context:end -->
 
@@ -1904,7 +1904,7 @@ button focus stays on the same DOM element after every edit.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use this section's HTML and JavaScript together. Activate category and history controls with Enter, Space or touch.
+> **Runnable complete example.** Use this section's HTML and JavaScript together. Activate category and history controls with Enter, Space or touch.
 
 <!-- snippet-context:end -->
 
@@ -2023,7 +2023,7 @@ focused item once. The host uses text nodes for descriptions and owns tooltip di
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use this section's HTML and JavaScript together. Hover the shared edge, focus the chart and use PageDown/PageUp, Enter and the expansion buttons.
+> **Runnable complete example.** Use this section's HTML and JavaScript together. Hover the shared edge, focus the chart and use PageDown/PageUp, Enter and the expansion buttons.
 
 <!-- snippet-context:end -->
 

@@ -10,6 +10,12 @@ the process. Pyramid keeps it even if a later count exceeds an earlier one.
 
 {% include chart-example.html id="pyramid" %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import the Full ggaction package; this example declares its ordered stage observations.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from "ggaction";
 

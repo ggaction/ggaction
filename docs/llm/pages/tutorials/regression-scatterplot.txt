@@ -19,6 +19,8 @@ curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f9
 
 ## Complete program
 
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
 ```javascript
 import { chart, render } from "ggaction";
 

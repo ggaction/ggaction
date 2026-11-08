@@ -15,7 +15,7 @@ accepts the same option.
 
 For a complete quadratic example:
 
-> **Executable complete.** Standalone ES module with ggaction installed; all observations are declared in the sample.
+> **Runnable complete example.** Standalone ES module with ggaction installed; all observations are declared in the sample.
 
 ```javascript
 import { chart } from "ggaction";
@@ -40,7 +40,7 @@ The fitted values match the quadratic observations within floating-point precisi
 
 ## `createRegression(options?)`
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `points`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `points` from that setup.
 
 ```javascript
 const program = points.createRegression();
@@ -53,7 +53,7 @@ come from that point layer. Inference fails rather than choosing among multiple
 targets or group fields. Explicit `groupBy: false` requests one model and survives JSON serialization.
 Legacy explicit `groupBy: undefined` keeps the same JavaScript behavior.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createRegression({
@@ -98,7 +98,7 @@ program.createRegression({
 
 Choose another model or interval without coordinating its child layers:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `points`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `points` from that setup.
 
 ```javascript
 points.createRegression({ method: "polynomial", degree: 2 });
@@ -175,7 +175,7 @@ decomposition matters.
 
 Use the original point owner, not generated band or line IDs:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 ```javascript
 const revised = program.editRegression({
@@ -189,7 +189,7 @@ const revised = program.editRegression({
 
 Create-time data roles can be revised through the same stable owner:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `data: "observations"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `data: "observations"`.
 
 ```javascript
 const rebound = program.editRegression({
@@ -216,7 +216,7 @@ only regression owner and fails on ambiguity.
 
 ## Editing generated components
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const emphasized = program

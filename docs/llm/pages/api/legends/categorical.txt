@@ -13,7 +13,7 @@ line’s fixed stroke color. Mapped color or stroke scales and explicit legend-b
 symbol overrides take precedence. Editing the line’s fixed color updates its
 existing samples; the sample recipe’s opacity remains independent of mark opacity.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ~~~javascript
 program.createLegend();
@@ -21,7 +21,7 @@ program.createLegend();
 
 A size encoding is independently eligible; color and shape are not required:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ~~~javascript
 program.createLegend({ channels: ["size"], position: "right", count: 4 });
@@ -125,7 +125,7 @@ Incompatible direction or title options produce an error.
 
 For example, this complete program places 21 years in three columns on the right:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -184,7 +184,7 @@ the plot's left edge and keeps 40 logical pixels between complete occupied
 blocks. A left-positioned categorical title participates in the same inline
 center line as a left-positioned sampled-opacity title.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `densityArea`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `densityArea` from that setup.
 
 ~~~javascript
 densityArea.createLegend({
@@ -230,7 +230,7 @@ Point legends can combine categorical color or shape with quantitative size on
 any edge. For a point chart with both encodings, this fragment places a bordered
 legend above the plot:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```js
 program.createLegend({
@@ -295,7 +295,7 @@ it does not change other recipe layers, labels, title or frame. Omission keeps
 historical fallback appearance. Replacing a recipe without opacity, including
 `symbol:'auto'`, removes its explicit layer opacity.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```js
 program.createLegend({
@@ -335,7 +335,7 @@ single-point opacity example remains available above.
 
 Keep an encoded size while showing only a vertical slice of its symbol:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 ```js
 program.createLegend({ channels: ["size"], clipHeight: 30 });
@@ -364,7 +364,7 @@ Each sample uses the original color mapper and `sqrt(mappedArea / Math.PI)`;
 transformed scales keep their independent mappings. Mark data and mappings do
 not change. Omission keeps separate legends.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 ```js
 program.createLegend({combine: "color-size", values: [0, 5, 10]});

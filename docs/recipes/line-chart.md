@@ -11,6 +11,12 @@ title: Line Chart Recipe
 
 {% include runnable-recipe-note.html %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from "ggaction";
 
@@ -48,6 +54,12 @@ the authored axis labels and title.
 Use `line: { curve: "step" }` during creation for midpoint steps, or edit an existing
 line without changing its encodings:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const smooth = program.editLineMark({
   curve: "monotone",
@@ -58,6 +70,12 @@ const smooth = program.editLineMark({
 To overlay a trend on compatible aggregate bars, add the line after the bar
 encodings. The line infers the shared fields, scales, and aggregate, so no
 second `encodeY` call is needed:
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const layered = chart().createCanvas()

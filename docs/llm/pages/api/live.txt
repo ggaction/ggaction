@@ -24,7 +24,7 @@ need the lower-level APIs.
 
 ## Build an interactive chart
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction/live";
@@ -98,7 +98,7 @@ share a chart. With click selection present, every drag tool uses a modifier.
 | `edit(program => …)` | Applies any immutable-program update. `chart().addCanvas(element).edit(() => existingProgram)` makes a program you built elsewhere live. |
 | `save()` / `LiveChart.load(text, element?)` | Saves and restores the program and its tooltip, hover, selection, zoom, legend and drag features. Function options (`format`), controls, links and event handlers must be added again after `load`. |
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `scatter`, `rows`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `scatter`, `rows` from that setup.
 
 ```javascript
 await scatter.setData(rows.map(row => ({ ...row, y: row.y + 1 })));

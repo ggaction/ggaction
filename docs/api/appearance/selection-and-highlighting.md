@@ -14,7 +14,7 @@ stores its meaning in `semanticSpec.resources` and leaves `graphicSpec` unchange
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "points"`.
 
 <!-- snippet-context:end -->
 
@@ -72,7 +72,7 @@ histogram stack semantically with:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "bars"`.
 
 <!-- snippet-context:end -->
 
@@ -93,7 +93,7 @@ selection inline or reuse one:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`, `selected`. Resource selectors used here: `selection: "highestByOrigin"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program`, `selected` from that setup. It refers to `selection: "highestByOrigin"`.
 
 <!-- snippet-context:end -->
 
@@ -172,7 +172,7 @@ row-selection interfaces without adding hidden columns to the data.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "trends"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "trends"`.
 
 <!-- snippet-context:end -->
 
@@ -204,7 +204,7 @@ graphic IDs are not keys.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete ES module with its inline observations and public imports. Inspect the immutable selection resource after toggling its sole key.
+> **Runnable complete example.** Run the complete ES module with its inline observations and public imports. Inspect the immutable selection resource after toggling its sole key.
 
 <!-- snippet-context:end -->
 
@@ -248,7 +248,7 @@ Replace a stored selector while keeping its ID and mark target:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `highlighted`. Resource selectors used here: `selection: "highestByOrigin"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `highlighted` from that setup. It refers to `selection: "highestByOrigin"`.
 
 <!-- snippet-context:end -->
 
@@ -270,7 +270,7 @@ or release both through the selection action:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `revised`. Resource selectors used here: `selection: "highestByOrigin"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `revised` from that setup. It refers to `selection: "highestByOrigin"`.
 
 <!-- snippet-context:end -->
 
@@ -306,7 +306,7 @@ match individual contributing rows behind that item.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run the complete ES module with its inline observations and public chart import. The parameter edit raises the highlight threshold from 100 to 150 without changing the original program.
+> **Runnable complete example.** Run the complete ES module with its inline observations and public chart import. The parameter edit raises the highlight threshold from 100 to 150 without changing the original program.
 
 <!-- snippet-context:end -->
 
@@ -370,7 +370,7 @@ observation at (15, 5):
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Run this complete ES module with its inline observations and public import. The named region selects the observation at (15, 5).
+> **Runnable complete example.** Run this complete ES module with its inline observations and public import. The named region selects the observation at (15, 5).
 
 <!-- snippet-context:end -->
 

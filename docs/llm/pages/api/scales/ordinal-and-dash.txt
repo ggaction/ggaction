@@ -21,7 +21,7 @@ accept named shapes or [explicit simple polygons](../../../../api/marks/point/#e
 including their area or radius normalization policy. Automatic shape ranges
 retain the fourteen named shapes; custom polygons require an explicit range.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeColor({
@@ -42,7 +42,7 @@ The names `solid`, `dashed`, `dotted`, and `dashdot` resolve to `[]`, `[6, 4]`,
 `[1, 3]`, and `[6, 3, 1, 3]`. A direct pattern is an empty array or an
 even-length array of non-negative finite numbers that is not entirely zero.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeStrokeDash({

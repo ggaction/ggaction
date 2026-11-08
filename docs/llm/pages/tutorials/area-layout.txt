@@ -5,6 +5,8 @@ Start with a complete chart, then edit its endpoints, grouping, placement, and a
 
 ## Start with a zero baseline
 
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
 ```javascript
 import { chart, render } from 'ggaction';
 const program = chart()
@@ -26,6 +28,8 @@ uses the same action flow and includes independent variants for the remaining ca
 
 Given a prepared program with `low`, `high`, `time`, and `value` fields, these are alternative creation calls:
 
+> **Alternative.** Not a complete program: it continues the setup described in this section. It uses `base` from that setup.
+
 ```javascript
 // Fragments: each starts from a prepared Canvas and dataset.
 base.createAreaPlot({ x: 'time', y: { lower: 'low', upper: 'high' } });
@@ -39,6 +43,8 @@ scale needs a positive baseline. Edit an existing baseline with `encodeY2({datum
 bounds atomically with `encodeYRange`.
 
 ## Separate series identity, placement, and color
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `base` from that setup.
 
 ```javascript
 // Fragment: rows have aligned time samples, nonnegative value, series, and region fields.
@@ -69,6 +75,8 @@ For the exact options and limits, see [`createAreaPlot`](../../../reference/acti
 and [`layoutSeries`](../../../reference/actions/encodings/#layoutseries).
 
 ## Use a moving streamgraph baseline
+
+> **Runnable complete example.** Run this complete ES module with its inline aligned observations. The three immutable programs preserve each series thickness while changing their shared baseline.
 
 ```javascript
 import { chart } from 'ggaction';

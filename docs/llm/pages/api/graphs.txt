@@ -130,7 +130,7 @@ Remove a plot with `removeMark` before removing its bound layout or graph. Resou
 Use `createInferredGraphData` when relationships follow a rule. The resulting
 graph works with the same `layoutGraph` and `createGraphPlot` actions.
 
-> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Runnable complete example.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from 'ggaction';
@@ -239,7 +239,7 @@ worker beside the host module. In a browser, use a module `Worker` directly as t
 factory result and have its message handler call the same `computeGraphInference`;
 Node-specific worker adapters are not needed in the browser.
 
-> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Runnable complete example.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { Worker } from 'node:worker_threads';

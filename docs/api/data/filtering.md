@@ -15,7 +15,7 @@ Create a named derived dataset without replacing or mutating its source.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -53,7 +53,7 @@ missing field values are omitted. String order is lexicographic.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -79,7 +79,7 @@ either endpoint-specific property. An empty result is valid.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "cars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `source: "cars"`.
 
 <!-- snippet-context:end -->
 
@@ -106,7 +106,7 @@ and incompatible types, even when they are inactive.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Standalone ES module with a Canvas, all observations and imports included. Inspect each immutable filtered dataset.
+> **Runnable complete example.** Standalone ES module with a Canvas, all observations and imports included. Inspect each immutable filtered dataset.
 
 <!-- snippet-context:end -->
 
@@ -177,7 +177,7 @@ Observed graphs and other mark families reject `recompute: true`.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Import chart from ggaction and provide Cars rows with finite Displacement and Acceleration.
+> **Runnable complete example.** Import chart from ggaction and provide Cars rows with finite Displacement and Acceleration.
 
 <!-- snippet-context:end -->
 
@@ -205,7 +205,7 @@ line/area series path, arc sector, or rule. Stacked bars additionally support
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup. It refers to `target: "bars"`.
 
 <!-- snippet-context:end -->
 
@@ -224,7 +224,7 @@ must state whether it replaces the recipe or composes with its current result.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `filtered`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `filtered` from that setup. It refers to `target: "points"`.
 
 <!-- snippet-context:end -->
 
@@ -277,7 +277,7 @@ filter.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `japanOnly`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `japanOnly` from that setup. It refers to `target: "points"`.
 
 <!-- snippet-context:end -->
 

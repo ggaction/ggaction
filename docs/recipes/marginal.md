@@ -24,6 +24,12 @@ contains the public action chain; `fixture.js` declares the rows, boundaries,
 domains and panel dimensions. Replace the source import in that module with
 `import { chart, hconcat, vconcat } from "ggaction"` for an installed application.
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart and the linked example support modules.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { render } from "ggaction";
 import { createMarginal } from "./program.js";

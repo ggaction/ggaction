@@ -14,6 +14,12 @@ All three original edges remain independently selectable.
 This complete ES module uses the same data and action flow as the
 [executable example](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/edge-routes/program.js).
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Install ggaction and run this ES module in Node.js 20 or later.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from 'ggaction';
 
@@ -63,6 +69,12 @@ Copy [comparison.js](https://github.com/ggaction/ggaction/blob/{{ site.data.prov
 [options.js](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/edge-routes/options.js)
 and [data.js](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/edge-routes/data.js)
 beside this ES module and use `ggaction` for the helpers' public package imports.
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Copy comparison.js, program.js, options.js and data.js beside the ES module and use their public ggaction imports. All route and analytical data are declared in these helpers.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { createEdgeRouteComparison, reviseEdgeRouteComparison } from './comparison.js';

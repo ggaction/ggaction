@@ -17,7 +17,7 @@
 Creates the applicable Cartesian, Polar, or Parallel axes, Cartesian or Polar grid, and categorical legend supported
 by the current semantic encodings.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createGuides();
@@ -25,7 +25,7 @@ program.createGuides();
 
 Pass child options to customize each guide:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createGuides({
@@ -49,7 +49,7 @@ program.createGuides({
 
 `false` explicitly skips that guide:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.createGuides({ legend: false });
@@ -62,7 +62,7 @@ is named, only explicitly enabled directions are requested. In particular,
 `axes: { x: false }` requests neither axis; retain y with `axes: { x: false, y: {} }`.
 Skipping a guide does not remove a guide that already exists.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -96,7 +96,7 @@ as-is and only a missing applicable collection is created. This supports
 progressive authoring after a chart facade has already created its default
 axes and grid:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 program
@@ -125,7 +125,7 @@ line legend.
 Density areas can request both grids and forward the complete top-legend
 layout through the aggregate:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `densityArea`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `densityArea` from that setup.
 
 ```javascript
 densityArea.createGuides({
@@ -151,7 +151,7 @@ one composite Origin legend, followed by the five-symbol size legend.
 For grouped bars, the shortest call creates an ordinal x axis at band centers,
 a quantitative y axis, a horizontal grid, and a right-side color legend:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `groupedBars`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `groupedBars` from that setup.
 
 ```javascript
 groupedBars.createGuides();
@@ -160,7 +160,7 @@ groupedBars.createGuides();
 The same child options remain available. For example, this changes the ordinal
 labels while retaining inference for every other guide:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `groupedBars`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `groupedBars` from that setup.
 
 ```javascript
 groupedBars.createGuides({

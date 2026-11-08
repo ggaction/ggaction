@@ -51,6 +51,8 @@ export function createTemperatureWaterfall(temperatures) {
 
 ## A small worked example
 
+> **Runnable complete example.** Import the Full ggaction package; this example declares each contribution and its explicit role.
+
 ```js
 import { chart } from "ggaction";
 

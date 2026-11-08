@@ -48,7 +48,7 @@ Run this ES module in a bundler-based browser page containing `<canvas id="chart
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use a browser ES module with a canvas element whose id is chart; all input rows are included.
+> **Runnable complete example.** Use a browser ES module with a canvas element whose id is chart; all input rows are included.
 
 <!-- snippet-context:end -->
 
@@ -89,7 +89,7 @@ Every rendering fragment below continues from this complete program:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -124,7 +124,7 @@ context:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -141,7 +141,7 @@ logical CSS width and height while enlarging the backing store:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -170,7 +170,7 @@ save the returned string with the file API available in your environment.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -198,7 +198,7 @@ existing output container:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -212,7 +212,7 @@ The Node-only entry point writes a completed program directly to PNG.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -248,7 +248,7 @@ The Node-only PDF entry writes one completed chart as one vector PDF page:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -345,7 +345,7 @@ Browser and Node with Full or Basic editable programs. It returns a deeply froze
 
 <!-- snippet-context:start -->
 
-> **alternative.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Alternative.** Not a complete program: it continues the setup described in this section. It refers to `target: "sales"`.
 
 <!-- snippet-context:end -->
 
@@ -421,7 +421,7 @@ one native series item rather than becoming a row per source observation.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use an ES module. The example prints native aggregate values and their named selection membership.
+> **Runnable complete example.** Use an ES module. The example prints native aggregate values and their named selection membership.
 
 <!-- snippet-context:end -->
 
@@ -486,7 +486,7 @@ inside the fragment so fractional edges are not clipped twice.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: "data"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `data: "data"`.
 
 <!-- snippet-context:end -->
 
@@ -544,7 +544,7 @@ Browser example (with an existing `<canvas id="chart">` element):
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: "data"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `data: "data"`.
 
 <!-- snippet-context:end -->
 
@@ -579,7 +579,7 @@ word candidates that its title wrapping will use:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -669,7 +669,7 @@ For browser Canvas, prepare embedded bytes with an application-owned decoder:
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `URL`, `canvas`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `URL`, `canvas` from that setup.
 
 <!-- snippet-context:end -->
 
@@ -798,7 +798,7 @@ Complete browser module with a destination `<canvas id="chart">`:
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use the installed ggaction package in a browser module with a canvas element whose id is chart.
+> **Runnable complete example.** Use the installed ggaction package in a browser module with a canvas element whose id is chart.
 
 <!-- snippet-context:end -->
 

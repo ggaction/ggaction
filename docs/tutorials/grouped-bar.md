@@ -23,6 +23,12 @@ curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ si
 
 ## Complete program
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, render } from "ggaction";
 
@@ -80,11 +86,23 @@ each observed year/sex cell. Missing cells are omitted.
 Use exactly one width mode. Band width follows a resized Canvas; logical pixels
 stay fixed and are independent of PNG output density.
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.encodeBarWidth({ pixels: 14 });
 ```
 
 Advanced offset padding changes slot bandwidth while retaining each year band:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeXOffset({
@@ -94,11 +112,18 @@ program.encodeXOffset({
 });
 ```
 
-To replace the grouped field, call color once. It replaces color and xOffset
-together and refreshes an existing legend:
+To change the layout, call color once. Switching to `layout: "stack"` replaces
+color and xOffset together, stacks the two bars of each year, and refreshes the
+existing legend:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
+
+<!-- snippet-context:end -->
 
 ```javascript
-program.encodeColor({ field: "job", layout: "group" });
+const stacked = program.encodeColor({ field: "sex", layout: "stack" });
 ```
 
 ## Key action trace

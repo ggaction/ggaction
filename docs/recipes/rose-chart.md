@@ -14,6 +14,12 @@ The overlay layout draws larger sectors first so smaller sectors remain visible.
 
 {% include runnable-recipe-note.html %}
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from "ggaction";
 

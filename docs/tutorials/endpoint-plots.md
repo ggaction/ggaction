@@ -99,6 +99,12 @@ export function createFertilityLollipop(gapminder) {
 
 ## A small worked example
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, render } from "ggaction";
 
@@ -149,6 +155,12 @@ Both endpoint fields share one quantitative scale; conflicting scale definitions
 are rejected before the caller program changes.
 
 Use `editEndpointPlot` when a source or semantic role changes:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `changes`, `values` from that setup. It refers to `data: "replacement"`.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const withReplacement = changes.createData({

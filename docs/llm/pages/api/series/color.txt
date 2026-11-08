@@ -32,7 +32,7 @@ per series. Raw Area supports an independent group field or tuple. Color must be
 | `scale.range` | `"auto"`, color array, or palette descriptor | `"auto"` |
 | `scale.palette` | palette name or `{ name, count?, extent? }` | omitted |
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeColor({
@@ -55,7 +55,7 @@ Use `fieldType: "ordinal"` when the values are ordered categories rather than
 continuous magnitudes. They still receive discrete palette colors and legend
 entries:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeColor({
@@ -78,7 +78,7 @@ domain size unless `count` is supplied. On a sequential scale, `count` must be
 at least `2` and controls the concrete gradient-stop count. Non-categorical
 palettes also accept an optional two-value `extent` within `[0, 1]`.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeColor({
@@ -96,7 +96,7 @@ zero and one mean per category/color cell. Negative and positive bars therefore
 extend in opposite directions from the same zero baseline. Color and offset
 scales are fully resolved, and concrete rects use the implicit `0.72` band width immediately.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `groupedBars`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `groupedBars` from that setup.
 
 ```javascript
 groupedBars.encodeColor({
@@ -116,7 +116,7 @@ zero-stacked category rects. Stack and fill order follow source first appearance
 independently of the color domain. The y scale continues to use each bin's total count, and an explicit
 domain must contain every observed category.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `histogram`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `histogram` from that setup.
 
 ```javascript
 histogram.encodeColor({
@@ -138,7 +138,7 @@ values; their group and overlay layouts use zero as each rectangle's start
 endpoint and reject explicit measure domains that exclude zero. Call
 `encodeBarWidth` after color only when the implicit `0.72` width is not desired.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `histogram`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `histogram` from that setup.
 
 ```javascript
 histogram.encodeColor({ field: "Origin", layout: "fill" });
@@ -147,7 +147,7 @@ histogram.encodeColor({ field: "Origin", layout: "fill" });
 On an area mark, author grouping directly or through
 `encodeDensity({ groupBy })`, then encode that same field:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `densityArea`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `densityArea` from that setup.
 
 ```javascript
 densityArea.encodeColor({
@@ -170,7 +170,7 @@ layout; group-to-stack transitions remove active offsets and only unused automat
 `layout: "center"` is the area-only shorthand for matching grouping, color, and
 `layoutSeries({ mode: "center" })` in one atomic call:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "occupations"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "occupations"`.
 
 ```javascript
 const stream = chart()
@@ -202,7 +202,7 @@ For an aggregate bar, continuous color is computed at the same final category
 grain as the rectangle. When the color field matches the quantitative measure,
 omitting `aggregate` inherits that measure aggregate:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 bars
@@ -217,7 +217,7 @@ bars
 If color uses a different field, its aggregate is required because multiple
 source rows cannot be chosen arbitrarily for one final rectangle:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `bars`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `bars` from that setup.
 
 ```javascript
 bars.encodeColor({
@@ -275,7 +275,7 @@ not expose Area authoring; use the Full facade for Area charts.
 segment and uses a filled color ramp. Stroke retains its outlined ramp.
 Geometry and opacity stay independent.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";

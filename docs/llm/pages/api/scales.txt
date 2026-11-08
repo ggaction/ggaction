@@ -35,7 +35,7 @@ The same restriction applies to the first position on an otherwise incomplete li
 
 Existing scales can be changed with `editScale`:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const reversed = program.editScale({ id: "x", reverse: true });
@@ -44,7 +44,7 @@ const reversed = program.editScale({ id: "x", reverse: true });
 Color scales can use the same top-level palette shorthand during creation and
 editing. It is mutually exclusive with `range`:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const recolored = program.editScale({ id: "color", palette: "set2" });
@@ -53,7 +53,7 @@ const recolored = program.editScale({ id: "color", palette: "set2" });
 Full programs also expose channel-specific editors, so ordinary revisions do
 not require knowing the generated scale ID:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `target: "points"`.
 
 ```javascript
 program
@@ -97,7 +97,7 @@ rounding density. An observed range of 0–108 becomes 0–110. The count contro
 rounding; it does not force the number of axis ticks. This is useful when facet
 panels have independent ranges.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -165,7 +165,7 @@ focused stroke edits then refresh both sets of consumers.
 Advanced authors can create a named unattached scale with the same complete
 type vocabulary:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 const program = chart().createScale({
@@ -196,7 +196,7 @@ domain or range; omission preserves the current value. Quantitative position
 scales can change atomically between `linear`, `log`, `pow`, `sqrt`, and
 `symlog`:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const logarithmic = program.editScale({ id: "x", type: "log", base: 10 });
@@ -207,7 +207,7 @@ Categorical bar positions use `band`; categorical point and rule positions use
 non-zero slot width and accepts `paddingInner`, `paddingOuter`, and `align`.
 A point scale exposes zero bandwidth and accepts `padding` and `align`.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 program.encodeX({
@@ -226,7 +226,7 @@ and guides. A band can be shared by bars and point centers, but changing it to
 
 Use the Full-only removal action to delete an unattached named scale:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
 
 ```javascript
 const cleaned = program.removeScale({ id: "temporaryColor" });

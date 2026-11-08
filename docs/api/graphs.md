@@ -147,7 +147,7 @@ graph works with the same `layoutGraph` and `createGraphPlot` actions.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Runnable complete example.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 
@@ -260,7 +260,7 @@ Node-specific worker adapters are not needed in the browser.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Runnable complete example.** Not a complete program: it continues the setup described in this section.
 
 <!-- snippet-context:end -->
 

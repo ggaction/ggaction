@@ -2,6 +2,8 @@
 
 ## Minimal flow
 
+> **Runnable complete example.** Import ggaction and provide the named row array with the fields and grain described on this recipe.
+
 ```javascript
 import { chart } from "ggaction";
 
@@ -39,6 +41,8 @@ the authored axis labels and title.
 Use `line: { curve: "step" }` during creation for midpoint steps, or edit an existing
 line without changing its encodings:
 
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
+
 ```javascript
 const smooth = program.editLineMark({
   curve: "monotone",
@@ -49,6 +53,8 @@ const smooth = program.editLineMark({
 To overlay a trend on compatible aggregate bars, add the line after the bar
 encodings. The line infers the shared fields, scales, and aggregate, so no
 second `encodeY` call is needed:
+
+> **Runnable complete example.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 ```javascript
 const layered = chart().createCanvas()

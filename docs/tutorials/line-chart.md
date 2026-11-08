@@ -22,6 +22,12 @@ curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ si
 
 ## Complete program
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, render } from "ggaction";
 
@@ -85,6 +91,12 @@ field and ordered domain, `createGuides` combines them into one legend.
 Curve is line appearance rather than a semantic field encoding. It can be set
 inside the facade:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
+
 ```javascript
 .createLinePlot({
   id: "trends",
@@ -95,6 +107,12 @@ inside the facade:
 ```
 
 or edited after the complete chart exists:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const smooth = program.editLineMark({
@@ -110,6 +128,12 @@ mean aggregation, grouping, scales, axes, and legend remain unchanged.
 
 Use named styles in a field scale when each series needs its own pattern:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `program` from that setup.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const named = program.encodeStrokeDash({
   field: "Origin",
@@ -118,6 +142,12 @@ const named = program.encodeStrokeDash({
 ```
 
 Or replace the field mapping with one constant pattern:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `named` from that setup.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const dotted = named.encodeStrokeDash({ value: "dotted" });

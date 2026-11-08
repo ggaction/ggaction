@@ -14,7 +14,7 @@ setting, and `clip: false` disables it. Polar/Parallel clipping is unsupported.
 
 This complete module first creates a scatterplot, then refines its existing mark:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section.
 
 ```javascript
 import { chart } from "ggaction";
@@ -72,7 +72,7 @@ removes generated composite children, unreferenced generated datasets, owned
 legends, and selection/highlight state. Source data and resources shared by
 another mark remain:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `layeredProgram`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `layeredProgram` from that setup. It refers to `target: "points"`.
 
 ```javascript
 const barsOnly = layeredProgram.removeMark({ target: "points" });
@@ -126,7 +126,7 @@ updates it.
 `createTickMark` creates a centered fixed-length line glyph for every source
 row after both x and y encodings are complete:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `cars`. Resource selectors used here: `target: "ticks"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `cars` from that setup. It refers to `target: "ticks"`.
 
 ```javascript
 const rug = chart()

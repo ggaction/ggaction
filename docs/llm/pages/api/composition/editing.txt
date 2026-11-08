@@ -27,7 +27,7 @@ preserved group inside the new parent. A concat requires an explicit structured
 It identifies the unit or facet supplying data and defaults, independently of where
 the new chart is attached. Overlays and generated facet cells cannot be sources.
 
-> **Executable complete.** Import chart from ggaction. This complete example includes all data and adds a full-width line below an existing pair using an explicit source panel.
+> **Runnable complete example.** Import chart from ggaction. This complete example includes all data and adds a full-width line below an existing pair using an explicit source panel.
 
 ```javascript
 import { chart } from "ggaction";
@@ -94,7 +94,7 @@ The Basic entry point and low-level primitives retain their original target cont
 
 ## Edit the layout
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `row`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `row` from that setup.
 
 ```javascript
 const revised = row.editCompositionLayout({
@@ -107,7 +107,7 @@ const revised = row.editCompositionLayout({
 This continuation edits the `row` concat created above. For a one-field facet,
 use its own retained parent to change the number of columns:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `faceted`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `faceted` from that setup.
 
 ```javascript
 const twoColumns = faceted.editCompositionLayout({ columns: 2, gap: 28 });
@@ -127,7 +127,7 @@ header anchors are recomputed from the newly translated child plot bounds.
 
 ## Edit facet scale and guide policies
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `faceted`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `faceted` from that setup.
 
 ```javascript
 const independent = faceted.editFacetScales({
@@ -162,7 +162,7 @@ still rejects `axes: "outer"`.
 
 ## Replace the repeated source recipe
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `matrix`. Resource selectors used here: `target: "plot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `matrix` from that setup. It refers to `target: "plot"`.
 
 ```javascript
 const revised = matrix.editFacetSource({ program: revisedUnit });
@@ -194,7 +194,7 @@ the caller-owned program.
 
 ## Replace one stable slot
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `revised`. Resource selectors used here: `target: "detail"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `revised` from that setup. It refers to `target: "detail"`.
 
 ```javascript
 const replaced = revised.replaceCompositionChild({
@@ -213,7 +213,7 @@ Facet cells are derived from one canonical source and cannot be replaced with
 
 ## Insert, remove, and reorder named concat children
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `row`. Resource selectors used here: `target: "detail"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `row` from that setup. It refers to `target: "detail"`.
 
 ```javascript
 const expanded = row.insertCompositionChild({
@@ -277,7 +277,7 @@ in nested and faceted views.
 
 Use `createLayerPlot` for independently computed plots over the same measurements:
 
-> **Executable complete.** Self-contained deterministic observations with shared measurement scales and independent native layers.
+> **Runnable complete example.** Self-contained deterministic observations with shared measurement scales and independent native layers.
 
 ```js
 import { chart } from "ggaction";

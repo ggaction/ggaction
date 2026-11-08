@@ -17,6 +17,12 @@ radius for rose charts and radial bars.
 Use `createPiePlot` for a complete category count or explicitly weighted pie.
 This is the count variant of the canonical `examples/pie-plot/program.js`:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, render } from "ggaction";
 
@@ -47,6 +53,12 @@ available for direct row weights, rose charts and independent editing.
 
 When each row already contains one category and its final numeric value, pass
 that value field directly to `encodeTheta`:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It refers to `source: "Search"`; `source: "Direct"`; `source: "Social"`; `source: "Referral"`.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const data = [
@@ -86,6 +98,12 @@ curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ si
 
 ## Complete program
 
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use the Getting Started browser module setup with a canvas whose id is chart.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, render } from "ggaction";
 
@@ -124,6 +142,12 @@ Use `aggregate: "sum"` when each source row contributes a numeric weight rather
 than one count. This example filters Gapminder to one year and partitions the
 donut by the total population in each cluster:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `gapminder` from that setup.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const clusterOrder = [0, 1, 2, 3, 4, 5];
 const populationByCluster = chart()
@@ -161,6 +185,12 @@ before semantic state or trace changes; source rows are never expanded.
 `createRadialBarPlot` makes length from the inner edge proportional to the same
 measure. This is the canonical `examples/radial-sectors/program.js` rose-hole variant:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart, render } from "ggaction";
 const program = chart()
@@ -193,6 +223,12 @@ For category sums represented by annular area, use createRosePlot above. The thr
 share each month band. The following fragment continues from an imported `chart`
 function and a loaded `nightingaleRows` array containing one row per month and
 cause.
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const monthOrder = [
@@ -250,6 +286,12 @@ Radial bars use the same position pair without an overlay group. This fragment
 assumes `chart`, the selected `countryRows`, and their explicit `countryOrder`
 are already available:
 
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const radialBars = chart()
   .createCanvas({
@@ -288,6 +330,12 @@ uses that same baseline instead of drawing through the empty center.
 ## Editing an arc
 
 `editArcMark` updates geometry or appearance and rematerializes every sector:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `radialBars` from that setup.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const tighter = radialBars.editArcMark({
