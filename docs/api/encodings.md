@@ -74,7 +74,7 @@ scales stay live until the encoding is replaced or removed.
 
 Field branches contribute their complete final-item populations to automatic
 scale domains. Conditions select values without filtering the input population. Use a
-[parameterized data filter](../data-updates.md) to change statistical input.
+[parameterized data filter](data/filtering.md#filter-with-a-parameter) to change statistical input.
 Categorical color, stroke, shape and dash domains retain their source appearance
 order, including when aggregation changes the order of the displayed items.
 Appearance on paths and aggregate marks requires one branch value and one predicate result per

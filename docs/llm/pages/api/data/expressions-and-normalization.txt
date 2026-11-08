@@ -107,6 +107,22 @@ Unary operations are `negate` and `not`. Binary operations are `add`, `subtract`
 The closed function registry covers numeric, string, array, and calendar
 operations. Use [getExpressionFunctions](../../../../inspection/#expression-functions)
 to inspect names, argument limits, input/output types, and option families.
+
+| Group | Functions (argument count) |
+| --- | --- |
+| Numbers | `abs` (1), `sqrt` (1), `log` (1), `exp` (1), `round` (1), `floor` (1), `ceil` (1), `min` (1–64), `max` (1–64), `pow` (2), `toNumber` (1) |
+| Angles (need `options.angleUnit`) | `sin` (1), `cos` (1), `tan` (1), `atan2` (2) |
+| Strings | `lower` (1), `upper` (1), `length` (1), `substring` (3), `replace` (3), `concat` (1–64) |
+| Tests and fallbacks | `isNull` (1), `isMissing` (1), `isFinite` (1), `coalesce` (2–64) |
+| Arrays | `arrayLength` (1), `at` (2) |
+| Dates and times (need options) | `parseTime` (1), `datePart` (1), `timeFloor` (1) |
+
+A call node names the function and passes its arguments as nodes. For example,
+`{ type: "call", name: "round", args: [{ type: "field", name: "price" }] }`
+rounds a field, and
+`{ type: "call", name: "coalesce", args: [{ type: "field", name: "label" }, { type: "literal", value: "unknown" }] }`
+replaces missing labels.
+
 Trigonometric calls require `options.angleUnit` (`radians` or `degrees`).
 `parseTime` requires an explicit `format` (`%Y-%m-%d`, `%d/%m/%Y`, `%m/%d/%Y`,
 or `iso-offset`). `datePart` requires `part` and `timeZone`; `timeFloor` requires
@@ -176,6 +192,11 @@ It revises all dependent datasets and chart consumers atomically, including shar
 lookup dependencies, scales, guides, and highlights. Unrelated branches stay shared.
 An unchanged value preserves revisions; negative zero and zero are distinct edits.
 A failed computation or consumer validation leaves the original program unchanged.
+
+In a browser, bind a parameter to a control with [`ggaction/live`](../../../../api/live/):
+`chart.addSlider("factor", { min: 1, max: 5, step: 0.5, label: "Factor" })` edits
+the parameter as the slider moves, and `addDropdown("factor", { options: [1, 2, 3] })`
+offers fixed choices.
 
 If a parameter is used by a live data source URL, a changed value requires
 [`prepareDataUpdate` and `applyDataUpdate`](../../../../api/data/source-and-derived/#prepared-data-updates).

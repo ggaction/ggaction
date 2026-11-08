@@ -1122,3 +1122,13 @@ test("keeps concise and full LLM documentation synchronized", async () => {
     "Scale maps values"
   );
 });
+
+test("lists every version 2 expression function in the expression guide", async () => {
+  const { getExpressionFunctions } = await import("../../src/inspection.js");
+  const page = read("docs/api/data/expressions-and-normalization.md");
+  const table = page.slice(page.indexOf("| Group | Functions (argument count) |"));
+  for (const { name, min, max } of getExpressionFunctions()) {
+    const count = min === max ? String(min) : `${min}–${max}`;
+    assert.ok(table.includes(`\`${name}\` (${count})`), `${name} (${count})`);
+  }
+});

@@ -49,7 +49,7 @@ Edit the source to change linked positions. `editOverlay({ target: "trend", foll
 freezes the current geometry as an independent normalized plot snapshot; further source edits
 no longer move it. Independent axis scales require explicit axis selection when creating guides.
 
-The [runnable overlay example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/linked-overlay/) uses the same public program as
+The [runnable overlay example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/linked-overlay/) uses the same public program as
 the primitive-equivalence and rendering tests.
 
 ## Pair a resource view with an analytical chart
@@ -59,7 +59,7 @@ its source measurements. Each child owns its data, marks, scales and guides.
 The analytical axis and legend explain the point chart; the resource view keeps
 its native layout, thickness and styles.
 
-Copy the [resource comparison module](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/program-composition/resource-comparison.js)
+Copy the [resource comparison module](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/program-composition/resource-comparison.js)
 beside this browser module, set its `chart`/`hconcat` import to `from "ggaction"`,
 and provide `<canvas id="chart"></canvas>`. The helper
 builds both children from the same rows, including distinct numeric `1` and
