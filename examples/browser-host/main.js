@@ -1,5 +1,6 @@
 import { render } from "../../src/index.js";
 import { publicExamples } from "../registry.js";
+import { SHOWCASE_DATASETS, parseShowcaseDataset } from "../showcase-data.js";
 
 const DATA_FILES = Object.freeze({
   cars: "cars.json",
@@ -23,6 +24,11 @@ function parseFashionRows(source) {
 }
 
 async function loadDataset(id) {
+  if (Object.hasOwn(SHOWCASE_DATASETS, id)) {
+    const response = await fetch(`../../data/${SHOWCASE_DATASETS[id].file}`);
+    if (!response.ok) throw new Error(`Cannot load browser dataset "${id}".`);
+    return parseShowcaseDataset(id, await response.text());
+  }
   const file = DATA_FILES[id];
   if (file === undefined) throw new Error(`Unknown browser dataset "${id}".`);
   const response = await fetch(`../../data/${file}`);

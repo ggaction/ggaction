@@ -3,6 +3,7 @@ import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { documentationCodeBlocks, documentationPrograms } from "./doc-snippets.js";
+import { showcaseDisplays } from "./generate-doc-showcase.js";
 const root = fileURLToPath(new URL("../", import.meta.url));
 export async function publicSnippetCoverage() {
   async function visit(directory) {
@@ -12,6 +13,7 @@ export async function publicSnippetCoverage() {
     }))).flat();
   }
   const programs = await documentationPrograms();
+  const showcase = await showcaseDisplays();
   const records = [];
   for (const file of ["README.md", ...await visit("docs")]) {
     const source = await readFile(path.join(root, file), "utf8");
@@ -21,7 +23,8 @@ export async function publicSnippetCoverage() {
       const ordinal = (seen.get(heading) ?? 0) + 1; seen.set(heading, ordinal);
       const id = `${file}#${heading}:${ordinal}`;
       const program = programs.find(program => path.posix.normalize(`docs/${program.file}`) === file && program.code === block.code);
-      const generated = file.startsWith("docs/reference/actions/");
+      // Showcase blocks are copied from canonical programs that the showcase tests render.
+      const generated = file.startsWith("docs/reference/actions/") || showcase.has(block.code);
       records.push({ id, file, heading: block.heading, executable: Boolean(program), generated,
         ...(program?.htmlSha256 ? { htmlSha256: program.htmlSha256 } : {}),
         sha256: createHash("sha256").update(block.code).digest("hex") });

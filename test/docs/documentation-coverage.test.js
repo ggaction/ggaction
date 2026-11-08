@@ -10,6 +10,7 @@ import { readDocChartCatalog } from "../../scripts/doc-chart-catalog.js";
 import { publicOptionDeclarations } from "../../scripts/generate-doc-signatures.js";
 import { generateDocChartPicker } from "../../scripts/generate-doc-chart-picker.js";
 import { generateDocWorkflows } from "../../scripts/generate-doc-workflows.js";
+import { generateDocShowcase } from "../../scripts/generate-doc-showcase.js";
 import { generateDocSnippetContracts } from "../../scripts/generate-doc-snippet-contracts.js";
 import { buildDocProvenance, generateDocProvenance } from "../../scripts/doc-provenance.js";
 import { docsEnvironmentRecommendations, inspectDocsEnvironment } from "../../scripts/check-docs-environment.js";
@@ -64,6 +65,7 @@ test("keeps the chart picker, workflow programs, snippet contracts, and provenan
   await generateDocChartPicker({ check: true });
   await generateDocScaleEditors({ check: true });
   await generateDocWorkflows({ check: true });
+  await generateDocShowcase({ check: true });
   await generateDocSnippetContracts({ check: true });
   await generateDocProvenance({ check: true });
   const provenance = await buildDocProvenance();

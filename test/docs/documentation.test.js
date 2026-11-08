@@ -477,7 +477,7 @@ test("keeps task pages visual and chart figures canonical", async () => {
     const relativeImage = example.image.replace(/^\//, "docs/");
     assert.equal(existsSync(path.join(root, relativeImage)), true, id);
     const imageId = path.basename(example.image, ".png");
-    const generated = manifest.charts[imageId] ?? manifest.tutorials[imageId];
+    const generated = manifest.showcase[imageId] ?? manifest.charts[imageId] ?? manifest.tutorials[imageId];
     assert.notEqual(generated, undefined, `${id} generated image`);
     assert.equal(Number(example.width), generated.width, `${id} width`);
     assert.equal(Number(example.height), generated.height, `${id} height`);
@@ -600,9 +600,10 @@ test("routes entry documentation to the canonical example indexes", () => {
   );
   assert.match(read("docs/gallery.md"), /where: "gallery_featured", true/);
   assert.match(read("docs/gallery\/all.md"), /site\.data\.chart_examples/);
+  // Nine common charts plus ten real-data showcase charts appear on the home page.
   assert.equal(
     [...catalog.values()].filter(example => example.featured === true).length,
-    9
+    19
   );
   assert.match(read("docs/index.md"), /where: "featured", true/);
   assert.match(read("docs/index.md"), /toc: false/);

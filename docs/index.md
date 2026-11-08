@@ -54,6 +54,18 @@ and distributions.
   {% endfor %}
 </div>
 
+## Maps, networks, and flows
+
+Draw geographic data, hierarchies, networks, flows, calendars, and financial
+series with the same immutable action chain.
+
+<div class="docs-chart-gallery docs-chart-gallery--secondary">
+  {% assign domain_charts = site.data.chart_examples | where: "home_group", "domains" | where: "featured", true | sort: "home_order" %}
+  {% for example in domain_charts %}
+    {% include chart-gallery-card.html example=example %}
+  {% endfor %}
+</div>
+
 ## Statistics and uncertainty
 
 Compose ordinary marks and derived data into higher-level statistical views.

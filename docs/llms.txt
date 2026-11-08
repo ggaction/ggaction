@@ -160,6 +160,7 @@ requirements after resolving each part.
 - Regression: ./api/regression/
 - Error Bars: ./api/error-bars/
 - Violin Plots: ./api/violin-plots/
+- Distribution Plots: ./api/distribution-plots/
 - Guides: ./api/guides/
 - Titles: ./api/titles/
 - Inspect Overlapping Chart Items: ./recipes/inspect-chart/

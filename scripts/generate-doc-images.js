@@ -8,6 +8,7 @@ import { renderToPNG } from "ggaction/png";
 import { createGettingStartedChart } from
   "../examples/getting-started/program.js";
 import { publicExamples } from "../examples/registry.js";
+import { SHOWCASE_DATASETS, parseShowcaseDataset } from "../examples/showcase-data.js";
 
 const thumbnailMaxWidth = 640;
 
@@ -17,12 +18,16 @@ const dataFiles = Object.freeze({
   jobs: new URL("../data/jobs.json", import.meta.url),
   gapminder: new URL("../data/gapminder.json", import.meta.url),
   nightingaleRose: new URL("../data/nightingale_rose.json", import.meta.url),
-  imdbSelected: new URL("../data/imdb_selected.json", import.meta.url)
+  imdbSelected: new URL("../data/imdb_selected.json", import.meta.url),
+  ...Object.fromEntries(Object.entries(SHOWCASE_DATASETS).map(([id, dataset]) =>
+    [id, new URL(`../data/${dataset.file}`, import.meta.url)]))
 });
 const data = Object.fromEntries(await Promise.all(
   Object.entries(dataFiles).map(async ([id, file]) => [
     id,
-    file.pathname.endsWith(".csv")
+    Object.hasOwn(SHOWCASE_DATASETS, id)
+      ? parseShowcaseDataset(id, await readFile(file, "utf8"))
+      : file.pathname.endsWith(".csv")
       ? (await readFile(file, "utf8")).trim().split(/\r?\n/).slice(1).map(line => {
         const [x, y, label, name] = line.split(",");
         return { x_pos: Number(x), y_pos: Number(y), label: Number(label), label_name: name };
@@ -44,7 +49,10 @@ function imageDefinition(chart) {
 
 export const chartImages = publicExamples({ docsGroup: "charts" })
   .map(imageDefinition);
-export const tutorialImages = publicExamples().filter(chart => chart.docsGroup !== "charts")
+export const showcaseImages = publicExamples({ docsGroup: "showcase" })
+  .map(imageDefinition);
+export const tutorialImages = publicExamples()
+  .filter(chart => chart.docsGroup !== "charts" && chart.docsGroup !== "showcase")
   .map(imageDefinition);
 export const guideImages = Object.freeze([
   Object.freeze({
@@ -59,7 +67,7 @@ export const guideImages = Object.freeze([
   })
 ]);
 
-const allImages = [...chartImages, ...tutorialImages, ...guideImages];
+const allImages = [...showcaseImages, ...chartImages, ...tutorialImages, ...guideImages];
 
 export function docThumbnailDimensions(width, height) {
   const scale = Math.min(1, thumbnailMaxWidth / width);
@@ -115,6 +123,7 @@ export async function buildDocImageManifest() {
     }
   ]));
   const groups = {
+    showcase: imageManifest(showcaseImages),
     charts: imageManifest(chartImages),
     tutorials: imageManifest(tutorialImages),
     guides: imageManifest(guideImages)
@@ -129,7 +138,9 @@ export async function buildDocImageManifest() {
       hash.update(await readFile(file));
     }
     for (const file of chart.dataFiles ?? []) hash.update(await readFile(file));
-    const group = chartImages.includes(chart)
+    const group = showcaseImages.includes(chart)
+      ? groups.showcase
+      : chartImages.includes(chart)
       ? groups.charts
       : tutorialImages.includes(chart)
         ? groups.tutorials

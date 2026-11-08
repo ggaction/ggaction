@@ -17,13 +17,121 @@ python3 -m http.server 8000
 - [Extension TypeScript](./extension-typescript/) demonstrates strict custom
   action authoring against the installed package.
 
-## Maintained public chart programs
+## Complete chart programs
 
-### [Program composition](./program-composition/)
+### [World choropleth map](./world-gdp-map/)
 
-Compare distinct child panels, edit their layout, and replace one stable slot.
+Join a table to country shapes and color each country by a value.
 
-Representative actions: `hconcat`, `editCompositionLayout`, `replaceCompositionChild`. [Documentation](https://ggaction.github.io/ggaction/recipes/composition/).
+Representative actions: `createGeometryData`, `createGeoJoinData`, `createProjection`, `createGeoShapeMark`. [Documentation](https://ggaction.github.io/ggaction/api/geometry/).
+
+### [Earthquake map](./world-earthquakes-map/)
+
+Place points by longitude and latitude and encode size and color.
+
+Representative actions: `createProjection`, `createGraticule`, `createGeoPointMark`, `encodeSize`. [Documentation](https://ggaction.github.io/ggaction/api/geometry/).
+
+### [Temperature anomaly heatmap](./global-temperature-heatmap/)
+
+Show a long monthly series as a year by month grid with a diverging color scale.
+
+Representative actions: `createHeatmap`. [Documentation](https://ggaction.github.io/ggaction/api/basic-charts/).
+
+### [Daily births calendar](./us-births-calendar/)
+
+Lay out daily values as a weekday by week calendar.
+
+Representative actions: `createCalendarLayout`, `createCalendarPlot`. [Documentation](https://ggaction.github.io/ggaction/api/calendar/).
+
+### [Density contours with points](./penguin-density-contours/)
+
+Estimate a two-dimensional density and overlay the raw observations.
+
+Representative actions: `createDensityContourData`, `createContourMark`, `createPointMark`. [Documentation](https://ggaction.github.io/ggaction/api/contours/).
+
+### [Sankey diagram](./penguin-sankey/)
+
+Show how counts split and merge across stages.
+
+Representative actions: `createFlowData`, `layoutFlow`, `createFlowLinks`, `createFlowNodes`. [Documentation](https://ggaction.github.io/ggaction/api/flows/).
+
+### [Similarity network](./country-similarity-network/)
+
+Infer links from feature similarity and lay them out with a seeded force layout.
+
+Representative actions: `createInferredGraphData`, `layoutGraph`, `createGraphPlot`. [Documentation](https://ggaction.github.io/ggaction/api/graphs/).
+
+### [Population treemap](./world-population-treemap/)
+
+Size nested rectangles by a value in a two-level hierarchy.
+
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreemapPlot`. [Documentation](https://ggaction.github.io/ggaction/api/hierarchy/).
+
+### [Population sunburst](./world-population-sunburst/)
+
+Show a hierarchy as rings whose angles follow a value.
+
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createPartitionPlot`. [Documentation](https://ggaction.github.io/ggaction/api/partition/).
+
+### [Radial class tree](./flare-radial-tree/)
+
+Draw a parent-child table as a node-link tree.
+
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreePlot`. [Documentation](https://ggaction.github.io/ggaction/api/hierarchy/).
+
+### [Candlestick chart with volume](./ibm-candlesticks/)
+
+Draw daily price ranges and align a second panel on the same sessions.
+
+Representative actions: `createOHLCPlot`, `createBarPlot`, `vconcat`. [Documentation](https://ggaction.github.io/ggaction/api/ohlc/).
+
+### [Waterfall chart](./temperature-waterfall/)
+
+Explain how a total is built from signed steps.
+
+Representative actions: `createWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/api/waterfall/).
+
+### [Trail chart](./gapminder-life-trails/)
+
+Draw a line whose width varies with a third field.
+
+Representative actions: `createTrailPlot`. [Documentation](https://ggaction.github.io/ggaction/api/trail/).
+
+### [Table with bars and sparklines](./gapminder-country-table/)
+
+Combine exact values with small graphics in one table.
+
+Representative actions: `createTablePlot`. [Documentation](https://ggaction.github.io/ggaction/api/table/).
+
+### [Raincloud plot](./penguin-mass-raincloud/)
+
+Show a distribution's shape, summary and observations together.
+
+Representative actions: `createRaincloudPlot`. [Documentation](https://ggaction.github.io/ggaction/api/distribution-plots/).
+
+### [Beeswarm plot](./penguin-flipper-beeswarm/)
+
+Show every observation in a category without overlap.
+
+Representative actions: `createBeeswarmPlot`. [Documentation](https://ggaction.github.io/ggaction/api/distribution-plots/).
+
+### [Cumulative distribution by group](./cars-mpg-ecdf/)
+
+Compare whole distributions without choosing bins.
+
+Representative actions: `createECDFPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/ecdf/).
+
+### [Dumbbell plot](./life-expectancy-dumbbell/)
+
+Compare a before and after value for each category.
+
+Representative actions: `createDumbbellPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/endpoint-plots/).
+
+### [Lollipop chart](./fertility-lollipop/)
+
+Rank categories by one value with a stem and a point.
+
+Representative actions: `createLollipopPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/endpoint-plots/).
 
 ### [Faceted scatterplot](./cars-origin-scatterplot-facet/)
 
@@ -31,29 +139,11 @@ Repeat a complete point or bar chart by field value.
 
 Representative actions: `facet`, `editFacetHeaders`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/recipes/facet/).
 
-### [Row and column facet grid](./facet-grid/)
-
-Cross two fields into an observed or complete grid with stable cell coordinates.
-
-Representative actions: `facetGrid`, `editFacetSource`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/#build-a-row-and-column-facet-grid).
-
-### [Repeated metric charts](./repeat-charts/)
-
-Repeat one positional encoding across fields with explicit scale and guide policies.
-
-Representative actions: `repeatCharts`, `editFacetSource`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/#repeat-a-positional-encoding-across-fields).
-
 ### [Scatterplot](./cars-scatterplot/)
 
 Compare two quantitative fields and encode a category with color.
 
 Representative actions: `createScatterPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/scatterplot/).
-
-### [Fitted long axis labels](./fitted-long-labels/)
-
-Fit chart margins after laying out long Cartesian axis labels.
-
-Representative actions: `createXAxis`. [Documentation](https://ggaction.github.io/ggaction/api/canvas/#fitcanvasoptions).
 
 ### [Multi-legend layout](./cars-multi-legend-layout/)
 
@@ -96,12 +186,6 @@ Representative actions: `createHeatmap`, `createTextMark`, `encodeText`. [Docume
 Aggregate ordinal categories and arrange nominal groups side by side.
 
 Representative actions: `createBarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/grouped-bar/).
-
-### [Ordered category bars](./ordered-category-bar/)
-
-Order categorical x or y positions explicitly or from a stable aggregate summary.
-
-Representative actions: `orderCategories`, `removeCategoryOrder`. [Documentation](https://ggaction.github.io/ggaction/api/position/category-ordering/).
 
 ### [Horizontal grouped bar](./jobs-horizontal-grouped-bar/)
 
@@ -175,12 +259,6 @@ Compare multivariate row profiles while retaining row-level identity.
 
 Representative actions: `createParallelCoordinates`, `encodeParallelCoordinates`. [Documentation](https://ggaction.github.io/ggaction/recipes/parallel-coordinates/).
 
-### [Polar points](./polar-points/)
-
-Map quantitative fields to clockwise angle and radial distance.
-
-Representative actions: `encodeTheta`, `encodeR`, `encodePointRadius`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-points/).
-
 ### [Polar guides](./polar-guides/)
 
 Read angle and radial mappings with aligned axes, labels, and grids.
@@ -229,6 +307,113 @@ Select, filter, and emphasize final point, bar, and line items.
 
 Representative actions: `highlightMarks`. [Documentation](https://ggaction.github.io/ggaction/tutorials/mark-selection/).
 
+### [Faceted car histograms](./cars-origin-histogram-facet/)
+
+Each origin panel shows the observed distribution with its own final bars.
+
+Representative actions: `createBarMark`, `encodeHistogram`, `encodeColor`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/marks/#createbarmark).
+
+### [Raincloud distribution](./raincloud-plot/)
+
+A half violin, summary, and raw observations share one category and measure frame.
+
+Representative actions: `createRaincloudPlot`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createraincloudplot).
+
+### [Binned cars heatmap](./cars-binned-heatmap/)
+
+Rectangular bins summarize the density of two quantitative car measurements.
+
+Representative actions: `createHeatmap`, `createTitle`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createheatmap).
+
+### [Moving passenger windows](./airline-passenger-moving-windows/)
+
+Ordered moving summaries reveal changes in monthly passenger counts.
+
+Representative actions: `createTimeUnitData`, `createLineMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createtimeunitdata).
+
+### [Ranked cars](./cars-window-rank-scatterplot/)
+
+A partitioned window rank selects observations before drawing a scatterplot.
+
+Representative actions: `createWindowData`, `filterData`, `createScatterPlot`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createwindowdata).
+
+### [Cars by origin with jitter](./point-jitter/)
+
+Bounded deterministic offsets separate overlapping observations inside category slots.
+
+Representative actions: `createStripPlot`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createstripplot).
+
+### [Country labels without overlap](./gapminder-country-labels/)
+
+Attached labels use bounded collision layout and leader lines.
+
+Representative actions: `createPointMark`, `encodeX`, `encodeY`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/marks/#createpointmark).
+
+### [Continuous aggregate bar color](./gapminder-continuous-color-bars/)
+
+A quantitative color scale maps a compatible aggregate for each bar.
+
+Representative actions: `filterData`, `createBarMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#filterdata).
+
+### [Discretized color intervals](./gapminder-discretized-color-scales/)
+
+Quantitative observations map to ordered color intervals and legend labels.
+
+Representative actions: `filterData`, `createPointMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#filterdata).
+
+### [Temporal and discrete positions](./gapminder-temporal-discrete-scales/)
+
+Band, point, and temporal mappings retain distinct positional meanings.
+
+Representative actions: `filterData`, `createBarMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#filterdata).
+
+### [Transformed quantitative positions](./gapminder-transformed-scales/)
+
+Nonlinear position scales compare measurements over unequal numeric ranges.
+
+Representative actions: `filterData`, `createPointMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#filterdata).
+
+## Option illustrations
+
+These programs illustrate one option or workflow step and appear as figures on
+the documentation page that owns them rather than in the chart gallery.
+
+### [Program composition](./program-composition/)
+
+Compare distinct child panels, edit their layout, and replace one stable slot.
+
+Representative actions: `hconcat`, `editCompositionLayout`, `replaceCompositionChild`. [Documentation](https://ggaction.github.io/ggaction/recipes/composition/).
+
+### [Row and column facet grid](./facet-grid/)
+
+Cross two fields into an observed or complete grid with stable cell coordinates.
+
+Representative actions: `facetGrid`, `editFacetSource`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/#build-a-row-and-column-facet-grid).
+
+### [Repeated metric charts](./repeat-charts/)
+
+Repeat one positional encoding across fields with explicit scale and guide policies.
+
+Representative actions: `repeatCharts`, `editFacetSource`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/#repeat-a-positional-encoding-across-fields).
+
+### [Fitted long axis labels](./fitted-long-labels/)
+
+Fit chart margins after laying out long Cartesian axis labels.
+
+Representative actions: `createXAxis`. [Documentation](https://ggaction.github.io/ggaction/api/canvas/#fitcanvasoptions).
+
+### [Ordered category bars](./ordered-category-bar/)
+
+Order categorical x or y positions explicitly or from a stable aggregate summary.
+
+Representative actions: `orderCategories`, `removeCategoryOrder`. [Documentation](https://ggaction.github.io/ggaction/api/position/category-ordering/).
+
+### [Polar points](./polar-points/)
+
+Map quantitative fields to clockwise angle and radial distance.
+
+Representative actions: `encodeTheta`, `encodeR`, `encodePointRadius`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-points/).
+
 ### [Signed Horizon chart](./horizon-plot/)
 
 Define explicit source roles, then revise bands, baseline, palette, and appearance.
@@ -271,23 +456,11 @@ Switch between continuous color and numeric classes without stale guides.
 
 Representative actions: `createBarPlot`, `editScale`, `createLegend`. [Documentation](https://ggaction.github.io/ggaction/api/scales/discretized-color/#changing-color-scale-families).
 
-### [Faceted car histograms](./cars-origin-histogram-facet/)
-
-Each origin panel shows the observed distribution with its own final bars.
-
-Representative actions: `createBarMark`, `encodeHistogram`, `encodeColor`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/marks/#createbarmark).
-
 ### [Field-driven rule widths](./cars-weighted-rules/)
 
 Rule widths and opacity map quantitative observations to visible stroke properties.
 
 Representative actions: `createRuleMark`, `encodeX`, `encodeX2`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/marks/#createrulemark).
-
-### [Raincloud distribution](./raincloud-plot/)
-
-A half violin, summary, and raw observations share one category and measure frame.
-
-Representative actions: `createRaincloudPlot`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createraincloudplot).
 
 ### [Beeswarm distribution](./beeswarm-plot/)
 
@@ -343,29 +516,11 @@ Directional glyphs and a rug compare point and tick encodings.
 
 Representative actions: `encodeX`, `encodeY`, `createTickMark`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/encodings/#encodex).
 
-### [Binned cars heatmap](./cars-binned-heatmap/)
-
-Rectangular bins summarize the density of two quantitative car measurements.
-
-Representative actions: `createHeatmap`, `createTitle`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createheatmap).
-
 ### [Time bucket comparison](./time-unit-data/)
 
 Calendar buckets change temporal resolution while preserving original measurements.
 
 Representative actions: `createTimeUnitData`, `createScatterPlot`, `createTitle`. [Documentation](https://ggaction.github.io/ggaction/api/data/time-units/).
-
-### [Moving passenger windows](./airline-passenger-moving-windows/)
-
-Ordered moving summaries reveal changes in monthly passenger counts.
-
-Representative actions: `createTimeUnitData`, `createLineMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createtimeunitdata).
-
-### [Ranked cars](./cars-window-rank-scatterplot/)
-
-A partitioned window rank selects observations before drawing a scatterplot.
-
-Representative actions: `createWindowData`, `filterData`, `createScatterPlot`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createwindowdata).
 
 ### [Mixed chart dashboard](./cross-feature-dashboard/)
 
@@ -373,47 +528,11 @@ Complete statistical and coordinate-specific programs form a nested dashboard.
 
 Representative actions: `facet`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#facet).
 
-### [Cars by origin with jitter](./point-jitter/)
-
-Bounded deterministic offsets separate overlapping observations inside category slots.
-
-Representative actions: `createStripPlot`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createstripplot).
-
 ### [Dark theme scatterplot](./dark-theme-scatterplot/)
 
 A program theme changes default canvas, guide, and mark appearance together.
 
 Representative actions: `createPointMark`, `encodeX`, `encodeY`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/marks/#createpointmark).
-
-### [Country labels without overlap](./gapminder-country-labels/)
-
-Attached labels use bounded collision layout and leader lines.
-
-Representative actions: `createPointMark`, `encodeX`, `encodeY`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/marks/#createpointmark).
-
-### [Continuous aggregate bar color](./gapminder-continuous-color-bars/)
-
-A quantitative color scale maps a compatible aggregate for each bar.
-
-Representative actions: `filterData`, `createBarMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#filterdata).
-
-### [Discretized color intervals](./gapminder-discretized-color-scales/)
-
-Quantitative observations map to ordered color intervals and legend labels.
-
-Representative actions: `filterData`, `createPointMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#filterdata).
-
-### [Temporal and discrete positions](./gapminder-temporal-discrete-scales/)
-
-Band, point, and temporal mappings retain distinct positional meanings.
-
-Representative actions: `filterData`, `createBarMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#filterdata).
-
-### [Transformed quantitative positions](./gapminder-transformed-scales/)
-
-Nonlinear position scales compare measurements over unequal numeric ranges.
-
-Representative actions: `filterData`, `createPointMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#filterdata).
 
 ### [Repair missing observations](./repair-missing-observations/)
 

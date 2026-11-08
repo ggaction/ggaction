@@ -26,7 +26,7 @@ export async function buildExamplesReadme() {
   for (const chart of catalog) {
     await access(path.join(root, chart.example.replace(/^\//, "")));
   }
-  const charts = catalog.flatMap(chart => [
+  const entry = chart => [
     `### [${chart.title}](${localExampleUrl(chart.example)})`,
     "",
     chart.summary,
@@ -34,7 +34,9 @@ export async function buildExamplesReadme() {
     `Representative actions: ${actionList(chart.actions)}. ` +
       `[Documentation](${documentationUrl(chart.url)}).`,
     ""
-  ]);
+  ];
+  const charts = catalog.filter(chart => chart.figure_only !== true).flatMap(entry);
+  const figures = catalog.filter(chart => chart.figure_only === true).flatMap(entry);
   return [
     "# Examples",
     "",
@@ -55,9 +57,15 @@ export async function buildExamplesReadme() {
     "- [Extension TypeScript](./extension-typescript/) demonstrates strict custom",
     "  action authoring against the installed package.",
     "",
-    "## Maintained public chart programs",
+    "## Complete chart programs",
     "",
     ...charts,
+    "## Option illustrations",
+    "",
+    "These programs illustrate one option or workflow step and appear as figures on",
+    "the documentation page that owns them rather than in the chart gallery.",
+    "",
+    ...figures,
     "## Development fixtures",
     "",
     "The catalog includes every maintained public chart program. Getting Started",

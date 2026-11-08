@@ -43,6 +43,65 @@ See [Mark Style](./appearance/mark-style.md#stroke-caps-joins-and-rounded-rectan
 This page covers six common Cartesian facades. Use [Choose a Chart](./chart-picker.md)
 for all H0 chart families and their package and editing paths.
 
+## Example with real data
+
+<!-- showcase-program:global-temperature-heatmap:start -->
+
+{% include chart-example.html id="global-temperature-heatmap" %}
+
+`createGlobalTemperatureHeatmap` builds this chart from real data. It receives the rows of `data/showcase/global-temperatures.csv` (NASA GISTEMP, public domain) with numeric fields parsed.
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+// NASA GISTEMP global monthly anomalies relative to 1951–1980.
+export function createGlobalTemperatureHeatmap(temperatures) {
+  const cells = temperatures.flatMap(row => MONTHS.map(month => ({
+    year: row.Year,
+    month,
+    anomaly: row[month]
+  }))).filter(cell => Number.isFinite(cell.anomaly));
+
+  return chart()
+    .createCanvas({
+      width: 960,
+      height: 360,
+      margin: { top: 80, right: 140, bottom: 50, left: 60 }
+    })
+    .createData({ id: "temperatures", values: cells })
+    .createHeatmap({
+      id: "anomalies",
+      x: { field: "year", fieldType: "ordinal" },
+      y: { field: "month", fieldType: "ordinal", scale: { domain: MONTHS } },
+      color: {
+        field: "anomaly",
+        fieldType: "quantitative",
+        // A symmetric domain keeps zero anomaly at the white center.
+        scale: { type: "sequential", domain: [-1.4, 1.4], range: ["#2166ac", "#f7f7f7", "#b2182b"] }
+      },
+      guides: {
+        axes: {
+          x: {
+            title: { text: "Year" },
+            ticksAndLabels: { values: [1880, 1900, 1920, 1940, 1960, 1980, 2000, 2020] }
+          },
+          y: { title: false }
+        },
+        legend: { title: "Anomaly (°C)" }
+      }
+    })
+    .createTitle({
+      text: "Global surface temperature, 1880–2023",
+      subtitle: "Monthly anomaly from the 1951–1980 mean · NASA GISTEMP"
+    });
+}
+```
+
+<!-- showcase-program:global-temperature-heatmap:end -->
+
 ## Choose a facade
 
 | Facade | Shortest complete decision | Guides when omitted |

@@ -121,3 +121,42 @@ counts. Ungrouping removes a coupled group color; `color: false` removes it
 explicitly during another role edit. Line appearance, labels, scales, and guides remain editable through
 their ordinary lower-level actions.
 Axes removed after construction stay removed when the statistical source changes.
+
+## Example with real data
+
+<!-- showcase-program:cars-mpg-ecdf:start -->
+
+{% include chart-example.html id="cars-mpg-ecdf" %}
+
+`createCarsMpgEcdf` builds this chart from real data. It receives the rows of `data/cars.json` (vega-datasets).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// Cumulative share of cars at or below each fuel economy, by region of origin.
+export function createCarsMpgEcdf(cars) {
+  const measured = cars.filter(car => Number.isFinite(car.Miles_per_Gallon));
+
+  return chart()
+    .createCanvas({ width: 900, height: 460, margin: { top: 80, right: 140, bottom: 60, left: 70 } })
+    .createData({ id: "cars", values: measured })
+    .createECDFPlot({
+      field: "Miles_per_Gallon",
+      groupBy: "Origin",
+      color: { field: "Origin", scale: { domain: ["USA", "Europe", "Japan"], range: ["#2563eb", "#f97316", "#dc2626"] } },
+      line: { strokeWidth: 2.5 },
+      guides: {
+        axes: { x: { title: { text: "Miles per gallon" } }, y: { title: { text: "Share of cars at or below" } } },
+        legend: { title: "Origin" },
+        grid: { horizontal: true, vertical: true }
+      }
+    })
+    .createTitle({
+      text: "Half of American cars got under 19 miles per gallon",
+      subtitle: "Empirical cumulative distribution of 398 cars, 1970–1982"
+    });
+}
+```
+
+<!-- showcase-program:cars-mpg-ecdf:end -->

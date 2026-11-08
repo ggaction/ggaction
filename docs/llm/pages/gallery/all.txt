@@ -1,4 +1,5 @@
 # All Chart Examples
 
-This catalog includes every maintained public chart example. Start with the
+This catalog includes every complete chart example. Start with the
 [curated gallery](../../../gallery/) when you want a shorter representative set.
+Small illustrations of a single option stay on the API page that owns them.

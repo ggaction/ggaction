@@ -27,6 +27,11 @@ then [choose from every complete chart family](../../api/chart-picker/).
 Start with common Cartesian charts for relationships, comparisons, trends,
 and distributions.
 
+## Maps, networks, and flows
+
+Draw geographic data, hierarchies, networks, flows, calendars, and financial
+series with the same immutable action chain.
+
 ## Statistics and uncertainty
 
 Compose ordinary marks and derived data into higher-level statistical views.

@@ -1,0 +1,103 @@
+import { readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { SHOWCASE_CHARTS } from "../examples/registry.js";
+
+const root = fileURLToPath(new URL("../", import.meta.url));
+
+// The page that teaches each real-data showcase chart.
+export const SHOWCASE_PAGES = Object.freeze({
+  "world-gdp-map": "docs/api/geometry.md",
+  "world-earthquakes-map": "docs/api/geometry.md",
+  "global-temperature-heatmap": "docs/api/basic-charts.md",
+  "us-births-calendar": "docs/api/calendar.md",
+  "penguin-density-contours": "docs/api/contours.md",
+  "penguin-sankey": "docs/api/flows.md",
+  "country-similarity-network": "docs/api/graphs.md",
+  "world-population-treemap": "docs/api/hierarchy.md",
+  "world-population-sunburst": "docs/api/partition.md",
+  "flare-radial-tree": "docs/api/hierarchy.md",
+  "ibm-candlesticks": "docs/api/ohlc.md",
+  "temperature-waterfall": "docs/api/waterfall.md",
+  "gapminder-life-trails": "docs/api/trail.md",
+  "gapminder-country-table": "docs/api/table.md",
+  "penguin-mass-raincloud": "docs/api/distribution-plots.md",
+  "penguin-flipper-beeswarm": "docs/api/distribution-plots.md",
+  "cars-mpg-ecdf": "docs/tutorials/ecdf.md",
+  "life-expectancy-dumbbell": "docs/tutorials/endpoint-plots.md",
+  "fertility-lollipop": "docs/tutorials/endpoint-plots.md"
+});
+
+const DATASETS = Object.freeze({
+  worldCountries: "the parsed GeoJSON of `data/showcase/countries-110m.geojson` (Natural Earth, public domain)",
+  earthquakes: "the parsed GeoJSON of `data/showcase/earthquakes-2024-01.geojson` (USGS, public domain)",
+  globalTemperatures: "the rows of `data/showcase/global-temperatures.csv` (NASA GISTEMP, public domain) with numeric fields parsed",
+  usBirths: "the rows of `data/showcase/us-births-2000-2014.csv` (FiveThirtyEight, CC BY 4.0) with numeric fields parsed",
+  penguins: "the rows of `data/showcase/penguins.csv` (palmerpenguins, CC0) with numbers parsed and `NA` read as `null`",
+  flare: "the array in `data/showcase/flare.json` (Flare toolkit via vega-datasets, BSD-3-Clause)",
+  ibmDaily: "the parsed JSON response in `data/showcase/ibm-daily.json` (Alpha Vantage demo endpoint)",
+  gapminder: "the rows of `data/gapminder.json` (Gapminder via vega-datasets)",
+  cars: "the rows of `data/cars.json` (vega-datasets)"
+});
+
+function dataSentence(chart) {
+  if (typeof chart.data === "string") return `It receives ${DATASETS[chart.data]}.`;
+  const parts = Object.entries(chart.data).map(([key, id]) => `\`${key}\` is ${DATASETS[id]}`);
+  return `It receives one object: ${parts.join("; ")}.`;
+}
+
+export async function showcaseDisplay(chart) {
+  const code = await readFile(chart.programFile, "utf8");
+  return code.replaceAll('from "../../src/index.js"', 'from "ggaction"').trim();
+}
+
+/** Every generated showcase code block, keyed by its exact displayed source. */
+export async function showcaseDisplays() {
+  return new Set(await Promise.all(SHOWCASE_CHARTS.map(showcaseDisplay)));
+}
+
+async function section(chart) {
+  const name = chart.createProgram.name;
+  return [
+    `<!-- showcase-program:${chart.id}:start -->`,
+    "",
+    `{% include chart-example.html id="${chart.id}" %}`,
+    "",
+    `\`${name}\` builds this chart from real data. ${dataSentence(chart)}`,
+    "Draw the returned program with `render` in a browser or `renderToPNG` in Node.",
+    "",
+    "```javascript",
+    await showcaseDisplay(chart),
+    "```",
+    "",
+    `<!-- showcase-program:${chart.id}:end -->`
+  ].join("\n");
+}
+
+export async function generateDocShowcase({ check = false } = {}) {
+  const pages = new Map();
+  for (const chart of SHOWCASE_CHARTS) {
+    const relative = SHOWCASE_PAGES[chart.id];
+    if (relative === undefined) throw new Error(`Showcase chart "${chart.id}" needs an owning page.`);
+    const file = path.join(root, relative);
+    const source = pages.get(file) ?? await readFile(file, "utf8");
+    const pattern = new RegExp(
+      `<!-- showcase-program:${chart.id}:start -->[\\s\\S]*?<!-- showcase-program:${chart.id}:end -->`
+    );
+    if (!pattern.test(source)) throw new Error(`${relative} needs the ${chart.id} showcase marker.`);
+    const replacement = await section(chart);
+    pages.set(file, source.replace(pattern, () => replacement));
+  }
+  for (const [file, expected] of pages) {
+    const current = await readFile(file, "utf8");
+    if (check && current !== expected) {
+      throw new Error(`${path.relative(root, file)} has a stale showcase program. Run npm run docs:showcase.`);
+    }
+    if (!check && current !== expected) await writeFile(file, expected);
+  }
+}
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
+  await generateDocShowcase({ check: process.argv.includes("--check") });
+}

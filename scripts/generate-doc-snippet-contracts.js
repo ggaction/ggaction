@@ -3,6 +3,7 @@ import { readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { documentationCodeBlocks, documentationPrograms } from "./doc-snippets.js";
+import { showcaseDisplays } from "./generate-doc-showcase.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 async function markdownFiles(directory) {
@@ -23,13 +24,16 @@ function receiverNames(code) {
 }
 export async function generateDocSnippetContracts({ check = false } = {}) {
   const programs = await documentationPrograms();
+  const showcase = await showcaseDisplays();
   const files = (await Promise.all(["api", "advanced", "extension"].map(group => markdownFiles(path.join(root, "docs", group))))).flat();
   const records = [];
   for (const file of files) {
     const original = await readFile(file, "utf8");
     let source = original.replace(/<!-- snippet-context:start -->[\s\S]*?<!-- snippet-context:end -->\n*/g, "");
     const relative = path.relative(path.join(root, "docs"), file);
-    const blocks = documentationCodeBlocks(source).filter(block => ["javascript", "js"].includes(block.language));
+    // Showcase programs carry their own generated data sentence instead of a callout.
+    const blocks = documentationCodeBlocks(source).filter(block => ["javascript", "js"].includes(block.language) &&
+      !showcase.has(block.code));
     for (const [index, block] of blocks.entries()) {
       const registered = programs.find(program => program.file === relative && program.code === block.code);
       const receivers = receiverNames(block.code);

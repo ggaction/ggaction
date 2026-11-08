@@ -55,7 +55,8 @@ const expectedFeaturedCount = (chartCatalog.match(/^  featured: true$/gm) ?? [])
 const expectedGalleryFeaturedCount = (
   chartCatalog.match(/^  gallery_featured: true$/gm) ?? []
 ).length;
-const expectedGalleryCount = (chartCatalog.match(/^- id:/gm) ?? []).length;
+const expectedGalleryCount = chartCatalog.split(/^(?=- id:)/m)
+  .filter(record => record.startsWith("- id:") && !/^  figure_only: true$/m.test(record)).length;
 await mkdir(artifactRoot, { recursive: true });
 
 async function files(directory) {

@@ -4,6 +4,7 @@ const ALLOWED_KEYS = new Set([
   "caption",
   "example",
   "featured",
+  "figure_only",
   "gallery_featured",
   "height",
   "home_group",
@@ -149,10 +150,12 @@ export function validateDocChartCatalog(records) {
     if (!record.image.endsWith(".png") || !record.thumbnail.endsWith("-thumb.png")) {
       throw new Error(`Chart "${record.id}" requires PNG image and thumbnail paths.`);
     }
-    const invalidFeatured = [record.featured, record.gallery_featured]
-      .some(value => value !== undefined && value !== true);
+    const invalidFeatured = [record.featured, record.gallery_featured, record.figure_only]
+      .some(value => value !== undefined && value !== true) ||
+      (record.figure_only === true &&
+        (record.featured === true || record.gallery_featured === true));
     const invalidGroup = record.home_group !== undefined &&
-      !["essentials", "statistical", "coordinates", "other"].includes(record.home_group);
+      !["essentials", "statistical", "coordinates", "domains", "other"].includes(record.home_group);
     if (invalidFeatured || invalidGroup) {
       throw new Error(`Chart "${record.id}" has invalid discovery metadata.`);
     }
@@ -177,7 +180,7 @@ export function validateDocChartCatalog(records) {
     );
   }
   requireUnique(records.map(record => record.example), "example");
-  for (const group of ["essentials", "statistical", "coordinates", "other"]) {
+  for (const group of ["essentials", "statistical", "coordinates", "domains", "other"]) {
     requireUnique(
       records
         .filter(record => record.home_group === group && record.home_order !== undefined)

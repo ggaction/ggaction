@@ -1,0 +1,134 @@
+# Distribution Plots
+
+Use these plots when the individual observations matter as much as their
+summary. Each one is a single action that builds ordinary Point, Area, and
+Rule marks, so the usual editing, selection, and export actions keep working.
+
+| Question | Action | What it draws |
+| --- | --- | --- |
+| Where does every observation fall in each category? | `createStripPlot` | One point per row on a category slot, with optional seeded jitter. |
+| Same, but without any overlap? | `createBeeswarmPlot` | One point per row, packed so that glyphs do not overlap. |
+| Shape, summary, and observations together? | `createRaincloudPlot` | A half density, a box or interval summary, and the raw points. |
+| Share of values at or below each value? | `createECDFPlot` | A step line per group. See the [ECDF tutorial](../../../tutorials/ecdf/). |
+| Density shape only? | `createViolinPlot`, `createDensityPlot` | See [violin plots](../../../api/violin-plots/) and [statistical transforms](../../../api/data/statistical-transforms/). |
+| Five-number summary only? | `createBoxPlot` | See [box plots](../../../api/box-plots/). |
+
+## Raincloud plot
+
+`createPenguinMassRaincloud` builds this chart from real data. It receives the rows of `data/showcase/penguins.csv` (palmerpenguins, CC0) with numbers parsed and `NA` read as `null`.
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// Palmer penguins with a recorded body mass.
+export function createPenguinMassRaincloud(penguins) {
+  const weighed = penguins.filter(row => Number.isFinite(row.body_mass_g))
+    .map(row => ({ species: row.species, massKg: row.body_mass_g / 1000 }));
+
+  return chart()
+    .createCanvas({ width: 900, height: 460, margin: { top: 80, right: 40, bottom: 60, left: 110 } })
+    .createData({ id: "penguins", values: weighed })
+    .createRaincloudPlot({
+      category: { field: "species", fieldType: "nominal", scale: { domain: ["Adelie", "Chinstrap", "Gentoo"] } },
+      value: { field: "massKg", scale: { zero: false, domain: [2.5, 6.5] } },
+      orientation: "horizontal",
+      // A seeded strip keeps all 342 birds visible where a packed swarm would not fit.
+      points: { type: "strip", jitter: { maxOffset: { band: 0.12 }, seed: 1 }, point: { radius: 2, opacity: 0.6 } },
+      color: { field: "species", scale: { domain: ["Adelie", "Chinstrap", "Gentoo"], range: ["#f97316", "#a855f7", "#0d9488"] } },
+      guides: {
+        axes: { x: { title: { text: "Body mass (kg)" } }, y: { title: false } },
+        legend: false,
+        grid: { horizontal: false, vertical: true }
+      }
+    })
+    .createTitle({
+      text: "Gentoo penguins are the heaviest",
+      subtitle: "Density, box summary and every weighed bird · 342 Palmer penguins"
+    });
+}
+```
+
+`createRaincloudPlot({ category, value })` needs a categorical field and a
+quantitative field. By default it is vertical, draws the density on the
+`"before"` side, adds a box summary, and packs the points as a beeswarm.
+
+- `orientation: "horizontal"` puts categories on the y axis, as above.
+- `density: false`, `summary: false`, or `points: false` removes one layer.
+- `summary: { type: "interval" }` replaces the box with a center point and interval.
+- `color` accepts the category field or a fixed `{ value: "#345678" }`; every
+ layer uses the same color.
+
+A packed beeswarm needs room for every glyph. With a few hundred rows in a
+narrow slot, packing fails with *Point packing … cannot avoid glyph overlap*.
+Switch to a seeded strip, as the example does:
+`points: { type: "strip", jitter: { maxOffset: { band: 0.12 }, seed: 1 } }`.
+Change the plot later with `editRaincloudPlot`; omitted options keep their
+current values.
+
+## Beeswarm plot
+
+`createPenguinFlipperBeeswarm` builds this chart from real data. It receives the rows of `data/showcase/penguins.csv` (palmerpenguins, CC0) with numbers parsed and `NA` read as `null`.
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// Each point is one penguin, packed so that no two overlap.
+export function createPenguinFlipperBeeswarm(penguins) {
+  const measured = penguins.filter(row => Number.isFinite(row.flipper_length_mm) && row.sex !== null)
+    .map(row => ({ species: row.species, sex: row.sex, flipper: row.flipper_length_mm }));
+
+  return chart()
+    .createCanvas({ width: 900, height: 460, margin: { top: 80, right: 140, bottom: 60, left: 70 } })
+    .createData({ id: "penguins", values: measured })
+    .createBeeswarmPlot({
+      x: { field: "species", fieldType: "nominal", scale: { domain: ["Adelie", "Chinstrap", "Gentoo"] } },
+      y: { field: "flipper", scale: { zero: false, domain: [170, 235] } },
+      color: { field: "sex", scale: { domain: ["female", "male"], range: ["#e11d48", "#2563eb"] } },
+      point: { radius: 3, opacity: 0.85, stroke: "#ffffff", strokeWidth: 0.5 },
+      guides: {
+        axes: { x: { title: false }, y: { title: { text: "Flipper length (mm)" } } },
+        legend: { title: "Sex" },
+        grid: { horizontal: true, vertical: false }
+      }
+    })
+    .createTitle({
+      text: "Flipper length of 333 penguins",
+      subtitle: "Beeswarm packing keeps every bird visible · males have longer flippers in each species"
+    });
+}
+```
+
+`createBeeswarmPlot({ x, y })` needs one categorical and one quantitative
+channel, in either order. Points keep their exact measured position; packing
+only moves them along the category slot.
+
+- `packing.padding` sets the gap between glyphs in pixels.
+- `packing.overflow: "overlap"` keeps drawing when a slot is too narrow
+ instead of failing.
+- `packing: false` keeps the points on the category center.
+- `color`, `size`, and `shape` accept the same channels as a scatterplot.
+
+Packing is a separate action, [`packPoints`](../../../reference/actions/marks/#packpoints),
+so you can also pack an existing Point mark.
+
+## Strip plot
+
+`createStripPlot({ x, y })` draws one point per row without packing. Add
+`jitter: { maxOffset: { band: 0.2 }, seed: 1 }` to spread points along the
+category slot. The same seed always gives the same positions, so saved and
+re-rendered charts match. With only one measure, `createStripPlot({ x })`
+draws a single centered strip and jitter is given in pixels:
+`jitter: { maxOffset: { pixels: 6 } }`.
+
+## Related
+
+- [Box plots](../../../api/box-plots/), [violin plots](../../../api/violin-plots/), and
+ [gradient plots](../../../api/gradient-plots/) summarize a distribution.
+- [Histogram tutorial](../../../tutorials/histogram/) and
+ [density area tutorial](../../../tutorials/density-area/) bin or smooth one field.
+- [Endpoint plots](../../../tutorials/endpoint-plots/) compare two values per category.
+- Exact options: [`createStripPlot`](../../../reference/actions/charts-data/#createstripplot),
+ [`createBeeswarmPlot`](../../../reference/actions/charts-data/#createbeeswarmplot),
+ [`createRaincloudPlot`](../../../reference/actions/charts-data/#createraincloudplot).

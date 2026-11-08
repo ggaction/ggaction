@@ -484,6 +484,13 @@
     "description": "Use createViolinPlot to compare kernel density profiles inside categorical bands.",
     "image": "/assets/images/cars-acceleration-violins.png"
   },
+  "/api/distribution-plots/": {
+    "title": "Distribution Plots",
+    "source": "docs/api/distribution-plots.md",
+    "editSource": "docs/api/distribution-plots.md",
+    "description": "Show every observation, its density, and its summary with strip, beeswarm, and raincloud plots.",
+    "image": "/assets/images/penguin-mass-raincloud.png"
+  },
   "/api/guides/": {
     "title": "Guides",
     "source": "docs/api/guides.md",
@@ -1140,7 +1147,8 @@
     "title": "Geometry and Projections",
     "source": "docs/api/geometry.md",
     "editSource": "docs/api/geometry.md",
-    "description": "Keep geographic or planar shapes in an immutable resource with explicit feature identity."
+    "description": "Keep geographic or planar shapes in an immutable resource with explicit feature identity.",
+    "image": "/assets/images/world-gdp-map.png"
   },
   "/api/contours/": {
     "title": "Contours and Two-Dimensional Density",

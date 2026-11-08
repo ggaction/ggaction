@@ -230,6 +230,10 @@
   url: /api/violin-plots/
   nav_group: statistics
   nav_order: 6
+- title: Distribution Plots
+  url: /api/distribution-plots/
+  nav_group: statistics
+  nav_order: 7
 - title: Guides
   url: /api/guides/
   parent: /api/
