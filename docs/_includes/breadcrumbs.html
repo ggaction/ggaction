@@ -8,9 +8,17 @@
   {% if parent_entry and parent_entry.parent %}
     {% assign grandparent_entry = site.data.pages | where: "url", parent_entry.parent | first %}
   {% endif %}
+  {% assign top_entry = grandparent_entry | default: parent_entry | default: current_entry %}
+  {% assign group_entry = nil %}
+  {% if top_entry.nav_group and top_entry.nav_group != "start" and top_entry.nav_group != "chart-api" %}
+    {% assign group_entry = site.data.navigation_groups | where: "id", top_entry.nav_group | first %}
+  {% endif %}
   <nav class="docs-breadcrumbs" aria-label="Breadcrumb">
     <ol>
       <li><a href="{{ '/' | relative_url }}">Docs</a></li>
+      {% if group_entry %}
+        <li>{{ group_entry.title }}</li>
+      {% endif %}
       {% if grandparent_entry %}
         <li><a href="{{ grandparent_entry.url | relative_url }}">{{ grandparent_entry.title }}</a></li>
       {% endif %}

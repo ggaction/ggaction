@@ -186,11 +186,22 @@ try {
     await desktop.locator(".docs-chart-gallery__title").allInnerTexts(),
     [
       "Scatterplot",
+      "Animated bubble chart",
       "Line chart",
       "Heatmap",
+      "Temperature anomaly heatmap",
       "Bar chart",
       "Histogram",
+      "World choropleth map",
+      "Earthquake map",
+      "Sankey diagram",
+      "Population treemap",
+      "Similarity network",
+      "Daily births calendar",
+      "Candlestick chart with volume",
+      "Density contours with points",
       "Regression scatterplot",
+      "Raincloud plot",
       "Box plot",
       "Parallel coordinates",
       "Rose chart"
@@ -427,7 +438,7 @@ try {
   });
   assert.deepEqual(
     await desktop.locator(".docs-breadcrumbs li").allInnerTexts(),
-    ["Docs", "Chart API", "Basic Charts"]
+    ["Docs", "Chart Types", "Basic Charts"]
   );
   await assertFragmentPlacement(desktop, "#createlineplot", "desktop direct h2 fragment");
   await desktop.screenshot({
