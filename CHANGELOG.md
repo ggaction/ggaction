@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.29] - 2026-11-08
+
 - Publish the documentation release recorded in the unpublished 0.0.28 candidate below; the runtime is the same as 0.0.27.
 - Release verification treats the animated documentation GIF like the PNG figures, whose native Canvas raster bytes vary across operating systems, and a test checks its format, size and frame count.
 
