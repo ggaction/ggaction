@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.28] - 2026-11-08
+
 This release changes documentation and examples only; the runtime is the same as 0.0.27.
 
 ### Documentation
