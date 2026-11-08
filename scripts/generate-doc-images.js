@@ -4,10 +4,14 @@ import { relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { createCanvas, loadImage } from "@napi-rs/canvas";
+import gifenc from "gifenc";
+import { render } from "ggaction";
+import { exportAnimationFrames, planTransition } from "ggaction/animation";
 import { renderToPNG } from "ggaction/png";
 import { createGettingStartedChart } from
   "../examples/getting-started/program.js";
 import { publicExamples } from "../examples/registry.js";
+import { createGapminderBubbleYears } from "../examples/gapminder-bubbles/program.js";
 import { SHOWCASE_DATASETS, parseShowcaseDataset } from "../examples/showcase-data.js";
 
 const thumbnailMaxWidth = 640;
@@ -66,6 +70,57 @@ export const guideImages = Object.freeze([
     createProgram: createGettingStartedChart
   })
 ]);
+
+// Animated figures play each canonical transition at fixed frame times.
+export const docAnimations = Object.freeze([
+  Object.freeze({
+    id: "gapminder-bubbles-animation",
+    width: 820,
+    height: 500,
+    transitionMs: 700,
+    frameTimesMs: [0, 100, 200, 300, 400, 500, 600],
+    createPrograms: () => createGapminderBubbleYears(structuredClone(data.gapminder))
+  })
+]);
+
+async function generateDocAnimation(animation) {
+  const { GIFEncoder, applyPalette, quantize } = gifenc;
+  const canvas = createCanvas(animation.width, animation.height);
+  const context = canvas.getContext("2d");
+  const pixels = program => {
+    context.clearRect(0, 0, animation.width, animation.height);
+    render(program, context);
+    return new Uint8Array(context.getImageData(0, 0, animation.width, animation.height).data);
+  };
+  const programs = animation.createPrograms();
+  const frames = [];
+  for (const [index, from] of programs.slice(0, -1).entries()) {
+    const plan = planTransition({
+      from,
+      to: programs[index + 1],
+      options: { durationMs: animation.transitionMs, easing: "cubic-in-out" }
+    });
+    for (const [step, frame] of exportAnimationFrames(plan, { timesMs: animation.frameTimesMs }).entries()) {
+      frames.push({ pixels: pixels(frame), delay: step === 0 ? 500 : 70 });
+    }
+  }
+  frames.push({ pixels: pixels(programs.at(-1)), delay: 2500 });
+  const sample = new Uint8Array(frames[0].pixels.length * 2);
+  sample.set(frames[0].pixels);
+  sample.set(frames.at(-1).pixels, frames[0].pixels.length);
+  const palette = quantize(sample, 128);
+  const gif = GIFEncoder();
+  for (const frame of frames) {
+    gif.writeFrame(applyPalette(frame.pixels, palette), animation.width, animation.height,
+      { palette, delay: frame.delay });
+  }
+  gif.finish();
+  await writeFile(
+    fileURLToPath(new URL(`../docs/assets/images/${animation.id}.gif`, import.meta.url)),
+    gif.bytes()
+  );
+  process.stdout.write(`generated ${animation.id}.gif\n`);
+}
 
 const allImages = [...showcaseImages, ...chartImages, ...tutorialImages, ...guideImages];
 
@@ -171,6 +226,7 @@ export async function generateDocImages() {
     await writeFile(thumbnailOutput, thumbnail.toBuffer("image/png"));
     process.stdout.write(`generated ${chart.id}-thumb.png\n`);
   }
+  for (const animation of docAnimations) await generateDocAnimation(animation);
   const manifest = fileURLToPath(
     new URL("../docs/assets/images/manifest.json", import.meta.url)
   );

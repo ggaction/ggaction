@@ -20,8 +20,9 @@ one part. Every package entry includes TypeScript declarations.
 
 ## Start here
 
-Learn [how the same chart stays editable across authoring levels](./tutorials/hierarchical-authoring.md),
-then [choose from every complete chart family](./api/chart-picker.md).
+New here? [Build your first chart](./getting-started.md), then
+[make it interactive](./tutorials/interactive-chart.md) or
+[choose from every chart family](./api/chart-picker.md).
 
 <div class="docs-entry-grid">
   <a href="./getting-started/">
@@ -35,6 +36,14 @@ then [choose from every complete chart family](./api/chart-picker.md).
   <a href="./reference/actions/">
     <strong>Find an action</strong>
     <span>Look up exact signatures, defaults, inference, and related guides.</span>
+  </a>
+  <a href="./tutorials/interactive-chart/">
+    <strong>Make a chart interactive</strong>
+    <span>Add tooltips, brushing, legend toggles, and animated data updates in a web page.</span>
+  </a>
+  <a href="./api/geometry/">
+    <strong>Draw a map</strong>
+    <span>Project GeoJSON countries, color them by a value, and place points by longitude and latitude.</span>
   </a>
   <a href="./mcp/">
     <strong>Connect an LLM locally</strong>

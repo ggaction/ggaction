@@ -17,6 +17,37 @@ tooltips, brushing and animated updates, see [Live charts](live.md).
 See the [complete browser recipe](../recipes/inspect-chart.md) for setup.
 This is an advanced controller function, not a chainable authoring action.
 
+## Start here
+
+Three rules apply to every session:
+
+- **The session never draws.** Render the starting program yourself, then
+  subscribe and render `event.current` whenever `event.phase === "commit"`.
+  Nothing on screen changes until you do. With an SVG surface, insert the new
+  SVG and call `session.mount(newSvg)` again after each commit.
+- **Hit testing uses chart coordinates.** If CSS scales the element, for
+  example `canvas { width: 100% }`, pass the matching
+  `mount(element, { rootTransform })`; otherwise clicks land on the wrong items.
+- **Interactions edit the program.** Selections, filters and legend toggles
+  produce new immutable programs, so undo, redo, saving and linked views work
+  on the same state you render.
+
+Common tasks, each with a complete browser example:
+
+| Task | Section |
+| --- | --- |
+| Click to select items | [Automatic click selection](#automatic-click-selection) |
+| Drag a rectangle or lasso | [Brush or lasso an existing selection](#brush-or-lasso-an-existing-selection) |
+| Toggle categories from the legend | [Hide and restore categories from a legend](#hide-and-restore-categories-from-a-legend) |
+| Show a tooltip | [Accessible tooltips and touch](#accessible-tooltips-and-touch) |
+| Filter or link another chart | [Filter another view from a selection](#filter-another-view-from-a-selection) |
+| Pan and zoom a map | [Navigate a map with drag, wheel, pinch and keyboard](#navigate-a-map-with-drag-wheel-pinch-and-keyboard) |
+| Drag graph nodes | [Move graph nodes with pointer or keyboard](#move-graph-nodes-with-pointer-or-keyboard) |
+| Undo and redo | [Undo, redo and reset](#undo-redo-and-reset) |
+
+If you only need these behaviors on a page and do not need to keep each state,
+[`ggaction/live`](live.md) wires them up and redraws for you.
+
 ## Create and mount
 
 Continue from a rendered `program` and its Canvas or SVG root element:

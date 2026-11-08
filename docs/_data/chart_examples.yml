@@ -1,3 +1,23 @@
+- id: gapminder-bubbles
+  example: /examples/gapminder-bubbles/
+  title: Animated bubble chart
+  image: /assets/images/gapminder-bubbles.png
+  alt: Gapminder bubble chart of fertility against life expectancy in 2005 with bubbles sized by population and colored by region
+  width: 1640
+  height: 1000
+  thumbnail: /assets/images/gapminder-bubbles-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 390
+  caption: Countries sized by population; the tutorial adds tooltips, brushing and a fifty-year animation.
+  summary: Make a chart interactive in a web page and animate it through time.
+  actions: createScatterPlot · addTooltip · addBrush · setData
+  tasks: relationship trend interactive
+  url: /tutorials/interactive-chart/
+  tutorial_order: 15
+  gallery_featured: true
+  home_group: essentials
+  home_order: 11
+  featured: true
 - id: world-gdp-map
   example: /examples/world-gdp-map/
   title: World choropleth map

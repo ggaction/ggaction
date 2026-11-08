@@ -1,9 +1,70 @@
 # Animate and Export Chart Frames
 
+![Gapminder bubble chart moving year by year from 1955 to 2005](../../../assets/images/gapminder-bubbles-animation.gif)
+
 Prepare a transition between two immutable charts, sample it at an explicit time,
 and pass the returned frame directly to Canvas, SVG, PNG, or PDF. The
 `ggaction/animation` entry is browser-safe. These functions are advanced chart
 authoring APIs; they leave both source programs and their action traces unchanged.
+
+Choose the shortest path that fits:
+
+| You want to | Use |
+| --- | --- |
+| Animate a chart that is already on the page when its data changes | `setData` or `animateTo` from [`ggaction/live`](../../../api/live/); see the [interactive chart tutorial](../../../tutorials/interactive-chart/) |
+| Play one transition between two programs on a `<canvas>` | `playAnimation(from, to, canvas)` from `ggaction/live` |
+| Control timing yourself, or export frames | `planTransition`, `createAnimationPlayer`, and `exportAnimationFrames` on this page |
+
+## Animate a data change in a browser
+
+```html
+<canvas id="chart" aria-label="Gapminder bubbles moving from 1955 to 2005"></canvas>
+```
+
+> **Executable complete.** Use this section's HTML and JavaScript together with ggaction installed and gapminder.json served from the site root.
+
+```javascript
+import { chart, render } from "ggaction";
+import { createAnimationPlayer, planTransition } from "ggaction/animation";
+
+const rows = await fetch("/gapminder.json").then(response => response.json());
+const countries = year => rows.filter(row => row.year === year);
+
+const before = chart()
+  .createCanvas({ width: 640, height: 400, margin: { top: 30, right: 30, bottom: 60, left: 70 } })
+  .createData({ id: "countries", keyField: "country", values: countries(1955) })
+  .createScatterPlot({
+    x: { field: "fertility", scale: { domain: [0, 9], nice: false } },
+    y: { field: "life_expect", scale: { domain: [20, 85], nice: false } },
+    size: { field: "pop", scale: { domain: [0, 1.4e9], range: [8, 1200] } },
+    guides: { legend: false }
+  });
+const after = before.reviseData({ source: "countries", id: "countries-2005", values: countries(2005) });
+
+const context = document.querySelector("#chart").getContext("2d");
+render(before, context);
+const player = createAnimationPlayer({
+  plan: planTransition({ from: before, to: after, options: { durationMs: 1500, easing: "cubic-in-out" } }),
+  clock: {
+    now: () => performance.now(),
+    requestFrame: callback => requestAnimationFrame(callback),
+    cancelFrame: handle => cancelAnimationFrame(handle)
+  },
+  render: frame => render(frame, context)
+});
+player.play();
+const program = after;
+```
+
+Three rules make the motion readable:
+
+- Give the rows a `keyField`. Items with the same key move; without keys the
+ old items fade out and the new ones fade in.
+- Derive the second chart from the first with `reviseData`, naming the
+ dataset it replaces as `source`. When you revise again, the `source` is the
+ previous revision's `id`; naming an older dataset leaves the marks on the
+ older rows.
+- Fix the scale domains when the axes should stay still.
 
 ## Prepare, save, and sample
 

@@ -2,6 +2,24 @@
   {
     "file": "api/animation.md",
     "block": 1,
+    "heading": "Animate a data change in a browser",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [
+      "performance"
+    ],
+    "resources": [
+      "source: \"countries\""
+    ],
+    "prerequisites": "Use this section's HTML and JavaScript together with ggaction installed and gapminder.json served from the site root.",
+    "host": "paired-html",
+    "htmlSha256": "bb5f00250af20b7d6820b91cf338759796f886fc27de36199c6e31d0c8458714",
+    "sha256": "e3ff5defc0b063781b1d0ef4ca37b21ddbe7afc646523b18fe0eec84afe47e4a",
+    "executable": true
+  },
+  {
+    "file": "api/animation.md",
+    "block": 2,
     "heading": "Prepare, save, and sample",
     "mode": "complete",
     "environment": "node-esm",
@@ -15,7 +33,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 2,
+    "block": 3,
     "heading": "Sample materialized batches",
     "mode": "complete",
     "environment": "node-esm",
@@ -27,7 +45,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 3,
+    "block": 4,
     "heading": "Preserve geographic capacity in saved animations",
     "mode": "complete",
     "environment": "node-esm",
@@ -39,7 +57,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 4,
+    "block": 5,
     "heading": "Move axes, labels, and grids",
     "mode": "complete",
     "environment": "node-esm",
@@ -51,7 +69,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 5,
+    "block": 6,
     "heading": "Move axes, labels, and grids",
     "mode": "complete",
     "environment": "node-esm",
@@ -65,7 +83,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 6,
+    "block": 7,
     "heading": "Move axes, labels, and grids",
     "mode": "complete",
     "environment": "node-esm",
@@ -77,7 +95,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 7,
+    "block": 8,
     "heading": "Move axes, labels, and grids",
     "mode": "complete",
     "environment": "node-esm",
@@ -89,7 +107,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 8,
+    "block": 9,
     "heading": "Move axes, labels, and grids",
     "mode": "complete",
     "environment": "node-esm",
@@ -101,7 +119,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 9,
+    "block": 10,
     "heading": "Request larger node limits",
     "mode": "complete",
     "environment": "node-esm",
@@ -115,7 +133,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 10,
+    "block": 11,
     "heading": "Render the same frame",
     "mode": "fragment",
     "environment": "esm-context",
@@ -127,7 +145,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 11,
+    "block": 12,
     "heading": "Play with an explicit clock",
     "mode": "fragment",
     "environment": "browser-module",

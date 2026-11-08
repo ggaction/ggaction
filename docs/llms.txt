@@ -117,6 +117,7 @@ requirements after resolving each part.
 - Bounded MCP resource-catalog schema: ./schemas/mcp-resources.schema.json
 - Exact public ChartProgram declaration: ./types/program.d.ts
 - Tutorials: ./tutorials/
+- Make a Chart Interactive: ./tutorials/interactive-chart/
 - Polar Line and Radar Tutorial: ./tutorials/polar-lines/
 - Polar Arc Tutorial: ./tutorials/polar-arcs/
 - Area and Series Layout: ./tutorials/area-layout/

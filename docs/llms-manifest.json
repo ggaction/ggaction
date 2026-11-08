@@ -14,7 +14,7 @@
     "manifest": "doc-provenance.json"
   },
   "bundle": "llms-full.txt",
-  "sectionCount": 188,
+  "sectionCount": 189,
   "sections": [
     {
       "order": 1,
@@ -30,8 +30,8 @@
         "alternative-coordinates",
         "go-deeper"
       ],
-      "bytes": 2544,
-      "sha256": "dcef4f36fc2d9367b2a33e46d5f7aeb3f868a3d4ba546135af0bfdca13fa2f20"
+      "bytes": 2810,
+      "sha256": "0a48329dc1ca82a49e198e04624b99626fe8b8a713952de2cd08b9a73b3e0d19"
     },
     {
       "order": 2,
@@ -47,8 +47,8 @@
         "runnable-repository-examples",
         "next"
       ],
-      "bytes": 6774,
-      "sha256": "1082b03a6ff1bf5881206852b5c6da183d7a37cac0db55273242f5780d3690f3"
+      "bytes": 6732,
+      "sha256": "9ec8e12328418e793348df0bf7c671771e064eeb845d4d9467418781b1f00fcb"
     },
     {
       "order": 3,
@@ -110,11 +110,30 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 5473,
-      "sha256": "4e57a9a71d97e19147738886c24e420986658f77d56dbe0fd13c679f13b9c1bd"
+      "bytes": 5389,
+      "sha256": "2f5abe50c9f2e1fa8c9014ffb74b672d41e1f242fd9527ad651a28dae77cd3dd"
     },
     {
       "order": 7,
+      "title": "Make a Chart Interactive",
+      "route": "/tutorials/interactive-chart/",
+      "source": "tutorials/interactive-chart.md",
+      "headings": [
+        "make-a-chart-interactive",
+        "1-set-up-a-page",
+        "2-draw-the-chart",
+        "complete-program",
+        "3-what-each-interaction-does",
+        "4-animate-the-data",
+        "5-save-the-result",
+        "the-same-chart-without-live-updates",
+        "related"
+      ],
+      "bytes": 7956,
+      "sha256": "532260395d3ba5c700c45836e436caae140f6f351422e07d92f0fa76b15df30b"
+    },
+    {
+      "order": 8,
       "title": "Polar Point Tutorial",
       "route": "/tutorials/polar-points/",
       "source": "tutorials/polar-points.md",
@@ -126,11 +145,11 @@
         "current-boundary",
         "related"
       ],
-      "bytes": 3562,
-      "sha256": "a69f830a586445ef6460ff486f79a88274ccd71b40b7246a18f5d32115b9b668"
+      "bytes": 3541,
+      "sha256": "e6a32769c923ed78408423130d527cb6abf514939d47fbf7f884b942c2907857"
     },
     {
-      "order": 8,
+      "order": 9,
       "title": "Polar Line and Radar Tutorial",
       "route": "/tutorials/polar-lines/",
       "source": "tutorials/polar-lines.md",
@@ -141,11 +160,11 @@
         "closed-radar-paths",
         "related"
       ],
-      "bytes": 3449,
-      "sha256": "d0cb3180d5fd619f0cd850166855e0e35d504d616993f58931efc32a23ca3131"
+      "bytes": 3428,
+      "sha256": "effe17a69e0827f2ce1cd4f13e5d866b97a6dd5552e16b41b83fb0227f6601cf"
     },
     {
-      "order": 9,
+      "order": 10,
       "title": "Polar Arc Tutorial",
       "route": "/tutorials/polar-arcs/",
       "source": "tutorials/polar-arcs.md",
@@ -162,11 +181,11 @@
         "editing-an-arc",
         "related"
       ],
-      "bytes": 9986,
-      "sha256": "fbfb27b2d035ae9f4bf1ca56734a957f08b2d85f6c53bbf1b674ee5dfcc1f27a"
+      "bytes": 9965,
+      "sha256": "8fef9fbaec128633a1f3c4f7ee0af1114105ea0d7aa97aaf8084d097ce723e6a"
     },
     {
-      "order": 10,
+      "order": 11,
       "title": "Line Chart Tutorial",
       "route": "/tutorials/line-chart/",
       "source": "tutorials/line-chart.md",
@@ -179,11 +198,11 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4781,
-      "sha256": "50a41ccd44b44ff2009ec8e4599b18bf0dc4a876437630c2b81fbef44ad5c1d9"
+      "bytes": 4697,
+      "sha256": "c52bf9fff6fc8c3091c1a0eef1f280243d6fb6d7be98d19d1a348b40c2c0cbd3"
     },
     {
-      "order": 11,
+      "order": 12,
       "title": "Histogram Tutorial",
       "route": "/tutorials/histogram/",
       "source": "tutorials/histogram.md",
@@ -194,11 +213,11 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4380,
-      "sha256": "647be1a9f958da25124fbb897a31d4a064e300732e3832e004c81baa43d45520"
+      "bytes": 4296,
+      "sha256": "6b62bb8f5c1b09b4d850c5cd15aeea392fbcafee9c477a3b80eb6ed5c8a50819"
     },
     {
-      "order": 12,
+      "order": 13,
       "title": "Bar Chart Tutorial",
       "route": "/tutorials/grouped-bar/",
       "source": "tutorials/grouped-bar.md",
@@ -210,11 +229,11 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4153,
-      "sha256": "50469d6b77eb67ec6196ff31010f888f2c6869ca79544e69758575481e9c6ced"
+      "bytes": 4069,
+      "sha256": "050f2ff3e47756e5741b189bca2daea900d2000fedaa14f0081ea63a0a1c4c69"
     },
     {
-      "order": 13,
+      "order": 14,
       "title": "Regression Scatterplot Tutorial",
       "route": "/tutorials/regression-scatterplot/",
       "source": "tutorials/regression-scatterplot.md",
@@ -225,11 +244,11 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4216,
-      "sha256": "0d938fa5000607c2e46722b825a9ac8fb331b05a4460bc732377c29c24d896f3"
+      "bytes": 4153,
+      "sha256": "59de07d750a05cd64c1e4810767d1759aaa9d822feaac0ee57dd225314ff784a"
     },
     {
-      "order": 14,
+      "order": 15,
       "title": "Area and Series Layout",
       "route": "/tutorials/area-layout/",
       "source": "tutorials/area-layout.md",
@@ -242,11 +261,11 @@
         "use-a-moving-streamgraph-baseline",
         "shared-layout-policies"
       ],
-      "bytes": 5313,
-      "sha256": "a0a91858e2b0355ba07cffbde2a2ea5fcfb0e42e8332d0c2d2d535899fd9de3d"
+      "bytes": 5271,
+      "sha256": "2e78de42e7408bc68aa8f5d8bc7622d99f2d7aae2ca2dff785fb91772b741aa7"
     },
     {
-      "order": 15,
+      "order": 16,
       "title": "Density Area Tutorial",
       "route": "/tutorials/density-area/",
       "source": "tutorials/density-area.md",
@@ -259,11 +278,11 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 6267,
-      "sha256": "87085f5d0fcafea3f713a862e8e22041a6c32aa62eecb77b82cd0012c4bee053"
+      "bytes": 6162,
+      "sha256": "061b6ea250a92dfa25e25a038b74e24d6ac92d43fec500a7d90129213f755243"
     },
     {
-      "order": 16,
+      "order": 17,
       "title": "Horizon Chart Tutorial",
       "route": "/tutorials/horizon/",
       "source": "tutorials/horizon.md",
@@ -275,11 +294,11 @@
         "revise-without-mutation",
         "key-action-trace"
       ],
-      "bytes": 4650,
-      "sha256": "d7d4de9b75c24f940ef14335ca2e2b17713d0cf1d73f012650a97c0b7a30e4aa"
+      "bytes": 4587,
+      "sha256": "d0aef7ebc8bf6aa9c63eb975b6187219d2c0eaf51cdaf241b76feef2fb6d0885"
     },
     {
-      "order": 17,
+      "order": 18,
       "title": "Error Bar Tutorial",
       "route": "/tutorials/error-bar/",
       "source": "tutorials/error-bar.md",
@@ -291,11 +310,11 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3587,
-      "sha256": "0279671d13418d8729decf11ae458aab3299ec1b5643762045ab930c6cc06a6a"
+      "bytes": 3524,
+      "sha256": "912030b61208e53b6804e2c08bfd0654e34fc53478406d8b8a7bcb5147cc6f0d"
     },
     {
-      "order": 18,
+      "order": 19,
       "title": "Error Band Tutorial",
       "route": "/tutorials/error-band/",
       "source": "tutorials/error-band.md",
@@ -307,11 +326,11 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3811,
-      "sha256": "6e84af63e574aa5db0477558d56945d874a2b652f792d344766114cd10a21d79"
+      "bytes": 3748,
+      "sha256": "b693c7c139449d17a3b88b4ecca71e9a2c2f13a2908c70fb13b404b341cb017d"
     },
     {
-      "order": 19,
+      "order": 20,
       "title": "Mark Selection Tutorial",
       "route": "/tutorials/mark-selection/",
       "source": "tutorials/mark-selection.md",
@@ -324,11 +343,11 @@
         "choose-filtering-reusable-selection-or-highlighting",
         "run-and-continue"
       ],
-      "bytes": 6372,
-      "sha256": "ad304cb9e4f0f8d744d8ed759aa69b5b8f74e12945961ef408ba649e826d2079"
+      "bytes": 6309,
+      "sha256": "2c333935ce30cee3657518c78fe3211e2cf4f9dbc47fc7134aa60bc754dd3f08"
     },
     {
-      "order": 20,
+      "order": 21,
       "title": "Dot, Lollipop, and Dumbbell Plots",
       "route": "/tutorials/endpoint-plots/",
       "source": "tutorials/endpoint-plots.md",
@@ -340,7 +359,7 @@
       "sha256": "7b7950d2a39a3f747b7ee7b5877c5424a3ea1594addf89b73a4fe2e9c1267ead"
     },
     {
-      "order": 21,
+      "order": 22,
       "title": "Empirical Cumulative Distribution Plots",
       "route": "/tutorials/ecdf/",
       "source": "tutorials/ecdf.md",
@@ -353,11 +372,11 @@
         "revise-the-statistical-source",
         "example-with-real-data"
       ],
-      "bytes": 5254,
-      "sha256": "916b416cd37a88b95a1a908e76d986d5f6ffda73c05a31b0f1d691557c6f5fd2"
+      "bytes": 5233,
+      "sha256": "e2fd2e2ef142a0f5c1d3cbb8d307402eec22f4ad1639780d3f1dfc98fb2deda1"
     },
     {
-      "order": 22,
+      "order": 23,
       "title": "Chart Recipes",
       "route": "/recipes/",
       "source": "recipes/index.md",
@@ -368,7 +387,7 @@
       "sha256": "9fd5fcbfb12d8ae272126c5abb4521948b384aa5f3de42654e5b660655ea7552"
     },
     {
-      "order": 23,
+      "order": 24,
       "title": "Marginal Distribution Recipe",
       "route": "/recipes/marginal/",
       "source": "recipes/marginal.md",
@@ -379,11 +398,11 @@
         "decide-the-domains-and-membership",
         "revise-and-resize-together"
       ],
-      "bytes": 3506,
-      "sha256": "f086961135d8d345c08a9f3375348ef08ffe4b225a268d5710b6126cc254e93f"
+      "bytes": 3443,
+      "sha256": "c18e7383579d1c362f976e6dc54861b1495a32ca13096c89db7b3666009cba3c"
     },
     {
-      "order": 24,
+      "order": 25,
       "title": "Bullet Comparison Recipe",
       "route": "/recipes/bullet/",
       "source": "recipes/bullet.md",
@@ -394,11 +413,11 @@
         "declare-the-reference-meaning",
         "update-the-comparison"
       ],
-      "bytes": 2866,
-      "sha256": "69c80c38fbeb2d62d728b161f4eab215a955ac3d1efe9fce484bfae8db2572a0"
+      "bytes": 2824,
+      "sha256": "19f46ce6ec47247911fa599391f31e3ea97d3844d54656f40b445b5fc8ed4787"
     },
     {
-      "order": 25,
+      "order": 26,
       "title": "Combo Chart Recipe",
       "route": "/recipes/combo/",
       "source": "recipes/combo.md",
@@ -409,11 +428,11 @@
         "keep-one-quantitative-y-owner",
         "revise-and-inspect"
       ],
-      "bytes": 2147,
-      "sha256": "83f6888285be22f837726f3eb51083fbb37a95a931d4ae4cc1562d15426614e5"
+      "bytes": 2126,
+      "sha256": "dcd4262b6696e617e68393d9c00c52386e1e171906e440baaad8a7803a9e15b9"
     },
     {
-      "order": 26,
+      "order": 27,
       "title": "Scatterplot Recipe",
       "route": "/recipes/scatterplot/",
       "source": "recipes/scatterplot.md",
@@ -428,7 +447,7 @@
       "sha256": "dd89e239c78fd6b1a26ded28c128f9c482245f3d9134a1dbe1e828b82926d09f"
     },
     {
-      "order": 27,
+      "order": 28,
       "title": "Line Chart Recipe",
       "route": "/recipes/line-chart/",
       "source": "recipes/line-chart.md",
@@ -443,7 +462,7 @@
       "sha256": "9b666c3f03159ac76b426468c48f9782b1bdc7870eaaff6920f1b238253faff2"
     },
     {
-      "order": 28,
+      "order": 29,
       "title": "Histogram Recipe",
       "route": "/recipes/histogram/",
       "source": "recipes/histogram.md",
@@ -458,7 +477,7 @@
       "sha256": "b75f08aabb5b4ca2282cedc0c40e25f4ee5bc8d5b5c552c1f7e4b34496fde624"
     },
     {
-      "order": 29,
+      "order": 30,
       "title": "Bar Chart Recipe",
       "route": "/recipes/bar-chart/",
       "source": "recipes/bar-chart.md",
@@ -473,7 +492,7 @@
       "sha256": "dbb78e823160851d22a13cae946687223e306051fb94409e8aa764287458969f"
     },
     {
-      "order": 30,
+      "order": 31,
       "title": "Heatmap Recipe",
       "route": "/recipes/heatmap/",
       "source": "recipes/heatmap.md",
@@ -489,7 +508,7 @@
       "sha256": "d79dd2a542834792a81ff109d067d699887ace5d675ef3c7a40850d308dc409b"
     },
     {
-      "order": 31,
+      "order": 32,
       "title": "Regression Scatterplot Recipe",
       "route": "/recipes/regression-scatterplot/",
       "source": "recipes/regression-scatterplot.md",
@@ -504,7 +523,7 @@
       "sha256": "a8f88c07aada4275b50274d6ba31683d8a762fb856e236640a130e5183003767"
     },
     {
-      "order": 32,
+      "order": 33,
       "title": "Density Area Recipe",
       "route": "/recipes/density-area/",
       "source": "recipes/density-area.md",
@@ -519,7 +538,7 @@
       "sha256": "9e077a57aa8d4130e43b82ec6263510e04c54ce0d554c082365777303261c180"
     },
     {
-      "order": 33,
+      "order": 34,
       "title": "Horizon Chart Recipe",
       "route": "/recipes/horizon/",
       "source": "recipes/horizon.md",
@@ -534,7 +553,7 @@
       "sha256": "e4aba555e6dca08da360b6bd861035b60f059e69c64c25bb44fa18fb72a9f547"
     },
     {
-      "order": 34,
+      "order": 35,
       "title": "Error Bar Recipe",
       "route": "/recipes/error-bar/",
       "source": "recipes/error-bar.md",
@@ -549,7 +568,7 @@
       "sha256": "05b8a425549c6f370bd5d5606b781cf81e6fbfa8e4802b06251a91e64d593f29"
     },
     {
-      "order": 35,
+      "order": 36,
       "title": "Error Band Recipe",
       "route": "/recipes/error-band/",
       "source": "recipes/error-band.md",
@@ -564,7 +583,7 @@
       "sha256": "1b7bc7ee81c431a5ff67903d1892b87c27e0c3ffdd6840a350ac95a5ecc53df7"
     },
     {
-      "order": 36,
+      "order": 37,
       "title": "Box Plot Recipe",
       "route": "/recipes/box-plot/",
       "source": "recipes/box-plot.md",
@@ -579,7 +598,7 @@
       "sha256": "baa3fca7cf29f0953dccc25f613e8c49accec9b7a8745c96076a84a3f566c521"
     },
     {
-      "order": 37,
+      "order": 38,
       "title": "Violin Plot Recipe",
       "route": "/recipes/violin-plot/",
       "source": "recipes/violin-plot.md",
@@ -594,7 +613,7 @@
       "sha256": "1cea0966db8a967d5b89b321d3bfbcae200b8d5efab310f140d934956d038666"
     },
     {
-      "order": 38,
+      "order": 39,
       "title": "Composition Recipe",
       "route": "/recipes/composition/",
       "source": "recipes/composition.md",
@@ -607,11 +626,11 @@
         "the-library-infers",
         "continue"
       ],
-      "bytes": 4947,
-      "sha256": "2467fa4bb2476a5ee5aa4c8bb367da141cb4c8a486f13e3e5b2168f35181ab0d"
+      "bytes": 4926,
+      "sha256": "7955bba370b2c43e3e81428a23282577214d1078bb2d1cba4971429ab6a440ec"
     },
     {
-      "order": 39,
+      "order": 40,
       "title": "Facet Recipe",
       "route": "/recipes/facet/",
       "source": "recipes/facet.md",
@@ -626,7 +645,7 @@
       "sha256": "306d6835d311d6571e1d10ba9b871e12a50d72e76d2f67057f37b2cb9647d029"
     },
     {
-      "order": 40,
+      "order": 41,
       "title": "Parallel Coordinates Recipe",
       "route": "/recipes/parallel-coordinates/",
       "source": "recipes/parallel-coordinates.md",
@@ -641,7 +660,7 @@
       "sha256": "b10cfe45a76eff45130021e52cae38d6c26e14bf707cb1ff288ce2a9c7b9f495"
     },
     {
-      "order": 41,
+      "order": 42,
       "title": "Rose Chart Recipe",
       "route": "/recipes/rose-chart/",
       "source": "recipes/rose-chart.md",
@@ -656,7 +675,7 @@
       "sha256": "ee056bf7ca28bcc9988cd7d785fbe2a589eba4f861629e7279430bb9099d9540"
     },
     {
-      "order": 42,
+      "order": 43,
       "title": "Gradient Plot Recipe",
       "route": "/recipes/gradient-plot/",
       "source": "recipes/gradient-plot.md",
@@ -671,7 +690,7 @@
       "sha256": "bb6e9f3c8f6d916bea99364dce2b5b57fb17372408e593081b72ef3279dcd933"
     },
     {
-      "order": 43,
+      "order": 44,
       "title": "Annotation Recipe",
       "route": "/recipes/annotations/",
       "source": "recipes/annotations.md",
@@ -686,7 +705,7 @@
       "sha256": "1bb7d3b475afab979ab9365a5834cf54cc8c908173dce17c6c609232e75415cc"
     },
     {
-      "order": 44,
+      "order": 45,
       "title": "Path Ordering Recipe",
       "route": "/recipes/path-ordering/",
       "source": "recipes/path-ordering.md",
@@ -701,7 +720,7 @@
       "sha256": "13294d316c432df3ea303663c643eb8549a63087587d74356a45b5a50097cc5d"
     },
     {
-      "order": 45,
+      "order": 46,
       "title": "Troubleshooting",
       "route": "/troubleshooting/",
       "source": "troubleshooting.md",
@@ -727,7 +746,7 @@
       "sha256": "6d0b938e98cae926dd7f97e457807d2b77de65229f0c3c5675314ae4be153351"
     },
     {
-      "order": 46,
+      "order": 47,
       "title": "Chart Gallery",
       "route": "/gallery/",
       "source": "gallery.md",
@@ -739,7 +758,7 @@
       "sha256": "f75186a0f3682464a40fde7335bebdd048c38249d849de1331d84e1252d03974"
     },
     {
-      "order": 47,
+      "order": 48,
       "title": "All Chart Examples",
       "route": "/gallery/all/",
       "source": "gallery/all.md",
@@ -750,7 +769,7 @@
       "sha256": "000c1b536d3c3ad729623d6c61a4629b640342bcfdff288bf55d70e2dc956d6c"
     },
     {
-      "order": 48,
+      "order": 49,
       "title": "Chart API",
       "route": "/api/",
       "source": "api/index.md",
@@ -767,7 +786,7 @@
       "sha256": "269fe3eef6187e1104c8270ca8e648d33c8a525a5f68612cbd629b625c3611bd"
     },
     {
-      "order": 49,
+      "order": 50,
       "title": "Basic Charts",
       "route": "/api/basic-charts/",
       "source": "api/basic-charts.md",
@@ -790,7 +809,7 @@
       "sha256": "11214978791735f1392afa15eec78e4e7aa579b284ad2cbed7f6f33d9808e88d"
     },
     {
-      "order": 50,
+      "order": 51,
       "title": "Parallel Coordinates",
       "route": "/api/parallel-coordinates/",
       "source": "api/parallel-coordinates.md",
@@ -810,7 +829,7 @@
       "sha256": "eb4b386880c1e2ccbf09c2f24e741210af3ea890198d3eba694dafcc2c3bed5f"
     },
     {
-      "order": 51,
+      "order": 52,
       "title": "Canvas",
       "route": "/api/canvas/",
       "source": "api/canvas.md",
@@ -829,7 +848,7 @@
       "sha256": "e96c1900cf9e190446f6ff09cb7cfb4abe0d9b77c983da686f4388c9866e0682"
     },
     {
-      "order": 52,
+      "order": 53,
       "title": "Data",
       "route": "/api/data/",
       "source": "api/data.md",
@@ -844,7 +863,7 @@
       "sha256": "8d8f1984bae1a5615ff26ee3b72b0d3aad9c309c7e9c775dc19aece2f0f8a2d0"
     },
     {
-      "order": 53,
+      "order": 54,
       "title": "Source and Derived Data",
       "route": "/api/data/source-and-derived/",
       "source": "api/data/source-and-derived.md",
@@ -874,7 +893,7 @@
       "sha256": "67e70ff7cceaeccd238eeed2030f85c27bd77f9e83683f0f557e874df2d9a777"
     },
     {
-      "order": 54,
+      "order": 55,
       "title": "Data Filtering",
       "route": "/api/data/filtering/",
       "source": "api/data/filtering.md",
@@ -891,7 +910,7 @@
       "sha256": "9520bdbb859195d23c06cbabfc7f00f93f80b0bac86d3964394fe058d630a796"
     },
     {
-      "order": 55,
+      "order": 56,
       "title": "Statistical Data Transforms",
       "route": "/api/data/statistical-transforms/",
       "source": "api/data/statistical-transforms.md",
@@ -907,7 +926,7 @@
       "sha256": "62d381f7f86ae65bb5849da1409374b6bf980493c74cffa01c9304732600dccd"
     },
     {
-      "order": 56,
+      "order": 57,
       "title": "Time-Unit Data Transforms",
       "route": "/api/data/time-units/",
       "source": "api/data/time-units.md",
@@ -922,7 +941,7 @@
       "sha256": "7b7701fc1acdaad909c135644c9ff80076432c3181675d1a8d80018c0d72ff00"
     },
     {
-      "order": 57,
+      "order": 58,
       "title": "Window Data Transforms",
       "route": "/api/data/window/",
       "source": "api/data/window.md",
@@ -931,11 +950,11 @@
         "createwindowdata-id-source-partitionby-sortby-operations-temporalunit",
         "related"
       ],
-      "bytes": 5887,
-      "sha256": "1471777587d9457055aa498130b7032e95e0479113578649eefbce61618428a9"
+      "bytes": 5866,
+      "sha256": "0a94db5094d1080bf3f886bfc0ad987f35e9b731c4ab69815d7564b52cbbfac4"
     },
     {
-      "order": 58,
+      "order": 59,
       "title": "Rectangular 2D Bins",
       "route": "/api/data/bin2d/",
       "source": "api/data/bin2d.md",
@@ -950,7 +969,7 @@
       "sha256": "3a6c63be6b90ea40e6f80d7987a86f944c0f47dcef3a91268ec131ec7bbe33d5"
     },
     {
-      "order": 59,
+      "order": 60,
       "title": "Marks",
       "route": "/api/marks/",
       "source": "api/marks.md",
@@ -968,7 +987,7 @@
       "sha256": "cb67036c8ad6b32a73bafba6b6dcb601e701e94190b0940c9512a2f55848233e"
     },
     {
-      "order": 60,
+      "order": 61,
       "title": "Point Marks",
       "route": "/api/marks/point/",
       "source": "api/marks/point.md",
@@ -987,7 +1006,7 @@
       "sha256": "cc136d35b26be7bd8e64a3b771a8149fbfce44525a3bea6f0698fda1f0c316ad"
     },
     {
-      "order": 61,
+      "order": 62,
       "title": "Line and Area Marks",
       "route": "/api/marks/line-area/",
       "source": "api/marks/line-area.md",
@@ -1011,7 +1030,7 @@
       "sha256": "fc7cbe285ff00d8ff85ddff446a9f4bc2bccbe86aadc73494a5032ee2771f036"
     },
     {
-      "order": 62,
+      "order": 63,
       "title": "Bar Marks",
       "route": "/api/marks/bar/",
       "source": "api/marks/bar.md",
@@ -1027,7 +1046,7 @@
       "sha256": "0e23c24e3b5141d5deb323a9b97369a2be54e4569b5bde7233fa7874d8e0d27f"
     },
     {
-      "order": 63,
+      "order": 64,
       "title": "Rule Marks",
       "route": "/api/marks/rule/",
       "source": "api/marks/rule.md",
@@ -1042,7 +1061,7 @@
       "sha256": "9c8e253867916d5ddc5021723d25eeae75d65b0db4ed5573224e5c1d3d870e5c"
     },
     {
-      "order": 64,
+      "order": 65,
       "title": "Text Marks",
       "route": "/api/marks/text/",
       "source": "api/marks/text.md",
@@ -1067,7 +1086,7 @@
       "sha256": "a57ac93a9cdf485b55ed1e721f9e1978a5897b6f487913abf9a7ebe18b545a98"
     },
     {
-      "order": 65,
+      "order": 66,
       "title": "Rect Marks",
       "route": "/api/marks/rect/",
       "source": "api/marks/rect.md",
@@ -1083,7 +1102,7 @@
       "sha256": "5fa79928cc05fd82023343fe0b286fa00b4b5046093daa42e070f53e1b22c2bc"
     },
     {
-      "order": 66,
+      "order": 67,
       "title": "Encodings",
       "route": "/api/encodings/",
       "source": "api/encodings.md",
@@ -1114,7 +1133,7 @@
       "sha256": "4d6b71fe381f1fd1283817672d1eb60d1494639669f53910ecf35c637e15d0a4"
     },
     {
-      "order": 67,
+      "order": 68,
       "title": "Regression",
       "route": "/api/regression/",
       "source": "api/regression.md",
@@ -1131,7 +1150,7 @@
       "sha256": "a883287e3594cac27c2734b82b36a22256fda9aee54957ac70df3409d4060242"
     },
     {
-      "order": 68,
+      "order": 69,
       "title": "Error Bars",
       "route": "/api/error-bars/",
       "source": "api/error-bars.md",
@@ -1153,7 +1172,7 @@
       "sha256": "cf25a441f647bae985a8ba0c4bb4b47e4d4ab6d76e3f1ff54c486123524071a0"
     },
     {
-      "order": 69,
+      "order": 70,
       "title": "Error Bands",
       "route": "/api/error-bands/",
       "source": "api/error-bands.md",
@@ -1168,7 +1187,7 @@
       "sha256": "e3c7b4a04d77aba51d5fe093fa5f1f44a5d19990474cb75ba21dcc423a873717"
     },
     {
-      "order": 70,
+      "order": 71,
       "title": "Box Plots",
       "route": "/api/box-plots/",
       "source": "api/box-plots.md",
@@ -1186,7 +1205,7 @@
       "sha256": "3323ae402c3bb647bd1a05681306a2a9cb9e19b5c26a8937580a3ad72537833c"
     },
     {
-      "order": 71,
+      "order": 72,
       "title": "Gradient Plots",
       "route": "/api/gradient-plots/",
       "source": "api/gradient-plots.md",
@@ -1202,7 +1221,7 @@
       "sha256": "6621c48e2ee3fd09ba954cfab4f95d6cfebbfd6a5e47121b55c0a0ddd3272e8a"
     },
     {
-      "order": 72,
+      "order": 73,
       "title": "Violin Plots",
       "route": "/api/violin-plots/",
       "source": "api/violin-plots.md",
@@ -1220,7 +1239,7 @@
       "sha256": "2977e8ec959a8f39d4d7229a4c46f378984a7317cec06b2c9bd4686ed3600efe"
     },
     {
-      "order": 73,
+      "order": 74,
       "title": "Distribution Plots",
       "route": "/api/distribution-plots/",
       "source": "api/distribution-plots.md",
@@ -1235,7 +1254,7 @@
       "sha256": "54a9e578802d90018dbbfaa7db70a08f109ecfc0c9eecf731d62316343e4b724"
     },
     {
-      "order": 74,
+      "order": 75,
       "title": "Guides",
       "route": "/api/guides/",
       "source": "api/guides.md",
@@ -1252,7 +1271,7 @@
       "sha256": "ac22bb7a8fd5abf7ffee6fe003c6ff19483d6c48b48ab39d002e01e2d71c4e6c"
     },
     {
-      "order": 75,
+      "order": 76,
       "title": "Titles",
       "route": "/api/titles/",
       "source": "api/titles.md",
@@ -1272,7 +1291,7 @@
       "sha256": "041c28a07771350ce1009353316887c27a2ba24b80f610f2b164fe6e2c5b8586"
     },
     {
-      "order": 76,
+      "order": 77,
       "title": "Rendering",
       "route": "/api/rendering/",
       "source": "api/rendering.md",
@@ -1306,12 +1325,13 @@
       "sha256": "381ca35b3c23320341c74446708e6d5af4713b15c133d13b03720321f0f4c448"
     },
     {
-      "order": 77,
+      "order": 78,
       "title": "Animate and Export Chart Frames",
       "route": "/api/animation/",
       "source": "api/animation.md",
       "headings": [
         "animate-and-export-chart-frames",
+        "animate-a-data-change-in-a-browser",
         "prepare-save-and-sample",
         "animate-solid-color-and-opacity",
         "sample-materialized-batches",
@@ -1329,31 +1349,33 @@
         "play-with-an-explicit-clock",
         "offline-replay-and-limits"
       ],
-      "bytes": 45378,
-      "sha256": "05c21af43eb7270d59177acc1de8fcd0176d0f55e8115c24d61f64e00df25385"
+      "bytes": 48124,
+      "sha256": "5ebef36671bf6a013b0205d9386e66b51fbe38a8fb8c97633e5c496c0aedb8a5"
     },
     {
-      "order": 78,
+      "order": 79,
       "title": "Live Charts",
       "route": "/api/live/",
       "source": "api/live.md",
       "headings": [
         "live-charts",
+        "live-charts-or-interaction-sessions",
         "build-an-interactive-chart",
         "screen",
         "interactions",
         "data-and-change"
       ],
-      "bytes": 6175,
-      "sha256": "ddb35ba79a27be68edce5632eefdbf40f9923d60f5b53d397dd639b34bd6f298"
+      "bytes": 8311,
+      "sha256": "bffde3936f56073f150926a62ce7e83c3f7c418ed4177059ade47f212a9574db"
     },
     {
-      "order": 79,
+      "order": 80,
       "title": "Interaction Sessions",
       "route": "/api/interaction/",
       "source": "api/interaction.md",
       "headings": [
         "interaction-sessions",
+        "start-here",
         "create-and-mount",
         "bound-hit-preparation",
         "resize-a-selection-or-reorder-categories",
@@ -1387,11 +1409,11 @@
         "native-control-alternatives",
         "inspect-overlapping-graph-edges"
       ],
-      "bytes": 119288,
-      "sha256": "25b6844c102d528b055d79d89d057b60f36558d1e2de79a393d580405c358e37"
+      "bytes": 121224,
+      "sha256": "e7940c677aafbfee473777609b719245f5abaa4b16ea417f63e66397ac0a50ec"
     },
     {
-      "order": 80,
+      "order": 81,
       "title": "Inspect Overlapping Chart Items",
       "route": "/recipes/inspect-chart/",
       "source": "recipes/inspect-chart.md",
@@ -1405,7 +1427,7 @@
       "sha256": "2677c30d37cc266f224164980ad87bec117e45aa4c4eb304694257183b916607"
     },
     {
-      "order": 81,
+      "order": 82,
       "title": "Program Composition",
       "route": "/api/composition/",
       "source": "api/composition.md",
@@ -1427,11 +1449,11 @@
         "shared-color-legends",
         "nested-responsive-panels"
       ],
-      "bytes": 9976,
-      "sha256": "4b8fbbedb7f15f938ca6335fc9c0502cc7a8d89fc2b5154ca40f8fdd947650c2"
+      "bytes": 9934,
+      "sha256": "8595a6038849f9d7d9980f7237a47ac3a65ce0cd999fd973138053cd7704afcc"
     },
     {
-      "order": 82,
+      "order": 83,
       "title": "Position Encodings",
       "route": "/api/position-encodings/",
       "source": "api/position-encodings.md",
@@ -1451,7 +1473,7 @@
       "sha256": "9790b67f7be132888647e261b66bd0f38a6b6f540ff55e1ac0225c149469fa93"
     },
     {
-      "order": 83,
+      "order": 84,
       "title": "Quantitative Positions",
       "route": "/api/position/quantitative/",
       "source": "api/position/quantitative.md",
@@ -1466,7 +1488,7 @@
       "sha256": "12266f37b966bbf8b7189a035d9ab2843c3f71a99d6775f3a2498806ef371cf0"
     },
     {
-      "order": 84,
+      "order": 85,
       "title": "Temporal Line Positions",
       "route": "/api/position/temporal/",
       "source": "api/position/temporal.md",
@@ -1479,11 +1501,11 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 7299,
-      "sha256": "a764f4e34e57cb0aec75723438ed1fd6b3711a3341468f66a863e91f54a3a3d8"
+      "bytes": 7278,
+      "sha256": "2cfeda8e465c38ffc91d2600b82b41c1889b1cab706e6ac79e42677ebd53e458"
     },
     {
-      "order": 85,
+      "order": 86,
       "title": "Ordinal Bar Positions",
       "route": "/api/position/ordinal-bars/",
       "source": "api/position/ordinal-bars.md",
@@ -1500,7 +1522,7 @@
       "sha256": "794fa50d32c1218ad2a3d6e8307508fdf86e80b2dc254bf00ecbcd85ae46d99a"
     },
     {
-      "order": 86,
+      "order": 87,
       "title": "Category Ordering",
       "route": "/api/position/category-ordering/",
       "source": "api/position/category-ordering.md",
@@ -1515,7 +1537,7 @@
       "sha256": "7920ebcb7f89369ea799a55ec04c673ab78c2daa94a9db67d25d7cb8fd5cb732"
     },
     {
-      "order": 87,
+      "order": 88,
       "title": "Histogram Positions",
       "route": "/api/position/histogram/",
       "source": "api/position/histogram.md",
@@ -1532,7 +1554,7 @@
       "sha256": "0f4e09106450a3f0f45981c6aa759d4c7173b580caa1fe89fcd2efb0e6cc1351"
     },
     {
-      "order": 88,
+      "order": 89,
       "title": "Ordinal Offsets",
       "route": "/api/position/offsets/",
       "source": "api/position/offsets.md",
@@ -1548,7 +1570,7 @@
       "sha256": "19d5ba09c90f31f7d0c688690972cfe9c73f4ce45c2530a79d53cd7966f26769"
     },
     {
-      "order": 89,
+      "order": 90,
       "title": "Series Encodings",
       "route": "/api/series-encodings/",
       "source": "api/series-encodings.md",
@@ -1561,11 +1583,11 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 5794,
-      "sha256": "2798674ab6da7e2803c5e9daff58288ae0b971d2611ed6c0c2dbececafe4b3a4"
+      "bytes": 5773,
+      "sha256": "700dd6a1148b3f0f2615fd1f2a3e35dca6128a7c2937cf4896a1f67f80672ad5"
     },
     {
-      "order": 90,
+      "order": 91,
       "title": "Color Encoding",
       "route": "/api/series/color/",
       "source": "api/series/color.md",
@@ -1583,7 +1605,7 @@
       "sha256": "006024c6164a617ed04e1c3d62d71eaa53f88c5b1a52bc075e2d507ef4b4d0d5"
     },
     {
-      "order": 91,
+      "order": 92,
       "title": "Stroke Dash Encoding",
       "route": "/api/series/stroke-dash/",
       "source": "api/series/stroke-dash.md",
@@ -1596,7 +1618,7 @@
       "sha256": "b4ebbd354a6e4984ae70a245d3db18be12b544bebd8e41ee58c3601104ebae34"
     },
     {
-      "order": 92,
+      "order": 93,
       "title": "Appearance Encodings",
       "route": "/api/appearance/",
       "source": "api/appearance.md",
@@ -1613,7 +1635,7 @@
       "sha256": "3ef7d54f79d3b4e16f53cc24068a42f287e2c79d54d95f07cb5703ac716e1d75"
     },
     {
-      "order": 93,
+      "order": 94,
       "title": "Selection and Highlighting",
       "route": "/api/appearance/selection-and-highlighting/",
       "source": "api/appearance/selection-and-highlighting.md",
@@ -1630,7 +1652,7 @@
       "sha256": "917ca1606552899871aa7688bb53b219e2d709dd94c7740bfa0cb44ee6e02eec"
     },
     {
-      "order": 94,
+      "order": 95,
       "title": "Point Appearance",
       "route": "/api/appearance/point/",
       "source": "api/appearance/point.md",
@@ -1645,7 +1667,7 @@
       "sha256": "d97190ce7a1c05a24c64aea86a36923df2d036babc05f5b62d0620b6c020cefd"
     },
     {
-      "order": 95,
+      "order": 96,
       "title": "Mark Style",
       "route": "/api/appearance/mark-style/",
       "source": "api/appearance/mark-style.md",
@@ -1665,7 +1687,7 @@
       "sha256": "b225f33b96a8fe0d0b508dedf07ddd546423378cd79abbbf3a4bcd808698c2f8"
     },
     {
-      "order": 96,
+      "order": 97,
       "title": "Scale Options",
       "route": "/api/scales/",
       "source": "api/scales.md",
@@ -1682,7 +1704,7 @@
       "sha256": "cc9cbed18c3a1baf1d31079ce26f0ff1ae02888286719d71c96b85af75c17dd3"
     },
     {
-      "order": 97,
+      "order": 98,
       "title": "Position Scales",
       "route": "/api/scales/position/",
       "source": "api/scales/position.md",
@@ -1699,7 +1721,7 @@
       "sha256": "bff833f3241d2c11c7d699bace1034b0b223ea89619551583b19ab389c102e3b"
     },
     {
-      "order": 98,
+      "order": 99,
       "title": "Ordinal and Dash Scales",
       "route": "/api/scales/ordinal-and-dash/",
       "source": "api/scales/ordinal-and-dash.md",
@@ -1714,7 +1736,7 @@
       "sha256": "0a89cc69831b50cd6d870e18398ad32e937f11099010eee02cf30296c57d890c"
     },
     {
-      "order": 99,
+      "order": 100,
       "title": "Continuous Color Scales",
       "route": "/api/scales/continuous-color/",
       "source": "api/scales/continuous-color.md",
@@ -1731,7 +1753,7 @@
       "sha256": "7ac44955b5dda6f38baa015233a67b4f457a6ed3a753f48cb95c02aa788c23ea"
     },
     {
-      "order": 100,
+      "order": 101,
       "title": "Discretized Color Scales",
       "route": "/api/scales/discretized-color/",
       "source": "api/scales/discretized-color.md",
@@ -1745,7 +1767,7 @@
       "sha256": "122f9e0f9a5d579ad24bbd1e95e48bc28640f9b5e00c904a2e73739edc6bdfd8"
     },
     {
-      "order": 101,
+      "order": 102,
       "title": "Missing Scale Values",
       "route": "/api/scales/missing-values/",
       "source": "api/scales/missing-values.md",
@@ -1758,7 +1780,7 @@
       "sha256": "b7928b226addfa02df6891a8c4939b95cb2f8a8ad014a6ba76301c907ac240ab"
     },
     {
-      "order": 102,
+      "order": 103,
       "title": "Coordinates",
       "route": "/api/coordinates/",
       "source": "api/coordinates.md",
@@ -1775,7 +1797,7 @@
       "sha256": "73eaa4bf4cce5d00c35260fa4b84ca6275c78d19f5f562e9ab9cb583830b93b0"
     },
     {
-      "order": 103,
+      "order": 104,
       "title": "Axes",
       "route": "/api/axes/",
       "source": "api/axes.md",
@@ -1804,7 +1826,7 @@
       "sha256": "55702357cf9e4aefe56ca1b5cb3edfd5f5b65ef8c8fbd87e3dc04ab9e5a5156b"
     },
     {
-      "order": 104,
+      "order": 105,
       "title": "Grids",
       "route": "/api/grids/",
       "source": "api/grids.md",
@@ -1821,7 +1843,7 @@
       "sha256": "c744f1b82b64da06e698e5e3c942484201c66c9f2032e5c414961d4b57173f09"
     },
     {
-      "order": 105,
+      "order": 106,
       "title": "Legends",
       "route": "/api/legends/",
       "source": "api/legends.md",
@@ -1842,7 +1864,7 @@
       "sha256": "271586062223036dc7d495bc9d97225ff1f31da385249d637fd81c5f7ded985f"
     },
     {
-      "order": 106,
+      "order": 107,
       "title": "Categorical and Size Legends",
       "route": "/api/legends/categorical/",
       "source": "api/legends/categorical.md",
@@ -1863,7 +1885,7 @@
       "sha256": "7f4cc72c7b38c9471c8ed512b6c6195ad41e435cbc0eb213a95603fb7272a38c"
     },
     {
-      "order": 107,
+      "order": 108,
       "title": "Continuous Legends",
       "route": "/api/legends/continuous/",
       "source": "api/legends/continuous.md",
@@ -1879,7 +1901,7 @@
       "sha256": "d12e711c88ae34fbaea0a87c3b37f316964695918af6ded8e8736f3491d3c7d3"
     },
     {
-      "order": 108,
+      "order": 109,
       "title": "Composite Legend Symbols",
       "route": "/api/legends/composite/",
       "source": "api/legends/composite.md",
@@ -1895,7 +1917,7 @@
       "sha256": "5f061ffa6f039cb07843a6938a27c75aa5de447cfac5fd67b5f6abba763fea1c"
     },
     {
-      "order": 109,
+      "order": 110,
       "title": "Editing Legends",
       "route": "/api/legends/editing/",
       "source": "api/legends/editing.md",
@@ -1918,7 +1940,7 @@
       "sha256": "5115fa6b375c3b1c5993afa5372fbed6e2bb7c6b91fa7df695b0fae495f80a83"
     },
     {
-      "order": 110,
+      "order": 111,
       "title": "ChartProgram and Immutability",
       "route": "/concepts/chart-program/",
       "source": "concepts/chart-program.md",
@@ -1931,7 +1953,7 @@
       "sha256": "baa7c2312d3332339f3316eea738979666096bd69891f4a8d246cb49195f20f7"
     },
     {
-      "order": 111,
+      "order": 112,
       "title": "Semantic and Graphical State",
       "route": "/concepts/semantic-and-graphics/",
       "source": "concepts/semantic-and-graphics.md",
@@ -1945,7 +1967,7 @@
       "sha256": "5407656af98f02d6628199d84cbf1dbf7fa3ba7fb92855f257646d66270b312c"
     },
     {
-      "order": 112,
+      "order": 113,
       "title": "Actions and Trace Trees",
       "route": "/concepts/actions-and-trace/",
       "source": "concepts/actions-and-trace.md",
@@ -1957,7 +1979,7 @@
       "sha256": "f14cc0727c543ad48bf093bf4207eebd79738e253ed67d4c62bc422560240ec4"
     },
     {
-      "order": 113,
+      "order": 114,
       "title": "Accessibility",
       "route": "/accessibility/",
       "source": "accessibility.md",
@@ -1974,7 +1996,7 @@
       "sha256": "8134e05573a629ef643445651a675a4d23aee51397ffe7f1936ee239f7cd8503"
     },
     {
-      "order": 114,
+      "order": 115,
       "title": "Runtime and Browser Compatibility",
       "route": "/compatibility/",
       "source": "compatibility.md",
@@ -1990,7 +2012,7 @@
       "sha256": "713e86e50077e08e6a2a4ceb297bd0bf2f28f10b85da5e5ea18316879fae6c4a"
     },
     {
-      "order": 115,
+      "order": 116,
       "title": "Responsive Charts",
       "route": "/responsive-charts/",
       "source": "responsive-charts.md",
@@ -2005,7 +2027,7 @@
       "sha256": "6f5cfec78f5b3a90bd89b1ee583a6b05ff8457317a7912477ab367d5adcb1881"
     },
     {
-      "order": 116,
+      "order": 117,
       "title": "Performance and Large Charts",
       "route": "/performance/",
       "source": "performance.md",
@@ -2026,7 +2048,7 @@
       "sha256": "082775a129791963032e883d1791c95583297316a673e791a48e486a91357d53"
     },
     {
-      "order": 117,
+      "order": 118,
       "title": "Data Updates and Live Refresh",
       "route": "/data-updates/",
       "source": "data-updates.md",
@@ -2047,7 +2069,7 @@
       "sha256": "4866144c991154bd7b5641ee34dfcfa8f58e40c29d8ae334cec94af75015a6d5"
     },
     {
-      "order": 118,
+      "order": 119,
       "title": "Program Inspection",
       "route": "/inspection/",
       "source": "inspection.md",
@@ -2068,7 +2090,7 @@
       "sha256": "284c92b715a8caa2472edce8ee50f32f0a1a38c4aa2f070308a736e4fe99a626"
     },
     {
-      "order": 119,
+      "order": 120,
       "title": "Errors and Recovery",
       "route": "/errors-and-recovery/",
       "source": "errors-and-recovery.md",
@@ -2085,7 +2107,7 @@
       "sha256": "8cc3254e03c06e91544edc2a7f22fc256f711ce2002508a5eb17cdfa87fd82f5"
     },
     {
-      "order": 120,
+      "order": 121,
       "title": "Versioning and Documentation Provenance",
       "route": "/versioning/",
       "source": "versioning.md",
@@ -2100,7 +2122,7 @@
       "sha256": "ad0559a7eea17134ca9d2651c1ff776c32cffe75824f2dc7a434db4d59a213c4"
     },
     {
-      "order": 121,
+      "order": 122,
       "title": "Fonts and Text Rendering",
       "route": "/fonts/",
       "source": "fonts.md",
@@ -2116,7 +2138,7 @@
       "sha256": "00fed241fd0b53ca865cf47de8d4bed3b01f194f7a4270c2d1bf164fdad41f73"
     },
     {
-      "order": 122,
+      "order": 123,
       "title": "TypeScript",
       "route": "/typescript/",
       "source": "typescript.md",
@@ -2133,7 +2155,7 @@
       "sha256": "eed74899ec08c0a9a051ed27b66015627bb798c3cbee0c1b123511c36905d7ef"
     },
     {
-      "order": 123,
+      "order": 124,
       "title": "Advanced Axis Components",
       "route": "/advanced/axis-components/",
       "source": "advanced/axis-components.md",
@@ -2150,7 +2172,7 @@
       "sha256": "7c2bef7fc8f249c025516651898cfd562b8422137d7c9518e2beeb9f9c648352"
     },
     {
-      "order": 124,
+      "order": 125,
       "title": "Supported Features",
       "route": "/supported-features/",
       "source": "supported-features.md",
@@ -2171,7 +2193,7 @@
       "sha256": "b4cd8b0c9b164e329d690925f364bab2b1fe06b27704bd09a5adffa3716ae4c9"
     },
     {
-      "order": 125,
+      "order": 126,
       "title": "Complete Action Reference",
       "route": "/reference/actions/",
       "source": "reference/actions.md",
@@ -2183,7 +2205,7 @@
       "sha256": "ac866e619b4747abe59a6e8af1e20c5b0f2d2150221e9e90e1866e061da1af25"
     },
     {
-      "order": 126,
+      "order": 127,
       "title": "Charts, Data, and Composition Actions",
       "route": "/reference/actions/charts-data/",
       "source": "reference/actions/charts-data.md",
@@ -2340,7 +2362,7 @@
       "sha256": "a3681160d413e8bddff80d0b71e9e0ed582c636961c12be8d0ecbd8fcbe9f2e3"
     },
     {
-      "order": 127,
+      "order": 128,
       "title": "Mark Actions",
       "route": "/reference/actions/marks/",
       "source": "reference/actions/marks.md",
@@ -2419,7 +2441,7 @@
       "sha256": "26280ec643c33160b8a68d224c872ab1559e804c4c2ec8521f9099f61ace3a28"
     },
     {
-      "order": 128,
+      "order": 129,
       "title": "Encoding Actions",
       "route": "/reference/actions/encodings/",
       "source": "reference/actions/encodings.md",
@@ -2471,7 +2493,7 @@
       "sha256": "02a6c7cda857d2f48b30aaca3e3c5d76b554e18c9b404997932db6ef415ef0ec"
     },
     {
-      "order": 129,
+      "order": 130,
       "title": "Statistical Layer Actions",
       "route": "/reference/actions/statistics/",
       "source": "reference/actions/statistics.md",
@@ -2533,7 +2555,7 @@
       "sha256": "0f4a48d26df8deb4a7c459639ae4eb9f720e4646d5283649052f21d277da0345"
     },
     {
-      "order": 130,
+      "order": 131,
       "title": "Guide, Axis, Grid, and Title Actions",
       "route": "/reference/actions/guides/",
       "source": "reference/actions/guides.md",
@@ -2631,7 +2653,7 @@
       "sha256": "fdc3dc43b810077fff5fc9251fd850933ae4c2569bc8765bdfa50a66254bdac4"
     },
     {
-      "order": 131,
+      "order": 132,
       "title": "Advanced Chart Actions",
       "route": "/reference/actions/advanced/",
       "source": "reference/actions/advanced.md",
@@ -2658,7 +2680,7 @@
       "sha256": "bc75841954c307bad2f4a27de5eb2463dc4d71281d7f0c0fea9ccb2c307c8a9a"
     },
     {
-      "order": 132,
+      "order": 133,
       "title": "Extension Actions",
       "route": "/reference/actions/extension/",
       "source": "reference/actions/extension.md",
@@ -2674,7 +2696,7 @@
       "sha256": "2a8e066d78d49b2726f4f0fa5c753fe87e3ded3fb1046dc88cd50deda172aa0b"
     },
     {
-      "order": 133,
+      "order": 134,
       "title": "Program and Rendering Functions",
       "route": "/reference/runtime/",
       "source": "reference/runtime.md",
@@ -2704,7 +2726,7 @@
       "sha256": "c253894fb12c85faec3cdc8388a2385f8ca4cf730a34a2cd2c3db39eb53ed480"
     },
     {
-      "order": 134,
+      "order": 135,
       "title": "Exact TypeScript Contract",
       "route": "/reference/types/",
       "source": "reference/types.md",
@@ -3648,7 +3670,7 @@
       "sha256": "da51dd3ad951b43aade0521e88bd91a9ac7e87f4ff4cdf6a594eb40d86b3979a"
     },
     {
-      "order": 135,
+      "order": 136,
       "title": "Action Authoring",
       "route": "/extension/action-authoring/",
       "source": "extension/action-authoring.md",
@@ -3665,7 +3687,7 @@
       "sha256": "f78ce38d4a7c9501c19c6baf646d724ed4b762a93900ede20676b354c2c6ab57"
     },
     {
-      "order": 136,
+      "order": 137,
       "title": "Primitive API",
       "route": "/extension/primitives/",
       "source": "extension/primitives.md",
@@ -3683,11 +3705,11 @@
         "store-fully-materialized-circles-in-columns",
         "store-fully-materialized-paths-in-columns"
       ],
-      "bytes": 28071,
-      "sha256": "cb3c71e4b88719c1048fe4174fdb9400c75e96962e531e2b55d0c21319655550"
+      "bytes": 28029,
+      "sha256": "ac6019d92588046b6bae4d3644b863dd60bc63def6fd5540a83f9e493edf3bdb"
     },
     {
-      "order": 137,
+      "order": 138,
       "title": "Summaries, Bins, and Data Shaping",
       "route": "/api/data/summaries-and-shaping/",
       "source": "api/data/summaries-and-shaping.md",
@@ -3706,7 +3728,7 @@
       "sha256": "2788d90dfc6d95c447946bcc81346d26d0263bc4275d69e7a088a48276d6803d"
     },
     {
-      "order": 138,
+      "order": 139,
       "title": "Expressions and Normalization",
       "route": "/api/data/expressions-and-normalization/",
       "source": "api/data/expressions-and-normalization.md",
@@ -3721,7 +3743,7 @@
       "sha256": "12c35f89e2e0932f207e1f563fcb00cbccefc6e8e03e723b0fed541e076a342d"
     },
     {
-      "order": 139,
+      "order": 140,
       "title": "Missing Keys and Values",
       "route": "/api/data/missing-data/",
       "source": "api/data/missing-data.md",
@@ -3735,7 +3757,7 @@
       "sha256": "8ba9731977a065533c72c7df98f0d850b45ba8efd26de86ea242351c955d318d"
     },
     {
-      "order": 140,
+      "order": 141,
       "title": "Data Revisions and Removal",
       "route": "/api/data/revisions-and-removal/",
       "source": "api/data/revisions-and-removal.md",
@@ -3750,7 +3772,7 @@
       "sha256": "9e44bfab1453d7f93a818b33f274763d83eacb9ee38eceaf1b473442a0ec40a4"
     },
     {
-      "order": 141,
+      "order": 142,
       "title": "Facets and Field Repetition",
       "route": "/api/composition/facets/",
       "source": "api/composition/facets.md",
@@ -3767,11 +3789,11 @@
         "name-the-complete-facet-field",
         "independently-packed-panels"
       ],
-      "bytes": 30024,
-      "sha256": "d22d3023db35ac7950e361fb12c50156261b5006bd5b8a7f88d5028fa500dbce"
+      "bytes": 29940,
+      "sha256": "b40876784493cfbb09f9e8722872256847733e9fe5587afac3d0eb50780299bd"
     },
     {
-      "order": 142,
+      "order": 143,
       "title": "Editing Compositions",
       "route": "/api/composition/editing/",
       "source": "api/composition/editing.md",
@@ -3790,7 +3812,7 @@
       "sha256": "ca3efc29a2c1116e6b7d4d84fa82048f7a5621eaca24e1a84b60dc87ba2a1c3b"
     },
     {
-      "order": 143,
+      "order": 144,
       "title": "Attached Mark Labels",
       "route": "/api/marks/labels/",
       "source": "api/marks/labels.md",
@@ -3806,7 +3828,7 @@
       "sha256": "01eb388d000459ac7053039e50248e7ac2d38b82840623973afeecae7cdfa1d5"
     },
     {
-      "order": 144,
+      "order": 145,
       "title": "Label Collision Layout",
       "route": "/api/marks/label-layout/",
       "source": "api/marks/label-layout.md",
@@ -3815,11 +3837,11 @@
         "layoutlabelsoptions",
         "removelabellayoutoptions"
       ],
-      "bytes": 2614,
-      "sha256": "f4f8ace85f66518e19cf62459ea40c02271189b00c06a095570d8c4151278776"
+      "bytes": 2593,
+      "sha256": "2c32504c10c700c6ddc2e1f0edf880f0c591f4d18baecae1fced04663feb5d0d"
     },
     {
-      "order": 145,
+      "order": 146,
       "title": "Repair missing observations",
       "route": "/recipes/repair-missing-observations/",
       "source": "recipes/repair-missing-observations.md",
@@ -3835,7 +3857,7 @@
       "sha256": "5b87c0534be49b06c6d5bc2e17af5e6a620599617ad85e42af7c4923f2b756a2"
     },
     {
-      "order": 146,
+      "order": 147,
       "title": "Compare weighted distributions",
       "route": "/recipes/compare-weighted-distributions/",
       "source": "recipes/compare-weighted-distributions.md",
@@ -3851,7 +3873,7 @@
       "sha256": "df3ee0d3553a4c165daa91ebc9bb0b0165f53932938da03ca77370b7dfa48a37"
     },
     {
-      "order": 147,
+      "order": 148,
       "title": "Switch encoding modes atomically",
       "route": "/recipes/switch-encoding-modes/",
       "source": "recipes/switch-encoding-modes.md",
@@ -3867,7 +3889,7 @@
       "sha256": "8b7ff73872e01415925768d9e71b00cced459e7237af9269cae481f07d1552ce"
     },
     {
-      "order": 148,
+      "order": 149,
       "title": "Edit scales and refresh guides",
       "route": "/recipes/edit-scales-and-guides/",
       "source": "recipes/edit-scales-and-guides.md",
@@ -3883,7 +3905,7 @@
       "sha256": "5f9a9dd1e29049768f40392954bed39f5dadb803122b8725347730a030ed28c6"
     },
     {
-      "order": 149,
+      "order": 150,
       "title": "Select and place final-item labels",
       "route": "/recipes/edit-selected-labels/",
       "source": "recipes/edit-selected-labels.md",
@@ -3899,7 +3921,7 @@
       "sha256": "7262f9d736122fcd3908930b9a003fba3e2654b653c012658e00ef64fa2742bc"
     },
     {
-      "order": 150,
+      "order": 151,
       "title": "Apply, override, and remove a theme",
       "route": "/recipes/apply-custom-theme/",
       "source": "recipes/apply-custom-theme.md",
@@ -3915,7 +3937,7 @@
       "sha256": "20b9847c73db938708908425a4053e75d20e1465b7c1e0afed97e9e0ce8b1f18"
     },
     {
-      "order": 151,
+      "order": 152,
       "title": "Revise facet source and shared guides",
       "route": "/recipes/edit-facet-source/",
       "source": "recipes/edit-facet-source.md",
@@ -3931,7 +3953,7 @@
       "sha256": "3ad6ef82965e6403f6ee646014c7180f03fe30ef78e4132ad6f6281d37b6cf1d"
     },
     {
-      "order": 152,
+      "order": 153,
       "title": "Remove resources in dependency order",
       "route": "/recipes/remove-dependent-resources/",
       "source": "recipes/remove-dependent-resources.md",
@@ -3947,7 +3969,7 @@
       "sha256": "bd52808145b2b978ece405b20eecac4eba4f230520ae45ad0e9b26af27097e99"
     },
     {
-      "order": 153,
+      "order": 154,
       "title": "Choose the Right Authoring Level",
       "route": "/tutorials/hierarchical-authoring/",
       "source": "tutorials/hierarchical-authoring.md",
@@ -3965,7 +3987,7 @@
       "sha256": "6051064606ddaf184073d026fc633e8d401a584ed28390bd82838b0cd6f50136"
     },
     {
-      "order": 154,
+      "order": 155,
       "title": "Authoring Conventions",
       "route": "/concepts/authoring-conventions/",
       "source": "concepts/authoring-conventions.md",
@@ -3980,7 +4002,7 @@
       "sha256": "ebbadf100f44602ab0e02594e1e5861df5e9af6d6ce7893d0dfd508ff9a6a998"
     },
     {
-      "order": 155,
+      "order": 156,
       "title": "Data Grain and Statistical Policies",
       "route": "/api/data/policies/",
       "source": "api/data/policies.md",
@@ -3995,7 +4017,7 @@
       "sha256": "3094e94a970a4245f1de6102aea49e28c4f1e89214d3ddad38bdc79b0305eb73"
     },
     {
-      "order": 156,
+      "order": 157,
       "title": "Choose a Chart",
       "route": "/api/chart-picker/",
       "source": "api/chart-picker.md",
@@ -4016,7 +4038,7 @@
       "sha256": "9042701c664d7d8bfe5fb8cb76c51bb4be26cceb3308961fdf5274035687eb57"
     },
     {
-      "order": 157,
+      "order": 158,
       "title": "Documentation Version",
       "route": "/version/",
       "source": "version.md",
@@ -4026,11 +4048,11 @@
         "migration-from-v0026",
         "migration-from-v0013"
       ],
-      "bytes": 4123,
-      "sha256": "89060ae3745e0883fe02f0daff764f8a78e195af7569c9fe9f233a5a5d7da09e"
+      "bytes": 4102,
+      "sha256": "0858284ca0218477550c96e44b1a8c8dc2c9cefe1e1a436b3d8970d358739a6b"
     },
     {
-      "order": 158,
+      "order": 159,
       "title": "Complete Axes and Labels",
       "route": "/api/axes/complete/",
       "source": "api/axes/complete.md",
@@ -4048,7 +4070,7 @@
       "sha256": "9defe018d40293d9dca3d3dc5ab27ae2f8019f266263b0d313ce8b70ceec275f"
     },
     {
-      "order": 159,
+      "order": 160,
       "title": "Image Assets Tutorial",
       "route": "/tutorials/image-assets/",
       "source": "tutorials/image-assets.md",
@@ -4059,11 +4081,11 @@
         "complete-program",
         "add-a-pixel-alpha-shadow"
       ],
-      "bytes": 6673,
-      "sha256": "610d58610602a3fd2af002356ef2faff190c880fbfd9ff443ee24178044a237b"
+      "bytes": 6631,
+      "sha256": "9002d0cb3d4602c63298fa7689e41555980e5dc357d9904cd1c0b03ee3621925"
     },
     {
-      "order": 160,
+      "order": 161,
       "title": "Prepared Fonts Tutorial",
       "route": "/tutorials/font-assets/",
       "source": "tutorials/font-assets.md",
@@ -4073,11 +4095,11 @@
         "draw-the-prepared-text",
         "change-labels-or-fonts"
       ],
-      "bytes": 3387,
-      "sha256": "cbc530404a41c20d8ae6bb29a2aa40da7488a3a7b5b9dc55a98b7244f8d4bd5e"
+      "bytes": 3324,
+      "sha256": "103df6bf1f6ad0881626ac6977a6c7e10a43d9d406121ad59d6d44663b4e296d"
     },
     {
-      "order": 161,
+      "order": 162,
       "title": "Hierarchy Resources and Plots",
       "route": "/api/hierarchy/",
       "source": "api/hierarchy.md",
@@ -4103,7 +4125,7 @@
       "sha256": "688ce553962a6d8ee408d82ed44f04330862023cacb2ba04193d17498cd8d030"
     },
     {
-      "order": 162,
+      "order": 163,
       "title": "Hierarchy Tutorial",
       "route": "/tutorials/hierarchy/",
       "source": "tutorials/hierarchy.md",
@@ -4114,11 +4136,11 @@
         "compare-rectangle-layouts",
         "edit-data-and-remove-views"
       ],
-      "bytes": 5486,
-      "sha256": "40c4d2841f1d259c29092638a316762f4813aed379f09c5001e203e60e0ca8d5"
+      "bytes": 5444,
+      "sha256": "fd5761da6fd7b11cfc75971e0b13677dfa3884b5f70f59e28662924c7757244b"
     },
     {
-      "order": 163,
+      "order": 164,
       "title": "Graph Plots",
       "route": "/api/graphs/",
       "source": "api/graphs.md",
@@ -4134,11 +4156,11 @@
         "prepare-inference-in-a-worker",
         "outlines-and-shadows"
       ],
-      "bytes": 20128,
-      "sha256": "fe6eca8382b18aa63315a3f23232843bf4608f5ec18b096405b1f43490e478b1"
+      "bytes": 20107,
+      "sha256": "840a5e494646f37fd81b92265a662d65fe8ee73dcd031636ef1a0b46f8dd3b5f"
     },
     {
-      "order": 164,
+      "order": 165,
       "title": "Graph Tutorial",
       "route": "/tutorials/graphs/",
       "source": "tutorials/graphs.md",
@@ -4151,7 +4173,7 @@
       "sha256": "301c4d6642ba5c95fd5101cde820c03054f73d8a99b2963f58921a88b7ca8f9a"
     },
     {
-      "order": 165,
+      "order": 166,
       "title": "Edge Routes",
       "route": "/api/edge-routes/",
       "source": "api/edge-routes.md",
@@ -4169,7 +4191,7 @@
       "sha256": "f05a0ed0cff37163f1839741b1f8fa937551b0c43d6ea1d5fd4b995b7be36d3f"
     },
     {
-      "order": 166,
+      "order": 167,
       "title": "Edge Route Tutorial",
       "route": "/tutorials/edge-routes/",
       "source": "tutorials/edge-routes.md",
@@ -4177,11 +4199,11 @@
         "bundle-existing-graph-edges",
         "compare-all-four-methods-with-source-measurements"
       ],
-      "bytes": 4499,
-      "sha256": "65cbe1b73a36264b01d8ff1ace08c4f24cdc3a1269d1d468abf0a2a3f27dc456"
+      "bytes": 4394,
+      "sha256": "53bcee6fa0fd33285f897d572b4a1b1b12c8b301f9a40415fa38a1b67edce872"
     },
     {
-      "order": 167,
+      "order": 168,
       "title": "Partition Plots",
       "route": "/api/partition/",
       "source": "api/partition.md",
@@ -4197,7 +4219,7 @@
       "sha256": "a3e739926d886cf75325d30a54bd5bf2fe4fee7a126e0a1ed9df5cea90b6d3e1"
     },
     {
-      "order": 168,
+      "order": 169,
       "title": "Partition Tutorial",
       "route": "/tutorials/partition/",
       "source": "tutorials/partition.md",
@@ -4207,11 +4229,11 @@
         "focus-and-return",
         "share-intervals-with-a-sunburst"
       ],
-      "bytes": 4386,
-      "sha256": "035efaa742437f58b2008093977f04e3bc0bebe9cad2334a45ee7f683074a34a"
+      "bytes": 4365,
+      "sha256": "786df22b6e6aee91994e2e905ae0f195183472ca98096bf7210d24ebed99b913"
     },
     {
-      "order": 169,
+      "order": 170,
       "title": "Flow Data and Sankey Layouts",
       "route": "/api/flows/",
       "source": "api/flows.md",
@@ -4232,18 +4254,18 @@
       "sha256": "3ad94849a9ca1b47d0bf069dd30d45d9d5c159cfb7626ff1b67d3c234cfb33fd"
     },
     {
-      "order": 170,
+      "order": 171,
       "title": "Draw Conserved Flows",
       "route": "/tutorials/flows/",
       "source": "tutorials/flows.md",
       "headings": [
         "draw-conserved-flows"
       ],
-      "bytes": 3692,
-      "sha256": "647c258171beb38064b66b978e07aa481e723f5c4ad8bfe3efb6b0f7d5bea483"
+      "bytes": 3671,
+      "sha256": "dcb16993cab0e70f317e62a06b372b9b48d65ec531a0c2442704e45122670479"
     },
     {
-      "order": 171,
+      "order": 172,
       "title": "Geometry and Projections",
       "route": "/api/geometry/",
       "source": "api/geometry.md",
@@ -4283,7 +4305,7 @@
       "sha256": "3622a4260515ec3959f55f4ddcdecaec4c48f631c3ccaec5053ae5ef9a83ac20"
     },
     {
-      "order": 172,
+      "order": 173,
       "title": "Contours and Two-Dimensional Density",
       "route": "/api/contours/",
       "source": "api/contours.md",
@@ -4300,18 +4322,18 @@
       "sha256": "8c6ab93846e24196c27bf3bc9b9234092953a1ac15253b54b86e68344a92ab1e"
     },
     {
-      "order": 173,
+      "order": 174,
       "title": "Draw Levels, Bands and Density",
       "route": "/tutorials/contours/",
       "source": "tutorials/contours.md",
       "headings": [
         "draw-levels-bands-and-density"
       ],
-      "bytes": 2908,
-      "sha256": "41b91e04c3f9ff6eb1736f7f09348699a787015cf39b9c09f3eadea1e6229f1e"
+      "bytes": 2887,
+      "sha256": "9632dada3ac4003887b2bf09c38c34efdc4a34b38307bef4eeacddf5e04a09cb"
     },
     {
-      "order": 174,
+      "order": 175,
       "title": "Fit Labels Inside a Fixed Canvas",
       "route": "/tutorials/responsive-guides/",
       "source": "tutorials/responsive-guides.md",
@@ -4322,7 +4344,7 @@
       "sha256": "2e6aeeccd9db4e2ba9f7432c2c3bc35f5034935b62342df518cb810a08e25b94"
     },
     {
-      "order": 175,
+      "order": 176,
       "title": "Calendar Plots",
       "route": "/api/calendar/",
       "source": "api/calendar.md",
@@ -4338,18 +4360,18 @@
       "sha256": "6281b277d63418e729ad922c2d1abd39f8ba1f76f57cb8250467a39e6251562c"
     },
     {
-      "order": 176,
+      "order": 177,
       "title": "Place Observations on a Calendar",
       "route": "/tutorials/calendar/",
       "source": "tutorials/calendar.md",
       "headings": [
         "place-observations-on-a-calendar"
       ],
-      "bytes": 2879,
-      "sha256": "9049bc33147570f326178e2989657798033fe5af09a410af3ae43a69444a2cac"
+      "bytes": 2858,
+      "sha256": "d1a10618fd22d5279a8356bb231bb8e01a3dabd7ed4c4c6a7ef6f1c032a258c8"
     },
     {
-      "order": 177,
+      "order": 178,
       "title": "Arrange Nested Panels with Shared Guides",
       "route": "/tutorials/nested-responsive/",
       "source": "tutorials/nested-responsive.md",
@@ -4360,7 +4382,7 @@
       "sha256": "326058c95ba85706eaa479e9833030c26d8df6153633263e902e0065882a9419"
     },
     {
-      "order": 178,
+      "order": 179,
       "title": "Draw Geometry on a Map",
       "route": "/tutorials/geographic-marks/",
       "source": "tutorials/geographic-marks.md",
@@ -4374,11 +4396,11 @@
         "label-feature-fields-and-graticules",
         "compare-graticule-degrees-in-a-companion-chart"
       ],
-      "bytes": 9718,
-      "sha256": "ed9ece67fbb8efa6e29391c4f517c95f5477705a2535c7e4a25d01b12e661d0d"
+      "bytes": 9634,
+      "sha256": "8daa883be92856a529ef6c440633e5e8590af342d892b8ec6d19b0ecedbb2bea"
     },
     {
-      "order": 179,
+      "order": 180,
       "title": "Pyramid Plots",
       "route": "/api/pyramid/",
       "source": "api/pyramid.md",
@@ -4391,7 +4413,7 @@
       "sha256": "cd3f252c0d1d0a21c920096353bb8816bd6e60159013ab05a9a1ee875f25a740"
     },
     {
-      "order": 180,
+      "order": 181,
       "title": "Compare Ordered Stages",
       "route": "/tutorials/pyramid/",
       "source": "tutorials/pyramid.md",
@@ -4399,11 +4421,11 @@
         "compare-ordered-stages",
         "key-action-trace"
       ],
-      "bytes": 1754,
-      "sha256": "26cb5aa92ccaea3e7550a41039653822b5335ffaeeae3f7b26300878b8fc5d17"
+      "bytes": 1733,
+      "sha256": "2905ffd1d7b8c923092ff804fcac78714d669097361eff9bc19e78480c0616ea"
     },
     {
-      "order": 181,
+      "order": 182,
       "title": "OHLC Plots",
       "route": "/api/ohlc/",
       "source": "api/ohlc.md",
@@ -4417,7 +4439,7 @@
       "sha256": "131858fedd9f1e4c929ebd8f48d2d12a1b1b1eff161911ac8b4fb03bd1b5498d"
     },
     {
-      "order": 182,
+      "order": 183,
       "title": "Show open, high, low and close",
       "route": "/tutorials/ohlc/",
       "source": "tutorials/ohlc.md",
@@ -4428,7 +4450,7 @@
       "sha256": "dc646bd85c2cc5cc8eaa7fedec13b6a15a6aa26aee034e2b862468402c171813"
     },
     {
-      "order": 183,
+      "order": 184,
       "title": "Waterfall Plots",
       "route": "/api/waterfall/",
       "source": "api/waterfall.md",
@@ -4442,7 +4464,7 @@
       "sha256": "5b3860476d0ec4d2361cb1cdcfa5e68fdb9c0d639164656740205a67acc46ec0"
     },
     {
-      "order": 184,
+      "order": 185,
       "title": "Show Contributions and Totals",
       "route": "/tutorials/waterfall/",
       "source": "tutorials/waterfall.md",
@@ -4453,7 +4475,7 @@
       "sha256": "c4ae18fc8eb3a57a2ea4d6c53fb1a2c729b5c935a8ca31840eb456e8ca820d24"
     },
     {
-      "order": 185,
+      "order": 186,
       "title": "Trail Plots",
       "route": "/api/trail/",
       "source": "api/trail.md",
@@ -4467,7 +4489,7 @@
       "sha256": "1bd05fd84b41b8815e0ae78cc5384cb0d4ff96979abbaf8b04cfa37ac048d340"
     },
     {
-      "order": 186,
+      "order": 187,
       "title": "Show Width Along a Series",
       "route": "/tutorials/trail/",
       "source": "tutorials/trail.md",
@@ -4478,7 +4500,7 @@
       "sha256": "1923a8531779adbce90abb5953de2e416edec5c19f8174776ca50dadf700b0a9"
     },
     {
-      "order": 187,
+      "order": 188,
       "title": "Table Plots",
       "route": "/api/table/",
       "source": "api/table.md",
@@ -4492,7 +4514,7 @@
       "sha256": "b4fa8cc90cb33c61a6745c2440ff6d9ddabbe0bd06fd521ad04acf70d469f7df"
     },
     {
-      "order": 188,
+      "order": 189,
       "title": "Combine Values and Small Charts in a Table",
       "route": "/tutorials/table/",
       "source": "tutorials/table.md",

@@ -22,6 +22,9 @@
 - title: Scatterplot Tutorial
   url: /tutorials/scatterplot/
   parent: /tutorials/
+- title: Make a Chart Interactive
+  url: /tutorials/interactive-chart/
+  parent: /tutorials/
 - title: Polar Point Tutorial
   url: /tutorials/polar-points/
   parent: /tutorials/

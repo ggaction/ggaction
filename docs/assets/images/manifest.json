@@ -3,6 +3,15 @@
   "pixelRatio": 2,
   "thumbnailMaxWidth": 640,
   "showcase": {
+    "gapminder-bubbles": {
+      "width": 1640,
+      "height": 1000,
+      "thumbnail": {
+        "width": 640,
+        "height": 390
+      },
+      "sourceHash": "86d1aa7872b06dccc080dbfff99b5b9f8c43752e2ea0413f11a4867d76c1b8ed"
+    },
     "world-gdp-map": {
       "width": 1920,
       "height": 1080,

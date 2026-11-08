@@ -5,11 +5,24 @@ title: Live Charts
 
 # Live Charts
 
-{% include chart-example.html id="scatterplot" lead=true %}
+{% include chart-example.html id="gapminder-bubbles" lead=true %}
 
 `ggaction/live` is the shortest path to an interactive chart in a browser. Attach a
 canvas once with `addCanvas`; after that every call redraws immediately, and
 interactions such as tooltips, brushing and zoom start working as soon as you add them.
+The [interactive chart tutorial](../tutorials/interactive-chart.md) builds the chart
+above step by step, including the page, the data file and a fifty-year animation.
+
+## Live charts or interaction sessions?
+
+| | `ggaction/live` | [`ggaction/interaction`](interaction.md) |
+| --- | --- | --- |
+| Who draws | The live chart redraws after every call and interaction. | You draw the program the session hands you on each commit. |
+| State | One mutable `LiveChart` that wraps the current immutable program. | Every interaction step is a new immutable program you keep or discard. |
+| Setup | One chain: `addCanvas`, chart actions, `addTooltip`, `addBrush`, … | Create a session, mount it on an element, render on `commit`. |
+| Browser bundle (gzip) | About 1.0 MB, which already includes chart authoring. | About 144 KB for the session entry; building programs also uses `ggaction` (about 805 KB). |
+| Limits | Cannot draw images, embedded fonts or shadows, because it renders without prepared resources. | Draws whatever you render, including prepared images, fonts and shadows. |
+| Use it for | Dashboards, notebooks and quick interactive pages. | Applications that store each state, run headless, or render through their own pipeline. |
 
 The live chart wraps the same immutable programs as `ggaction`. Every authoring action
 keeps its name and options and returns the same live chart, so a chain reads like any
@@ -76,7 +89,10 @@ chart, its screen and its interactions unchanged.
 | `on(event, handler)` | `"select"`, `"hover"`, `"change"` or `"error"`; returns an unsubscribe function. |
 
 When the chart has one mark, `target` may be omitted. Selections are created and
-highlighted for you and are stored as `live-<mark id>`. Drag tools share the pointer: the first
+highlighted for you and are stored as `live-<mark id>`. A `"select"` handler receives
+`{ program, selected }`, where `selected` maps each mark ID to an array of the selected
+items' fields, for example `event.selected.points` above. A mark with nothing
+selected has no key. Drag tools share the pointer: the first
 one uses a plain drag and later ones use Shift, Alt, then Ctrl, so at most four drag tools can
 share a chart. With click selection present, every drag tool uses a modifier.
 
@@ -87,10 +103,10 @@ share a chart. With click selection present, every drag tool uses a modifier.
 | `setData(rows, { source?, animate?, duration?, easing? })` | Replaces the drawn data through `reviseData`. With a screen attached it animates by default (500 ms, `"cubic-in-out"`); without one it commits at once. |
 | `animateTo(next, { duration?, easing? })` | Animates (500 ms, `"cubic-in-out"`) to another chart, program, or `program => program.editScale(...)`. Without a screen it commits at once. |
 | `playOver(field, { duration?, loop?, source? })` | Plays the data one value of `field` at a time (600 ms per step, no loop); returns `{ pause, play, stop, finished }`. |
-| `addSlider(parameter, options)` / `addDropdown(parameter, options)` | Binds a control to a parameter. Call `addCanvas` first; controls go in `options.container` or else the canvas's parent. |
+| `addSlider(parameter, { min?, max?, step?, label?, container? })` / `addDropdown(parameter, { options, label?, container? })` | Binds a control to a [parameter](data/expressions-and-normalization.md#parameters). The slider defaults to `0`–`100` in steps of `1`; the dropdown requires its `options` array. Call `addCanvas` first; controls go in `container` or else the canvas's parent. |
 | `linkTo(other, { by })` | Selecting items selects the items with the same `by` value in the other chart. |
 | `undo()` / `redo()` / `reset()` | Steps through changes; `reset` returns to the state after the last authoring call, `edit` or `setData`. |
-| `edit(program => …)` | Applies any immutable-program update. |
+| `edit(program => …)` | Applies any immutable-program update. `chart().addCanvas(element).edit(() => existingProgram)` makes a program you built elsewhere live. |
 | `save()` / `LiveChart.load(text, element?)` | Saves and restores the program and its tooltip, hover, selection, zoom, legend and drag features. Function options (`format`), controls, links and event handlers must be added again after `load`. |
 
 <!-- snippet-context:start -->
@@ -105,6 +121,12 @@ await scatter.animateTo(program => program.editScale({ id: "x", domain: [0, 10],
 scatter.linkTo(other, { by: "name" });
 const saved = scatter.save();
 ```
+
+Each `setData` keeps the previous rows in the program so that `undo` and `save` can
+reach them. A page that replaces its data forever, such as a polling dashboard,
+should rebuild the chart instead, for example `live.edit(() => buildChart(rows))`,
+so memory and saved text stay bounded. Give the rows a `keyField` so that items move
+between updates instead of fading out and in.
 
 `playAnimation(from, to, canvas, { duration?, easing?, pixelRatio? })` plays one transition
 (500 ms, `"cubic-in-out"`) between two charts or programs on a `<canvas>` without keeping a

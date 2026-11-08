@@ -36,6 +36,13 @@
     "editSource": "docs/tutorials/scatterplot.md",
     "description": "This tutorial uses the public npm package. The repository also contains a runnable browser example and its canonical program."
   },
+  "/tutorials/interactive-chart/": {
+    "title": "Make a Chart Interactive",
+    "source": "docs/tutorials/interactive-chart.md",
+    "editSource": "docs/tutorials/interactive-chart.md",
+    "description": "Build a Gapminder bubble chart in a web page, add tooltips, brushing and legend toggles, and animate it through fifty years.",
+    "image": "/assets/images/gapminder-bubbles.png"
+  },
   "/tutorials/polar-points/": {
     "title": "Polar Point Tutorial",
     "source": "docs/tutorials/polar-points.md",
@@ -516,15 +523,14 @@
     "title": "Animate and Export Chart Frames",
     "source": "docs/api/animation.md",
     "editSource": "docs/api/animation.md",
-    "description": "Prepare a transition between two immutable charts, sample it at an explicit time, and pass the returned frame directly to Canvas, SVG, PNG, or PDF.",
-    "image": "/assets/images/cars-scatterplot.png"
+    "description": "Prepare a transition between two immutable charts, sample it at an explicit time, and pass the returned frame directly to Canvas, SVG, PNG, or PDF."
   },
   "/api/live/": {
     "title": "Live Charts",
     "source": "docs/api/live.md",
     "editSource": "docs/api/live.md",
     "description": "ggaction/live is the shortest path to an interactive chart in a browser.",
-    "image": "/assets/images/cars-scatterplot.png"
+    "image": "/assets/images/gapminder-bubbles.png"
   },
   "/api/interaction/": {
     "title": "Interaction Sessions",

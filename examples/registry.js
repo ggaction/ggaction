@@ -16,6 +16,7 @@ import { createPenguinFlipperBeeswarm } from "./penguin-flipper-beeswarm/program
 import { createCarsMpgEcdf } from "./cars-mpg-ecdf/program.js";
 import { createLifeExpectancyDumbbell } from "./life-expectancy-dumbbell/program.js";
 import { createFertilityLollipop } from "./fertility-lollipop/program.js";
+import { createGapminderBubbles } from "./gapminder-bubbles/program.js";
 import { createMarginal } from "./marginal/program.js";
 import { createBullet } from "./bullet/program.js";
 import { createGeographicMarks } from "./geographic-marks/program.js";
@@ -1197,6 +1198,9 @@ export function publicCharts(options = {}) {
 // Real-data documentation showcase. Each program composes already-qualified
 // public chart families over a pinned dataset from data/ or data/showcase/.
 export const SHOWCASE_CHARTS = Object.freeze([
+  example({ id: "gapminder-bubbles", data: "gapminder", width: 820, height: 500, docsGroup: "showcase", createProgram: createGapminderBubbles,
+    browser: { path: "browser-host/?chart=gapminder-bubbles", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "gapminder-bubbles", width: 820, height: 500 } } } }),
   example({ id: "world-gdp-map", data: "worldCountries", width: 960, height: 540, docsGroup: "showcase", createProgram: createWorldGdpMap,
     browser: { path: "browser-host/?chart=world-gdp-map", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "world-gdp-map", width: 960, height: 540 } } } }),

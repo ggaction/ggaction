@@ -234,7 +234,7 @@ The library validates the complete model, source binding, metric weights and
 saved diagnostics before exposing a prepared handle.
 
 This complete Node ES-module example uses the adjacent
-[`inference-worker.mjs`](https://github.com/ggaction/ggaction/blob/c71f89b158672c0125a6d100abab34bd8ac28b8d/examples/graph-inference/worker.mjs) file. Save that
+[`inference-worker.mjs`](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/graph-inference/worker.mjs) file. Save that
 worker beside the host module. In a browser, use a module `Worker` directly as the
 factory result and have its message handler call the same `computeGraphInference`;
 Node-specific worker adapters are not needed in the browser.

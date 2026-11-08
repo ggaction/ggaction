@@ -600,10 +600,10 @@ test("routes entry documentation to the canonical example indexes", () => {
   );
   assert.match(read("docs/gallery.md"), /where: "gallery_featured", true/);
   assert.match(read("docs/gallery\/all.md"), /site\.data\.chart_examples/);
-  // Nine common charts plus ten real-data showcase charts appear on the home page.
+  // Nine common charts plus eleven real-data showcase charts appear on the home page.
   assert.equal(
     [...catalog.values()].filter(example => example.featured === true).length,
-    19
+    20
   );
   assert.match(read("docs/index.md"), /where: "featured", true/);
   assert.match(read("docs/index.md"), /toc: false/);

@@ -8,6 +8,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 // The page that teaches each real-data showcase chart.
 export const SHOWCASE_PAGES = Object.freeze({
+  "gapminder-bubbles": "docs/tutorials/interactive-chart.md",
   "world-gdp-map": "docs/api/geometry.md",
   "world-earthquakes-map": "docs/api/geometry.md",
   "global-temperature-heatmap": "docs/api/basic-charts.md",

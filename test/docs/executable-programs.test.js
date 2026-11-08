@@ -20,7 +20,7 @@ for (const example of await documentationPrograms()) {
     const started = performance.now();
     t.after(async () => writeFile(path.join(directory, example.file.replaceAll("/", "-") + (example.id ?? "primary") + ".json"), JSON.stringify({ id: example.id ?? example.file, file: example.file, sha256: example.sha256, ...(example.htmlSha256 ? { htmlSha256: example.htmlSha256 } : {}), rendering: example.rendering, status: passed ? "passed" : "failed", durationMs: performance.now() - started }, null, 2)));
     if (example.host === "paired-html") {
-      const browserDirectory = path.join(directory, example.id);
+      const browserDirectory = path.join(directory, example.id ?? `${example.file.replaceAll("/", "-")}-primary`);
       await mkdir(browserDirectory, { recursive: true });
       await testTutorialConsumers(browserDirectory, { examples: [example], evidenceFile: path.join(browserDirectory, "browser-receipts.json") });
       passed = true;

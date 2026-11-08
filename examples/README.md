@@ -19,6 +19,12 @@ python3 -m http.server 8000
 
 ## Complete chart programs
 
+### [Animated bubble chart](./gapminder-bubbles/)
+
+Make a chart interactive in a web page and animate it through time.
+
+Representative actions: `createScatterPlot`, `addTooltip`, `addBrush`, `setData`. [Documentation](https://ggaction.github.io/ggaction/tutorials/interactive-chart/).
+
 ### [World choropleth map](./world-gdp-map/)
 
 Join a table to country shapes and color each country by a value.
