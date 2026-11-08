@@ -1353,7 +1353,7 @@ See [Conditional encodings](../../api/encodings.md#choose-appearance-with-condit
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.28. See [release compatibility](../../version.md).
 
 ```typescript
 encodeDx(options: TargetedOptions<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>): ChartProgram;
@@ -1399,7 +1399,7 @@ See [Conditional encodings](../../api/encodings.md#choose-appearance-with-condit
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.28. See [release compatibility](../../version.md).
 
 ```typescript
 encodeDy(options: TargetedOptions<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>): ChartProgram;
