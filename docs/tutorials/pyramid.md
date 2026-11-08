@@ -49,6 +49,5 @@ and editing options.
 
 ## Key action trace
 
-`createPyramidPlot` records its stage/value meaning, then explicitly calls
-`materializePyramidPlot` and the graphic primitives. `editPyramidPlot` validates
-the whole candidate before applying the same materializer.
+`createPyramidPlot` records which fields are the stages and values, then draws
+the stages. `editPyramidPlot` checks the whole edited chart before redrawing it.

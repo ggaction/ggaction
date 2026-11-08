@@ -83,7 +83,7 @@ for the rendered chart and surface when no root matrix is supplied.
 
 ## Bound hit preparation
 
-Large native scenes can opt into a larger preparation allowance for one session:
+Large scenes can opt into a larger preparation allowance for one session:
 
 <!-- snippet-context:start -->
 
@@ -121,7 +121,7 @@ allows more bounded work; it does not promise a frame rate or reduce memory usag
 For 100,000 authored points, the mark also needs its explicit `maxItems: 100000`
 capacity, and a background requires an additional scene node.
 
-For a native geographic path with an explicit capacity, opt into bounded path
+For a geographic path with an explicit capacity, opt into bounded path
 preparation separately. This complete example keeps the original geometry and
 uses the existing query limit:
 
@@ -207,15 +207,15 @@ includes mouse, touch and keyboard controls for Canvas and SVG.
 
 Axes are `x`, `y`, `xy`, or directed `theta`. XY supplies four edge midpoints and
 four corners. Linear, log, time and contiguous categorical regions reuse their
-native forward/inverse scales. Empty, non-region or clipped-away boundaries have
+forward/inverse scales. Empty, non-region or clipped-away boundaries have
 no handles. Coincident or equally nearest different handles reject explicitly.
 The pointer uses the standard 3 CSS-pixel mouse/pen slop or 6 for touch. Resize
 replaces the region and keeps the untouched numeric endpoint's inclusivity.
 
-For an existing categorical mark and its native axis, bind
+For an existing categorical mark and its axis, bind
 `{type:"reorder",target:"bars",channel:"x"}`. `channel` also accepts `y` or `theta`.
 Only the actual axis tick/label identifies the typed category; mark bodies and
-axis titles do not. Moving across category centers uses the native `orderCategories`
+axis titles do not. Moving across category centers uses the `orderCategories`
 action and updates dependent marks, axes and legends. A keyboard control can use
 `session.dispatch({type:"reorder",target:"bars",payload:{channel:"x",values:["B","C","A"]}})`
 to apply the same order.
@@ -223,7 +223,7 @@ to apply the same order.
 Both bindings default to priority 60. Use explicit priorities or disjoint modifiers
 when competing bindings could apply. A drag previews on host RAF, then commits one
 history entry. Escape and capture loss cancel; a tap or unchanged result creates no
-history. The existing native scale must still describe the displayed owner;
+history. The existing scale must still describe the displayed owner;
 independently transformed animation pixels are not inverted into data values.
 
 ## Observe the mounted surface size
@@ -235,7 +235,7 @@ a collapsed surface may report zero. DPR and `rootTransform` do not alter these 
 Observation alone never edits the chart, creates history or changes its revision.
 
 Continue from a Full `program` with a Canvas and a rendered DOM `element`. This host
-policy explicitly resizes the native Canvas; choose your own native projection policy
+policy explicitly resizes the Canvas; choose your own projection policy
 when a map needs fitting or a preserved viewport.
 
 <!-- snippet-context:start -->
@@ -261,7 +261,7 @@ function disposeResize() {
 
 Render accepted `program` events using your existing Canvas or SVG renderer. Keep the
 surface's CSS dimensions controlled by its container to avoid a render/resize loop.
-Async native work and assets use the same prepared-update cancellation contract below.
+Async work and assets use the same prepared-update cancellation contract below.
 Remount, unmount and destroy disconnect the observer; previous observers cannot publish
 late events. Observation defaults to `false`. An unsupported host or failed observer setup
 rejects the attempted mount while preserving the previous mounted surface.
@@ -272,7 +272,7 @@ Supply `assetResolver` when a candidate needs asynchronous image, font or shadow
 The session keeps the previous committed program and history until the new lease is ready.
 Superseding edits and destroy abort the request; a late result is released without committing.
 `whenSettled()` observes the request current at the call and returns a settled, cancelled or error
-result. Native transaction events keep their existing commit/settled/error/cancel phases.
+result. Transaction events keep their existing commit/settled/error/cancel phases.
 Initial and external preparation use an `assets` event with a separate `status` field.
 
 Continue from an immutable `program` containing retained images, a Canvas `context`, and an
@@ -339,7 +339,7 @@ public animation-frame preparation.
 
 The session retains up to `historyLimit` committed snapshots (default 100; integer 0–10000).
 A drag with many preview frames adds one entry on release. Cancellation, failed commands,
-inspection and unchanged native commands add none. Set `historyLimit: 0` to disable undo/redo.
+inspection and unchanged commands add none. Set `historyLimit: 0` to disable undo/redo.
 
 Use the same dispatch path from host buttons, keyboard controls or headless code:
 
@@ -378,9 +378,9 @@ event reports the chosen `history` policy and origin. Every successful replaceme
 preview. Runtime history is not serialized; recreate a session after loading a saved program.
 
 History commands use the same transaction IDs, origins, FIFO reentry and commit/settled events as
-native edits. Each restore advances revision and generation, rejecting earlier frame results.
+edits. Each restore advances revision and generation, rejecting earlier frame results.
 The event's `previous` and `current` are immutable snapshot references. Reset and recorded external
-replacements affect the whole program and report `affectedOwners: []`; undo/redo of native edits
+replacements affect the whole program and report `affectedOwners: []`; undo/redo of edits
 retain that transition's owners. A restore has `selectionChanges: []` because it restores saved
 selection state; read `state.linkedSelections` or inspect `current` for its exact membership.
 
@@ -428,22 +428,22 @@ atomic and clears transient hits. It increments both `frameVersion` and
 For frames returned by `sampleTransition` or `createAnimationPlayer` from
 [`ggaction/animation`](animation.md), dispatch
 `{ type: "frame", frame, version, generation }`. Supply the exact returned frame,
-not a clone, and keep the session's current native program as a displayed contributor
+not a clone, and keep the session's current program as a displayed contributor
 or a direct endpoint of the plan. A restored offline plan can render, but it has no
-native program authority for session targeting. `frame` and `scene` are mutually exclusive.
+program authority for session targeting. `frame` and `scene` are mutually exclusive.
 
 Maintain an increasing host counter greater than the current `frameVersion` and every
 previous request, including requests still preparing. Use the current session generation.
 Stale requests return `stale` without examining their frame. Entering, exiting and weighted
 shapes use their actual displayed geometry for inspection; keyboard activation additionally
-requires that the logical item exists in the session's current program. A geographic feature or its attached Text label may be hidden by the committed projection yet appear in the sampled frame. It can be selected when its exact owner, child scope, logical feature key and geometry or projection resource still exist in the current native program. Each endpoint revision is validated independently. Fully clipped or transparent parts cannot gain activation through source membership. The command stores the existing logical key and returns to the native picture; highlights apply when that picture contains the item. Attached labels retain their source selection; projection clipping does not remove their logical membership.
+requires that the logical item exists in the session's current program. A geographic feature or its attached Text label may be hidden by the committed projection yet appear in the sampled frame. It can be selected when its exact owner, child scope, logical feature key and geometry or projection resource still exist in the current program. Each endpoint revision is validated independently. Fully clipped or transparent parts cannot gain activation through source membership. The command stores the existing logical key and returns to the picture; highlights apply when that picture contains the item. Attached labels retain their source selection; projection clipping does not remove their logical membership.
 
 With `assetResolver`, prepare against `request.frame ?? request.program`. While the frame's
 assets prepare, the previous accepted picture and focus remain active. A successful `frame`
 event publishes the exact `state.animationFrame`, scene, focus and `state.frameAssets` together.
 Render the accepted animation frame with those handles; `state.assets` remains bound to the
-committed native program. A failed or cancelled request preserves the previous display.
-Native edits and program replacements clear the transient animation frame and release its
+committed program. A failed or cancelled request preserves the previous display.
+Edits and program replacements clear the transient animation frame and release its
 lease. Frames themselves add no history entry. The same flow accepts a reduced-motion player's
 final frame; the host owns playback policy.
 
@@ -451,8 +451,8 @@ An animation host may supply a version-2 Canvas scene or a complete version-3
 batch scene whose logical keys, types and topology belong to the current program.
 `state.scene` and the frame command's `scene` use `AnyCanvasTransitionScene`;
 check `scene.version` before reading `nodes` or `entries`. The `frame` alternative
-also accepts authentic format6 samples, preserving each batch row's native identity.
-Offline and cloned frames retain no native targeting authority. Render the accepted snapshot:
+also accepts authentic format6 samples, preserving each batch row's identity.
+Offline and cloned frames retain no targeting authority. Render the accepted snapshot:
 
 <!-- snippet-context:start -->
 
@@ -589,14 +589,14 @@ metadata are not serialized with the chart.
 Use `filter` to call the existing mark filter through the same atomic session.
 The payload is `{select,mode?,recompute?}` or `{clear:true}`. `select` uses the
 inline [mark selector](appearance/selection-and-highlighting.md); named selection
-expressions, region and screen metadata are not inline filters. Native replace/
+expressions, region and screen metadata are not inline filters. Replace/
 compose and inferred-graph recompute rules remain unchanged. Clear restores that
 filter's source while preserving other authored state.
 
 Use `reorder` with `{channel,values}` or `{channel,by,direction?}` to apply the
 existing [category order](position/category-ordering.md). Channel is `x`, `y`, or
 `theta`. `{channel,clear:true}` removes an active order. These commands update the
-native data, geometry and guide consumers before committing the new hit frame.
+data, geometry and guide consumers before committing the new hit frame.
 They preserve source row order and use the existing selection lifecycle policy.
 Basic programs reject these editors.
 
@@ -704,7 +704,7 @@ usual and attach the bindings again after restoring it.
 
 ## Filter another view from a selection
 
-Use `linkFilter` to make a source selection control a target's native filter.
+Use `linkFilter` to make a source selection control a target's filter.
 The target's existing selection identifies its item grain. Its membership stays
 independent, so target selections can still be edited or brushed. Projections and
 `union`, `intersection`, and `global` resolution follow linked selections above.
@@ -762,7 +762,7 @@ these records with `effect: "filter"`.
 
 Serialize the committed chart normally and reattach bindings after restoration.
 Destroying the session keeps the committed filter. This authoring binding requires
-Full and the target's existing native filter support.
+Full and the target's existing filter support.
 
 ## Select the nearest item
 
@@ -832,7 +832,7 @@ as removed items.
 Program replacement events and transaction events expose `event.selectionChanges`, with each change
 containing `target`, `selection`, `policy`, `ownerMissing`, `hiddenKeys`, `restoredKeys` and `droppedKeys`.
 The arrays use opaque logical keys in the owner's child scope. Unchanged hidden state does not repeat
-an event. Render the session's accepted program after replacement: drop may add native selection edits.
+an event. Render the session's accepted program after replacement: drop may add selection edits.
 Failures preserve the previously accepted program and frame.
 
 A removed linked endpoint becomes dormant. Inspect `linkedSelections[].targetAvailable` and
@@ -938,7 +938,7 @@ visibilitySession.subscribe(event => {
 visibilitySession.mount(canvas);
 ```
 
-The native `setMarkVisibility({ target?, channel, values, visible, scaleDomain })` action and `setVisibility` session
+The `setMarkVisibility({ target?, channel, values, visible, scaleDomain })` action and `setVisibility` session
 command accept `channel`, unique typed `values`, boolean `visible` and the same explicit `scaleDomain`, which has no
 default. Both require an existing categorical legend block for that target and channel; see
 [Hide legend categories](data/filtering.md#set-mark-visibility). Use the command payload `{clear:true}` or the native
@@ -1024,7 +1024,7 @@ click is suppressed, so remounting an SVG during commit cannot toggle twice. An 
 inspection runs after this up commit. Host controls may still send an activation click with `detail: 0`;
 the controller does not assign Enter/Space behavior or a focused item.
 
-Custom event surfaces without pointer-capture methods keep click-only handling. Native Canvas and SVG
+Custom event surfaces without pointer-capture methods keep click-only handling. Canvas and SVG
 Elements use capture automatically. Brush/lasso and navigation are separate binding types; this click binding does not start their gestures. History commands operate on the whole session.
 
 
@@ -1070,7 +1070,7 @@ selected when its band touches the interval. Proportional pie sectors have no po
 and reject angular brushing. Start inside the owner's Polar disc, away from its exact center; ending
 at the center cancels with an error because no angle exists. The temporary overlay is a clipped sector.
 The selection also records `screenAngles: [startRadians, endRadians]` in `[0, 2π)` as pointer metadata.
-Its native domain ranges or item keys preserve the selection after resizing or loading.
+Its domain ranges or item keys preserve the selection after resizing or loading.
 
 Use `{type: "lasso", target: "points", selection: "picked"}` for a freehand screen polygon.
 Lasso selects the centers of current logical-item hit bounds, respecting clipping and opacity. It
@@ -1081,7 +1081,7 @@ points select nothing. Lasso does not accept axis or channel options.
 Both bindings accept `mode: "replace" | "add" | "toggle" | "subtract" | "intersect"`, default replace.
 Each preview recomputes from the same pointerdown program; repeated toggle previews do not accumulate.
 At most one preview is published per animation frame. Final pointerup uses its last coordinates
-through the native reducer and creates one commit followed by settled. An assetResolver delays acceptance until its lease is ready. `state.program` and its revision stay
+through the reducer and creates one commit followed by settled. An assetResolver delays acceptance until its lease is ready. `state.program` and its revision stay
 unchanged during preview; render `state.previewProgram` for the temporary selection and blue overlay.
 The committed program never contains that overlay. Empty brushes select nothing.
 
@@ -1099,7 +1099,7 @@ is removed.
 
 ## Connect parameter inputs and a context action
 
-Use native HTML controls and send their typed values to `setParameter`. The host owns keyboard behavior
+Use HTML controls and send their typed values to `setParameter`. The host owns keyboard behavior
 and focus; the session commits the parameter's dependent data, marks and selections together. For a
 context menu, subscribe to `contextMenu` and use its current semantic hit to build your own actions.
 The binding prevents the browser menu only on the mounted surface. A request itself changes no chart state.
@@ -1178,7 +1178,7 @@ const disposeControls = () => {
 };
 ```
 
-The Actions for point a button uses that native item's exact current-frame focus point. It works with
+The Actions for point a button uses that item's exact current-frame focus point. It works with
 Enter, Space or touch, and the same selection action is available without a right-click or hover.
 A host keyboard menu can send `dispatch({type:"contextMenu",point:{x,y}})` using its focused item's
 current CSS-local point. The session supplies all overlapping candidates, including guide roles, and the
@@ -1189,8 +1189,8 @@ context binding, the mounted surface keeps its normal browser menu.
 ## Navigate a partition view from host controls
 
 Send `focusHierarchy` with a typed node key or grouped path. `focus:null` returns to the current root.
-The native partition view keeps its hierarchy values, layout and logical selection identities. Hidden
-selections follow the configured native and session pruning policies. The host owns navigation controls
+The partition view keeps its hierarchy values, layout and logical selection identities. Hidden
+selections follow the configured and session pruning policies. The host owns navigation controls
 and can display the breadcrumb keys returned by inspection.
 
 This browser module expects `<canvas id="chart" aria-label="Hierarchy partition"></canvas>`.
@@ -1242,7 +1242,7 @@ const disposeFocus = () => {
 };
 ```
 
-Native buttons retain their usual Enter/Space activation and focus. For scoped charts, provide the
+Buttons retain their usual Enter/Space activation and focus. For scoped charts, provide the
 partition's explicit `{childPath,id}` target. This command does not change Tree or Treemap views, create
 an animation, or infer a focused keyboard item.
 
@@ -1251,11 +1251,11 @@ an animation, or infer a focused keyboard item.
 
 Send `setViewport` to the explicit projection resource. `scalePx` is an absolute projection scale;
 `translatePx` is in logical output pixels before composition or host transforms. Geographic projections
-also accept their native `centerDeg` and `rotateDeg` options. The command uses the existing projection
+also accept their `centerDeg` and `rotateDeg` options. The command uses the existing projection
 edit rules: a scale or translation patch detaches a fitted projection, while an angular patch retains
 and recomputes its fit. It preserves the geometry resource and feature selection identities.
 
-Alternatively, pass only `{operation}` to use [native camera operations](geometry.md#navigateprojection):
+Alternatively, pass only `{operation}` to use [camera operations](geometry.md#navigateprojection):
 pan, anchored zoom, pinch, spherical rotation, fit, reset or resize. The operation and absolute transform
 fields cannot be combined. One successful command adds one history entry, including Canvas resize.
 Capture reset parameters explicitly with `getProjectionView`; the session does not infer a home view.
@@ -1310,10 +1310,10 @@ const disposeViewport = () => {
 };
 ```
 
-For a projection in a composed child, use `{childPath,id}`. Zoom and pinch anchors use native local
+For a projection in a composed child, use `{childPath,id}`. Zoom and pinch anchors use local
 projection pixels; convert a host pointer into that coordinate space before dispatching. The native
 operation validates inverse visibility and the explicit scale extent. Reset uses the captured parameters.
-Both payload forms preserve geometry and level of detail. Native buttons keep focus and keyboard behavior.
+Both payload forms preserve geometry and level of detail. Buttons keep focus and keyboard behavior.
 Preparation failure or cancellation keeps the committed program, frame and history unchanged. This direct
 command requires Full authoring and does not install pointer gestures or animate the change.
 
@@ -1327,7 +1327,7 @@ Pan rejects that rotation-only option. The initial projection type must match th
 
 The focused surface accepts Arrow keys (10 local pixels), +/= and -/_ (double or halve scale), and Home.
 Wheel deltas use pixels, 16 pixels per line, or the surface height per page, then `2^(-delta/300)` with a
-bounded exponent and the explicit scale extent. Wheel and pinch use the native inverse anchor; a hidden
+bounded exponent and the explicit scale extent. Wheel and pinch use the inverse anchor; a hidden
 or noninvertible anchor rejects without changing the committed program. No projection or child is inferred.
 
 <!-- snippet-context:start -->
@@ -1369,7 +1369,7 @@ Adding a second pointer preserves the current pan or rotation as a private pinch
 intermediate history entry. While assets prepare, the committed program and its displayed frame remain
 active. Escape, lost capture, pointer cancel, blur, external program/frame updates, unmount and destroy
 release both pointers and discard the draft. A late pointer-up has no effect. Wheel and keyboard each use
-one native command; Ctrl/Meta/Alt keyboard shortcuts remain with the host. The host owns focus and touch
+one command; Ctrl/Meta/Alt keyboard shortcuts remain with the host. The host owns focus and touch
 CSS. Remove the binding by creating a new session; incompatible targets fail, and a removed target remains
 inactive until an explicit matching owner returns. Editing bindings share one capture owner alongside inspection/context-menu bindings. To animate a camera change, plan a transition between the committed programs with [`ggaction/animation`](animation.md) and dispatch its frames as in [Replace a program or sampled frame](#replace-a-program-or-sampled-frame).
 
@@ -1379,7 +1379,7 @@ inactive until an explicit matching owner returns. Editing bindings share one ca
 Bind `moveNode` to the explicit GraphPlot. Its fixed or force layout and plot origin determine the
 coordinate system. Dragging keeps the initial pointer offset, previews from one baseline, and commits
 once when released. Escape restores the baseline. A force drag pins the moved node and uses the existing
-solver for the others. Native buttons can send the same command using an explicit layout and typed key.
+solver for the others. Buttons can send the same command using an explicit layout and typed key.
 The commit is a synchronous `editLayout`, so node movement is unavailable while a version 2
 [edge route](edge-routes.md#explicit-bounded-execution) depends on the layout; use version 1 routes for
 draggable routed graphs.
@@ -1438,7 +1438,7 @@ const disposeNodeControls = () => {
 };
 ```
 
-Both native nodes have an ordinary button alternative to dragging.
+Both nodes have an ordinary button alternative to dragging.
 The example uses an explicit origin so moving a node does not recenter the whole graph. Circular and
 flow layouts do not accept node movement. Gesture cancellation releases capture and redraws the prior
 program. Preview hit frames track the same visible geometry; read the session's current `frameVersion`
@@ -1449,7 +1449,7 @@ installed by this binding.
 ### Drag a graph during animation
 
 A `moveNode` binding can start from an accepted authentic animation frame when its current graph
-meaning has the same native owner and complete node/edge topology. The initial pointer offset is
+meaning has the same owner and complete node/edge topology. The initial pointer offset is
 preserved. During dragging, `state.previewFrame` contains the actual current graph presentation;
 `state.program`, history and the accepted `state.animationFrame` stay unchanged. Incident routed
 edges stay attached using their current shape. Independently altered plain scenes and fallback graph
@@ -1462,22 +1462,22 @@ baseline keeps `frameAssets`.
 
 With an asset resolver, prepare `request.frame ?? request.program`; the preview and its assets become
 visible together. Escape and cancellation restore the accepted frame and its original handles.
-Release updates the native layout once and creates one history entry. Fixed layouts keep current
+Release updates the layout once and creates one history entry. Fixed layouts keep current
 positions; force layouts use them as starting positions, retain existing pins and add the dragged
-node's pin. The native force solver can move other nodes on release. To animate that final change,
+node's pin. The force solver can move other nodes on release. To animate that final change,
 retain the last preview frame and explicitly pass it as `from` to `planTransition`, with the committed
-program as `to`. Undo/redo restores native programs. Transient frames are never stored in the program.
+program as `to`. Undo/redo restores programs. Transient frames are never stored in the program.
 
 
 ## Edit existing annotations
 
 For a [geographic annotation](geometry.md), the same `annotate` command calls `editGeoAnnotation`.
-Its payload accepts a native `anchor` (position or typed feature key), text and Text styles; geographic coordinates and the original detail level remain native.
+Its payload accepts an `anchor` (position or typed feature key), text and Text styles; geographic coordinates and the original detail level remain native.
 The explicit target chooses the editor. Position fields `x`/`y`, label placement and collision layout belong to ordinary Text annotations and reject on geographic targets.
 
 Send `annotate` to an existing Text owner to update text, datum anchors, offsets, style or source-owned item membership in one transaction.
 The payload follows [`editAnnotation`](./marks/text.md#editannotationoptions) and cannot include another target.
-The Full editor retains the source/data/plot/screen anchor and native replay behavior. Basic does not author Text annotations.
+The Full editor retains the source/data/plot/screen anchor and replay behavior. Basic does not author Text annotations.
 
 This browser module expects `<canvas id="chart" aria-label="Annotated points"></canvas>`.
 
@@ -1531,7 +1531,7 @@ const disposeAnnotationControls = () => {
 };
 ```
 
-Drag the note with mouse, pen or touch to change its native pixel offsets while preserving its anchor.
+Drag the note with mouse, pen or touch to change its pixel offsets while preserving its anchor.
 The target layer is the editing unit: attached labels all move by the same offset. Use a separate annotation
 with item membership to move one label. Encoded offsets and facet sources reject this binding.
 A drag previews at most once per animation frame, commits the final release position once, and restores the
@@ -1542,15 +1542,15 @@ Keyboard activation uses ordinary host buttons. Each command produces one commit
 an invalid patch preserves the current program and trace. Annotation creation and screen-anchor conversion are not
 performed by this command.
 
-## Prepare native work before replacing the program
+## Prepare edits before replacing the program
 
-Pass a callback to `updateProgram` when a native resource needs asynchronous computation. It receives the
+Pass a callback to `updateProgram` when a resource needs asynchronous computation. It receives the
 current immutable program and an `AbortSignal`. A newer edit or destruction cancels the request; a late result
 cannot replace the current chart. `whenSettled()` waits for computation and any configured asset preparation.
 The previous program and history stay available until the replacement is ready.
 
 For a Full `program` containing graph `graph`, layout `layout` and graph plot `network`, create a route executor
-and apply its prepared result through the native actions:
+and apply its prepared result through the actions:
 
 <!-- snippet-context:start -->
 
@@ -1580,7 +1580,7 @@ function disposeRoutes() {
 ```
 
 Subscribe to the `program` event to render the accepted replacement. The subsequent `update` event reports
-`status: "settled"`; cancellation and failures report `"cancelled"` and `"error"`. Native editing commands keep
+`status: "settled"`; cancellation and failures report `"cancelled"` and `"error"`. Editing commands keep
 their existing transaction phases. Supply `createWorker` to `createGraphRouteExecutor` when work should run
 in a worker; the executor owns its transport and honors the session signal. Keep the executor until its owning
 view is disposed, then call `disposeRoutes()`.
@@ -1639,14 +1639,14 @@ brush and a plain click toggles a point. `priority` and `modifiers` are availabl
 including legends and navigation; they do not apply to inspection, context menus, keyboard or linked
 bindings. There are at most 256 editing bindings and 259 total records. A click clear-on-miss remains an applicable
 command; use `onMiss:"ignore"` when a miss should fall through. Wheel and keyboard arbitrate navigation
-bindings, while native Ctrl/Meta/Alt shortcuts remain with the host. SVG hosts keep the root during a drag
+bindings, while Ctrl/Meta/Alt shortcuts remain with the host. SVG hosts keep the root during a drag
 and remount when replacing it. Call `disposeGestures()` when removing this view.
 
 ## Keyboard item focus
 
-A keyboard binding navigates native logical items that are painted in the accepted current frame.
+A keyboard binding navigates logical items that are painted in the accepted current frame.
 It respects clipping, opacity, nested scopes and geographic representations. Focus alone changes no
-program or history. Enter or Space executes an explicitly configured native selection; partition
+program or history. Enter or Space executes an explicitly configured selection; partition
 activation can instead use `activation: { type: "focusHierarchy" }`.
 
 ```html
@@ -1712,16 +1712,16 @@ const disposeKeyboard = () => { unmountKeyboard(); unsubscribeKeyboard(); keyboa
 
 The controller keeps a stable authored key when exactly one current geographic item represents it.
 If the item becomes hidden, fully clipped, transparent, deleted or ambiguous, focus returns to its
-configured owner container; the host clears `aria-activedescendant`. The native program remains the
+configured owner container; the host clears `aria-activedescendant`. The program remains the
 source for descriptions, selected state and restored data. Use explicit `{childPath,id}` targets for
 nested charts and opaque scoped item keys from `exportAccessibleData` or inspection.
 
 Headless hosts can dispatch `{type:"focus",move:"first"}`, `{type:"focus",target:"points",itemKey}`
 or `{type:"activate"}`. Moves are next, previous, first, last, parent, firstChild, previousSibling,
 nextSibling, root, nextCandidate and previousCandidate. The candidate moves cycle the latest current-frame
-inspection with PageDown/PageUp. The hierarchy moves follow native navigation metadata. On a hierarchy item,
+inspection with PageDown/PageUp. The hierarchy moves follow navigation metadata. On a hierarchy item,
 Left/Right visit parent/first child, Up/Down visit siblings, Home visits root, and Escape invokes the
-configured partition parent's native focus. Unavailable neighbors are unchanged. Tab and modified
+configured partition parent's focus. Unavailable neighbors are unchanged. Tab and modified
 keys stay with the host; nested text controls are never intercepted. A keyboard binding takes the
 surface's key navigation role when a camera navigation binding is also present; wheel and drag remain
 with that camera binding. For independent keyboard camera controls, use a separate focusable surface.
@@ -1731,11 +1731,11 @@ exports are static; the same accessible item snapshot can accompany them without
 
 ## Accessible tooltips and touch
 
-Tooltips are host UI. Combine native item descriptions with the same pointer inspection and keyboard
+Tooltips are host UI. Combine item descriptions with the same pointer inspection and keyboard
 focus state; never insert a field value as HTML. This complete example exposes three descriptions,
 including the two overlapping points, through a focusable listbox. Hover or focus opens a tooltip;
 Escape closes that description until the pointer or focused item changes. A click or touch tap focuses
-and toggles the native selection, so touch does not depend on hover. The host owns tooltip dismissal;
+and toggles the selection, so touch does not depend on hover. The host owns tooltip dismissal;
 it does not create a second selection or history store.
 
 ```html
@@ -1864,20 +1864,20 @@ drawAccessible({ state: accessibleSession.getState() });
 ```
 
 The tooltip is ordinary text beside the chart and remains available when the pointer moves into that
-text. Escape and native focus changes dismiss or replace it without a timer. Tab is never trapped, and nested host controls keep their
-own keyboard behavior. Filtering updates the native descriptions and selected state before the host
+text. Escape and focus changes dismiss or replace it without a timer. Tab is never trapped, and nested host controls keep their
+own keyboard behavior. Filtering updates the descriptions and selected state before the host
 reads them. The item-focus example above explains owner fallback and geographic representations.
-Use a similarly explicit list of native controls for camera, legend visibility and other commands;
+Use a similarly explicit list of controls for camera, legend visibility and other commands;
 those controls must dispatch through the same session reducer and cleanup their own listeners.
 For animated transitions with reduced-motion handling, use `createAnimationPlayer` from
 [`ggaction/animation`](animation.md); this recipe stays static.
 
-## Native control alternatives
+## Accessible control alternatives
 
-Provide native HTML controls for each editing task instead of requiring a gesture on a painted mark.
+Provide HTML controls for each editing task instead of requiring a gesture on a painted mark.
 These buttons use the same selection, visibility, filter, category-order and history commands as pointer
 bindings. Category controls remain present when their items are hidden, so showing a category does not
-require finding an invisible mark. The description is rebuilt from the committed native snapshot;
+require finding an invisible mark. The description is rebuilt from the committed snapshot;
 button focus stays on the same DOM element after every edit.
 
 ```html
@@ -1972,7 +1972,7 @@ drawControls();
 Enter, Space and a touch tap activate the same button handler. Hiding a category preserves the user
 filter; showing it does not clear that filter. Removing the filter preserves visibility. With
 `keep-hidden`, a surviving selection reappears when its category returns. Undo and redo restore the
-native snapshots; Reset restores the initial chart, while Clear selection changes membership alone.
+snapshots; Reset restores the initial chart, while Clear selection changes membership alone.
 
 Use the labeled [parameter input](#connect-parameter-inputs-and-a-context-action),
 [partition buttons](#navigate-a-partition-view-from-host-controls),
@@ -1986,24 +1986,24 @@ keeps one command, preparation, selection and history path and does not create D
 
 Pointer inspection retains every original edge at a shared stroke. With a keyboard binding,
 PageDown and PageUp cycle those candidates in their actual hit order; Enter uses the configured
-native activation. Headless hosts use `focus` moves `nextCandidate` and `previousCandidate`.
+activation. Headless hosts use `focus` moves `nextCandidate` and `previousCandidate`.
 These moves wrap within the eligible candidates from the latest current-frame inspection. They
 never select an item by themselves. A source or accepted-frame change invalidates old candidates.
 
 `dispatch({type:"unbundleEdge",target,itemKey})` temporarily draws one painted GraphPlot edge
-using its native unbundled geometry. Use an opaque scoped edge key and an explicit root or child
-target. `itemKey:null` restores the baseline. The command supports static native graphs and
+using its unbundled geometry. Use an opaque scoped edge key and an explicit root or child
+target. `itemKey:null` restores the baseline. The command supports static graphs and
 authentic animated graph frames; independently edited plain scenes and active editing previews
 reject. It changes `previewFrame` and emits `unbundleEdge`, without changing the program, routes,
 selection, revision or history. Candidate cycling restores the original baseline and rechecks the
-original inspection point before advancing. Escape, a new frame, source update, native edit,
+original inspection point before advancing. Escape, a new frame, source update, edit,
 editing gesture, unmount and destruction also clear this temporary view.
 
-The host renders `previewFrame` with `previewAssets` before the ordinary animation/native state.
+The host renders `previewFrame` with `previewAssets` before the ordinary animation/state.
 An asset resolver receives the exact preview in its `frame` field. Until preparation succeeds the
 previous picture and assets remain active; failed or stale leases cannot publish a preview. The
 baseline `animationFrame` and its assets stay available for restoration. For a graph with no routed
-geometry, the temporary result may already match its native edge.
+geometry, the temporary result may already match its edge.
 
 Use this complete example's HTML and module together. Hover over the shared line, focus the chart,
 and press PageDown or PageUp. The buttons expand the focused edge and restore it. Enter selects the

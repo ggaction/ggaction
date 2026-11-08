@@ -29,13 +29,12 @@ Directions are explicit. `orientation: "up"`, `"right"` or `"left"` changes
 the direction of progress; it does not sort the source rows. A pointed ending
 is an explicit `lastStage: "point"` choice for width mode.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/920096cf05fd9a458c5f8c59bafc30e9aa670365/examples/pyramid/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/pyramid/program.js)
 drives the browser examples, primitive comparisons and generated images.
 See [Pyramid plots](../../../api/pyramid/) for labels, percentages, color, selection
 and editing options.
 
 ## Key action trace
 
-`createPyramidPlot` records its stage/value meaning, then explicitly calls
-`materializePyramidPlot` and the graphic primitives. `editPyramidPlot` validates
-the whole candidate before applying the same materializer.
+`createPyramidPlot` records which fields are the stages and values, then draws
+the stages. `editPyramidPlot` checks the whole edited chart before redrawing it.

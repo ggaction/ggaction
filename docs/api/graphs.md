@@ -147,7 +147,7 @@ graph works with the same `layoutGraph` and `createGraphPlot` actions.
 
 <!-- snippet-context:start -->
 
-> **Runnable complete example.** Not a complete program: it continues the setup described in this section.
+> **Runnable complete example.** Runs as written with ggaction installed.
 
 <!-- snippet-context:end -->
 
@@ -248,9 +248,76 @@ A worker factory is required. Each request owns one fresh worker, and an executo
 accepts one pending request; another request fails instead of joining a queue.
 There is no result cache. The worker must call `computeGraphInference` with the
 unchanged job and return its completion. The host supplies this trusted computation
-provider; consistency hashes do not certify a provider's mathematical honesty.
+provider; the library checks the result's shape and consistency, not that the computation itself is correct.
 The library validates the complete model, source binding, metric weights and
 saved diagnostics before exposing a prepared handle.
+
+### Run inference in a browser worker
+
+In a browser, the worker is two lines. Save it as `inference-worker.js` beside
+the page's module:
+
+<!-- snippet-context:start -->
+
+> **Fragment.** Not a complete program: it continues the setup described in this section. It uses `self` from that setup.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { computeGraphInference } from "ggaction/graph";
+self.onmessage = ({ data: { job } }) => self.postMessage(computeGraphInference(job));
+```
+
+The page creates the executor with a module `Worker`, prepares the graph off
+the main thread, and applies it. Bundlers such as Vite recognize
+`new Worker(new URL(..., import.meta.url), { type: "module" })` and bundle the
+worker file with its `ggaction/graph` import:
+
+```html
+<canvas id="chart" aria-label="Network of countries linked to their nearest neighbors"></canvas>
+```
+
+<!-- snippet-context:start -->
+
+> **Runnable complete example.** Use this section's HTML and module with inference-worker.js beside them, and serve gapminder.json from the site root.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart, render } from "ggaction";
+import { createGraphInferenceExecutor, prepareInferredGraphData } from "ggaction/graph";
+
+const rows = await fetch("/gapminder.json").then(response => response.json());
+const countries = rows.filter(row => row.year === 2005);
+
+const base = chart()
+  .createCanvas({ width: 640, height: 480 })
+  .createData({ id: "countries", keyField: "country", values: countries });
+const executor = createGraphInferenceExecutor({
+  createWorker: () => new Worker(new URL("./inference-worker.js", import.meta.url), { type: "module" })
+});
+let program;
+try {
+  const prepared = await prepareInferredGraphData(base, {
+    kind: "create", id: "similar", nodeKey: "country", ruleId: "nearest",
+    rule: "knn", features: ["life_expect", "fertility"], metric: "euclidean",
+    preprocess: "standardize", options: { k: 3, symmetrize: "union" }
+  }, { executor, requestToken: "similar-1" });
+  program = base
+    .createInferredGraphData({ prepared, requestToken: "similar-1" })
+    .layoutGraph({ id: "placement", method: "force", options: { seed: 7, linkDistance: 60 } })
+    .createGraphPlot({ labels: { fontSize: 9 } });
+} finally {
+  executor.dispose();
+}
+render(program, document.querySelector("#chart").getContext("2d"));
+```
+
+The same pattern works for edge routes with `createGraphRouteExecutor` and a
+worker that calls `computeGraphEdgeRoutesAsync`; see
+[edge routes](edge-routes.md).
+
+### Run inference in a Node.js worker
 
 This complete Node ES-module example uses the adjacent
 [`inference-worker.mjs`](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/graph-inference/worker.mjs) file. Save that
@@ -260,7 +327,7 @@ Node-specific worker adapters are not needed in the browser.
 
 <!-- snippet-context:start -->
 
-> **Runnable complete example.** Not a complete program: it continues the setup described in this section.
+> **Runnable complete example.** Runs as written with ggaction installed.
 
 <!-- snippet-context:end -->
 
@@ -316,8 +383,8 @@ Each encoded job and completion is limited to 128 MiB, or the smaller explicit
 `execution.maxBytes`. The existing inference work and capacity policies still apply.
 These are admission bounds, not total heap or latency guarantees. Worker startup,
 message copying, main-thread input preparation, result validation and the explicit
-commit remain real costs. Source revisions still use their existing synchronous
-resource closure; preparation does not silently turn it into an asynchronous update.
+commit remain real costs. Source data revisions still update the graph synchronously;
+preparation does not turn them into asynchronous updates.
 
 ## Outlines and shadows
 

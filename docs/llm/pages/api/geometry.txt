@@ -547,7 +547,7 @@ explicitly include `plot:false`. Authored projection clipping stays unchanged.
 
 > **Executable complete.** Run as an ES module. This resource-only example creates no graphics; the initial frozen view is explicit caller state.
 
-> **Runnable complete example.** Not a complete program: it continues the setup described in this section.
+> **Runnable complete example.** Runs as written with ggaction installed.
 
 ```javascript
 import { chart } from "ggaction";

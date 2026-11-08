@@ -982,5 +982,20 @@
     "rendering": "renders-canvas",
     "dataset": "cars",
     "prerequisites": "Use the index.html from step 1 and serve cars.json from the site root, as the Vite public folder does."
+  },
+  {
+    "id": "graph-inference-browser-worker",
+    "file": "api/graphs.md",
+    "contains": "createWorker: () => new Worker(new URL(\"./inference-worker.js\", import.meta.url), { type: \"module\" })",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "host": "paired-html",
+    "dataset": "gapminder",
+    "prerequisites": "Use this section's HTML and module with inference-worker.js beside them, and serve gapminder.json from the site root.",
+    "supportFiles": {
+      "inference-worker.js": "examples/graph-inference/browser-worker.js"
+    }
   }
 ]

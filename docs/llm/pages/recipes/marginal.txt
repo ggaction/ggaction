@@ -11,8 +11,8 @@ Use the [Getting Started browser module setup](../../../getting-started/) with a
 
 ## Complete program
 
-Run this entry in the [example directory](https://github.com/ggaction/ggaction/tree/920096cf05fd9a458c5f8c59bafc30e9aa670365/examples/marginal/)
-after installing ggaction. Its [program.js](https://github.com/ggaction/ggaction/blob/920096cf05fd9a458c5f8c59bafc30e9aa670365/examples/marginal/program.js)
+Run this entry in the [example directory](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/marginal/)
+after installing ggaction. Its [program.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/marginal/program.js)
 contains the public action chain; `fixture.js` declares the rows, boundaries,
 domains and panel dimensions. Replace the source import in that module with
 `import { chart, hconcat, vconcat } from "ggaction"` for an installed application.
@@ -44,7 +44,7 @@ coordinates remain separate observations; duplicate explicit keys are rejected.
 Zero is a valid observation. An empty array has no inferred field schema and
 cannot create this recipe's bins.
 
-The linked [selection example](https://github.com/ggaction/ggaction/blob/920096cf05fd9a458c5f8c59bafc30e9aa670365/examples/marginal/selection.js)
+The linked [selection example](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/marginal/selection.js)
 uses public `getMarkItems` to read one bin's exact source rows, then calls
 `highlightMarks` with the same row indices in each explicitly named child.
 It checks current logical source identity and revision before linking. It never

@@ -2884,7 +2884,7 @@
     "reason": "Requires the retained-image program, Canvas context and explicit interactionBindings supplied in the text. The exact fragment is executed with real browser image bytes for committed commands and pointer previews in test/browser/interaction-session.browser.js. Authentic graph frame preparation and matching preview/frame assets are additionally verified by the public current-graph drag browser and installed consumers."
   },
   {
-    "id": "docs/api/interaction.md#prepare-native-work-before-replacing-the-program:1",
+    "id": "docs/api/interaction.md#prepare-edits-before-replacing-the-program:1",
     "sha256": "d2ba963d0e1da08724959b45ef21d2bdb2a21c685e1a8f64307cb695cea5ce1d",
     "mode": "contextual-fragment",
     "owner": "docs/api/interaction.md",
@@ -2966,5 +2966,12 @@
     "mode": "contextual-fragment",
     "owner": "docs/getting-started.md",
     "reason": "Complete Node.js script that reads public/cars.json from the project created in step 1 and writes cars.png with the optional native Canvas peer; the same program renders to PNG in the documentation image generator."
+  },
+  {
+    "id": "docs/api/graphs.md#run-inference-in-a-browser-worker:1",
+    "sha256": "76b1757fe88f5c7ab1b6f2400feb0ef336e3b39b33eb5f347e08f3eca86588c9",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/graphs.md",
+    "reason": "Worker support file, not a page module. Its source is examples/graph-inference/browser-worker.js with the public ggaction/graph import, and the graph-inference-browser-worker case bundles and runs it in a module Worker in Chromium."
   }
 ]

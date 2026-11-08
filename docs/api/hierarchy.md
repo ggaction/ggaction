@@ -158,7 +158,7 @@ editHierarchyData(options: TargetedOptions<EditHierarchyDataOptions>): ChartProg
 
 Chart authoring. Revise hierarchy input options and refresh every dependent layout and plot atomically.
 
-Omitted options retain stored intent; the source form cannot change. A nonempty patch is required. A new data binding must resolve to a materialized dataset. Every dependent layout receives one new revision; its plots, labels and selections refresh. Raw and computed source revisions follow the same closure. Input programs and traces remain unchanged when any consumer fails.
+Omitted options retain stored intent; the source form cannot change. A nonempty patch is required. A new data binding must resolve to a materialized dataset. Every dependent layout receives one new revision; its plots, labels and selections refresh. Raw and computed source revisions update dependent layouts the same way. Input programs and traces remain unchanged when any consumer fails.
 
 ## layoutHierarchy
 

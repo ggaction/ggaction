@@ -10,7 +10,7 @@ chart-authoring API does not support that combination.
 
 ## Complete chart support
 
-Use the [chart picker](./api/chart-picker.md) for every current H0 facade, its required
+Use the [chart picker](./api/chart-picker.md) for every one-call chart action, its required
 input context, editable owners, package membership, and lower-level actions.
 
 | Task | Complete chart families | Next decision |

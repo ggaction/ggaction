@@ -41,7 +41,7 @@ export async function generateDocSnippetContracts({ check = false } = {}) {
       const resources = [...new Set([...block.code.matchAll(/\b(target|data|source|selection):\s*["']([^"']+)["']/g)]
         .map(match => `${match[1]}: "${match[2]}"`))];
       const mode = registered?.mode ?? (/\bcatch\s*(?:\([^)]*\))?\s*\{/.test(block.code) ? "expected-error" : /\b(?:alternative|each starts)\b/i.test(block.code) ? "alternative" : "fragment");
-      const prerequisites = registered?.prerequisites ?? [
+      const prerequisites = registered ? registered.prerequisites ?? "Runs as written with ggaction installed." : [
         "Not a complete program: it continues the setup described in this section.",
         ...(receivers.length ? [`It uses ${receivers.map(name => `\`${name}\``).join(", ")} from that setup.`] : []),
         ...(resources.length ? [`It refers to ${resources.map(value => `\`${value}\``).join("; ")}.`] : [])

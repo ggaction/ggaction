@@ -21,7 +21,8 @@ export async function copyDocumentationSupportFiles(example, destination) {
     let bytes = await readFile(path.join(root, source));
     if (/\.[cm]?js$/.test(source)) bytes = Buffer.from(bytes.toString("utf8")
       .replace(/from (["\'])\.\.\/\.\.\/src\/index\.js\1/g, 'from "ggaction"')
-      .replace(/from (["\'])\.\.\/\.\.\/src\/inspection\.js\1/g, 'from "ggaction/inspection"'));
+      .replace(/from (["\'])\.\.\/\.\.\/src\/inspection\.js\1/g, 'from "ggaction/inspection"')
+      .replace(/from (["\'])\.\.\/\.\.\/src\/graph\.js\1/g, 'from "ggaction/graph"'));
     if (/\.[cm]?js$/.test(source) && /(?:from\s*|import\s*\()["'][^"']*\bsrc\//.test(bytes.toString("utf8"))) {
       throw new Error("Documentation support modules must import the public installed package.");
     }

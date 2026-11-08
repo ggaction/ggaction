@@ -2264,7 +2264,7 @@
     "environment": "node-esm",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Not a complete program: it continues the setup described in this section.",
+    "prerequisites": "Runs as written with ggaction installed.",
     "sha256": "b6095cb38a3fab998ff59f4eb62160f1b62ed1c90558ccf5d35f09817d9a35e0",
     "executable": true
   },
@@ -2421,19 +2421,47 @@
     "environment": "node-esm",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Not a complete program: it continues the setup described in this section.",
+    "prerequisites": "Runs as written with ggaction installed.",
     "sha256": "763a08ab408e0e4ebc51c3c1aee83c4c9e841ff22d1ab03e1017dbf6617a2726",
     "executable": true
   },
   {
     "file": "api/graphs.md",
     "block": 2,
-    "heading": "Prepare inference in a worker",
+    "heading": "Run inference in a browser worker",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "self"
+    ],
+    "resources": [],
+    "prerequisites": "Not a complete program: it continues the setup described in this section. It uses `self` from that setup.",
+    "sha256": "76b1757fe88f5c7ab1b6f2400feb0ef336e3b39b33eb5f347e08f3eca86588c9",
+    "executable": false
+  },
+  {
+    "file": "api/graphs.md",
+    "block": 3,
+    "heading": "Run inference in a browser worker",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use this section's HTML and module with inference-worker.js beside them, and serve gapminder.json from the site root.",
+    "host": "paired-html",
+    "htmlSha256": "284104b39ae0318ab9450440cce374903f064ab266e54e5c31c68d5dbc8a31f5",
+    "sha256": "6cc25e3ae8deae0ad3b02f8494fa24030b2d06071c2e9acf642df0df7bf39935",
+    "executable": true
+  },
+  {
+    "file": "api/graphs.md",
+    "block": 4,
+    "heading": "Run inference in a Node.js worker",
     "mode": "complete",
     "environment": "node-esm",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Not a complete program: it continues the setup described in this section.",
+    "prerequisites": "Runs as written with ggaction installed.",
     "sha256": "2dc2d94e53c93d1b8c754336235f3fbe50c0029a58677bfda99139ad5113e831",
     "executable": true
   },
@@ -2976,7 +3004,7 @@
   {
     "file": "api/interaction.md",
     "block": 26,
-    "heading": "Prepare native work before replacing the program",
+    "heading": "Prepare edits before replacing the program",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -3042,7 +3070,7 @@
   {
     "file": "api/interaction.md",
     "block": 30,
-    "heading": "Native control alternatives",
+    "heading": "Accessible control alternatives",
     "mode": "complete",
     "environment": "browser-module",
     "receivers": [],

@@ -582,7 +582,7 @@ explicitly include `plot:false`. Authored projection clipping stays unchanged.
 
 <!-- snippet-context:start -->
 
-> **Runnable complete example.** Not a complete program: it continues the setup described in this section.
+> **Runnable complete example.** Runs as written with ggaction installed.
 
 <!-- snippet-context:end -->
 

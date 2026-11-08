@@ -103,6 +103,6 @@ Use keyed source revisions to update prices; the source rows, scales, bodies,
 labels and selections are rematerialized together. See [OHLC options](../../../api/ohlc/)
 for invalid rows, color scales, effects, temporal widths and scoped edits.
 
-The facade records the price meaning, then calls the wrapped
-`materializeOHLCPlot` and ordinary graphic primitives. Renderers consume those
-concrete graphics without deriving prices or fetching data.
+`createOHLCPlot` records which fields hold the prices, then draws ordinary
+rectangles and lines. Renderers draw those shapes without recomputing prices
+or fetching data.

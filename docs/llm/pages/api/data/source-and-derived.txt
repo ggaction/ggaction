@@ -201,8 +201,8 @@ An old immutable program is a valid intentional branch; the library cannot
 observe which variable the application considers current. See the complete
 [refresh workflow](../../../../data-updates/#prepare-and-apply-source-data).
 
-Full snapshots retain original received text/rows and parsing receipts for
-offline restoration. Old snapshots preserve their historical receipts. Restore
+Saved programs keep the original received text or rows and the parsing record
+for offline restoration. Older saved programs keep their earlier records. Restore
 validates stored data without loading or evaluating URL expressions. Canvas,
 SVG, PNG, PDF and scenes continue to use concrete graphics only.
 
