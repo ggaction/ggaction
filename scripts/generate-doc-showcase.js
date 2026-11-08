@@ -9,6 +9,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 // The pages that show each real-data showcase chart: its API page and, for a
 // chart family with a tutorial, the tutorial that opens with it.
 export const SHOWCASE_PAGES = Object.freeze({
+  "cars-mpg-bars": ["docs/api/basic-charts.md", "docs/tutorials/grouped-bar.md"],
   "gapminder-bubbles": "docs/tutorials/interactive-chart.md",
   "world-gdp-map": ["docs/api/geometry.md", "docs/tutorials/geographic-marks.md"],
   "world-earthquakes-map": "docs/api/geometry.md",

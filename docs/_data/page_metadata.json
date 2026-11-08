@@ -80,7 +80,8 @@
     "title": "Bar Chart Tutorial",
     "source": "docs/tutorials/grouped-bar.md",
     "editSource": "docs/tutorials/grouped-bar.md",
-    "description": "This tutorial uses a grouped bar chart as one concrete bar chart layout. It aggregates job percentages by year and places the mean for men and women side by side."
+    "description": "This tutorial uses a grouped bar chart as one concrete bar chart layout. It aggregates job percentages by year and places the mean for men and women side by side.",
+    "image": "/assets/images/cars-mpg-bars.png"
   },
   "/tutorials/regression-scatterplot/": {
     "title": "Regression Scatterplot Tutorial",

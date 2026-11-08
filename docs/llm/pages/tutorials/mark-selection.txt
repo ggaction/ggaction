@@ -2,8 +2,8 @@
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/d11f932ea5d6209defb7013d77c1176fb8ab750c/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/docs-overhaul/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -12,7 +12,7 @@ Follow [Getting Started](../../../getting-started/) to create a browser module a
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d11f932ea5d6209defb7013d77c1176fb8ab750c/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/docs-overhaul/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow draws the image above. The histogram and line

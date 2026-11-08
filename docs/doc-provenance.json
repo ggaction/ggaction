@@ -5,7 +5,7 @@
   "contractId": "sha256:cdfbebb474d11f7d3608c8c465f43cc2fcf995bfcc885da0165bb9410577c9fd",
   "sourceCommit": "6322f990c79f93a7d9cf1e61af8f49a7f36648fe",
   "sourceRef": "6322f990c79f93a7d9cf1e61af8f49a7f36648fe",
-  "exampleSourceRef": "d11f932ea5d6209defb7013d77c1176fb8ab750c",
+  "exampleSourceRef": "codex/docs-overhaul",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",

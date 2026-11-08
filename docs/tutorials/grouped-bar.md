@@ -5,8 +5,6 @@ title: Bar Chart Tutorial
 
 # Bar Chart Tutorial
 
-![Mean job percentage by year and sex](../assets/images/jobs-grouped-bar.png){: loading="eager" fetchpriority="high" width="1440" height="920" }
-
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
@@ -20,6 +18,47 @@ place the tutorial dataset in Vite's public directory:
 mkdir -p public
 curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ site.data.provenance.exampleSourceRef }}/data/jobs.json --output public/jobs.json
 ```
+
+## Example with real data
+
+<!-- showcase-program:cars-mpg-bars:start -->
+
+{% include chart-example.html id="cars-mpg-bars" %}
+
+`createCarsMpgBars` builds this chart from real data. It receives the rows of `data/cars.json` (1970–1982 car models).
+Draw the returned program with `render` in a browser or `renderToPNG` in Node.
+
+```javascript
+import { chart } from "ggaction";
+
+// Average fuel economy of 1970–1982 cars by cylinder count and region of origin.
+export function createCarsMpgBars(cars) {
+  const common = cars.filter(car =>
+    Number.isFinite(car.Miles_per_Gallon) && [4, 6, 8].includes(car.Cylinders))
+    .map(car => ({ cylinders: `${car.Cylinders} cylinders`, origin: car.Origin, mpg: car.Miles_per_Gallon }));
+
+  return chart()
+    .createCanvas({ width: 760, height: 440, margin: { top: 80, right: 140, bottom: 60, left: 70 } })
+    .createData({ id: "cars", values: common })
+    .createBarPlot({
+      id: "bars",
+      x: { field: "cylinders", fieldType: "ordinal", scale: { domain: ["4 cylinders", "6 cylinders", "8 cylinders"] } },
+      y: { field: "mpg", aggregate: "mean", scale: { domain: [0, 35] } },
+      color: { field: "origin", layout: "group", scale: { domain: ["USA", "Japan", "Europe"], range: ["#2563eb", "#dc2626", "#f97316"] } },
+      guides: {
+        axes: { x: { title: false }, y: { title: { text: "Average miles per gallon" } } },
+        legend: { title: "Origin" },
+        grid: { horizontal: true, vertical: false }
+      }
+    })
+    .createTitle({
+      text: "Fewer cylinders, more miles per gallon",
+      subtitle: "Average fuel economy of 1970–1982 car models · no European or Japanese 8-cylinder cars"
+    });
+}
+```
+
+<!-- showcase-program:cars-mpg-bars:end -->
 
 ## Complete program
 

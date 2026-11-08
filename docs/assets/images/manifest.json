@@ -3,6 +3,15 @@
   "pixelRatio": 2,
   "thumbnailMaxWidth": 640,
   "showcase": {
+    "cars-mpg-bars": {
+      "width": 1520,
+      "height": 880,
+      "thumbnail": {
+        "width": 640,
+        "height": 371
+      },
+      "sourceHash": "06521a530592698a2ce2c61b61755ee2e5f36d227d1c7e902a531524a9fa7c32"
+    },
     "gapminder-bubbles": {
       "width": 1640,
       "height": 1000,

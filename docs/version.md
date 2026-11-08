@@ -36,6 +36,26 @@ The full LLM bundle and its section manifest carry that identity too. The finger
 covers runtime code, declarations, and public package configuration; documentation
 edits alone do not change the chart API fingerprint.
 
+## What's new in 0.0.27 {#whats-new-in-0027}
+
+| New in 0.0.27 | Start here |
+| --- | --- |
+| Interactive charts in a web page: tooltips, hover, brushing, legend toggles, zoom, sliders, linked charts | [Make a chart interactive](./tutorials/interactive-chart.md), [live charts](./api/live.md), [interaction sessions](./api/interaction.md) |
+| Animated transitions between charts and offline frame export | [Animation](./api/animation.md) |
+| Maps: GeoJSON and TopoJSON, 15 projections, joins, graticules, routes | [Maps](./api/geometry.md) |
+| Trees, treemaps, icicles and sunbursts | [Hierarchies](./api/hierarchy.md), [partitions](./api/partition.md) |
+| Networks inferred from data, layouts and edge bundling | [Networks](./api/graphs.md), [edge routes](./api/edge-routes.md) |
+| Sankey flows | [Flows](./api/flows.md) |
+| Contours, calendars, OHLC, waterfall, trail, pyramid and table plots | [Choose a chart](./api/chart-picker.md) |
+| Raincloud, beeswarm and strip plots | [Distribution plots](./api/distribution-plots.md) |
+| Images and embedded fonts | [Rendering](./api/rendering.md) |
+| Parameters, version 2 expressions and conditional appearance | [Expressions and parameters](./api/data/expressions-and-normalization.md) |
+| Prepared CSV, JSON and URL data, and time-sliced revisions and loads | [Data updates](./data-updates.md) |
+
+The [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md)
+lists every new action, and [performance](./performance.md#known-limits)
+records the known limits of this release.
+
 ## Migration from v0.0.26 {#migration-from-v0026}
 
 Editable snapshots are now written as schema 4. Schemas 1–3 still load, but

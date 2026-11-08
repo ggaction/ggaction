@@ -17,6 +17,7 @@ import { createCarsMpgEcdf } from "./cars-mpg-ecdf/program.js";
 import { createLifeExpectancyDumbbell } from "./life-expectancy-dumbbell/program.js";
 import { createFertilityLollipop } from "./fertility-lollipop/program.js";
 import { createGapminderBubbles } from "./gapminder-bubbles/program.js";
+import { createCarsMpgBars } from "./cars-mpg-bars/program.js";
 import { createMarginal } from "./marginal/program.js";
 import { createBullet } from "./bullet/program.js";
 import { createGeographicMarks } from "./geographic-marks/program.js";
@@ -1198,6 +1199,9 @@ export function publicCharts(options = {}) {
 // Real-data documentation showcase. Each program composes already-qualified
 // public chart families over a pinned dataset from data/ or data/showcase/.
 export const SHOWCASE_CHARTS = Object.freeze([
+  example({ id: "cars-mpg-bars", data: "cars", width: 760, height: 440, docsGroup: "showcase", createProgram: createCarsMpgBars,
+    browser: { path: "browser-host/?chart=cars-mpg-bars", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "cars-mpg-bars", width: 760, height: 440 } } } }),
   example({ id: "gapminder-bubbles", data: "gapminder", width: 820, height: 500, docsGroup: "showcase", createProgram: createGapminderBubbles,
     browser: { path: "browser-host/?chart=gapminder-bubbles", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "gapminder-bubbles", width: 820, height: 500 } } } }),

@@ -19,6 +19,12 @@ python3 -m http.server 8000
 
 ## Complete chart programs
 
+### [Grouped bar chart](./cars-mpg-bars/)
+
+Compare an aggregated value across two categorical fields.
+
+Representative actions: `createBarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/grouped-bar/).
+
 ### [Animated bubble chart](./gapminder-bubbles/)
 
 Make a chart interactive in a web page and animate it through time.

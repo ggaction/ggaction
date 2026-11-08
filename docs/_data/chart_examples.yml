@@ -1,3 +1,23 @@
+- id: cars-mpg-bars
+  example: /examples/cars-mpg-bars/
+  title: Grouped bar chart
+  image: /assets/images/cars-mpg-bars.png
+  alt: Grouped bars of average miles per gallon for 4, 6 and 8 cylinder cars from the USA, Japan and Europe
+  width: 1520
+  height: 880
+  thumbnail: /assets/images/cars-mpg-bars-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 371
+  caption: Average fuel economy by cylinder count, grouped by region of origin.
+  summary: Compare an aggregated value across two categorical fields.
+  actions: createBarPlot
+  tasks: comparison
+  url: /tutorials/grouped-bar/
+  home_group: essentials
+  home_order: 71
+  featured: true
+  gallery_featured: true
+  tutorial_order: 30
 - id: gapminder-bubbles
   example: /examples/gapminder-bubbles/
   title: Animated bubble chart
@@ -625,9 +645,7 @@
   home_group: essentials
   home_order: 70
   recipe_order: 40
-  featured: true
   gallery_featured: true
-  tutorial_order: 30
 - id: ordered-category-bar
   example: /examples/ordered-category-bar/
   title: Ordered category bars

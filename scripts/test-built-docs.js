@@ -190,7 +190,7 @@ try {
       "Line chart",
       "Heatmap",
       "Temperature anomaly heatmap",
-      "Bar chart",
+      "Grouped bar chart",
       "Histogram",
       "World choropleth map",
       "Earthquake map",
