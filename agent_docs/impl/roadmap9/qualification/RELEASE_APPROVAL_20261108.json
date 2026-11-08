@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "state": "approved",
+  "date": "2026-11-08",
+  "source": "Explicit user reply in the current task",
+  "reply": "지금 내자",
+  "approved": [
+    { "id": "G-RELEASE-0.0.28", "decision": "Publish 0.0.28 now: a documentation and examples release over the 0.0.27 runtime, through the pull request, annotated tag, protected release workflow, npm publish and docs deployment." }
+  ],
+  "precondition": "The documentation overhaul (PR #285) is merged to main and passed every required CI check.",
+  "remainingObligations": ["The protected npm-release environment is approved by the repository owner in the GitHub UI."]
+}

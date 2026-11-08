@@ -12,7 +12,7 @@ Each declared action has an exact signature and its own stable link. Option tabl
 
 **API layer:** advanced. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.28. See [release compatibility](../../version.md).
 
 ```typescript
 encodeChannels(options: TargetedOptions<EncodeChannelsOptions>): ChartProgram;
@@ -67,7 +67,7 @@ from `ggaction`; use the focused encoding actions from `ggaction/basic`.
 
 **API layer:** advanced. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.28. See [release compatibility](../../version.md).
 
 ```typescript
 setMarkVisibility(options: TargetedOptions<MarkVisibilityOptions>): ChartProgram;
@@ -105,7 +105,7 @@ Visibility removes actual final items and preserves original row lineage. It com
 
 **API layer:** advanced. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.27. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.28. See [release compatibility](../../version.md).
 
 ```typescript
 removeMarkVisibility(options?: TargetedOptions<RemoveMarkVisibilityOptions>): ChartProgram;
