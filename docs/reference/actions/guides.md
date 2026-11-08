@@ -1039,7 +1039,7 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.28. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editAxes(options: TargetedOptions<EditAxesOptions>): ChartProgram;
@@ -1720,7 +1720,7 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.28. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editLegendBlock(options: TargetedOptions<EditLegendBlockOptions>): ChartProgram;

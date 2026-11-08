@@ -287,15 +287,17 @@ jobs:
             assert.equal((await buildDocProvenance()).status, "published-release");
           '
           node scripts/run-check.js test-docs -- npm run test:docs
-          # Native Canvas PNG bytes vary across supported operating systems.
-          # Their sources, manifest, dimensions, and rendered output remain
-          # covered by documentation and render tests; all other generated
-          # documentation must stay byte-identical to the release tag.
+          # Native Canvas raster bytes (PNG figures and animated GIFs) vary
+          # across supported operating systems. Their sources, manifest,
+          # dimensions, frame counts, and rendered output remain covered by
+          # documentation and render tests; all other generated documentation
+          # must stay byte-identical to the release tag.
           git diff --exit-code -- \
             docs \
             examples/README.md \
             knowledge/action-cards.json \
-            ':(exclude)docs/assets/images/*.png'
+            ':(exclude)docs/assets/images/*.png' \
+            ':(exclude)docs/assets/images/*.gif'
       - name: Build documentation with Jekyll
         run: node scripts/run-check.js docs-build -- npm run docs:build
       - name: Check built documentation
