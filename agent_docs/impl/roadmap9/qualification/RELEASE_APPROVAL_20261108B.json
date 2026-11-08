@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "state": "approved",
+  "date": "2026-11-08",
+  "source": "Explicit user answer in the current task",
+  "reply": "Release as 0.0.29 (Recommended)",
+  "approved": [
+    { "id": "G-RELEASE-0.0.29", "decision": "The 0.0.28 release workflow failed before publishing because the animated documentation GIF differed on Linux. Leave the v0.0.28 tag unreleased and publish the fixed candidate as 0.0.29 through the same pull request, annotated tag, protected workflow, npm publish and docs deployment." }
+  ],
+  "precondition": "The release verification fix is merged and every required CI check passes.",
+  "remainingObligations": ["The protected npm-release environment is approved by the repository owner in the GitHub UI."]
+}
