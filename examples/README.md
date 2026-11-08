@@ -29,7 +29,7 @@ Representative actions: `createScatterPlot`, `addTooltip`, `addBrush`, `setData`
 
 Join a table to country shapes and color each country by a value.
 
-Representative actions: `createGeometryData`, `createGeoJoinData`, `createProjection`, `createGeoShapeMark`. [Documentation](https://ggaction.github.io/ggaction/api/geometry/).
+Representative actions: `createGeometryData`, `createGeoJoinData`, `createProjection`, `createGeoShapeMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
 
 ### [Earthquake map](./world-earthquakes-map/)
 
@@ -47,37 +47,37 @@ Representative actions: `createHeatmap`. [Documentation](https://ggaction.github
 
 Lay out daily values as a weekday by week calendar.
 
-Representative actions: `createCalendarLayout`, `createCalendarPlot`. [Documentation](https://ggaction.github.io/ggaction/api/calendar/).
+Representative actions: `createCalendarLayout`, `createCalendarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/calendar/).
 
 ### [Density contours with points](./penguin-density-contours/)
 
 Estimate a two-dimensional density and overlay the raw observations.
 
-Representative actions: `createDensityContourData`, `createContourMark`, `createPointMark`. [Documentation](https://ggaction.github.io/ggaction/api/contours/).
+Representative actions: `createDensityContourData`, `createContourMark`, `createPointMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/contours/).
 
 ### [Sankey diagram](./penguin-sankey/)
 
 Show how counts split and merge across stages.
 
-Representative actions: `createFlowData`, `layoutFlow`, `createFlowLinks`, `createFlowNodes`. [Documentation](https://ggaction.github.io/ggaction/api/flows/).
+Representative actions: `createFlowData`, `layoutFlow`, `createFlowLinks`, `createFlowNodes`. [Documentation](https://ggaction.github.io/ggaction/tutorials/flows/).
 
 ### [Similarity network](./country-similarity-network/)
 
 Infer links from feature similarity and lay them out with a seeded force layout.
 
-Representative actions: `createInferredGraphData`, `layoutGraph`, `createGraphPlot`. [Documentation](https://ggaction.github.io/ggaction/api/graphs/).
+Representative actions: `createInferredGraphData`, `layoutGraph`, `createGraphPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/graphs/).
 
 ### [Population treemap](./world-population-treemap/)
 
 Size nested rectangles by a value in a two-level hierarchy.
 
-Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreemapPlot`. [Documentation](https://ggaction.github.io/ggaction/api/hierarchy/).
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreemapPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchy/).
 
 ### [Population sunburst](./world-population-sunburst/)
 
 Show a hierarchy as rings whose angles follow a value.
 
-Representative actions: `createHierarchyData`, `layoutHierarchy`, `createPartitionPlot`. [Documentation](https://ggaction.github.io/ggaction/api/partition/).
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createPartitionPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/partition/).
 
 ### [Radial class tree](./flare-radial-tree/)
 
@@ -89,25 +89,25 @@ Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreePlo
 
 Draw daily price ranges and align a second panel on the same sessions.
 
-Representative actions: `createOHLCPlot`, `createBarPlot`, `vconcat`. [Documentation](https://ggaction.github.io/ggaction/api/ohlc/).
+Representative actions: `createOHLCPlot`, `createBarPlot`, `vconcat`. [Documentation](https://ggaction.github.io/ggaction/tutorials/ohlc/).
 
 ### [Waterfall chart](./temperature-waterfall/)
 
 Explain how a total is built from signed steps.
 
-Representative actions: `createWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/api/waterfall/).
+Representative actions: `createWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/waterfall/).
 
 ### [Trail chart](./gapminder-life-trails/)
 
 Draw a line whose width varies with a third field.
 
-Representative actions: `createTrailPlot`. [Documentation](https://ggaction.github.io/ggaction/api/trail/).
+Representative actions: `createTrailPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/trail/).
 
 ### [Table with bars and sparklines](./gapminder-country-table/)
 
 Combine exact values with small graphics in one table.
 
-Representative actions: `createTablePlot`. [Documentation](https://ggaction.github.io/ggaction/api/table/).
+Representative actions: `createTablePlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/table/).
 
 ### [Raincloud plot](./penguin-mass-raincloud/)
 
@@ -265,11 +265,11 @@ Compare multivariate row profiles while retaining row-level identity.
 
 Representative actions: `createParallelCoordinates`, `encodeParallelCoordinates`. [Documentation](https://ggaction.github.io/ggaction/recipes/parallel-coordinates/).
 
-### [Polar guides](./polar-guides/)
+### [Polar points](./polar-guides/)
 
 Read angle and radial mappings with aligned axes, labels, and grids.
 
-Representative actions: `createGuides`, `editRadialAxis`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-points/#add-polar-guides).
+Representative actions: `createGuides`, `editRadialAxis`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-points/).
 
 ### [Polar lines](./gapminder-polar-trends/)
 
@@ -414,7 +414,7 @@ Order categorical x or y positions explicitly or from a stable aggregate summary
 
 Representative actions: `orderCategories`, `removeCategoryOrder`. [Documentation](https://ggaction.github.io/ggaction/api/position/category-ordering/).
 
-### [Polar points](./polar-points/)
+### [Polar point cloud](./polar-points/)
 
 Map quantitative fields to clockwise angle and radial distance.
 
