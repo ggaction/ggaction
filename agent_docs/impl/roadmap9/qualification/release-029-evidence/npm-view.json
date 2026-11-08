@@ -1,0 +1,30 @@
+{
+  "name": "ggaction",
+  "version": "0.0.29",
+  "dist": {
+    "shasum": "0711899e7454dedd5acba0b2e039f871f61ffcde",
+    "tarball": "https://registry.npmjs.org/ggaction/-/ggaction-0.0.29.tgz",
+    "fileCount": 1288,
+    "integrity": "sha512-//AAtqNsHPD/jBt9Ncl5yTz2T286SliRJzdNaws8oNHdUwjBq8ob0GURvnp/HHHhmo/Cos1HKnWFTzyATCQwpg==",
+    "signatures": [
+      {
+        "sig": "MEUCIQDcsJcKT5ghOFsbQHZfBjeynihFSdxvCsOR704u4WIHWgIgJSwzb/wvzlg0SQyYaQ9F9lTv1NJltEe+YG4ByEn4UsI=",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      },
+      {
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+        "sig": "MEYCIQD7mrkgpmOfCr9XMz81hbmt63WA+sAyM7yMa9DNm2PwQgIhAP8V/63Wl74OSY1Jt9hp5wA4vEHBak/WpH+1indzZ32E"
+      }
+    ],
+    "attestations": {
+      "url": "https://registry.npmjs.org/-/npm/v1/attestations/ggaction@0.0.29",
+      "provenance": {
+        "predicateType": "https://slsa.dev/provenance/v1"
+      }
+    },
+    "unpackedSize": 8475100
+  },
+  "dist-tags": {
+    "latest": "0.0.29"
+  }
+}

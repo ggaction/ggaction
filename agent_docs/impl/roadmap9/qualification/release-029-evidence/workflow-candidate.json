@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "name": "ggaction",
+  "version": "0.0.29",
+  "tag": "v0.0.29",
+  "commit": "a5fd3dc821b1a8cd6dbafd7a8c86ba1fb566fecd",
+  "filename": "ggaction-0.0.29.tgz",
+  "sha1": "0711899e7454dedd5acba0b2e039f871f61ffcde",
+  "sha256": "8f0c062fe255aff329e64a7fc78615602c2a9f3a816489c440fe7ecad65184dd",
+  "entryCount": 1288,
+  "packedBytes": 1895091,
+  "unpackedBytes": 8475100,
+  "releaseNotes": "ggaction-0.0.29-release-notes.md"
+}
