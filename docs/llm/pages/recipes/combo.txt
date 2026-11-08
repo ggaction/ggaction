@@ -11,7 +11,7 @@ Use the [Getting Started browser module setup](../../../getting-started/) with a
 
 ## Complete program
 
-Run this entry beside the canonical [program.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/linked-overlay/program.js)
+Run this entry beside the canonical [program.js](https://github.com/ggaction/ggaction/blob/c71f89b158672c0125a6d100abab34bd8ac28b8d/examples/linked-overlay/program.js)
 after installing ggaction and replacing its source import with
 `import { chart } from "ggaction"`.
 

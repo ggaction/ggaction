@@ -88,7 +88,7 @@ style editing path.
 
 {% include chart-example.html id="life-expectancy-dumbbell" %}
 
-`createLifeExpectancyDumbbell` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder via vega-datasets).
+`createLifeExpectancyDumbbell` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
 Draw the returned program with `render` in a browser or `renderToPNG` in Node.
 
 ```javascript
@@ -134,7 +134,7 @@ export function createLifeExpectancyDumbbell(gapminder) {
 
 {% include chart-example.html id="fertility-lollipop" %}
 
-`createFertilityLollipop` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder via vega-datasets).
+`createFertilityLollipop` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
 Draw the returned program with `render` in a browser or `renderToPNG` in Node.
 
 ```javascript

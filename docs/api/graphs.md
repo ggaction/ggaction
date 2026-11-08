@@ -25,7 +25,7 @@ For pointer and keyboard controls, see [node movement](interaction.md#move-graph
 
 {% include chart-example.html id="country-similarity-network" %}
 
-`createCountrySimilarityNetwork` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder via vega-datasets).
+`createCountrySimilarityNetwork` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
 Draw the returned program with `render` in a browser or `renderToPNG` in Node.
 
 ```javascript

@@ -128,7 +128,7 @@ Axes removed after construction stay removed when the statistical source changes
 
 {% include chart-example.html id="cars-mpg-ecdf" %}
 
-`createCarsMpgEcdf` builds this chart from real data. It receives the rows of `data/cars.json` (vega-datasets).
+`createCarsMpgEcdf` builds this chart from real data. It receives the rows of `data/cars.json` (1970–1982 car models).
 Draw the returned program with `render` in a browser or `renderToPNG` in Node.
 
 ```javascript

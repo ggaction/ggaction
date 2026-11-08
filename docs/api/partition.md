@@ -14,7 +14,7 @@ description: Draw, focus and revise icicles and sunbursts from one typed hierarc
 
 {% include chart-example.html id="world-population-sunburst" %}
 
-`createWorldPopulationSunburst` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder via vega-datasets).
+`createWorldPopulationSunburst` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
 Draw the returned program with `render` in a browser or `renderToPNG` in Node.
 
 ```javascript

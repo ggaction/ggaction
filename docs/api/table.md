@@ -17,7 +17,7 @@ and drawing order.
 
 {% include chart-example.html id="gapminder-country-table" %}
 
-`createGapminderCountryTable` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder via vega-datasets).
+`createGapminderCountryTable` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
 Draw the returned program with `render` in a browser or `renderToPNG` in Node.
 
 ```javascript

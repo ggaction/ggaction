@@ -9,7 +9,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/docs-overhaul/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/c71f89b158672c0125a6d100abab34bd8ac28b8d/data/cars.json --output public/cars.json
 ```
 
 ## Complete program

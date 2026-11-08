@@ -16,7 +16,7 @@ Create hierarchy data, compute an explicit layout, then draw a tree or treemap. 
 
 {% include chart-example.html id="world-population-treemap" %}
 
-`createWorldPopulationTreemap` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder via vega-datasets).
+`createWorldPopulationTreemap` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
 Draw the returned program with `render` in a browser or `renderToPNG` in Node.
 
 ```javascript
@@ -106,7 +106,7 @@ export function createWorldPopulationSunburst(gapminder) {
 
 {% include chart-example.html id="flare-radial-tree" %}
 
-`createFlareRadialTree` builds this chart from real data. It receives the array in `data/showcase/flare.json` (Flare toolkit via vega-datasets, BSD-3-Clause).
+`createFlareRadialTree` builds this chart from real data. It receives the array in `data/showcase/flare.json` (Flare toolkit class hierarchy, BSD-3-Clause).
 Draw the returned program with `render` in a browser or `renderToPNG` in Node.
 
 ```javascript

@@ -17,7 +17,7 @@ available in the Full entry and share Canvas, SVG, PNG and PDF output.
 
 {% include chart-example.html id="gapminder-life-trails" %}
 
-`createGapminderLifeTrails` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder via vega-datasets).
+`createGapminderLifeTrails` builds this chart from real data. It receives the rows of `data/gapminder.json` (Gapminder).
 Draw the returned program with `render` in a browser or `renderToPNG` in Node.
 
 ```javascript

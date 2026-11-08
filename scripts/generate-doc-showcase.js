@@ -35,10 +35,10 @@ const DATASETS = Object.freeze({
   globalTemperatures: "the rows of `data/showcase/global-temperatures.csv` (NASA GISTEMP, public domain) with numeric fields parsed",
   usBirths: "the rows of `data/showcase/us-births-2000-2014.csv` (FiveThirtyEight, CC BY 4.0) with numeric fields parsed",
   penguins: "the rows of `data/showcase/penguins.csv` (palmerpenguins, CC0) with numbers parsed and `NA` read as `null`",
-  flare: "the array in `data/showcase/flare.json` (Flare toolkit via vega-datasets, BSD-3-Clause)",
+  flare: "the array in `data/showcase/flare.json` (Flare toolkit class hierarchy, BSD-3-Clause)",
   ibmDaily: "the parsed JSON response in `data/showcase/ibm-daily.json` (Alpha Vantage demo endpoint)",
-  gapminder: "the rows of `data/gapminder.json` (Gapminder via vega-datasets)",
-  cars: "the rows of `data/cars.json` (vega-datasets)"
+  gapminder: "the rows of `data/gapminder.json` (Gapminder)",
+  cars: "the rows of `data/cars.json` (1970–1982 car models)"
 });
 
 function dataSentence(chart) {
@@ -92,7 +92,7 @@ export async function generateDocShowcase({ check = false } = {}) {
   for (const [file, expected] of pages) {
     const current = await readFile(file, "utf8");
     if (check && current !== expected) {
-      throw new Error(`${path.relative(root, file)} has a stale showcase program. Run npm run docs:showcase.`);
+      throw new Error(`${path.relative(root, file)} has a stale showcase program. Run npm run docs:workflows.`);
     }
     if (!check && current !== expected) await writeFile(file, expected);
   }
