@@ -107,7 +107,7 @@ Length defaults to `14`; stroke width defaults to `2`. [Marks](../../api/marks.m
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createStatisticalReference(options: TargetedOptions<CreateStatisticalReferenceOptions>): ChartProgram;
@@ -396,7 +396,7 @@ keeps its percentage of the complete source.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editMarkLabelSelection(options: TargetedOptions<EditMarkLabelSelectionOptions>): ChartProgram;
@@ -438,7 +438,7 @@ rebound with this action or removed.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editMarkLabelPlacement(options: TargetedOptions<EditMarkLabelPlacementOptions>): ChartProgram;
@@ -482,7 +482,7 @@ Pass `"auto"` to restore the legacy source anchor and remove the owned placement
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 removeMarkLabels(options: TargetedOptions<RemoveMarkLabelsOptions>): ChartProgram;
@@ -612,7 +612,7 @@ Omit `layout` or pass `false` to retain the exact anchor. A layout object accept
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editAnnotation(options: TargetedOptions<EditAnnotationOptions>): ChartProgram;
@@ -1802,7 +1802,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createOverlay(options?: TargetedOptions<CreateOverlayOptions>): ChartProgram;
@@ -1843,7 +1843,7 @@ Add a line or point layer that follows a source mark's visible results. Bar over
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editOverlay(options: TargetedOptions<EditOverlayOptions>): ChartProgram;
@@ -1880,7 +1880,7 @@ Change an overlay's dependency or gap policy. `follow: false` freezes current re
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
@@ -1924,7 +1924,7 @@ four renderer tests.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
@@ -1965,7 +1965,7 @@ to the plot. Explicit geometry adds clipping to the always-clipped viewport.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createFlowNodes(options?: TargetedOptions<FlowNodesOptions>): ChartProgram;
@@ -2004,7 +2004,7 @@ Create flow node rectangles and optional labels from a stored layout. Full only.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editFlowNodes(options: TargetedOptions<EditFlowNodesOptions>): ChartProgram;
@@ -2042,7 +2042,7 @@ Edit flow node styling, labels or layout binding. Full only.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createFlowLinks(options?: TargetedOptions<FlowLinksOptions>): ChartProgram;
@@ -2080,7 +2080,7 @@ Create closed flow ribbons from a stored layout. Full only.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editFlowLinks(options: TargetedOptions<EditFlowLinksOptions>): ChartProgram;
@@ -2117,7 +2117,7 @@ Edit flow ribbon styling or layout binding. Full only.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
@@ -2163,7 +2163,7 @@ Draw stored contour level boundaries or filled bands with shared position and co
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
@@ -2208,7 +2208,7 @@ Edit contour geometry bindings, mappings and appearance while retaining item ide
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
@@ -2248,7 +2248,7 @@ Draw a stored calendar layout with explicit day, month and label roles. See [Cal
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
@@ -2287,7 +2287,7 @@ Edit a calendar plot while preserving day identities and source lineage. See [Ca
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createGeoShapeMark(options?: TargetedOptions<GeoShapeMarkOptions>): ChartProgram;
@@ -2337,7 +2337,7 @@ Create projected geographic GeoShapeMark geometry with native style. See [Geomet
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editGeoShapeMark(options: TargetedOptions<EditGeoShapeMarkOptions>): ChartProgram;
@@ -2386,7 +2386,7 @@ Edit projected geographic GeoShapeMark geometry with native style. See [Geometry
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createGeoPointMark(options?: TargetedOptions<GeoPointMarkOptions>): ChartProgram;
@@ -2437,7 +2437,7 @@ Create projected geographic GeoPointMark geometry with native style. See [Geomet
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editGeoPointMark(options: TargetedOptions<EditGeoPointMarkOptions>): ChartProgram;
@@ -2487,7 +2487,7 @@ Edit projected geographic GeoPointMark geometry with native style. See [Geometry
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createGeoLineMark(options?: TargetedOptions<GeoLineMarkOptions>): ChartProgram;
@@ -2536,7 +2536,7 @@ Create projected geographic GeoLineMark geometry with native style. See [Geometr
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
@@ -2584,7 +2584,7 @@ Edit projected geographic GeoLineMark geometry with native style. See [Geometry 
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram;
@@ -2639,7 +2639,7 @@ Attach native Text to a semantic geographic position or original feature centroi
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram;
@@ -2693,7 +2693,7 @@ Edit the annotation while preserving omitted intent, original feature identity a
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
@@ -2742,7 +2742,7 @@ Create projected geographic Graticule geometry with native style. See [Geometry 
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
@@ -2790,7 +2790,7 @@ Edit projected geographic Graticule geometry with native style. See [Geometry an
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
@@ -2837,7 +2837,7 @@ Draw ordered stages with explicit width or area meaning. See [Pyramid plots](../
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
@@ -2883,7 +2883,7 @@ Edit a Pyramid while preserving typed row identities and source order. See [Pyra
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
@@ -2933,7 +2933,7 @@ Draw explicit open, high, low and close roles as one row-owned item. See [OHLC p
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
@@ -2982,7 +2982,7 @@ Edit prices and styles while preserving typed row identities. See [OHLC plots](.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
@@ -3029,7 +3029,7 @@ Draw ordered contributions, explicit totals and subtotals. See [Waterfall plots]
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
@@ -3075,7 +3075,7 @@ Edit contribution meaning and appearance with stable stage identities. See [Wate
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;
@@ -3130,7 +3130,7 @@ Draw a filled ribbon with an explicit screen width at each sample. Choose Cartes
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;
@@ -3184,7 +3184,7 @@ Patch native series meaning and appearance while preserving typed logical identi
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 createTablePlot(options: TargetedOptions<CreateTablePlotOptions>): ChartProgram;
@@ -3233,7 +3233,7 @@ Draw keyed cells with text, bars, sparklines and explicit whole-source footer su
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.29. See [release compatibility](../../version.md).
 
 ```typescript
 editTablePlot(options: TargetedOptions<EditTablePlotOptions>): ChartProgram;
