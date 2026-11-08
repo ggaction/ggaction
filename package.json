@@ -186,7 +186,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
-    "@modelcontextprotocol/sdk": "1.32.1",
+    "@modelcontextprotocol/sdk": "1.32.2",
     "@napi-rs/canvas": "^1.0.2",
     "@xmldom/xmldom": "0.9.12",
     "acorn": "8.19.0",
@@ -200,7 +200,7 @@
     "yaml": "2.9.1"
   },
   "peerDependencies": {
-    "@modelcontextprotocol/sdk": "1.32.1",
+    "@modelcontextprotocol/sdk": "1.32.2",
     "@napi-rs/canvas": "^1.0.2"
   },
   "peerDependenciesMeta": {
@@ -212,7 +212,7 @@
     }
   },
   "dependencies": {
-    "d3-array": "3.2.4",
+    "d3-array": "3.2.5",
     "geographic-math": "npm:d3-geo@3.1.1",
     "internmap": "2.0.3"
   }
