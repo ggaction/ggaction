@@ -426,7 +426,7 @@ try {
   );
   assert.equal(
     await desktop.locator(".docs-example-figure img").getAttribute("alt"),
-    "Three-point scatterplot of horsepower and fuel economy using color and shape for origin"
+    "Scatterplot of horsepower and fuel economy for 392 cars using color and shape for origin"
   );
   assert.equal(
     await desktop.locator(".docs-example-figure img").getAttribute("fetchpriority"),

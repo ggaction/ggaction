@@ -67,7 +67,8 @@ export const guideImages = Object.freeze([
       "../examples/getting-started/program.js",
       import.meta.url
     ),
-    createProgram: createGettingStartedChart
+    dataFiles: [dataFiles.cars],
+    createProgram: () => createGettingStartedChart(structuredClone(data.cars))
   })
 ]);
 

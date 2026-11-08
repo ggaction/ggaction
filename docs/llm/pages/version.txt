@@ -10,7 +10,7 @@ The comparison baseline below is the older release used by the migration notes.
 | Identity | Value |
 | --- | --- |
 | Contract fingerprint | `sha256:cdfbebb474d11f7d3608c8c465f43cc2fcf995bfcc885da0165bb9410577c9fd` |
-| Example and dataset source | `4ca52527ec70894e0fe1ab4cc47bfbf6d4b77a17` |
+| Example and dataset source | `codex/docs-overhaul` |
 | Runtime source commit | `6322f990c79f93a7d9cf1e61af8f49a7f36648fe` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 380 |

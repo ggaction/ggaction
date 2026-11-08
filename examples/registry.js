@@ -202,7 +202,7 @@ function example({ id, data, width, height, createProgram, ...options }) {
 
 export const DOCUMENTATION_ONLY_PROGRAMS = Object.freeze({
   "readme-rose-sequence": "Paper Nightingale sequence used by the generated README animation, with progressive intermediate states.",
-  "getting-started": "Inline-data program for the Getting Started guide.",
+  "getting-started": "Program for the Getting Started guide over the repository cars dataset.",
   "readme-authoring-sequence": "Stepwise animation for the repository README."
 });
 

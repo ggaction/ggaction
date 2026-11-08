@@ -8,14 +8,18 @@ image: /assets/images/getting-started.png
 
 {% include getting-started-chart.html %}
 
-This walkthrough installs `ggaction`, creates a complete scatterplot from an
-inline dataset, and renders it to Browser Canvas. Every action returns a new
-immutable `ChartProgram`, so the calls can be chained.
+This walkthrough draws the scatterplot above from 392 real car models, changes
+it, and saves it as an image. It takes about ten minutes.
+
+A ggaction chart is a chain of actions: create a Canvas, add data, add a
+scatterplot. Each action returns a new chart and leaves the previous one
+unchanged, so you can keep editing, compare versions, and see exactly which
+steps built a chart.
 
 ## 1. Create a browser project
 
-`ggaction` is an ESM package. This minimal setup uses Vite to resolve the npm
-package for the browser:
+`ggaction` is an ESM package. This setup uses Vite to serve it in a browser and
+downloads the cars dataset into Vite's `public` folder:
 
 ```bash
 mkdir ggaction-start
@@ -23,13 +27,12 @@ cd ggaction-start
 npm init -y
 npm install ggaction
 npm install --save-dev vite
+mkdir public
+curl -o public/cars.json https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json
 ```
 
-Node PNG/PDF output additionally requires `npm install @napi-rs/canvas`. The
-optional MCP server requires `npm install @modelcontextprotocol/sdk`. Browser
-Canvas and SVG need neither dependency.
-
-The command installs the public `ggaction` package from the npm registry.
+Each row is one car, for example
+`{ "Name": "chevrolet chevelle malibu", "Miles_per_Gallon": 18, "Horsepower": 130, "Origin": "USA", … }`.
 
 Create `index.html`:
 
@@ -43,25 +46,23 @@ Create `index.html`:
   </head>
   <body>
     <canvas id="chart" aria-label="Scatterplot of horsepower versus mileage by origin">
-      Scatterplot of horsepower versus mileage by origin.
+      Scatterplot of horsepower versus mileage for 392 cars, by origin.
     </canvas>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
 ```
 
-## 2. Build the program
+## 2. Build the chart
 
 Create `main.js`:
 
 ```javascript
-import { chart, render } from "ggaction/basic";
+import { chart, render } from "ggaction";
 
-const cars = [
-  { horsepower: 88, mpg: 27, origin: "USA" },
-  { horsepower: 70, mpg: 36, origin: "Japan" },
-  { horsepower: 110, mpg: 24, origin: "Europe" }
-];
+const cars = await fetch("/cars.json").then(response => response.json());
+const measured = cars.filter(car =>
+  Number.isFinite(car.Horsepower) && Number.isFinite(car.Miles_per_Gallon));
 
 const program = chart()
   .createCanvas({
@@ -69,12 +70,13 @@ const program = chart()
     height: 400,
     margin: { top: 30, right: 130, bottom: 60, left: 70 }
   })
-  .createData({ values: cars })
+  .createData({ values: measured })
   .createScatterPlot({
-    x: "horsepower",
-    y: "mpg",
-    color: "origin",
-    shape: "origin",
+    id: "cars",
+    x: "Horsepower",
+    y: "Miles_per_Gallon",
+    color: "Origin",
+    shape: "Origin",
     guides: {
       axes: {
         x: { title: { text: "Horsepower" } },
@@ -88,22 +90,10 @@ render(program, canvas.getContext("2d"));
 ```
 
 `createScatterPlot` uses the current dataset to create the point mark, x and y
-positions, scales, and applicable guides. Matching nominal color and shape
+positions, scales, axes, and grid lines. Matching nominal color and shape
 encodings also create a composite legend and a redundant visual cue, so origin
 is recognizable without color alone. The right margin reserves room for that
-legend.
-
-Pass `data` when more than one dataset could apply, or `id` when a later edit
-must name this mark. To understand how these calls remain immutable and
-inspectable, continue with
-<a href="{{ '/concepts/chart-program/' | relative_url }}">ChartProgram</a>,
-<a href="{{ '/concepts/semantic-and-graphics/' | relative_url }}">semantic and graphical state</a>,
-and <a href="{{ '/concepts/actions-and-trace/' | relative_url }}">action traces</a>.
-
-This walkthrough uses the creation-focused `ggaction/basic` entry. Import from
-`ggaction` instead when the program needs editing, selection, composition,
-Polar or Parallel coordinates, statistical layers, graphs, hierarchies, maps,
-or specialized plots.
+legend. The filter drops the few cars without a horsepower or mileage value.
 
 ## 3. Run it
 
@@ -112,7 +102,67 @@ npx vite
 ```
 
 Open the local URL printed by Vite. The browser draws the chart into the Canvas
-created in `index.html`.
+in `index.html`.
+
+## 4. Change the chart
+
+Add these lines to the end of `main.js`:
+
+```javascript
+const faded = program.editPointMark({ target: "cars", opacity: 0.5 });
+render(faded, canvas.getContext("2d"));
+console.log(faded.trace.children.map(step => step.op));
+```
+
+`editPointMark` returns a new chart; `program` is unchanged, so you can render
+either one or keep both. The console lists the actions that built `faded`,
+ending with `editPointMark`. Every chart keeps this trace, which is how
+[inspection](inspection.md), undo, and saved charts work.
+
+## 5. Save it as an image
+
+In the browser, turn the chart into an SVG string and download it:
+
+```javascript
+import { renderToSVG } from "ggaction/svg";
+
+const svg = renderToSVG(faded);
+const link = Object.assign(document.createElement("a"), {
+  href: URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" })),
+  download: "cars.svg"
+});
+link.click();
+```
+
+In Node.js, write a PNG file instead. Install the native Canvas package once
+with `npm install @napi-rs/canvas`, then run `node save-chart.mjs`:
+
+```javascript
+import { readFile } from "node:fs/promises";
+import { chart } from "ggaction";
+import { renderToPNG } from "ggaction/png";
+
+const cars = JSON.parse(await readFile("public/cars.json", "utf8"));
+const program = chart()
+  .createCanvas({ width: 640, height: 400, margin: { top: 30, right: 130, bottom: 60, left: 70 } })
+  .createData({ values: cars.filter(car => Number.isFinite(car.Horsepower) && Number.isFinite(car.Miles_per_Gallon)) })
+  .createScatterPlot({ x: "Horsepower", y: "Miles_per_Gallon", color: "Origin", shape: "Origin" });
+
+await renderToPNG(program, { output: "cars.png", pixelRatio: 2 });
+```
+
+`renderToPDF` from `ggaction/pdf` writes a vector PDF the same way. See
+[rendering](api/rendering.md) for every output.
+
+## Next
+
+- [Make the chart interactive](tutorials/interactive-chart.md) with tooltips,
+  brushing, and animated updates.
+- [Browse the gallery](gallery.md) and start from a chart that looks like the
+  one you need.
+- [Choose a chart type](api/chart-picker.md), including maps, networks,
+  hierarchies, and flows.
+- [Copy a recipe](recipes/index.md) for one common chart.
 
 ## Package entries and compatibility
 
@@ -144,10 +194,6 @@ local, read-only language-model authoring support. It is not imported by any
 browser entry. See [Local MCP for LLM Chart Authoring](./mcp.md) for setup and
 the one-tool workflow.
 
-The release artifact is tested by installing its exact tarball into fresh
-JavaScript and TypeScript consumer projects. It is also tested in a browser and
-across the supported Node release matrix.
-
 ## Runnable repository examples
 
 Use the
@@ -157,19 +203,3 @@ for complete runnable modules. Browse the
 or use
 the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/quarto-ojs/)
 when authoring an `.qmd` document.
-
-## Next
-
-Learn [how the same chart stays editable across authoring levels](./tutorials/hierarchical-authoring.md),
-then [choose from every complete chart family](./api/chart-picker.md).
-
-<div class="docs-entry-grid">
-  <a href="{{ '/recipes/' | relative_url }}"><strong>Copy a chart recipe</strong><span>Start from the shortest supported flow for a known chart type.</span></a>
-  <a href="{{ '/tutorials/' | relative_url }}"><strong>Learn a complete workflow</strong><span>Build a chart step by step and understand what each action adds.</span></a>
-  <a href="{{ '/reference/actions/' | relative_url }}"><strong>Find an exact action</strong><span>Look up canonical signatures, defaults, inference, and errors.</span></a>
-</div>
-
-Use <a href="{{ '/troubleshooting/' | relative_url }}">Troubleshooting</a> when
-inference or layout cannot make one safe choice. Render the same program to a
-file with <a href="{{ '/api/rendering/#png-output' | relative_url }}">PNG</a> or
-<a href="{{ '/api/rendering/#pdf-output' | relative_url }}">vector PDF output</a>.

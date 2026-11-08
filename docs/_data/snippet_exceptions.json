@@ -2352,13 +2352,6 @@
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Loading in browsers\" on docs/fonts.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/getting-started.md#2-build-the-program:1",
-    "sha256": "14c0501a8cb73d808b9181331de8af8c740e9f883a091eb4773cf4641258f47e",
-    "mode": "contextual-fragment",
-    "owner": "docs/getting-started.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"2. Build the program\" on docs/getting-started.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
-  },
-  {
     "id": "docs/inspection.md#program-inspection:1",
     "sha256": "6d15d17be58f7519df13460ccab8f2b86b1ebf998cdd4540f0cb4088d45b22e8",
     "mode": "contextual-fragment",
@@ -2952,5 +2945,26 @@
     "mode": "contextual-fragment",
     "owner": "docs/api/live.md",
     "reason": "Contextual continuation of the live scatter example. It needs that attached live chart, a second live chart named other, and browser animation frames; setData, animateTo, linkTo and save are executed in test/unit/live/live-chart.test.js."
+  },
+  {
+    "id": "docs/getting-started.md#4-change-the-chart:1",
+    "sha256": "387a0ec6e51be56a5b8e11ec85254e98f671e2d73fdbf2b6c6480eea8908c01a",
+    "mode": "contextual-fragment",
+    "owner": "docs/getting-started.md",
+    "reason": "Continuation of the executable step 2 program: it needs that program and its canvas. The same editPointMark call on the same chart and its trace operations are asserted in test/docs/getting-started.test.js."
+  },
+  {
+    "id": "docs/getting-started.md#5-save-it-as-an-image:1",
+    "sha256": "40741da14eb4086ef3bb313c0a2d27a4671ef90a6b40d48e7955e3863e9f1026",
+    "mode": "contextual-fragment",
+    "owner": "docs/getting-started.md",
+    "reason": "Browser continuation of step 4 that needs the edited chart, a DOM document and object URLs to trigger a download; renderToSVG on the same program is asserted in test/docs/getting-started.test.js."
+  },
+  {
+    "id": "docs/getting-started.md#5-save-it-as-an-image:2",
+    "sha256": "535a27db3af77b61b92db79bcd88f3ca4bf2552cc9fd97407f4234da26259bd5",
+    "mode": "contextual-fragment",
+    "owner": "docs/getting-started.md",
+    "reason": "Complete Node.js script that reads public/cars.json from the project created in step 1 and writes cars.png with the optional native Canvas peer; the same program renders to PNG in the documentation image generator."
   }
 ]

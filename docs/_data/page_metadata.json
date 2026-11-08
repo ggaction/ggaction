@@ -9,7 +9,7 @@
     "title": "Getting Started",
     "source": "docs/getting-started.md",
     "editSource": "docs/getting-started.md",
-    "description": "This walkthrough installs ggaction, creates a complete scatterplot from an inline dataset, and renders it to Browser Canvas.",
+    "description": "This walkthrough draws the scatterplot above from 392 real car models, changes it, and saves it as an image. It takes about ten minutes.",
     "image": "/assets/images/getting-started.png"
   },
   "/mcp/": {

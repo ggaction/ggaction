@@ -971,5 +971,16 @@
     "host": "paired-html",
     "dataset": "gapminder",
     "prerequisites": "Use this section's HTML and JavaScript together with ggaction installed and gapminder.json served from the site root."
+  },
+  {
+    "id": "getting-started-main",
+    "file": "getting-started.md",
+    "contains": "render(program, canvas.getContext(\"2d\"));",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "dataset": "cars",
+    "prerequisites": "Use the index.html from step 1 and serve cars.json from the site root, as the Vite public folder does."
   }
 ]
