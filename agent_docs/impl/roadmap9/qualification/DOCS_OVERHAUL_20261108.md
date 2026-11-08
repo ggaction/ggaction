@@ -39,9 +39,19 @@
   (오류 없음). 애니메이션·데이터 업데이트 문서에 적었다.
 - 지도 projection 좌표는 Canvas 픽셀이라 margin을 무시한다. 문서로 안내했고 라이브러리 동작은 바꾸지 않았다.
 
+## 2차 (사용자 선택 B: 남은 항목까지 마저 고친 뒤 PR)
+
+- 레시피 19개를 실제 데이터(cars, Gapminder, Nightingale, IMDb)를 불러오는 완결 프로그램으로 바꾸고 문서 실행 시험에
+  등록했다. 막대 레시피는 실제 그룹 막대 그림으로 시작한다. 산점도 레시피의 범례 설명을 실제 규칙(색과 모양이 같을 때
+  또는 크기일 때만 자동)으로 고쳤다.
+- graph 추론 브라우저 worker 예제를 추가하고 Vite 번들과 Chromium 실행으로 확인했다.
+- interaction 문서의 내부 용어 native 77곳을 지우고, edge route·graph·hierarchy·OHLC·pyramid 문서의 내부 구현 문장을
+  동작 설명으로 바꿨다.
+- expression v2 함수 30개 표(런타임과 동기화 시험), 매개변수를 슬라이더·드롭다운에 연결하는 안내.
+- 극좌표 튜토리얼 3개를 한 시리즈로 연결하고, 튜토리얼의 시험 과정 문구를 그림 설명으로 바꿨다.
+- 검증: `npm test` 10,625개, `npm run docs:verify`, `npm run test:package` 모두 통과.
+
 ## 남은 일
 
-- 레시피 19개의 "Minimal flow" 블록은 여전히 데이터 선언과 render가 없다.
-- 튜토리얼과 레시피 중복, 극좌표 튜토리얼 3개 통합, interaction 페이지의 내부 용어 정리.
-- 브라우저용 graph worker 파일 예제, expression v2 함수 표.
-- 문서 배포는 Release workflow(tag)로만 가능하다. 0.0.27 이후 docs만 바뀌었으므로 배포 방식은 사용자 결정이 필요하다.
+- 튜토리얼 3개(극좌표)를 한 페이지로 합치는 구조 변경은 URL과 기존 링크를 바꾸므로 하지 않고 시리즈 연결로 대신했다.
+- 문서 배포는 다음 버전(0.0.28) 릴리스에서 Release workflow로 진행한다.
