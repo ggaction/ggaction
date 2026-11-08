@@ -245,7 +245,7 @@ of the stored bounds, so fitting and clipping include their full extent.
 {% include chart-example.html id="flow-cyclic" %}
 
 The [shared example source](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/flow-layouts/program.js)
-also demonstrates vertical flow and typed per-item colors. The browser example,
-primitive comparisons and generated figures use that one program.
+also demonstrates vertical flow and typed per-item colors, and draws the small
+figures on this page.
 See [Flow Data and Sankey Layouts](../api/flows.md) for exact options, selection
 fields, defaults and lifecycle behavior.

@@ -5,6 +5,10 @@ title: Polar Lines and Radar Tutorial
 
 # Polar Lines and Radar Tutorial
 
+> **Polar charts in three steps:** [points and guides](polar-points.md) ·
+> [lines and radar charts](polar-lines.md) ·
+> [pie, donut, rose, and radial bar charts](polar-arcs.md).
+
 Polar line marks use the same `encodeTheta` and `encodeR` actions as Polar
 points. The line stays open by default; `closed: true` turns each grouped series
 into a radar path.

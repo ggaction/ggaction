@@ -154,7 +154,7 @@ and translation; Canvas resizing alone does not silently fit the geometry.
 See [Geometry and projections](../api/geometry.md) for exact options, revisions,
 selection, coordinate compatibility and current limitations. The
 [shared example source](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/geographic-marks/program.js)
-is used by this tutorial, the browser examples and the primitive comparisons.
+draws the small planar figures on this page.
 
 ## Keep labels attached to their features
 

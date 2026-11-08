@@ -11,6 +11,10 @@ program with the new width and height, then render again. CSS-only stretching
 changes displayed pixels without recomputing scales, marks, guides, wrapping,
 or collision layout and is therefore not chart layout.
 
+With [`ggaction/live`](./api/live.md), `chart.addCanvas(element).autoResize()`
+follows the container width for you. The pattern below does the same with an
+immutable program.
+
 ## Complete browser pattern
 
 ```javascript

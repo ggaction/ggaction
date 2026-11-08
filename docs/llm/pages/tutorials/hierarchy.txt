@@ -88,9 +88,9 @@ export function createWorldPopulationSunburst(gapminder) {
 }
 ```
 
-## Run the maintained examples
+## Run the examples
 
-Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/treemap-layouts). Their programs, `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`, draw the small figures on this page.
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 

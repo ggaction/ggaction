@@ -5,6 +5,10 @@ title: Polar Point Chart Tutorial
 
 # Polar Point Chart Tutorial
 
+> **Polar charts in three steps:** [points and guides](polar-points.md) ·
+> [lines and radar charts](polar-lines.md) ·
+> [pie, donut, rose, and radial bar charts](polar-arcs.md).
+
 {% include chart-example.html id="polar" lead=true %}
 
 This tutorial maps car acceleration to angle, horsepower to distance from the

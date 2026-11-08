@@ -43,7 +43,7 @@ the direction of progress; it does not sort the source rows. A pointed ending
 is an explicit `lastStage: "point"` choice for width mode.
 
 The [shared example source](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/pyramid/program.js)
-drives the browser examples, primitive comparisons and generated images.
+draws the figures on this page.
 See [Pyramid plots](../api/pyramid.md) for labels, percentages, color, selection
 and editing options.
 

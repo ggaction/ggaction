@@ -3,8 +3,8 @@
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
 contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/mark-selection/program.js)
-used by the acceptance and PNG tests below.
+and the [program source](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/mark-selection/program.js)
+that draws the figures below.
 
 ## Complete program
 

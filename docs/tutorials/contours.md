@@ -196,6 +196,5 @@ values agree, while their estimation policies remain explicit.
 {% include chart-example.html id="contour-density" %}
 
 The [shared example source](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/contours/program.js)
-contains all five variants. Browser examples, primitive comparisons and images
-use that one program. See [Contours and two-dimensional density](../api/contours.md)
+contains all five variants shown on this page. See [Contours and two-dimensional density](../api/contours.md)
 for exact options, limits, guide mappings, edits and source revision behavior.

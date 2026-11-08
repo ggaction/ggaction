@@ -173,6 +173,5 @@ a triangular product kernel and bandwidth [1, 1]. On this grid their sampled
 values agree, while their estimation policies remain explicit.
 
 The [shared example source](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/contours/program.js)
-contains all five variants. Browser examples, primitive comparisons and images
-use that one program. See [Contours and two-dimensional density](../../../api/contours/)
+contains all five variants shown on this page. See [Contours and two-dimensional density](../../../api/contours/)
 for exact options, limits, guide mappings, edits and source revision behavior.

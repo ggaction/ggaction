@@ -23,7 +23,3 @@ Choose the visual relationship that matches the question you want to answer.
     </div>
   {% endfor %}
 </div>
-
-The bar tutorial uses grouped bars as one layout of the general bar mark. The
-statistical tutorials compose ordinary data, marks, encodings, and guides rather
-than introducing a separate renderer path.

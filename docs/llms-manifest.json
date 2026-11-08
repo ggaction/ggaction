@@ -95,8 +95,8 @@
       "headings": [
         "tutorials"
       ],
-      "bytes": 588,
-      "sha256": "23211b2b3ae3db031041e3315ab894676ec387f1d972b8b95f4d3da20f919986"
+      "bytes": 385,
+      "sha256": "c0bd98c482fe777f0597c7ccd2a0b11fd905e5fd34a1ab813b3e7b8344c495a1"
     },
     {
       "order": 6,
@@ -147,8 +147,8 @@
         "current-boundary",
         "related"
       ],
-      "bytes": 4146,
-      "sha256": "1fc5555b88fd72ca1ceb2690cd0b8ce8184afc392d58c0cd8a2ac73669a7d8e9"
+      "bytes": 4358,
+      "sha256": "712bb3e9e8bd4bb8977ba3ec227d8720f130d49894c24d07c3a5b0e40dec7fc2"
     },
     {
       "order": 9,
@@ -162,8 +162,8 @@
         "closed-radar-paths",
         "related"
       ],
-      "bytes": 3652,
-      "sha256": "9b5d44d3a32fa36f83edcdc923a673b305777fd037020a075d16430b318795e1"
+      "bytes": 3864,
+      "sha256": "2d9180c94f3ef7210c541db7711c54f664f758bd6de1914762e4365a183e2a1b"
     },
     {
       "order": 10,
@@ -183,8 +183,8 @@
         "editing-an-arc",
         "related"
       ],
-      "bytes": 10905,
-      "sha256": "831d4c8b7bb309f1667970b5aa6452838dbcaa73fceebb42c3ecca80598f1ee6"
+      "bytes": 11117,
+      "sha256": "c7c869b9b5645b08d3b7f87bf357c01010c15b18e0cb8d02ae6d8e2bb51305e3"
     },
     {
       "order": 11,
@@ -346,8 +346,8 @@
         "choose-filtering-reusable-selection-or-highlighting",
         "run-and-continue"
       ],
-      "bytes": 7136,
-      "sha256": "edffdc856e9bb5e77e72e92cc825f5651b8f3c3eb412cbc990d5d6f79cad948f"
+      "bytes": 7118,
+      "sha256": "4b8c29a815a8b1df9ff0c154bd4d56437f9de2a4df648dc05b6a35e2822a53b5"
     },
     {
       "order": 21,
@@ -2031,8 +2031,8 @@
         "resize-policy",
         "related"
       ],
-      "bytes": 3067,
-      "sha256": "6f5cfec78f5b3a90bd89b1ee583a6b05ff8457317a7912477ab367d5adcb1881"
+      "bytes": 3241,
+      "sha256": "68663ac221f6fdab7ec0b1517c559ed9da947df2c0a15f997e858531b4730f75"
     },
     {
       "order": 117,
@@ -4143,13 +4143,13 @@
       "headings": [
         "hierarchy-tutorial",
         "example-with-real-data",
-        "run-the-maintained-examples",
+        "run-the-examples",
         "change-geometry-while-retaining-meaning",
         "compare-rectangle-layouts",
         "edit-data-and-remove-views"
       ],
-      "bytes": 9024,
-      "sha256": "d1fcb5f63ab97d8a5163b3a55e528b8ce561fc290eac3d63955a776656942fb0"
+      "bytes": 8960,
+      "sha256": "4297c5be310473ec23477a26e3e0257ab47a107a9afaeb5c22c05bcee25a95f9"
     },
     {
       "order": 164,
@@ -4245,8 +4245,8 @@
         "focus-and-return",
         "share-intervals-with-a-sunburst"
       ],
-      "bytes": 7925,
-      "sha256": "39542bf92e3019976621b16d77873585d1abc3da9e27cb8b81e7dd7675f61998"
+      "bytes": 7900,
+      "sha256": "4de503823637a901d80bd956552a3786e22fb80d60e0ee3f0dc0caadfd6a7bee"
     },
     {
       "order": 170,
@@ -4279,8 +4279,8 @@
         "example-with-real-data",
         "a-small-worked-example"
       ],
-      "bytes": 6570,
-      "sha256": "88a92d8d3f8908d21f06d37b9787e5f3df6f1c9d39a42d8a31c596c3688a0404"
+      "bytes": 6525,
+      "sha256": "5bc4593c7f06c359b11763c6aa13f70f2703ea9c0f43e60b477a34d8e84ed11f"
     },
     {
       "order": 172,
@@ -4351,8 +4351,8 @@
         "example-with-real-data",
         "a-small-worked-example"
       ],
-      "bytes": 5445,
-      "sha256": "67335c34c1d25a395a90c8286b21548a87fb87dc61ccce18d09785ebbf774851"
+      "bytes": 5391,
+      "sha256": "b5d83fa456c52eab0b69af45a7f027821d506b34d59f829e5d063f85c8a35e4c"
     },
     {
       "order": 175,
@@ -4421,8 +4421,8 @@
         "label-feature-fields-and-graticules",
         "compare-graticule-degrees-in-a-companion-chart"
       ],
-      "bytes": 13097,
-      "sha256": "df4cc55052e45b3f29fd256e844db1ca782ef137c1f1148b27af45163a4983ab"
+      "bytes": 13064,
+      "sha256": "921b604ea7436b5b248f5de6630c6058fd193a06fe4b1d85a316960f3bd6038d"
     },
     {
       "order": 180,
@@ -4446,8 +4446,8 @@
         "compare-ordered-stages",
         "key-action-trace"
       ],
-      "bytes": 1821,
-      "sha256": "b7029b87c3ad89bb10040a8d829f9075baf0f5c013b212ce90561b122d5cb039"
+      "bytes": 1780,
+      "sha256": "fe3a15e4d3a4bae68344b56afab22647f08630eaa256a828f4bee547e7fbedd9"
     },
     {
       "order": 182,

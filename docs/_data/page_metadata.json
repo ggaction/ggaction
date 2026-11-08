@@ -47,21 +47,21 @@
     "title": "Polar Point Tutorial",
     "source": "docs/tutorials/polar-points.md",
     "editSource": "docs/tutorials/polar-points.md",
-    "description": "This tutorial maps car acceleration to angle, horsepower to distance from the center, and origin to color.",
+    "description": "Polar charts in three steps: points and guides · lines and radar charts · pie, donut, rose, and radial bar charts.",
     "image": "/assets/images/cars-polar-scatterplot.png"
   },
   "/tutorials/polar-lines/": {
     "title": "Polar Line and Radar Tutorial",
     "source": "docs/tutorials/polar-lines.md",
     "editSource": "docs/tutorials/polar-lines.md",
-    "description": "Polar line marks use the same encodeTheta and encodeR actions as Polar points. The line stays open by default; closed: true turns each grouped series into a radar path.",
+    "description": "Polar charts in three steps: points and guides · lines and radar charts · pie, donut, rose, and radial bar charts.",
     "image": "/assets/images/gapminder-polar-trends.png"
   },
   "/tutorials/polar-arcs/": {
     "title": "Polar Arc Tutorial",
     "source": "docs/tutorials/polar-arcs.md",
     "editSource": "docs/tutorials/polar-arcs.md",
-    "description": "Arc marks turn Polar positions into closed sector paths. Map a quantitative theta field directly to proportional sectors, aggregate categorical theta by count or weighted sum, or…",
+    "description": "Polar charts in three steps: points and guides · lines and radar charts · pie, donut, rose, and radial bar charts.",
     "image": "/assets/images/pie-plot.png"
   },
   "/tutorials/line-chart/": {

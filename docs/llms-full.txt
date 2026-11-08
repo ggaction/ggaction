@@ -689,10 +689,6 @@ Choose the visual relationship that matches the question you want to answer.
  [New to ggaction? Install the package and render one complete browser chart first.](./getting-started/)
  [Need only the shortest code? Switch to recipes when you do not need the step-by-step explanation.](./recipes/)
 
-The bar tutorial uses grouped bars as one layout of the general bar mark. The
-statistical tutorials compose ordinary data, marks, encodings, and guides rather
-than introducing a separate renderer path.
-
 <!-- Source: /tutorials/scatterplot/ -->
 
 # Cars Scatterplot Tutorial
@@ -1071,6 +1067,10 @@ export function createGapminderBubbleYears(gapminder) {
 
 # Polar Point Chart Tutorial
 
+> **Polar charts in three steps:** [points and guides](./tutorials/polar-points/) ·
+> [lines and radar charts](./tutorials/polar-lines/) ·
+> [pie, donut, rose, and radial bar charts](./tutorials/polar-arcs/).
+
 This tutorial maps car acceleration to angle, horsepower to distance from the
 center, and origin to color. The public angle unit is degrees: `0` points to 12
 o'clock and positive angles move clockwise.
@@ -1188,6 +1188,10 @@ charts use arc marks; see the [polar arc tutorial](./tutorials/polar-arcs/).
 
 # Polar Lines and Radar Tutorial
 
+> **Polar charts in three steps:** [points and guides](./tutorials/polar-points/) ·
+> [lines and radar charts](./tutorials/polar-lines/) ·
+> [pie, donut, rose, and radial bar charts](./tutorials/polar-arcs/).
+
 Polar line marks use the same `encodeTheta` and `encodeR` actions as Polar
 points. The line stays open by default; `closed: true` turns each grouped series
 into a radar path.
@@ -1303,6 +1307,10 @@ interpolation only; Cartesian lines retain the complete curve vocabulary.
 <!-- Source: /tutorials/polar-arcs/ -->
 
 # Polar Arc Tutorial
+
+> **Polar charts in three steps:** [points and guides](./tutorials/polar-points/) ·
+> [lines and radar charts](./tutorials/polar-lines/) ·
+> [pie, donut, rose, and radial bar charts](./tutorials/polar-arcs/).
 
 Arc marks turn Polar positions into closed sector paths. Map a quantitative
 theta field directly to proportional sectors, aggregate categorical theta by
@@ -2860,8 +2868,8 @@ program
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
 contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/mark-selection/program.js)
-used by the acceptance and PNG tests below.
+and the [program source](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/mark-selection/program.js)
+that draws the figures below.
 
 ## Complete program
 
@@ -21272,6 +21280,10 @@ behavior belongs to the host: measure a container, rebuild the immutable
 program with the new width and height, then render again. CSS-only stretching
 changes displayed pixels without recomputing scales, marks, guides, wrapping,
 or collision layout and is therefore not chart layout.
+
+With [`ggaction/live`](./api/live/), `chart.addCanvas(element).autoResize()`
+follows the container width for you. The pattern below does the same with an
+immutable program.
 
 ## Complete browser pattern
 
@@ -59797,9 +59809,9 @@ export function createWorldPopulationSunburst(gapminder) {
 }
 ```
 
-## Run the maintained examples
+## Run the examples
 
-Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/treemap-layouts). Their programs, `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`, draw the small figures on this page.
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 
@@ -61038,7 +61050,7 @@ Body and label styles accept `outline:{color,width}|false` and `shadow:{color,of
 
 # Partition tutorial
 
-A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
+A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/partition-layouts/program.js); it draws the small figures on this page.
 
 ## Example with real data
 
@@ -61806,8 +61818,8 @@ self-loops when the flow graph explicitly enables them. Outside lanes are part
 of the stored bounds, so fitting and clipping include their full extent.
 
 The [shared example source](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/flow-layouts/program.js)
-also demonstrates vertical flow and typed per-item colors. The browser example,
-primitive comparisons and generated figures use that one program.
+also demonstrates vertical flow and typed per-item colors, and draws the small
+figures on this page.
 See [Flow Data and Sankey Layouts](./api/flows/) for exact options, selection
 fields, defaults and lifecycle behavior.
 
@@ -63193,8 +63205,7 @@ a triangular product kernel and bandwidth [1, 1]. On this grid their sampled
 values agree, while their estimation policies remain explicit.
 
 The [shared example source](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/contours/program.js)
-contains all five variants. Browser examples, primitive comparisons and images
-use that one program. See [Contours and two-dimensional density](./api/contours/)
+contains all five variants shown on this page. See [Contours and two-dimensional density](./api/contours/)
 for exact options, limits, guide mappings, edits and source revision behavior.
 
 <!-- Source: /tutorials/responsive-guides/ -->
@@ -63771,7 +63782,7 @@ and translation; Canvas resizing alone does not silently fit the geometry.
 See [Geometry and projections](./api/geometry/) for exact options, revisions,
 selection, coordinate compatibility and current limitations. The
 [shared example source](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/geographic-marks/program.js)
-is used by this tutorial, the browser examples and the primitive comparisons.
+draws the small planar figures on this page.
 
 ## Keep labels attached to their features
 
@@ -64017,7 +64028,7 @@ the direction of progress; it does not sort the source rows. A pointed ending
 is an explicit `lastStage: "point"` choice for width mode.
 
 The [shared example source](https://github.com/ggaction/ggaction/blob/c463cf422b0a1f4fa7d3c903525387ac393c3c09/examples/pyramid/program.js)
-drives the browser examples, primitive comparisons and generated images.
+draws the figures on this page.
 See [Pyramid plots](./api/pyramid/) for labels, percentages, color, selection
 and editing options.
 

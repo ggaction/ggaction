@@ -6191,7 +6191,7 @@
   {
     "file": "tutorials/hierarchy.md",
     "block": 1,
-    "heading": "Run the maintained examples",
+    "heading": "Run the examples",
     "mode": "complete",
     "environment": "browser-module",
     "receivers": [],
