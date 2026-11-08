@@ -27,7 +27,7 @@ Directions are explicit. `orientation: "up"`, `"right"` or `"left"` changes
 the direction of progress; it does not sort the source rows. A pointed ending
 is an explicit `lastStage: "point"` choice for width mode.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/pyramid/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/4ca52527ec70894e0fe1ab4cc47bfbf6d4b77a17/examples/pyramid/program.js)
 drives the browser examples, primitive comparisons and generated images.
 See [Pyramid plots](../../../api/pyramid/) for labels, percentages, color, selection
 and editing options.

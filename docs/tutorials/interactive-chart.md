@@ -6,7 +6,7 @@ description: Build a Gapminder bubble chart in a web page, add tooltips, brushin
 
 # Make a Chart Interactive
 
-![Gapminder bubble chart animating from 1955 to 2005 as countries move toward lower fertility and longer lives]({{ '/assets/images/gapminder-bubbles-animation.gif' | relative_url }})
+![Gapminder bubble chart animating from 1955 to 2005 as countries move toward lower fertility and longer lives](../assets/images/gapminder-bubbles-animation.gif){: loading="eager" width="820" height="500" }
 
 This tutorial builds the chart above in a web page. You will draw it once,
 then add a tooltip, hover highlighting, brush selection and legend toggles,

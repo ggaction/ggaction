@@ -4,7 +4,7 @@ The long A–C connection follows the existing A–B–C path, with two corner c
 All three original edges remain independently selectable.
 
 This complete ES module uses the same data and action flow as the
-[executable example](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/edge-routes/program.js).
+[executable example](https://github.com/ggaction/ggaction/blob/4ca52527ec70894e0fe1ab4cc47bfbf6d4b77a17/examples/edge-routes/program.js).
 
 ```javascript
 import { chart } from 'ggaction';
@@ -50,10 +50,10 @@ axis and legend belong to that child; editing them leaves the route child's nati
 positions, route references and stroke unchanged. Equal row keys do not create an
 automatic link: revise both source datasets with explicit child targets.
 
-Copy [comparison.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/edge-routes/comparison.js),
-[program.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/edge-routes/program.js),
-[options.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/edge-routes/options.js)
-and [data.js](https://github.com/ggaction/ggaction/blob/codex/docs-overhaul/examples/edge-routes/data.js)
+Copy [comparison.js](https://github.com/ggaction/ggaction/blob/4ca52527ec70894e0fe1ab4cc47bfbf6d4b77a17/examples/edge-routes/comparison.js),
+[program.js](https://github.com/ggaction/ggaction/blob/4ca52527ec70894e0fe1ab4cc47bfbf6d4b77a17/examples/edge-routes/program.js),
+[options.js](https://github.com/ggaction/ggaction/blob/4ca52527ec70894e0fe1ab4cc47bfbf6d4b77a17/examples/edge-routes/options.js)
+and [data.js](https://github.com/ggaction/ggaction/blob/4ca52527ec70894e0fe1ab4cc47bfbf6d4b77a17/examples/edge-routes/data.js)
 beside this ES module and use `ggaction` for the helpers' public package imports.
 
 ```javascript

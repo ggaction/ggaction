@@ -5,7 +5,7 @@ title: Animate and Export Chart Frames
 
 # Animate and Export Chart Frames
 
-![Gapminder bubble chart moving year by year from 1955 to 2005]({{ '/assets/images/gapminder-bubbles-animation.gif' | relative_url }})
+![Gapminder bubble chart moving year by year from 1955 to 2005](../assets/images/gapminder-bubbles-animation.gif){: loading="eager" width="820" height="500" }
 
 Prepare a transition between two immutable charts, sample it at an explicit time,
 and pass the returned frame directly to Canvas, SVG, PNG, or PDF. The
