@@ -66,7 +66,7 @@ test("compares compound paths through four product backends and both scenes", as
       drawPrimitive(reference.getContext("2d"), variant, { reference: true });
       assert.deepEqual(pixels(canvas.getContext("2d")), pixels(reference.getContext("2d")), `${variant.id}: independent native primitive equality`);
       const nativePNG = canvas.toBuffer("image/png");
-      await writeFile(path.join(output, "primitive.png"), nativePNG);
+      await writeFile(path.join(output, "primitive-node.png"), nativePNG);
       const svg = primitiveSVG(variant);
       await writeFile(path.join(output, "primitive.svg"), svg);
       const svgCanvas = await decode(Buffer.from(svg));
@@ -85,7 +85,7 @@ test("compares compound paths through four product backends and both scenes", as
       const productPNG = (await renderToPNGBuffer(program)).buffer;
       const productSVG = renderToSVG(program);
       const productPDF = (await renderToPDFBuffer(program)).buffer;
-      await writeFile(path.join(output, "user-facing.png"), productPNG);
+      await writeFile(path.join(output, "user-facing-node.png"), productPNG);
       await writeFile(path.join(output, "user-facing.svg"), productSVG);
       await writeFile(path.join(output, "user-facing.pdf"), productPDF);
       await equalPixels(productPNG, nativePNG, `${variant.id}: Node PNG pixels`);
@@ -141,7 +141,7 @@ test("compares compound paths through four product backends and both scenes", as
     for (let i = 0; i < variants.length; i++) {
       const x = i % 3 * frame.width, y = 55 + Math.floor(i / 3) * (frame.height + 38);
       context.font = "16px sans-serif"; context.fillStyle = "#172b4d"; context.fillText(variants[i].title, x + 16, y + 24);
-      context.drawImage(await loadImage(path.join(directory, variants[i].id, "primitive.png")), x, y + 38);
+      context.drawImage(await loadImage(path.join(directory, variants[i].id, "primitive-node.png")), x, y + 38);
     }
     await writeFile(path.join(directory, "contact-sheet.png"), sheet.toBuffer("image/png"));
     await writeFile(path.join(directory, "results.json"), JSON.stringify({ productIntegration: "passed", variants: evidence }, null, 2) + "\n");

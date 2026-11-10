@@ -27,6 +27,19 @@ test("isolates npm pack from the caller's global cache", () => {
   });
 });
 
+test("installed consumers do not inherit test-runner coverage", async () => {
+  const { installedConsumerEnvironment } = await import("../../scripts/consumers/runtime.js");
+  assert.deepEqual(installedConsumerEnvironment({
+    HOME: "/users/example",
+    NODE_V8_COVERAGE: "/tmp/node-coverage",
+    NPM_CONFIG_CACHE: "/tmp/consumer-cache"
+  }), {
+    HOME: "/users/example",
+    NODE_V8_COVERAGE: "",
+    NPM_CONFIG_CACHE: "/tmp/consumer-cache"
+  });
+});
+
 test("publishes only the bounded public package artifact", async () => {
   const compactJsonPaths = [
     "knowledge/action-card.schema.json",

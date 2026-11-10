@@ -14,14 +14,23 @@ export const tscCommand = path.join(
   "tsc"
 );
 
+// Consumers execute the installed copy outside the repository, so inherited V8
+// coverage only records files the src/** report discards while doubling runtime.
+// Node re-adds the parent's NODE_V8_COVERAGE unless env owns the key; empty disables it.
+export function installedConsumerEnvironment(environment = process.env) {
+  return { ...environment, NODE_V8_COVERAGE: "" };
+}
+
 export function run(command, args, cwd, options = {}) {
-  const invocation = command === npmCommand ? npmInvocation(args, { env: options.env ?? process.env }) : { command, args };
+  const env = installedConsumerEnvironment(options.env);
+  const invocation = command === npmCommand ? npmInvocation(args, { env }) : { command, args };
   execFileSync(invocation.command, invocation.args, {
     cwd,
     encoding: "utf8",
     stdio: "pipe",
     timeout: Number(process.env.GGACTION_CHECK_TIMEOUT_MS ?? 90 * 60 * 1000),
-    ...options
+    ...options,
+    env
   });
 }
 
