@@ -42,3 +42,18 @@
 - 렌더 시험 `compound-path/point-only`는 `backends.render.js`와 같은 `primitive.png` 경로를 동시에 쓰는 경쟁이 있다.
   재실행으로 통과했으며 별도 수정이 필요하다.
 - `installed native families` 시험은 coverage CI에서 15분 제한 근처에서 실행된다.
+
+## 후속 수정 (2026-11-10)
+
+두 CI flake의 원인을 고쳤다. 시간 제한, 검사 항목, coverage 기준은 바꾸지 않았다.
+
+- 파일 충돌: `backends.render.js`가 1배 native PNG와 Node PNG를 시각 변형 시험(2배)과 같은 `primitive.png`,
+  `user-facing.png`에 썼다. 두 파일이 동시에 돌면 2배 결과를 다시 읽는 쪽이 `400 !== 800`으로 실패했다. 1배 결과는
+  `primitive-node.png`, `user-facing-node.png`에 쓰고 contact sheet도 1배 파일을 읽는다. 두 시험을 동시에 돌려
+  7/7 통과와 각 파일 크기(800px, 400px)를 확인했다.
+- 시간 초과: 설치 소비자 하위 process가 test runner의 `NODE_V8_COVERAGE`를 물려받아, 저장소 밖 설치본까지
+  block coverage로 계측했다. 이 결과는 `src/**` 보고서에서 버려지는데도 소비자 단계가 113초에서 228초로 두 배가 됐다.
+  Node는 env에 키가 없으면 부모 값을 다시 넣으므로, 소비자 env에서 빈 문자열로 끈다. coverage 파일은 99개(129MB)에서
+  5개(6.8MB)로 줄었고, 시험 process 자체의 저장소 `src` coverage 항목은 1070개로 같다. 실제 coverage 실행에서 이 시험은
+  122초였다. CI 일반 job의 같은 시험은 368–697초로 편차가 크므로, 이 수정은 coverage job을 일반 job과 같은 속도로
+  되돌리는 것이지 여유를 새로 만드는 것은 아니다.
