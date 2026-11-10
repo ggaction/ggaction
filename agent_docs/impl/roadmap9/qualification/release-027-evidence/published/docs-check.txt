@@ -1,0 +1,12 @@
+2026-11-07T16:39:34Z
+200 https://ggaction.github.io/ggaction/
+200 https://ggaction.github.io/ggaction/version/
+200 https://ggaction.github.io/ggaction/api/live/
+200 https://ggaction.github.io/ggaction/api/graphs/
+200 https://ggaction.github.io/ggaction/api/edge-routes/
+200 https://ggaction.github.io/ggaction/api/animation/
+200 https://ggaction.github.io/ggaction/api/geometry/
+200 https://ggaction.github.io/ggaction/performance/
+200 https://ggaction.github.io/ggaction/llms.txt
+version page 0.0.27: 4
+performance Known limits: 1
